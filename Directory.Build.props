@@ -2,8 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup Label="Metadata configuration">
-    <OrganizationName><!-- insert organization name here --></OrganizationName>
-    <RepositoryName><!-- insert repository name here --></RepositoryName>
+    <OrganizationName>atc-net</OrganizationName>
+    <RepositoryName>atc</RepositoryName>
   </PropertyGroup>
 
   <!-- Solution wide properties -->
@@ -18,7 +18,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>9.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1573,1591,1712</NoWarn>
+    <NoWarn>1573,1591,1712,CA1014</NoWarn>
 
     <!-- Used by code coverage -->
     <DebugType>full</DebugType>
@@ -27,9 +27,9 @@
 
   <PropertyGroup Label="Analyzer settings">
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <!-- Treat warnings as errors are always on when building in release -->
