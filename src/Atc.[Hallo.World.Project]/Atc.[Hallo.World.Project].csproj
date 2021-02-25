@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Atc.[Hallo.World.Project]</PackageId>
+    <PackageTags>tag1;tag2</PackageTags>
+    <Description>[PROJECT-TEXT]</Description>
+  </PropertyGroup>
+
+</Project>
