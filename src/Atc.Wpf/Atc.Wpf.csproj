@@ -1,9 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Atc.[Hallo.World.Project]</PackageId>
-    <PackageTags>tag1;tag2</PackageTags>
-    <Description>[PROJECT-TEXT]</Description>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf</Title>
+    <PackageId>Atc.Wpf</PackageId>
+    <PackageTags>wpf;mvvm,relaycommand</PackageTags>
+    <Description>A base library for building WPF application with the MVVM design pattern.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>9.0</LangVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
 </Project>

@@ -5,6 +5,15 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf", "src\Atc.Wpf\Atc.Wpf.csproj", "{9E78A492-8638-473B-ADBC-C377AF3EFC72}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Tests", "test\Atc.Wpf.Tests\Atc.Wpf.Tests.csproj", "{281A8963-0302-4E28-84FB-8D16A13F6B2B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Sample", "sample\Atc.Wpf.Sample\Atc.Wpf.Sample.csproj", "{C8D94D8E-5177-4EEE-8056-A3764B247013}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CDD5376-1409-4FC7-9ACA-4659ED944589}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +24,14 @@ Global
 		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
