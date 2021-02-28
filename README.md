@@ -7,7 +7,7 @@
 
 ### Packages
 [![Github Version](https://img.shields.io/static/v1?logo=github&color=blue&label=github&message=latest)](https://github.com/orgs/atc-net/packages?repo_name=atc-wpf)
-[![NuGet Version](https://img.shields.io/nuget/v/Atc.[Hallo.World.Project].svg?logo=nuget)](https://www.nuget.org/profiles/atc-net)
+[![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?logo=nuget)](https://www.nuget.org/profiles/atc-net)
 
 ### Build Status
 ![Pre-Integration](https://github.com/atc-net/atc-wpf/workflows/Pre-Integration/badge.svg)
