@@ -78,8 +78,12 @@ jobs:
 
       - name: 📦 Push packages to GitHub Package Registry
         run: |
+          echo '${NBGV_NuGetPackageVersion}'
+          echo ${NBGV_NuGetPackageVersion}
           echo '${{NBGV_NuGetPackageVersion}}'
           echo ${{NBGV_NuGetPackageVersion}}
+          echo '${GITHUB_WORKSPACE}'
+          echo ${GITHUB_WORKSPACE}
           echo '${{GITHUB_WORKSPACE}}'
           echo ${{ GITHUB_WORKSPACE}}
           dir ${GITHUB_WORKSPACE}/packages
