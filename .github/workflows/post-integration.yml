@@ -78,6 +78,6 @@ jobs:
 
       - name: 📦 Push packages to GitHub Package Registry
         run: |
-          echo 'Hallo-${NBGV_NuGetPackageVersion}-1'
+          echo 'Hallo-${{NBGV_NuGetPackageVersion}}-2'
           dir ${GITHUB_WORKSPACE}/packages
           dotnet nuget push ${GITHUB_WORKSPACE}/packages/Atc.Wpf.${{NBGV_NuGetPackageVersion}}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols true
