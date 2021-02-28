@@ -11,7 +11,7 @@ env:
 jobs:
   release:
     if: github.ref == 'refs/heads/stable'
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v2

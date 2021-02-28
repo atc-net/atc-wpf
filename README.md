@@ -1,29 +1,30 @@
 ### General Project Info
-[![Github top language](https://img.shields.io/github/languages/top/atc-net/atc-[hallo-world-project])](https://github.com/atc-net/atc-[hallo-world-project])
-[![Github stars](https://img.shields.io/github/stars/atc-net/atc-[hallo-world-project])](https://github.com/atc-net/atc-[hallo-world-project])
-[![Github forks](https://img.shields.io/github/forks/atc-net/atc-[hallo-world-project])](https://github.com/atc-net/atc-[hallo-world-project])
-[![Github size](https://img.shields.io/github/repo-size/atc-net/atc-[hallo-world-project])](https://github.com/atc-net/atc-[hallo-world-project])
-[![Issues Open](https://img.shields.io/github/issues/atc-net/atc-[hallo-world-project].svg?logo=github)](https://github.com/atc-net/atc-[hallo-world-project]/issues)
+[![Github top language](https://img.shields.io/github/languages/top/atc-net/atc-wpf)](https://github.com/atc-net/atc-wpf)
+[![Github stars](https://img.shields.io/github/stars/atc-net/atc-wpf)](https://github.com/atc-net/atc-wpf)
+[![Github forks](https://img.shields.io/github/forks/atc-net/atc-wpf)](https://github.com/atc-net/atc-wpf)
+[![Github size](https://img.shields.io/github/repo-size/atc-net/atc-wpf)](https://github.com/atc-net/atc-wpf)
+[![Issues Open](https://img.shields.io/github/issues/atc-net/atc-wpf.svg?logo=github)](https://github.com/atc-net/atc-wpf/issues)
 
 ### Packages
-[![Github Version](https://img.shields.io/static/v1?logo=github&color=blue&label=github&message=latest)](https://github.com/orgs/atc-net/packages?repo_name=atc-[hallo-world-project])
+[![Github Version](https://img.shields.io/static/v1?logo=github&color=blue&label=github&message=latest)](https://github.com/orgs/atc-net/packages?repo_name=atc-wpf)
 [![NuGet Version](https://img.shields.io/nuget/v/Atc.[Hallo.World.Project].svg?logo=nuget)](https://www.nuget.org/profiles/atc-net)
 
 ### Build Status
-![Pre-Integration](https://github.com/atc-net/atc-[hallo-world-project]/workflows/Pre-Integration/badge.svg)
-![Post-Integration](https://github.com/atc-net/atc-[hallo-world-project]/workflows/Post-Integration/badge.svg)
-![Release](https://github.com/atc-net/atc-[hallo-world-project]/workflows/Release/badge.svg)
+![Pre-Integration](https://github.com/atc-net/atc-wpf/workflows/Pre-Integration/badge.svg)
+![Post-Integration](https://github.com/atc-net/atc-wpf/workflows/Post-Integration/badge.svg)
+![Release](https://github.com/atc-net/atc-wpf/workflows/Release/badge.svg)
 
 ### Code Quality
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-[hallo-world-project]&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=atc-[hallo-world-project])
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-[hallo-world-project]&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=atc-[hallo-world-project])
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-[hallo-world-project]&metric=security_rating)](https://sonarcloud.io/dashboard?id=atc-[hallo-world-project])
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=atc-[hallo-world-project]&metric=bugs)](https://sonarcloud.io/dashboard?id=atc-[hallo-world-project])
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atc-[hallo-world-project]&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=atc-[hallo-world-project])
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-wpf&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=atc-wpf)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-wpf&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=atc-wpf)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=atc-wpf&metric=security_rating)](https://sonarcloud.io/dashboard?id=atc-wpf)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=atc-wpf&metric=bugs)](https://sonarcloud.io/dashboard?id=atc-wpf)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=atc-wpf&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=atc-wpf)
 
-# ATC.Net [PROJECT-TEXT]
+# ATC.Net WPF
 
-[PROJECT-TEXT].
+This is a base library for building WPF application with the MVVM design pattern.
+
 
 # The workflow setup for this repository
 [Read more on Git-Flow](docs/GitFlow.md)
