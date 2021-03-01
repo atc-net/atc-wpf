@@ -32,11 +32,13 @@ jobs:
 
       - name: Test-Print1
         env:
+          MY_VAR0: World
           MY_VAR1: $NBGV_NuGetPackageVersion
           MY_VAR2: ${NBGV_NuGetPackageVersion}
           MY_VAR3: $SemVer2
           MY_VAR4: ${SemVer2}
-        run: echo Hallo $MY_VAR1 - $MY_VAR2 - $MY_VAR3 - $MY_VAR4
+        shell: cmd
+        run: echo Hallo $MY_VAR0 - $MY_VAR1 - $MY_VAR2 - $MY_VAR3 - $MY_VAR4
 
       - name: ⚙️ Setup dotnet 5.0.x
         uses: actions/setup-dotnet@v1
@@ -85,4 +87,5 @@ jobs:
         run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH_NAME
 
       - name: 📦 Push packages to GitHub Package Registry
+        shell: cmd
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'Atc.Wpf.'${SemVer2}'.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
