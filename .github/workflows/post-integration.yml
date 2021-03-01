@@ -36,7 +36,7 @@ jobs:
           echo ${NBGV_NuGetPackageVersion}
           echo ${env.NBGV_NuGetPackageVersion}
           echo $NBGV_NuGetPackageVersion
-          echo $env.NBGV_NuGetPackageVersion'
+          echo $env.NBGV_NuGetPackageVersion
 
       - name: ⚙️ Setup dotnet 5.0.x
         uses: actions/setup-dotnet@v1
