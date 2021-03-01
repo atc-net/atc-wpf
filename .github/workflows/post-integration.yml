@@ -31,13 +31,10 @@ jobs:
           setAllVars: true
 
       - name: Test-Print1
-        run: echo "Version@ $NBGV_NuGetPackageVersion"
-
-      - name: Test-Print2
-        run: echo "Version@ ${NBGV_NuGetPackageVersion}"
-
-      - name: Test-Print4
-        run: echo "Version@ ${ NBGV_NuGetPackageVersion }"
+        env:
+          MY_VAR1: $NBGV_NuGetPackageVersion
+          MY_VAR2: ${NBGV_NuGetPackageVersion}
+        run: echo Hallo $MY_VAR1 - $MY_VAR2
 
       - name: ⚙️ Setup dotnet 5.0.x
         uses: actions/setup-dotnet@v1
