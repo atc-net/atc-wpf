@@ -9,10 +9,4 @@
     <Description>A base library for building WPF application with the MVVM design pattern.</Description>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <Nullable>enable</Nullable>
-    <LangVersion>9.0</LangVersion>
-    <NeutralLanguage>en-US</NeutralLanguage>
-  </PropertyGroup>
-
 </Project>
