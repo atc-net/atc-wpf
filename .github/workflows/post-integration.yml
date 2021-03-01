@@ -89,4 +89,4 @@ jobs:
           echo ${NBGV_NuGetPackageVersion}
           dir ${GITHUB_WORKSPACE}/packages
           dir ${GITHUB_WORKSPACE}/packages/*.nupkg
-          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
