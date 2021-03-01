@@ -6,18 +6,6 @@
   -->
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., Directory.Build.props))\Directory.Build.props" />
 
-  <!--
-  Place this in your csproj file for each package that needs to be generated.
-
-  <PropertyGroup>
-    <PackageId>my-id</PackageId>
-    <PackageTags>tag1;tag2</PackageTags>
-    <Description>Package description.</Description>
-    <PackAsTool>false/true</PackAsTool>
-  </PropertyGroup>
-
-  -->
-
   <!-- Global nuget package configurations that should not be needed to change -->
   <PropertyGroup Label="Global Nuget Package metadata">
     <RepositoryUrl>https://github.com/$(OrganizationName)/$(RepositoryName)</RepositoryUrl>
