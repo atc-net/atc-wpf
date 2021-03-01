@@ -3,7 +3,7 @@
 
   <PropertyGroup Label="Metadata configuration">
     <OrganizationName>atc-net</OrganizationName>
-    <RepositoryName>atc</RepositoryName>
+    <RepositoryName>atc-wpf</RepositoryName>
   </PropertyGroup>
 
   <!-- Solution wide properties -->
