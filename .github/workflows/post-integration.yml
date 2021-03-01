@@ -36,9 +36,6 @@ jobs:
       - name: Test-Print2
         run: echo "Version@ ${NBGV_NuGetPackageVersion}"
 
-      - name: Test-Print3
-        run: echo "Version@ ${{NBGV_NuGetPackageVersion}}"
-
       - name: Test-Print4
         run: echo "Version@ ${ NBGV_NuGetPackageVersion }"
 
