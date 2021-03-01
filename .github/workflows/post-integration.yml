@@ -30,14 +30,6 @@ jobs:
         with:
           setAllVars: true
 
-      - name: Test-Print1
-        shell: pwsh
-        run: |
-          echo ${NBGV_NuGetPackageVersion}
-          echo ${env.NBGV_NuGetPackageVersion}
-          echo $NBGV_NuGetPackageVersion
-          echo $env.NBGV_NuGetPackageVersion
-
       - name: ⚙️ Setup dotnet 5.0.x
         uses: actions/setup-dotnet@v1
         with:
@@ -86,7 +78,5 @@ jobs:
 
       - name: 📦 Push packages to GitHub Package Registry
         run: |
-          echo ${NBGV_NuGetPackageVersion}
-          dir ${GITHUB_WORKSPACE}/packages
-          dir ${GITHUB_WORKSPACE}/packages/*.nupkg
-          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
+          cd ${GITHUB_WORKSPACE}/packages
+          dotnet nuget push Atc.Wpf.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
