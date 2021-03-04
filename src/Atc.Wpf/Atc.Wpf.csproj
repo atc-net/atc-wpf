@@ -9,4 +9,8 @@
     <Description>A base library for building WPF application with the MVVM design pattern.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="1.1.112" />
+  </ItemGroup>
+
 </Project>
