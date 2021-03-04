@@ -18,7 +18,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>9.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1573,1591,1712,CA1014</NoWarn>
+    <NoWarn>1573,1591,1712,CA1014,CS8601</NoWarn>
 
     <!-- Used by code coverage -->
     <DebugType>full</DebugType>
