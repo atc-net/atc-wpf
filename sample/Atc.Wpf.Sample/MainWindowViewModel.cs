@@ -1,36 +1,17 @@
-using System.Windows;
-using System.Windows.Input;
-using Atc.Wpf.Command;
+using System.Diagnostics.CodeAnalysis;
+using Atc.Wpf.Messaging;
 using Atc.Wpf.Mvvm;
+using Atc.Wpf.SampleControls;
 
 namespace Atc.Wpf.Sample
 {
+    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "OK.")]
     public class MainWindowViewModel : MainWindowViewModelBase
     {
-        private bool isTestEnabled;
-
-        public ICommand Test1Command => new RelayCommand(this.Test1CommandHandler);
-
-        public ICommand Test2Command => new RelayCommand(this.Test2CommandHandler, () => this.IsTestEnabled);
-
-        public bool IsTestEnabled
+        public void UpdateSelectedView(SampleTreeViewItem? sampleTreeViewItem)
         {
-            get => this.isTestEnabled;
-            set
-            {
-                this.isTestEnabled = value;
-                this.RaisePropertyChanged();
-            }
-        }
-
-        private void Test1CommandHandler()
-        {
-            _ = MessageBox.Show("Test1-command is hit", "Hallo", MessageBoxButton.OK);
-        }
-
-        private void Test2CommandHandler()
-        {
-            _ = MessageBox.Show("Test2-command is hit", "Hallo", MessageBoxButton.OK);
+            var samplePath = sampleTreeViewItem?.SamplePath;
+            Messenger.Default.Send(new SampleItemMessage(samplePath));
         }
     }
 }

@@ -485,3 +485,4 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
+dotnet_diagnostic.IDE0058.severity = none           # For now.

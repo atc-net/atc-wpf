@@ -13,4 +13,8 @@
     <PackageReference Include="Atc" Version="1.1.112" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controls\Documents\SourceCode\Format\" />
+  </ItemGroup>
+
 </Project>
