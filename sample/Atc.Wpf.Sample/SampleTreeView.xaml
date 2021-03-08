@@ -1,0 +1,19 @@
+<TreeView x:Class="Atc.Wpf.Sample.SampleTreeView"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          xmlns:atc="https://github.com/atc-net/atc-wpf"
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          d:DesignHeight="450"
+          d:DesignWidth="230"
+          mc:Ignorable="d">
+    <TreeViewItem Header="Controls" IsExpanded="True">
+        <TreeViewItem Header="Commands" IsExpanded="True">
+            <atc:SampleTreeViewItem Header="RelayCommand" SamplePath="Commands.RelayCommandView" />
+        </TreeViewItem>
+        <TreeViewItem Header="Layouts" IsExpanded="True">
+            <atc:SampleTreeViewItem Header="AutoGrid" SamplePath="Layouts.AutoGridView" />
+            <atc:SampleTreeViewItem Header="GridEx" SamplePath="Layouts.GridExView" />
+        </TreeViewItem>
+    </TreeViewItem>
+</TreeView>

@@ -1,4 +1,7 @@
 // ReSharper disable once CheckNamespace
+
+using System.Diagnostics;
+
 namespace System
 {
     /// <summary>
