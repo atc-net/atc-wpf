@@ -18,7 +18,8 @@ namespace Atc.Wpf.Controls.Documents.SourceCode.Format
                                               + "object operator out override partial params private protected public readonly "
                                               + "ref return sbyte sealed short sizeof stackalloc static string struct "
                                               + "switch this throw true try typeof uint ulong unchecked unsafe ushort "
-                                              + "using value virtual void volatile where while yield";
+                                              + "using value virtual void volatile where while yield "
+                                              + "get set";
 
         /// <summary>
         /// The list of C# preprocessors.

@@ -46,7 +46,7 @@ namespace Atc.Wpf.Controls.Documents.SourceCode
             {
                 var tokenText = xamlText.Substring(position, token.Length);
                 tokenTexts.Add(tokenText);
-                Color color = ColorForToken(token);
+                var color = ColorForToken(token);
                 colors.Add(color);
                 position += token.Length;
             }
@@ -56,7 +56,7 @@ namespace Atc.Wpf.Controls.Documents.SourceCode
             // Loop through tokens
             for (int i = 0; i < tokenTexts.Count; i++)
             {
-                Run run = new Run(tokenTexts[i])
+                var run = new Run(tokenTexts[i])
                 {
                     Foreground = new SolidColorBrush(colors[i]),
                 };
