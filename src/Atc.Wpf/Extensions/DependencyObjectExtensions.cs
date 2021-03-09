@@ -1,3 +1,4 @@
+// ReSharper disable ConstantConditionalAccessQualifier
 // ReSharper disable once CheckNamespace
 namespace System.Windows
 {

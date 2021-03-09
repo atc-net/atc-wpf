@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Atc.Wpf.Controls.Documents.SourceCode.Format
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 {
     /// <summary>
     /// CSharp.

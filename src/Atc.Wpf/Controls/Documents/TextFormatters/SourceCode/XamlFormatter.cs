@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
 using System.Windows.Media;
-using Atc.Wpf.Controls.Documents.SourceCode.Format;
-using Atc.Wpf.Controls.RichTextBoxFormatters;
+using Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 
-namespace Atc.Wpf.Controls.Documents.SourceCode
+// ReSharper disable UnusedMethodReturnValue.Global
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode
 {
     /// <summary>
     /// Formats the RichTextBox text as colored Xaml.

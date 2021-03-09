@@ -1,6 +1,6 @@
 using System.Windows.Documents;
 
-namespace Atc.Wpf.Controls.RichTextBoxFormatters
+namespace Atc.Wpf.Controls.Documents.TextFormatters
 {
     /// <summary>
     /// Interface TextFormatter.
