@@ -4,12 +4,12 @@ using System.Text;
 using System.Windows;
 using System.Windows.Documents;
 
-namespace Atc.Wpf.Controls.RichTextBoxFormatters
+namespace Atc.Wpf.Controls.Documents.TextFormatters
 {
     /// <summary>
-    /// Formats the RichTextBox text as RTF.
+    /// Formats the RichTextBox text as Xaml.
     /// </summary>
-    public class RtfFormatter : ITextFormatter
+    public class XamlFormatter : ITextFormatter
     {
         /// <summary>
         /// Gets the text.
@@ -25,7 +25,7 @@ namespace Atc.Wpf.Controls.RichTextBoxFormatters
 
             var tr = new TextRange(document.ContentStart, document.ContentEnd);
             using MemoryStream memoryStream = new MemoryStream();
-            tr.Save(memoryStream, DataFormats.Rtf);
+            tr.Save(memoryStream, DataFormats.Xaml);
             return Encoding.Default.GetString(memoryStream.ToArray());
         }
 
@@ -34,7 +34,7 @@ namespace Atc.Wpf.Controls.RichTextBoxFormatters
         /// </summary>
         /// <param name="document">The document.</param>
         /// <param name="text">The text.</param>
-        /// <exception cref="System.IO.InvalidDataException">Data provided is not in the correct RTF format.</exception>
+        /// <exception cref="InvalidDataException">Data provided is not in the correct Xaml format.</exception>
         public void SetText(FlowDocument document, string text)
         {
             if (document == null)
@@ -54,12 +54,12 @@ namespace Atc.Wpf.Controls.RichTextBoxFormatters
                 {
                     var tr = new TextRange(document.ContentStart, document.ContentEnd);
                     using MemoryStream memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
-                    tr.Load(memoryStream, DataFormats.Rtf);
+                    tr.Load(memoryStream, DataFormats.Xaml);
                 }
             }
             catch
             {
-                throw new InvalidDataException("Data provided is not in the correct RTF format.");
+                throw new InvalidDataException("Data provided is not in the correct Xaml format.");
             }
         }
     }

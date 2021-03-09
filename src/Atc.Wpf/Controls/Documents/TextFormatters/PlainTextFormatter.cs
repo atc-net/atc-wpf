@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Documents;
 
-namespace Atc.Wpf.Controls.RichTextBoxFormatters
+namespace Atc.Wpf.Controls.Documents.TextFormatters
 {
     /// <summary>
     /// Formats the RichTextBox text as plain text.

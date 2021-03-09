@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Documents.SourceCode.Format
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 {
     /*
     * this file implements a mostly correct XML tokenizer.  The token boundaries

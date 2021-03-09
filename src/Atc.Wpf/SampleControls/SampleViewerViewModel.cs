@@ -18,6 +18,7 @@ namespace Atc.Wpf.SampleControls
             Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
         }
 
+        private string? header;
         private UserControl? sampleContent;
         private string? xamlCode;
         private string? codeBehindCode;
@@ -30,6 +31,16 @@ namespace Atc.Wpf.SampleControls
         public bool HasCodeBehindCode => this.CodeBehindCode != null;
 
         public bool HasViewModelCode => this.ViewModelCode != null;
+
+        public string? Header
+        {
+            get => this.header;
+            set
+            {
+                this.header = value;
+                this.RaisePropertyChanged();
+            }
+        }
 
         public UserControl? SampleContent
         {
@@ -115,19 +126,20 @@ namespace Atc.Wpf.SampleControls
             }
             else
             {
-                this.SetSelectedViewData(obj.SampleItemPath);
+                this.SetSelectedViewData(obj.Header, obj.SampleItemPath);
             }
         }
 
         private void ClearSelectedViewData()
         {
+            this.Header = null;
             this.SampleContent = null;
             this.XamlCode = null;
             this.CodeBehindCode = null;
             this.ViewModelCode = null;
         }
 
-        private void SetSelectedViewData(string samplePath)
+        private void SetSelectedViewData(string sampleHeader, string samplePath)
         {
             var entryAssembly = Assembly.GetEntryAssembly();
 
@@ -158,6 +170,7 @@ namespace Atc.Wpf.SampleControls
             var classViewName = this.ExtractClassName(instance.ToString()!);
             var sampleLocation = this.ExtractSamplePath(baseLocation, classViewName);
 
+            this.Header = sampleHeader;
             this.SampleContent = instance;
             this.XamlCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml"));
             this.CodeBehindCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml.cs"));

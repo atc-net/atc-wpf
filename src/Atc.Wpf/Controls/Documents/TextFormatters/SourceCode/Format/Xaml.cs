@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Atc.Wpf.Controls.Documents.SourceCode.Format
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 {
     /// <summary>
     /// XML tokenizer, tokens are designed to match Visual Studio syntax highlighting.

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sampleControls="clr-namespace:Atc.Wpf.SampleControls"
-             xmlns:sourceCode="clr-namespace:Atc.Wpf.Controls.Documents.SourceCode"
+             xmlns:sourceCode="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters.SourceCode"
              d:DataContext="{d:DesignInstance Type=sampleControls:SampleViewerViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -15,45 +15,54 @@
         <sampleControls:SampleViewerViewModel />
     </UserControl.DataContext>
 
-    <TabControl>
-        <TabItem Header="Sample" IsEnabled="{Binding Path=HasSampleContent}">
-            <ContentControl Margin="5,10,5,5"
-                            Content="{Binding Path=SampleContent}"
-                            ScrollViewer.CanContentScroll="True" />
-        </TabItem>
-        <TabItem Header="XAML" IsEnabled="{Binding Path=HasXamlCode}">
-            <controls:RichTextBoxEx Margin="5,10,5,5"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    FontFamily="Courier New"
-                                    HorizontalScrollBarVisibility="Auto"
-                                    IsReadOnly="True"
-                                    Text="{Binding Path=XamlCode}"
-                                    TextFormatter="{x:Static sourceCode:XamlFormatter.Instance}"
-                                    VerticalScrollBarVisibility="Auto" />
-        </TabItem>
-        <TabItem Header="CodeBehind" IsEnabled="{Binding Path=HasCodeBehindCode}">
-            <controls:RichTextBoxEx Margin="5,10,5,5"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    FontFamily="Courier New"
-                                    HorizontalScrollBarVisibility="Auto"
-                                    IsReadOnly="True"
-                                    Text="{Binding Path=CodeBehindCode}"
-                                    TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
-                                    VerticalScrollBarVisibility="Auto" />
-        </TabItem>
-        <TabItem Header="ViewModel" IsEnabled="{Binding Path=HasViewModelCode}">
-            <controls:RichTextBoxEx Margin="5,10,5,5"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    FontFamily="Courier New"
-                                    HorizontalScrollBarVisibility="Auto"
-                                    IsReadOnly="True"
-                                    Text="{Binding Path=ViewModelCode}"
-                                    TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
-                                    VerticalScrollBarVisibility="Auto" />
-        </TabItem>
-    </TabControl>
+    <controls:AutoGrid d:Background="White"
+                       Columns="*"
+                       Rows="Auto,*">
+        <TextBlock Margin="10"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Foreground="Chocolate"
+                   Text="{Binding Path=Header, FallbackValue='Select sample name'}" />
+        <TabControl>
+            <TabItem Header="Sample" IsEnabled="{Binding Path=HasSampleContent}">
+                <ContentControl Margin="5,10,5,5"
+                                Content="{Binding Path=SampleContent}"
+                                ScrollViewer.CanContentScroll="True" />
+            </TabItem>
+            <TabItem Header="XAML" IsEnabled="{Binding Path=HasXamlCode}">
+                <controls:RichTextBoxEx Margin="5,10,5,5"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        FontFamily="Courier New"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        IsReadOnly="True"
+                                        Text="{Binding Path=XamlCode}"
+                                        TextFormatter="{x:Static sourceCode:XamlFormatter.Instance}"
+                                        VerticalScrollBarVisibility="Auto" />
+            </TabItem>
+            <TabItem Header="CodeBehind" IsEnabled="{Binding Path=HasCodeBehindCode}">
+                <controls:RichTextBoxEx Margin="5,10,5,5"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        FontFamily="Courier New"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        IsReadOnly="True"
+                                        Text="{Binding Path=CodeBehindCode}"
+                                        TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
+                                        VerticalScrollBarVisibility="Auto" />
+            </TabItem>
+            <TabItem Header="ViewModel" IsEnabled="{Binding Path=HasViewModelCode}">
+                <controls:RichTextBoxEx Margin="5,10,5,5"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        FontFamily="Courier New"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        IsReadOnly="True"
+                                        Text="{Binding Path=ViewModelCode}"
+                                        TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
+                                        VerticalScrollBarVisibility="Auto" />
+            </TabItem>
+        </TabControl>
+    </controls:AutoGrid>
 
 </UserControl>

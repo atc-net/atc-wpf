@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace Atc.Wpf.Controls.Documents.SourceCode.Format
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 {
     /// <summary>
     /// Provides a base class for formatting most programming languages.

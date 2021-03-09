@@ -11,7 +11,8 @@ namespace Atc.Wpf.Sample
         public void UpdateSelectedView(SampleTreeViewItem? sampleTreeViewItem)
         {
             var samplePath = sampleTreeViewItem?.SamplePath;
-            Messenger.Default.Send(new SampleItemMessage(samplePath));
+            var header = sampleTreeViewItem?.Header?.ToString();
+            Messenger.Default.Send(new SampleItemMessage(header, samplePath));
         }
     }
 }

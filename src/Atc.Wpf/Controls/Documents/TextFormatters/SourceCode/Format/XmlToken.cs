@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
-namespace Atc.Wpf.Controls.Documents.SourceCode.Format
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 {
     /// <summary>
     /// Xml Token.

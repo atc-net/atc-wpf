@@ -1,9 +1,8 @@
 using System;
 using System.Windows.Documents;
-using Atc.Wpf.Controls.Documents.SourceCode.Format;
-using Atc.Wpf.Controls.RichTextBoxFormatters;
+using Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 
-namespace Atc.Wpf.Controls.Documents.SourceCode
+namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode
 {
     /// <summary>
     /// Formats the RichTextBox text as colored C#.

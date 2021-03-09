@@ -1,4 +1,4 @@
-﻿namespace Atc.Wpf.Controls.Documents.SourceCode.Format
+﻿namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 {
     internal enum XmlTokenizerMode
     {
