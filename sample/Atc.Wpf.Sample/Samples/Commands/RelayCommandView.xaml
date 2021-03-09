@@ -17,7 +17,7 @@
                   Columns="*"
                   Rows="Auto,*">
 
-        <GroupBox Header="Features" />
+        <GroupBox Padding="10" Header="Features" />
 
         <GroupBox Header="Usage">
             <ScrollViewer>

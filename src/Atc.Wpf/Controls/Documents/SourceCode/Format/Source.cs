@@ -5,6 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Atc.Wpf.Controls.Documents.SourceCode.Format
 {
     /// <summary>
@@ -99,7 +102,6 @@ namespace Atc.Wpf.Controls.Documents.SourceCode.Format
         /// <returns>A string containing the HTML code fragment.</returns>
         protected abstract string MatchEval(Match match);
 
-        [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
         [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "OK.")]
         private Paragraph FormatCode(string source, bool lineNumbers, bool alternate, bool embedStyleSheet, bool subCode)
         {
@@ -113,7 +115,7 @@ namespace Atc.Wpf.Controls.Documents.SourceCode.Format
             foreach (string code in split)
             {
                 currentChunk++;
-                Run run = new Run(code);
+                var run = new Run(code);
                 codeParagraph.Inlines.Add(run);
                 if ((currentChunk - 1) < this.CodeParagraphGlobal.Count)
                 {
