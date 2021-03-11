@@ -1,35 +1,35 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using Atc.Helpers;
 
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: BooleanToOppositeBoolean.
+    /// ValueConverter: Enum-Description To String.
     /// </summary>
-    [ValueConversion(typeof(bool), typeof(bool))]
-    public class BooleanToOppositeBooleanValueConverter : IValueConverter
+    public class EnumDescriptionToStringValueConverter : IValueConverter
     {
         /// <inheritdoc />
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            if (!(value is bool))
+            if (!(value is Enum))
             {
-                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
+                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not an enum type");
             }
 
-            return !(bool)value;
+            return EnumHelper.GetDescription(value as Enum);
         }
 
         /// <inheritdoc />
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Windows.Media;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: ColorToBrush.
+    /// ValueConverter: Color To (SolidColor)Brush.
     /// </summary>
     [ValueConversion(typeof(Color), typeof(SolidColorBrush))]
     public class ColorToBrushValueConverter : IValueConverter

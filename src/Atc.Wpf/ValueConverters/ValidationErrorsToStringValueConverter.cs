@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
@@ -9,10 +9,10 @@ using System.Windows.Markup;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: ValidationErrorsToString.
+    /// ValueConverter: ValidationErrors To String.
     /// </summary>
-    [ValueConversion(typeof(ReadOnlyObservableCollection<ValidationError>), typeof(string))]
-    public class ValidationErrorsToStringConverter : MarkupExtension, IValueConverter
+    [ValueConversion(typeof(ICollection<ValidationError>), typeof(string))]
+    public class ValidationErrorsToStringValueConverter : MarkupExtension, IValueConverter
     {
         /// <summary>
         /// When implemented in a derived class, returns an object that is provided as the value of the target property for this markup extension.
@@ -23,21 +23,21 @@ namespace Atc.Wpf.ValueConverters
         /// </returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return new ValidationErrorsToStringConverter();
+            return new ValidationErrorsToStringValueConverter();
         }
 
         /// <inheritdoc />
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is not ReadOnlyObservableCollection<ValidationError> errors
-                ? string.Empty
-                : string.Join("\n", (from e in errors select e.ErrorContent as string).ToArray());
+            return value is ICollection<ValidationError> errors
+                ? string.Join("\n", (from e in errors select e.ErrorContent as string).ToArray())
+                : string.Empty;
         }
 
         /// <inheritdoc />
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This is a OneWay converter.");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows;
@@ -7,10 +7,10 @@ using System.Windows.Data;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: BooleanToWidth.
+    /// ValueConverter: Bool To Width.
     /// </summary>
     [ValueConversion(typeof(bool), typeof(LengthConverter))]
-    public class BooleanToWidthValueConverter : IValueConverter
+    public class BoolToWidthValueConverter : IValueConverter
     {
         /// <inheritdoc />
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
@@ -53,7 +53,7 @@ namespace Atc.Wpf.ValueConverters
         /// <inheritdoc />
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
