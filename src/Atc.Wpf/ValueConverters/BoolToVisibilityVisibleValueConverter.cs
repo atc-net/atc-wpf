@@ -6,13 +6,24 @@ using System.Windows.Data;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: BooleanToVisibilityCollapsed.
+    /// ValueConverter: Bool To Visibility-Visible.
     /// </summary>
     [ValueConversion(typeof(bool), typeof(Visibility))]
-    public class BooleanToVisibilityCollapsedValueConverter : IValueConverter
+    public class BoolToVisibilityVisibleValueConverter : IValueConverter
     {
         /// <inheritdoc />
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Convert(value);
+        }
+
+        /// <inheritdoc />
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Convert(value);
+        }
+
+        private static Visibility Convert(object value)
         {
             if (value is null)
             {
@@ -25,14 +36,8 @@ namespace Atc.Wpf.ValueConverters
             }
 
             return (bool)value
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-        }
-
-        /// <inheritdoc />
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
     }
 }

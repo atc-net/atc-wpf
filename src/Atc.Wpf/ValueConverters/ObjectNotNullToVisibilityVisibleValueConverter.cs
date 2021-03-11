@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -6,9 +6,9 @@ using System.Windows.Data;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: NotNullToVisibilityVisible.
+    /// ValueConverter: Object NotNull To Visibility-Visible.
     /// </summary>
-    public class NotNullToVisibilityVisibleValueConverter : IValueConverter
+    public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
     {
         /// <inheritdoc />
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
@@ -19,9 +19,11 @@ namespace Atc.Wpf.ValueConverters
         }
 
         /// <inheritdoc />
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return value == null
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
     }
 }

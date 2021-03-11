@@ -1,7 +1,7 @@
 <UserControl x:Class="Atc.Wpf.Sample.Samples.Controls.RichTextBoxExView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:atc="https://github.com/atc-net/atc-wpf/schemas"
+             xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sourceCode="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters.SourceCode;assembly=Atc.Wpf"

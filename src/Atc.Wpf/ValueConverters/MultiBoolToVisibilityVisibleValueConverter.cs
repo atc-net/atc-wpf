@@ -8,10 +8,10 @@ using System.Windows.Data;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// MultiValueConverter: MultiBooleanToVisibilityVisible.
+    /// MultiValueConverter: Multi Bool To Visibility-Visible.
     /// </summary>
     [ValueConversion(typeof(List<bool>), typeof(Visibility))]
-    public class MultiBooleanToVisibilityVisibleValueConverter : IMultiValueConverter
+    public class MultiBoolToVisibilityVisibleValueConverter : IMultiValueConverter
     {
         /// <inheritdoc />
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -51,7 +51,7 @@ namespace Atc.Wpf.ValueConverters
         /// <inheritdoc />
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This is a OneWay converter.");
         }
     }
 }
