@@ -25,4 +25,20 @@
         <atc:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.AutoGreyableImageView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Extensions" IsExpanded="True">
+        <TreeViewItem Header="BitmapSource" IsExpanded="True">
+            <atc:SampleTreeViewItem Header="Invert Colors" SamplePath="Extensions.BitmapSourceInvertColorsView" />
+            <atc:SampleTreeViewItem Header="To Resized BitmapImage" SamplePath="Extensions.BitmapSourceToResizedBitmapImageView" />
+        </TreeViewItem>
+    </TreeViewItem>
+
+    <TreeViewItem Header="Media" IsExpanded="True">
+        <TreeViewItem Header="ShaderEffects" IsExpanded="True">
+            <atc:SampleTreeViewItem Header="Contrast Adjust" SamplePath="Media.ShaderEffects.ContrastAdjustShaderEffectView" />
+            <atc:SampleTreeViewItem Header="Invert Colors" SamplePath="Media.ShaderEffects.InvertColorsShaderEffectView" />
+            <atc:SampleTreeViewItem Header="Monochrome" SamplePath="Media.ShaderEffects.MonochromeShaderEffectView" />
+            <atc:SampleTreeViewItem Header="Saturate Transition" SamplePath="Media.ShaderEffects.SaturateTransitionShaderEffectView" />
+        </TreeViewItem>
+    </TreeViewItem>
+
 </TreeView>
