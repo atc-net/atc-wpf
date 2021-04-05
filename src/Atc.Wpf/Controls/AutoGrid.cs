@@ -14,6 +14,7 @@ namespace Atc.Wpf.Controls
     ///
     /// Partially based on work at http://rachel53461.wordpress.com/2011/09/17/wpf-grids-rowcolumn-count-properties.
     /// </summary>
+    [SuppressMessage("Style", "IDE0083:Use pattern matching", Justification = "OK.")]
     public class AutoGrid : Grid
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace Atc.Wpf.Controls
             typeof(HorizontalAlignment?),
             typeof(AutoGrid),
             new FrameworkPropertyMetadata(
-                null,
+                defaultValue: null,
                 FrameworkPropertyMetadataOptions.AffectsMeasure,
                 OnChildHorizontalAlignmentChanged));
 
@@ -36,7 +37,7 @@ namespace Atc.Wpf.Controls
             typeof(Thickness?),
             typeof(AutoGrid),
             new FrameworkPropertyMetadata(
-                null,
+                defaultValue: null,
                 FrameworkPropertyMetadataOptions.AffectsMeasure,
                 OnChildMarginChanged));
 
@@ -48,7 +49,7 @@ namespace Atc.Wpf.Controls
             typeof(VerticalAlignment?),
             typeof(AutoGrid),
             new FrameworkPropertyMetadata(
-                null,
+                defaultValue: null,
                 FrameworkPropertyMetadataOptions.AffectsMeasure,
                 OnChildVerticalAlignmentChanged));
 
@@ -96,7 +97,7 @@ namespace Atc.Wpf.Controls
             typeof(bool),
             typeof(AutoGrid),
             new FrameworkPropertyMetadata(
-                true,
+                defaultValue: true,
                 FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
@@ -396,7 +397,7 @@ namespace Atc.Wpf.Controls
         /// <returns>Return the GridLength array.</returns>
         public static GridLength[] Parse(string text)
         {
-            if (text == null)
+            if (text is null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
@@ -580,19 +581,19 @@ namespace Atc.Wpf.Controls
         /// </summary>
         private void ApplyChildLayout(DependencyObject obj)
         {
-            if (ChildMargin != null)
+            if (ChildMargin is not null)
             {
-                _ = obj.SetIfDefault(FrameworkElement.MarginProperty, ChildMargin.Value);
+                _ = obj.SetIfDefault(MarginProperty, ChildMargin.Value);
             }
 
-            if (ChildHorizontalAlignment != null)
+            if (ChildHorizontalAlignment is not null)
             {
-                _ = obj.SetIfDefault(FrameworkElement.HorizontalAlignmentProperty, ChildHorizontalAlignment.Value);
+                _ = obj.SetIfDefault(HorizontalAlignmentProperty, ChildHorizontalAlignment.Value);
             }
 
-            if (ChildVerticalAlignment != null)
+            if (ChildVerticalAlignment is not null)
             {
-                _ = obj.SetIfDefault(FrameworkElement.VerticalAlignmentProperty, ChildVerticalAlignment.Value);
+                _ = obj.SetIfDefault(VerticalAlignmentProperty, ChildVerticalAlignment.Value);
             }
         }
 
@@ -630,11 +631,11 @@ namespace Atc.Wpf.Controls
                             col = position % colCount;
                         }
 
-                        Grid.SetRow(child, row);
-                        Grid.SetColumn(child, col);
-                        position += Grid.GetColumnSpan(child);
+                        SetRow(child, row);
+                        SetColumn(child, col);
+                        position += GetColumnSpan(child);
 
-                        var offset = Grid.GetRowSpan(child) - 1;
+                        var offset = GetRowSpan(child) - 1;
                         while (offset > 0)
                         {
                             skip[row + offset--, col] = true;
@@ -651,11 +652,11 @@ namespace Atc.Wpf.Controls
                             col = position / rowCount;
                         }
 
-                        Grid.SetRow(child, row);
-                        Grid.SetColumn(child, col);
-                        position += Grid.GetRowSpan(child);
+                        SetRow(child, row);
+                        SetColumn(child, col);
+                        position += GetRowSpan(child);
 
-                        var offset = Grid.GetColumnSpan(child) - 1;
+                        var offset = GetColumnSpan(child) - 1;
                         while (offset > 0)
                         {
                             skip[row, col + offset--] = true;

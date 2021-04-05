@@ -16,7 +16,7 @@ namespace Atc.Wpf.DependencyObjects
             nameof(Message),
             typeof(string),
             typeof(MessageListener),
-            new UIPropertyMetadata(null));
+            new UIPropertyMetadata(propertyChangedCallback: null));
 
         private static MessageListener? messageListener;
 

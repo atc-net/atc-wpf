@@ -17,7 +17,7 @@ namespace Atc.Wpf.DependencyObjects
             nameof(Percent),
             typeof(int),
             typeof(PercentListener),
-            new UIPropertyMetadata(null));
+            new UIPropertyMetadata(propertyChangedCallback: null));
 
         private static PercentListener? percentListener;
 
