@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Threading;
 using Atc.Wpf.Diagnostics;
@@ -40,7 +39,6 @@ namespace Atc.Wpf.Sample
         }
 
         // ReSharper disable once UnusedParameter.Local
-        [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "OK.")]
         private static ServiceCollection CreateServiceCollectionAndRegister()
         {
             var services = new ServiceCollection();
@@ -67,7 +65,7 @@ namespace Atc.Wpf.Sample
                 return;
             }
 
-            string exceptionMessage = ex.GetMessage(true);
+            string exceptionMessage = ex.GetMessage(includeInnerMessage: true);
             _ = MessageBox.Show(
                     exceptionMessage,
                     "CurrentDomain Unhandled Exception",
@@ -82,7 +80,7 @@ namespace Atc.Wpf.Sample
         /// <param name="args">The <see cref="DispatcherUnhandledExceptionEventArgs"/> instance containing the event data.</param>
         private void ApplicationOnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
-            string exceptionMessage = args.Exception.GetMessage(true);
+            string exceptionMessage = args.Exception.GetMessage(includeInnerMessage: true);
             if (exceptionMessage.IndexOf(
                 "BindingExpression:Path=HorizontalContentAlignment; DataItem=null; target element is 'ComboBoxItem'",
                 StringComparison.Ordinal) != -1)
