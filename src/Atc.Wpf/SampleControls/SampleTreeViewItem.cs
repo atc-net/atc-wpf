@@ -14,7 +14,7 @@ namespace Atc.Wpf.SampleControls
             nameof(SamplePath),
             typeof(string),
             typeof(SampleTreeViewItem),
-            new UIPropertyMetadata(null));
+            new UIPropertyMetadata(propertyChangedCallback: null));
 
         /// <summary>
         /// Gets or sets the sample path.
@@ -34,7 +34,7 @@ namespace Atc.Wpf.SampleControls
         /// <param name="e">The event data.</param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (e == null)
+            if (e is null)
             {
                 throw new ArgumentNullException(nameof(e));
             }
@@ -45,7 +45,7 @@ namespace Atc.Wpf.SampleControls
             }
             else
             {
-                this.SetCurrentValue(IsSelectedProperty, true);
+                this.SetCurrentValue(IsSelectedProperty, value: true);
             }
 
             e.Handled = true;

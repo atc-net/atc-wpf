@@ -15,7 +15,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters
         /// <returns>The text.</returns>
         public string GetText(FlowDocument document)
         {
-            if (document == null)
+            if (document is null)
             {
                 throw new ArgumentNullException(nameof(document));
             }
@@ -30,7 +30,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters
         /// <param name="text">The text.</param>
         public void SetText(FlowDocument document, string text)
         {
-            if (document == null)
+            if (document is null)
             {
                 throw new ArgumentNullException(nameof(document));
             }

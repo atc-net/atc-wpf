@@ -18,7 +18,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters
         /// <returns>The text.</returns>
         public string GetText(FlowDocument document)
         {
-            if (document == null)
+            if (document is null)
             {
                 throw new ArgumentNullException(nameof(document));
             }
@@ -37,7 +37,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters
         /// <exception cref="InvalidDataException">Data provided is not in the correct Xaml format.</exception>
         public void SetText(FlowDocument document, string text)
         {
-            if (document == null)
+            if (document is null)
             {
                 throw new ArgumentNullException(nameof(document));
             }

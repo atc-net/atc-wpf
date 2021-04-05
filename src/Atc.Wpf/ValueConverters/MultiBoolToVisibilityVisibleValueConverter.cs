@@ -21,7 +21,7 @@ namespace Atc.Wpf.ValueConverters
                 return Visibility.Visible;
             }
 
-            if (values == null)
+            if (values is null)
             {
                 throw new ArgumentNullException(nameof(values));
             }

@@ -109,7 +109,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
         [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
         protected override string MatchEval(Match match)
         {
-            if (match == null)
+            if (match is null)
             {
                 throw new ArgumentNullException(nameof(match));
             }
@@ -133,7 +133,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format
 
                 if (!string.IsNullOrEmpty(sb.ToString()))
                 {
-                    Run run = new Run(sb.ToString())
+                    var run = new Run(sb.ToString())
                     {
                         Foreground = new SolidColorBrush(Color.FromRgb(0, 128, 0)),
                     };

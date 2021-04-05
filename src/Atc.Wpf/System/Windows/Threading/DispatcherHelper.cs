@@ -7,6 +7,15 @@ namespace System.Windows.Threading
     public static class DispatcherHelper
     {
         /// <summary>
+        /// Runs the on main thread.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public static void RunOnMainThread(Action action)
+        {
+            Application.Current.RunOnUiThread(action);
+        }
+
+        /// <summary>
         /// Does the events.
         /// </summary>
         public static void DoEvents()

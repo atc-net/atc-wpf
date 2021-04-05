@@ -40,7 +40,7 @@ namespace Atc.Wpf.Controls
             typeof(string),
             typeof(GridEx),
             new PropertyMetadata(
-                null,
+                defaultValue: null,
                 OnRowsChanged));
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Atc.Wpf.Controls
             typeof(string),
             typeof(GridEx),
             new PropertyMetadata(
-                null,
+                defaultValue: null,
                 OnColumnsChanged));
 
         /// <summary>

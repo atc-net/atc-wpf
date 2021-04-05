@@ -16,8 +16,6 @@ namespace Atc.Wpf.Sample
             this.InitializeComponent();
             this.DataContext = viewModel;
 
-            this.DataContext = viewModel;
-
             this.Loaded += this.OnLoaded;
             this.Closing += this.OnClosing;
             this.KeyDown += this.OnKeyDown;
@@ -50,8 +48,7 @@ namespace Atc.Wpf.Sample
 
         private void TreeViewOnSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var vm = this.DataContext as MainWindowViewModel;
-            vm!.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
+            MainWindowViewModel.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
         }
     }
 }

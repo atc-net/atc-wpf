@@ -10,7 +10,7 @@ namespace Atc.Wpf.Tests.XUnitTestTypes
             bool expectedAsEmpty,
             string propertyName)
         {
-            if (eventArgs == null)
+            if (eventArgs is null)
             {
                 throw new ArgumentNullException(nameof(eventArgs));
             }
@@ -24,7 +24,7 @@ namespace Atc.Wpf.Tests.XUnitTestTypes
             }
             else
             {
-                if (propertyName == null)
+                if (propertyName is null)
                 {
                     throw new ArgumentNullException(nameof(propertyName));
                 }

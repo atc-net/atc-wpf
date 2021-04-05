@@ -36,7 +36,7 @@ namespace Atc.Wpf.Media
         /// <returns>The color from hexa color.</returns>
         public static Color GetColorFromHex(string hexaColor)
         {
-            if (hexaColor == null)
+            if (hexaColor is null)
             {
                 throw new ArgumentNullException(nameof(hexaColor));
             }
@@ -78,7 +78,7 @@ namespace Atc.Wpf.Media
         /// </returns>
         public static string FormatColorString(string stringToFormat, bool isUsingAlphaChannel)
         {
-            if (stringToFormat == null)
+            if (stringToFormat is null)
             {
                 throw new ArgumentNullException(nameof(stringToFormat));
             }

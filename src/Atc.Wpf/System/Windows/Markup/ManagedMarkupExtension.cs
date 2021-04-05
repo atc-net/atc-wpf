@@ -85,7 +85,7 @@ namespace System.Windows.Markup
                 else
                 {
                     var info = this.targetProperty as PropertyInfo;
-                    if (info != null)
+                    if (info is not null)
                     {
                         propertyType = info.PropertyType;
                     }
@@ -147,7 +147,7 @@ namespace System.Windows.Markup
                 else if (this.targetProperty is PropertyInfo info)
                 {
                     object? target = reference.Target;
-                    if (target != null)
+                    if (target is not null)
                     {
                         info.SetValue(target, this.GetValue(), null);
                     }
