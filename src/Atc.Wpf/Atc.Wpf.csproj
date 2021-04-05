@@ -10,6 +10,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Media\ShaderEffects\Shaders\ContrastAdjust.fx" />
+    <None Remove="Media\ShaderEffects\Shaders\ContrastAdjust.ps" />
+    <None Remove="Media\ShaderEffects\Shaders\InvertColors.fx" />
+    <None Remove="Media\ShaderEffects\Shaders\InvertColors.ps" />
+    <None Remove="Media\ShaderEffects\Shaders\Monochrome.fx" />
+    <None Remove="Media\ShaderEffects\Shaders\Monochrome.ps" />
+    <None Remove="Media\ShaderEffects\Shaders\SaturateTransition.fx" />
+    <None Remove="Media\ShaderEffects\Shaders\SaturateTransition.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Media\ShaderEffects\Shaders\ContrastAdjust.fx" />
+    <Content Include="Media\ShaderEffects\Shaders\InvertColors.fx" />
+    <Content Include="Media\ShaderEffects\Shaders\Monochrome.fx" />
+    <Content Include="Media\ShaderEffects\Shaders\SaturateTransition.fx" />
+    <Resource Include="Media\ShaderEffects\Shaders\ContrastAdjust.ps" />
+    <Resource Include="Media\ShaderEffects\Shaders\InvertColors.ps" />
+    <Resource Include="Media\ShaderEffects\Shaders\Monochrome.ps" />
+    <Resource Include="Media\ShaderEffects\Shaders\SaturateTransition.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Atc" Version="1.1.112" />
   </ItemGroup>
 

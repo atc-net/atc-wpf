@@ -25,7 +25,7 @@ namespace Atc.Wpf.ValueConverters
             }
 
             var color = (Color)value;
-            return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
+            return new SolidColorBrush(color);
         }
 
         /// <inheritdoc />
