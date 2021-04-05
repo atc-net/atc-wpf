@@ -18,7 +18,7 @@ namespace Atc.Wpf.Tests.ValueConverters
         {
             // Arrange
             Color? input = null;
-            if (inputHex != null)
+            if (inputHex is not null)
             {
                 input = (Color)ColorConverter.ConvertFromString(inputHex);
             }
@@ -40,7 +40,7 @@ namespace Atc.Wpf.Tests.ValueConverters
         {
             // Arrange
             SolidColorBrush? input = null;
-            if (inputHex != null)
+            if (inputHex is not null)
             {
                 input = (SolidColorBrush)new BrushConverter().ConvertFrom(inputHex);
             }

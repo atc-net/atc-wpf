@@ -72,7 +72,7 @@ namespace Atc.Wpf.Messaging
         /// state.</param>
         public void Execute(TCallbackParameter parameter)
         {
-            if (parameter == null)
+            if (parameter is null)
             {
                 throw new ArgumentNullException(nameof(parameter));
             }

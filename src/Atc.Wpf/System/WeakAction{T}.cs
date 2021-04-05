@@ -33,7 +33,7 @@ namespace System
         /// be kept as a hard reference, which might cause a memory leak.</param>
         public WeakAction(object? target, Action<T>? action, bool keepTargetAlive = false)
         {
-            if (action == null)
+            if (action is null)
             {
                 throw new ArgumentNullException(nameof(action));
             }

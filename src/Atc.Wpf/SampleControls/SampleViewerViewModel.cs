@@ -147,7 +147,7 @@ namespace Atc.Wpf.SampleControls
                 .GetExportedTypes()
                 .FirstOrDefault(x => x.FullName != null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
 
-            if (sampleType == null)
+            if (sampleType is null)
             {
                 _ = MessageBox.Show($"Can't find sample by path '{samplePath}'", "Error", MessageBoxButton.OK);
                 return;
@@ -161,7 +161,7 @@ namespace Atc.Wpf.SampleControls
 
             var entryAssemblyLocation = new DirectoryInfo(Path.GetDirectoryName(entryAssembly.Location)!);
             var baseLocation = this.ExtractBasePath(entryAssemblyLocation);
-            if (baseLocation == null)
+            if (baseLocation is null)
             {
                 _ = MessageBox.Show($"Can't find sample by invalid base location", "Error", MessageBoxButton.OK);
                 return;

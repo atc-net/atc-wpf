@@ -25,12 +25,12 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode
         /// <returns>The flowDocument.</returns>
         public static FlowDocument ColorizeXaml(string xamlText, FlowDocument targetDoc)
         {
-            if (xamlText == null)
+            if (xamlText is null)
             {
                 throw new ArgumentNullException(nameof(xamlText));
             }
 
-            if (targetDoc == null)
+            if (targetDoc is null)
             {
                 throw new ArgumentNullException(nameof(targetDoc));
             }
@@ -75,7 +75,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode
         /// <returns>The text.</returns>
         public string GetText(FlowDocument document)
         {
-            if (document == null)
+            if (document is null)
             {
                 throw new ArgumentNullException(nameof(document));
             }
@@ -90,7 +90,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode
         /// <param name="text">The text.</param>
         public void SetText(FlowDocument document, string text)
         {
-            if (document == null)
+            if (document is null)
             {
                 throw new ArgumentNullException(nameof(document));
             }
