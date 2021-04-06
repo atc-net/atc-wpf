@@ -14,10 +14,16 @@ namespace Atc.Wpf.Factories
                 throw new ArgumentNullException(nameof(uriLocation));
             }
 
-            return new BitmapImage(
+            var bitmapImage = new BitmapImage(
                 new Uri(
                     uriLocation,
                     uriKind));
+
+            return uriKind is UriKind.Absolute
+                ? bitmapImage
+                : bitmapImage
+                    .EnsureRelativeUriLocation()
+                    .ToBitmapImage();
         }
     }
 }
