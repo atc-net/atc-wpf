@@ -6,16 +6,11 @@ using Atc.Wpf.Command;
 
 namespace Atc.Wpf.Mvvm
 {
-    public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModel
+    public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
     {
         private WindowState windowState;
 
-        /// <summary>
-        /// Gets or sets the state of the window.
-        /// </summary>
-        /// <value>
-        /// The state of the window.
-        /// </value>
+        /// <inheritdoc />
         public WindowState WindowState
         {
             get => this.windowState;
@@ -26,12 +21,7 @@ namespace Atc.Wpf.Mvvm
             }
         }
 
-        /// <summary>
-        /// Gets the application exit command.
-        /// </summary>
-        /// <value>
-        /// The application exit command.
-        /// </value>
+        /// <inheritdoc />
         public ICommand ApplicationExitCommand => new RelayCommand(ApplicationExitCommandHandler);
 
         /// <inheritdoc />

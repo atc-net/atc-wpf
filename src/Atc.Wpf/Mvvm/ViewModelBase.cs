@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Atc.Wpf.Messaging;
 
@@ -11,7 +10,7 @@ namespace Atc.Wpf.Mvvm
     /// <summary>
     /// A base class for a the ViewModel class, to be used in the MVVM pattern design.
     /// </summary>
-    public abstract class ViewModelBase : ObservableObject, ICleanup
+    public abstract class ViewModelBase : ObservableObject, IViewModelBase
     {
         private bool isEnable;
         private bool isVisible;
@@ -38,12 +37,7 @@ namespace Atc.Wpf.Mvvm
             this.MessengerInstance = messenger ?? Messenger.Default;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is enable.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is enable; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsEnable
         {
             get => this.isEnable;
@@ -54,12 +48,7 @@ namespace Atc.Wpf.Mvvm
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is visible.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is visible; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsVisible
         {
             get => this.isVisible;
@@ -75,12 +64,7 @@ namespace Atc.Wpf.Mvvm
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is busy.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is busy; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsBusy
         {
             get => this.isBusy;
@@ -91,12 +75,7 @@ namespace Atc.Wpf.Mvvm
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is dirty.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is dirty; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsDirty
         {
             get => this.isDirty;
@@ -107,12 +86,7 @@ namespace Atc.Wpf.Mvvm
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [is selected].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [is selected]; otherwise, <c>false</c>.
-        /// </value>
+        /// <inheritdoc />
         public bool IsSelected
         {
             get => this.isSelected;
@@ -145,29 +119,14 @@ namespace Atc.Wpf.Mvvm
             this.MessengerInstance.UnRegister(this);
         }
 
-        /// <summary>
-        /// Broadcasts the specified old value.
-        /// </summary>
-        /// <typeparam name="T">The type.</typeparam>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
+        /// <inheritdoc />
         public void Broadcast<T>(string propertyName, T oldValue, T newValue)
         {
             var message = new PropertyChangedMessage<T>(this, propertyName, oldValue, newValue);
             this.MessengerInstance.Send(message);
         }
 
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <typeparam name="T">The type.</typeparam>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        /// <param name="broadcast">if set to <c>true</c> [broadcast].</param>
-        /// <exception cref="ArgumentException">This method cannot be called with an empty string, propertyName</exception>
-        [SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "OK.")]
+        /// <inheritdoc />
         public void RaisePropertyChanged<T>(
             string propertyName,
             T oldValue = default,
