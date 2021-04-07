@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Atc.Wpf.Mvvm;
 using Atc.Wpf.SampleControls;
 
 namespace Atc.Wpf.Sample
@@ -48,7 +47,8 @@ namespace Atc.Wpf.Sample
 
         private void TreeViewOnSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            MainWindowViewModel.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
+            var vm = this.DataContext as IMainWindowViewModel;
+            vm!.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
         }
     }
 }

@@ -12,18 +12,14 @@ namespace Atc.Wpf.Mvvm
     /// A base class for objects of which the properties must be observable.
     /// </summary>
     /// <seealso cref="INotifyPropertyChanged" />
-    [SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "OK.")]
-    public abstract class ObservableObject : INotifyPropertyChanged
+    public abstract class ObservableObject : IObservableObject
     {
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
+        /// <inheritdoc />
         public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
         {
             this.VerifyPropertyName(propertyName);
@@ -31,11 +27,7 @@ namespace Atc.Wpf.Mvvm
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <typeparam name="T">The type of the property.</typeparam>
-        /// <param name="propertyExpression">The property expression.</param>
+        /// <inheritdoc />
         public void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
         {
             var handler = this.PropertyChanged;
@@ -51,11 +43,7 @@ namespace Atc.Wpf.Mvvm
             }
         }
 
-        /// <summary>
-        /// Verifies the name of the property.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <exception cref="ArgumentException">Property not found, propertyName</exception>
+        /// <inheritdoc />
         public void VerifyPropertyName(string? propertyName)
         {
             var info = this.GetType().GetTypeInfo();

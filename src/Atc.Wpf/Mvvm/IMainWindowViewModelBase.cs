@@ -7,12 +7,25 @@ using System.Windows.Input;
 // ReSharper disable UnusedMemberInSuper.Global
 namespace Atc.Wpf.Mvvm
 {
-    /// <summary>
-    /// Defines a common interface for a MainWindowViewModel
-    /// </summary>
     [SuppressMessage("Security", "CA2109:Review visible event handlers", Justification = "OK.")]
-    public interface IMainWindowViewModel
+    public interface IMainWindowViewModelBase : IViewModelBase
     {
+        /// <summary>
+        /// Gets or sets the state of the window.
+        /// </summary>
+        /// <value>
+        /// The state of the window.
+        /// </value>
+        WindowState WindowState { get; set; }
+
+        /// <summary>
+        /// Gets the application exit command.
+        /// </summary>
+        /// <value>
+        /// The application exit command.
+        /// </value>
+        ICommand ApplicationExitCommand { get; }
+
         /// <summary>
         /// Called when loaded.
         /// </summary>
