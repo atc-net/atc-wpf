@@ -46,9 +46,20 @@ namespace Atc.Wpf.Media
                 hexaColor = "#" + hexaColor;
             }
 
-            if (hexaColor.Length == 7)
+            switch (hexaColor.Length)
             {
-                hexaColor = hexaColor.Replace("#", "#FF", StringComparison.Ordinal);
+                case 4:
+                    var r = hexaColor.Substring(1, 1);
+                    var g = hexaColor.Substring(2, 1);
+                    var b = hexaColor.Substring(3, 1);
+                    return Color.FromArgb(
+                        Convert.ToByte("FF", 16),
+                        Convert.ToByte($"{r}{r}", 16),
+                        Convert.ToByte($"{g}{g}", 16),
+                        Convert.ToByte($"{b}{b}", 16));
+                case 7:
+                    hexaColor = hexaColor.Replace("#", "#FF", StringComparison.Ordinal);
+                    break;
             }
 
             if (hexaColor.Length != 9)
@@ -325,8 +336,8 @@ namespace Atc.Wpf.Media
         /// </returns>
         private static Dictionary<string, Color> GetKnownColors()
         {
-            var colorProperties = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public);
-            return colorProperties.ToDictionary(p => p.Name, p => (Color)p.GetValue(null, null)!, StringComparer.OrdinalIgnoreCase);
+            var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
+            return colorProperties.ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.OrdinalIgnoreCase);
         }
     }
 }
