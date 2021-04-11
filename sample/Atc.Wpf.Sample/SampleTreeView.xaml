@@ -23,6 +23,8 @@
 
     <TreeViewItem Header="Controls - Media" IsExpanded="True">
         <atc:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.AutoGreyableImageView" />
+        <atc:SampleTreeViewItem Header="SvgImage" SamplePath="Controls.SvgImageView" />
+        <atc:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.SvgImageListView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Extensions" IsExpanded="True">
