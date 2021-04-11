@@ -485,4 +485,15 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
-dotnet_diagnostic.IDE0058.severity = none           # For now.
+dotnet_diagnostic.IDE0057.severity = none           # Substring can be simplified
+dotnet_diagnostic.IDE0058.severity = none           # Expression value is never used
+dotnet_diagnostic.IDE0090.severity = none           # 'new' expression can be simplified
+dotnet_diagnostic.IDE1006.severity = none           # Naming rule violation: Missing prefix: '____RULE_VIOLATION____'
+
+dotnet_diagnostic.MA0016.severity = none            # TEMP
+dotnet_diagnostic.MA0048.severity = none            # TEMP
+dotnet_diagnostic.MA0049.severity = none            # TEMP
+dotnet_diagnostic.SA1202.severity = none            # TEMP
+dotnet_diagnostic.SA1307.severity = none            # TEMP
+dotnet_diagnostic.SA1308.severity = none            # TEMP
+dotnet_diagnostic.SA1401.severity = none            # TEMP
