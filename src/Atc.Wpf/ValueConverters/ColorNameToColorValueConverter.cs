@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
 using System.Windows.Media;
+using Atc.Wpf.Media;
 
 namespace Atc.Wpf.ValueConverters
 {
@@ -25,12 +25,12 @@ namespace Atc.Wpf.ValueConverters
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(string)");
             }
 
-            if (typeof(Colors).GetProperties().FirstOrDefault(x => x.Name.Equals((string)value, StringComparison.OrdinalIgnoreCase)) is null)
+            if (!ColorUtil.KnownColors.TryGetValue((string)value, out var color))
             {
                 throw new InvalidCastException($"{value} is not a valid color");
             }
 
-            return (Color)ColorConverter.ConvertFromString(value.ToString());
+            return color;
         }
 
         /// <inheritdoc />
