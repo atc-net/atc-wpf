@@ -148,19 +148,24 @@ namespace Atc.Wpf.Controls
         /// <summary>
         /// Called when [text property changed].
         /// </summary>
-        /// <param name="d">The dependency object.</param>
+        /// <param name="obj">The dependency object.</param>
         /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        private static void OnTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            ((RichTextBoxEx)d).UpdateDocumentFromText();
+            if (obj is not RichTextBoxEx richTextBoxEx)
+            {
+                return;
+            }
+
+            richTextBoxEx.UpdateDocumentFromText();
         }
 
         /// <summary>
         /// Coerces the text property.
         /// </summary>
-        /// <param name="d">The dependency object.</param>
+        /// <param name="obj">The dependency object.</param>
         /// <param name="value">The value.</param>
-        private static object CoerceText(DependencyObject d, object? value)
+        private static object CoerceText(DependencyObject obj, object? value)
         {
             return value ?? string.Empty;
         }
@@ -168,11 +173,15 @@ namespace Atc.Wpf.Controls
         /// <summary>
         /// Called when [text formatter property changed].
         /// </summary>
-        /// <param name="d">The dependency object.</param>
+        /// <param name="obj">The dependency object.</param>
         /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void OnTextFormatterChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        private static void OnTextFormatterChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            var richTextBoxEx = d as RichTextBoxEx;
+            if (obj is not RichTextBoxEx richTextBoxEx)
+            {
+                return;
+            }
+
             richTextBoxEx?.OnTextFormatterPropertyChanged((ITextFormatter)args.OldValue, (ITextFormatter)args.NewValue);
         }
 

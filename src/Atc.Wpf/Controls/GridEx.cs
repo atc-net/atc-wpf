@@ -81,12 +81,12 @@ namespace Atc.Wpf.Controls
         /// <summary>
         /// Called when the rows property is changed.
         /// </summary>
-        /// <param name="d">The dependency object.</param>
+        /// <param name="obj">The dependency object.</param>
         /// <param name="args">The <see ref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void OnRowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        private static void OnRowsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             // Get the gridEx.
-            if (!(d is GridEx gridEx))
+            if (obj is not GridEx gridEx)
             {
                 return;
             }
@@ -108,12 +108,12 @@ namespace Atc.Wpf.Controls
         /// <summary>
         /// Called when the columns property is changed.
         /// </summary>
-        /// <param name="d">The dependency object.</param>
+        /// <param name="obj">The dependency object.</param>
         /// <param name="args">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void OnColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        private static void OnColumnsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             // Get the gridEx.
-            if (!(d is GridEx gridEx))
+            if (obj is not GridEx gridEx)
             {
                 return;
             }

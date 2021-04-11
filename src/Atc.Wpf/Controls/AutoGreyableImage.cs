@@ -30,13 +30,13 @@ namespace Atc.Wpf.Controls
         }
 
         /// <summary>
-        /// Called when [auto grey scale image is enabled property changed].
+        /// Called when [is enabled changed].
         /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void OnIsEnabledChanged(DependencyObject source, DependencyPropertyChangedEventArgs args)
+        /// <param name="obj">The dependency object.</param>
+        /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        private static void OnIsEnabledChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            var autoGreyScaleImage = source as AutoGreyableImage;
+            var autoGreyScaleImage = obj as AutoGreyableImage;
             if (autoGreyScaleImage?.Source is null)
             {
                 return;
