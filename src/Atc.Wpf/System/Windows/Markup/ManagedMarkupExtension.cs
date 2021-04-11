@@ -77,19 +77,12 @@ namespace System.Windows.Markup
         {
             get
             {
-                Type? propertyType = null;
-                if (this.targetProperty is DependencyProperty dependencyProperty)
+                Type? propertyType = this.targetProperty switch
                 {
-                    propertyType = dependencyProperty.PropertyType;
-                }
-                else
-                {
-                    var info = this.targetProperty as PropertyInfo;
-                    if (info is not null)
-                    {
-                        propertyType = info.PropertyType;
-                    }
-                }
+                    DependencyProperty dependencyProperty => dependencyProperty.PropertyType,
+                    PropertyInfo info => info.PropertyType,
+                    _ => null
+                };
 
                 return propertyType;
             }
