@@ -21,8 +21,9 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: 📐 Ensure nuget.org added as package source
+      - name: 📐 Ensure nuget.org added as package source for Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
+        continue-on-error: true
 
       - name: 🔁 Restore packages
         run: dotnet restore
@@ -45,8 +46,9 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: 📐 Ensure nuget.org added as package source
+      - name: 📐 Ensure nuget.org added as package source for Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
+        continue-on-error: true
 
       - name: 🔁 Restore packages
         run: dotnet restore
