@@ -286,7 +286,7 @@ namespace Atc.Wpf.Controls
                 return;
             }
 
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -322,7 +322,7 @@ namespace Atc.Wpf.Controls
                 return;
             }
 
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -347,7 +347,7 @@ namespace Atc.Wpf.Controls
         /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         public static void FixedColumnWidthChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -372,7 +372,7 @@ namespace Atc.Wpf.Controls
         /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         public static void FixedRowHeightChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -448,7 +448,7 @@ namespace Atc.Wpf.Controls
                 return;
             }
 
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -484,7 +484,7 @@ namespace Atc.Wpf.Controls
                 return;
             }
 
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -520,7 +520,7 @@ namespace Atc.Wpf.Controls
         /// </summary>
         private static void OnChildHorizontalAlignmentChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -536,7 +536,7 @@ namespace Atc.Wpf.Controls
         /// </summary>
         private static void OnChildMarginChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }
@@ -552,7 +552,7 @@ namespace Atc.Wpf.Controls
         /// </summary>
         private static void OnChildVerticalAlignmentChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            if (!(obj is AutoGrid grid))
+            if (obj is not AutoGrid grid)
             {
                 return;
             }

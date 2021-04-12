@@ -8,12 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Asset2\**" />
+    <EmbeddedResource Remove="Asset2\**" />
+    <None Remove="Asset2\**" />
+    <Page Remove="Asset2\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\a.svg" />
+    <None Remove="Assets\eggeaster.svg" />
+    <None Remove="Assets\shout.svg" />
     <None Remove="Assets\the-road_640.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\a.svg" />
+    <Resource Include="Assets\eggeaster.svg" />
+    <Resource Include="Assets\shout.svg" />
     <Resource Include="Assets\the-road_640.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 

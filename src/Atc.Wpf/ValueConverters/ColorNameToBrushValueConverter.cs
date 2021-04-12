@@ -7,17 +7,17 @@ using Atc.Wpf.Media;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: string-color-name To Color.
+    /// ValueConverter: string-color-name To SolidColorBrush.
     /// </summary>
-    [ValueConversion(typeof(string), typeof(Color))]
-    public class ColorNameToColorValueConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(Brush))]
+    public class ColorNameToBrushValueConverter : IValueConverter
     {
         /// <inheritdoc />
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is null)
             {
-                return Colors.DeepPink;
+                return Brushes.DeepPink;
             }
 
             if (!(value is string))
@@ -27,10 +27,10 @@ namespace Atc.Wpf.ValueConverters
 
             if (!ColorUtil.KnownColors.TryGetValue((string)value, out var color))
             {
-                throw new InvalidCastException($"{value} is not a valid color");
+                throw new InvalidCastException($"{value} is not a valid brush");
             }
 
-            return color;
+            return new SolidColorBrush(color);
         }
 
         /// <inheritdoc />
@@ -38,12 +38,12 @@ namespace Atc.Wpf.ValueConverters
         {
             if (value is null)
             {
-                return Colors.DeepPink.ToString(GlobalizationConstants.EnglishCultureInfo);
+                return Brushes.DeepPink.ToString(GlobalizationConstants.EnglishCultureInfo);
             }
 
-            if (!(value is Color))
+            if (!(value is Brush))
             {
-                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
+                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Brush)");
             }
 
             return value.ToString()!;
