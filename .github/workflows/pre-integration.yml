@@ -21,7 +21,7 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: 📐 Ensure nuget.org added as package source for Windows
+      - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
@@ -46,7 +46,7 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: 📐 Ensure nuget.org added as package source for Windows
+      - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
