@@ -18,9 +18,9 @@ namespace Atc.Wpf.Tests.ValueConverters
                 converter.Convert(input, targetType: null, parameter: null, culture: null));
 
         [Theory]
-        [InlineData(Visibility.Collapsed, true)]
-        [InlineData(Visibility.Visible, false)]
-        public void ConvertBack(Visibility expected, bool input)
+        [InlineData(true, Visibility.Collapsed)]
+        [InlineData(false, Visibility.Visible)]
+        public void ConvertBack(bool expected, Visibility input)
             => Assert.Equal(
                 expected,
                 converter.ConvertBack(input, targetType: null, parameter: null, culture: null));

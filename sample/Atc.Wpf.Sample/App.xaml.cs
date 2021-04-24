@@ -3,10 +3,11 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using Atc.Wpf.Diagnostics;
-using Atc.Wpf.Mvvm;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+// ReSharper disable once UnusedParameter.Local
 namespace Atc.Wpf.Sample
 {
     /// <summary>
@@ -14,7 +15,24 @@ namespace Atc.Wpf.Sample
     /// </summary>
     public partial class App
     {
-        private ServiceProvider? serviceProvider;
+        private readonly IHost host;
+
+        public App()
+        {
+            this.host = Host.CreateDefaultBuilder()
+                .ConfigureLogging(logging =>
+                {
+                    logging
+                        .AddDebug()
+                        .SetMinimumLevel(LogLevel.Trace);
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
+                    services.AddSingleton<MainWindow>();
+                })
+                .Build();
+        }
 
         /// <summary>
         /// Raises the Startup event.
@@ -36,21 +54,6 @@ namespace Atc.Wpf.Sample
             {
                 BindingErrorTraceListener.StartTrace();
             }
-        }
-
-        // ReSharper disable once UnusedParameter.Local
-        private static ServiceCollection CreateServiceCollectionAndRegister()
-        {
-            var services = new ServiceCollection();
-            _ = services.AddLogging(logging =>
-            {
-                _ = logging.AddDebug().SetMinimumLevel(LogLevel.Trace);
-            });
-
-            // Singleton's
-            _ = services.AddSingleton<MainWindow>();
-            _ = services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
-            return services;
         }
 
         /// <summary>
@@ -99,12 +102,26 @@ namespace Atc.Wpf.Sample
             this.Shutdown(-1);
         }
 
-        private void OnStartupInitialize(object sender, StartupEventArgs startupEventArgs)
+        private async void ApplicationStartup(object sender, StartupEventArgs args)
         {
-            var services = CreateServiceCollectionAndRegister();
-            this.serviceProvider = services.BuildServiceProvider();
-            var mainWindow = serviceProvider.GetService<MainWindow>()!;
+            await this.host
+                .StartAsync()
+                .ConfigureAwait(false);
+
+            var mainWindow = this.host
+                .Services
+                .GetService<MainWindow>()!;
+
             mainWindow.Show();
+        }
+
+        private async void ApplicationExit(object sender, ExitEventArgs args)
+        {
+            await this.host
+                .StopAsync()
+                .ConfigureAwait(false);
+
+            this.host.Dispose();
         }
     }
 }
