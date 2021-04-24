@@ -18,18 +18,18 @@ namespace Atc.Wpf.ValueConverters
                 throw new ArgumentNullException(nameof(value));
             }
 
-            if (!(value is Enum))
+            if (value is not Enum enumValue)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not an enum type");
             }
 
-            return EnumHelper.GetDescription(value as Enum);
+            return EnumHelper.GetDescription(enumValue);
         }
 
         /// <inheritdoc />
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("This is a OneWay converter.");
         }
     }
 }

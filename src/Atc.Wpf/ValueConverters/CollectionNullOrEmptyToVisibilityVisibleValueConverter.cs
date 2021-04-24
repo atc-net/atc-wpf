@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -6,17 +7,17 @@ using System.Windows.Data;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: Object NotNull To Visibility-Visible.
+    /// ValueConverter: ICollection Null Or Empty To Visibility-Visible.
     /// </summary>
-    [ValueConversion(typeof(object), typeof(Visibility))]
-    public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
+    [ValueConversion(typeof(ICollection), typeof(Visibility))]
+    public class CollectionNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
     {
         /// <inheritdoc />
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+            return value is not ICollection collectionValue || collectionValue.Count == 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         /// <inheritdoc />

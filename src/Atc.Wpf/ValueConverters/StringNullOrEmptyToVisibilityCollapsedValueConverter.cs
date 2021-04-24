@@ -6,15 +6,15 @@ using System.Windows.Data;
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: Object NotNull To Visibility-Visible.
+    /// ValueConverter: String Null Or Empty To Visibility-Collapsed.
     /// </summary>
-    [ValueConversion(typeof(object), typeof(Visibility))]
-    public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(Visibility))]
+    public class StringNullOrEmptyToVisibilityCollapsedValueConverter : IValueConverter
     {
         /// <inheritdoc />
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null
+            return value is null || string.IsNullOrEmpty(value.ToString())
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }

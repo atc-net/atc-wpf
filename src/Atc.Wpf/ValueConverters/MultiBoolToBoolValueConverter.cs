@@ -13,9 +13,14 @@ namespace Atc.Wpf.ValueConverters
     public class MultiBoolToBoolValueConverter : IMultiValueConverter
     {
         /// <inheritdoc />
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return values.All(value => !(value is bool) || (bool)value);
+            if (values is null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            return values.All(value => value is not bool boolValue || boolValue);
         }
 
         /// <inheritdoc />

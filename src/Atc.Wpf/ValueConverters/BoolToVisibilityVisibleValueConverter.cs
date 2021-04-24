@@ -12,32 +12,37 @@ namespace Atc.Wpf.ValueConverters
     public class BoolToVisibilityVisibleValueConverter : IValueConverter
     {
         /// <inheritdoc />
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Convert(value);
-        }
-
-        /// <inheritdoc />
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Convert(value);
-        }
-
-        private static Visibility Convert(object value)
+        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            if (!(value is bool))
+            if (value is not bool boolValue)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
             }
 
-            return (bool)value
+            return boolValue
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+        }
+
+        /// <inheritdoc />
+        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (value is not Visibility visibility)
+            {
+                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Visibility)");
+            }
+
+            return visibility == Visibility.Visible;
         }
     }
 }

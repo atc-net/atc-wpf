@@ -1,23 +1,23 @@
 using System;
+using System.Windows;
 using System.Windows.Data;
 using Atc.Wpf.ValueConverters;
 using Xunit;
 
 namespace Atc.Wpf.Tests.ValueConverters
 {
-    public class BoolToWidthValueConverterTests
+    public class CollectionNullOrEmptyToVisibilityVisibleValueConverterTests
     {
-        private readonly IValueConverter converter = new BoolToWidthValueConverter();
+        private readonly IValueConverter converter = new CollectionNullOrEmptyToVisibilityVisibleValueConverter();
 
         [Theory]
-        [InlineData(0, false, null)]
-        [InlineData(double.NaN, true, null)]
-        [InlineData(10, true, 10)]
-        [InlineData(double.NaN, true, "Auto")]
-        public void Convert(double expected, bool input, object parameter)
+        [InlineData(Visibility.Visible, null)]
+        [InlineData(Visibility.Visible, new object[] { })]
+        [InlineData(Visibility.Collapsed, new object[] { 1 })]
+        public void Convert(Visibility expected, object? input)
             => Assert.Equal(
                 expected,
-                converter.Convert(input, targetType: null, parameter, culture: null));
+                converter.Convert(input, targetType: null, parameter: null, culture: null));
 
         [Fact]
         public void ConvertBack_Should_Throw_Exception()

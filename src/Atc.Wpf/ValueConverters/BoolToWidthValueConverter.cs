@@ -14,14 +14,14 @@ namespace Atc.Wpf.ValueConverters
     {
         /// <inheritdoc />
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-        public object Convert(object value, Type targetType, object? parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            if (!(value is bool))
+            if (value is not bool boolValue)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
             }
@@ -29,7 +29,7 @@ namespace Atc.Wpf.ValueConverters
             double width = double.NaN;
             if (parameter is null || "Auto".IsEqual(parameter.ToString()!, StringComparison.OrdinalIgnoreCase))
             {
-                return (bool)value
+                return boolValue
                     ? width
                     : 0;
             }
@@ -45,15 +45,15 @@ namespace Atc.Wpf.ValueConverters
                 // Dummy
             }
 
-            return (bool)value
+            return boolValue
                 ? width
                 : 0;
         }
 
         /// <inheritdoc />
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("This is a OneWay converter.");
         }
     }
 }

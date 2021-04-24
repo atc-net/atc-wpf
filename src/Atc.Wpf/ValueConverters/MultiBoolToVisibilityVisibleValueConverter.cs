@@ -29,12 +29,12 @@ namespace Atc.Wpf.ValueConverters
             bool visible = true;
             foreach (object value in values)
             {
-                if (!(value is bool))
+                if (value is not bool boolValue)
                 {
                     throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
                 }
 
-                if ((bool)value)
+                if (boolValue)
                 {
                     continue;
                 }

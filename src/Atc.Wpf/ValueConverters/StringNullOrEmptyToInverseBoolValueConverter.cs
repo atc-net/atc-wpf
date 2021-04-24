@@ -1,22 +1,19 @@
 using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Atc.Wpf.ValueConverters
 {
     /// <summary>
-    /// ValueConverter: Object NotNull To Visibility-Visible.
+    /// ValueConverter: String Null Or Empty To Inverse Bool.
     /// </summary>
-    [ValueConversion(typeof(object), typeof(Visibility))]
-    public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(bool))]
+    public class StringNullOrEmptyToInverseBoolValueConverter : IValueConverter
     {
         /// <inheritdoc />
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null
-                ? Visibility.Collapsed
-                : Visibility.Visible;
+            return !(value is null || string.IsNullOrEmpty(value.ToString()));
         }
 
         /// <inheritdoc />

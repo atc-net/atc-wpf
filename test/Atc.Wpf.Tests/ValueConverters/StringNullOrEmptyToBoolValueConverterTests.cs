@@ -5,19 +5,18 @@ using Xunit;
 
 namespace Atc.Wpf.Tests.ValueConverters
 {
-    public class BoolToWidthValueConverterTests
+    public class StringNullOrEmptyToBoolValueConverterTests
     {
-        private readonly IValueConverter converter = new BoolToWidthValueConverter();
+        private readonly IValueConverter converter = new StringNullOrEmptyToBoolValueConverter();
 
         [Theory]
-        [InlineData(0, false, null)]
-        [InlineData(double.NaN, true, null)]
-        [InlineData(10, true, 10)]
-        [InlineData(double.NaN, true, "Auto")]
-        public void Convert(double expected, bool input, object parameter)
+        [InlineData(true, null)]
+        [InlineData(true, "")]
+        [InlineData(false, "Hallo")]
+        public void Convert(bool expected, string? input)
             => Assert.Equal(
                 expected,
-                converter.Convert(input, targetType: null, parameter, culture: null));
+                converter.Convert(input, targetType: null, parameter: null, culture: null));
 
         [Fact]
         public void ConvertBack_Should_Throw_Exception()

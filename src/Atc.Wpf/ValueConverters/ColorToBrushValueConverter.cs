@@ -19,12 +19,11 @@ namespace Atc.Wpf.ValueConverters
                 return Brushes.DeepPink;
             }
 
-            if (!(value is Color))
+            if (value is not Color color)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
             }
 
-            var color = (Color)value;
             return new SolidColorBrush(color);
         }
 
@@ -36,12 +35,11 @@ namespace Atc.Wpf.ValueConverters
                 return Colors.DeepPink;
             }
 
-            if (!(value is SolidColorBrush))
+            if (value is not SolidColorBrush brush)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(SolidColorBrush)");
             }
 
-            var brush = (SolidColorBrush)value;
             return brush.Color;
         }
     }

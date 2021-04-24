@@ -1,23 +1,23 @@
 using System;
+using System.Globalization;
 using System.Windows.Data;
 using Atc.Wpf.ValueConverters;
 using Xunit;
 
 namespace Atc.Wpf.Tests.ValueConverters
 {
-    public class BoolToWidthValueConverterTests
+    public class CollectionNullOrEmptyToBoolValueConverterTests
     {
-        private readonly IValueConverter converter = new BoolToWidthValueConverter();
+        private readonly IValueConverter converter = new CollectionNullOrEmptyToBoolValueConverter();
 
         [Theory]
-        [InlineData(0, false, null)]
-        [InlineData(double.NaN, true, null)]
-        [InlineData(10, true, 10)]
-        [InlineData(double.NaN, true, "Auto")]
-        public void Convert(double expected, bool input, object parameter)
+        [InlineData(true, null)]
+        [InlineData(true, new object[] { })]
+        [InlineData(false, new object[] { 1 })]
+        public void Convert(bool expected, object? input)
             => Assert.Equal(
                 expected,
-                converter.Convert(input, targetType: null, parameter, culture: null));
+                converter.Convert(input, targetType: null, parameter: null, culture: null));
 
         [Fact]
         public void ConvertBack_Should_Throw_Exception()

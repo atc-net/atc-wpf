@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Media;
 using Atc.Wpf.Media;
@@ -20,14 +21,14 @@ namespace Atc.Wpf.ValueConverters
                 return Brushes.DeepPink;
             }
 
-            if (!(value is string))
+            if (value is not string stringValue)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(string)");
             }
 
-            if (!ColorUtil.KnownColors.TryGetValue((string)value, out var color))
+            if (!ColorUtil.KnownColors.TryGetValue(stringValue, out var color))
             {
-                throw new InvalidCastException($"{value} is not a valid brush");
+                throw new InvalidCastException($"{stringValue} is not a valid brush");
             }
 
             return new SolidColorBrush(color);
@@ -38,15 +39,18 @@ namespace Atc.Wpf.ValueConverters
         {
             if (value is null)
             {
-                return Brushes.DeepPink.ToString(GlobalizationConstants.EnglishCultureInfo);
+                return "DeepPink";
             }
 
-            if (!(value is Brush))
+            if (value is not Brush)
             {
                 throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Brush)");
             }
 
-            return value.ToString()!;
+            var knownColor = ColorUtil.KnownColors.FirstOrDefault(x => x.Value.ToString(GlobalizationConstants.EnglishCultureInfo) == value.ToString());
+            return string.IsNullOrEmpty(knownColor.Key)
+                ? value.ToString()!
+                : knownColor.Key;
         }
     }
 }

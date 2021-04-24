@@ -24,7 +24,7 @@ namespace Atc.Wpf.Tests.ValueConverters
 
             // Assert
             Assert.IsType<NotSupportedException>(exception);
-            Assert.Equal("Specified method is not supported.", exception.Message);
+            Assert.Equal("This is a OneWay converter.", exception.Message);
         }
     }
 }
