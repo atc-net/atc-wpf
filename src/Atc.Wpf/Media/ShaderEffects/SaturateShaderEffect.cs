@@ -3,36 +3,36 @@ using System.Windows.Media;
 
 namespace Atc.Wpf.Media.ShaderEffects
 {
-    public class SaturateTransitionShaderEffect : ShaderEffectBase
+    public class SaturateShaderEffect : ShaderEffectBase
     {
         public static readonly DependencyProperty InputProperty =
             RegisterPixelShaderSamplerProperty(
                 "Input",
-                typeof(SaturateTransitionShaderEffect),
+                typeof(SaturateShaderEffect),
                 0);
 
         public static readonly DependencyProperty SecondInputProperty =
             RegisterPixelShaderSamplerProperty(
                 "SecondInput",
-                typeof(SaturateTransitionShaderEffect),
+                typeof(SaturateShaderEffect),
                 1);
 
         public static readonly DependencyProperty ProgressProperty =
             DependencyProperty.Register(
                 nameof(Progress),
                 typeof(double),
-                typeof(SaturateTransitionShaderEffect),
+                typeof(SaturateShaderEffect),
                 new UIPropertyMetadata(
                     default(double),
                     PixelShaderConstantCallback(0)));
 
-        public override string Name => "SaturateTransition";
+        public override string Name => "Saturate";
 
-        public SaturateTransitionShaderEffect()
+        public SaturateShaderEffect()
         {
-            UpdateShaderValue(InputProperty);
-            UpdateShaderValue(SecondInputProperty);
-            UpdateShaderValue(ProgressProperty);
+            this.UpdateShaderValue(InputProperty);
+            this.UpdateShaderValue(SecondInputProperty);
+            this.UpdateShaderValue(ProgressProperty);
         }
 
         /// <summary>

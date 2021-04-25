@@ -37,9 +37,11 @@
     <TreeViewItem Header="Media" IsExpanded="True">
         <TreeViewItem Header="ShaderEffects" IsExpanded="True">
             <atc:SampleTreeViewItem Header="Contrast Adjust" SamplePath="Media.ShaderEffects.ContrastAdjustShaderEffectView" />
+            <atc:SampleTreeViewItem Header="Desaturate" SamplePath="Media.ShaderEffects.DesaturateShaderEffectView" />
+            <atc:SampleTreeViewItem Header="Fade" SamplePath="Media.ShaderEffects.FadeShaderEffectView" />
             <atc:SampleTreeViewItem Header="Invert Colors" SamplePath="Media.ShaderEffects.InvertColorsShaderEffectView" />
             <atc:SampleTreeViewItem Header="Monochrome" SamplePath="Media.ShaderEffects.MonochromeShaderEffectView" />
-            <atc:SampleTreeViewItem Header="Saturate Transition" SamplePath="Media.ShaderEffects.SaturateTransitionShaderEffectView" />
+            <atc:SampleTreeViewItem Header="Saturate" SamplePath="Media.ShaderEffects.SaturateShaderEffectView" />
         </TreeViewItem>
     </TreeViewItem>
 

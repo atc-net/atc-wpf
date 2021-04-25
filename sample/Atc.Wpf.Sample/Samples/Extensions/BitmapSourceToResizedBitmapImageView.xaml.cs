@@ -13,15 +13,15 @@ namespace Atc.Wpf.Sample.Samples.Extensions
         {
             this.InitializeComponent();
 
-            this.Loaded += OnLoaded;
+            this.Loaded += this.OnLoaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             var bitmap = new BitmapImage(
-                new Uri(@"pack://application:,,,/Atc.Wpf.Sample;component/Assets/the-road_640.jpg", UriKind.Absolute));
+                new Uri(@"pack://application:,,,/Atc.Wpf.Sample;component/Assets/road.jpg", UriKind.Absolute));
 
-            int newWidth = (int)bitmap.Width / 2;
+            int newWidth = (int)this.OrgImage.Width / 2;
             var bitmapSource = bitmap.ToResizedBitmapImage(newWidth);
 
             this.TestImage.Source = bitmapSource;

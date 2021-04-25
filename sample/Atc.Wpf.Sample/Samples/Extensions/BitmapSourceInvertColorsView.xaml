@@ -23,7 +23,7 @@
                 <Image Grid.Row="2"
                        Grid.Column="0"
                        Width="640"
-                       Source="../../Assets/the-road_640.jpg" />
+                       Source="../../Assets/road.jpg" />
 
                 <TextBlock Grid.Row="0"
                            Grid.Column="2"
