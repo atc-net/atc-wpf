@@ -15,7 +15,7 @@ namespace Atc.Wpf.Media.ShaderEffects
 
         public InvertColorsShaderEffect()
         {
-            UpdateShaderValue(InputProperty);
+            this.UpdateShaderValue(InputProperty);
         }
 
         /// <summary>

@@ -3,29 +3,29 @@ using System.Windows.Media;
 
 namespace Atc.Wpf.Media.ShaderEffects
 {
-    public class MonochromeShaderEffect : ShaderEffectBase
+    public class DesaturateShaderEffect : ShaderEffectBase
     {
         public static readonly DependencyProperty InputProperty =
             RegisterPixelShaderSamplerProperty(
                 "Input",
-                typeof(MonochromeShaderEffect),
+                typeof(DesaturateShaderEffect),
                 0);
 
-        public static readonly DependencyProperty FilterColorProperty =
+        public static readonly DependencyProperty StrengthProperty =
             DependencyProperty.Register(
-                nameof(FilterColor),
-                typeof(Color),
-                typeof(MonochromeShaderEffect),
+                nameof(Strength),
+                typeof(double),
+                typeof(DesaturateShaderEffect),
                 new UIPropertyMetadata(
-                    MakeColor(0x7F, 0x7F, 0x7F),
+                    default(double),
                     PixelShaderConstantCallback(0)));
 
-        public override string Name => "Monochrome";
+        public override string Name => "Desaturate";
 
-        public MonochromeShaderEffect()
+        public DesaturateShaderEffect()
         {
             this.UpdateShaderValue(InputProperty);
-            this.UpdateShaderValue(FilterColorProperty);
+            this.UpdateShaderValue(StrengthProperty);
         }
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace Atc.Wpf.Media.ShaderEffects
         }
 
         /// <summary>
-        /// FilterColor - default => 0x7F, 0x7F, 0x7F.
+        /// Strength.
         /// </summary>
-        public Color FilterColor
+        public double Strength
         {
-            get => (Color)GetValue(FilterColorProperty);
-            set => SetValue(FilterColorProperty, value);
+            get => (double)GetValue(StrengthProperty);
+            set => SetValue(StrengthProperty, value);
         }
     }
 }

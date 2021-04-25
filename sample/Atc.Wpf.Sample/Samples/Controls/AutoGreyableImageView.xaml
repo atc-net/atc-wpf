@@ -19,7 +19,7 @@
             <StackPanel Margin="20">
                 <atc:AutoGreyableImage Width="640"
                                        IsEnabled="{Binding ElementName=CbImage, Path=IsChecked}"
-                                       Source="pack://application:,,,/Atc.Wpf.Sample;component/Assets/the-road_640.jpg"
+                                       Source="pack://application:,,,/Atc.Wpf.Sample;component/Assets/road.jpg"
                                        Stretch="None" />
             </StackPanel>
         </GroupBox>

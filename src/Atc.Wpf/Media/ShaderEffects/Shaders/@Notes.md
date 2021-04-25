@@ -6,6 +6,9 @@
 4. Set Build-Action on the fx file in Visual Studio to Content
 5. Set Build-Action on the ps file in Visual Studio to Resource
 
+HLSL Shader Compiler is called `fxc.exe` (Direct3D Shader Compiler) and it
+can be located in `C:\Program Files (x86)\Windows Kits\10\bin\x86\fxc.exe`
+
 Example on compile command with "/Fc -> output assembly code listing file" => cod file:
 ```
 fxc.exe /T ps_2_0 /E main /WX /O0 /Fc /Zi /Fo ContrastAdjust.ps ContrastAdjust.fx
@@ -78,7 +81,9 @@ Output assembly code listing file "cod file" for ContrastAdjust:
 Actual script:
 ```
 fxc.exe /T ps_2_0 /E main /WX /O0 /Fo ContrastAdjust.ps ContrastAdjust.fx
+fxc.exe /T ps_2_0 /E main /WX /O0 /Fo Desaturate.ps Desaturate.fx
+fxc.exe /T ps_2_0 /E main /WX /O0 /Fo Fade.ps Fade.fx
 fxc.exe /T ps_2_0 /E main /WX /O0 /Fo InvertColors.ps InvertColors.fx
 fxc.exe /T ps_2_0 /E main /WX /O0 /Fo Monochrome.ps Monochrome.fx
-fxc.exe /T ps_2_0 /E main /WX /O0 /Fo SaturateTransition.ps SaturateTransition.fx
+fxc.exe /T ps_2_0 /E main /WX /O0 /Fo Saturate.ps Saturate.fx
 ```

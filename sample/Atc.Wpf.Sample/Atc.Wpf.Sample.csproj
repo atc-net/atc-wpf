@@ -17,17 +17,15 @@
   <ItemGroup>
     <None Remove="Assets\a.svg" />
     <None Remove="Assets\eggeaster.svg" />
+    <None Remove="Assets\road.jpg" />
     <None Remove="Assets\shout.svg" />
-    <None Remove="Assets\the-road_640.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\a.svg" />
     <Resource Include="Assets\eggeaster.svg" />
+    <Resource Include="Assets\road.jpg" />
     <Resource Include="Assets\shout.svg" />
-    <Resource Include="Assets\the-road_640.jpg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>

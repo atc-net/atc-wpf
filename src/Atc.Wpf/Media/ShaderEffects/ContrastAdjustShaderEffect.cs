@@ -33,9 +33,9 @@ namespace Atc.Wpf.Media.ShaderEffects
 
         public ContrastAdjustShaderEffect()
         {
-            UpdateShaderValue(InputProperty);
-            UpdateShaderValue(BrightnessProperty);
-            UpdateShaderValue(ContrastProperty);
+            this.UpdateShaderValue(InputProperty);
+            this.UpdateShaderValue(BrightnessProperty);
+            this.UpdateShaderValue(ContrastProperty);
         }
 
         /// <summary>

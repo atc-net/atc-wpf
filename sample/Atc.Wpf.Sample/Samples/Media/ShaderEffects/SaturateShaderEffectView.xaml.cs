@@ -3,11 +3,11 @@ using System.Windows;
 namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects
 {
     /// <summary>
-    /// Interaction logic for SaturateTransitionShaderEffectView.
+    /// Interaction logic for SaturateShaderEffectView.
     /// </summary>
-    public partial class SaturateTransitionShaderEffectView
+    public partial class SaturateShaderEffectView
     {
-        public SaturateTransitionShaderEffectView()
+        public SaturateShaderEffectView()
         {
             this.InitializeComponent();
         }
