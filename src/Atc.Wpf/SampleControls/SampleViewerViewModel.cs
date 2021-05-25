@@ -18,11 +18,22 @@ namespace Atc.Wpf.SampleControls
             Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
         }
 
+        private int tabSelectedIndex;
         private string? header;
         private UserControl? sampleContent;
         private string? xamlCode;
         private string? codeBehindCode;
         private string? viewModelCode;
+
+        public int TabSelectedIndex
+        {
+            get => this.tabSelectedIndex;
+            set
+            {
+                this.tabSelectedIndex = value;
+                this.RaisePropertyChanged();
+            }
+        }
 
         public bool HasSampleContent => this.SampleContent != null;
 
@@ -120,6 +131,8 @@ namespace Atc.Wpf.SampleControls
 
         private void SampleItemMessageHandler(SampleItemMessage obj)
         {
+            this.TabSelectedIndex = 0;
+
             if (string.IsNullOrEmpty(obj.SampleItemPath))
             {
                 this.ClearSelectedViewData();

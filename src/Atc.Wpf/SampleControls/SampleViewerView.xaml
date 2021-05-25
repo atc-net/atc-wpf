@@ -23,7 +23,7 @@
                    FontWeight="Bold"
                    Foreground="Chocolate"
                    Text="{Binding Path=Header, FallbackValue='Select sample name'}" />
-        <TabControl>
+        <TabControl SelectedIndex="{Binding Path=TabSelectedIndex}">
             <TabItem Header="Sample" IsEnabled="{Binding Path=HasSampleContent}">
                 <ContentControl Margin="5,10,5,5"
                                 Content="{Binding Path=SampleContent}"
