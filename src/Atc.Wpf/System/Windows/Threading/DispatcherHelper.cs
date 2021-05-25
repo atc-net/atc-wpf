@@ -26,7 +26,11 @@ namespace System.Windows.Threading
             // Dispatch a callback to the current message queue, when getting called,
             // this callback will end the nested message loop.
             // note that the priority of this callback should be lower than that of UI event messages.
-            var exitOperation = Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrames), nestedFrame);
+            var exitOperation = Dispatcher.CurrentDispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new DispatcherOperationCallback(ExitFrames),
+                nestedFrame);
+
             try
             {
                 // Pump the nested message loop, the nested message loop will immediately

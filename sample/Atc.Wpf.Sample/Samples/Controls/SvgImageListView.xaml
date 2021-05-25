@@ -21,7 +21,7 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <WrapPanel Name="UsagePanel"
+            <WrapPanel x:Name="UsagePanel"
                        Margin="20"
                        Orientation="Horizontal" />
         </GroupBox>

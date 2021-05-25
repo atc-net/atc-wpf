@@ -28,7 +28,7 @@
                            Grid.Column="0"
                            VerticalAlignment="Center"
                            Text="Color:" />
-                <ComboBox Name="CbColor"
+                <ComboBox x:Name="CbColor"
                           Grid.Row="0"
                           Grid.Column="2"
                           Height="24"
