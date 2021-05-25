@@ -11,7 +11,7 @@ float4 main(float2 uv : TEXCOORD) : COLOR0
     if (Progress > 0.8)
     {
         float newProgress = (Progress - 0.8) * 5.0;
-        return lerp(c1, color2, newProgress);
+        return lerp(color1, color2, newProgress);
     }
     else
     {

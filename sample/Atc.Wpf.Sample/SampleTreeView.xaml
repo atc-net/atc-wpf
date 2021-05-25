@@ -45,4 +45,8 @@
         </TreeViewItem>
     </TreeViewItem>
 
+    <TreeViewItem Header="Threading" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
+    </TreeViewItem>
+
 </TreeView>
