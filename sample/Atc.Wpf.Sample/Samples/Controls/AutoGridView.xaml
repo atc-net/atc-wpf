@@ -148,7 +148,7 @@
                     <atc:AutoGrid ChildMargin="5"
                                   Columns="*"
                                   Rows="25*,75*">
-                        <ComboBox Name="CbMyBox" SelectedIndex="0">
+                        <ComboBox x:Name="CbMyBox" SelectedIndex="0">
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />

@@ -36,7 +36,7 @@
                                    Margin="0,0,10,0"
                                    VerticalAlignment="Center"
                                    Text="Width:" />
-                        <TextBox Name="TbControlWidth"
+                        <TextBox x:Name="TbControlWidth"
                                  Width="50"
                                  HorizontalContentAlignment="Right"
                                  Text="400" />
@@ -49,7 +49,7 @@
                                    Margin="0,0,10,0"
                                    VerticalAlignment="Center"
                                    Text="Height:" />
-                        <TextBox Name="TbControlHeight"
+                        <TextBox x:Name="TbControlHeight"
                                  Width="50"
                                  HorizontalContentAlignment="Right"
                                  Text="400" />
@@ -62,7 +62,7 @@
                     <TextBlock Margin="0,0,10,0"
                                VerticalAlignment="Center"
                                Text="Control Size:" />
-                    <ComboBox Name="CbControlSizeType"
+                    <ComboBox x:Name="CbControlSizeType"
                               Width="180"
                               Height="24"
                               ItemsSource="{Binding Source={StaticResource ControlSizeTypeEnum}}"
@@ -72,7 +72,7 @@
                     <TextBlock Margin="0,0,10,0"
                                VerticalAlignment="Center"
                                Text="Color:" />
-                    <ComboBox Name="CbColor"
+                    <ComboBox x:Name="CbColor"
                               Width="180"
                               Height="24"
                               ItemsSource="{Binding Source={StaticResource ListOfColor}}"
