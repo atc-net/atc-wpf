@@ -295,6 +295,7 @@ namespace Atc.Wpf.Messaging
             }
         }
 
+        [SuppressMessage("Major Code Smell", "S3267:Loops should be simplified with \"LINQ\" expressions", Justification = "OK.")]
         private static void UnRegisterFromLists(object? recipient, Dictionary<Type, List<WeakActionAndToken>>? lists)
         {
             if (recipient is null

@@ -135,7 +135,7 @@ namespace Atc.Wpf.Controls.W3cSvg
 
         public static double CalculateDRef(double width, double height)
         {
-            return Math.Sqrt((width * width) + (height * height)) / Math.Sqrt(2);
+            return System.Math.Sqrt((width * width) + (height * height)) / System.Math.Sqrt(2);
         }
 
         [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "OK.")]

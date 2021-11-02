@@ -1,7 +1,10 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Atc;
+using Atc.Wpf;
 using Atc.Wpf.Factories;
 
 // ReSharper disable once CheckNamespace
@@ -47,6 +50,67 @@ namespace System.Windows.Media.Imaging
             var stride = bitmapSource.GetStride();
             var pixels = new byte[height * stride];
             bitmapSource.CopyPixels(pixels, stride, 0);
+            return pixels;
+        }
+
+        public static Color GetPixelColor(this BitmapSource source, int x, int y)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (x < 0 || x >= source.PixelWidth)
+            {
+                throw new ArgumentOutOfRangeException(nameof(x));
+            }
+
+            if (y < 0 || y >= source.PixelHeight)
+            {
+                throw new ArgumentOutOfRangeException(nameof(y));
+            }
+
+            var croppedBitmap = new CroppedBitmap(source, new Int32Rect(x, y, 1, 1));
+            var pixels = new byte[4];
+
+            croppedBitmap.CopyPixels(pixels, 4, 0);
+
+            return Color.FromRgb(pixels[2], pixels[1], pixels[0]);
+        }
+
+        [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
+        public static PixelColor[,] GetPixelColors(this BitmapSource source)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (source.Format != PixelFormats.Bgra32)
+            {
+                source = new FormatConvertedBitmap(
+                    source,
+                    PixelFormats.Bgra32,
+                    destinationPalette: null,
+                    0);
+            }
+
+            var pixels = new PixelColor[source.PixelWidth, source.PixelHeight];
+            var stride = source.PixelWidth * source.GetBytesPerPixel();
+            var pinnedPixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+
+            source.CopyPixels(
+                new Int32Rect(
+                    0,
+                    0,
+                    source.PixelWidth,
+                    source.PixelHeight),
+                pinnedPixels.AddrOfPinnedObject(),
+                pixels.GetLength(0) * pixels.GetLength(1) * 4,
+                stride);
+
+            pinnedPixels.Free();
+
             return pixels;
         }
 
@@ -251,6 +315,35 @@ namespace System.Windows.Media.Imaging
             return bitmapSource.ToFormatConvertedBitmapAsGray32();
         }
 
+        [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
+        [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
+        public static BitmapImage ToBitmapImageWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (pixelColors is null)
+            {
+                throw new ArgumentNullException(nameof(pixelColors));
+            }
+
+            if (source.PixelWidth != pixelColors.GetLength(0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(pixelColors));
+            }
+
+            if (source.PixelHeight != pixelColors.GetLength(1))
+            {
+                throw new ArgumentOutOfRangeException(nameof(pixelColors));
+            }
+
+            var writeableBitmap = source.ToWriteableBitmapWithPixelColors(pixelColors);
+
+            return writeableBitmap.ToBitmapImage();
+        }
+
         public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(this BitmapSource bitmapSource)
         {
             if (bitmapSource is null)
@@ -287,6 +380,55 @@ namespace System.Windows.Media.Imaging
             formattedBitmapSource.DestinationFormat = PixelFormats.Pbgra32;
             formattedBitmapSource.EndInit();
             return new WriteableBitmap(formattedBitmapSource);
+        }
+
+        [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
+        [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
+        public static WriteableBitmap ToWriteableBitmapWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (pixelColors is null)
+            {
+                throw new ArgumentNullException(nameof(pixelColors));
+            }
+
+            if (source.PixelWidth != pixelColors.GetLength(0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(pixelColors));
+            }
+
+            if (source.PixelHeight != pixelColors.GetLength(1))
+            {
+                throw new ArgumentOutOfRangeException(nameof(pixelColors));
+            }
+
+            if (source.Format != PixelFormats.Bgra32)
+            {
+                source = new FormatConvertedBitmap(
+                    source,
+                    PixelFormats.Bgra32,
+                    destinationPalette: null,
+                    0);
+            }
+
+            var stride = source.PixelWidth * source.GetBytesPerPixel();
+            var writeableBitmap = new WriteableBitmap(source);
+
+            writeableBitmap.WritePixels(
+                new Int32Rect(
+                    0,
+                    0,
+                    source.PixelWidth,
+                    source.PixelHeight),
+                pixelColors,
+                stride,
+                0);
+
+            return writeableBitmap;
         }
     }
 }
