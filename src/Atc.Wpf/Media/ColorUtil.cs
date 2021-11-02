@@ -122,8 +122,8 @@ namespace Atc.Wpf.Media
             double h = 0;
             double s;
 
-            double min = Math.Min(Math.Min(r, g), b);
-            double v = Math.Max(Math.Max(r, g), b);
+            double min = System.Math.Min(System.Math.Min(r, g), b);
+            double v = System.Math.Max(System.Math.Max(r, g), b);
             double delta = v - min;
 
             if (v.IsEqual(0))
@@ -209,7 +209,7 @@ namespace Atc.Wpf.Media
                     h /= 60;
                 }
 
-                int i = (int)Math.Truncate(h);
+                int i = (int)System.Math.Truncate(h);
                 double f = h - i;
                 double p = v * (1.0 - s);
                 double q = v * (1.0 - (s * f));

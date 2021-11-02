@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -122,6 +123,7 @@ namespace System.Windows.Markup
         /// <summary>
         /// Update the associated target.
         /// </summary>
+        [SuppressMessage("Major Code Smell", "S3267:Loops should be simplified with \"LINQ\" expressions", Justification = "OK.")]
         public void UpdateTarget()
         {
             if (this.targetProperty is null)
