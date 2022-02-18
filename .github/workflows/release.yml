@@ -27,10 +27,10 @@ jobs:
         with:
           setAllVars: true
 
-      - name: ⚙️ Setup dotnet 5.0.x
+      - name: ⚙️ Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
@@ -56,4 +56,4 @@ jobs:
       - name: 📦 Push packages to NuGet
         run: |
           cd ${GITHUB_WORKSPACE}/packages
-          dotnet nuget push Atc.Wpf.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols true
+          dotnet nuget push Atc.Wpf.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
