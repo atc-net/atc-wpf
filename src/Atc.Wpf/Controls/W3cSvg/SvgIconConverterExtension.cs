@@ -59,7 +59,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
     /// </returns>
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider == null)
+        if (serviceProvider is null)
         {
             throw new ArgumentNullException(nameof(serviceProvider));
         }
@@ -83,14 +83,14 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             }
 
             Uri? inputUri = null;
-            if (parameter != null)
+            if (parameter is not null)
             {
                 inputUri = this.ResolveUri(parameter.ToString());
             }
-            else if (value != null)
+            else if (value is not null)
             {
                 inputUri = uriConverter.ConvertFrom(value) as Uri;
-                if (inputUri == null)
+                if (inputUri is null)
                 {
                     inputUri = this.ResolveUri(value.ToString());
                 }
@@ -100,7 +100,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
                 }
             }
 
-            if (inputUri == null)
+            if (inputUri is null)
             {
                 return null;
             }
@@ -159,7 +159,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             svgPath = svgPath.Replace('/', '\\');
 
             var assembly = GetExecutingAssembly();
-            if (assembly != null)
+            if (assembly is not null)
             {
                 string localFile = Path.Combine(Path.GetDirectoryName(assembly.Location), svgPath);
 
@@ -171,14 +171,14 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
 
             // Try getting it as resource file...
             var inputUri = uriConverter.ConvertFrom(inputParameter) as Uri;
-            if (inputUri != null)
+            if (inputUri is not null)
             {
                 if (inputUri.IsAbsoluteUri)
                 {
                     return inputUri;
                 }
 
-                if (baseUri != null)
+                if (baseUri is not null)
                 {
                     var validUri = new Uri(baseUri, inputUri);
 
@@ -187,7 +187,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             }
 
             var asmName = this.ApplicationName;
-            if (assembly != null)
+            if (assembly is not null)
             {
                 asmName = assembly.GetName().Name;
             }

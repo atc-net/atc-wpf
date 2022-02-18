@@ -15,12 +15,12 @@ internal class UseShape : Shape
 
     protected override void Parse(Svg svg, string name, string value)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (name == null)
+        if (name is null)
         {
             throw new ArgumentNullException(nameof(name));
         }

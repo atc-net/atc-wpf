@@ -5,7 +5,7 @@ internal class EllipseShape : Shape
     public EllipseShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }

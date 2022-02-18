@@ -9,12 +9,12 @@ internal class TextShape : Shape
     public TextShape(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }
@@ -105,7 +105,7 @@ internal class TextShape : Shape
 
         public static Element? Parse(Svg svg, string text, TextShape owner)
         {
-            if (text == null)
+            if (text is null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
@@ -122,7 +122,7 @@ internal class TextShape : Shape
 
         public void Print(Element tag, string indent)
         {
-            if (tag == null)
+            if (tag is null)
             {
                 throw new ArgumentNullException(nameof(tag));
             }
@@ -132,7 +132,7 @@ internal class TextShape : Shape
                 Console.WriteLine($"{indent} '{tag.Text}'");
             }
 
-            if (tag.Children == null)
+            if (tag.Children is null)
             {
                 return;
             }
@@ -204,26 +204,26 @@ internal class TextShape : Shape
             {
                 int prevPos = curPos;
                 var next = NextTag(svg, tag, text, ref curPos);
-                if (tag.Children != null && next == null && curPos < text.Length)
+                if (tag.Children is not null && next is null && curPos < text.Length)
                 {
                     string s = text.Substring(curPos, text.Length - curPos);
                     tag.Children.Add(new Element(svg, tag, s));
                     return tag;
                 }
 
-                if (next == null)
+                if (next is null)
                 {
                     throw new Exception("unexpected tag");
                 }
 
-                if (tag.Children != null && next.StartIndex - prevPos > 0)
+                if (tag.Children is not null && next.StartIndex - prevPos > 0)
                 {
                     int diff = next.StartIndex - prevPos;
                     string s = text.Substring(prevPos, diff);
                     tag.Children.Add(new Element(svg, tag, s));
                 }
 
-                if (tag.Children != null && next.Text.StartsWith("<tspan", StringComparison.Ordinal))
+                if (tag.Children is not null && next.Text.StartsWith("<tspan", StringComparison.Ordinal))
                 {
                     next = Parse(svg, text, ref curPos, tag, next);
                     tag.Children.Add(next);

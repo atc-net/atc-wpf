@@ -8,7 +8,7 @@ internal class PatternPaintServer : PaintServer
     public PatternPaintServer(PaintServerManager owner, Svg svg, XmlNode node)
         : base(owner)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
@@ -50,18 +50,18 @@ internal class PatternPaintServer : PaintServer
 
     public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (svgRender == null)
+        if (svgRender is null)
         {
             throw new ArgumentNullException(nameof(svgRender));
         }
 
-        if (this.Brush != null)
+        if (this.Brush is not null)
         {
             return this.Brush;
         }
 
-        if (patternPaintServers != null &&
-            svgRender.Svg != null)
+        if (patternPaintServers is not null &&
+            svgRender.Svg is not null)
         {
             foreach (var (key, value) in patternPaintServers)
             {

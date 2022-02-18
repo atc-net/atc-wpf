@@ -18,7 +18,7 @@ internal class SolidColorPaintServer : PaintServer
 
     public override Brush? GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (this.Brush != null)
+        if (this.Brush is not null)
         {
             return this.Brush;
         }

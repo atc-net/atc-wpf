@@ -13,7 +13,7 @@ internal class Clip : Group
     {
         get
         {
-            if (this.clpGeo != null)
+            if (this.clpGeo is not null)
             {
                 return this.clpGeo;
             }

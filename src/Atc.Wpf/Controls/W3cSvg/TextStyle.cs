@@ -4,7 +4,7 @@ internal class TextStyle
 {
     public TextStyle(Shape owner)
     {
-        if (owner == null)
+        if (owner is null)
         {
             throw new ArgumentNullException(nameof(owner));
         }
@@ -17,7 +17,7 @@ internal class TextStyle
         this.WordSpacing = 0;
         this.LetterSpacing = 0;
         this.BaseLineShift = string.Empty;
-        if (owner.Parent != null)
+        if (owner.Parent is not null)
         {
             this.Copy(owner.Parent.TextStyle);
         }
@@ -48,7 +48,7 @@ internal class TextStyle
 
     public void Copy(TextStyle? aCopy)
     {
-        if (aCopy == null)
+        if (aCopy is null)
         {
             return;
         }

@@ -55,7 +55,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     protected bool IsInDesignMode =>
         this.targetObjects
             .Select(reference => reference.Target as DependencyObject)
-            .Any(element => element != null && DesignerProperties.GetIsInDesignMode(element));
+            .Any(element => element is not null && DesignerProperties.GetIsInDesignMode(element));
 
     /// <summary>
     /// Gets the Target Property the extension is associated with.

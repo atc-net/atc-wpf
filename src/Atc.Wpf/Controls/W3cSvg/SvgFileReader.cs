@@ -14,7 +14,7 @@ internal sealed class SvgFileReader : IDisposable
 
     public DrawingGroup Read(Uri fileUri)
     {
-        if (fileUri == null)
+        if (fileUri is null)
         {
             return new DrawingGroup();
         }
@@ -29,7 +29,7 @@ internal sealed class SvgFileReader : IDisposable
 
     public DrawingGroup? Read(Stream? stream)
     {
-        if (stream == null)
+        if (stream is null)
         {
             return new DrawingGroup();
         }

@@ -12,12 +12,12 @@ internal static class TextRender
 
     public static GeometryGroup BuildTextGeometry(TextShape shape)
     {
-        if (shape == null)
+        if (shape is null)
         {
             throw new ArgumentNullException(nameof(shape));
         }
 
-        if (shape.TextSpan != null)
+        if (shape.TextSpan is not null)
         {
             return BuildTextSpan(shape);
         }
@@ -31,7 +31,7 @@ internal static class TextRender
 
     public static GeometryGroup BuildTextSpan(TextShape shape)
     {
-        if (shape == null)
+        if (shape is null)
         {
             throw new ArgumentNullException(nameof(shape));
         }
@@ -45,7 +45,7 @@ internal static class TextRender
 
     public static void SetElement(DependencyObject obj, TextShape.TSpan.Element value)
     {
-        if (obj == null)
+        if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
         }
@@ -55,7 +55,7 @@ internal static class TextRender
 
     public static TextShape.TSpan.Element GetElement(DependencyObject obj)
     {
-        if (obj == null)
+        if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
         }
@@ -65,7 +65,7 @@ internal static class TextRender
 
     private static void BuildTextSpan(GeometryGroup gp, TextStyle textStyle, TextShape.TSpan.Element tSpan, ref double x, ref double y)
     {
-        if (tSpan.Children == null)
+        if (tSpan.Children is null)
         {
             return;
         }
@@ -110,7 +110,7 @@ internal static class TextRender
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     private static Geometry BuildGlyphRun(TextStyle textStyle, string text, double x, double y, ref double totalWidth)
     {
-        if (textStyle == null)
+        if (textStyle is null)
         {
             throw new ArgumentNullException(nameof(textStyle));
         }
@@ -200,7 +200,7 @@ internal static class TextRender
 
         var geometryGroup = new GeometryGroup();
         geometryGroup.Children.Add(glyphs.BuildGeometry());
-        if (textStyle.TextDecoration == null)
+        if (textStyle.TextDecoration is null)
         {
             return geometryGroup;
         }

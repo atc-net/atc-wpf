@@ -72,7 +72,7 @@ internal class Svg
         set
         {
             customBrushes = value;
-            if (customBrushes == null)
+            if (customBrushes is null)
             {
                 return;
             }
@@ -108,7 +108,7 @@ internal class Svg
     {
         get
         {
-            if (elements == null)
+            if (elements is null)
             {
                 return new List<Shape>();
             }
@@ -161,7 +161,7 @@ internal class Svg
 
     public void Load(Uri fileUri)
     {
-        if (fileUri == null)
+        if (fileUri is null)
         {
             throw new ArgumentNullException(nameof(fileUri));
         }
@@ -195,7 +195,7 @@ internal class Svg
 
     public void Load(Stream stream)
     {
-        if (stream == null)
+        if (stream is null)
         {
             throw new ArgumentNullException(nameof(stream));
         }
@@ -207,7 +207,7 @@ internal class Svg
 
     public void Load(XmlReader xmlReader)
     {
-        if (xmlReader == null)
+        if (xmlReader is null)
         {
             throw new ArgumentNullException(nameof(xmlReader));
         }
@@ -219,7 +219,7 @@ internal class Svg
 
     public void Load(TextReader txtReader)
     {
-        if (txtReader == null)
+        if (txtReader is null)
         {
             throw new ArgumentNullException(nameof(txtReader));
         }
@@ -231,7 +231,7 @@ internal class Svg
 
     private void Load(XmlDocument svgDocument)
     {
-        if (svgDocument == null)
+        if (svgDocument is null)
         {
             throw new ArgumentNullException(nameof(svgDocument));
         }
@@ -249,7 +249,7 @@ internal class Svg
 
     private void Load(XmlNode svgTag)
     {
-        if (svgTag == null)
+        if (svgTag is null)
         {
             throw new ArgumentNullException(nameof(svgTag));
         }
@@ -261,7 +261,7 @@ internal class Svg
     [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
     private void LoadStyles(XmlNode doc)
     {
-        if (this.ExternalFileLoader == null)
+        if (this.ExternalFileLoader is null)
         {
             return;
         }
@@ -281,7 +281,7 @@ internal class Svg
         {
             var url = Regex.Match(node.Data, "href=\"(?<url>.*?)\"").Groups["url"].Value;
             var stream = this.ExternalFileLoader.LoadFile(url, this.Filename);
-            if (stream == null)
+            if (stream is null)
             {
                 continue;
             }
@@ -295,13 +295,13 @@ internal class Svg
 
     private List<Shape> Parse(XmlNode node)
     {
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }
 
         var vb = node.Attributes?.GetNamedItem("viewBox");
-        if (vb?.Value != null)
+        if (vb?.Value is not null)
         {
             var cord = vb.Value.Split(' ');
             var cult = CultureInfo.InvariantCulture;

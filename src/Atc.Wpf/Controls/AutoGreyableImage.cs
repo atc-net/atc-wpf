@@ -34,7 +34,7 @@ public class AutoGreyableImage : Image
             return;
         }
 
-        bool isEnable = args.NewValue != null &&
+        bool isEnable = args.NewValue is not null &&
                         Convert.ToBoolean(args.NewValue, GlobalizationConstants.EnglishCultureInfo);
         if (isEnable)
         {

@@ -28,7 +28,7 @@ internal class Shape
         this.Opacity = 1;
         this.Parent = parent;
         this.ParseAtStart(svg, node);
-        if (node?.Attributes != null)
+        if (node?.Attributes is not null)
         {
             foreach (XmlAttribute? attr in node.Attributes)
             {
@@ -48,7 +48,7 @@ internal class Shape
 
         this.Opacity = 1;
         this.Parent = parent;
-        if (attrs != null)
+        if (attrs is not null)
         {
             foreach (KeyValueItem attr in attrs)
             {
@@ -83,15 +83,15 @@ internal class Shape
     {
         get
         {
-            if (this.stroke != null)
+            if (this.stroke is not null)
             {
                 return this.stroke;
             }
 
             var parent = this.Parent;
-            while (parent != null)
+            while (parent is not null)
             {
-                if (parent.Stroke != null)
+                if (parent.Stroke is not null)
                 {
                     return parent.Stroke;
                 }
@@ -107,15 +107,15 @@ internal class Shape
     {
         get
         {
-            if (this.fill != null)
+            if (this.fill is not null)
             {
                 return this.fill;
             }
 
             var parent = this.Parent;
-            while (parent != null)
+            while (parent is not null)
             {
-                if (parent.Fill != null)
+                if (parent.Fill is not null)
                 {
                     return parent.Fill;
                 }
@@ -131,15 +131,15 @@ internal class Shape
     {
         get
         {
-            if (this.textStyle != null)
+            if (this.textStyle is not null)
             {
                 return this.textStyle;
             }
 
             var parent = this.Parent;
-            while (parent != null)
+            while (parent is not null)
             {
-                if (parent.textStyle != null)
+                if (parent.textStyle is not null)
                 {
                     return parent.textStyle;
                 }
@@ -163,12 +163,12 @@ internal class Shape
 
     protected virtual void ParseAtStart(Svg svg, XmlNode? node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (node == null)
+        if (node is null)
         {
             return;
         }
@@ -213,17 +213,17 @@ internal class Shape
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     protected virtual void Parse(Svg svg, string name, string value)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (name == null)
+        if (name is null)
         {
             throw new ArgumentNullException(nameof(name));
         }
 
-        if (value == null)
+        if (value is null)
         {
             throw new ArgumentNullException(nameof(value));
         }

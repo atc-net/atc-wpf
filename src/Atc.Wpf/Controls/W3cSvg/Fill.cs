@@ -16,18 +16,18 @@ internal class Fill
 
     public Brush? FillBrush(Svg svg, SvgRender svgRender, Shape shape, double elementOpacity, Rect bounds)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (shape == null)
+        if (shape is null)
         {
             throw new ArgumentNullException(nameof(shape));
         }
 
         var paintServer = svg.PaintServers.GetServer(PaintServerKey);
-        if (paintServer == null)
+        if (paintServer is null)
         {
             return null;
         }
@@ -35,7 +35,7 @@ internal class Fill
         if (paintServer is CurrentColorPaintServer)
         {
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
-            if (shapePaintServer != null)
+            if (shapePaintServer is not null)
             {
                 return shapePaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
             }
@@ -47,9 +47,9 @@ internal class Fill
         }
 
         var p = shape.RealParent;
-        while (p != null)
+        while (p is not null)
         {
-            if (p.Fill != null)
+            if (p.Fill is not null)
             {
                 var checkPaintServer = svg.PaintServers.GetServer(p.Fill.PaintServerKey);
                 if (checkPaintServer is not null && !(checkPaintServer is InheritPaintServer))

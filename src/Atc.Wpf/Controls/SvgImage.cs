@@ -430,9 +430,9 @@ public class SvgImage : Control
             return;
         }
 
-        if (svgImage.svgRender != null)
+        if (svgImage.svgRender is not null)
         {
-            if (svgImage.svgRender.CustomBrushes != null)
+            if (svgImage.svgRender.CustomBrushes is not null)
             {
                 var newCustomBrushes = new Dictionary<string, Brush>(svgImage.svgRender.CustomBrushes, StringComparer.Ordinal);
                 foreach (var (key, value) in newBrushes)
@@ -465,7 +465,7 @@ public class SvgImage : Control
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     private void ReCalculateImageSize()
     {
-        if (this.drawing == null)
+        if (this.drawing is null)
         {
             return;
         }

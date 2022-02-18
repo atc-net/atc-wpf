@@ -4,7 +4,7 @@ internal static class SvgXmlUtil
 {
     public static bool GetValueRespectingUnits(string input, out double value, double percentageMaximum)
     {
-        if (input == null)
+        if (input is null)
         {
             throw new ArgumentNullException(nameof(input));
         }
@@ -61,7 +61,7 @@ internal static class SvgXmlUtil
 
     public static double GetDoubleValue(string value, double percentageMaximum = 1)
     {
-        if (value == null)
+        if (value is null)
         {
             throw new ArgumentNullException(nameof(value));
         }
@@ -73,7 +73,7 @@ internal static class SvgXmlUtil
 
     public static double AttrValue(KeyValueItem attr)
     {
-        if (attr == null)
+        if (attr is null)
         {
             throw new ArgumentNullException(nameof(attr));
         }
@@ -85,13 +85,13 @@ internal static class SvgXmlUtil
 
     public static double AttrValue(XmlNode node, string id, double defaultValue, double percentageMaximum = 1)
     {
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }
 
         var attr = node.Attributes?[id];
-        if (attr == null)
+        if (attr is null)
         {
             return defaultValue;
         }
@@ -103,18 +103,18 @@ internal static class SvgXmlUtil
 
     public static string? AttrValue(XmlNode node, string id, string? defaultValue)
     {
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }
 
-        if (node.Attributes == null)
+        if (node.Attributes is null)
         {
             return defaultValue;
         }
 
         var attr = node.Attributes[id];
-        return attr != null
+        return attr is not null
             ? attr.Value
             : defaultValue;
     }
@@ -126,7 +126,7 @@ internal static class SvgXmlUtil
 
     public static double ParseDouble(string value)
     {
-        if (value == null)
+        if (value is null)
         {
             throw new ArgumentNullException(nameof(value));
         }
@@ -138,7 +138,7 @@ internal static class SvgXmlUtil
 
     public static IEnumerable<KeyValueItem> SplitStyle(string fullStyle)
     {
-        if (fullStyle == null)
+        if (fullStyle is null)
         {
             throw new ArgumentNullException(nameof(fullStyle));
         }

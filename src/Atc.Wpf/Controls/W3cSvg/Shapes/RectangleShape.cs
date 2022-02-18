@@ -8,7 +8,7 @@ internal class RectangleShape : Shape
     public RectangleShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
@@ -35,12 +35,12 @@ internal class RectangleShape : Shape
 
     protected override void Parse(Svg svg, string name, string value)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (name == null)
+        if (name is null)
         {
             throw new ArgumentNullException(nameof(name));
         }

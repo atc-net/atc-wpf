@@ -7,12 +7,12 @@ internal class Group : Shape
     public Group(Svg svg, XmlNode node, Shape parent)
         : base(svg, node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }
@@ -34,7 +34,7 @@ internal class Group : Shape
         foreach (XmlNode childNode in node.ChildNodes)
         {
             var shape = AddToList(svg, this.elements, childNode, this);
-            if (shape != null)
+            if (shape is not null)
             {
                 shape.Parent = this;
             }
@@ -48,17 +48,17 @@ internal class Group : Shape
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static Shape? AddToList(Svg svg, List<Shape> list, XmlNode childNode, Shape? parent)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (list == null)
+        if (list is null)
         {
             throw new ArgumentNullException(nameof(list));
         }
 
-        if (childNode == null)
+        if (childNode is null)
         {
             throw new ArgumentNullException(nameof(childNode));
         }
@@ -70,7 +70,7 @@ internal class Group : Shape
 
         Shape? retVal = null;
         var nodeName = GetNodeName(childNode);
-        if (nodeName == null)
+        if (nodeName is null)
         {
             return null;
         }
@@ -154,7 +154,7 @@ internal class Group : Shape
                 break;
         }
 
-        if (retVal != null)
+        if (retVal is not null)
         {
             list.Add(retVal);
             if (retVal.Id.Length > 0)
@@ -170,7 +170,7 @@ internal class Group : Shape
 
     private static void ReadDefs(Svg svg, List<Shape> list, XmlNode node)
     {
-        if (list == null)
+        if (list is null)
         {
             throw new ArgumentNullException(nameof(list));
         }

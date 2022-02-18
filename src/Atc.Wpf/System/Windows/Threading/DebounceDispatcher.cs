@@ -58,7 +58,7 @@ public class DebounceDispatcher
             priority,
             (_, _) =>
             {
-                if (timer == null)
+                if (timer is null)
                 {
                     return;
                 }
@@ -111,7 +111,7 @@ public class DebounceDispatcher
             priority,
             (_, _) =>
             {
-                if (timer == null)
+                if (timer is null)
                 {
                     return;
                 }

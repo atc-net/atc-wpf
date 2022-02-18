@@ -30,7 +30,7 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
 
     public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (this.Brush != null)
+        if (this.Brush is not null)
         {
             return this.Brush;
         }
@@ -76,7 +76,7 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
             brush.MappingMode = BrushMappingMode.RelativeToBoundingBox;
         }
 
-        if (this.Transform != null)
+        if (this.Transform is not null)
         {
             brush.Transform = this.Transform;
         }

@@ -111,7 +111,7 @@ public abstract class Code : Source
             var sb = new StringBuilder();
             string line;
             bool firstLineRead = false;
-            while ((line = reader.ReadLine()!) != null)
+            while ((line = reader.ReadLine()!) is not null)
             {
                 if (firstLineRead)
                 {

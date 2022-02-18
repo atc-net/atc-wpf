@@ -26,7 +26,7 @@ public static class AdornerExtensions
         }
 
         var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
-        if (adornerLayer != null && !adornerLayer.ContainsAdorner<T>(uiElement))
+        if (adornerLayer is not null && !adornerLayer.ContainsAdorner<T>(uiElement))
         {
             adornerLayer.Add(adorner);
         }

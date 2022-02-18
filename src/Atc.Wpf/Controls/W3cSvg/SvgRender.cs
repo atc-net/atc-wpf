@@ -28,7 +28,7 @@ internal class SvgRender
         set
         {
             this.customBrushes = value;
-            if (this.Svg != null)
+            if (this.Svg is not null)
             {
                 this.Svg.CustomBrushes = value;
             }
@@ -79,7 +79,7 @@ internal class SvgRender
 
     public DrawingGroup CreateDrawing(Svg svg)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
@@ -98,7 +98,7 @@ internal class SvgRender
         shape.GeometryElement = geometry;
         var geometryDrawing = new GeometryDrawing();
         var stroke = shape.Stroke;
-        if (stroke != null)
+        if (stroke is not null)
         {
             if (OverrideStrokeWidth.HasValue)
             {
@@ -106,13 +106,13 @@ internal class SvgRender
             }
 
             var brush = stroke.StrokeBrush(this.Svg, this, shape, shape.Opacity, geometry.Bounds);
-            if (OverrideColor != null)
+            if (OverrideColor is not null)
             {
                 brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
             }
 
             geometryDrawing.Pen = new Pen(brush, stroke.Width);
-            if (stroke.StrokeArray != null)
+            if (stroke.StrokeArray is not null)
             {
                 geometryDrawing.Pen.DashCap = PenLineCap.Flat;
                 DashStyle ds = new DashStyle();
@@ -156,10 +156,10 @@ internal class SvgRender
             }
         }
 
-        if (shape.Fill == null)
+        if (shape.Fill is null)
         {
             geometryDrawing.Brush = Brushes.Black;
-            if (OverrideColor != null)
+            if (OverrideColor is not null)
             {
                 geometryDrawing.Brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
             }
@@ -175,7 +175,7 @@ internal class SvgRender
         else
         {
             geometryDrawing.Brush = shape.Fill.FillBrush(this.Svg, this, shape, shape.Opacity, geometry.Bounds);
-            if (OverrideColor != null)
+            if (OverrideColor is not null)
             {
                 geometryDrawing.Brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
             }
@@ -282,7 +282,7 @@ internal class SvgRender
                                             Duration = animate.Duration,
                                         };
 
-                                        if (animate.Values != null)
+                                        if (animate.Values is not null)
                                         {
                                             foreach (var d in animate.Values
                                                          .Split(';')
@@ -305,7 +305,7 @@ internal class SvgRender
                                             Duration = animate.Duration,
                                         };
 
-                                        if (animate.Values != null)
+                                        if (animate.Values is not null)
                                         {
                                             foreach (var d in animate.Values
                                                          .Split(';')
@@ -327,7 +327,7 @@ internal class SvgRender
                                             Duration = animate.Duration,
                                         };
 
-                                        if (animate.Values != null)
+                                        if (animate.Values is not null)
                                         {
                                             foreach (var d in animate.Values
                                                          .Split(';')
@@ -354,7 +354,7 @@ internal class SvgRender
                 case UseShape useShape:
                 {
                     var currentUsedShape = this.Svg!.GetShape(useShape.Href);
-                    if (currentUsedShape != null)
+                    if (currentUsedShape is not null)
                     {
                         currentUsedShape.RealParent = useShape;
                         var oldParent = currentUsedShape.Parent;
@@ -368,13 +368,13 @@ internal class SvgRender
                             subgroup = this.LoadGroup(new[] { currentUsedShape }, viewBox: null, isSwitch: false);
                         }
 
-                        if (currentUsedShape.Clip != null)
+                        if (currentUsedShape.Clip is not null)
                         {
                             subgroup.ClipGeometry = currentUsedShape.Clip.ClipGeometry;
                         }
 
                         subgroup.Transform = new TranslateTransform(useShape.X, useShape.Y);
-                        if (useShape.Transform != null)
+                        if (useShape.Transform is not null)
                         {
                             subgroup.Transform = new TransformGroup
                             {
@@ -395,7 +395,7 @@ internal class SvgRender
                 case Clip clip:
                 {
                     DrawingGroup subgroup = this.LoadGroup(clip.Elements, viewBox: null, isSwitch: false);
-                    if (clip.Transform != null)
+                    if (clip.Transform is not null)
                     {
                         subgroup.Transform = clip.Transform;
                     }
@@ -513,7 +513,7 @@ internal class SvgRender
                         var tSpan = TextRender.GetElement(gm);
 
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                        if (tSpan == null)
+                        if (tSpan is null)
                         {
                             var di = this.NewDrawingItem(textShape, gm);
                             AddDrawingToGroup(drawingGroup, textShape, di);
@@ -543,20 +543,20 @@ internal class SvgRender
 
     private static void AddDrawingToGroup(DrawingGroup grp, Shape shape, Drawing drawing)
     {
-        if (shape.Clip != null || shape.Transform != null || shape.Filter != null)
+        if (shape.Clip is not null || shape.Transform is not null || shape.Filter is not null)
         {
             var drawingGroup = new DrawingGroup();
-            if (shape.Clip != null)
+            if (shape.Clip is not null)
             {
                 drawingGroup.ClipGeometry = shape.Clip.ClipGeometry;
             }
 
-            if (shape.Transform != null)
+            if (shape.Transform is not null)
             {
                 drawingGroup.Transform = shape.Transform;
             }
 
-            if (shape.Filter != null)
+            if (shape.Filter is not null)
             {
                 drawingGroup.BitmapEffect = shape.Filter.GetBitmapEffect();
             }

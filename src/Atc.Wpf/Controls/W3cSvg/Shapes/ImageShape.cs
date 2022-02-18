@@ -7,7 +7,7 @@ internal class ImageShape : Shape
     public ImageShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
@@ -32,13 +32,13 @@ internal class ImageShape : Shape
                 }
                 else
                 {
-                    if (svg.ExternalFileLoader != null)
+                    if (svg.ExternalFileLoader is not null)
                     {
                         imageStream = svg.ExternalFileLoader.LoadFile(hRef, svg.Filename);
                     }
                 }
 
-                if (imageStream == null)
+                if (imageStream is null)
                 {
                     return;
                 }

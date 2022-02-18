@@ -7,7 +7,7 @@ internal class PaintServerManager
 
     public void Create(Svg svg, XmlNode node)
     {
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }

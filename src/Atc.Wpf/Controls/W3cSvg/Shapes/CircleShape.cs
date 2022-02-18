@@ -5,7 +5,7 @@ internal class CircleShape : Shape
     public CircleShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }

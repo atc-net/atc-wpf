@@ -25,13 +25,13 @@ public class SampleViewerViewModel : ViewModelBase
         }
     }
 
-    public bool HasSampleContent => this.SampleContent != null;
+    public bool HasSampleContent => this.SampleContent is not null;
 
-    public bool HasXamlCode => this.XamlCode != null;
+    public bool HasXamlCode => this.XamlCode is not null;
 
-    public bool HasCodeBehindCode => this.CodeBehindCode != null;
+    public bool HasCodeBehindCode => this.CodeBehindCode is not null;
 
-    public bool HasViewModelCode => this.ViewModelCode != null;
+    public bool HasViewModelCode => this.ViewModelCode is not null;
 
     public string? Header
     {
@@ -99,7 +99,7 @@ public class SampleViewerViewModel : ViewModelBase
             return path.Parent;
         }
 
-        return path.Parent == null
+        return path.Parent is null
             ? null
             : this.ExtractBasePath(path.Parent);
     }
@@ -148,7 +148,7 @@ public class SampleViewerViewModel : ViewModelBase
 
         var sampleType = entryAssembly!
             .GetExportedTypes()
-            .FirstOrDefault(x => x.FullName != null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
+            .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
 
         if (sampleType is null)
         {
@@ -178,7 +178,7 @@ public class SampleViewerViewModel : ViewModelBase
         this.XamlCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml"));
         this.CodeBehindCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml.cs"));
 
-        if (instance.DataContext == null ||
+        if (instance.DataContext is null ||
             nameof(SampleViewerViewModel).Equals(this.ExtractClassName(instance.DataContext.ToString()!), StringComparison.Ordinal))
         {
             this.ViewModelCode = null;

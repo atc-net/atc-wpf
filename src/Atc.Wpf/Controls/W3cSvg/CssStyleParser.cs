@@ -8,7 +8,7 @@ internal static class CssStyleParser
 
     public static void ParseStyle(Svg svg, string style)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }

@@ -72,7 +72,7 @@ public static class StaticResourceHelper
 
     private static void Apply(FrameworkElement? element, DependencyProperty? property, object? key)
     {
-        if (element != null && property != null && key is not null)
+        if (element is not null && property is not null && key is not null)
         {
             element.SetValue(property, element.TryFindResource(key));
         }

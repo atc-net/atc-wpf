@@ -4,7 +4,7 @@ internal static class ShapeUtil
 {
     public static Transform? ParseTransform(string value)
     {
-        if (value == null)
+        if (value is null)
         {
             throw new ArgumentNullException(nameof(value));
         }
@@ -24,7 +24,7 @@ internal static class ShapeUtil
             }
 
             var transObj = ParseTransformInternal(transform + ")");
-            if (transObj != null)
+            if (transObj is not null)
             {
                 tg.Children.Add(transObj);
             }
@@ -95,7 +95,7 @@ internal static class ShapeUtil
 
     public static string ExtractUntil(string value, char ch)
     {
-        if (value == null)
+        if (value is null)
         {
             throw new ArgumentNullException(nameof(value));
         }
@@ -108,7 +108,7 @@ internal static class ShapeUtil
 
     public static string ExtractBetween(string value, char startCh, char endCh)
     {
-        if (value == null)
+        if (value is null)
         {
             throw new ArgumentNullException(nameof(value));
         }
@@ -135,7 +135,7 @@ internal static class ShapeUtil
     [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
     public static KeyValueItem ReadNextAttr(string input, ref int startPos)
     {
-        if (input == null)
+        if (input is null)
         {
             throw new ArgumentNullException(nameof(input));
         }

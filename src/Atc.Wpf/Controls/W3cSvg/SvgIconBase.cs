@@ -46,7 +46,7 @@ public abstract class SvgIconBase : MarkupExtension
         get => this.culture;
         set
         {
-            if (value != null)
+            if (value is not null)
             {
                 this.culture = value;
             }
@@ -86,7 +86,7 @@ public abstract class SvgIconBase : MarkupExtension
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     protected virtual DrawingGroup? GetDrawing(Uri svgSource)
     {
-        if (svgSource == null)
+        if (svgSource is null)
         {
             throw new ArgumentNullException(nameof(svgSource));
         }
@@ -123,7 +123,7 @@ public abstract class SvgIconBase : MarkupExtension
                     : Application.GetResourceStream(svgSource);
 
                 var svgStream = svgStreamInfo?.Stream;
-                if (svgStream != null)
+                if (svgStream is not null)
                 {
                     string fileExt = Path.GetExtension(svgSource.ToString());
                     bool isCompressed = !string.IsNullOrWhiteSpace(fileExt) &&
@@ -135,7 +135,7 @@ public abstract class SvgIconBase : MarkupExtension
                         using var zipStream = new GZipStream(svgStream, CompressionMode.Decompress);
                         using SvgFileReader reader = new SvgFileReader(this.OverrideColor);
                         var drawGroup = reader.Read(zipStream);
-                        if (drawGroup != null)
+                        if (drawGroup is not null)
                         {
                             return drawGroup;
                         }
@@ -145,7 +145,7 @@ public abstract class SvgIconBase : MarkupExtension
                         using var stream = svgStream;
                         using SvgFileReader reader = new SvgFileReader(this.OverrideColor);
                         var drawGroup = reader.Read(svgStream);
-                        if (drawGroup != null)
+                        if (drawGroup is not null)
                         {
                             return drawGroup;
                         }
@@ -172,7 +172,7 @@ public abstract class SvgIconBase : MarkupExtension
                         using GZipStream zipStream = new GZipStream(stream, CompressionMode.Decompress);
                         using var reader = new SvgFileReader(this.OverrideColor);
                         var drawGroup = reader.Read(zipStream);
-                        if (drawGroup != null)
+                        if (drawGroup is not null)
                         {
                             return drawGroup;
                         }
@@ -182,7 +182,7 @@ public abstract class SvgIconBase : MarkupExtension
                         using var stream = new MemoryStream(imageBytes);
                         using var reader = new SvgFileReader(this.OverrideColor);
                         var drawGroup = reader.Read(stream);
-                        if (drawGroup != null)
+                        if (drawGroup is not null)
                         {
                             return drawGroup;
                         }
@@ -207,7 +207,7 @@ public abstract class SvgIconBase : MarkupExtension
     protected virtual DrawingImage? GetImage(Uri svgSource)
     {
         var drawGroup = this.GetDrawing(svgSource);
-        return drawGroup == null
+        return drawGroup is null
             ? null
             : new DrawingImage(drawGroup);
     }
@@ -218,7 +218,7 @@ public abstract class SvgIconBase : MarkupExtension
         try
         {
             var asm = GetEntryAssembly();
-            if (asm != null)
+            if (asm is not null)
             {
                 this.applicationName = asm.GetName().Name;
             }
@@ -237,7 +237,7 @@ public abstract class SvgIconBase : MarkupExtension
         try
         {
             asm = Assembly.GetEntryAssembly();
-            if (asm != null)
+            if (asm is not null)
             {
                 var assemblyName = asm.GetName().Name;
                 if (string.Equals(assemblyName, xDesProc, StringComparison.OrdinalIgnoreCase))
@@ -246,7 +246,7 @@ public abstract class SvgIconBase : MarkupExtension
                 }
             }
 
-            if (asm == null)
+            if (asm is null)
             {
                 asm = (
                         from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -258,10 +258,10 @@ public abstract class SvgIconBase : MarkupExtension
                     )
                     .FirstOrDefault();
 
-                if (asm == null)
+                if (asm is null)
                 {
                     asm = Application.ResourceAssembly;
-                    if (asm != null)
+                    if (asm is not null)
                     {
                         var assemblyName = asm.GetName().Name;
                         if (string.Equals(assemblyName, xDesProc, StringComparison.OrdinalIgnoreCase))
@@ -274,7 +274,7 @@ public abstract class SvgIconBase : MarkupExtension
         }
         catch (Exception ex)
         {
-            if (asm == null)
+            if (asm is null)
             {
                 asm = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                         where !assembly.IsDynamic

@@ -25,18 +25,18 @@ internal class Stroke
 
     public Brush? StrokeBrush(Svg svg, SvgRender svgRender, Shape shape, double elementOpacity, Rect bounds)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
 
-        if (shape == null)
+        if (shape is null)
         {
             throw new ArgumentNullException(nameof(shape));
         }
 
         var paintServer = svg.PaintServers.GetServer(PaintServerKey);
-        if (paintServer == null)
+        if (paintServer is null)
         {
             return null;
         }
@@ -44,7 +44,7 @@ internal class Stroke
         if (paintServer is CurrentColorPaintServer)
         {
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
-            if (shapePaintServer != null)
+            if (shapePaintServer is not null)
             {
                 return shapePaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
             }
@@ -56,9 +56,9 @@ internal class Stroke
         }
 
         var p = shape.RealParent ?? shape.Parent;
-        while (p != null)
+        while (p is not null)
         {
-            if (p.Stroke != null)
+            if (p.Stroke is not null)
             {
                 var checkPaintServer = svg.PaintServers.GetServer(p.Stroke.PaintServerKey);
                 if (checkPaintServer is not null &&

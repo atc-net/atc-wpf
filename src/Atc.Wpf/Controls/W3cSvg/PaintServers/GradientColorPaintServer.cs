@@ -9,12 +9,12 @@ internal abstract class GradientColorPaintServer : PaintServer
     protected GradientColorPaintServer(PaintServerManager owner, XmlNode node)
         : base(owner)
     {
-        if (owner == null)
+        if (owner is null)
         {
             throw new ArgumentNullException(nameof(owner));
         }
 
-        if (node == null)
+        if (node is null)
         {
             throw new ArgumentNullException(nameof(node));
         }

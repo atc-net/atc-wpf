@@ -54,7 +54,7 @@ internal class PathShape : Shape
 
         public StringSplitter SplitCommand(string command, out char cmd)
         {
-            if (command == null)
+            if (command is null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
@@ -82,7 +82,7 @@ internal class PathShape : Shape
         public MoveTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -98,7 +98,7 @@ internal class PathShape : Shape
         public LineTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -148,7 +148,7 @@ internal class PathShape : Shape
         public CurveTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -161,7 +161,7 @@ internal class PathShape : Shape
         public CurveTo(char command, StringSplitter value, Point ctrlPoint)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -183,7 +183,7 @@ internal class PathShape : Shape
         public QuadraticCurveTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -195,7 +195,7 @@ internal class PathShape : Shape
         public QuadraticCurveTo(char command, StringSplitter value, Point ctrlPoint)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -214,7 +214,7 @@ internal class PathShape : Shape
         public EllipticalArcTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -261,7 +261,7 @@ internal class PathShape : Shape
     internal PathShape(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }

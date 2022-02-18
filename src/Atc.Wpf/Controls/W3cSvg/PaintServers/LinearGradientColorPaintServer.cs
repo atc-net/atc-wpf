@@ -27,7 +27,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
 
     public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (this.Brush != null)
+        if (this.Brush is not null)
         {
             return this.Brush;
         }
@@ -45,7 +45,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
         if (this.GradientUnits == SvgTagConstants.UserSpaceOnUse)
         {
             var tr = this.Transform;
-            if (tr != null)
+            if (tr is not null)
             {
                 brush.StartPoint = tr.Transform(new Point(this.X1, this.Y1));
                 brush.EndPoint = tr.Transform(new Point(this.X2, this.Y2));

@@ -5,7 +5,7 @@ internal class LineShape : Shape
     public LineShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg == null)
+        if (svg is null)
         {
             throw new ArgumentNullException(nameof(svg));
         }
