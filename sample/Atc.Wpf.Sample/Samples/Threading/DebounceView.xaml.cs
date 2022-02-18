@@ -5,7 +5,7 @@ namespace Atc.Wpf.Sample.Samples.Threading;
 /// </summary>
 public partial class DebounceView
 {
-    private readonly DebounceDispatcher debounceTimer = new DebounceDispatcher();
+    private readonly DebounceDispatcher debounceTimer = new ();
 
     public DebounceView()
     {
@@ -16,7 +16,18 @@ public partial class DebounceView
     private void SearchTextBoxOnKeyup(object sender, KeyEventArgs e)
     {
         var selectedComboBoxItem = this.CbDebounce.SelectedValue as ComboBoxItem;
-        var delayMs = int.Parse(selectedComboBoxItem!.Content.ToString(), NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo);
+        if (selectedComboBoxItem?.Content is null)
+        {
+            return;
+        }
+
+        var s = selectedComboBoxItem.Content.ToString();
+        if (s is null)
+        {
+            return;
+        }
+
+        var delayMs = int.Parse(s, NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo);
 
         // Fire after [delayMs]ms after last keypress
         debounceTimer.Debounce(delayMs, async _ =>

@@ -244,7 +244,10 @@ internal class Svg
         }
 
         var svgTag = svgTags[0];
-        elements = this.Parse(svgTag);
+        if (svgTag is not null)
+        {
+            elements = this.Parse(svgTag);
+        }
     }
 
     private void Load(XmlNode svgTag)
@@ -259,6 +262,7 @@ internal class Svg
     }
 
     [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
+    [SuppressMessage("Performance", "MA0078:Use 'Cast' instead of 'Select' to cast", Justification = "OK.")]
     private void LoadStyles(XmlNode doc)
     {
         if (this.ExternalFileLoader is null)

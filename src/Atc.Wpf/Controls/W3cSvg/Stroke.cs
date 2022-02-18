@@ -35,13 +35,18 @@ internal class Stroke
             throw new ArgumentNullException(nameof(shape));
         }
 
+        if (PaintServerKey is null)
+        {
+            return null;
+        }
+
         var paintServer = svg.PaintServers.GetServer(PaintServerKey);
         if (paintServer is null)
         {
             return null;
         }
 
-        if (paintServer is CurrentColorPaintServer)
+        if (paintServer is CurrentColorPaintServer && shape.PaintServerKey is not null)
         {
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
             if (shapePaintServer is not null)
@@ -58,11 +63,11 @@ internal class Stroke
         var p = shape.RealParent ?? shape.Parent;
         while (p is not null)
         {
-            if (p.Stroke is not null)
+            if (p.Stroke?.PaintServerKey is not null)
             {
                 var checkPaintServer = svg.PaintServers.GetServer(p.Stroke.PaintServerKey);
                 if (checkPaintServer is not null &&
-                    !(checkPaintServer is InheritPaintServer))
+                    checkPaintServer is not InheritPaintServer)
                 {
                     return checkPaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
                 }

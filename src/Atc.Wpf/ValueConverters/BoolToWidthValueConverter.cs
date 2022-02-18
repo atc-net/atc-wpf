@@ -28,7 +28,13 @@ public class BoolToWidthValueConverter : IValueConverter
         }
 
         var lengthConverter = new LengthConverter();
-        var convertFromString = lengthConverter.ConvertFromString(parameter.ToString());
+        var s = parameter.ToString();
+        if (s is null)
+        {
+            return 0;
+        }
+
+        var convertFromString = lengthConverter.ConvertFromString(s);
         width = convertFromString is not null &&
                 double.TryParse(convertFromString.ToString(), NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo, out var result)
             ? result

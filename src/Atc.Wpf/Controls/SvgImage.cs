@@ -182,7 +182,7 @@ public class SvgImage : Control
 
     public void ReRenderSvg()
     {
-        if (this.svgRender is not null)
+        if (this.svgRender?.Svg is not null)
         {
             var svgDrawing = this.svgRender.CreateDrawing(this.svgRender.Svg);
             this.SetImage(svgDrawing);
@@ -204,7 +204,11 @@ public class SvgImage : Control
 
         this.InitializeSvgRender();
 
-        this.loadImage(this.svgRender);
+        if (this.svgRender is not null)
+        {
+            this.loadImage(this.svgRender);
+        }
+
         this.loadImage = null;
     }
 
@@ -223,7 +227,11 @@ public class SvgImage : Control
 
         this.InitializeSvgRender();
 
-        this.loadImage(svgRender);
+        if (svgRender is not null)
+        {
+            this.loadImage(svgRender);
+        }
+
         this.loadImage = null;
     }
 
@@ -248,6 +256,11 @@ public class SvgImage : Control
         }
 
         this.InitializeSvgRender();
+
+        if (this.svgRender is null)
+        {
+            return;
+        }
 
         this.loadImage(this.svgRender);
         this.loadImage = null;
@@ -378,6 +391,11 @@ public class SvgImage : Control
         }
 
         var uri = args.NewValue.ToString();
+        if (string.IsNullOrEmpty(uri))
+        {
+            return;
+        }
+
         var resource = Application.GetResourceStream(new Uri(uri, UriKind.Relative));
         if (resource is not null)
         {
@@ -393,6 +411,11 @@ public class SvgImage : Control
         }
 
         var uri = args.NewValue.ToString();
+        if (string.IsNullOrEmpty(uri))
+        {
+            return;
+        }
+
         using var fileStream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         var memoryStream = (MemoryStream)fileStream.CopyToStream();
         svgImage.SetImage(memoryStream);
@@ -405,7 +428,10 @@ public class SvgImage : Control
             return;
         }
 
-        svgImage.SetImage(args.NewValue as Drawing);
+        if (args.NewValue is Drawing drawing)
+        {
+            svgImage.SetImage(drawing);
+        }
     }
 
     private static void OverrideStrokeWidthPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)

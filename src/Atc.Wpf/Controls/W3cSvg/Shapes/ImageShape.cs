@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.W3cSvg.Shapes;
 internal class ImageShape : Shape
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
+    [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "OK for now")]
     public ImageShape(Svg svg, XmlNode node)
         : base(svg, node)
     {

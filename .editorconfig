@@ -505,16 +505,3 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 [*.cs]
 csharp_style_prefer_index_operator = false                                      # IDE0056
 csharp_style_prefer_range_operator = false                                      # IDE0057
-
-##########################################
-# ATC temporary suppressions
-# generated @ Friday, February 18, 2022 12:01:54 PM
-# Please fix all generated temporary suppressions
-# either by code changes or move the
-# suppressions one by one to the relevant
-# 'Custom - Code Analyzers Rules' section.
-##########################################
-[*.cs]
-
-# Microsoft.CompilerErrors.Undocumented
-dotnet_diagnostic.CS8604.severity = none			# 56 occurrences - Possible null reference argument.

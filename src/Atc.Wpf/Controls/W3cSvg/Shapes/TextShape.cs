@@ -198,13 +198,13 @@ internal class TextShape : Shape
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
         private static Element? Parse(Svg svg, string text, ref int curPos, Element? parent, Element? curTag)
         {
-            var tag = curTag ?? NextTag(svg, parent, text, ref curPos);
+            var tag = curTag ?? NextTag(svg, parent!, text, ref curPos);
 
             while (curPos < text.Length)
             {
                 int prevPos = curPos;
-                var next = NextTag(svg, tag, text, ref curPos);
-                if (tag.Children is not null && next is null && curPos < text.Length)
+                var next = NextTag(svg, tag!, text, ref curPos);
+                if (tag?.Children is not null && next is null && curPos < text.Length)
                 {
                     string s = text.Substring(curPos, text.Length - curPos);
                     tag.Children.Add(new Element(svg, tag, s));
@@ -216,21 +216,25 @@ internal class TextShape : Shape
                     throw new Exception("unexpected tag");
                 }
 
-                if (tag.Children is not null && next.StartIndex - prevPos > 0)
+                if (tag?.Children is not null && next.StartIndex - prevPos > 0)
                 {
                     int diff = next.StartIndex - prevPos;
                     string s = text.Substring(prevPos, diff);
                     tag.Children.Add(new Element(svg, tag, s));
                 }
 
-                if (tag.Children is not null && next.Text.StartsWith("<tspan", StringComparison.Ordinal))
+                if (tag?.Children is not null && next.Text.StartsWith("<tspan", StringComparison.Ordinal))
                 {
                     next = Parse(svg, text, ref curPos, tag, next);
-                    tag.Children.Add(next);
+                    if (next is not null)
+                    {
+                        tag.Children.Add(next);
+                    }
+
                     continue;
                 }
 
-                if (next.Text.StartsWith("</tspan", StringComparison.Ordinal))
+                if (tag is not null && next.Text.StartsWith("</tspan", StringComparison.Ordinal))
                 {
                     tag.End = next;
                     return tag;

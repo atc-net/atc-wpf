@@ -124,6 +124,7 @@ public sealed class SvgIconExtension : SvgIconBase
     /// Returns the valid <see cref="Uri"/> of the SVG source path if
     /// successful; otherwise, it returns <see langword="null"/>.
     /// </returns>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK for now")]
     private Uri? ResolveUri(IServiceProvider serviceProvider)
     {
         if (string.IsNullOrWhiteSpace(svgPath))
@@ -148,11 +149,14 @@ public sealed class SvgIconExtension : SvgIconBase
             var assembly = GetExecutingAssembly();
             if (assembly is not null)
             {
-                string localFile = Path.Combine(Path.GetDirectoryName(assembly.Location), tmp);
-
-                if (File.Exists(localFile))
+                var location = Path.GetDirectoryName(assembly.Location);
+                if (location is not null)
                 {
-                    return new Uri(localFile);
+                    string localFile = Path.Combine(location, tmp);
+                    if (File.Exists(localFile))
+                    {
+                        return new Uri(localFile);
+                    }
                 }
             }
 

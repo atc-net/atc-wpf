@@ -20,8 +20,11 @@ internal class PatternPaintServer : PaintServer
             this.PatternTransform = ShapeUtil.ParseTransform(transform.ToLower(GlobalizationConstants.EnglishCultureInfo));
         }
 
-        var tempSVG = new Svg(node, svg.ExternalFileLoader);
-        elements = tempSVG.Elements;
+        if (svg.ExternalFileLoader is not null)
+        {
+            var tempSVG = new Svg(node, svg.ExternalFileLoader);
+            elements = tempSVG.Elements;
+        }
 
         patternPaintServers = svg.PaintServers.GetServers();
         this.X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
@@ -67,6 +70,11 @@ internal class PatternPaintServer : PaintServer
             {
                 svgRender.Svg.PaintServers.AddServer(key, value);
             }
+        }
+
+        if (elements is null)
+        {
+            return new DrawingBrush();
         }
 
         var brush = new DrawingBrush

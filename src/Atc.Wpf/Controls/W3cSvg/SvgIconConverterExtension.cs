@@ -85,27 +85,29 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             Uri? inputUri = null;
             if (parameter is not null)
             {
-                inputUri = this.ResolveUri(parameter.ToString());
+                inputUri = this.ResolveUri(parameter.ToString()!);
             }
             else if (value is not null)
             {
                 inputUri = uriConverter.ConvertFrom(value) as Uri;
                 if (inputUri is null)
                 {
-                    inputUri = this.ResolveUri(value.ToString());
+                    inputUri = this.ResolveUri(value.ToString()!);
                 }
                 else if (!inputUri.IsAbsoluteUri)
                 {
-                    inputUri = this.ResolveUri(value.ToString());
+                    inputUri = this.ResolveUri(value.ToString()!);
                 }
             }
 
-            if (inputUri is null)
+            if (inputUri is null || baseUri is null)
             {
                 return null;
             }
 
-            var svgSource = inputUri.IsAbsoluteUri ? inputUri : new Uri(baseUri, inputUri);
+            var svgSource = inputUri.IsAbsoluteUri
+                ? inputUri
+                : new Uri(baseUri, inputUri);
             return this.GetImage(svgSource);
         }
         catch
@@ -161,11 +163,14 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             var assembly = GetExecutingAssembly();
             if (assembly is not null)
             {
-                string localFile = Path.Combine(Path.GetDirectoryName(assembly.Location), svgPath);
-
-                if (File.Exists(localFile))
+                var location = Path.GetDirectoryName(assembly.Location);
+                if (location is not null)
                 {
-                    return new Uri(localFile);
+                    string localFile = Path.Combine(location, svgPath);
+                    if (File.Exists(localFile))
+                    {
+                        return new Uri(localFile);
+                    }
                 }
             }
 

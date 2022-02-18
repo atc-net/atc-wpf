@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.W3cSvg.PaintServers;
 
 internal abstract class GradientColorPaintServer : PaintServer
 {
-    private readonly List<GradientStop> gradientStop = new List<GradientStop>();
+    private readonly List<GradientStop> gradientStop = new ();
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     protected GradientColorPaintServer(PaintServerManager owner, XmlNode node)
@@ -30,6 +30,11 @@ internal abstract class GradientColorPaintServer : PaintServer
         if (node.ChildNodes.Count == 0 && !string.IsNullOrEmpty(refId))
         {
             var paintServerKey = owner.Parse(refId.Substring(1));
+            if (paintServerKey is null)
+            {
+                return;
+            }
+
             if (owner.GetServer(paintServerKey) is not GradientColorPaintServer refCol)
             {
                 return;
@@ -98,7 +103,7 @@ internal abstract class GradientColorPaintServer : PaintServer
     public sealed class TempXmlAttribute : XmlAttribute
     {
         public TempXmlAttribute(XmlNode owner, string name, string value)
-            : base(string.Empty, name, string.Empty, owner.OwnerDocument)
+            : base(string.Empty, name, string.Empty, owner.OwnerDocument!)
         {
             this.Value = value;
         }

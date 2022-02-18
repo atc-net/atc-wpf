@@ -5,12 +5,15 @@ internal class PolylineShape : Shape
     public PolylineShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        var points = SvgXmlUtil.AttrValue(node, SvgTagConstants.Points, string.Empty);
-        var split = new StringSplitter(points);
         var list = new List<Point>();
-        while (split.More)
+        var points = SvgXmlUtil.AttrValue(node, SvgTagConstants.Points, string.Empty);
+        if (points is not null)
         {
-            list.Add(split.ReadNextPoint());
+            var split = new StringSplitter(points);
+            while (split.More)
+            {
+                list.Add(split.ReadNextPoint());
+            }
         }
 
         this.Points = list.ToArray();

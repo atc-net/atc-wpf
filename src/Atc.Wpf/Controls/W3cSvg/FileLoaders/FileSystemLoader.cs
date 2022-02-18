@@ -17,10 +17,13 @@ public class FileSystemLoader : IExternalFileLoader
             path = Path.GetDirectoryName(svgFilename);
         }
 
-        var fileName = Path.Combine(path, hRef);
-        if (File.Exists(fileName))
+        if (path is not null)
         {
-            return File.OpenRead(fileName);
+            var fileName = Path.Combine(path, hRef);
+            if (File.Exists(fileName))
+            {
+                return File.OpenRead(fileName);
+            }
         }
 
         Trace.TraceWarning("Unresolved URI: " + hRef);

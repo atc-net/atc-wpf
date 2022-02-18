@@ -129,7 +129,10 @@ public class SampleViewerViewModel : ViewModelBase
         }
         else
         {
-            this.SetSelectedViewData(obj.Header, obj.SampleItemPath);
+            if (obj.Header is not null)
+            {
+                this.SetSelectedViewData(obj.Header, obj.SampleItemPath);
+            }
         }
     }
 
@@ -156,9 +159,9 @@ public class SampleViewerViewModel : ViewModelBase
             return;
         }
 
-        if (!(Activator.CreateInstance(sampleType) is UserControl instance))
+        if (Activator.CreateInstance(sampleType) is not UserControl instance)
         {
-            _ = MessageBox.Show($"Can't create instance of sample by path '{samplePath}'", "Error", MessageBoxButton.OK);
+            MessageBox.Show($"Can't create instance of sample by path '{samplePath}'", "Error", MessageBoxButton.OK);
             return;
         }
 
@@ -166,7 +169,7 @@ public class SampleViewerViewModel : ViewModelBase
         var baseLocation = this.ExtractBasePath(entryAssemblyLocation);
         if (baseLocation is null)
         {
-            _ = MessageBox.Show($"Can't find sample by invalid base location", "Error", MessageBoxButton.OK);
+            MessageBox.Show("Can't find sample by invalid base location", "Error", MessageBoxButton.OK);
             return;
         }
 

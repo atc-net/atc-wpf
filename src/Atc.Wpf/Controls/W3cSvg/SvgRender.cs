@@ -98,6 +98,11 @@ internal class SvgRender
         shape.GeometryElement = geometry;
         var geometryDrawing = new GeometryDrawing();
         var stroke = shape.Stroke;
+        if (this.Svg is null)
+        {
+            return geometryDrawing;
+        }
+
         if (stroke is not null)
         {
             if (OverrideStrokeWidth.HasValue)
@@ -246,7 +251,9 @@ internal class SvgRender
                         {
                             case AnimateTransform animateTransform:
                             {
-                                if (animateTransform.Type == AnimateTransformType.Rotate)
+                                if (animateTransform.Type == AnimateTransformType.Rotate &&
+                                    animateTransform.From is not null &&
+                                    animateTransform.To is not null)
                                 {
                                     var animation = new DoubleAnimation
                                     {
@@ -266,7 +273,7 @@ internal class SvgRender
 
                             case Animate animate:
                             {
-                                var target = this.Svg!.GetShape(animate.Href);
+                                var target = this.Svg!.GetShape(animate.Href!);
                                 var g = target?.GeometryElement;
                                 if (g is null)
                                 {
@@ -353,7 +360,7 @@ internal class SvgRender
 
                 case UseShape useShape:
                 {
-                    var currentUsedShape = this.Svg!.GetShape(useShape.Href);
+                    var currentUsedShape = this.Svg!.GetShape(useShape.Href!);
                     if (currentUsedShape is not null)
                     {
                         currentUsedShape.RealParent = useShape;

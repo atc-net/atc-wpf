@@ -2,7 +2,7 @@ namespace Atc.Wpf.Controls.W3cSvg.Shapes;
 
 internal class Group : Shape
 {
-    private readonly List<Shape> elements = new List<Shape>();
+    private readonly List<Shape> elements = new ();
 
     public Group(Svg svg, XmlNode node, Shape parent)
         : base(svg, node)
@@ -84,10 +84,10 @@ internal class Group : Shape
                 retVal = new RectangleShape(svg, childNode);
                 break;
             case SvgTagConstants.Filter:
-                retVal = new Filter(svg, childNode, parent);
+                retVal = new Filter(svg, childNode, parent!);
                 break;
             case SvgTagConstants.FeGaussianBlur:
-                retVal = new FilterFeGaussianBlur(svg, childNode, parent);
+                retVal = new FilterFeGaussianBlur(svg, childNode, parent!);
                 break;
             case SvgTagConstants.ShapeCircle:
                 retVal = new CircleShape(svg, childNode);
@@ -105,16 +105,16 @@ internal class Group : Shape
                 retVal = new PolygonShape(svg, childNode);
                 break;
             case SvgTagConstants.ShapePath:
-                retVal = new PathShape(svg, childNode, parent);
+                retVal = new PathShape(svg, childNode, parent!);
                 break;
             case SvgTagConstants.ClipPath:
-                retVal = new Clip(svg, childNode, parent);
+                retVal = new Clip(svg, childNode, parent!);
                 break;
             case SvgTagConstants.ShapeGroup:
-                retVal = new Group(svg, childNode, parent);
+                retVal = new Group(svg, childNode, parent!);
                 break;
             case SvgTagConstants.Switch:
-                retVal = new Group(svg, childNode, parent)
+                retVal = new Group(svg, childNode, parent!)
                 {
                     IsSwitch = true,
                 };
@@ -126,19 +126,19 @@ internal class Group : Shape
                 retVal = new ImageShape(svg, childNode);
                 break;
             case SvgTagConstants.Animate:
-                retVal = new Animate(svg, childNode, parent);
+                retVal = new Animate(svg, childNode, parent!);
                 break;
             case SvgTagConstants.AnimateColor:
-                retVal = new AnimateColor(svg, childNode, parent);
+                retVal = new AnimateColor(svg, childNode, parent!);
                 break;
             case SvgTagConstants.AnimateMotion:
-                retVal = new AnimateMotion(svg, childNode, parent);
+                retVal = new AnimateMotion(svg, childNode, parent!);
                 break;
             case SvgTagConstants.AnimateTransform:
-                retVal = new AnimateTransform(svg, childNode, parent);
+                retVal = new AnimateTransform(svg, childNode, parent!);
                 break;
             case SvgTagConstants.Text:
-                retVal = new TextShape(svg, childNode, parent);
+                retVal = new TextShape(svg, childNode, parent!);
                 break;
             case SvgTagConstants.LinearGradient:
                 svg.PaintServers.Create(svg, childNode);
@@ -150,7 +150,7 @@ internal class Group : Shape
                 ReadDefs(svg, list, childNode);
                 return null;
             case SvgTagConstants.Symbol:
-                retVal = new Group(svg, childNode, parent);
+                retVal = new Group(svg, childNode, parent!);
                 break;
         }
 

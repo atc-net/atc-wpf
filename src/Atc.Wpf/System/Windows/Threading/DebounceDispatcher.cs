@@ -65,7 +65,7 @@ public class DebounceDispatcher
 
                 timer?.Stop();
                 timer = null;
-                action.Invoke(param);
+                action.Invoke(param!);
             },
             dispatcher);
 
@@ -118,7 +118,7 @@ public class DebounceDispatcher
 
                 timer?.Stop();
                 timer = null;
-                action.Invoke(param);
+                action.Invoke(param!);
             },
             dispatcher);
 

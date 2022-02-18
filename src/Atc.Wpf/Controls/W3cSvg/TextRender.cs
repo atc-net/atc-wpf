@@ -25,7 +25,11 @@ internal static class TextRender
         var geometryGroup = new GeometryGroup();
         double totalWidth = 0;
         string txt = shape.Text;
-        geometryGroup.Children.Add(BuildGlyphRun(shape.TextStyle, txt, shape.X, shape.Y, ref totalWidth));
+        if (shape.TextStyle is not null)
+        {
+            geometryGroup.Children.Add(BuildGlyphRun(shape.TextStyle, txt, shape.X, shape.Y, ref totalWidth));
+        }
+
         return geometryGroup;
     }
 
@@ -39,7 +43,11 @@ internal static class TextRender
         double x = shape.X;
         double y = shape.Y;
         var geometryGroup = new GeometryGroup();
-        BuildTextSpan(geometryGroup, shape.TextStyle, shape.TextSpan, ref x, ref y);
+        if (shape.TextStyle is not null && shape.TextSpan is not null)
+        {
+            BuildTextSpan(geometryGroup, shape.TextStyle, shape.TextSpan, ref x, ref y);
+        }
+
         return geometryGroup;
     }
 
