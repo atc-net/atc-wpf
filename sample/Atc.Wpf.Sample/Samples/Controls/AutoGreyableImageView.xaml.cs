@@ -1,13 +1,12 @@
-namespace Atc.Wpf.Sample.Samples.Controls
+namespace Atc.Wpf.Sample.Samples.Controls;
+
+/// <summary>
+/// Interaction logic for AutoGreyableImageView.
+/// </summary>
+public partial class AutoGreyableImageView
 {
-    /// <summary>
-    /// Interaction logic for AutoGreyableImageView.
-    /// </summary>
-    public partial class AutoGreyableImageView
+    public AutoGreyableImageView()
     {
-        public AutoGreyableImageView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

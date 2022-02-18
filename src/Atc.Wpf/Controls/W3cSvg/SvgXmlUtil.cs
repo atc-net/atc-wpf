@@ -1,170 +1,163 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using Atc.Data.Models;
+namespace Atc.Wpf.Controls.W3cSvg;
 
-namespace Atc.Wpf.Controls.W3cSvg
+internal static class SvgXmlUtil
 {
-    internal static class SvgXmlUtil
+    public static bool GetValueRespectingUnits(string input, out double value, double percentageMaximum)
     {
-        public static bool GetValueRespectingUnits(string input, out double value, double percentageMaximum)
+        if (input == null)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException(nameof(input));
-            }
+            throw new ArgumentNullException(nameof(input));
+        }
 
-            value = 0;
-            var units = string.Empty;
-            int index = input.LastIndexOfAny(new[] { '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
-            if (index < 0)
-            {
-                return false;
-            }
-
-            var tmp = input.Substring(0, index + 1);
-            if (index + 1 < input.Length)
-            {
-                units = input.Substring(index + 1);
-            }
-
-            try
-            {
-                value = XmlConvert.ToDouble(tmp);
-
-                switch (units)
-                {
-                    case "pt":
-                        value *= 1.25;
-                        break;
-                    case "mm":
-                        value *= 3.54;
-                        break;
-                    case "pc":
-                        value *= 15;
-                        break;
-                    case "cm":
-                        value *= 35.43;
-                        break;
-                    case "in":
-                        value *= 90;
-                        break;
-                    case "%":
-                        value = value * percentageMaximum / 100;
-                        break;
-                }
-
-                return true;
-            }
-            catch (FormatException)
-            {
-                // Dummy
-            }
-
+        value = 0;
+        var units = string.Empty;
+        int index = input.LastIndexOfAny(new[] { '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+        if (index < 0)
+        {
             return false;
         }
 
-        public static double GetDoubleValue(string value, double percentageMaximum = 1)
+        var tmp = input.Substring(0, index + 1);
+        if (index + 1 < input.Length)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            return GetValueRespectingUnits(value, out var result, percentageMaximum)
-                ? result
-                : 0;
+            units = input.Substring(index + 1);
         }
 
-        public static double AttrValue(KeyValueItem attr)
+        try
         {
-            if (attr == null)
+            value = XmlConvert.ToDouble(tmp);
+
+            switch (units)
             {
-                throw new ArgumentNullException(nameof(attr));
+                case "pt":
+                    value *= 1.25;
+                    break;
+                case "mm":
+                    value *= 3.54;
+                    break;
+                case "pc":
+                    value *= 15;
+                    break;
+                case "cm":
+                    value *= 35.43;
+                    break;
+                case "in":
+                    value *= 90;
+                    break;
+                case "%":
+                    value = value * percentageMaximum / 100;
+                    break;
             }
 
-            return GetValueRespectingUnits(attr.Value, out var result, 1)
-                ? result
-                : 0;
+            return true;
+        }
+        catch (FormatException)
+        {
+            // Dummy
         }
 
-        public static double AttrValue(XmlNode node, string id, double defaultValue, double percentageMaximum = 1)
+        return false;
+    }
+
+    public static double GetDoubleValue(string value, double percentageMaximum = 1)
+    {
+        if (value == null)
         {
-            if (node == null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
-
-            var attr = node.Attributes?[id];
-            if (attr == null)
-            {
-                return defaultValue;
-            }
-
-            return GetValueRespectingUnits(attr.Value, out var result, percentageMaximum)
-                ? result
-                : defaultValue;
+            throw new ArgumentNullException(nameof(value));
         }
 
-        public static string? AttrValue(XmlNode node, string id, string? defaultValue)
+        return GetValueRespectingUnits(value, out var result, percentageMaximum)
+            ? result
+            : 0;
+    }
+
+    public static double AttrValue(KeyValueItem attr)
+    {
+        if (attr == null)
         {
-            if (node == null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
-
-            if (node.Attributes == null)
-            {
-                return defaultValue;
-            }
-
-            var attr = node.Attributes[id];
-            return attr != null
-                ? attr.Value
-                : defaultValue;
+            throw new ArgumentNullException(nameof(attr));
         }
 
-        public static string? AttrValue(XmlNode node, string id)
+        return GetValueRespectingUnits(attr.Value, out var result, 1)
+            ? result
+            : 0;
+    }
+
+    public static double AttrValue(XmlNode node, string id, double defaultValue, double percentageMaximum = 1)
+    {
+        if (node == null)
         {
-            return AttrValue(node, id, string.Empty);
+            throw new ArgumentNullException(nameof(node));
         }
 
-        public static double ParseDouble(string value)
+        var attr = node.Attributes?[id];
+        if (attr == null)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            return GetValueRespectingUnits(value, out var result, 1)
-                ? result
-                : 0.1;
+            return defaultValue;
         }
 
-        public static IEnumerable<KeyValueItem> SplitStyle(string fullStyle)
+        return GetValueRespectingUnits(attr.Value, out var result, percentageMaximum)
+            ? result
+            : defaultValue;
+    }
+
+    public static string? AttrValue(XmlNode node, string id, string? defaultValue)
+    {
+        if (node == null)
         {
-            if (fullStyle == null)
-            {
-                throw new ArgumentNullException(nameof(fullStyle));
-            }
+            throw new ArgumentNullException(nameof(node));
+        }
 
-            var list = new List<KeyValueItem>();
-            if (fullStyle.Length == 0)
-            {
-                return list;
-            }
+        if (node.Attributes == null)
+        {
+            return defaultValue;
+        }
 
-            string[] attrs = fullStyle.Split(';');
-            list.AddRange(
-                from attr
-                in attrs
-                select attr.Split(':')
-                into s
-                where s.Length == 2
-                select new KeyValueItem(s[0].Trim(), s[1].Trim()));
+        var attr = node.Attributes[id];
+        return attr != null
+            ? attr.Value
+            : defaultValue;
+    }
 
+    public static string? AttrValue(XmlNode node, string id)
+    {
+        return AttrValue(node, id, string.Empty);
+    }
+
+    public static double ParseDouble(string value)
+    {
+        if (value == null)
+        {
+            throw new ArgumentNullException(nameof(value));
+        }
+
+        return GetValueRespectingUnits(value, out var result, 1)
+            ? result
+            : 0.1;
+    }
+
+    public static IEnumerable<KeyValueItem> SplitStyle(string fullStyle)
+    {
+        if (fullStyle == null)
+        {
+            throw new ArgumentNullException(nameof(fullStyle));
+        }
+
+        var list = new List<KeyValueItem>();
+        if (fullStyle.Length == 0)
+        {
             return list;
         }
+
+        string[] attrs = fullStyle.Split(';');
+        list.AddRange(
+            from attr
+                in attrs
+            select attr.Split(':')
+            into s
+            where s.Length == 2
+            select new KeyValueItem(s[0].Trim(), s[1].Trim()));
+
+        return list;
     }
 }

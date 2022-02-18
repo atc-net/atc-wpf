@@ -1,10 +1,9 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.Controls.W3cSvg
+namespace Atc.Wpf.Controls.W3cSvg;
+
+internal enum StrokeLineJoinType
 {
-    internal enum StrokeLineJoinType
-    {
-        Miter,
-        Round,
-        Bevel,
-    }
+    Miter,
+    Round,
+    Bevel,
 }

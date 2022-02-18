@@ -1,10 +1,9 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.Controls.W3cSvg
+namespace Atc.Wpf.Controls.W3cSvg;
+
+internal enum StrokeLineCapType
 {
-    internal enum StrokeLineCapType
-    {
-        Butt,
-        Round,
-        Square,
-    }
+    Butt,
+    Round,
+    Square,
 }

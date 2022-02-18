@@ -1,84 +1,80 @@
-using System;
-using System.Windows;
+namespace Atc.Wpf.Helpers;
 
-namespace Atc.Wpf.Helpers
+public static class StaticResourceHelper
 {
-    public static class StaticResourceHelper
+    public static readonly DependencyProperty PropertyProperty =
+        DependencyProperty.RegisterAttached(
+            "Property",
+            typeof(DependencyProperty),
+            typeof(StaticResourceHelper),
+            new PropertyMetadata(OnPropertyChanged));
+
+    public static readonly DependencyProperty ResourceKeyProperty =
+        DependencyProperty.RegisterAttached(
+            "ResourceKey",
+            typeof(object),
+            typeof(StaticResourceHelper),
+            new PropertyMetadata(OnResourceKeyChanged));
+
+    public static DependencyProperty GetProperty(FrameworkElement element)
     {
-        public static readonly DependencyProperty PropertyProperty =
-            DependencyProperty.RegisterAttached(
-                "Property",
-                typeof(DependencyProperty),
-                typeof(StaticResourceHelper),
-                new PropertyMetadata(OnPropertyChanged));
-
-        public static readonly DependencyProperty ResourceKeyProperty =
-            DependencyProperty.RegisterAttached(
-                "ResourceKey",
-                typeof(object),
-                typeof(StaticResourceHelper),
-                new PropertyMetadata(OnResourceKeyChanged));
-
-        public static DependencyProperty GetProperty(FrameworkElement element)
+        if (element is null)
         {
-            if (element is null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
-
-            return (DependencyProperty)element.GetValue(PropertyProperty);
+            throw new ArgumentNullException(nameof(element));
         }
 
-        public static void SetProperty(FrameworkElement element, DependencyProperty value)
-        {
-            if (element is null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+        return (DependencyProperty)element.GetValue(PropertyProperty);
+    }
 
-            element.SetValue(PropertyProperty, value);
+    public static void SetProperty(FrameworkElement element, DependencyProperty value)
+    {
+        if (element is null)
+        {
+            throw new ArgumentNullException(nameof(element));
         }
 
-        public static object GetResourceKey(FrameworkElement element)
-        {
-            if (element is null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+        element.SetValue(PropertyProperty, value);
+    }
 
-            return element.GetValue(ResourceKeyProperty);
+    public static object GetResourceKey(FrameworkElement element)
+    {
+        if (element is null)
+        {
+            throw new ArgumentNullException(nameof(element));
         }
 
-        public static void SetResourceKey(FrameworkElement element, object value)
-        {
-            if (element is null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+        return element.GetValue(ResourceKeyProperty);
+    }
 
-            element.SetValue(ResourceKeyProperty, value);
+    public static void SetResourceKey(FrameworkElement element, object value)
+    {
+        if (element is null)
+        {
+            throw new ArgumentNullException(nameof(element));
         }
 
-        private static void OnPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            var element = (FrameworkElement)obj;
-            var newValue = (DependencyProperty)args.NewValue;
-            Apply(element, newValue, GetResourceKey(element));
-        }
+        element.SetValue(ResourceKeyProperty, value);
+    }
 
-        private static void OnResourceKeyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            var element = (FrameworkElement)obj;
-            var newValue = args.NewValue;
-            Apply(element, GetProperty(element), newValue);
-        }
+    private static void OnPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    {
+        var element = (FrameworkElement)obj;
+        var newValue = (DependencyProperty)args.NewValue;
+        Apply(element, newValue, GetResourceKey(element));
+    }
 
-        private static void Apply(FrameworkElement? element, DependencyProperty? property, object? key)
+    private static void OnResourceKeyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    {
+        var element = (FrameworkElement)obj;
+        var newValue = args.NewValue;
+        Apply(element, GetProperty(element), newValue);
+    }
+
+    private static void Apply(FrameworkElement? element, DependencyProperty? property, object? key)
+    {
+        if (element != null && property != null && key is not null)
         {
-            if (element != null && property != null && key is not null)
-            {
-                element.SetValue(property, element.TryFindResource(key));
-            }
+            element.SetValue(property, element.TryFindResource(key));
         }
     }
 }

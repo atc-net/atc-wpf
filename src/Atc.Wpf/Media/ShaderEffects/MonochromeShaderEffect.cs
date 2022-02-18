@@ -1,49 +1,45 @@
-using System.Windows;
-using System.Windows.Media;
+namespace Atc.Wpf.Media.ShaderEffects;
 
-namespace Atc.Wpf.Media.ShaderEffects
+public class MonochromeShaderEffect : ShaderEffectBase
 {
-    public class MonochromeShaderEffect : ShaderEffectBase
+    public static readonly DependencyProperty InputProperty =
+        RegisterPixelShaderSamplerProperty(
+            "Input",
+            typeof(MonochromeShaderEffect),
+            0);
+
+    public static readonly DependencyProperty FilterColorProperty =
+        DependencyProperty.Register(
+            nameof(FilterColor),
+            typeof(Color),
+            typeof(MonochromeShaderEffect),
+            new UIPropertyMetadata(
+                MakeColor(0x7F, 0x7F, 0x7F),
+                PixelShaderConstantCallback(0)));
+
+    public override string Name => "Monochrome";
+
+    public MonochromeShaderEffect()
     {
-        public static readonly DependencyProperty InputProperty =
-            RegisterPixelShaderSamplerProperty(
-                "Input",
-                typeof(MonochromeShaderEffect),
-                0);
+        this.UpdateShaderValue(InputProperty);
+        this.UpdateShaderValue(FilterColorProperty);
+    }
 
-        public static readonly DependencyProperty FilterColorProperty =
-            DependencyProperty.Register(
-                nameof(FilterColor),
-                typeof(Color),
-                typeof(MonochromeShaderEffect),
-                new UIPropertyMetadata(
-                    MakeColor(0x7F, 0x7F, 0x7F),
-                    PixelShaderConstantCallback(0)));
+    /// <summary>
+    /// Input.
+    /// </summary>
+    public Brush Input
+    {
+        get => (Brush)GetValue(InputProperty);
+        set => SetValue(InputProperty, value);
+    }
 
-        public override string Name => "Monochrome";
-
-        public MonochromeShaderEffect()
-        {
-            this.UpdateShaderValue(InputProperty);
-            this.UpdateShaderValue(FilterColorProperty);
-        }
-
-        /// <summary>
-        /// Input.
-        /// </summary>
-        public Brush Input
-        {
-            get => (Brush)GetValue(InputProperty);
-            set => SetValue(InputProperty, value);
-        }
-
-        /// <summary>
-        /// FilterColor - default => 0x7F, 0x7F, 0x7F.
-        /// </summary>
-        public Color FilterColor
-        {
-            get => (Color)GetValue(FilterColorProperty);
-            set => SetValue(FilterColorProperty, value);
-        }
+    /// <summary>
+    /// FilterColor - default => 0x7F, 0x7F, 0x7F.
+    /// </summary>
+    public Color FilterColor
+    {
+        get => (Color)GetValue(FilterColorProperty);
+        set => SetValue(FilterColorProperty, value);
     }
 }

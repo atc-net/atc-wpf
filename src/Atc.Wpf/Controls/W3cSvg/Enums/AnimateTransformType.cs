@@ -1,12 +1,11 @@
 // ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Controls.W3cSvg
+namespace Atc.Wpf.Controls.W3cSvg;
+
+internal enum AnimateTransformType
 {
-    internal enum AnimateTransformType
-    {
-        Translate,
-        Scale,
-        Rotate,
-        SkewX,
-        SkewY,
-    }
+    Translate,
+    Scale,
+    Rotate,
+    SkewX,
+    SkewY,
 }

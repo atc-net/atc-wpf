@@ -1,54 +1,48 @@
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+namespace Atc.Wpf.SampleControls;
 
-namespace Atc.Wpf.SampleControls
+public class SampleTreeViewItem : TreeViewItem
 {
-    public class SampleTreeViewItem : TreeViewItem
+    /// <summary>
+    /// The sample path property.
+    /// </summary>
+    public static readonly DependencyProperty SamplePathProperty = DependencyProperty.Register(
+        nameof(SamplePath),
+        typeof(string),
+        typeof(SampleTreeViewItem),
+        new UIPropertyMetadata(propertyChangedCallback: null));
+
+    /// <summary>
+    /// Gets or sets the sample path.
+    /// </summary>
+    /// <value>
+    /// The sample path.
+    /// </value>
+    public string SamplePath
     {
-        /// <summary>
-        /// The sample path property.
-        /// </summary>
-        public static readonly DependencyProperty SamplePathProperty = DependencyProperty.Register(
-            nameof(SamplePath),
-            typeof(string),
-            typeof(SampleTreeViewItem),
-            new UIPropertyMetadata(propertyChangedCallback: null));
+        get => (string)this.GetValue(SamplePathProperty);
+        set => this.SetValue(SamplePathProperty, value);
+    }
 
-        /// <summary>
-        /// Gets or sets the sample path.
-        /// </summary>
-        /// <value>
-        /// The sample path.
-        /// </value>
-        public string SamplePath
+    /// <summary>
+    /// Provides class handling for a MouseLeftButtonDown event.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        if (e is null)
         {
-            get => (string)this.GetValue(SamplePathProperty);
-            set => this.SetValue(SamplePathProperty, value);
+            throw new ArgumentNullException(nameof(e));
         }
 
-        /// <summary>
-        /// Provides class handling for a MouseLeftButtonDown event.
-        /// </summary>
-        /// <param name="e">The event data.</param>
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        if (string.IsNullOrEmpty(this.SamplePath))
         {
-            if (e is null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            if (string.IsNullOrEmpty(this.SamplePath))
-            {
-                this.SetCurrentValue(IsExpandedProperty, !this.IsExpanded);
-            }
-            else
-            {
-                this.SetCurrentValue(IsSelectedProperty, value: true);
-            }
-
-            e.Handled = true;
+            this.SetCurrentValue(IsExpandedProperty, !this.IsExpanded);
         }
+        else
+        {
+            this.SetCurrentValue(IsSelectedProperty, value: true);
+        }
+
+        e.Handled = true;
     }
 }

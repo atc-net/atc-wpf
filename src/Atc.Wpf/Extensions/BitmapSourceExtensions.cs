@@ -1,434 +1,424 @@
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using Atc;
-using Atc.Wpf;
-using Atc.Wpf.Factories;
-
 // ReSharper disable once CheckNamespace
-namespace System.Windows.Media.Imaging
+namespace System.Windows.Media.Imaging;
+
+public static class BitmapSourceExtensions
 {
-    public static class BitmapSourceExtensions
+    public static int GetBytesPerPixel(this BitmapSource bitmapSource)
     {
-        public static int GetBytesPerPixel(this BitmapSource bitmapSource)
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            return (bitmapSource.Format.BitsPerPixel + 7) / 8;
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        public static int GetStride(this BitmapSource bitmapSource)
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        return (bitmapSource.Format.BitsPerPixel + 7) / 8;
+    }
+
+    public static int GetStride(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            var bytesForPixelWidth = bitmapSource.PixelWidth * bitmapSource.GetBytesPerPixel();
-            return 4 * ((bytesForPixelWidth + 3) / 4);
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        public static byte[] GetBytes(this BitmapSource bitmapSource)
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        var bytesForPixelWidth = bitmapSource.PixelWidth * bitmapSource.GetBytesPerPixel();
+        return 4 * ((bytesForPixelWidth + 3) / 4);
+    }
+
+    public static byte[] GetBytes(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            var height = bitmapSource.PixelHeight;
-            var stride = bitmapSource.GetStride();
-            var pixels = new byte[height * stride];
-            bitmapSource.CopyPixels(pixels, stride, 0);
-            return pixels;
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        public static Color GetPixelColor(this BitmapSource source, int x, int y)
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        var height = bitmapSource.PixelHeight;
+        var stride = bitmapSource.GetStride();
+        var pixels = new byte[height * stride];
+        bitmapSource.CopyPixels(pixels, stride, 0);
+        return pixels;
+    }
+
+    public static Color GetPixelColor(this BitmapSource source, int x, int y)
+    {
+        if (source is null)
         {
-            if (source is null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (x < 0 || x >= source.PixelWidth)
-            {
-                throw new ArgumentOutOfRangeException(nameof(x));
-            }
-
-            if (y < 0 || y >= source.PixelHeight)
-            {
-                throw new ArgumentOutOfRangeException(nameof(y));
-            }
-
-            var croppedBitmap = new CroppedBitmap(source, new Int32Rect(x, y, 1, 1));
-            var pixels = new byte[4];
-
-            croppedBitmap.CopyPixels(pixels, 4, 0);
-
-            return Color.FromRgb(pixels[2], pixels[1], pixels[0]);
+            throw new ArgumentNullException(nameof(source));
         }
 
-        [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
-        public static PixelColor[,] GetPixelColors(this BitmapSource source)
+        if (x < 0 || x >= source.PixelWidth)
         {
-            if (source is null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (source.Format != PixelFormats.Bgra32)
-            {
-                source = new FormatConvertedBitmap(
-                    source,
-                    PixelFormats.Bgra32,
-                    destinationPalette: null,
-                    0);
-            }
-
-            var pixels = new PixelColor[source.PixelWidth, source.PixelHeight];
-            var stride = source.PixelWidth * source.GetBytesPerPixel();
-            var pinnedPixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
-
-            source.CopyPixels(
-                new Int32Rect(
-                    0,
-                    0,
-                    source.PixelWidth,
-                    source.PixelHeight),
-                pinnedPixels.AddrOfPinnedObject(),
-                pixels.GetLength(0) * pixels.GetLength(1) * 4,
-                stride);
-
-            pinnedPixels.Free();
-
-            return pixels;
+            throw new ArgumentOutOfRangeException(nameof(x));
         }
 
-        public static BitmapSource EnsureRelativeUriLocation(this BitmapSource bitmapSource)
+        if (y < 0 || y >= source.PixelHeight)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
+            throw new ArgumentOutOfRangeException(nameof(y));
+        }
 
-            var path = bitmapSource.ToString(GlobalizationConstants.EnglishCultureInfo);
-            if (!path.StartsWith("..", StringComparison.Ordinal))
-            {
-                return bitmapSource;
-            }
+        var croppedBitmap = new CroppedBitmap(source, new Int32Rect(x, y, 1, 1));
+        var pixels = new byte[4];
 
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                path = path.Replace("..", location, StringComparison.Ordinal);
-                return BitmapImageFactory.Create(path, UriKind.Relative);
-            }
+        croppedBitmap.CopyPixels(pixels, 4, 0);
 
-            path = path.Replace("..", ".", StringComparison.Ordinal);
+        return Color.FromRgb(pixels[2], pixels[1], pixels[0]);
+    }
+
+    [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
+    public static PixelColor[,] GetPixelColors(this BitmapSource source)
+    {
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        if (source.Format != PixelFormats.Bgra32)
+        {
+            source = new FormatConvertedBitmap(
+                source,
+                PixelFormats.Bgra32,
+                destinationPalette: null,
+                0);
+        }
+
+        var pixels = new PixelColor[source.PixelWidth, source.PixelHeight];
+        var stride = source.PixelWidth * source.GetBytesPerPixel();
+        var pinnedPixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+
+        source.CopyPixels(
+            new Int32Rect(
+                0,
+                0,
+                source.PixelWidth,
+                source.PixelHeight),
+            pinnedPixels.AddrOfPinnedObject(),
+            pixels.GetLength(0) * pixels.GetLength(1) * 4,
+            stride);
+
+        pinnedPixels.Free();
+
+        return pixels;
+    }
+
+    public static BitmapSource EnsureRelativeUriLocation(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapSource));
+        }
+
+        var path = bitmapSource.ToString(GlobalizationConstants.EnglishCultureInfo);
+        if (!path.StartsWith("..", StringComparison.Ordinal))
+        {
+            return bitmapSource;
+        }
+
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        {
+            var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            path = path.Replace("..", location, StringComparison.Ordinal);
             return BitmapImageFactory.Create(path, UriKind.Relative);
         }
 
-        public static BitmapSource InvertColors(this BitmapSource bitmapSource)
+        path = path.Replace("..", ".", StringComparison.Ordinal);
+        return BitmapImageFactory.Create(path, UriKind.Relative);
+    }
+
+    public static BitmapSource InvertColors(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            var stride = bitmapSource.GetStride();
-            var length = stride * bitmapSource.PixelHeight;
-
-            var data = new byte[length];
-            bitmapSource.CopyPixels(data, stride, 0);
-
-            for (var i = 0; i < length; i += 4)
-            {
-                data[i] = (byte)(255 - data[i]);            // R
-                data[i + 1] = (byte)(255 - data[i + 1]);    // G
-                data[i + 2] = (byte)(255 - data[i + 2]);    // B
-                data[i + 3] = (byte)(255 - data[i + 3]);    // A
-            }
-
-            return BitmapSource.Create(
-                bitmapSource.PixelWidth,
-                bitmapSource.PixelHeight,
-                bitmapSource.DpiX,
-                bitmapSource.DpiY,
-                bitmapSource.Format,
-                palette: null,
-                data,
-                stride);
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        /// <summary>
-        /// Save the bitmap into a file.
-        /// </summary>
-        /// <param name="bitmapSource">The bitmap.</param>
-        /// <param name="fileName">The file.</param>
-        public static void Save(this BitmapSource bitmapSource, string fileName)
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        var stride = bitmapSource.GetStride();
+        var length = stride * bitmapSource.PixelHeight;
+
+        var data = new byte[length];
+        bitmapSource.CopyPixels(data, stride, 0);
+
+        for (var i = 0; i < length; i += 4)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            if (fileName is null)
-            {
-                throw new ArgumentNullException(nameof(fileName));
-            }
-
-            bitmapSource.Save(new FileInfo(fileName));
+            data[i] = (byte)(255 - data[i]);            // R
+            data[i + 1] = (byte)(255 - data[i + 1]);    // G
+            data[i + 2] = (byte)(255 - data[i + 2]);    // B
+            data[i + 3] = (byte)(255 - data[i + 3]);    // A
         }
 
-        /// <summary>
-        /// Save the bitmap into a file.
-        /// </summary>
-        /// <param name="bitmapSource">The bitmap.</param>
-        /// <param name="fileInfo">The file information.</param>
-        public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo)
+        return BitmapSource.Create(
+            bitmapSource.PixelWidth,
+            bitmapSource.PixelHeight,
+            bitmapSource.DpiX,
+            bitmapSource.DpiY,
+            bitmapSource.Format,
+            palette: null,
+            data,
+            stride);
+    }
+
+    /// <summary>
+    /// Save the bitmap into a file.
+    /// </summary>
+    /// <param name="bitmapSource">The bitmap.</param>
+    /// <param name="fileName">The file.</param>
+    public static void Save(this BitmapSource bitmapSource, string fileName)
+    {
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            if (fileInfo is null)
-            {
-                throw new ArgumentNullException(nameof(fileInfo));
-            }
-
-            switch (fileInfo.Extension.ToLower(GlobalizationConstants.EnglishCultureInfo))
-            {
-                case ".bmp":
-                    bitmapSource.Save(fileInfo, ImageFormatType.Bmp);
-                    break;
-                case ".gif":
-                    bitmapSource.Save(fileInfo, ImageFormatType.Gif);
-                    break;
-                case ".jpg":
-                case ".jpeg":
-                    bitmapSource.Save(fileInfo, ImageFormatType.Jpeg);
-                    break;
-                case ".png":
-                    bitmapSource.Save(fileInfo, ImageFormatType.Png);
-                    break;
-                case ".tif":
-                case ".tiff":
-                    bitmapSource.Save(fileInfo, ImageFormatType.Tiff);
-                    break;
-                case ".wmp":
-                    bitmapSource.Save(fileInfo, ImageFormatType.Wmp);
-                    break;
-            }
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        /// <summary>
-        /// Save the bitmap into a file.
-        /// </summary>
-        /// <param name="bitmapSource">The bitmap.</param>
-        /// <param name="fileInfo">The file information.</param>
-        /// <param name="imageFormatType">Type of the image format.</param>
-        public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo, ImageFormatType imageFormatType)
+        if (fileName is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            if (fileInfo is null)
-            {
-                throw new ArgumentNullException(nameof(fileInfo));
-            }
-
-            using FileStream stream = new FileStream(fileInfo.FullName, FileMode.Create);
-            var encoder = BitmapEncoderFactory.Create(imageFormatType);
-            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-            encoder.Save(stream);
+            throw new ArgumentNullException(nameof(fileName));
         }
 
-        public static BitmapImage ToBitmapImage(this BitmapSource bitmapSource, ImageFormatType imageFormatType = ImageFormatType.Png, int? newWidth = null)
+        bitmapSource.Save(new FileInfo(fileName));
+    }
+
+    /// <summary>
+    /// Save the bitmap into a file.
+    /// </summary>
+    /// <param name="bitmapSource">The bitmap.</param>
+    /// <param name="fileInfo">The file information.</param>
+    public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo)
+    {
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            var bitmapImage = new BitmapImage();
-            var bitmapEncoder = BitmapEncoderFactory.Create(imageFormatType);
-            var memoryStream = new MemoryStream();
-
-            var bitmapFrame = BitmapFrame.Create(bitmapSource);
-            bitmapEncoder.Frames.Add(bitmapFrame);
-            bitmapEncoder.Save(memoryStream);
-
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            bitmapImage.BeginInit();
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            if (newWidth > 0)
-            {
-                bitmapImage.DecodePixelWidth = (int)newWidth;
-            }
-
-            bitmapImage.StreamSource = memoryStream;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-            memoryStream.Close();
-
-            return bitmapImage;
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        public static BitmapImage ToResizedBitmapImage(this BitmapSource bitmapSource, int newWidth)
+        if (fileInfo is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            return bitmapSource.ToBitmapImage(ImageFormatType.Png, newWidth);
+            throw new ArgumentNullException(nameof(fileInfo));
         }
 
-        public static BitmapSource ToBitmapSourceAsGray32(this BitmapSource bitmapSource)
+        switch (fileInfo.Extension.ToLower(GlobalizationConstants.EnglishCultureInfo))
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
+            case ".bmp":
+                bitmapSource.Save(fileInfo, ImageFormatType.Bmp);
+                break;
+            case ".gif":
+                bitmapSource.Save(fileInfo, ImageFormatType.Gif);
+                break;
+            case ".jpg":
+            case ".jpeg":
+                bitmapSource.Save(fileInfo, ImageFormatType.Jpeg);
+                break;
+            case ".png":
+                bitmapSource.Save(fileInfo, ImageFormatType.Png);
+                break;
+            case ".tif":
+            case ".tiff":
+                bitmapSource.Save(fileInfo, ImageFormatType.Tiff);
+                break;
+            case ".wmp":
+                bitmapSource.Save(fileInfo, ImageFormatType.Wmp);
+                break;
+        }
+    }
 
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            return bitmapSource.ToFormatConvertedBitmapAsGray32();
+    /// <summary>
+    /// Save the bitmap into a file.
+    /// </summary>
+    /// <param name="bitmapSource">The bitmap.</param>
+    /// <param name="fileInfo">The file information.</param>
+    /// <param name="imageFormatType">Type of the image format.</param>
+    public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo, ImageFormatType imageFormatType)
+    {
+        if (bitmapSource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapSource));
         }
 
-        [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
-        [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
-        public static BitmapImage ToBitmapImageWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+        if (fileInfo is null)
         {
-            if (source is null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (pixelColors is null)
-            {
-                throw new ArgumentNullException(nameof(pixelColors));
-            }
-
-            if (source.PixelWidth != pixelColors.GetLength(0))
-            {
-                throw new ArgumentOutOfRangeException(nameof(pixelColors));
-            }
-
-            if (source.PixelHeight != pixelColors.GetLength(1))
-            {
-                throw new ArgumentOutOfRangeException(nameof(pixelColors));
-            }
-
-            var writeableBitmap = source.ToWriteableBitmapWithPixelColors(pixelColors);
-
-            return writeableBitmap.ToBitmapImage();
+            throw new ArgumentNullException(nameof(fileInfo));
         }
 
-        public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(this BitmapSource bitmapSource)
+        using FileStream stream = new FileStream(fileInfo.FullName, FileMode.Create);
+        var encoder = BitmapEncoderFactory.Create(imageFormatType);
+        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+        encoder.Save(stream);
+    }
+
+    public static BitmapImage ToBitmapImage(this BitmapSource bitmapSource, ImageFormatType imageFormatType = ImageFormatType.Png, int? newWidth = null)
+    {
+        if (bitmapSource is null)
         {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
+            throw new ArgumentNullException(nameof(bitmapSource));
+        }
 
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
-            return new FormatConvertedBitmap(
-                bitmapSource,
-                PixelFormats.Gray32Float,
+        var bitmapImage = new BitmapImage();
+        var bitmapEncoder = BitmapEncoderFactory.Create(imageFormatType);
+        var memoryStream = new MemoryStream();
+
+        var bitmapFrame = BitmapFrame.Create(bitmapSource);
+        bitmapEncoder.Frames.Add(bitmapFrame);
+        bitmapEncoder.Save(memoryStream);
+
+        memoryStream.Seek(0, SeekOrigin.Begin);
+        bitmapImage.BeginInit();
+        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        if (newWidth > 0)
+        {
+            bitmapImage.DecodePixelWidth = (int)newWidth;
+        }
+
+        bitmapImage.StreamSource = memoryStream;
+        bitmapImage.EndInit();
+        bitmapImage.Freeze();
+        memoryStream.Close();
+
+        return bitmapImage;
+    }
+
+    public static BitmapImage ToResizedBitmapImage(this BitmapSource bitmapSource, int newWidth)
+    {
+        if (bitmapSource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapSource));
+        }
+
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        return bitmapSource.ToBitmapImage(ImageFormatType.Png, newWidth);
+    }
+
+    public static BitmapSource ToBitmapSourceAsGray32(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapSource));
+        }
+
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        return bitmapSource.ToFormatConvertedBitmapAsGray32();
+    }
+
+    [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
+    [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
+    public static BitmapImage ToBitmapImageWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+    {
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        if (pixelColors is null)
+        {
+            throw new ArgumentNullException(nameof(pixelColors));
+        }
+
+        if (source.PixelWidth != pixelColors.GetLength(0))
+        {
+            throw new ArgumentOutOfRangeException(nameof(pixelColors));
+        }
+
+        if (source.PixelHeight != pixelColors.GetLength(1))
+        {
+            throw new ArgumentOutOfRangeException(nameof(pixelColors));
+        }
+
+        var writeableBitmap = source.ToWriteableBitmapWithPixelColors(pixelColors);
+
+        return writeableBitmap.ToBitmapImage();
+    }
+
+    public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapSource));
+        }
+
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        return new FormatConvertedBitmap(
+            bitmapSource,
+            PixelFormats.Gray32Float,
+            destinationPalette: null,
+            alphaThreshold: 0);
+    }
+
+    public static WriteableBitmap ToWriteableBitmap(this BitmapSource bitmapSource)
+    {
+        if (bitmapSource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapSource));
+        }
+
+        bitmapSource = bitmapSource.EnsureRelativeUriLocation();
+
+        if (bitmapSource.Format == PixelFormats.Pbgra32)
+        {
+            return new WriteableBitmap(bitmapSource);
+        }
+
+        var formattedBitmapSource = new FormatConvertedBitmap();
+        formattedBitmapSource.BeginInit();
+        formattedBitmapSource.Source = bitmapSource;
+        formattedBitmapSource.DestinationFormat = PixelFormats.Pbgra32;
+        formattedBitmapSource.EndInit();
+        return new WriteableBitmap(formattedBitmapSource);
+    }
+
+    [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
+    [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
+    public static WriteableBitmap ToWriteableBitmapWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+    {
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        if (pixelColors is null)
+        {
+            throw new ArgumentNullException(nameof(pixelColors));
+        }
+
+        if (source.PixelWidth != pixelColors.GetLength(0))
+        {
+            throw new ArgumentOutOfRangeException(nameof(pixelColors));
+        }
+
+        if (source.PixelHeight != pixelColors.GetLength(1))
+        {
+            throw new ArgumentOutOfRangeException(nameof(pixelColors));
+        }
+
+        if (source.Format != PixelFormats.Bgra32)
+        {
+            source = new FormatConvertedBitmap(
+                source,
+                PixelFormats.Bgra32,
                 destinationPalette: null,
-                alphaThreshold: 0);
-        }
-
-        public static WriteableBitmap ToWriteableBitmap(this BitmapSource bitmapSource)
-        {
-            if (bitmapSource is null)
-            {
-                throw new ArgumentNullException(nameof(bitmapSource));
-            }
-
-            bitmapSource = bitmapSource.EnsureRelativeUriLocation();
-
-            if (bitmapSource.Format == PixelFormats.Pbgra32)
-            {
-                return new WriteableBitmap(bitmapSource);
-            }
-
-            var formattedBitmapSource = new FormatConvertedBitmap();
-            formattedBitmapSource.BeginInit();
-            formattedBitmapSource.Source = bitmapSource;
-            formattedBitmapSource.DestinationFormat = PixelFormats.Pbgra32;
-            formattedBitmapSource.EndInit();
-            return new WriteableBitmap(formattedBitmapSource);
-        }
-
-        [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
-        [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
-        public static WriteableBitmap ToWriteableBitmapWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
-        {
-            if (source is null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (pixelColors is null)
-            {
-                throw new ArgumentNullException(nameof(pixelColors));
-            }
-
-            if (source.PixelWidth != pixelColors.GetLength(0))
-            {
-                throw new ArgumentOutOfRangeException(nameof(pixelColors));
-            }
-
-            if (source.PixelHeight != pixelColors.GetLength(1))
-            {
-                throw new ArgumentOutOfRangeException(nameof(pixelColors));
-            }
-
-            if (source.Format != PixelFormats.Bgra32)
-            {
-                source = new FormatConvertedBitmap(
-                    source,
-                    PixelFormats.Bgra32,
-                    destinationPalette: null,
-                    0);
-            }
-
-            var stride = source.PixelWidth * source.GetBytesPerPixel();
-            var writeableBitmap = new WriteableBitmap(source);
-
-            writeableBitmap.WritePixels(
-                new Int32Rect(
-                    0,
-                    0,
-                    source.PixelWidth,
-                    source.PixelHeight),
-                pixelColors,
-                stride,
                 0);
-
-            return writeableBitmap;
         }
+
+        var stride = source.PixelWidth * source.GetBytesPerPixel();
+        var writeableBitmap = new WriteableBitmap(source);
+
+        writeableBitmap.WritePixels(
+            new Int32Rect(
+                0,
+                0,
+                source.PixelWidth,
+                source.PixelHeight),
+            pixelColors,
+            stride,
+            0);
+
+        return writeableBitmap;
     }
 }

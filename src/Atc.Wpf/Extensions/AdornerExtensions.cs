@@ -1,156 +1,153 @@
-using System.Windows.Documents;
-
 // ReSharper disable once CheckNamespace
-namespace System.Windows
+namespace System.Windows;
+
+/// <summary>
+/// Extension methods for Adorner.
+/// </summary>
+public static class AdornerExtensions
 {
     /// <summary>
-    /// Extension methods for Adorner.
+    /// Tries the add adorner.
     /// </summary>
-    public static class AdornerExtensions
+    /// <typeparam name="T">The element type.</typeparam>
+    /// <param name="uiElement">The UI element.</param>
+    /// <param name="adorner">The adorner.</param>
+    public static void TryAddAdorner<T>(this UIElement uiElement, Adorner adorner)
+        where T : Adorner
     {
-        /// <summary>
-        /// Tries the add adorner.
-        /// </summary>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <param name="uiElement">The UI element.</param>
-        /// <param name="adorner">The adorner.</param>
-        public static void TryAddAdorner<T>(this UIElement uiElement, Adorner adorner)
-            where T : Adorner
+        if (uiElement is null)
         {
-            if (uiElement is null)
-            {
-                throw new ArgumentNullException(nameof(uiElement));
-            }
-
-            if (adorner is null)
-            {
-                throw new ArgumentNullException(nameof(adorner));
-            }
-
-            var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
-            if (adornerLayer != null && !adornerLayer.ContainsAdorner<T>(uiElement))
-            {
-                adornerLayer.Add(adorner);
-            }
+            throw new ArgumentNullException(nameof(uiElement));
         }
 
-        /// <summary>
-        /// Tries the remove adorners.
-        /// </summary>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <param name="uiElement">The UI element.</param>
-        public static void TryRemoveAdorners<T>(this UIElement uiElement)
-            where T : Adorner
+        if (adorner is null)
         {
-            if (uiElement is null)
-            {
-                throw new ArgumentNullException(nameof(uiElement));
-            }
-
-            var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
-            adornerLayer?.RemoveAdorners<T>(uiElement);
+            throw new ArgumentNullException(nameof(adorner));
         }
 
-        /// <summary>
-        /// Determines whether the specified adorner layer contains adorner.
-        /// </summary>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <param name="adornerLayer">The adorner layer.</param>
-        /// <param name="uiElement">The UI element.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified adorner layer contains adorner; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool ContainsAdorner<T>(this AdornerLayer adornerLayer, UIElement uiElement)
-            where T : Adorner
+        var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
+        if (adornerLayer != null && !adornerLayer.ContainsAdorner<T>(uiElement))
         {
-            if (adornerLayer is null)
-            {
-                throw new ArgumentNullException(nameof(adornerLayer));
-            }
+            adornerLayer.Add(adorner);
+        }
+    }
 
-            if (uiElement is null)
-            {
-                throw new ArgumentNullException(nameof(uiElement));
-            }
+    /// <summary>
+    /// Tries the remove adorners.
+    /// </summary>
+    /// <typeparam name="T">The element type.</typeparam>
+    /// <param name="uiElement">The UI element.</param>
+    public static void TryRemoveAdorners<T>(this UIElement uiElement)
+        where T : Adorner
+    {
+        if (uiElement is null)
+        {
+            throw new ArgumentNullException(nameof(uiElement));
+        }
 
-            var adorners = adornerLayer.GetAdorners(uiElement);
-            if (adorners is null)
-            {
-                return false;
-            }
+        var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
+        adornerLayer?.RemoveAdorners<T>(uiElement);
+    }
 
-            for (var i = adorners.Length - 1; i >= 0; i--)
-            {
-                if (adorners[i] is T)
-                {
-                    return true;
-                }
-            }
+    /// <summary>
+    /// Determines whether the specified adorner layer contains adorner.
+    /// </summary>
+    /// <typeparam name="T">The element type.</typeparam>
+    /// <param name="adornerLayer">The adorner layer.</param>
+    /// <param name="uiElement">The UI element.</param>
+    /// <returns>
+    ///   <c>true</c> if the specified adorner layer contains adorner; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool ContainsAdorner<T>(this AdornerLayer adornerLayer, UIElement uiElement)
+        where T : Adorner
+    {
+        if (adornerLayer is null)
+        {
+            throw new ArgumentNullException(nameof(adornerLayer));
+        }
 
+        if (uiElement is null)
+        {
+            throw new ArgumentNullException(nameof(uiElement));
+        }
+
+        var adorners = adornerLayer.GetAdorners(uiElement);
+        if (adorners is null)
+        {
             return false;
         }
 
-        /// <summary>
-        /// Removes the adorners.
-        /// </summary>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <param name="adornerLayer">The adorner layer.</param>
-        /// <param name="uiElement">The UI element.</param>
-        public static void RemoveAdorners<T>(this AdornerLayer adornerLayer, UIElement uiElement)
-            where T : Adorner
+        for (var i = adorners.Length - 1; i >= 0; i--)
         {
-            if (adornerLayer is null)
+            if (adorners[i] is T)
             {
-                throw new ArgumentNullException(nameof(adornerLayer));
-            }
-
-            if (uiElement is null)
-            {
-                throw new ArgumentNullException(nameof(uiElement));
-            }
-
-            var adorners = adornerLayer.GetAdorners(uiElement);
-            if (adorners is null)
-            {
-                return;
-            }
-
-            for (var i = adorners.Length - 1; i >= 0; i--)
-            {
-                if (adorners[i] is T)
-                {
-                    adornerLayer.Remove(adorners[i]);
-                }
+                return true;
             }
         }
 
-        /// <summary>
-        /// Removes all adorners.
-        /// </summary>
-        /// <param name="adornerLayer">The adorner layer.</param>
-        /// <param name="uiElement">The UI element.</param>
-        public static void RemoveAllAdorners(this AdornerLayer adornerLayer, UIElement uiElement)
+        return false;
+    }
+
+    /// <summary>
+    /// Removes the adorners.
+    /// </summary>
+    /// <typeparam name="T">The element type.</typeparam>
+    /// <param name="adornerLayer">The adorner layer.</param>
+    /// <param name="uiElement">The UI element.</param>
+    public static void RemoveAdorners<T>(this AdornerLayer adornerLayer, UIElement uiElement)
+        where T : Adorner
+    {
+        if (adornerLayer is null)
         {
-            if (adornerLayer is null)
-            {
-                throw new ArgumentNullException(nameof(adornerLayer));
-            }
+            throw new ArgumentNullException(nameof(adornerLayer));
+        }
 
-            if (uiElement is null)
-            {
-                throw new ArgumentNullException(nameof(uiElement));
-            }
+        if (uiElement is null)
+        {
+            throw new ArgumentNullException(nameof(uiElement));
+        }
 
-            var adorners = adornerLayer.GetAdorners(uiElement);
-            if (adorners is null)
-            {
-                return;
-            }
+        var adorners = adornerLayer.GetAdorners(uiElement);
+        if (adorners is null)
+        {
+            return;
+        }
 
-            foreach (Adorner toRemove in adorners)
+        for (var i = adorners.Length - 1; i >= 0; i--)
+        {
+            if (adorners[i] is T)
             {
-                adornerLayer.Remove(toRemove);
+                adornerLayer.Remove(adorners[i]);
             }
+        }
+    }
+
+    /// <summary>
+    /// Removes all adorners.
+    /// </summary>
+    /// <param name="adornerLayer">The adorner layer.</param>
+    /// <param name="uiElement">The UI element.</param>
+    public static void RemoveAllAdorners(this AdornerLayer adornerLayer, UIElement uiElement)
+    {
+        if (adornerLayer is null)
+        {
+            throw new ArgumentNullException(nameof(adornerLayer));
+        }
+
+        if (uiElement is null)
+        {
+            throw new ArgumentNullException(nameof(uiElement));
+        }
+
+        var adorners = adornerLayer.GetAdorners(uiElement);
+        if (adorners is null)
+        {
+            return;
+        }
+
+        foreach (Adorner toRemove in adorners)
+        {
+            adornerLayer.Remove(toRemove);
         }
     }
 }

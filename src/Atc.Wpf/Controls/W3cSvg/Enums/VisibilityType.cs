@@ -1,9 +1,8 @@
 // ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Controls.W3cSvg
+namespace Atc.Wpf.Controls.W3cSvg;
+
+internal enum VisibilityType
 {
-    internal enum VisibilityType
-    {
-        Visible,
-        Hidden,
-    }
+    Visible,
+    Hidden,
 }

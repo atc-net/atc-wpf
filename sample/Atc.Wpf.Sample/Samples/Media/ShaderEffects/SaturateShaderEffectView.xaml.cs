@@ -1,20 +1,17 @@
-using System.Windows;
+namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects;
 
-namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects
+/// <summary>
+/// Interaction logic for SaturateShaderEffectView.
+/// </summary>
+public partial class SaturateShaderEffectView
 {
-    /// <summary>
-    /// Interaction logic for SaturateShaderEffectView.
-    /// </summary>
-    public partial class SaturateShaderEffectView
+    public SaturateShaderEffectView()
     {
-        public SaturateShaderEffectView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
-        private void ResetOnClick(object sender, RoutedEventArgs e)
-        {
-            this.SliderProgress.Value = 0;
-        }
+    private void ResetOnClick(object sender, RoutedEventArgs e)
+    {
+        this.SliderProgress.Value = 0;
     }
 }

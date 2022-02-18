@@ -1,40 +1,35 @@
-using System;
-using System.Globalization;
-using System.Windows.Data;
+namespace Atc.Wpf.ValueConverters;
 
-namespace Atc.Wpf.ValueConverters
+/// <summary>
+/// ValueConverter: Bool To Inverse Bool.
+/// </summary>
+[ValueConversion(typeof(bool), typeof(bool))]
+public class BoolToInverseBoolValueConverter : IValueConverter
 {
-    /// <summary>
-    /// ValueConverter: Bool To Inverse Bool.
-    /// </summary>
-    [ValueConversion(typeof(bool), typeof(bool))]
-    public class BoolToInverseBoolValueConverter : IValueConverter
+    /// <inheritdoc />
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        /// <inheritdoc />
-        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+        return Convert(value);
+    }
+
+    /// <inheritdoc />
+    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return Convert(value);
+    }
+
+    private static bool Convert(object? value)
+    {
+        if (value is null)
         {
-            return Convert(value);
+            throw new ArgumentNullException(nameof(value));
         }
 
-        /// <inheritdoc />
-        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+        if (value is not bool boolValue)
         {
-            return Convert(value);
+            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
         }
 
-        private static bool Convert(object? value)
-        {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            if (value is not bool boolValue)
-            {
-                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
-            }
-
-            return !boolValue;
-        }
+        return !boolValue;
     }
 }

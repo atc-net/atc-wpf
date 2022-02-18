@@ -1,32 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Data;
+namespace Atc.Wpf.ValueConverters;
 
-namespace Atc.Wpf.ValueConverters
+/// <summary>
+/// ValueConverter: Multi Bool To Bool.
+/// </summary>
+[ValueConversion(typeof(List<bool>), typeof(bool))]
+public class MultiBoolToBoolValueConverter : IMultiValueConverter
 {
-    /// <summary>
-    /// ValueConverter: Multi Bool To Bool.
-    /// </summary>
-    [ValueConversion(typeof(List<bool>), typeof(bool))]
-    public class MultiBoolToBoolValueConverter : IMultiValueConverter
+    /// <inheritdoc />
+    public object Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        /// <inheritdoc />
-        public object Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)
+        if (values is null)
         {
-            if (values is null)
-            {
-                throw new ArgumentNullException(nameof(values));
-            }
-
-            return values.All(value => value is not bool boolValue || boolValue);
+            throw new ArgumentNullException(nameof(values));
         }
 
-        /// <inheritdoc />
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotSupportedException("This is a OneWay converter.");
-        }
+        return values.All(value => value is not bool boolValue || boolValue);
+    }
+
+    /// <inheritdoc />
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+    {
+        throw new NotSupportedException("This is a OneWay converter.");
     }
 }

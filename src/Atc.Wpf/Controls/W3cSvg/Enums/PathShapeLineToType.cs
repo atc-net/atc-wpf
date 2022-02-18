@@ -1,10 +1,9 @@
 // ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Controls.W3cSvg
+namespace Atc.Wpf.Controls.W3cSvg;
+
+internal enum PathShapeLineToType
 {
-    internal enum PathShapeLineToType
-    {
-        Point,
-        Horizontal,
-        Vertical,
-    }
+    Point,
+    Horizontal,
+    Vertical,
 }

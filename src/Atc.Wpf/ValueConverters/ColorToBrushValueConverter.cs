@@ -1,46 +1,40 @@
-using System;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media;
+namespace Atc.Wpf.ValueConverters;
 
-namespace Atc.Wpf.ValueConverters
+/// <summary>
+/// ValueConverter: Color To (SolidColor)Brush.
+/// </summary>
+[ValueConversion(typeof(Color), typeof(SolidColorBrush))]
+public class ColorToBrushValueConverter : IValueConverter
 {
-    /// <summary>
-    /// ValueConverter: Color To (SolidColor)Brush.
-    /// </summary>
-    [ValueConversion(typeof(Color), typeof(SolidColorBrush))]
-    public class ColorToBrushValueConverter : IValueConverter
+    /// <inheritdoc />
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        /// <inheritdoc />
-        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+        if (value is null)
         {
-            if (value is null)
-            {
-                return Brushes.DeepPink;
-            }
-
-            if (value is not Color color)
-            {
-                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
-            }
-
-            return new SolidColorBrush(color);
+            return Brushes.DeepPink;
         }
 
-        /// <inheritdoc />
-        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+        if (value is not Color color)
         {
-            if (value is null)
-            {
-                return Colors.DeepPink;
-            }
-
-            if (value is not SolidColorBrush brush)
-            {
-                throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(SolidColorBrush)");
-            }
-
-            return brush.Color;
+            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
         }
+
+        return new SolidColorBrush(color);
+    }
+
+    /// <inheritdoc />
+    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is null)
+        {
+            return Colors.DeepPink;
+        }
+
+        if (value is not SolidColorBrush brush)
+        {
+            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(SolidColorBrush)");
+        }
+
+        return brush.Color;
     }
 }

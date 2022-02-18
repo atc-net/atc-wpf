@@ -1,20 +1,17 @@
-using System.Windows;
+namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects;
 
-namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects
+/// <summary>
+/// Interaction logic for FadeShaderEffectView.
+/// </summary>
+public partial class FadeShaderEffectView
 {
-    /// <summary>
-    /// Interaction logic for FadeShaderEffectView.
-    /// </summary>
-    public partial class FadeShaderEffectView
+    public FadeShaderEffectView()
     {
-        public FadeShaderEffectView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
-        private void ResetOnClick(object sender, RoutedEventArgs e)
-        {
-            this.SliderStrength.Value = 0;
-        }
+    private void ResetOnClick(object sender, RoutedEventArgs e)
+    {
+        this.SliderStrength.Value = 0;
     }
 }

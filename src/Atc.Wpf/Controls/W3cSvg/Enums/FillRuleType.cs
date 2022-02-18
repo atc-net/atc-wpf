@@ -1,9 +1,8 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.Controls.W3cSvg
+namespace Atc.Wpf.Controls.W3cSvg;
+
+internal enum FillRuleType
 {
-    internal enum FillRuleType
-    {
-        NonZero,
-        EvenOdd,
-    }
+    NonZero,
+    EvenOdd,
 }

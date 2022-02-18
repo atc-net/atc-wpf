@@ -1,13 +1,12 @@
-namespace Atc.Wpf.Sample.Samples.Controls
+namespace Atc.Wpf.Sample.Samples.Controls;
+
+/// <summary>
+/// Interaction logic for SvgImageView.
+/// </summary>
+public partial class SvgImageView
 {
-    /// <summary>
-    /// Interaction logic for SvgImageView.
-    /// </summary>
-    public partial class SvgImageView
+    public SvgImageView()
     {
-        public SvgImageView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

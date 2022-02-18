@@ -1,18 +1,18 @@
-namespace Atc.Wpf.Sample.Samples.Controls
-{
-    /// <summary>
-    /// Interaction logic for RichTextBoxExView.
-    /// </summary>
-    public partial class RichTextBoxExView
-    {
-        public RichTextBoxExView()
-        {
-            this.InitializeComponent();
-            this.DataContext = this;
-        }
+namespace Atc.Wpf.Sample.Samples.Controls;
 
-        public static string XamlCode =>
-@"<UserControl x:Class=""Atc.Wpf.Sample.Samples.Controls.GridExView""
+/// <summary>
+/// Interaction logic for RichTextBoxExView.
+/// </summary>
+public partial class RichTextBoxExView
+{
+    public RichTextBoxExView()
+    {
+        this.InitializeComponent();
+        this.DataContext = this;
+    }
+
+    public static string XamlCode =>
+        @"<UserControl x:Class=""Atc.Wpf.Sample.Samples.Controls.GridExView""
              xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
              xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""
              xmlns:atc=""https://github.com/atc-net/atc-wpf""
@@ -43,8 +43,8 @@ namespace Atc.Wpf.Sample.Samples.Controls
 </UserControl>
 ";
 
-        public static string CSharpCode =>
-@"namespace Atc.Wpf.Sample.Samples.Layouts
+    public static string CSharpCode =>
+        @"namespace Atc.Wpf.Sample.Samples.Layouts
 {
     /// <summary>
     /// Interaction logic for GridExView.
@@ -57,5 +57,4 @@ namespace Atc.Wpf.Sample.Samples.Controls
         }
     }
 }";
-}
 }
