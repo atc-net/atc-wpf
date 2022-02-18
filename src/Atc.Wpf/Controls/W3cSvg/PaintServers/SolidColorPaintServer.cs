@@ -30,6 +30,5 @@ internal class SolidColorPaintServer : PaintServer
         return this.Brush;
     }
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{nameof(Color)}: {Color}";
 }

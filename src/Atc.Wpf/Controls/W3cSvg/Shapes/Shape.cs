@@ -1,6 +1,5 @@
 // ReSharper disable VirtualMemberCallInConstructor
 // ReSharper disable VirtualMemberNeverOverridden.Global
-#pragma warning disable 8618
 namespace Atc.Wpf.Controls.W3cSvg.Shapes;
 
 [SuppressMessage("Critical Code Smell", "S1699:Constructors should only call non-overridable methods", Justification = "OK.")]
@@ -16,9 +15,15 @@ internal class Shape
 
     public Shape(Svg svg, XmlNode? node = null, Shape? parent = null)
     {
-        this.Id = node == null
-            ? "<null>"
-            : SvgXmlUtil.AttrValue(node, "id");
+        if (node is null)
+        {
+            this.Id = "<null>";
+        }
+        else
+        {
+            var attrValue = SvgXmlUtil.AttrValue(node, "id");
+            this.Id = attrValue ?? "<null>";
+        }
 
         this.Opacity = 1;
         this.Parent = parent;
@@ -355,10 +360,20 @@ internal class Shape
                 this.GetTextStyle().FontSize = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
                 return;
             case SvgTagConstants.FontWeight:
-                this.GetTextStyle().FontWeight = (FontWeight)new FontWeightConverter().ConvertFromString(value);
+                var convertFontWeight = new FontWeightConverter().ConvertFromString(value);
+                if (convertFontWeight is not null)
+                {
+                    this.GetTextStyle().FontWeight = (FontWeight)convertFontWeight;
+                }
+
                 return;
             case SvgTagConstants.FontStyle:
-                this.GetTextStyle().FontStyle = (FontStyle)new FontStyleConverter().ConvertFromString(value);
+                var convertFontStyle = new FontStyleConverter().ConvertFromString(value);
+                if (convertFontStyle is not null)
+                {
+                    this.GetTextStyle().FontStyle = (FontStyle)convertFontStyle;
+                }
+
                 return;
             case SvgTagConstants.TextDecoration:
             {
@@ -423,4 +438,3 @@ internal class Shape
 
     private Stroke GetStroke() => this.stroke ??= new Stroke();
 }
-#pragma warning restore 8618

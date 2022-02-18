@@ -55,6 +55,5 @@ internal class UseShape : Shape
         }
     }
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Href)}: {Href}";
 }

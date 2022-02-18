@@ -83,7 +83,7 @@ public abstract class Source
     /// </returns>
     public Paragraph FormatCode(string source)
     {
-        return this.FormatCode(source, this.LineNumbers, this.Alternate, this.EmbedStyleSheet, false);
+        return this.FormatCodeHelper(source);
     }
 
     /// <summary>
@@ -95,8 +95,7 @@ public abstract class Source
     /// <returns>A string containing the HTML code fragment.</returns>
     protected abstract string MatchEval(Match match);
 
-    [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "OK.")]
-    private Paragraph FormatCode(string source, bool lineNumbers, bool alternate, bool embedStyleSheet, bool subCode)
+    private Paragraph FormatCodeHelper(string source)
     {
         var codeParagraph = new Paragraph();
         var sb = new StringBuilder(source);

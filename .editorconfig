@@ -1,4 +1,4 @@
-# ATC coding rules - https://github.com/atc-net/atc-coding-rules
+﻿# ATC coding rules - https://github.com/atc-net/atc-coding-rules
 # Version: 1.0.9
 # Updated: 01-02-2022
 # Location: Root
@@ -502,15 +502,19 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
-dotnet_diagnostic.IDE0057.severity = none           # Substring can be simplified
-dotnet_diagnostic.IDE0058.severity = none           # Expression value is never used
-dotnet_diagnostic.IDE0090.severity = none           # 'new' expression can be simplified
-dotnet_diagnostic.IDE1006.severity = none           # Naming rule violation: Missing prefix: '____RULE_VIOLATION____'
+[*.cs]
+csharp_style_prefer_index_operator = false                                      # IDE0056
+csharp_style_prefer_range_operator = false                                      # IDE0057
 
-dotnet_diagnostic.MA0016.severity = none            # TEMP
-dotnet_diagnostic.MA0048.severity = none            # TEMP
-dotnet_diagnostic.MA0049.severity = none            # TEMP
-dotnet_diagnostic.SA1202.severity = none            # TEMP
-dotnet_diagnostic.SA1307.severity = none            # TEMP
-dotnet_diagnostic.SA1308.severity = none            # TEMP
-dotnet_diagnostic.SA1401.severity = none            # TEMP
+##########################################
+# ATC temporary suppressions
+# generated @ Friday, February 18, 2022 12:01:54 PM
+# Please fix all generated temporary suppressions
+# either by code changes or move the
+# suppressions one by one to the relevant
+# 'Custom - Code Analyzers Rules' section.
+##########################################
+[*.cs]
+
+# Microsoft.CompilerErrors.Undocumented
+dotnet_diagnostic.CS8604.severity = none			# 56 occurrences - Possible null reference argument.

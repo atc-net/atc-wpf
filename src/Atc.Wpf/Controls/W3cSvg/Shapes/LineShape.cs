@@ -22,6 +22,5 @@ internal class LineShape : Shape
 
     public Point P2 { get; }
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{base.ToString()}, {nameof(P1)}: ({P1}), {nameof(P2)}: ({P2})";
 }

@@ -124,8 +124,8 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
     /// <inheritdoc />
     public void RaisePropertyChanged<T>(
         string propertyName,
-        T oldValue = default,
-        T newValue = default,
+        T? oldValue = default,
+        T? newValue = default,
         bool broadcast = false)
     {
         if (string.IsNullOrEmpty(propertyName))

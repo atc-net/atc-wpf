@@ -86,6 +86,5 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
         return brush;
     }
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{nameof(Cx)}: {Cx}, {nameof(Cy)}: {Cy}, {nameof(Fx)}: {Fx}, {nameof(Fy)}: {Fy}, {nameof(R)}: {R}";
 }

@@ -4,7 +4,6 @@ namespace Atc.Wpf.WindowsNative.Structs;
 [StructLayout(LayoutKind.Sequential)]
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
 [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "OK.")]
-[SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "OK.")]
 [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "OK.")]
 public struct RECT
 {

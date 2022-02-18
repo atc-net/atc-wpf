@@ -22,7 +22,7 @@ public partial class MainWindow
         vm!.OnLoaded(this, args);
     }
 
-    private void OnClosing(object sender, CancelEventArgs args)
+    private void OnClosing(object? sender, CancelEventArgs args)
     {
         var vm = this.DataContext as IMainWindowViewModel;
         vm!.OnClosing(this, args);

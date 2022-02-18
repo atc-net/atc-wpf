@@ -21,6 +21,5 @@ internal class FilterFeGaussianBlur : FilterBaseFe
             Radius = this.StdDeviationX,
         };
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{base.ToString()}, {nameof(In)}: {In}, {nameof(StdDeviationX)}: {StdDeviationX}, {nameof(StdDeviationY)}: {StdDeviationY}";
 }

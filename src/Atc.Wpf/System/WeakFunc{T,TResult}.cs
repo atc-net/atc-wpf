@@ -101,7 +101,7 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     /// </summary>
     /// <param name="parameter">A parameter to be passed to the action.</param>
     /// <returns>The result of the Func stored as reference.</returns>
-    public TResult Execute(T parameter = default)
+    public TResult Execute(T? parameter = default)
     {
         if (this.staticFunc is not null)
         {

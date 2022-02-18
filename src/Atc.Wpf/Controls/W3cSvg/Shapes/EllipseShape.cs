@@ -27,6 +27,5 @@ internal class EllipseShape : Shape
 
     public double Ry { get; }
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{base.ToString()}, {nameof(Cx)}: {Cx}, {nameof(Cy)}: {Cy}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}";
 }

@@ -7,7 +7,6 @@ namespace Atc.Wpf.ValueConverters;
 public class BoolToWidthValueConverter : IValueConverter
 {
     /// <inheritdoc />
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is null)
@@ -29,15 +28,11 @@ public class BoolToWidthValueConverter : IValueConverter
         }
 
         var lengthConverter = new LengthConverter();
-        try
-        {
-            // ReSharper disable once PossibleNullReferenceException
-            width = (double)lengthConverter.ConvertFromString(parameter.ToString());
-        }
-        catch
-        {
-            // Dummy
-        }
+        var convertFromString = lengthConverter.ConvertFromString(parameter.ToString());
+        width = convertFromString is not null &&
+                double.TryParse(convertFromString.ToString(), NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo, out var result)
+            ? result
+            : 0;
 
         return boolValue
             ? width

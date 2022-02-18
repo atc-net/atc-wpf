@@ -7,7 +7,6 @@ namespace Atc.Wpf.Controls;
 ///
 /// Partially based on work at http://rachel53461.wordpress.com/2011/09/17/wpf-grids-rowcolumn-count-properties.
 /// </summary>
-[SuppressMessage("Style", "IDE0083:Use pattern matching", Justification = "OK.")]
 public class AutoGrid : Grid
 {
     /// <summary>

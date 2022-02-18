@@ -151,7 +151,12 @@ public class GridEx : Grid
         gridLengths.AddRange(sa.Select(length =>
         {
             var convertFromString = gridLengthConverter.ConvertFromString(length);
-            return (GridLength)(GridLength?)convertFromString;
+            if (convertFromString is GridLength gridLength)
+            {
+                return gridLength;
+            }
+
+            return GridLength.Auto;
         }));
 
         return gridLengths;

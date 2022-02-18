@@ -13,8 +13,8 @@ namespace Atc.Wpf.Controls;
 [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "OK.")]
 public class SvgImage : Control
 {
-    private readonly TranslateTransform translateTransform = new TranslateTransform();
-    private readonly ScaleTransform scaleTransform = new ScaleTransform();
+    private readonly TranslateTransform translateTransform = new ();
+    private readonly ScaleTransform scaleTransform = new ();
     private Drawing? drawing;
     private SvgRender? svgRender;
     private Action<SvgRender>? loadImage;
@@ -165,6 +165,7 @@ public class SvgImage : Control
     }
 
     [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
+    [SuppressMessage("Design", "MA0016:Prefer returning collection abstraction instead of implementation", Justification = "OK.")]
     public Dictionary<string, Brush> CustomBrushes
     {
         get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);
@@ -255,7 +256,11 @@ public class SvgImage : Control
         {
             foreach (var (key, value) in svgRender.Svg.PaintServers.GetServers())
             {
-                brushesFromSvg[key] = value.GetBrush();
+                var brush = value.GetBrush();
+                if (brush is not null)
+                {
+                    brushesFromSvg[key] = brush;
+                }
             }
         }
 

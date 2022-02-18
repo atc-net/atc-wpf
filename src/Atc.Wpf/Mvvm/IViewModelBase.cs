@@ -63,7 +63,7 @@ public interface IViewModelBase : IObservableObject, ICleanup
     /// <exception cref="ArgumentException">This method cannot be called with an empty string, propertyName</exception>
     void RaisePropertyChanged<T>(
         string propertyName,
-        T oldValue = default,
-        T newValue = default,
+        T? oldValue = default,
+        T? newValue = default,
         bool broadcast = false);
 }

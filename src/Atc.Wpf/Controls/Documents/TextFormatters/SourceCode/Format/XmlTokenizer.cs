@@ -3,8 +3,6 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 /// <summary>
 /// XML tokenizer, tokens are designed to match Visual Studio syntax highlighting.
 /// </summary>
-[SuppressMessage("Design", "MA0048:File name must match type name", Justification = "OK.")]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "OK.")]
 internal class XmlTokenizer
 {
     private string input = string.Empty;
@@ -55,37 +53,18 @@ internal class XmlTokenizer
             return new XmlToken(XmlTokenKind.Eof, 0);
         }
 
-        XmlToken token;
-        switch (this.mode)
+        XmlToken token = this.mode switch
         {
-            case XmlTokenizerMode.AfterAttributeEquals:
-                token = this.TokenizeAttributeValue();
-                break;
-            case XmlTokenizerMode.AfterAttributeName:
-                token = this.TokenizeSimple("=", XmlTokenKind.Equals, XmlTokenizerMode.AfterAttributeEquals);
-                break;
-            case XmlTokenizerMode.AfterOpen:
-                token = this.TokenizeName(XmlTokenKind.ElementName, XmlTokenizerMode.InsideElement);
-                break;
-            case XmlTokenizerMode.InsideCData:
-                token = this.TokenizeInsideCData();
-                break;
-            case XmlTokenizerMode.InsideComment:
-                token = this.TokenizeInsideComment();
-                break;
-            case XmlTokenizerMode.InsideElement:
-                token = this.TokenizeInsideElement();
-                break;
-            case XmlTokenizerMode.InsideProcessingInstruction:
-                token = this.TokenizeInsideProcessingInstruction();
-                break;
-            case XmlTokenizerMode.OutsideElement:
-                token = this.TokenizeOutsideElement();
-                break;
-            default:
-                token = new XmlToken(XmlTokenKind.Eof, 0);
-                break;
-        }
+            XmlTokenizerMode.AfterAttributeEquals => this.TokenizeAttributeValue(),
+            XmlTokenizerMode.AfterAttributeName => this.TokenizeSimple("=", XmlTokenKind.Equals, XmlTokenizerMode.AfterAttributeEquals),
+            XmlTokenizerMode.AfterOpen => this.TokenizeName(XmlTokenKind.ElementName, XmlTokenizerMode.InsideElement),
+            XmlTokenizerMode.InsideCData => this.TokenizeInsideCData(),
+            XmlTokenizerMode.InsideComment => this.TokenizeInsideComment(),
+            XmlTokenizerMode.InsideElement => this.TokenizeInsideElement(),
+            XmlTokenizerMode.InsideProcessingInstruction => this.TokenizeInsideProcessingInstruction(),
+            XmlTokenizerMode.OutsideElement => this.TokenizeOutsideElement(),
+            _ => new XmlToken(XmlTokenKind.Eof, 0)
+        };
 
         return token;
     }
@@ -189,15 +168,12 @@ internal class XmlTokenizer
             return new XmlToken(XmlTokenKind.Eof, 0);
         }
 
-        switch (this.input[this.position])
+        return this.input[this.position] switch
         {
-            case '<':
-                return this.TokenizeOpen();
-            case '&':
-                return this.TokenizeEntity();
-            default:
-                return this.TokenizeText();
-        }
+            '<' => this.TokenizeOpen(),
+            '&' => this.TokenizeEntity(),
+            _ => this.TokenizeText()
+        };
     }
 
     private XmlToken TokenizeSimple(string text, XmlTokenKind kind, XmlTokenizerMode nextMode)

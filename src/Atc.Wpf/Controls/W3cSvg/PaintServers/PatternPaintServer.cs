@@ -82,6 +82,5 @@ internal class PatternPaintServer : PaintServer
         return brush;
     }
 
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public override string ToString() => $"{nameof(elements)}: {elements}, {nameof(patternPaintServers)}: {patternPaintServers}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(PatternTransform)}: {PatternTransform}, {nameof(PatternUnits)}: {PatternUnits}";
 }

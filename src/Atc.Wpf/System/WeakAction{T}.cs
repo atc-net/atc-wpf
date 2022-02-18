@@ -101,7 +101,7 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     /// is still alive.
     /// </summary>
     /// <param name="parameter">A parameter to be passed to the action.</param>
-    public void Execute(T parameter = default)
+    public void Execute(T? parameter = default)
     {
         if (this.staticAction is not null)
         {

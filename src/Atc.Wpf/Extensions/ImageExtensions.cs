@@ -15,8 +15,8 @@ public static class ImageExtensions
             return renderTargetBitmap.ToBitmapImage();
         }
 
-        if (image.Source.ToString(GlobalizationConstants.EnglishCultureInfo).Contains("/", StringComparison.Ordinal) ||
-            image.Source.ToString(GlobalizationConstants.EnglishCultureInfo).Contains("\\", StringComparison.Ordinal))
+        if (image.Source.ToString(GlobalizationConstants.EnglishCultureInfo).Contains('/', StringComparison.Ordinal) ||
+            image.Source.ToString(GlobalizationConstants.EnglishCultureInfo).Contains('\\', StringComparison.Ordinal))
         {
             // Get the source bitmap from Uri
             return BitmapImageFactory.Create(image.Source.ToString(GlobalizationConstants.EnglishCultureInfo));

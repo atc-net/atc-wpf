@@ -4,7 +4,6 @@ namespace Atc.Wpf.Media;
 /// Hsv Color.
 /// </summary>
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
-[SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "OK.")]
 [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "OK.")]
 [StructLayout(LayoutKind.Auto)]
 public struct HsvColor
