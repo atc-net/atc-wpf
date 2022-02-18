@@ -1,7 +1,8 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.6
-# Updated: 11-05-2021
+# Version: 1.0.9
+# Updated: 01-02-2022
 # Location: Root
+# Distribution: DotNet6
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
 ##########################################
@@ -58,6 +59,12 @@ end_of_line = crlf
 # Bash Files
 [*.sh]
 end_of_line = lf
+indent_size = 2
+
+# Powershell
+[*.ps1]
+end_of_line = lf
+indent_size = 2
 
 # Makefiles
 [Makefile]
@@ -252,6 +259,7 @@ csharp_space_between_square_brackets = false
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#wrap-options
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
+csharp_style_namespace_declarations = file_scoped:suggestion
 
 ##########################################
 # .NET Naming Conventions
@@ -445,9 +453,11 @@ dotnet_diagnostic.MA0048.severity = error           # https://github.com/atc-net
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1014.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1014.md
+dotnet_diagnostic.CA1068.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1068.md
 dotnet_diagnostic.CA1707.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1707.md
 dotnet_diagnostic.CA2007.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
-dotnet_diagnostic.IDE0058.severity = error          # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/IDE0058.md
+dotnet_diagnostic.IDE0058.severity = none           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/IDE0058.md
 
 
 # Microsoft - Compiler Errors
@@ -467,6 +477,7 @@ dotnet_diagnostic.SA1122.severity = error           # https://github.com/atc-net
 dotnet_diagnostic.SA1133.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1133.md
 dotnet_diagnostic.SA1200.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1200.md
 dotnet_diagnostic.SA1201.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1201.md
+dotnet_diagnostic.SA1202.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1202.md
 dotnet_diagnostic.SA1204.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1204.md
 dotnet_diagnostic.SA1413.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1413.md
 dotnet_diagnostic.SA1600.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1600.md
@@ -475,11 +486,17 @@ dotnet_diagnostic.SA1604.severity = none            # https://github.com/atc-net
 dotnet_diagnostic.SA1623.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1623.md
 dotnet_diagnostic.SA1629.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1629.md
 dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1633.md
+dotnet_diagnostic.SA1649.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1649.md
 
 
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
 dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/SonarAnalyzerCSharp/S1135.md
+
+
+##########################################
+# Custom - File Extension Settings
+##########################################
 
 
 ##########################################
