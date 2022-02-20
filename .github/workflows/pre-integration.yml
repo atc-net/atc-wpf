@@ -8,7 +8,7 @@ on:
       - reopened
 
 jobs:
-  dotnet5-build:
+  dotnet-build:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout repository
@@ -34,7 +34,7 @@ jobs:
   dotnet-test:
     runs-on: windows-latest
     needs:
-      - dotnet5-build
+      - dotnet-build
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v2
