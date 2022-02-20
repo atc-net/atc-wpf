@@ -1,24 +1,21 @@
-using System.Windows.Documents;
+namespace Atc.Wpf.Controls.Documents.TextFormatters;
 
-namespace Atc.Wpf.Controls.Documents.TextFormatters
+/// <summary>
+/// Interface TextFormatter.
+/// </summary>
+public interface ITextFormatter
 {
     /// <summary>
-    /// Interface TextFormatter.
+    /// Gets the text.
     /// </summary>
-    public interface ITextFormatter
-    {
-        /// <summary>
-        /// Gets the text.
-        /// </summary>
-        /// <param name="document">The document.</param>
-        /// <returns>The text.</returns>
-        string GetText(FlowDocument document);
+    /// <param name="document">The document.</param>
+    /// <returns>The text.</returns>
+    string GetText(FlowDocument document);
 
-        /// <summary>
-        /// Sets the text.
-        /// </summary>
-        /// <param name="document">The document.</param>
-        /// <param name="text">The text.</param>
-        void SetText(FlowDocument document, string text);
-    }
+    /// <summary>
+    /// Sets the text.
+    /// </summary>
+    /// <param name="document">The document.</param>
+    /// <param name="text">The text.</param>
+    void SetText(FlowDocument document, string text);
 }

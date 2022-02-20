@@ -1,9 +1,6 @@
-using System.IO;
+namespace Atc.Wpf.Controls.W3cSvg.FileLoaders;
 
-namespace Atc.Wpf.Controls.W3cSvg.FileLoaders
+public interface IExternalFileLoader
 {
-    public interface IExternalFileLoader
-    {
-        Stream? LoadFile(string hRef, string svgFilename);
-    }
+    Stream? LoadFile(string hRef, string svgFilename);
 }

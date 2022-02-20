@@ -1,65 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using System.Windows.Data;
-using Atc.Wpf.ValueConverters;
-using Xunit;
+namespace Atc.Wpf.Tests.ValueConverters;
 
-namespace Atc.Wpf.Tests.ValueConverters
+public class ValidationErrorsToStringValueConverterTests
 {
-    public class ValidationErrorsToStringValueConverterTests
+    private readonly IValueConverter converter = new ValidationErrorsToStringValueConverter();
+
+    private readonly KeyValuePair<string, string>[] inputSet1 =
     {
-        private readonly IValueConverter converter = new ValidationErrorsToStringValueConverter();
+        new KeyValuePair<string, string>("Key1", "Error1"),
+    };
 
-        private readonly KeyValuePair<string, string>[] inputSet1 =
+    private readonly KeyValuePair<string, string>[] inputSet2 =
+    {
+        new KeyValuePair<string, string>("Key1", "Error1"),
+        new KeyValuePair<string, string>("Key2", "Error2"),
+    };
+
+    [Theory]
+    [InlineData("Error1", 1)]
+    [InlineData("Error1\nError2", 2)]
+    public void Convert(string expected, int inputSetNumber)
+    {
+        // Arrange
+        var errors = new ObservableCollection<ValidationError>();
+        KeyValuePair<string, string>[] testData = inputSetNumber switch
         {
-            new KeyValuePair<string, string>("Key1", "Error1"),
+            1 => inputSet1,
+            2 => inputSet2,
+            _ => Array.Empty<KeyValuePair<string, string>>()
         };
 
-        private readonly KeyValuePair<string, string>[] inputSet2 =
+        foreach (var (key, value) in testData)
         {
-            new KeyValuePair<string, string>("Key1", "Error1"),
-            new KeyValuePair<string, string>("Key2", "Error2"),
-        };
-
-        [Theory]
-        [InlineData("Error1", 1)]
-        [InlineData("Error1\nError2", 2)]
-        public void Convert(string expected, int inputSetNumber)
-        {
-            // Arrange
-            var errors = new ObservableCollection<ValidationError>();
-            KeyValuePair<string, string>[] testData = inputSetNumber switch
-            {
-                1 => inputSet1,
-                2 => inputSet2,
-                _ => Array.Empty<KeyValuePair<string, string>>()
-            };
-
-            foreach (var (key, value) in testData)
-            {
-                errors.Add(new ValidationError(new DataErrorValidationRule(), key, value, exception: null));
-            }
-
-            var input = new ReadOnlyObservableCollection<ValidationError>(errors);
-
-            // Atc
-            var actual = converter.Convert(input, targetType: null, parameter: null, culture: null);
-
-            // Arrange
-            Assert.Equal(expected, actual);
+            errors.Add(new ValidationError(new DataErrorValidationRule(), key, value, exception: null));
         }
 
-        [Fact]
-        public void ConvertBack_Should_Throw_Exception()
-        {
-            // Act
-            var exception = Record.Exception(() => converter.ConvertBack(value: null, targetType: null, parameter: null, culture: null));
+        var input = new ReadOnlyObservableCollection<ValidationError>(errors);
 
-            // Assert
-            Assert.IsType<NotSupportedException>(exception);
-            Assert.Equal("This is a OneWay converter.", exception.Message);
-        }
+        // Atc
+        var actual = converter.Convert(input, targetType: null, parameter: null, culture: null);
+
+        // Arrange
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void ConvertBack_Should_Throw_Exception()
+    {
+        // Act
+        var exception = Record.Exception(() => converter.ConvertBack(value: null, targetType: null, parameter: null, culture: null));
+
+        // Assert
+        Assert.IsType<NotSupportedException>(exception);
+        Assert.Equal("This is a OneWay converter.", exception.Message);
     }
 }

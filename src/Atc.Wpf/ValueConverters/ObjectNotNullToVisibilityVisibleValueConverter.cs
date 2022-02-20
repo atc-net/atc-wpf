@@ -1,28 +1,22 @@
-using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
+namespace Atc.Wpf.ValueConverters;
 
-namespace Atc.Wpf.ValueConverters
+/// <summary>
+/// ValueConverter: Object NotNull To Visibility-Visible.
+/// </summary>
+[ValueConversion(typeof(object), typeof(Visibility))]
+public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
 {
-    /// <summary>
-    /// ValueConverter: Object NotNull To Visibility-Visible.
-    /// </summary>
-    [ValueConversion(typeof(object), typeof(Visibility))]
-    public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
+    /// <inheritdoc />
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        /// <inheritdoc />
-        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value == null
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-        }
+        return value is null
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+    }
 
-        /// <inheritdoc />
-        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException("This is a OneWay converter.");
-        }
+    /// <inheritdoc />
+    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException("This is a OneWay converter.");
     }
 }

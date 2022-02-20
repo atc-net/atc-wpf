@@ -8,7 +8,7 @@ on:
       - reopened
 
 jobs:
-  dotnet5-build:
+  dotnet-build:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout repository
@@ -16,10 +16,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ⚙️ Setup dotnet 5.0.x
+      - name: ⚙️ Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
@@ -34,17 +34,17 @@ jobs:
   dotnet-test:
     runs-on: windows-latest
     needs:
-      - dotnet5-build
+      - dotnet-build
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: ⚙️ Setup dotnet 5.0.x
+      - name: ⚙️ Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config

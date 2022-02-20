@@ -1,22 +1,18 @@
-using System;
-using System.Windows;
+namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects;
 
-namespace Atc.Wpf.Sample.Samples.Media.ShaderEffects
+/// <summary>
+/// Interaction logic for ContrastAdjustShaderEffectView.
+/// </summary>
+public partial class ContrastAdjustShaderEffectView
 {
-    /// <summary>
-    /// Interaction logic for ContrastAdjustShaderEffectView.
-    /// </summary>
-    public partial class ContrastAdjustShaderEffectView
+    public ContrastAdjustShaderEffectView()
     {
-        public ContrastAdjustShaderEffectView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
+    }
 
-        private void ResetOnClick(object sender, RoutedEventArgs e)
-        {
-            this.SliderBrightness.Value = 0;
-            this.SliderContrast.Value = 0;
-        }
+    private void ResetOnClick(object sender, RoutedEventArgs e)
+    {
+        this.SliderBrightness.Value = 0;
+        this.SliderContrast.Value = 0;
     }
 }

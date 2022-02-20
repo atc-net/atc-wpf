@@ -1,13 +1,12 @@
-namespace Atc.Wpf.SampleControls
+namespace Atc.Wpf.SampleControls;
+
+/// <summary>
+/// Interaction logic for SampleViewerView.
+/// </summary>
+public partial class SampleViewerView
 {
-    /// <summary>
-    /// Interaction logic for SampleViewerView.
-    /// </summary>
-    public partial class SampleViewerView
+    public SampleViewerView()
     {
-        public SampleViewerView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

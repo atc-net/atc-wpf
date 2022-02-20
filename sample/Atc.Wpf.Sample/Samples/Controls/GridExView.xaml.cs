@@ -1,13 +1,12 @@
-namespace Atc.Wpf.Sample.Samples.Controls
+namespace Atc.Wpf.Sample.Samples.Controls;
+
+/// <summary>
+/// Interaction logic for GridExView.
+/// </summary>
+public partial class GridExView
 {
-    /// <summary>
-    /// Interaction logic for GridExView.
-    /// </summary>
-    public partial class GridExView
+    public GridExView()
     {
-        public GridExView()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

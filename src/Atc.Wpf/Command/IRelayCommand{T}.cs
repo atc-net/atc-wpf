@@ -1,16 +1,12 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Windows.Input;
-
 // ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable UnusedTypeParameter
-namespace Atc.Wpf.Command
+namespace Atc.Wpf.Command;
+
+public interface IRelayCommand<T> : ICommand
 {
-    public interface IRelayCommand<T> : ICommand
-    {
-        /// <summary>
-        /// Raises the <see cref="RelayCommand.CanExecuteChanged" /> event.
-        /// </summary>
-        [SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "OK.")]
-        void RaiseCanExecuteChanged();
-    }
+    /// <summary>
+    /// Raises the <see cref="RelayCommand.CanExecuteChanged" /> event.
+    /// </summary>
+    [SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "OK.")]
+    void RaiseCanExecuteChanged();
 }
