@@ -52,9 +52,9 @@ public class RelayCommandAsyncGenericTests
 
     [Theory]
     [InlineData("Executed", true, null)]
-    //[InlineData("Not executed", false, null)]
-    //[InlineData("Executed", true, 42)]
-    //[InlineData("Not executed", false, 42)]
+    [InlineData("Not executed", false, null)]
+    [InlineData("Executed", true, 42)]
+    [InlineData("Not executed", false, 42)]
     public async Task Execute(string expected, bool canExecute, object? parameter)
     {
         // Arrange
@@ -69,13 +69,13 @@ public class RelayCommandAsyncGenericTests
         Assert.Equal(expected, actual);
     }
 
+    private delegate void OpDelegate(string op);
+
     private static async Task<string> MyTask()
     {
         await Task.Delay(1);
         return "Hallo";
     }
-
-    private delegate void OpDelegate(string op);
 
     [SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "OK.")]
     [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]

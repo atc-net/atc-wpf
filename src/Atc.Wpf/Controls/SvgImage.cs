@@ -428,9 +428,9 @@ public class SvgImage : Control
             return;
         }
 
-        if (args.NewValue is Drawing drawing)
+        if (args.NewValue is Drawing newDrawing)
         {
-            svgImage.SetImage(drawing);
+            svgImage.SetImage(newDrawing);
         }
     }
 
