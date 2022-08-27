@@ -1,15 +1,17 @@
-<TreeView x:Class="Atc.Wpf.Sample.SampleTreeView"
-          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-          xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-          d:DesignHeight="450"
-          d:DesignWidth="230"
-          mc:Ignorable="d">
+<TreeView
+    x:Class="Atc.Wpf.Sample.SampleTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="230"
+    mc:Ignorable="d">
 
     <TreeViewItem Header="Commands" IsExpanded="True">
         <atc:SampleTreeViewItem Header="RelayCommand" SamplePath="Commands.RelayCommandView" />
+        <atc:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Controls - Input" IsExpanded="True">
