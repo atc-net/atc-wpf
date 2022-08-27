@@ -273,7 +273,7 @@ public static class ColorUtil
     {
         List<Color> colorsList = new List<Color>(8);
 
-        for (int i = 0; i < 29; i++)
+        for (var i = 0; i < 29; i++)
         {
             colorsList.Add(ConvertHsvToRgb(i * 12, 1, 1));
         }

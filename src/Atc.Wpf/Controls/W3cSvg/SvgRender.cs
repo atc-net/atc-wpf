@@ -462,7 +462,7 @@ internal class SvgRender
                     pathGeometry.Figures.Add(pathFigure);
                     pathFigure.IsClosed = false;
                     pathFigure.StartPoint = polylineShape.Points[0];
-                    for (int index = 1; index < polylineShape.Points.Length; index++)
+                    for (var index = 1; index < polylineShape.Points.Length; index++)
                     {
                         pathFigure.Segments.Add(new LineSegment(polylineShape.Points[index], isStroked: true));
                     }
@@ -479,7 +479,7 @@ internal class SvgRender
                     pathGeometry.Figures.Add(pathFigure);
                     pathFigure.IsClosed = true;
                     pathFigure.StartPoint = polygonShape.Points[0];
-                    for (int index = 1; index < polygonShape.Points.Length; index++)
+                    for (var index = 1; index < polygonShape.Points.Length; index++)
                     {
                         pathFigure.Segments.Add(new LineSegment(polygonShape.Points[index], isStroked: true));
                     }

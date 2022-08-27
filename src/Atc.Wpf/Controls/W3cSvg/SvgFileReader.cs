@@ -53,7 +53,7 @@ internal sealed class SvgFileReader : IDisposable
         var src = str.ToCharArray();
         int dstIdx = 0;
 
-        for (int i = 0; i < len; i++)
+        for (var i = 0; i < len; i++)
         {
             var ch = src[i];
 

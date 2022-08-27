@@ -18,7 +18,7 @@ public class RelayCommandTests
 
         var command = new RelayCommand(() => { }, () => canExecute);
 
-        for (int i = 0; i < registerOnChangeCount; i++)
+        for (var i = 0; i < registerOnChangeCount; i++)
         {
             command.CanExecuteChanged += canExecuteChangedEventHandler;
         }
