@@ -1,3 +1,4 @@
+// ReSharper disable SuggestVarOrType_SimpleTypes
 namespace Atc.Wpf.Command;
 
 /// <summary>
@@ -82,7 +83,7 @@ public sealed class RelayCommand : IRelayCommand
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal!,
+                    ref this.requerySuggestedLocal,
                     handler3,
                     handler2);
             }
