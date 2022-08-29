@@ -292,7 +292,7 @@ public class AutoGrid : Grid
 
         // Clear and rebuild
         grid.ColumnDefinitions.Clear();
-        for (int i = 0; i < (int)args.NewValue; i++)
+        for (var i = 0; i < (int)args.NewValue; i++)
         {
             grid.ColumnDefinitions.Add(
                 new ColumnDefinition
@@ -454,7 +454,7 @@ public class AutoGrid : Grid
 
         // Clear and rebuild
         grid.RowDefinitions.Clear();
-        for (int i = 0; i < (int)args.NewValue; i++)
+        for (var i = 0; i < (int)args.NewValue; i++)
         {
             grid.RowDefinitions.Add(
                 new RowDefinition

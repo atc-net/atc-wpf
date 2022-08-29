@@ -48,7 +48,7 @@ public class XamlFormatter : ITextFormatter
         var p = new Paragraph();
 
         // Loop through tokens
-        for (int i = 0; i < tokenTexts.Count; i++)
+        for (var i = 0; i < tokenTexts.Count; i++)
         {
             var run = new Run(tokenTexts[i])
             {

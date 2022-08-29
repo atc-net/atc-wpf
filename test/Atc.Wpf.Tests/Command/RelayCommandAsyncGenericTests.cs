@@ -1,6 +1,8 @@
+// ReSharper disable RedundantAssignment
+// ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Tests.Command;
 
-public class RelayCommandTests
+public class RelayCommandAsyncGenericTests
 {
     [Theory]
     [InlineData(0, true, 0)]
@@ -16,7 +18,7 @@ public class RelayCommandTests
         var canExecuteChangedCalled = 0;
         var canExecuteChangedEventHandler = new EventHandler((_, _) => canExecuteChangedCalled++);
 
-        var command = new RelayCommand(() => { }, () => canExecute);
+        var command = new RelayCommandAsync<string>(_ => MyTask(), _ => canExecute);
 
         for (var i = 0; i < registerOnChangeCount; i++)
         {
@@ -34,17 +36,15 @@ public class RelayCommandTests
     }
 
     [Theory]
-    [InlineData(true, true, null)]
-    [InlineData(false, false, null)]
-    [InlineData(true, true, 42)]
-    [InlineData(false, false, 42)]
-    public void CanExecute(bool expected, bool canExecute, object? parameter)
+    [InlineData(true, true)]
+    [InlineData(false, false)]
+    public void CanExecute(bool expected, bool canExecute)
     {
         // Arrange
-        var command = new RelayCommand(() => { }, () => canExecute);
+        var command = new RelayCommandAsync<string>(_ => MyTask(), _ => canExecute);
 
         // Act
-        var actual = command.CanExecute(parameter);
+        var actual = command.CanExecute(null);
 
         // Assert
         Assert.Equal(expected, actual);
@@ -55,17 +55,35 @@ public class RelayCommandTests
     [InlineData("Not executed", false, null)]
     [InlineData("Executed", true, 42)]
     [InlineData("Not executed", false, 42)]
-    public void Execute(string expected, bool canExecute, object? parameter)
+    public async Task Execute(string expected, bool canExecute, object? parameter)
     {
         // Arrange
         var actual = "Not executed";
 
-        var command = new RelayCommand(() => { actual = expected; }, () => canExecute);
+        var command = new RelayCommandAsync<string>(_ => MyTask(expected, op => actual = op), _ => canExecute);
 
         // Act
-        command.Execute(parameter);
+        await command.ExecuteAsync(parameter?.ToString());
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    private delegate void OpDelegate(string op);
+
+    private static async Task<string> MyTask()
+    {
+        await Task.Delay(1);
+        return "Hallo";
+    }
+
+    [SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "OK.")]
+    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
+    [SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "OK.")]
+    private static async Task<string> MyTask(string expected, OpDelegate callback)
+    {
+        await Task.Delay(1);
+        callback(expected);
+        return "Hallo";
     }
 }
