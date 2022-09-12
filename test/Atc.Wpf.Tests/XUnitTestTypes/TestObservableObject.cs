@@ -9,34 +9,34 @@ public class TestObservableObject : ObservableObject
 
     public bool IsBoolProperty
     {
-        get => this.isBoolProperty;
+        get => isBoolProperty;
         set
         {
-            this.isBoolProperty = value;
-            this.RaisePropertyChanged();
+            isBoolProperty = value;
+            RaisePropertyChanged();
         }
     }
 
     public bool IsBoolPropertyWithExpression
     {
-        get => this.isBoolPropertyWithExpression;
+        get => isBoolPropertyWithExpression;
         set
         {
-            this.isBoolPropertyWithExpression = value;
-            this.RaisePropertyChanged(() => this.IsBoolPropertyWithExpression);
+            isBoolPropertyWithExpression = value;
+            RaisePropertyChanged(() => IsBoolPropertyWithExpression);
         }
     }
 
     [SuppressMessage("Maintainability", "CA1507:Use nameof to express symbol names", Justification = "OK.")]
     public bool IsBoolPropertyWithSet
     {
-        get => this.isBoolPropertyWithSet;
-        set => _ = this.Set("IsBoolPropertyWithSet", ref isBoolPropertyWithSet, value);
+        get => isBoolPropertyWithSet;
+        set => _ = Set("IsBoolPropertyWithSet", ref isBoolPropertyWithSet, value);
     }
 
     public bool IsBoolPropertyWithSetAndExpression
     {
-        get => this.isBoolPropertyWithSetAndExpression;
-        set => _ = this.Set(() => IsBoolPropertyWithSetAndExpression, ref isBoolPropertyWithSetAndExpression, value);
+        get => isBoolPropertyWithSetAndExpression;
+        set => _ = Set(() => IsBoolPropertyWithSetAndExpression, ref isBoolPropertyWithSetAndExpression, value);
     }
 }

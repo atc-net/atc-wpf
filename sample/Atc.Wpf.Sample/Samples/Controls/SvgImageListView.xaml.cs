@@ -7,11 +7,11 @@ public partial class SvgImageListView
 {
     public SvgImageListView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
 
-        this.DataContext = this;
+        DataContext = this;
 
-        this.Loaded += this.OnLoaded;
+        Loaded += OnLoaded;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
@@ -26,7 +26,7 @@ public partial class SvgImageListView
         }
 
         var svgFiles = new DirectoryInfo(assetPath).GetFiles("*.svg");
-        this.LoadFiles(svgFiles);
+        LoadFiles(svgFiles);
     }
 
     private void BtnBrowseOnClick(object sender, RoutedEventArgs e)
@@ -52,12 +52,12 @@ public partial class SvgImageListView
             .Select(fileName => new FileInfo(fileName))
             .ToArray();
 
-        this.LoadFiles(svgFiles);
+        LoadFiles(svgFiles);
     }
 
     private void LoadFiles(IEnumerable<FileInfo> svgFiles)
     {
-        this.UsagePanel.Children.Clear();
+        UsagePanel.Children.Clear();
         foreach (var svgFile in svgFiles)
         {
             var svgImage = new SvgImage();
@@ -65,7 +65,7 @@ public partial class SvgImageListView
             svgImage.Margin = new Thickness(10);
             svgImage.Width = 80;
             svgImage.Height = 80;
-            this.UsagePanel.Children.Add(svgImage);
+            UsagePanel.Children.Add(svgImage);
         }
     }
 }

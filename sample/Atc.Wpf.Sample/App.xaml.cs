@@ -10,14 +10,14 @@ public partial class App
 
     public App()
     {
-        this.host = Host.CreateDefaultBuilder()
+        host = Host.CreateDefaultBuilder()
             .ConfigureLogging(logging =>
             {
                 logging
                     .AddDebug()
                     .SetMinimumLevel(LogLevel.Trace);
             })
-            .ConfigureServices((context, services) =>
+            .ConfigureServices((_, services) =>
             {
                 services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
                 services.AddSingleton<MainWindow>();
@@ -38,7 +38,7 @@ public partial class App
 
         // Hook on error before app really starts
         AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
-        Current.DispatcherUnhandledException += this.ApplicationOnDispatcherUnhandledException;
+        Current.DispatcherUnhandledException += ApplicationOnDispatcherUnhandledException;
         base.OnStartup(e);
 
         if (Debugger.IsAttached)
@@ -59,7 +59,7 @@ public partial class App
             return;
         }
 
-        string exceptionMessage = ex.GetMessage(includeInnerMessage: true);
+        var exceptionMessage = ex.GetMessage(includeInnerMessage: true);
         _ = MessageBox.Show(
             exceptionMessage,
             "CurrentDomain Unhandled Exception",
@@ -74,7 +74,7 @@ public partial class App
     /// <param name="args">The <see cref="DispatcherUnhandledExceptionEventArgs"/> instance containing the event data.</param>
     private void ApplicationOnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
     {
-        string exceptionMessage = args.Exception.GetMessage(includeInnerMessage: true);
+        var exceptionMessage = args.Exception.GetMessage(includeInnerMessage: true);
         if (exceptionMessage.IndexOf(
                 "BindingExpression:Path=HorizontalContentAlignment; DataItem=null; target element is 'ComboBoxItem'",
                 StringComparison.Ordinal) != -1)
@@ -90,16 +90,16 @@ public partial class App
             MessageBoxImage.Error);
 
         args.Handled = true;
-        this.Shutdown(-1);
+        Shutdown(-1);
     }
 
     private async void ApplicationStartup(object sender, StartupEventArgs args)
     {
-        await this.host
+        await host
             .StartAsync()
             .ConfigureAwait(false);
 
-        var mainWindow = this.host
+        var mainWindow = host
             .Services
             .GetService<MainWindow>()!;
 
@@ -108,10 +108,10 @@ public partial class App
 
     private async void ApplicationExit(object sender, ExitEventArgs args)
     {
-        await this.host
+        await host
             .StopAsync()
             .ConfigureAwait(false);
 
-        this.host.Dispose();
+        host.Dispose();
     }
 }

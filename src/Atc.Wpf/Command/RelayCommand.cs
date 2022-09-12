@@ -31,11 +31,11 @@ public sealed class RelayCommand : IRelayCommand
             throw new ArgumentNullException(nameof(execute));
         }
 
-        this.waExecute = new WeakAction(execute, keepTargetAlive);
+        waExecute = new WeakAction(execute, keepTargetAlive);
 
         if (canExecute is not null)
         {
-            this.wfCanExecute = new WeakFunc<bool>(canExecute, keepTargetAlive);
+            wfCanExecute = new WeakFunc<bool>(canExecute, keepTargetAlive);
         }
     }
 
@@ -46,20 +46,20 @@ public sealed class RelayCommand : IRelayCommand
     {
         add
         {
-            if (this.wfCanExecute is null)
+            if (wfCanExecute is null)
             {
                 return;
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = this.requerySuggestedLocal;
+            EventHandler canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal,
+                    ref requerySuggestedLocal,
                     handler3,
                     handler2);
             }
@@ -70,20 +70,20 @@ public sealed class RelayCommand : IRelayCommand
 
         remove
         {
-            if (this.wfCanExecute is null)
+            if (wfCanExecute is null)
             {
                 return;
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = this.requerySuggestedLocal;
+            EventHandler canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal,
+                    ref requerySuggestedLocal,
                     handler3,
                     handler2);
             }
@@ -102,18 +102,18 @@ public sealed class RelayCommand : IRelayCommand
     /// <inheritdoc />
     public bool CanExecute(object? parameter)
     {
-        return this.wfCanExecute is null ||
-               ((this.wfCanExecute.IsStatic || this.wfCanExecute.IsAlive) && this.wfCanExecute.Execute());
+        return wfCanExecute is null ||
+               ((wfCanExecute.IsStatic || wfCanExecute.IsAlive) && wfCanExecute.Execute());
     }
 
     /// <inheritdoc />
     public void Execute(object? parameter)
     {
-        if (this.CanExecute(parameter)
-            && this.waExecute is not null
-            && (this.waExecute.IsStatic || this.waExecute.IsAlive))
+        if (CanExecute(parameter)
+            && waExecute is not null
+            && (waExecute.IsStatic || waExecute.IsAlive))
         {
-            this.waExecute.Execute();
+            waExecute.Execute();
         }
     }
 }

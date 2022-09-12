@@ -7,6 +7,6 @@ public partial class AutoGreyableImageView
 {
     public AutoGreyableImageView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

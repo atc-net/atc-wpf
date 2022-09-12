@@ -37,25 +37,25 @@ public class WeakAction
 
         if (action.Method.IsStatic)
         {
-            this.staticAction = action;
+            staticAction = action;
 
             if (target is not null)
             {
                 // Keep a reference to the target to control the
                 // WeakAction's lifetime.
-                this.Reference = new WeakReference(target);
+                Reference = new WeakReference(target);
             }
 
             return;
         }
 
-        this.Method = action.Method;
-        this.ActionReference = new WeakReference(action.Target);
+        Method = action.Method;
+        ActionReference = new WeakReference(action.Target);
 
-        this.LiveReference = keepTargetAlive
+        LiveReference = keepTargetAlive
             ? action.Target
             : null;
-        this.Reference = new WeakReference(target);
+        Reference = new WeakReference(target);
 
 #if DEBUG
         if (this.ActionReference.Target is not null && !keepTargetAlive)
@@ -87,8 +87,8 @@ public class WeakAction
     /// Gets the name of the method that this WeakAction represents.
     /// </summary>
     public virtual string MethodName => staticAction is null
-        ? this.Method!.Name
-        : this.staticAction.Method.Name;
+        ? Method!.Name
+        : staticAction.Method.Name;
 
     /// <summary>
     /// Gets a value indicating whether the Action's owner is still alive, or if it was collected
@@ -98,32 +98,32 @@ public class WeakAction
     {
         get
         {
-            if (this.staticAction is null
-                && this.Reference is null
-                && this.LiveReference is null)
+            if (staticAction is null
+                && Reference is null
+                && LiveReference is null)
             {
                 return false;
             }
 
-            if (this.staticAction is not null)
+            if (staticAction is not null)
             {
-                return this.Reference is null || this.Reference.IsAlive;
+                return Reference is null || Reference.IsAlive;
             }
 
             // Non static action
-            if (this.LiveReference is not null)
+            if (LiveReference is not null)
             {
                 return true;
             }
 
-            return this.Reference is not null && this.Reference.IsAlive;
+            return Reference is not null && Reference.IsAlive;
         }
     }
 
     /// <summary>
     /// Gets the Action's owner. This object is stored as a <see cref="WeakReference" />.
     /// </summary>
-    public object? Target => this.Reference?.Target;
+    public object? Target => Reference?.Target;
 
     /// <summary>
     /// Gets or sets the <see cref="MethodInfo" /> corresponding to this WeakAction's
@@ -165,25 +165,25 @@ public class WeakAction
     /// </summary>
     public void Execute()
     {
-        if (this.staticAction is not null)
+        if (staticAction is not null)
         {
-            this.staticAction();
+            staticAction();
             return;
         }
 
-        var actionTarget = this.ActionTarget;
+        var actionTarget = ActionTarget;
 
-        if (!this.IsAlive)
-        {
-            return;
-        }
-
-        if (this.Method is null || (this.LiveReference is null && this.ActionReference is null) || actionTarget is null)
+        if (!IsAlive)
         {
             return;
         }
 
-        _ = this.Method.Invoke(actionTarget, parameters: null);
+        if (Method is null || (LiveReference is null && ActionReference is null) || actionTarget is null)
+        {
+            return;
+        }
+
+        _ = Method.Invoke(actionTarget, parameters: null);
     }
 
     /// <summary>
@@ -191,10 +191,10 @@ public class WeakAction
     /// </summary>
     public void MarkForDeletion()
     {
-        this.Reference = null;
-        this.ActionReference = null;
-        this.LiveReference = null;
-        this.Method = null;
-        this.staticAction = null;
+        Reference = null;
+        ActionReference = null;
+        LiveReference = null;
+        Method = null;
+        staticAction = null;
     }
 }

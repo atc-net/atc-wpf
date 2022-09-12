@@ -31,8 +31,8 @@ public struct HsvColor
     /// <param name="v">The v.</param>
     public HsvColor(double h, double s, double v)
     {
-        this.H = h;
-        this.S = s;
-        this.V = v;
+        H = h;
+        S = s;
+        V = v;
     }
 }

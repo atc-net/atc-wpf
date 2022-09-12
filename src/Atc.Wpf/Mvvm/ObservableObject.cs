@@ -14,15 +14,15 @@ public abstract class ObservableObject : IObservableObject
     /// <inheritdoc />
     public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        this.VerifyPropertyName(propertyName);
-        var handler = this.PropertyChanged;
+        VerifyPropertyName(propertyName);
+        var handler = PropertyChanged;
         handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     /// <inheritdoc />
     public void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
     {
-        var handler = this.PropertyChanged;
+        var handler = PropertyChanged;
         if (handler is null)
         {
             return;
@@ -31,14 +31,14 @@ public abstract class ObservableObject : IObservableObject
         var propertyName = GetPropertyName(propertyExpression);
         if (!string.IsNullOrEmpty(propertyName))
         {
-            this.RaisePropertyChanged(propertyName);
+            RaisePropertyChanged(propertyName);
         }
     }
 
     /// <inheritdoc />
     public void VerifyPropertyName(string? propertyName)
     {
-        var info = this.GetType().GetTypeInfo();
+        var info = GetType().GetTypeInfo();
         if (string.IsNullOrEmpty(propertyName) ||
             info.GetDeclaredProperty(propertyName) is not null)
         {
@@ -98,8 +98,8 @@ public abstract class ObservableObject : IObservableObject
     [SuppressMessage("Major Code Smell", "S4144:Methods should not have identical implementations", Justification = "OK.")]
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        this.VerifyPropertyName(propertyName);
-        var handler = this.PropertyChanged;
+        VerifyPropertyName(propertyName);
+        var handler = PropertyChanged;
         handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
@@ -114,7 +114,7 @@ public abstract class ObservableObject : IObservableObject
         }
 
         field = newValue;
-        this.RaisePropertyChanged(propertyExpression);
+        RaisePropertyChanged(propertyExpression);
         return true;
     }
 
@@ -129,7 +129,7 @@ public abstract class ObservableObject : IObservableObject
         }
 
         field = newValue;
-        this.RaisePropertyChanged(propertyName);
+        RaisePropertyChanged(propertyName);
         return true;
     }
 
@@ -138,6 +138,6 @@ public abstract class ObservableObject : IObservableObject
         T newValue,
         [CallerMemberName] string? propertyName = null)
     {
-        return this.Set(propertyName, ref field, newValue);
+        return Set(propertyName, ref field, newValue);
     }
 }

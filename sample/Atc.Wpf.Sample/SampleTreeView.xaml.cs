@@ -7,6 +7,6 @@ public partial class SampleTreeView
 {
     public SampleTreeView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

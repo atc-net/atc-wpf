@@ -6,15 +6,15 @@ internal class Animate : AnimationBase
     public Animate(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)
     {
-        this.From = SvgXmlUtil.AttrValue(node, "from", defaultValue: null);
-        this.To = SvgXmlUtil.AttrValue(node, "to", defaultValue: null);
-        this.AttributeName = SvgXmlUtil.AttrValue(node, "attributeName", defaultValue: null);
-        this.RepeatType = SvgXmlUtil.AttrValue(node, "repeatCount", "indefinite");
-        this.Values = SvgXmlUtil.AttrValue(node, "values", defaultValue: null);
-        this.Href = SvgXmlUtil.AttrValue(node, "xlink:href", string.Empty);
-        if (this.Href is not null && this.Href.StartsWith('#'))
+        From = SvgXmlUtil.AttrValue(node, "from", defaultValue: null);
+        To = SvgXmlUtil.AttrValue(node, "to", defaultValue: null);
+        AttributeName = SvgXmlUtil.AttrValue(node, "attributeName", defaultValue: null);
+        RepeatType = SvgXmlUtil.AttrValue(node, "repeatCount", "indefinite");
+        Values = SvgXmlUtil.AttrValue(node, "values", defaultValue: null);
+        Href = SvgXmlUtil.AttrValue(node, "xlink:href", string.Empty);
+        if (Href is not null && Href.StartsWith('#'))
         {
-            this.Href = this.Href.Substring(1);
+            Href = Href.Substring(1);
         }
     }
 

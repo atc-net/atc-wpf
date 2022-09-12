@@ -24,7 +24,7 @@ public struct PixelColor : IEquatable<PixelColor>
     public byte Alpha;
 
     public override readonly string ToString()
-        => $"{nameof(Blue)}: {this.Blue}, {nameof(Green)}: {this.Green}, {nameof(Red)}: {this.Red}, {nameof(Alpha)}: {this.Alpha}";
+        => $"{nameof(Blue)}: {Blue}, {nameof(Green)}: {Green}, {nameof(Red)}: {Red}, {nameof(Alpha)}: {Alpha}";
 
     public static bool operator ==(PixelColor pixelColor1, PixelColor pixelColor2)
         => pixelColor1.Equals(pixelColor2);
@@ -33,16 +33,16 @@ public struct PixelColor : IEquatable<PixelColor>
         => !pixelColor1.Equals(pixelColor2);
 
     public readonly bool Equals(PixelColor other)
-        => this.ColorBgra == other.ColorBgra &&
-           this.Blue == other.Blue &&
-           this.Green == other.Green &&
-           this.Red == other.Red &&
-           this.Alpha == other.Alpha;
+        => ColorBgra == other.ColorBgra &&
+           Blue == other.Blue &&
+           Green == other.Green &&
+           Red == other.Red &&
+           Alpha == other.Alpha;
 
     public override readonly bool Equals(object? obj)
         => obj is PixelColor x && Equals(x);
 
     [SuppressMessage("Minor Bug", "S2328:\"GetHashCode\" should not reference mutable fields", Justification = "OK.")]
     public override readonly int GetHashCode()
-        => this.ColorBgra.GetHashCode() ^ this.Blue.GetHashCode() ^ this.Green.GetHashCode() ^ this.Red.GetHashCode() ^ this.Alpha.GetHashCode();
+        => ColorBgra.GetHashCode() ^ Blue.GetHashCode() ^ Green.GetHashCode() ^ Red.GetHashCode() ^ Alpha.GetHashCode();
 }

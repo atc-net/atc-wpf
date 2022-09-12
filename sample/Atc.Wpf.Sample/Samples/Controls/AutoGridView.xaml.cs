@@ -7,6 +7,6 @@ public partial class AutoGridView
 {
     public AutoGridView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

@@ -19,7 +19,7 @@ public class RelayCommandAsync : IRelayCommandAsync
 
         if (canExecute is not null)
         {
-            this.wfCanExecute = new WeakFunc<bool>(canExecute, keepTargetAlive);
+            wfCanExecute = new WeakFunc<bool>(canExecute, keepTargetAlive);
         }
 
         if (errorHandler is not null)
@@ -32,20 +32,20 @@ public class RelayCommandAsync : IRelayCommandAsync
     {
         add
         {
-            if (this.wfCanExecute is null)
+            if (wfCanExecute is null)
             {
                 return;
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = this.requerySuggestedLocal;
+            EventHandler canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal,
+                    ref requerySuggestedLocal,
                     handler3,
                     handler2);
             }
@@ -56,20 +56,20 @@ public class RelayCommandAsync : IRelayCommandAsync
 
         remove
         {
-            if (this.wfCanExecute is null)
+            if (wfCanExecute is null)
             {
                 return;
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = this.requerySuggestedLocal;
+            EventHandler canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal,
+                    ref requerySuggestedLocal,
                     handler3,
                     handler2);
             }
@@ -86,51 +86,51 @@ public class RelayCommandAsync : IRelayCommandAsync
 
     public bool CanExecute(object? parameter)
     {
-        return this.wfCanExecute is null ||
-               ((this.wfCanExecute.IsStatic || this.wfCanExecute.IsAlive) && this.wfCanExecute.Execute());
+        return wfCanExecute is null ||
+               ((wfCanExecute.IsStatic || wfCanExecute.IsAlive) && wfCanExecute.Execute());
     }
 
     [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK - ICommand signature")]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]
     public async void Execute(object? parameter)
     {
-        if (this.isExecuting ||
-            !this.CanExecute(parameter) ||
-            this.execute is null)
+        if (isExecuting ||
+            !CanExecute(parameter) ||
+            execute is null)
         {
             return;
         }
 
-        this.isExecuting = true;
+        isExecuting = true;
 
-        if (this.errorHandler is null)
+        if (errorHandler is null)
         {
-            await this.ExecuteAsync(parameter);
-            this.RaiseCanExecuteChanged();
-            this.isExecuting = false;
+            await ExecuteAsync(parameter);
+            RaiseCanExecuteChanged();
+            isExecuting = false;
         }
         else
         {
             try
             {
-                await this.ExecuteAsync(parameter);
-                this.RaiseCanExecuteChanged();
-                this.isExecuting = false;
+                await ExecuteAsync(parameter);
+                RaiseCanExecuteChanged();
+                isExecuting = false;
             }
             catch (Exception ex)
             {
-                this.errorHandler?.HandleError(ex);
-                this.isExecuting = false;
+                errorHandler?.HandleError(ex);
+                isExecuting = false;
             }
         }
     }
 
     public Task ExecuteAsync(object? parameter)
     {
-        if (this.CanExecute(parameter) &&
-            this.execute is not null)
+        if (CanExecute(parameter) &&
+            execute is not null)
         {
-            return this.execute();
+            return execute();
         }
 
         return Task.CompletedTask;

@@ -9,11 +9,11 @@ public class ViewModelDialogBase : ViewModelBase
     /// </summary>
     public bool DialogResult
     {
-        get => this.dialogResult;
+        get => dialogResult;
         set
         {
-            this.dialogResult = value;
-            this.RaisePropertyChanged();
+            dialogResult = value;
+            RaisePropertyChanged();
         }
     }
 }

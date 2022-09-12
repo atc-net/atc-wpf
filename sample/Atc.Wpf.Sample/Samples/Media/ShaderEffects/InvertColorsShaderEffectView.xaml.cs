@@ -7,6 +7,6 @@ public partial class InvertColorsShaderEffectView
 {
     public InvertColorsShaderEffectView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

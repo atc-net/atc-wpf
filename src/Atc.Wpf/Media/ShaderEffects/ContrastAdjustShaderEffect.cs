@@ -30,9 +30,9 @@ public class ContrastAdjustShaderEffect : ShaderEffectBase
 
     public ContrastAdjustShaderEffect()
     {
-        this.UpdateShaderValue(InputProperty);
-        this.UpdateShaderValue(BrightnessProperty);
-        this.UpdateShaderValue(ContrastProperty);
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(BrightnessProperty);
+        UpdateShaderValue(ContrastProperty);
     }
 
     /// <summary>

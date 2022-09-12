@@ -4,13 +4,13 @@ internal class PaintServer
 {
     public PaintServer(PaintServerManager owner)
     {
-        this.Owner = owner;
+        Owner = owner;
     }
 
     public PaintServer(PaintServerManager owner, Brush brush)
     {
-        this.Owner = owner;
-        this.Brush = brush;
+        Owner = owner;
+        Brush = brush;
     }
 
     public PaintServerManager Owner { get; }
@@ -19,11 +19,11 @@ internal class PaintServer
 
     public virtual Brush? GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        return this.Brush;
+        return Brush;
     }
 
     public Brush? GetBrush()
     {
-        return this.Brush;
+        return Brush;
     }
 }

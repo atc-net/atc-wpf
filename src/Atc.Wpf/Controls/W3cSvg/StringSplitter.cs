@@ -7,45 +7,45 @@ internal class StringSplitter
 
     public StringSplitter(string value)
     {
-        this.val = value;
-        this.curPos = 0;
+        val = value;
+        curPos = 0;
     }
 
     public void SetString(string value, int startPos)
     {
-        this.val = value;
-        this.curPos = startPos;
+        val = value;
+        curPos = startPos;
     }
 
-    public bool More => this.curPos >= 0 && this.curPos < this.val.Length;
+    public bool More => curPos >= 0 && curPos < val.Length;
 
     public double ReadNextValue()
     {
-        int startPos = this.curPos;
+        int startPos = curPos;
         if (startPos < 0)
         {
             startPos = 0;
         }
 
-        if (startPos >= this.val.Length)
+        if (startPos >= val.Length)
         {
             return float.NaN;
         }
 
         string numbers = "0123456789-.eE";
-        while (startPos < this.val.Length && !numbers.Contains(this.val[startPos], StringComparison.Ordinal))
+        while (startPos < val.Length && !numbers.Contains(val[startPos], StringComparison.Ordinal))
         {
             startPos++;
         }
 
         int endPos = startPos;
-        while (endPos < this.val.Length && numbers.Contains(this.val[endPos], StringComparison.Ordinal))
+        while (endPos < val.Length && numbers.Contains(val[endPos], StringComparison.Ordinal))
         {
             // '-' if number is followed by '-' then it indicates the end of the value
             if (endPos != startPos &&
-                this.val[endPos] == '-' &&
-                this.val[endPos - 1] != 'e' &&
-                this.val[endPos - 1] != 'E')
+                val[endPos] == '-' &&
+                val[endPos - 1] != 'e' &&
+                val[endPos - 1] != 'E')
             {
                 break;
             }
@@ -59,28 +59,28 @@ internal class StringSplitter
             return float.NaN;
         }
 
-        this.curPos = endPos;
-        string s = this.val.Substring(startPos, len);
+        curPos = endPos;
+        string s = val.Substring(startPos, len);
 
         startPos = endPos;
-        while (startPos < this.val.Length && !numbers.Contains(this.val[startPos], StringComparison.Ordinal))
+        while (startPos < val.Length && !numbers.Contains(val[startPos], StringComparison.Ordinal))
         {
             startPos++;
         }
 
-        if (startPos >= this.val.Length)
+        if (startPos >= val.Length)
         {
             endPos = startPos;
         }
 
-        this.curPos = endPos;
+        curPos = endPos;
         return XmlConvert.ToDouble(s);
     }
 
     public Point ReadNextPoint()
     {
-        double x = this.ReadNextValue();
-        double y = this.ReadNextValue();
+        double x = ReadNextValue();
+        double y = ReadNextValue();
         return new Point(x, y);
     }
 }

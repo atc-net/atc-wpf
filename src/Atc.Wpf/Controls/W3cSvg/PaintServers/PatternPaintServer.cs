@@ -13,11 +13,11 @@ internal class PatternPaintServer : PaintServer
             throw new ArgumentNullException(nameof(svg));
         }
 
-        this.PatternUnits = SvgXmlUtil.AttrValue(node, "patternUnits", string.Empty);
+        PatternUnits = SvgXmlUtil.AttrValue(node, "patternUnits", string.Empty);
         var transform = SvgXmlUtil.AttrValue(node, "patternTransform", string.Empty);
         if (!string.IsNullOrEmpty(transform))
         {
-            this.PatternTransform = ShapeUtil.ParseTransform(transform.ToLower(GlobalizationConstants.EnglishCultureInfo));
+            PatternTransform = ShapeUtil.ParseTransform(transform.ToLower(GlobalizationConstants.EnglishCultureInfo));
         }
 
         if (svg.ExternalFileLoader is not null)
@@ -27,16 +27,16 @@ internal class PatternPaintServer : PaintServer
         }
 
         patternPaintServers = svg.PaintServers.GetServers();
-        this.X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
-        this.Y = SvgXmlUtil.AttrValue(node, "y", 0, svg.Size.Height);
-        this.Width = SvgXmlUtil.AttrValue(node, "width", 1, svg.Size.Width);
-        this.Height = SvgXmlUtil.AttrValue(node, "height", 1, svg.Size.Height);
+        X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
+        Y = SvgXmlUtil.AttrValue(node, "y", 0, svg.Size.Height);
+        Width = SvgXmlUtil.AttrValue(node, "width", 1, svg.Size.Width);
+        Height = SvgXmlUtil.AttrValue(node, "height", 1, svg.Size.Height);
     }
 
     public PatternPaintServer(PaintServerManager owner, Brush newBrush)
         : base(owner)
     {
-        this.Brush = newBrush;
+        Brush = newBrush;
     }
 
     public double X { get; }
@@ -58,9 +58,9 @@ internal class PatternPaintServer : PaintServer
             throw new ArgumentNullException(nameof(svgRender));
         }
 
-        if (this.Brush is not null)
+        if (Brush is not null)
         {
-            return this.Brush;
+            return Brush;
         }
 
         if (patternPaintServers is not null &&
@@ -86,7 +86,7 @@ internal class PatternPaintServer : PaintServer
             ViewportUnits = BrushMappingMode.RelativeToBoundingBox,
         };
 
-        this.Brush = brush;
+        Brush = brush;
         return brush;
     }
 

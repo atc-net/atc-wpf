@@ -44,7 +44,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     ///   <c>true</c> if this instance is target alive; otherwise, <c>false</c>.
     /// </value>
     public bool IsTargetAlive =>
-        this.targetObjects.Count == 0 || this.targetObjects.Any(reference => reference.IsAlive);
+        targetObjects.Count == 0 || targetObjects.Any(reference => reference.IsAlive);
 
     /// <summary>
     /// Gets a value indicating whether this instance is in design mode.
@@ -53,7 +53,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     ///   <c>true</c> if this instance is in design mode; otherwise, <c>false</c>.
     /// </value>
     protected bool IsInDesignMode =>
-        this.targetObjects
+        targetObjects
             .Select(reference => reference.Target as DependencyObject)
             .Any(element => element is not null && DesignerProperties.GetIsInDesignMode(element));
 
@@ -63,7 +63,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// <remarks>
     /// Can either be a <see cref="DependencyProperty" /> or <see cref="PropertyInfo" />.
     /// </remarks>
-    protected object? TargetProperty => this.targetProperty as DependencyProperty;
+    protected object? TargetProperty => targetProperty as DependencyProperty;
 
     /// <summary>
     /// Gets the type of the Target Property.
@@ -72,7 +72,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     {
         get
         {
-            Type? propertyType = this.targetProperty switch
+            Type? propertyType = targetProperty switch
             {
                 DependencyProperty dependencyProperty => dependencyProperty.PropertyType,
                 PropertyInfo info => info.PropertyType,
@@ -104,14 +104,14 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             return null;
         }
 
-        this.targetProperty = targetHelper.TargetProperty;
-        if (!(targetHelper.TargetObject is DependencyObject) && this.targetProperty is DependencyProperty)
+        targetProperty = targetHelper.TargetProperty;
+        if (!(targetHelper.TargetObject is DependencyObject) && targetProperty is DependencyProperty)
         {
             return this;
         }
 
-        this.targetObjects.Add(new WeakReference(targetHelper.TargetObject));
-        return this.GetValue();
+        targetObjects.Add(new WeakReference(targetHelper.TargetObject));
+        return GetValue();
     }
 
     /// <summary>
@@ -120,25 +120,25 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     [SuppressMessage("Major Code Smell", "S3267:Loops should be simplified with \"LINQ\" expressions", Justification = "OK.")]
     public void UpdateTarget()
     {
-        if (this.targetProperty is null)
+        if (targetProperty is null)
         {
             return;
         }
 
-        foreach (WeakReference reference in this.targetObjects)
+        foreach (WeakReference reference in targetObjects)
         {
             // ReSharper disable once ConvertIfStatementToSwitchStatement
-            if (this.targetProperty is DependencyProperty dependencyProperty)
+            if (targetProperty is DependencyProperty dependencyProperty)
             {
                 var target = reference.Target as DependencyObject;
-                target?.SetValue(dependencyProperty, this.GetValue());
+                target?.SetValue(dependencyProperty, GetValue());
             }
-            else if (this.targetProperty is PropertyInfo info)
+            else if (targetProperty is PropertyInfo info)
             {
                 object? target = reference.Target;
                 if (target is not null)
                 {
-                    info.SetValue(target, this.GetValue(), null);
+                    info.SetValue(target, GetValue(), null);
                 }
             }
         }

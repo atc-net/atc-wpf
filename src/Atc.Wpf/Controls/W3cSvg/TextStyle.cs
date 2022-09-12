@@ -9,23 +9,23 @@ internal class TextStyle
             throw new ArgumentNullException(nameof(owner));
         }
 
-        this.FontFamily = "Arial Unicode MS, Verdana";
-        this.FontSize = 12;
-        this.FontWeight = FontWeights.Normal;
-        this.FontStyle = FontStyles.Normal;
-        this.TextAlignment = TextAlignment.Left;
-        this.WordSpacing = 0;
-        this.LetterSpacing = 0;
-        this.BaseLineShift = string.Empty;
+        FontFamily = "Arial Unicode MS, Verdana";
+        FontSize = 12;
+        FontWeight = FontWeights.Normal;
+        FontStyle = FontStyles.Normal;
+        TextAlignment = TextAlignment.Left;
+        WordSpacing = 0;
+        LetterSpacing = 0;
+        BaseLineShift = string.Empty;
         if (owner.Parent is not null)
         {
-            this.Copy(owner.Parent.TextStyle);
+            Copy(owner.Parent.TextStyle);
         }
     }
 
     public TextStyle(TextStyle aCopy)
     {
-        this.Copy(aCopy);
+        Copy(aCopy);
     }
 
     public string? FontFamily { get; set; }
@@ -53,13 +53,13 @@ internal class TextStyle
             return;
         }
 
-        this.FontFamily = aCopy.FontFamily;
-        this.FontSize = aCopy.FontSize;
-        this.FontWeight = aCopy.FontWeight;
-        this.FontStyle = aCopy.FontStyle;
-        this.TextAlignment = aCopy.TextAlignment;
-        this.WordSpacing = aCopy.WordSpacing;
-        this.LetterSpacing = aCopy.LetterSpacing;
-        this.BaseLineShift = aCopy.BaseLineShift;
+        FontFamily = aCopy.FontFamily;
+        FontSize = aCopy.FontSize;
+        FontWeight = aCopy.FontWeight;
+        FontStyle = aCopy.FontStyle;
+        TextAlignment = aCopy.TextAlignment;
+        WordSpacing = aCopy.WordSpacing;
+        LetterSpacing = aCopy.LetterSpacing;
+        BaseLineShift = aCopy.BaseLineShift;
     }
 }

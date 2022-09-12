@@ -15,40 +15,40 @@ internal class PathShape : Shape
 
         public CommandSplitter(string value)
         {
-            this.val = value;
+            val = value;
         }
 
         public string ReadNext()
         {
-            int startPos = this.curPos;
+            int startPos = curPos;
             if (startPos < 0)
             {
                 startPos = 0;
             }
 
-            if (startPos >= this.val.Length)
+            if (startPos >= val.Length)
             {
                 return string.Empty;
             }
 
-            int cmdStart = this.val.IndexOfAny(this.commands, startPos);
+            int cmdStart = val.IndexOfAny(commands, startPos);
             int cmdEnd = cmdStart;
             if (cmdStart >= 0)
             {
-                cmdEnd = this.val.IndexOfAny(this.commands, cmdStart + 1);
+                cmdEnd = val.IndexOfAny(commands, cmdStart + 1);
             }
 
             if (cmdEnd < 0)
             {
-                int len = this.val.Length - startPos;
-                this.curPos = this.val.Length;
-                return this.val.Substring(startPos, len).Trim();
+                int len = val.Length - startPos;
+                curPos = val.Length;
+                return val.Substring(startPos, len).Trim();
             }
             else
             {
                 int len = cmdEnd - startPos;
-                this.curPos = cmdEnd;
-                return this.val.Substring(startPos, len).Trim();
+                curPos = cmdEnd;
+                return val.Substring(startPos, len).Trim();
             }
         }
 
@@ -60,8 +60,8 @@ internal class PathShape : Shape
             }
 
             cmd = command[0];
-            this.splitter.SetString(command, 1);
-            return this.splitter;
+            splitter.SetString(command, 1);
+            return splitter;
         }
     }
 
@@ -69,12 +69,12 @@ internal class PathShape : Shape
     {
         protected PathElement(char command)
         {
-            this.Command = command;
+            Command = command;
         }
 
         public char Command { get; }
 
-        public bool IsRelative => char.IsLower(this.Command);
+        public bool IsRelative => char.IsLower(Command);
     }
 
     internal class MoveTo : PathElement
@@ -87,7 +87,7 @@ internal class PathShape : Shape
                 throw new ArgumentNullException(nameof(value));
             }
 
-            this.Point = value.ReadNextPoint();
+            Point = value.ReadNextPoint();
         }
 
         public Point Point { get; }
@@ -105,9 +105,9 @@ internal class PathShape : Shape
 
             if (char.ToLower(command, GlobalizationConstants.EnglishCultureInfo) == 'h')
             {
-                this.PositionType = PathShapeLineToType.Horizontal;
+                PositionType = PathShapeLineToType.Horizontal;
                 double v = value.ReadNextValue();
-                this.Points = new[]
+                Points = new[]
                 {
                     new Point(v, 0),
                 };
@@ -117,9 +117,9 @@ internal class PathShape : Shape
 
             if (char.ToLower(command, GlobalizationConstants.EnglishCultureInfo) == 'v')
             {
-                this.PositionType = PathShapeLineToType.Vertical;
+                PositionType = PathShapeLineToType.Vertical;
                 double v = value.ReadNextValue();
-                this.Points = new[]
+                Points = new[]
                 {
                     new Point(0, v),
                 };
@@ -127,7 +127,7 @@ internal class PathShape : Shape
                 return;
             }
 
-            this.PositionType = PathShapeLineToType.Point;
+            PositionType = PathShapeLineToType.Point;
             List<Point> list = new List<Point>();
             while (value.More)
             {
@@ -135,7 +135,7 @@ internal class PathShape : Shape
                 list.Add(p);
             }
 
-            this.Points = list.ToArray();
+            Points = list.ToArray();
         }
 
         public PathShapeLineToType PositionType { get; }
@@ -153,9 +153,9 @@ internal class PathShape : Shape
                 throw new ArgumentNullException(nameof(value));
             }
 
-            this.CtrlPoint1 = value.ReadNextPoint();
-            this.CtrlPoint2 = value.ReadNextPoint();
-            this.Point = value.ReadNextPoint();
+            CtrlPoint1 = value.ReadNextPoint();
+            CtrlPoint2 = value.ReadNextPoint();
+            Point = value.ReadNextPoint();
         }
 
         public CurveTo(char command, StringSplitter value, Point ctrlPoint)
@@ -166,9 +166,9 @@ internal class PathShape : Shape
                 throw new ArgumentNullException(nameof(value));
             }
 
-            this.CtrlPoint1 = ctrlPoint;
-            this.CtrlPoint2 = value.ReadNextPoint();
-            this.Point = value.ReadNextPoint();
+            CtrlPoint1 = ctrlPoint;
+            CtrlPoint2 = value.ReadNextPoint();
+            Point = value.ReadNextPoint();
         }
 
         public Point CtrlPoint1 { get; }
@@ -188,8 +188,8 @@ internal class PathShape : Shape
                 throw new ArgumentNullException(nameof(value));
             }
 
-            this.CtrlPoint = value.ReadNextPoint();
-            this.Point = value.ReadNextPoint();
+            CtrlPoint = value.ReadNextPoint();
+            Point = value.ReadNextPoint();
         }
 
         public QuadraticCurveTo(char command, StringSplitter value, Point ctrlPoint)
@@ -200,8 +200,8 @@ internal class PathShape : Shape
                 throw new ArgumentNullException(nameof(value));
             }
 
-            this.CtrlPoint = ctrlPoint;
-            this.Point = value.ReadNextPoint();
+            CtrlPoint = ctrlPoint;
+            Point = value.ReadNextPoint();
         }
 
         public Point CtrlPoint { get; }
@@ -219,15 +219,15 @@ internal class PathShape : Shape
                 throw new ArgumentNullException(nameof(value));
             }
 
-            this.Rx = value.ReadNextValue();
-            this.Ry = value.ReadNextValue();
-            this.AxisRotation = value.ReadNextValue();
+            Rx = value.ReadNextValue();
+            Ry = value.ReadNextValue();
+            AxisRotation = value.ReadNextValue();
             double arcFlag = value.ReadNextValue();
-            this.LargeArc = arcFlag > 0;
+            LargeArc = arcFlag > 0;
             double sweepFlag = value.ReadNextValue();
-            this.Clockwise = sweepFlag > 0;
-            this.X = value.ReadNextValue();
-            this.Y = value.ReadNextValue();
+            Clockwise = sweepFlag > 0;
+            X = value.ReadNextValue();
+            Y = value.ReadNextValue();
         }
 
         public double Rx { get; }
@@ -251,7 +251,7 @@ internal class PathShape : Shape
 
     public override Fill? Fill => base.Fill ?? defaultFill;
 
-    public IList<PathElement> Elements => this.elements.AsReadOnly();
+    public IList<PathElement> Elements => elements.AsReadOnly();
 
     public bool ClosePath { get; }
 
@@ -271,8 +271,8 @@ internal class PathShape : Shape
             PaintServerKey = svg.PaintServers.Parse("black"),
         };
 
-        this.ClosePath = false;
+        ClosePath = false;
         var path = SvgXmlUtil.AttrValue(node, "d", string.Empty);
-        this.Data = path;
+        Data = path;
     }
 }

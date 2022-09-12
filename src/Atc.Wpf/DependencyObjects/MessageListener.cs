@@ -44,7 +44,7 @@ public class MessageListener : DependencyObject
     /// <param name="message">The message.</param>
     public void ReceiveMessage(string message)
     {
-        this.SetCurrentValue(MessageProperty, message);
+        SetCurrentValue(MessageProperty, message);
         DispatcherHelper.DoEvents();
     }
 }

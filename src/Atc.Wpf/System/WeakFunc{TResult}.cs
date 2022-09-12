@@ -8,14 +8,14 @@ public class WeakFunc<TResult>
     /// <summary>
     /// Gets a value indicating whether this instance is static.
     /// </summary>
-    public bool IsStatic => this.staticFunc is not null;
+    public bool IsStatic => staticFunc is not null;
 
     /// <summary>
     /// Gets the name of the method that this WeakFunc represents.
     /// </summary>
-    public virtual string MethodName => this.staticFunc is null
-        ? this.Method!.Name
-        : this.staticFunc.Method.Name;
+    public virtual string MethodName => staticFunc is null
+        ? Method!.Name
+        : staticFunc.Method.Name;
 
     /// <summary>
     /// Gets a value indicating whether the Func owner is still alive, or if it was collected
@@ -25,25 +25,25 @@ public class WeakFunc<TResult>
     {
         get
         {
-            if (this.staticFunc is null
-                && this.Reference is null
-                && this.LiveReference is null)
+            if (staticFunc is null
+                && Reference is null
+                && LiveReference is null)
             {
                 return false;
             }
 
-            if (this.staticFunc is not null)
+            if (staticFunc is not null)
             {
-                return this.Reference is null || this.Reference.IsAlive;
+                return Reference is null || Reference.IsAlive;
             }
 
             // Non static action
-            if (this.LiveReference is not null)
+            if (LiveReference is not null)
             {
                 return true;
             }
 
-            return this.Reference is not null && this.Reference.IsAlive;
+            return Reference is not null && Reference.IsAlive;
         }
     }
 
@@ -51,7 +51,7 @@ public class WeakFunc<TResult>
     /// Gets the Func owner. This object is stored as a.
     /// <see cref="WeakReference" />.
     /// </summary>
-    public object? Target => this.Reference?.Target;
+    public object? Target => Reference?.Target;
 
     /// <summary>
     /// Gets or sets the <see cref="MethodInfo" /> corresponding to this WeakFunc.
@@ -88,7 +88,7 @@ public class WeakFunc<TResult>
     /// <see cref="Target" />, for example if the
     /// method is anonymous.
     /// </summary>
-    protected object? FuncTarget => this.LiveReference ?? this.FuncReference?.Target;
+    protected object? FuncTarget => LiveReference ?? FuncReference?.Target;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WeakFunc{TResult}"/> class.
@@ -115,25 +115,25 @@ public class WeakFunc<TResult>
     {
         if (func!.Method.IsStatic)
         {
-            this.staticFunc = func;
+            staticFunc = func;
 
             if (target is not null)
             {
                 // Keep a reference to the target to control the
                 // WeakAction's lifetime.
-                this.Reference = new WeakReference(target);
+                Reference = new WeakReference(target);
             }
 
             return;
         }
 
-        this.Method = func.Method;
-        this.FuncReference = new WeakReference(func.Target);
+        Method = func.Method;
+        FuncReference = new WeakReference(func.Target);
 
-        this.LiveReference = keepTargetAlive
+        LiveReference = keepTargetAlive
             ? func.Target
             : null;
-        this.Reference = new WeakReference(target);
+        Reference = new WeakReference(target);
 
 #if DEBUG
         if (this.FuncReference.Target is not null && !keepTargetAlive)
@@ -162,20 +162,20 @@ public class WeakFunc<TResult>
     /// <returns>The result of the Func stored as reference.</returns>
     public TResult Execute()
     {
-        if (this.staticFunc is not null)
+        if (staticFunc is not null)
         {
-            return this.staticFunc();
+            return staticFunc();
         }
 
-        var funcTarget = this.FuncTarget;
+        var funcTarget = FuncTarget;
 
         if (!IsAlive)
         {
             return default!;
         }
 
-        if (this.Method is null ||
-            (this.LiveReference is null && this.FuncReference is null) ||
+        if (Method is null ||
+            (LiveReference is null && FuncReference is null) ||
             funcTarget is null)
         {
             return default!;
@@ -189,10 +189,10 @@ public class WeakFunc<TResult>
     /// </summary>
     protected void MarkForDeletion()
     {
-        this.Reference = null;
-        this.FuncReference = null;
-        this.LiveReference = null;
-        this.Method = null;
-        this.staticFunc = null;
+        Reference = null;
+        FuncReference = null;
+        LiveReference = null;
+        Method = null;
+        staticFunc = null;
     }
 }

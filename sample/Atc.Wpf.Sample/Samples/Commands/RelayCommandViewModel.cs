@@ -4,19 +4,19 @@ public class RelayCommandViewModel : ViewModelBase
 {
     private bool isTestEnabled;
 
-    public IRelayCommand Test1Command => new RelayCommand(this.Test1CommandHandler);
+    public IRelayCommand Test1Command => new RelayCommand(Test1CommandHandler);
 
-    public IRelayCommand Test2Command => new RelayCommand(this.Test2CommandHandler, () => this.IsTestEnabled);
+    public IRelayCommand Test2Command => new RelayCommand(Test2CommandHandler, () => IsTestEnabled);
 
-    public IRelayCommand<string> Test3Command => new RelayCommand<string>(this.Test3CommandHandler);
+    public IRelayCommand<string> Test3Command => new RelayCommand<string>(Test3CommandHandler);
 
     public bool IsTestEnabled
     {
-        get => this.isTestEnabled;
+        get => isTestEnabled;
         set
         {
-            this.isTestEnabled = value;
-            this.RaisePropertyChanged();
+            isTestEnabled = value;
+            RaisePropertyChanged();
         }
     }
 

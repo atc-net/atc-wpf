@@ -5,12 +5,12 @@ internal class AnimateTransform : AnimationBase
     public AnimateTransform(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)
     {
-        this.Type = Enum<AnimateTransformType>.Parse(SvgXmlUtil.AttrValue(node, "type", "translate")!);
-        this.From = SvgXmlUtil.AttrValue(node, "from", defaultValue: null);
-        this.To = SvgXmlUtil.AttrValue(node, "to", defaultValue: null);
-        this.AttributeName = SvgXmlUtil.AttrValue(node, "attributeName", defaultValue: null);
-        this.RepeatType = SvgXmlUtil.AttrValue(node, "repeatCount", "indefinite");
-        this.Values = SvgXmlUtil.AttrValue(node, "values", defaultValue: null);
+        Type = Enum<AnimateTransformType>.Parse(SvgXmlUtil.AttrValue(node, "type", "translate")!);
+        From = SvgXmlUtil.AttrValue(node, "from", defaultValue: null);
+        To = SvgXmlUtil.AttrValue(node, "to", defaultValue: null);
+        AttributeName = SvgXmlUtil.AttrValue(node, "attributeName", defaultValue: null);
+        RepeatType = SvgXmlUtil.AttrValue(node, "repeatCount", "indefinite");
+        Values = SvgXmlUtil.AttrValue(node, "values", defaultValue: null);
     }
 
     public string? AttributeName { get; }

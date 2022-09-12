@@ -7,11 +7,11 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
     /// <inheritdoc />
     public WindowState WindowState
     {
-        get => this.windowState;
+        get => windowState;
         set
         {
-            this.windowState = value;
-            this.RaisePropertyChanged();
+            windowState = value;
+            RaisePropertyChanged();
         }
     }
 
@@ -40,7 +40,7 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
 
         if (args.Key == Key.F11)
         {
-            this.WindowState = this.WindowState == WindowState.Maximized
+            WindowState = WindowState == WindowState.Maximized
                 ? WindowState.Normal
                 : WindowState.Maximized;
             args.Handled = true;
@@ -55,6 +55,6 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
 
     private void ApplicationExitCommandHandler()
     {
-        this.OnClosing(this, new CancelEventArgs());
+        OnClosing(this, new CancelEventArgs());
     }
 }

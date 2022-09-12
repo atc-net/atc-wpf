@@ -7,11 +7,11 @@ public partial class SaturateShaderEffectView
 {
     public SaturateShaderEffectView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void ResetOnClick(object sender, RoutedEventArgs e)
     {
-        this.SliderProgress.Value = 0;
+        SliderProgress.Value = 0;
     }
 }

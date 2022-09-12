@@ -19,11 +19,11 @@ internal abstract class GradientColorPaintServer : PaintServer
             throw new ArgumentNullException(nameof(node));
         }
 
-        this.GradientUnits = SvgXmlUtil.AttrValue(node, "gradientUnits", string.Empty);
+        GradientUnits = SvgXmlUtil.AttrValue(node, "gradientUnits", string.Empty);
         var transform = SvgXmlUtil.AttrValue(node, "gradientTransform", string.Empty);
         if (!string.IsNullOrEmpty(transform))
         {
-            this.Transform = ShapeUtil.ParseTransform(transform.ToLower(GlobalizationConstants.EnglishCultureInfo));
+            Transform = ShapeUtil.ParseTransform(transform.ToLower(GlobalizationConstants.EnglishCultureInfo));
         }
 
         var refId = SvgXmlUtil.AttrValue(node, "xlink:href", string.Empty);
@@ -40,7 +40,7 @@ internal abstract class GradientColorPaintServer : PaintServer
                 return;
             }
 
-            this.gradientStop = new List<GradientStop>(refCol.gradientStop);
+            gradientStop = new List<GradientStop>(refCol.gradientStop);
         }
 
         foreach (XmlNode childNode in node.ChildNodes)
@@ -85,7 +85,7 @@ internal abstract class GradientColorPaintServer : PaintServer
                 offset /= 100;
             }
 
-            this.gradientStop.Add(new GradientStop(color, offset));
+            gradientStop.Add(new GradientStop(color, offset));
         }
     }
 
@@ -94,7 +94,7 @@ internal abstract class GradientColorPaintServer : PaintServer
     {
     }
 
-    public IEnumerable<GradientStop> Stops => this.gradientStop.AsReadOnly();
+    public IEnumerable<GradientStop> Stops => gradientStop.AsReadOnly();
 
     public Transform? Transform { get; protected set; }
 
@@ -105,7 +105,7 @@ internal abstract class GradientColorPaintServer : PaintServer
         public TempXmlAttribute(XmlNode owner, string name, string value)
             : base(string.Empty, name, string.Empty, owner.OwnerDocument!)
         {
-            this.Value = value;
+            Value = value;
         }
     }
 }

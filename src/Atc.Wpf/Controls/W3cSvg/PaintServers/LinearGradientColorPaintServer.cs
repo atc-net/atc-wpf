@@ -5,10 +5,10 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
     public LinearGradientColorPaintServer(PaintServerManager owner, XmlNode node)
         : base(owner, node)
     {
-        this.X1 = SvgXmlUtil.AttrValue(node, "x1", double.NaN);
-        this.Y1 = SvgXmlUtil.AttrValue(node, "y1", double.NaN);
-        this.X2 = SvgXmlUtil.AttrValue(node, "x2", double.NaN);
-        this.Y2 = SvgXmlUtil.AttrValue(node, "y2", double.NaN);
+        X1 = SvgXmlUtil.AttrValue(node, "x1", double.NaN);
+        Y1 = SvgXmlUtil.AttrValue(node, "y1", double.NaN);
+        X2 = SvgXmlUtil.AttrValue(node, "x2", double.NaN);
+        Y2 = SvgXmlUtil.AttrValue(node, "y2", double.NaN);
     }
 
     public LinearGradientColorPaintServer(PaintServerManager owner, Brush newBrush)
@@ -27,13 +27,13 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
 
     public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (this.Brush is not null)
+        if (Brush is not null)
         {
-            return this.Brush;
+            return Brush;
         }
 
         var brush = new LinearGradientBrush();
-        foreach (GradientStop stop in this.Stops)
+        foreach (GradientStop stop in Stops)
         {
             brush.GradientStops.Add(stop);
         }
@@ -42,87 +42,87 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
         brush.StartPoint = new Point(0, 0);
         brush.EndPoint = new Point(1, 0);
 
-        if (this.GradientUnits == SvgTagConstants.UserSpaceOnUse)
+        if (GradientUnits == SvgTagConstants.UserSpaceOnUse)
         {
-            var tr = this.Transform;
+            var tr = Transform;
             if (tr is not null)
             {
-                brush.StartPoint = tr.Transform(new Point(this.X1, this.Y1));
-                brush.EndPoint = tr.Transform(new Point(this.X2, this.Y2));
+                brush.StartPoint = tr.Transform(new Point(X1, Y1));
+                brush.EndPoint = tr.Transform(new Point(X2, Y2));
             }
             else
             {
-                brush.StartPoint = new Point(this.X1, this.Y1);
-                brush.EndPoint = new Point(this.X2, this.Y2);
+                brush.StartPoint = new Point(X1, Y1);
+                brush.EndPoint = new Point(X2, Y2);
             }
 
-            this.Transform = null;
+            Transform = null;
             brush.MappingMode = BrushMappingMode.Absolute;
         }
         else
         {
-            this.Normalize();
-            if (!double.IsNaN(this.X1))
+            Normalize();
+            if (!double.IsNaN(X1))
             {
-                brush.StartPoint = new Point(this.X1, this.Y1);
+                brush.StartPoint = new Point(X1, Y1);
             }
 
-            if (!double.IsNaN(this.X2))
+            if (!double.IsNaN(X2))
             {
-                brush.EndPoint = new Point(this.X2, this.Y2);
+                brush.EndPoint = new Point(X2, Y2);
             }
         }
 
-        this.Brush = brush;
+        Brush = brush;
 
         return brush;
     }
 
     private void Normalize()
     {
-        if (!double.IsNaN(this.X1) && !double.IsNaN(this.X2))
+        if (!double.IsNaN(X1) && !double.IsNaN(X2))
         {
-            double min = this.X1;
-            if (this.X2 < this.X1)
+            double min = X1;
+            if (X2 < X1)
             {
-                min = this.X2;
+                min = X2;
             }
 
-            this.X1 -= min;
-            this.X2 -= min;
-            double scale = this.X1;
-            if (this.X2 > this.X1)
+            X1 -= min;
+            X2 -= min;
+            double scale = X1;
+            if (X2 > X1)
             {
-                scale = this.X2;
+                scale = X2;
             }
 
             if (scale != 0)
             {
-                this.X1 /= scale;
-                this.X2 /= scale;
+                X1 /= scale;
+                X2 /= scale;
             }
         }
 
-        if (!double.IsNaN(this.Y1) && !double.IsNaN(this.Y2))
+        if (!double.IsNaN(Y1) && !double.IsNaN(Y2))
         {
-            double min = this.Y1;
-            if (this.Y2 < this.Y1)
+            double min = Y1;
+            if (Y2 < Y1)
             {
-                min = this.Y2;
+                min = Y2;
             }
 
-            this.Y1 -= min;
-            this.Y2 -= min;
-            double scale = this.Y1;
-            if (this.Y2 > this.Y1)
+            Y1 -= min;
+            Y2 -= min;
+            double scale = Y1;
+            if (Y2 > Y1)
             {
-                scale = this.Y2;
+                scale = Y2;
             }
 
             if (scale != 0)
             {
-                this.Y1 /= scale;
-                this.Y2 /= scale;
+                Y1 /= scale;
+                Y2 /= scale;
             }
         }
     }

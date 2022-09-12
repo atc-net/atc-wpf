@@ -29,8 +29,8 @@ public class FadeShaderEffect : ShaderEffectBase
 
     public FadeShaderEffect()
     {
-        this.UpdateShaderValue(InputProperty);
-        this.UpdateShaderValue(StrengthProperty);
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(StrengthProperty);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class FadeShaderEffect : ShaderEffectBase
     /// </summary>
     public Color ToColor
     {
-        get => (Color)this.GetValue(ToColorProperty);
-        set => this.SetValue(ToColorProperty, value);
+        get => (Color)GetValue(ToColorProperty);
+        set => SetValue(ToColorProperty, value);
     }
 }

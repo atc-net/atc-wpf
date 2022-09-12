@@ -37,25 +37,25 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
 
         if (action.Method.IsStatic)
         {
-            this.staticAction = action;
+            staticAction = action;
 
             if (target is not null)
             {
                 // Keep a reference to the target to control the
                 // WeakAction's lifetime.
-                this.Reference = new WeakReference(target);
+                Reference = new WeakReference(target);
             }
 
             return;
         }
 
-        this.Method = action.Method;
-        this.ActionReference = new WeakReference(action.Target);
+        Method = action.Method;
+        ActionReference = new WeakReference(action.Target);
 
-        this.LiveReference = keepTargetAlive
+        LiveReference = keepTargetAlive
             ? action.Target
             : null;
-        this.Reference = new WeakReference(target);
+        Reference = new WeakReference(target);
 
 #if DEBUG
         if (this.ActionReference.Target is not null && !keepTargetAlive)
@@ -73,9 +73,9 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     /// <summary>
     /// Gets the name of the method that this WeakAction represents.
     /// </summary>
-    public override string MethodName => this.staticAction is null
-        ? this.Method!.Name
-        : this.staticAction.Method.Name;
+    public override string MethodName => staticAction is null
+        ? Method!.Name
+        : staticAction.Method.Name;
 
     /// <summary>
     /// Gets a value indicating whether the Action's owner is still alive, or if it was collected
@@ -85,14 +85,14 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     {
         get
         {
-            if (this.staticAction is null && this.Reference is null)
+            if (staticAction is null && Reference is null)
             {
                 return false;
             }
 
-            return this.staticAction is null
-                ? this.Reference is not null && this.Reference.IsAlive
-                : this.Reference is null || this.Reference.IsAlive;
+            return staticAction is null
+                ? Reference is not null && Reference.IsAlive
+                : Reference is null || Reference.IsAlive;
         }
     }
 
@@ -103,24 +103,24 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     /// <param name="parameter">A parameter to be passed to the action.</param>
     public void Execute(T? parameter = default)
     {
-        if (this.staticAction is not null)
+        if (staticAction is not null)
         {
-            this.staticAction(parameter!);
+            staticAction(parameter!);
             return;
         }
 
-        var actionTarget = this.ActionTarget;
+        var actionTarget = ActionTarget;
 
-        if (!this.IsAlive)
+        if (!IsAlive)
         {
             return;
         }
 
-        if (this.Method is not null
-            && (this.LiveReference is not null || this.ActionReference is not null)
+        if (Method is not null
+            && (LiveReference is not null || ActionReference is not null)
             && actionTarget is not null)
         {
-            _ = this.Method.Invoke(
+            _ = Method.Invoke(
                 actionTarget,
                 new object[] { parameter! });
         }
@@ -142,7 +142,7 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
         }
 
         var parameterCasted = (T)parameter;
-        this.Execute(parameterCasted);
+        Execute(parameterCasted);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     /// </summary>
     public new void MarkForDeletion()
     {
-        this.staticAction = null;
+        staticAction = null;
         base.MarkForDeletion();
     }
 }

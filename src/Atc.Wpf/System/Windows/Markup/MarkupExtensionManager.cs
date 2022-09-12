@@ -43,7 +43,7 @@ public sealed class MarkupExtensionManager
     /// </summary>
     public void UpdateAllTargets()
     {
-        foreach (ManagedMarkupExtension extension in this.ActiveExtensions)
+        foreach (ManagedMarkupExtension extension in ActiveExtensions)
         {
             extension.UpdateTarget();
         }
@@ -61,9 +61,9 @@ public sealed class MarkupExtensionManager
     /// </remarks>
     public void CleanupInactiveExtensions()
     {
-        var newExtensions = new List<ManagedMarkupExtension>(this.ActiveExtensions.Count);
-        newExtensions.AddRange(this.ActiveExtensions.Where(ext => ext.IsTargetAlive));
-        this.ActiveExtensions = newExtensions;
+        var newExtensions = new List<ManagedMarkupExtension>(ActiveExtensions.Count);
+        newExtensions.AddRange(ActiveExtensions.Where(ext => ext.IsTargetAlive));
+        ActiveExtensions = newExtensions;
     }
 
     /// <summary>
@@ -80,13 +80,13 @@ public sealed class MarkupExtensionManager
 
         // Cleanup extensions for target objects which have been garbage collected
         // for performance only do this periodically
-        if (this.cleanupCount > this.cleanupInterval)
+        if (cleanupCount > cleanupInterval)
         {
-            this.CleanupInactiveExtensions();
-            this.cleanupCount = 0;
+            CleanupInactiveExtensions();
+            cleanupCount = 0;
         }
 
-        this.ActiveExtensions.Add(extension);
-        this.cleanupCount++;
+        ActiveExtensions.Add(extension);
+        cleanupCount++;
     }
 }

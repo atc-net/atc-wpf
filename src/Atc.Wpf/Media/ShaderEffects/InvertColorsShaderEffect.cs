@@ -12,7 +12,7 @@ public class InvertColorsShaderEffect : ShaderEffectBase
 
     public InvertColorsShaderEffect()
     {
-        this.UpdateShaderValue(InputProperty);
+        UpdateShaderValue(InputProperty);
     }
 
     /// <summary>

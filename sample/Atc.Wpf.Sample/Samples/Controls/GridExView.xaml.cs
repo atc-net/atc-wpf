@@ -7,6 +7,6 @@ public partial class GridExView
 {
     public GridExView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

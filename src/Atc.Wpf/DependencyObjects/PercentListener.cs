@@ -49,7 +49,7 @@ public class PercentListener : DependencyObject
             throw new ArgumentException("Percent have to be between 0 and 100", nameof(percent));
         }
 
-        this.SetCurrentValue(PercentProperty, percent);
+        SetCurrentValue(PercentProperty, percent);
         DispatcherHelper.DoEvents();
     }
 }

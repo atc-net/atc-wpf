@@ -5,11 +5,11 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
     public RadialGradientColorPaintServer(PaintServerManager owner, XmlNode node)
         : base(owner, node)
     {
-        this.Cx = SvgXmlUtil.AttrValue(node, "cx", 0.5);
-        this.Cy = SvgXmlUtil.AttrValue(node, "cy", 0.5);
-        this.Fx = SvgXmlUtil.AttrValue(node, "fx", this.Cx);
-        this.Fy = SvgXmlUtil.AttrValue(node, "fy", this.Cy);
-        this.R = SvgXmlUtil.AttrValue(node, "r", 0.5);
+        Cx = SvgXmlUtil.AttrValue(node, "cx", 0.5);
+        Cy = SvgXmlUtil.AttrValue(node, "cy", 0.5);
+        Fx = SvgXmlUtil.AttrValue(node, "fx", Cx);
+        Fy = SvgXmlUtil.AttrValue(node, "fy", Cy);
+        R = SvgXmlUtil.AttrValue(node, "r", 0.5);
     }
 
     public RadialGradientColorPaintServer(PaintServerManager owner, Brush newBrush)
@@ -30,13 +30,13 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
 
     public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (this.Brush is not null)
+        if (Brush is not null)
         {
-            return this.Brush;
+            return Brush;
         }
 
         var brush = new RadialGradientBrush();
-        foreach (GradientStop stop in this.Stops)
+        foreach (GradientStop stop in Stops)
         {
             brush.GradientStops.Add(stop);
         }
@@ -46,42 +46,42 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
         brush.RadiusX = 0.5;
         brush.RadiusY = 0.5;
 
-        if (this.GradientUnits == SvgTagConstants.UserSpaceOnUse)
+        if (GradientUnits == SvgTagConstants.UserSpaceOnUse)
         {
-            brush.Center = new Point(this.Cx, this.Cy);
-            brush.GradientOrigin = new Point(this.Fx, this.Fy);
-            brush.RadiusX = this.R;
-            brush.RadiusY = this.R;
+            brush.Center = new Point(Cx, Cy);
+            brush.GradientOrigin = new Point(Fx, Fy);
+            brush.RadiusX = R;
+            brush.RadiusY = R;
             brush.MappingMode = BrushMappingMode.Absolute;
         }
         else
         {
             const double scale = 1d / 100d;
-            if (!double.IsNaN(this.Cx) && !double.IsNaN(this.Cy))
+            if (!double.IsNaN(Cx) && !double.IsNaN(Cy))
             {
-                brush.Center = new Point(this.Cx, this.Cy);
+                brush.Center = new Point(Cx, Cy);
             }
 
-            if (!double.IsNaN(this.Fx) && !double.IsNaN(this.Fy))
+            if (!double.IsNaN(Fx) && !double.IsNaN(Fy))
             {
-                brush.GradientOrigin = new Point(this.Fx * scale, this.Fy * scale);
+                brush.GradientOrigin = new Point(Fx * scale, Fy * scale);
             }
 
-            if (!double.IsNaN(this.R))
+            if (!double.IsNaN(R))
             {
-                brush.RadiusX = this.R;
-                brush.RadiusY = this.R;
+                brush.RadiusX = R;
+                brush.RadiusY = R;
             }
 
             brush.MappingMode = BrushMappingMode.RelativeToBoundingBox;
         }
 
-        if (this.Transform is not null)
+        if (Transform is not null)
         {
-            brush.Transform = this.Transform;
+            brush.Transform = Transform;
         }
 
-        this.Brush = brush;
+        Brush = brush;
 
         return brush;
     }

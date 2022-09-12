@@ -21,8 +21,8 @@ public class DesaturateShaderEffect : ShaderEffectBase
 
     public DesaturateShaderEffect()
     {
-        this.UpdateShaderValue(InputProperty);
-        this.UpdateShaderValue(StrengthProperty);
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(StrengthProperty);
     }
 
     /// <summary>

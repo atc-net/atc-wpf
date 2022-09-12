@@ -186,23 +186,23 @@ public class Messenger : IMessenger
     /// </summary>
     public void RequestCleanup()
     {
-        if (this.isCleanupRegistered)
+        if (isCleanupRegistered)
         {
             return;
         }
 
         Action cleanupAction = Cleanup;
 
-        if (this.context is not null)
+        if (context is not null)
         {
-            this.context.Post(_ => cleanupAction(), state: null);
+            context.Post(_ => cleanupAction(), state: null);
         }
         else
         {
             cleanupAction(); // run inline w/o a context
         }
 
-        this.isCleanupRegistered = true;
+        isCleanupRegistered = true;
     }
 
     /// <summary>

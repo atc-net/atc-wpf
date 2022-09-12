@@ -13,15 +13,15 @@ internal class AnimationBase : Shape
 
         if (dur.EndsWith("ms", StringComparison.Ordinal))
         {
-            this.Duration = TimeSpan.FromMilliseconds(double.Parse(dur.Substring(0, dur.Length - 2), GlobalizationConstants.EnglishCultureInfo));
+            Duration = TimeSpan.FromMilliseconds(double.Parse(dur.Substring(0, dur.Length - 2), GlobalizationConstants.EnglishCultureInfo));
         }
         else if (dur.EndsWith('s'))
         {
-            this.Duration = TimeSpan.FromSeconds(double.Parse(dur.Substring(0, dur.Length - 1), GlobalizationConstants.EnglishCultureInfo));
+            Duration = TimeSpan.FromSeconds(double.Parse(dur.Substring(0, dur.Length - 1), GlobalizationConstants.EnglishCultureInfo));
         }
         else
         {
-            this.Duration = TimeSpan.FromSeconds(double.Parse(dur, GlobalizationConstants.EnglishCultureInfo));
+            Duration = TimeSpan.FromSeconds(double.Parse(dur, GlobalizationConstants.EnglishCultureInfo));
         }
     }
 

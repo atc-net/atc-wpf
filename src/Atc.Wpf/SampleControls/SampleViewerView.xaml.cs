@@ -7,6 +7,6 @@ public partial class SampleViewerView
 {
     public SampleViewerView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

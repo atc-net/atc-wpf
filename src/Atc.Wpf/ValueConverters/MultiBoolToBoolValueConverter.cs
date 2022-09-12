@@ -18,7 +18,7 @@ public class MultiBoolToBoolValueConverter : IMultiValueConverter
     }
 
     /// <inheritdoc />
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

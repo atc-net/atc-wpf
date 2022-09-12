@@ -7,12 +7,12 @@ public partial class ContrastAdjustShaderEffectView
 {
     public ContrastAdjustShaderEffectView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void ResetOnClick(object sender, RoutedEventArgs e)
     {
-        this.SliderBrightness.Value = 0;
-        this.SliderContrast.Value = 0;
+        SliderBrightness.Value = 0;
+        SliderContrast.Value = 0;
     }
 }

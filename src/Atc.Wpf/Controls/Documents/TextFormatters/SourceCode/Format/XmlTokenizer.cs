@@ -15,7 +15,7 @@ internal class XmlTokenizer
     /// <value>
     /// The remaining text.
     /// </value>
-    public string RemainingText => this.input.Substring(this.position);
+    public string RemainingText => input.Substring(position);
 
     public static List<XmlToken> Tokenize(string input)
     {
@@ -26,9 +26,9 @@ internal class XmlTokenizer
 
     public List<XmlToken> Tokenize(string inputValue, ref XmlTokenizerMode tokenizerMode)
     {
-        this.input = inputValue;
-        this.mode = tokenizerMode;
-        this.position = 0;
+        input = inputValue;
+        mode = tokenizerMode;
+        position = 0;
         List<XmlToken> result = Tokenize();
         return result;
     }
@@ -39,7 +39,7 @@ internal class XmlTokenizer
         XmlToken token;
         do
         {
-            token = this.NextToken();
+            token = NextToken();
             list.Add(token);
         }
         while (token.Kind != XmlTokenKind.Eof);
@@ -48,21 +48,21 @@ internal class XmlTokenizer
 
     private XmlToken NextToken()
     {
-        if (this.position >= this.input.Length)
+        if (position >= input.Length)
         {
             return new XmlToken(XmlTokenKind.Eof, 0);
         }
 
-        XmlToken token = this.mode switch
+        XmlToken token = mode switch
         {
-            XmlTokenizerMode.AfterAttributeEquals => this.TokenizeAttributeValue(),
-            XmlTokenizerMode.AfterAttributeName => this.TokenizeSimple("=", XmlTokenKind.Equals, XmlTokenizerMode.AfterAttributeEquals),
-            XmlTokenizerMode.AfterOpen => this.TokenizeName(XmlTokenKind.ElementName, XmlTokenizerMode.InsideElement),
-            XmlTokenizerMode.InsideCData => this.TokenizeInsideCData(),
-            XmlTokenizerMode.InsideComment => this.TokenizeInsideComment(),
-            XmlTokenizerMode.InsideElement => this.TokenizeInsideElement(),
-            XmlTokenizerMode.InsideProcessingInstruction => this.TokenizeInsideProcessingInstruction(),
-            XmlTokenizerMode.OutsideElement => this.TokenizeOutsideElement(),
+            XmlTokenizerMode.AfterAttributeEquals => TokenizeAttributeValue(),
+            XmlTokenizerMode.AfterAttributeName => TokenizeSimple("=", XmlTokenKind.Equals, XmlTokenizerMode.AfterAttributeEquals),
+            XmlTokenizerMode.AfterOpen => TokenizeName(XmlTokenKind.ElementName, XmlTokenizerMode.InsideElement),
+            XmlTokenizerMode.InsideCData => TokenizeInsideCData(),
+            XmlTokenizerMode.InsideComment => TokenizeInsideComment(),
+            XmlTokenizerMode.InsideElement => TokenizeInsideElement(),
+            XmlTokenizerMode.InsideProcessingInstruction => TokenizeInsideProcessingInstruction(),
+            XmlTokenizerMode.OutsideElement => TokenizeOutsideElement(),
             _ => new XmlToken(XmlTokenKind.Eof, 0)
         };
 
@@ -78,183 +78,183 @@ internal class XmlTokenizer
 
     private XmlToken TokenizeAttributeValue()
     {
-        int closePosition = this.input.IndexOf(this.input[this.position], this.position + 1);
-        var token = new XmlToken(XmlTokenKind.AttributeValue, closePosition + 1 - this.position);
-        this.position = closePosition + 1;
-        this.mode = XmlTokenizerMode.InsideElement;
+        int closePosition = input.IndexOf(input[position], position + 1);
+        var token = new XmlToken(XmlTokenKind.AttributeValue, closePosition + 1 - position);
+        position = closePosition + 1;
+        mode = XmlTokenizerMode.InsideElement;
         return token;
     }
 
     private XmlToken TokenizeName(XmlTokenKind kind, XmlTokenizerMode nextMode)
     {
         int i;
-        for (i = this.position; i < this.input.Length; i++)
+        for (i = position; i < input.Length; i++)
         {
-            if (!IsNameCharacter(this.input[i]))
+            if (!IsNameCharacter(input[i]))
             {
                 break;
             }
         }
 
-        var token = new XmlToken(kind, i - this.position);
-        this.mode = nextMode;
-        this.position = i;
+        var token = new XmlToken(kind, i - position);
+        mode = nextMode;
+        position = i;
         return token;
     }
 
     private XmlToken TokenizeElementWhitespace()
     {
         int i;
-        for (i = this.position; i < this.input.Length; i++)
+        for (i = position; i < input.Length; i++)
         {
-            if (!char.IsWhiteSpace(this.input[i]))
+            if (!char.IsWhiteSpace(input[i]))
             {
                 break;
             }
         }
 
-        var token = new XmlToken(XmlTokenKind.ElementWhitespace, i - this.position);
-        this.position = i;
+        var token = new XmlToken(XmlTokenKind.ElementWhitespace, i - position);
+        position = i;
         return token;
     }
 
     private bool StartsWith(string text)
     {
-        if (this.position + text.Length > this.input.Length)
+        if (position + text.Length > input.Length)
         {
             return false;
         }
 
-        return this.input.Substring(this.position, text.Length) == text;
+        return input.Substring(position, text.Length) == text;
     }
 
     private XmlToken TokenizeInsideElement()
     {
-        if (char.IsWhiteSpace(this.input[this.position]))
+        if (char.IsWhiteSpace(input[position]))
         {
-            return this.TokenizeElementWhitespace();
+            return TokenizeElementWhitespace();
         }
 
-        if (this.StartsWith("/>"))
+        if (StartsWith("/>"))
         {
-            return this.TokenizeSimple("/>", XmlTokenKind.SelfClose, XmlTokenizerMode.OutsideElement);
+            return TokenizeSimple("/>", XmlTokenKind.SelfClose, XmlTokenizerMode.OutsideElement);
         }
 
-        return this.StartsWith(">")
-            ? this.TokenizeSimple(">", XmlTokenKind.Close, XmlTokenizerMode.OutsideElement)
-            : this.TokenizeName(XmlTokenKind.AttributeName, XmlTokenizerMode.AfterAttributeName);
+        return StartsWith(">")
+            ? TokenizeSimple(">", XmlTokenKind.Close, XmlTokenizerMode.OutsideElement)
+            : TokenizeName(XmlTokenKind.AttributeName, XmlTokenizerMode.AfterAttributeName);
     }
 
     private XmlToken TokenizeText()
     {
         int i;
-        for (i = this.position; i < this.input.Length; i++)
+        for (i = position; i < input.Length; i++)
         {
-            if (this.input[i] == '<' || this.input[i] == '&')
+            if (input[i] == '<' || input[i] == '&')
             {
                 break;
             }
         }
 
-        var token = new XmlToken(XmlTokenKind.TextContent, i - this.position);
-        this.position = i;
+        var token = new XmlToken(XmlTokenKind.TextContent, i - position);
+        position = i;
         return token;
     }
 
     private XmlToken TokenizeOutsideElement()
     {
-        if (this.position >= this.input.Length)
+        if (position >= input.Length)
         {
             return new XmlToken(XmlTokenKind.Eof, 0);
         }
 
-        return this.input[this.position] switch
+        return input[position] switch
         {
-            '<' => this.TokenizeOpen(),
-            '&' => this.TokenizeEntity(),
-            _ => this.TokenizeText()
+            '<' => TokenizeOpen(),
+            '&' => TokenizeEntity(),
+            _ => TokenizeText()
         };
     }
 
     private XmlToken TokenizeSimple(string text, XmlTokenKind kind, XmlTokenizerMode nextMode)
     {
         var token = new XmlToken(kind, text.Length);
-        this.position += text.Length;
-        this.mode = nextMode;
+        position += text.Length;
+        mode = nextMode;
         return token;
     }
 
     private XmlToken TokenizeOpen()
     {
-        if (this.StartsWith("<!--"))
+        if (StartsWith("<!--"))
         {
-            return this.TokenizeSimple("<!--", XmlTokenKind.CommentBegin, XmlTokenizerMode.InsideComment);
+            return TokenizeSimple("<!--", XmlTokenKind.CommentBegin, XmlTokenizerMode.InsideComment);
         }
 
-        if (this.StartsWith("<![CDATA["))
+        if (StartsWith("<![CDATA["))
         {
-            return this.TokenizeSimple("<![CDATA[", XmlTokenKind.CDataBegin, XmlTokenizerMode.InsideCData);
+            return TokenizeSimple("<![CDATA[", XmlTokenKind.CDataBegin, XmlTokenizerMode.InsideCData);
         }
 
-        if (this.StartsWith("<?"))
+        if (StartsWith("<?"))
         {
-            return this.TokenizeSimple("<?", XmlTokenKind.OpenProcessingInstruction, XmlTokenizerMode.InsideProcessingInstruction);
+            return TokenizeSimple("<?", XmlTokenKind.OpenProcessingInstruction, XmlTokenizerMode.InsideProcessingInstruction);
         }
 
-        return this.StartsWith("</")
-            ? this.TokenizeSimple("</", XmlTokenKind.OpenClose, XmlTokenizerMode.AfterOpen)
-            : this.TokenizeSimple("<", XmlTokenKind.Open, XmlTokenizerMode.AfterOpen);
+        return StartsWith("</")
+            ? TokenizeSimple("</", XmlTokenKind.OpenClose, XmlTokenizerMode.AfterOpen)
+            : TokenizeSimple("<", XmlTokenKind.Open, XmlTokenizerMode.AfterOpen);
     }
 
     private XmlToken TokenizeEntity()
     {
-        var token = new XmlToken(XmlTokenKind.Entity, this.input.IndexOf(';', this.position) - this.position);
-        this.position += token.Length;
+        var token = new XmlToken(XmlTokenKind.Entity, input.IndexOf(';', position) - position);
+        position += token.Length;
         return token;
     }
 
     private XmlToken TokenizeInsideProcessingInstruction()
     {
-        int index = this.input.IndexOf("?>", this.position, StringComparison.Ordinal);
-        if (this.position == index)
+        int index = input.IndexOf("?>", position, StringComparison.Ordinal);
+        if (position == index)
         {
-            this.position += "?>".Length;
-            this.mode = XmlTokenizerMode.OutsideElement;
+            position += "?>".Length;
+            mode = XmlTokenizerMode.OutsideElement;
             return new XmlToken(XmlTokenKind.CloseProcessingInstruction, "?>".Length);
         }
 
-        var token = new XmlToken(XmlTokenKind.TextContent, index - this.position);
-        this.position = index;
+        var token = new XmlToken(XmlTokenKind.TextContent, index - position);
+        position = index;
         return token;
     }
 
     private XmlToken TokenizeInsideCData()
     {
-        int index = this.input.IndexOf("]]>", this.position, StringComparison.Ordinal);
-        if (this.position == index)
+        int index = input.IndexOf("]]>", position, StringComparison.Ordinal);
+        if (position == index)
         {
-            this.position += "]]>".Length;
-            this.mode = XmlTokenizerMode.OutsideElement;
+            position += "]]>".Length;
+            mode = XmlTokenizerMode.OutsideElement;
             return new XmlToken(XmlTokenKind.CDataEnd, "]]>".Length);
         }
 
-        var token = new XmlToken(XmlTokenKind.TextContent, index - this.position);
-        this.position = index;
+        var token = new XmlToken(XmlTokenKind.TextContent, index - position);
+        position = index;
         return token;
     }
 
     private XmlToken TokenizeInsideComment()
     {
-        int index = this.input.IndexOf("-->", this.position, StringComparison.Ordinal);
-        if (this.position == index)
+        int index = input.IndexOf("-->", position, StringComparison.Ordinal);
+        if (position == index)
         {
-            this.position += "-->".Length;
-            this.mode = XmlTokenizerMode.OutsideElement;
+            position += "-->".Length;
+            mode = XmlTokenizerMode.OutsideElement;
             return new XmlToken(XmlTokenKind.CommentEnd, "-->".Length);
         }
 
-        var token = new XmlToken(XmlTokenKind.CommentText, index - this.position);
-        this.position = index;
+        var token = new XmlToken(XmlTokenKind.CommentText, index - position);
+        position = index;
         return token;
     }
 }

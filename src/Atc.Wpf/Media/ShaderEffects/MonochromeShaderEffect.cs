@@ -21,8 +21,8 @@ public class MonochromeShaderEffect : ShaderEffectBase
 
     public MonochromeShaderEffect()
     {
-        this.UpdateShaderValue(InputProperty);
-        this.UpdateShaderValue(FilterColorProperty);
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(FilterColorProperty);
     }
 
     /// <summary>

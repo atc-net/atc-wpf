@@ -16,7 +16,7 @@ public class NotificationMessage : MessageBase
     /// passed to recipient(s)</param>
     public NotificationMessage(string notification)
     {
-        this.Notification = notification;
+        Notification = notification;
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ public class NotificationMessage : MessageBase
     public NotificationMessage(object sender, string notification)
         : base(sender)
     {
-        this.Notification = notification;
+        Notification = notification;
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public class NotificationMessage : MessageBase
     public NotificationMessage(object sender, object target, string notification)
         : base(sender, target)
     {
-        this.Notification = notification;
+        Notification = notification;
     }
 
     /// <summary>

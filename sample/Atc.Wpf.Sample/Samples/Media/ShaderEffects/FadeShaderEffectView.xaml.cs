@@ -7,11 +7,11 @@ public partial class FadeShaderEffectView
 {
     public FadeShaderEffectView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void ResetOnClick(object sender, RoutedEventArgs e)
     {
-        this.SliderStrength.Value = 0;
+        SliderStrength.Value = 0;
     }
 }

@@ -10,7 +10,7 @@ internal class Filter : Group
     public BitmapEffect GetBitmapEffect()
     {
         var bitmapEffectGroup = new BitmapEffectGroup();
-        foreach (var element in this.Elements.OfType<FilterBaseFe>())
+        foreach (var element in Elements.OfType<FilterBaseFe>())
         {
             bitmapEffectGroup.Children.Add(element.GetBitmapEffect());
         }

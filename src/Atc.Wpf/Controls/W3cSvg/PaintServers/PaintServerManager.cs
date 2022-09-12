@@ -17,9 +17,9 @@ internal class PaintServerManager
             case SvgTagConstants.LinearGradient:
             {
                 var id = SvgXmlUtil.AttrValue(node, "id");
-                if (id is not null && !this.paintServers.ContainsKey(id))
+                if (id is not null && !paintServers.ContainsKey(id))
                 {
-                    this.paintServers[id] = new LinearGradientColorPaintServer(this, node);
+                    paintServers[id] = new LinearGradientColorPaintServer(this, node);
                 }
 
                 return;
@@ -28,9 +28,9 @@ internal class PaintServerManager
             case SvgTagConstants.RadialGradient:
             {
                 var id = SvgXmlUtil.AttrValue(node, "id");
-                if (id is not null && !this.paintServers.ContainsKey(id))
+                if (id is not null && !paintServers.ContainsKey(id))
                 {
-                    this.paintServers[id] = new RadialGradientColorPaintServer(this, node);
+                    paintServers[id] = new RadialGradientColorPaintServer(this, node);
                 }
 
                 return;
@@ -39,9 +39,9 @@ internal class PaintServerManager
             case SvgTagConstants.Pattern:
             {
                 var id = SvgXmlUtil.AttrValue(node, "id");
-                if (id is not null && !this.paintServers.ContainsKey(id))
+                if (id is not null && !paintServers.ContainsKey(id))
                 {
-                    this.paintServers[id] = new PatternPaintServer(this, svg, node);
+                    paintServers[id] = new PatternPaintServer(this, svg, node);
                 }
 
                 return;
@@ -59,7 +59,7 @@ internal class PaintServerManager
             return;
         }
 
-        this.paintServers[key] = server;
+        paintServers[key] = server;
     }
 
     public PaintServer? GetServer(string serverKey)
@@ -69,19 +69,19 @@ internal class PaintServerManager
             return null;
         }
 
-        return this.paintServers.TryGetValue(serverKey, out var paintServer)
+        return paintServers.TryGetValue(serverKey, out var paintServer)
             ? paintServer
             : null;
     }
 
     public Dictionary<string, PaintServer> GetServers()
     {
-        return this.paintServers;
+        return paintServers;
     }
 
     public void CreateServerFromBrush(string key, Brush customBrush)
     {
-        this.paintServers[key] = customBrush switch
+        paintServers[key] = customBrush switch
         {
             SolidColorBrush => new SolidColorPaintServer(this, customBrush),
             LinearGradientBrush => new LinearGradientColorPaintServer(this, customBrush),
@@ -106,7 +106,7 @@ internal class PaintServerManager
                 return null;
             }
 
-            if (this.paintServers.TryGetValue(value, out _))
+            if (paintServers.TryGetValue(value, out _))
             {
                 return value;
             }
@@ -114,10 +114,10 @@ internal class PaintServerManager
             switch (value)
             {
                 case SvgTagConstants.Inherit:
-                    this.paintServers[value] = new InheritPaintServer(this);
+                    paintServers[value] = new InheritPaintServer(this);
                     return value;
                 case SvgTagConstants.CurrentColor:
-                    this.paintServers[value] = new CurrentColorPaintServer(this);
+                    paintServers[value] = new CurrentColorPaintServer(this);
                     return value;
             }
 
@@ -134,7 +134,7 @@ internal class PaintServerManager
                     id = id.Substring(1);
                 }
 
-                this.paintServers.TryGetValue(id, out _);
+                paintServers.TryGetValue(id, out _);
                 return id;
             }
 
@@ -160,13 +160,13 @@ internal class PaintServerManager
     private string ParseSolidColor(string value)
     {
         var id = value;
-        if (this.paintServers.TryGetValue(id, out _))
+        if (paintServers.TryGetValue(id, out _))
         {
             return id;
         }
 
         var paintServer = new SolidColorPaintServer(this, ColorUtil.GetColorFromHex(value));
-        this.paintServers[id] = paintServer;
+        paintServers[id] = paintServer;
         return id;
     }
 
@@ -210,7 +210,7 @@ internal class PaintServerManager
 
     private string? ParseKnownColor(string value)
     {
-        if (this.paintServers.TryGetValue(value, out _))
+        if (paintServers.TryGetValue(value, out _))
         {
             return value;
         }
@@ -218,7 +218,7 @@ internal class PaintServerManager
         if (ColorUtil.KnownColors.TryGetValue(value, out var color))
         {
             var paintServer = new SolidColorPaintServer(this, color);
-            this.paintServers[value] = paintServer;
+            paintServers[value] = paintServer;
             return value;
         }
 
