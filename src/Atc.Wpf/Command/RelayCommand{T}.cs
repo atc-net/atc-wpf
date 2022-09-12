@@ -30,11 +30,11 @@ public class RelayCommand<T> : IRelayCommand<T>
             throw new ArgumentNullException(nameof(execute));
         }
 
-        this.waExecute = new WeakAction<T>(execute, keepTargetAlive);
+        waExecute = new WeakAction<T>(execute, keepTargetAlive);
 
         if (canExecute is not null)
         {
-            this.wfCanExecute = new WeakFunc<T, bool>(canExecute, keepTargetAlive);
+            wfCanExecute = new WeakFunc<T, bool>(canExecute, keepTargetAlive);
         }
     }
 
@@ -45,7 +45,7 @@ public class RelayCommand<T> : IRelayCommand<T>
     {
         add
         {
-            if (this.wfCanExecute is not null)
+            if (wfCanExecute is not null)
             {
                 CommandManager.RequerySuggested += value;
             }
@@ -53,7 +53,7 @@ public class RelayCommand<T> : IRelayCommand<T>
 
         remove
         {
-            if (this.wfCanExecute is not null)
+            if (wfCanExecute is not null)
             {
                 CommandManager.RequerySuggested -= value;
             }
@@ -69,12 +69,12 @@ public class RelayCommand<T> : IRelayCommand<T>
     /// <inheritdoc />
     public bool CanExecute(object? parameter)
     {
-        if (this.wfCanExecute is null)
+        if (wfCanExecute is null)
         {
             return true;
         }
 
-        if (!this.wfCanExecute.IsStatic && !this.wfCanExecute.IsAlive)
+        if (!wfCanExecute.IsStatic && !wfCanExecute.IsAlive)
         {
             return false;
         }
@@ -82,10 +82,10 @@ public class RelayCommand<T> : IRelayCommand<T>
         switch (parameter)
         {
             case null when typeof(T).IsValueType:
-                return this.wfCanExecute.Execute();
+                return wfCanExecute.Execute();
             case null:
             case T:
-                return this.wfCanExecute.Execute((T)parameter!);
+                return wfCanExecute.Execute((T)parameter!);
             default:
                 return false;
         }
@@ -104,8 +104,8 @@ public class RelayCommand<T> : IRelayCommand<T>
         }
 
         if (!CanExecute(val) ||
-            this.waExecute is null ||
-            (!this.waExecute.IsStatic && !this.waExecute.IsAlive))
+            waExecute is null ||
+            (!waExecute.IsStatic && !waExecute.IsAlive))
         {
             return;
         }
@@ -114,16 +114,16 @@ public class RelayCommand<T> : IRelayCommand<T>
         {
             if (typeof(T).IsValueType)
             {
-                this.waExecute.Execute();
+                waExecute.Execute();
             }
             else
             {
-                this.waExecute.Execute((T)val!);
+                waExecute.Execute((T)val!);
             }
         }
         else
         {
-            this.waExecute.Execute((T)val);
+            waExecute.Execute((T)val);
         }
     }
 }

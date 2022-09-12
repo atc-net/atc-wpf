@@ -20,8 +20,8 @@ public class PropertyChangedMessage<T> : PropertyChangedMessageBase
     public PropertyChangedMessage(object sender, string propertyName, T oldValue, T newValue)
         : base(sender, propertyName)
     {
-        this.OldValue = oldValue;
-        this.NewValue = newValue;
+        OldValue = oldValue;
+        NewValue = newValue;
     }
 
     /// <summary>
@@ -33,8 +33,8 @@ public class PropertyChangedMessage<T> : PropertyChangedMessageBase
     public PropertyChangedMessage(string propertyName, T oldValue, T newValue)
         : base(propertyName)
     {
-        this.OldValue = oldValue;
-        this.NewValue = newValue;
+        OldValue = oldValue;
+        NewValue = newValue;
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public class PropertyChangedMessage<T> : PropertyChangedMessageBase
     public PropertyChangedMessage(object sender, object target, string propertyName, T oldValue, T newValue)
         : base(sender, target, propertyName)
     {
-        this.OldValue = oldValue;
-        this.NewValue = newValue;
+        OldValue = oldValue;
+        NewValue = newValue;
     }
 
     /// <summary>

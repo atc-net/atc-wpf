@@ -5,29 +5,29 @@ internal class SolidColorPaintServer : PaintServer
     public SolidColorPaintServer(PaintServerManager owner, Color color)
         : base(owner)
     {
-        this.Color = color;
+        Color = color;
     }
 
     public SolidColorPaintServer(PaintServerManager owner, Brush brush)
         : base(owner)
     {
-        this.Brush = brush;
+        Brush = brush;
     }
 
     public Color Color { get; }
 
     public override Brush? GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
     {
-        if (this.Brush is not null)
+        if (Brush is not null)
         {
-            return this.Brush;
+            return Brush;
         }
 
         byte a = (byte)(255 * opacity / 100);
-        var c = this.Color;
+        var c = Color;
         var newColor = Color.FromArgb(a, c.R, c.G, c.B);
-        this.Brush = new SolidColorBrush(newColor);
-        return this.Brush;
+        Brush = new SolidColorBrush(newColor);
+        return Brush;
     }
 
     public override string ToString() => $"{nameof(Color)}: {Color}";

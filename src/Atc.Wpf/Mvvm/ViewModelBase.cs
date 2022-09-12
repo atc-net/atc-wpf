@@ -29,66 +29,66 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
     /// <param name="messenger">The messenger.</param>
     protected ViewModelBase(IMessenger? messenger)
     {
-        this.MessengerInstance = messenger ?? Messenger.Default;
+        MessengerInstance = messenger ?? Messenger.Default;
     }
 
     /// <inheritdoc />
     public bool IsEnable
     {
-        get => this.isEnable;
+        get => isEnable;
         set
         {
-            this.isEnable = value;
-            this.RaisePropertyChanged();
+            isEnable = value;
+            RaisePropertyChanged();
         }
     }
 
     /// <inheritdoc />
     public bool IsVisible
     {
-        get => this.isVisible;
+        get => isVisible;
         set
         {
-            if (this.isVisible == value)
+            if (isVisible == value)
             {
                 return;
             }
 
-            this.isVisible = value;
-            this.RaisePropertyChanged();
+            isVisible = value;
+            RaisePropertyChanged();
         }
     }
 
     /// <inheritdoc />
     public bool IsBusy
     {
-        get => this.isBusy;
+        get => isBusy;
         set
         {
-            this.isBusy = value;
-            this.RaisePropertyChanged();
+            isBusy = value;
+            RaisePropertyChanged();
         }
     }
 
     /// <inheritdoc />
     public bool IsDirty
     {
-        get => this.isDirty;
+        get => isDirty;
         set
         {
-            this.isDirty = value;
-            this.RaisePropertyChanged();
+            isDirty = value;
+            RaisePropertyChanged();
         }
     }
 
     /// <inheritdoc />
     public bool IsSelected
     {
-        get => this.isSelected;
+        get => isSelected;
         set
         {
-            this.isSelected = value;
-            this.RaisePropertyChanged();
+            isSelected = value;
+            RaisePropertyChanged();
         }
     }
 
@@ -111,14 +111,14 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
     /// <inheritdoc />
     public virtual void Cleanup()
     {
-        this.MessengerInstance.UnRegister(this);
+        MessengerInstance.UnRegister(this);
     }
 
     /// <inheritdoc />
     public void Broadcast<T>(string propertyName, T oldValue, T newValue)
     {
         var message = new PropertyChangedMessage<T>(this, propertyName, oldValue, newValue);
-        this.MessengerInstance.Send(message);
+        MessengerInstance.Send(message);
     }
 
     /// <inheritdoc />
@@ -133,10 +133,10 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
             throw new ArgumentException("This method cannot be called with an empty string", propertyName);
         }
 
-        this.RaisePropertyChanged(propertyName);
+        RaisePropertyChanged(propertyName);
         if (broadcast)
         {
-            this.Broadcast(propertyName, oldValue, newValue);
+            Broadcast(propertyName, oldValue, newValue);
         }
     }
 }

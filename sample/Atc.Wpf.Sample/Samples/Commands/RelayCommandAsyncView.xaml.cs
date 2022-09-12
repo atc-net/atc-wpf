@@ -7,6 +7,6 @@ public partial class RelayCommandAsyncView
 {
     public RelayCommandAsyncView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

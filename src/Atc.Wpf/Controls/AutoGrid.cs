@@ -503,7 +503,7 @@ public class AutoGrid : Grid
     /// </returns>
     protected override Size MeasureOverride(Size constraint)
     {
-        this.PerformLayout();
+        PerformLayout();
         return base.MeasureOverride(constraint);
     }
 
@@ -596,9 +596,9 @@ public class AutoGrid : Grid
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void PerformLayout()
     {
-        var fillRowFirst = this.Orientation == Orientation.Horizontal;
-        var rowCount = this.RowDefinitions.Count;
-        var colCount = this.ColumnDefinitions.Count;
+        var fillRowFirst = Orientation == Orientation.Horizontal;
+        var rowCount = RowDefinitions.Count;
+        var colCount = ColumnDefinitions.Count;
 
         if (rowCount == 0 || colCount == 0)
         {

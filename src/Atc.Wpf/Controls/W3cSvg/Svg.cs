@@ -10,17 +10,17 @@ internal class Svg
 
     public Svg()
     {
-        this.Size = new Size(300, 150);
-        this.Filename = string.Empty;
-        this.Shapes = new Dictionary<string, Shape>(StringComparer.Ordinal);
-        this.StyleItems = new Dictionary<string, List<KeyValueItem>>(StringComparer.Ordinal);
-        this.PaintServers.Parse("black");
+        Size = new Size(300, 150);
+        Filename = string.Empty;
+        Shapes = new Dictionary<string, Shape>(StringComparer.Ordinal);
+        StyleItems = new Dictionary<string, List<KeyValueItem>>(StringComparer.Ordinal);
+        PaintServers.Parse("black");
     }
 
     public Svg(IExternalFileLoader externalFileLoader)
         : this()
     {
-        this.ExternalFileLoader = externalFileLoader;
+        ExternalFileLoader = externalFileLoader;
     }
 
     public Svg(string fileName)
@@ -31,8 +31,8 @@ internal class Svg
     public Svg(string fileName, IExternalFileLoader externalFileLoader)
         : this()
     {
-        this.ExternalFileLoader = externalFileLoader;
-        this.Load(fileName);
+        ExternalFileLoader = externalFileLoader;
+        Load(fileName);
     }
 
     public Svg(Stream stream)
@@ -43,15 +43,15 @@ internal class Svg
     public Svg(Stream stream, IExternalFileLoader externalFileLoader)
         : this()
     {
-        this.ExternalFileLoader = externalFileLoader;
-        this.Load(stream);
+        ExternalFileLoader = externalFileLoader;
+        Load(stream);
     }
 
     public Svg(XmlNode svgTag, IExternalFileLoader externalFileLoader)
         : this()
     {
-        this.ExternalFileLoader = externalFileLoader;
-        this.Load(svgTag);
+        ExternalFileLoader = externalFileLoader;
+        Load(svgTag);
     }
 
     public Dictionary<string, Shape> Shapes { get; }
@@ -88,7 +88,7 @@ internal class Svg
 
     public void AddShape(string id, Shape shape)
     {
-        this.Shapes[id] = shape;
+        Shapes[id] = shape;
     }
 
     public Shape? GetShape(string id)
@@ -98,7 +98,7 @@ internal class Svg
             return null;
         }
 
-        this.Shapes.TryGetValue(id, out var shape);
+        Shapes.TryGetValue(id, out var shape);
         return shape;
     }
 
@@ -119,7 +119,7 @@ internal class Svg
 
     public void LoadXml(string fileXml)
     {
-        this.Filename = string.Empty;
+        Filename = string.Empty;
         if (string.IsNullOrWhiteSpace(fileXml))
         {
             return;
@@ -128,18 +128,18 @@ internal class Svg
         var doc = new XmlDocument();
         doc.LoadXml(fileXml);
 
-        this.Load(doc);
+        Load(doc);
     }
 
     public void Load(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
         {
-            this.Filename = string.Empty;
+            Filename = string.Empty;
             return;
         }
 
-        this.Filename = filePath;
+        Filename = filePath;
 
         var fileUri = new UriBuilder(filePath);
         if (string.Equals(fileUri.Scheme, "file", StringComparison.Ordinal))
@@ -149,14 +149,14 @@ internal class Svg
             {
                 using var fileStream = File.OpenRead(fileUri.Uri.LocalPath);
                 using var zipStream = new GZipStream(fileStream, CompressionMode.Decompress);
-                this.Load(zipStream);
+                Load(zipStream);
                 return;
             }
         }
 
         var doc = new XmlDocument();
         doc.Load(filePath);
-        this.Load(doc);
+        Load(doc);
     }
 
     public void Load(Uri fileUri)
@@ -177,20 +177,20 @@ internal class Svg
 
         if (string.IsNullOrWhiteSpace(filePath))
         {
-            this.Filename = string.Empty;
+            Filename = string.Empty;
             return;
         }
 
         if (fileUri.IsFile && !File.Exists(filePath))
         {
-            this.Filename = string.Empty;
+            Filename = string.Empty;
             return;
         }
 
-        this.Filename = filePath;
+        Filename = filePath;
         var doc = new XmlDocument();
         doc.Load(filePath);
-        this.Load(doc);
+        Load(doc);
     }
 
     public void Load(Stream stream)
@@ -202,7 +202,7 @@ internal class Svg
 
         var doc = new XmlDocument();
         doc.Load(stream);
-        this.Load(doc);
+        Load(doc);
     }
 
     public void Load(XmlReader xmlReader)
@@ -214,7 +214,7 @@ internal class Svg
 
         var doc = new XmlDocument();
         doc.Load(xmlReader);
-        this.Load(doc);
+        Load(doc);
     }
 
     public void Load(TextReader txtReader)
@@ -226,7 +226,7 @@ internal class Svg
 
         var doc = new XmlDocument();
         doc.Load(txtReader);
-        this.Load(doc);
+        Load(doc);
     }
 
     private void Load(XmlDocument svgDocument)
@@ -236,7 +236,7 @@ internal class Svg
             throw new ArgumentNullException(nameof(svgDocument));
         }
 
-        this.LoadStyles(svgDocument);
+        LoadStyles(svgDocument);
         var svgTags = svgDocument.GetElementsByTagName("svg");
         if (svgTags.Count == 0)
         {
@@ -246,7 +246,7 @@ internal class Svg
         var svgTag = svgTags[0];
         if (svgTag is not null)
         {
-            elements = this.Parse(svgTag);
+            elements = Parse(svgTag);
         }
     }
 
@@ -257,15 +257,15 @@ internal class Svg
             throw new ArgumentNullException(nameof(svgTag));
         }
 
-        this.LoadStyles(svgTag);
-        elements = this.Parse(svgTag);
+        LoadStyles(svgTag);
+        elements = Parse(svgTag);
     }
 
     [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
     [SuppressMessage("Performance", "MA0078:Use 'Cast' instead of 'Select' to cast", Justification = "OK.")]
     private void LoadStyles(XmlNode doc)
     {
-        if (this.ExternalFileLoader is null)
+        if (ExternalFileLoader is null)
         {
             return;
         }
@@ -284,7 +284,7 @@ internal class Svg
         foreach (var node in cssUrlNodes)
         {
             var url = Regex.Match(node.Data, "href=\"(?<url>.*?)\"").Groups["url"].Value;
-            var stream = this.ExternalFileLoader.LoadFile(url, this.Filename);
+            var stream = ExternalFileLoader.LoadFile(url, Filename);
             if (stream is null)
             {
                 continue;
@@ -309,14 +309,14 @@ internal class Svg
         {
             var cord = vb.Value.Split(' ');
             var cult = CultureInfo.InvariantCulture;
-            this.ViewBox = new Rect(
+            ViewBox = new Rect(
                 double.Parse(cord[0], cult),
                 double.Parse(cord[1], cult),
                 double.Parse(cord[2], cult),
                 double.Parse(cord[3], cult));
         }
 
-        this.Size = new Size(
+        Size = new Size(
             SvgXmlUtil.AttrValue(node, "width", 300),
             SvgXmlUtil.AttrValue(node, "height", 150));
 

@@ -4,8 +4,8 @@ public class SampleItemMessage : MessageBase
 {
     public SampleItemMessage(string? header, string? sampleItemPath)
     {
-        this.Header = header;
-        this.SampleItemPath = sampleItemPath;
+        Header = header;
+        SampleItemPath = sampleItemPath;
     }
 
     public string? Header { get; }

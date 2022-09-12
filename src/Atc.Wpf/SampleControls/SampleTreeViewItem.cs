@@ -19,8 +19,8 @@ public class SampleTreeViewItem : TreeViewItem
     /// </value>
     public string SamplePath
     {
-        get => (string)this.GetValue(SamplePathProperty);
-        set => this.SetValue(SamplePathProperty, value);
+        get => (string)GetValue(SamplePathProperty);
+        set => SetValue(SamplePathProperty, value);
     }
 
     /// <summary>
@@ -34,13 +34,13 @@ public class SampleTreeViewItem : TreeViewItem
             throw new ArgumentNullException(nameof(e));
         }
 
-        if (string.IsNullOrEmpty(this.SamplePath))
+        if (string.IsNullOrEmpty(SamplePath))
         {
-            this.SetCurrentValue(IsExpandedProperty, !this.IsExpanded);
+            SetCurrentValue(IsExpandedProperty, !IsExpanded);
         }
         else
         {
-            this.SetCurrentValue(IsSelectedProperty, value: true);
+            SetCurrentValue(IsSelectedProperty, value: true);
         }
 
         e.Handled = true;

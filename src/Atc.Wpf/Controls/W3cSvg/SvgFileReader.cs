@@ -7,7 +7,7 @@ internal sealed class SvgFileReader : IDisposable
 
     public SvgFileReader(Color? overrideColor)
     {
-        this.OverrideColor = overrideColor;
+        OverrideColor = overrideColor;
     }
 
     private Color? OverrideColor { get; }
@@ -21,7 +21,7 @@ internal sealed class SvgFileReader : IDisposable
 
         var svgRender = new SvgRender(new FileSystemLoader())
         {
-            OverrideColor = this.OverrideColor,
+            OverrideColor = OverrideColor,
         };
 
         return svgRender.LoadDrawing(fileUri);
@@ -36,7 +36,7 @@ internal sealed class SvgFileReader : IDisposable
 
         var svgRender = new SvgRender(new FileSystemLoader())
         {
-            OverrideColor = this.OverrideColor,
+            OverrideColor = OverrideColor,
         };
 
         return svgRender.LoadDrawing(stream);

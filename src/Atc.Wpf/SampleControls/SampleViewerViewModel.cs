@@ -17,73 +17,73 @@ public class SampleViewerViewModel : ViewModelBase
 
     public int TabSelectedIndex
     {
-        get => this.tabSelectedIndex;
+        get => tabSelectedIndex;
         set
         {
-            this.tabSelectedIndex = value;
-            this.RaisePropertyChanged();
+            tabSelectedIndex = value;
+            RaisePropertyChanged();
         }
     }
 
-    public bool HasSampleContent => this.SampleContent is not null;
+    public bool HasSampleContent => SampleContent is not null;
 
-    public bool HasXamlCode => this.XamlCode is not null;
+    public bool HasXamlCode => XamlCode is not null;
 
-    public bool HasCodeBehindCode => this.CodeBehindCode is not null;
+    public bool HasCodeBehindCode => CodeBehindCode is not null;
 
-    public bool HasViewModelCode => this.ViewModelCode is not null;
+    public bool HasViewModelCode => ViewModelCode is not null;
 
     public string? Header
     {
-        get => this.header;
+        get => header;
         set
         {
-            this.header = value;
-            this.RaisePropertyChanged();
+            header = value;
+            RaisePropertyChanged();
         }
     }
 
     public UserControl? SampleContent
     {
-        get => this.sampleContent;
+        get => sampleContent;
         set
         {
-            this.sampleContent = value;
-            this.RaisePropertyChanged();
-            this.RaisePropertyChanged(nameof(HasSampleContent));
+            sampleContent = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(HasSampleContent));
         }
     }
 
     public string? XamlCode
     {
-        get => this.xamlCode;
+        get => xamlCode;
         set
         {
-            this.xamlCode = value;
-            this.RaisePropertyChanged();
-            this.RaisePropertyChanged(nameof(HasXamlCode));
+            xamlCode = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(HasXamlCode));
         }
     }
 
     public string? CodeBehindCode
     {
-        get => this.codeBehindCode;
+        get => codeBehindCode;
         set
         {
-            this.codeBehindCode = value;
-            this.RaisePropertyChanged();
-            this.RaisePropertyChanged(nameof(HasCodeBehindCode));
+            codeBehindCode = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(HasCodeBehindCode));
         }
     }
 
     public string? ViewModelCode
     {
-        get => this.viewModelCode;
+        get => viewModelCode;
         set
         {
-            this.viewModelCode = value;
-            this.RaisePropertyChanged();
-            this.RaisePropertyChanged(nameof(HasViewModelCode));
+            viewModelCode = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(HasViewModelCode));
         }
     }
 
@@ -101,7 +101,7 @@ public class SampleViewerViewModel : ViewModelBase
 
         return path.Parent is null
             ? null
-            : this.ExtractBasePath(path.Parent);
+            : ExtractBasePath(path.Parent);
     }
 
     private DirectoryInfo? ExtractSamplePath(FileSystemInfo baseLocation, string classViewName)
@@ -121,28 +121,28 @@ public class SampleViewerViewModel : ViewModelBase
 
     private void SampleItemMessageHandler(SampleItemMessage obj)
     {
-        this.TabSelectedIndex = 0;
+        TabSelectedIndex = 0;
 
         if (string.IsNullOrEmpty(obj.SampleItemPath))
         {
-            this.ClearSelectedViewData();
+            ClearSelectedViewData();
         }
         else
         {
             if (obj.Header is not null)
             {
-                this.SetSelectedViewData(obj.Header, obj.SampleItemPath);
+                SetSelectedViewData(obj.Header, obj.SampleItemPath);
             }
         }
     }
 
     private void ClearSelectedViewData()
     {
-        this.Header = null;
-        this.SampleContent = null;
-        this.XamlCode = null;
-        this.CodeBehindCode = null;
-        this.ViewModelCode = null;
+        Header = null;
+        SampleContent = null;
+        XamlCode = null;
+        CodeBehindCode = null;
+        ViewModelCode = null;
     }
 
     private void SetSelectedViewData(string sampleHeader, string samplePath)
@@ -166,30 +166,30 @@ public class SampleViewerViewModel : ViewModelBase
         }
 
         var entryAssemblyLocation = new DirectoryInfo(Path.GetDirectoryName(entryAssembly.Location)!);
-        var baseLocation = this.ExtractBasePath(entryAssemblyLocation);
+        var baseLocation = ExtractBasePath(entryAssemblyLocation);
         if (baseLocation is null)
         {
             MessageBox.Show("Can't find sample by invalid base location", "Error", MessageBoxButton.OK);
             return;
         }
 
-        var classViewName = this.ExtractClassName(instance.ToString()!);
-        var sampleLocation = this.ExtractSamplePath(baseLocation, classViewName);
+        var classViewName = ExtractClassName(instance.ToString()!);
+        var sampleLocation = ExtractSamplePath(baseLocation, classViewName);
 
-        this.Header = sampleHeader;
-        this.SampleContent = instance;
-        this.XamlCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml"));
-        this.CodeBehindCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml.cs"));
+        Header = sampleHeader;
+        SampleContent = instance;
+        XamlCode = ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml"));
+        CodeBehindCode = ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml.cs"));
 
         if (instance.DataContext is null ||
-            nameof(SampleViewerViewModel).Equals(this.ExtractClassName(instance.DataContext.ToString()!), StringComparison.Ordinal))
+            nameof(SampleViewerViewModel).Equals(ExtractClassName(instance.DataContext.ToString()!), StringComparison.Ordinal))
         {
-            this.ViewModelCode = null;
+            ViewModelCode = null;
         }
         else
         {
-            var classViewModelName = this.ExtractClassName(instance.DataContext.ToString()!);
-            this.ViewModelCode = this.ReadFileText(Path.Combine(sampleLocation!.FullName, classViewModelName + ".cs"));
+            var classViewModelName = ExtractClassName(instance.DataContext.ToString()!);
+            ViewModelCode = ReadFileText(Path.Combine(sampleLocation!.FullName, classViewModelName + ".cs"));
         }
     }
 }

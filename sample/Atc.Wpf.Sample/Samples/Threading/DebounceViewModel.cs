@@ -8,7 +8,7 @@ public class DebounceViewModel : ViewModelBase
 
     public DebounceViewModel()
     {
-        this.totalItems = new Collection<string>
+        totalItems = new Collection<string>
         {
             "John Doe",
             "Jane Doe",
@@ -21,28 +21,28 @@ public class DebounceViewModel : ViewModelBase
             "Hakeem Rose",
             "Rafael Wanda",
         };
-        this.FoundItems = new ObservableCollection<string>();
-        this.status = string.Empty;
-        this.filter = string.Empty;
+        FoundItems = new ObservableCollection<string>();
+        status = string.Empty;
+        filter = string.Empty;
     }
 
     public string Status
     {
-        get => this.status;
+        get => status;
         set
         {
-            this.status = value;
-            this.RaisePropertyChanged();
+            status = value;
+            RaisePropertyChanged();
         }
     }
 
     public string Filter
     {
-        get => this.filter;
+        get => filter;
         set
         {
-            this.filter = value;
-            this.RaisePropertyChanged();
+            filter = value;
+            RaisePropertyChanged();
         }
     }
 
@@ -50,25 +50,25 @@ public class DebounceViewModel : ViewModelBase
 
     public async Task Search(string searchQuery)
     {
-        this.Filter = searchQuery;
-        this.FoundItems.Clear();
+        Filter = searchQuery;
+        FoundItems.Clear();
 
         if (string.IsNullOrEmpty(searchQuery))
         {
-            this.Status = "Clear result";
+            Status = "Clear result";
             return;
         }
 
-        this.Status = "Searching...";
+        Status = "Searching...";
 
         await Task.Delay(1000).ConfigureAwait(true);
 
-        foreach (string item in this.totalItems
+        foreach (string item in totalItems
                      .Where(item => item.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)))
         {
-            this.FoundItems.Add(item);
+            FoundItems.Add(item);
         }
 
-        this.Status = $"Done - found {this.FoundItems.Count}";
+        Status = $"Done - found {FoundItems.Count}";
     }
 }

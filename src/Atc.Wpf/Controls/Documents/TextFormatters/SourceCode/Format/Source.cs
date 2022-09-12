@@ -27,10 +27,10 @@ public abstract class Source
     /// </summary>
     protected Source()
     {
-        this.TabSpaces = 4;
-        this.LineNumbers = false;
-        this.Alternate = false;
-        this.EmbedStyleSheet = false;
+        TabSpaces = 4;
+        LineNumbers = false;
+        Alternate = false;
+        EmbedStyleSheet = false;
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public abstract class Source
     /// </returns>
     public Paragraph FormatCode(string source)
     {
-        return this.FormatCodeHelper(source);
+        return FormatCodeHelper(source);
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public abstract class Source
     {
         var codeParagraph = new Paragraph();
         var sb = new StringBuilder(source);
-        source = this.CodeRegex.Replace(sb.ToString(), this.MatchEval);
+        source = CodeRegex.Replace(sb.ToString(), MatchEval);
         string[] characters = { "::::::" };
 
         string[] split = source.Split(characters, StringSplitOptions.None);
@@ -109,9 +109,9 @@ public abstract class Source
             currentChunk++;
             var run = new Run(code);
             codeParagraph.Inlines.Add(run);
-            if ((currentChunk - 1) < this.CodeParagraphGlobal.Count)
+            if ((currentChunk - 1) < CodeParagraphGlobal.Count)
             {
-                codeParagraph.Inlines.Add(this.CodeParagraphGlobal[currentChunk - 1]);
+                codeParagraph.Inlines.Add(CodeParagraphGlobal[currentChunk - 1]);
             }
         }
 

@@ -13,10 +13,10 @@ internal class ImageShape : Shape
             throw new ArgumentNullException(nameof(svg));
         }
 
-        this.X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
-        this.Y = SvgXmlUtil.AttrValue(node, "y", 0, svg.Size.Height);
-        this.Width = SvgXmlUtil.AttrValue(node, "width", 0, svg.Size.Width);
-        this.Height = SvgXmlUtil.AttrValue(node, "height", 0, svg.Size.Height);
+        X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
+        Y = SvgXmlUtil.AttrValue(node, "y", 0, svg.Size.Height);
+        Width = SvgXmlUtil.AttrValue(node, "width", 0, svg.Size.Width);
+        Height = SvgXmlUtil.AttrValue(node, "height", 0, svg.Size.Height);
         var hRef = SvgXmlUtil.AttrValue(node, "xlink:href", string.Empty);
         if (!string.IsNullOrEmpty(hRef))
         {
@@ -48,7 +48,7 @@ internal class ImageShape : Shape
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = imageStream;
                 bitmapImage.EndInit();
-                this.ImageSource = bitmapImage;
+                ImageSource = bitmapImage;
             }
             catch (Exception ex)
             {

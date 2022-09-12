@@ -13,19 +13,19 @@ internal class Clip : Group
     {
         get
         {
-            if (this.clpGeo is not null)
+            if (clpGeo is not null)
             {
-                return this.clpGeo;
+                return clpGeo;
             }
 
-            var retVal = GetGeometryForShape(this.Elements[0]);
-            if (this.Elements.Count > 1)
+            var retVal = GetGeometryForShape(Elements[0]);
+            if (Elements.Count > 1)
             {
-                retVal = this.Elements.Aggregate(retVal, (current, element) => new CombinedGeometry(current, GetGeometryForShape(element)));
+                retVal = Elements.Aggregate(retVal, (current, element) => new CombinedGeometry(current, GetGeometryForShape(element)));
             }
 
-            this.clpGeo = retVal;
-            return this.clpGeo;
+            clpGeo = retVal;
+            return clpGeo;
         }
     }
 

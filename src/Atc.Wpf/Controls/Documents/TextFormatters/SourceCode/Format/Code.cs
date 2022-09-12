@@ -15,8 +15,8 @@ public abstract class Code : Source
     {
         // generate the keyword and preprocessor regexes from the keyword lists
         var r = new Regex(@"\w+|-\w+|#\w+|@@\w+|#(?:\\(?:s|w)(?:\*|\+)?\w+)+|@\\w\*+");
-        var regKeyword = r.Replace(this.Keywords, @"(?<=^|\W)$0(?=\W)");
-        var regPreproc = r.Replace(this.Preprocessors, @"(?<=^|\s)$0(?=\s|$)");
+        var regKeyword = r.Replace(Keywords, @"(?<=^|\W)$0(?=\W)");
+        var regPreproc = r.Replace(Preprocessors, @"(?<=^|\s)$0(?=\s|$)");
         r = new Regex(@" +");
         regKeyword = r.Replace(regKeyword, @"|");
         regPreproc = r.Replace(regPreproc, @"|");
@@ -30,9 +30,9 @@ public abstract class Code : Source
         // build a master regex with capturing groups
         StringBuilder regAll = new StringBuilder();
         regAll.Append('(');
-        regAll.Append(this.CommentRegEx);
+        regAll.Append(CommentRegEx);
         regAll.Append(")|(");
-        regAll.Append(this.StringRegEx);
+        regAll.Append(StringRegEx);
         if (regPreproc.Length > 0)
         {
             regAll.Append(")|(");
@@ -44,9 +44,9 @@ public abstract class Code : Source
         regAll.Append(')');
 
         // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-        RegexOptions caseInsensitive = this.CaseSensitive ? 0 : RegexOptions.IgnoreCase;
-        this.CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive);
-        this.CodeParagraphGlobal = new List<Run>();
+        RegexOptions caseInsensitive = CaseSensitive ? 0 : RegexOptions.IgnoreCase;
+        CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive);
+        CodeParagraphGlobal = new List<Run>();
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public abstract class Code : Source
                     Foreground = new SolidColorBrush(Color.FromRgb(0, 128, 0)),
                 };
 
-                this.CodeParagraphGlobal.Add(run);
+                CodeParagraphGlobal.Add(run);
             }
 
             return "::::::";
@@ -143,7 +143,7 @@ public abstract class Code : Source
                 Foreground = new SolidColorBrush(Color.FromRgb(0, 96, 128)),
             };
 
-            this.CodeParagraphGlobal.Add(run);
+            CodeParagraphGlobal.Add(run);
             return "::::::";
         }
 
@@ -155,7 +155,7 @@ public abstract class Code : Source
                 Foreground = new SolidColorBrush(Color.FromRgb(204, 102, 51)),
             };
 
-            this.CodeParagraphGlobal.Add(run);
+            CodeParagraphGlobal.Add(run);
             return "::::::";
         }
 
@@ -167,7 +167,7 @@ public abstract class Code : Source
                 Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 255)),
             };
 
-            this.CodeParagraphGlobal.Add(run);
+            CodeParagraphGlobal.Add(run);
             return "::::::";
         }
 

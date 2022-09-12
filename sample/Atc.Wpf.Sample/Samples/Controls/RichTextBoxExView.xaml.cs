@@ -7,8 +7,8 @@ public partial class RichTextBoxExView
 {
     public RichTextBoxExView()
     {
-        this.InitializeComponent();
-        this.DataContext = this;
+        InitializeComponent();
+        DataContext = this;
     }
 
     public static string XamlCode =>

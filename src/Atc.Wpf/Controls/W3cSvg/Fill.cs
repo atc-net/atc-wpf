@@ -4,8 +4,8 @@ internal class Fill
 {
     public Fill()
     {
-        this.FillRule = FillRuleType.NonZero;
-        this.Opacity = 100;
+        FillRule = FillRuleType.NonZero;
+        Opacity = 100;
     }
 
     public FillRuleType FillRule { get; set; }
@@ -42,13 +42,13 @@ internal class Fill
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
             if (shapePaintServer is not null)
             {
-                return shapePaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
+                return shapePaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
             }
         }
 
         if (paintServer is not InheritPaintServer)
         {
-            return paintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
+            return paintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
         }
 
         var p = shape.RealParent;
@@ -59,7 +59,7 @@ internal class Fill
                 var checkPaintServer = svg.PaintServers.GetServer(p.Fill.PaintServerKey);
                 if (checkPaintServer is not null && checkPaintServer is not InheritPaintServer)
                 {
-                    return checkPaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
+                    return checkPaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
                 }
             }
 

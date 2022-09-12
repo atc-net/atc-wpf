@@ -7,6 +7,6 @@ public partial class MonochromeShaderEffectView
 {
     public MonochromeShaderEffectView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

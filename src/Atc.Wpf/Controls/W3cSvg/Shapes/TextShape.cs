@@ -19,13 +19,13 @@ internal class TextShape : Shape
             throw new ArgumentNullException(nameof(node));
         }
 
-        this.X = SvgXmlUtil.AttrValue(node, "x", 0);
-        this.Y = SvgXmlUtil.AttrValue(node, "y", 0);
-        this.Text = node.InnerText;
-        this.GetTextStyle();
+        X = SvgXmlUtil.AttrValue(node, "x", 0);
+        Y = SvgXmlUtil.AttrValue(node, "y", 0);
+        Text = node.InnerText;
+        GetTextStyle();
         if (node.InnerXml.IndexOf("<", StringComparison.Ordinal) != -1)
         {
-            this.TextSpan = this.ParseTSpan(svg, node.InnerXml);
+            TextSpan = ParseTSpan(svg, node.InnerXml);
         }
 
         defaultFill ??= new Fill
@@ -68,7 +68,7 @@ internal class TextShape : Shape
     {
         public class Element : Shape
         {
-            public override System.Windows.Media.Transform? Transform => this.Parent?.Transform;
+            public override Transform? Transform => Parent?.Transform;
 
             public TextShapeElementType ElementType { get; }
 
@@ -85,21 +85,21 @@ internal class TextShape : Shape
             public Element(Svg svg, Shape parent, string text)
                 : base(svg, (XmlNode)null!, parent)
             {
-                this.ElementType = TextShapeElementType.Text;
-                this.Text = text;
+                ElementType = TextShapeElementType.Text;
+                Text = text;
             }
 
             public Element(Svg svg, Shape parent, TextShapeElementType elementType, IReadOnlyCollection<KeyValueItem>? attributes)
                 : base(svg, attributes, parent)
             {
-                this.ElementType = elementType;
-                this.Text = string.Empty;
-                this.Children = new List<Element>();
+                ElementType = elementType;
+                Text = string.Empty;
+                Children = new List<Element>();
             }
 
             public override string ToString()
             {
-                return this.Text;
+                return Text;
             }
         }
 
@@ -140,7 +140,7 @@ internal class TextShape : Shape
             indent += "   ";
             foreach (Element c in tag.Children)
             {
-                this.Print(c, indent);
+                Print(c, indent);
             }
         }
 

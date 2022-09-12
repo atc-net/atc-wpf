@@ -34,20 +34,20 @@ internal class UseShape : Shape
         {
             case SvgTagConstants.Href:
             {
-                this.Href = value;
-                if (this.Href.StartsWith('#'))
+                Href = value;
+                if (Href.StartsWith('#'))
                 {
-                    this.Href = this.Href.Substring(1);
+                    Href = Href.Substring(1);
                 }
 
                 return;
             }
 
             case "x":
-                this.X = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
+                X = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
                 return;
             case "y":
-                this.Y = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
+                Y = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
                 return;
             default:
                 base.Parse(svg, name, value);

@@ -17,46 +17,46 @@ internal class Shape
     {
         if (node is null)
         {
-            this.Id = "<null>";
+            Id = "<null>";
         }
         else
         {
             var attrValue = SvgXmlUtil.AttrValue(node, "id");
-            this.Id = attrValue ?? "<null>";
+            Id = attrValue ?? "<null>";
         }
 
-        this.Opacity = 1;
-        this.Parent = parent;
-        this.ParseAtStart(svg, node);
+        Opacity = 1;
+        Parent = parent;
+        ParseAtStart(svg, node);
         if (node?.Attributes is not null)
         {
             foreach (XmlAttribute? attr in node.Attributes)
             {
                 if (attr is not null)
                 {
-                    this.Parse(svg, attr.Name, attr.Value);
+                    Parse(svg, attr.Name, attr.Value);
                 }
             }
         }
 
-        this.ParseLocalStyle(svg);
+        ParseLocalStyle(svg);
     }
 
     public Shape(Svg svg, IReadOnlyCollection<KeyValueItem>? attrs, Shape parent)
     {
-        this.Id = "<null>";
+        Id = "<null>";
 
-        this.Opacity = 1;
-        this.Parent = parent;
+        Opacity = 1;
+        Parent = parent;
         if (attrs is not null)
         {
             foreach (KeyValueItem attr in attrs)
             {
-                this.Parse(svg, attr.Key, attr.Value);
+                Parse(svg, attr.Key, attr.Value);
             }
         }
 
-        this.ParseLocalStyle(svg);
+        ParseLocalStyle(svg);
     }
 
     internal Clip? Clip { get; set; }
@@ -83,12 +83,12 @@ internal class Shape
     {
         get
         {
-            if (this.stroke is not null)
+            if (stroke is not null)
             {
-                return this.stroke;
+                return stroke;
             }
 
-            var parent = this.Parent;
+            var parent = Parent;
             while (parent is not null)
             {
                 if (parent.Stroke is not null)
@@ -107,12 +107,12 @@ internal class Shape
     {
         get
         {
-            if (this.fill is not null)
+            if (fill is not null)
             {
-                return this.fill;
+                return fill;
             }
 
-            var parent = this.Parent;
+            var parent = Parent;
             while (parent is not null)
             {
                 if (parent.Fill is not null)
@@ -131,12 +131,12 @@ internal class Shape
     {
         get
         {
-            if (this.textStyle is not null)
+            if (textStyle is not null)
             {
-                return this.textStyle;
+                return textStyle;
             }
 
-            var parent = this.Parent;
+            var parent = Parent;
             while (parent is not null)
             {
                 if (parent.textStyle is not null)
@@ -187,8 +187,8 @@ internal class Shape
             }
         }
 
-        if (!string.IsNullOrEmpty(this.Id) &&
-            svg.StyleItems.TryGetValue("#" + this.Id, out attributes))
+        if (!string.IsNullOrEmpty(Id) &&
+            svg.StyleItems.TryGetValue("#" + Id, out attributes))
         {
             foreach (var xmlAttribute in attributes)
             {
@@ -199,14 +199,14 @@ internal class Shape
 
     protected virtual void ParseLocalStyle(Svg svg)
     {
-        if (string.IsNullOrEmpty(this.localStyle))
+        if (string.IsNullOrEmpty(localStyle))
         {
             return;
         }
 
-        foreach (KeyValueItem item in SvgXmlUtil.SplitStyle(this.localStyle))
+        foreach (KeyValueItem item in SvgXmlUtil.SplitStyle(localStyle))
         {
-            this.Parse(svg, item.Key, item.Value);
+            Parse(svg, item.Key, item.Value);
         }
     }
 
@@ -236,7 +236,7 @@ internal class Shape
         switch (name)
         {
             case SvgTagConstants.Display when value == "none":
-                this.Display = false;
+                Display = false;
                 break;
             case SvgTagConstants.Class:
             {
@@ -261,24 +261,24 @@ internal class Shape
         switch (name)
         {
             case SvgTagConstants.Transform:
-                this.Transform = ShapeUtil.ParseTransform(value.ToLower(GlobalizationConstants.EnglishCultureInfo));
+                Transform = ShapeUtil.ParseTransform(value.ToLower(GlobalizationConstants.EnglishCultureInfo));
                 return;
             case SvgTagConstants.Visibility:
-                this.Visibility = value == "hidden"
+                Visibility = value == "hidden"
                     ? VisibilityType.Hidden
                     : VisibilityType.Visible;
                 break;
             case SvgTagConstants.Stroke:
-                this.GetStroke().PaintServerKey = svg.PaintServers.Parse(value);
+                GetStroke().PaintServerKey = svg.PaintServers.Parse(value);
                 return;
             case SvgTagConstants.StrokeWidth:
-                this.GetStroke().Width = SvgXmlUtil.ParseDouble(value);
+                GetStroke().Width = SvgXmlUtil.ParseDouble(value);
                 return;
             case SvgTagConstants.StrokeOpacity:
-                this.GetStroke().Opacity = SvgXmlUtil.ParseDouble(value) * 100;
+                GetStroke().Opacity = SvgXmlUtil.ParseDouble(value) * 100;
                 return;
             case SvgTagConstants.StrokeDashArray when value == "none":
-                this.GetStroke().StrokeArray = null;
+                GetStroke().StrokeArray = null;
                 return;
             case SvgTagConstants.StrokeDashArray:
             {
@@ -289,21 +289,21 @@ internal class Shape
                     doubles.Add(stringSplitter.ReadNextValue());
                 }
 
-                this.GetStroke().StrokeArray = doubles.ToArray();
+                GetStroke().StrokeArray = doubles.ToArray();
                 return;
             }
 
             case SvgTagConstants.RequiredFeatures:
-                this.RequiredFeatures = value.Trim();
+                RequiredFeatures = value.Trim();
                 return;
             case SvgTagConstants.RequiredExtensions:
-                this.RequiredExtensions = value.Trim();
+                RequiredExtensions = value.Trim();
                 return;
             case SvgTagConstants.StrokeLineCap:
-                this.GetStroke().LineCap = Enum<StrokeLineCapType>.Parse(value);
+                GetStroke().LineCap = Enum<StrokeLineCapType>.Parse(value);
                 return;
             case SvgTagConstants.StrokeLineJoin:
-                this.GetStroke().LineJoin = Enum<StrokeLineJoinType>.Parse(value);
+                GetStroke().LineJoin = Enum<StrokeLineJoinType>.Parse(value);
                 return;
             case SvgTagConstants.FilterProperty when value.StartsWith("url", StringComparison.Ordinal):
             {
@@ -314,7 +314,7 @@ internal class Shape
                 }
 
                 svg.Shapes.TryGetValue(id, out var shape);
-                this.Filter = shape as Filter;
+                Filter = shape as Filter;
                 return;
             }
 
@@ -329,41 +329,41 @@ internal class Shape
                 }
 
                 svg.Shapes.TryGetValue(id, out var shape);
-                this.Clip = shape as Clip;
+                Clip = shape as Clip;
                 return;
             }
 
             case SvgTagConstants.ClipPathProperty:
                 return;
             case SvgTagConstants.Fill:
-                this.GetFill().PaintServerKey = svg.PaintServers.Parse(value);
+                GetFill().PaintServerKey = svg.PaintServers.Parse(value);
                 return;
             case SvgTagConstants.Color:
-                this.PaintServerKey = svg.PaintServers.Parse(value);
+                PaintServerKey = svg.PaintServers.Parse(value);
                 return;
             case SvgTagConstants.FillOpacity:
-                this.GetFill().Opacity = SvgXmlUtil.ParseDouble(value) * 100;
+                GetFill().Opacity = SvgXmlUtil.ParseDouble(value) * 100;
                 return;
             case SvgTagConstants.FillRule:
-                this.GetFill().FillRule = Enum<FillRuleType>.Parse(value);
+                GetFill().FillRule = Enum<FillRuleType>.Parse(value);
                 return;
             case SvgTagConstants.Opacity:
-                this.Opacity = SvgXmlUtil.ParseDouble(value);
+                Opacity = SvgXmlUtil.ParseDouble(value);
                 return;
             case SvgTagConstants.Style:
                 localStyle = value;
                 break;
             case SvgTagConstants.FontFamily:
-                this.GetTextStyle().FontFamily = value;
+                GetTextStyle().FontFamily = value;
                 return;
             case SvgTagConstants.FontSize:
-                this.GetTextStyle().FontSize = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
+                GetTextStyle().FontSize = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
                 return;
             case SvgTagConstants.FontWeight:
                 var convertFontWeight = new FontWeightConverter().ConvertFromString(value);
                 if (convertFontWeight is not null)
                 {
-                    this.GetTextStyle().FontWeight = (FontWeight)convertFontWeight;
+                    GetTextStyle().FontWeight = (FontWeight)convertFontWeight;
                 }
 
                 return;
@@ -371,7 +371,7 @@ internal class Shape
                 var convertFontStyle = new FontStyleConverter().ConvertFromString(value);
                 if (convertFontStyle is not null)
                 {
-                    this.GetTextStyle().FontStyle = (FontStyle)convertFontStyle;
+                    GetTextStyle().FontStyle = (FontStyle)convertFontStyle;
                 }
 
                 return;
@@ -398,43 +398,43 @@ internal class Shape
                     t,
                 };
 
-                this.GetTextStyle().TextDecoration = tt;
+                GetTextStyle().TextDecoration = tt;
                 return;
             }
 
             case SvgTagConstants.TextAnchor:
             {
-                this.GetTextStyle().TextAlignment = value switch
+                GetTextStyle().TextAlignment = value switch
                 {
                     "start" => TextAlignment.Left,
                     "middle" => TextAlignment.Center,
                     "end" => TextAlignment.Right,
-                    _ => this.GetTextStyle().TextAlignment
+                    _ => GetTextStyle().TextAlignment
                 };
 
                 return;
             }
 
             case "word-spacing":
-                this.GetTextStyle().WordSpacing = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
+                GetTextStyle().WordSpacing = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
                 return;
             case "letter-spacing":
-                this.GetTextStyle().LetterSpacing = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
+                GetTextStyle().LetterSpacing = SvgXmlUtil.AttrValue(new KeyValueItem(name, value));
                 return;
             case "baseline-shift":
-                this.GetTextStyle().BaseLineShift = value;
+                GetTextStyle().BaseLineShift = value;
                 return;
         }
     }
 
-    protected Fill GetFill() => this.fill ??= new Fill();
+    protected Fill GetFill() => fill ??= new Fill();
 
-    protected TextStyle GetTextStyle() => this.textStyle ??= new TextStyle(this);
+    protected TextStyle GetTextStyle() => textStyle ??= new TextStyle(this);
 
     public override string ToString()
     {
-        return this.GetType().Name + " (" + Id + ")";
+        return GetType().Name + " (" + Id + ")";
     }
 
-    private Stroke GetStroke() => this.stroke ??= new Stroke();
+    private Stroke GetStroke() => stroke ??= new Stroke();
 }

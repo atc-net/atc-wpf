@@ -16,7 +16,7 @@ internal class PolylineShape : Shape
             }
         }
 
-        this.Points = list.ToArray();
+        Points = list.ToArray();
     }
 
     public Point[] Points { get; }

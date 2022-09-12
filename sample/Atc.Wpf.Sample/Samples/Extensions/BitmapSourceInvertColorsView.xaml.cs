@@ -7,9 +7,9 @@ public partial class BitmapSourceInvertColorsView
 {
     public BitmapSourceInvertColorsView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
 
-        this.Loaded += this.OnLoaded;
+        Loaded += OnLoaded;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
@@ -19,6 +19,6 @@ public partial class BitmapSourceInvertColorsView
 
         var bitmapSource = bitmap.InvertColors();
 
-        this.TestImage.Source = bitmapSource;
+        TestImage.Source = bitmapSource;
     }
 }

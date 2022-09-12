@@ -5,15 +5,26 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
 {
     private readonly Func<T, Task>? execute;
     private readonly WeakFunc<T, bool>? wfCanExecute;
+    private readonly IErrorHandler? errorHandler;
     private EventHandler requerySuggestedLocal = null!;
+    private bool isExecuting;
 
-    public RelayCommandAsync(Func<T, Task> execute, Func<T, bool>? canExecute = null, bool keepTargetAlive = false)
+    public RelayCommandAsync(
+        Func<T, Task> execute,
+        Func<T, bool>? canExecute = null,
+        IErrorHandler? errorHandler = null,
+        bool keepTargetAlive = false)
     {
         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
 
         if (canExecute is not null)
         {
-            this.wfCanExecute = new WeakFunc<T, bool>(canExecute, keepTargetAlive);
+            wfCanExecute = new WeakFunc<T, bool>(canExecute, keepTargetAlive);
+        }
+
+        if (errorHandler is not null)
+        {
+            this.errorHandler = errorHandler;
         }
     }
 
@@ -21,20 +32,20 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
     {
         add
         {
-            if (this.wfCanExecute is null)
+            if (wfCanExecute is null)
             {
                 return;
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = this.requerySuggestedLocal;
+            EventHandler canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal,
+                    ref requerySuggestedLocal,
                     handler3,
                     handler2);
             }
@@ -45,20 +56,20 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
 
         remove
         {
-            if (this.wfCanExecute is null)
+            if (wfCanExecute is null)
             {
                 return;
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = this.requerySuggestedLocal;
+            EventHandler canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
                 EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
                 canExecuteChanged = Interlocked.CompareExchange(
-                    ref this.requerySuggestedLocal,
+                    ref requerySuggestedLocal,
                     handler3,
                     handler2);
             }
@@ -75,11 +86,13 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
 
     public bool CanExecute(object? parameter)
     {
-        return this.wfCanExecute is null ||
-               ((this.wfCanExecute.IsStatic || this.wfCanExecute.IsAlive) && this.wfCanExecute.Execute());
+        return wfCanExecute is null ||
+               ((wfCanExecute.IsStatic || wfCanExecute.IsAlive) && wfCanExecute.Execute());
     }
 
-    public void Execute(object? parameter)
+    [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK - ICommand signature")]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]
+    public async void Execute(object? parameter)
     {
         var val = parameter;
 
@@ -90,8 +103,51 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
             val = Convert.ChangeType(parameter, typeof(T), provider: null);
         }
 
-        if (!CanExecute(val) ||
-            this.execute is null)
+        if (isExecuting ||
+            !CanExecute(val) ||
+            execute is null)
+        {
+            return;
+        }
+
+        isExecuting = true;
+
+        if (errorHandler is null)
+        {
+            await DoExecute(val);
+            RaiseCanExecuteChanged();
+            isExecuting = false;
+        }
+        else
+        {
+            try
+            {
+                await DoExecute(val);
+                RaiseCanExecuteChanged();
+                isExecuting = false;
+            }
+            catch (Exception ex)
+            {
+                errorHandler?.HandleError(ex);
+                isExecuting = false;
+            }
+        }
+    }
+
+    public Task ExecuteAsync(T parameter)
+    {
+        if (CanExecute(parameter) &&
+            execute is not null)
+        {
+            return execute(parameter);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private async Task DoExecute(object? val)
+    {
+        if (execute is null)
         {
             return;
         }
@@ -100,27 +156,16 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
         {
             if (typeof(T).IsValueType)
             {
-                this.ExecuteAsync(default!);
+                await ExecuteAsync(default!);
             }
             else
             {
-                this.execute((T)val!);
+                await execute((T)val!);
             }
         }
         else
         {
-            this.execute((T)val);
+            await execute((T)val);
         }
-    }
-
-    public Task ExecuteAsync(T parameter)
-    {
-        if (this.CanExecute(parameter)
-            && this.execute is not null)
-        {
-            return Task.Run(() => this.execute(parameter), CancellationToken.None);
-        }
-
-        return Task.CompletedTask;
     }
 }

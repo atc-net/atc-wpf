@@ -19,7 +19,7 @@ public abstract class SvgIconBase : MarkupExtension
     /// </summary>
     protected SvgIconBase()
     {
-        this.GetAppName();
+        GetAppName();
     }
 
     public Color? OverrideColor { get; set; }
@@ -43,12 +43,12 @@ public abstract class SvgIconBase : MarkupExtension
     /// </remarks>
     public CultureInfo? CultureInfo
     {
-        get => this.culture;
+        get => culture;
         set
         {
             if (value is not null)
             {
-                this.culture = value;
+                culture = value;
             }
         }
     }
@@ -64,16 +64,16 @@ public abstract class SvgIconBase : MarkupExtension
     /// </remarks>
     public string? ApplicationName
     {
-        get => this.applicationName;
+        get => applicationName;
         set
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                this.GetAppName();
+                GetAppName();
             }
             else
             {
-                this.applicationName = value;
+                applicationName = value;
             }
         }
     }
@@ -112,7 +112,7 @@ public abstract class SvgIconBase : MarkupExtension
             case "file":
             case "https":
             case "http":
-                using (SvgFileReader reader = new SvgFileReader(this.OverrideColor))
+                using (SvgFileReader reader = new SvgFileReader(OverrideColor))
                 {
                     return reader.Read(svgSource);
                 }
@@ -133,7 +133,7 @@ public abstract class SvgIconBase : MarkupExtension
                     {
                         using var stream = svgStream;
                         using var zipStream = new GZipStream(svgStream, CompressionMode.Decompress);
-                        using SvgFileReader reader = new SvgFileReader(this.OverrideColor);
+                        using SvgFileReader reader = new SvgFileReader(OverrideColor);
                         var drawGroup = reader.Read(zipStream);
                         if (drawGroup is not null)
                         {
@@ -143,7 +143,7 @@ public abstract class SvgIconBase : MarkupExtension
                     else
                     {
                         using var stream = svgStream;
-                        using SvgFileReader reader = new SvgFileReader(this.OverrideColor);
+                        using SvgFileReader reader = new SvgFileReader(OverrideColor);
                         var drawGroup = reader.Read(svgStream);
                         if (drawGroup is not null)
                         {
@@ -170,7 +170,7 @@ public abstract class SvgIconBase : MarkupExtension
                     {
                         using var stream = new MemoryStream(imageBytes);
                         using GZipStream zipStream = new GZipStream(stream, CompressionMode.Decompress);
-                        using var reader = new SvgFileReader(this.OverrideColor);
+                        using var reader = new SvgFileReader(OverrideColor);
                         var drawGroup = reader.Read(zipStream);
                         if (drawGroup is not null)
                         {
@@ -180,7 +180,7 @@ public abstract class SvgIconBase : MarkupExtension
                     else
                     {
                         using var stream = new MemoryStream(imageBytes);
-                        using var reader = new SvgFileReader(this.OverrideColor);
+                        using var reader = new SvgFileReader(OverrideColor);
                         var drawGroup = reader.Read(stream);
                         if (drawGroup is not null)
                         {
@@ -206,7 +206,7 @@ public abstract class SvgIconBase : MarkupExtension
     /// </remarks>
     protected virtual DrawingImage? GetImage(Uri svgSource)
     {
-        var drawGroup = this.GetDrawing(svgSource);
+        var drawGroup = GetDrawing(svgSource);
         return drawGroup is null
             ? null
             : new DrawingImage(drawGroup);
@@ -220,7 +220,7 @@ public abstract class SvgIconBase : MarkupExtension
             var asm = GetEntryAssembly();
             if (asm is not null)
             {
-                this.applicationName = asm.GetName().Name;
+                applicationName = asm.GetName().Name;
             }
         }
         catch

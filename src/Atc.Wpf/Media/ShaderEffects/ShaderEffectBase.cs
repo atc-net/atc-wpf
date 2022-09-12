@@ -5,10 +5,10 @@ public abstract class ShaderEffectBase : ShaderEffect
     public abstract string Name { get; }
 
     [SuppressMessage("Design", "MA0056:Do not call overridable members in constructor", Justification = "By design.")]
-    protected ShaderEffectBase() => this.PixelShader = new PixelShader
+    protected ShaderEffectBase() => PixelShader = new PixelShader
     {
         UriSource = new Uri(
-            $"pack://application:,,,/Atc.Wpf;component/Media/ShaderEffects/Shaders/{this.Name}.ps",
+            $"pack://application:,,,/Atc.Wpf;component/Media/ShaderEffects/Shaders/{Name}.ps",
             UriKind.Absolute),
     };
 

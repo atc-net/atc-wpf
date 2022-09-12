@@ -66,6 +66,6 @@ public class NotificationMessageWithCallback : NotificationMessage
     /// <returns>The object returned by the callback method.</returns>
     public virtual object? Execute(params object[] arguments)
     {
-        return this.callback.DynamicInvoke(arguments);
+        return callback.DynamicInvoke(arguments);
     }
 }

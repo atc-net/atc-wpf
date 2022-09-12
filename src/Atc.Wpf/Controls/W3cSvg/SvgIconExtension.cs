@@ -57,15 +57,15 @@ public sealed class SvgIconExtension : SvgIconBase
     /// </value>
     public string? Source
     {
-        get => this.svgPath;
+        get => svgPath;
         set
         {
-            this.svgPath = value;
+            svgPath = value;
 
-            if (string.IsNullOrWhiteSpace(this.ApplicationName) &&
+            if (string.IsNullOrWhiteSpace(ApplicationName) &&
                 DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                this.GetAppName();
+                GetAppName();
             }
         }
     }
@@ -92,16 +92,16 @@ public sealed class SvgIconExtension : SvgIconBase
 
         try
         {
-            if (string.IsNullOrWhiteSpace(this.ApplicationName) &&
+            if (string.IsNullOrWhiteSpace(ApplicationName) &&
                 DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                this.GetAppName();
+                GetAppName();
             }
 
-            var svgSource = this.ResolveUri(serviceProvider);
+            var svgSource = ResolveUri(serviceProvider);
             return svgSource is null
                 ? null
-                : this.GetImage(svgSource);
+                : GetImage(svgSource);
         }
         catch
         {
@@ -139,10 +139,10 @@ public sealed class SvgIconExtension : SvgIconBase
                 return svgSource;
             }
 
-            var tmp = this.svgPath;
-            if (this.svgPath[0] == '\\' || this.svgPath[0] == '/')
+            var tmp = svgPath;
+            if (svgPath[0] == '\\' || svgPath[0] == '/')
             {
-                tmp = this.svgPath.Substring(1);
+                tmp = svgPath.Substring(1);
             }
 
             tmp = tmp.Replace('/', '\\');
@@ -165,22 +165,22 @@ public sealed class SvgIconExtension : SvgIconBase
                 return new Uri(uriContext.BaseUri, svgSource);
             }
 
-            var asmName = this.ApplicationName;
+            var asmName = ApplicationName;
             if (assembly is not null)
             {
                 asmName = assembly.GetName().Name;
             }
 
-            tmp = this.svgPath;
-            if (this.svgPath.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            tmp = svgPath;
+            if (svgPath.StartsWith("/", StringComparison.OrdinalIgnoreCase))
             {
                 tmp = tmp.TrimStart('/');
             }
 
             bool designTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
-            if (designTime && !string.IsNullOrWhiteSpace(this.ApplicationName))
+            if (designTime && !string.IsNullOrWhiteSpace(ApplicationName))
             {
-                return new Uri($"/{this.ApplicationName};component/{tmp}", UriKind.Relative);
+                return new Uri($"/{ApplicationName};component/{tmp}", UriKind.Relative);
             }
 
             return new Uri($"pack://application:,,,/{asmName};component/{tmp}");

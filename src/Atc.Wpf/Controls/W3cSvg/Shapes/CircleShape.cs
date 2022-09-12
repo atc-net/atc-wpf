@@ -10,12 +10,12 @@ internal class CircleShape : Shape
             throw new ArgumentNullException(nameof(svg));
         }
 
-        this.Cx = SvgXmlUtil.AttrValue(node, "cx", 0, svg.ViewBox?.Width ?? svg.Size.Width);
-        this.Cy = SvgXmlUtil.AttrValue(node, "cy", 0, svg.ViewBox?.Height ?? svg.Size.Height);
+        Cx = SvgXmlUtil.AttrValue(node, "cx", 0, svg.ViewBox?.Width ?? svg.Size.Width);
+        Cy = SvgXmlUtil.AttrValue(node, "cy", 0, svg.ViewBox?.Height ?? svg.Size.Height);
         var dRef = svg.ViewBox.HasValue
             ? ShapeUtil.CalculateDRef(svg.ViewBox.Value.Width, svg.ViewBox.Value.Height)
             : ShapeUtil.CalculateDRef(svg.Size.Width, svg.Size.Height);
-        this.R = SvgXmlUtil.AttrValue(node, "r", 0, dRef);
+        R = SvgXmlUtil.AttrValue(node, "r", 0, dRef);
     }
 
     public double Cx { get; }

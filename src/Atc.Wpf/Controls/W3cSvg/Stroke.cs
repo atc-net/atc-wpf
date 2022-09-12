@@ -4,10 +4,10 @@ internal class Stroke
 {
     public Stroke()
     {
-        this.Width = 1;
-        this.LineCap = StrokeLineCapType.Butt;
-        this.LineJoin = StrokeLineJoinType.Miter;
-        this.Opacity = 100;
+        Width = 1;
+        LineCap = StrokeLineCapType.Butt;
+        LineJoin = StrokeLineJoinType.Miter;
+        Opacity = 100;
     }
 
     public string? PaintServerKey { get; set; }
@@ -51,13 +51,13 @@ internal class Stroke
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
             if (shapePaintServer is not null)
             {
-                return shapePaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
+                return shapePaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
             }
         }
 
         if (paintServer is not InheritPaintServer)
         {
-            return paintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
+            return paintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
         }
 
         var p = shape.RealParent ?? shape.Parent;
@@ -69,7 +69,7 @@ internal class Stroke
                 if (checkPaintServer is not null &&
                     checkPaintServer is not InheritPaintServer)
                 {
-                    return checkPaintServer.GetBrush(this.Opacity * elementOpacity, svg, svgRender, bounds);
+                    return checkPaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
                 }
             }
 

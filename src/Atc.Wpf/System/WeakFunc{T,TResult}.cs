@@ -36,25 +36,25 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     {
         if (func!.Method.IsStatic)
         {
-            this.staticFunc = func;
+            staticFunc = func;
 
             if (target is not null)
             {
                 // Keep a reference to the target to control the
                 // WeakAction's lifetime.
-                this.Reference = new WeakReference(target);
+                Reference = new WeakReference(target);
             }
 
             return;
         }
 
-        this.Method = func.Method;
-        this.FuncReference = new WeakReference(func.Target);
+        Method = func.Method;
+        FuncReference = new WeakReference(func.Target);
 
-        this.LiveReference = keepTargetAlive
+        LiveReference = keepTargetAlive
             ? func.Target
             : null;
-        this.Reference = new WeakReference(target);
+        Reference = new WeakReference(target);
 
 #if DEBUG
         if (this.FuncReference.Target is not null && !keepTargetAlive)
@@ -72,9 +72,9 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     /// <summary>
     /// Gets the name of the method that this WeakFunc represents.
     /// </summary>
-    public override string MethodName => this.staticFunc is null
-        ? this.Method!.Name
-        : this.staticFunc.Method.Name;
+    public override string MethodName => staticFunc is null
+        ? Method!.Name
+        : staticFunc.Method.Name;
 
     /// <summary>
     /// Gets a value indicating whether the Func owner is still alive, or if it was collected
@@ -84,14 +84,14 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     {
         get
         {
-            if (this.staticFunc is null && this.Reference is null)
+            if (staticFunc is null && Reference is null)
             {
                 return false;
             }
 
-            return this.staticFunc is null
-                ? this.Reference is not null && this.Reference.IsAlive
-                : this.Reference is null || this.Reference.IsAlive;
+            return staticFunc is null
+                ? Reference is not null && Reference.IsAlive
+                : Reference is null || Reference.IsAlive;
         }
     }
 
@@ -103,23 +103,23 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     /// <returns>The result of the Func stored as reference.</returns>
     public TResult Execute(T? parameter = default)
     {
-        if (this.staticFunc is not null)
+        if (staticFunc is not null)
         {
-            return this.staticFunc(parameter!);
+            return staticFunc(parameter!);
         }
 
-        var funcTarget = this.FuncTarget;
+        var funcTarget = FuncTarget;
 
-        if (!this.IsAlive)
+        if (!IsAlive)
         {
             return default!;
         }
 
-        if (this.Method is not null
-            && (this.LiveReference is not null || this.FuncReference is not null)
+        if (Method is not null
+            && (LiveReference is not null || FuncReference is not null)
             && funcTarget is not null)
         {
-            return (TResult)this.Method.Invoke(
+            return (TResult)Method.Invoke(
                 funcTarget,
                 new object[] { parameter! })!;
         }
@@ -139,7 +139,7 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     public object ExecuteWithObject(object parameter)
     {
         var parameterCasted = (T)parameter;
-        return this.Execute(parameterCasted)!;
+        return Execute(parameterCasted)!;
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
     /// </summary>
     public new void MarkForDeletion()
     {
-        this.staticFunc = null;
+        staticFunc = null;
         base.MarkForDeletion();
     }
 }

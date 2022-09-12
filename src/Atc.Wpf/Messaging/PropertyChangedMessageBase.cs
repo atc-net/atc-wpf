@@ -17,7 +17,7 @@ public abstract class PropertyChangedMessageBase : MessageBase
     protected PropertyChangedMessageBase(object sender, string propertyName)
         : base(sender)
     {
-        this.PropertyName = propertyName;
+        PropertyName = propertyName;
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public abstract class PropertyChangedMessageBase : MessageBase
     protected PropertyChangedMessageBase(object sender, object target, string propertyName)
         : base(sender, target)
     {
-        this.PropertyName = propertyName;
+        PropertyName = propertyName;
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public abstract class PropertyChangedMessageBase : MessageBase
     /// <param name="propertyName">The name of the property that changed.</param>
     protected PropertyChangedMessageBase(string propertyName)
     {
-        this.PropertyName = propertyName;
+        PropertyName = propertyName;
     }
 
     /// <summary>

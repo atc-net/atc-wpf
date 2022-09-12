@@ -9,13 +9,13 @@ public partial class DebounceView
 
     public DebounceView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK.")]
     private void SearchTextBoxOnKeyup(object sender, KeyEventArgs e)
     {
-        var selectedComboBoxItem = this.CbDebounce.SelectedValue as ComboBoxItem;
+        var selectedComboBoxItem = CbDebounce.SelectedValue as ComboBoxItem;
         if (selectedComboBoxItem?.Content is null)
         {
             return;
@@ -32,8 +32,8 @@ public partial class DebounceView
         // Fire after [delayMs]ms after last keypress
         debounceTimer.Debounce(delayMs, async _ =>
         {
-            var vm = this.DataContext as DebounceViewModel;
-            await vm!.Search(this.TbSearch.Text);
+            var vm = DataContext as DebounceViewModel;
+            await vm!.Search(TbSearch.Text);
         });
     }
 }

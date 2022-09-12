@@ -27,9 +27,9 @@ public class SaturateShaderEffect : ShaderEffectBase
 
     public SaturateShaderEffect()
     {
-        this.UpdateShaderValue(InputProperty);
-        this.UpdateShaderValue(SecondInputProperty);
-        this.UpdateShaderValue(ProgressProperty);
+        UpdateShaderValue(InputProperty);
+        UpdateShaderValue(SecondInputProperty);
+        UpdateShaderValue(ProgressProperty);
     }
 
     /// <summary>

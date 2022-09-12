@@ -60,7 +60,7 @@ public class BindingErrorTraceListener : DefaultTraceListener
     /// </PermissionSet>
     public override void Write(string? message)
     {
-        _ = this.errorMessage.Append(message);
+        _ = errorMessage.Append(message);
     }
 
     /// <summary>
@@ -86,9 +86,9 @@ public class BindingErrorTraceListener : DefaultTraceListener
             return;
         }
 
-        _ = this.errorMessage.Append(message);
-        var error = this.errorMessage.ToString();
-        this.errorMessage.Length = 0;
+        _ = errorMessage.Append(message);
+        var error = errorMessage.ToString();
+        errorMessage.Length = 0;
 
         _ = Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Normal,

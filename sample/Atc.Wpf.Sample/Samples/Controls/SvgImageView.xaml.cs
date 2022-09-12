@@ -7,6 +7,6 @@ public partial class SvgImageView
 {
     public SvgImageView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

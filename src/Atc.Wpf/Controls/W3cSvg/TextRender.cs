@@ -159,7 +159,7 @@ internal static class TextRender
         {
             var dpiScale = new DpiScale(dpiX, dpiY);
             glyphs = new GlyphRun((float)dpiScale.PixelsPerDip);
-            ((System.ComponentModel.ISupportInitialize)glyphs).BeginInit();
+            ((ISupportInitialize)glyphs).BeginInit();
             glyphs.GlyphTypeface = glyphFace;
             glyphs.FontRenderingEmSize = fontSize;
             List<char> textChars = new List<char>();
@@ -199,7 +199,7 @@ internal static class TextRender
 
             baseLine = y;
             glyphs.BaselineOrigin = new Point(x - alignmentOffset, baseLine);
-            ((System.ComponentModel.ISupportInitialize)glyphs).EndInit();
+            ((ISupportInitialize)glyphs).EndInit();
         }
         else
         {

@@ -27,13 +27,13 @@ internal class Group : Shape
             }
 
             svg.Shapes.TryGetValue(id, out var shape);
-            this.Clip = shape as Clip;
+            Clip = shape as Clip;
         }
 
-        this.Parent = parent;
+        Parent = parent;
         foreach (XmlNode childNode in node.ChildNodes)
         {
-            var shape = AddToList(svg, this.elements, childNode, this);
+            var shape = AddToList(svg, elements, childNode, this);
             if (shape is not null)
             {
                 shape.Parent = this;
@@ -41,7 +41,7 @@ internal class Group : Shape
         }
     }
 
-    public IList<Shape> Elements => this.elements.AsReadOnly();
+    public IList<Shape> Elements => elements.AsReadOnly();
 
     public bool IsSwitch { get; init; }
 

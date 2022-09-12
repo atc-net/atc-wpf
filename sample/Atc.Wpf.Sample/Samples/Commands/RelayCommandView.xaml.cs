@@ -7,6 +7,6 @@ public partial class RelayCommandView
 {
     public RelayCommandView()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

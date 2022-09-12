@@ -53,22 +53,22 @@ internal class RectangleShape : Shape
         switch (name)
         {
             case "x":
-                this.X = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
+                X = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
                 return;
             case "y":
-                this.Y = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
+                Y = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
                 return;
             case "width":
-                this.Width = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
+                Width = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
                 return;
             case "height":
-                this.Height = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
+                Height = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
                 return;
             case "rx":
-                this.Rx = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
+                Rx = SvgXmlUtil.GetDoubleValue(value, svg.Size.Width);
                 return;
             case "ry":
-                this.Ry = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
+                Ry = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
                 return;
             default:
                 base.Parse(svg, name, value);

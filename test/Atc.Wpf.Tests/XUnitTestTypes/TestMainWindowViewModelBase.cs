@@ -7,21 +7,21 @@ public class TestMainWindowViewModelBase : MainWindowViewModelBase
 
     public bool IsBoolProperty
     {
-        get => this.isBoolProperty;
+        get => isBoolProperty;
         set
         {
-            this.isBoolProperty = value;
-            this.RaisePropertyChanged();
+            isBoolProperty = value;
+            RaisePropertyChanged();
         }
     }
 
     public bool IsBoolPropertyWithExpression
     {
-        get => this.isBoolPropertyWithExpression;
+        get => isBoolPropertyWithExpression;
         set
         {
-            this.isBoolPropertyWithExpression = value;
-            this.RaisePropertyChanged(() => this.IsBoolPropertyWithExpression);
+            isBoolPropertyWithExpression = value;
+            RaisePropertyChanged(() => IsBoolPropertyWithExpression);
         }
     }
 }

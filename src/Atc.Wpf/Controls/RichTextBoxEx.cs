@@ -80,7 +80,7 @@ public class RichTextBoxEx : RichTextBox
     /// </summary>
     public void Clear()
     {
-        this.Document.Blocks.Clear();
+        Document.Blocks.Clear();
     }
 
     /// <summary>
@@ -91,8 +91,8 @@ public class RichTextBoxEx : RichTextBox
         base.BeginInit();
 
         //// Do not update anything while initializing. See EndInit
-        this.preventTextUpdate = true;
-        this.preventDocumentUpdate = true;
+        preventTextUpdate = true;
+        preventDocumentUpdate = true;
     }
 
     /// <summary>
@@ -101,19 +101,19 @@ public class RichTextBoxEx : RichTextBox
     public override void EndInit()
     {
         base.EndInit();
-        this.preventTextUpdate = false;
-        this.preventDocumentUpdate = false;
+        preventTextUpdate = false;
+        preventDocumentUpdate = false;
 
         // Possible conflict here if the user specifies
         // the document AND the text at the same time
         // in XAML. Text has priority.
-        if (!string.IsNullOrEmpty(this.Text))
+        if (!string.IsNullOrEmpty(Text))
         {
-            this.UpdateDocumentFromText();
+            UpdateDocumentFromText();
         }
         else
         {
-            this.UpdateTextFromDocument();
+            UpdateTextFromDocument();
         }
     }
 
@@ -124,7 +124,7 @@ public class RichTextBoxEx : RichTextBox
     /// <param name="newValue">The new value.</param>
     protected virtual void OnTextFormatterPropertyChanged(ITextFormatter oldValue, ITextFormatter newValue)
     {
-        this.UpdateTextFromDocument();
+        UpdateTextFromDocument();
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ public class RichTextBoxEx : RichTextBox
     protected override void OnTextChanged(TextChangedEventArgs e)
     {
         base.OnTextChanged(e);
-        this.UpdateTextFromDocument();
+        UpdateTextFromDocument();
     }
 
     /// <summary>
@@ -182,14 +182,14 @@ public class RichTextBoxEx : RichTextBox
     /// </summary>
     private void UpdateTextFromDocument()
     {
-        if (this.preventTextUpdate)
+        if (preventTextUpdate)
         {
             return;
         }
 
-        this.preventDocumentUpdate = true;
-        this.SetCurrentValue(TextProperty, this.TextFormatter.GetText(this.Document));
-        this.preventDocumentUpdate = false;
+        preventDocumentUpdate = true;
+        SetCurrentValue(TextProperty, TextFormatter.GetText(Document));
+        preventDocumentUpdate = false;
     }
 
     /// <summary>
@@ -197,13 +197,13 @@ public class RichTextBoxEx : RichTextBox
     /// </summary>
     private void UpdateDocumentFromText()
     {
-        if (this.preventDocumentUpdate)
+        if (preventDocumentUpdate)
         {
             return;
         }
 
-        this.preventTextUpdate = true;
-        this.TextFormatter.SetText(this.Document, this.Text);
-        this.preventTextUpdate = false;
+        preventTextUpdate = true;
+        TextFormatter.SetText(Document, Text);
+        preventTextUpdate = false;
     }
 }

@@ -36,7 +36,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
     /// </summary>
     public SvgIconConverterExtension()
     {
-        this.uriConverter = new UriTypeConverter();
+        uriConverter = new UriTypeConverter();
     }
 
     public SvgIconConverterExtension(Uri baseUri)
@@ -77,26 +77,26 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(this.ApplicationName) && DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            if (string.IsNullOrWhiteSpace(ApplicationName) && DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                this.GetAppName();
+                GetAppName();
             }
 
             Uri? inputUri = null;
             if (parameter is not null)
             {
-                inputUri = this.ResolveUri(parameter.ToString()!);
+                inputUri = ResolveUri(parameter.ToString()!);
             }
             else if (value is not null)
             {
                 inputUri = uriConverter.ConvertFrom(value) as Uri;
                 if (inputUri is null)
                 {
-                    inputUri = this.ResolveUri(value.ToString()!);
+                    inputUri = ResolveUri(value.ToString()!);
                 }
                 else if (!inputUri.IsAbsoluteUri)
                 {
-                    inputUri = this.ResolveUri(value.ToString()!);
+                    inputUri = ResolveUri(value.ToString()!);
                 }
             }
 
@@ -108,7 +108,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             var svgSource = inputUri.IsAbsoluteUri
                 ? inputUri
                 : new Uri(baseUri, inputUri);
-            return this.GetImage(svgSource);
+            return GetImage(svgSource);
         }
         catch
         {
@@ -191,7 +191,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
                 }
             }
 
-            var asmName = this.ApplicationName;
+            var asmName = ApplicationName;
             if (assembly is not null)
             {
                 asmName = assembly.GetName().Name;
@@ -205,10 +205,10 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
 
             // A little hack to display preview in design mode
             bool designTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
-            if (designTime && !string.IsNullOrWhiteSpace(this.ApplicationName))
+            if (designTime && !string.IsNullOrWhiteSpace(ApplicationName))
             {
                 // The relative path is not working with the Converter...
-                return new Uri($"pack://application:,,,/{this.ApplicationName};component/{svgPath}");
+                return new Uri($"pack://application:,,,/{ApplicationName};component/{svgPath}");
             }
 
             return new Uri($"pack://application:,,,/{asmName};component/{svgPath}");

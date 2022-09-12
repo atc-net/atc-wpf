@@ -25,7 +25,7 @@ internal struct XmlToken
     /// <param name="length">The length.</param>
     public XmlToken(XmlTokenKind kind, int length)
     {
-        this.Kind = kind;
-        this.Length = (short)length;
+        Kind = kind;
+        Length = (short)length;
     }
 }

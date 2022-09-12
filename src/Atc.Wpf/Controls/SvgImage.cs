@@ -112,8 +112,8 @@ public class SvgImage : Control
 
     public SvgImage()
     {
-        this.ClipToBounds = true;
-        this.SnapsToDevicePixels = true;
+        ClipToBounds = true;
+        SnapsToDevicePixels = true;
     }
 
     public new Brush? Background
@@ -178,94 +178,94 @@ public class SvgImage : Control
         set => SetValue(ExternalFileLoaderProperty, value);
     }
 
-    internal Svg? Svg => this.svgRender?.Svg;
+    internal Svg? Svg => svgRender?.Svg;
 
     public void ReRenderSvg()
     {
-        if (this.svgRender?.Svg is not null)
+        if (svgRender?.Svg is not null)
         {
-            var svgDrawing = this.svgRender.CreateDrawing(this.svgRender.Svg);
-            this.SetImage(svgDrawing);
+            var svgDrawing = svgRender.CreateDrawing(svgRender.Svg);
+            SetImage(svgDrawing);
         }
     }
 
     public void SetImage(string svgFileName)
     {
-        this.loadImage = render =>
+        loadImage = render =>
         {
-            this.SetImage(render.LoadDrawing(svgFileName));
+            SetImage(render.LoadDrawing(svgFileName));
         };
 
-        if (!this.IsInitialized &&
+        if (!IsInitialized &&
             !DesignerProperties.GetIsInDesignMode(this))
         {
             return;
         }
 
-        this.InitializeSvgRender();
+        InitializeSvgRender();
 
-        if (this.svgRender is not null)
+        if (svgRender is not null)
         {
-            this.loadImage(this.svgRender);
+            loadImage(svgRender);
         }
 
-        this.loadImage = null;
+        loadImage = null;
     }
 
     public void SetImage(Stream svgStream)
     {
-        this.loadImage = render =>
+        loadImage = render =>
         {
-            this.SetImage(render.LoadDrawing(svgStream));
+            SetImage(render.LoadDrawing(svgStream));
         };
 
-        if (!this.IsInitialized &&
+        if (!IsInitialized &&
             !DesignerProperties.GetIsInDesignMode(this))
         {
             return;
         }
 
-        this.InitializeSvgRender();
+        InitializeSvgRender();
 
         if (svgRender is not null)
         {
-            this.loadImage(svgRender);
+            loadImage(svgRender);
         }
 
-        this.loadImage = null;
+        loadImage = null;
     }
 
     public void SetImage(Drawing svgDrawing)
     {
-        this.drawing = svgDrawing;
-        this.InvalidateVisual();
-        if (this.drawing is not null)
+        drawing = svgDrawing;
+        InvalidateVisual();
+        if (drawing is not null)
         {
-            this.InvalidateMeasure();
+            InvalidateMeasure();
         }
 
-        this.ReCalculateImageSize();
+        ReCalculateImageSize();
     }
 
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
-        if (this.loadImage is null)
+        if (loadImage is null)
         {
             return;
         }
 
-        this.InitializeSvgRender();
+        InitializeSvgRender();
 
-        if (this.svgRender is null)
+        if (svgRender is null)
         {
             return;
         }
 
-        this.loadImage(this.svgRender);
-        this.loadImage = null;
+        loadImage(svgRender);
+        loadImage = null;
         var brushesFromSvg = new Dictionary<string, Brush>(StringComparer.Ordinal);
-        if (this.svgRender.Svg is not null)
+        if (svgRender.Svg is not null)
         {
             foreach (var (key, value) in svgRender.Svg.PaintServers.GetServers())
             {
@@ -277,14 +277,14 @@ public class SvgImage : Control
             }
         }
 
-        this.CustomBrushes = brushesFromSvg;
+        CustomBrushes = brushesFromSvg;
     }
 
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
-        this.ReCalculateImageSize();
-        this.InvalidateVisual();
+        ReCalculateImageSize();
+        InvalidateVisual();
     }
 
     protected override void OnRender(DrawingContext drawingContext)
@@ -294,25 +294,25 @@ public class SvgImage : Control
             throw new ArgumentNullException(nameof(drawingContext));
         }
 
-        if (this.drawing is null)
+        if (drawing is null)
         {
             return;
         }
 
-        if (this.Background is not null)
+        if (Background is not null)
         {
             // Notice TemplateBinding background must be removed from the Border in the default template (or remove Border from the template)
             // Border renders the background AFTER the child render has been called
             // http://social.msdn.microsoft.com/Forums/en-US/wpf/thread/1575d2af-8e86-4085-81b8-a8bf24268e51/?prof=required
             drawingContext.DrawRectangle(
-                this.Background,
+                Background,
                 pen: null,
-                new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+                new Rect(0, 0, ActualWidth, ActualHeight));
         }
 
-        drawingContext.PushTransform(this.translateTransform);
-        drawingContext.PushTransform(this.scaleTransform);
-        drawingContext.DrawDrawing(this.drawing);
+        drawingContext.PushTransform(translateTransform);
+        drawingContext.PushTransform(scaleTransform);
+        drawingContext.DrawDrawing(drawing);
         drawingContext.Pop();
         drawingContext.Pop();
     }
@@ -320,11 +320,11 @@ public class SvgImage : Control
     protected override Size MeasureOverride(Size constraint)
     {
         var size = base.MeasureOverride(constraint);
-        if (this.ControlSizeType == ControlSizeType.SizeToContent &&
-            this.drawing is not null &&
-            !this.drawing.Bounds.Size.IsEmpty)
+        if (ControlSizeType == ControlSizeType.SizeToContent &&
+            drawing is not null &&
+            !drawing.Bounds.Size.IsEmpty)
         {
-            size = this.drawing.Bounds.Size;
+            size = drawing.Bounds.Size;
         }
 
         if (constraint.Width > 0 && constraint.Width < size.Width)
@@ -343,11 +343,11 @@ public class SvgImage : Control
     protected override Size ArrangeOverride(Size arrangeBounds)
     {
         var size = base.ArrangeOverride(arrangeBounds);
-        if (this.ControlSizeType == ControlSizeType.SizeToContent &&
-            this.drawing is not null &&
-            !this.drawing.Bounds.Size.IsEmpty)
+        if (ControlSizeType == ControlSizeType.SizeToContent &&
+            drawing is not null &&
+            !drawing.Bounds.Size.IsEmpty)
         {
-            size = this.drawing.Bounds.Size;
+            size = drawing.Bounds.Size;
         }
 
         if (arrangeBounds.Width > 0 && arrangeBounds.Width < size.Width)
@@ -479,133 +479,133 @@ public class SvgImage : Control
     }
 
     private void InitializeSvgRender() =>
-        this.svgRender = new SvgRender
+        svgRender = new SvgRender
         {
-            ExternalFileLoader = this.ExternalFileLoader,
-            OverrideColor = this.OverrideColor,
-            CustomBrushes = this.CustomBrushes,
-            OverrideStrokeWidth = this.OverrideStrokeWidth,
-            UseAnimations = this.UseAnimations,
+            ExternalFileLoader = ExternalFileLoader,
+            OverrideColor = OverrideColor,
+            CustomBrushes = CustomBrushes,
+            OverrideStrokeWidth = OverrideStrokeWidth,
+            UseAnimations = UseAnimations,
         };
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     private void ReCalculateImageSize()
     {
-        if (this.drawing is null)
+        if (drawing is null)
         {
             return;
         }
 
-        var rect = this.drawing.Bounds;
-        switch (this.ControlSizeType)
+        var rect = drawing.Bounds;
+        switch (ControlSizeType)
         {
             case ControlSizeType.None:
-                this.scaleTransform.ScaleX = 1;
-                this.scaleTransform.ScaleY = 1;
-                switch (this.HorizontalContentAlignment)
+                scaleTransform.ScaleX = 1;
+                scaleTransform.ScaleY = 1;
+                switch (HorizontalContentAlignment)
                 {
                     case HorizontalAlignment.Center:
-                        this.translateTransform.X = (this.ActualWidth / 2) - (rect.Width / 2) - rect.Left;
+                        translateTransform.X = (ActualWidth / 2) - (rect.Width / 2) - rect.Left;
                         break;
                     case HorizontalAlignment.Right:
-                        this.translateTransform.X = this.ActualWidth - rect.Right;
+                        translateTransform.X = ActualWidth - rect.Right;
                         break;
                     default:
                         // Move to left by default
-                        this.translateTransform.X = -rect.Left;
+                        translateTransform.X = -rect.Left;
                         break;
                 }
 
-                switch (this.VerticalContentAlignment)
+                switch (VerticalContentAlignment)
                 {
                     case VerticalAlignment.Center:
-                        this.translateTransform.Y = (this.ActualHeight / 2) - (rect.Height / 2);
+                        translateTransform.Y = (ActualHeight / 2) - (rect.Height / 2);
                         break;
                     case VerticalAlignment.Bottom:
-                        this.translateTransform.Y = this.ActualHeight - rect.Height - rect.Top;
+                        translateTransform.Y = ActualHeight - rect.Height - rect.Top;
                         break;
                     default:
                         // Move to top by default
-                        this.translateTransform.Y = -rect.Top;
+                        translateTransform.Y = -rect.Top;
                         break;
                 }
 
                 break;
             case ControlSizeType.ContentToSizeNoStretch:
-                this.SizeToContentNoStretch();
+                SizeToContentNoStretch();
                 break;
             case ControlSizeType.ContentToSizeStretch:
-                double xScale = this.ActualWidth / rect.Width;
-                double yScale = this.ActualHeight / rect.Height;
-                this.scaleTransform.CenterX = rect.Left;
-                this.scaleTransform.CenterY = rect.Top;
-                this.scaleTransform.ScaleX = xScale;
-                this.scaleTransform.ScaleY = yScale;
+                double xScale = ActualWidth / rect.Width;
+                double yScale = ActualHeight / rect.Height;
+                scaleTransform.CenterX = rect.Left;
+                scaleTransform.CenterY = rect.Top;
+                scaleTransform.ScaleX = xScale;
+                scaleTransform.ScaleY = yScale;
 
                 // Move to top-left by default
-                this.translateTransform.X = -rect.Left;
-                this.translateTransform.Y = -rect.Top;
+                translateTransform.X = -rect.Left;
+                translateTransform.Y = -rect.Top;
                 break;
-            case ControlSizeType.SizeToContent when rect.Width > this.ActualWidth || rect.Height > this.ActualHeight:
-                this.SizeToContentNoStretch();
+            case ControlSizeType.SizeToContent when rect.Width > ActualWidth || rect.Height > ActualHeight:
+                SizeToContentNoStretch();
                 break;
             case ControlSizeType.SizeToContent:
-                this.scaleTransform.CenterX = rect.Left;
-                this.scaleTransform.CenterY = rect.Top;
-                this.scaleTransform.ScaleX = 1;
-                this.scaleTransform.ScaleY = 1;
+                scaleTransform.CenterX = rect.Left;
+                scaleTransform.CenterY = rect.Top;
+                scaleTransform.ScaleX = 1;
+                scaleTransform.ScaleY = 1;
 
                 // Move to top-left by default
-                this.translateTransform.X = -rect.Left;
-                this.translateTransform.Y = -rect.Top;
+                translateTransform.X = -rect.Left;
+                translateTransform.Y = -rect.Top;
                 break;
             default:
-                throw new SwitchExpressionException(this.ControlSizeType);
+                throw new SwitchExpressionException(ControlSizeType);
         }
     }
 
     private void SizeToContentNoStretch()
     {
-        var rect = this.drawing!.Bounds;
-        double xScale = this.ActualWidth / rect.Width;
-        double yScale = this.ActualHeight / rect.Height;
+        var rect = drawing!.Bounds;
+        double xScale = ActualWidth / rect.Width;
+        double yScale = ActualHeight / rect.Height;
         double scale = xScale;
         if (scale > yScale)
         {
             scale = yScale;
         }
 
-        this.scaleTransform.CenterX = rect.Left;
-        this.scaleTransform.CenterY = rect.Top;
-        this.scaleTransform.ScaleX = scale;
-        this.scaleTransform.ScaleY = scale;
+        scaleTransform.CenterX = rect.Left;
+        scaleTransform.CenterY = rect.Top;
+        scaleTransform.ScaleX = scale;
+        scaleTransform.ScaleY = scale;
 
-        this.translateTransform.X = -rect.Left;
+        translateTransform.X = -rect.Left;
         if (scale < xScale)
         {
-            switch (this.HorizontalContentAlignment)
+            switch (HorizontalContentAlignment)
             {
                 case HorizontalAlignment.Center:
                     double width = rect.Width * scale;
-                    this.translateTransform.X = (this.ActualWidth / 2) - (width / 2) - rect.Left;
+                    translateTransform.X = (ActualWidth / 2) - (width / 2) - rect.Left;
                     break;
                 case HorizontalAlignment.Right:
-                    this.translateTransform.X = this.ActualWidth - (rect.Right * scale);
+                    translateTransform.X = ActualWidth - (rect.Right * scale);
                     break;
             }
         }
 
-        this.translateTransform.Y = -rect.Top;
+        translateTransform.Y = -rect.Top;
         if (scale < yScale)
         {
-            switch (this.VerticalContentAlignment)
+            switch (VerticalContentAlignment)
             {
                 case VerticalAlignment.Center:
                     double height = rect.Height * scale;
-                    this.translateTransform.Y = (this.ActualHeight / 2) - (height / 2) - rect.Top;
+                    translateTransform.Y = (ActualHeight / 2) - (height / 2) - rect.Top;
                     break;
                 case VerticalAlignment.Bottom:
-                    this.translateTransform.Y = this.ActualHeight - (rect.Height * scale) - rect.Top;
+                    translateTransform.Y = ActualHeight - (rect.Height * scale) - rect.Top;
                     break;
             }
         }

@@ -14,7 +14,7 @@ public class GenericMessage<T> : MessageBase
     /// <param name="content">The message content.</param>
     public GenericMessage(T content)
     {
-        this.Content = content;
+        Content = content;
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ public class GenericMessage<T> : MessageBase
     public GenericMessage(object sender, T content)
         : base(sender)
     {
-        this.Content = content;
+        Content = content;
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class GenericMessage<T> : MessageBase
     public GenericMessage(object sender, object target, T content)
         : base(sender, target)
     {
-        this.Content = content;
+        Content = content;
     }
 
     /// <summary>
