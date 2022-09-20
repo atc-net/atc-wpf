@@ -534,4 +534,10 @@
   <data name="YellowGreen" xml:space="preserve">
     <value>Yellow Green</value>
   </data>
+  <data name="Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
 </root>

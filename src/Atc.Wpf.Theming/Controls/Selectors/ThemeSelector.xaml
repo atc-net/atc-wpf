@@ -1,0 +1,38 @@
+<UserControl
+    x:Class="Atc.Wpf.Theming.Controls.Selectors.ThemeSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="clr-namespace:Atc.Wpf.Extensions;assembly=Atc.Wpf"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Theming.Controls.Selectors"
+    x:Name="UcThemeSelector"
+    d:DataContext="{d:DesignInstance Type=selectors:ThemeSelector}"
+    d:DesignHeight="50"
+    d:DesignWidth="200"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <atcValueConverters:LabelControlOrientationToMarginValueConverter x:Key="LabelControlOrientationToMarginConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel Orientation="{Binding ElementName=UcThemeSelector, Path=Orientation}">
+            <TextBlock
+                Margin="{Binding ElementName=UcThemeSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}, ConverterParameter='a'}"
+                VerticalAlignment="Center"
+                Text="{extensions:Resx ResxName=Atc.Wpf.Theming.Resource.Miscellaneous,
+                                       Key=Theme,
+                                       Suffix=':'}" />
+            <ComboBox
+                Height="22"
+                MinWidth="100"
+                DisplayMemberPath="DisplayName"
+                ItemsSource="{Binding Path=Items}"
+                SelectedValue="{Binding Path=SelectedKey}"
+                SelectedValuePath="Name" />
+        </StackPanel>
+    </Grid>
+
+</UserControl>

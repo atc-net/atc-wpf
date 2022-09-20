@@ -130,6 +130,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ColorNames.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resource\Miscellaneous.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Miscellaneous.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -142,6 +147,10 @@
     <EmbeddedResource Update="Resource\ColorNames.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ColorNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\Miscellaneous.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

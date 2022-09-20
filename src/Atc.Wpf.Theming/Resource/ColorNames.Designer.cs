@@ -241,6 +241,15 @@ namespace Atc.Wpf.Theming.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string Dark {
+            get {
+                return ResourceManager.GetString("Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark Blue.
         /// </summary>
         public static string DarkBlue {
@@ -615,6 +624,15 @@ namespace Atc.Wpf.Theming.Resource {
         public static string LemonChiffon {
             get {
                 return ResourceManager.GetString("LemonChiffon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string Light {
+            get {
+                return ResourceManager.GetString("Light", resourceCulture);
             }
         }
         

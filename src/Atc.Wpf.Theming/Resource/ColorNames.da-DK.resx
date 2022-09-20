@@ -534,4 +534,10 @@
   <data name="WhiteSmoke" xml:space="preserve">
     <value>?White Smoke</value>
   </data>
+  <data name="Light" xml:space="preserve">
+    <value>Lys</value>
+  </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Mørk</value>
+  </data>
 </root>

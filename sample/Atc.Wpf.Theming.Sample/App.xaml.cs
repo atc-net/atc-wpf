@@ -102,6 +102,7 @@ public partial class App
             .StartAsync()
             .ConfigureAwait(false);
 
+        Thread.CurrentThread.CurrentUICulture = GlobalizationConstants.DanishCultureInfo;
         ThemeManager.Current.ChangeTheme(Current, "Light.Blue");
 
         var mainWindow = host
