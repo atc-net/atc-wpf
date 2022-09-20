@@ -9,10 +9,7 @@ public class MultiBoolToBoolValueConverter : IMultiValueConverter
     /// <inheritdoc />
     public object Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values is null)
-        {
-            throw new ArgumentNullException(nameof(values));
-        }
+        ArgumentNullException.ThrowIfNull(values);
 
         return values.All(value => value is not bool boolValue || boolValue);
     }

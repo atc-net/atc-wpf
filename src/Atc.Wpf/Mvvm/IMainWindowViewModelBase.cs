@@ -25,27 +25,27 @@ public interface IMainWindowViewModelBase : IViewModelBase
     /// Called when loaded.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-    void OnLoaded(object sender, RoutedEventArgs args);
+    /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+    void OnLoaded(object sender, RoutedEventArgs e);
 
     /// <summary>
     /// Called when closing.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
-    void OnClosing(object sender, CancelEventArgs args);
+    /// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
+    void OnClosing(object sender, CancelEventArgs e);
 
     /// <summary>
     /// Called when key down.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-    void OnKeyDown(object sender, KeyEventArgs args);
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    void OnKeyDown(object sender, KeyEventArgs e);
 
     /// <summary>
     /// Called when key up.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-    void OnKeyUp(object sender, KeyEventArgs args);
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    void OnKeyUp(object sender, KeyEventArgs e);
 }

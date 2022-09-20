@@ -12,10 +12,7 @@ public static class VisualExtensions
     /// <returns>The BitmapSource from a visual.</returns>
     public static BitmapSource ToBitmapSource(this Visual visual, double dpiX = 96, double dpiY = 96)
     {
-        if (visual is null)
-        {
-            throw new ArgumentNullException(nameof(visual));
-        }
+        ArgumentNullException.ThrowIfNull(visual);
 
         if (dpiX < 1)
         {
@@ -36,7 +33,7 @@ public static class VisualExtensions
             PixelFormats.Pbgra32);
 
         var drawingVisual = new DrawingVisual();
-        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+        using (var drawingContext = drawingVisual.RenderOpen())
         {
             var visualBrush = new VisualBrush(visual);
             drawingContext.DrawRectangle(

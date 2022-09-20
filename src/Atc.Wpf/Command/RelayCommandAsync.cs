@@ -38,12 +38,12 @@ public class RelayCommandAsync : IRelayCommandAsync
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = requerySuggestedLocal;
+            var canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
-                EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
+                var handler3 = (EventHandler)Delegate.Combine(handler2, value);
                 canExecuteChanged = Interlocked.CompareExchange(
                     ref requerySuggestedLocal,
                     handler3,
@@ -62,12 +62,12 @@ public class RelayCommandAsync : IRelayCommandAsync
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = requerySuggestedLocal;
+            var canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
-                EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
+                var handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
                 canExecuteChanged = Interlocked.CompareExchange(
                     ref requerySuggestedLocal,
                     handler3,

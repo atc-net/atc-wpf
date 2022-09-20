@@ -4,10 +4,7 @@ internal class TextStyle
 {
     public TextStyle(Shape owner)
     {
-        if (owner is null)
-        {
-            throw new ArgumentNullException(nameof(owner));
-        }
+        ArgumentNullException.ThrowIfNull(owner);
 
         FontFamily = "Arial Unicode MS, Verdana";
         FontSize = 12;

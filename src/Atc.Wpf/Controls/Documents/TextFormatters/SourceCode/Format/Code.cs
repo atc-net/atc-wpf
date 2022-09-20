@@ -28,7 +28,7 @@ public abstract class Code : Source
         }
 
         // build a master regex with capturing groups
-        StringBuilder regAll = new StringBuilder();
+        var regAll = new StringBuilder();
         regAll.Append('(');
         regAll.Append(CommentRegEx);
         regAll.Append(")|(");
@@ -44,7 +44,7 @@ public abstract class Code : Source
         regAll.Append(')');
 
         // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-        RegexOptions caseInsensitive = CaseSensitive ? 0 : RegexOptions.IgnoreCase;
+        var caseInsensitive = CaseSensitive ? 0 : RegexOptions.IgnoreCase;
         CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive);
         CodeParagraphGlobal = new List<Run>();
     }
@@ -100,17 +100,14 @@ public abstract class Code : Source
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override string MatchEval(Match match)
     {
-        if (match is null)
-        {
-            throw new ArgumentNullException(nameof(match));
-        }
+        ArgumentNullException.ThrowIfNull(match);
 
         if (match.Groups[1].Success)
         {
             var reader = new StringReader(match.ToString());
             var sb = new StringBuilder();
             string line;
-            bool firstLineRead = false;
+            var firstLineRead = false;
             while ((line = reader.ReadLine()!) is not null)
             {
                 if (firstLineRead)

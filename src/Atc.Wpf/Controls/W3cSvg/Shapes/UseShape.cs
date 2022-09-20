@@ -15,15 +15,8 @@ internal class UseShape : Shape
 
     protected override void Parse(Svg svg, string name, string value)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (name is null)
-        {
-            throw new ArgumentNullException(nameof(name));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(name);
 
         if (name.Contains(':', StringComparison.Ordinal))
         {

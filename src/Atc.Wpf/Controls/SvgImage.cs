@@ -13,8 +13,8 @@ namespace Atc.Wpf.Controls;
 [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "OK.")]
 public class SvgImage : Control
 {
-    private readonly TranslateTransform translateTransform = new ();
-    private readonly ScaleTransform scaleTransform = new ();
+    private readonly TranslateTransform translateTransform = new();
+    private readonly ScaleTransform scaleTransform = new();
     private Drawing? drawing;
     private SvgRender? svgRender;
     private Action<SvgRender>? loadImage;
@@ -189,7 +189,8 @@ public class SvgImage : Control
         }
     }
 
-    public void SetImage(string svgFileName)
+    public void SetImage(
+        string svgFileName)
     {
         loadImage = render =>
         {
@@ -212,7 +213,8 @@ public class SvgImage : Control
         loadImage = null;
     }
 
-    public void SetImage(Stream svgStream)
+    public void SetImage(
+        Stream svgStream)
     {
         loadImage = render =>
         {
@@ -235,7 +237,8 @@ public class SvgImage : Control
         loadImage = null;
     }
 
-    public void SetImage(Drawing svgDrawing)
+    public void SetImage(
+        Drawing svgDrawing)
     {
         drawing = svgDrawing;
         InvalidateVisual();
@@ -247,7 +250,8 @@ public class SvgImage : Control
         ReCalculateImageSize();
     }
 
-    protected override void OnInitialized(EventArgs e)
+    protected override void OnInitialized(
+        EventArgs e)
     {
         base.OnInitialized(e);
         if (loadImage is null)
@@ -280,19 +284,18 @@ public class SvgImage : Control
         CustomBrushes = brushesFromSvg;
     }
 
-    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    protected override void OnRenderSizeChanged(
+        SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
         ReCalculateImageSize();
         InvalidateVisual();
     }
 
-    protected override void OnRender(DrawingContext drawingContext)
+    protected override void OnRender(
+        DrawingContext drawingContext)
     {
-        if (drawingContext is null)
-        {
-            throw new ArgumentNullException(nameof(drawingContext));
-        }
+        ArgumentNullException.ThrowIfNull(drawingContext);
 
         if (drawing is null)
         {
@@ -317,7 +320,8 @@ public class SvgImage : Control
         drawingContext.Pop();
     }
 
-    protected override Size MeasureOverride(Size constraint)
+    protected override Size MeasureOverride(
+        Size constraint)
     {
         var size = base.MeasureOverride(constraint);
         if (ControlSizeType == ControlSizeType.SizeToContent &&
@@ -340,7 +344,8 @@ public class SvgImage : Control
         return size;
     }
 
-    protected override Size ArrangeOverride(Size arrangeBounds)
+    protected override Size ArrangeOverride(
+        Size arrangeBounds)
     {
         var size = base.ArrangeOverride(arrangeBounds);
         if (ControlSizeType == ControlSizeType.SizeToContent &&
@@ -363,9 +368,11 @@ public class SvgImage : Control
         return size;
     }
 
-    private static void OnBackgroundChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnBackgroundChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
@@ -373,9 +380,11 @@ public class SvgImage : Control
         svgImage.ReRenderSvg();
     }
 
-    private static void OnControlSizeTypeChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnControlSizeTypeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
@@ -383,14 +392,16 @@ public class SvgImage : Control
         svgImage.ReCalculateImageSize();
     }
 
-    private static void OnSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnSourceChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
 
-        var uri = args.NewValue.ToString();
+        var uri = e.NewValue.ToString();
         if (string.IsNullOrEmpty(uri))
         {
             return;
@@ -403,14 +414,16 @@ public class SvgImage : Control
         }
     }
 
-    private static void OnFileSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnFileSourceChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
 
-        var uri = args.NewValue.ToString();
+        var uri = e.NewValue.ToString();
         if (string.IsNullOrEmpty(uri))
         {
             return;
@@ -421,23 +434,27 @@ public class SvgImage : Control
         svgImage.SetImage(memoryStream);
     }
 
-    private static void OnImageSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnImageSourceChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
 
-        if (args.NewValue is Drawing newDrawing)
+        if (e.NewValue is Drawing newDrawing)
         {
             svgImage.SetImage(newDrawing);
         }
     }
 
-    private static void OverrideStrokeWidthPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OverrideStrokeWidthPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage ||
-            args.NewValue is not double newStrokeWidth ||
+        if (d is not SvgImage svgImage ||
+            e.NewValue is not double newStrokeWidth ||
             svgImage.svgRender is null)
         {
             return;
@@ -448,10 +465,12 @@ public class SvgImage : Control
         svgImage.ReRenderSvg();
     }
 
-    private static void CustomBrushesPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void CustomBrushesPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not SvgImage svgImage ||
-            args.NewValue is not Dictionary<string, Brush> newBrushes)
+        if (d is not SvgImage svgImage ||
+            e.NewValue is not Dictionary<string, Brush> newBrushes)
         {
             return;
         }
@@ -535,8 +554,8 @@ public class SvgImage : Control
                 SizeToContentNoStretch();
                 break;
             case ControlSizeType.ContentToSizeStretch:
-                double xScale = ActualWidth / rect.Width;
-                double yScale = ActualHeight / rect.Height;
+                var xScale = ActualWidth / rect.Width;
+                var yScale = ActualHeight / rect.Height;
                 scaleTransform.CenterX = rect.Left;
                 scaleTransform.CenterY = rect.Top;
                 scaleTransform.ScaleX = xScale;
@@ -567,9 +586,9 @@ public class SvgImage : Control
     private void SizeToContentNoStretch()
     {
         var rect = drawing!.Bounds;
-        double xScale = ActualWidth / rect.Width;
-        double yScale = ActualHeight / rect.Height;
-        double scale = xScale;
+        var xScale = ActualWidth / rect.Width;
+        var yScale = ActualHeight / rect.Height;
+        var scale = xScale;
         if (scale > yScale)
         {
             scale = yScale;
@@ -586,7 +605,7 @@ public class SvgImage : Control
             switch (HorizontalContentAlignment)
             {
                 case HorizontalAlignment.Center:
-                    double width = rect.Width * scale;
+                    var width = rect.Width * scale;
                     translateTransform.X = (ActualWidth / 2) - (width / 2) - rect.Left;
                     break;
                 case HorizontalAlignment.Right:
@@ -601,7 +620,7 @@ public class SvgImage : Control
             switch (VerticalContentAlignment)
             {
                 case VerticalAlignment.Center:
-                    double height = rect.Height * scale;
+                    var height = rect.Height * scale;
                     translateTransform.Y = (ActualHeight / 2) - (height / 2) - rect.Top;
                     break;
                 case VerticalAlignment.Bottom:

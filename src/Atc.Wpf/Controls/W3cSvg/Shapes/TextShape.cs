@@ -9,15 +9,8 @@ internal class TextShape : Shape
     public TextShape(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(node);
 
         X = SvgXmlUtil.AttrValue(node, "x", 0);
         Y = SvgXmlUtil.AttrValue(node, "y", 0);
@@ -105,12 +98,9 @@ internal class TextShape : Shape
 
         public static Element? Parse(Svg svg, string text, TextShape owner)
         {
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
+            ArgumentNullException.ThrowIfNull(text);
 
-            int curPos = 0;
+            var curPos = 0;
             var root = new Element(svg, owner, TextShapeElementType.Tag, attributes: null)
             {
                 Text = "<root>",
@@ -122,10 +112,7 @@ internal class TextShape : Shape
 
         public void Print(Element tag, string indent)
         {
-            if (tag is null)
-            {
-                throw new ArgumentNullException(nameof(tag));
-            }
+            ArgumentNullException.ThrowIfNull(tag);
 
             if (tag.ElementType == TextShapeElementType.Text)
             {
@@ -138,7 +125,7 @@ internal class TextShape : Shape
             }
 
             indent += "   ";
-            foreach (Element c in tag.Children)
+            foreach (var c in tag.Children)
             {
                 Print(c, indent);
             }
@@ -148,13 +135,13 @@ internal class TextShape : Shape
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
         private static Element? NextTag(Svg svg, Element parent, string text, ref int curPos)
         {
-            int start = text.IndexOf("<", curPos, StringComparison.Ordinal);
+            var start = text.IndexOf("<", curPos, StringComparison.Ordinal);
             if (start < 0)
             {
                 return null;
             }
 
-            int end = text.IndexOf(">", start + 1, StringComparison.Ordinal);
+            var end = text.IndexOf(">", start + 1, StringComparison.Ordinal);
             if (end < 0)
             {
                 throw new Exception("Start '<' with no end '>'");
@@ -162,14 +149,14 @@ internal class TextShape : Shape
 
             end++;
 
-            string tagText = text.Substring(start, end - start);
+            var tagText = text.Substring(start, end - start);
             if (tagText.IndexOf("<", 1, StringComparison.Ordinal) != -1)
             {
                 throw new Exception("Start '<' within tag 'tag'");
             }
 
             var attrs = new List<KeyValueItem>();
-            int attrStart = tagText.IndexOf("tspan", StringComparison.Ordinal);
+            var attrStart = tagText.IndexOf("tspan", StringComparison.Ordinal);
             if (attrStart > 0)
             {
                 attrStart += 5;
@@ -202,11 +189,11 @@ internal class TextShape : Shape
 
             while (curPos < text.Length)
             {
-                int prevPos = curPos;
+                var prevPos = curPos;
                 var next = NextTag(svg, tag!, text, ref curPos);
                 if (tag?.Children is not null && next is null && curPos < text.Length)
                 {
-                    string s = text.Substring(curPos, text.Length - curPos);
+                    var s = text.Substring(curPos, text.Length - curPos);
                     tag.Children.Add(new Element(svg, tag, s));
                     return tag;
                 }
@@ -218,8 +205,8 @@ internal class TextShape : Shape
 
                 if (tag?.Children is not null && next.StartIndex - prevPos > 0)
                 {
-                    int diff = next.StartIndex - prevPos;
-                    string s = text.Substring(prevPos, diff);
+                    var diff = next.StartIndex - prevPos;
+                    var s = text.Substring(prevPos, diff);
                     tag.Children.Add(new Element(svg, tag, s));
                 }
 

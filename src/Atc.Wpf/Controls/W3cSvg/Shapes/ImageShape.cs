@@ -8,10 +8,7 @@ internal class ImageShape : Shape
     public ImageShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
         Y = SvgXmlUtil.AttrValue(node, "y", 0, svg.Size.Height);

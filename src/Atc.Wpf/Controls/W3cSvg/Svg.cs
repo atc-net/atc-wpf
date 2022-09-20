@@ -144,7 +144,7 @@ internal class Svg
         var fileUri = new UriBuilder(filePath);
         if (string.Equals(fileUri.Scheme, "file", StringComparison.Ordinal))
         {
-            string fileExt = Path.GetExtension(filePath);
+            var fileExt = Path.GetExtension(filePath);
             if (string.Equals(fileExt, ".svgz", StringComparison.OrdinalIgnoreCase))
             {
                 using var fileStream = File.OpenRead(fileUri.Uri.LocalPath);
@@ -161,10 +161,7 @@ internal class Svg
 
     public void Load(Uri fileUri)
     {
-        if (fileUri is null)
-        {
-            throw new ArgumentNullException(nameof(fileUri));
-        }
+        ArgumentNullException.ThrowIfNull(fileUri);
 
         if (!fileUri.IsAbsoluteUri)
         {
@@ -195,10 +192,7 @@ internal class Svg
 
     public void Load(Stream stream)
     {
-        if (stream is null)
-        {
-            throw new ArgumentNullException(nameof(stream));
-        }
+        ArgumentNullException.ThrowIfNull(stream);
 
         var doc = new XmlDocument();
         doc.Load(stream);
@@ -207,10 +201,7 @@ internal class Svg
 
     public void Load(XmlReader xmlReader)
     {
-        if (xmlReader is null)
-        {
-            throw new ArgumentNullException(nameof(xmlReader));
-        }
+        ArgumentNullException.ThrowIfNull(xmlReader);
 
         var doc = new XmlDocument();
         doc.Load(xmlReader);
@@ -219,10 +210,7 @@ internal class Svg
 
     public void Load(TextReader txtReader)
     {
-        if (txtReader is null)
-        {
-            throw new ArgumentNullException(nameof(txtReader));
-        }
+        ArgumentNullException.ThrowIfNull(txtReader);
 
         var doc = new XmlDocument();
         doc.Load(txtReader);
@@ -231,10 +219,7 @@ internal class Svg
 
     private void Load(XmlDocument svgDocument)
     {
-        if (svgDocument is null)
-        {
-            throw new ArgumentNullException(nameof(svgDocument));
-        }
+        ArgumentNullException.ThrowIfNull(svgDocument);
 
         LoadStyles(svgDocument);
         var svgTags = svgDocument.GetElementsByTagName("svg");
@@ -252,10 +237,7 @@ internal class Svg
 
     private void Load(XmlNode svgTag)
     {
-        if (svgTag is null)
-        {
-            throw new ArgumentNullException(nameof(svgTag));
-        }
+        ArgumentNullException.ThrowIfNull(svgTag);
 
         LoadStyles(svgTag);
         elements = Parse(svgTag);
@@ -299,10 +281,7 @@ internal class Svg
 
     private List<Shape> Parse(XmlNode node)
     {
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(node);
 
         var vb = node.Attributes?.GetNamedItem("viewBox");
         if (vb?.Value is not null)

@@ -57,9 +57,9 @@ public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResu
         Reference = new WeakReference(target);
 
 #if DEBUG
-        if (this.FuncReference.Target is not null && !keepTargetAlive)
+        if (FuncReference.Target is not null && !keepTargetAlive)
         {
-            var type = this.FuncReference.Target.GetType();
+            var type = FuncReference.Target.GetType();
 
             if (type.Name.StartsWith("<>", StringComparison.Ordinal) && type.Name.Contains("DisplayClass", StringComparison.Ordinal))
             {

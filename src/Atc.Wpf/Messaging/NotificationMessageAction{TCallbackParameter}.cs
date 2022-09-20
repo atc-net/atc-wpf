@@ -70,10 +70,7 @@ public class NotificationMessageAction<TCallbackParameter> : NotificationMessage
     /// state.</param>
     public void Execute(TCallbackParameter parameter)
     {
-        if (parameter is null)
-        {
-            throw new ArgumentNullException(nameof(parameter));
-        }
+        ArgumentNullException.ThrowIfNull(parameter);
 
         _ = base.Execute(parameter);
     }

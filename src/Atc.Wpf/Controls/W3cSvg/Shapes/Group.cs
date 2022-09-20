@@ -2,25 +2,18 @@ namespace Atc.Wpf.Controls.W3cSvg.Shapes;
 
 internal class Group : Shape
 {
-    private readonly List<Shape> elements = new ();
+    private readonly List<Shape> elements = new();
 
     public Group(Svg svg, XmlNode node, Shape parent)
         : base(svg, node)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(node);
 
         var clp = SvgXmlUtil.AttrValue(node, "clip-path", defaultValue: null);
         if (!string.IsNullOrEmpty(clp))
         {
-            string id = ShapeUtil.ExtractBetween(clp, '(', ')');
+            var id = ShapeUtil.ExtractBetween(clp, '(', ')');
             if (id.Length > 0 && id[0] == '#')
             {
                 id = id.Substring(1);
@@ -48,20 +41,9 @@ internal class Group : Shape
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static Shape? AddToList(Svg svg, List<Shape> list, XmlNode childNode, Shape? parent)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
-
-        if (childNode is null)
-        {
-            throw new ArgumentNullException(nameof(childNode));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(childNode);
 
         if (childNode.NodeType != XmlNodeType.Element)
         {
@@ -170,10 +152,7 @@ internal class Group : Shape
 
     private static void ReadDefs(Svg svg, List<Shape> list, XmlNode node)
     {
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
+        ArgumentNullException.ThrowIfNull(list);
 
         list = new List<Shape>();
         foreach (XmlNode childNode in node.ChildNodes)

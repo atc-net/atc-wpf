@@ -20,7 +20,7 @@ internal class PathShape : Shape
 
         public string ReadNext()
         {
-            int startPos = curPos;
+            var startPos = curPos;
             if (startPos < 0)
             {
                 startPos = 0;
@@ -31,8 +31,8 @@ internal class PathShape : Shape
                 return string.Empty;
             }
 
-            int cmdStart = val.IndexOfAny(commands, startPos);
-            int cmdEnd = cmdStart;
+            var cmdStart = val.IndexOfAny(commands, startPos);
+            var cmdEnd = cmdStart;
             if (cmdStart >= 0)
             {
                 cmdEnd = val.IndexOfAny(commands, cmdStart + 1);
@@ -40,13 +40,13 @@ internal class PathShape : Shape
 
             if (cmdEnd < 0)
             {
-                int len = val.Length - startPos;
+                var len = val.Length - startPos;
                 curPos = val.Length;
                 return val.Substring(startPos, len).Trim();
             }
             else
             {
-                int len = cmdEnd - startPos;
+                var len = cmdEnd - startPos;
                 curPos = cmdEnd;
                 return val.Substring(startPos, len).Trim();
             }
@@ -54,10 +54,7 @@ internal class PathShape : Shape
 
         public StringSplitter SplitCommand(string command, out char cmd)
         {
-            if (command is null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
+            ArgumentNullException.ThrowIfNull(command);
 
             cmd = command[0];
             splitter.SetString(command, 1);
@@ -82,10 +79,7 @@ internal class PathShape : Shape
         public MoveTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             Point = value.ReadNextPoint();
         }
@@ -98,15 +92,12 @@ internal class PathShape : Shape
         public LineTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             if (char.ToLower(command, GlobalizationConstants.EnglishCultureInfo) == 'h')
             {
                 PositionType = PathShapeLineToType.Horizontal;
-                double v = value.ReadNextValue();
+                var v = value.ReadNextValue();
                 Points = new[]
                 {
                     new Point(v, 0),
@@ -118,7 +109,7 @@ internal class PathShape : Shape
             if (char.ToLower(command, GlobalizationConstants.EnglishCultureInfo) == 'v')
             {
                 PositionType = PathShapeLineToType.Vertical;
-                double v = value.ReadNextValue();
+                var v = value.ReadNextValue();
                 Points = new[]
                 {
                     new Point(0, v),
@@ -128,10 +119,10 @@ internal class PathShape : Shape
             }
 
             PositionType = PathShapeLineToType.Point;
-            List<Point> list = new List<Point>();
+            var list = new List<Point>();
             while (value.More)
             {
-                Point p = value.ReadNextPoint();
+                var p = value.ReadNextPoint();
                 list.Add(p);
             }
 
@@ -148,10 +139,7 @@ internal class PathShape : Shape
         public CurveTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             CtrlPoint1 = value.ReadNextPoint();
             CtrlPoint2 = value.ReadNextPoint();
@@ -161,10 +149,7 @@ internal class PathShape : Shape
         public CurveTo(char command, StringSplitter value, Point ctrlPoint)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             CtrlPoint1 = ctrlPoint;
             CtrlPoint2 = value.ReadNextPoint();
@@ -183,10 +168,7 @@ internal class PathShape : Shape
         public QuadraticCurveTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             CtrlPoint = value.ReadNextPoint();
             Point = value.ReadNextPoint();
@@ -195,10 +177,7 @@ internal class PathShape : Shape
         public QuadraticCurveTo(char command, StringSplitter value, Point ctrlPoint)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             CtrlPoint = ctrlPoint;
             Point = value.ReadNextPoint();
@@ -214,17 +193,14 @@ internal class PathShape : Shape
         public EllipticalArcTo(char command, StringSplitter value)
             : base(command)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             Rx = value.ReadNextValue();
             Ry = value.ReadNextValue();
             AxisRotation = value.ReadNextValue();
-            double arcFlag = value.ReadNextValue();
+            var arcFlag = value.ReadNextValue();
             LargeArc = arcFlag > 0;
-            double sweepFlag = value.ReadNextValue();
+            var sweepFlag = value.ReadNextValue();
             Clockwise = sweepFlag > 0;
             X = value.ReadNextValue();
             Y = value.ReadNextValue();
@@ -261,10 +237,7 @@ internal class PathShape : Shape
     internal PathShape(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         defaultFill ??= new Fill
         {

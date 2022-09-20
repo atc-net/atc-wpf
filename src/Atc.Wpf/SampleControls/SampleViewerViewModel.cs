@@ -87,12 +87,14 @@ public class SampleViewerViewModel : ViewModelBase
         }
     }
 
-    private string ExtractClassName(string classFullName)
+    private string ExtractClassName(
+        string classFullName)
     {
         return classFullName.Split('.').Last();
     }
 
-    private DirectoryInfo? ExtractBasePath(DirectoryInfo path)
+    private DirectoryInfo? ExtractBasePath(
+        DirectoryInfo path)
     {
         if ("bin".Equals(path.Name, StringComparison.Ordinal))
         {
@@ -104,7 +106,9 @@ public class SampleViewerViewModel : ViewModelBase
             : ExtractBasePath(path.Parent);
     }
 
-    private DirectoryInfo? ExtractSamplePath(FileSystemInfo baseLocation, string classViewName)
+    private DirectoryInfo? ExtractSamplePath(
+        FileSystemInfo baseLocation,
+        string classViewName)
     {
         var files = Directory.GetFiles(baseLocation.FullName, $"{classViewName}.xaml", SearchOption.AllDirectories);
         return files.Length == 1
@@ -112,14 +116,16 @@ public class SampleViewerViewModel : ViewModelBase
             : null;
     }
 
-    private string? ReadFileText(string filePath)
+    private string? ReadFileText(
+        string filePath)
     {
         return File.Exists(filePath)
             ? File.ReadAllText(filePath)
             : null;
     }
 
-    private void SampleItemMessageHandler(SampleItemMessage obj)
+    private void SampleItemMessageHandler(
+        SampleItemMessage obj)
     {
         TabSelectedIndex = 0;
 
@@ -145,7 +151,9 @@ public class SampleViewerViewModel : ViewModelBase
         ViewModelCode = null;
     }
 
-    private void SetSelectedViewData(string sampleHeader, string samplePath)
+    private void SetSelectedViewData(
+        string sampleHeader,
+        string samplePath)
     {
         var entryAssembly = Assembly.GetEntryAssembly();
 

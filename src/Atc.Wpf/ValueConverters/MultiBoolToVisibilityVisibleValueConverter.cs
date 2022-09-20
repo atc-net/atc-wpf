@@ -14,13 +14,10 @@ public class MultiBoolToVisibilityVisibleValueConverter : IMultiValueConverter
             return Visibility.Visible;
         }
 
-        if (values is null)
-        {
-            throw new ArgumentNullException(nameof(values));
-        }
+        ArgumentNullException.ThrowIfNull(values);
 
-        bool visible = true;
-        foreach (object value in values)
+        var visible = true;
+        foreach (var value in values)
         {
             if (value is not bool boolValue)
             {

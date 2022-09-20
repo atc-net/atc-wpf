@@ -16,15 +16,8 @@ internal class Fill
 
     public Brush? FillBrush(Svg svg, SvgRender svgRender, Shape shape, double elementOpacity, Rect bounds)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (shape is null)
-        {
-            throw new ArgumentNullException(nameof(shape));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(shape);
 
         if (PaintServerKey is null)
         {

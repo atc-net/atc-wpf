@@ -21,7 +21,7 @@ internal class StringSplitter
 
     public double ReadNextValue()
     {
-        int startPos = curPos;
+        var startPos = curPos;
         if (startPos < 0)
         {
             startPos = 0;
@@ -32,13 +32,13 @@ internal class StringSplitter
             return float.NaN;
         }
 
-        string numbers = "0123456789-.eE";
+        var numbers = "0123456789-.eE";
         while (startPos < val.Length && !numbers.Contains(val[startPos], StringComparison.Ordinal))
         {
             startPos++;
         }
 
-        int endPos = startPos;
+        var endPos = startPos;
         while (endPos < val.Length && numbers.Contains(val[endPos], StringComparison.Ordinal))
         {
             // '-' if number is followed by '-' then it indicates the end of the value
@@ -53,14 +53,14 @@ internal class StringSplitter
             endPos++;
         }
 
-        int len = endPos - startPos;
+        var len = endPos - startPos;
         if (len <= 0)
         {
             return float.NaN;
         }
 
         curPos = endPos;
-        string s = val.Substring(startPos, len);
+        var s = val.Substring(startPos, len);
 
         startPos = endPos;
         while (startPos < val.Length && !numbers.Contains(val[startPos], StringComparison.Ordinal))
@@ -79,8 +79,8 @@ internal class StringSplitter
 
     public Point ReadNextPoint()
     {
-        double x = ReadNextValue();
-        double y = ReadNextValue();
+        var x = ReadNextValue();
+        var y = ReadNextValue();
         return new Point(x, y);
     }
 }

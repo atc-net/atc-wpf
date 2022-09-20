@@ -7,10 +7,7 @@ internal class PaintServerManager
 
     public void Create(Svg svg, XmlNode node)
     {
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(node);
 
         switch (node.Name)
         {
@@ -87,7 +84,7 @@ internal class PaintServerManager
             LinearGradientBrush => new LinearGradientColorPaintServer(this, customBrush),
             RadialGradientBrush => new RadialGradientColorPaintServer(this, customBrush),
             DrawingBrush => new PatternPaintServer(this, customBrush),
-            _ => new PaintServer(this, customBrush)
+            _ => new PaintServer(this, customBrush),
         };
     }
 
@@ -128,7 +125,7 @@ internal class PaintServerManager
 
             if (value.StartsWith("url", StringComparison.Ordinal))
             {
-                string id = ShapeUtil.ExtractBetween(value, '(', ')');
+                var id = ShapeUtil.ExtractBetween(value, '(', ')');
                 if (id.Length > 0 && id[0] == '#')
                 {
                     id = id.Substring(1);

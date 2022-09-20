@@ -74,12 +74,14 @@ public class GridEx : Grid
     /// <summary>
     /// Called when the rows property is changed.
     /// </summary>
-    /// <param name="obj">The dependency object.</param>
-    /// <param name="args">The <see ref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-    private static void OnRowsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The dependency object.</param>
+    /// <param name="e">The <see ref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+    private static void OnRowsChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
         // Get the gridEx.
-        if (obj is not GridEx gridEx)
+        if (d is not GridEx gridEx)
         {
             return;
         }
@@ -101,12 +103,14 @@ public class GridEx : Grid
     /// <summary>
     /// Called when the columns property is changed.
     /// </summary>
-    /// <param name="obj">The dependency object.</param>
-    /// <param name="args">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-    private static void OnColumnsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The dependency object.</param>
+    /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+    private static void OnColumnsChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
         // Get the gridEx.
-        if (obj is not GridEx gridEx)
+        if (d is not GridEx gridEx)
         {
             return;
         }
@@ -145,7 +149,7 @@ public class GridEx : Grid
         var sa = lengths.Split(',');
 
         // Create a grid length converter.
-        GridLengthConverter gridLengthConverter = new GridLengthConverter();
+        var gridLengthConverter = new GridLengthConverter();
 
         // Use the grid length converter to set each length.
         gridLengths.AddRange(sa.Select(length =>

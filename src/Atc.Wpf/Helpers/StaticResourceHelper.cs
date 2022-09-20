@@ -16,61 +16,63 @@ public static class StaticResourceHelper
             typeof(StaticResourceHelper),
             new PropertyMetadata(OnResourceKeyChanged));
 
-    public static DependencyProperty GetProperty(FrameworkElement element)
+    public static DependencyProperty GetProperty(
+        FrameworkElement
+            element)
     {
-        if (element is null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
+        ArgumentNullException.ThrowIfNull(element);
 
         return (DependencyProperty)element.GetValue(PropertyProperty);
     }
 
-    public static void SetProperty(FrameworkElement element, DependencyProperty value)
+    public static void SetProperty(
+        FrameworkElement element,
+        DependencyProperty value)
     {
-        if (element is null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
+        ArgumentNullException.ThrowIfNull(element);
 
         element.SetValue(PropertyProperty, value);
     }
 
-    public static object GetResourceKey(FrameworkElement element)
+    public static object GetResourceKey(
+        FrameworkElement element)
     {
-        if (element is null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
+        ArgumentNullException.ThrowIfNull(element);
 
         return element.GetValue(ResourceKeyProperty);
     }
 
-    public static void SetResourceKey(FrameworkElement element, object value)
+    public static void SetResourceKey(
+        FrameworkElement element,
+        object value)
     {
-        if (element is null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
+        ArgumentNullException.ThrowIfNull(element);
 
         element.SetValue(ResourceKeyProperty, value);
     }
 
-    private static void OnPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        var element = (FrameworkElement)obj;
-        var newValue = (DependencyProperty)args.NewValue;
+        var element = (FrameworkElement)d;
+        var newValue = (DependencyProperty)e.NewValue;
         Apply(element, newValue, GetResourceKey(element));
     }
 
-    private static void OnResourceKeyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnResourceKeyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        var element = (FrameworkElement)obj;
-        var newValue = args.NewValue;
+        var element = (FrameworkElement)d;
+        var newValue = e.NewValue;
         Apply(element, GetProperty(element), newValue);
     }
 
-    private static void Apply(FrameworkElement? element, DependencyProperty? property, object? key)
+    private static void Apply(
+        FrameworkElement? element,
+        DependencyProperty? property,
+        object? key)
     {
         if (element is not null && property is not null && key is not null)
         {

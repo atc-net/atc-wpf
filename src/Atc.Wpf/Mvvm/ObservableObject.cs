@@ -12,7 +12,8 @@ public abstract class ObservableObject : IObservableObject
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <inheritdoc />
-    public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+    public void RaisePropertyChanged(
+        [CallerMemberName] string? propertyName = null)
     {
         VerifyPropertyName(propertyName);
         var handler = PropertyChanged;
@@ -20,7 +21,8 @@ public abstract class ObservableObject : IObservableObject
     }
 
     /// <inheritdoc />
-    public void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
+    public void RaisePropertyChanged<T>(
+        Expression<Func<T>> propertyExpression)
     {
         var handler = PropertyChanged;
         if (handler is null)
@@ -36,7 +38,8 @@ public abstract class ObservableObject : IObservableObject
     }
 
     /// <inheritdoc />
-    public void VerifyPropertyName(string? propertyName)
+    public void VerifyPropertyName(
+        string? propertyName)
     {
         var info = GetType().GetTypeInfo();
         if (string.IsNullOrEmpty(propertyName) ||
@@ -71,19 +74,17 @@ public abstract class ObservableObject : IObservableObject
     /// <typeparam name="T">The type of the property.</typeparam>
     /// <param name="propertyExpression">The property expression.</param>
     /// <returns>The name of the property.</returns>
-    protected static string GetPropertyName<T>(Expression<Func<T>> propertyExpression)
+    protected static string GetPropertyName<T>(
+        Expression<Func<T>> propertyExpression)
     {
-        if (propertyExpression is null)
-        {
-            throw new ArgumentNullException(nameof(propertyExpression));
-        }
+        ArgumentNullException.ThrowIfNull(propertyExpression);
 
-        if (!(propertyExpression.Body is MemberExpression body))
+        if (propertyExpression.Body is not MemberExpression body)
         {
             throw new ArgumentException("Invalid argument", nameof(propertyExpression));
         }
 
-        if (!(body.Member is PropertyInfo property))
+        if (body.Member is not PropertyInfo property)
         {
             throw new ArgumentException("Argument is not a property", nameof(propertyExpression));
         }
@@ -96,7 +97,8 @@ public abstract class ObservableObject : IObservableObject
     /// </summary>
     /// <param name="propertyName">Name of the property.</param>
     [SuppressMessage("Major Code Smell", "S4144:Methods should not have identical implementations", Justification = "OK.")]
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
     {
         VerifyPropertyName(propertyName);
         var handler = PropertyChanged;

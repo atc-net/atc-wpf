@@ -16,7 +16,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// List of weak reference to the target DependencyObjects to allow them to
     /// be garbage collected.
     /// </summary>
-    private readonly List<WeakReference> targetObjects = new List<WeakReference>();
+    private readonly List<WeakReference> targetObjects = new();
 
     /// <summary>
     /// The target property.
@@ -29,10 +29,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// <param name="manager">The manager.</param>
     protected ManagedMarkupExtension(MarkupExtensionManager manager)
     {
-        if (manager is null)
-        {
-            throw new ArgumentNullException(nameof(manager));
-        }
+        ArgumentNullException.ThrowIfNull(manager);
 
         manager.RegisterExtension(this);
     }
@@ -72,11 +69,11 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     {
         get
         {
-            Type? propertyType = targetProperty switch
+            var propertyType = targetProperty switch
             {
                 DependencyProperty dependencyProperty => dependencyProperty.PropertyType,
                 PropertyInfo info => info.PropertyType,
-                _ => null
+                _ => null,
             };
 
             return propertyType;
@@ -93,10 +90,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
     public override object? ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider is null)
-        {
-            throw new ArgumentNullException(nameof(serviceProvider));
-        }
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         var targetHelper = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
         if (targetHelper?.TargetObject is null)
@@ -125,7 +119,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             return;
         }
 
-        foreach (WeakReference reference in targetObjects)
+        foreach (var reference in targetObjects)
         {
             // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (targetProperty is DependencyProperty dependencyProperty)
@@ -135,7 +129,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             }
             else if (targetProperty is PropertyInfo info)
             {
-                object? target = reference.Target;
+                var target = reference.Target;
                 if (target is not null)
                 {
                     info.SetValue(target, GetValue(), null);

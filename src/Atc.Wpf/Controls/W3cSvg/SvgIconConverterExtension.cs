@@ -59,10 +59,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
     /// </returns>
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider is null)
-        {
-            throw new ArgumentNullException(nameof(serviceProvider));
-        }
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         if (serviceProvider.GetService(typeof(IUriContext)) is IUriContext uriContext)
         {
@@ -152,7 +149,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             }
 
             // Try getting a local file in the same directory....
-            string svgPath = inputParameter;
+            var svgPath = inputParameter;
             if (inputParameter[0] == '\\' || inputParameter[0] == '/')
             {
                 svgPath = inputParameter.Substring(1);
@@ -166,7 +163,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
                 var location = Path.GetDirectoryName(assembly.Location);
                 if (location is not null)
                 {
-                    string localFile = Path.Combine(location, svgPath);
+                    var localFile = Path.Combine(location, svgPath);
                     if (File.Exists(localFile))
                     {
                         return new Uri(localFile);
@@ -204,7 +201,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             }
 
             // A little hack to display preview in design mode
-            bool designTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
+            var designTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
             if (designTime && !string.IsNullOrWhiteSpace(ApplicationName))
             {
                 // The relative path is not working with the Converter...

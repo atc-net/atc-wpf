@@ -4,10 +4,7 @@ internal static class ShapeUtil
 {
     public static Transform? ParseTransform(string value)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         var transforms = value.Split(')');
         if (transforms.Length == 2)
@@ -41,11 +38,11 @@ internal static class ShapeUtil
         }
 
         value = value.Trim();
-        string type = ExtractUntil(value, '(').TrimStart(',');
-        string v1 = ExtractBetween(value, '(', ')');
+        var type = ExtractUntil(value, '(').TrimStart(',');
+        var v1 = ExtractBetween(value, '(', ')');
 
         var split = new StringSplitter(v1);
-        List<double> values = new List<double>();
+        var values = new List<double>();
         while (split.More)
         {
             values.Add(split.ReadNextValue());
@@ -86,7 +83,7 @@ internal static class ShapeUtil
             {
                 1 => new RotateTransform(values[0], 0, 0),
                 2 => new RotateTransform(values[0], values[1], 0),
-                _ => new RotateTransform(values[0], values[1], values[2])
+                _ => new RotateTransform(values[0], values[1], values[2]),
             };
         }
 
@@ -95,12 +92,9 @@ internal static class ShapeUtil
 
     public static string ExtractUntil(string value, char ch)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
-        int index = value.IndexOf(ch, StringComparison.Ordinal);
+        var index = value.IndexOf(ch, StringComparison.Ordinal);
         return index <= 0
             ? value
             : value.Substring(0, index);
@@ -108,19 +102,16 @@ internal static class ShapeUtil
 
     public static string ExtractBetween(string value, char startCh, char endCh)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
-        int start = value.IndexOf(startCh, StringComparison.Ordinal);
+        var start = value.IndexOf(startCh, StringComparison.Ordinal);
         if (startCh < 0)
         {
             return value;
         }
 
         start++;
-        int end = value.IndexOf(endCh, start);
+        var end = value.IndexOf(endCh, start);
         return endCh < 0
             ? value.Substring(start)
             : value.Substring(start, end - start);
@@ -135,10 +126,7 @@ internal static class ShapeUtil
     [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
     public static KeyValueItem ReadNextAttr(string input, ref int startPos)
     {
-        if (input is null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         if (input[startPos] != ' ')
         {
@@ -150,23 +138,23 @@ internal static class ShapeUtil
             startPos++;
         }
 
-        int nameStart = startPos;
-        int nameEnd = input.IndexOf('=', startPos);
+        var nameStart = startPos;
+        var nameEnd = input.IndexOf('=', startPos);
         if (nameEnd < nameStart)
         {
             throw new Exception("did not find xml attribute name");
         }
 
-        int valueStart = input.IndexOf('"', nameEnd);
+        var valueStart = input.IndexOf('"', nameEnd);
         valueStart++;
-        int valueEnd = input.IndexOf('"', valueStart);
+        var valueEnd = input.IndexOf('"', valueStart);
         if (valueEnd < 0 || valueEnd < valueStart)
         {
             throw new Exception("did not find xml attribute value");
         }
 
-        string attrName = input.Substring(nameStart, nameEnd - nameStart).Trim();
-        string attrValue = input.Substring(valueStart, valueEnd - valueStart).Trim();
+        var attrName = input.Substring(nameStart, nameEnd - nameStart).Trim();
+        var attrValue = input.Substring(valueStart, valueEnd - valueStart).Trim();
         startPos = valueEnd + 1;
         return new KeyValueItem(attrName, attrValue);
     }

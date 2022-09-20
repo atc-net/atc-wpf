@@ -9,10 +9,7 @@ public class BoolToVisibilityVisibleValueConverter : IValueConverter
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         if (value is not bool boolValue)
         {
@@ -27,10 +24,7 @@ public class BoolToVisibilityVisibleValueConverter : IValueConverter
     /// <inheritdoc />
     public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         if (value is not Visibility visibility)
         {

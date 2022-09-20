@@ -102,9 +102,9 @@ public abstract class Source
         source = CodeRegex.Replace(sb.ToString(), MatchEval);
         string[] characters = { "::::::" };
 
-        string[] split = source.Split(characters, StringSplitOptions.None);
-        int currentChunk = 0;
-        foreach (string code in split)
+        var split = source.Split(characters, StringSplitOptions.None);
+        var currentChunk = 0;
+        foreach (var code in split)
         {
             currentChunk++;
             var run = new Run(code);

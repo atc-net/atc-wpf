@@ -17,15 +17,8 @@ public static class DispatcherExtensions
         Action action,
         DispatcherPriority priority = DispatcherPriority.Normal)
     {
-        if (dispatcher is null)
-        {
-            throw new ArgumentNullException(nameof(dispatcher));
-        }
-
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(dispatcher);
+        ArgumentNullException.ThrowIfNull(action);
 
         if (dispatcher.CheckAccess())
         {
@@ -48,15 +41,8 @@ public static class DispatcherExtensions
         Action action,
         DispatcherPriority priority = DispatcherPriority.Normal)
     {
-        if (dispatcher is null)
-        {
-            throw new ArgumentNullException(nameof(dispatcher));
-        }
-
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(dispatcher);
+        ArgumentNullException.ThrowIfNull(action);
 
         if (dispatcher.CheckAccess())
         {

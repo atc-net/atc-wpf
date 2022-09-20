@@ -15,11 +15,11 @@ public static class WindowPlacementHelper
             return;
         }
 
-        byte[] xmlBytes = Encoding.GetBytes(placementXml);
+        var xmlBytes = Encoding.GetBytes(placementXml);
 
         try
         {
-            using MemoryStream memoryStream = new MemoryStream(xmlBytes);
+            using var memoryStream = new MemoryStream(xmlBytes);
             var placement = (WINDOWPLACEMENT)Serializer.Deserialize(memoryStream)!;
 
             placement.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
@@ -40,10 +40,10 @@ public static class WindowPlacementHelper
     {
         NativeMethods.GetWindowPlacement(windowHandle, out var placement);
 
-        using MemoryStream memoryStream = new MemoryStream();
-        using XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+        using var memoryStream = new MemoryStream();
+        using var xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
         Serializer.Serialize(xmlTextWriter, placement);
-        byte[] xmlBytes = memoryStream.ToArray();
+        var xmlBytes = memoryStream.ToArray();
         return Encoding.GetString(xmlBytes);
     }
 }

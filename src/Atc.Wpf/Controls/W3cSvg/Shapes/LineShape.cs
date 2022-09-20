@@ -5,15 +5,12 @@ internal class LineShape : Shape
     public LineShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
-        double x1 = SvgXmlUtil.AttrValue(node, "x1", 0, svg.Size.Width);
-        double y1 = SvgXmlUtil.AttrValue(node, "y1", 0, svg.Size.Height);
-        double x2 = SvgXmlUtil.AttrValue(node, "x2", 0, svg.Size.Width);
-        double y2 = SvgXmlUtil.AttrValue(node, "y2", 0, svg.Size.Height);
+        var x1 = SvgXmlUtil.AttrValue(node, "x1", 0, svg.Size.Width);
+        var y1 = SvgXmlUtil.AttrValue(node, "y1", 0, svg.Size.Height);
+        var x2 = SvgXmlUtil.AttrValue(node, "x2", 0, svg.Size.Width);
+        var y2 = SvgXmlUtil.AttrValue(node, "y2", 0, svg.Size.Height);
         P1 = new Point(x1, y1);
         P2 = new Point(x2, y2);
     }

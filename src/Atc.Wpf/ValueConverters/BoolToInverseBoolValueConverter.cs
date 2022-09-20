@@ -20,10 +20,7 @@ public class BoolToInverseBoolValueConverter : IValueConverter
 
     private static bool Convert(object? value)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         if (value is not bool boolValue)
         {
