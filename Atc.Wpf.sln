@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Theming.Sample", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Controls.Sample", "sample\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj", "{52CA5442-0111-449E-B55D-2F272B0D01E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.Wpf.Controls", "src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj", "{286557DA-8BB2-4302-B4C7-28CB81161B16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Controls", "src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj", "{286557DA-8BB2-4302-B4C7-28CB81161B16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +76,7 @@ Global
 		{286557DA-8BB2-4302-B4C7-28CB81161B16} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationTail"]}
 		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
 	EndGlobalSection
 EndGlobal

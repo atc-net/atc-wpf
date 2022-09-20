@@ -628,7 +628,7 @@ namespace Atc.Wpf.Theming.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LightCoral.
+        ///   Looks up a localized string similar to Light Coral.
         /// </summary>
         public static string LightCoral {
             get {

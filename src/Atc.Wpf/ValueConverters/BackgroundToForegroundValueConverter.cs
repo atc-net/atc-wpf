@@ -48,18 +48,26 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
 
     public object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
     {
-        var titleBrush = values?.Length > 1
-            ? values[1] as Brush
-            : null;
+        Brush? titleBrush = null;
+        if (values is not null)
+        {
+            titleBrush = values.Length > 1
+                ? values[1] as Brush
+                : null;
+        }
 
         if (titleBrush is not null)
         {
             return titleBrush;
         }
 
-        var backgroundBrush = values?.Length > 0
-            ? values[0] as Brush
-            : null;
+        Brush? backgroundBrush = null;
+        if (values is not null)
+        {
+            backgroundBrush = values.Length > 0
+                ? values[0] as Brush
+                : null;
+        }
 
         return Convert(backgroundBrush, targetType, parameter, culture);
     }
