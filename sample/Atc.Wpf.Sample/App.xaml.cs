@@ -31,10 +31,7 @@ public partial class App
     /// <param name="e">The <see cref="StartupEventArgs"/> instance containing the event data.</param>
     protected override void OnStartup(StartupEventArgs e)
     {
-        if (e is null)
-        {
-            throw new ArgumentNullException(nameof(e));
-        }
+        ArgumentNullException.ThrowIfNull(e);
 
         // Hook on error before app really starts
         AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
@@ -51,10 +48,12 @@ public partial class App
     /// Currents the domain unhandled exception.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="UnhandledExceptionEventArgs"/> instance containing the event data.</param>
-    private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs args)
+    /// <param name="e">The <see cref="UnhandledExceptionEventArgs"/> instance containing the event data.</param>
+    private static void CurrentDomainUnhandledException(
+        object sender,
+        UnhandledExceptionEventArgs e)
     {
-        if (!(args is { ExceptionObject: Exception ex }))
+        if (!(e is { ExceptionObject: Exception ex }))
         {
             return;
         }
@@ -71,15 +70,17 @@ public partial class App
     /// Applications the on dispatcher unhandled exception.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="DispatcherUnhandledExceptionEventArgs"/> instance containing the event data.</param>
-    private void ApplicationOnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
+    /// <param name="e">The <see cref="DispatcherUnhandledExceptionEventArgs"/> instance containing the event data.</param>
+    private void ApplicationOnDispatcherUnhandledException(
+        object sender,
+        DispatcherUnhandledExceptionEventArgs e)
     {
-        var exceptionMessage = args.Exception.GetMessage(includeInnerMessage: true);
+        var exceptionMessage = e.Exception.GetMessage(includeInnerMessage: true);
         if (exceptionMessage.IndexOf(
                 "BindingExpression:Path=HorizontalContentAlignment; DataItem=null; target element is 'ComboBoxItem'",
                 StringComparison.Ordinal) != -1)
         {
-            args.Handled = true;
+            e.Handled = true;
             return;
         }
 
@@ -89,15 +90,19 @@ public partial class App
             MessageBoxButton.OK,
             MessageBoxImage.Error);
 
-        args.Handled = true;
+        e.Handled = true;
         Shutdown(-1);
     }
 
-    private async void ApplicationStartup(object sender, StartupEventArgs args)
+    private async void ApplicationStartup(
+        object sender,
+        StartupEventArgs e)
     {
         await host
             .StartAsync()
             .ConfigureAwait(false);
+
+        ThemeManager.Current.ChangeTheme(Current, "Light.Blue");
 
         var mainWindow = host
             .Services
@@ -106,7 +111,9 @@ public partial class App
         mainWindow.Show();
     }
 
-    private async void ApplicationExit(object sender, ExitEventArgs args)
+    private async void ApplicationExit(
+        object sender,
+        ExitEventArgs e)
     {
         await host
             .StopAsync()

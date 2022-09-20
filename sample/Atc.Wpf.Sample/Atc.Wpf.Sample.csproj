@@ -29,7 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.209" />
+    <PackageReference Include="Atc" Version="2.0.222" />
+    <PackageReference Include="ControlzEx" Version="6.0.0-alpha0241" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
@@ -37,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
+    <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
   </ItemGroup>
 
 </Project>

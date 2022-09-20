@@ -10,7 +10,9 @@ public partial class ContrastAdjustShaderEffectView
         InitializeComponent();
     }
 
-    private void ResetOnClick(object sender, RoutedEventArgs e)
+    private void ResetOnClick(
+        object sender,
+        RoutedEventArgs e)
     {
         SliderBrightness.Value = 0;
         SliderContrast.Value = 0;

@@ -10,7 +10,9 @@ public partial class SaturateShaderEffectView
         InitializeComponent();
     }
 
-    private void ResetOnClick(object sender, RoutedEventArgs e)
+    private void ResetOnClick(
+        object sender,
+        RoutedEventArgs e)
     {
         SliderProgress.Value = 0;
     }

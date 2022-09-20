@@ -12,12 +12,14 @@ public partial class BitmapSourceToResizedBitmapImageView
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         var bitmap = new BitmapImage(
             new Uri(@"pack://application:,,,/Atc.Wpf.Sample;component/Assets/road.jpg", UriKind.Absolute));
 
-        int newWidth = (int)OrgImage.Width / 2;
+        var newWidth = (int)OrgImage.Width / 2;
         var bitmapSource = bitmap.ToResizedBitmapImage(newWidth);
 
         TestImage.Source = bitmapSource;

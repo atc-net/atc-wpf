@@ -63,7 +63,7 @@ public class DebounceViewModel : ViewModelBase
 
         await Task.Delay(1000).ConfigureAwait(true);
 
-        foreach (string item in totalItems
+        foreach (var item in totalItems
                      .Where(item => item.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)))
         {
             FoundItems.Add(item);

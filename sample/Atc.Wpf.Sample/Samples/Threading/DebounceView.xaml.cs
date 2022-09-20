@@ -5,7 +5,7 @@ namespace Atc.Wpf.Sample.Samples.Threading;
 /// </summary>
 public partial class DebounceView
 {
-    private readonly DebounceDispatcher debounceTimer = new ();
+    private readonly DebounceDispatcher debounceTimer = new();
 
     public DebounceView()
     {
@@ -13,15 +13,13 @@ public partial class DebounceView
     }
 
     [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK.")]
-    private void SearchTextBoxOnKeyup(object sender, KeyEventArgs e)
+    private void SearchTextBoxOnKeyup(
+        object sender,
+        KeyEventArgs e)
     {
         var selectedComboBoxItem = CbDebounce.SelectedValue as ComboBoxItem;
-        if (selectedComboBoxItem?.Content is null)
-        {
-            return;
-        }
 
-        var s = selectedComboBoxItem.Content.ToString();
+        var s = selectedComboBoxItem?.Content?.ToString();
         if (s is null)
         {
             return;

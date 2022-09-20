@@ -16,31 +16,41 @@ public partial class MainWindow
         KeyUp += OnKeyUp;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs args)
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         var vm = DataContext as IMainWindowViewModel;
-        vm!.OnLoaded(this, args);
+        vm!.OnLoaded(this, e);
     }
 
-    private void OnClosing(object? sender, CancelEventArgs args)
+    private void OnClosing(
+        object? sender,
+        CancelEventArgs e)
     {
         var vm = DataContext as IMainWindowViewModel;
-        vm!.OnClosing(this, args);
+        vm!.OnClosing(this, e);
     }
 
-    private void OnKeyDown(object sender, KeyEventArgs args)
+    private void OnKeyDown(
+        object sender,
+        KeyEventArgs e)
     {
         var vm = DataContext as IMainWindowViewModel;
-        vm!.OnKeyDown(this, args);
+        vm!.OnKeyDown(this, e);
     }
 
-    private void OnKeyUp(object sender, KeyEventArgs args)
+    private void OnKeyUp(
+        object sender,
+        KeyEventArgs e)
     {
         var vm = DataContext as IMainWindowViewModel;
-        vm!.OnKeyUp(this, args);
+        vm!.OnKeyUp(this, e);
     }
 
-    private void TreeViewOnSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    private void TreeViewOnSelectionChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<object> e)
     {
         var vm = DataContext as IMainWindowViewModel;
         vm!.UpdateSelectedView(e.NewValue as SampleTreeViewItem);

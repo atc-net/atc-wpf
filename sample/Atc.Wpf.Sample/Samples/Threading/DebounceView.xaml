@@ -1,30 +1,33 @@
-<UserControl x:Class="Atc.Wpf.Sample.Samples.Threading.DebounceView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:threading="clr-namespace:Atc.Wpf.Sample.Samples.Threading"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+<UserControl
+    x:Class="Atc.Wpf.Sample.Samples.Threading.DebounceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:threading="clr-namespace:Atc.Wpf.Sample.Samples.Threading"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <UserControl.DataContext>
         <threading:DebounceViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid d:Background="White"
-                  Columns="*"
-                  Rows="Auto,*">
+    <atc:AutoGrid
+        d:Background="White"
+        Columns="*"
+        Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Margin="0,0,50,0" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="Fire after " />
-                    <ComboBox x:Name="CbDebounce"
-                              Width="60"
-                              Height="24"
-                              SelectedIndex="0">
+                    <ComboBox
+                        x:Name="CbDebounce"
+                        Width="60"
+                        Height="24"
+                        SelectedIndex="0">
                         <ComboBoxItem>300</ComboBoxItem>
                         <ComboBoxItem>500</ComboBoxItem>
                         <ComboBoxItem>800</ComboBoxItem>
@@ -36,15 +39,17 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <atc:AutoGrid Margin="5"
-                          ChildMargin="2"
-                          ColumnCount="2"
-                          ColumnWidth="200"
-                          Rows="Auto,Auto,*">
+            <atc:AutoGrid
+                Margin="5"
+                ChildMargin="2"
+                ColumnCount="2"
+                ColumnWidth="200"
+                Rows="Auto,Auto,*">
                 <TextBlock Text="Search" />
-                <TextBox x:Name="TbSearch"
-                         Padding="5"
-                         KeyUp="SearchTextBoxOnKeyup" />
+                <TextBox
+                    x:Name="TbSearch"
+                    Padding="5"
+                    KeyUp="SearchTextBoxOnKeyup" />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Status:" />
                     <TextBlock Margin="10,0" Text="{Binding Path=Status}" />
@@ -53,9 +58,10 @@
                     <TextBlock Text="Filter:" />
                     <TextBlock Margin="10,0" Text="{Binding Path=Filter}" />
                 </StackPanel>
-                <ListView Grid.ColumnSpan="2"
-                          Margin="0,20"
-                          ItemsSource="{Binding Path=FoundItems}">
+                <ListView
+                    Grid.ColumnSpan="2"
+                    Margin="0,20"
+                    ItemsSource="{Binding Path=FoundItems}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
