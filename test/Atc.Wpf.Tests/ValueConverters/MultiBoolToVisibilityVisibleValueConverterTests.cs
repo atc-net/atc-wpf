@@ -13,11 +13,11 @@ public class MultiBoolToVisibilityVisibleValueConverterTests
     public void Convert(Visibility expected, int inputSetNumber)
     {
         // Arrange
-        object[] input = inputSetNumber switch
+        var input = inputSetNumber switch
         {
             1 => inputSet1,
             2 => inputSet2,
-            _ => Array.Empty<object>()
+            _ => Array.Empty<object>(),
         };
 
         // Atc
