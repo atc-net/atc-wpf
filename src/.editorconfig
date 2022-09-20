@@ -45,3 +45,16 @@
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
+
+dotnet_diagnostic.CA2227.severity = none # Change to read-only setter
+
+dotnet_diagnostic.SA1310.severity = none # Field should not contains underscore
+dotnet_diagnostic.SA1615.severity = none # Element return value should be documented
+dotnet_diagnostic.SA1618.severity = none # Documented..
+dotnet_diagnostic.SA1642.severity = none # Documented..
+
+dotnet_diagnostic.S2372.severity = none
+dotnet_diagnostic.S3011.severity = none
+dotnet_diagnostic.S4144.severity = none
+
+dotnet_diagnostic.MA0016.severity = none

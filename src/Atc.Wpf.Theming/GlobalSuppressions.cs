@@ -1,0 +1,1 @@
+[assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1210:Using directives should be ordered alphabetically by namespace", Justification = "OK.")]

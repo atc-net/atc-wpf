@@ -1,0 +1,414 @@
+{
+  "TemplateFile": "Theme.Template.xaml",
+  "DefaultValues": {
+    "AtcApps.Colors.IdealForeground": "White"
+  },
+  "BaseColorSchemes": [
+    {
+      "Name": "Dark",
+      "Values": {
+        "AtcApps.Colors.ThemeForeground": "#FFFFFFFF",
+        "AtcApps.Colors.ThemeForeground20": "#51FFFFFF",
+        "AtcApps.Colors.ThemeBackground": "#FF252525",
+        "AtcApps.Colors.ThemeBackground20": "#51252525",
+        "AtcApps.Colors.Gray1": "#FFF9F9F9",
+        "AtcApps.Colors.Gray2": "#FF7F7F7F",
+        "AtcApps.Colors.Gray3": "#FF9D9D9D",
+        "AtcApps.Colors.Gray4": "#FFA59F93",
+        "AtcApps.Colors.Gray5": "#FFB9B9B9",
+        "AtcApps.Colors.Gray6": "#FFCCCCCC",
+        "AtcApps.Colors.Gray7": "#FF7E7E7E",
+        "AtcApps.Colors.Gray8": "#FF454545",
+        "AtcApps.Colors.Gray9": "#5EC9C9C9",
+        "AtcApps.Colors.Gray10": "#FF2F2F2F",
+        "AtcApps.Colors.Gray": "#FF7D7D7D",
+        "AtcApps.Colors.Gray.MouseOver": "#FFAAAAAA",
+        "AtcApps.Colors.Gray.SemiTransparent": "#40808080",
+        "AtcApps.Colors.SemiTransparent": "#55FFFFFF",
+        "AtcApps.Colors.ContextMenu.Border": "#E0717070",
+        "AtcApps.Colors.SubMenu.Border": "#E0717070",
+        "AtcApps.Colors.MenuShadow": "#99B2B2B2",
+        "AtcApps.Colors.ToolTipShadow": "#99B2B2B2",
+        "AtcApps.Colors.MenuItem.DisabledForeground": "#FF7E7E7E",
+        "AtcApps.Colors.SliderValue.Disabled": "#FF535353",
+        "AtcApps.Colors.SliderTrack.Disabled": "#FF383838",
+        "AtcApps.Colors.SliderThumb.Disabled": "#FF7E7E7E",
+        "AtcApps.Colors.SliderTrack.Hover": "#FF737373",
+        "AtcApps.Colors.SliderTrack.Normal": "#FF6C6C6C",
+        "AtcApps.Colors.Button.Flat.Background.Pressed": "#444444",
+        "AtcApps.Colors.Button.Flat.Foreground.Pressed": "#FFFFFF",
+        "AtcApps.Colors.MenuItem.SelectionFill": "#313131",
+        "AtcApps.Colors.MenuItem.SelectionStroke": "#313131",
+        "AtcApps.Colors.TopMenuItem.PressedFill": "#313131",
+        "AtcApps.Colors.TopMenuItem.PressedStroke": "#E0717070",
+        "AtcApps.Colors.TopMenuItem.SelectionStroke": "#90717070",
+        "AtcApps.Colors.Badged.Background.Disabled": "#FF666666",
+        "AtcApps.Colors.Badged.Foreground.Disabled": "#99000000",
+        "AtcApps.Colors.SystemAltHigh": "#FF000000",
+        "AtcApps.Colors.SystemAltLow": "#33000000",
+        "AtcApps.Colors.SystemAltMedium": "#99000000",
+        "AtcApps.Colors.SystemAltMediumHigh": "#CC000000",
+        "AtcApps.Colors.SystemAltMediumLow": "#66000000",
+        "AtcApps.Colors.SystemBaseHigh": "#FFFFFFFF",
+        "AtcApps.Colors.SystemBaseLow": "#33FFFFFF",
+        "AtcApps.Colors.SystemBaseMedium": "#99FFFFFF",
+        "AtcApps.Colors.SystemBaseMediumHigh": "#CCFFFFFF",
+        "AtcApps.Colors.SystemBaseMediumLow": "#66FFFFFF",
+        "AtcApps.Colors.SystemChromeAltLow": "#FFF2F2F2",
+        "AtcApps.Colors.SystemChromeBlackHigh": "#FF000000",
+        "AtcApps.Colors.SystemChromeBlackLow": "#33000000",
+        "AtcApps.Colors.SystemChromeBlackMediumLow": "#66000000",
+        "AtcApps.Colors.SystemChromeBlackMedium": "#CC000000",
+        "AtcApps.Colors.SystemChromeDisabledHigh": "#FF333333",
+        "AtcApps.Colors.SystemChromeDisabledLow": "#FF858585",
+        "AtcApps.Colors.SystemChromeHigh": "#FF767676",
+        "AtcApps.Colors.SystemChromeLow": "#FF171717",
+        "AtcApps.Colors.SystemChromeMedium": "#FF1F1F1F",
+        "AtcApps.Colors.SystemChromeMediumLow": "#FF2B2B2B",
+        "AtcApps.Colors.SystemChromeWhite": "#FFFFFFFF",
+        "AtcApps.Colors.SystemChromeGray": "#FF767676",
+        "AtcApps.Colors.SystemListLow": "#19FFFFFF",
+        "AtcApps.Colors.SystemListMedium": "#33FFFFFF",
+        "AtcApps.Colors.SystemErrorText": "#FFF000",
+        "AtcApps.Brushes.SystemControlHighlightAltListAccentHigh.Opacity": "0.9",
+        "AtcApps.Brushes.SystemControlHighlightAltListAccentLow.Opacity": "0.6",
+        "AtcApps.Brushes.SystemControlHighlightAltListAccentMedium.Opacity": "0.8",
+        "AtcApps.Brushes.SystemControlHighlightListAccentHigh.Opacity": "0.9",
+        "AtcApps.Brushes.SystemControlHighlightListAccentLow.Opacity": "0.6",
+        "AtcApps.Brushes.SystemControlHighlightListAccentMedium.Opacity": "0.8",
+        "AtcApps.Brushes.SystemControlTransientBorder.Opacity": "0.36"
+      }
+    },
+    {
+      "Name": "Light",
+      "Values": {
+        "AtcApps.Colors.ThemeForeground": "#FF000000",
+        "AtcApps.Colors.ThemeForeground20": "#51000000",
+        "AtcApps.Colors.ThemeBackground": "#FFFFFFFF",
+        "AtcApps.Colors.ThemeBackground20": "#51FFFFFF",
+        "AtcApps.Colors.Gray1": "#FF333333",
+        "AtcApps.Colors.Gray2": "#FF7F7F7F",
+        "AtcApps.Colors.Gray3": "#FF9D9D9D",
+        "AtcApps.Colors.Gray4": "#FFA59F93",
+        "AtcApps.Colors.Gray5": "#FFB9B9B9",
+        "AtcApps.Colors.Gray6": "#FFCCCCCC",
+        "AtcApps.Colors.Gray7": "#FFD8D8D9",
+        "AtcApps.Colors.Gray8": "#FFE0E0E0",
+        "AtcApps.Colors.Gray9": "#5EC9C9C9",
+        "AtcApps.Colors.Gray10": "#FFF7F7F7",
+        "AtcApps.Colors.Gray": "#FFBEBEBE",
+        "AtcApps.Colors.Gray.MouseOver": "#FF333333",
+        "AtcApps.Colors.Gray.SemiTransparent": "#40808080",
+        "AtcApps.Colors.SemiTransparent": "#55000000",
+        "AtcApps.Colors.ContextMenu.Border": "#E0717070",
+        "AtcApps.Colors.SubMenu.Border": "#E0717070",
+        "AtcApps.Colors.MenuShadow": "#FF000000",
+        "AtcApps.Colors.ToolTipShadow": "#FF000000",
+        "AtcApps.Colors.MenuItem.DisabledForeground": "#FF7F7F7F",
+        "AtcApps.Colors.SliderValue.Disabled": "#FFBABABA",
+        "AtcApps.Colors.SliderTrack.Disabled": "#FFDBDBDB",
+        "AtcApps.Colors.SliderThumb.Disabled": "#FFA0A0A0",
+        "AtcApps.Colors.SliderTrack.Hover": "#FFD0D0D0",
+        "AtcApps.Colors.SliderTrack.Normal": "#FFC6C6C6",
+        "AtcApps.Colors.Button.Flat.Background.Pressed": "#333333",
+        "AtcApps.Colors.Button.Flat.Foreground.Pressed": "#FFFFFF",
+        "AtcApps.Colors.MenuItem.SelectionFill": "#DEDEDE",
+        "AtcApps.Colors.MenuItem.SelectionStroke": "#DEDEDE",
+        "AtcApps.Colors.TopMenuItem.PressedFill": "#DEDEDE",
+        "AtcApps.Colors.TopMenuItem.PressedStroke": "#E0717070",
+        "AtcApps.Colors.TopMenuItem.SelectionStroke": "#90717070",
+        "AtcApps.Colors.Badged.Background.Disabled": "#FF999999",
+        "AtcApps.Colors.Badged.Foreground.Disabled": "#99000000",
+        "AtcApps.Colors.SystemAltHigh": "#FFFFFFFF",
+        "AtcApps.Colors.SystemAltLow": "#33FFFFFF",
+        "AtcApps.Colors.SystemAltMedium": "#99FFFFFF",
+        "AtcApps.Colors.SystemAltMediumHigh": "#CCFFFFFF",
+        "AtcApps.Colors.SystemAltMediumLow": "#66FFFFFF",
+        "AtcApps.Colors.SystemBaseHigh": "#FF000000",
+        "AtcApps.Colors.SystemBaseLow": "#33000000",
+        "AtcApps.Colors.SystemBaseMedium": "#99000000",
+        "AtcApps.Colors.SystemBaseMediumHigh": "#CC000000",
+        "AtcApps.Colors.SystemBaseMediumLow": "#66000000",
+        "AtcApps.Colors.SystemChromeAltLow": "#FF171717",
+        "AtcApps.Colors.SystemChromeBlackHigh": "#FF000000",
+        "AtcApps.Colors.SystemChromeBlackLow": "#33000000",
+        "AtcApps.Colors.SystemChromeBlackMediumLow": "#66000000",
+        "AtcApps.Colors.SystemChromeBlackMedium": "#CC000000",
+        "AtcApps.Colors.SystemChromeDisabledHigh": "#FFCCCCCC",
+        "AtcApps.Colors.SystemChromeDisabledLow": "#FF7A7A7A",
+        "AtcApps.Colors.SystemChromeHigh": "#FFCCCCCC",
+        "AtcApps.Colors.SystemChromeLow": "#FFF2F2F2",
+        "AtcApps.Colors.SystemChromeMedium": "#FFE6E6E6",
+        "AtcApps.Colors.SystemChromeMediumLow": "#FFF2F2F2",
+        "AtcApps.Colors.SystemChromeWhite": "#FFFFFFFF",
+        "AtcApps.Colors.SystemChromeGray": "#FF767676",
+        "AtcApps.Colors.SystemListLow": "#19000000",
+        "AtcApps.Colors.SystemListMedium": "#33000000",
+        "AtcApps.Colors.SystemErrorText": "#C50500",
+        "AtcApps.Brushes.SystemControlHighlightAltListAccentHigh.Opacity": "0.7",
+        "AtcApps.Brushes.SystemControlHighlightAltListAccentLow.Opacity": "0.4",
+        "AtcApps.Brushes.SystemControlHighlightAltListAccentMedium.Opacity": "0.6",
+        "AtcApps.Brushes.SystemControlHighlightListAccentHigh.Opacity": "0.7",
+        "AtcApps.Brushes.SystemControlHighlightListAccentLow.Opacity": "0.4",
+        "AtcApps.Brushes.SystemControlHighlightListAccentMedium.Opacity": "0.6",
+        "AtcApps.Brushes.SystemControlTransientBorder.Opacity": "0.14"
+      }
+    }
+  ],
+  "ColorSchemes": [
+    {
+      "Name": "Amber",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFF0A30A",
+        "AtcApps.Colors.Accent": "#CCF0A30A",
+        "AtcApps.Colors.Accent2": "#99F0A30A",
+        "AtcApps.Colors.Accent3": "#66F0A30A",
+        "AtcApps.Colors.Accent4": "#33F0A30A",
+        "AtcApps.Colors.Highlight": "#FFB17807"
+      }
+    },
+    {
+      "Name": "Blue",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF0078D7",
+        "AtcApps.Colors.Accent": "#CC0078D7",
+        "AtcApps.Colors.Accent2": "#990078D7",
+        "AtcApps.Colors.Accent3": "#660078D7",
+        "AtcApps.Colors.Accent4": "#330078D7",
+        "AtcApps.Colors.Highlight": "#FF00589F"
+      }
+    },
+    {
+      "Name": "Brown",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF825A2C",
+        "AtcApps.Colors.Accent": "#CC825A2C",
+        "AtcApps.Colors.Accent2": "#99825A2C",
+        "AtcApps.Colors.Accent3": "#66825A2C",
+        "AtcApps.Colors.Accent4": "#33825A2C",
+        "AtcApps.Colors.Highlight": "#FF604220"
+      }
+    },
+    {
+      "Name": "Cobalt",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF0050EF",
+        "AtcApps.Colors.Accent": "#CC0050EF",
+        "AtcApps.Colors.Accent2": "#990050EF",
+        "AtcApps.Colors.Accent3": "#660050EF",
+        "AtcApps.Colors.Accent4": "#330050EF",
+        "AtcApps.Colors.Highlight": "#FF003BB0"
+      }
+    },
+    {
+      "Name": "Crimson",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFA20025",
+        "AtcApps.Colors.Accent": "#CCA20025",
+        "AtcApps.Colors.Accent2": "#99A20025",
+        "AtcApps.Colors.Accent3": "#66A20025",
+        "AtcApps.Colors.Accent4": "#33A20025",
+        "AtcApps.Colors.Highlight": "#FF77001B"
+      }
+    },
+    {
+      "Name": "Cyan",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF1BA1E2",
+        "AtcApps.Colors.Accent": "#CC1BA1E2",
+        "AtcApps.Colors.Accent2": "#991BA1E2",
+        "AtcApps.Colors.Accent3": "#661BA1E2",
+        "AtcApps.Colors.Accent4": "#331BA1E2",
+        "AtcApps.Colors.Highlight": "#FF1377A7"
+      }
+    },
+    {
+      "Name": "Emerald",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF008A00",
+        "AtcApps.Colors.Accent": "#CC008A00",
+        "AtcApps.Colors.Accent2": "#99008A00",
+        "AtcApps.Colors.Accent3": "#66008A00",
+        "AtcApps.Colors.Accent4": "#33008A00",
+        "AtcApps.Colors.Highlight": "#FF006600"
+      }
+    },
+    {
+      "Name": "Green",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF60A917",
+        "AtcApps.Colors.Accent": "#CC60A917",
+        "AtcApps.Colors.Accent2": "#9960A917",
+        "AtcApps.Colors.Accent3": "#6660A917",
+        "AtcApps.Colors.Accent4": "#3360A917",
+        "AtcApps.Colors.Highlight": "#FF477D11"
+      }
+    },
+    {
+      "Name": "Indigo",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF6A00FF",
+        "AtcApps.Colors.Accent": "#CC6A00FF",
+        "AtcApps.Colors.Accent2": "#996A00FF",
+        "AtcApps.Colors.Accent3": "#666A00FF",
+        "AtcApps.Colors.Accent4": "#336A00FF",
+        "AtcApps.Colors.Highlight": "#FF4E00BC"
+      }
+    },
+    {
+      "Name": "Lime",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFA4C400",
+        "AtcApps.Colors.Accent": "#CCA4C400",
+        "AtcApps.Colors.Accent2": "#99A4C400",
+        "AtcApps.Colors.Accent3": "#66A4C400",
+        "AtcApps.Colors.Accent4": "#33A4C400",
+        "AtcApps.Colors.Highlight": "#FF799100"
+      }
+    },
+    {
+      "Name": "Magenta",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFD80073",
+        "AtcApps.Colors.Accent": "#CCD80073",
+        "AtcApps.Colors.Accent2": "#99D80073",
+        "AtcApps.Colors.Accent3": "#66D80073",
+        "AtcApps.Colors.Accent4": "#33D80073",
+        "AtcApps.Colors.Highlight": "#FF9F0055"
+      }
+    },
+    {
+      "Name": "Mauve",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF76608A",
+        "AtcApps.Colors.Accent": "#CC76608A",
+        "AtcApps.Colors.Accent2": "#9976608A",
+        "AtcApps.Colors.Accent3": "#6676608A",
+        "AtcApps.Colors.Accent4": "#3376608A",
+        "AtcApps.Colors.Highlight": "#FF574766"
+      }
+    },
+    {
+      "Name": "Olive",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF6D8764",
+        "AtcApps.Colors.Accent": "#CC6D8764",
+        "AtcApps.Colors.Accent2": "#996D8764",
+        "AtcApps.Colors.Accent3": "#666D8764",
+        "AtcApps.Colors.Accent4": "#336D8764",
+        "AtcApps.Colors.Highlight": "#FF50634A"
+      }
+    },
+    {
+      "Name": "Orange",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFFA6800",
+        "AtcApps.Colors.Accent": "#CCFA6800",
+        "AtcApps.Colors.Accent2": "#99FA6800",
+        "AtcApps.Colors.Accent3": "#66FA6800",
+        "AtcApps.Colors.Accent4": "#33FA6800",
+        "AtcApps.Colors.Highlight": "#FFB94C00"
+      }
+    },
+    {
+      "Name": "Pink",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFF472D0",
+        "AtcApps.Colors.Accent": "#CCF472D0",
+        "AtcApps.Colors.Accent2": "#99F472D0",
+        "AtcApps.Colors.Accent3": "#66F472D0",
+        "AtcApps.Colors.Accent4": "#33F472D0",
+        "AtcApps.Colors.Highlight": "#FFB45499"
+      }
+    },
+    {
+      "Name": "Purple",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF6459DF",
+        "AtcApps.Colors.Accent": "#CC6459DF",
+        "AtcApps.Colors.Accent2": "#996459DF",
+        "AtcApps.Colors.Accent3": "#666459DF",
+        "AtcApps.Colors.Accent4": "#336459DF",
+        "AtcApps.Colors.Highlight": "#FF4A41A5"
+      }
+    },
+    {
+      "Name": "Red",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFE51400",
+        "AtcApps.Colors.Accent": "#CCE51400",
+        "AtcApps.Colors.Accent2": "#99E51400",
+        "AtcApps.Colors.Accent3": "#66E51400",
+        "AtcApps.Colors.Accent4": "#33E51400",
+        "AtcApps.Colors.Highlight": "#FFA90E00"
+      }
+    },
+    {
+      "Name": "Sienna",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFA0522D",
+        "AtcApps.Colors.Accent": "#CCA0522D",
+        "AtcApps.Colors.Accent2": "#99A0522D",
+        "AtcApps.Colors.Accent3": "#66A0522D",
+        "AtcApps.Colors.Accent4": "#33A0522D",
+        "AtcApps.Colors.Highlight": "#FF763C21"
+      }
+    },
+    {
+      "Name": "Steel",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF647687",
+        "AtcApps.Colors.Accent": "#CC647687",
+        "AtcApps.Colors.Accent2": "#99647687",
+        "AtcApps.Colors.Accent3": "#66647687",
+        "AtcApps.Colors.Accent4": "#33647687",
+        "AtcApps.Colors.Highlight": "#FF4A5763"
+      }
+    },
+    {
+      "Name": "Taupe",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF87794E",
+        "AtcApps.Colors.Accent": "#CC87794E",
+        "AtcApps.Colors.Accent2": "#9987794E",
+        "AtcApps.Colors.Accent3": "#6687794E",
+        "AtcApps.Colors.Accent4": "#3387794E",
+        "AtcApps.Colors.Highlight": "#FF635939"
+      }
+    },
+    {
+      "Name": "Teal",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FF00ABA9",
+        "AtcApps.Colors.Accent": "#CC00ABA9",
+        "AtcApps.Colors.Accent2": "#9900ABA9",
+        "AtcApps.Colors.Accent3": "#6600ABA9",
+        "AtcApps.Colors.Accent4": "#3300ABA9",
+        "AtcApps.Colors.Highlight": "#FF007E7D"
+      }
+    },
+    {
+      "Name": "Violet",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFAA00FF",
+        "AtcApps.Colors.Accent": "#CCAA00FF",
+        "AtcApps.Colors.Accent2": "#99AA00FF",
+        "AtcApps.Colors.Accent3": "#66AA00FF",
+        "AtcApps.Colors.Accent4": "#33AA00FF",
+        "AtcApps.Colors.Highlight": "#FF7D00BC"
+      }
+    },
+    {
+      "Name": "Yellow",
+      "Values": {
+        "AtcApps.Colors.AccentBase": "#FFFEDE06",
+        "AtcApps.Colors.Accent": "#CCFEDE06",
+        "AtcApps.Colors.Accent2": "#99FEDE06",
+        "AtcApps.Colors.Accent3": "#66FEDE06",
+        "AtcApps.Colors.Accent4": "#33FEDE06",
+        "AtcApps.Colors.Highlight": "#FFBBA404",
+        "AtcApps.Colors.IdealForeground": "Black"
+      }
+    }
+  ]
+}

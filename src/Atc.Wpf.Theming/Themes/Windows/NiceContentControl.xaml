@@ -1,0 +1,131 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
+
+    <Style TargetType="{x:Type windows:NiceContentControl}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="windows:NiceContentControl">
+                    <Grid
+                        x:Name="RootGrid"
+                        Background="{TemplateBinding Background}"
+                        Opacity="0"
+                        RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TranslateTransform />
+                        </Grid.RenderTransform>
+                        <AdornerDecorator>
+                            <ContentPresenter
+                                x:Name="PART_ContentPresenter"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                Cursor="{TemplateBinding Cursor}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                UseLayoutRounding="{TemplateBinding UseLayoutRounding}" />
+                        </AdornerDecorator>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="LayoutStates">
+                                <VisualState x:Name="AfterLoaded">
+                                    <Storyboard x:Name="AfterLoadedStoryboard">
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30" />
+                                            <EasingDoubleKeyFrame KeyTime="00:00:00.700" Value="0">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut" />
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="AfterLoadedReverse">
+                                    <Storyboard x:Name="AfterLoadedReverseStoryboard">
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-30" />
+                                            <EasingDoubleKeyFrame KeyTime="00:00:00.700" Value="0">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut" />
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="AfterUnLoaded">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="30" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="AfterUnLoadedReverse">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames
+                                            BeginTime="00:00:00"
+                                            Storyboard.TargetName="RootGrid"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="-30" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="BeforeLoaded" />
+                                <VisualState x:Name="BeforeUnloaded" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+</ResourceDictionary>

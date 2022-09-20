@@ -1,0 +1,148 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.Theming</Title>
+    <PackageId>Atc.Wpf.Theming</PackageId>
+    <PackageTags>wpf;theming</PackageTags>
+    <Description>A base library for building WPF application with theming.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />
+    <Resource Include="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Styles\ThemesGenerator\GeneratorParameters.json" />
+    <Page Remove="Styles\ThemesGenerator\Theme.Template.xaml" />
+    <EmbeddedResource Include="Styles\ThemesGenerator\GeneratorParameters.json" />
+    <EmbeddedResource Include="Styles\ThemesGenerator\Theme.Template.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" version="6.0.0-alpha0241" />
+
+    <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
+    <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha0100" PrivateAssets="all" IncludeAssets="build" />-->
+
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.1.635-beta">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <XAMLColorSchemeGeneratorItems Include="Styles\ThemesGenerator\Theme.Template.xaml">
+      <ParametersFile>Styles\ThemesGenerator\GeneratorParameters.json</ParametersFile>
+      <OutputPath>Styles\Themes</OutputPath>
+    </XAMLColorSchemeGeneratorItems>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Styles\BaseControls\GroupBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\TreeView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\Slider.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\ToolBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\TabControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\ScrollViewer.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\ScrollBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\Menu.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\ListView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\Expander.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\PasswordBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\ListBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\TextBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\ComboBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\CheckBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\RepeatButton.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\RadioButton.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Styles\BaseControls\ToggleButton.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\BaseControls\Button.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Styles\Default.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource\ColorNames.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ColorNames.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource\ColorNames.da-DK.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\ColorNames.de-DE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\ColorNames.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ColorNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
