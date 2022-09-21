@@ -22,10 +22,4 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Atc.Wpf.Controls">
-      <HintPath>..\..\src\Atc.Wpf.Controls\bin\Debug\net6.0-windows\Atc.Wpf.Controls.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

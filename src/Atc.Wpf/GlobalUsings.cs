@@ -50,5 +50,6 @@ global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Media;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
+global using Atc.Wpf.Translation;
 global using Atc.Wpf.WindowsNative.Structs;
 global using Atc.Wpf.WindowsNative.User32;

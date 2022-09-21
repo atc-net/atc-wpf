@@ -70,6 +70,15 @@ namespace Atc.Wpf.Theming.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amber.
+        /// </summary>
+        public static string Amber {
+            get {
+                return ResourceManager.GetString("Amber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Antique White.
         /// </summary>
         public static string AntiqueWhite {
@@ -205,6 +214,15 @@ namespace Atc.Wpf.Theming.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cobalt.
+        /// </summary>
+        public static string Cobalt {
+            get {
+                return ResourceManager.GetString("Cobalt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Coral.
         /// </summary>
         public static string Coral {
@@ -237,6 +255,15 @@ namespace Atc.Wpf.Theming.Resource {
         public static string Crimson {
             get {
                 return ResourceManager.GetString("Crimson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cyan.
+        /// </summary>
+        public static string Cyan {
+            get {
+                return ResourceManager.GetString("Cyan", resourceCulture);
             }
         }
         
@@ -435,6 +462,15 @@ namespace Atc.Wpf.Theming.Resource {
         public static string DodgerBlue {
             get {
                 return ResourceManager.GetString("DodgerBlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Emerald.
+        /// </summary>
+        public static string Emerald {
+            get {
+                return ResourceManager.GetString("Emerald", resourceCulture);
             }
         }
         
@@ -781,11 +817,29 @@ namespace Atc.Wpf.Theming.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Magenta.
+        /// </summary>
+        public static string Magenta {
+            get {
+                return ResourceManager.GetString("Magenta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maroon.
         /// </summary>
         public static string Maroon {
             get {
                 return ResourceManager.GetString("Maroon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mauve.
+        /// </summary>
+        public static string Mauve {
+            get {
+                return ResourceManager.GetString("Mauve", resourceCulture);
             }
         }
         
@@ -1213,6 +1267,15 @@ namespace Atc.Wpf.Theming.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Steel.
+        /// </summary>
+        public static string Steel {
+            get {
+                return ResourceManager.GetString("Steel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Steel Blue.
         /// </summary>
         public static string SteelBlue {
@@ -1227,6 +1290,15 @@ namespace Atc.Wpf.Theming.Resource {
         public static string Tan {
             get {
                 return ResourceManager.GetString("Tan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taupe.
+        /// </summary>
+        public static string Taupe {
+            get {
+                return ResourceManager.GetString("Taupe", resourceCulture);
             }
         }
         

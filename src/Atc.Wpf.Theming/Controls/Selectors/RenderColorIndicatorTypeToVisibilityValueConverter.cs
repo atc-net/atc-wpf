@@ -10,17 +10,17 @@ public class RenderColorIndicatorTypeToVisibilityValueConverter : IValueConverte
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        if (value is not RenderColorIndicatorType actualRenderColorMode)
+        if (value is not RenderColorIndicatorType actualRenderMode)
         {
-            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(RenderColorIndicatorType)");
+            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof({nameof(RenderColorIndicatorType)})");
         }
 
-        if (parameter is not RenderColorIndicatorType wantedRenderColorMode)
+        if (parameter is not RenderColorIndicatorType wantedRenderMode)
         {
-            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(RenderColorIndicatorType)");
+            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof({nameof(RenderColorIndicatorType)})");
         }
 
-        return actualRenderColorMode == wantedRenderColorMode
+        return actualRenderMode == wantedRenderMode
             ? Visibility.Visible
             : Visibility.Collapsed;
     }

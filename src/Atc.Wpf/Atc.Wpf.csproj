@@ -16,6 +16,25 @@
     <None Remove="Media\ShaderEffects\Shaders\InvertColors.ps" />
     <None Remove="Media\ShaderEffects\Shaders\Monochrome.ps" />
     <None Remove="Media\ShaderEffects\Shaders\Saturate.ps" />
+    <None Remove="Resource\Flags\Flat\16\DE.png" />
+    <None Remove="Resource\Flags\Flat\16\DK.png" />
+    <None Remove="Resource\Flags\Flat\16\GB.png" />
+    <None Remove="Resource\Flags\Flat\16\US.png" />
+    <None Remove="Resource\Flags\Shiny\16\DE.png" />
+    <None Remove="Resource\Flags\Shiny\16\DK.png" />
+    <None Remove="Resource\Flags\Shiny\16\GB.png" />
+    <None Remove="Resource\Flags\Shiny\16\US.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\Flags\Flat\16\DE.png" />
+    <EmbeddedResource Include="Resource\Flags\Flat\16\DK.png" />
+    <EmbeddedResource Include="Resource\Flags\Flat\16\GB.png" />
+    <EmbeddedResource Include="Resource\Flags\Flat\16\US.png" />
+    <EmbeddedResource Include="Resource\Flags\Shiny\16\DE.png" />
+    <EmbeddedResource Include="Resource\Flags\Shiny\16\DK.png" />
+    <EmbeddedResource Include="Resource\Flags\Shiny\16\GB.png" />
+    <EmbeddedResource Include="Resource\Flags\Shiny\16\US.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +48,27 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.222" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource\Miscellaneous.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Miscellaneous.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource\Miscellaneous.da-DK.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\Miscellaneous.de-DE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\Miscellaneous.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

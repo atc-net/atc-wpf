@@ -172,13 +172,13 @@
     <value>Lysegrå</value>
   </data>
   <data name="AliceBlue" xml:space="preserve">
-    <value>?Alice Blue</value>
+    <value>Alice blå</value>
   </data>
   <data name="AntiqueWhite" xml:space="preserve">
     <value>Antik hvid</value>
   </data>
   <data name="Aqua" xml:space="preserve">
-    <value>?Aqua</value>
+    <value>Aqua</value>
   </data>
   <data name="Aquamarine" xml:space="preserve">
     <value>?Aquamarine</value>
@@ -187,13 +187,13 @@
     <value>?Azure</value>
   </data>
   <data name="Beige" xml:space="preserve">
-    <value>?Beige</value>
+    <value>Brungrå</value>
   </data>
   <data name="Bisque" xml:space="preserve">
     <value>?Bisque</value>
   </data>
   <data name="BlanchedAlmond" xml:space="preserve">
-    <value>?Blanched Almond</value>
+    <value>Blancheret mandel</value>
   </data>
   <data name="BlueViolet" xml:space="preserve">
     <value>Blå violet</value>
@@ -220,7 +220,7 @@
     <value>?Cornsilk</value>
   </data>
   <data name="Crimson" xml:space="preserve">
-    <value>?Crimson</value>
+    <value>Hvidrød</value>
   </data>
   <data name="DarkCyan" xml:space="preserve">
     <value>?Dark Cyan</value>
@@ -229,7 +229,7 @@
     <value>?Dark Goldenrod</value>
   </data>
   <data name="DarkGray" xml:space="preserve">
-    <value>?Dark Gray</value>
+    <value>Mørkegrå</value>
   </data>
   <data name="DarkKhaki" xml:space="preserve">
     <value>?Dark Khaki</value>
@@ -313,7 +313,7 @@
     <value>?Indian Red</value>
   </data>
   <data name="Indigo" xml:space="preserve">
-    <value>?Indigo</value>
+    <value>Indigo</value>
   </data>
   <data name="Ivory" xml:space="preserve">
     <value>?Ivory</value>
@@ -373,7 +373,7 @@
     <value>?Linen</value>
   </data>
   <data name="Maroon" xml:space="preserve">
-    <value>?Maroon</value>
+    <value>Rødbrun</value>
   </data>
   <data name="MediumAquamarine" xml:space="preserve">
     <value>?Medium Aquamarine</value>
@@ -424,7 +424,7 @@
     <value>?Old Lace</value>
   </data>
   <data name="Olive" xml:space="preserve">
-    <value>?Olive</value>
+    <value>Oliven</value>
   </data>
   <data name="OliveDrab" xml:space="preserve">
     <value>?Olive Drab</value>
@@ -487,7 +487,7 @@
     <value>?Sea Shell</value>
   </data>
   <data name="Sienna" xml:space="preserve">
-    <value>?Sienna</value>
+    <value>Sienna</value>
   </data>
   <data name="Silver" xml:space="preserve">
     <value>?Silver</value>
@@ -514,7 +514,7 @@
     <value>?Tan</value>
   </data>
   <data name="Teal" xml:space="preserve">
-    <value>?Teal</value>
+    <value>Blågrøn</value>
   </data>
   <data name="Thistle" xml:space="preserve">
     <value>?Thistle</value>
@@ -539,5 +539,29 @@
   </data>
   <data name="Dark" xml:space="preserve">
     <value>Mørk</value>
+  </data>
+  <data name="Amber" xml:space="preserve">
+    <value>Rav</value>
+  </data>
+  <data name="Cobalt" xml:space="preserve">
+    <value>Kobolt</value>
+  </data>
+  <data name="Cyan" xml:space="preserve">
+    <value>Cyan</value>
+  </data>
+  <data name="Emerald" xml:space="preserve">
+    <value>Smaragd</value>
+  </data>
+  <data name="Magenta" xml:space="preserve">
+    <value>Magenta</value>
+  </data>
+  <data name="Mauve" xml:space="preserve">
+    <value>Mauve</value>
+  </data>
+  <data name="Steel" xml:space="preserve">
+    <value>Stål</value>
+  </data>
+  <data name="Taupe" xml:space="preserve">
+    <value>Taupe</value>
   </data>
 </root>

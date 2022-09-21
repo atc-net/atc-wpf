@@ -7,6 +7,18 @@ public partial class AccentColorSelector
 {
     private string selectedKey = "Blue";
 
+    public static readonly DependencyProperty ShowLabelProperty = DependencyProperty.Register(
+        nameof(ShowLabel),
+        typeof(bool),
+        typeof(AccentColorSelector),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool ShowLabel
+    {
+        get => (bool)GetValue(ShowLabelProperty);
+        set => SetValue(ShowLabelProperty, value);
+    }
+
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),

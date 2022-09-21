@@ -6,5 +6,5 @@
 [assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters", "atcValueConverters")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters", "Atc.Wpf.ValueConverters")]
 
-[assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters", "atcTranslation")]
-[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters", "Atc.Wpf.Translation")]
+[assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas/translations", "atcTranslation")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas/translations", "Atc.Wpf.Translation")]

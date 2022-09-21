@@ -5,6 +5,18 @@ namespace Atc.Wpf.Theming.Controls.Selectors;
 /// </summary>
 public partial class ThemeAndAccentColorSelectors
 {
+    public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
+        nameof(ShowLabels),
+        typeof(bool),
+        typeof(ThemeAndAccentColorSelectors),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool ShowLabels
+    {
+        get => (bool)GetValue(ShowLabelsProperty);
+        set => SetValue(ShowLabelsProperty, value);
+    }
+
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),

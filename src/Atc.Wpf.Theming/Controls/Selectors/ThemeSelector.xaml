@@ -2,11 +2,11 @@
     x:Class="Atc.Wpf.Theming.Controls.Selectors.ThemeSelector"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selectors="clr-namespace:Atc.Wpf.Theming.Controls.Selectors"
-    xmlns:translation="clr-namespace:Atc.Wpf.Translation;assembly=Atc.Wpf"
     x:Name="UcThemeSelector"
     d:DataContext="{d:DesignInstance Type=selectors:ThemeSelector}"
     d:DesignHeight="50"
@@ -14,6 +14,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleConverter" />
         <atcValueConverters:LabelControlOrientationToMarginValueConverter x:Key="LabelControlOrientationToMarginConverter" />
         <selectors:RenderColorIndicatorTypeToVisibilityValueConverter x:Key="RenderColorIndicatorTypeToVisibilityConverter" />
     </UserControl.Resources>
@@ -23,9 +24,10 @@
             <TextBlock
                 Margin="{Binding ElementName=UcThemeSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}}"
                 VerticalAlignment="Center"
-                Text="{translation:Resx ResxName=Atc.Wpf.Theming.Resource.Miscellaneous,
-                                        Key=Theme,
-                                        Suffix=':'}" />
+                Text="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resource.Miscellaneous,
+                                           Key=Theme,
+                                           Suffix=':'}"
+                Visibility="{Binding ElementName=UcThemeSelector, Path=ShowLabel, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
             <ComboBox
                 Height="22"
                 MinWidth="100"
