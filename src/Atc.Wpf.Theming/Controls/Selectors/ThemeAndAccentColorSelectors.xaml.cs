@@ -29,6 +29,18 @@ public partial class ThemeAndAccentColorSelectors
         set => SetValue(LabelControlOrientationProperty, value);
     }
 
+    public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
+        nameof(RenderColorIndicatorType),
+        typeof(RenderColorIndicatorType),
+        typeof(ThemeAndAccentColorSelectors),
+        new PropertyMetadata(RenderColorIndicatorType.Square));
+
+    public RenderColorIndicatorType RenderColorIndicatorType
+    {
+        get => (RenderColorIndicatorType)GetValue(RenderColorIndicatorTypeProperty);
+        set => SetValue(RenderColorIndicatorTypeProperty, value);
+    }
+
     public ThemeAndAccentColorSelectors()
     {
         InitializeComponent();

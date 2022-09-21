@@ -1,12 +1,13 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
-                    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-                    xmlns:controls="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-                    xmlns:controlzEx="urn:controlzex"
-                    xmlns:images="clr-namespace:Atc.Wpf.Theming.Controls.Images"
-                    xmlns:primitives="clr-namespace:Atc.Wpf.Theming.Primitives"
-                    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:controls="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:controlzEx="urn:controlzex"
+    xmlns:images="clr-namespace:Atc.Wpf.Theming.Controls.Images"
+    xmlns:primitives="clr-namespace:Atc.Wpf.Theming.Primitives"
+    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBlock.xaml" />
@@ -18,11 +19,12 @@
     <atcValueConverters:ThicknessToDoubleValueConverter x:Key="ThicknessToDoubleConverter" />
 
     <ControlTemplate x:Key="AtcApps.Templates.NiceWindow" TargetType="{x:Type windows:NiceWindow}">
-        <Grid Background="{TemplateBinding Background}"
-              LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
-              RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
-              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-              UseLayoutRounding="True">
+        <Grid
+            Background="{TemplateBinding Background}"
+            LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
+            RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
+            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+            UseLayoutRounding="True">
             <AdornerDecorator>
                 <Grid UseLayoutRounding="False">
                     <Grid.ColumnDefinitions>
@@ -41,143 +43,160 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Rectangle x:Name="PART_WindowTitleBackground"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               Grid.ColumnSpan="3"
-                               Fill="{TemplateBinding WindowTitleBrush}"
-                               Focusable="False"
-                               StrokeThickness="0" />
+                    <Rectangle
+                        x:Name="PART_WindowTitleBackground"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Fill="{TemplateBinding WindowTitleBrush}"
+                        Focusable="False"
+                        StrokeThickness="0" />
 
-                    <ContentControl x:Name="PART_Icon"
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                    MinWidth="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                    HorizontalContentAlignment="Stretch"
-                                    VerticalContentAlignment="Stretch"
-                                    Panel.ZIndex="1"
-                                    controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
-                                    Content="{TemplateBinding Icon}"
-                                    ContentTemplate="{TemplateBinding IconTemplate}"
-                                    Focusable="False"
-                                    Visibility="{TemplateBinding ShowIconOnTitleBar,
-                                                                 Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <ContentControl
+                        x:Name="PART_Icon"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        MinWidth="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Panel.ZIndex="1"
+                        controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                        Content="{TemplateBinding Icon}"
+                        ContentTemplate="{TemplateBinding IconTemplate}"
+                        Focusable="False"
+                        Visibility="{TemplateBinding ShowIconOnTitleBar,
+                                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <primitives:NiceThumb x:Name="PART_WindowTitleThumb"
-                                          Grid.Row="1"
-                                          Grid.Column="0"
-                                          Grid.ColumnSpan="5"
-                                          Style="{StaticResource AtcApps.Styles.Thumb.WindowTitle}"
-                                          UseLayoutRounding="True" />
+                    <primitives:NiceThumb
+                        x:Name="PART_WindowTitleThumb"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="5"
+                        Style="{StaticResource AtcApps.Styles.Thumb.WindowTitle}"
+                        UseLayoutRounding="True" />
 
-                    <DockPanel Grid.Row="1"
-                               Grid.Column="2"
-                               VerticalAlignment="Top"
-                               Focusable="False">
-                        <atc:ContentPresenterEx x:Name="PART_LeftWindowCommands"
-                                                Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                VerticalAlignment="Top"
-                                                Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                DockPanel.Dock="Left"
-                                                Focusable="False" />
-                        <atc:ContentPresenterEx x:Name="PART_RightWindowCommands"
-                                                Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                VerticalAlignment="Top"
-                                                Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                DockPanel.Dock="Right"
-                                                Focusable="False" />
-                        <windows:NiceThumbContentControl x:Name="PART_TitleBar"
-                                                         Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                         HorizontalAlignment="{TemplateBinding TitleAlignment}"
-                                                         HorizontalContentAlignment="Stretch"
-                                                         VerticalContentAlignment="Stretch"
-                                                         Content="{TemplateBinding Title}"
-                                                         ContentCharacterCasing="{TemplateBinding TitleCharacterCasing}"
-                                                         ContentTemplate="{TemplateBinding TitleTemplate}"
-                                                         Focusable="False">
+                    <DockPanel
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        VerticalAlignment="Top"
+                        Focusable="False">
+                        <atc:ContentPresenterEx
+                            x:Name="PART_LeftWindowCommands"
+                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            VerticalAlignment="Top"
+                            Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            DockPanel.Dock="Left"
+                            Focusable="False" />
+                        <atc:ContentPresenterEx
+                            x:Name="PART_RightWindowCommands"
+                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            VerticalAlignment="Top"
+                            Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            DockPanel.Dock="Right"
+                            Focusable="False" />
+                        <windows:NiceThumbContentControl
+                            x:Name="PART_TitleBar"
+                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            HorizontalAlignment="{TemplateBinding TitleAlignment}"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            Content="{TemplateBinding Title}"
+                            ContentCharacterCasing="{TemplateBinding TitleCharacterCasing}"
+                            ContentTemplate="{TemplateBinding TitleTemplate}"
+                            Focusable="False">
                             <ContentControl.Foreground>
                                 <MultiBinding Converter="{x:Static atcValueConverters:BackgroundToForegroundValueConverter.Instance}">
-                                    <Binding ElementName="PART_WindowTitleBackground"
-                                             Mode="OneWay"
-                                             Path="Fill" />
-                                    <Binding Mode="OneWay"
-                                             Path="TitleForeground"
-                                             RelativeSource="{RelativeSource TemplatedParent}" />
+                                    <Binding
+                                        ElementName="PART_WindowTitleBackground"
+                                        Mode="OneWay"
+                                        Path="Fill" />
+                                    <Binding
+                                        Mode="OneWay"
+                                        Path="TitleForeground"
+                                        RelativeSource="{RelativeSource TemplatedParent}" />
                                 </MultiBinding>
                             </ContentControl.Foreground>
                         </windows:NiceThumbContentControl>
                     </DockPanel>
 
-                    <atc:ContentPresenterEx x:Name="PART_WindowButtonCommands"
-                                            Grid.Row="1"
-                                            Grid.RowSpan="2"
-                                            Grid.Column="3"
-                                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                            VerticalAlignment="Top"
-                                            Panel.ZIndex="1"
-                                            Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                            Focusable="False" />
+                    <atc:ContentPresenterEx
+                        x:Name="PART_WindowButtonCommands"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        VerticalAlignment="Top"
+                        Panel.ZIndex="1"
+                        Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        Focusable="False" />
 
-                    <windows:NiceContentControl x:Name="PART_Content"
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Grid.ColumnSpan="5"
-                                                FocusVisualStyle="{x:Null}"
-                                                IsTabStop="False"
-                                                OnlyLoadTransition="True"
-                                                TransitionsEnabled="{TemplateBinding WindowTransitionsEnabled}"
-                                                UseLayoutRounding="True">
-                        <atc:ContentPresenterEx x:Name="PART_ContentPresenter"
-                                                Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}"
-                                                UseLayoutRounding="False" />
+                    <windows:NiceContentControl
+                        x:Name="PART_Content"
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="5"
+                        FocusVisualStyle="{x:Null}"
+                        IsTabStop="False"
+                        OnlyLoadTransition="True"
+                        TransitionsEnabled="{TemplateBinding WindowTransitionsEnabled}"
+                        UseLayoutRounding="True">
+                        <atc:ContentPresenterEx
+                            x:Name="PART_ContentPresenter"
+                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}"
+                            UseLayoutRounding="False" />
                     </windows:NiceContentControl>
 
-                    <Grid x:Name="PART_NiceInactiveDialogsContainer"
-                          Grid.Row="1"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="3"
-                          Panel.ZIndex="3"
-                          FocusVisualStyle="{x:Null}" />
+                    <Grid
+                        x:Name="PART_NiceInactiveDialogsContainer"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="3"
+                        FocusVisualStyle="{x:Null}" />
 
-                    <Grid x:Name="PART_OverlayBox"
-                          Grid.Row="1"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="3"
-                          Panel.ZIndex="4"
-                          Background="{TemplateBinding OverlayBrush}"
-                          FocusVisualStyle="{x:Null}"
-                          Focusable="False"
-                          Opacity="0"
-                          Visibility="Hidden" />
+                    <Grid
+                        x:Name="PART_OverlayBox"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="4"
+                        Background="{TemplateBinding OverlayBrush}"
+                        FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        Opacity="0"
+                        Visibility="Hidden" />
 
-                    <Grid x:Name="PART_NiceActiveDialogContainer"
-                          Grid.Row="1"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="3"
-                          Panel.ZIndex="5"
-                          FocusVisualStyle="{x:Null}" />
+                    <Grid
+                        x:Name="PART_NiceActiveDialogContainer"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="5"
+                        FocusVisualStyle="{x:Null}" />
                 </Grid>
             </AdornerDecorator>
 
-            <Border x:Name="PART_Border"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="{x:Null}"
-                    BorderBrush="{Binding Path=GlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.DefaultInstance}}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    UseLayoutRounding="True" />
+            <Border
+                x:Name="PART_Border"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{x:Null}"
+                BorderBrush="{Binding Path=GlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.DefaultInstance}}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                UseLayoutRounding="True" />
 
-            <ResizeGrip x:Name="WindowResizeGrip"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        controlzEx:WindowChrome.ResizeGripDirection="BottomRight"
-                        IsTabStop="False"
-                        UseLayoutRounding="True"
-                        Visibility="Collapsed" />
+            <ResizeGrip
+                x:Name="WindowResizeGrip"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                controlzEx:WindowChrome.ResizeGripDirection="BottomRight"
+                IsTabStop="False"
+                UseLayoutRounding="True"
+                Visibility="Collapsed" />
         </Grid>
 
         <ControlTemplate.Triggers>
@@ -226,11 +245,12 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="AtcApps.Templates.NiceWindow.Center" TargetType="{x:Type windows:NiceWindow}">
-        <Grid Background="{TemplateBinding Background}"
-              LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
-              RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
-              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-              UseLayoutRounding="True">
+        <Grid
+            Background="{TemplateBinding Background}"
+            LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
+            RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
+            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+            UseLayoutRounding="True">
             <AdornerDecorator>
                 <Grid UseLayoutRounding="False">
                     <Grid.ColumnDefinitions>
@@ -249,164 +269,183 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Rectangle x:Name="PART_WindowTitleBackground"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               Grid.ColumnSpan="3"
-                               Fill="{TemplateBinding WindowTitleBrush}"
-                               Focusable="False"
-                               StrokeThickness="0" />
+                    <Rectangle
+                        x:Name="PART_WindowTitleBackground"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Fill="{TemplateBinding WindowTitleBrush}"
+                        Focusable="False"
+                        StrokeThickness="0" />
 
-                    <ContentControl x:Name="PART_Icon"
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                    MinWidth="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                    HorizontalContentAlignment="Stretch"
-                                    VerticalContentAlignment="Stretch"
-                                    Panel.ZIndex="1"
-                                    controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
-                                    Content="{TemplateBinding Icon}"
-                                    ContentTemplate="{TemplateBinding IconTemplate}"
-                                    Focusable="False"
-                                    Visibility="{TemplateBinding ShowIconOnTitleBar,
-                                                                 Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <ContentControl
+                        x:Name="PART_Icon"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        MinWidth="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Panel.ZIndex="1"
+                        controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                        Content="{TemplateBinding Icon}"
+                        ContentTemplate="{TemplateBinding IconTemplate}"
+                        Focusable="False"
+                        Visibility="{TemplateBinding ShowIconOnTitleBar,
+                                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <primitives:NiceThumb x:Name="PART_WindowTitleThumb"
-                                          Grid.Row="1"
-                                          Grid.Column="0"
-                                          Grid.ColumnSpan="5"
-                                          Style="{StaticResource AtcApps.Styles.Thumb.WindowTitle}"
-                                          UseLayoutRounding="True" />
+                    <primitives:NiceThumb
+                        x:Name="PART_WindowTitleThumb"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="5"
+                        Style="{StaticResource AtcApps.Styles.Thumb.WindowTitle}"
+                        UseLayoutRounding="True" />
 
-                    <windows:NiceThumbContentControl x:Name="PART_TitleBar"
-                                                     Grid.Row="1"
-                                                     Grid.Column="0"
-                                                     Grid.ColumnSpan="5"
-                                                     Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                     HorizontalAlignment="{TemplateBinding TitleAlignment}"
-                                                     HorizontalContentAlignment="Center"
-                                                     VerticalContentAlignment="Center"
-                                                     Content="{TemplateBinding Title}"
-                                                     ContentCharacterCasing="{TemplateBinding TitleCharacterCasing}"
-                                                     ContentTemplate="{TemplateBinding TitleTemplate}"
-                                                     Focusable="False">
+                    <windows:NiceThumbContentControl
+                        x:Name="PART_TitleBar"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="5"
+                        Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        HorizontalAlignment="{TemplateBinding TitleAlignment}"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="{TemplateBinding Title}"
+                        ContentCharacterCasing="{TemplateBinding TitleCharacterCasing}"
+                        ContentTemplate="{TemplateBinding TitleTemplate}"
+                        Focusable="False">
                         <ContentControl.Foreground>
                             <MultiBinding Converter="{x:Static atcValueConverters:BackgroundToForegroundValueConverter.Instance}">
-                                <Binding ElementName="PART_WindowTitleBackground"
-                                         Mode="OneWay"
-                                         Path="Fill" />
-                                <Binding Mode="OneWay"
-                                         Path="TitleForeground"
-                                         RelativeSource="{RelativeSource TemplatedParent}" />
+                                <Binding
+                                    ElementName="PART_WindowTitleBackground"
+                                    Mode="OneWay"
+                                    Path="Fill" />
+                                <Binding
+                                    Mode="OneWay"
+                                    Path="TitleForeground"
+                                    RelativeSource="{RelativeSource TemplatedParent}" />
                             </MultiBinding>
                         </ContentControl.Foreground>
                     </windows:NiceThumbContentControl>
 
-                    <DockPanel Grid.Row="1"
-                               Grid.Column="2"
-                               VerticalAlignment="Top"
-                               Panel.ZIndex="1"
-                               Focusable="False">
-                        <atc:ContentPresenterEx x:Name="PART_LeftWindowCommands"
-                                                Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                VerticalAlignment="Top"
-                                                Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                DockPanel.Dock="Left"
-                                                Focusable="False" />
-                        <atc:ContentPresenterEx x:Name="PART_RightWindowCommands"
-                                                Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                VerticalAlignment="Top"
-                                                Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                DockPanel.Dock="Right"
-                                                Focusable="False" />
+                    <DockPanel
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        VerticalAlignment="Top"
+                        Panel.ZIndex="1"
+                        Focusable="False">
+                        <atc:ContentPresenterEx
+                            x:Name="PART_LeftWindowCommands"
+                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            VerticalAlignment="Top"
+                            Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            DockPanel.Dock="Left"
+                            Focusable="False" />
+                        <atc:ContentPresenterEx
+                            x:Name="PART_RightWindowCommands"
+                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            VerticalAlignment="Top"
+                            Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            DockPanel.Dock="Right"
+                            Focusable="False" />
                         <Grid />
                     </DockPanel>
 
-                    <atc:ContentPresenterEx x:Name="PART_WindowButtonCommands"
-                                            Grid.Row="1"
-                                            Grid.RowSpan="2"
-                                            Grid.Column="3"
-                                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                            VerticalAlignment="Top"
-                                            Panel.ZIndex="1"
-                                            Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                            Focusable="False" />
+                    <atc:ContentPresenterEx
+                        x:Name="PART_WindowButtonCommands"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="3"
+                        Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        VerticalAlignment="Top"
+                        Panel.ZIndex="1"
+                        Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                        Focusable="False" />
 
-                    <windows:NiceContentControl x:Name="PART_Content"
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Grid.ColumnSpan="5"
-                                                FocusVisualStyle="{x:Null}"
-                                                IsTabStop="False"
-                                                OnlyLoadTransition="True"
-                                                TransitionsEnabled="{TemplateBinding WindowTransitionsEnabled}"
-                                                UseLayoutRounding="True">
-                        <atc:ContentPresenterEx x:Name="PART_ContentPresenter"
-                                                Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}"
-                                                UseLayoutRounding="False" />
+                    <windows:NiceContentControl
+                        x:Name="PART_Content"
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="5"
+                        FocusVisualStyle="{x:Null}"
+                        IsTabStop="False"
+                        OnlyLoadTransition="True"
+                        TransitionsEnabled="{TemplateBinding WindowTransitionsEnabled}"
+                        UseLayoutRounding="True">
+                        <atc:ContentPresenterEx
+                            x:Name="PART_ContentPresenter"
+                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}"
+                            UseLayoutRounding="False" />
                     </windows:NiceContentControl>
 
-                    <Grid x:Name="PART_NiceInactiveDialogsContainer"
-                          Grid.Row="1"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="3"
-                          Panel.ZIndex="3"
-                          FocusVisualStyle="{x:Null}" />
+                    <Grid
+                        x:Name="PART_NiceInactiveDialogsContainer"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="3"
+                        FocusVisualStyle="{x:Null}" />
 
-                    <Grid x:Name="PART_OverlayBox"
-                          Grid.Row="1"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="3"
-                          Panel.ZIndex="4"
-                          Background="{TemplateBinding OverlayBrush}"
-                          FocusVisualStyle="{x:Null}"
-                          Focusable="False"
-                          Opacity="0"
-                          Visibility="Hidden" />
+                    <Grid
+                        x:Name="PART_OverlayBox"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="4"
+                        Background="{TemplateBinding OverlayBrush}"
+                        FocusVisualStyle="{x:Null}"
+                        Focusable="False"
+                        Opacity="0"
+                        Visibility="Hidden" />
 
-                    <Grid x:Name="PART_NiceActiveDialogContainer"
-                          Grid.Row="1"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="3"
-                          Panel.ZIndex="5"
-                          FocusVisualStyle="{x:Null}" />
+                    <Grid
+                        x:Name="PART_NiceActiveDialogContainer"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="5"
+                        FocusVisualStyle="{x:Null}" />
                 </Grid>
             </AdornerDecorator>
 
-            <Border x:Name="PART_Border"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="{x:Null}"
-                    BorderBrush="{Binding Path=GlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.DefaultInstance}}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    UseLayoutRounding="True" />
+            <Border
+                x:Name="PART_Border"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{x:Null}"
+                BorderBrush="{Binding Path=GlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.DefaultInstance}}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                UseLayoutRounding="True" />
 
-            <ResizeGrip x:Name="WindowResizeGrip"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        controlzEx:WindowChrome.ResizeGripDirection="BottomRight"
-                        IsTabStop="False"
-                        UseLayoutRounding="True"
-                        Visibility="Collapsed" />
+            <ResizeGrip
+                x:Name="WindowResizeGrip"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                controlzEx:WindowChrome.ResizeGripDirection="BottomRight"
+                IsTabStop="False"
+                UseLayoutRounding="True"
+                Visibility="Collapsed" />
         </Grid>
 
         <ControlTemplate.Resources>
-            <Storyboard x:Key="OverlayFastSemiFadeIn"
-                        AccelerationRatio=".97"
-                        BeginTime="0:0:0"
-                        SpeedRatio="2.7"
-                        Storyboard.TargetProperty="Opacity">
+            <Storyboard
+                x:Key="OverlayFastSemiFadeIn"
+                AccelerationRatio=".97"
+                BeginTime="0:0:0"
+                SpeedRatio="2.7"
+                Storyboard.TargetProperty="Opacity">
                 <DoubleAnimation To=".7" />
             </Storyboard>
-            <Storyboard x:Key="OverlayFastSemiFadeOut"
-                        AccelerationRatio=".97"
-                        BeginTime="0:0:0"
-                        SpeedRatio="2.7"
-                        Storyboard.TargetProperty="Opacity">
+            <Storyboard
+                x:Key="OverlayFastSemiFadeOut"
+                AccelerationRatio=".97"
+                BeginTime="0:0:0"
+                SpeedRatio="2.7"
+                Storyboard.TargetProperty="Opacity">
                 <DoubleAnimation To="0.0" />
             </Storyboard>
         </ControlTemplate.Resources>
@@ -456,18 +495,20 @@
 
     </ControlTemplate>
 
-    <Storyboard x:Key="OverlayFastSemiFadeIn"
-                AccelerationRatio=".97"
-                BeginTime="0:0:0"
-                SpeedRatio="2.7"
-                Storyboard.TargetProperty="Opacity">
+    <Storyboard
+        x:Key="OverlayFastSemiFadeIn"
+        AccelerationRatio=".97"
+        BeginTime="0:0:0"
+        SpeedRatio="2.7"
+        Storyboard.TargetProperty="Opacity">
         <DoubleAnimation To=".7" />
     </Storyboard>
-    <Storyboard x:Key="OverlayFastSemiFadeOut"
-                AccelerationRatio=".97"
-                BeginTime="0:0:0"
-                SpeedRatio="2.7"
-                Storyboard.TargetProperty="Opacity">
+    <Storyboard
+        x:Key="OverlayFastSemiFadeOut"
+        AccelerationRatio=".97"
+        BeginTime="0:0:0"
+        SpeedRatio="2.7"
+        Storyboard.TargetProperty="Opacity">
         <DoubleAnimation To="0.0" />
     </Storyboard>
 
@@ -489,12 +530,13 @@
         <Setter Property="TitleTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <TextBlock Margin="8,-1,1,0"
-                               VerticalAlignment="Center"
-                               FontFamily="{DynamicResource AtcApps.Fonts.Family.Window.Title}"
-                               FontSize="{DynamicResource AtcApps.Font.Size.Window.Title}"
-                               Text="{TemplateBinding Content}"
-                               TextTrimming="CharacterEllipsis" />
+                    <TextBlock
+                        Margin="8,-1,1,0"
+                        VerticalAlignment="Center"
+                        FontFamily="{DynamicResource AtcApps.Fonts.Family.Window.Title}"
+                        FontSize="{DynamicResource AtcApps.Font.Size.Window.Title}"
+                        Text="{TemplateBinding Content}"
+                        TextTrimming="CharacterEllipsis" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -504,12 +546,13 @@
                 <Setter Property="IconTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <images:MultiFrameImage Width="{TemplateBinding Width}"
-                                                    Height="{TemplateBinding Height}"
-                                                    MultiFrameImageMode="{Binding IconScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}}"
-                                                    RenderOptions.BitmapScalingMode="{Binding IconBitmapScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}}"
-                                                    RenderOptions.EdgeMode="{Binding IconEdgeMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}}"
-                                                    Source="{TemplateBinding Content}" />
+                            <images:MultiFrameImage
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                MultiFrameImageMode="{Binding IconScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}}"
+                                RenderOptions.BitmapScalingMode="{Binding IconBitmapScalingMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}}"
+                                RenderOptions.EdgeMode="{Binding IconEdgeMode, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}}"
+                                Source="{TemplateBinding Content}" />
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>

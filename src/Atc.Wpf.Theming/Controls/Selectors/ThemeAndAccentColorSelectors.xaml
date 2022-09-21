@@ -21,11 +21,13 @@
             <selectors:ThemeSelector
                 Margin="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}, ConverterParameter={x:Static selectors:LabelControlSpacingType.Outside}}"
                 HorizontalAlignment="Right"
-                Orientation="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=LabelControlOrientation}" />
+                Orientation="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=LabelControlOrientation}"
+                RenderColorIndicatorType="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
             <selectors:AccentColorSelector
                 Margin="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}, ConverterParameter={x:Static selectors:LabelControlSpacingType.Outside}}"
                 HorizontalAlignment="Right"
-                Orientation="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=LabelControlOrientation}" />
+                Orientation="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=LabelControlOrientation}"
+                RenderColorIndicatorType="{Binding ElementName=UcThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
         </StackPanel>
     </Grid>
 

@@ -19,6 +19,18 @@ public partial class AccentColorSelector
         set => SetValue(OrientationProperty, value);
     }
 
+    public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
+        nameof(RenderColorIndicatorType),
+        typeof(RenderColorIndicatorType),
+        typeof(AccentColorSelector),
+        new PropertyMetadata(RenderColorIndicatorType.Square));
+
+    public RenderColorIndicatorType RenderColorIndicatorType
+    {
+        get => (RenderColorIndicatorType)GetValue(RenderColorIndicatorTypeProperty);
+        set => SetValue(RenderColorIndicatorTypeProperty, value);
+    }
+
     public AccentColorSelector()
     {
         InitializeComponent();
