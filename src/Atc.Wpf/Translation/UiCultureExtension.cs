@@ -1,4 +1,5 @@
-namespace Atc.Wpf.Extensions;
+// ReSharper disable ConvertToAutoPropertyWhenPossible
+namespace Atc.Wpf.Translation;
 
 /// <summary>
 /// Markup Extension used to dynamically set the Language property of an Markup element to the

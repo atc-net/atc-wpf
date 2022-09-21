@@ -46,7 +46,6 @@ global using Atc.Wpf.Controls.W3cSvg.Shapes;
 global using Atc.Wpf.Controls.W3cSvg.Shapes.Filters;
 global using Atc.Wpf.Extensions;
 global using Atc.Wpf.Factories;
-global using Atc.Wpf.Globalization;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Media;
 global using Atc.Wpf.Messaging;

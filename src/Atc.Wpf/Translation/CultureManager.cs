@@ -1,4 +1,5 @@
-namespace Atc.Wpf.Globalization;
+// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+namespace Atc.Wpf.Translation;
 
 /// <summary>
 /// Provides the ability to change the UICulture for WPF Windows and controls
@@ -6,7 +7,7 @@ namespace Atc.Wpf.Globalization;
 /// </summary>
 /// <remarks>
 /// XAML elements that use the <see cref="ResxExtension" /> are automatically
-/// updated when the <see cref="CultureManager.UiCulture" /> property is changed.
+/// updated when the <see cref="UiCulture" /> property is changed.
 /// </remarks>
 public static class CultureManager
 {
@@ -27,13 +28,17 @@ public static class CultureManager
     /// <value>
     /// The UI culture.
     /// </value>
-    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
     public static CultureInfo UiCulture
     {
         get => uiCulture;
 
         set
         {
+            if (value is null)
+            {
+                return;
+            }
+
             uiCulture = value;
             Thread.CurrentThread.CurrentUICulture = value;
             if (SynchronizeThreadCulture)
@@ -71,7 +76,8 @@ public static class CultureManager
     /// </summary>
     /// <param name="value">The culture to set.</param>
     /// <remarks>If the culture is neutral then creates a specific culture.</remarks>
-    private static void SetThreadCulture(CultureInfo value)
+    private static void SetThreadCulture(
+        CultureInfo value)
     {
         Thread.CurrentThread.CurrentCulture = value.IsNeutralCulture
             ? CultureInfo.CreateSpecificCulture(value.Name)

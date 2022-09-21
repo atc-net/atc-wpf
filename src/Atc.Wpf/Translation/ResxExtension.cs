@@ -1,20 +1,20 @@
-namespace Atc.Wpf.Extensions;
+// ReSharper disable EventNeverSubscribedTo.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+namespace Atc.Wpf.Translation;
 
 /// <summary>
 /// A markup extension to allow resources for WPF Windows and controls to be retrieved
 /// from an embedded resource (resx) file associated with the window or control.
 /// </summary>
+[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 [MarkupExtensionReturnType(typeof(object))]
 public class ResxExtension : ManagedMarkupExtension
 {
     /// <summary>
-    /// Defines the handling method for the <see cref="ResxExtension.Resource" /> event.
+    /// Defines the handling method for the <see cref="Resource" /> event.
     /// </summary>
-    /// <param name="resxName">The name of the resx file.</param>
-    /// <param name="key">The resource key within the file.</param>
-    /// <param name="culture">The culture to get the resource for.</param>
-    /// <returns>The resource.</returns>
-    public delegate object ResourceHandler(string resxName, string key, CultureInfo culture);
+    public event EventHandler<ResourceEventArgs>? Resource;
 
     /// <summary>
     /// The resource manager to use for this extension. Holding a strong reference to the
@@ -32,44 +32,19 @@ public class ResxExtension : ManagedMarkupExtension
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ResxExtension" /> class.
-    /// </summary>
-    /// <param name="resxName">Name of the RESX.</param>
-    /// <param name="key">The key.</param>
-    public ResxExtension(string resxName, string key)
+         /// Initializes a new instance of the <see cref="ResxExtension" /> class.
+         /// </summary>
+         /// <param name="resxName">Name of the RESX.</param>
+         /// <param name="key">The key.</param>
+    public ResxExtension(
+        string resxName,
+        string key)
         : base(MarkupManager)
     {
         ResxName = resxName;
         Key = key;
         DefaultValue = key;
     }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ResxExtension"/> class.
-    /// </summary>
-    /// <param name="resxName">The fully qualified name of the embedded resx (without .resources).</param>
-    /// <param name="key">The key used to get the value from the resources.</param>
-    /// <param name="defaultValue">
-    /// The default value for the property (can be null).  This is useful for non-string
-    /// that properties that may otherwise cause page load errors if the resource is not
-    /// present for some reason (eg at design time before the assembly has been compiled).
-    /// </param>
-    public ResxExtension(string resxName, string key, string defaultValue)
-        : base(MarkupManager)
-    {
-        ResxName = resxName;
-        Key = key;
-        DefaultValue = !string.IsNullOrEmpty(defaultValue)
-            ? defaultValue
-            : key;
-    }
-
-    /// <summary>
-    /// Occurs when [get resource].
-    /// </summary>
-    [SuppressMessage("Design", "CA1003:Use generic event handler instances", Justification = "OK.")]
-    [SuppressMessage("Design", "MA0046:Use EventHandler<T> to declare events", Justification = "OK.")]
-    public static event ResourceHandler? Resource;
 
     /// <summary>
     /// Gets the markup manager.
@@ -98,10 +73,11 @@ public class ResxExtension : ManagedMarkupExtension
     /// values because it allows the page to be displayed even if
     /// the resource can't be loaded.
     /// </remarks>
-    public string? DefaultValue { get; }
+    public string? DefaultValue { get; set; }
 
     /// <summary>
-    /// Gets or sets the suffix.</summary>
+    /// Gets or sets the suffix.
+    /// </summary>
     public string? Suffix { get; set; }
 
     /// <summary>
@@ -116,7 +92,8 @@ public class ResxExtension : ManagedMarkupExtension
     /// Update the ResxExtension target with the given key.
     /// </summary>
     /// <param name="key">The key.</param>
-    public static void UpdateTarget(string key)
+    public static void UpdateTarget(
+        string key)
     {
         foreach (var target in MarkupManager.ActiveExtensions
                      .Cast<ResxExtension>()
@@ -130,8 +107,6 @@ public class ResxExtension : ManagedMarkupExtension
     /// Return the value associated with the key from the resource manager.
     /// </summary>
     /// <returns>The value from the resources if possible otherwise the default value.</returns>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    [SuppressMessage("Major Code Smell", "S3928:Parameter names used into ArgumentException constructors should match an existing one ", Justification = "OK.")]
     protected override object GetValue()
     {
         if (string.IsNullOrEmpty(ResxName))
@@ -147,10 +122,7 @@ public class ResxExtension : ManagedMarkupExtension
         object? result = null;
         try
         {
-            if (Resource is not null)
-            {
-                result = Resource(ResxName, Key, CultureManager.UiCulture);
-            }
+            Resource?.Invoke(this, new ResourceEventArgs(ResxName, Key, CultureManager.UiCulture));
 
             if (result is null)
             {
@@ -158,9 +130,10 @@ public class ResxExtension : ManagedMarkupExtension
                 result = resourceManager.GetObject(Key, CultureManager.UiCulture);
             }
 
-            if (result is not null && !string.IsNullOrEmpty(Suffix))
+            if (result is not null &&
+                !string.IsNullOrEmpty(Suffix))
             {
-                result = result + Suffix;
+                result += Suffix;
             }
         }
         catch
@@ -174,21 +147,24 @@ public class ResxExtension : ManagedMarkupExtension
     /// <summary>
     /// Return the default value for the property.
     /// </summary>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    private object GetDefaultValue(string key)
+    private object GetDefaultValue(
+        string key)
     {
         object? result = DefaultValue;
         var targetType = TargetPropertyType;
         if (DefaultValue is null)
         {
-            if (targetType == typeof(string) || targetType == typeof(object))
+            if (targetType == typeof(string) ||
+                targetType == typeof(object))
             {
                 result = "#" + key + Suffix;
             }
         }
         else
         {
-            if (targetType is null || targetType == typeof(string) || targetType == typeof(object))
+            if (targetType is null ||
+                targetType == typeof(string) ||
+                targetType == typeof(object))
             {
                 return result!;
             }
