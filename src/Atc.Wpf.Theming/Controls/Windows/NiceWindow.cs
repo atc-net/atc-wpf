@@ -1,6 +1,5 @@
 // ReSharper disable InconsistentNaming
-using Atc.Wpf.Theming.Controls.Images;
-
+// ReSharper disable NotAccessedField.Global
 namespace Atc.Wpf.Theming.Controls.Windows;
 
 /// <summary>
@@ -550,7 +549,7 @@ public class NiceWindow : WindowChromeWindow
         nameof(WindowTransitionsEnabled),
         typeof(bool),
         typeof(NiceWindow),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     /// <summary>
     /// Gets or sets whether the start animation of the window content is available.
@@ -830,16 +829,25 @@ public class NiceWindow : WindowChromeWindow
 
     private void UpdateIconVisibility()
     {
-        var isVisible = (Icon is not null || IconTemplate is not null)
-                        && ((IconOverlayBehavior.HasFlag(OverlayBehavior.HiddenTitleBar) && !ShowTitleBar) || (ShowIconOnTitleBar && ShowTitleBar));
-        icon?.SetCurrentValue(VisibilityProperty, isVisible ? Visibility.Visible : Visibility.Collapsed);
+        var isVisible = (Icon is not null || IconTemplate is not null) &&
+                        ((IconOverlayBehavior.HasFlag(OverlayBehavior.HiddenTitleBar) && !ShowTitleBar) || (ShowIconOnTitleBar && ShowTitleBar));
+
+        var visibility = isVisible
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        icon?.SetCurrentValue(
+            VisibilityProperty,
+            visibility);
     }
 
     private void UpdateTitleBarElementsVisibility()
     {
         UpdateIconVisibility();
 
-        var newVisibility = TitleBarHeight > 0 && ShowTitleBar && !UseNoneWindowStyle ? Visibility.Visible : Visibility.Collapsed;
+        var newVisibility = TitleBarHeight > 0 &&
+                            ShowTitleBar &&
+                            !UseNoneWindowStyle ? Visibility.Visible : Visibility.Collapsed;
 
         titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
         titleBarBackground?.SetCurrentValue(VisibilityProperty, newVisibility);

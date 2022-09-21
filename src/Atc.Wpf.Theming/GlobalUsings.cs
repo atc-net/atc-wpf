@@ -37,6 +37,7 @@ global using Atc.Wpf.Theming.Automation.Peers;
 global using Atc.Wpf.Theming.Behaviors;
 global using Atc.Wpf.Theming.Behaviors.Internal;
 global using Atc.Wpf.Theming.Controls.Dialogs;
+global using Atc.Wpf.Theming.Controls.Images;
 global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Controls.Windows.Internal;
 global using Atc.Wpf.Theming.Exceptions;

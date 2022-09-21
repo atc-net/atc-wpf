@@ -20,7 +20,10 @@ namespace Atc.Wpf.Theming
         /// </summary>
         /// <param name="value">The value to box.</param>
         /// <returns>A boxed <see cref="bool"/> value.</returns>
-        public static object Box(bool value) => value ? TrueBox : FalseBox;
+        public static object Box(bool value)
+            => value
+                ? TrueBox
+                : FalseBox;
 
         /// <summary>
         /// Returns a boxed value for the specified nullable <paramref name="value"/>.
