@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Title>Atc.Wpf</Title>
-    <PackageId>Atc.Wpf</PackageId>
+    <Title>Atc.Wpf.Controls</Title>
+    <PackageId>Atc.Wpf.Controls</PackageId>
     <PackageTags>wpf;controls</PackageTags>
     <Description>A base library for building WPF application.</Description>
   </PropertyGroup>
