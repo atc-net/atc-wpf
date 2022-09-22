@@ -32,7 +32,7 @@
                 Height="22"
                 MinWidth="100"
                 ItemsSource="{Binding Path=Items}"
-                SelectedValue="{Binding Path=SelectedKey}"
+                SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                 SelectedValuePath="Culture.Lcid">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

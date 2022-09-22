@@ -5,7 +5,7 @@ namespace Atc.Wpf.Theming.Controls.Selectors;
 /// </summary>
 public partial class ThemeSelector : INotifyPropertyChanged
 {
-    private string selectedKey = "Light";
+    private string selectedKey = string.Empty;
 
     public static readonly DependencyProperty ShowLabelProperty = DependencyProperty.Register(
         nameof(ShowLabel),
@@ -49,37 +49,25 @@ public partial class ThemeSelector : INotifyPropertyChanged
 
         DataContext = this;
 
-        Items = new List<ThemeItem>();
-        foreach (var item in ThemeManager.Current
-                     .Themes
-                     .GroupBy(x => x.BaseColorScheme, StringComparer.Ordinal)
-                     .Select(x => x.First())
-                     .OrderBy(x => x.BaseColorScheme))
-        {
-            var translatedName = ColorNames.ResourceManager.GetString(
-                item.BaseColorScheme,
-                CultureInfo.CurrentUICulture);
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
 
-            var borderColorBrush = item.Resources["AtcApps.Brushes.ThemeForeground"] as Brush;
-            var colorBrush = item.Resources["AtcApps.Brushes.ThemeBackground"] as Brush;
-            Items.Add(
-                new ThemeItem(
-                    item.BaseColorScheme,
-                    translatedName ?? "#" + item.BaseColorScheme,
-                    borderColorBrush!,
-                    colorBrush!));
-        }
+        PopulateData();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IList<ThemeItem> Items { get; }
+    public IList<ThemeItem> Items { get; set; } = new List<ThemeItem>();
 
     public string SelectedKey
     {
         get => selectedKey;
         set
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
             selectedKey = value;
             OnPropertyChanged();
 
@@ -106,5 +94,52 @@ public partial class ThemeSelector : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    private void PopulateData()
+    {
+        if (string.IsNullOrEmpty(SelectedKey))
+        {
+            selectedKey = "Light";
+        }
+
+        Items.Clear();
+
+        foreach (var item in ThemeManager.Current
+                     .Themes
+                     .GroupBy(x => x.BaseColorScheme, StringComparer.Ordinal)
+                     .Select(x => x.First())
+                     .OrderBy(x => x.BaseColorScheme))
+        {
+            var translatedName = ColorNames.ResourceManager.GetString(
+                item.BaseColorScheme,
+                CultureInfo.CurrentUICulture);
+
+            var borderColorBrush = item.Resources["AtcApps.Brushes.ThemeForeground"] as Brush;
+            var colorBrush = item.Resources["AtcApps.Brushes.ThemeBackground"] as Brush;
+            Items.Add(
+                new ThemeItem(
+                    item.BaseColorScheme,
+                    translatedName ?? "#" + item.BaseColorScheme,
+                    borderColorBrush!,
+                    colorBrush!));
+        }
+
+        Items = Items
+            .OrderBy(x => x.DisplayName)
+            .ToList();
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        EventArgs e)
+    {
+        var oldSelectedKey = SelectedKey;
+
+        PopulateData();
+
+        OnPropertyChanged(nameof(Items));
+
+        SelectedKey = oldSelectedKey;
     }
 }

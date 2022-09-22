@@ -22,6 +22,8 @@ public static class CultureManager
     /// </summary>
     private static bool synchronizeThreadCulture = true;
 
+    public static event EventHandler? UiCultureChanged;
+
     /// <summary>
     /// Gets or sets the UI culture.
     /// </summary>
@@ -48,6 +50,8 @@ public static class CultureManager
 
             UiCultureExtension.UpdateAllTargets();
             ResxExtension.UpdateAllTargets();
+
+            UiCultureChanged?.Invoke(sender: null, EventArgs.Empty);
         }
     }
 

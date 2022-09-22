@@ -31,8 +31,9 @@
             <ComboBox
                 Height="22"
                 MinWidth="100"
+                IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding Path=Items}"
-                SelectedValue="{Binding Path=SelectedKey}"
+                SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                 SelectedValuePath="Name">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

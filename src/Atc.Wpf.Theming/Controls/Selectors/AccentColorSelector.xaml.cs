@@ -3,9 +3,9 @@ namespace Atc.Wpf.Theming.Controls.Selectors;
 /// <summary>
 /// Interaction logic for AccentColorSelector.xaml
 /// </summary>
-public partial class AccentColorSelector
+public partial class AccentColorSelector : INotifyPropertyChanged
 {
-    private string selectedKey = "Blue";
+    private string selectedKey = string.Empty;
 
     public static readonly DependencyProperty ShowLabelProperty = DependencyProperty.Register(
         nameof(ShowLabel),
@@ -49,35 +49,25 @@ public partial class AccentColorSelector
 
         DataContext = this;
 
-        Items = new List<AccentColorItem>();
-        foreach (var item in ThemeManager.Current
-                     .Themes
-                     .GroupBy(x => x.ColorScheme, StringComparer.Ordinal)
-                     .Select(x => x.First())
-                     .OrderBy(x => x.ColorScheme))
-        {
-            var translatedName = ColorNames.ResourceManager.GetString(
-                item.ColorScheme,
-                CultureInfo.CurrentUICulture);
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
 
-            Items.Add(
-                new AccentColorItem(
-                    item.ColorScheme,
-                    translatedName ?? "#" + item.ColorScheme,
-                    item.ShowcaseBrush,
-                    item.ShowcaseBrush));
-        }
+        PopulateData();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IList<AccentColorItem> Items { get; }
+    public IList<AccentColorItem> Items { get; set; } = new List<AccentColorItem>();
 
     public string SelectedKey
     {
         get => selectedKey;
         set
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
             selectedKey = value;
             OnPropertyChanged();
 
@@ -104,5 +94,51 @@ public partial class AccentColorSelector
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    private void PopulateData()
+    {
+        if (string.IsNullOrEmpty(SelectedKey))
+        {
+            selectedKey = "Blue";
+        }
+
+        Items.Clear();
+
+        var list = new List<AccentColorItem>();
+        foreach (var item in ThemeManager.Current
+                     .Themes
+                     .GroupBy(x => x.ColorScheme, StringComparer.Ordinal)
+                     .Select(x => x.First())
+                     .OrderBy(x => x.ColorScheme))
+        {
+            var translatedName = ColorNames.ResourceManager.GetString(
+                item.ColorScheme,
+                CultureInfo.CurrentUICulture);
+
+            list.Add(
+                new AccentColorItem(
+                    item.ColorScheme,
+                    translatedName ?? "#" + item.ColorScheme,
+                    item.ShowcaseBrush,
+                    item.ShowcaseBrush));
+        }
+
+        Items = list
+            .OrderBy(x => x.DisplayName)
+            .ToList();
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        EventArgs e)
+    {
+        var oldSelectedKey = SelectedKey;
+
+        PopulateData();
+
+        OnPropertyChanged(nameof(Items));
+
+        SelectedKey = oldSelectedKey;
     }
 }
