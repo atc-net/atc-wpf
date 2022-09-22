@@ -12,4 +12,3 @@ global using ControlzEx.Theming;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
-global using Microsoft.Win32;
