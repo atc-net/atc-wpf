@@ -20,7 +20,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1573,1591,1712,CA1014,MC3074</NoWarn>
+    <NoWarn>1573,1591,1712,CA1014,MC3074,NU5104</NoWarn>
 
     <!-- Used by code coverage -->
     <DebugType>full</DebugType>
@@ -43,7 +43,7 @@
   <ItemGroup Label="Code Analyzers">
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
     <PackageReference Include="Asyncify" Version="0.9.7" PrivateAssets="All" />
-    <PackageReference Include="Meziantou.Analyzer" Version="1.0.729" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.732" PrivateAssets="All" />
     <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="8.45.0.54064" PrivateAssets="All" />

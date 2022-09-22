@@ -29,7 +29,8 @@ public partial class App
     /// Raises the Startup event.
     /// </summary>
     /// <param name="e">The <see cref="StartupEventArgs"/> instance containing the event data.</param>
-    protected override void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(
+        StartupEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
