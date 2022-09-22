@@ -1,0 +1,40 @@
+<TreeView
+    x:Class="Atc.Wpf.Theming.Sample.SampleTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="230"
+    mc:Ignorable="d">
+
+    <TreeViewItem Header="Input - Button" IsExpanded="True">
+        <TreeViewItem Header="Button" IsExpanded="True" />
+        <TreeViewItem Header="ToggleButton" IsExpanded="True" />
+        <TreeViewItem Header="RadioButton" IsExpanded="True" />
+        <TreeViewItem Header="RepeatButton" IsExpanded="True" />
+    </TreeViewItem>
+    <TreeViewItem Header="Input - Box" IsExpanded="True">
+        <TreeViewItem Header="CheckBox" IsExpanded="True" />
+        <TreeViewItem Header="ComboBox" IsExpanded="True" />
+        <TreeViewItem Header="TextBox" IsExpanded="True" />
+        <TreeViewItem Header="ListBox" IsExpanded="True" />
+        <TreeViewItem Header="PasswordBox" IsExpanded="True" />
+    </TreeViewItem>
+    <TreeViewItem Header="Layout" IsExpanded="True">
+        <TreeViewItem Header="GroupBox" IsExpanded="True" />
+    </TreeViewItem>
+    <TreeViewItem Header="Misc" IsExpanded="True">
+        <TreeViewItem Header="Expander" IsExpanded="True" />
+        <TreeViewItem Header="ListView" IsExpanded="True" />
+        <TreeViewItem Header="Menu" IsExpanded="True" />
+        <TreeViewItem Header="ScrollBar" IsExpanded="True" />
+        <TreeViewItem Header="ScrollViewer" IsExpanded="True" />
+        <TreeViewItem Header="TabControl" IsExpanded="True" />
+        <TreeViewItem Header="TextBlock" IsExpanded="True" />
+        <TreeViewItem Header="ToolBar" IsExpanded="True" />
+        <TreeViewItem Header="Slider" IsExpanded="True" />
+        <TreeViewItem Header="TreeView" IsExpanded="True" />
+    </TreeViewItem>
+
+</TreeView>

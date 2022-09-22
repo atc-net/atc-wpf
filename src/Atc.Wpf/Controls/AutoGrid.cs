@@ -269,16 +269,18 @@ public class AutoGrid : Grid
     /// <summary>
     /// Handles the column count changed event.
     /// </summary>
-    /// <param name="obj">The object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    public static void ColumnCountChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    public static void ColumnCountChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if ((int)args.NewValue < 0)
+        if ((int)e.NewValue < 0)
         {
             return;
         }
 
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -292,7 +294,7 @@ public class AutoGrid : Grid
 
         // Clear and rebuild
         grid.ColumnDefinitions.Clear();
-        for (var i = 0; i < (int)args.NewValue; i++)
+        for (var i = 0; i < (int)e.NewValue; i++)
         {
             grid.ColumnDefinitions.Add(
                 new ColumnDefinition
@@ -305,23 +307,25 @@ public class AutoGrid : Grid
     /// <summary>
     /// Handle the columns changed event.
     /// </summary>
-    /// <param name="obj">The object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    public static void ColumnsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    public static void ColumnsChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (string.Empty.Equals((string)args.NewValue, StringComparison.Ordinal))
+        if (string.Empty.Equals((string)e.NewValue, StringComparison.Ordinal))
         {
             return;
         }
 
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
 
         grid.ColumnDefinitions.Clear();
 
-        var columnDefinitions = Parse((string)args.NewValue);
+        var columnDefinitions = Parse((string)e.NewValue);
         foreach (var columnDefinition in columnDefinitions)
         {
             grid.ColumnDefinitions.Add(
@@ -335,11 +339,13 @@ public class AutoGrid : Grid
     /// <summary>
     /// Handle the fixed column width changed event.
     /// </summary>
-    /// <param name="obj">The object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    public static void FixedColumnWidthChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    public static void FixedColumnWidthChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -353,18 +359,20 @@ public class AutoGrid : Grid
         // Set all existing columns to this width
         foreach (var columnDefinition in grid.ColumnDefinitions)
         {
-            columnDefinition.Width = (GridLength)args.NewValue;
+            columnDefinition.Width = (GridLength)e.NewValue;
         }
     }
 
     /// <summary>
     /// Handle the fixed row height changed event.
     /// </summary>
-    /// <param name="obj">The object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    public static void FixedRowHeightChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    public static void FixedRowHeightChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -378,7 +386,7 @@ public class AutoGrid : Grid
         // Set all existing rows to this height
         foreach (var rowDefinition in grid.RowDefinitions)
         {
-            rowDefinition.Height = (GridLength)args.NewValue;
+            rowDefinition.Height = (GridLength)e.NewValue;
         }
     }
 
@@ -389,10 +397,7 @@ public class AutoGrid : Grid
     /// <returns>Return the GridLength array.</returns>
     public static GridLength[] Parse(string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         var tokens = text.Split(',');
         var definitions = new GridLength[tokens.Length];
@@ -431,16 +436,18 @@ public class AutoGrid : Grid
     /// <summary>
     /// Handles the row count changed event.
     /// </summary>
-    /// <param name="obj">The object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    public static void RowCountChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    public static void RowCountChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if ((int)args.NewValue < 0)
+        if ((int)e.NewValue < 0)
         {
             return;
         }
 
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -454,7 +461,7 @@ public class AutoGrid : Grid
 
         // Clear and rebuild
         grid.RowDefinitions.Clear();
-        for (var i = 0; i < (int)args.NewValue; i++)
+        for (var i = 0; i < (int)e.NewValue; i++)
         {
             grid.RowDefinitions.Add(
                 new RowDefinition
@@ -467,23 +474,25 @@ public class AutoGrid : Grid
     /// <summary>
     /// Handle the rows changed event.
     /// </summary>
-    /// <param name="obj">The object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    public static void RowsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    public static void RowsChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (string.Empty.Equals((string)args.NewValue, StringComparison.Ordinal))
+        if (string.Empty.Equals((string)e.NewValue, StringComparison.Ordinal))
         {
             return;
         }
 
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
 
         grid.RowDefinitions.Clear();
 
-        var rowDefinitions = Parse((string)args.NewValue);
+        var rowDefinitions = Parse((string)e.NewValue);
         foreach (var rowDefinition in rowDefinitions)
         {
             grid.RowDefinitions.Add(
@@ -501,7 +510,8 @@ public class AutoGrid : Grid
     /// <returns>
     ///   <see cref="Size" /> that represents the required size to arrange child content.
     /// </returns>
-    protected override Size MeasureOverride(Size constraint)
+    protected override Size MeasureOverride(
+        Size constraint)
     {
         PerformLayout();
         return base.MeasureOverride(constraint);
@@ -510,9 +520,11 @@ public class AutoGrid : Grid
     /// <summary>
     /// Called when [child horizontal alignment changed].
     /// </summary>
-    private static void OnChildHorizontalAlignmentChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnChildHorizontalAlignmentChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -526,9 +538,11 @@ public class AutoGrid : Grid
     /// <summary>
     /// Called when [child layout changed].
     /// </summary>
-    private static void OnChildMarginChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnChildMarginChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -542,9 +556,11 @@ public class AutoGrid : Grid
     /// <summary>
     /// Called when [child vertical alignment changed].
     /// </summary>
-    private static void OnChildVerticalAlignmentChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    private static void OnChildVerticalAlignmentChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not AutoGrid grid)
+        if (d is not AutoGrid grid)
         {
             return;
         }
@@ -561,7 +577,9 @@ public class AutoGrid : Grid
     /// <param name="value">The value.</param>
     /// <param name="max">The maximum.</param>
     /// <returns>Return the biggest integer.</returns>
-    private static int Clamp(int value, int max)
+    private static int Clamp(
+        int value,
+        int max)
     {
         return value > max
             ? max
@@ -571,21 +589,22 @@ public class AutoGrid : Grid
     /// <summary>
     /// Apply child margins and layout effects such as alignment.
     /// </summary>
-    private void ApplyChildLayout(DependencyObject obj)
+    private void ApplyChildLayout(
+        DependencyObject d)
     {
         if (ChildMargin is not null)
         {
-            _ = obj.SetIfDefault(MarginProperty, ChildMargin.Value);
+            _ = d.SetIfDefault(MarginProperty, ChildMargin.Value);
         }
 
         if (ChildHorizontalAlignment is not null)
         {
-            _ = obj.SetIfDefault(HorizontalAlignmentProperty, ChildHorizontalAlignment.Value);
+            _ = d.SetIfDefault(HorizontalAlignmentProperty, ChildHorizontalAlignment.Value);
         }
 
         if (ChildVerticalAlignment is not null)
         {
-            _ = obj.SetIfDefault(VerticalAlignmentProperty, ChildVerticalAlignment.Value);
+            _ = d.SetIfDefault(VerticalAlignmentProperty, ChildVerticalAlignment.Value);
         }
     }
 

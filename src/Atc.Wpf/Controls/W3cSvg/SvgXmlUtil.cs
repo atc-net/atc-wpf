@@ -4,14 +4,11 @@ internal static class SvgXmlUtil
 {
     public static bool GetValueRespectingUnits(string input, out double value, double percentageMaximum)
     {
-        if (input is null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         value = 0;
         var units = string.Empty;
-        int index = input.LastIndexOfAny(new[] { '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+        var index = input.LastIndexOfAny(new[] { '.', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
         if (index < 0)
         {
             return false;
@@ -61,10 +58,7 @@ internal static class SvgXmlUtil
 
     public static double GetDoubleValue(string value, double percentageMaximum = 1)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         return GetValueRespectingUnits(value, out var result, percentageMaximum)
             ? result
@@ -73,10 +67,7 @@ internal static class SvgXmlUtil
 
     public static double AttrValue(KeyValueItem attr)
     {
-        if (attr is null)
-        {
-            throw new ArgumentNullException(nameof(attr));
-        }
+        ArgumentNullException.ThrowIfNull(attr);
 
         return GetValueRespectingUnits(attr.Value, out var result, 1)
             ? result
@@ -85,10 +76,7 @@ internal static class SvgXmlUtil
 
     public static double AttrValue(XmlNode node, string id, double defaultValue, double percentageMaximum = 1)
     {
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(node);
 
         var attr = node.Attributes?[id];
         if (attr is null)
@@ -103,10 +91,7 @@ internal static class SvgXmlUtil
 
     public static string? AttrValue(XmlNode node, string id, string? defaultValue)
     {
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(node);
 
         if (node.Attributes is null)
         {
@@ -126,10 +111,7 @@ internal static class SvgXmlUtil
 
     public static double ParseDouble(string value)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         return GetValueRespectingUnits(value, out var result, 1)
             ? result
@@ -138,10 +120,7 @@ internal static class SvgXmlUtil
 
     public static IEnumerable<KeyValueItem> SplitStyle(string fullStyle)
     {
-        if (fullStyle is null)
-        {
-            throw new ArgumentNullException(nameof(fullStyle));
-        }
+        ArgumentNullException.ThrowIfNull(fullStyle);
 
         var list = new List<KeyValueItem>();
         if (fullStyle.Length == 0)
@@ -149,7 +128,7 @@ internal static class SvgXmlUtil
             return list;
         }
 
-        string[] attrs = fullStyle.Split(';');
+        var attrs = fullStyle.Split(';');
         list.AddRange(
             from attr
                 in attrs

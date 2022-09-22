@@ -50,7 +50,7 @@ internal class Shape
         Parent = parent;
         if (attrs is not null)
         {
-            foreach (KeyValueItem attr in attrs)
+            foreach (var attr in attrs)
             {
                 Parse(svg, attr.Key, attr.Value);
             }
@@ -163,10 +163,7 @@ internal class Shape
 
     protected virtual void ParseAtStart(Svg svg, XmlNode? node)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         if (node is null)
         {
@@ -204,7 +201,7 @@ internal class Shape
             return;
         }
 
-        foreach (KeyValueItem item in SvgXmlUtil.SplitStyle(localStyle))
+        foreach (var item in SvgXmlUtil.SplitStyle(localStyle))
         {
             Parse(svg, item.Key, item.Value);
         }
@@ -213,20 +210,9 @@ internal class Shape
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     protected virtual void Parse(Svg svg, string name, string value)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (name is null)
-        {
-            throw new ArgumentNullException(nameof(name));
-        }
-
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(value);
 
         if (name.Contains(':', StringComparison.Ordinal))
         {
@@ -307,7 +293,7 @@ internal class Shape
                 return;
             case SvgTagConstants.FilterProperty when value.StartsWith("url", StringComparison.Ordinal):
             {
-                string id = ShapeUtil.ExtractBetween(value, '(', ')');
+                var id = ShapeUtil.ExtractBetween(value, '(', ')');
                 if (id.Length > 0 && id[0] == '#')
                 {
                     id = id.Substring(1);
@@ -322,7 +308,7 @@ internal class Shape
                 return;
             case SvgTagConstants.ClipPathProperty when value.StartsWith("url", StringComparison.Ordinal):
             {
-                string id = ShapeUtil.ExtractBetween(value, '(', ')');
+                var id = ShapeUtil.ExtractBetween(value, '(', ')');
                 if (id.Length > 0 && id[0] == '#')
                 {
                     id = id.Substring(1);
@@ -377,7 +363,7 @@ internal class Shape
                 return;
             case SvgTagConstants.TextDecoration:
             {
-                TextDecoration t = new TextDecoration();
+                var t = new TextDecoration();
                 switch (value)
                 {
                     case "none":
@@ -409,7 +395,7 @@ internal class Shape
                     "start" => TextAlignment.Left,
                     "middle" => TextAlignment.Center,
                     "end" => TextAlignment.Right,
-                    _ => GetTextStyle().TextAlignment
+                    _ => GetTextStyle().TextAlignment,
                 };
 
                 return;

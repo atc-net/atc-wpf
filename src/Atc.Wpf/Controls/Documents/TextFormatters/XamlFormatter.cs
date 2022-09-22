@@ -12,13 +12,10 @@ public class XamlFormatter : ITextFormatter
     /// <returns>The text.</returns>
     public string GetText(FlowDocument document)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         var tr = new TextRange(document.ContentStart, document.ContentEnd);
-        using MemoryStream memoryStream = new MemoryStream();
+        using var memoryStream = new MemoryStream();
         tr.Save(memoryStream, DataFormats.Xaml);
         return Encoding.Default.GetString(memoryStream.ToArray());
     }
@@ -31,10 +28,7 @@ public class XamlFormatter : ITextFormatter
     /// <exception cref="InvalidDataException">Data provided is not in the correct Xaml format.</exception>
     public void SetText(FlowDocument document, string text)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         try
         {
@@ -47,7 +41,7 @@ public class XamlFormatter : ITextFormatter
             else
             {
                 var tr = new TextRange(document.ContentStart, document.ContentEnd);
-                using MemoryStream memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
+                using var memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
                 tr.Load(memoryStream, DataFormats.Xaml);
             }
         }

@@ -85,10 +85,7 @@ public sealed class SvgIconExtension : SvgIconBase
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public override object? ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider is null)
-        {
-            throw new ArgumentNullException(nameof(serviceProvider));
-        }
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         try
         {
@@ -152,7 +149,7 @@ public sealed class SvgIconExtension : SvgIconBase
                 var location = Path.GetDirectoryName(assembly.Location);
                 if (location is not null)
                 {
-                    string localFile = Path.Combine(location, tmp);
+                    var localFile = Path.Combine(location, tmp);
                     if (File.Exists(localFile))
                     {
                         return new Uri(localFile);
@@ -177,7 +174,7 @@ public sealed class SvgIconExtension : SvgIconBase
                 tmp = tmp.TrimStart('/');
             }
 
-            bool designTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
+            var designTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
             if (designTime && !string.IsNullOrWhiteSpace(ApplicationName))
             {
                 return new Uri($"/{ApplicationName};component/{tmp}", UriKind.Relative);

@@ -22,11 +22,11 @@ public class ValidationErrorsToStringValueConverterTests
     {
         // Arrange
         var errors = new ObservableCollection<ValidationError>();
-        KeyValuePair<string, string>[] testData = inputSetNumber switch
+        var testData = inputSetNumber switch
         {
             1 => inputSet1,
             2 => inputSet2,
-            _ => Array.Empty<KeyValuePair<string, string>>()
+            _ => Array.Empty<KeyValuePair<string, string>>(),
         };
 
         foreach (var (key, value) in testData)

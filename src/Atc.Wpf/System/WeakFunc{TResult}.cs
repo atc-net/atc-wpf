@@ -136,7 +136,7 @@ public class WeakFunc<TResult>
         Reference = new WeakReference(target);
 
 #if DEBUG
-        if (this.FuncReference.Target is not null && !keepTargetAlive)
+        if (FuncReference.Target is not null && !keepTargetAlive)
         {
             var type = FuncReference.Target.GetType();
 

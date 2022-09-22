@@ -8,10 +8,7 @@ internal static class CssStyleParser
 
     public static void ParseStyle(Svg svg, string style)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         var svgStyles = svg.Styles;
 

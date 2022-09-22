@@ -20,7 +20,7 @@ internal class XmlTokenizer
     public static List<XmlToken> Tokenize(string input)
     {
         var tokenizerMode = XmlTokenizerMode.OutsideElement;
-        XmlTokenizer tokenizer = new XmlTokenizer();
+        var tokenizer = new XmlTokenizer();
         return tokenizer.Tokenize(input, ref tokenizerMode);
     }
 
@@ -29,7 +29,7 @@ internal class XmlTokenizer
         input = inputValue;
         mode = tokenizerMode;
         position = 0;
-        List<XmlToken> result = Tokenize();
+        var result = Tokenize();
         return result;
     }
 
@@ -53,7 +53,7 @@ internal class XmlTokenizer
             return new XmlToken(XmlTokenKind.Eof, 0);
         }
 
-        XmlToken token = mode switch
+        var token = mode switch
         {
             XmlTokenizerMode.AfterAttributeEquals => TokenizeAttributeValue(),
             XmlTokenizerMode.AfterAttributeName => TokenizeSimple("=", XmlTokenKind.Equals, XmlTokenizerMode.AfterAttributeEquals),
@@ -63,7 +63,7 @@ internal class XmlTokenizer
             XmlTokenizerMode.InsideElement => TokenizeInsideElement(),
             XmlTokenizerMode.InsideProcessingInstruction => TokenizeInsideProcessingInstruction(),
             XmlTokenizerMode.OutsideElement => TokenizeOutsideElement(),
-            _ => new XmlToken(XmlTokenKind.Eof, 0)
+            _ => new XmlToken(XmlTokenKind.Eof, 0),
         };
 
         return token;
@@ -72,13 +72,13 @@ internal class XmlTokenizer
     private static bool IsNameCharacter(char character)
     {
         // XML rule: Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender
-        bool result = char.IsLetterOrDigit(character) || character == '.' || character == '-' || character == '_' || character == ':';
+        var result = char.IsLetterOrDigit(character) || character == '.' || character == '-' || character == '_' || character == ':';
         return result;
     }
 
     private XmlToken TokenizeAttributeValue()
     {
-        int closePosition = input.IndexOf(input[position], position + 1);
+        var closePosition = input.IndexOf(input[position], position + 1);
         var token = new XmlToken(XmlTokenKind.AttributeValue, closePosition + 1 - position);
         position = closePosition + 1;
         mode = XmlTokenizerMode.InsideElement;
@@ -172,7 +172,7 @@ internal class XmlTokenizer
         {
             '<' => TokenizeOpen(),
             '&' => TokenizeEntity(),
-            _ => TokenizeText()
+            _ => TokenizeText(),
         };
     }
 
@@ -215,7 +215,7 @@ internal class XmlTokenizer
 
     private XmlToken TokenizeInsideProcessingInstruction()
     {
-        int index = input.IndexOf("?>", position, StringComparison.Ordinal);
+        var index = input.IndexOf("?>", position, StringComparison.Ordinal);
         if (position == index)
         {
             position += "?>".Length;
@@ -230,7 +230,7 @@ internal class XmlTokenizer
 
     private XmlToken TokenizeInsideCData()
     {
-        int index = input.IndexOf("]]>", position, StringComparison.Ordinal);
+        var index = input.IndexOf("]]>", position, StringComparison.Ordinal);
         if (position == index)
         {
             position += "]]>".Length;
@@ -245,7 +245,7 @@ internal class XmlTokenizer
 
     private XmlToken TokenizeInsideComment()
     {
-        int index = input.IndexOf("-->", position, StringComparison.Ordinal);
+        var index = input.IndexOf("-->", position, StringComparison.Ordinal);
         if (position == index)
         {
             position += "-->".Length;

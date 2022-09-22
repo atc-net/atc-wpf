@@ -3,21 +3,14 @@ namespace Atc.Wpf.Controls.W3cSvg.PaintServers;
 
 internal abstract class GradientColorPaintServer : PaintServer
 {
-    private readonly List<GradientStop> gradientStop = new ();
+    private readonly List<GradientStop> gradientStop = new();
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     protected GradientColorPaintServer(PaintServerManager owner, XmlNode node)
         : base(owner)
     {
-        if (owner is null)
-        {
-            throw new ArgumentNullException(nameof(owner));
-        }
-
-        if (node is null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
+        ArgumentNullException.ThrowIfNull(owner);
+        ArgumentNullException.ThrowIfNull(node);
 
         GradientUnits = SvgXmlUtil.AttrValue(node, "gradientUnits", string.Empty);
         var transform = SvgXmlUtil.AttrValue(node, "gradientTransform", string.Empty);

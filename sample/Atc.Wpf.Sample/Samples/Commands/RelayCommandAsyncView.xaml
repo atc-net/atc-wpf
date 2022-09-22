@@ -40,7 +40,7 @@
                             Command="{Binding Path=Test3Command}"
                             CommandParameter="Hallo"
                             Content="Button with no canExecute, and have a string as CommandParameter" />
-                    </StackPanel>                
+                    </StackPanel>
                 </StackPanel>
 
             </ScrollViewer>

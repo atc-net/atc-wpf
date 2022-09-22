@@ -1,0 +1,54 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Selectors.LanguageSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors"
+    xmlns:translation="clr-namespace:Atc.Wpf.Translation"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.ValueConverters"
+    x:Name="UcLanguageSelector"
+    d:DataContext="{d:DesignInstance Type=selectors:LanguageSelector}"
+    d:DesignHeight="50"
+    d:DesignWidth="200"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <valueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleConverter" />
+        <valueConverters:LabelControlOrientationToMarginValueConverter x:Key="LabelControlOrientationToMarginConverter" />
+        <selectors:RenderFlagIndicatorTypeToVisibilityValueConverter x:Key="RenderFlagIndicatorTypeToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel Orientation="{Binding ElementName=UcLanguageSelector, Path=Orientation}">
+            <TextBlock
+                Margin="{Binding ElementName=UcLanguageSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}}"
+                VerticalAlignment="Center"
+                Text="{translation:Resx ResxName=Atc.Wpf.Resource.Miscellaneous,
+                                        Key=Language,
+                                        Suffix=':'}"
+                Visibility="{Binding ElementName=UcLanguageSelector, Path=ShowLabel, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
+            <ComboBox
+                Height="22"
+                MinWidth="100"
+                ItemsSource="{Binding Path=Items}"
+                SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+                SelectedValuePath="Culture.Lcid">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="0,0,5,0"
+                                Source="{Binding Path=Image}"
+                                Visibility="{Binding ElementName=UcLanguageSelector, Path=RenderFlagIndicatorType, Converter={StaticResource RenderFlagIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderFlagIndicatorType.Shiny16}}" />
+                            <TextBlock Text="{Binding Culture.LanguageDisplayName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+
+</UserControl>

@@ -12,10 +12,7 @@ public class PlainTextFormatter : ITextFormatter
     /// <returns>The text.</returns>
     public string GetText(FlowDocument document)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         return new TextRange(document.ContentStart, document.ContentEnd).Text;
     }
@@ -27,10 +24,7 @@ public class PlainTextFormatter : ITextFormatter
     /// <param name="text">The text.</param>
     public void SetText(FlowDocument document, string text)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         new TextRange(document.ContentStart, document.ContentEnd).Text = text;
     }

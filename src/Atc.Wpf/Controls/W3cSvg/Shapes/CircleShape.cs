@@ -5,10 +5,7 @@ internal class CircleShape : Shape
     public CircleShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         Cx = SvgXmlUtil.AttrValue(node, "cx", 0, svg.ViewBox?.Width ?? svg.Size.Width);
         Cy = SvgXmlUtil.AttrValue(node, "cy", 0, svg.ViewBox?.Height ?? svg.Size.Height);

@@ -13,7 +13,7 @@ public static class BitmapEncoderFactory
             ImageFormatType.Png => new PngBitmapEncoder(),
             ImageFormatType.Tiff => new TiffBitmapEncoder(),
             ImageFormatType.Wmp => new WmpBitmapEncoder(),
-            _ => throw new SwitchCaseDefaultException(imageFormatType)
+            _ => throw new SwitchCaseDefaultException(imageFormatType),
         };
     }
 }

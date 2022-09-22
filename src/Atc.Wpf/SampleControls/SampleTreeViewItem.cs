@@ -27,12 +27,10 @@ public class SampleTreeViewItem : TreeViewItem
     /// Provides class handling for a MouseLeftButtonDown event.
     /// </summary>
     /// <param name="e">The event data.</param>
-    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+    protected override void OnMouseLeftButtonDown(
+        MouseButtonEventArgs e)
     {
-        if (e is null)
-        {
-            throw new ArgumentNullException(nameof(e));
-        }
+        ArgumentNullException.ThrowIfNull(e);
 
         if (string.IsNullOrEmpty(SamplePath))
         {

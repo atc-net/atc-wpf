@@ -5,8 +5,8 @@ namespace Atc.Wpf.Controls;
 /// </summary>
 public class AutoGreyableImage : Image
 {
-    private static readonly ConcurrentDictionary<int, FormatConvertedBitmap> CacheFormatConvertedBitmap = new ConcurrentDictionary<int, FormatConvertedBitmap>();
-    private static readonly ConcurrentDictionary<int, ImageBrush> CacheImageBrush = new ConcurrentDictionary<int, ImageBrush>();
+    private static readonly ConcurrentDictionary<int, FormatConvertedBitmap> CacheFormatConvertedBitmap = new();
+    private static readonly ConcurrentDictionary<int, ImageBrush> CacheImageBrush = new();
 
     /// <summary>
     /// Initializes static members of the <see cref="AutoGreyableImage"/> class.
@@ -24,18 +24,20 @@ public class AutoGreyableImage : Image
     /// <summary>
     /// Called when [is enabled changed].
     /// </summary>
-    /// <param name="obj">The dependency object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    private static void OnIsEnabledChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The dependency object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    private static void OnIsEnabledChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        var autoGreyScaleImage = obj as AutoGreyableImage;
+        var autoGreyScaleImage = d as AutoGreyableImage;
         if (autoGreyScaleImage?.Source is null)
         {
             return;
         }
 
-        bool isEnable = args.NewValue is not null &&
-                        Convert.ToBoolean(args.NewValue, GlobalizationConstants.EnglishCultureInfo);
+        var isEnable = e.NewValue is not null &&
+                       Convert.ToBoolean(e.NewValue, GlobalizationConstants.EnglishCultureInfo);
         if (isEnable)
         {
             // Set the Source property to the original value.

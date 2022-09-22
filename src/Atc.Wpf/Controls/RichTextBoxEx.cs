@@ -90,7 +90,7 @@ public class RichTextBoxEx : RichTextBox
     {
         base.BeginInit();
 
-        //// Do not update anything while initializing. See EndInit
+        // Do not update anything while initializing. See EndInit
         preventTextUpdate = true;
         preventDocumentUpdate = true;
     }
@@ -122,7 +122,9 @@ public class RichTextBoxEx : RichTextBox
     /// </summary>
     /// <param name="oldValue">The old value.</param>
     /// <param name="newValue">The new value.</param>
-    protected virtual void OnTextFormatterPropertyChanged(ITextFormatter oldValue, ITextFormatter newValue)
+    protected virtual void OnTextFormatterPropertyChanged(
+        ITextFormatter oldValue,
+        ITextFormatter newValue)
     {
         UpdateTextFromDocument();
     }
@@ -131,7 +133,8 @@ public class RichTextBoxEx : RichTextBox
     /// Is called when content in this editing control changes.
     /// </summary>
     /// <param name="e">The arguments that are associated with the <see cref="TextBoxBase.TextChanged" /> event.</param>
-    protected override void OnTextChanged(TextChangedEventArgs e)
+    protected override void OnTextChanged(
+        TextChangedEventArgs e)
     {
         base.OnTextChanged(e);
         UpdateTextFromDocument();
@@ -140,11 +143,13 @@ public class RichTextBoxEx : RichTextBox
     /// <summary>
     /// Called when [text property changed].
     /// </summary>
-    /// <param name="obj">The dependency object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-    private static void OnTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The dependency object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+    private static void OnTextChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not RichTextBoxEx richTextBoxEx)
+        if (d is not RichTextBoxEx richTextBoxEx)
         {
             return;
         }
@@ -155,9 +160,11 @@ public class RichTextBoxEx : RichTextBox
     /// <summary>
     /// Coerces the text property.
     /// </summary>
-    /// <param name="obj">The dependency object.</param>
+    /// <param name="d">The dependency object.</param>
     /// <param name="value">The value.</param>
-    private static object CoerceText(DependencyObject obj, object? value)
+    private static object CoerceText(
+        DependencyObject d,
+        object? value)
     {
         return value ?? string.Empty;
     }
@@ -165,16 +172,20 @@ public class RichTextBoxEx : RichTextBox
     /// <summary>
     /// Called when [text formatter property changed].
     /// </summary>
-    /// <param name="obj">The dependency object.</param>
-    /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-    private static void OnTextFormatterChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    /// <param name="d">The dependency object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+    private static void OnTextFormatterChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (obj is not RichTextBoxEx richTextBoxEx)
+        if (d is not RichTextBoxEx richTextBoxEx)
         {
             return;
         }
 
-        richTextBoxEx?.OnTextFormatterPropertyChanged((ITextFormatter)args.OldValue, (ITextFormatter)args.NewValue);
+        richTextBoxEx.OnTextFormatterPropertyChanged(
+            (ITextFormatter)e.OldValue,
+            (ITextFormatter)e.NewValue);
     }
 
     /// <summary>

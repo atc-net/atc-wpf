@@ -12,11 +12,11 @@ public class MultiBoolToBoolValueConverterTests
     public void Convert(bool expected, int inputSetNumber)
     {
         // Arrange
-        object[] input = inputSetNumber switch
+        var input = inputSetNumber switch
         {
             1 => inputSet1,
             2 => inputSet2,
-            _ => Array.Empty<object>()
+            _ => Array.Empty<object>(),
         };
 
         // Atc

@@ -7,10 +7,7 @@ public static class TestHelper
         bool expectedAsEmpty,
         string propertyName)
     {
-        if (eventArgs is null)
-        {
-            throw new ArgumentNullException(nameof(eventArgs));
-        }
+        ArgumentNullException.ThrowIfNull(eventArgs);
 
         if (expectedAsEmpty)
         {
@@ -21,10 +18,7 @@ public static class TestHelper
         }
         else
         {
-            if (propertyName is null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
+            ArgumentNullException.ThrowIfNull(propertyName);
 
             if (propertyName.Equals(eventArgs.PropertyName, StringComparison.Ordinal))
             {

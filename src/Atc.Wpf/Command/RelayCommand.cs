@@ -26,10 +26,7 @@ public sealed class RelayCommand : IRelayCommand
     /// <exception cref="ArgumentNullException">If the execute argument is null.</exception>
     public RelayCommand(Action execute, Func<bool>? canExecute = null, bool keepTargetAlive = false)
     {
-        if (execute is null)
-        {
-            throw new ArgumentNullException(nameof(execute));
-        }
+        ArgumentNullException.ThrowIfNull(execute);
 
         waExecute = new WeakAction(execute, keepTargetAlive);
 
@@ -52,12 +49,12 @@ public sealed class RelayCommand : IRelayCommand
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = requerySuggestedLocal;
+            var canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
-                EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
+                var handler3 = (EventHandler)Delegate.Combine(handler2, value);
                 canExecuteChanged = Interlocked.CompareExchange(
                     ref requerySuggestedLocal,
                     handler3,
@@ -76,12 +73,12 @@ public sealed class RelayCommand : IRelayCommand
             }
 
             EventHandler handler2;
-            EventHandler canExecuteChanged = requerySuggestedLocal;
+            var canExecuteChanged = requerySuggestedLocal;
 
             do
             {
                 handler2 = canExecuteChanged;
-                EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
+                var handler3 = (EventHandler)Delegate.Remove(handler2, value)!;
                 canExecuteChanged = Interlocked.CompareExchange(
                     ref requerySuggestedLocal,
                     handler3,

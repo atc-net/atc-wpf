@@ -10,7 +10,9 @@ public partial class FadeShaderEffectView
         InitializeComponent();
     }
 
-    private void ResetOnClick(object sender, RoutedEventArgs e)
+    private void ResetOnClick(
+        object sender,
+        RoutedEventArgs e)
     {
         SliderStrength.Value = 0;
     }

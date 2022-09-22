@@ -3,16 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf", "src\Atc.Wpf\Atc.Wpf.csproj", "{9E78A492-8638-473B-ADBC-C377AF3EFC72}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Tests", "test\Atc.Wpf.Tests\Atc.Wpf.Tests.csproj", "{281A8963-0302-4E28-84FB-8D16A13F6B2B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Sample", "sample\Atc.Wpf.Sample\Atc.Wpf.Sample.csproj", "{C8D94D8E-5177-4EEE-8056-A3764B247013}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CDD5376-1409-4FC7-9ACA-4659ED944589}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{CBB934C5-7D23-4490-8A8F-8807DEC9543D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2C893B25-2401-44B7-9FDA-7DC496C00D2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0FA723AA-8BA7-42AD-9C08-6491F364A258}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf", "src\Atc.Wpf\Atc.Wpf.csproj", "{0FBD009E-1905-4354-980E-9AD5199BD172}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{CCB6786B-31F4-40A2-A549-3F36F26641F2}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Theming", "src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj", "{50B9C861-0478-4AF3-958E-54F9AEC3A614}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Theming.Sample", "sample\Atc.Wpf.Theming.Sample\Atc.Wpf.Theming.Sample.csproj", "{4653091D-D1B8-4AC6-B4A3-8D46F1DA6D00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Controls.Sample", "sample\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj", "{52CA5442-0111-449E-B55D-2F272B0D01E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Controls", "src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj", "{286557DA-8BB2-4302-B4C7-28CB81161B16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +34,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E78A492-8638-473B-ADBC-C377AF3EFC72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{281A8963-0302-4E28-84FB-8D16A13F6B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,11 +42,41 @@ Global
 		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8D94D8E-5177-4EEE-8056-A3764B247013}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FBD009E-1905-4354-980E-9AD5199BD172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FBD009E-1905-4354-980E-9AD5199BD172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FBD009E-1905-4354-980E-9AD5199BD172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FBD009E-1905-4354-980E-9AD5199BD172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B9C861-0478-4AF3-958E-54F9AEC3A614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B9C861-0478-4AF3-958E-54F9AEC3A614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B9C861-0478-4AF3-958E-54F9AEC3A614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B9C861-0478-4AF3-958E-54F9AEC3A614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4653091D-D1B8-4AC6-B4A3-8D46F1DA6D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4653091D-D1B8-4AC6-B4A3-8D46F1DA6D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4653091D-D1B8-4AC6-B4A3-8D46F1DA6D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4653091D-D1B8-4AC6-B4A3-8D46F1DA6D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CA5442-0111-449E-B55D-2F272B0D01E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CA5442-0111-449E-B55D-2F272B0D01E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CA5442-0111-449E-B55D-2F272B0D01E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CA5442-0111-449E-B55D-2F272B0D01E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{286557DA-8BB2-4302-B4C7-28CB81161B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{286557DA-8BB2-4302-B4C7-28CB81161B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{286557DA-8BB2-4302-B4C7-28CB81161B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{286557DA-8BB2-4302-B4C7-28CB81161B16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{281A8963-0302-4E28-84FB-8D16A13F6B2B} = {2C893B25-2401-44B7-9FDA-7DC496C00D2B}
+		{C8D94D8E-5177-4EEE-8056-A3764B247013} = {CBB934C5-7D23-4490-8A8F-8807DEC9543D}
+		{0FBD009E-1905-4354-980E-9AD5199BD172} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
+		{50B9C861-0478-4AF3-958E-54F9AEC3A614} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
+		{4653091D-D1B8-4AC6-B4A3-8D46F1DA6D00} = {CBB934C5-7D23-4490-8A8F-8807DEC9543D}
+		{52CA5442-0111-449E-B55D-2F272B0D01E9} = {CBB934C5-7D23-4490-8A8F-8807DEC9543D}
+		{286557DA-8BB2-4302-B4C7-28CB81161B16} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationTail"]}
 		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
 	EndGlobalSection
 EndGlobal

@@ -9,17 +9,14 @@ public class BoolToWidthValueConverter : IValueConverter
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         if (value is not bool boolValue)
         {
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
         }
 
-        double width = double.NaN;
+        var width = double.NaN;
         if (parameter is null || "Auto".IsEqual(parameter.ToString()!, StringComparison.OrdinalIgnoreCase))
         {
             return boolValue

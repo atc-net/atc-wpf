@@ -17,10 +17,7 @@ public class CSharpFormatter : ITextFormatter
     /// <returns>The text.</returns>
     public string GetText(FlowDocument document)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         return new TextRange(document.ContentStart, document.ContentEnd).Text;
     }
@@ -32,10 +29,7 @@ public class CSharpFormatter : ITextFormatter
     /// <param name="text">The text.</param>
     public void SetText(FlowDocument document, string text)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         document.Blocks.Clear();
         document.SetCurrentValue(FlowDocument.PageWidthProperty, 2500D);

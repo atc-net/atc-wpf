@@ -72,7 +72,7 @@ public class Messenger : IMessenger
         {
             var messageType = typeof(TMessage);
 
-            Dictionary<Type, List<WeakActionAndToken>> recipients = receiveDerivedMessagesToo
+            var recipients = receiveDerivedMessagesToo
                 ? recipientsOfSubclassesAction
                 : recipientsStrictAction;
 
@@ -191,7 +191,7 @@ public class Messenger : IMessenger
             return;
         }
 
-        Action cleanupAction = Cleanup;
+        var cleanupAction = Cleanup;
 
         if (context is not null)
         {

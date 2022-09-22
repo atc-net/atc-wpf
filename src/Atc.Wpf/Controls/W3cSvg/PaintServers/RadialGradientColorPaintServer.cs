@@ -36,7 +36,7 @@ internal class RadialGradientColorPaintServer : GradientColorPaintServer
         }
 
         var brush = new RadialGradientBrush();
-        foreach (GradientStop stop in Stops)
+        foreach (var stop in Stops)
         {
             brush.GradientStops.Add(stop);
         }

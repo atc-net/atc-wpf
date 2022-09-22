@@ -79,10 +79,7 @@ internal class SvgRender
 
     public DrawingGroup CreateDrawing(Svg svg)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         return LoadGroup(svg.Elements, svg.ViewBox, isSwitch: false);
     }
@@ -120,8 +117,8 @@ internal class SvgRender
             if (stroke.StrokeArray is not null)
             {
                 geometryDrawing.Pen.DashCap = PenLineCap.Flat;
-                DashStyle ds = new DashStyle();
-                double scale = 1 / stroke.Width;
+                var ds = new DashStyle();
+                var scale = 1 / stroke.Width;
                 foreach (var d in stroke.StrokeArray)
                 {
                     var dash = (int)d;
@@ -212,7 +209,7 @@ internal class SvgRender
             drawingGroup.ClipGeometry = new RectangleGeometry(viewBox.Value);
         }
 
-        foreach (Shape shape in elements)
+        foreach (var shape in elements)
         {
             shape.RealParent = null;
             if (!shape.Display)
@@ -401,7 +398,7 @@ internal class SvgRender
 
                 case Clip clip:
                 {
-                    DrawingGroup subgroup = LoadGroup(clip.Elements, viewBox: null, isSwitch: false);
+                    var subgroup = LoadGroup(clip.Elements, viewBox: null, isSwitch: false);
                     if (clip.Transform is not null)
                     {
                         subgroup.Transform = clip.Transform;
@@ -413,19 +410,19 @@ internal class SvgRender
 
                 case Shapes.Group groupShape:
                 {
-                    DrawingGroup subgroup = LoadGroup(groupShape.Elements, viewBox: null, groupShape.IsSwitch);
+                    var subgroup = LoadGroup(groupShape.Elements, viewBox: null, groupShape.IsSwitch);
                     AddDrawingToGroup(drawingGroup, groupShape, subgroup);
                     continue;
                 }
 
                 case RectangleShape rectangleShape:
                 {
-                    double dx = rectangleShape.X;
-                    double dy = rectangleShape.Y;
-                    double width = rectangleShape.Width;
-                    double height = rectangleShape.Height;
-                    double rx = rectangleShape.Rx;
-                    double ry = rectangleShape.Ry;
+                    var dx = rectangleShape.X;
+                    var dy = rectangleShape.Y;
+                    var width = rectangleShape.Width;
+                    var height = rectangleShape.Height;
+                    var rx = rectangleShape.Rx;
+                    var ry = rectangleShape.Ry;
                     if (width <= 0 || height <= 0)
                     {
                         continue;
@@ -441,7 +438,7 @@ internal class SvgRender
                             break;
                     }
 
-                    RectangleGeometry rect = new RectangleGeometry(new Rect(dx, dy, width, height), rx, ry);
+                    var rect = new RectangleGeometry(new Rect(dx, dy, width, height), rx, ry);
                     var di = NewDrawingItem(rectangleShape, rect);
                     AddDrawingToGroup(drawingGroup, rectangleShape, di);
                     continue;
@@ -515,7 +512,7 @@ internal class SvgRender
                 case TextShape textShape:
                 {
                     var gp = TextRender.BuildTextGeometry(textShape);
-                    foreach (Geometry gm in gp.Children)
+                    foreach (var gm in gp.Children)
                     {
                         var tSpan = TextRender.GetElement(gm);
 

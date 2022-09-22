@@ -30,10 +30,7 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     /// be kept as a hard reference, which might cause a memory leak.</param>
     public WeakAction(object? target, Action<T>? action, bool keepTargetAlive = false)
     {
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(action);
 
         if (action.Method.IsStatic)
         {
@@ -58,9 +55,9 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
         Reference = new WeakReference(target);
 
 #if DEBUG
-        if (this.ActionReference.Target is not null && !keepTargetAlive)
+        if (ActionReference.Target is not null && !keepTargetAlive)
         {
-            var type = this.ActionReference.Target.GetType();
+            var type = ActionReference.Target.GetType();
 
             if (type.Name.StartsWith("<>", StringComparison.Ordinal) && type.Name.Contains("DisplayClass", StringComparison.Ordinal))
             {
@@ -136,10 +133,7 @@ public class WeakAction<T> : WeakAction, IExecuteWithObject
     ///     being casted to T.</param>
     public void ExecuteWithObject(object? parameter)
     {
-        if (parameter is null)
-        {
-            throw new ArgumentNullException(nameof(parameter));
-        }
+        ArgumentNullException.ThrowIfNull(parameter);
 
         var parameterCasted = (T)parameter;
         Execute(parameterCasted);

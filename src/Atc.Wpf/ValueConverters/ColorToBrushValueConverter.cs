@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Color), typeof(SolidColorBrush))]
 public class ColorToBrushValueConverter : IValueConverter
 {
+    public static readonly ColorToBrushValueConverter DefaultInstance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -19,7 +21,10 @@ public class ColorToBrushValueConverter : IValueConverter
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
         }
 
-        return new SolidColorBrush(color);
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+
+        return brush;
     }
 
     /// <inheritdoc />

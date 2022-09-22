@@ -19,15 +19,8 @@ public class XamlFormatter : ITextFormatter
     /// <returns>The flowDocument.</returns>
     public static FlowDocument ColorizeXaml(string xamlText, FlowDocument targetDoc)
     {
-        if (xamlText is null)
-        {
-            throw new ArgumentNullException(nameof(xamlText));
-        }
-
-        if (targetDoc is null)
-        {
-            throw new ArgumentNullException(nameof(targetDoc));
-        }
+        ArgumentNullException.ThrowIfNull(xamlText);
+        ArgumentNullException.ThrowIfNull(targetDoc);
 
         var tokenizer = new XmlTokenizer();
         var mode = XmlTokenizerMode.OutsideElement;
@@ -35,8 +28,8 @@ public class XamlFormatter : ITextFormatter
         var tokens = tokenizer.Tokenize(xamlText, ref mode);
         var tokenTexts = new List<string>(tokens.Count);
         var colors = new List<Color>(tokens.Count);
-        int position = 0;
-        foreach (XmlToken token in tokens)
+        var position = 0;
+        foreach (var token in tokens)
         {
             var tokenText = xamlText.Substring(position, token.Length);
             tokenTexts.Add(tokenText);
@@ -69,10 +62,7 @@ public class XamlFormatter : ITextFormatter
     /// <returns>The text.</returns>
     public string GetText(FlowDocument document)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         return new TextRange(document.ContentStart, document.ContentEnd).Text;
     }
@@ -84,10 +74,7 @@ public class XamlFormatter : ITextFormatter
     /// <param name="text">The text.</param>
     public void SetText(FlowDocument document, string text)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         document.Blocks.Clear();
         document.SetCurrentValue(FlowDocument.PageWidthProperty, 2500D);
@@ -96,7 +83,7 @@ public class XamlFormatter : ITextFormatter
 
     private static Color ColorForToken(XmlToken token)
     {
-        Color color = Color.FromRgb(0, 0, 0);
+        var color = Color.FromRgb(0, 0, 0);
         switch (token.Kind)
         {
             case XmlTokenKind.Open:

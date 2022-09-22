@@ -29,10 +29,7 @@ public static class ColorUtil
     /// <returns>The color from hexa color.</returns>
     public static Color GetColorFromHex(string hexaColor)
     {
-        if (hexaColor is null)
-        {
-            throw new ArgumentNullException(nameof(hexaColor));
-        }
+        ArgumentNullException.ThrowIfNull(hexaColor);
 
         if (!hexaColor.StartsWith('#'))
         {
@@ -82,10 +79,7 @@ public static class ColorUtil
     /// </returns>
     public static string FormatColorString(string stringToFormat, bool isUsingAlphaChannel)
     {
-        if (stringToFormat is null)
-        {
-            throw new ArgumentNullException(nameof(stringToFormat));
-        }
+        ArgumentNullException.ThrowIfNull(stringToFormat);
 
         if (!isUsingAlphaChannel && (stringToFormat.Length == 9))
         {
@@ -117,7 +111,7 @@ public static class ColorUtil
 
         double min = System.Math.Min(System.Math.Min(r, g), b);
         double v = System.Math.Max(System.Math.Max(r, g), b);
-        double delta = v - min;
+        var delta = v - min;
 
         if (v.IsEqual(0))
         {
@@ -134,7 +128,7 @@ public static class ColorUtil
         }
         else
         {
-            int iv = (int)v;
+            var iv = (int)v;
             if (r == iv)
             {
                 h = (g - b) / delta;
@@ -202,11 +196,11 @@ public static class ColorUtil
                 h /= 60;
             }
 
-            int i = (int)System.Math.Truncate(h);
-            double f = h - i;
-            double p = v * (1.0 - s);
-            double q = v * (1.0 - (s * f));
-            double t = v * (1.0 - (s * (1.0 - f)));
+            var i = (int)System.Math.Truncate(h);
+            var f = h - i;
+            var p = v * (1.0 - s);
+            var q = v * (1.0 - (s * f));
+            var t = v * (1.0 - (s * (1.0 - f)));
 
             switch (i)
             {
@@ -271,7 +265,7 @@ public static class ColorUtil
     /// </returns>
     public static IList<Color> GenerateHsvSpectrum()
     {
-        List<Color> colorsList = new List<Color>(8);
+        var colorsList = new List<Color>(8);
 
         for (var i = 0; i < 29; i++)
         {
@@ -316,8 +310,8 @@ public static class ColorUtil
     /// <param name="amount">The amount.</param>
     private static float Lerp(float start, float end, float amount)
     {
-        float difference = end - start;
-        float adjusted = difference * amount;
+        var difference = end - start;
+        var adjusted = difference * amount;
         return start + adjusted;
     }
 

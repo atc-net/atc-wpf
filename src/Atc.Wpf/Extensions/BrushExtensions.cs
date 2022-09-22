@@ -31,10 +31,7 @@ public static class BrushExtensions
     /// <returns>The BitmapSource from a brush.</returns>
     public static BitmapSource ToBitmapSource(this Brush brush, int pixelWidth = 32, int pixelHeight = 32, double dpiX = 96, double dpiY = 96)
     {
-        if (brush is null)
-        {
-            throw new ArgumentNullException(nameof(brush));
-        }
+        ArgumentNullException.ThrowIfNull(brush);
 
         if (pixelWidth < 1)
         {
@@ -64,7 +61,7 @@ public static class BrushExtensions
             PixelFormats.Pbgra32);
 
         var drawingVisual = new DrawingVisual();
-        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+        using (var drawingContext = drawingVisual.RenderOpen())
         {
             drawingContext.DrawRectangle(
                 brush,

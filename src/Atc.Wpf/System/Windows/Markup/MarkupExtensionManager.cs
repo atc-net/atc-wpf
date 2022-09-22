@@ -43,7 +43,7 @@ public sealed class MarkupExtensionManager
     /// </summary>
     public void UpdateAllTargets()
     {
-        foreach (ManagedMarkupExtension extension in ActiveExtensions)
+        foreach (var extension in ActiveExtensions)
         {
             extension.UpdateTarget();
         }
@@ -73,10 +73,7 @@ public sealed class MarkupExtensionManager
     /// <param name="extension">The extension to register.</param>
     internal void RegisterExtension(ManagedMarkupExtension extension)
     {
-        if (extension is null)
-        {
-            throw new ArgumentNullException(nameof(extension));
-        }
+        ArgumentNullException.ThrowIfNull(extension);
 
         // Cleanup extensions for target objects which have been garbage collected
         // for performance only do this periodically

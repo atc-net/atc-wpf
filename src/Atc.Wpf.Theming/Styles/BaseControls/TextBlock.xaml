@@ -1,0 +1,10 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Base  -->
+    <Style x:Key="AtcApps.Styles.TextBlock" TargetType="{x:Type TextBlock}" />
+
+    <!--  Light  -->
+
+    <!--  Dark  -->
+
+</ResourceDictionary>

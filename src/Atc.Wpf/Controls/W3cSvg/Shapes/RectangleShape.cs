@@ -8,10 +8,7 @@ internal class RectangleShape : Shape
     public RectangleShape(Svg svg, XmlNode node)
         : base(svg, node)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
 
         defaultFill ??= new Fill
         {
@@ -35,15 +32,8 @@ internal class RectangleShape : Shape
 
     protected override void Parse(Svg svg, string name, string value)
     {
-        if (svg is null)
-        {
-            throw new ArgumentNullException(nameof(svg));
-        }
-
-        if (name is null)
-        {
-            throw new ArgumentNullException(nameof(name));
-        }
+        ArgumentNullException.ThrowIfNull(svg);
+        ArgumentNullException.ThrowIfNull(name);
 
         if (name.Contains(':', StringComparison.Ordinal))
         {

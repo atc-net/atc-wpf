@@ -4,10 +4,7 @@ public static class ImageExtensions
 {
     public static BitmapImage ToBitmapImage(this Image image)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         if (image.Source is RenderTargetBitmap renderTargetBitmap)
         {
@@ -32,10 +29,7 @@ public static class ImageExtensions
 
     public static Image AutoGreyImage(this Image image, bool isEnabled)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         if (isEnabled)
         {

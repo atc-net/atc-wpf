@@ -5,10 +5,7 @@ public static class BitmapSourceExtensions
 {
     public static int GetBytesPerPixel(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -17,10 +14,7 @@ public static class BitmapSourceExtensions
 
     public static int GetStride(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -30,10 +24,7 @@ public static class BitmapSourceExtensions
 
     public static byte[] GetBytes(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -46,10 +37,7 @@ public static class BitmapSourceExtensions
 
     public static Color GetPixelColor(this BitmapSource source, int x, int y)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         if (x < 0 || x >= source.PixelWidth)
         {
@@ -72,10 +60,7 @@ public static class BitmapSourceExtensions
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
     public static PixelColor[,] GetPixelColors(this BitmapSource source)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         if (source.Format != PixelFormats.Bgra32)
         {
@@ -107,10 +92,7 @@ public static class BitmapSourceExtensions
 
     public static BitmapSource EnsureRelativeUriLocation(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         var path = bitmapSource.ToString(GlobalizationConstants.EnglishCultureInfo);
         if (!path.StartsWith("..", StringComparison.Ordinal))
@@ -131,10 +113,7 @@ public static class BitmapSourceExtensions
 
     public static BitmapSource InvertColors(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -170,15 +149,8 @@ public static class BitmapSourceExtensions
     /// <param name="fileName">The file.</param>
     public static void Save(this BitmapSource bitmapSource, string fileName)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
-
-        if (fileName is null)
-        {
-            throw new ArgumentNullException(nameof(fileName));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
+        ArgumentNullException.ThrowIfNull(fileName);
 
         bitmapSource.Save(new FileInfo(fileName));
     }
@@ -190,15 +162,8 @@ public static class BitmapSourceExtensions
     /// <param name="fileInfo">The file information.</param>
     public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
-
-        if (fileInfo is null)
-        {
-            throw new ArgumentNullException(nameof(fileInfo));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
+        ArgumentNullException.ThrowIfNull(fileInfo);
 
         switch (fileInfo.Extension.ToLower(GlobalizationConstants.EnglishCultureInfo))
         {
@@ -233,17 +198,10 @@ public static class BitmapSourceExtensions
     /// <param name="imageFormatType">Type of the image format.</param>
     public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo, ImageFormatType imageFormatType)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
+        ArgumentNullException.ThrowIfNull(fileInfo);
 
-        if (fileInfo is null)
-        {
-            throw new ArgumentNullException(nameof(fileInfo));
-        }
-
-        using FileStream stream = new FileStream(fileInfo.FullName, FileMode.Create);
+        using var stream = new FileStream(fileInfo.FullName, FileMode.Create);
         var encoder = BitmapEncoderFactory.Create(imageFormatType);
         encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
         encoder.Save(stream);
@@ -251,10 +209,7 @@ public static class BitmapSourceExtensions
 
     public static BitmapImage ToBitmapImage(this BitmapSource bitmapSource, ImageFormatType imageFormatType = ImageFormatType.Png, int? newWidth = null)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -284,10 +239,7 @@ public static class BitmapSourceExtensions
 
     public static BitmapImage ToResizedBitmapImage(this BitmapSource bitmapSource, int newWidth)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -296,10 +248,7 @@ public static class BitmapSourceExtensions
 
     public static BitmapSource ToBitmapSourceAsGray32(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -310,15 +259,8 @@ public static class BitmapSourceExtensions
     [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
     public static BitmapImage ToBitmapImageWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
-
-        if (pixelColors is null)
-        {
-            throw new ArgumentNullException(nameof(pixelColors));
-        }
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(pixelColors);
 
         if (source.PixelWidth != pixelColors.GetLength(0))
         {
@@ -337,10 +279,7 @@ public static class BitmapSourceExtensions
 
     public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -353,10 +292,7 @@ public static class BitmapSourceExtensions
 
     public static WriteableBitmap ToWriteableBitmap(this BitmapSource bitmapSource)
     {
-        if (bitmapSource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapSource));
-        }
+        ArgumentNullException.ThrowIfNull(bitmapSource);
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
@@ -377,15 +313,8 @@ public static class BitmapSourceExtensions
     [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
     public static WriteableBitmap ToWriteableBitmapWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
-
-        if (pixelColors is null)
-        {
-            throw new ArgumentNullException(nameof(pixelColors));
-        }
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(pixelColors);
 
         if (source.PixelWidth != pixelColors.GetLength(0))
         {

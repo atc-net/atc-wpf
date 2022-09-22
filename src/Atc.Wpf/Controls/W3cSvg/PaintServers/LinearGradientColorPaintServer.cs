@@ -33,7 +33,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
         }
 
         var brush = new LinearGradientBrush();
-        foreach (GradientStop stop in Stops)
+        foreach (var stop in Stops)
         {
             brush.GradientStops.Add(stop);
         }
@@ -82,7 +82,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
     {
         if (!double.IsNaN(X1) && !double.IsNaN(X2))
         {
-            double min = X1;
+            var min = X1;
             if (X2 < X1)
             {
                 min = X2;
@@ -90,7 +90,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
 
             X1 -= min;
             X2 -= min;
-            double scale = X1;
+            var scale = X1;
             if (X2 > X1)
             {
                 scale = X2;
@@ -105,7 +105,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
 
         if (!double.IsNaN(Y1) && !double.IsNaN(Y2))
         {
-            double min = Y1;
+            var min = Y1;
             if (Y2 < Y1)
             {
                 min = Y2;
@@ -113,7 +113,7 @@ internal class LinearGradientColorPaintServer : GradientColorPaintServer
 
             Y1 -= min;
             Y2 -= min;
-            double scale = Y1;
+            var scale = Y1;
             if (Y2 > Y1)
             {
                 scale = Y2;

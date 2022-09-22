@@ -12,13 +12,10 @@ public class RtfFormatter : ITextFormatter
     /// <returns>The text.</returns>
     public string GetText(FlowDocument document)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         var tr = new TextRange(document.ContentStart, document.ContentEnd);
-        using MemoryStream memoryStream = new MemoryStream();
+        using var memoryStream = new MemoryStream();
         tr.Save(memoryStream, DataFormats.Rtf);
         return Encoding.Default.GetString(memoryStream.ToArray());
     }
@@ -31,10 +28,7 @@ public class RtfFormatter : ITextFormatter
     /// <exception cref="InvalidDataException">Data provided is not in the correct RTF format.</exception>
     public void SetText(FlowDocument document, string text)
     {
-        if (document is null)
-        {
-            throw new ArgumentNullException(nameof(document));
-        }
+        ArgumentNullException.ThrowIfNull(document);
 
         try
         {
@@ -47,7 +41,7 @@ public class RtfFormatter : ITextFormatter
             else
             {
                 var tr = new TextRange(document.ContentStart, document.ContentEnd);
-                using MemoryStream memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
+                using var memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
                 tr.Load(memoryStream, DataFormats.Rtf);
             }
         }

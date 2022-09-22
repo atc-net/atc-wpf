@@ -19,36 +19,43 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
     public ICommand ApplicationExitCommand => new RelayCommand(ApplicationExitCommandHandler);
 
     /// <inheritdoc />
-    public void OnLoaded(object sender, RoutedEventArgs args)
+    public void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         // Method intentionally left empty.
     }
 
     /// <inheritdoc />
-    public void OnClosing(object sender, CancelEventArgs args)
+    public void OnClosing(
+        object sender,
+        CancelEventArgs e)
     {
         Application.Current.Shutdown(-1);
     }
 
     /// <inheritdoc />
-    public void OnKeyDown(object sender, KeyEventArgs args)
+    public void OnKeyDown(
+        object sender,
+        KeyEventArgs e)
     {
-        if (args is null)
+        ArgumentNullException.ThrowIfNull(e);
+
+        if (e.Key != Key.F11)
         {
-            throw new ArgumentNullException(nameof(args));
+            return;
         }
 
-        if (args.Key == Key.F11)
-        {
-            WindowState = WindowState == WindowState.Maximized
-                ? WindowState.Normal
-                : WindowState.Maximized;
-            args.Handled = true;
-        }
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+        e.Handled = true;
     }
 
     /// <inheritdoc />
-    public void OnKeyUp(object sender, KeyEventArgs args)
+    public void OnKeyUp(
+        object sender,
+        KeyEventArgs e)
     {
         // Method intentionally left empty.
     }

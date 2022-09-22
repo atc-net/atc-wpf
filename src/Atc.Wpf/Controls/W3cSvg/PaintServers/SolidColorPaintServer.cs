@@ -23,7 +23,7 @@ internal class SolidColorPaintServer : PaintServer
             return Brush;
         }
 
-        byte a = (byte)(255 * opacity / 100);
+        var a = (byte)(255 * opacity / 100);
         var c = Color;
         var newColor = Color.FromArgb(a, c.R, c.G, c.B);
         Brush = new SolidColorBrush(newColor);

@@ -25,10 +25,7 @@ public class RelayCommand<T> : IRelayCommand<T>
     /// <exception cref="ArgumentNullException">If the execute argument is null.</exception>
     public RelayCommand(Action<T> execute, Func<T, bool>? canExecute = null, bool keepTargetAlive = false)
     {
-        if (execute is null)
-        {
-            throw new ArgumentNullException(nameof(execute));
-        }
+        ArgumentNullException.ThrowIfNull(execute);
 
         waExecute = new WeakAction<T>(execute, keepTargetAlive);
 

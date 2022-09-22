@@ -14,7 +14,9 @@ public partial class SvgImageListView
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         var currentDomainBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         var indexOfBin = currentDomainBaseDirectory.IndexOf("bin", StringComparison.Ordinal);
@@ -29,7 +31,9 @@ public partial class SvgImageListView
         LoadFiles(svgFiles);
     }
 
-    private void BtnBrowseOnClick(object sender, RoutedEventArgs e)
+    private void BtnBrowseOnClick(
+        object sender,
+        RoutedEventArgs e)
     {
         var openFileDialog = new OpenFileDialog
         {
@@ -55,7 +59,8 @@ public partial class SvgImageListView
         LoadFiles(svgFiles);
     }
 
-    private void LoadFiles(IEnumerable<FileInfo> svgFiles)
+    private void LoadFiles(
+        IEnumerable<FileInfo> svgFiles)
     {
         UsagePanel.Children.Clear();
         foreach (var svgFile in svgFiles)

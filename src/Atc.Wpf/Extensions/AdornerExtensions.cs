@@ -15,15 +15,8 @@ public static class AdornerExtensions
     public static void TryAddAdorner<T>(this UIElement uiElement, Adorner adorner)
         where T : Adorner
     {
-        if (uiElement is null)
-        {
-            throw new ArgumentNullException(nameof(uiElement));
-        }
-
-        if (adorner is null)
-        {
-            throw new ArgumentNullException(nameof(adorner));
-        }
+        ArgumentNullException.ThrowIfNull(uiElement);
+        ArgumentNullException.ThrowIfNull(adorner);
 
         var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
         if (adornerLayer is not null && !adornerLayer.ContainsAdorner<T>(uiElement))
@@ -40,10 +33,7 @@ public static class AdornerExtensions
     public static void TryRemoveAdorners<T>(this UIElement uiElement)
         where T : Adorner
     {
-        if (uiElement is null)
-        {
-            throw new ArgumentNullException(nameof(uiElement));
-        }
+        ArgumentNullException.ThrowIfNull(uiElement);
 
         var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
         adornerLayer?.RemoveAdorners<T>(uiElement);
@@ -61,15 +51,8 @@ public static class AdornerExtensions
     public static bool ContainsAdorner<T>(this AdornerLayer adornerLayer, UIElement uiElement)
         where T : Adorner
     {
-        if (adornerLayer is null)
-        {
-            throw new ArgumentNullException(nameof(adornerLayer));
-        }
-
-        if (uiElement is null)
-        {
-            throw new ArgumentNullException(nameof(uiElement));
-        }
+        ArgumentNullException.ThrowIfNull(adornerLayer);
+        ArgumentNullException.ThrowIfNull(uiElement);
 
         var adorners = adornerLayer.GetAdorners(uiElement);
         if (adorners is null)
@@ -97,15 +80,8 @@ public static class AdornerExtensions
     public static void RemoveAdorners<T>(this AdornerLayer adornerLayer, UIElement uiElement)
         where T : Adorner
     {
-        if (adornerLayer is null)
-        {
-            throw new ArgumentNullException(nameof(adornerLayer));
-        }
-
-        if (uiElement is null)
-        {
-            throw new ArgumentNullException(nameof(uiElement));
-        }
+        ArgumentNullException.ThrowIfNull(adornerLayer);
+        ArgumentNullException.ThrowIfNull(uiElement);
 
         var adorners = adornerLayer.GetAdorners(uiElement);
         if (adorners is null)
@@ -129,15 +105,8 @@ public static class AdornerExtensions
     /// <param name="uiElement">The UI element.</param>
     public static void RemoveAllAdorners(this AdornerLayer adornerLayer, UIElement uiElement)
     {
-        if (adornerLayer is null)
-        {
-            throw new ArgumentNullException(nameof(adornerLayer));
-        }
-
-        if (uiElement is null)
-        {
-            throw new ArgumentNullException(nameof(uiElement));
-        }
+        ArgumentNullException.ThrowIfNull(adornerLayer);
+        ArgumentNullException.ThrowIfNull(uiElement);
 
         var adorners = adornerLayer.GetAdorners(uiElement);
         if (adorners is null)
@@ -145,7 +114,7 @@ public static class AdornerExtensions
             return;
         }
 
-        foreach (Adorner toRemove in adorners)
+        foreach (var toRemove in adorners)
         {
             adornerLayer.Remove(toRemove);
         }
