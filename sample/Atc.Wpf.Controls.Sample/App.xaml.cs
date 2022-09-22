@@ -103,6 +103,7 @@ public partial class App
             .StartAsync()
             .ConfigureAwait(false);
 
+        AppDomain.CurrentDomain.TryLoadAssemblyIfNeeded("Atc.Wpf.Controls.dll");
         ThemeManager.Current.ChangeTheme(Current, "Light.Blue");
 
         var mainWindow = host
