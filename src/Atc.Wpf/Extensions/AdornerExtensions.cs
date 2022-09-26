@@ -12,7 +12,9 @@ public static class AdornerExtensions
     /// <typeparam name="T">The element type.</typeparam>
     /// <param name="uiElement">The UI element.</param>
     /// <param name="adorner">The adorner.</param>
-    public static void TryAddAdorner<T>(this UIElement uiElement, Adorner adorner)
+    public static void TryAddAdorner<T>(
+        this UIElement uiElement,
+        Adorner adorner)
         where T : Adorner
     {
         ArgumentNullException.ThrowIfNull(uiElement);
@@ -30,7 +32,8 @@ public static class AdornerExtensions
     /// </summary>
     /// <typeparam name="T">The element type.</typeparam>
     /// <param name="uiElement">The UI element.</param>
-    public static void TryRemoveAdorners<T>(this UIElement uiElement)
+    public static void TryRemoveAdorners<T>(
+        this UIElement uiElement)
         where T : Adorner
     {
         ArgumentNullException.ThrowIfNull(uiElement);
@@ -48,7 +51,9 @@ public static class AdornerExtensions
     /// <returns>
     ///   <c>true</c> if the specified adorner layer contains adorner; otherwise, <c>false</c>.
     /// </returns>
-    public static bool ContainsAdorner<T>(this AdornerLayer adornerLayer, UIElement uiElement)
+    public static bool ContainsAdorner<T>(
+        this AdornerLayer adornerLayer,
+        UIElement uiElement)
         where T : Adorner
     {
         ArgumentNullException.ThrowIfNull(adornerLayer);
@@ -77,7 +82,9 @@ public static class AdornerExtensions
     /// <typeparam name="T">The element type.</typeparam>
     /// <param name="adornerLayer">The adorner layer.</param>
     /// <param name="uiElement">The UI element.</param>
-    public static void RemoveAdorners<T>(this AdornerLayer adornerLayer, UIElement uiElement)
+    public static void RemoveAdorners<T>(
+        this AdornerLayer adornerLayer,
+        UIElement uiElement)
         where T : Adorner
     {
         ArgumentNullException.ThrowIfNull(adornerLayer);
@@ -103,7 +110,9 @@ public static class AdornerExtensions
     /// </summary>
     /// <param name="adornerLayer">The adorner layer.</param>
     /// <param name="uiElement">The UI element.</param>
-    public static void RemoveAllAdorners(this AdornerLayer adornerLayer, UIElement uiElement)
+    public static void RemoveAllAdorners(
+        this AdornerLayer adornerLayer,
+        UIElement uiElement)
     {
         ArgumentNullException.ThrowIfNull(adornerLayer);
         ArgumentNullException.ThrowIfNull(uiElement);

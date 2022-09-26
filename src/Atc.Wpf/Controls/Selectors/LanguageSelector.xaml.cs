@@ -144,7 +144,7 @@ public partial class LanguageSelector
 
         var flagLocations = assembly
             .GetManifestResourceNames()
-            .Where(x => x.StartsWith("Atc.Wpf.Resource.Flags", StringComparison.Ordinal) &&
+            .Where(x => x.StartsWith("Atc.Wpf.Resources.Flags", StringComparison.Ordinal) &&
                         x.Contains(filterStyle, StringComparison.Ordinal) &&
                         x.Contains(filterSize, StringComparison.Ordinal))
             .ToList();

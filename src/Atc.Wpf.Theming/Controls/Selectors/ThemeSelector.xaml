@@ -24,7 +24,7 @@
             <TextBlock
                 Margin="{Binding ElementName=UcThemeSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}}"
                 VerticalAlignment="Center"
-                Text="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resource.Miscellaneous,
+                Text="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resources.Miscellaneous,
                                            Key=Theme,
                                            Suffix=':'}"
                 Visibility="{Binding ElementName=UcThemeSelector, Path=ShowLabel, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />

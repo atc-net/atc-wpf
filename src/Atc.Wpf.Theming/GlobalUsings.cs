@@ -44,7 +44,7 @@ global using Atc.Wpf.Theming.Exceptions;
 global using Atc.Wpf.Theming.Helper;
 global using Atc.Wpf.Theming.Internal;
 global using Atc.Wpf.Theming.Primitives;
-global using Atc.Wpf.Theming.Resource;
+global using Atc.Wpf.Theming.Resources;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 

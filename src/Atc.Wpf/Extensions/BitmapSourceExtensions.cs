@@ -3,7 +3,8 @@ namespace System.Windows.Media.Imaging;
 
 public static class BitmapSourceExtensions
 {
-    public static int GetBytesPerPixel(this BitmapSource bitmapSource)
+    public static int GetBytesPerPixel(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -12,7 +13,8 @@ public static class BitmapSourceExtensions
         return (bitmapSource.Format.BitsPerPixel + 7) / 8;
     }
 
-    public static int GetStride(this BitmapSource bitmapSource)
+    public static int GetStride(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -22,7 +24,8 @@ public static class BitmapSourceExtensions
         return 4 * ((bytesForPixelWidth + 3) / 4);
     }
 
-    public static byte[] GetBytes(this BitmapSource bitmapSource)
+    public static byte[] GetBytes(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -35,7 +38,10 @@ public static class BitmapSourceExtensions
         return pixels;
     }
 
-    public static Color GetPixelColor(this BitmapSource source, int x, int y)
+    public static Color GetPixelColor(
+        this BitmapSource source,
+        int x,
+        int y)
     {
         ArgumentNullException.ThrowIfNull(source);
 
@@ -58,7 +64,8 @@ public static class BitmapSourceExtensions
     }
 
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
-    public static PixelColor[,] GetPixelColors(this BitmapSource source)
+    public static PixelColor[,] GetPixelColors(
+        this BitmapSource source)
     {
         ArgumentNullException.ThrowIfNull(source);
 
@@ -90,7 +97,8 @@ public static class BitmapSourceExtensions
         return pixels;
     }
 
-    public static BitmapSource EnsureRelativeUriLocation(this BitmapSource bitmapSource)
+    public static BitmapSource EnsureRelativeUriLocation(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -111,7 +119,8 @@ public static class BitmapSourceExtensions
         return BitmapImageFactory.Create(path, UriKind.Relative);
     }
 
-    public static BitmapSource InvertColors(this BitmapSource bitmapSource)
+    public static BitmapSource InvertColors(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -147,7 +156,9 @@ public static class BitmapSourceExtensions
     /// </summary>
     /// <param name="bitmapSource">The bitmap.</param>
     /// <param name="fileName">The file.</param>
-    public static void Save(this BitmapSource bitmapSource, string fileName)
+    public static void Save(
+        this BitmapSource bitmapSource,
+        string fileName)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
         ArgumentNullException.ThrowIfNull(fileName);
@@ -160,7 +171,9 @@ public static class BitmapSourceExtensions
     /// </summary>
     /// <param name="bitmapSource">The bitmap.</param>
     /// <param name="fileInfo">The file information.</param>
-    public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo)
+    public static void Save(
+        this BitmapSource bitmapSource,
+        FileInfo fileInfo)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
         ArgumentNullException.ThrowIfNull(fileInfo);
@@ -196,7 +209,10 @@ public static class BitmapSourceExtensions
     /// <param name="bitmapSource">The bitmap.</param>
     /// <param name="fileInfo">The file information.</param>
     /// <param name="imageFormatType">Type of the image format.</param>
-    public static void Save(this BitmapSource bitmapSource, FileInfo fileInfo, ImageFormatType imageFormatType)
+    public static void Save(
+        this BitmapSource bitmapSource,
+        FileInfo fileInfo,
+        ImageFormatType imageFormatType)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
         ArgumentNullException.ThrowIfNull(fileInfo);
@@ -207,7 +223,10 @@ public static class BitmapSourceExtensions
         encoder.Save(stream);
     }
 
-    public static BitmapImage ToBitmapImage(this BitmapSource bitmapSource, ImageFormatType imageFormatType = ImageFormatType.Png, int? newWidth = null)
+    public static BitmapImage ToBitmapImage(
+        this BitmapSource bitmapSource,
+        ImageFormatType imageFormatType = ImageFormatType.Png,
+        int? newWidth = null)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -237,7 +256,9 @@ public static class BitmapSourceExtensions
         return bitmapImage;
     }
 
-    public static BitmapImage ToResizedBitmapImage(this BitmapSource bitmapSource, int newWidth)
+    public static BitmapImage ToResizedBitmapImage(
+        this BitmapSource bitmapSource,
+        int newWidth)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -246,7 +267,8 @@ public static class BitmapSourceExtensions
         return bitmapSource.ToBitmapImage(ImageFormatType.Png, newWidth);
     }
 
-    public static BitmapSource ToBitmapSourceAsGray32(this BitmapSource bitmapSource)
+    public static BitmapSource ToBitmapSourceAsGray32(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -257,7 +279,9 @@ public static class BitmapSourceExtensions
 
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
     [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
-    public static BitmapImage ToBitmapImageWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+    public static BitmapImage ToBitmapImageWithPixelColors(
+        this BitmapSource source,
+        PixelColor[,] pixelColors)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(pixelColors);
@@ -277,7 +301,8 @@ public static class BitmapSourceExtensions
         return writeableBitmap.ToBitmapImage();
     }
 
-    public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(this BitmapSource bitmapSource)
+    public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -290,7 +315,8 @@ public static class BitmapSourceExtensions
             alphaThreshold: 0);
     }
 
-    public static WriteableBitmap ToWriteableBitmap(this BitmapSource bitmapSource)
+    public static WriteableBitmap ToWriteableBitmap(
+        this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -311,7 +337,9 @@ public static class BitmapSourceExtensions
 
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
     [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
-    public static WriteableBitmap ToWriteableBitmapWithPixelColors(this BitmapSource source, PixelColor[,] pixelColors)
+    public static WriteableBitmap ToWriteableBitmapWithPixelColors(
+        this BitmapSource source,
+        PixelColor[,] pixelColors)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(pixelColors);

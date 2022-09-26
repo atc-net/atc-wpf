@@ -2,8 +2,9 @@
     x:Class="Atc.Wpf.SampleControls.SampleViewerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:Atc.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sampleControls="clr-namespace:Atc.Wpf.SampleControls"
     xmlns:sourceCode="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters.SourceCode"
@@ -16,7 +17,7 @@
         <sampleControls:SampleViewerViewModel />
     </UserControl.DataContext>
 
-    <controls:AutoGrid
+    <layouts:AutoGrid
         d:Background="White"
         Columns="*"
         Rows="Auto,*">
@@ -34,7 +35,7 @@
                     ScrollViewer.CanContentScroll="True" />
             </TabItem>
             <TabItem Header="XAML" IsEnabled="{Binding Path=HasXamlCode}">
-                <controls:RichTextBoxEx
+                <inputs:RichTextBoxEx
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -46,7 +47,7 @@
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
             <TabItem Header="CodeBehind" IsEnabled="{Binding Path=HasCodeBehindCode}">
-                <controls:RichTextBoxEx
+                <inputs:RichTextBoxEx
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -58,7 +59,7 @@
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
             <TabItem Header="ViewModel" IsEnabled="{Binding Path=HasViewModelCode}">
-                <controls:RichTextBoxEx
+                <inputs:RichTextBoxEx
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -70,6 +71,6 @@
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
         </TabControl>
-    </controls:AutoGrid>
+    </layouts:AutoGrid>
 
 </UserControl>
