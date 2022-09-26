@@ -8,6 +8,7 @@ global using System.Windows.Media;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Command;
+global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Tests.XUnitTestTypes;
 global using Atc.Wpf.ValueConverters;
