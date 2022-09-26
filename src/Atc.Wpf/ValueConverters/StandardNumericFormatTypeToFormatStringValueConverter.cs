@@ -40,6 +40,6 @@ public class StandardNumericFormatTypeToFormatStringValueConverter : IValueConve
     /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException("This is a OneWay converter.");
     }
 }
