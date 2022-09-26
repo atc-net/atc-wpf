@@ -10,7 +10,10 @@ public static class VisualExtensions
     /// <param name="dpiX">The dpi x.</param>
     /// <param name="dpiY">The dpi y.</param>
     /// <returns>The BitmapSource from a visual.</returns>
-    public static BitmapSource ToBitmapSource(this Visual visual, double dpiX = 96, double dpiY = 96)
+    public static BitmapSource ToBitmapSource(
+        this Visual visual,
+        double dpiX = 96,
+        double dpiY = 96)
     {
         ArgumentNullException.ThrowIfNull(visual);
 
