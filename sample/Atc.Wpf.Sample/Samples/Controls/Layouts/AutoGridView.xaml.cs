@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.Samples.Controls;
+namespace Atc.Wpf.Sample.Samples.Controls.Layouts;
 
 /// <summary>
 /// Interaction logic for AutoGridView.

@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.Samples.Controls;
+namespace Atc.Wpf.Sample.Samples.Controls.Media;
 
 /// <summary>
 /// Interaction logic for SvgImageListView.

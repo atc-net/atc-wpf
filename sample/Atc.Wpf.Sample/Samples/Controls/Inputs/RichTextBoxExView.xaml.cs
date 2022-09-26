@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.Samples.Controls;
+namespace Atc.Wpf.Sample.Samples.Controls.Inputs;
 
 /// <summary>
 /// Interaction logic for RichTextBoxExView.

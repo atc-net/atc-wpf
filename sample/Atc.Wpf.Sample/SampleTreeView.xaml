@@ -47,6 +47,10 @@
         </TreeViewItem>
     </TreeViewItem>
 
+    <TreeViewItem Header="Markup - Inputs" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Threading" IsExpanded="True">
         <atc:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
     </TreeViewItem>
