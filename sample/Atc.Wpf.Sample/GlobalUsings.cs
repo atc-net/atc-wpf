@@ -11,7 +11,7 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Command;
-global using Atc.Wpf.Controls;
+global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;

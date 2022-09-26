@@ -16,25 +16,25 @@
     <None Remove="Media\ShaderEffects\Shaders\InvertColors.ps" />
     <None Remove="Media\ShaderEffects\Shaders\Monochrome.ps" />
     <None Remove="Media\ShaderEffects\Shaders\Saturate.ps" />
-    <None Remove="Resource\Flags\Flat\16\DE.png" />
-    <None Remove="Resource\Flags\Flat\16\DK.png" />
-    <None Remove="Resource\Flags\Flat\16\GB.png" />
-    <None Remove="Resource\Flags\Flat\16\US.png" />
-    <None Remove="Resource\Flags\Shiny\16\DE.png" />
-    <None Remove="Resource\Flags\Shiny\16\DK.png" />
-    <None Remove="Resource\Flags\Shiny\16\GB.png" />
-    <None Remove="Resource\Flags\Shiny\16\US.png" />
+    <None Remove="Resources\Flags\Flat\16\DE.png" />
+    <None Remove="Resources\Flags\Flat\16\DK.png" />
+    <None Remove="Resources\Flags\Flat\16\GB.png" />
+    <None Remove="Resources\Flags\Flat\16\US.png" />
+    <None Remove="Resources\Flags\Shiny\16\DE.png" />
+    <None Remove="Resources\Flags\Shiny\16\DK.png" />
+    <None Remove="Resources\Flags\Shiny\16\GB.png" />
+    <None Remove="Resources\Flags\Shiny\16\US.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resource\Flags\Flat\16\DE.png" />
-    <EmbeddedResource Include="Resource\Flags\Flat\16\DK.png" />
-    <EmbeddedResource Include="Resource\Flags\Flat\16\GB.png" />
-    <EmbeddedResource Include="Resource\Flags\Flat\16\US.png" />
-    <EmbeddedResource Include="Resource\Flags\Shiny\16\DE.png" />
-    <EmbeddedResource Include="Resource\Flags\Shiny\16\DK.png" />
-    <EmbeddedResource Include="Resource\Flags\Shiny\16\GB.png" />
-    <EmbeddedResource Include="Resource\Flags\Shiny\16\US.png" />
+    <EmbeddedResource Include="Resources\Flags\Flat\16\DE.png" />
+    <EmbeddedResource Include="Resources\Flags\Flat\16\DK.png" />
+    <EmbeddedResource Include="Resources\Flags\Flat\16\GB.png" />
+    <EmbeddedResource Include="Resources\Flags\Flat\16\US.png" />
+    <EmbeddedResource Include="Resources\Flags\Shiny\16\DE.png" />
+    <EmbeddedResource Include="Resources\Flags\Shiny\16\DK.png" />
+    <EmbeddedResource Include="Resources\Flags\Shiny\16\GB.png" />
+    <EmbeddedResource Include="Resources\Flags\Shiny\16\US.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resource\Miscellaneous.Designer.cs">
+    <Compile Update="Resources\Miscellaneous.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Miscellaneous.resx</DependentUpon>
@@ -59,13 +59,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resource\Miscellaneous.da-DK.resx">
+    <EmbeddedResource Update="Resources\Miscellaneous.da-DK.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resource\Miscellaneous.de-DE.resx">
+    <EmbeddedResource Update="Resources\Miscellaneous.de-DE.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resource\Miscellaneous.resx">
+    <EmbeddedResource Update="Resources\Miscellaneous.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
     </EmbeddedResource>

@@ -132,12 +132,12 @@
     <Compile Update="Controls\Selectors\AccentColorSelector.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Resource\ColorNames.Designer.cs">
+    <Compile Update="Resources\ColorNames.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ColorNames.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resource\Miscellaneous.Designer.cs">
+    <Compile Update="Resources\Miscellaneous.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Miscellaneous.resx</DependentUpon>
@@ -145,17 +145,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resource\ColorNames.da-DK.resx">
+    <EmbeddedResource Update="Resources\ColorNames.da-DK.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resource\ColorNames.de-DE.resx">
+    <EmbeddedResource Update="Resources\ColorNames.de-DE.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resource\ColorNames.resx">
+    <EmbeddedResource Update="Resources\ColorNames.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ColorNames.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resource\Miscellaneous.resx">
+    <EmbeddedResource Update="Resources\Miscellaneous.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
     </EmbeddedResource>

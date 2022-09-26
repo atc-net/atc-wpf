@@ -14,19 +14,19 @@
         <atc:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Controls - Input" IsExpanded="True">
-        <atc:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="Controls.RichTextBoxExView" />
+    <TreeViewItem Header="Controls - Inputs" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="Controls.Inputs.RichTextBoxExView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Controls - Layout" IsExpanded="True">
-        <atc:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.AutoGridView" />
-        <atc:SampleTreeViewItem Header="GridEx" SamplePath="Controls.GridExView" />
+    <TreeViewItem Header="Controls - Layouts" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.Layouts.AutoGridView" />
+        <atc:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Controls - Media" IsExpanded="True">
-        <atc:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.AutoGreyableImageView" />
-        <atc:SampleTreeViewItem Header="SvgImage" SamplePath="Controls.SvgImageView" />
-        <atc:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.SvgImageListView" />
+        <atc:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.Media.AutoGreyableImageView" />
+        <atc:SampleTreeViewItem Header="SvgImage" SamplePath="Controls.Media.SvgImageView" />
+        <atc:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.Media.SvgImageListView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Extensions" IsExpanded="True">

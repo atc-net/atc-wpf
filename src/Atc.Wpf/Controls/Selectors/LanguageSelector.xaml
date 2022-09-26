@@ -24,7 +24,7 @@
             <TextBlock
                 Margin="{Binding ElementName=UcLanguageSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}}"
                 VerticalAlignment="Center"
-                Text="{translation:Resx ResxName=Atc.Wpf.Resource.Miscellaneous,
+                Text="{translation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous,
                                         Key=Language,
                                         Suffix=':'}"
                 Visibility="{Binding ElementName=UcLanguageSelector, Path=ShowLabel, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />

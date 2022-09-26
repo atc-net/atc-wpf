@@ -24,7 +24,7 @@
             <TextBlock
                 Margin="{Binding ElementName=UcAccentColorSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToMarginConverter}}"
                 VerticalAlignment="Center"
-                Text="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resource.Miscellaneous,
+                Text="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resources.Miscellaneous,
                                            Key=AccentColor,
                                            Suffix=':'}"
                 Visibility="{Binding ElementName=UcAccentColorSelector, Path=ShowLabel, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
