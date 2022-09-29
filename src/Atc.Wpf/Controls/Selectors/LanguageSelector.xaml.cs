@@ -8,35 +8,11 @@ public partial class LanguageSelector
 {
     private string selectedKey;
 
-    public static readonly DependencyProperty ShowLabelProperty = DependencyProperty.Register(
-        nameof(ShowLabel),
-        typeof(bool),
-        typeof(LanguageSelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowLabel
-    {
-        get => (bool)GetValue(ShowLabelProperty);
-        set => SetValue(ShowLabelProperty, value);
-    }
-
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        nameof(Orientation),
-        typeof(Orientation),
-        typeof(LanguageSelector),
-        new PropertyMetadata(default(Orientation)));
-
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
-
     public static readonly DependencyProperty RenderFlagIndicatorTypeTypeProperty = DependencyProperty.Register(
         nameof(RenderFlagIndicatorType),
         typeof(RenderFlagIndicatorType),
         typeof(LanguageSelector),
-        new PropertyMetadata(RenderFlagIndicatorType.Shiny16));
+        new PropertyMetadata(RenderFlagIndicatorType.Flat16));
 
     public RenderFlagIndicatorType RenderFlagIndicatorType
     {

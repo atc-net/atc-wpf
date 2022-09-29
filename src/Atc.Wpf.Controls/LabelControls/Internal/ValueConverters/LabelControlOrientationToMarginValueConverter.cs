@@ -1,10 +1,10 @@
-namespace Atc.Wpf.ValueConverters;
+namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
 /// <summary>
 /// ValueConverter: Label-Control Orientation To Margin (Thickness).
 /// </summary>
 [ValueConversion(typeof(Orientation), typeof(Thickness))]
-public class LabelControlOrientationToMarginValueConverter : IValueConverter
+internal class LabelControlOrientationToMarginValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -33,7 +33,7 @@ public class LabelControlOrientationToMarginValueConverter : IValueConverter
             Orientation.Vertical => spacingType != LabelControlSpacingType.Inside
                 ? new Thickness(0, 0, 0, 15)
                 : new Thickness(0, 0, 0, 5),
-            _ => throw new SwitchExpressionException(orientation),
+            _ => throw new SwitchCaseDefaultException(orientation),
         };
     }
 

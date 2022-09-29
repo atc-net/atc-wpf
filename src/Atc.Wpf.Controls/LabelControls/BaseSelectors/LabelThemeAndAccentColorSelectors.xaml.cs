@@ -1,26 +1,15 @@
-namespace Atc.Wpf.Theming.Controls.Selectors;
+// ReSharper disable CheckNamespace
+namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
-/// Interaction logic for ThemeAndAccentColorSelectors.xaml
+/// Interaction logic for LabelThemeAndAccentColorSelectors.
 /// </summary>
-public partial class ThemeAndAccentColorSelectors
+public partial class LabelThemeAndAccentColorSelectors
 {
-    public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
-        nameof(ShowLabels),
-        typeof(bool),
-        typeof(ThemeAndAccentColorSelectors),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowLabels
-    {
-        get => (bool)GetValue(ShowLabelsProperty);
-        set => SetValue(ShowLabelsProperty, value);
-    }
-
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),
-        typeof(ThemeAndAccentColorSelectors),
+        typeof(LabelThemeAndAccentColorSelectors),
         new PropertyMetadata(default(Orientation)));
 
     public Orientation Orientation
@@ -32,7 +21,7 @@ public partial class ThemeAndAccentColorSelectors
     public static readonly DependencyProperty LabelControlOrientationProperty = DependencyProperty.Register(
         nameof(LabelControlOrientation),
         typeof(Orientation),
-        typeof(ThemeAndAccentColorSelectors),
+        typeof(LabelThemeAndAccentColorSelectors),
         new PropertyMetadata(default(Orientation)));
 
     public Orientation LabelControlOrientation
@@ -44,7 +33,7 @@ public partial class ThemeAndAccentColorSelectors
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderColorIndicatorType),
         typeof(RenderColorIndicatorType),
-        typeof(ThemeAndAccentColorSelectors),
+        typeof(LabelThemeAndAccentColorSelectors),
         new PropertyMetadata(RenderColorIndicatorType.Square));
 
     public RenderColorIndicatorType RenderColorIndicatorType
@@ -53,7 +42,7 @@ public partial class ThemeAndAccentColorSelectors
         set => SetValue(RenderColorIndicatorTypeProperty, value);
     }
 
-    public ThemeAndAccentColorSelectors()
+    public LabelThemeAndAccentColorSelectors()
     {
         InitializeComponent();
 

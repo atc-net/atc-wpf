@@ -10,4 +10,7 @@ global using System.Windows.Input;
 global using System.Windows.Markup;
 global using System.Windows.Media;
 
+global using Atc.Wpf.Controls.LabelControls.Abstractions;
+global using Atc.Wpf.Theming.Controls.Selectors;
+
 global using Newtonsoft.Json.Linq;

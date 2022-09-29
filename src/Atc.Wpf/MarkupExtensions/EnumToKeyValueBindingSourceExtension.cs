@@ -25,7 +25,12 @@ public class EnumToKeyValueBindingSourceExtension : MarkupExtension
     /// <param name="enumType">Type of the enum.</param>
     public EnumToKeyValueBindingSourceExtension(
         Type enumType)
-        : this(enumType, DropDownFirstItemType.None, false, true, SortDirectionType.None)
+        : this(
+            enumType,
+            DropDownFirstItemType.None,
+            includeDefault: false,
+            useDescriptionAttribute: true,
+            SortDirectionType.None)
     {
     }
 
@@ -37,7 +42,12 @@ public class EnumToKeyValueBindingSourceExtension : MarkupExtension
     public EnumToKeyValueBindingSourceExtension(
         Type enumType,
         DropDownFirstItemType firstItemType = DropDownFirstItemType.None)
-        : this(enumType, firstItemType, false, true, SortDirectionType.None)
+        : this(
+            enumType,
+            firstItemType,
+            includeDefault: false,
+            useDescriptionAttribute: true,
+            SortDirectionType.None)
     {
     }
 
@@ -53,7 +63,12 @@ public class EnumToKeyValueBindingSourceExtension : MarkupExtension
         DropDownFirstItemType firstItemType = DropDownFirstItemType.None,
         bool includeDefault = false,
         bool useDescriptionAttribute = true)
-        : this(enumType, firstItemType, includeDefault, useDescriptionAttribute, SortDirectionType.None)
+        : this(
+            enumType,
+            firstItemType,
+            includeDefault,
+            useDescriptionAttribute,
+            SortDirectionType.None)
     {
     }
 

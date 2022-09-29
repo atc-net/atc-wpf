@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
   </ItemGroup>

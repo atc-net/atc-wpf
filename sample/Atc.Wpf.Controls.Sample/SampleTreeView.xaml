@@ -9,6 +9,39 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="Label Controls" IsExpanded="True">
+        <TreeViewItem Header="Base Selectors" IsExpanded="True">
+            <atc:SampleTreeViewItem
+                Header="LabelLanguageSelector"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelLanguageSelectorView" />
+            <atc:SampleTreeViewItem
+                Header="LabelThemeSelector"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelThemeSelectorView" />
+            <atc:SampleTreeViewItem
+                Header="LabelAccentColorSelector"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelAccentColorSelectorView" />
+            <atc:SampleTreeViewItem
+                Header="LabelThemeAndAccentColorSelectors"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelThemeAndAccentColorSelectorsView" />
+        </TreeViewItem>
+        <atc:SampleTreeViewItem
+            Header="LabelComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelComboBoxView" />
+        <atc:SampleTreeViewItem
+            Header="LabelTextBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelTextBoxView" />
+        <atc:SampleTreeViewItem
+            Header="Label-MIX"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelMixView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Viewers" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="JsonViewer"

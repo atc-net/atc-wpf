@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Theming.Sample"
-    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors;assembly=Atc.Wpf"
     Title="..:: Atc.Wpf.Theming.Sample ::.."
     Width="1500"
     Height="1000"
@@ -31,22 +30,12 @@
             Grid.Column="2"
             Grid.ColumnSpan="2"
             Margin="10">
-            <atc:GridEx Columns="*,10,Auto,10,Auto" Rows="Auto,*">
-                <selectors:LanguageSelector
+            <atc:GridEx Columns="*,10,Auto,Auto" Rows="Auto,*">
+                <atc:LabelLanguageSelector
                     Grid.Row="0"
                     Grid.Column="2"
-                    Width="175"
-                    HorizontalContentAlignment="Right"
                     Orientation="Horizontal" />
-                <atc:ThemeAndAccentColorSelectors
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    Width="350"
-                    HorizontalContentAlignment="Right"
-                    LabelControlOrientation="Horizontal"
-                    Orientation="Horizontal"
-                    RenderColorIndicatorType="Square"
-                    ShowLabels="True" />
+                <atc:LabelThemeAndAccentColorSelectors Grid.Row="0" Grid.Column="3" />
                 <atc:SampleViewerView
                     x:Name="SampleViewer"
                     Grid.Row="1"
