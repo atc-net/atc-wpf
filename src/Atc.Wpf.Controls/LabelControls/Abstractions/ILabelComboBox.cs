@@ -1,5 +1,3 @@
-using Atc.Wpf.Controls.LabelControls.EventArgs;
-
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
 public interface ILabelComboBox : ILabelControlBase

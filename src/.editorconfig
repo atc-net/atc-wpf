@@ -46,6 +46,9 @@
 # Custom - Code Analyzers Rules
 ##########################################
 
+dotnet_diagnostic.CS0067.severity = none # The event 'event' is never used
+
+dotnet_diagnostic.CA1812.severity = none # Internal class is never instantiated
 dotnet_diagnostic.CA2227.severity = none # Change to read-only setter
 
 dotnet_diagnostic.SA1310.severity = none # Field should not contains underscore
