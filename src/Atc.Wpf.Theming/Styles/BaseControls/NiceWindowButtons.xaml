@@ -83,10 +83,34 @@
         </Style.Triggers>
     </Style>
 
+    <Style
+        x:Key="AtcApps.Styles.Button.NiceWindow.LightHighlight"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Light}"
+        TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="true">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--  Dark for windows: min, max and close  -->
     <Style
         x:Key="AtcApps.Styles.Button.NiceWindow.Dark"
-        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Light}"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Base}"
         TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -105,6 +129,30 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForegroundDisabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.Button.NiceWindow.DarkHighlight"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Dark}"
+        TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="true">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
             </Trigger>
         </Style.Triggers>
     </Style>
