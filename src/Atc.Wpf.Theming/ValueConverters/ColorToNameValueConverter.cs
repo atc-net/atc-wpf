@@ -1,8 +1,8 @@
-namespace Atc.Wpf.Theming.Converters;
+namespace Atc.Wpf.Theming.ValueConverters;
 
 [MarkupExtensionReturnType(typeof(ColorToNameValueConverter))]
 [ValueConversion(typeof(Color), typeof(string))]
-public class ColorToNameValueConverter : MarkupMultiValueConverter
+public class ColorToNameValueConverter : MarkupMultiValueConverterBase
 {
     public ColorHelper? ColorHelper { get; set; }
 

@@ -1,8 +1,9 @@
-namespace Atc.Wpf.Theming.Helper;
+namespace Atc.Wpf.Theming.Helpers;
 
 /// <summary>
 /// A helper class that provides various controls.
 /// </summary>
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class ControlsHelper
 {
     public static readonly DependencyProperty DisabledVisualElementVisibilityProperty = DependencyProperty.RegisterAttached(
@@ -15,45 +16,30 @@ public static class ControlsHelper
 
     public static Visibility GetDisabledVisualElementVisibility(
         UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return (Visibility)element.GetValue(DisabledVisualElementVisibilityProperty);
-    }
+        => (Visibility)element.GetValue(DisabledVisualElementVisibilityProperty);
 
     public static void SetDisabledVisualElementVisibility(
         UIElement element,
         Visibility value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
+        => element.SetValue(DisabledVisualElementVisibilityProperty, value);
 
-        element.SetValue(DisabledVisualElementVisibilityProperty, value);
-    }
-
-    public static readonly DependencyProperty ContentCharacterCasingProperty =
-        DependencyProperty.RegisterAttached(
-            "ContentCharacterCasing",
-            typeof(CharacterCasing),
-            typeof(ControlsHelper),
-            new FrameworkPropertyMetadata(CharacterCasing.Normal, FrameworkPropertyMetadataOptions.AffectsMeasure),
-            value => (CharacterCasing)value >= CharacterCasing.Normal && (CharacterCasing)value <= CharacterCasing.Upper);
+    public static readonly DependencyProperty ContentCharacterCasingProperty = DependencyProperty.RegisterAttached(
+        "ContentCharacterCasing",
+        typeof(CharacterCasing),
+        typeof(ControlsHelper),
+        new FrameworkPropertyMetadata(
+            CharacterCasing.Normal,
+            FrameworkPropertyMetadataOptions.AffectsMeasure),
+        value => (CharacterCasing)value >= CharacterCasing.Normal && (CharacterCasing)value <= CharacterCasing.Upper);
 
     public static CharacterCasing GetContentCharacterCasing(
         UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return (CharacterCasing)element.GetValue(ContentCharacterCasingProperty);
-    }
+        => (CharacterCasing)element.GetValue(ContentCharacterCasingProperty);
 
     public static void SetContentCharacterCasing(
         UIElement element,
         CharacterCasing value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        element.SetValue(ContentCharacterCasingProperty, value);
-    }
+        => element.SetValue(ContentCharacterCasingProperty, value);
 
     public static readonly DependencyProperty RecognizesAccessKeyProperty = DependencyProperty.RegisterAttached(
         "RecognizesAccessKey",
@@ -63,20 +49,12 @@ public static class ControlsHelper
 
     public static bool GetRecognizesAccessKey(
         UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return (bool)element.GetValue(RecognizesAccessKeyProperty);
-    }
+        => (bool)element.GetValue(RecognizesAccessKeyProperty);
 
     public static void SetRecognizesAccessKey(
         UIElement element,
         bool value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        element.SetValue(RecognizesAccessKeyProperty, BooleanBoxes.Box(value));
-    }
+        => element.SetValue(RecognizesAccessKeyProperty, BooleanBoxes.Box(value));
 
     public static readonly DependencyProperty FocusBorderBrushProperty = DependencyProperty.RegisterAttached(
         "FocusBorderBrush",
@@ -88,20 +66,12 @@ public static class ControlsHelper
 
     public static Brush GetFocusBorderBrush(
         DependencyObject d)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        return (Brush)d.GetValue(FocusBorderBrushProperty);
-    }
+        => (Brush)d.GetValue(FocusBorderBrushProperty);
 
     public static void SetFocusBorderBrush(
         DependencyObject d,
         Brush value)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        d.SetValue(FocusBorderBrushProperty, value);
-    }
+        => d.SetValue(FocusBorderBrushProperty, value);
 
     public static readonly DependencyProperty FocusBorderThicknessProperty = DependencyProperty.RegisterAttached(
         "FocusBorderThickness",
@@ -113,20 +83,12 @@ public static class ControlsHelper
 
     public static Thickness GetFocusBorderThickness(
         DependencyObject d)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        return (Thickness)d.GetValue(FocusBorderThicknessProperty);
-    }
+        => (Thickness)d.GetValue(FocusBorderThicknessProperty);
 
     public static void SetFocusBorderThickness(
         DependencyObject d,
         Thickness value)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        d.SetValue(FocusBorderThicknessProperty, value);
-    }
+        => d.SetValue(FocusBorderThicknessProperty, value);
 
     public static readonly DependencyProperty MouseOverBorderBrushProperty = DependencyProperty.RegisterAttached(
         "MouseOverBorderBrush",
@@ -138,20 +100,12 @@ public static class ControlsHelper
 
     public static Brush GetMouseOverBorderBrush(
         DependencyObject d)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        return (Brush)d.GetValue(MouseOverBorderBrushProperty);
-    }
+        => (Brush)d.GetValue(MouseOverBorderBrushProperty);
 
     public static void SetMouseOverBorderBrush(
         DependencyObject d,
         Brush value)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        d.SetValue(MouseOverBorderBrushProperty, value);
-    }
+        => d.SetValue(MouseOverBorderBrushProperty, value);
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.RegisterAttached(
         "CornerRadius",
@@ -163,20 +117,12 @@ public static class ControlsHelper
 
     public static CornerRadius GetCornerRadius(
         UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return (CornerRadius)element.GetValue(CornerRadiusProperty);
-    }
+        => (CornerRadius)element.GetValue(CornerRadiusProperty);
 
     public static void SetCornerRadius(
         UIElement element,
         CornerRadius value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        element.SetValue(CornerRadiusProperty, value);
-    }
+        => element.SetValue(CornerRadiusProperty, value);
 
     public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.RegisterAttached(
         "IsReadOnly",
@@ -186,18 +132,10 @@ public static class ControlsHelper
 
     public static bool GetIsReadOnly(
         UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return (bool)element.GetValue(IsReadOnlyProperty);
-    }
+        => (bool)element.GetValue(IsReadOnlyProperty);
 
     public static void SetIsReadOnly(
         UIElement element,
         bool value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        element.SetValue(IsReadOnlyProperty, BooleanBoxes.Box(value));
-    }
+        => element.SetValue(IsReadOnlyProperty, BooleanBoxes.Box(value));
 }

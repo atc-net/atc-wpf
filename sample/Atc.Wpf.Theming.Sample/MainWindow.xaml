@@ -39,7 +39,8 @@
                 <atc:SampleViewerView
                     x:Name="SampleViewer"
                     Grid.Row="1"
-                    Grid.ColumnSpan="5" />
+                    Grid.ColumnSpan="5"
+                    HeaderForeground="{DynamicResource AtcApps.Brushes.Accent}" />
             </atc:GridEx>
         </Grid>
 

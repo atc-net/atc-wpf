@@ -7,7 +7,7 @@ public class StringNullOrEmptyToVisibilityVisibleValueConverterTests
     [Theory]
     [InlineData(Visibility.Visible, null)]
     [InlineData(Visibility.Visible, "")]
-    [InlineData(Visibility.Collapsed, "Hallo")]
+    [InlineData(Visibility.Collapsed, "Hello")]
     public void Convert(Visibility expected, string? input)
         => Assert.Equal(
             expected,

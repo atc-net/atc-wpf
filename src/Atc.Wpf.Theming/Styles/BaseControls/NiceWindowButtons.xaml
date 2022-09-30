@@ -4,7 +4,7 @@
     xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controlzex="urn:controlzex"
-    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helper">
+    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helpers">
 
     <atcValueConverters:ThicknessToDoubleValueConverter x:Key="BorderThicknessToStrokeThicknessConverter" TakeThicknessSide="Left" />
 

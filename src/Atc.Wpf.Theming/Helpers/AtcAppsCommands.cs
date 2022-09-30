@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Helper;
+namespace Atc.Wpf.Theming.Helpers;
 
 public static class AtcAppsCommands
 {

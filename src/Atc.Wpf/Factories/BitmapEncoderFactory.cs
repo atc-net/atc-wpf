@@ -3,9 +3,9 @@ namespace Atc.Wpf.Factories;
 
 public static class BitmapEncoderFactory
 {
-    public static BitmapEncoder Create(ImageFormatType imageFormatType)
-    {
-        return imageFormatType switch
+    public static BitmapEncoder Create(
+        ImageFormatType imageFormatType)
+        => imageFormatType switch
         {
             ImageFormatType.Bmp => new BmpBitmapEncoder(),
             ImageFormatType.Gif => new GifBitmapEncoder(),
@@ -15,5 +15,4 @@ public static class BitmapEncoderFactory
             ImageFormatType.Wmp => new WmpBitmapEncoder(),
             _ => throw new SwitchCaseDefaultException(imageFormatType),
         };
-    }
 }

@@ -18,6 +18,7 @@
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
+        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
     </UserControl.Resources>
 
@@ -25,7 +26,7 @@
 
         <TextBlock
             Grid.Column="0"
-            Padding="0,3,0,0"
+            Padding="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}, FallbackValue='0,7,0,0'}"
             FontWeight="Bold"
             Foreground="{Binding ElementName=UcLabelComboBox, Path=MandatoryColor, FallbackValue=Red}"
             Text="*">
@@ -100,7 +101,7 @@
 
         <parts:LabelControlInformationIcon
             Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
+            Margin="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}, FallbackValue='0,5,0,0'}"
             InformationColor="{Binding ElementName=UcLabelComboBox, Path=InformationColor}"
             InformationText="{Binding ElementName=UcLabelComboBox, Path=InformationText}"
             Visibility="{Binding ElementName=UcLabelComboBox, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />

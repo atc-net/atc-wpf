@@ -1,5 +1,6 @@
 // ReSharper disable InvertIf
 // ReSharper disable InconsistentNaming
+
 namespace Atc.Wpf.Theming.Controls.Dialogs;
 
 /// <summary>

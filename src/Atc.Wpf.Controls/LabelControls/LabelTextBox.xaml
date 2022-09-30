@@ -16,6 +16,7 @@
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
+        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
     </UserControl.Resources>
 
@@ -23,7 +24,7 @@
 
         <TextBlock
             Grid.Column="0"
-            Padding="0,3,0,0"
+            Padding="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
             FontWeight="Bold"
             Foreground="{Binding ElementName=UcLabelTextBox, Path=MandatoryColor, FallbackValue=Red}"
             Text="*">

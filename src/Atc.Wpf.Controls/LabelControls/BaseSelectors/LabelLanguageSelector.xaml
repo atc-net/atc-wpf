@@ -10,7 +10,7 @@
     xmlns:parts="clr-namespace:Atc.Wpf.Controls.LabelControls.Parts"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     x:Name="UcLabelLanguageSelector"
-    MinWidth="200"
+    MinWidth="220"
     mc:Ignorable="d">
 
     <UserControl.Resources>

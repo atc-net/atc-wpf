@@ -23,13 +23,13 @@ public class RelayCommandAsyncViewModel : ViewModelBase
     private async Task Test1CommandHandler()
     {
         await Task.Delay(1000, CancellationToken.None);
-        _ = MessageBox.Show("Test1-command is hit", "Hallo", MessageBoxButton.OK);
+        _ = MessageBox.Show("Test1-command is hit", "Hello", MessageBoxButton.OK);
     }
 
     private async Task Test2CommandHandler()
     {
         await Task.Delay(1000, CancellationToken.None);
-        _ = MessageBox.Show("Test2-command is hit", "Hallo", MessageBoxButton.OK);
+        _ = MessageBox.Show("Test2-command is hit", "Hello", MessageBoxButton.OK);
     }
 
     private async Task Test3CommandHandler(string obj)

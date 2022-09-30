@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Helper;
+namespace Atc.Wpf.Theming.Helpers;
 
 /// <summary>
 /// Class used to manage generic scoping of access keys.

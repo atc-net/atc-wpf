@@ -16,7 +16,7 @@
         Source="/Atc.Wpf.Controls;component/Resources/info_help.svg">
         <atc:SvgImage.ToolTip>
             <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-            <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+            <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" Style="{StaticResource AtcApps.Styles.ToolTip}">
                 <StackPanel>
                     <TextBlock Text="{Binding Path=InformationText}" />
                 </StackPanel>

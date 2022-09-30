@@ -2,8 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
-    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helper"
-    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
+    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows"
+    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helpers">
 
     <ControlTemplate x:Key="AtcApps.Templates.Button.WindowCommands" TargetType="{x:Type Button}">
         <Grid Background="{TemplateBinding Background}">

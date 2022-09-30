@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Helper;
+namespace Atc.Wpf.Theming.Helpers;
 
 /// <summary>
 /// A Helper class for the Color-Struct.

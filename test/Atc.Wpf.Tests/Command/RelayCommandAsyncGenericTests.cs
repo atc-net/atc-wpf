@@ -74,7 +74,7 @@ public class RelayCommandAsyncGenericTests
     private static async Task<string> MyTask()
     {
         await Task.Delay(1);
-        return "Hallo";
+        return "Hello";
     }
 
     [SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "OK.")]
@@ -84,6 +84,6 @@ public class RelayCommandAsyncGenericTests
     {
         await Task.Delay(1);
         callback(expected);
-        return "Hallo";
+        return "Hello";
     }
 }

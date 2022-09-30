@@ -22,12 +22,12 @@ public class RelayCommandViewModel : ViewModelBase
 
     private void Test1CommandHandler()
     {
-        _ = MessageBox.Show("Test1-command is hit", "Hallo", MessageBoxButton.OK);
+        _ = MessageBox.Show("Test1-command is hit", "Hello", MessageBoxButton.OK);
     }
 
     private void Test2CommandHandler()
     {
-        _ = MessageBox.Show("Test2-command is hit", "Hallo", MessageBoxButton.OK);
+        _ = MessageBox.Show("Test2-command is hit", "Hello", MessageBoxButton.OK);
     }
 
     private void Test3CommandHandler(string obj)
