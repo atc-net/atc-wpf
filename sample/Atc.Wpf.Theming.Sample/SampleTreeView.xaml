@@ -10,10 +10,10 @@
     mc:Ignorable="d">
 
     <TreeViewItem Header="Input - Button" IsExpanded="True">
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="Button"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="InputButton.ButtonView" />
         <TreeViewItem
             Header="ToggleButton"
             IsEnabled="False"
