@@ -3,14 +3,33 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <!--  FontFamily  -->
     <FontFamily x:Key="AtcApps.Fonts.Family.Window.Title">Segoe UI</FontFamily>
+
     <FontFamily x:Key="AtcApps.Fonts.Family.Header">Segoe UI</FontFamily>
     <FontFamily x:Key="AtcApps.Fonts.Family.Button">Segoe UI</FontFamily>
     <FontFamily x:Key="AtcApps.Fonts.Family.ContentControlTheme">Segoe UI</FontFamily>
     <FontFamily x:Key="AtcApps.Fonts.Family.Control">Segoe UI</FontFamily>
 
+    <!--  FontSize  -->
     <system:Double x:Key="AtcApps.Font.Size.Window.Title">16</system:Double>
+
+    <system:Double x:Key="AtcApps.Font.Size.Dialog.Button">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.Dialog.Message">14</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.Dialog.Title">16</system:Double>
+
     <system:Double x:Key="AtcApps.Font.Size.Default">14</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Content">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.StatusBar">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.TabItem">16</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.ToolTip">12</system:Double>
+
+    <!--  CharacterCasing  -->
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs">Normal</CharacterCasing>
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs.Accent">Normal</CharacterCasing>
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs.AccentHighlight">Normal</CharacterCasing>
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.GridViewColumnHeader">Normal</CharacterCasing>
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.GroupBox">Normal</CharacterCasing>
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.WindowCommands">Normal</CharacterCasing>
 
 </ResourceDictionary>

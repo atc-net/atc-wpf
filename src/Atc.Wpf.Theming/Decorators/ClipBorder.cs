@@ -25,16 +25,6 @@ public sealed class ClipBorder : Decorator
         set => SetValue(BorderThicknessProperty, value);
     }
 
-    private static bool OnValidateThickness(object? value)
-    {
-        var th = (Thickness)(value ?? default(Thickness));
-        return th.IsValid(
-            allowNegative: false,
-            allowNaN: false,
-            allowPositiveInfinity: false,
-            allowNegativeInfinity: false);
-    }
-
     public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
         nameof(Padding),
         typeof(Thickness),
@@ -63,16 +53,6 @@ public sealed class ClipBorder : Decorator
     {
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
-    }
-
-    private static bool OnValidateCornerRadius(object? value)
-    {
-        var cr = (CornerRadius)(value ?? default(CornerRadius));
-        return cr.IsValid(
-            allowNegative: false,
-            allowNaN: false,
-            allowPositiveInfinity: false,
-            allowNegativeInfinity: false);
     }
 
     public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
@@ -308,6 +288,28 @@ public sealed class ClipBorder : Decorator
         {
             drawingContext.DrawGeometry(bgBrush, pen: null, backgroundGeometry);
         }
+    }
+
+    private static bool OnValidateThickness(
+        object? value)
+    {
+        var th = (Thickness)(value ?? default(Thickness));
+        return th.IsValid(
+            allowNegative: false,
+            allowNaN: false,
+            allowPositiveInfinity: false,
+            allowNegativeInfinity: false);
+    }
+
+    private static bool OnValidateCornerRadius(
+        object? value)
+    {
+        var cr = (CornerRadius)(value ?? default(CornerRadius));
+        return cr.IsValid(
+            allowNegative: false,
+            allowNaN: false,
+            allowPositiveInfinity: false,
+            allowNegativeInfinity: false);
     }
 
     private static void GenerateGeometry(

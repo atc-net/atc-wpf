@@ -275,20 +275,6 @@
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Gray8}" />
 
-    <!--  Brushes: TextBox  -->
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBox.Border"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBox.Border.Focus"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBox.Border.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
-
     <!--  Brushes: Slider  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.SliderValue.Disabled"
@@ -311,13 +297,33 @@
         options:Freeze="True"
         Color="{{AtcApps.Colors.SliderTrack.Normal}}" />
 
+    <!--  Brushes: TabControl  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TabControl.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+
     <!--  Brushes: TextBlock  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.TextBlock.FloatingMessage"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.AccentBase}" />
 
-    <!--  Brushes: TextBlock  -->
+    <!--  Brushes: TextBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBox.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBox.Border.Focus"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBox.Border.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray2}" />
+
+    <!--  Brushes: Thumb  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Thumb"
         options:Freeze="True"

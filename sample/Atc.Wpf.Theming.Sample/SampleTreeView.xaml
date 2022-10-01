@@ -84,10 +84,10 @@
             Header="Slider"
             IsEnabled="False"
             IsExpanded="True" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="TabControl"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.TabControlView" />
         <atc:SampleTreeViewItem
             Header="TextBlock"
             IsExpanded="True"
@@ -101,7 +101,6 @@
             IsExpanded="True"
             SamplePath="Misc.TreeViewView" />
     </TreeViewItem>
-
     <atc:SampleTreeViewItem
         Header="Mix"
         IsExpanded="True"
