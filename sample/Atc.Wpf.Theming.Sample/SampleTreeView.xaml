@@ -64,10 +64,10 @@
             Header="Label"
             IsExpanded="True"
             SamplePath="Misc.LabelView" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="ListView"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.ListViewView" />
         <TreeViewItem
             Header="Menu"
             IsEnabled="False"

@@ -3,7 +3,6 @@ namespace Atc.Wpf.Theming.Sample.Samples.InputBox;
 /// <summary>
 /// Interaction logic for ComboBoxView.
 /// </summary>
-[SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
 public partial class ComboBoxView
 {
     public ComboBoxView()

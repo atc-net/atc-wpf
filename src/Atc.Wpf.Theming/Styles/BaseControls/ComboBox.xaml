@@ -12,6 +12,7 @@
 
     <Geometry x:Key="ComboBoxDownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
 
+    <!--  DropDownButton  -->
     <Style x:Key="AtcApps.Styles.ToggleButton.ComboBoxDropDown" TargetType="{x:Type ToggleButton}">
         <Setter Property="ClickMode" Value="Press" />
         <Setter Property="Focusable" Value="False" />
@@ -55,6 +56,7 @@
         </Setter>
     </Style>
 
+    <!--  ItemBase  -->
     <Style x:Key="AtcApps.Styles.ComboBoxItem" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderThickness" Value="0" />
@@ -381,10 +383,10 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="true" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                                <Condition Property="IsGrouping" Value="True" />
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
