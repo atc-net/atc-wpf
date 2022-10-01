@@ -1,4 +1,5 @@
-namespace Atc.Wpf.Extensions;
+// ReSharper disable once CheckNamespace
+namespace System.Windows;
 
 public static class RectExtensions
 {

@@ -28,12 +28,7 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Shapes;
 global using System.Windows.Threading;
 
-global using Windows.Win32;
-global using Windows.Win32.Foundation;
-global using Windows.Win32.Graphics.Gdi;
-global using Windows.Win32.UI.WindowsAndMessaging;
 global using Atc.Wpf.Controls;
-global using Atc.Wpf.Extensions;
 global using Atc.Wpf.Theming.Automation.Peers;
 global using Atc.Wpf.Theming.Behaviors;
 global using Atc.Wpf.Theming.Behaviors.Internal;
@@ -49,10 +44,14 @@ global using Atc.Wpf.Theming.Internal;
 global using Atc.Wpf.Theming.Primitives;
 global using Atc.Wpf.Theming.Resources;
 global using Atc.Wpf.Translation;
-global using Atc.Wpf.ValueConverters;
 
 global using ControlzEx;
 global using ControlzEx.Native;
 global using ControlzEx.Theming;
 
 global using Microsoft.Xaml.Behaviors;
+
+global using Windows.Win32;
+global using Windows.Win32.Foundation;
+global using Windows.Win32.Graphics.Gdi;
+global using Windows.Win32.UI.WindowsAndMessaging;

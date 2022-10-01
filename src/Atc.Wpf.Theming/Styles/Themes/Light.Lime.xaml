@@ -241,15 +241,29 @@
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Gray6}" />
 
-    <!--  Brushes: ComboBox  -->
+    <!--  Brushes: CheckBox  -->
     <SolidColorBrush
-        x:Key="AtcApps.Brushes.ComboBox.Border.MouseOver"
+        x:Key="AtcApps.Brushes.CheckBox"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray5}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.CheckBox.MouseOver"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Gray2}" />
+
+    <!--  Brushes: ComboBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ComboBox.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ComboBox.Border.Focus"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ComboBox.Border.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray2}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ComboBox.PopupBorder"
         options:Freeze="True"
@@ -262,15 +276,6 @@
         Color="{StaticResource AtcApps.Colors.Gray8}" />
 
     <!--  Brushes: TextBox  -->
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.CheckBox"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray5}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.CheckBox.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
-    <!--  Brushes: CheckBox  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.TextBox.Border"
         options:Freeze="True"
@@ -321,5 +326,12 @@
         <GradientStop Offset="0" Color="{StaticResource AtcApps.Colors.Highlight}" />
         <GradientStop Offset="1" Color="{StaticResource AtcApps.Colors.Accent3}" />
     </LinearGradientBrush>
+
+    <!--  Brushes: TreeView  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TreeView.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+
 
 </ResourceDictionary>

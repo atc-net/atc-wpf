@@ -169,8 +169,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controls\Helpers\" />
-  </ItemGroup>
-
 </Project>

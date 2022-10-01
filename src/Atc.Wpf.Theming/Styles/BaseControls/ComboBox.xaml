@@ -168,7 +168,7 @@
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.ComboBox" TargetType="{x:Type ComboBox}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />

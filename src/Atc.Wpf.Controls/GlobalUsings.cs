@@ -1,7 +1,6 @@
 global using System.Collections;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
-
 global using System.Windows;
 global using System.Windows.Controls;
 global using System.Windows.Controls.Primitives;

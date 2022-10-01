@@ -21,8 +21,7 @@
         <sample:SampleTreeView
             Grid.Row="1"
             Grid.Column="0"
-            Margin="10"
-            BorderThickness="1"
+            BorderThickness="0"
             SelectedItemChanged="TreeViewOnSelectionChanged" />
 
         <Grid

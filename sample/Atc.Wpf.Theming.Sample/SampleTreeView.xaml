@@ -81,6 +81,10 @@
             IsEnabled="False"
             IsExpanded="True" />
         <TreeViewItem
+            Header="Slider"
+            IsEnabled="False"
+            IsExpanded="True" />
+        <TreeViewItem
             Header="TabControl"
             IsEnabled="False"
             IsExpanded="True" />
@@ -92,14 +96,10 @@
             Header="ToolBar"
             IsEnabled="False"
             IsExpanded="True" />
-        <TreeViewItem
-            Header="Slider"
-            IsEnabled="False"
-            IsExpanded="True" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="TreeView"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.TreeViewView" />
     </TreeViewItem>
 
     <atc:SampleTreeViewItem
