@@ -11,7 +11,7 @@ namespace Atc.Wpf.Theming.Controls.Icons
 
         public static readonly DependencyProperty DataProperty = Path.DataProperty.AddOwner(
             typeof(PathIcon),
-            new FrameworkPropertyMetadata(null));
+            new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
         /// <summary>
         /// Gets or sets a Geometry that specifies the shape to be drawn. In XAML this can also be set using the Path Markup Syntax.

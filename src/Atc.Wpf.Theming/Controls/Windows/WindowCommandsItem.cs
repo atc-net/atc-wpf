@@ -31,7 +31,7 @@ public class WindowCommandsItem : ContentControl
         nameof(ParentWindowCommands),
         typeof(WindowCommands),
         typeof(WindowCommandsItem),
-        new PropertyMetadata(null));
+        new PropertyMetadata(propertyChangedCallback: null));
 
     public static readonly DependencyProperty ParentWindowCommandsProperty = ParentWindowCommandsPropertyKey.DependencyProperty;
 

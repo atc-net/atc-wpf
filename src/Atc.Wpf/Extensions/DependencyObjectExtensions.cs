@@ -1,6 +1,7 @@
 // ReSharper disable ConstantConditionalAccessQualifier
 // ReSharper disable ConvertIfStatementToSwitchStatement
 // ReSharper disable InvertIf
+// ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
 // ReSharper disable once CheckNamespace
 namespace System.Windows;
 
@@ -361,7 +362,7 @@ public static class DependencyObjectExtensions
             return false;
         }
 
-        d.SetValue(property, value);
+        d?.SetValue(property, value);
         return true;
     }
 }

@@ -42,7 +42,7 @@ public class RelayCommandGenericTests
         var command = new RelayCommand<string>(_ => { }, _ => canExecute);
 
         // Act
-        var actual = command.CanExecute(null);
+        var actual = command.CanExecute(parameter: null);
 
         // Assert
         Assert.Equal(expected, actual);

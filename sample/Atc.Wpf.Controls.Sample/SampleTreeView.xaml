@@ -29,6 +29,10 @@
                 SamplePath="LabelControls.LabelThemeAndAccentColorSelectorsView" />
         </TreeViewItem>
         <atc:SampleTreeViewItem
+            Header="LabelCheckBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelCheckBoxView" />
+        <atc:SampleTreeViewItem
             Header="LabelComboBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelComboBoxView" />

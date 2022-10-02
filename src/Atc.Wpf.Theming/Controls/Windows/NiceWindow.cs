@@ -1412,7 +1412,7 @@ public class NiceWindow : WindowChromeWindow
             return;
         }
 
-        Mouse.Capture(null);
+        Mouse.Capture(element: null);
     }
 
     internal static void DoWindowTitleThumbMoveOnDragDelta(

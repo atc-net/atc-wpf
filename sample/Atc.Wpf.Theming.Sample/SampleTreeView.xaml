@@ -28,10 +28,10 @@
             IsExpanded="True" />
     </TreeViewItem>
     <TreeViewItem Header="Input - Box" IsExpanded="True">
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="CheckBox"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="InputBox.CheckBoxView" />
         <atc:SampleTreeViewItem
             Header="ComboBox"
             IsExpanded="True"

@@ -72,7 +72,7 @@ public static class TextBoxHelper
         "ButtonCommandTarget",
         typeof(IInputElement),
         typeof(TextBoxHelper),
-        new FrameworkPropertyMetadata(null));
+        new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
     public static IInputElement? GetButtonCommandTarget(
         DependencyObject d)

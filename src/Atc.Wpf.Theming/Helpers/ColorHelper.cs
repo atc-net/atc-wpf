@@ -48,7 +48,7 @@ public class ColorHelper
             {
                 try
                 {
-                    var color = (Color)(propertyInfo.GetValue(null) ?? default(Color));
+                    var color = (Color)(propertyInfo.GetValue(obj: null) ?? default(Color));
                     if (!ColorNamesDictionary.ContainsKey(color))
                     {
                         ColorNamesDictionary.Add(color, propertyInfo.Name);

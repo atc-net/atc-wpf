@@ -44,7 +44,7 @@ public class RelayCommandAsyncGenericTests
         var command = new RelayCommandAsync<string>(_ => MyTask(), _ => canExecute);
 
         // Act
-        var actual = command.CanExecute(null);
+        var actual = command.CanExecute(parameter: null);
 
         // Assert
         Assert.Equal(expected, actual);
