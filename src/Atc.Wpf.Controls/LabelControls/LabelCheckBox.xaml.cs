@@ -113,7 +113,6 @@ public partial class LabelCheckBox : ILabelCheckBox
         set => SetValue(ControlValueProperty, value);
     }
 
-
     public LabelCheckBox()
     {
         InitializeComponent();

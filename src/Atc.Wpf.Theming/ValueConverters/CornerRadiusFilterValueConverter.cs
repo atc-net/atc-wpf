@@ -31,7 +31,6 @@ public class CornerRadiusFilterValueConverter : IValueConverter
             RadiusType.BottomLeft => cornerRadius.BottomLeft,
             _ => cornerRadius,
         };
-
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
