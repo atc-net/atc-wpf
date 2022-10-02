@@ -330,7 +330,7 @@ public class NiceWindow : WindowChromeWindow
         typeof(CharacterCasing),
         typeof(NiceWindow),
         new FrameworkPropertyMetadata(
-            CharacterCasing.Upper,
+            CharacterCasing.Normal,
             FrameworkPropertyMetadataOptions.Inherits | FrameworkPropertyMetadataOptions.AffectsMeasure),
         value => (CharacterCasing)value >= CharacterCasing.Normal && (CharacterCasing)value <= CharacterCasing.Upper);
 
@@ -1412,7 +1412,7 @@ public class NiceWindow : WindowChromeWindow
             return;
         }
 
-        Mouse.Capture(null);
+        Mouse.Capture(element: null);
     }
 
     internal static void DoWindowTitleThumbMoveOnDragDelta(

@@ -4,12 +4,14 @@
     xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/ControlsStoryboard.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/NiceWindowButtons.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Expander.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/GroupBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ListView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Menu.xaml" />
@@ -24,6 +26,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolTip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TreeView.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -33,26 +36,35 @@
         BasedOn="{StaticResource {x:Type windows:NiceWindow}}"
         TargetType="{x:Type windows:NiceWindow}" />
 
-    <Style BasedOn="{StaticResource AtcApps.Styles.Button}" TargetType="Button" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.CheckBox}" TargetType="CheckBox" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ComboBox}" TargetType="ComboBox" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.Expander}" TargetType="Expander" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.GroupBox}" TargetType="GroupBox" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ListBox}" TargetType="ListBox" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ListView}" TargetType="ListView" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.Menu}" TargetType="Menu" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.PasswordBox}" TargetType="PasswordBox" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.RadioButton}" TargetType="RadioButton" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.RepeatButton}" TargetType="RepeatButton" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ScrollBar}" TargetType="ScrollBar" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ScrollViewer}" TargetType="ScrollViewer" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.Slider}" TargetType="Slider" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.TabControl}" TargetType="TabControl" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBar}" TargetType="StatusBar" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBarItem}" TargetType="StatusBarItem" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.TextBlock}" TargetType="TextBlock" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.TextBox}" TargetType="TextBox" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ToolBar}" TargetType="ToolBar" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="TreeView" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Button}" TargetType="{x:Type Button}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.CheckBox}" TargetType="{x:Type CheckBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ComboBox}" TargetType="{x:Type ComboBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ComboBoxItem}" TargetType="{x:Type ComboBoxItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Expander}" TargetType="{x:Type Expander}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.GridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.GroupBox}" TargetType="{x:Type GroupBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Label}" TargetType="{x:Type Label}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ListBox}" TargetType="{x:Type ListBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ListBoxItem}" TargetType="{x:Type ListBoxItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ListView}" TargetType="{x:Type ListView}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ListViewItem}" TargetType="{x:Type ListViewItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Menu}" TargetType="{x:Type Menu}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.MenuItem}" TargetType="{x:Type MenuItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.PasswordBox}" TargetType="{x:Type PasswordBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.RadioButton}" TargetType="{x:Type RadioButton}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.RepeatButton}" TargetType="{x:Type RepeatButton}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ScrollBar}" TargetType="{x:Type ScrollBar}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ScrollViewer}" TargetType="{x:Type ScrollViewer}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Slider}" TargetType="{x:Type Slider}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBar}" TargetType="{x:Type StatusBar}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBarItem}" TargetType="{x:Type StatusBarItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.TextBlock}" TargetType="{x:Type TextBlock}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.TextBox}" TargetType="{x:Type TextBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.TabControl}" TargetType="{x:Type TabControl}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.TabItem}" TargetType="{x:Type TabItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToolBar}" TargetType="{x:Type ToolBar}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToolTip}" TargetType="{x:Type ToolTip}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type TreeView}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type TreeViewItem}" />
 
 </ResourceDictionary>

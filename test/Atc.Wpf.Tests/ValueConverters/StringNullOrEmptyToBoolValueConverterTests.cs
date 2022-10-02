@@ -7,7 +7,7 @@ public class StringNullOrEmptyToBoolValueConverterTests
     [Theory]
     [InlineData(true, null)]
     [InlineData(true, "")]
-    [InlineData(false, "Hallo")]
+    [InlineData(false, "Hello")]
     public void Convert(bool expected, string? input)
         => Assert.Equal(
             expected,

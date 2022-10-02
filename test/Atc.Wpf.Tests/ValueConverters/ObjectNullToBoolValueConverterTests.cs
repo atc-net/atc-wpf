@@ -7,7 +7,7 @@ public class ObjectNullToBoolValueConverterTests
     [Theory]
     [InlineData(true, null)]
     [InlineData(false, "")]
-    [InlineData(false, "Hallo")]
+    [InlineData(false, "Hello")]
     public void Convert(bool expected, string? input)
         => Assert.Equal(
             expected,

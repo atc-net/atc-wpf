@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(bool))]
 public class StringNullOrEmptyToBoolValueConverter : IValueConverter
 {
+    public static readonly StringNullOrEmptyToBoolValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {

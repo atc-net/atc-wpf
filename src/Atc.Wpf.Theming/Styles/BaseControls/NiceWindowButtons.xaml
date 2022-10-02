@@ -4,7 +4,7 @@
     xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controlzex="urn:controlzex"
-    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helper">
+    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helpers">
 
     <atcValueConverters:ThicknessToDoubleValueConverter x:Key="BorderThicknessToStrokeThicknessConverter" TakeThicknessSide="Left" />
 
@@ -64,16 +64,16 @@
         <Setter Property="Width" Value="34" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.WindowButtonCommands.Background.MouseOver}" />
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.ButtonCommands.Background.MouseOver}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
             </Trigger>
-            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="true">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.WindowButtonCommands.Background.MouseOver}" />
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.ButtonCommands.Background.MouseOver}" />
             </Trigger>
-            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="true">
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
             </Trigger>
@@ -83,28 +83,76 @@
         </Style.Triggers>
     </Style>
 
-    <!--  Dark for windows: min, max and close  -->
     <Style
-        x:Key="AtcApps.Styles.Button.NiceWindow.Dark"
+        x:Key="AtcApps.Styles.Button.NiceWindow.LightHighlight"
         BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Light}"
         TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.WindowButtonCommands.Background.MouseOver}" />
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  Dark for windows: min, max and close  -->
+    <Style
+        x:Key="AtcApps.Styles.Button.NiceWindow.Dark"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Base}"
+        TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.ButtonCommands.Background.MouseOver}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
             </Trigger>
-            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="true">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.WindowButtonCommands.Background.MouseOver}" />
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.ButtonCommands.Background.MouseOver}" />
             </Trigger>
-            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="true">
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForegroundDisabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.Button.NiceWindow.DarkHighlight"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.Dark}"
+        TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.MouseOver}" />
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="controlzex:NonClientControlProperties.IsNCPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Window.CloseButton.Background.Pressed}" />
+                <Setter Property="Opacity" Value="1" />
             </Trigger>
         </Style.Triggers>
     </Style>

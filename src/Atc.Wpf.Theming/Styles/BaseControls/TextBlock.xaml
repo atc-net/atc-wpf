@@ -3,8 +3,4 @@
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.TextBlock" TargetType="{x:Type TextBlock}" />
 
-    <!--  Light  -->
-
-    <!--  Dark  -->
-
 </ResourceDictionary>

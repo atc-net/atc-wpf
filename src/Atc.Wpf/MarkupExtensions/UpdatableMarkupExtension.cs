@@ -59,19 +59,19 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
         object value,
         DependencyProperty dp)
     {
-        if (TargetObject is not DependencyObject obj)
+        if (TargetObject is not DependencyObject d)
         {
             return;
         }
 
-        void UpdateAction() => obj.SetValue(dp, value);
-        if (obj.CheckAccess())
+        void UpdateAction() => d.SetValue(dp, value);
+        if (d.CheckAccess())
         {
             UpdateAction();
         }
         else
         {
-            obj.Dispatcher.Invoke(UpdateAction);
+            d.Dispatcher.Invoke(UpdateAction);
         }
     }
 

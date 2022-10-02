@@ -1,4 +1,5 @@
-namespace Atc.Wpf.Extensions;
+// ReSharper disable once CheckNamespace
+namespace System.Windows.Controls;
 
 public static class ImageExtensions
 {

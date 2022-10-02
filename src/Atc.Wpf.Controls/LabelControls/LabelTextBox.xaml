@@ -1,0 +1,107 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.LabelControls.LabelTextBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:parts="clr-namespace:Atc.Wpf.Controls.LabelControls.Parts"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
+    x:Name="UcLabelTextBox"
+    MinWidth="200"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
+        <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
+        <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
+        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
+        <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
+    </UserControl.Resources>
+
+    <atc:GridEx Columns="10,*,20" Rows="Auto">
+
+        <TextBlock
+            Grid.Column="0"
+            Padding="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
+            FontWeight="Bold"
+            Foreground="{Binding ElementName=UcLabelTextBox, Path=MandatoryColor, FallbackValue=Red}"
+            Text="*">
+            <TextBlock.Visibility>
+                <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
+                    <Binding ElementName="UcLabelTextBox" Path="ShowAsteriskOnMandatory" />
+                    <Binding ElementName="UcLabelTextBox" Path="IsMandatory" />
+                </MultiBinding>
+            </TextBlock.Visibility>
+        </TextBlock>
+
+        <atc:GridEx
+            Grid.Column="1"
+            Columns="0.3*,0.7*"
+            Rows="Auto,Auto,10"
+            Visibility="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+
+            <StackPanel
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Text="{Binding ElementName=UcLabelTextBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Margin="0,0,5,0" Text=":" />
+            </StackPanel>
+
+            <TextBox
+                x:Name="InputFieldHorizontal"
+                Grid.Column="1"
+                MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
+                MaxLines="1"
+                Text="{Binding ElementName=UcLabelTextBox, Path=ControlValue}" />
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Visibility="Visible" />
+
+        </atc:GridEx>
+
+        <atc:GridEx
+            Grid.Column="1"
+            Columns="*"
+            Rows="Auto,Auto,Auto,10"
+            Visibility="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
+
+            <StackPanel
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Text="{Binding ElementName=UcLabelTextBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Margin="0,0,5,0" Text=":" />
+            </StackPanel>
+
+            <TextBox
+                x:Name="InputFieldVertical"
+                Grid.Row="1"
+                MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
+                MaxLines="1"
+                Text="{Binding ElementName=UcLabelTextBox, Path=ControlValue}" />
+
+            <TextBlock
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Visibility="Visible" />
+
+        </atc:GridEx>
+
+        <parts:LabelControlInformationIcon
+            Grid.Column="2"
+            Margin="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
+            InformationColor="{Binding ElementName=UcLabelTextBox, Path=InformationColor}"
+            InformationText="{Binding ElementName=UcLabelTextBox, Path=InformationText}"
+            Visibility="{Binding ElementName=UcLabelTextBox, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+
+    </atc:GridEx>
+
+</UserControl>

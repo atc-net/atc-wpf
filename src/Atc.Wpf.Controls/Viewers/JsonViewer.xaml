@@ -15,12 +15,14 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <UserControl.Resources>
+
         <valueConverters:MethodToValueConverter x:Key="MethodToValueConverter" />
         <valueConverters:ComplexPropertyMethodToValueConverter x:Key="ComplexPropertyMethodToValueConverter" />
         <valueConverters:JValueConverter x:Key="JValueConverter" />
         <valueConverters:JPropertyTypeToColorValueConverter x:Key="JPropertyTypeToColorConverter" />
         <valueConverters:JValueTypeToColorValueConverter x:Key="JValueTypeToColorConverter" />
         <valueConverters:JArrayLengthValueConverter x:Key="JArrayLengthConverter" />
+
         <HierarchicalDataTemplate DataType="{x:Type jLinq:JArray}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
             <StackPanel Margin="1" Orientation="Horizontal">
                 <TextBlock
@@ -33,13 +35,14 @@
                 <TextBlock Foreground="#a40000" Text="{Binding Converter={StaticResource JArrayLengthConverter}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
+
         <HierarchicalDataTemplate
             x:Key="ArrayPropertyTemplate"
             DataType="{x:Type jLinq:JProperty}"
             ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
             <StackPanel Margin="1" Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
-                <TextBlock Text=" : " />
+                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding Path=Name, Mode=OneWay}" />
+                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
                 <TextBlock
                     Margin="0,0,5,0"
                     Padding="3,0,3,1"
@@ -50,20 +53,22 @@
                 <TextBlock Foreground="#a40000" Text="{Binding Converter={StaticResource JArrayLengthConverter}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
+
         <HierarchicalDataTemplate
             x:Key="ObjectPropertyTemplate"
             DataType="{x:Type jLinq:JProperty}"
             ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
             <StackPanel Margin="1" Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
-                <TextBlock Text=" : " />
+                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding Path=Name, Mode=OneWay}" />
+                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
                 <TextBlock Foreground="#729fcf" Text="{}{ }" />
             </StackPanel>
         </HierarchicalDataTemplate>
+
         <DataTemplate x:Key="PrimitivePropertyTemplate" DataType="{x:Type jLinq:JProperty}">
             <StackPanel Margin="1" Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
-                <TextBlock Text=" : " />
+                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding Path=Name, Mode=OneWay}" />
+                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
                 <TextBlock Text="  " />
                 <TextBlock
                     Width="300"
@@ -72,17 +77,20 @@
                     TextWrapping="Wrap" />
             </StackPanel>
         </DataTemplate>
+
         <HierarchicalDataTemplate DataType="{x:Type jLinq:JObject}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
             <StackPanel Margin="1" Orientation="Horizontal">
                 <TextBlock Text=" " />
                 <TextBlock Foreground="#729fcf" Text="{}{ }" />
             </StackPanel>
         </HierarchicalDataTemplate>
+
         <HierarchicalDataTemplate DataType="{x:Type jLinq:JConstructor}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
-            <TextBlock Text="Constructor" />
+            <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="Constructor" />
         </HierarchicalDataTemplate>
+
         <HierarchicalDataTemplate DataType="{x:Type jLinq:JRaw}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
-            <TextBlock Text="Raw" />
+            <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="Raw" />
         </HierarchicalDataTemplate>
 
         <templateSelectors:JPropertyDataTemplateSelector
@@ -98,7 +106,9 @@
                 Text="{Binding Converter={StaticResource JValueConverter}}"
                 TextWrapping="Wrap" />
         </DataTemplate>
+
     </UserControl.Resources>
+
     <DockPanel Name="DockPanel" Visibility="Visible">
         <TreeView
             Name="JsonTreeView"
@@ -114,4 +124,5 @@
             </TreeView.ItemContainerStyle>
         </TreeView>
     </DockPanel>
+
 </UserControl>

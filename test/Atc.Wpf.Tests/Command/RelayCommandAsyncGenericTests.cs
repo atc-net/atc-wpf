@@ -44,7 +44,7 @@ public class RelayCommandAsyncGenericTests
         var command = new RelayCommandAsync<string>(_ => MyTask(), _ => canExecute);
 
         // Act
-        var actual = command.CanExecute(null);
+        var actual = command.CanExecute(parameter: null);
 
         // Assert
         Assert.Equal(expected, actual);
@@ -74,7 +74,7 @@ public class RelayCommandAsyncGenericTests
     private static async Task<string> MyTask()
     {
         await Task.Delay(1);
-        return "Hallo";
+        return "Hello";
     }
 
     [SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "OK.")]
@@ -84,6 +84,6 @@ public class RelayCommandAsyncGenericTests
     {
         await Task.Delay(1);
         callback(expected);
-        return "Hallo";
+        return "Hello";
     }
 }

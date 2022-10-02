@@ -7,7 +7,7 @@ public class ObjectNotNullToVisibilityVisibleValueConverterTests
     [Theory]
     [InlineData(Visibility.Collapsed, null)]
     [InlineData(Visibility.Visible, true)]
-    [InlineData(Visibility.Visible, "Hallo")]
+    [InlineData(Visibility.Visible, "Hello")]
     public void Convert(Visibility expected, object input)
         => Assert.Equal(
             expected,

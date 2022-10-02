@@ -7,30 +7,6 @@ public partial class ThemeSelector : INotifyPropertyChanged
 {
     private string selectedKey = string.Empty;
 
-    public static readonly DependencyProperty ShowLabelProperty = DependencyProperty.Register(
-        nameof(ShowLabel),
-        typeof(bool),
-        typeof(ThemeSelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowLabel
-    {
-        get => (bool)GetValue(ShowLabelProperty);
-        set => SetValue(ShowLabelProperty, value);
-    }
-
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        nameof(Orientation),
-        typeof(Orientation),
-        typeof(ThemeSelector),
-        new PropertyMetadata(default(Orientation)));
-
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
-
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderColorIndicatorType),
         typeof(RenderColorIndicatorType),

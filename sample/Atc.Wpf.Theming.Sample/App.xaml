@@ -2,6 +2,8 @@
     x:Class="Atc.Wpf.Theming.Sample.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:sample="clr-namespace:Atc.Wpf.Theming.Sample"
     Exit="ApplicationExit"
     Startup="ApplicationStartup">
     <Application.Resources>
@@ -11,6 +13,10 @@
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SampleTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type atc:SampleTreeViewItem}" />
+
         </ResourceDictionary>
     </Application.Resources>
+
 </Application>

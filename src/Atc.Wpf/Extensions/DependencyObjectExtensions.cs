@@ -1,6 +1,7 @@
 // ReSharper disable ConstantConditionalAccessQualifier
 // ReSharper disable ConvertIfStatementToSwitchStatement
 // ReSharper disable InvertIf
+// ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
 // ReSharper disable once CheckNamespace
 namespace System.Windows;
 
@@ -9,6 +10,33 @@ namespace System.Windows;
 /// </summary>
 public static class DependencyObjectExtensions
 {
+    /// <summary>
+    /// Counts the ancestors until the type T was found.
+    /// </summary>
+    /// <typeparam name="T">The type until the search should work.</typeparam>
+    /// <param name="child">The start child.</param>
+    /// <param name="countFor">A filter function which can be null to count all ancestors.</param>
+    internal static int CountAncestors<T>(
+        this DependencyObject child,
+        Func<DependencyObject, bool> countFor)
+        where T : DependencyObject
+    {
+        var count = 0;
+        var parent = VisualTreeHelper.GetParent(child);
+
+        while (parent is not null && parent is not T)
+        {
+            if (countFor is null || countFor(parent))
+            {
+                count++;
+            }
+
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+
+        return count;
+    }
+
     /// <summary>
     /// This method is an alternative to WPF's
     /// <see cref="VisualTreeHelper.GetParent"/> method, which also

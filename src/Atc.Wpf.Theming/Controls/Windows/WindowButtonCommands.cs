@@ -126,7 +126,7 @@ public class WindowButtonCommands : ContentControl
         nameof(Minimize),
         typeof(string),
         typeof(WindowButtonCommands),
-        new PropertyMetadata(null));
+        new PropertyMetadata(propertyChangedCallback: null));
 
     /// <summary>
     /// Gets or sets the minimize button tooltip.

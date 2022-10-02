@@ -38,7 +38,7 @@
                     <StackPanel Margin="10" Orientation="Vertical">
                         <Button
                             Command="{Binding Path=Test3Command}"
-                            CommandParameter="Hallo"
+                            CommandParameter="Hello"
                             Content="Button with no canExecute, and have a string as CommandParameter" />
                     </StackPanel>
                 </StackPanel>

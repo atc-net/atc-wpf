@@ -7,493 +7,8 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="options">
 
-    <!--  Matadata  -->
-    <system:String x:Key="Theme.Name">Dark.Emerald</system:String>
-    <system:String x:Key="Theme.Origin">AtcApps.Nice</system:String>
-    <system:String x:Key="Theme.DisplayName">Emerald (Dark)</system:String>
-    <system:String x:Key="Theme.BaseColorScheme">Dark</system:String>
-    <system:String x:Key="Theme.ColorScheme">Emerald</system:String>
-    <Color x:Key="Theme.PrimaryAccentColor">#FF008A00</Color>
-    <SolidColorBrush
-        x:Key="Theme.ShowcaseBrush"
-        options:Freeze="True"
-        Color="#FF008A00" />
-
-    <!--  *************COLORS START*************  -->
-
-    <!--  Theme Base Colors  -->
-
-    <!--  ACCENT COLORS  -->
-    <Color x:Key="AtcApps.Colors.Highlight">#FF006600</Color>
-    <Color x:Key="AtcApps.Colors.AccentBase">#FF008A00</Color>
-    <!--  80%  -->
-    <Color x:Key="AtcApps.Colors.Accent">#CC008A00</Color>
-    <!--  60%  -->
-    <Color x:Key="AtcApps.Colors.Accent2">#99008A00</Color>
-    <!--  40%  -->
-    <Color x:Key="AtcApps.Colors.Accent3">#66008A00</Color>
-    <!--  20%  -->
-    <Color x:Key="AtcApps.Colors.Accent4">#33008A00</Color>
-
-    <!--  BASE COLORS  -->
-    <Color x:Key="AtcApps.Colors.ThemeForeground">#FFFFFFFF</Color>
-    <Color x:Key="AtcApps.Colors.ThemeBackground">#FF252525</Color>
-    <Color x:Key="AtcApps.Colors.IdealForeground">White</Color>
-
-    <Color x:Key="AtcApps.Colors.Gray1">#FFF9F9F9</Color>
-    <Color x:Key="AtcApps.Colors.Gray2">#FF7F7F7F</Color>
-    <Color x:Key="AtcApps.Colors.Gray3">#FF9D9D9D</Color>
-    <Color x:Key="AtcApps.Colors.Gray4">#FFA59F93</Color>
-    <Color x:Key="AtcApps.Colors.Gray5">#FFB9B9B9</Color>
-    <Color x:Key="AtcApps.Colors.Gray6">#FFCCCCCC</Color>
-    <Color x:Key="AtcApps.Colors.Gray7">#FF7E7E7E</Color>
-    <Color x:Key="AtcApps.Colors.Gray8">#FF454545</Color>
-    <Color x:Key="AtcApps.Colors.Gray9">#5EC9C9C9</Color>
-    <Color x:Key="AtcApps.Colors.Gray10">#FF2F2F2F</Color>
-
-    <Color x:Key="AtcApps.Colors.Gray">#FF7D7D7D</Color>
-    <Color x:Key="AtcApps.Colors.Gray.MouseOver">#FFAAAAAA</Color>
-    <Color x:Key="AtcApps.Colors.Gray.SemiTransparent">#40808080</Color>
-
-    <!--  CORE CONTROL COLORS  -->
-    <Color x:Key="AtcApps.Colors.ProgressIndeterminate1">#33878787</Color>
-    <Color x:Key="AtcApps.Colors.ProgressIndeterminate2">#33959595</Color>
-    <Color x:Key="AtcApps.Colors.ProgressIndeterminate3">#4C000000</Color>
-    <Color x:Key="AtcApps.Colors.ProgressIndeterminate4">#4C000000</Color>
-
-    <!--  *************BRUSHES START*************  -->
-    <!--  PROJECT TEMPLATE BRUSHES  -->
-
-    <!--  UNIVERSAL CONTROL BRUSHES  -->
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ThemeBackground"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ThemeForeground"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Text"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.IdealForeground"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.IdealForegroundDisabled"
-        options:Freeze="True"
-        Color="#FFADADAD" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Selected.Foreground"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.WindowTitle"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.WindowTitle.NonActive"
-        options:Freeze="True"
-        Color="#808080" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Border.NonActive"
-        options:Freeze="True"
-        Color="#808080" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Highlight"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Highlight}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Transparent"
-        options:Freeze="True"
-        Color="Transparent" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SemiTransparent"
-        options:Freeze="True"
-        Color="#55FFFFFF" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.AccentBase"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.AccentBase}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Accent"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Accent2"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent2}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Accent3"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent3}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Accent4"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent4}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray1"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray1}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray2"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray3"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray3}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray4"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray4}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray5"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray5}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray6"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray7"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray7}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray8"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray8}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray9"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray9}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray10"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray10}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray.MouseOver}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Gray.SemiTransparent"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray.SemiTransparent}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBox.Border"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBox.Border.Focus"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBox.Border.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TextBlock.FloatingMessage"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.AccentBase}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Control.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Control.Border"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Control.Disabled"
-        options:Freeze="True"
-        Color="#A5FFFFFF" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Control.Validation"
-        options:Freeze="True"
-        Color="#FFDB000C" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Border"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Border.Focus"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Border.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ComboBox.Border.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ComboBox.Border.Focus"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ComboBox.PopupBorder"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray4}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.CheckBox"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray5}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.CheckBox.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Thumb"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray5}" />
-    <LinearGradientBrush x:Key="AtcApps.Brushes.Progress" options:Freeze="True" StartPoint="1.002,0.5" EndPoint="0.001,0.5">
-        <GradientStop Offset="0" Color="{StaticResource AtcApps.Colors.Highlight}" />
-        <GradientStop Offset="1" Color="{StaticResource AtcApps.Colors.Accent3}" />
-    </LinearGradientBrush>
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SliderValue.Disabled"
-        options:Freeze="True"
-        Color="#FF535353" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SliderTrack.Disabled"
-        options:Freeze="True"
-        Color="#FF383838" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SliderThumb.Disabled"
-        options:Freeze="True"
-        Color="#FF7E7E7E" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SliderTrack.Hover"
-        options:Freeze="True"
-        Color="#FF737373" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SliderTrack.Normal"
-        options:Freeze="True"
-        Color="#FF6C6C6C" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Dialog.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Dialog.Foreground"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Dialog.Background.Accent"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Highlight}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Dialog.Foreground.Accent"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Window.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Separator"
-        options:Freeze="True"
-        Color="#FFC4C4C5" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Flat.Background"
-        options:Freeze="True"
-        Color="#D5D5D5" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Flat.Foreground"
-        options:Freeze="True"
-        Color="#222222" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Flat.Background.MouseOver"
-        options:Freeze="True"
-        Color="#A9A9A9" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Flat.Background.Pressed"
-        options:Freeze="True"
-        Color="#444444" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Flat.Foreground.Pressed"
-        options:Freeze="True"
-        Color="#FFFFFF" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.CleanWindow.Close.Background.MouseOver"
-        options:Freeze="True"
-        Color="#EB2F2F" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.CleanWindow.Close.Foreground.MouseOver"
-        options:Freeze="True"
-        Color="#FFFFFF" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.CleanWindow.Close.Background.Pressed"
-        options:Freeze="True"
-        Color="#7C0000" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Square.Background.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray8}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.Square.Foreground.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.AccentedSquare.Background.MouseOver"
-        options:Freeze="True"
-        Color="#66000000" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Button.AccentedSquare.Foreground.MouseOver"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
-
-    <!--  CONTROL VALIDATION BRUSHES  -->
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Validation1"
-        options:Freeze="True"
-        Color="#052A2E31" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Validation2"
-        options:Freeze="True"
-        Color="#152A2E31" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Validation3"
-        options:Freeze="True"
-        Color="#252A2E31" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Validation4"
-        options:Freeze="True"
-        Color="#352A2E31" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Validation5"
-        options:Freeze="True"
-        Color="#FFDC000C" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummary1"
-        options:Freeze="True"
-        Color="#FFDC020D" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummary2"
-        options:Freeze="True"
-        Color="#FFCA000C" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummary3"
-        options:Freeze="True"
-        Color="#FFFF9298" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummary4"
-        options:Freeze="True"
-        Color="#FFFDC8C8" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummary5"
-        options:Freeze="True"
-        Color="#DDD43940" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummaryFill1"
-        options:Freeze="True"
-        Color="#59F7D8DB" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ValidationSummaryFill2"
-        options:Freeze="True"
-        Color="#FFF7D8DB" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Text.Validation"
-        options:Freeze="True"
-        Color="White" />
-
-    <!--  Default colors  -->
-    <SolidColorBrush
-        x:Key="{x:Static SystemColors.WindowBrushKey}"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-
-    <!--  Menu default colors  -->
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.Menu.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ContextMenu.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SubMenu.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.MenuItem.Background"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ContextMenu.Border"
-        options:Freeze="True"
-        Color="#E0717070" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.SubMenu.Border"
-        options:Freeze="True"
-        Color="#E0717070" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.MenuItem.SelectionFill"
-        options:Freeze="True"
-        Color="#313131" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.MenuItem.SelectionStroke"
-        options:Freeze="True"
-        Color="#313131" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TopMenuItem.PressedFill"
-        options:Freeze="True"
-        Color="#313131" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TopMenuItem.PressedStroke"
-        options:Freeze="True"
-        Color="#E0717070" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.TopMenuItem.SelectionStroke"
-        options:Freeze="True"
-        Color="#90717070" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.MenuItem.Foreground.Disabled"
-        options:Freeze="True"
-        Color="#FF7E7E7E" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.MenuItem.GlyphPanel.Disabled"
-        options:Freeze="True"
-        Color="#848589" />
-    <SolidColorBrush
-        x:Key="{x:Static SystemColors.MenuTextBrushKey}"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.CheckmarkFill"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.RightArrowFill"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Accent}" />
-    <Color x:Key="AtcApps.Colors.MenuShadow">#99B2B2B2</Color>
-    <Color x:Key="AtcApps.Colors.ToolTipShadow">#99B2B2B2</Color>
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.WindowButtonCommands.Background.MouseOver"
-        options:Freeze="True"
-        Color="#66DCDCDC" />
-
-
-    <!--
-        ******************************************************************
-        DEFAULT COMMON CONTROL COLORS
-        ******************************************************************
-    -->
+    <!--  System Colors  -->
     <Color x:Key="AtcApps.Colors.SystemAccent">#FF008A00</Color>
-
     <Color x:Key="AtcApps.Colors.SystemAltHigh">#FF000000</Color>
     <Color x:Key="AtcApps.Colors.SystemAltLow">#33000000</Color>
     <Color x:Key="AtcApps.Colors.SystemAltMedium">#99000000</Color>
@@ -521,6 +36,7 @@
     <Color x:Key="AtcApps.Colors.SystemListMedium">#33FFFFFF</Color>
     <Color x:Key="AtcApps.Colors.SystemErrorText">#FFF000</Color>
 
+    <!--  System Brushes  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.SystemControlBackgroundAccent"
         options:Freeze="True"
@@ -921,37 +437,342 @@
         options:Freeze="True"
         Color="Transparent" />
 
+    <!--  Theming  -->
+    <system:String x:Key="Theme.Name">Dark.Emerald</system:String>
+    <system:String x:Key="Theme.Origin">AtcApps.Nice</system:String>
+    <system:String x:Key="Theme.DisplayName">Emerald (Dark)</system:String>
+    <system:String x:Key="Theme.BaseColorScheme">Dark</system:String>
+    <system:String x:Key="Theme.ColorScheme">Emerald</system:String>
+    <Color x:Key="Theme.PrimaryAccentColor">#FF008A00</Color>
+
+    <!--  Accent Colors  -->
+    <Color x:Key="AtcApps.Colors.Highlight">#FF006600</Color>
+    <Color x:Key="AtcApps.Colors.AccentBase">#FF008A00</Color>
+    <Color x:Key="AtcApps.Colors.Accent">#CC008A00</Color>
+    <Color x:Key="AtcApps.Colors.Accent2">#99008A00</Color>
+    <Color x:Key="AtcApps.Colors.Accent3">#66008A00</Color>
+    <Color x:Key="AtcApps.Colors.Accent4">#33008A00</Color>
+
+    <!--  Base Colors  -->
+    <Color x:Key="AtcApps.Colors.ThemeForeground">#FFFFFFFF</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground">#FF252525</Color>
+    <Color x:Key="AtcApps.Colors.IdealForeground">White</Color>
+    <Color x:Key="AtcApps.Colors.Gray1">#FFF9F9F9</Color>
+    <Color x:Key="AtcApps.Colors.Gray2">#FF7F7F7F</Color>
+    <Color x:Key="AtcApps.Colors.Gray3">#FF9D9D9D</Color>
+    <Color x:Key="AtcApps.Colors.Gray4">#FFA59F93</Color>
+    <Color x:Key="AtcApps.Colors.Gray5">#FFB9B9B9</Color>
+    <Color x:Key="AtcApps.Colors.Gray6">#FFCCCCCC</Color>
+    <Color x:Key="AtcApps.Colors.Gray7">#FF7E7E7E</Color>
+    <Color x:Key="AtcApps.Colors.Gray8">#FF454545</Color>
+    <Color x:Key="AtcApps.Colors.Gray9">#5EC9C9C9</Color>
+    <Color x:Key="AtcApps.Colors.Gray10">#FF2F2F2F</Color>
+    <Color x:Key="AtcApps.Colors.Gray">#FF7D7D7D</Color>
+    <Color x:Key="AtcApps.Colors.Gray.MouseOver">#FFAAAAAA</Color>
+    <Color x:Key="AtcApps.Colors.Gray.SemiTransparent">#40808080</Color>
+
+    <!--  Controls Colors  -->
+    <Color x:Key="AtcApps.Colors.ProgressIndeterminate1">#33878787</Color>
+    <Color x:Key="AtcApps.Colors.ProgressIndeterminate2">#33959595</Color>
+    <Color x:Key="AtcApps.Colors.ProgressIndeterminate3">#4C000000</Color>
+    <Color x:Key="AtcApps.Colors.ProgressIndeterminate4">#4C000000</Color>
+
+    <!--  Brushes  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Text"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.IdealForeground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.IdealForegroundDisabled"
+        options:Freeze="True"
+        Color="#FFADADAD" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Selected.Foreground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Border.NonActive"
+        options:Freeze="True"
+        Color="#808080" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Highlight"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Highlight}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Transparent"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SemiTransparent"
+        options:Freeze="True"
+        Color="#55FFFFFF" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.AccentBase"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.AccentBase}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Accent"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Accent}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Accent2"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Accent2}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Accent3"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Accent3}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Accent4"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Accent4}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray1"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray1}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray2"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray2}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray3"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray3}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray4"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray4}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray5"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray5}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray6"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray7"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray7}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray8"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray9"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray9}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray10"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray10}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray.MouseOver}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Gray.SemiTransparent"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray.SemiTransparent}" />
+
+    <!--  Brushes: Window  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Window.Background"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.WindowTitle"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Accent}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.WindowTitle.NonActive"
+        options:Freeze="True"
+        Color="#808080" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Window.CloseButton.Background.MouseOver"
+        options:Freeze="True"
+        Color="#C42B1C" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Window.CloseButton.Foreground.MouseOver"
+        options:Freeze="True"
+        Color="#FFFFFF" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Window.CloseButton.Background.Pressed"
+        options:Freeze="True"
+        Color="#B22A1B" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Window.ButtonCommands.Background.MouseOver"
+        options:Freeze="True"
+        Color="#66DCDCDC" />
+
+    <!--  Brushes: Dialog  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Dialog.Background"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Dialog.Foreground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Dialog.Background.Accent"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Highlight}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Dialog.Foreground.Accent"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.IdealForeground}" />
+
+    <!--  Brushes: Control  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Control.Background"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Control.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Control.Disabled"
+        options:Freeze="True"
+        Color="#A5FFFFFF" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Control.Validation"
+        options:Freeze="True"
+        Color="#FFDB000C" />
+
+    <!--  Brushes: Button  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Button.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Button.Border.Focus"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Button.Border.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+
+    <!--  Brushes: CheckBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.CheckBox"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray5}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.CheckBox.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray2}" />
+
+    <!--  Brushes: ComboBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ComboBox.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ComboBox.Border.Focus"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ComboBox.Border.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray2}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ComboBox.PopupBorder"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray4}" />
+
+    <!--  Brushes: ListView  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ListView.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+
+    <!--  Brushes: Slider  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SliderValue.Disabled"
+        options:Freeze="True"
+        Color="#FF535353" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SliderTrack.Disabled"
+        options:Freeze="True"
+        Color="#FF383838" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SliderThumb.Disabled"
+        options:Freeze="True"
+        Color="#FF7E7E7E" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SliderTrack.Hover"
+        options:Freeze="True"
+        Color="#FF737373" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SliderTrack.Normal"
+        options:Freeze="True"
+        Color="#FF6C6C6C" />
+
+    <!--  Brushes: TabControl  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TabControl.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+
+    <!--  Brushes: TextBlock  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBlock.FloatingMessage"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.AccentBase}" />
+
+    <!--  Brushes: TextBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBox.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBox.Border.Focus"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TextBox.Border.MouseOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray2}" />
+
+    <!--  Brushes: Thumb  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Thumb"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray5}" />
+    <LinearGradientBrush x:Key="AtcApps.Brushes.Progress" options:Freeze="True" StartPoint="1.002,0.5" EndPoint="0.001,0.5">
+        <GradientStop Offset="0" Color="{StaticResource AtcApps.Colors.Highlight}" />
+        <GradientStop Offset="1" Color="{StaticResource AtcApps.Colors.Accent3}" />
+    </LinearGradientBrush>
+
+    <!--  Brushes: TreeView  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.TreeView.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+
+    <!--  Resources: System  -->
     <markup:StaticResource x:Key="AtcApps.Brushes.SystemControlDescriptionTextForeground" ResourceKey="AtcApps.Brushes.SystemControlPageTextBaseMedium" />
 
-    <!--  Resources for AtcApps.Styles.Button.Win10  -->
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.Background" ResourceKey="AtcApps.Brushes.SystemControlBackgroundBaseLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BackgroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlBackgroundBaseLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BackgroundPressed" ResourceKey="AtcApps.Brushes.SystemControlBackgroundBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BackgroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlBackgroundBaseLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.Foreground" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.ForegroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.ForegroundPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.ForegroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BorderBrush" ResourceKey="AtcApps.Brushes.SystemControlForegroundTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BorderBrushPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BorderBrushPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.BorderBrushDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledTransparent" />
-
-    <!--  Resources for AtcApps.Styles.Button.Accent.Win10  -->
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBackground" ResourceKey="AtcApps.Brushes.SystemControlForegroundAccent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBackgroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlForegroundAccent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBackgroundPressed" ResourceKey="AtcApps.Brushes.SystemControlBackgroundBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBackgroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlBackgroundBaseLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentForeground" ResourceKey="AtcApps.Brushes.SystemControlBackgroundChromeWhite" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentForegroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlBackgroundChromeWhite" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentForegroundPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentForegroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBorderBrush" ResourceKey="AtcApps.Brushes.SystemControlForegroundTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBorderBrushPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBorderBrushPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.Button.AccentBorderBrushDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledTransparent" />
-
-    <!--  Resources for AtcApps.Styles.CheckBox.Win10  -->
+    <!--  Resources: CheckBox  -->
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.ForegroundUnchecked" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.ForegroundUncheckedMouseOver" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.ForegroundUncheckedPressed" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
@@ -1024,77 +845,5 @@
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.CheckGlyphForegroundIndeterminateMouseOver" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.CheckGlyphForegroundIndeterminatePressed" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMedium" />
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.CheckGlyphForegroundIndeterminateDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-
-    <!--  Resources for AtcApps.Styles.RadioButton.Win10  -->
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.Foreground" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.ForegroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.ForegroundPressed" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.ForegroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.Background" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BackgroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BackgroundPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BackgroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrush" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrushPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrushPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrushDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStroke" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMediumHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStrokePointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStrokePressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStrokeDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFill" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFillPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFillPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFillDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStroke" ResourceKey="AtcApps.Brushes.SystemControlHighlightAccent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStrokePointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightAccent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStrokePressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStrokeDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFill" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFillPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFillPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFillDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFill" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMediumHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFillPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFillPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltBaseMedium" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFillDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStroke" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStrokePointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStrokePressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStrokeDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-
-    <!--  Resources for AtcApps.Styles.ToggleSwitch  -->
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.ContentForeground" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.ContentForegroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.HeaderForeground" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.HeaderForegroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackground" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackgroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackgroundPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackgroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOff" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOffPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOffPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOffDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOff" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMediumHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOffPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOffPressed" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMediumHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOffDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOn" ResourceKey="AtcApps.Brushes.SystemControlHighlightAccent" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOnPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltListAccentHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOnPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.FillOnDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOn" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOnPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightListAccentHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOnPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOnDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOff" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMediumHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOffPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOffPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltChromeWhite" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOffDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOn" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltChromeWhite" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOnPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightChromeWhite" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOnPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltChromeWhite" />
-    <markup:StaticResource x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOnDisabled" ResourceKey="AtcApps.Brushes.SystemControlPageBackgroundBaseLow" />
 
 </ResourceDictionary>

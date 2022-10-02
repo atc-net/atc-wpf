@@ -10,8 +10,56 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\eggeaster.svg" />
+    <None Remove="Resources\information2.png" />
+    <None Remove="Resources\info_help.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.227" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\info_help.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="LabelControls\LabelComboBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Resources\Miscellaneous.Designer.cs">
+      <DependentUpon>Miscellaneous.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Miscellaneous.da-DK.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Miscellaneous.de-DE.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Miscellaneous.resx">
+      <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="LabelControls\LabelComboBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

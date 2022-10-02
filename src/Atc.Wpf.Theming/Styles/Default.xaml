@@ -4,6 +4,7 @@
     xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/ControlsStoryboard.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -14,7 +15,7 @@
         BasedOn="{StaticResource {x:Type windows:NiceWindow}}"
         TargetType="{x:Type windows:NiceWindow}" />
 
-    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBar}" TargetType="StatusBar" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBarItem}" TargetType="StatusBarItem" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBar}" TargetType="{x:Type StatusBar}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.StatusBarItem}" TargetType="{x:Type StatusBarItem}" />
 
 </ResourceDictionary>
