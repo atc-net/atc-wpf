@@ -137,16 +137,16 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(CharactersNotAllowedProperty, value);
     }
 
-    public static readonly DependencyProperty ControlValueProperty = DependencyProperty.Register(
-        nameof(ControlValue),
+    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+        nameof(Text),
         typeof(string),
         typeof(LabelTextBox),
         new PropertyMetadata(string.Empty));
 
-    public string ControlValue
+    public string Text
     {
-        get => (string)GetValue(ControlValueProperty);
-        set => SetValue(ControlValueProperty, value);
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
     }
 
     public static readonly DependencyProperty WatermarkEnableProperty = DependencyProperty.Register(

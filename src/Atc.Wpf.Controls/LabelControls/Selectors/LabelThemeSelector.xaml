@@ -40,8 +40,7 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                VerticalAlignment="Center"
-                Visibility="Visible" />
+                VerticalAlignment="Center" />
 
         </atc:GridEx>
 
@@ -61,10 +60,7 @@
 
             <atc:ThemeSelector Grid.Row="1" RenderColorIndicatorType="{Binding ElementName=UcLabelThemeSelector, Path=RenderColorIndicatorType}" />
 
-            <TextBlock
-                Grid.Row="2"
-                VerticalAlignment="Center"
-                Visibility="Visible" />
+            <TextBlock Grid.Row="2" VerticalAlignment="Center" />
 
         </atc:GridEx>
 

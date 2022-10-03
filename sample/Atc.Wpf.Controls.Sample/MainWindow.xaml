@@ -17,7 +17,7 @@
     WindowState="{Binding Path=WindowState}"
     mc:Ignorable="d">
 
-    <atc:GridEx Columns="230,5,*,600" Rows="Auto,*,Auto">
+    <atc:GridEx Columns="250,5,*,600" Rows="Auto,*,Auto">
         <sample:SampleTreeView
             Grid.Row="1"
             Grid.Column="0"

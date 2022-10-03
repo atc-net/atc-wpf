@@ -1,0 +1,47 @@
+<UserControl
+    x:Class="Atc.Wpf.Theming.Controls.Selectors.WellKnownColorSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Theming.Controls.Selectors"
+    x:Name="UcWellKnownColorSelector"
+    MinWidth="100"
+    d:DataContext="{d:DesignInstance Type=selectors:AccentColorSelector}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <selectors:RenderColorIndicatorTypeToVisibilityValueConverter x:Key="RenderColorIndicatorTypeToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <ComboBox
+        IsSynchronizedWithCurrentItem="True"
+        ItemsSource="{Binding Path=Items}"
+        SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+        SelectedValuePath="Name">
+        <ComboBox.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle
+                        Width="15"
+                        Height="15"
+                        Margin="0,0,5,0"
+                        Fill="{Binding ColorBrush}"
+                        Stroke="{Binding BorderColorBrush}"
+                        StrokeThickness="1"
+                        Visibility="{Binding ElementName=UcWellKnownColorSelector, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Square}}" />
+                    <Ellipse
+                        Width="15"
+                        Height="15"
+                        Margin="0,0,5,0"
+                        Fill="{Binding ColorBrush}"
+                        Stroke="{Binding BorderColorBrush}"
+                        StrokeThickness="1"
+                        Visibility="{Binding ElementName=UcWellKnownColorSelector, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Circle}}" />
+                    <TextBlock Text="{Binding DisplayName}" />
+                </StackPanel>
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+    </ComboBox>
+
+</UserControl>

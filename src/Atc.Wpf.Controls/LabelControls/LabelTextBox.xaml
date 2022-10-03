@@ -55,14 +55,13 @@
                 Grid.Column="1"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
-                Text="{Binding ElementName=UcLabelTextBox, Path=ControlValue}" />
+                Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Visibility="Visible" />
+                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
 
         </atc:GridEx>
 
@@ -85,13 +84,12 @@
                 Grid.Row="1"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
-                Text="{Binding ElementName=UcLabelTextBox, Path=ControlValue}" />
+                Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Visibility="Visible" />
+                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
 
         </atc:GridEx>
 

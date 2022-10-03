@@ -109,7 +109,7 @@
 
     </UserControl.Resources>
 
-    <DockPanel Name="DockPanel" Visibility="Visible">
+    <DockPanel Name="DockPanel">
         <TreeView
             Name="JsonTreeView"
             BorderBrush="#FF828790"

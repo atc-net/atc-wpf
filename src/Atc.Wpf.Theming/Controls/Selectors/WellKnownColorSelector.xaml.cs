@@ -1,16 +1,16 @@
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 /// <summary>
-/// Interaction logic for AccentColorSelector.
+/// Interaction logic for WellKnownColorSelector.
 /// </summary>
-public partial class AccentColorSelector : INotifyPropertyChanged
+public partial class WellKnownColorSelector : INotifyPropertyChanged
 {
     private string selectedKey = string.Empty;
 
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderColorIndicatorType),
         typeof(RenderColorIndicatorType),
-        typeof(AccentColorSelector),
+        typeof(WellKnownColorSelector),
         new PropertyMetadata(RenderColorIndicatorType.Square));
 
     public RenderColorIndicatorType RenderColorIndicatorType
@@ -19,13 +19,11 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         set => SetValue(RenderColorIndicatorTypeProperty, value);
     }
 
-    public AccentColorSelector()
+    public WellKnownColorSelector()
     {
         InitializeComponent();
 
         DataContext = this;
-
-        CultureManager.UiCultureChanged += OnUiCultureChanged;
 
         PopulateData();
     }
@@ -82,39 +80,26 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         Items.Clear();
 
         var list = new List<ColorItem>();
-        foreach (var item in ThemeManager.Current
-                     .Themes
-                     .GroupBy(x => x.ColorScheme, StringComparer.Ordinal)
-                     .Select(x => x.First())
-                     .OrderBy(x => x.ColorScheme))
+        var colorsInfo = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
+        foreach (var itemName in colorsInfo.Select(x => x.Name))
         {
             var translatedName = ColorNames.ResourceManager.GetString(
-                item.ColorScheme,
+                itemName,
                 CultureInfo.CurrentUICulture);
+
+            var color = (Color)ColorConverter.ConvertFromString(itemName);
+            var showcaseBrush = new SolidColorBrush(color);
 
             list.Add(
                 new ColorItem(
-                    item.ColorScheme,
-                    translatedName ?? "#" + item.ColorScheme,
-                    item.ShowcaseBrush,
-                    item.ShowcaseBrush));
+                    itemName,
+                    translatedName ?? "#" + itemName,
+                    showcaseBrush,
+                    showcaseBrush));
         }
 
         Items = list
             .OrderBy(x => x.DisplayName)
             .ToList();
-    }
-
-    private void OnUiCultureChanged(
-        object? sender,
-        EventArgs e)
-    {
-        var oldSelectedKey = SelectedKey;
-
-        PopulateData();
-
-        OnPropertyChanged(nameof(Items));
-
-        SelectedKey = oldSelectedKey;
     }
 }

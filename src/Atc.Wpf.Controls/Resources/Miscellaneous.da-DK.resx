@@ -100,4 +100,7 @@
   <data name="Language" xml:space="preserve">
     <value>Sprog</value>
   </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farve</value>
+  </data>
 </root>
