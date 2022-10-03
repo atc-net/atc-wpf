@@ -8,10 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <atc:AutoGrid
-        d:Background="White"
-        Columns="*"
-        Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features">
             <CheckBox x:Name="CbImage">Set IsEnabled on image</CheckBox>

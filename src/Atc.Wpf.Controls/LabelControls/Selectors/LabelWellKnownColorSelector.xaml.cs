@@ -54,6 +54,18 @@ public partial class LabelWellKnownColorSelector : ILabelControlBase
         set => SetValue(RenderColorIndicatorTypeProperty, value);
     }
 
+    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
+        nameof(SelectedKey),
+        typeof(string),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(default(string)));
+
+    public string SelectedKey
+    {
+        get => (string)GetValue(SelectedKeyProperty);
+        set => SetValue(SelectedKeyProperty, value);
+    }
+
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();

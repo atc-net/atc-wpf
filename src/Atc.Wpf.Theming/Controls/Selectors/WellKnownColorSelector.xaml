@@ -7,7 +7,7 @@
     xmlns:selectors="clr-namespace:Atc.Wpf.Theming.Controls.Selectors"
     x:Name="UcWellKnownColorSelector"
     MinWidth="100"
-    d:DataContext="{d:DesignInstance Type=selectors:AccentColorSelector}"
+    d:DataContext="{d:DesignInstance Type=selectors:WellKnownColorSelector}"
     mc:Ignorable="d">
 
     <UserControl.Resources>

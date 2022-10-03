@@ -5,8 +5,6 @@ namespace Atc.Wpf.Theming.Controls.Selectors;
 /// </summary>
 public partial class WellKnownColorSelector : INotifyPropertyChanged
 {
-    private string selectedKey = string.Empty;
-
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderColorIndicatorType),
         typeof(RenderColorIndicatorType),
@@ -17,6 +15,18 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
     {
         get => (RenderColorIndicatorType)GetValue(RenderColorIndicatorTypeProperty);
         set => SetValue(RenderColorIndicatorTypeProperty, value);
+    }
+
+    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
+        nameof(SelectedKey),
+        typeof(string),
+        typeof(WellKnownColorSelector),
+        new PropertyMetadata(default(string)));
+
+    public string SelectedKey
+    {
+        get => (string)GetValue(SelectedKeyProperty);
+        set => SetValue(SelectedKeyProperty, value);
     }
 
     public WellKnownColorSelector()
@@ -31,23 +41,6 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public IList<ColorItem> Items { get; set; } = new List<ColorItem>();
-
-    public string SelectedKey
-    {
-        get => selectedKey;
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return;
-            }
-
-            selectedKey = value;
-            OnPropertyChanged();
-
-            ThemeManager.Current.ChangeThemeColorScheme(Application.Current, SelectedKey);
-        }
-    }
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
@@ -72,11 +65,6 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
 
     private void PopulateData()
     {
-        if (string.IsNullOrEmpty(SelectedKey))
-        {
-            selectedKey = "Blue";
-        }
-
         Items.Clear();
 
         var list = new List<ColorItem>();

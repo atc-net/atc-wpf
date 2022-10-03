@@ -6,31 +6,15 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <ObjectDataProvider
-            x:Key="ControlSizeTypeEnum"
-            MethodName="GetValues"
-            ObjectType="{x:Type system:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="atc:ControlSizeType" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <ObjectDataProvider
-            x:Key="ListOfColor"
-            MethodName="GetProperties"
-            ObjectInstance="{x:Type Colors}" />
         <atcValueConverters:ColorNameToBrushValueConverter x:Key="ColorNameToBrushValueConverter" />
     </UserControl.Resources>
 
-    <atc:AutoGrid
-        d:Background="White"
-        Columns="*"
-        Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features">
             <StackPanel Orientation="Horizontal">
@@ -68,44 +52,16 @@
                             Text="px" />
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="0,0,50,0" Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Center"
-                        Text="Control Size:" />
-                    <ComboBox
-                        x:Name="CbControlSizeType"
-                        Width="180"
-                        Height="24"
-                        ItemsSource="{Binding Source={StaticResource ControlSizeTypeEnum}}"
-                        SelectedIndex="0" />
-                </StackPanel>
-                <StackPanel Margin="0,0,50,0" Orientation="Horizontal">
-                    <TextBlock
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Center"
-                        Text="Color:" />
-                    <ComboBox
-                        x:Name="CbColor"
-                        Width="180"
-                        Height="24"
-                        ItemsSource="{Binding Source={StaticResource ListOfColor}}"
-                        SelectedIndex="133">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle
-                                        Width="15"
-                                        Height="15"
-                                        Fill="{Binding Path=Name}"
-                                        Stroke="Black"
-                                        StrokeThickness="1" />
-                                    <Label Margin="0,-4" Content="{Binding Path=Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
+                <atc:LabelComboBox
+                    x:Name="CbControlSizeType"
+                    Width="280"
+                    Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                    LabelText="Control Size"
+                    SelectedKey="None" />
+                <atc:LabelWellKnownColorSelector
+                    x:Name="CbColor"
+                    Width="230"
+                    SelectedKey="Transparent" />
             </StackPanel>
         </GroupBox>
 
@@ -120,8 +76,8 @@
                     Width="{Binding ElementName=TbControlWidth, Path=Text}"
                     Height="{Binding ElementName=TbControlHeight, Path=Text}"
                     Margin="20"
-                    Background="{Binding ElementName=CbColor, Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToBrushValueConverter}}"
-                    ControlSizeType="{Binding ElementName=CbControlSizeType, Path=SelectedValue}"
+                    Background="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToBrushValueConverter}}"
+                    ControlSizeType="{Binding ElementName=CbControlSizeType, Path=SelectedKey}"
                     Source="/Atc.Wpf.Sample;component/Assets/eggeaster.svg" />
             </StackPanel>
         </GroupBox>

@@ -15,10 +15,7 @@
         <vm:JsonViewerViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid
-        d:Background="White"
-        Columns="*"
-        Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features" />
 
