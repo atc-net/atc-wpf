@@ -54,14 +54,13 @@
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
                 Height="26"
-                IsChecked="{Binding ElementName=UcLabelCheckBox, Path=ControlValue}" />
+                IsChecked="{Binding ElementName=UcLabelCheckBox, Path=IsChecked}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelCheckBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Visibility="Visible" />
+                Foreground="{Binding ElementName=UcLabelCheckBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
 
         </atc:GridEx>
 
@@ -83,13 +82,12 @@
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
                 Height="26"
-                IsChecked="{Binding ElementName=UcLabelCheckBox, Path=ControlValue}" />
+                IsChecked="{Binding ElementName=UcLabelCheckBox, Path=IsChecked}" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelCheckBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Visibility="Visible" />
+                Foreground="{Binding ElementName=UcLabelCheckBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
 
         </atc:GridEx>
 

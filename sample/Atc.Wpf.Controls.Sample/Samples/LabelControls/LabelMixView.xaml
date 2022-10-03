@@ -9,10 +9,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid
-        d:Background="White"
-        Columns="*"
-        Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features" />
 
@@ -21,47 +18,105 @@
 
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
 
-                    <atc:GridEx Grid.Column="0" Rows="Auto,Auto,Auto">
-                        <atc:LabelComboBox
-                            Grid.Row="0"
-                            InformationText="This is a help text.."
-                            IsMandatory="True"
-                            LabelText="MyComboBox"
-                            Orientation="Horizontal" />
-                        <atc:LabelTextBox
-                            Grid.Row="1"
-                            InformationText="This is a help text.."
-                            IsMandatory="True"
-                            LabelText="MyTextBox"
-                            Orientation="Horizontal" />
-                        <atc:LabelCheckBox
-                            Grid.Row="2"
-                            InformationText="This is a help text.."
-                            IsMandatory="True"
-                            LabelText="MyCheckBox"
-                            Orientation="Horizontal" />
-                    </atc:GridEx>
+                    <StackPanel Grid.Column="0">
 
-                    <atc:GridEx Grid.Column="1" Rows="Auto,Auto,Auto">
-                        <atc:LabelComboBox
-                            Grid.Row="0"
+                        <atc:LabelCheckBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            LabelText="MyCheckBox"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelComboBox
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyComboBox"
-                            Orientation="Vertical" />
+                            Orientation="Horizontal"
+                            SelectedKey="None" />
+
                         <atc:LabelTextBox
-                            Grid.Row="1"
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelText="MyTextBox"
-                            Orientation="Vertical" />
+                            Orientation="Horizontal"
+                            Text="Hello" />
+
+                        <atc:LabelTextInfo
+                            InformationText="This is a help text.."
+                            LabelText="MyTextInfo"
+                            Orientation="Horizontal"
+                            Text="Hello" />
+
+                        <atc:LabelTextBox
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            LabelText="MyTextBox"
+                            Orientation="Horizontal"
+                            Text="Hello" />
+
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            Orientation="Horizontal"
+                            SelectedKey="Blue" />
+
+                        <atc:LabelContent
+                            InformationText="This is a help text.."
+                            LabelText="MyContent-TextBox"
+                            Orientation="Horizontal">
+                            <TextBox />
+                        </atc:LabelContent>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+
                         <atc:LabelCheckBox
-                            Grid.Row="2"
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelText="MyCheckBox"
                             Orientation="Vertical" />
-                    </atc:GridEx>
+
+                        <atc:LabelComboBox
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            LabelText="MyComboBox"
+                            Orientation="Vertical"
+                            SelectedKey="None" />
+
+                        <atc:LabelTextBox
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            LabelText="MyTextBox"
+                            Orientation="Vertical"
+                            Text="Hello" />
+
+                        <atc:LabelTextInfo
+                            InformationText="This is a help text.."
+                            LabelText="MyTextInfo"
+                            Orientation="Vertical"
+                            Text="Hello" />
+
+                        <atc:LabelTextBox
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            LabelText="MyTextBox"
+                            Orientation="Vertical"
+                            Text="Hello" />
+
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            Orientation="Vertical"
+                            SelectedKey="Blue" />
+
+                        <atc:LabelContent
+                            InformationText="This is a help text.."
+                            LabelText="MyContent-TextBox"
+                            Orientation="Vertical">
+                            <TextBox />
+                        </atc:LabelContent>
+
+                    </StackPanel>
 
                 </atc:GridEx>
 

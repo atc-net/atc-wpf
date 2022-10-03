@@ -101,16 +101,16 @@ public partial class LabelCheckBox : ILabelCheckBox
         set => SetValue(InformationColorProperty, value);
     }
 
-    public static readonly DependencyProperty ControlValueProperty = DependencyProperty.Register(
-        nameof(ControlValue),
+    public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
+        nameof(IsChecked),
         typeof(bool),
         typeof(LabelCheckBox),
         new PropertyMetadata(default));
 
-    public bool ControlValue
+    public bool IsChecked
     {
-        get => (bool)GetValue(ControlValueProperty);
-        set => SetValue(ControlValueProperty, value);
+        get => (bool)GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
     }
 
     public LabelCheckBox()

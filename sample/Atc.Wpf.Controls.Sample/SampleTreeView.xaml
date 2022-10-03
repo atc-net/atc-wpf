@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <TreeViewItem Header="Label Controls" IsExpanded="True">
-        <TreeViewItem Header="Base Selectors" IsExpanded="True">
+        <TreeViewItem Header="Selectors" IsExpanded="True">
             <atc:SampleTreeViewItem
                 Header="LabelLanguageSelector"
                 IsExpanded="True"
@@ -27,6 +27,10 @@
                 Header="LabelThemeAndAccentColorSelectors"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelThemeAndAccentColorSelectorsView" />
+            <atc:SampleTreeViewItem
+                Header="LabelWellKnownColorSelectorView"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelWellKnownColorSelectorView" />
         </TreeViewItem>
         <atc:SampleTreeViewItem
             Header="LabelCheckBox"
@@ -37,9 +41,17 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelComboBoxView" />
         <atc:SampleTreeViewItem
+            Header="LabelContent"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelContentView" />
+        <atc:SampleTreeViewItem
             Header="LabelTextBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelTextBoxView" />
+        <atc:SampleTreeViewItem
+            Header="LabelTextInfo"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelTextInfoView" />
         <atc:SampleTreeViewItem
             Header="Label-MIX"
             IsExpanded="True"

@@ -1,14 +1,14 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
-/// Interaction logic for LabelTextBox.
+/// Interaction logic for LabelContent.
 /// </summary>
-public partial class LabelTextBox : ILabelTextBox
+public partial class LabelContent : ILabelControl
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(default(Orientation)));
 
     public Orientation Orientation
@@ -20,7 +20,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
         nameof(ShowAsteriskOnMandatory),
         typeof(bool),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(defaultValue: true));
 
     public bool ShowAsteriskOnMandatory
@@ -32,7 +32,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty IsMandatoryProperty = DependencyProperty.Register(
         nameof(IsMandatory),
         typeof(bool),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
@@ -44,7 +44,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty MandatoryColorProperty = DependencyProperty.Register(
         nameof(MandatoryColor),
         typeof(SolidColorBrush),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(new SolidColorBrush(Colors.Red)));
 
     public SolidColorBrush MandatoryColor
@@ -56,7 +56,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
         nameof(LabelText),
         typeof(string),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(string.Empty));
 
     public string LabelText
@@ -68,7 +68,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
         nameof(ValidationColor),
         typeof(SolidColorBrush),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(new SolidColorBrush(Colors.OrangeRed)));
 
     public SolidColorBrush ValidationColor
@@ -80,7 +80,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(string.Empty));
 
     public string InformationText
@@ -92,7 +92,7 @@ public partial class LabelTextBox : ILabelTextBox
     public static readonly DependencyProperty InformationColorProperty = DependencyProperty.Register(
         nameof(InformationColor),
         typeof(Color),
-        typeof(LabelTextBox),
+        typeof(LabelContent),
         new PropertyMetadata(Colors.DodgerBlue));
 
     public Color InformationColor
@@ -101,79 +101,7 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(InformationColorProperty, value);
     }
 
-    public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(
-        nameof(MaxLength),
-        typeof(uint),
-        typeof(LabelTextBox),
-        new PropertyMetadata(100U));
-
-    public uint MaxLength
-    {
-        get => (uint)GetValue(MaxLengthProperty);
-        set => SetValue(MaxLengthProperty, value);
-    }
-
-    public static readonly DependencyProperty UseDefaultNotAllowedCharactersProperty = DependencyProperty.Register(
-        nameof(UseDefaultNotAllowedCharacters),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
-
-    public bool UseDefaultNotAllowedCharacters
-    {
-        get => (bool)GetValue(UseDefaultNotAllowedCharactersProperty);
-        set => SetValue(UseDefaultNotAllowedCharactersProperty, value);
-    }
-
-    public static readonly DependencyProperty CharactersNotAllowedProperty = DependencyProperty.Register(
-        nameof(CharactersNotAllowed),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
-
-    public string CharactersNotAllowed
-    {
-        get => (string)GetValue(CharactersNotAllowedProperty);
-        set => SetValue(CharactersNotAllowedProperty, value);
-    }
-
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
-
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkEnableProperty = DependencyProperty.Register(
-        nameof(WatermarkEnable),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
-
-    public bool WatermarkEnable
-    {
-        get => (bool)GetValue(WatermarkEnableProperty);
-        set => SetValue(WatermarkEnableProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkLabelProperty = DependencyProperty.Register(
-        nameof(WatermarkLabel),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
-
-    public string WatermarkLabel
-    {
-        get => (string)GetValue(WatermarkLabelProperty);
-        set => SetValue(WatermarkLabelProperty, value);
-    }
-
-    public LabelTextBox()
+    public LabelContent()
     {
         InitializeComponent();
 

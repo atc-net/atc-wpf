@@ -31,7 +31,10 @@ public partial class DebounceView
         debounceTimer.Debounce(delayMs, async _ =>
         {
             var vm = DataContext as DebounceViewModel;
-            await vm!.Search(TbSearch.Text);
+            if (LcSearch.Content is TextBox searchBox)
+            {
+                await vm!.Search(searchBox.Text);
+            }
         });
     }
 }

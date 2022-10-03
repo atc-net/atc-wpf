@@ -8,7 +8,7 @@ public interface ILabelTextBox : ILabelControl
 
     string CharactersNotAllowed { get; set; }
 
-    string ControlValue { get; set; }
+    string Text { get; set; }
 
     bool WatermarkEnable { get; set; }
 

@@ -12,17 +12,10 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <ObjectDataProvider
-            x:Key="ListOfColor"
-            MethodName="GetProperties"
-            ObjectInstance="{x:Type Colors}" />
         <atcValueConverters:ColorNameToColorValueConverter x:Key="ColorNameToColorValueConverter" />
     </UserControl.Resources>
 
-    <atc:AutoGrid
-        d:Background="White"
-        Columns="*"
-        Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features">
             <StackPanel Orientation="Vertical">
@@ -66,32 +59,12 @@
 
                 <atc:GridEx Columns="Auto,10,120" Rows="Auto">
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Color:" />
-                    <ComboBox
+                    <atc:LabelWellKnownColorSelector
                         x:Name="CbColor"
                         Grid.Row="0"
-                        Grid.Column="2"
-                        Height="24"
-                        ItemsSource="{Binding Source={StaticResource ListOfColor}}"
-                        SelectedIndex="50">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Rectangle
-                                        Width="15"
-                                        Height="15"
-                                        Fill="{Binding Path=Name}"
-                                        Stroke="Black"
-                                        StrokeThickness="1" />
-                                    <Label Margin="0,-4" Content="{Binding Path=Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                        Grid.Column="0"
+                        Width="230"
+                        SelectedKey="Gray" />
 
                 </atc:GridEx>
             </StackPanel>
@@ -123,7 +96,7 @@
                     Width="640"
                     Source="../../../Assets/road.jpg">
                     <Image.Effect>
-                        <shaderEffects:FadeShaderEffect Strength="{Binding Value, ElementName=SliderStrength}" ToColor="{Binding ElementName=CbColor, Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToColorValueConverter}}" />
+                        <shaderEffects:FadeShaderEffect Strength="{Binding Value, ElementName=SliderStrength}" ToColor="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToColorValueConverter}}" />
                     </Image.Effect>
                 </Image>
             </atc:GridEx>

@@ -14,10 +14,7 @@
         <threading:DebounceViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid
-        d:Background="White"
-        Columns="*"
-        Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox Padding="10" Header="Features">
             <StackPanel Orientation="Horizontal">
@@ -39,28 +36,34 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <atc:AutoGrid
+            <atc:GridEx
                 Margin="5"
-                ChildMargin="2"
-                ColumnCount="2"
-                ColumnWidth="200"
-                Rows="Auto,Auto,*">
-                <TextBlock Text="Search" />
-                <TextBox
-                    x:Name="TbSearch"
-                    Padding="5"
-                    KeyUp="SearchTextBoxOnKeyup" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Status:" />
-                    <TextBlock Margin="10,0" Text="{Binding Path=Status}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Filter:" />
-                    <TextBlock Margin="10,0" Text="{Binding Path=Filter}" />
-                </StackPanel>
+                Columns="Auto,Auto,Auto"
+                Rows="Auto,*">
+
+                <atc:LabelContent
+                    x:Name="LcSearch"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    LabelText="Search">
+                    <TextBox KeyUp="SearchTextBoxOnKeyup" />
+                </atc:LabelContent>
+
+                <atc:LabelTextInfo
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    LabelText="Status"
+                    Text="{Binding Path=Status}" />
+
+                <atc:LabelTextInfo
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    LabelText="Filter"
+                    Text="{Binding Path=Filter}" />
+
                 <ListView
-                    Grid.ColumnSpan="2"
-                    Margin="0,20"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
                     ItemsSource="{Binding Path=FoundItems}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -70,7 +73,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </atc:AutoGrid>
+
+            </atc:GridEx>
         </GroupBox>
     </atc:AutoGrid>
 

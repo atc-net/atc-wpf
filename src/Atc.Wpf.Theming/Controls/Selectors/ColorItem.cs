@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
-public record AccentColorItem(
+public record ColorItem(
     string Name,
     string DisplayName,
     Brush BorderColorBrush,
