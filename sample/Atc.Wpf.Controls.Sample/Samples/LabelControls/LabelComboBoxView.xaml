@@ -21,12 +21,14 @@
                     <atc:GridEx Grid.Column="0" Rows="Auto,Auto">
                         <atc:LabelComboBox
                             Grid.Row="0"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel1"
                             Orientation="Horizontal" />
                         <atc:LabelComboBox
                             Grid.Row="1"
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
                     </atc:GridEx>
@@ -34,12 +36,14 @@
                     <atc:GridEx Grid.Column="1" Rows="Auto,Auto">
                         <atc:LabelComboBox
                             Grid.Row="0"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel3"
                             Orientation="Vertical" />
                         <atc:LabelComboBox
                             Grid.Row="1"
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel4"
                             Orientation="Vertical" />
                     </atc:GridEx>

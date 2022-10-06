@@ -105,7 +105,10 @@ public partial class LabelCheckBox : ILabelCheckBox
         nameof(IsChecked),
         typeof(bool),
         typeof(LabelCheckBox),
-        new PropertyMetadata(default));
+        new FrameworkPropertyMetadata(
+            defaultValue: false,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            propertyChangedCallback: null));
 
     public bool IsChecked
     {

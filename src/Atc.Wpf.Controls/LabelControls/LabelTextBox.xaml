@@ -61,7 +61,8 @@
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
+                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}" />
 
         </atc:GridEx>
 
@@ -89,7 +90,8 @@
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
+                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}" />
 
         </atc:GridEx>
 

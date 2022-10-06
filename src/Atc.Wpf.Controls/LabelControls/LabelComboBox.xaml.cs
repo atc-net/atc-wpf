@@ -77,6 +77,18 @@ public partial class LabelComboBox : ILabelComboBox
         set => SetValue(ValidationColorProperty, value);
     }
 
+    public static readonly DependencyProperty ValidationTextProperty = DependencyProperty.Register(
+        nameof(ValidationText),
+        typeof(string),
+        typeof(LabelComboBox),
+        new PropertyMetadata(default(string)));
+
+    public string ValidationText
+    {
+        get => (string)GetValue(ValidationTextProperty);
+        set => SetValue(ValidationTextProperty, value);
+    }
+
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),
@@ -117,8 +129,9 @@ public partial class LabelComboBox : ILabelComboBox
         nameof(SelectedKey),
         typeof(string),
         typeof(LabelComboBox),
-        new PropertyMetadata(
+        new FrameworkPropertyMetadata(
             default(string),
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnSelectedKeyChanged));
 
     public string SelectedKey
@@ -140,13 +153,21 @@ public partial class LabelComboBox : ILabelComboBox
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var identifier = string.Empty;
-        if (d is LabelComboBox labelComboBox)
+        var labelComboBox = (LabelComboBox)d;
+
+        if (labelComboBox.IsMandatory &&
+            string.IsNullOrWhiteSpace(labelComboBox.SelectedKey) &&
+            e.OldValue is not null)
         {
-            identifier = labelComboBox.Tag is null
-                ? labelComboBox.LabelText
-                : labelComboBox.Tag.ToString();
+            labelComboBox.ValidationText = "Field is required";
+            return;
         }
+
+        labelComboBox.ValidationText = string.Empty;
+
+        var identifier = labelComboBox.Tag is null
+            ? labelComboBox.LabelText
+            : labelComboBox.Tag.ToString();
 
         SelectedKeyChanged?.Invoke(
             sender: null,
