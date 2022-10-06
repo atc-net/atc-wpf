@@ -846,4 +846,42 @@
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.CheckGlyphForegroundIndeterminatePressed" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMedium" />
     <markup:StaticResource x:Key="AtcApps.Brushes.CheckBox.CheckGlyphForegroundIndeterminateDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
 
+    <!--  Resources: RadioButton  -->
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.Foreground" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.ForegroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.ForegroundPressed" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.ForegroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.Background" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BackgroundPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BackgroundPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BackgroundDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrush" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrushPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrushPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.BorderBrushDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStroke" ResourceKey="AtcApps.Brushes.SystemControlForegroundBaseMediumHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStrokePointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStrokePressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseStrokeDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFill" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFillPointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFillPressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseFillDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStroke" ResourceKey="AtcApps.Brushes.SystemControlHighlightAccent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStrokePointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightAccent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStrokePressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMedium" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedStrokeDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFill" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFillPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFillPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.OuterEllipseCheckedFillDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFill" ResourceKey="AtcApps.Brushes.SystemControlHighlightBaseMediumHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFillPointerOver" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltBaseHigh" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFillPressed" ResourceKey="AtcApps.Brushes.SystemControlHighlightAltBaseMedium" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphFillDisabled" ResourceKey="AtcApps.Brushes.SystemControlDisabledBaseMediumLow" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStroke" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStrokePointerOver" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStrokePressed" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+    <markup:StaticResource x:Key="AtcApps.Brushes.RadioButton.CheckGlyphStrokeDisabled" ResourceKey="AtcApps.Brushes.SystemControlTransparent" />
+
 </ResourceDictionary>
