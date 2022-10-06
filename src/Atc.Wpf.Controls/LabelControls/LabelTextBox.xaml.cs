@@ -1,3 +1,5 @@
+// ReSharper disable InvertIf
+// ReSharper disable RedundantJumpStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -77,6 +79,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(ValidationColorProperty, value);
     }
 
+    public static readonly DependencyProperty ValidationTextProperty = DependencyProperty.Register(
+        nameof(ValidationText),
+        typeof(string),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(string)));
+
+    public string ValidationText
+    {
+        get => (string)GetValue(ValidationTextProperty);
+        set => SetValue(ValidationTextProperty, value);
+    }
+
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),
@@ -113,6 +127,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(MaxLengthProperty, value);
     }
 
+    public static readonly DependencyProperty MinLengthProperty = DependencyProperty.Register(
+        nameof(MinLength),
+        typeof(uint),
+        typeof(LabelTextBox),
+        new PropertyMetadata(0U));
+
+    public uint MinLength
+    {
+        get => (uint)GetValue(MinLengthProperty);
+        set => SetValue(MinLengthProperty, value);
+    }
+
     public static readonly DependencyProperty UseDefaultNotAllowedCharactersProperty = DependencyProperty.Register(
         nameof(UseDefaultNotAllowedCharacters),
         typeof(bool),
@@ -141,7 +167,13 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(Text),
         typeof(string),
         typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnTextPropertyChanged,
+            CoerceText,
+            isAnimationProhibited: true,
+            UpdateSourceTrigger.LostFocus));
 
     public string Text
     {
@@ -178,5 +210,64 @@ public partial class LabelTextBox : ILabelTextBox
         InitializeComponent();
 
         DataContext = this;
+    }
+
+    private static string GetOnlyUsedNotAllowedCharacters(
+        string charactersNotAllowed,
+        string text)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var ch in charactersNotAllowed.Where(ch => text.Contains(ch, StringComparison.OrdinalIgnoreCase)))
+        {
+            if (sb.Length != 0)
+            {
+                sb.Append(' ');
+            }
+
+            sb.Append(ch);
+        }
+
+        return sb.ToString();
+    }
+
+    private static object CoerceText(
+        DependencyObject d,
+        object? value)
+        => value ?? string.Empty;
+
+    private static void OnTextPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var labelTextBox = (LabelTextBox)d;
+
+        if (labelTextBox.IsMandatory &&
+            string.IsNullOrWhiteSpace(labelTextBox.Text))
+        {
+            labelTextBox.ValidationText = "Field is required";
+            return;
+        }
+
+        if (labelTextBox.Text.Length < labelTextBox.MinLength)
+        {
+            labelTextBox.ValidationText = $"Min length: {labelTextBox.MinLength}";
+            return;
+        }
+
+        if (labelTextBox.Text.Length > labelTextBox.MaxLength)
+        {
+            labelTextBox.ValidationText = $"Max length: {labelTextBox.MaxLength}";
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(labelTextBox.CharactersNotAllowed)
+            && labelTextBox.CharactersNotAllowed.Any(x => labelTextBox.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
+        {
+            labelTextBox.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(labelTextBox.CharactersNotAllowed, labelTextBox.Text)}";
+            return;
+        }
+
+        labelTextBox.ValidationText = string.Empty;
     }
 }

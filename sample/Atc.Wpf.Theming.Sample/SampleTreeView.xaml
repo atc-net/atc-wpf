@@ -18,10 +18,10 @@
             Header="ToggleButton"
             IsEnabled="False"
             IsExpanded="True" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="RadioButton"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="InputButton.RadioButtonView" />
         <TreeViewItem
             Header="RepeatButton"
             IsEnabled="False"

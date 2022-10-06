@@ -4,6 +4,7 @@ global using System.Windows;
 global using System.Windows.Input;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Command;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;

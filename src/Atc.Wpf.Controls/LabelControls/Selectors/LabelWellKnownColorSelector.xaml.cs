@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// <summary>
 /// Interaction logic for LabelWellKnownColorSelector.
 /// </summary>
-public partial class LabelWellKnownColorSelector : ILabelControlBase
+public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
@@ -16,6 +16,66 @@ public partial class LabelWellKnownColorSelector : ILabelControlBase
     {
         get => (Orientation)GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
+        nameof(ShowAsteriskOnMandatory),
+        typeof(bool),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool ShowAsteriskOnMandatory
+    {
+        get => (bool)GetValue(ShowAsteriskOnMandatoryProperty);
+        set => SetValue(ShowAsteriskOnMandatoryProperty, value);
+    }
+
+    public static readonly DependencyProperty IsMandatoryProperty = DependencyProperty.Register(
+        nameof(IsMandatory),
+        typeof(bool),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool IsMandatory
+    {
+        get => (bool)GetValue(IsMandatoryProperty);
+        set => SetValue(IsMandatoryProperty, value);
+    }
+
+    public static readonly DependencyProperty MandatoryColorProperty = DependencyProperty.Register(
+        nameof(MandatoryColor),
+        typeof(SolidColorBrush),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(new SolidColorBrush(Colors.Red)));
+
+    public SolidColorBrush MandatoryColor
+    {
+        get => (SolidColorBrush)GetValue(MandatoryColorProperty);
+        set => SetValue(MandatoryColorProperty, value);
+    }
+
+    public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
+        nameof(ValidationColor),
+        typeof(SolidColorBrush),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(new SolidColorBrush(Colors.OrangeRed)));
+
+    public SolidColorBrush ValidationColor
+    {
+        get => (SolidColorBrush)GetValue(ValidationColorProperty);
+        set => SetValue(ValidationColorProperty, value);
+    }
+
+    public static readonly DependencyProperty ValidationTextProperty = DependencyProperty.Register(
+        nameof(ValidationText),
+        typeof(string),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(default(string)));
+
+    public string ValidationText
+    {
+        get => (string)GetValue(ValidationTextProperty);
+        set => SetValue(ValidationTextProperty, value);
     }
 
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
@@ -58,7 +118,10 @@ public partial class LabelWellKnownColorSelector : ILabelControlBase
         nameof(SelectedKey),
         typeof(string),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(default(string)));
+        new FrameworkPropertyMetadata(
+            default(string),
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnSelectedKeyChanged));
 
     public string SelectedKey
     {
@@ -66,10 +129,40 @@ public partial class LabelWellKnownColorSelector : ILabelControlBase
         set => SetValue(SelectedKeyProperty, value);
     }
 
+    public static event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
+
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();
 
         DataContext = this;
+    }
+
+    private static void OnSelectedKeyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var labelWellKnownColorSelector = (LabelWellKnownColorSelector)d;
+
+        if (labelWellKnownColorSelector.IsMandatory &&
+            string.IsNullOrWhiteSpace(labelWellKnownColorSelector.SelectedKey) &&
+            e.OldValue is not null)
+        {
+            labelWellKnownColorSelector.ValidationText = "Field is required";
+            return;
+        }
+
+        labelWellKnownColorSelector.ValidationText = string.Empty;
+
+        var identifier = labelWellKnownColorSelector.Tag is null
+            ? "Color"
+            : labelWellKnownColorSelector.Tag.ToString();
+
+        SelectedKeyChanged?.Invoke(
+            sender: null,
+            new SelectedKeyEventArgs(
+                identifier!,
+                e.NewValue?.ToString(),
+                e.OldValue?.ToString()));
     }
 }

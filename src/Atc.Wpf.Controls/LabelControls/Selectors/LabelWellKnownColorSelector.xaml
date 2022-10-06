@@ -6,20 +6,38 @@
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:parts="clr-namespace:Atc.Wpf.Controls.LabelControls.Parts"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     x:Name="UcLabelWellKnownColorSelector"
     MinWidth="220"
+    d:DataContext="{d:DesignInstance Type=labelControls:LabelWellKnownColorSelector}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
+        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
     </UserControl.Resources>
 
     <atc:GridEx Columns="10,*,20" Rows="Auto">
+
+        <TextBlock
+            Grid.Column="0"
+            Padding="{Binding ElementName=UcLabelWellKnownColorSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}, FallbackValue='0,7,0,0'}"
+            FontWeight="Bold"
+            Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=MandatoryColor, FallbackValue=Red}"
+            Text="*">
+            <TextBlock.Visibility>
+                <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
+                    <Binding ElementName="UcLabelWellKnownColorSelector" Path="ShowAsteriskOnMandatory" />
+                    <Binding ElementName="UcLabelWellKnownColorSelector" Path="IsMandatory" />
+                </MultiBinding>
+            </TextBlock.Visibility>
+        </TextBlock>
 
         <atc:GridEx
             Grid.Column="1"
@@ -43,7 +61,9 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}" />
 
         </atc:GridEx>
 
@@ -69,7 +89,8 @@
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Visibility="Visible" />
+                Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}" />
 
         </atc:GridEx>
 
