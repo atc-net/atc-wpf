@@ -181,28 +181,16 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(TextProperty, value);
     }
 
-    public static readonly DependencyProperty WatermarkEnableProperty = DependencyProperty.Register(
-        nameof(WatermarkEnable),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
-
-    public bool WatermarkEnable
-    {
-        get => (bool)GetValue(WatermarkEnableProperty);
-        set => SetValue(WatermarkEnableProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkLabelProperty = DependencyProperty.Register(
-        nameof(WatermarkLabel),
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
         typeof(string),
         typeof(LabelTextBox),
         new PropertyMetadata(string.Empty));
 
-    public string WatermarkLabel
+    public string WatermarkText
     {
-        get => (string)GetValue(WatermarkLabelProperty);
-        set => SetValue(WatermarkLabelProperty, value);
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
     }
 
     public LabelTextBox()

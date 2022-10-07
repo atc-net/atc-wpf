@@ -53,6 +53,7 @@
             <TextBox
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
+                atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
                 Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
@@ -83,6 +84,7 @@
             <TextBox
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
+                atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
                 Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />

@@ -665,11 +665,11 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Button.Border.Focus"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+        Color="{StaticResource AtcApps.Colors.Accent}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Button.Border.MouseOver"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray6}" />
+        Color="{StaticResource AtcApps.Colors.Accent2}" />
 
     <!--  Brushes: CheckBox  -->
     <SolidColorBrush
@@ -679,7 +679,7 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.CheckBox.MouseOver"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
+        Color="{StaticResource AtcApps.Colors.Accent2}" />
 
     <!--  Brushes: ComboBox  -->
     <SolidColorBrush
@@ -689,15 +689,15 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ComboBox.Border.Focus"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+        Color="{StaticResource AtcApps.Colors.Accent}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ComboBox.Border.MouseOver"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
+        Color="{StaticResource AtcApps.Colors.Accent2}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ComboBox.PopupBorder"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray4}" />
+        Color="{StaticResource AtcApps.Colors.Accent2}" />
 
     <!--  Brushes: ListView  -->
     <SolidColorBrush
@@ -747,11 +747,11 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.TextBox.Border.Focus"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
+        Color="{StaticResource AtcApps.Colors.Accent}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.TextBox.Border.MouseOver"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray2}" />
+        Color="{StaticResource AtcApps.Colors.Accent2}" />
 
     <!--  Brushes: Thumb  -->
     <SolidColorBrush

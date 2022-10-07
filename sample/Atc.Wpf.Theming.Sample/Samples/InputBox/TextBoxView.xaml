@@ -23,7 +23,7 @@
                     Columns="*,10,*"
                     ShowGridLines="True">
 
-                    <atc:GridEx Grid.Column="0" Rows="Auto,10,Auto,10,Auto">
+                    <atc:GridEx Grid.Column="0" Rows="Auto,10,Auto,10,Auto,10,Auto">
 
                         <TextBox Grid.Row="0" />
 
@@ -36,6 +36,8 @@
                             Grid.Row="4"
                             IsEnabled="False"
                             Text="Hello" />
+
+                        <TextBox Grid.Row="6" atc:TextBoxHelper.Watermark="Hello watermark..." />
 
                     </atc:GridEx>
 

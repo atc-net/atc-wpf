@@ -20,7 +20,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid x:Name="ToggleButtonRootGrid" Background="{TemplateBinding Background}">
+                    <Grid
+                        x:Name="ToggleButtonRootGrid"
+                        Margin="0,0.5,1,1"
+                        Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="TextColumn" Width="*" />
                             <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto" />
@@ -222,6 +225,7 @@
                                 helpers:TextBoxHelper.ButtonWidth="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
                                 helpers:TextBoxHelper.ClearTextButton="{TemplateBinding helpers:TextBoxHelper.ClearTextButton}"
                                 Background="Transparent"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.Border}"
                                 BorderThickness="0"
                                 Foreground="{TemplateBinding Foreground}"
                                 IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
@@ -380,6 +384,7 @@
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray9}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -395,6 +400,15 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource AtcApps.Templates.ValidationError}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.Focus}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonWidth" Value="22" />
     </Style>
 
 </ResourceDictionary>
