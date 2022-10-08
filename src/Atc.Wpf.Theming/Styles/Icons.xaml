@@ -14,10 +14,20 @@
 
     <Path
         x:Key="AtcApps.Path.ClearIcon"
-        Width="12"
-        Height="12"
+        Width="10"
+        Height="10"
         HorizontalAlignment="Center"
         Data="{DynamicResource AtcApps.Geometry.Clear}"
+        Fill="{DynamicResource AtcApps.Brushes.Text}"
+        IsHitTestVisible="False"
+        Stretch="Uniform" />
+
+    <Path
+        x:Key="AtcApps.Path.ArrowDown"
+        Width="10"
+        Height="10"
+        HorizontalAlignment="Center"
+        Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
         Fill="{DynamicResource AtcApps.Brushes.Gray1}"
         IsHitTestVisible="false"
         Stretch="Uniform" />
@@ -28,8 +38,8 @@
         Height="12"
         HorizontalAlignment="Center"
         Data="{DynamicResource AtcApps.Geometry.Search}"
-        Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-        IsHitTestVisible="false"
+        Fill="{DynamicResource AtcApps.Brushes.Text}"
+        IsHitTestVisible="False"
         Stretch="Uniform" />
 
 </ResourceDictionary>

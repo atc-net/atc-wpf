@@ -21,7 +21,6 @@
     <system:Double x:Key="AtcApps.Font.Size.Default">14</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Content">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Button">12</system:Double>
-    <system:Double x:Key="AtcApps.Font.Size.Button.ClearText">16</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.FloatingWatermark">10</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.StatusBar">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.TabItem">16</system:Double>

@@ -32,7 +32,7 @@
                             SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                             SelectedValuePath="Key" />
 
-                        <TextBox Grid.Row="2" />
+                        <TextBox Grid.Row="2" atc:TextBoxHelper.ClearTextButton="True" />
 
                         <TextBox Grid.Row="4" atc:TextBoxHelper.ClearTextButton="True">
                             <TextBox.InputBindings>

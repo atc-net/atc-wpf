@@ -83,7 +83,6 @@
                                 Command="{TemplateBinding helpers:TextBoxHelper.ButtonCommand}"
                                 CommandParameter="{TemplateBinding helpers:TextBoxHelper.ButtonCommandParameter}"
                                 CommandTarget="{TemplateBinding helpers:TextBoxHelper.ButtonCommandTarget}"
-                                Content="{TemplateBinding helpers:TextBoxHelper.ButtonContent}"
                                 ContentTemplate="{TemplateBinding helpers:TextBoxHelper.ButtonContentTemplate}"
                                 Focusable="False"
                                 FontFamily="{TemplateBinding helpers:TextBoxHelper.ButtonFontFamily}"
@@ -91,7 +90,19 @@
                                 IsTabStop="False"
                                 Style="{DynamicResource AtcApps.Styles.Button.Chromeless}"
                                 Template="{TemplateBinding helpers:TextBoxHelper.ButtonTemplate}"
-                                Visibility="Visible" />
+                                Visibility="Visible">
+                                <Path
+                                    x:Name="PART_ClearTextButtonIcon"
+                                    Width="8"
+                                    Height="8"
+                                    Margin="0,1,0,0"
+                                    HorizontalAlignment="Center"
+                                    Data="{DynamicResource AtcApps.Geometry.Clear}"
+                                    Fill="{DynamicResource AtcApps.Brushes.Gray1}"
+                                    IsHitTestVisible="false"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    Stretch="Uniform" />
+                            </Button>
                         </Grid>
 
                         <Border
@@ -186,8 +197,8 @@
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonContent" Value="{DynamicResource AtcApps.Path.ClearIcon}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonContent" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.Text}" />
         <Setter Property="helpers:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="helpers:TextBoxHelper.ButtonWidth" Value="22" />
         <Setter Property="helpers:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}" />

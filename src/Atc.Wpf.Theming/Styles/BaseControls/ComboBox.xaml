@@ -32,7 +32,7 @@
                             Width="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
                             Background="Transparent">
                             <Path
-                                x:Name="Arrow"
+                                x:Name="ArrowIcon"
                                 Width="10"
                                 Height="10"
                                 HorizontalAlignment="Center"
