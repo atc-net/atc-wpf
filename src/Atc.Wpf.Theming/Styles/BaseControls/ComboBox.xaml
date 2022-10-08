@@ -10,8 +10,6 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Geometry x:Key="ComboBoxDownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
-
     <!--  DropDownButton  -->
     <Style x:Key="AtcApps.Styles.ToggleButton.ComboBoxDropDown" TargetType="{x:Type ToggleButton}">
         <Setter Property="ClickMode" Value="Press" />
@@ -22,7 +20,7 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Grid
                         x:Name="ToggleButtonRootGrid"
-                        Margin="0,0.5,1,1"
+                        Margin="0,0.5,0.5,1"
                         Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="TextColumn" Width="*" />
@@ -35,10 +33,10 @@
                             Background="Transparent">
                             <Path
                                 x:Name="Arrow"
-                                Width="8"
-                                Height="4"
+                                Width="10"
+                                Height="10"
                                 HorizontalAlignment="Center"
-                                Data="{DynamicResource ComboBoxDownArrowGeometry}"
+                                Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
                                 Fill="{DynamicResource AtcApps.Brushes.Gray1}"
                                 IsHitTestVisible="false"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"

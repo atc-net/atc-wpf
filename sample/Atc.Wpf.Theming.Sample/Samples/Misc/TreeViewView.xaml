@@ -19,12 +19,12 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
 
-                <atc:GridEx
-                    Margin="10"
-                    Columns="*,10,*"
-                    ShowGridLines="True">
+                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
 
-                    <atc:GridEx Grid.Column="0" Rows="*">
+                    <atc:GridEx
+                        Grid.Column="0"
+                        Margin="10"
+                        Rows="*">
 
                         <TreeView Grid.Row="0">
                             <TreeViewItem Header="Item 1">
@@ -51,7 +51,10 @@
 
                     </atc:GridEx>
 
-                    <atc:GridEx Grid.Column="2" Rows="*" />
+                    <atc:GridEx
+                        Grid.Column="2"
+                        Margin="10"
+                        Rows="*" />
 
                 </atc:GridEx>
 

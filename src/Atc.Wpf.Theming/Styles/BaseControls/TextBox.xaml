@@ -74,11 +74,12 @@
                                 Visibility="Collapsed" />
 
                             <Button
-                                x:Name="PART_ClearText"
+                                x:Name="PART_ClearTextButton"
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="1"
                                 Width="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
+                                Margin="0,-0.5,-0.5,0"
                                 Command="{TemplateBinding helpers:TextBoxHelper.ButtonCommand}"
                                 CommandParameter="{TemplateBinding helpers:TextBoxHelper.ButtonCommandParameter}"
                                 CommandTarget="{TemplateBinding helpers:TextBoxHelper.ButtonCommandTarget}"
@@ -106,18 +107,18 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="helpers:TextBoxHelper.ClearTextButton" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Command" Value="{x:Static helpers:AtcAppsCommands.ClearControlCommand}" />
+                            <Setter TargetName="PART_ClearTextButton" Property="Command" Value="{x:Static helpers:AtcAppsCommands.ClearControlCommand}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="helpers:TextBoxHelper.ClearTextButton" Value="False" />
                                 <Condition Property="helpers:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_ClearText" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ClearTextButton" Property="Visibility" Value="Collapsed" />
                         </MultiTrigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(helpers:TextBoxHelper.ButtonsAlignment)}" Value="Left">
                             <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_ClearTextButton" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_Message" Property="Grid.Column" Value="1" />
                             <Setter TargetName="TextColumn" Property="Width" Value="Auto" />
@@ -148,13 +149,12 @@
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.FocusBorderBrush)}" />
                         </Trigger>
-                        <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        <Trigger SourceName="PART_ClearTextButton" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_ClearTextButton" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray5}" />
                         </Trigger>
-                        <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+                        <Trigger SourceName="PART_ClearTextButton" Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_ClearTextButton" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
+                            <Setter TargetName="PART_ClearTextButton" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -185,6 +185,7 @@
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonContent" Value="{DynamicResource AtcApps.Path.ClearIcon}" />
         <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
         <Setter Property="helpers:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="helpers:TextBoxHelper.ButtonWidth" Value="22" />
