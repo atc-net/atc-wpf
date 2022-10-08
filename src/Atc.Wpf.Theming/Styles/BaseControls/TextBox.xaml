@@ -151,6 +151,7 @@
                         </Trigger>
                         <Trigger SourceName="PART_ClearTextButton" Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_ClearTextButton" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray5}" />
+                            <Setter TargetName="PART_ClearTextButton" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearTextButton" Property="IsPressed" Value="True">
                             <Setter TargetName="PART_ClearTextButton" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />

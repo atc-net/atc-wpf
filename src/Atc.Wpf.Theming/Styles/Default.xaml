@@ -8,6 +8,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Icons.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Themes/Light.Blue.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->

@@ -94,7 +94,7 @@
                 <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="#ADADAD" />
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Control.Disabled}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
