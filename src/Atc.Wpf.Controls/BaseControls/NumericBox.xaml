@@ -3,9 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="clr-namespace:Atc.Wpf.Controls.BaseControls"
     xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators;assembly=Atc.Wpf.Theming"
     xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
 
     <Style x:Key="AtcApps.Styles.Button.NumericBox.Spin" TargetType="{x:Type ButtonBase}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Transparent}" />
@@ -132,48 +135,72 @@
                                 <ColumnDefinition x:Name="PART_RightColumn" Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBox
-                                x:Name="PART_TextBox"
+                            <atcTheming:GridEx
+                                x:Name="PART_Content"
                                 Grid.Column="0"
                                 MinWidth="20"
                                 MinHeight="0"
                                 Margin="0"
-                                Padding="{TemplateBinding Padding}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                atcTheming:ControlsHelper.DisabledVisualElementVisibility="Collapsed"
-                                atcTheming:TextBoxHelper.ButtonCommand="{TemplateBinding atcTheming:TextBoxHelper.ButtonCommand}"
-                                atcTheming:TextBoxHelper.ButtonCommandParameter="{TemplateBinding atcTheming:TextBoxHelper.ButtonCommandParameter}"
-                                atcTheming:TextBoxHelper.ButtonCommandTarget="{TemplateBinding atcTheming:TextBoxHelper.ButtonCommandTarget}"
-                                atcTheming:TextBoxHelper.ButtonContent="{TemplateBinding atcTheming:TextBoxHelper.ButtonContent}"
-                                atcTheming:TextBoxHelper.ButtonContentTemplate="{TemplateBinding atcTheming:TextBoxHelper.ButtonContentTemplate}"
-                                atcTheming:TextBoxHelper.ButtonFontFamily="{TemplateBinding atcTheming:TextBoxHelper.ButtonFontFamily}"
-                                atcTheming:TextBoxHelper.ButtonFontSize="{TemplateBinding atcTheming:TextBoxHelper.ButtonFontSize}"
-                                atcTheming:TextBoxHelper.ButtonTemplate="{TemplateBinding atcTheming:TextBoxHelper.ButtonTemplate}"
-                                atcTheming:TextBoxHelper.ButtonWidth="{TemplateBinding atcTheming:TextBoxHelper.ButtonWidth}"
-                                atcTheming:TextBoxHelper.ButtonsAlignment="{TemplateBinding ButtonsAlignment}"
-                                atcTheming:TextBoxHelper.ClearTextButton="{TemplateBinding atcTheming:TextBoxHelper.ClearTextButton}"
-                                atcTheming:TextBoxHelper.HasText="{TemplateBinding atcTheming:TextBoxHelper.HasText}"
-                                atcTheming:TextBoxHelper.UseFloatingWatermark="{TemplateBinding atcTheming:TextBoxHelper.UseFloatingWatermark}"
-                                atcTheming:TextBoxHelper.Watermark="{TemplateBinding atcTheming:TextBoxHelper.Watermark}"
-                                atcTheming:TextBoxHelper.WatermarkAlignment="{TemplateBinding atcTheming:TextBoxHelper.WatermarkAlignment}"
-                                atcTheming:TextBoxHelper.WatermarkTrimming="{TemplateBinding atcTheming:TextBoxHelper.WatermarkTrimming}"
-                                atcTheming:TextBoxHelper.WatermarkWrapping="{TemplateBinding atcTheming:TextBoxHelper.WatermarkWrapping}"
-                                Background="{x:Null}"
-                                BorderThickness="0"
-                                ContextMenu="{TemplateBinding ContextMenu}"
-                                FocusVisualStyle="{x:Null}"
-                                Focusable="{TemplateBinding Focusable}"
-                                FontFamily="{TemplateBinding FontFamily}"
-                                FontSize="{TemplateBinding FontSize}"
-                                Foreground="{TemplateBinding Foreground}"
-                                HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                IsReadOnly="{TemplateBinding IsReadOnly}"
-                                IsTabStop="{TemplateBinding IsTabStop}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                TabIndex="{TemplateBinding TabIndex}"
-                                VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+                                Columns="Auto,*,Auto"
+                                Rows="Auto">
+
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Margin="0,1,0,0"
+                                    Padding="4,4,0,4"
+                                    Foreground="{DynamicResource AtcApps.Brushes.Gray2}"
+                                    Text="{TemplateBinding PrefixText}"
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PrefixText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}, Mode=OneWay}" />
+
+                                <TextBox
+                                    x:Name="PART_TextBox"
+                                    Grid.Column="1"
+                                    Padding="{TemplateBinding Padding}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    atcTheming:ControlsHelper.DisabledVisualElementVisibility="Collapsed"
+                                    atcTheming:TextBoxHelper.ButtonCommand="{TemplateBinding atcTheming:TextBoxHelper.ButtonCommand}"
+                                    atcTheming:TextBoxHelper.ButtonCommandParameter="{TemplateBinding atcTheming:TextBoxHelper.ButtonCommandParameter}"
+                                    atcTheming:TextBoxHelper.ButtonCommandTarget="{TemplateBinding atcTheming:TextBoxHelper.ButtonCommandTarget}"
+                                    atcTheming:TextBoxHelper.ButtonContent="{TemplateBinding atcTheming:TextBoxHelper.ButtonContent}"
+                                    atcTheming:TextBoxHelper.ButtonContentTemplate="{TemplateBinding atcTheming:TextBoxHelper.ButtonContentTemplate}"
+                                    atcTheming:TextBoxHelper.ButtonFontFamily="{TemplateBinding atcTheming:TextBoxHelper.ButtonFontFamily}"
+                                    atcTheming:TextBoxHelper.ButtonFontSize="{TemplateBinding atcTheming:TextBoxHelper.ButtonFontSize}"
+                                    atcTheming:TextBoxHelper.ButtonTemplate="{TemplateBinding atcTheming:TextBoxHelper.ButtonTemplate}"
+                                    atcTheming:TextBoxHelper.ButtonWidth="{TemplateBinding atcTheming:TextBoxHelper.ButtonWidth}"
+                                    atcTheming:TextBoxHelper.ButtonsAlignment="{TemplateBinding ButtonsAlignment}"
+                                    atcTheming:TextBoxHelper.ClearTextButton="{TemplateBinding atcTheming:TextBoxHelper.ClearTextButton}"
+                                    atcTheming:TextBoxHelper.HasText="{TemplateBinding atcTheming:TextBoxHelper.HasText}"
+                                    atcTheming:TextBoxHelper.UseFloatingWatermark="{TemplateBinding atcTheming:TextBoxHelper.UseFloatingWatermark}"
+                                    atcTheming:TextBoxHelper.Watermark="{TemplateBinding atcTheming:TextBoxHelper.Watermark}"
+                                    atcTheming:TextBoxHelper.WatermarkAlignment="{TemplateBinding atcTheming:TextBoxHelper.WatermarkAlignment}"
+                                    atcTheming:TextBoxHelper.WatermarkTrimming="{TemplateBinding atcTheming:TextBoxHelper.WatermarkTrimming}"
+                                    atcTheming:TextBoxHelper.WatermarkWrapping="{TemplateBinding atcTheming:TextBoxHelper.WatermarkWrapping}"
+                                    Background="{x:Null}"
+                                    BorderThickness="0"
+                                    ContextMenu="{TemplateBinding ContextMenu}"
+                                    FocusVisualStyle="{x:Null}"
+                                    Focusable="{TemplateBinding Focusable}"
+                                    FontFamily="{TemplateBinding FontFamily}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                    IsReadOnly="{TemplateBinding IsReadOnly}"
+                                    IsTabStop="{TemplateBinding IsTabStop}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    TabIndex="{TemplateBinding TabIndex}"
+                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Margin="0,1,0,0"
+                                    Padding="0,4,4,4"
+                                    Foreground="{DynamicResource AtcApps.Brushes.Gray2}"
+                                    Text="{TemplateBinding SuffixText}"
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SuffixText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}, Mode=OneWay}" />
+
+                            </atcTheming:GridEx>
 
                             <RepeatButton
                                 x:Name="PART_NumericUp"
@@ -236,7 +263,7 @@
                             <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
                             <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="2" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -250,7 +277,7 @@
                             <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
                             <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="2" />
                         </MultiTrigger>
 
                         <MultiTrigger>
@@ -265,7 +292,7 @@
                             <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
                             <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -279,7 +306,7 @@
                             <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
                             <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
                         </MultiTrigger>
 
                         <MultiTrigger>
@@ -292,7 +319,7 @@
                             <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="0" />
                         </MultiTrigger>
 
                         <Trigger Property="IsEnabled" Value="False">

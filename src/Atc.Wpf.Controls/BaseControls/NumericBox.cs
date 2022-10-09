@@ -517,6 +517,34 @@ public class NumericBox : Control
         set => SetValue(ParsingNumberStyleProperty, value);
     }
 
+    public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
+        nameof(PrefixText),
+        typeof(string),
+        typeof(NumericBox),
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+
+    public string PrefixText
+    {
+        get => (string)GetValue(PrefixTextProperty);
+        set => SetValue(PrefixTextProperty, value);
+    }
+
+    public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.Register(
+        nameof(SuffixText),
+        typeof(string),
+        typeof(NumericBox),
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+
+    public string SuffixText
+    {
+        get => (string)GetValue(SuffixTextProperty);
+        set => SetValue(SuffixTextProperty, value);
+    }
+
     private CultureInfo SpecificCultureInfo => Culture ?? Language.GetSpecificCulture();
 
     static NumericBox()

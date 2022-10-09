@@ -70,7 +70,9 @@
                         <atc:LabelDecimalBox
                             InformationText="This is a help text.."
                             LabelText="MyDecimalBox"
-                            Orientation="Horizontal" />
+                            Orientation="Horizontal"
+                            PrefixText="P123"
+                            SuffixText="S123" />
 
                         <atc:LabelIntegerBox
                             InformationText="This is a help text.."
@@ -78,6 +80,8 @@
                             Maximum="10"
                             Minimum="-10"
                             Orientation="Horizontal"
+                            PrefixText="P123"
+                            SuffixText="S123"
                             Value="3" />
 
                     </StackPanel>

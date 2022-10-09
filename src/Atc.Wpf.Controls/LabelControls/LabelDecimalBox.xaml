@@ -58,6 +58,8 @@
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelDecimalBox, Path=WatermarkText}"
                 Maximum="{Binding ElementName=UcLabelDecimalBox, Path=Maximum, Converter={StaticResource DecimalToDoubleValueConverter}}"
                 Minimum="{Binding ElementName=UcLabelDecimalBox, Path=Minimum, Converter={StaticResource DecimalToDoubleValueConverter}}"
+                PrefixText="{Binding ElementName=UcLabelDecimalBox, Path=PrefixText}"
+                SuffixText="{Binding ElementName=UcLabelDecimalBox, Path=SuffixText}"
                 UpDownButtonsMargin="0,0,0,-0.5"
                 Value="{Binding ElementName=UcLabelDecimalBox, Path=Value, Converter={StaticResource DecimalToDoubleValueConverter}, FallbackValue=42.12}" />
 
@@ -90,6 +92,8 @@
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelDecimalBox, Path=WatermarkText}"
                 Maximum="{Binding ElementName=UcLabelDecimalBox, Path=Maximum, Converter={StaticResource DecimalToDoubleValueConverter}}"
                 Minimum="{Binding ElementName=UcLabelDecimalBox, Path=Minimum, Converter={StaticResource DecimalToDoubleValueConverter}}"
+                PrefixText="{Binding ElementName=UcLabelDecimalBox, Path=PrefixText}"
+                SuffixText="{Binding ElementName=UcLabelDecimalBox, Path=SuffixText}"
                 UpDownButtonsMargin="0,0,0,-0.5"
                 Value="{Binding ElementName=UcLabelDecimalBox, Path=Value, Converter={StaticResource DecimalToDoubleValueConverter}, FallbackValue=42.12}" />
 

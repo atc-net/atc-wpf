@@ -58,6 +58,8 @@
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelIntegerBox, Path=WatermarkText}"
                 Maximum="{Binding ElementName=UcLabelIntegerBox, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
                 Minimum="{Binding ElementName=UcLabelIntegerBox, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+                PrefixText="{Binding ElementName=UcLabelIntegerBox, Path=PrefixText}"
+                SuffixText="{Binding ElementName=UcLabelIntegerBox, Path=SuffixText}"
                 UpDownButtonsMargin="0,0,0,-0.5"
                 Value="{Binding ElementName=UcLabelIntegerBox, Path=Value, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
 
@@ -90,6 +92,8 @@
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelIntegerBox, Path=WatermarkText}"
                 Maximum="{Binding ElementName=UcLabelIntegerBox, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
                 Minimum="{Binding ElementName=UcLabelIntegerBox, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+                PrefixText="{Binding ElementName=UcLabelIntegerBox, Path=PrefixText}"
+                SuffixText="{Binding ElementName=UcLabelIntegerBox, Path=SuffixText}"
                 UpDownButtonsMargin="0,0,0,-0.5"
                 Value="{Binding ElementName=UcLabelIntegerBox, Path=Value, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
 

@@ -1,3 +1,5 @@
+using Atc.Wpf.Controls.BaseControls;
+
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -63,6 +65,34 @@ public partial class LabelDecimalBox
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+
+    public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
+        nameof(PrefixText),
+        typeof(string),
+        typeof(LabelDecimalBox),
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+
+    public string PrefixText
+    {
+        get => (string)GetValue(PrefixTextProperty);
+        set => SetValue(PrefixTextProperty, value);
+    }
+
+    public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.Register(
+        nameof(SuffixText),
+        typeof(string),
+        typeof(LabelDecimalBox),
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+
+    public string SuffixText
+    {
+        get => (string)GetValue(SuffixTextProperty);
+        set => SetValue(SuffixTextProperty, value);
     }
 
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(

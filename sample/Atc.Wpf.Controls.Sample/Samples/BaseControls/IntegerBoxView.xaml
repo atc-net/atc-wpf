@@ -31,7 +31,10 @@
 
                         <atc:IntegerBox Grid.Row="4" ButtonsAlignment="Opposite" />
 
-                        <TextBox Grid.Row="6" atc:TextBoxHelper.ClearTextButton="True" />
+                        <atc:IntegerBox
+                            Grid.Row="6"
+                            PrefixText="P123"
+                            SuffixText="S123" />
 
                     </atc:GridEx>
 

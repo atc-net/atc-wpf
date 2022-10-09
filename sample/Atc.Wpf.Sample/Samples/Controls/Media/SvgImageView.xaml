@@ -19,45 +19,27 @@
         <GroupBox Padding="10" Header="Features">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Margin="0,0,50,0" Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Width="50"
-                            Margin="0,0,10,0"
-                            VerticalAlignment="Center"
-                            Text="Width:" />
-                        <TextBox
-                            x:Name="TbControlWidth"
-                            Width="50"
-                            HorizontalContentAlignment="Right"
-                            Text="400" />
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            VerticalAlignment="Center"
-                            Text="px" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Width="50"
-                            Margin="0,0,10,0"
-                            VerticalAlignment="Center"
-                            Text="Height:" />
-                        <TextBox
-                            x:Name="TbControlHeight"
-                            Width="50"
-                            HorizontalContentAlignment="Right"
-                            Text="400" />
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            VerticalAlignment="Center"
-                            Text="px" />
-                    </StackPanel>
+                    <atc:LabelIntegerBox
+                        x:Name="TbControlWidth"
+                        LabelText="Width"
+                        Maximum="1000"
+                        Minimum="0"
+                        SuffixText="px"
+                        Value="400" />
+                    <atc:LabelIntegerBox
+                        x:Name="TbControlHeight"
+                        LabelText="Height"
+                        Maximum="1000"
+                        Minimum="0"
+                        SuffixText="px"
+                        Value="400" />
                 </StackPanel>
                 <atc:LabelComboBox
                     x:Name="CbControlSizeType"
                     Width="280"
                     Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                     LabelText="Control Size"
-                    SelectedKey="None" />
+                    SelectedKey="ContentToSizeStretch" />
                 <atc:LabelWellKnownColorSelector
                     x:Name="CbColor"
                     Width="230"
@@ -73,8 +55,8 @@
                 <!--  ReSharper disable once MarkupAttributeTypo  -->
                 <atc:SvgImage
                     x:Name="MySvgImage"
-                    Width="{Binding ElementName=TbControlWidth, Path=Text}"
-                    Height="{Binding ElementName=TbControlHeight, Path=Text}"
+                    Width="{Binding ElementName=TbControlWidth, Path=Value}"
+                    Height="{Binding ElementName=TbControlHeight, Path=Value}"
                     Margin="20"
                     Background="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToBrushValueConverter}}"
                     ControlSizeType="{Binding ElementName=CbControlSizeType, Path=SelectedKey}"
