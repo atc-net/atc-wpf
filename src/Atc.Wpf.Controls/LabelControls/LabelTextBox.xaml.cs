@@ -193,6 +193,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(WatermarkTextProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
     public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
         nameof(ShowClearTextButton),
         typeof(bool),

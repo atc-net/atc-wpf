@@ -39,7 +39,10 @@
                             CornerRadius="{TemplateBinding helpers:ControlsHelper.CornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
-                        <Grid x:Name="PART_InnerGrid" Margin="{TemplateBinding BorderThickness}">
+                        <Grid
+                            x:Name="PART_InnerGrid"
+                            Margin="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition x:Name="TextColumn" Width="*" />
                                 <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
@@ -71,6 +74,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Foreground="{TemplateBinding Foreground}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Style="{DynamicResource AtcApps.Styles.TextBlock.Watermark}"
                                 Text="{TemplateBinding helpers:TextBoxHelper.Watermark}"
                                 TextAlignment="{TemplateBinding helpers:TextBoxHelper.WatermarkAlignment}"
@@ -93,6 +97,7 @@
                                 FontFamily="{TemplateBinding helpers:TextBoxHelper.ButtonFontFamily}"
                                 FontSize="{TemplateBinding helpers:TextBoxHelper.ButtonFontSize}"
                                 IsTabStop="False"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Style="{DynamicResource AtcApps.Styles.Button.Chromeless}"
                                 Template="{TemplateBinding helpers:TextBoxHelper.ButtonTemplate}"
                                 Visibility="Visible">

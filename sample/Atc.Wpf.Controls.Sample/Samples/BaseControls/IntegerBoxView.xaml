@@ -23,16 +23,42 @@
                     <atc:GridEx
                         Grid.Column="0"
                         Margin="10"
-                        Rows="Auto,10,Auto,10,Auto,10,Auto,10,Auto">
+                        Rows="Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto">
 
-                        <atc:IntegerBox Grid.Row="0" />
+                        <atc:IntegerBox
+                            Grid.Row="0"
+                            ButtonsAlignment="Right"
+                            SwitchUpDownButtons="False" />
 
-                        <atc:IntegerBox Grid.Row="2" ButtonsAlignment="Left" />
+                        <atc:IntegerBox
+                            Grid.Row="2"
+                            ButtonsAlignment="Right"
+                            SwitchUpDownButtons="True" />
 
-                        <atc:IntegerBox Grid.Row="4" ButtonsAlignment="Opposite" />
+                        <atc:IntegerBox
+                            Grid.Row="4"
+                            ButtonsAlignment="Left"
+                            SwitchUpDownButtons="False" />
 
                         <atc:IntegerBox
                             Grid.Row="6"
+                            ButtonsAlignment="Left"
+                            SwitchUpDownButtons="True" />
+
+                        <atc:IntegerBox
+                            Grid.Row="8"
+                            ButtonsAlignment="Opposite"
+                            SwitchUpDownButtons="False" />
+
+                        <atc:IntegerBox
+                            Grid.Row="10"
+                            ButtonsAlignment="Opposite"
+                            SwitchUpDownButtons="True" />
+
+                        <atc:IntegerBox
+                            Grid.Row="12"
+                            atc:TextBoxHelper.Watermark="Hello Watermark..."
+                            atc:TextBoxHelper.WatermarkAlignment="Center"
                             PrefixText="P123"
                             SuffixText="S123" />
 

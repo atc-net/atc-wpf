@@ -55,6 +55,7 @@
                 Grid.Column="1"
                 atc:TextBoxHelper.ClearTextButton="{Binding ElementName=UcLabelTextBox, Path=ShowClearTextButton}"
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
+                atc:TextBoxHelper.WatermarkAlignment="{Binding ElementName=UcLabelTextBox, Path=WatermarkAlignment}"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
                 Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
@@ -87,6 +88,7 @@
                 Grid.Row="1"
                 atc:TextBoxHelper.ClearTextButton="{Binding ElementName=UcLabelTextBox, Path=ShowClearTextButton}"
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
+                atc:TextBoxHelper.WatermarkAlignment="{Binding ElementName=UcLabelTextBox, Path=WatermarkAlignment}"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
                 Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
