@@ -52,6 +52,7 @@
                             IsMandatory="True"
                             LabelText="MyTextBox"
                             Orientation="Horizontal"
+                            ShowClearTextButton="True"
                             Text="Hello" />
 
                         <atc:LabelWellKnownColorSelector
@@ -65,6 +66,19 @@
                             Orientation="Horizontal">
                             <TextBox />
                         </atc:LabelContent>
+
+                        <atc:LabelDecimalBox
+                            InformationText="This is a help text.."
+                            LabelText="MyDecimalBox"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelIntegerBox
+                            InformationText="This is a help text.."
+                            LabelText="MyIntegerBox"
+                            Maximum="10"
+                            Minimum="-10"
+                            Orientation="Horizontal"
+                            Value="3" />
 
                     </StackPanel>
 
@@ -102,6 +116,7 @@
                             IsMandatory="True"
                             LabelText="MyTextBox"
                             Orientation="Vertical"
+                            ShowClearTextButton="True"
                             Text="Hello" />
 
                         <atc:LabelWellKnownColorSelector
@@ -115,6 +130,17 @@
                             Orientation="Vertical">
                             <TextBox />
                         </atc:LabelContent>
+
+                        <atc:LabelDecimalBox
+                            InformationText="This is a help text.."
+                            LabelText="MyDecimalBox"
+                            Orientation="Vertical" />
+
+                        <atc:LabelIntegerBox
+                            InformationText="This is a help text.."
+                            LabelText="MyIntegerBox"
+                            Orientation="Vertical" />
+
 
                     </StackPanel>
 

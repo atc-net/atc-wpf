@@ -12,5 +12,5 @@ public partial class TextBoxView
         DataContext = this;
     }
 
-    public ICommand ControlButtonCommand { get; }
+    public ICommand? ControlButtonCommand { get; }
 }

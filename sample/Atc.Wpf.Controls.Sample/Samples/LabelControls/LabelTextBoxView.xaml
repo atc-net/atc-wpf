@@ -29,6 +29,7 @@
                             IsMandatory="True"
                             LabelText="MyLabel2"
                             Orientation="Horizontal"
+                            ShowClearTextButton="True"
                             WatermarkText="Fill out with text.." />
                     </atc:GridEx>
 
@@ -43,6 +44,7 @@
                             IsMandatory="True"
                             LabelText="MyLabel4"
                             Orientation="Vertical"
+                            ShowClearTextButton="True"
                             WatermarkText="Fill out with text.." />
                     </atc:GridEx>
 

@@ -1,0 +1,14 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/NumericBox.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style BasedOn="{StaticResource AtcApps.Styles.NumericBox}" TargetType="{x:Type baseControls:NumericBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DecimalBox}" TargetType="{x:Type baseControls:DecimalBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type baseControls:IntegerBox}" />
+
+</ResourceDictionary>
