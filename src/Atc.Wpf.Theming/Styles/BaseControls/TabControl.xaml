@@ -570,6 +570,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TabControl}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, FallbackValue={x:Static Brushes.Transparent}}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.TabItem}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Gray}" />

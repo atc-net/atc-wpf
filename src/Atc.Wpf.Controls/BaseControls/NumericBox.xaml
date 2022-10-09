@@ -365,6 +365,7 @@
         <Setter Property="UpDownButtonsMargin" Value="0,-0.5,-0.5,0" />
         <Setter Property="UpDownButtonsWidth" Value="22" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource AtcApps.Templates.ValidationError}" />
+        <Setter Property="atcTheming:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.NumericBox}" />
         <Setter Property="atcTheming:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.Focus}" />
         <Setter Property="atcTheming:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
         <Setter Property="atcTheming:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />

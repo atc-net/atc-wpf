@@ -69,7 +69,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button}" />
-        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="0" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.Button}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.Focus}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderThickness" Value="1" />
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.MouseOver}" />

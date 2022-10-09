@@ -294,7 +294,7 @@
                                     Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                                     BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.PopupBorder}"
                                     BorderThickness="1"
-                                    CornerRadius="0"
+                                    CornerRadius="3"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ScrollViewer Padding="1" BorderThickness="0">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -403,6 +403,7 @@
         </Setter>
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource AtcApps.Templates.ValidationError}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.ComboBox}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.Focus}" />
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />

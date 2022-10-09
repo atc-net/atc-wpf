@@ -27,6 +27,7 @@
     <system:Double x:Key="AtcApps.Font.Size.ToolTip">12</system:Double>
 
     <!--  CharacterCasing  -->
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.Button">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs.Accent">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs.AccentHighlight">Normal</CharacterCasing>

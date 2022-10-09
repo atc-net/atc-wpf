@@ -205,6 +205,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource AtcApps.Templates.ValidationError}" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TextBox}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.Focus}" />
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />

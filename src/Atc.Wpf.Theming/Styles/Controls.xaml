@@ -69,4 +69,14 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type TreeView}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type TreeViewItem}" />
 
+    <!--  CornerRadius  -->
+    <CornerRadius x:Key="AtcApps.CornerRadius.Button">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.CheckBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.ComboBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.GroupBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.NumericBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.TabControl">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.TextBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.TreeView">3</CornerRadius>
+
 </ResourceDictionary>
