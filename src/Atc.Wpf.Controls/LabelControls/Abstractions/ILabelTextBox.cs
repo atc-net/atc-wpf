@@ -12,7 +12,5 @@ public interface ILabelTextBox : ILabelControl
 
     string Text { get; set; }
 
-    bool WatermarkEnable { get; set; }
-
-    string WatermarkLabel { get; set; }
+    string WatermarkText { get; set; }
 }

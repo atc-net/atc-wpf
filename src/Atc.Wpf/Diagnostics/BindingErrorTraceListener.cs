@@ -55,7 +55,7 @@ public class BindingErrorTraceListener : DefaultTraceListener
     /// </summary>
     /// <param name="message">The message to write to <see langword="OutputDebugString" /> and <see ref="M:System.Diagnostics.Debugger.Log(System.Int32,System.String,System.String)" />.</param>
     /// <PermissionSet>
-    /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+    /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="True" />
     /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="ControlEvidence" />
     /// </PermissionSet>
     public override void Write(string? message)
@@ -70,8 +70,8 @@ public class BindingErrorTraceListener : DefaultTraceListener
     /// <param name="message">The message to write to <see langword="OutputDebugString" /> and <see ref="M:System.Diagnostics.Debugger.Log(System.Int32,System.String,System.String)" />.</param>
     /// <exception cref="ArgumentException">BindingError: " + error.</exception>
     /// <PermissionSet>
-    /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
-    /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+    /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="True" />
+    /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="True" />
     /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="ControlEvidence" />
     /// </PermissionSet>
     public override void WriteLine(string? message)

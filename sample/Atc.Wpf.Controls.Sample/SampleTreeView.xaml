@@ -9,6 +9,21 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="Base Controls" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="DecimalBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.DecimalBoxView" />
+        <atc:SampleTreeViewItem
+            Header="IntegerBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.IntegerBoxView" />
+        <atc:SampleTreeViewItem
+            Header="NumericBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.NumericBoxView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Label Controls" IsExpanded="True">
         <TreeViewItem Header="Selectors" IsExpanded="True">
             <atc:SampleTreeViewItem

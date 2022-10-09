@@ -18,12 +18,13 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
 
-                <atc:GridEx
-                    Margin="10"
-                    Columns="*,10,*"
-                    ShowGridLines="True">
+                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
 
-                    <atc:GridEx Grid.Column="0" Rows="Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto">
+                    <atc:GridEx
+                        Grid.Column="0"
+                        Margin="10"
+                        Rows="Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto">
+
                         <ComboBox
                             Grid.Row="0"
                             DisplayMemberPath="Value"
@@ -31,15 +32,24 @@
                             SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                             SelectedValuePath="Key" />
 
-                        <TextBox Grid.Row="2" />
+                        <TextBox Grid.Row="2" atc:TextBoxHelper.ClearTextButton="True" />
 
-                        <Button Grid.Row="4" Content="Hello" />
+                        <TextBox Grid.Row="4" atc:TextBoxHelper.ClearTextButton="True">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Escape" Command="{x:Static atc:AtcAppsCommands.ClearControlCommand}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
 
-                        <CheckBox Grid.Row="6" Content="Hello" />
+                        <Button Grid.Row="6" Content="Hello" />
+
+                        <CheckBox Grid.Row="8" Content="Hello" />
 
                     </atc:GridEx>
 
-                    <atc:GridEx Grid.Column="2" Rows="Auto">
+                    <atc:GridEx
+                        Grid.Column="2"
+                        Margin="10"
+                        Rows="Auto">
 
                         <StackPanel Orientation="Horizontal">
                             <ComboBox

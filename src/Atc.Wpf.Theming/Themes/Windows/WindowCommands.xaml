@@ -159,17 +159,17 @@
                 DockPanel.Dock="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(DockPanel.Dock), Mode=OneWay}"
                 Foreground="{TemplateBinding Foreground}"
                 IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOverflowOpen, Mode=TwoWay}"
-                IsEnabled="false"
+                IsEnabled="False"
                 Style="{StaticResource AtcApps.Styles.ToggleButton.ToolBarOverflow}"
                 Visibility="Collapsed">
                 <Popup
                     x:Name="OverflowPopup"
-                    AllowsTransparency="true"
-                    Focusable="false"
+                    AllowsTransparency="True"
+                    Focusable="False"
                     IsOpen="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOverflowOpen}"
                     Placement="Bottom"
                     PopupAnimation="Slide"
-                    StaysOpen="false">
+                    StaysOpen="False">
                     <Grid x:Name="DropDownBorder" Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}, Path=Background, Mode=OneWay}">
                         <ToolBarOverflowPanel
                             x:Name="PART_ToolBarOverflowPanel"
@@ -177,7 +177,7 @@
                             VerticalAlignment="Stretch"
                             Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:NiceWindow}}, Path=WindowTitleBrush, Mode=OneWay}"
                             FocusVisualStyle="{x:Null}"
-                            Focusable="true"
+                            Focusable="True"
                             KeyboardNavigation.DirectionalNavigation="Cycle"
                             KeyboardNavigation.TabNavigation="Cycle" />
                     </Grid>
@@ -187,7 +187,7 @@
                 x:Name="PART_ToolBarPanel"
                 Margin="0"
                 Background="{TemplateBinding Background}"
-                IsItemsHost="true" />
+                IsItemsHost="True" />
         </DockPanel>
         <ControlTemplate.Triggers>
             <Trigger Property="HasOverflowItems" Value="True">

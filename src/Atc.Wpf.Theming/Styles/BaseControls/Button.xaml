@@ -69,10 +69,44 @@
             </Setter.Value>
         </Setter>
         <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button}" />
-        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="0" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.Button}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.Focus}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderThickness" Value="1" />
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.MouseOver}" />
+    </Style>
+
+    <!--  Chromeless - ControlTemplate  -->
+    <ControlTemplate x:Key="AtcApps.Templates.Button.Chromeless" TargetType="{x:Type ButtonBase}">
+        <Grid Background="{TemplateBinding Background}">
+            <ContentPresenter
+                x:Name="PART_ContentPresenter"
+                Margin="{TemplateBinding Padding}"
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                RecognizesAccessKey="{TemplateBinding helpers:ControlsHelper.RecognizesAccessKey}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Control.Disabled}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--  Chromeless  -->
+    <Style x:Key="AtcApps.Styles.Button.Chromeless" TargetType="{x:Type ButtonBase}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Transparent}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template" Value="{StaticResource AtcApps.Templates.Button.Chromeless}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
 </ResourceDictionary>

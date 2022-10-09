@@ -340,6 +340,7 @@
         <Setter Property="helpers:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled" Value="{DynamicResource AtcApps.Brushes.CheckBox}" />
         <Setter Property="helpers:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver" Value="{DynamicResource AtcApps.Brushes.CheckBox.MouseOver}" />
         <Setter Property="helpers:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed" Value="{DynamicResource AtcApps.Brushes.CheckBox.MouseOver}" />
+        <Setter Property="helpers:CheckBoxHelper.CheckCornerRadius" Value="{DynamicResource AtcApps.CornerRadius.CheckBox}" />
         <Setter Property="helpers:CheckBoxHelper.CheckGlyphCheckedTemplate">
             <Setter.Value>
                 <DataTemplate>

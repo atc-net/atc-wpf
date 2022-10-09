@@ -20,7 +20,7 @@
     <system:Double x:Key="TabItemUnderlineExtentTabPanel">4</system:Double>
 
     <Style TargetType="{x:Type controls:Underline}">
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
@@ -174,7 +174,7 @@
                             <Setter TargetName="Underline" Property="LineThickness" Value="{DynamicResource TabItemUnderlineThicknessTabPanel}" />
                         </DataTrigger>
 
-                        <Trigger Property="IsSelected" Value="true">
+                        <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                             <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
                         </Trigger>
@@ -507,7 +507,7 @@
                                 Visibility="Collapsed" />
                             <TabPanel
                                 x:Name="HeaderPanel"
-                                IsItemsHost="true"
+                                IsItemsHost="True"
                                 KeyboardNavigation.TabIndex="1" />
                         </Grid>
                         <Border
@@ -570,6 +570,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TabControl}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, FallbackValue={x:Static Brushes.Transparent}}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.TabItem}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Gray}" />

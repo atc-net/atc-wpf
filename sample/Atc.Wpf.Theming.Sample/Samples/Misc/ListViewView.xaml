@@ -19,12 +19,13 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
 
-                <atc:GridEx
-                    Margin="10"
-                    Columns="*,10,*"
-                    ShowGridLines="True">
+                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
 
-                    <atc:GridEx Grid.Column="0" Rows="*">
+                    <atc:GridEx
+                        Grid.Column="0"
+                        Margin="10"
+                        Rows="*">
+
                         <ListView Grid.Row="0" ItemsSource="{Binding Items, ElementName=UcListViewView}">
                             <ListView.View>
                                 <GridView>
@@ -35,25 +36,27 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
+
                     </atc:GridEx>
 
-                    <atc:GridEx Grid.Column="2" Rows="*">
+                    <atc:GridEx
+                        Grid.Column="2"
+                        Margin="10"
+                        Rows="*">
 
-                        <atc:GridEx Grid.Column="0" Rows="*">
-                            <ListView
-                                Grid.Row="0"
-                                IsEnabled="False"
-                                ItemsSource="{Binding Items, ElementName=UcListViewView}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />
-                                        <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last-Name" />
-                                        <GridViewColumn DisplayMemberBinding="{Binding Age}" Header="Age" />
-                                        <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Address" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </atc:GridEx>
+                        <ListView
+                            Grid.Row="0"
+                            IsEnabled="False"
+                            ItemsSource="{Binding Items, ElementName=UcListViewView}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last-Name" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Age}" Header="Age" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Address" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
                     </atc:GridEx>
 

@@ -83,12 +83,11 @@ public static class TextBoxHelper
         IInputElement? value)
         => d.SetValue(ButtonCommandTargetProperty, value);
 
-    public static readonly DependencyProperty ButtonContentProperty
-        = DependencyProperty.RegisterAttached(
-            "ButtonContent",
-            typeof(object),
-            typeof(TextBoxHelper),
-            new FrameworkPropertyMetadata("r"));
+    public static readonly DependencyProperty ButtonContentProperty = DependencyProperty.RegisterAttached(
+        "ButtonContent",
+        typeof(object),
+        typeof(TextBoxHelper),
+        new FrameworkPropertyMetadata("#"));
 
     public static object GetButtonContent(
         DependencyObject d)
@@ -114,12 +113,11 @@ public static class TextBoxHelper
         DataTemplate? value)
         => d.SetValue(ButtonContentTemplateProperty, value);
 
-    public static readonly DependencyProperty ButtonTemplateProperty
-        = DependencyProperty.RegisterAttached(
-            "ButtonTemplate",
-            typeof(ControlTemplate),
-            typeof(TextBoxHelper),
-            new FrameworkPropertyMetadata(propertyChangedCallback: null));
+    public static readonly DependencyProperty ButtonTemplateProperty = DependencyProperty.RegisterAttached(
+        "ButtonTemplate",
+        typeof(ControlTemplate),
+        typeof(TextBoxHelper),
+        new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
     public static ControlTemplate? GetButtonTemplate(
         DependencyObject d)
@@ -130,12 +128,11 @@ public static class TextBoxHelper
         ControlTemplate? value)
         => d.SetValue(ButtonTemplateProperty, value);
 
-    public static readonly DependencyProperty ButtonFontFamilyProperty
-        = DependencyProperty.RegisterAttached(
-            "ButtonFontFamily",
-            typeof(FontFamily),
-            typeof(TextBoxHelper),
-            new FrameworkPropertyMetadata(new FontFamilyConverter().ConvertFromString("Segoe UI")));
+    public static readonly DependencyProperty ButtonFontFamilyProperty = DependencyProperty.RegisterAttached(
+        "ButtonFontFamily",
+        typeof(FontFamily),
+        typeof(TextBoxHelper),
+        new FrameworkPropertyMetadata(new FontFamilyConverter().ConvertFromString("Segoe UI")));
 
     public static FontFamily GetButtonFontFamily(
         DependencyObject d)
@@ -169,10 +166,13 @@ public static class TextBoxHelper
             BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static bool GetHasText(DependencyObject d)
+    public static bool GetHasText(
+        DependencyObject d)
         => (bool)d.GetValue(HasTextProperty);
 
-    public static void SetHasText(DependencyObject d, bool value)
+    public static void SetHasText(
+        DependencyObject d,
+        bool value)
         => d.SetValue(HasTextProperty, BooleanBoxes.Box(value));
 
     public static readonly DependencyProperty ClearTextButtonProperty = DependencyProperty.RegisterAttached(
@@ -297,43 +297,54 @@ public static class TextBoxHelper
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is RichTextBox richTextBox)
+        switch (d)
         {
-            richTextBox.Loaded -= RichTextBoxLoaded;
-            richTextBox.Loaded += RichTextBoxLoaded;
-            if (richTextBox.IsLoaded)
+            case RichTextBox richTextBox:
             {
-                RichTextBoxLoaded(richTextBox, new RoutedEventArgs());
+                richTextBox.Loaded -= RichTextBoxLoaded;
+                richTextBox.Loaded += RichTextBoxLoaded;
+                if (richTextBox.IsLoaded)
+                {
+                    RichTextBoxLoaded(richTextBox, new RoutedEventArgs());
+                }
+
+                break;
             }
-        }
-        else if (d is TextBox textBox)
-        {
-            // only one loaded event
-            textBox.Loaded -= TextChanged;
-            textBox.Loaded += TextChanged;
-            if (textBox.IsLoaded)
+
+            case TextBox textBox:
             {
-                TextChanged(textBox, new RoutedEventArgs());
+                textBox.Loaded -= TextChanged;
+                textBox.Loaded += TextChanged;
+                if (textBox.IsLoaded)
+                {
+                    TextChanged(textBox, new RoutedEventArgs());
+                }
+
+                break;
             }
-        }
-        else if (d is PasswordBox passwordBox)
-        {
-            // only one loaded event
-            passwordBox.Loaded -= PasswordChanged;
-            passwordBox.Loaded += PasswordChanged;
-            if (passwordBox.IsLoaded)
+
+            case PasswordBox passwordBox:
             {
-                PasswordChanged(passwordBox, new RoutedEventArgs());
+                passwordBox.Loaded -= PasswordChanged;
+                passwordBox.Loaded += PasswordChanged;
+                if (passwordBox.IsLoaded)
+                {
+                    PasswordChanged(passwordBox, new RoutedEventArgs());
+                }
+
+                break;
             }
-        }
-        else if (d is ComboBox comboBox)
-        {
-            // only one loaded event
-            comboBox.Loaded -= ComboBoxLoaded;
-            comboBox.Loaded += ComboBoxLoaded;
-            if (comboBox.IsLoaded)
+
+            case ComboBox comboBox:
             {
-                ComboBoxLoaded(comboBox, new RoutedEventArgs());
+                comboBox.Loaded -= ComboBoxLoaded;
+                comboBox.Loaded += ComboBoxLoaded;
+                if (comboBox.IsLoaded)
+                {
+                    ComboBoxLoaded(comboBox, new RoutedEventArgs());
+                }
+
+                break;
             }
         }
     }
@@ -380,7 +391,9 @@ public static class TextBoxHelper
         }
     }
 
-    private static void ComboBoxLoaded(object sender, RoutedEventArgs e)
+    private static void ComboBoxLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         if (sender is ComboBox comboBox)
         {

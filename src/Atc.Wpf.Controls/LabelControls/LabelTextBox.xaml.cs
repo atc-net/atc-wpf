@@ -181,28 +181,40 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(TextProperty, value);
     }
 
-    public static readonly DependencyProperty WatermarkEnableProperty = DependencyProperty.Register(
-        nameof(WatermarkEnable),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
-
-    public bool WatermarkEnable
-    {
-        get => (bool)GetValue(WatermarkEnableProperty);
-        set => SetValue(WatermarkEnableProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkLabelProperty = DependencyProperty.Register(
-        nameof(WatermarkLabel),
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
         typeof(string),
         typeof(LabelTextBox),
         new PropertyMetadata(string.Empty));
 
-    public string WatermarkLabel
+    public string WatermarkText
     {
-        get => (string)GetValue(WatermarkLabelProperty);
-        set => SetValue(WatermarkLabelProperty, value);
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
+        nameof(ShowClearTextButton),
+        typeof(bool),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(bool)));
+
+    public bool ShowClearTextButton
+    {
+        get => (bool)GetValue(ShowClearTextButtonProperty);
+        set => SetValue(ShowClearTextButtonProperty, value);
     }
 
     public LabelTextBox()

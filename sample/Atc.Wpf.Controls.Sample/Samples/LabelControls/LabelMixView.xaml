@@ -52,6 +52,7 @@
                             IsMandatory="True"
                             LabelText="MyTextBox"
                             Orientation="Horizontal"
+                            ShowClearTextButton="True"
                             Text="Hello" />
 
                         <atc:LabelWellKnownColorSelector
@@ -65,6 +66,23 @@
                             Orientation="Horizontal">
                             <TextBox />
                         </atc:LabelContent>
+
+                        <atc:LabelDecimalBox
+                            InformationText="This is a help text.."
+                            LabelText="MyDecimalBox"
+                            Orientation="Horizontal"
+                            PrefixText="P123"
+                            SuffixText="S123" />
+
+                        <atc:LabelIntegerBox
+                            InformationText="This is a help text.."
+                            LabelText="MyIntegerBox"
+                            Maximum="10"
+                            Minimum="-10"
+                            Orientation="Horizontal"
+                            PrefixText="P123"
+                            SuffixText="S123"
+                            Value="3" />
 
                     </StackPanel>
 
@@ -102,6 +120,7 @@
                             IsMandatory="True"
                             LabelText="MyTextBox"
                             Orientation="Vertical"
+                            ShowClearTextButton="True"
                             Text="Hello" />
 
                         <atc:LabelWellKnownColorSelector
@@ -115,6 +134,17 @@
                             Orientation="Vertical">
                             <TextBox />
                         </atc:LabelContent>
+
+                        <atc:LabelDecimalBox
+                            InformationText="This is a help text.."
+                            LabelText="MyDecimalBox"
+                            Orientation="Vertical" />
+
+                        <atc:LabelIntegerBox
+                            InformationText="This is a help text.."
+                            LabelText="MyIntegerBox"
+                            Orientation="Vertical" />
+
 
                     </StackPanel>
 

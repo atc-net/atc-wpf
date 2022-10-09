@@ -28,7 +28,9 @@
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelText="MyLabel2"
-                            Orientation="Horizontal" />
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            WatermarkText="Fill out with text.." />
                     </atc:GridEx>
 
                     <atc:GridEx Grid.Column="1" Rows="Auto,Auto">
@@ -41,7 +43,9 @@
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelText="MyLabel4"
-                            Orientation="Vertical" />
+                            Orientation="Vertical"
+                            ShowClearTextButton="True"
+                            WatermarkText="Fill out with text.." />
                     </atc:GridEx>
 
                 </atc:GridEx>

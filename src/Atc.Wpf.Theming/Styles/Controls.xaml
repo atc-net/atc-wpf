@@ -9,6 +9,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ContextMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Expander.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/GroupBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Label.xaml" />
@@ -40,6 +41,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.CheckBox}" TargetType="{x:Type CheckBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ComboBox}" TargetType="{x:Type ComboBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ComboBoxItem}" TargetType="{x:Type ComboBoxItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ContextMenu}" TargetType="{x:Type ContextMenu}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Expander}" TargetType="{x:Type Expander}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GroupBox}" TargetType="{x:Type GroupBox}" />
@@ -66,5 +68,15 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.ToolTip}" TargetType="{x:Type ToolTip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type TreeView}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type TreeViewItem}" />
+
+    <!--  CornerRadius  -->
+    <CornerRadius x:Key="AtcApps.CornerRadius.Button">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.CheckBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.ComboBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.GroupBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.NumericBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.TabControl">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.TextBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.TreeView">3</CornerRadius>
 
 </ResourceDictionary>

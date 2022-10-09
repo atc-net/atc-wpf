@@ -10,8 +10,6 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Geometry x:Key="ComboBoxDownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
-
     <!--  DropDownButton  -->
     <Style x:Key="AtcApps.Styles.ToggleButton.ComboBoxDropDown" TargetType="{x:Type ToggleButton}">
         <Setter Property="ClickMode" Value="Press" />
@@ -20,7 +18,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid x:Name="ToggleButtonRootGrid" Background="{TemplateBinding Background}">
+                    <Grid
+                        x:Name="ToggleButtonRootGrid"
+                        Margin="0,0.5,0.5,1"
+                        Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="TextColumn" Width="*" />
                             <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto" />
@@ -31,13 +32,13 @@
                             Width="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
                             Background="Transparent">
                             <Path
-                                x:Name="Arrow"
-                                Width="8"
-                                Height="4"
+                                x:Name="ArrowIcon"
+                                Width="10"
+                                Height="10"
                                 HorizontalAlignment="Center"
-                                Data="{DynamicResource ComboBoxDownArrowGeometry}"
+                                Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
                                 Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-                                IsHitTestVisible="false"
+                                IsHitTestVisible="False"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Stretch="Uniform" />
                         </Grid>
@@ -62,8 +63,11 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="MinHeight" Value="22" />
-        <Setter Property="Padding" Value="2" />
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="MinWidth" Value="62" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -222,6 +226,7 @@
                                 helpers:TextBoxHelper.ButtonWidth="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
                                 helpers:TextBoxHelper.ClearTextButton="{TemplateBinding helpers:TextBoxHelper.ClearTextButton}"
                                 Background="Transparent"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.Border}"
                                 BorderThickness="0"
                                 Foreground="{TemplateBinding Foreground}"
                                 IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
@@ -233,7 +238,7 @@
                                 x:Name="ContentSite"
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="0,1,0,0">
+                                Margin="0">
                                 <ContentPresenter
                                     Margin="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -289,7 +294,7 @@
                                     Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                                     BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.PopupBorder}"
                                     BorderThickness="1"
-                                    CornerRadius="0"
+                                    CornerRadius="3"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ScrollViewer Padding="1" BorderThickness="0">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -380,6 +385,7 @@
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray9}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -395,6 +401,16 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource AtcApps.Templates.ValidationError}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.ComboBox}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.Focus}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonWidth" Value="22" />
     </Style>
 
 </ResourceDictionary>

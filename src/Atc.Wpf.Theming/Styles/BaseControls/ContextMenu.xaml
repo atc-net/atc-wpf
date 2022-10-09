@@ -1,0 +1,14 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="AtcApps.Styles.ContextMenu" TargetType="{x:Type ContextMenu}" />
+
+    <ContextMenu
+        x:Key="AtcApps.TextBox.ContextMenu"
+        x:Shared="False"
+        Style="{StaticResource AtcApps.Styles.ContextMenu}">
+        <MenuItem Command="ApplicationCommands.Cut" Style="{DynamicResource AtcApps.Styles.MenuItem}" />
+        <MenuItem Command="ApplicationCommands.Copy" Style="{DynamicResource AtcApps.Styles.MenuItem}" />
+        <MenuItem Command="ApplicationCommands.Paste" Style="{DynamicResource AtcApps.Styles.MenuItem}" />
+    </ContextMenu>
+
+</ResourceDictionary>

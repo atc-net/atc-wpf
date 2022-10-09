@@ -3,4 +3,27 @@
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.TextBlock" TargetType="{x:Type TextBlock}" />
 
+    <!--  Watermark  -->
+    <Style
+        x:Key="AtcApps.Styles.TextBlock.Watermark"
+        BasedOn="{StaticResource AtcApps.Styles.TextBlock}"
+        TargetType="{x:Type TextBlock}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Opacity" Value="0.6" />
+    </Style>
+
+    <!--  AutoCollapsing  -->
+    <Style
+        x:Key="AtcApps.Styles.TextBlock.AutoCollapsing"
+        BasedOn="{StaticResource AtcApps.Styles.TextBlock}"
+        TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.FloatingWatermark}" />
+        <Setter Property="Opacity" Value="0.6" />
+        <Style.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

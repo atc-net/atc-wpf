@@ -89,6 +89,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.GroupBox}" />
+        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.GroupBox}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
         <Setter Property="helpers:HeaderedControlHelper.HeaderForeground" Value="{x:Null}" />
