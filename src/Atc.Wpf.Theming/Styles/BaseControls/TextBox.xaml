@@ -15,12 +15,17 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CaretBrush" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
         <Setter Property="ContextMenu" Value="{DynamicResource AtcApps.TextBox.ContextMenu}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="MinHeight" Value="26" />
+        <Setter Property="MinWidth" Value="62" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="SelectionBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -99,7 +104,7 @@
                                     HorizontalAlignment="Center"
                                     Data="{DynamicResource AtcApps.Geometry.Clear}"
                                     Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-                                    IsHitTestVisible="false"
+                                    IsHitTestVisible="False"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                     Stretch="Uniform" />
                             </Button>
@@ -134,11 +139,13 @@
                             <Setter TargetName="PART_Message" Property="Grid.Column" Value="1" />
                             <Setter TargetName="TextColumn" Property="Width" Value="Auto" />
                         </DataTrigger>
+                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
                             <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
                         </DataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                                 <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
                                 <Condition Binding="{Binding Path=(helpers:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
                                 <Condition Binding="{Binding Path=(helpers:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />

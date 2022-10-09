@@ -38,7 +38,7 @@
                                 HorizontalAlignment="Center"
                                 Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
                                 Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-                                IsHitTestVisible="false"
+                                IsHitTestVisible="False"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Stretch="Uniform" />
                         </Grid>
@@ -63,8 +63,11 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="MinHeight" Value="22" />
-        <Setter Property="Padding" Value="2" />
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="MinWidth" Value="62" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -235,7 +238,7 @@
                                 x:Name="ContentSite"
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="0,1,0,0">
+                                Margin="0">
                                 <ContentPresenter
                                     Margin="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

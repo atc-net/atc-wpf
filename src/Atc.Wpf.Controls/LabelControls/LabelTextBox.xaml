@@ -53,6 +53,7 @@
             <TextBox
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
+                atc:TextBoxHelper.ClearTextButton="{Binding ElementName=UcLabelTextBox, Path=ShowClearTextButton}"
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"
@@ -84,6 +85,7 @@
             <TextBox
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
+                atc:TextBoxHelper.ClearTextButton="{Binding ElementName=UcLabelTextBox, Path=ShowClearTextButton}"
                 atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
                 MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
                 MaxLines="1"

@@ -174,7 +174,7 @@
                             <Setter TargetName="Underline" Property="LineThickness" Value="{DynamicResource TabItemUnderlineThicknessTabPanel}" />
                         </DataTrigger>
 
-                        <Trigger Property="IsSelected" Value="true">
+                        <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                             <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
                         </Trigger>
@@ -507,7 +507,7 @@
                                 Visibility="Collapsed" />
                             <TabPanel
                                 x:Name="HeaderPanel"
-                                IsItemsHost="true"
+                                IsItemsHost="True"
                                 KeyboardNavigation.TabIndex="1" />
                         </Grid>
                         <Border

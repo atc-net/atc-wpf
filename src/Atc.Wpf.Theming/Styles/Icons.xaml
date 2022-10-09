@@ -29,7 +29,7 @@
         HorizontalAlignment="Center"
         Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
         Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-        IsHitTestVisible="false"
+        IsHitTestVisible="False"
         Stretch="Uniform" />
 
     <Path

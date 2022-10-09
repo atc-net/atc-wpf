@@ -193,6 +193,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(WatermarkTextProperty, value);
     }
 
+    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
+        nameof(ShowClearTextButton),
+        typeof(bool),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(bool)));
+
+    public bool ShowClearTextButton
+    {
+        get => (bool)GetValue(ShowClearTextButtonProperty);
+        set => SetValue(ShowClearTextButtonProperty, value);
+    }
+
     public LabelTextBox()
     {
         InitializeComponent();
