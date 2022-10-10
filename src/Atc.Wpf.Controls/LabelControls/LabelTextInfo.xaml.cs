@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// <summary>
 /// Interaction logic for LabelTextInfo.
 /// </summary>
-public partial class LabelTextInfo : ILabelControlBase
+public partial class LabelTextInfo : ILabelTextInfo
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),

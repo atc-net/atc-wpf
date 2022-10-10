@@ -8,7 +8,7 @@ public interface ILabelControl : ILabelControlBase
 
     SolidColorBrush MandatoryColor { get; set; }
 
-    string LabelText { get; set; }
-
     SolidColorBrush ValidationColor { get; set; }
+
+    string ValidationText { get; set; }
 }

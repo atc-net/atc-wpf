@@ -22,7 +22,6 @@
 
                         <atc:LabelCheckBox
                             InformationText="This is a help text.."
-                            IsMandatory="True"
                             LabelText="MyCheckBox"
                             Orientation="Horizontal" />
 
@@ -90,7 +89,6 @@
 
                         <atc:LabelCheckBox
                             InformationText="This is a help text.."
-                            IsMandatory="True"
                             LabelText="MyCheckBox"
                             Orientation="Vertical" />
 

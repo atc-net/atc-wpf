@@ -13,28 +13,14 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
-        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
     </UserControl.Resources>
 
     <atc:GridEx Columns="10,*,20" Rows="Auto">
 
-        <TextBlock
-            Grid.Column="0"
-            Padding="{Binding ElementName=UcLabelCheckBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
-            FontWeight="Bold"
-            Foreground="{Binding ElementName=UcLabelCheckBox, Path=MandatoryColor, FallbackValue=Red}"
-            Text="*">
-            <TextBlock.Visibility>
-                <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
-                    <Binding ElementName="UcLabelCheckBox" Path="ShowAsteriskOnMandatory" />
-                    <Binding ElementName="UcLabelCheckBox" Path="IsMandatory" />
-                </MultiBinding>
-            </TextBlock.Visibility>
-        </TextBlock>
+        <TextBlock Grid.Column="0" />
 
         <atc:GridEx
             Grid.Column="1"
@@ -59,8 +45,7 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelCheckBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
+                VerticalAlignment="Center" />
 
         </atc:GridEx>
 
@@ -84,10 +69,7 @@
                 Height="26"
                 IsChecked="{Binding ElementName=UcLabelCheckBox, Path=IsChecked}" />
 
-            <TextBlock
-                Grid.Row="2"
-                VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelCheckBox, Path=ValidationColor, FallbackValue=OrangeRed}" />
+            <TextBlock Grid.Row="2" VerticalAlignment="Center" />
 
         </atc:GridEx>
 
