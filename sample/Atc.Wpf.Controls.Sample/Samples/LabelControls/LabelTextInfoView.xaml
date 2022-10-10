@@ -15,50 +15,39 @@
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
 
-                    <atc:GridEx Grid.Column="0" Rows="Auto,Auto,Auto">
-                        <atc:LabelTextInfo
-                            Grid.Row="0"
-                            LabelText="MyLabel1"
-                            Orientation="Horizontal" />
+                        <atc:LabelTextInfo LabelText="MyLabel1" Orientation="Horizontal" />
 
                         <atc:LabelTextInfo
-                            Grid.Row="1"
                             IsEnabled="False"
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
 
                         <atc:LabelTextInfo
-                            Grid.Row="2"
                             IsEnabled="False"
                             LabelText="MyLabel3"
                             Orientation="Horizontal"
                             Text="Hello" />
-                    </atc:GridEx>
 
-                    <atc:GridEx Grid.Column="1" Rows="Auto,Auto,Auto">
-                        <atc:LabelTextInfo
-                            Grid.Row="0"
-                            LabelText="MyLabel1"
-                            Orientation="Vertical" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelTextInfo LabelText="MyLabel1" Orientation="Vertical" />
 
                         <atc:LabelTextInfo
-                            Grid.Row="1"
                             IsEnabled="False"
                             LabelText="MyLabel2"
                             Orientation="Vertical" />
 
                         <atc:LabelTextInfo
-                            Grid.Row="2"
                             LabelText="MyLabel3"
                             Orientation="Vertical"
                             Text="Hello" />
-                    </atc:GridEx>
 
+                    </StackPanel>
                 </atc:GridEx>
-
             </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>

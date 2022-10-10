@@ -15,33 +15,22 @@
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
 
-                    <atc:GridEx Grid.Column="0" Rows="Auto,Auto">
-                        <atc:LabelThemeAndAccentColorSelectors
-                            Grid.Row="0"
-                            LabelControlOrientation="Horizontal"
-                            Orientation="Horizontal" />
-                        <atc:LabelThemeAndAccentColorSelectors
-                            Grid.Row="1"
-                            LabelControlOrientation="Vertical"
-                            Orientation="Horizontal" />
-                    </atc:GridEx>
+                        <atc:LabelThemeAndAccentColorSelectors LabelControlOrientation="Horizontal" Orientation="Horizontal" />
 
-                    <atc:GridEx Grid.Column="1" Rows="Auto,Auto">
-                        <atc:LabelThemeAndAccentColorSelectors
-                            Grid.Row="0"
-                            LabelControlOrientation="Horizontal"
-                            Orientation="Vertical" />
-                        <atc:LabelThemeAndAccentColorSelectors
-                            Grid.Row="1"
-                            LabelControlOrientation="Vertical"
-                            Orientation="Vertical" />
-                    </atc:GridEx>
+                        <atc:LabelThemeAndAccentColorSelectors LabelControlOrientation="Vertical" Orientation="Horizontal" />
 
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelThemeAndAccentColorSelectors LabelControlOrientation="Horizontal" Orientation="Vertical" />
+
+                        <atc:LabelThemeAndAccentColorSelectors LabelControlOrientation="Vertical" Orientation="Vertical" />
+
+                    </StackPanel>
                 </atc:GridEx>
-
             </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>
