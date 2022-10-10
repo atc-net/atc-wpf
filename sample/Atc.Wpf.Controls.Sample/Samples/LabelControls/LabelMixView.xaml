@@ -23,6 +23,11 @@
                             LabelText="MyCheckBox"
                             Orientation="Horizontal" />
 
+                        <atc:LabelToggleSwitch
+                            InformationText="This is a help text.."
+                            LabelText="MyToggleSwitch"
+                            Orientation="Horizontal" />
+
                         <atc:LabelComboBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
@@ -87,6 +92,11 @@
                         <atc:LabelCheckBox
                             InformationText="This is a help text.."
                             LabelText="MyCheckBox"
+                            Orientation="Vertical" />
+
+                        <atc:LabelToggleSwitch
+                            InformationText="This is a help text.."
+                            LabelText="MyToggleSwitch"
                             Orientation="Vertical" />
 
                         <atc:LabelComboBox

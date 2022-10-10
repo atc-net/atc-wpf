@@ -10,6 +10,8 @@
     <FontFamily x:Key="AtcApps.Fonts.Family.Button">Segoe UI</FontFamily>
     <FontFamily x:Key="AtcApps.Fonts.Family.ContentControlTheme">Segoe UI</FontFamily>
     <FontFamily x:Key="AtcApps.Fonts.Family.Control">Segoe UI</FontFamily>
+    <FontFamily x:Key="AtcApps.Fonts.Family.ToggleSwitch">Segoe UI</FontFamily>
+    <FontFamily x:Key="AtcApps.Fonts.Family.ToggleSwitch.Header">Segoe UI</FontFamily>
 
     <!--  FontSize  -->
     <system:Double x:Key="AtcApps.Font.Size.Window.Title">16</system:Double>

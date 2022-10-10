@@ -15,14 +15,14 @@ public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return DoConvert(value, parameter, this.Operation);
+        return DoConvert(value, parameter, Operation);
     }
 
     public object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
     {
         return values is null
             ? Binding.DoNothing
-            : DoConvert(values.ElementAtOrDefault(0), values.ElementAtOrDefault(1), this.Operation);
+            : DoConvert(values.ElementAtOrDefault(0), values.ElementAtOrDefault(1), Operation);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
