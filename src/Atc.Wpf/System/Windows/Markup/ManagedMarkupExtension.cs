@@ -99,7 +99,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
         }
 
         targetProperty = targetHelper.TargetProperty;
-        if (!(targetHelper.TargetObject is DependencyObject) && targetProperty is DependencyProperty)
+        if (targetHelper.TargetObject is not DependencyObject && targetProperty is DependencyProperty)
         {
             return this;
         }
@@ -132,7 +132,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
                 var target = reference.Target;
                 if (target is not null)
                 {
-                    info.SetValue(target, GetValue(), null);
+                    info.SetValue(target, GetValue(), index: null);
                 }
             }
         }
