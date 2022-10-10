@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// <summary>
 /// Interaction logic for LabelContent.
 /// </summary>
-public partial class LabelContent : ILabelControl
+public partial class LabelContent : ILabelTextControl
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
@@ -75,6 +75,18 @@ public partial class LabelContent : ILabelControl
     {
         get => (SolidColorBrush)GetValue(ValidationColorProperty);
         set => SetValue(ValidationColorProperty, value);
+    }
+
+    public static readonly DependencyProperty ValidationTextProperty = DependencyProperty.Register(
+        nameof(ValidationText),
+        typeof(string),
+        typeof(LabelContent),
+        new PropertyMetadata(default(string)));
+
+    public string ValidationText
+    {
+        get => (string)GetValue(ValidationTextProperty);
+        set => SetValue(ValidationTextProperty, value);
     }
 
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(

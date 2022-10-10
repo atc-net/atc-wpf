@@ -1,16 +1,20 @@
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
-public interface ILabelTextBox : ILabelControl
+public interface ILabelTextBox : ILabelTextControl
 {
-    uint MinLength { get; set; }
+    string WatermarkText { get; set; }
+
+    TextAlignment WatermarkAlignment { get; set; }
 
     uint MaxLength { get; set; }
+
+    uint MinLength { get; set; }
 
     bool UseDefaultNotAllowedCharacters { get; set; }
 
     string CharactersNotAllowed { get; set; }
 
-    string Text { get; set; }
+    bool ShowClearTextButton { get; set; }
 
-    string WatermarkText { get; set; }
+    string Text { get; set; }
 }

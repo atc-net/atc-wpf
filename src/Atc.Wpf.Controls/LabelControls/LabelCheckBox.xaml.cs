@@ -17,42 +17,6 @@ public partial class LabelCheckBox : ILabelCheckBox
         set => SetValue(OrientationProperty, value);
     }
 
-    public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
-        nameof(ShowAsteriskOnMandatory),
-        typeof(bool),
-        typeof(LabelCheckBox),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowAsteriskOnMandatory
-    {
-        get => (bool)GetValue(ShowAsteriskOnMandatoryProperty);
-        set => SetValue(ShowAsteriskOnMandatoryProperty, value);
-    }
-
-    public static readonly DependencyProperty IsMandatoryProperty = DependencyProperty.Register(
-        nameof(IsMandatory),
-        typeof(bool),
-        typeof(LabelCheckBox),
-        new PropertyMetadata(defaultValue: false));
-
-    public bool IsMandatory
-    {
-        get => (bool)GetValue(IsMandatoryProperty);
-        set => SetValue(IsMandatoryProperty, value);
-    }
-
-    public static readonly DependencyProperty MandatoryColorProperty = DependencyProperty.Register(
-        nameof(MandatoryColor),
-        typeof(SolidColorBrush),
-        typeof(LabelCheckBox),
-        new PropertyMetadata(new SolidColorBrush(Colors.Red)));
-
-    public SolidColorBrush MandatoryColor
-    {
-        get => (SolidColorBrush)GetValue(MandatoryColorProperty);
-        set => SetValue(MandatoryColorProperty, value);
-    }
-
     public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
         nameof(LabelText),
         typeof(string),
@@ -63,18 +27,6 @@ public partial class LabelCheckBox : ILabelCheckBox
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
-    }
-
-    public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
-        nameof(ValidationColor),
-        typeof(SolidColorBrush),
-        typeof(LabelCheckBox),
-        new PropertyMetadata(new SolidColorBrush(Colors.OrangeRed)));
-
-    public SolidColorBrush ValidationColor
-    {
-        get => (SolidColorBrush)GetValue(ValidationColorProperty);
-        set => SetValue(ValidationColorProperty, value);
     }
 
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(

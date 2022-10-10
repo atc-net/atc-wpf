@@ -26,7 +26,6 @@
                         <atc:LabelCheckBox
                             Grid.Row="1"
                             InformationText="This is a help text.."
-                            IsMandatory="True"
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
                     </atc:GridEx>
@@ -39,7 +38,6 @@
                         <atc:LabelCheckBox
                             Grid.Row="1"
                             InformationText="This is a help text.."
-                            IsMandatory="True"
                             LabelText="MyLabel4"
                             Orientation="Vertical" />
                     </atc:GridEx>

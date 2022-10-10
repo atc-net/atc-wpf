@@ -115,6 +115,30 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(InformationColorProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
+        typeof(string),
+        typeof(LabelTextBox),
+        new PropertyMetadata(string.Empty));
+
+    public string WatermarkText
+    {
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
     public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(
         nameof(MaxLength),
         typeof(uint),
@@ -163,6 +187,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(CharactersNotAllowedProperty, value);
     }
 
+    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
+        nameof(ShowClearTextButton),
+        typeof(bool),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(bool)));
+
+    public bool ShowClearTextButton
+    {
+        get => (bool)GetValue(ShowClearTextButtonProperty);
+        set => SetValue(ShowClearTextButtonProperty, value);
+    }
+
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
         nameof(Text),
         typeof(string),
@@ -179,42 +215,6 @@ public partial class LabelTextBox : ILabelTextBox
     {
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
-
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(TextAlignment)));
-
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
-        nameof(ShowClearTextButton),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
-
-    public bool ShowClearTextButton
-    {
-        get => (bool)GetValue(ShowClearTextButtonProperty);
-        set => SetValue(ShowClearTextButtonProperty, value);
     }
 
     public LabelTextBox()

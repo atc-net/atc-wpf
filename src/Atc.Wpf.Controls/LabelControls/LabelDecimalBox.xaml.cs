@@ -1,11 +1,9 @@
-using Atc.Wpf.Controls.BaseControls;
-
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
 /// Interaction logic for LabelDecimalBox.
 /// </summary>
-public partial class LabelDecimalBox
+public partial class LabelDecimalBox : ILabelDecimalBox
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
@@ -67,34 +65,6 @@ public partial class LabelDecimalBox
         set => SetValue(LabelTextProperty, value);
     }
 
-    public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
-        nameof(PrefixText),
-        typeof(string),
-        typeof(LabelDecimalBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public string PrefixText
-    {
-        get => (string)GetValue(PrefixTextProperty);
-        set => SetValue(PrefixTextProperty, value);
-    }
-
-    public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.Register(
-        nameof(SuffixText),
-        typeof(string),
-        typeof(LabelDecimalBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public string SuffixText
-    {
-        get => (string)GetValue(SuffixTextProperty);
-        set => SetValue(SuffixTextProperty, value);
-    }
-
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
         nameof(ValidationColor),
         typeof(SolidColorBrush),
@@ -143,6 +113,58 @@ public partial class LabelDecimalBox
         set => SetValue(InformationColorProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
+        typeof(string),
+        typeof(LabelDecimalBox),
+        new PropertyMetadata(string.Empty));
+
+    public string WatermarkText
+    {
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(LabelDecimalBox),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
+        nameof(PrefixText),
+        typeof(string),
+        typeof(LabelDecimalBox),
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+
+    public string PrefixText
+    {
+        get => (string)GetValue(PrefixTextProperty);
+        set => SetValue(PrefixTextProperty, value);
+    }
+
+    public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.Register(
+        nameof(SuffixText),
+        typeof(string),
+        typeof(LabelDecimalBox),
+        new FrameworkPropertyMetadata(
+            string.Empty,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+
+    public string SuffixText
+    {
+        get => (string)GetValue(SuffixTextProperty);
+        set => SetValue(SuffixTextProperty, value);
+    }
+
     public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
         nameof(Maximum),
         typeof(decimal),
@@ -188,30 +210,6 @@ public partial class LabelDecimalBox
     {
         get => (decimal)GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelDecimalBox),
-        new PropertyMetadata(string.Empty));
-
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelDecimalBox),
-        new PropertyMetadata(default(TextAlignment)));
-
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
     }
 
     public LabelDecimalBox()
