@@ -9,10 +9,10 @@ namespace Atc.Wpf.Controls.BaseControls;
 [TemplatePart(Name = nameof(SwitchKnob), Type = typeof(FrameworkElement))]
 [TemplatePart(Name = nameof(KnobTranslateTransform), Type = typeof(TranslateTransform))]
 [TemplatePart(Name = nameof(SwitchThumb), Type = typeof(Thumb))]
-[TemplateVisualState(GroupName = VisualStates.GroupCommon, Name = VisualStates.StateNormal)]
-[TemplateVisualState(GroupName = VisualStates.GroupCommon, Name = VisualStates.StateMouseOver)]
-[TemplateVisualState(GroupName = VisualStates.GroupCommon, Name = VisualStates.StatePressed)]
-[TemplateVisualState(GroupName = VisualStates.GroupCommon, Name = VisualStates.StateDisabled)]
+[TemplateVisualState(GroupName = Internal.VisualStates.GroupCommon, Name = Internal.VisualStates.StateNormal)]
+[TemplateVisualState(GroupName = Internal.VisualStates.GroupCommon, Name = Internal.VisualStates.StateMouseOver)]
+[TemplateVisualState(GroupName = Internal.VisualStates.GroupCommon, Name = Internal.VisualStates.StatePressed)]
+[TemplateVisualState(GroupName = Internal.VisualStates.GroupCommon, Name = Internal.VisualStates.StateDisabled)]
 [TemplateVisualState(GroupName = ContentStatesGroup, Name = OffContentState)]
 [TemplateVisualState(GroupName = ContentStatesGroup, Name = OnContentState)]
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = DraggingState)]
@@ -387,7 +387,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
         => base.IsEnabledCore && CanExecute;
 
     protected override AutomationPeer OnCreateAutomationPeer()
-        => new ToggleSwitchAutomationPeer(this);
+        => new Internal.ToggleSwitchAutomationPeer(this);
 
     private static void OnIsOnChanged(
         DependencyObject d,
@@ -401,7 +401,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
             return;
         }
 
-        if (UIElementAutomationPeer.FromElement(toggleSwitch) is ToggleSwitchAutomationPeer peer)
+        if (UIElementAutomationPeer.FromElement(toggleSwitch) is Internal.ToggleSwitchAutomationPeer peer)
         {
             peer.RaiseToggleStatePropertyChangedEvent(oldValue, newValue);
         }
@@ -523,19 +523,19 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
 
         if (!IsEnabled)
         {
-            stateName = VisualStates.StateDisabled;
+            stateName = Internal.VisualStates.StateDisabled;
         }
         else if (IsPressed)
         {
-            stateName = VisualStates.StatePressed;
+            stateName = Internal.VisualStates.StatePressed;
         }
         else if (IsMouseOver)
         {
-            stateName = VisualStates.StateMouseOver;
+            stateName = Internal.VisualStates.StateMouseOver;
         }
         else
         {
-            stateName = VisualStates.StateNormal;
+            stateName = Internal.VisualStates.StateNormal;
         }
 
         VisualStateManager.GoToState(this, stateName, useTransitions);

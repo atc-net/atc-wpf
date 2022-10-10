@@ -30,9 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="LabelControls\LabelComboBox.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Resources\Miscellaneous.Designer.cs">
       <DependentUpon>Miscellaneous.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -53,13 +50,6 @@
       <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="LabelControls\LabelComboBox.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
 </Project>

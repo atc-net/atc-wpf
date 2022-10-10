@@ -17,6 +17,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ListView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Menu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/PasswordBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ProgressBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/RadioButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/RepeatButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ScrollBar.xaml" />
@@ -53,6 +54,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Menu}" TargetType="{x:Type Menu}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.MenuItem}" TargetType="{x:Type MenuItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.PasswordBox}" TargetType="{x:Type PasswordBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ProgressBar}" TargetType="{x:Type ProgressBar}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.RadioButton}" TargetType="{x:Type RadioButton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.RepeatButton}" TargetType="{x:Type RepeatButton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ScrollBar}" TargetType="{x:Type ScrollBar}" />

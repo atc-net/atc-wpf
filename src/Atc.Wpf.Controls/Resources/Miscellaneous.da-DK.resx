@@ -103,4 +103,7 @@
   <data name="Color" xml:space="preserve">
     <value>Farve</value>
   </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Vent venligst</value>
+  </data>
 </root>

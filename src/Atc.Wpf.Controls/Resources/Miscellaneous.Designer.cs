@@ -77,5 +77,14 @@ namespace Atc.Wpf.Controls.Resources {
                 return ResourceManager.GetString("Language", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please wait.
+        /// </summary>
+        public static string PleaseWait {
+            get {
+                return ResourceManager.GetString("PleaseWait", resourceCulture);
+            }
+        }
     }
 }
