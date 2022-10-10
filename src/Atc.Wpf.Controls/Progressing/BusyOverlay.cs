@@ -146,8 +146,7 @@ public class BusyOverlay : ContentControl
                 new Action(() =>
                     {
                         FocusAfterBusy.Focus();
-                    }
-                ));
+                    }));
         }
 
         ChangeVisualState(useTransitions: true);
