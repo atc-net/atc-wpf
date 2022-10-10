@@ -22,6 +22,10 @@
             Header="NumericBox"
             IsExpanded="True"
             SamplePath="BaseControls.NumericBoxView" />
+        <atc:SampleTreeViewItem
+            Header="ToggleSwitch"
+            IsExpanded="True"
+            SamplePath="BaseControls.ToggleSwitchView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Label Controls" IsExpanded="True">
@@ -67,6 +71,10 @@
             Header="LabelTextInfo"
             IsExpanded="True"
             SamplePath="LabelControls.LabelTextInfoView" />
+        <atc:SampleTreeViewItem
+            Header="LabelToggleSwitch"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelToggleSwitchView" />
         <atc:SampleTreeViewItem
             Header="Label-MIX"
             IsExpanded="True"

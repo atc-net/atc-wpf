@@ -1,3 +1,4 @@
+// ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 /// <summary>
@@ -15,6 +16,18 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
     {
         get => (RenderColorIndicatorType)GetValue(RenderColorIndicatorTypeProperty);
         set => SetValue(RenderColorIndicatorTypeProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowHexCodeProperty = DependencyProperty.Register(
+        nameof(ShowHexCode),
+        typeof(bool),
+        typeof(WellKnownColorSelector),
+        new PropertyMetadata(default(bool)));
+
+    public bool ShowHexCode
+    {
+        get => (bool)GetValue(ShowHexCodeProperty);
+        set => SetValue(ShowHexCodeProperty, value);
     }
 
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
@@ -82,6 +95,7 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
                 new ColorItem(
                     itemName,
                     translatedName ?? "#" + itemName,
+                    color.ToString(GlobalizationConstants.EnglishCultureInfo),
                     showcaseBrush,
                     showcaseBrush));
         }

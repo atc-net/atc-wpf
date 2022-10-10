@@ -18,9 +18,7 @@
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
-
                     <StackPanel Grid.Column="0" Orientation="Vertical">
 
                         <atc:LabelCheckBox IsChecked="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldBool1}" LabelText="Field-Bool-1" />
@@ -54,9 +52,8 @@
                         <Button Command="{Binding Path=GoCommand}" Content="Go" />
 
                     </StackPanel>
-
+                    <StackPanel Grid.Column="1" Margin="10" />
                 </atc:GridEx>
-
             </ScrollViewer>
         </GroupBox>
 

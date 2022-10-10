@@ -5,10 +5,12 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/NumericBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/ToggleSwitch.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style BasedOn="{StaticResource AtcApps.Styles.NumericBox}" TargetType="{x:Type baseControls:NumericBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.DecimalBox}" TargetType="{x:Type baseControls:DecimalBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type baseControls:IntegerBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type baseControls:ToggleSwitch}" />
 
 </ResourceDictionary>

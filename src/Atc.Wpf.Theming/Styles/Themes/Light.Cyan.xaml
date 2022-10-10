@@ -769,6 +769,136 @@
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Gray8}" />
 
+    <!--  Brushes: ToggleSwitch  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.ContentForeground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.ContentForegroundDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumLow}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.HeaderForeground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.HeaderForegroundDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumLow}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackground"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackgroundPointerOver"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackgroundPressed"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.ContainerBackgroundDisabled"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOff"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOffPointerOver"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOffPressed"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMedium}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOffDisabled"
+        options:Freeze="True"
+        Color="Transparent" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOff"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOffPointerOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOffPressed"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOffDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumLow}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOn"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemAccent}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOnPointerOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemAccent}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOnPressed"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMedium}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.FillOnDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseLow}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOn"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOnPointerOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemAccent}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOnPressed"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMedium}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.StrokeOnDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumLow}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOff"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOffPointerOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseHigh}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOffPressed"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemChromeWhite}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOffDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseMediumLow}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOn"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemChromeWhite}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOnPointerOver"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemChromeWhite}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOnPressed"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemChromeWhite}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ToggleSwitch.KnobFillOnDisabled"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SystemBaseLow}" />
+
     <!--  Resources: System  -->
     <markup:StaticResource x:Key="AtcApps.Brushes.SystemControlDescriptionTextForeground" ResourceKey="AtcApps.Brushes.SystemControlPageTextBaseMedium" />
 

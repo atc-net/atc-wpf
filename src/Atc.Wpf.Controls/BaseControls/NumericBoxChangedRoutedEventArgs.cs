@@ -9,6 +9,6 @@ public class NumericBoxChangedRoutedEventArgs : RoutedEventArgs
         double interval)
         : base(routedEvent)
     {
-        this.Interval = interval;
+        Interval = interval;
     }
 }
