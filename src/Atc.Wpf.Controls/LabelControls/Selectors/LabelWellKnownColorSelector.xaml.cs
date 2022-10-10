@@ -114,6 +114,18 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         set => SetValue(RenderColorIndicatorTypeProperty, value);
     }
 
+    public static readonly DependencyProperty ShowHexCodeProperty = DependencyProperty.Register(
+        nameof(ShowHexCode),
+        typeof(bool),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(default(bool)));
+
+    public bool ShowHexCode
+    {
+        get => (bool)GetValue(ShowHexCodeProperty);
+        set => SetValue(ShowHexCodeProperty, value);
+    }
+
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),

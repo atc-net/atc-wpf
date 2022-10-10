@@ -56,7 +56,8 @@
             <atc:WellKnownColorSelector
                 Grid.Column="1"
                 RenderColorIndicatorType="{Binding ElementName=UcLabelWellKnownColorSelector, Path=RenderColorIndicatorType}"
-                SelectedKey="{Binding ElementName=UcLabelWellKnownColorSelector, Path=SelectedKey, Mode=TwoWay}" />
+                SelectedKey="{Binding ElementName=UcLabelWellKnownColorSelector, Path=SelectedKey, Mode=TwoWay}"
+                ShowHexCode="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ShowHexCode}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -84,7 +85,8 @@
             <atc:WellKnownColorSelector
                 Grid.Row="1"
                 RenderColorIndicatorType="{Binding ElementName=UcLabelWellKnownColorSelector, Path=RenderColorIndicatorType}"
-                SelectedKey="{Binding ElementName=UcLabelWellKnownColorSelector, Path=SelectedKey, Mode=TwoWay}" />
+                SelectedKey="{Binding ElementName=UcLabelWellKnownColorSelector, Path=SelectedKey, Mode=TwoWay}"
+                ShowHexCode="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ShowHexCode}" />
 
             <TextBlock
                 Grid.Row="2"
