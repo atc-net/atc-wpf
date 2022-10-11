@@ -85,6 +85,13 @@
             SamplePath="LabelControls.LabelMixBindingsView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Progressing" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="BusyOverlay"
+            IsExpanded="True"
+            SamplePath="Progressing.BusyOverlayView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Viewers" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="JsonViewer"

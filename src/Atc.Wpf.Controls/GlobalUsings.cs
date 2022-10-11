@@ -14,9 +14,14 @@ global using System.Windows.Data;
 global using System.Windows.Input;
 global using System.Windows.Markup;
 global using System.Windows.Media;
-global using Atc.Wpf.Controls.BaseControls.Internal;
+global using System.Windows.Shapes;
+global using System.Windows.Threading;
+
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
+global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Theming;
 global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.Wpf.Theming.Helpers;
+global using Atc.Wpf.Translation;
+
 global using Newtonsoft.Json.Linq;

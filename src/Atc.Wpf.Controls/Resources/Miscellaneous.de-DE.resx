@@ -123,4 +123,7 @@
   <data name="Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Warten Sie mal</value>
+  </data>
 </root>

@@ -1,6 +1,5 @@
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable InconsistentNaming
-using Atc.Wpf.Translation;
 
 namespace Atc.Wpf.Controls.BaseControls;
 
