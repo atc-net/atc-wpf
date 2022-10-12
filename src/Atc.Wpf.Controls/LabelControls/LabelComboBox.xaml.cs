@@ -33,7 +33,7 @@ public partial class LabelComboBox : ILabelComboBox
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelComboBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
     {
@@ -69,7 +69,7 @@ public partial class LabelComboBox : ILabelComboBox
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelComboBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

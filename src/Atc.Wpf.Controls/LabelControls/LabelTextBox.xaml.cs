@@ -35,7 +35,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
     {
@@ -71,7 +71,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

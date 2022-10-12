@@ -33,7 +33,7 @@ public partial class LabelContent : ILabelTextControl
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelContent),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
     {
@@ -69,7 +69,7 @@ public partial class LabelContent : ILabelTextControl
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelContent),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

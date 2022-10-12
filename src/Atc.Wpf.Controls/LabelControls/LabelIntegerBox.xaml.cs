@@ -33,7 +33,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelIntegerBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
     {
@@ -69,7 +69,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelIntegerBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

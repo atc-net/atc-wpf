@@ -22,7 +22,7 @@ public partial class LabelLanguageSelector : ILabelControlBase
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelLanguageSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

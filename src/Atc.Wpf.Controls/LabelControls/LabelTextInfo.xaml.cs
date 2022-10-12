@@ -33,7 +33,7 @@ public partial class LabelTextInfo : ILabelTextInfo
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelTextInfo),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

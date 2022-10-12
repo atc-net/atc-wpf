@@ -22,7 +22,7 @@ public partial class LabelThemeSelector : ILabelControlBase
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelThemeSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

@@ -22,7 +22,7 @@ public partial class LabelAccentColorSelector : ILabelControlBase
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelAccentColorSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

@@ -34,7 +34,7 @@ public partial class LabelThemeAndAccentColorSelectors
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelThemeAndAccentColorSelectors),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

@@ -33,7 +33,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelDecimalBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
     {
@@ -69,7 +69,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelDecimalBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

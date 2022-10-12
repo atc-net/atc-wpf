@@ -33,7 +33,7 @@ public partial class LabelCheckBox : ILabelCheckBox
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelCheckBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {

@@ -34,7 +34,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool IsMandatory
     {
@@ -58,7 +58,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(HideValidationTextArea),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool HideValidationTextArea
     {
@@ -130,7 +130,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(ShowHexCode),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: false));
 
     public bool ShowHexCode
     {
