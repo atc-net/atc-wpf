@@ -36,6 +36,7 @@ global using Atc;
 global using Atc.Data.Models;
 global using Atc.Helpers;
 global using Atc.Wpf;
+global using Atc.Wpf.Collections;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.Documents.TextFormatters;
