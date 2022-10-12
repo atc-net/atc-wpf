@@ -16,6 +16,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
@@ -64,7 +65,8 @@
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}" />
+                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}"
+                Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -92,7 +94,8 @@
                 Grid.Row="2"
                 VerticalAlignment="Center"
                 Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}" />
+                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}"
+                Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 

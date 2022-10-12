@@ -13,6 +13,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
@@ -65,7 +66,8 @@
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}" />
+                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}"
+                Visibility="{Binding ElementName=UcLabelTextBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -97,7 +99,8 @@
                 Grid.Row="2"
                 VerticalAlignment="Center"
                 Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}" />
+                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}"
+                Visibility="{Binding ElementName=UcLabelTextBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 

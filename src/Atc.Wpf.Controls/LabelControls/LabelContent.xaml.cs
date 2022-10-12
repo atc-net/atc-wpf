@@ -33,7 +33,7 @@ public partial class LabelContent : ILabelTextControl
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelContent),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: true));
 
     public bool IsMandatory
     {
@@ -57,12 +57,24 @@ public partial class LabelContent : ILabelTextControl
         nameof(LabelText),
         typeof(string),
         typeof(LabelContent),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string LabelText
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelContent),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
     }
 
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
@@ -93,7 +105,7 @@ public partial class LabelContent : ILabelTextControl
         nameof(InformationText),
         typeof(string),
         typeof(LabelContent),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {

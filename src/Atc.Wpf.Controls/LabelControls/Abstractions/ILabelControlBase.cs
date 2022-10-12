@@ -7,4 +7,6 @@ public interface ILabelControlBase
     string InformationText { get; set; }
 
     Color InformationColor { get; set; }
+
+    bool HideValidationTextArea { get; set; }
 }

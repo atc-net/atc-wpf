@@ -14,6 +14,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
@@ -40,7 +41,8 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Visibility="{Binding ElementName=UcLabelLanguageSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -60,7 +62,10 @@
 
             <atc:LanguageSelector Grid.Row="1" />
 
-            <TextBlock Grid.Row="2" VerticalAlignment="Center" />
+            <TextBlock
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                Visibility="{Binding ElementName=UcLabelLanguageSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 

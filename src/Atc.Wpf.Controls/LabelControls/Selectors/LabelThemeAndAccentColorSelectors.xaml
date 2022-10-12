@@ -10,8 +10,14 @@
     mc:Ignorable="d">
 
     <StackPanel Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=Orientation}">
-        <labelControls:LabelThemeSelector Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=LabelControlOrientation}" RenderColorIndicatorType="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
-        <labelControls:LabelAccentColorSelector Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=LabelControlOrientation}" RenderColorIndicatorType="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
+        <labelControls:LabelThemeSelector
+            HideValidationTextArea="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=HideValidationTextArea}"
+            Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=LabelControlOrientation}"
+            RenderColorIndicatorType="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
+        <labelControls:LabelAccentColorSelector
+            HideValidationTextArea="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=HideValidationTextArea}"
+            Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=LabelControlOrientation}"
+            RenderColorIndicatorType="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
     </StackPanel>
 
 </UserControl>

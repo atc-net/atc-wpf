@@ -34,7 +34,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: true));
 
     public bool IsMandatory
     {
@@ -52,6 +52,18 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
     {
         get => (SolidColorBrush)GetValue(MandatoryColorProperty);
         set => SetValue(MandatoryColorProperty, value);
+    }
+
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
     }
 
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
@@ -82,7 +94,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(InformationText),
         typeof(string),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {
@@ -118,7 +130,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(ShowHexCode),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowHexCode
     {

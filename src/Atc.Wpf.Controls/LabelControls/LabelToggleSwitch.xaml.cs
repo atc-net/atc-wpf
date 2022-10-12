@@ -23,7 +23,7 @@ public partial class LabelToggleSwitch
         nameof(LabelText),
         typeof(string),
         typeof(LabelToggleSwitch),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string LabelText
     {
@@ -35,7 +35,7 @@ public partial class LabelToggleSwitch
         nameof(InformationText),
         typeof(string),
         typeof(LabelToggleSwitch),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {
