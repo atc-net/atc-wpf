@@ -21,7 +21,7 @@ public partial class LabelCheckBox : ILabelCheckBox
         nameof(LabelText),
         typeof(string),
         typeof(LabelCheckBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string LabelText
     {
@@ -29,11 +29,23 @@ public partial class LabelCheckBox : ILabelCheckBox
         set => SetValue(LabelTextProperty, value);
     }
 
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelCheckBox),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
+    }
+
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),
         typeof(LabelCheckBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {

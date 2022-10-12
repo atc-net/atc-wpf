@@ -20,18 +20,30 @@
 
                         <atc:LabelWellKnownColorSelector Orientation="Horizontal" />
 
-                        <atc:LabelWellKnownColorSelector Orientation="Horizontal" ShowHexCode="True" />
+                        <atc:LabelWellKnownColorSelector
+                            Orientation="Horizontal"
+                            SelectedKey="Red"
+                            ShowHexCode="True" />
 
-                        <atc:LabelWellKnownColorSelector InformationText="This is a help text.." Orientation="Horizontal" />
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            Orientation="Horizontal"
+                            SelectedKey="Red" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
                         <atc:LabelWellKnownColorSelector Orientation="Vertical" />
 
-                        <atc:LabelWellKnownColorSelector Orientation="Vertical" ShowHexCode="True" />
+                        <atc:LabelWellKnownColorSelector
+                            Orientation="Vertical"
+                            SelectedKey="Red"
+                            ShowHexCode="True" />
 
-                        <atc:LabelWellKnownColorSelector InformationText="This is a help text.." Orientation="Vertical" />
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            Orientation="Vertical"
+                            SelectedKey="Red" />
 
                     </StackPanel>
                 </atc:GridEx>

@@ -9,7 +9,7 @@ public partial class LabelControlInformationIcon
         nameof(InformationText),
         typeof(string),
         typeof(LabelControlInformationIcon),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {

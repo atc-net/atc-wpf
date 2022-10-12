@@ -59,12 +59,24 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(LabelText),
         typeof(string),
         typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string LabelText
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelTextBox),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
     }
 
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
@@ -95,7 +107,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(InformationText),
         typeof(string),
         typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {
@@ -119,7 +131,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(WatermarkText),
         typeof(string),
         typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string WatermarkText
     {
@@ -167,7 +179,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(UseDefaultNotAllowedCharacters),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(defaultValue: true));
 
     public bool UseDefaultNotAllowedCharacters
     {
@@ -179,7 +191,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(CharactersNotAllowed),
         typeof(string),
         typeof(LabelTextBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string CharactersNotAllowed
     {
@@ -191,7 +203,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(ShowClearTextButton),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowClearTextButton
     {

@@ -57,12 +57,24 @@ public partial class LabelComboBox : ILabelComboBox
         nameof(LabelText),
         typeof(string),
         typeof(LabelComboBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string LabelText
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelComboBox),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
     }
 
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
@@ -93,7 +105,7 @@ public partial class LabelComboBox : ILabelComboBox
         nameof(InformationText),
         typeof(string),
         typeof(LabelComboBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {

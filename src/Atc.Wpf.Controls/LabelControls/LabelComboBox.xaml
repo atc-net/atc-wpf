@@ -15,6 +15,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
@@ -57,7 +58,7 @@
                 Grid.Column="1"
                 DisplayMemberPath="Value"
                 ItemsSource="{Binding Path=Items}"
-                SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+                SelectedValue="{Binding Path=SelectedKey}"
                 SelectedValuePath="Key" />
 
             <TextBlock
@@ -65,7 +66,8 @@
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Foreground="{Binding ElementName=UcLabelComboBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelComboBox, Path=ValidationText}" />
+                Text="{Binding ElementName=UcLabelComboBox, Path=ValidationText}"
+                Visibility="{Binding ElementName=UcLabelComboBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -88,14 +90,15 @@
                 Grid.Row="1"
                 DisplayMemberPath="Value"
                 ItemsSource="{Binding Path=Items}"
-                SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+                SelectedValue="{Binding Path=SelectedKey}"
                 SelectedValuePath="Key" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
                 Foreground="{Binding ElementName=UcLabelComboBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelComboBox, Path=ValidationText}" />
+                Text="{Binding ElementName=UcLabelComboBox, Path=ValidationText}"
+                Visibility="{Binding ElementName=UcLabelComboBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 

@@ -18,11 +18,23 @@ public partial class LabelAccentColorSelector : ILabelControlBase
         set => SetValue(OrientationProperty, value);
     }
 
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelAccentColorSelector),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
+    }
+
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),
         typeof(LabelAccentColorSelector),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {

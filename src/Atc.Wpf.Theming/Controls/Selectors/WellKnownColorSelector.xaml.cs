@@ -22,7 +22,7 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         nameof(ShowHexCode),
         typeof(bool),
         typeof(WellKnownColorSelector),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowHexCode
     {

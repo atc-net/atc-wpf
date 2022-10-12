@@ -14,6 +14,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
@@ -49,7 +50,8 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Visibility="{Binding ElementName=UcLabelToggleSwitch, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -76,7 +78,10 @@
                 OffContent="{Binding ElementName=UcLabelToggleSwitch, Path=OffText}"
                 OnContent="{Binding ElementName=UcLabelToggleSwitch, Path=OnText}" />
 
-            <TextBlock Grid.Row="2" VerticalAlignment="Center" />
+            <TextBlock
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                Visibility="{Binding ElementName=UcLabelToggleSwitch, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 

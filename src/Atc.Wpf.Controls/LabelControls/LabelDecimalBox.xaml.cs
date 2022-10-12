@@ -57,12 +57,24 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         nameof(LabelText),
         typeof(string),
         typeof(LabelDecimalBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string LabelText
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelDecimalBox),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
     }
 
     public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
@@ -93,7 +105,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         nameof(InformationText),
         typeof(string),
         typeof(LabelDecimalBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string InformationText
     {
@@ -117,7 +129,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         nameof(WatermarkText),
         typeof(string),
         typeof(LabelDecimalBox),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string WatermarkText
     {
