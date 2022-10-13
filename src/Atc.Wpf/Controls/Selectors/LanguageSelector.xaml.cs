@@ -24,8 +24,6 @@ public partial class LanguageSelector
     {
         InitializeComponent();
 
-        DataContext = this;
-
         var cultures = GetSupportedCultures();
         var flags = GetFlags();
 

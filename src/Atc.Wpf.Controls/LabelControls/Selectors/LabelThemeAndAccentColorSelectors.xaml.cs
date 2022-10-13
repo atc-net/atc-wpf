@@ -57,7 +57,5 @@ public partial class LabelThemeAndAccentColorSelectors
     public LabelThemeAndAccentColorSelectors()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

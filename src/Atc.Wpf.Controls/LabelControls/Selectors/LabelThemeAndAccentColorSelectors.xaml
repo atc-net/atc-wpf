@@ -9,15 +9,15 @@
     d:DataContext="{d:DesignInstance Type=labelControls:LabelThemeAndAccentColorSelectors}"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=Orientation}">
+    <StackPanel Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
         <labelControls:LabelThemeSelector
-            HideValidationTextArea="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=HideValidationTextArea}"
-            Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=LabelControlOrientation}"
-            RenderColorIndicatorType="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
+            HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
+            Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelControlOrientation}"
+            RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType}" />
         <labelControls:LabelAccentColorSelector
-            HideValidationTextArea="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=HideValidationTextArea}"
-            Orientation="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=LabelControlOrientation}"
-            RenderColorIndicatorType="{Binding ElementName=UcLabelThemeAndAccentColorSelectors, Path=RenderColorIndicatorType}" />
+            HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
+            Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelControlOrientation}"
+            RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType}" />
     </StackPanel>
 
 </UserControl>

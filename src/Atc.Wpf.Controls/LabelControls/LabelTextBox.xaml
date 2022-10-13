@@ -25,9 +25,9 @@
 
         <TextBlock
             Grid.Column="0"
-            Padding="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
+            Padding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
             FontWeight="Bold"
-            Foreground="{Binding ElementName=UcLabelTextBox, Path=MandatoryColor, FallbackValue=Red}"
+            Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor, FallbackValue=Red}"
             Text="*">
             <TextBlock.Visibility>
                 <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
@@ -41,33 +41,33 @@
             Grid.Column="1"
             Columns="0.3*,0.7*"
             Rows="Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
 
             <StackPanel
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelTextBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
             <TextBox
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
-                atc:TextBoxHelper.ClearTextButton="{Binding ElementName=UcLabelTextBox, Path=ShowClearTextButton}"
-                atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
-                atc:TextBoxHelper.WatermarkAlignment="{Binding ElementName=UcLabelTextBox, Path=WatermarkAlignment}"
-                MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
+                atc:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShowClearTextButton}"
+                atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkText}"
+                atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkAlignment}"
+                MaxLength="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MaxLength}"
                 MaxLines="1"
-                Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Text, FallbackValue=Text}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelTextBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -75,41 +75,41 @@
             Grid.Column="1"
             Columns="*"
             Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
 
             <StackPanel
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelTextBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
             <TextBox
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
-                atc:TextBoxHelper.ClearTextButton="{Binding ElementName=UcLabelTextBox, Path=ShowClearTextButton}"
-                atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelTextBox, Path=WatermarkText}"
-                atc:TextBoxHelper.WatermarkAlignment="{Binding ElementName=UcLabelTextBox, Path=WatermarkAlignment}"
-                MaxLength="{Binding ElementName=UcLabelTextBox, Path=MaxLength}"
+                atc:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShowClearTextButton}"
+                atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkText}"
+                atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkAlignment}"
+                MaxLength="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MaxLength}"
                 MaxLines="1"
-                Text="{Binding ElementName=UcLabelTextBox, Path=Text, FallbackValue=Text}" />
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Text, FallbackValue=Text}" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelTextBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelTextBox, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelTextBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
         <parts:LabelControlInformationIcon
             Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelTextBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-            InformationColor="{Binding ElementName=UcLabelTextBox, Path=InformationColor}"
-            InformationText="{Binding ElementName=UcLabelTextBox, Path=InformationText}"
-            Visibility="{Binding ElementName=UcLabelTextBox, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+            Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
+            InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+            InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
 
     </atc:GridEx>
 

@@ -26,7 +26,7 @@
             Grid.Column="1"
             Columns="0.3*,0.7*"
             Rows="Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelThemeSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
 
             <StackPanel
                 Grid.Column="0"
@@ -36,13 +36,13 @@
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
-            <atc:ThemeSelector Grid.Column="1" RenderColorIndicatorType="{Binding ElementName=UcLabelThemeSelector, Path=RenderColorIndicatorType}" />
+            <atc:ThemeSelector Grid.Column="1" RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Visibility="{Binding ElementName=UcLabelThemeSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -50,7 +50,7 @@
             Grid.Column="1"
             Columns="*"
             Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelThemeSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
 
             <StackPanel
                 Grid.Row="0"
@@ -60,21 +60,21 @@
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
-            <atc:ThemeSelector Grid.Row="1" RenderColorIndicatorType="{Binding ElementName=UcLabelThemeSelector, Path=RenderColorIndicatorType}" />
+            <atc:ThemeSelector Grid.Row="1" RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType}" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Visibility="{Binding ElementName=UcLabelThemeSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
         <parts:LabelControlInformationIcon
             Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelThemeSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-            InformationColor="{Binding ElementName=UcLabelThemeSelector, Path=InformationColor}"
-            InformationText="{Binding ElementName=UcLabelThemeSelector, Path=InformationText}"
-            Visibility="{Binding ElementName=UcLabelThemeSelector, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+            Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
+            InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+            InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
 
     </atc:GridEx>
 

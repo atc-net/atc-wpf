@@ -23,8 +23,6 @@ public partial class ThemeSelector : INotifyPropertyChanged
     {
         InitializeComponent();
 
-        DataContext = this;
-
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
         PopulateData();

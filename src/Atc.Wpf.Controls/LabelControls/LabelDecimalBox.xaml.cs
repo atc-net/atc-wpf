@@ -227,7 +227,5 @@ public partial class LabelDecimalBox : ILabelDecimalBox
     public LabelDecimalBox()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

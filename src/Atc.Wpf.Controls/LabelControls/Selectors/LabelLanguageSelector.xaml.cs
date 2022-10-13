@@ -57,7 +57,5 @@ public partial class LabelLanguageSelector : ILabelControlBase
     public LabelLanguageSelector()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

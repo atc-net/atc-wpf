@@ -27,13 +27,13 @@
             Grid.Column="1"
             Columns="0.3*,0.7*"
             Rows="Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelCheckBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
 
             <StackPanel
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelCheckBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
@@ -41,13 +41,13 @@
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
                 Height="26"
-                IsChecked="{Binding ElementName=UcLabelCheckBox, Path=IsChecked}" />
+                IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsChecked}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Visibility="{Binding ElementName=UcLabelCheckBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -55,13 +55,13 @@
             Grid.Column="1"
             Columns="*"
             Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelCheckBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
 
             <StackPanel
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelCheckBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
@@ -69,21 +69,21 @@
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
                 Height="26"
-                IsChecked="{Binding ElementName=UcLabelCheckBox, Path=IsChecked}" />
+                IsChecked="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsChecked}" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Visibility="{Binding ElementName=UcLabelCheckBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
         <parts:LabelControlInformationIcon
             Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelCheckBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-            InformationColor="{Binding ElementName=UcLabelCheckBox, Path=InformationColor}"
-            InformationText="{Binding ElementName=UcLabelCheckBox, Path=InformationText}"
-            Visibility="{Binding ElementName=UcLabelCheckBox, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+            Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
+            InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+            InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
 
     </atc:GridEx>
 

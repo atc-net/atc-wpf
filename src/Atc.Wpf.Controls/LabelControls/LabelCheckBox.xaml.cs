@@ -83,7 +83,5 @@ public partial class LabelCheckBox : ILabelCheckBox
     public LabelCheckBox()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

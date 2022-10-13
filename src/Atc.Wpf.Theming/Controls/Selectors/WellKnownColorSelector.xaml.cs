@@ -46,8 +46,6 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
     {
         InitializeComponent();
 
-        DataContext = this;
-
         PopulateData();
     }
 

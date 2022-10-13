@@ -27,9 +27,9 @@
 
         <TextBlock
             Grid.Column="0"
-            Padding="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}, FallbackValue='0,7,0,0'}"
+            Padding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}, FallbackValue='0,7,0,0'}"
             FontWeight="Bold"
-            Foreground="{Binding ElementName=UcLabelComboBox, Path=MandatoryColor, FallbackValue=Red}"
+            Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor, FallbackValue=Red}"
             Text="*">
             <TextBlock.Visibility>
                 <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
@@ -43,13 +43,13 @@
             Grid.Column="1"
             Columns="0.3*,0.7*"
             Rows="Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
 
             <StackPanel
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelComboBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
@@ -57,17 +57,17 @@
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
                 DisplayMemberPath="Value"
-                ItemsSource="{Binding Path=Items}"
-                SelectedValue="{Binding Path=SelectedKey}"
+                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
+                SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey}"
                 SelectedValuePath="Key" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelComboBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelComboBox, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelComboBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -75,13 +75,13 @@
             Grid.Column="1"
             Columns="*"
             Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
 
             <StackPanel
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelComboBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
@@ -89,25 +89,25 @@
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
                 DisplayMemberPath="Value"
-                ItemsSource="{Binding Path=Items}"
-                SelectedValue="{Binding Path=SelectedKey}"
+                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
+                SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey}"
                 SelectedValuePath="Key" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelComboBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelComboBox, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelComboBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
         <parts:LabelControlInformationIcon
             Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelComboBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}, FallbackValue='0,5,0,0'}"
-            InformationColor="{Binding ElementName=UcLabelComboBox, Path=InformationColor}"
-            InformationText="{Binding ElementName=UcLabelComboBox, Path=InformationText}"
-            Visibility="{Binding ElementName=UcLabelComboBox, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+            Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}, FallbackValue='0,5,0,0'}"
+            InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+            InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
 
     </atc:GridEx>
 

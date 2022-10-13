@@ -16,8 +16,8 @@
 
     <ComboBox
         IsSynchronizedWithCurrentItem="True"
-        ItemsSource="{Binding Path=Items}"
-        SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
+        SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
         SelectedValuePath="Name">
         <ComboBox.ItemTemplate>
             <DataTemplate>
@@ -29,7 +29,7 @@
                         Fill="{Binding ColorBrush}"
                         Stroke="{Binding BorderColorBrush}"
                         StrokeThickness="1"
-                        Visibility="{Binding ElementName=UcAccentColorSelector, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Square}}" />
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Square}}" />
                     <Ellipse
                         Width="15"
                         Height="15"
@@ -37,7 +37,7 @@
                         Fill="{Binding ColorBrush}"
                         Stroke="{Binding BorderColorBrush}"
                         StrokeThickness="1"
-                        Visibility="{Binding ElementName=UcAccentColorSelector, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Circle}}" />
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Circle}}" />
                     <TextBlock Text="{Binding DisplayName}" />
                 </StackPanel>
             </DataTemplate>

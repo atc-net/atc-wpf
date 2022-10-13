@@ -24,8 +24,6 @@ public partial class AccentColorSelector : INotifyPropertyChanged
     {
         InitializeComponent();
 
-        DataContext = this;
-
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
         PopulateData();

@@ -128,7 +128,5 @@ public partial class LabelContent : ILabelTextControl
     public LabelContent()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

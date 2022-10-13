@@ -27,9 +27,9 @@
 
         <TextBlock
             Grid.Column="0"
-            Padding="{Binding ElementName=UcLabelDecimalBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
+            Padding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
             FontWeight="Bold"
-            Foreground="{Binding ElementName=UcLabelDecimalBox, Path=MandatoryColor, FallbackValue=Red}"
+            Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor, FallbackValue=Red}"
             Text="*">
             <TextBlock.Visibility>
                 <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
@@ -43,35 +43,35 @@
             Grid.Column="1"
             Columns="0.3*,0.7*"
             Rows="Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelDecimalBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
 
             <StackPanel
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelDecimalBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
             <baseControls:DecimalBox
                 x:Name="InputFieldHorizontal"
                 Grid.Column="1"
-                atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelDecimalBox, Path=WatermarkText}"
-                atc:TextBoxHelper.WatermarkAlignment="{Binding ElementName=UcLabelDecimalBox, Path=WatermarkAlignment}"
-                Maximum="{Binding ElementName=UcLabelDecimalBox, Path=Maximum, Converter={StaticResource DecimalToDoubleValueConverter}}"
-                Minimum="{Binding ElementName=UcLabelDecimalBox, Path=Minimum, Converter={StaticResource DecimalToDoubleValueConverter}}"
-                PrefixText="{Binding ElementName=UcLabelDecimalBox, Path=PrefixText}"
-                SuffixText="{Binding ElementName=UcLabelDecimalBox, Path=SuffixText}"
+                atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkText}"
+                atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkAlignment}"
+                Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum, Converter={StaticResource DecimalToDoubleValueConverter}}"
+                Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum, Converter={StaticResource DecimalToDoubleValueConverter}}"
+                PrefixText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=PrefixText}"
+                SuffixText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SuffixText}"
                 UpDownButtonsMargin="0,0,0,-0.5"
-                Value="{Binding ElementName=UcLabelDecimalBox, Path=Value, Converter={StaticResource DecimalToDoubleValueConverter}, FallbackValue=42.12}" />
+                Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Converter={StaticResource DecimalToDoubleValueConverter}, FallbackValue=42.12}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelDecimalBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelDecimalBox, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelDecimalBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
@@ -79,43 +79,43 @@
             Grid.Column="1"
             Columns="*"
             Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelDecimalBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
 
             <StackPanel
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding ElementName=UcLabelDecimalBox, Path=LabelText, FallbackValue=Label}" />
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
                 <TextBlock Margin="0,0,5,0" Text=":" />
             </StackPanel>
 
             <baseControls:DecimalBox
                 x:Name="InputFieldVertical"
                 Grid.Row="1"
-                atc:TextBoxHelper.Watermark="{Binding ElementName=UcLabelDecimalBox, Path=WatermarkText}"
-                atc:TextBoxHelper.WatermarkAlignment="{Binding ElementName=UcLabelDecimalBox, Path=WatermarkAlignment}"
-                Maximum="{Binding ElementName=UcLabelDecimalBox, Path=Maximum, Converter={StaticResource DecimalToDoubleValueConverter}}"
-                Minimum="{Binding ElementName=UcLabelDecimalBox, Path=Minimum, Converter={StaticResource DecimalToDoubleValueConverter}}"
-                PrefixText="{Binding ElementName=UcLabelDecimalBox, Path=PrefixText}"
-                SuffixText="{Binding ElementName=UcLabelDecimalBox, Path=SuffixText}"
+                atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkText}"
+                atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=WatermarkAlignment}"
+                Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum, Converter={StaticResource DecimalToDoubleValueConverter}}"
+                Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum, Converter={StaticResource DecimalToDoubleValueConverter}}"
+                PrefixText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=PrefixText}"
+                SuffixText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SuffixText}"
                 UpDownButtonsMargin="0,0,0,-0.5"
-                Value="{Binding ElementName=UcLabelDecimalBox, Path=Value, Converter={StaticResource DecimalToDoubleValueConverter}, FallbackValue=42.12}" />
+                Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Converter={StaticResource DecimalToDoubleValueConverter}, FallbackValue=42.12}" />
 
             <TextBlock
                 Grid.Row="2"
                 VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelDecimalBox, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelDecimalBox, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelDecimalBox, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
 
         </atc:GridEx>
 
         <parts:LabelControlInformationIcon
             Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelDecimalBox, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-            InformationColor="{Binding ElementName=UcLabelDecimalBox, Path=InformationColor}"
-            InformationText="{Binding ElementName=UcLabelDecimalBox, Path=InformationText}"
-            Visibility="{Binding ElementName=UcLabelDecimalBox, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+            Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
+            InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+            InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
 
     </atc:GridEx>
 

@@ -69,7 +69,5 @@ public partial class LabelThemeSelector : ILabelControlBase
     public LabelThemeSelector()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

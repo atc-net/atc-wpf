@@ -232,8 +232,6 @@ public partial class LabelTextBox : ILabelTextBox
     public LabelTextBox()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 
     private static string GetOnlyUsedNotAllowedCharacters(
