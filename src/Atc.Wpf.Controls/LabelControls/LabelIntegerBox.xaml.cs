@@ -227,7 +227,5 @@ public partial class LabelIntegerBox : ILabelIntegerBox
     public LabelIntegerBox()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

@@ -31,21 +31,21 @@
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Orientation="Vertical">
 
-                        <atc:LabelCheckBox IsChecked="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldBool1}" LabelText="Field-Bool-1" />
+                        <atc:LabelCheckBox IsChecked="{Binding Path=FieldBool1}" LabelText="Field-Bool-1" />
 
                         <atc:LabelComboBox
                             IsMandatory="False"
                             Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="Field-Select-1"
                             Orientation="Horizontal"
-                            SelectedKey="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldSelectedKey1}" />
+                            SelectedKey="{Binding Path=FieldSelectedKey1}" />
 
                         <atc:LabelComboBox
                             IsMandatory="True"
-                            Items="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldItems2, Converter={StaticResource ObservableDictionaryToDictionaryOfStringsConverter}}"
+                            Items="{Binding Path=FieldItems2, Converter={StaticResource ObservableDictionaryToDictionaryOfStringsConverter}}"
                             LabelText="Field-Select-2"
                             Orientation="Horizontal"
-                            SelectedKey="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldSelectedKey2}" />
+                            SelectedKey="{Binding Path=FieldSelectedKey2}" />
 
                         <atc:LabelTextBox
                             CharactersNotAllowed="-,x"
@@ -53,18 +53,18 @@
                             LabelText="Field-Text-1"
                             MaxLength="5"
                             MinLength="2"
-                            Text="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldText1}" />
+                            Text="{Binding Path=FieldText1}" />
 
                         <atc:LabelTextBox
                             IsMandatory="True"
                             LabelText="Field-Text-2"
-                            Text="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldText2}" />
+                            Text="{Binding Path=FieldText2}" />
 
                         <atc:LabelContent IsMandatory="True" LabelText="Field-Text-3">
                             <TextBox Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=labelControls:LabelMixBindingsView}, Path=DataContext.FieldText3}" />
                         </atc:LabelContent>
 
-                        <atc:LabelWellKnownColorSelector IsMandatory="True" SelectedKey="{Binding ElementName=UcLabelControlToCommandView, Path=DataContext.FieldSelectedKey3}" />
+                        <atc:LabelWellKnownColorSelector IsMandatory="True" SelectedKey="{Binding Path=FieldSelectedKey3}" />
 
                         <Button Command="{Binding Path=GoCommand}" Content="Go" />
 

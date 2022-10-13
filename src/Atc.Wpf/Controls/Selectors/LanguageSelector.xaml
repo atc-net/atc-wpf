@@ -15,8 +15,8 @@
     </UserControl.Resources>
 
     <ComboBox
-        ItemsSource="{Binding Path=Items}"
-        SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
+        SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
         SelectedValuePath="Culture.Lcid">
         <ComboBox.ItemTemplate>
             <DataTemplate>
@@ -26,7 +26,7 @@
                         Height="16"
                         Margin="0,1,5,0"
                         Source="{Binding Path=Image}"
-                        Visibility="{Binding ElementName=UcLanguageSelector, Path=RenderFlagIndicatorType, Converter={StaticResource RenderFlagIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderFlagIndicatorType.Flat16}}" />
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderFlagIndicatorType, Converter={StaticResource RenderFlagIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderFlagIndicatorType.Flat16}}" />
                     <TextBlock Text="{Binding Culture.LanguageDisplayName}" />
                 </StackPanel>
             </DataTemplate>

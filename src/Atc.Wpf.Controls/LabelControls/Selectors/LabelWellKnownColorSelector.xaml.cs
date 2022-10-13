@@ -158,8 +158,6 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 
     private static void OnSelectedKeyChanged(

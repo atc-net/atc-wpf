@@ -127,7 +127,5 @@ public partial class LabelToggleSwitch
     public LabelToggleSwitch()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }

@@ -19,8 +19,8 @@
 
     <ComboBox
         IsSynchronizedWithCurrentItem="True"
-        ItemsSource="{Binding Path=Items}"
-        SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
+        SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
         SelectedValuePath="Name">
         <ComboBox.ItemContainerStyle>
             <Style TargetType="{x:Type ComboBoxItem}">
@@ -38,7 +38,7 @@
                         Fill="{Binding ColorBrush}"
                         Stroke="{Binding BorderColorBrush}"
                         StrokeThickness="1"
-                        Visibility="{Binding ElementName=UcWellKnownColorSelector, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Square}}" />
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Square}}" />
                     <Ellipse
                         Grid.Column="0"
                         Width="15"
@@ -47,7 +47,7 @@
                         Fill="{Binding ColorBrush}"
                         Stroke="{Binding BorderColorBrush}"
                         StrokeThickness="1"
-                        Visibility="{Binding ElementName=UcWellKnownColorSelector, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Circle}}" />
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static selectors:RenderColorIndicatorType.Circle}}" />
                     <TextBlock
                         Grid.Column="1"
                         Margin="0,0,10,0"
@@ -59,7 +59,7 @@
                         Foreground="{DynamicResource AtcApps.Brushes.Gray2}"
                         Text="{Binding DisplayHexCode}"
                         TextAlignment="Right"
-                        Visibility="{Binding ElementName=UcWellKnownColorSelector, Path=ShowHexCode, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShowHexCode, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
                 </atc:GridEx>
             </DataTemplate>
         </ComboBox.ItemTemplate>

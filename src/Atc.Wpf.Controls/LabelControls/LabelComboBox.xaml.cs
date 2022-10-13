@@ -157,8 +157,6 @@ public partial class LabelComboBox : ILabelComboBox
     public LabelComboBox()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 
     private static void OnSelectedKeyChanged(

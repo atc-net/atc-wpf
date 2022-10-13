@@ -2,110 +2,31 @@
     x:Class="Atc.Wpf.Controls.LabelControls.LabelWellKnownColorSelector"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
-    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:parts="clr-namespace:Atc.Wpf.Controls.LabelControls.Parts"
-    xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
-    x:Name="UcLabelWellKnownColorSelector"
-    MinWidth="220"
-    d:DataContext="{d:DesignInstance Type=labelControls:LabelWellKnownColorSelector}"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
-        <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
-        <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
-        <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
-        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
-        <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
-    </UserControl.Resources>
+    <labelControls:LabelContent
+        HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
+        InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+        InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+        IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
+        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                        Key=Color}"
+        MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"
+        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}"
+        ShowAsteriskOnMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShowAsteriskOnMandatory}"
+        ValidationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor}"
+        ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
-    <atc:GridEx Columns="10,*,20" Rows="Auto">
+        <atcTheming:WellKnownColorSelector
+            RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=RenderColorIndicatorType}"
+            SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=SelectedKey, Mode=TwoWay}"
+            ShowHexCode="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=ShowHexCode}" />
 
-        <TextBlock
-            Grid.Column="0"
-            Padding="{Binding ElementName=UcLabelWellKnownColorSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}, FallbackValue='0,7,0,0'}"
-            FontWeight="Bold"
-            Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=MandatoryColor, FallbackValue=Red}"
-            Text="*">
-            <TextBlock.Visibility>
-                <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
-                    <Binding ElementName="UcLabelWellKnownColorSelector" Path="ShowAsteriskOnMandatory" />
-                    <Binding ElementName="UcLabelWellKnownColorSelector" Path="IsMandatory" />
-                </MultiBinding>
-            </TextBlock.Visibility>
-        </TextBlock>
-
-        <atc:GridEx
-            Grid.Column="1"
-            Columns="0.3*,0.7*"
-            Rows="Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
-
-            <StackPanel
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Color}" />
-                <TextBlock Margin="0,0,5,0" Text=":" />
-            </StackPanel>
-
-            <atc:WellKnownColorSelector
-                Grid.Column="1"
-                RenderColorIndicatorType="{Binding ElementName=UcLabelWellKnownColorSelector, Path=RenderColorIndicatorType}"
-                SelectedKey="{Binding ElementName=UcLabelWellKnownColorSelector, Path=SelectedKey, Mode=TwoWay}"
-                ShowHexCode="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ShowHexCode}" />
-
-            <TextBlock
-                Grid.Row="1"
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
-
-        </atc:GridEx>
-
-        <atc:GridEx
-            Grid.Column="1"
-            Columns="*"
-            Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
-
-            <StackPanel
-                Grid.Row="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Color}" />
-                <TextBlock Margin="0,0,5,0" Text=":" />
-            </StackPanel>
-
-            <atc:WellKnownColorSelector
-                Grid.Row="1"
-                RenderColorIndicatorType="{Binding ElementName=UcLabelWellKnownColorSelector, Path=RenderColorIndicatorType}"
-                SelectedKey="{Binding ElementName=UcLabelWellKnownColorSelector, Path=SelectedKey, Mode=TwoWay}"
-                ShowHexCode="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ShowHexCode}" />
-
-            <TextBlock
-                Grid.Row="2"
-                VerticalAlignment="Center"
-                Foreground="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationColor, FallbackValue=OrangeRed}"
-                Text="{Binding ElementName=UcLabelWellKnownColorSelector, Path=ValidationText}"
-                Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
-
-        </atc:GridEx>
-
-        <parts:LabelControlInformationIcon
-            Grid.Column="2"
-            Margin="{Binding ElementName=UcLabelWellKnownColorSelector, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-            InformationColor="{Binding ElementName=UcLabelWellKnownColorSelector, Path=InformationColor}"
-            InformationText="{Binding ElementName=UcLabelWellKnownColorSelector, Path=InformationText}"
-            Visibility="{Binding ElementName=UcLabelWellKnownColorSelector, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
-
-    </atc:GridEx>
+    </labelControls:LabelContent>
 
 </UserControl>

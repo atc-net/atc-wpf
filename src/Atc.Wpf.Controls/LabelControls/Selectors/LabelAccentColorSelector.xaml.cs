@@ -69,7 +69,5 @@ public partial class LabelAccentColorSelector : ILabelControlBase
     public LabelAccentColorSelector()
     {
         InitializeComponent();
-
-        DataContext = this;
     }
 }
