@@ -2,96 +2,25 @@
     x:Class="Atc.Wpf.Controls.LabelControls.LabelToggleSwitch"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:parts="clr-namespace:Atc.Wpf.Controls.LabelControls.Parts"
-    xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
-    x:Name="UcLabelToggleSwitch"
-    MinWidth="200"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
-        <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
-        <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
-        <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
-    </UserControl.Resources>
+    <labelControls:LabelContent
+        HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
+        InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+        InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+        LabelText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=ToggleSwitch}"
+        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
 
-    <atc:GridEx Columns="10,*,20" Rows="Auto">
+        <baseControls:ToggleSwitch
+            ContentDirection="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=ContentDirection}"
+            IsOn="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=IsOn}"
+            OffContent="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=OffText}"
+            OnContent="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=OnText}" />
 
-        <TextBlock Grid.Column="0" />
-
-        <atc:GridEx
-            Grid.Column="1"
-            Columns="0.3*,0.7*"
-            Rows="Auto,Auto,10"
-            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
-
-            <StackPanel
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
-                <TextBlock Margin="0,0,5,0" Text=":" />
-            </StackPanel>
-
-            <baseControls:ToggleSwitch
-                x:Name="InputFieldHorizontal"
-                Grid.Column="1"
-                Height="26"
-                ContentDirection="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ContentDirection}"
-                IsOn="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsOn}"
-                OffContent="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=OffText}"
-                OnContent="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=OnText}" />
-
-            <TextBlock
-                Grid.Row="1"
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
-
-        </atc:GridEx>
-
-        <atc:GridEx
-            Grid.Column="1"
-            Columns="*"
-            Rows="Auto,Auto,Auto,10"
-            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Vertical}, FallbackValue=Collapsed}">
-
-            <StackPanel
-                Grid.Row="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
-                <TextBlock Margin="0,0,5,0" Text=":" />
-            </StackPanel>
-
-            <baseControls:ToggleSwitch
-                x:Name="InputFieldVertical"
-                Grid.Row="1"
-                Height="26"
-                ContentDirection="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ContentDirection}"
-                IsOn="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsOn}"
-                OffContent="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=OffText}"
-                OnContent="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=OnText}" />
-
-            <TextBlock
-                Grid.Row="2"
-                VerticalAlignment="Center"
-                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
-
-        </atc:GridEx>
-
-        <parts:LabelControlInformationIcon
-            Grid.Column="2"
-            Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-            InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
-            InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
-            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
-
-    </atc:GridEx>
+    </labelControls:LabelContent>
 
 </UserControl>

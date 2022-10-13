@@ -6,9 +6,7 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:parts="clr-namespace:Atc.Wpf.Controls.LabelControls.Parts"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
-    x:Name="UcLabelContent"
     MinWidth="200"
     mc:Ignorable="d">
 
@@ -37,8 +35,8 @@
                                 Text="*">
                                 <TextBlock.Visibility>
                                     <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
-                                        <Binding ElementName="UcLabelContent" Path="ShowAsteriskOnMandatory" />
-                                        <Binding ElementName="UcLabelContent" Path="IsMandatory" />
+                                        <Binding Path="ShowAsteriskOnMandatory" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="IsMandatory" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </TextBlock.Visibility>
                             </TextBlock>
@@ -100,12 +98,25 @@
 
                             </atc:GridEx>
 
-                            <parts:LabelControlInformationIcon
+                            <atc:SvgImage
                                 Grid.Column="2"
+                                Width="16"
+                                Height="16"
                                 Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
-                                InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
-                                InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
-                                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                                VerticalAlignment="Top"
+                                OverrideColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor, FallbackValue=DodgerBlue}"
+                                Source="/Atc.Wpf.Controls;component/Resources/info_help.svg"
+                                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}">
+                                <atc:SvgImage.ToolTip>
+                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                    <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" Style="{StaticResource AtcApps.Styles.ToolTip}">
+                                        <StackPanel>
+                                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationText}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </atc:SvgImage.ToolTip>
+                            </atc:SvgImage>
 
                         </atc:GridEx>
 
@@ -114,6 +125,5 @@
             </Setter>
         </Style>
     </UserControl.Style>
-
 
 </UserControl>
