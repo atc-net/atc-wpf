@@ -8,6 +8,11 @@ internal class LabelControlOrientationToInformationIconMarginValueConverter : IV
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        {
+            return new Thickness(0, 5, 0, 0);
+        }
+
         if (value is null)
         {
             return new Thickness(0);
@@ -21,7 +26,7 @@ internal class LabelControlOrientationToInformationIconMarginValueConverter : IV
         return orientation switch
         {
             Orientation.Horizontal => new Thickness(0, 5, 0, 0),
-            Orientation.Vertical => new Thickness(0, 21, 0, 0),
+            Orientation.Vertical => new Thickness(0, 26, 0, 0),
             _ => throw new SwitchCaseDefaultException(orientation),
         };
     }
