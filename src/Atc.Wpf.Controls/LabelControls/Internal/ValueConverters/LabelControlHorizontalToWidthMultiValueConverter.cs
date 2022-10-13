@@ -7,7 +7,7 @@ public class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConve
     {
         if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
         {
-            return "0.3*,0.7*";
+            return "120,*";
         }
 
         ArgumentNullException.ThrowIfNull(values);

@@ -1,4 +1,4 @@
-<UserControl
+<labelControls:LabelControlBase
     x:Class="Atc.Wpf.Controls.LabelControls.LabelToggleSwitch"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -27,4 +27,4 @@
 
     </labelControls:LabelContent>
 
-</UserControl>
+</labelControls:LabelControlBase>

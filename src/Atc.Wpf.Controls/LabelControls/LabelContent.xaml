@@ -1,16 +1,17 @@
-<UserControl
+<labelControls:LabelControlBase
     x:Class="Atc.Wpf.Controls.LabelControls.LabelContent"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     MinWidth="200"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
+    <labelControls:LabelControlBase.Resources>
         <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
@@ -19,9 +20,9 @@
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
-    </UserControl.Resources>
+    </labelControls:LabelControlBase.Resources>
 
-    <UserControl.Style>
+    <labelControls:LabelControlBase.Style>
         <Style TargetType="{x:Type UserControl}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -137,6 +138,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UserControl.Style>
+    </labelControls:LabelControlBase.Style>
 
-</UserControl>
+</labelControls:LabelControlBase>

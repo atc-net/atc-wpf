@@ -1,4 +1,4 @@
-<UserControl
+<labelControls:LabelControlBase
     x:Class="Atc.Wpf.Controls.LabelControls.LabelThemeAndAccentColorSelectors"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -28,4 +28,4 @@
             RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType}" />
     </StackPanel>
 
-</UserControl>
+</labelControls:LabelControlBase>
