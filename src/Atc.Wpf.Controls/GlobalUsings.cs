@@ -1,9 +1,11 @@
 global using System.Collections;
 global using System.ComponentModel;
+global using System.ComponentModel.Design.Serialization;
 global using System.Data;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Reflection;
+global using System.Security;
 global using System.Text;
 global using System.Text.RegularExpressions;
 global using System.Windows;
@@ -20,6 +22,7 @@ global using System.Windows.Shapes;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
+global using Atc.Wpf.Controls.Layouts.Grid.Internal;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Theming;
 global using Atc.Wpf.Theming.Controls.Selectors;

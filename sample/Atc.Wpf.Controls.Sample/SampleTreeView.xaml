@@ -85,6 +85,13 @@
             SamplePath="LabelControls.LabelMixBindingsView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Layouts" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="Divider"
+            IsExpanded="True"
+            SamplePath="Layouts.DividerView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Progressing" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="BusyOverlay"
