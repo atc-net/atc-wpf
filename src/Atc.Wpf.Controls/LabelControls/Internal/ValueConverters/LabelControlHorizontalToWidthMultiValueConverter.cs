@@ -32,7 +32,7 @@ public class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConve
             case SizeDefinitionType.Pixel when width < 10:
                 throw new ConstraintException("Width in Pixel mode must be greater than 10.");
             case SizeDefinitionType.Pixel:
-                return $"{width},*";
+                return $"{width.ToString(GlobalizationConstants.EnglishCultureInfo)},*";
             case SizeDefinitionType.Percentage when width is < 0 or > 100:
                 throw new ConstraintException("Width in Percentage mode must be between 0 and 100.");
             case SizeDefinitionType.Percentage:

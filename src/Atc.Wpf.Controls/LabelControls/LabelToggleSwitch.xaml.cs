@@ -5,6 +5,42 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelToggleSwitch : ILabelToggleSwitch
 {
+    public static readonly DependencyProperty HideAsteriskAreaProperty = DependencyProperty.Register(
+        nameof(HideAsteriskArea),
+        typeof(bool),
+        typeof(LabelToggleSwitch),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideAsteriskArea
+    {
+        get => (bool)GetValue(HideAsteriskAreaProperty);
+        set => SetValue(HideAsteriskAreaProperty, value);
+    }
+
+    public static readonly DependencyProperty HideInformationAreaProperty = DependencyProperty.Register(
+        nameof(HideInformationArea),
+        typeof(bool),
+        typeof(LabelToggleSwitch),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideInformationArea
+    {
+        get => (bool)GetValue(HideInformationAreaProperty);
+        set => SetValue(HideInformationAreaProperty, value);
+    }
+
+    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
+        nameof(HideValidationTextArea),
+        typeof(bool),
+        typeof(LabelToggleSwitch),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool HideValidationTextArea
+    {
+        get => (bool)GetValue(HideValidationTextAreaProperty);
+        set => SetValue(HideValidationTextAreaProperty, value);
+    }
+
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
     nameof(Orientation),
     typeof(Orientation),
@@ -51,18 +87,6 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
-    }
-
-    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
-        nameof(HideValidationTextArea),
-        typeof(bool),
-        typeof(LabelToggleSwitch),
-        new PropertyMetadata(defaultValue: false));
-
-    public bool HideValidationTextArea
-    {
-        get => (bool)GetValue(HideValidationTextAreaProperty);
-        set => SetValue(HideValidationTextAreaProperty, value);
     }
 
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(

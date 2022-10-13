@@ -11,12 +11,16 @@
 
     <StackPanel Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
         <labelControls:LabelThemeSelector
+            HideAsteriskArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAsteriskArea}"
+            HideInformationArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideInformationArea}"
             HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
             LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
             LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
             Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelControlOrientation}"
             RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType}" />
         <labelControls:LabelAccentColorSelector
+            HideAsteriskArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAsteriskArea}"
+            HideInformationArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideInformationArea}"
             HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
             LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
             LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"

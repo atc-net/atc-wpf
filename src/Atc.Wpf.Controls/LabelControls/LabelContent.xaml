@@ -14,6 +14,7 @@
         <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
+        <valueConverters:LabelControlHideLeftRightAreaMultiValueConverter x:Key="LabelControlHideLeftRightAreaMultiValueConverter" />
         <valueConverters:LabelControlHorizontalToWidthMultiValueConverter x:Key="LabelControlHorizontalToWidthMultiValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
@@ -26,7 +27,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type UserControl}">
 
-                        <atc:GridEx Columns="10,*,20" Rows="Auto">
+                        <!--<atc:GridEx Columns="10,*,20" Rows="Auto">-->
+                        <atc:GridEx Rows="Auto">
+                            <atc:GridEx.Columns>
+                                <MultiBinding Converter="{StaticResource LabelControlHideLeftRightAreaMultiValueConverter}">
+                                    <Binding Path="HideAsteriskArea" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    <Binding Path="HideInformationArea" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                </MultiBinding>
+                            </atc:GridEx.Columns>
 
                             <TextBlock
                                 Grid.Column="0"
