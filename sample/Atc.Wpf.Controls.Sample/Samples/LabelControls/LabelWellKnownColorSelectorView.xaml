@@ -30,6 +30,31 @@
                             Orientation="Horizontal"
                             SelectedKey="Red" />
 
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            LabelWidthNumber="50"
+                            LabelWidthSizeDefinition="Percentage"
+                            Orientation="Horizontal"
+                            SelectedKey="Red" />
+
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            LabelWidthNumber="120"
+                            LabelWidthSizeDefinition="Pixel"
+                            Orientation="Horizontal"
+                            SelectedKey="Red" />
+
+                        <atc:LabelWellKnownColorSelector
+                            HideAsteriskArea="True"
+                            HideInformationArea="True"
+                            HideValidationTextArea="True"
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            LabelWidthNumber="120"
+                            LabelWidthSizeDefinition="Pixel"
+                            Orientation="Horizontal"
+                            SelectedKey="Red" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 

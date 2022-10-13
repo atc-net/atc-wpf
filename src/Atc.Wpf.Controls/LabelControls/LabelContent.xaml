@@ -1,31 +1,40 @@
-<UserControl
+<labelControls:LabelControl
     x:Class="Atc.Wpf.Controls.LabelControls.LabelContent"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     MinWidth="200"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
+    <labelControls:LabelControl.Resources>
         <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
+        <valueConverters:LabelControlHideLeftRightAreaMultiValueConverter x:Key="LabelControlHideLeftRightAreaMultiValueConverter" />
+        <valueConverters:LabelControlHorizontalToWidthMultiValueConverter x:Key="LabelControlHorizontalToWidthMultiValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
-    </UserControl.Resources>
+    </labelControls:LabelControl.Resources>
 
-    <UserControl.Style>
+    <labelControls:LabelControl.Style>
         <Style TargetType="{x:Type UserControl}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type UserControl}">
 
-                        <atc:GridEx Columns="10,*,20" Rows="Auto">
+                        <atc:GridEx Rows="Auto">
+                            <atc:GridEx.Columns>
+                                <MultiBinding Converter="{StaticResource LabelControlHideLeftRightAreaMultiValueConverter}">
+                                    <Binding Path="HideAsteriskArea" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    <Binding Path="HideInformationArea" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                </MultiBinding>
+                            </atc:GridEx.Columns>
 
                             <TextBlock
                                 Grid.Column="0"
@@ -43,9 +52,14 @@
 
                             <atc:GridEx
                                 Grid.Column="1"
-                                Columns="0.3*,0.7*"
                                 Rows="Auto,Auto,10"
                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+                                <atc:GridEx.Columns>
+                                    <MultiBinding Converter="{StaticResource LabelControlHorizontalToWidthMultiValueConverter}">
+                                        <Binding Path="LabelWidthNumber" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="LabelWidthSizeDefinition" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </atc:GridEx.Columns>
 
                                 <StackPanel
                                     Grid.Column="0"
@@ -78,6 +92,7 @@
 
                                 <StackPanel
                                     Grid.Row="0"
+                                    Margin="0,0,0,5"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
                                     <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
@@ -124,6 +139,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UserControl.Style>
+    </labelControls:LabelControl.Style>
 
-</UserControl>
+</labelControls:LabelControl>

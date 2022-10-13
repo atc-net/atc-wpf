@@ -33,8 +33,16 @@
                 <atc:LabelLanguageSelector
                     Grid.Row="0"
                     Grid.Column="2"
+                    Width="250"
+                    LabelWidthNumber="80"
+                    LabelWidthSizeDefinition="Pixel"
                     Orientation="Horizontal" />
-                <atc:LabelThemeAndAccentColorSelectors Grid.Row="0" Grid.Column="3" />
+                <atc:LabelThemeAndAccentColorSelectors
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Width="500"
+                    LabelWidthNumber="50"
+                    LabelWidthSizeDefinition="Pixel" />
                 <atc:SampleViewerView
                     x:Name="SampleViewer"
                     Grid.Row="1"

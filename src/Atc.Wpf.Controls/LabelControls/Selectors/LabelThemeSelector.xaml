@@ -1,4 +1,4 @@
-<UserControl
+<labelControls:LabelControlBase
     x:Class="Atc.Wpf.Controls.LabelControls.LabelThemeSelector"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,15 +10,19 @@
     mc:Ignorable="d">
 
     <labelControls:LabelContent
+        HideAsteriskArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAsteriskArea}"
+        HideInformationArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideInformationArea}"
         HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resources.Miscellaneous,
                                         Key=Theme}"
+        LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
+        LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
 
         <atcTheming:ThemeSelector RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelThemeSelector}}, Path=RenderColorIndicatorType}" />
 
     </labelControls:LabelContent>
 
-</UserControl>
+</labelControls:LabelControlBase>
