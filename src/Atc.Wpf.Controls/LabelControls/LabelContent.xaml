@@ -27,7 +27,6 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type UserControl}">
 
-                        <!--<atc:GridEx Columns="10,*,20" Rows="Auto">-->
                         <atc:GridEx Rows="Auto">
                             <atc:GridEx.Columns>
                                 <MultiBinding Converter="{StaticResource LabelControlHideLeftRightAreaMultiValueConverter}">
