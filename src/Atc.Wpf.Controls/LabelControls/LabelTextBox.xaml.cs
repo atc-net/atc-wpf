@@ -55,6 +55,30 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(MandatoryColorProperty, value);
     }
 
+    public static readonly DependencyProperty LabelWidthNumberProperty = DependencyProperty.Register(
+        nameof(LabelWidthNumber),
+        typeof(int),
+        typeof(LabelTextBox),
+        new PropertyMetadata(30));
+
+    public int LabelWidthNumber
+    {
+        get => (int)GetValue(LabelWidthNumberProperty);
+        set => SetValue(LabelWidthNumberProperty, value);
+    }
+
+    public static readonly DependencyProperty LabelWidthSizeDefinitionProperty = DependencyProperty.Register(
+        nameof(LabelWidthSizeDefinition),
+        typeof(SizeDefinitionType),
+        typeof(LabelTextBox),
+        new PropertyMetadata(SizeDefinitionType.Percentage));
+
+    public SizeDefinitionType LabelWidthSizeDefinition
+    {
+        get => (SizeDefinitionType)GetValue(LabelWidthSizeDefinitionProperty);
+        set => SetValue(LabelWidthSizeDefinitionProperty, value);
+    }
+
     public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
         nameof(LabelText),
         typeof(string),

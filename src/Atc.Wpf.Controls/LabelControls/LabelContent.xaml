@@ -14,6 +14,7 @@
         <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
         <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
+        <valueConverters:LabelControlHorizontalToWidthMultiValueConverter x:Key="LabelControlHorizontalToWidthMultiValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
@@ -43,9 +44,14 @@
 
                             <atc:GridEx
                                 Grid.Column="1"
-                                Columns="0.3*,0.7*"
                                 Rows="Auto,Auto,10"
                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToVisibilityValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue=Visible}">
+                                <atc:GridEx.Columns>
+                                    <MultiBinding Converter="{StaticResource LabelControlHorizontalToWidthMultiValueConverter}">
+                                        <Binding Path="LabelWidthNumber" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="LabelWidthSizeDefinition" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </atc:GridEx.Columns>
 
                                 <StackPanel
                                     Grid.Column="0"

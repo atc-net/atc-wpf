@@ -18,6 +18,30 @@ public partial class LabelThemeSelector : ILabelControlBase
         set => SetValue(OrientationProperty, value);
     }
 
+    public static readonly DependencyProperty LabelWidthNumberProperty = DependencyProperty.Register(
+        nameof(LabelWidthNumber),
+        typeof(int),
+        typeof(LabelThemeSelector),
+        new PropertyMetadata(30));
+
+    public int LabelWidthNumber
+    {
+        get => (int)GetValue(LabelWidthNumberProperty);
+        set => SetValue(LabelWidthNumberProperty, value);
+    }
+
+    public static readonly DependencyProperty LabelWidthSizeDefinitionProperty = DependencyProperty.Register(
+        nameof(LabelWidthSizeDefinition),
+        typeof(SizeDefinitionType),
+        typeof(LabelThemeSelector),
+        new PropertyMetadata(SizeDefinitionType.Percentage));
+
+    public SizeDefinitionType LabelWidthSizeDefinition
+    {
+        get => (SizeDefinitionType)GetValue(LabelWidthSizeDefinitionProperty);
+        set => SetValue(LabelWidthSizeDefinitionProperty, value);
+    }
+
     public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
         nameof(HideValidationTextArea),
         typeof(bool),

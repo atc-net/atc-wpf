@@ -30,6 +30,30 @@ public partial class LabelThemeAndAccentColorSelectors
         set => SetValue(LabelControlOrientationProperty, value);
     }
 
+    public static readonly DependencyProperty LabelWidthNumberProperty = DependencyProperty.Register(
+        nameof(LabelWidthNumber),
+        typeof(int),
+        typeof(LabelThemeAndAccentColorSelectors),
+        new PropertyMetadata(30));
+
+    public int LabelWidthNumber
+    {
+        get => (int)GetValue(LabelWidthNumberProperty);
+        set => SetValue(LabelWidthNumberProperty, value);
+    }
+
+    public static readonly DependencyProperty LabelWidthSizeDefinitionProperty = DependencyProperty.Register(
+        nameof(LabelWidthSizeDefinition),
+        typeof(SizeDefinitionType),
+        typeof(LabelThemeAndAccentColorSelectors),
+        new PropertyMetadata(SizeDefinitionType.Percentage));
+
+    public SizeDefinitionType LabelWidthSizeDefinition
+    {
+        get => (SizeDefinitionType)GetValue(LabelWidthSizeDefinitionProperty);
+        set => SetValue(LabelWidthSizeDefinitionProperty, value);
+    }
+
     public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
         nameof(HideValidationTextArea),
         typeof(bool),
