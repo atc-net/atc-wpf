@@ -27,31 +27,19 @@ public class ObservableDictionaryToDictionaryOfStringsValueConverter : IValueCon
         {
             case ObservableDictionary<string, string> observableDictionaryString:
             {
-                foreach (var item in observableDictionaryString)
-                {
-                    dictionary.Add(item.Key, item.Value);
-                }
-
+                dictionary = observableDictionaryString.ToDictionaryOfStrings();
                 break;
             }
 
             case ObservableDictionary<int, string> observableDictionaryInt:
             {
-                foreach (var item in observableDictionaryInt)
-                {
-                    dictionary.Add(item.Key.ToString(GlobalizationConstants.EnglishCultureInfo), item.Value);
-                }
-
+                dictionary = observableDictionaryInt.ToDictionaryOfStrings();
                 break;
             }
 
             case ObservableDictionary<Guid, string> observableDictionaryGuid:
             {
-                foreach (var item in observableDictionaryGuid)
-                {
-                    dictionary.Add(item.Key.ToString(), item.Value);
-                }
-
+                observableDictionaryGuid.ToDictionaryOfStrings();
                 break;
             }
         }
@@ -62,6 +50,6 @@ public class ObservableDictionaryToDictionaryOfStringsValueConverter : IValueCon
     /// <inheritdoc />
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException("This is a OneWay converter.");
     }
 }
