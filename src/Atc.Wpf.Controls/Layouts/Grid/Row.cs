@@ -30,7 +30,7 @@ public class Row : Panel
     }
 
     protected override Size MeasureOverride(
-        Size constraint)
+        Size availableSize)
     {
         var totalCellCount = 0;
         var totalRowCount = 1;
@@ -40,7 +40,7 @@ public class Row : Panel
         foreach (var child in InternalChildren.OfType<Col>())
         {
             child.Margin = new Thickness(gutterHalf);
-            child.Measure(constraint);
+            child.Measure(availableSize);
             var childDesiredSize = child.DesiredSize;
 
             if (maxChildDesiredHeight < childDesiredSize.Height)
