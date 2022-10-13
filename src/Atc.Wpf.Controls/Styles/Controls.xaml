@@ -2,11 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/NumericBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/ToggleSwitch.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Divider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/BusyOverlay.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -15,5 +17,6 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type baseControls:IntegerBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type baseControls:ToggleSwitch}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.BusyOverlay}" TargetType="{x:Type progressing:BusyOverlay}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type layouts:Divider}" />
 
 </ResourceDictionary>
