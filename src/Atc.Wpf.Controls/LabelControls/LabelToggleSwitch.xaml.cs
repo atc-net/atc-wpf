@@ -1,11 +1,9 @@
-using Atc.Wpf.Controls.BaseControls;
-
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
 /// Interaction logic for LabelToggleSwitch.
 /// </summary>
-public partial class LabelToggleSwitch
+public partial class LabelToggleSwitch : ILabelToggleSwitch
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
     nameof(Orientation),
