@@ -10,8 +10,8 @@
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SampleTreeView}" />
