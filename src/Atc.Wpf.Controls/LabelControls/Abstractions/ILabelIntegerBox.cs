@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
-public interface ILabelIntegerBox : ILabelTextControl
+public interface ILabelIntegerBox : ILabelIntegerNumberControl
 {
     string WatermarkText { get; set; }
 
@@ -9,10 +9,6 @@ public interface ILabelIntegerBox : ILabelTextControl
     string PrefixText { get; set; }
 
     string SuffixText { get; set; }
-
-    int Maximum { get; set; }
-
-    int Minimum { get; set; }
 
     int Value { get; set; }
 }

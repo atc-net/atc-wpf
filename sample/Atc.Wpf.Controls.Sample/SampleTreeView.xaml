@@ -15,13 +15,25 @@
             IsExpanded="True"
             SamplePath="BaseControls.DecimalBoxView" />
         <atc:SampleTreeViewItem
+            Header="DecimalXyBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.DecimalXyBoxView" />
+        <atc:SampleTreeViewItem
             Header="IntegerBox"
             IsExpanded="True"
             SamplePath="BaseControls.IntegerBoxView" />
         <atc:SampleTreeViewItem
+            Header="IntegerXyBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.IntegerXyBoxView" />
+        <atc:SampleTreeViewItem
             Header="NumericBox"
             IsExpanded="True"
             SamplePath="BaseControls.NumericBoxView" />
+        <atc:SampleTreeViewItem
+            Header="PixelSizeBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.PixelSizeBoxView" />
         <atc:SampleTreeViewItem
             Header="ToggleSwitch"
             IsExpanded="True"
@@ -63,6 +75,26 @@
             Header="LabelContent"
             IsExpanded="True"
             SamplePath="LabelControls.LabelContentView" />
+        <atc:SampleTreeViewItem
+            Header="LabelDecimalBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelDecimalBoxView" />
+        <atc:SampleTreeViewItem
+            Header="LabelDecimalXyBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelDecimalXyBoxView" />
+        <atc:SampleTreeViewItem
+            Header="LabelIntegerBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelIntegerBoxView" />
+        <atc:SampleTreeViewItem
+            Header="LabelIntegerXyBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelIntegerXyBoxView" />
+        <atc:SampleTreeViewItem
+            Header="LabelPixelSizeBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelPixelSizeBoxView" />
         <atc:SampleTreeViewItem
             Header="LabelSlider"
             IsExpanded="True"
