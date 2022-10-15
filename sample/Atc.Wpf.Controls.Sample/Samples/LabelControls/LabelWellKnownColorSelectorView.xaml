@@ -11,7 +11,10 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features" />
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features" />
 
         <GroupBox Header="Usage">
             <ScrollViewer>
@@ -45,9 +48,7 @@
                             SelectedKey="Red" />
 
                         <atc:LabelWellKnownColorSelector
-                            HideAsteriskArea="True"
-                            HideInformationArea="True"
-                            HideValidationTextArea="True"
+                            HideAreas="All"
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelWidthNumber="120"

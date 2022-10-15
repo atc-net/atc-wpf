@@ -16,23 +16,28 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Margin="0,0,50,0" Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="Fire after " />
-                    <ComboBox
-                        x:Name="CbDebounce"
-                        Width="60"
-                        Height="24"
-                        SelectedIndex="0">
-                        <ComboBoxItem>300</ComboBoxItem>
-                        <ComboBoxItem>500</ComboBoxItem>
-                        <ComboBoxItem>800</ComboBoxItem>
-                        <ComboBoxItem>1500</ComboBoxItem>
-                    </ComboBox>
-                    <TextBlock VerticalAlignment="Center" Text="ms after last keypress" />
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Margin="0,0,50,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Fire after " />
+                        <ComboBox
+                            x:Name="CbDebounce"
+                            Width="60"
+                            Height="24"
+                            SelectedIndex="0">
+                            <ComboBoxItem>300</ComboBoxItem>
+                            <ComboBoxItem>500</ComboBoxItem>
+                            <ComboBoxItem>800</ComboBoxItem>
+                            <ComboBoxItem>1500</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock VerticalAlignment="Center" Text="ms after last keypress" />
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">

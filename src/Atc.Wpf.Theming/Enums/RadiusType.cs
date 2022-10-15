@@ -1,4 +1,5 @@
-namespace Atc.Wpf.Theming.Enums;
+// ReSharper disable CheckNamespace
+namespace Atc.Wpf.Theming;
 
 public enum RadiusType
 {

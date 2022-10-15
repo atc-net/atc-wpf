@@ -11,13 +11,18 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
-            <StackPanel Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Click="BtnBrowseOnClick"
-                    Content="Browse svg files" />
-            </StackPanel>
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <Button
+                        Width="100"
+                        Click="BtnBrowseOnClick"
+                        Content="Browse svg files" />
+                </StackPanel>
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">

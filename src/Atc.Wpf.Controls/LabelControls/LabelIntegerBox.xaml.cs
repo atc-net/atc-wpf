@@ -5,18 +5,6 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelIntegerBox : ILabelIntegerBox
 {
-    public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-        nameof(LabelText),
-        typeof(string),
-        typeof(LabelIntegerBox),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string LabelText
-    {
-        get => (string)GetValue(LabelTextProperty);
-        set => SetValue(LabelTextProperty, value);
-    }
-
     public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
         nameof(WatermarkText),
         typeof(string),
@@ -67,34 +55,6 @@ public partial class LabelIntegerBox : ILabelIntegerBox
     {
         get => (string)GetValue(SuffixTextProperty);
         set => SetValue(SuffixTextProperty, value);
-    }
-
-    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-        nameof(Maximum),
-        typeof(int),
-        typeof(LabelIntegerBox),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public int Maximum
-    {
-        get => (int)GetValue(MaximumProperty);
-        set => SetValue(MaximumProperty, value);
-    }
-
-    public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-        nameof(Minimum),
-        typeof(int),
-        typeof(LabelIntegerBox),
-        new FrameworkPropertyMetadata(
-            int.MinValue,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public int Minimum
-    {
-        get => (int)GetValue(MinimumProperty);
-        set => SetValue(MinimumProperty, value);
     }
 
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(

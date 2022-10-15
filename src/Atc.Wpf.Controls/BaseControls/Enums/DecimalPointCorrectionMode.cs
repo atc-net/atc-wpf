@@ -1,5 +1,5 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.Controls.BaseControls;
+namespace Atc.Wpf.Controls;
 
 public enum DecimalPointCorrectionMode
 {

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
-public interface ILabelDecimalBox : ILabelTextControl
+public interface ILabelDecimalBox : ILabelDecimalNumberControl
 {
     string WatermarkText { get; set; }
 
@@ -9,10 +9,6 @@ public interface ILabelDecimalBox : ILabelTextControl
     string PrefixText { get; set; }
 
     string SuffixText { get; set; }
-
-    decimal Maximum { get; set; }
-
-    decimal Minimum { get; set; }
 
     decimal Value { get; set; }
 }

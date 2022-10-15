@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// ValueConverter: Decimal to Double.
 /// </summary>
 [ValueConversion(typeof(decimal), typeof(double))]
-public class DecimalToDoubleValueConverter : IValueConverter
+internal class DecimalToDoubleValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         => value switch

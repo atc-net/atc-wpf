@@ -13,58 +13,42 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features" />
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features" />
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
-                    <atc:GridEx
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <atc:UniformSpacingPanel
                         Grid.Column="0"
-                        Margin="10"
-                        Rows="Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto,10,Auto">
+                        Orientation="Vertical"
+                        Spacing="10">
+
+                        <atc:IntegerBox ButtonsAlignment="Right" SwitchUpDownButtons="False" />
+
+                        <atc:IntegerBox ButtonsAlignment="Right" SwitchUpDownButtons="True" />
+
+                        <atc:IntegerBox ButtonsAlignment="Left" SwitchUpDownButtons="False" />
+
+                        <atc:IntegerBox ButtonsAlignment="Left" SwitchUpDownButtons="True" />
+
+                        <atc:IntegerBox ButtonsAlignment="Opposite" SwitchUpDownButtons="False" />
+
+                        <atc:IntegerBox ButtonsAlignment="Opposite" SwitchUpDownButtons="True" />
 
                         <atc:IntegerBox
-                            Grid.Row="0"
-                            ButtonsAlignment="Right"
-                            SwitchUpDownButtons="False" />
-
-                        <atc:IntegerBox
-                            Grid.Row="2"
-                            ButtonsAlignment="Right"
-                            SwitchUpDownButtons="True" />
-
-                        <atc:IntegerBox
-                            Grid.Row="4"
-                            ButtonsAlignment="Left"
-                            SwitchUpDownButtons="False" />
-
-                        <atc:IntegerBox
-                            Grid.Row="6"
-                            ButtonsAlignment="Left"
-                            SwitchUpDownButtons="True" />
-
-                        <atc:IntegerBox
-                            Grid.Row="8"
-                            ButtonsAlignment="Opposite"
-                            SwitchUpDownButtons="False" />
-
-                        <atc:IntegerBox
-                            Grid.Row="10"
-                            ButtonsAlignment="Opposite"
-                            SwitchUpDownButtons="True" />
-
-                        <atc:IntegerBox
-                            Grid.Row="12"
                             atc:TextBoxHelper.Watermark="Hello Watermark..."
                             atc:TextBoxHelper.WatermarkAlignment="Center"
                             PrefixText="P123"
                             SuffixText="S123" />
 
-                    </atc:GridEx>
-                    <atc:GridEx
-                        Grid.Column="2"
-                        Margin="10"
-                        Rows="Auto,10,Auto" />
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        Spacing="10" />
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>

@@ -1,10 +1,278 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
+    xmlns:primitives="clr-namespace:Atc.Wpf.Theming.Primitives"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <system:Double x:Key="AtcApps.Sizes.Slider.HorizontalThumb.Height">24</system:Double>
+    <system:Double x:Key="AtcApps.Sizes.Slider.HorizontalThumb.Width">8</system:Double>
+    <system:Double x:Key="AtcApps.Sizes.Slider.VerticalThumb.Width">24</system:Double>
+    <system:Double x:Key="AtcApps.Sizes.Slider.VerticalThumb.Height">8</system:Double>
+
+    <Style x:Key="AtcApps.Styles.Thumb.Slider" TargetType="{x:Type Thumb}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.RepeatButton.Slider.HorizontalTrack" TargetType="{x:Type RepeatButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Rectangle Height="2" Fill="{TemplateBinding Foreground}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.RepeatButton.Slider.VerticalTrack"
+        BasedOn="{StaticResource AtcApps.Styles.RepeatButton.Slider.HorizontalTrack}"
+        TargetType="{x:Type RepeatButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Rectangle Width="2" Fill="{TemplateBinding Foreground}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="AtcApps.Templates.Slider.Horizontal" TargetType="{x:Type Slider}">
+        <Grid
+            x:Name="HorizontalTemplate"
+            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+            Background="{TemplateBinding Background}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" MinHeight="{TemplateBinding Slider.MinHeight}" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TickBar
+                x:Name="TopTick"
+                Grid.Row="0"
+                Height="4"
+                Fill="{TemplateBinding Foreground}"
+                Placement="Top"
+                Visibility="Collapsed" />
+            <TickBar
+                x:Name="BottomTick"
+                Grid.Row="2"
+                Height="4"
+                Fill="{TemplateBinding Foreground}"
+                Placement="Bottom"
+                Visibility="Collapsed" />
+            <Track
+                x:Name="PART_Track"
+                Grid.Row="0"
+                Grid.RowSpan="3">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton
+                        x:Name="HorizontalTrackDecrease"
+                        Command="{x:Static Slider.DecreaseLarge}"
+                        Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillBrush)}"
+                        Style="{DynamicResource AtcApps.Styles.RepeatButton.Slider.HorizontalTrack}" />
+                </Track.DecreaseRepeatButton>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton
+                        x:Name="HorizontalTrackIncrease"
+                        Command="{x:Static Slider.IncreaseLarge}"
+                        Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillBrush)}"
+                        Style="{DynamicResource AtcApps.Styles.RepeatButton.Slider.HorizontalTrack}" />
+                </Track.IncreaseRepeatButton>
+                <Track.Thumb>
+                    <primitives:NiceThumb
+                        x:Name="HorizontalThumb"
+                        Width="{DynamicResource AtcApps.Sizes.Slider.HorizontalThumb.Width}"
+                        Height="{DynamicResource AtcApps.Sizes.Slider.HorizontalThumb.Height}"
+                        Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillBrush)}"
+                        IsTabStop="True"
+                        Style="{DynamicResource AtcApps.Styles.Thumb.Slider}" />
+                </Track.Thumb>
+            </Track>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="TickPlacement" Value="TopLeft">
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="BottomRight">
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="Both">
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillHoverBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillHoverBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillHoverBrush)}" />
+            </Trigger>
+            <Trigger SourceName="HorizontalTrackDecrease" Property="IsPressed" Value="True">
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillPressedBrush)}" />
+            </Trigger>
+            <Trigger SourceName="HorizontalTrackIncrease" Property="IsPressed" Value="True">
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillPressedBrush)}" />
+            </Trigger>
+            <Trigger SourceName="HorizontalThumb" Property="IsDragging" Value="True">
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillPressedBrush)}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillDisabledBrush)}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="AtcApps.Templates.Slider.Vertical" TargetType="{x:Type Slider}">
+        <Grid
+            x:Name="HorizontalTemplate"
+            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+            Background="{TemplateBinding Background}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="{TemplateBinding Slider.MinWidth}" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TickBar
+                x:Name="TopTick"
+                Grid.Column="0"
+                Width="4"
+                Fill="{TemplateBinding Foreground}"
+                Placement="Left"
+                Visibility="Collapsed" />
+            <TickBar
+                x:Name="BottomTick"
+                Grid.Column="2"
+                Width="4"
+                Fill="{TemplateBinding Foreground}"
+                Placement="Right"
+                Visibility="Collapsed" />
+            <Track
+                x:Name="PART_Track"
+                Grid.Column="0"
+                Grid.ColumnSpan="3">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton
+                        x:Name="VerticalTrackDecrease"
+                        Command="{x:Static Slider.DecreaseLarge}"
+                        Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillBrush)}"
+                        Style="{DynamicResource AtcApps.Styles.RepeatButton.Slider.VerticalTrack}" />
+                </Track.DecreaseRepeatButton>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton
+                        x:Name="VerticalTrackIncrease"
+                        Command="{x:Static Slider.IncreaseLarge}"
+                        Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillBrush)}"
+                        Style="{DynamicResource AtcApps.Styles.RepeatButton.Slider.VerticalTrack}" />
+                </Track.IncreaseRepeatButton>
+                <Track.Thumb>
+                    <primitives:NiceThumb
+                        x:Name="VerticalThumb"
+                        Width="{DynamicResource AtcApps.Sizes.Slider.VerticalThumb.Width}"
+                        Height="{DynamicResource AtcApps.Sizes.Slider.VerticalThumb.Height}"
+                        Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillBrush)}"
+                        IsTabStop="True"
+                        Style="{DynamicResource AtcApps.Styles.Thumb.Slider}" />
+                </Track.Thumb>
+            </Track>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="TickPlacement" Value="TopLeft">
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="BottomRight">
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="Both">
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillHoverBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillHoverBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillHoverBrush)}" />
+            </Trigger>
+            <Trigger SourceName="VerticalTrackDecrease" Property="IsPressed" Value="True">
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillPressedBrush)}" />
+            </Trigger>
+            <Trigger SourceName="VerticalTrackIncrease" Property="IsPressed" Value="True">
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillPressedBrush)}" />
+            </Trigger>
+            <Trigger SourceName="VerticalThumb" Property="IsDragging" Value="True">
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillPressedBrush)}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.ThumbFillDisabledBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackValueFillDisabledBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:SliderHelper.TrackFillDisabledBrush)}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <!--  Base  -->
-    <Style x:Key="AtcApps.Styles.Slider" TargetType="{x:Type Slider}" />
-
-    <!--  Light  -->
-
-    <!--  Dark  -->
+    <Style x:Key="AtcApps.Styles.Slider" TargetType="{x:Type Slider}">
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Control.Border}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray2}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="IsMoveToPointEnabled" Value="True" />
+        <Setter Property="Maximum" Value="100" />
+        <Setter Property="Minimum" Value="0" />
+        <Setter Property="Template" Value="{DynamicResource AtcApps.Templates.Slider.Horizontal}" />
+        <Setter Property="Value" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="helpers:SliderHelper.ThumbFillBrush" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
+        <Setter Property="helpers:SliderHelper.ThumbFillDisabledBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="helpers:SliderHelper.ThumbFillHoverBrush" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
+        <Setter Property="helpers:SliderHelper.ThumbFillPressedBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="helpers:SliderHelper.TrackFillBrush" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
+        <Setter Property="helpers:SliderHelper.TrackFillDisabledBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="helpers:SliderHelper.TrackFillHoverBrush" Value="{DynamicResource AtcApps.Brushes.Gray2}" />
+        <Setter Property="helpers:SliderHelper.TrackFillPressedBrush" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
+        <Setter Property="helpers:SliderHelper.TrackValueFillBrush" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
+        <Setter Property="helpers:SliderHelper.TrackValueFillDisabledBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="helpers:SliderHelper.TrackValueFillHoverBrush" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
+        <Setter Property="helpers:SliderHelper.TrackValueFillPressedBrush" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Template" Value="{DynamicResource AtcApps.Templates.Slider.Vertical}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

@@ -13,26 +13,27 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features" />
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features" />
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-
                 <atc:GridEx Columns="*,10,*" ShowGridLines="True">
-
-                    <atc:GridEx
+                    <atc:UniformSpacingPanel
                         Grid.Column="0"
                         Margin="10"
-                        Rows="Auto,10,Auto,10,Auto">
+                        Orientation="Vertical"
+                        Spacing="10">
+
                         <ComboBox
-                            Grid.Row="0"
                             DisplayMemberPath="Value"
                             ItemsSource="{Binding Path=Items}"
                             SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                             SelectedValuePath="Key" />
 
                         <ComboBox
-                            Grid.Row="2"
                             DisplayMemberPath="Value"
                             IsEnabled="True"
                             ItemsSource="{Binding Path=Items}"
@@ -41,22 +42,20 @@
                             SelectedValuePath="Key" />
 
                         <ComboBox
-                            Grid.Row="4"
                             DisplayMemberPath="Value"
                             IsEnabled="False"
                             ItemsSource="{Binding Path=Items}"
                             SelectedIndex="0"
                             SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                             SelectedValuePath="Key" />
-                    </atc:GridEx>
 
-                    <atc:GridEx
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
                         Grid.Column="2"
                         Margin="10"
-                        Rows="Auto,Auto" />
-
+                        Orientation="Vertical"
+                        Spacing="10" />
                 </atc:GridEx>
-
             </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>

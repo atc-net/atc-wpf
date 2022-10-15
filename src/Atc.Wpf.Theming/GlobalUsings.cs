@@ -37,7 +37,6 @@ global using Atc.Wpf.Theming.Controls.Images;
 global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Controls.Windows.Internal;
 global using Atc.Wpf.Theming.Decorators.Internal;
-global using Atc.Wpf.Theming.Enums;
 global using Atc.Wpf.Theming.Exceptions;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Theming.Internal;

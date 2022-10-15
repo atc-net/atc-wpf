@@ -1,7 +1,7 @@
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
-public class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConverter
+internal class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

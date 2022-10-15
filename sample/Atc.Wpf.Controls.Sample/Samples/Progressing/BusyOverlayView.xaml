@@ -17,16 +17,25 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
-            <WrapPanel>
-                <atc:LabelCheckBox x:Name="CbIsBusy" LabelText="Set IsBusy" />
-                <atc:LabelIntegerBox
-                    x:Name="IbDelay"
-                    LabelText="Delay for busy-overlay"
-                    Maximum="10000"
-                    Minimum="0"
-                    Value="0" />
-            </WrapPanel>
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <atc:LabelCheckBox
+                        x:Name="CbIsBusy"
+                        HideAreas="All"
+                        LabelText="IsBusy" />
+                    <atc:LabelIntegerBox
+                        x:Name="IbDelay"
+                        HideAreas="All"
+                        LabelText="DisplayAfter"
+                        Maximum="10000"
+                        Minimum="0"
+                        Value="0" />
+                </StackPanel>
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">

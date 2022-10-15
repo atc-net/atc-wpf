@@ -4,7 +4,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controls="clr-namespace:Atc.Wpf.Theming.Controls"
-    xmlns:enums="clr-namespace:Atc.Wpf.Theming.Enums"
+    xmlns:enums="clr-namespace:Atc.Wpf.Theming"
     xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters">
 
