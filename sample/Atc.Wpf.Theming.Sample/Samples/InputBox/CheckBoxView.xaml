@@ -13,47 +13,40 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features" />
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features" />
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-
                 <atc:GridEx Columns="*,10,*" ShowGridLines="True">
-
-                    <atc:GridEx
+                    <atc:UniformSpacingPanel
                         Grid.Column="0"
                         Margin="10"
-                        Rows="Auto,10,Auto,10,Auto,10,Auto,10,Auto">
+                        Orientation="Vertical"
+                        Spacing="10">
 
-                        <CheckBox Grid.Row="0" />
+                        <CheckBox />
 
-                        <CheckBox Grid.Row="2" Content="Hello 1" />
+                        <CheckBox Content="Hello 1" />
 
-                        <CheckBox
-                            Grid.Row="4"
-                            Content="Hello 2"
-                            IsEnabled="True" />
+                        <CheckBox Content="Hello 2" IsEnabled="True" />
 
-                        <CheckBox
-                            Grid.Row="6"
-                            Content="Hello 3"
-                            IsEnabled="False" />
+                        <CheckBox Content="Hello 3" IsEnabled="False" />
 
                         <CheckBox
-                            Grid.Row="6"
                             Content="Hello 4"
                             IsChecked="True"
                             IsEnabled="False" />
 
-                    </atc:GridEx>
-
-                    <atc:GridEx
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
                         Grid.Column="2"
                         Margin="10"
-                        Rows="Auto,Auto" />
-
+                        Orientation="Vertical"
+                        Spacing="10" />
                 </atc:GridEx>
-
             </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>

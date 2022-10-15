@@ -17,17 +17,20 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
-            <atc:GridEx Columns="Auto,10,120" Rows="Auto">
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
 
-                <atc:LabelWellKnownColorSelector
-                    x:Name="CbColor"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Width="230"
-                    SelectedKey="Gray" />
+                    <atc:LabelWellKnownColorSelector
+                        x:Name="CbColor"
+                        HideAreas="All"
+                        SelectedKey="Gray" />
 
-            </atc:GridEx>
+                </StackPanel>
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">

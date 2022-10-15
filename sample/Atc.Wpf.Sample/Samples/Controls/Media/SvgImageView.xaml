@@ -16,35 +16,33 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Margin="0,0,50,0" Orientation="Vertical">
-                    <atc:LabelIntegerBox
-                        x:Name="TbControlWidth"
-                        LabelText="Width"
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <atc:LabelPixelSizeBox
+                        x:Name="TbControlPixelSize"
+                        HideAreas="All"
+                        LabelText="Size"
                         Maximum="1000"
-                        Minimum="0"
-                        SuffixText="px"
-                        Value="400" />
-                    <atc:LabelIntegerBox
-                        x:Name="TbControlHeight"
-                        LabelText="Height"
-                        Maximum="1000"
-                        Minimum="0"
-                        SuffixText="px"
-                        Value="400" />
+                        ValueHeight="400"
+                        ValueWidth="400" />
                 </StackPanel>
-                <atc:LabelComboBox
-                    x:Name="CbControlSizeType"
-                    Width="280"
-                    Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
-                    LabelText="Control Size"
-                    SelectedKey="ContentToSizeStretch" />
-                <atc:LabelWellKnownColorSelector
-                    x:Name="CbColor"
-                    Width="230"
-                    SelectedKey="Transparent" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <atc:LabelComboBox
+                        x:Name="CbControlSizeType"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                        LabelText="Control Size"
+                        SelectedKey="ContentToSizeStretch" />
+                    <atc:LabelWellKnownColorSelector
+                        x:Name="CbColor"
+                        HideAreas="All"
+                        SelectedKey="Transparent" />
+                </StackPanel>
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">
@@ -55,8 +53,8 @@
                 <!--  ReSharper disable once MarkupAttributeTypo  -->
                 <atc:SvgImage
                     x:Name="MySvgImage"
-                    Width="{Binding ElementName=TbControlWidth, Path=Value}"
-                    Height="{Binding ElementName=TbControlHeight, Path=Value}"
+                    Width="{Binding ElementName=TbControlPixelSize, Path=ValueWidth}"
+                    Height="{Binding ElementName=TbControlPixelSize, Path=ValueHeight}"
                     Margin="20"
                     Background="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToBrushValueConverter}}"
                     ControlSizeType="{Binding ElementName=CbControlSizeType, Path=SelectedKey}"

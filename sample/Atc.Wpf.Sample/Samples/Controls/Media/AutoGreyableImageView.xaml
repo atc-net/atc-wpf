@@ -10,8 +10,15 @@
     mc:Ignorable="d">
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
-            <CheckBox x:Name="CbImage">Set IsEnabled on image</CheckBox>
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="CbImage">Set IsEnabled on image</CheckBox>
+                </StackPanel>
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">

@@ -19,7 +19,10 @@
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
-        <GroupBox Padding="10" Header="Features">
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
             <Button
                 Width="100"
                 Command="{Binding Path=AddCommand}"
