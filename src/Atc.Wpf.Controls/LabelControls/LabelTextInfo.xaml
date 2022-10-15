@@ -8,9 +8,7 @@
     mc:Ignorable="d">
 
     <labelControls:LabelContent
-        HideAsteriskArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAsteriskArea}"
-        HideInformationArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideInformationArea}"
-        HideValidationTextArea="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideValidationTextArea}"
+        HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         LabelText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=TextInfo}"

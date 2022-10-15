@@ -45,9 +45,7 @@
                             SelectedKey="Red" />
 
                         <atc:LabelWellKnownColorSelector
-                            HideAsteriskArea="True"
-                            HideInformationArea="True"
-                            HideValidationTextArea="True"
+                            HideAreas="All"
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelWidthNumber="120"

@@ -1,5 +1,5 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.Controls.BaseControls;
+namespace Atc.Wpf.Controls;
 
 [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "OK.")]
 [Flags]

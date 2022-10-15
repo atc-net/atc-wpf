@@ -2,40 +2,16 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public class LabelControlBase : UserControl, ILabelControlBase
 {
-    public static readonly DependencyProperty HideAsteriskAreaProperty = DependencyProperty.Register(
-        nameof(HideAsteriskArea),
-        typeof(bool),
+    public static readonly DependencyProperty HideAreasProperty = DependencyProperty.Register(
+        nameof(HideAreas),
+        typeof(LabelControlHideAreasType),
         typeof(LabelControlBase),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(LabelControlHideAreasType.None));
 
-    public bool HideAsteriskArea
+    public LabelControlHideAreasType HideAreas
     {
-        get => (bool)GetValue(HideAsteriskAreaProperty);
-        set => SetValue(HideAsteriskAreaProperty, value);
-    }
-
-    public static readonly DependencyProperty HideInformationAreaProperty = DependencyProperty.Register(
-        nameof(HideInformationArea),
-        typeof(bool),
-        typeof(LabelControlBase),
-        new PropertyMetadata(defaultValue: false));
-
-    public bool HideInformationArea
-    {
-        get => (bool)GetValue(HideInformationAreaProperty);
-        set => SetValue(HideInformationAreaProperty, value);
-    }
-
-    public static readonly DependencyProperty HideValidationTextAreaProperty = DependencyProperty.Register(
-        nameof(HideValidationTextArea),
-        typeof(bool),
-        typeof(LabelControlBase),
-        new PropertyMetadata(defaultValue: false));
-
-    public bool HideValidationTextArea
-    {
-        get => (bool)GetValue(HideValidationTextAreaProperty);
-        set => SetValue(HideValidationTextAreaProperty, value);
+        get => (LabelControlHideAreasType)GetValue(HideAreasProperty);
+        set => SetValue(HideAreasProperty, value);
     }
 
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(

@@ -2,11 +2,7 @@ namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
 public interface ILabelControlBase
 {
-    bool HideAsteriskArea { get; set; }
-
-    bool HideValidationTextArea { get; set; }
-
-    bool HideInformationArea { get; set; }
+    LabelControlHideAreasType HideAreas { get; set; }
 
     Orientation Orientation { get; set; }
 
