@@ -1,15 +1,14 @@
-// ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Theming.Controls
+// ReSharper disable CheckNamespace
+namespace Atc.Wpf.Theming;
+
+/// <summary>
+/// An enum representing the result of a Message Dialog.
+/// </summary>
+public enum MessageDialogResultType
 {
-    /// <summary>
-    /// An enum representing the result of a Message Dialog.
-    /// </summary>
-    public enum MessageDialogResultType
-    {
-        Canceled = -1,
-        Negative = 0,
-        Affirmative = 1,
-        FirstAuxiliary,
-        SecondAuxiliary,
-    }
+    Canceled = -1,
+    Negative = 0,
+    Affirmative = 1,
+    FirstAuxiliary,
+    SecondAuxiliary,
 }

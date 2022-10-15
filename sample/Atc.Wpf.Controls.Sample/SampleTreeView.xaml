@@ -64,6 +64,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelContentView" />
         <atc:SampleTreeViewItem
+            Header="LabelSlider"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelSliderView" />
+        <atc:SampleTreeViewItem
             Header="LabelTextBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelTextBoxView" />

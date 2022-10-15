@@ -86,6 +86,8 @@
                             SuffixText="S123"
                             Value="3" />
 
+                        <atc:LabelSlider LabelText="MySlider" Orientation="Horizontal" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
@@ -150,6 +152,7 @@
                             LabelText="MyIntegerBox"
                             Orientation="Vertical" />
 
+                        <atc:LabelSlider LabelText="MySlider" Orientation="Vertical" />
 
                     </StackPanel>
                 </atc:GridEx>
