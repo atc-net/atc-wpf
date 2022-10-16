@@ -7,18 +7,6 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelTextBox : ILabelTextBox
 {
-    public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-        nameof(LabelText),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string LabelText
-    {
-        get => (string)GetValue(LabelTextProperty);
-        set => SetValue(LabelTextProperty, value);
-    }
-
     public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
         nameof(WatermarkText),
         typeof(string),

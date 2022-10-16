@@ -6,6 +6,8 @@ public interface ILabelControlBase
 
     Orientation Orientation { get; set; }
 
+    string LabelText { get; set; }
+
     int LabelWidthNumber { get; set; }
 
     SizeDefinitionType LabelWidthSizeDefinition { get; set; }

@@ -563,7 +563,7 @@ public class NumericBox : Control
 
     private void OnCultureManagerUiCultureChanged(
         object? sender,
-        EventArgs e)
+        UiCultureEventArgs e)
     {
         Culture = Thread.CurrentThread.CurrentUICulture;
     }

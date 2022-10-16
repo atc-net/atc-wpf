@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
-public interface ILabelSlider : ILabelTextControl
+public interface ILabelSlider : ILabelControl
 {
     int Maximum { get; set; }
 

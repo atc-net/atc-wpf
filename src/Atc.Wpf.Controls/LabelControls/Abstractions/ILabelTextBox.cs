@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
-public interface ILabelTextBox : ILabelTextControl
+public interface ILabelTextBox : ILabelControl
 {
     string WatermarkText { get; set; }
 

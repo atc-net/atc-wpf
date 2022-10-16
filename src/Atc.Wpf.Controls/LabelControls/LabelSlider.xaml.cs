@@ -5,18 +5,6 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelSlider : ILabelSlider
 {
-    public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-        nameof(LabelText),
-        typeof(string),
-        typeof(LabelSlider),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string LabelText
-    {
-        get => (string)GetValue(LabelTextProperty);
-        set => SetValue(LabelTextProperty, value);
-    }
-
     public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
         nameof(Maximum),
         typeof(int),
