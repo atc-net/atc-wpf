@@ -8,6 +8,11 @@ internal class LabelControlOrientationToAsteriskPaddingValueConverter : IValueCo
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        {
+            return new Thickness(0, 7, 0, 0);
+        }
+
         if (value is null)
         {
             return new Thickness(0);

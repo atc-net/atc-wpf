@@ -54,7 +54,7 @@ public class LabelControlBase : UserControl, ILabelControlBase
         nameof(LabelText),
         typeof(string),
         typeof(LabelControlBase),
-        new PropertyMetadata(defaultValue: string.Empty));
+        new PropertyMetadata("-Label-"));
 
     public string LabelText
     {
