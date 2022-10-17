@@ -5,18 +5,6 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelToggleSwitch : ILabelToggleSwitch
 {
-    public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-        nameof(LabelText),
-        typeof(string),
-        typeof(LabelToggleSwitch),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string LabelText
-    {
-        get => (string)GetValue(LabelTextProperty);
-        set => SetValue(LabelTextProperty, value);
-    }
-
     public static readonly DependencyProperty ContentDirectionProperty = DependencyProperty.Register(
         nameof(ContentDirection),
         typeof(FlowDirection),

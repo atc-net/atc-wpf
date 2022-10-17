@@ -1,13 +1,12 @@
 namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
-internal class LabelControlHideAreasToTreeGridExColumnsValueConverter : IValueConverter
+public class LabelControlHideAreasForValidationToGridExRowsValueConverter : IValueConverter
 {
-    [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
         {
-            return "10,*,20";
+            return "Auto,Auto,10";
         }
 
         if (value is not LabelControlHideAreasType currentHideAreasType)
@@ -15,19 +14,21 @@ internal class LabelControlHideAreasToTreeGridExColumnsValueConverter : IValueCo
             throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
         }
 
-        var widthLeft = 0;
-        if (!currentHideAreasType.HasFlag(LabelControlHideAreasType.Asterisk))
+        if (parameter is not Orientation orientation)
         {
-            widthLeft = 10;
+            throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
         }
 
-        var widthRight = 0;
-        if (!currentHideAreasType.HasFlag(LabelControlHideAreasType.Information))
+        if (currentHideAreasType.HasFlag(LabelControlHideAreasType.Validation))
         {
-            widthRight = 20;
+            return orientation == Orientation.Horizontal
+                ? "Auto,Auto"
+                : "Auto,Auto,Auto";
         }
 
-        return $"{widthLeft},*,{widthRight}";
+        return orientation == Orientation.Horizontal
+            ? "Auto,Auto,10"
+            : "Auto,Auto,Auto,10";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

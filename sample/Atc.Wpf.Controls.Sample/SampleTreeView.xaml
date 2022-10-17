@@ -116,6 +116,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelMixView" />
         <atc:SampleTreeViewItem
+            Header="Label-MIX-Compact"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelMixCompactView" />
+        <atc:SampleTreeViewItem
             Header="Label-MIX-Bindings"
             IsExpanded="True"
             SamplePath="LabelControls.LabelMixBindingsView" />

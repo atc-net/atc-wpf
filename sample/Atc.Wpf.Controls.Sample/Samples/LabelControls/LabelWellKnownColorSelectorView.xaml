@@ -30,6 +30,7 @@
 
                         <atc:LabelWellKnownColorSelector
                             InformationText="This is a help text.."
+                            LabelText="MyColor"
                             Orientation="Horizontal"
                             SelectedKey="Red" />
 
@@ -68,6 +69,7 @@
 
                         <atc:LabelWellKnownColorSelector
                             InformationText="This is a help text.."
+                            LabelText="MyColor"
                             Orientation="Vertical"
                             SelectedKey="Red" />
 

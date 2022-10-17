@@ -50,6 +50,18 @@ public class LabelControlBase : UserControl, ILabelControlBase
         set => SetValue(LabelWidthSizeDefinitionProperty, value);
     }
 
+    public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
+        nameof(LabelText),
+        typeof(string),
+        typeof(LabelControlBase),
+        new PropertyMetadata("-Label-"));
+
+    public string LabelText
+    {
+        get => (string)GetValue(LabelTextProperty);
+        set => SetValue(LabelTextProperty, value);
+    }
+
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),

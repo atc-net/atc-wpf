@@ -6,6 +6,15 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
 {
+    public static new readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
+        nameof(LabelText),
+        typeof(string),
+        typeof(LabelWellKnownColorSelector),
+        new FrameworkPropertyMetadata(
+            Miscellaneous.Color,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnLabelTextChanged));
+
     public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
         nameof(ShowAsteriskOnMandatory),
         typeof(bool),
@@ -110,6 +119,38 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();
+
+        CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
+    }
+
+    private void OnCultureManagerUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        if (string.IsNullOrEmpty(LabelText))
+        {
+            LabelText = Miscellaneous.Color;
+        }
+        else
+        {
+            var s = Miscellaneous.ResourceManager.GetString(LabelText, e.OldCulture);
+            if (s is not null && s.Equals(LabelText, StringComparison.Ordinal))
+            {
+                LabelText = Miscellaneous.Color;
+            }
+        }
+    }
+
+    private static void OnLabelTextChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var labelWellKnownColorSelector = (LabelWellKnownColorSelector)d;
+
+        if (string.IsNullOrEmpty(labelWellKnownColorSelector.LabelText))
+        {
+            labelWellKnownColorSelector.LabelText = Miscellaneous.Color;
+        }
     }
 
     private static void OnSelectedKeyChanged(

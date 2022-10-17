@@ -47,6 +47,8 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         InitializeComponent();
 
         PopulateData();
+
+        CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -72,6 +74,18 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    private void OnCultureManagerUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        var backupSelectedKey = SelectedKey;
+
+        PopulateData();
+        OnPropertyChanged(nameof(Items));
+
+        SelectedKey = backupSelectedKey;
     }
 
     private void PopulateData()

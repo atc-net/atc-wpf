@@ -238,7 +238,7 @@
                                 x:Name="ContentSite"
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="0">
+                                Margin="3,0">
                                 <ContentPresenter
                                     Margin="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

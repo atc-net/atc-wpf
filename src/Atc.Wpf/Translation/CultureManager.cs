@@ -22,7 +22,7 @@ public static class CultureManager
     /// </summary>
     private static bool synchronizeThreadCulture = true;
 
-    public static event EventHandler? UiCultureChanged;
+    public static event EventHandler<UiCultureEventArgs>? UiCultureChanged;
 
     /// <summary>
     /// Gets or sets the UI culture.
@@ -41,6 +41,7 @@ public static class CultureManager
                 return;
             }
 
+            var oldUiCulture = new CultureInfo(uiCulture.LCID);
             uiCulture = value;
             Thread.CurrentThread.CurrentUICulture = value;
             if (SynchronizeThreadCulture)
@@ -51,7 +52,11 @@ public static class CultureManager
             UiCultureExtension.UpdateAllTargets();
             ResxExtension.UpdateAllTargets();
 
-            UiCultureChanged?.Invoke(sender: null, EventArgs.Empty);
+            UiCultureChanged?.Invoke(
+                sender: null,
+                new UiCultureEventArgs(
+                    oldUiCulture,
+                    value));
         }
     }
 

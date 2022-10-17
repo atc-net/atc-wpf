@@ -111,7 +111,7 @@ public class BusyOverlay : ContentControl
 
     private void OnCultureManagerUiCultureChanged(
         object? sender,
-        EventArgs e)
+        UiCultureEventArgs e)
     {
         if (BusyContent is string)
         {
