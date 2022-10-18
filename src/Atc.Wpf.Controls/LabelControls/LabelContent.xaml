@@ -13,7 +13,7 @@
 
     <labelControls:LabelControl.Resources>
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
-        <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
+        <atcValueConverters:StringNullOrEmptyToBoolValueConverter x:Key="StringNullOrEmptyToBoolValueConverter" />
         <valueConverters:LabelControlHideAreasForValidationToGridExRowsValueConverter x:Key="LabelControlHideAreasForValidationToGridExRowsValueConverter" />
         <valueConverters:LabelControlHideAreasToBoolValueConverter x:Key="LabelControlHideAreasToBoolValueConverter" />
         <valueConverters:LabelControlHideAreasToVisibilityValueConverter x:Key="LabelControlHideAreasToVisibilityValueConverter" />
@@ -130,7 +130,7 @@
                                             Path="HideAreas"
                                             RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                         <Binding
-                                            Converter="{StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}"
+                                            Converter="{StaticResource StringNullOrEmptyToBoolValueConverter}"
                                             Path="InformationText"
                                             RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
