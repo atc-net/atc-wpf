@@ -1,5 +1,9 @@
 namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
+/// <summary>
+/// ValueConverter: Label-Control HideAreas To string of columns: "[0],[1],[2]".
+/// </summary>
+[ValueConversion(typeof(LabelControlHideAreasType), typeof(string))]
 internal class LabelControlHideAreasToTreeGridExColumnsValueConverter : IValueConverter
 {
     [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]

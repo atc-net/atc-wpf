@@ -1,5 +1,9 @@
 namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
+/// <summary>
+/// ValueConverter: Label-Control HideAreas To string of rows: "[0],[1],[2]" or "[0],[1],[2],[3]".
+/// </summary>
+[ValueConversion(typeof(LabelControlHideAreasType), typeof(string))]
 public class LabelControlHideAreasForValidationToGridExRowsValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
