@@ -118,7 +118,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="GridViewColumnHeader">
+                <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
                     <Grid>
                         <Rectangle Fill="Transparent" IsHitTestVisible="True" />
                         <Border
@@ -164,7 +164,7 @@
                 <Setter Property="Opacity" Value="0.7" />
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="GridViewColumnHeader">
+                        <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
                             <Canvas Name="PART_FloatingHeaderCanvas">
                                 <Rectangle
                                     Width="{TemplateBinding ActualWidth}"
@@ -346,7 +346,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListView">
+                <ControlTemplate TargetType="{x:Type ListView}">
                     <Border
                         x:Name="Border"
                         Background="{TemplateBinding Background}"

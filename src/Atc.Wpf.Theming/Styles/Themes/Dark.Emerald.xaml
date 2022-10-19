@@ -699,6 +699,12 @@
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Accent2}" />
 
+    <!--  Brushes: ListBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ListBox.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
+
     <!--  Brushes: ListView  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ListView.Border"
