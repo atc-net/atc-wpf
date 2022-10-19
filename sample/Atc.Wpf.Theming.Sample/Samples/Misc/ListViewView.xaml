@@ -27,9 +27,23 @@
                     <atc:GridEx
                         Grid.Column="0"
                         Margin="10"
-                        Rows="*">
+                        Rows="*,10,*">
 
                         <ListView Grid.Row="0" ItemsSource="{Binding Items, ElementName=UcListViewView}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last-Name" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Age}" Header="Age" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Address" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <ListView
+                            Grid.Row="2"
+                            atc:ItemHelper.DisableAlternatingRowColoring="True"
+                            ItemsSource="{Binding Items, ElementName=UcListViewView}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />

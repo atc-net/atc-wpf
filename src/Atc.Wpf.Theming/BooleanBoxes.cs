@@ -3,6 +3,9 @@ namespace Atc.Wpf.Theming
     /// <summary>
     /// Helps boxing Boolean values.
     /// </summary>
+    /// <remarks>
+    /// https://xstatic2.wordpress.com/2011/10/21/tip-improving-boolean-dependency-properties-performance/
+    /// </remarks>
     public static class BooleanBoxes
     {
         /// <summary>

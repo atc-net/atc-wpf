@@ -3,6 +3,40 @@ namespace Atc.Wpf.Theming.Helpers;
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class ItemHelper
 {
+    public static readonly DependencyProperty AlternatingRowBackgroundBrushProperty = DependencyProperty.RegisterAttached(
+        "AlternatingRowBackgroundBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            default(Brush),
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static Brush? GetAlternatingRowBackgroundBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(AlternatingRowBackgroundBrushProperty);
+
+    public static void SetAlternatingRowBackgroundBrush(
+        UIElement element,
+        Brush? value)
+        => element.SetValue(AlternatingRowBackgroundBrushProperty, value);
+
+    public static readonly DependencyProperty DisableAlternatingRowColoringProperty = DependencyProperty.RegisterAttached(
+        "DisableAlternatingRowColoring",
+        typeof(bool),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            defaultValue: false,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static bool GetDisableAlternatingRowColoring(
+        UIElement element)
+        => (bool)element.GetValue(DisableAlternatingRowColoringProperty);
+
+    public static void SetDisableAlternatingRowColoring(
+        UIElement element,
+        bool value)
+        => element.SetValue(DisableAlternatingRowColoringProperty, value);
+
     public static readonly DependencyProperty ActiveSelectionBackgroundBrushProperty = DependencyProperty.RegisterAttached(
         "ActiveSelectionBackgroundBrush",
         typeof(Brush),
@@ -329,54 +363,132 @@ public static class ItemHelper
             FrameworkPropertyMetadataOptions.AffectsRender,
             OnMouseLeftButtonPressedPropertyChanged));
 
-    private static void OnMouseLeftButtonPressedPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    public static Brush? GetMouseLeftButtonPressedBackgroundBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(MouseLeftButtonPressedBackgroundBrushProperty);
+
+    public static void SetMouseLeftButtonPressedBackgroundBrush(
+        UIElement element, Brush? value)
+        => element.SetValue(MouseLeftButtonPressedBackgroundBrushProperty, value);
+
+    public static readonly DependencyProperty MouseLeftButtonPressedBorderBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseLeftButtonPressedBorderBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            default(Brush),
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            OnMouseLeftButtonPressedBorderPropertyChanged));
+
+    public static Brush? GetMouseLeftButtonPressedBorderBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(MouseLeftButtonPressedBorderBrushProperty);
+
+    public static void SetMouseLeftButtonPressedBorderBrush(
+        UIElement element,
+        Brush? value)
+        => element.SetValue(MouseLeftButtonPressedBorderBrushProperty, value);
+
+    public static readonly DependencyProperty MouseLeftButtonPressedForegroundBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseLeftButtonPressedForegroundBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            default(Brush),
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            OnMouseLeftButtonPressedForegroundBrushPropertyChanged));
+
+    public static Brush? GetMouseLeftButtonPressedForegroundBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(MouseLeftButtonPressedForegroundBrushProperty);
+
+    public static void SetMouseLeftButtonPressedForegroundBrush(
+        UIElement element,
+        Brush? value)
     {
-        if (d is not UIElement element || e.OldValue == e.NewValue)
-        {
-            return;
-        }
-
-        element.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
-        element.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
-        element.MouseEnter -= OnLeftMouseEnter;
-        element.MouseLeave -= OnLeftMouseLeave;
-
-        if (e.NewValue is not Brush &&
-            GetMouseLeftButtonPressedForegroundBrush(element) is null &&
-            GetMouseLeftButtonPressedBorderBrush(element) is null)
-        {
-            return;
-        }
-
-        element.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
-        element.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
-        element.MouseEnter += OnLeftMouseEnter;
-        element.MouseLeave += OnLeftMouseLeave;
+        element.SetValue(MouseLeftButtonPressedForegroundBrushProperty, value);
     }
 
-    private static void OnLeftMouseEnter(
-        object sender,
-        MouseEventArgs e)
-    {
-        var element = (UIElement)sender;
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            element.SetValue(IsMouseLeftButtonPressedPropertyKey, BooleanBoxes.TrueBox);
-        }
-    }
+    private static readonly DependencyPropertyKey IsMouseRightButtonPressedPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+        "IsMouseRightButtonPressed",
+        typeof(bool),
+        typeof(ItemHelper),
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
-    private static void OnLeftMouseLeave(
-        object sender,
-        MouseEventArgs e)
-    {
-        var element = (UIElement)sender;
-        if (e.LeftButton == MouseButtonState.Pressed && GetIsMouseLeftButtonPressed(element))
-        {
-            element.SetValue(IsMouseLeftButtonPressedPropertyKey, BooleanBoxes.FalseBox);
-        }
-    }
+    public static readonly DependencyProperty IsMouseRightButtonPressedProperty = IsMouseRightButtonPressedPropertyKey.DependencyProperty;
+
+    public static bool GetIsMouseRightButtonPressed(
+        UIElement element)
+        => (bool)element.GetValue(IsMouseRightButtonPressedProperty);
+
+    public static readonly DependencyProperty MouseRightButtonPressedBackgroundBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseRightButtonPressedBackgroundBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            default(Brush),
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            OnMouseRightButtonPressedPropertyChanged));
+
+    public static Brush? GetMouseRightButtonPressedBackgroundBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(MouseRightButtonPressedBackgroundBrushProperty);
+
+    public static void SetMouseRightButtonPressedBackgroundBrush(
+        UIElement element,
+        Brush? value)
+        => element.SetValue(MouseRightButtonPressedBackgroundBrushProperty, value);
+
+    public static readonly DependencyProperty MouseRightButtonPressedBorderBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseRightButtonPressedBorderBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            default(Brush),
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            OnMouseRightButtonPressedBorderPropertyChanged));
+
+    public static Brush? GetMouseRightButtonPressedBorderBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(MouseRightButtonPressedBorderBrushProperty);
+
+    public static void SetMouseRightButtonPressedBorderBrush(
+        UIElement element,
+        Brush? value)
+        => element.SetValue(MouseRightButtonPressedBorderBrushProperty, value);
+
+    public static readonly DependencyProperty MouseRightButtonPressedForegroundBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseRightButtonPressedForegroundBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(
+            default(Brush),
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            OnMouseRightButtonPressedForegroundBrushPropertyChanged));
+
+    public static Brush? GetMouseRightButtonPressedForegroundBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(MouseRightButtonPressedForegroundBrushProperty);
+
+    public static void SetMouseRightButtonPressedForegroundBrush(
+        UIElement element,
+        Brush? value)
+        => element.SetValue(MouseRightButtonPressedForegroundBrushProperty, value);
+
+    public static readonly DependencyProperty GridViewHeaderIndicatorBrushProperty = DependencyProperty.RegisterAttached(
+        "GridViewHeaderIndicatorBrush",
+        typeof(Brush),
+        typeof(ItemHelper),
+        new FrameworkPropertyMetadata(propertyChangedCallback: null));
+
+    public static Brush? GetGridViewHeaderIndicatorBrush(
+        UIElement element)
+        => (Brush?)element.GetValue(GridViewHeaderIndicatorBrushProperty);
+
+    public static void SetGridViewHeaderIndicatorBrush(
+        UIElement element,
+        Brush? value)
+        => element.SetValue(GridViewHeaderIndicatorBrushProperty, value);
 
     private static void OnPreviewMouseLeftButtonDown(
         object sender,
@@ -398,154 +510,6 @@ public static class ItemHelper
         {
             element.SetValue(IsMouseLeftButtonPressedPropertyKey, BooleanBoxes.FalseBox);
         }
-    }
-
-    public static Brush? GetMouseLeftButtonPressedBackgroundBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(MouseLeftButtonPressedBackgroundBrushProperty);
-
-    public static void SetMouseLeftButtonPressedBackgroundBrush(
-        UIElement element, Brush? value)
-        => element.SetValue(MouseLeftButtonPressedBackgroundBrushProperty, value);
-
-    public static readonly DependencyProperty MouseLeftButtonPressedBorderBrushProperty
-        = DependencyProperty.RegisterAttached(
-            "MouseLeftButtonPressedBorderBrush",
-            typeof(Brush),
-            typeof(ItemHelper),
-            new FrameworkPropertyMetadata(
-                default(Brush),
-                FrameworkPropertyMetadataOptions.AffectsRender,
-                OnMouseLeftButtonPressedBorderPropertyChanged));
-
-    private static void OnMouseLeftButtonPressedBorderPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not UIElement element || e.OldValue == e.NewValue)
-        {
-            return;
-        }
-
-        element.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
-        element.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
-        element.MouseEnter -= OnLeftMouseEnter;
-        element.MouseLeave -= OnLeftMouseLeave;
-
-        if (e.NewValue is not Brush &&
-            GetMouseLeftButtonPressedForegroundBrush(element) is null &&
-            GetMouseLeftButtonPressedBackgroundBrush(element) is null)
-        {
-            return;
-        }
-
-        element.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
-        element.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
-        element.MouseEnter += OnLeftMouseEnter;
-        element.MouseLeave += OnLeftMouseLeave;
-    }
-
-    public static Brush? GetMouseLeftButtonPressedBorderBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(MouseLeftButtonPressedBorderBrushProperty);
-
-    public static void SetMouseLeftButtonPressedBorderBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(MouseLeftButtonPressedBorderBrushProperty, value);
-
-    public static readonly DependencyProperty MouseLeftButtonPressedForegroundBrushProperty = DependencyProperty.RegisterAttached(
-        "MouseLeftButtonPressedForegroundBrush",
-        typeof(Brush),
-        typeof(ItemHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnMouseLeftButtonPressedForegroundBrushPropertyChanged));
-
-    private static void OnMouseLeftButtonPressedForegroundBrushPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not UIElement element ||
-            e.OldValue == e.NewValue)
-        {
-            return;
-        }
-
-        element.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
-        element.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
-        element.MouseEnter -= OnLeftMouseEnter;
-        element.MouseLeave -= OnLeftMouseLeave;
-
-        if (e.NewValue is not Brush &&
-            GetMouseLeftButtonPressedBackgroundBrush(element) is null &&
-            GetMouseLeftButtonPressedBorderBrush(element) is null)
-        {
-            return;
-        }
-
-        element.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
-        element.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
-        element.MouseEnter += OnLeftMouseEnter;
-        element.MouseLeave += OnLeftMouseLeave;
-    }
-
-    public static Brush? GetMouseLeftButtonPressedForegroundBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(MouseLeftButtonPressedForegroundBrushProperty);
-
-    public static void SetMouseLeftButtonPressedForegroundBrush(
-        UIElement element,
-        Brush? value)
-    {
-        element.SetValue(MouseLeftButtonPressedForegroundBrushProperty, value);
-    }
-
-    private static readonly DependencyPropertyKey IsMouseRightButtonPressedPropertyKey
-        = DependencyProperty.RegisterAttachedReadOnly(
-            "IsMouseRightButtonPressed",
-            typeof(bool),
-            typeof(ItemHelper),
-            new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public static readonly DependencyProperty IsMouseRightButtonPressedProperty = IsMouseRightButtonPressedPropertyKey.DependencyProperty;
-
-    public static bool GetIsMouseRightButtonPressed(
-        UIElement element)
-        => (bool)element.GetValue(IsMouseRightButtonPressedProperty);
-
-    public static readonly DependencyProperty MouseRightButtonPressedBackgroundBrushProperty = DependencyProperty.RegisterAttached(
-        "MouseRightButtonPressedBackgroundBrush",
-        typeof(Brush),
-        typeof(ItemHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnMouseRightButtonPressedPropertyChanged));
-
-    private static void OnMouseRightButtonPressedPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not UIElement element ||
-            e.OldValue == e.NewValue)
-        {
-            return;
-        }
-
-        element.PreviewMouseRightButtonDown -= OnPreviewMouseRightButtonDown;
-        element.PreviewMouseRightButtonUp -= OnPreviewMouseRightButtonUp;
-
-        if (e.NewValue is not Brush &&
-            GetMouseRightButtonPressedForegroundBrush(element) is null &&
-            GetMouseRightButtonPressedBorderBrush(element) is null)
-        {
-            return;
-        }
-
-        element.PreviewMouseRightButtonDown += OnPreviewMouseRightButtonDown;
-        element.PreviewMouseRightButtonUp += OnPreviewMouseRightButtonUp;
     }
 
     private static void OnPreviewMouseRightButtonDown(
@@ -584,25 +548,111 @@ public static class ItemHelper
         element.SetValue(IsMouseRightButtonPressedPropertyKey, BooleanBoxes.FalseBox);
     }
 
-    public static Brush? GetMouseRightButtonPressedBackgroundBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(MouseRightButtonPressedBackgroundBrushProperty);
+    private static void OnMouseLeftButtonPressedPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not UIElement element || e.OldValue == e.NewValue)
+        {
+            return;
+        }
 
-    public static void SetMouseRightButtonPressedBackgroundBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(MouseRightButtonPressedBackgroundBrushProperty, value);
+        element.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+        element.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
+        element.MouseEnter -= OnLeftMouseEnter;
+        element.MouseLeave -= OnLeftMouseLeave;
 
-    public static readonly DependencyProperty MouseRightButtonPressedBorderBrushProperty = DependencyProperty.RegisterAttached(
-        "MouseRightButtonPressedBorderBrush",
-        typeof(Brush),
-        typeof(ItemHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnMouseRightButtonPressedBorderPropertyChanged));
+        if (e.NewValue is not Brush &&
+            GetMouseLeftButtonPressedForegroundBrush(element) is null &&
+            GetMouseLeftButtonPressedBorderBrush(element) is null)
+        {
+            return;
+        }
 
-    private static void OnMouseRightButtonPressedBorderPropertyChanged(
+        element.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+        element.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
+        element.MouseEnter += OnLeftMouseEnter;
+        element.MouseLeave += OnLeftMouseLeave;
+    }
+
+    private static void OnMouseLeftButtonPressedBorderPropertyChanged(
+       DependencyObject d,
+       DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not UIElement element || e.OldValue == e.NewValue)
+        {
+            return;
+        }
+
+        element.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+        element.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
+        element.MouseEnter -= OnLeftMouseEnter;
+        element.MouseLeave -= OnLeftMouseLeave;
+
+        if (e.NewValue is not Brush &&
+            GetMouseLeftButtonPressedForegroundBrush(element) is null &&
+            GetMouseLeftButtonPressedBackgroundBrush(element) is null)
+        {
+            return;
+        }
+
+        element.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+        element.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
+        element.MouseEnter += OnLeftMouseEnter;
+        element.MouseLeave += OnLeftMouseLeave;
+    }
+
+    private static void OnMouseLeftButtonPressedForegroundBrushPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not UIElement element ||
+            e.OldValue == e.NewValue)
+        {
+            return;
+        }
+
+        element.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+        element.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
+        element.MouseEnter -= OnLeftMouseEnter;
+        element.MouseLeave -= OnLeftMouseLeave;
+
+        if (e.NewValue is not Brush &&
+            GetMouseLeftButtonPressedBackgroundBrush(element) is null &&
+            GetMouseLeftButtonPressedBorderBrush(element) is null)
+        {
+            return;
+        }
+
+        element.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+        element.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
+        element.MouseEnter += OnLeftMouseEnter;
+        element.MouseLeave += OnLeftMouseLeave;
+    }
+
+    private static void OnLeftMouseEnter(
+        object sender,
+        MouseEventArgs e)
+    {
+        var element = (UIElement)sender;
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            element.SetValue(IsMouseLeftButtonPressedPropertyKey, BooleanBoxes.TrueBox);
+        }
+    }
+
+    private static void OnLeftMouseLeave(
+        object sender,
+        MouseEventArgs e)
+    {
+        var element = (UIElement)sender;
+        if (e.LeftButton == MouseButtonState.Pressed && GetIsMouseLeftButtonPressed(element))
+        {
+            element.SetValue(IsMouseLeftButtonPressedPropertyKey, BooleanBoxes.FalseBox);
+        }
+    }
+
+    private static void OnMouseRightButtonPressedPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
@@ -617,7 +667,7 @@ public static class ItemHelper
 
         if (e.NewValue is not Brush &&
             GetMouseRightButtonPressedForegroundBrush(element) is null &&
-            GetMouseRightButtonPressedBackgroundBrush(element) is null)
+            GetMouseRightButtonPressedBorderBrush(element) is null)
         {
             return;
         }
@@ -625,24 +675,6 @@ public static class ItemHelper
         element.PreviewMouseRightButtonDown += OnPreviewMouseRightButtonDown;
         element.PreviewMouseRightButtonUp += OnPreviewMouseRightButtonUp;
     }
-
-    public static Brush? GetMouseRightButtonPressedBorderBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(MouseRightButtonPressedBorderBrushProperty);
-
-    public static void SetMouseRightButtonPressedBorderBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(MouseRightButtonPressedBorderBrushProperty, value);
-
-    public static readonly DependencyProperty MouseRightButtonPressedForegroundBrushProperty = DependencyProperty.RegisterAttached(
-        "MouseRightButtonPressedForegroundBrush",
-        typeof(Brush),
-        typeof(ItemHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnMouseRightButtonPressedForegroundBrushPropertyChanged));
 
     private static void OnMouseRightButtonPressedForegroundBrushPropertyChanged(
         DependencyObject d,
@@ -668,27 +700,27 @@ public static class ItemHelper
         element.PreviewMouseRightButtonUp += OnPreviewMouseRightButtonUp;
     }
 
-    public static Brush? GetMouseRightButtonPressedForegroundBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(MouseRightButtonPressedForegroundBrushProperty);
+    private static void OnMouseRightButtonPressedBorderPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not UIElement element ||
+            e.OldValue == e.NewValue)
+        {
+            return;
+        }
 
-    public static void SetMouseRightButtonPressedForegroundBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(MouseRightButtonPressedForegroundBrushProperty, value);
+        element.PreviewMouseRightButtonDown -= OnPreviewMouseRightButtonDown;
+        element.PreviewMouseRightButtonUp -= OnPreviewMouseRightButtonUp;
 
-    public static readonly DependencyProperty GridViewHeaderIndicatorBrushProperty = DependencyProperty.RegisterAttached(
-        "GridViewHeaderIndicatorBrush",
-        typeof(Brush),
-        typeof(ItemHelper),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
+        if (e.NewValue is not Brush &&
+            GetMouseRightButtonPressedForegroundBrush(element) is null &&
+            GetMouseRightButtonPressedBackgroundBrush(element) is null)
+        {
+            return;
+        }
 
-    public static Brush? GetGridViewHeaderIndicatorBrush(
-        UIElement element)
-        => (Brush?)element.GetValue(GridViewHeaderIndicatorBrushProperty);
-
-    public static void SetGridViewHeaderIndicatorBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(GridViewHeaderIndicatorBrushProperty, value);
+        element.PreviewMouseRightButtonDown += OnPreviewMouseRightButtonDown;
+        element.PreviewMouseRightButtonUp += OnPreviewMouseRightButtonUp;
+    }
 }
