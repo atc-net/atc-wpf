@@ -9,11 +9,6 @@ internal class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueCon
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-        {
-            return "120,*";
-        }
-
         ArgumentNullException.ThrowIfNull(values);
 
         var width = 0;
@@ -33,6 +28,8 @@ internal class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueCon
 
         switch (sizeDefinition)
         {
+            case SizeDefinitionType.None:
+                return $"{width.ToString(GlobalizationConstants.EnglishCultureInfo)},*";
             case SizeDefinitionType.Pixel when width < 10:
                 throw new ConstraintException("Width in Pixel mode must be greater than 10.");
             case SizeDefinitionType.Pixel:

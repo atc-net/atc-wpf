@@ -57,6 +57,14 @@
                             Orientation="Horizontal"
                             SelectedKey="Red" />
 
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            Orientation="Horizontal"
+                            SelectedKey="Red"
+                            ShowAsteriskOnMandatory="True"
+                            ShowHexCode="True" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
@@ -72,6 +80,37 @@
                             LabelText="MyColor"
                             Orientation="Vertical"
                             SelectedKey="Red" />
+
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            LabelWidthNumber="50"
+                            LabelWidthSizeDefinition="Percentage"
+                            Orientation="Vertical"
+                            SelectedKey="Red" />
+
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            LabelWidthNumber="120"
+                            LabelWidthSizeDefinition="Pixel"
+                            Orientation="Vertical"
+                            SelectedKey="Red" />
+
+                        <atc:LabelWellKnownColorSelector
+                            HideAreas="All"
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            LabelWidthNumber="120"
+                            LabelWidthSizeDefinition="Pixel"
+                            Orientation="Vertical"
+                            SelectedKey="Red" />
+
+                        <atc:LabelWellKnownColorSelector
+                            InformationText="This is a help text.."
+                            IsMandatory="True"
+                            Orientation="Vertical"
+                            SelectedKey="Red"
+                            ShowAsteriskOnMandatory="True"
+                            ShowHexCode="True" />
 
                     </StackPanel>
                 </atc:GridEx>

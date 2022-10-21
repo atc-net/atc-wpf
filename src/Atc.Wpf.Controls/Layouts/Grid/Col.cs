@@ -50,7 +50,7 @@ public class Col : ContentControl
         nameof(IsFixed),
         typeof(bool),
         typeof(Col),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
 
     public bool IsFixed
     {

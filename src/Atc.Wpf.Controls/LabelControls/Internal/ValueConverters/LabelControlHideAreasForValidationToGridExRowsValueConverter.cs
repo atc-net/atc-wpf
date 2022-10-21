@@ -8,11 +8,6 @@ public class LabelControlHideAreasForValidationToGridExRowsValueConverter : IVal
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-        {
-            return "Auto,Auto,10";
-        }
-
         if (value is not LabelControlHideAreasType currentHideAreasType)
         {
             throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));

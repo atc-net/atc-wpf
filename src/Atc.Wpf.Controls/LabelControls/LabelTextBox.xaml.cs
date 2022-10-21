@@ -59,7 +59,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(UseDefaultNotAllowedCharacters),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
 
     public bool UseDefaultNotAllowedCharacters
     {
@@ -83,7 +83,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(ShowClearTextButton),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
 
     public bool ShowClearTextButton
     {

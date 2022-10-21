@@ -7,7 +7,7 @@ public class LabelIntegerNumberControl : LabelNumberControl, ILabelIntegerNumber
         typeof(int),
         typeof(LabelIntegerNumberControl),
         new FrameworkPropertyMetadata(
-            int.MaxValue,
+            defaultValue: int.MaxValue,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
 
     public int Maximum
@@ -21,7 +21,7 @@ public class LabelIntegerNumberControl : LabelNumberControl, ILabelIntegerNumber
         typeof(int),
         typeof(LabelIntegerNumberControl),
         new FrameworkPropertyMetadata(
-            int.MinValue,
+            defaultValue: int.MinValue,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
 
     public int Minimum

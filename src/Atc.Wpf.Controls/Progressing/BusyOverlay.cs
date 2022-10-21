@@ -16,7 +16,7 @@ public class BusyOverlay : ContentControl
         typeof(bool),
         typeof(BusyOverlay),
         new PropertyMetadata(
-            defaultValue: false,
+            defaultValue: BooleanBoxes.FalseBox,
             OnIsBusyChanged));
 
     public bool IsBusy

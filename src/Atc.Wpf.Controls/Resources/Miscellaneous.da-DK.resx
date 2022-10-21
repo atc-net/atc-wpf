@@ -106,4 +106,7 @@
   <data name="PleaseWait" xml:space="preserve">
     <value>Vent venligst</value>
   </data>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>Feltet er påkrævet</value>
+  </data>
 </root>

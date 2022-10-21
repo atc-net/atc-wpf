@@ -13,7 +13,7 @@
 
     <labelControls:LabelControl.Resources>
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
-        <atcValueConverters:StringNullOrEmptyToBoolValueConverter x:Key="StringNullOrEmptyToBoolValueConverter" />
+        <atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter x:Key="StringNullOrEmptyToInverseBoolValueConverter" />
         <valueConverters:LabelControlHideAreasForValidationToGridExRowsValueConverter x:Key="LabelControlHideAreasForValidationToGridExRowsValueConverter" />
         <valueConverters:LabelControlHideAreasToBoolValueConverter x:Key="LabelControlHideAreasToBoolValueConverter" />
         <valueConverters:LabelControlHideAreasToVisibilityValueConverter x:Key="LabelControlHideAreasToVisibilityValueConverter" />
@@ -51,6 +51,7 @@
                                 </TextBlock.Visibility>
                             </TextBlock>
 
+                            <!--  Orientation="Horizontal" mode  -->
                             <atc:GridEx
                                 Grid.Column="1"
                                 Rows="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas, Converter={StaticResource LabelControlHideAreasForValidationToGridExRowsValueConverter}, ConverterParameter={x:Static Orientation.Horizontal}, FallbackValue='Auto,Auto,10'}"
@@ -66,7 +67,7 @@
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelContent}}, Path=LabelText, FallbackValue=Label}" />
                                     <TextBlock Margin="0,0,5,0" Text=":" />
                                 </StackPanel>
 
@@ -79,12 +80,13 @@
                                     Grid.Row="1"
                                     Grid.Column="2"
                                     VerticalAlignment="Center"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor, FallbackValue=OrangeRed}"
+                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelContent}}, Path=ValidationColor, FallbackValue=OrangeRed}"
                                     Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}"
                                     Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas, Converter={StaticResource LabelControlHideAreasToVisibilityValueConverter}, ConverterParameter={x:Static labelControls:LabelControlHideAreasType.Validation}}" />
 
                             </atc:GridEx>
 
+                            <!--  Orientation="Vertical" mode  -->
                             <atc:GridEx
                                 Grid.Column="1"
                                 Columns="*"
@@ -96,7 +98,7 @@
                                     Margin="0,5,0,5"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=Label}" />
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelContent}}, Path=LabelText, FallbackValue=Label}" />
                                     <TextBlock Margin="0,0,5,0" Text=":" />
                                 </StackPanel>
 
@@ -122,19 +124,6 @@
                                 VerticalAlignment="Top"
                                 OverrideColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor, FallbackValue=DodgerBlue}"
                                 Source="/Atc.Wpf.Controls;component/Resources/info_help.svg">
-                                <atc:SvgImage.Visibility>
-                                    <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
-                                        <Binding
-                                            Converter="{StaticResource LabelControlHideAreasToBoolValueConverter}"
-                                            ConverterParameter="{x:Static labelControls:LabelControlHideAreasType.Information}"
-                                            Path="HideAreas"
-                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                        <Binding
-                                            Converter="{StaticResource StringNullOrEmptyToBoolValueConverter}"
-                                            Path="InformationText"
-                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                    </MultiBinding>
-                                </atc:SvgImage.Visibility>
                                 <atc:SvgImage.ToolTip>
                                     <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                                     <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" Style="{StaticResource AtcApps.Styles.ToolTip}">
@@ -144,6 +133,19 @@
                                         </StackPanel>
                                     </ToolTip>
                                 </atc:SvgImage.ToolTip>
+                                <atc:SvgImage.Visibility>
+                                    <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
+                                        <Binding
+                                            Converter="{StaticResource LabelControlHideAreasToBoolValueConverter}"
+                                            ConverterParameter="{x:Static labelControls:LabelControlHideAreasType.Information}"
+                                            Path="HideAreas"
+                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding
+                                            Converter="{StaticResource StringNullOrEmptyToInverseBoolValueConverter}"
+                                            Path="InformationText"
+                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </atc:SvgImage.Visibility>
                             </atc:SvgImage>
 
                         </atc:GridEx>

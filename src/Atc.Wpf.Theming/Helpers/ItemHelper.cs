@@ -25,7 +25,7 @@ public static class ItemHelper
         typeof(bool),
         typeof(ItemHelper),
         new FrameworkPropertyMetadata(
-            defaultValue: false,
+            defaultValue: BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
     public static bool GetDisableAlternatingRowColoring(

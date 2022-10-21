@@ -9,11 +9,6 @@ internal class LabelControlHideAreasToTreeGridExColumnsValueConverter : IValueCo
     [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-        {
-            return "10,*,20";
-        }
-
         if (value is not LabelControlHideAreasType currentHideAreasType)
         {
             throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
