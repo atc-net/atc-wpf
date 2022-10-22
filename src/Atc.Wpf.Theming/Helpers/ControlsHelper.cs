@@ -107,6 +107,23 @@ public static class ControlsHelper
         Brush value)
         => d.SetValue(MouseOverBackgroundBrushProperty, value);
 
+    public static readonly DependencyProperty MouseOverForegroundBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseOverForegroundBrush",
+        typeof(Brush),
+        typeof(ControlsHelper),
+        new FrameworkPropertyMetadata(
+            Brushes.Transparent,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static Brush GetMouseOverForegroundBrush(
+        DependencyObject d)
+        => (Brush)d.GetValue(MouseOverForegroundBrushProperty);
+
+    public static void SetMouseOverForegroundBrush(
+        DependencyObject d,
+        Brush value)
+        => d.SetValue(MouseOverForegroundBrushProperty, value);
+
     public static readonly DependencyProperty MouseOverBorderBrushProperty = DependencyProperty.RegisterAttached(
         "MouseOverBorderBrush",
         typeof(Brush),

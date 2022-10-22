@@ -27,64 +27,169 @@
                         Orientation="Vertical"
                         Spacing="10">
 
-                        <Button Content="Hello" />
+                        <atc:UniformSpacingPanel
+                            ItemWidth="100"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button Content="Hello" />
+                            <Button Content="Hello" IsEnabled="False" />
+                        </atc:UniformSpacingPanel>
 
-                        <Button Content="Hello" IsEnabled="False" />
+                        <atc:UniformSpacingPanel
+                            ItemWidth="100"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button Content="Hello" Style="{StaticResource ButtonChromeless}" />
+                            <Button
+                                Content="Hello"
+                                IsEnabled="False"
+                                Style="{StaticResource ButtonChromeless}" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <Button Content="Hello" Style="{StaticResource Button.Small}" />
+                            <Button
+                                Content="Hello"
+                                IsEnabled="False"
+                                Style="{StaticResource Button.Small}" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <Button Content="Hello" Style="{StaticResource ButtonChromeless.Small}" />
+                            <Button
+                                Content="Hello"
+                                IsEnabled="False"
+                                Style="{StaticResource ButtonChromeless.Small}" />
+                        </atc:UniformSpacingPanel>
 
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"
                         Margin="10"
-                        Orientation="Horizontal"
+                        Orientation="Vertical"
                         Spacing="10">
 
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Vertical"
-                            Spacing="10">
-                            <Button Content="Default" Style="{StaticResource ButtonDefault}" />
-                            <Button Content="Primary" Style="{StaticResource ButtonPrimary}" />
-                            <Button Content="Secondary" Style="{StaticResource ButtonSecondary}" />
-                            <Button Content="Success" Style="{StaticResource ButtonSuccess}" />
-                            <Button Content="Danger" Style="{StaticResource ButtonDanger}" />
-                            <Button Content="Warning" Style="{StaticResource ButtonWarning}" />
-                            <Button Content="Info" Style="{StaticResource ButtonInfo}" />
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+
+                            <atc:UniformSpacingPanel
+                                ItemWidth="100"
+                                Orientation="Vertical"
+                                Spacing="10">
+                                <Button Content="Default" Style="{StaticResource ButtonDefault}" />
+                                <Button Content="Primary" Style="{StaticResource ButtonPrimary}" />
+                                <Button Content="Secondary" Style="{StaticResource ButtonSecondary}" />
+                                <Button Content="Success" Style="{StaticResource ButtonSuccess}" />
+                                <Button Content="Danger" Style="{StaticResource ButtonDanger}" />
+                                <Button Content="Warning" Style="{StaticResource ButtonWarning}" />
+                                <Button Content="Info" Style="{StaticResource ButtonInfo}" />
+                            </atc:UniformSpacingPanel>
+
+                            <atc:UniformSpacingPanel
+                                ItemWidth="100"
+                                Orientation="Vertical"
+                                Spacing="10">
+                                <Button
+                                    Content="Default"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonDefault}" />
+                                <Button
+                                    Content="Primary"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonPrimary}" />
+                                <Button
+                                    Content="Secondary"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonSecondary}" />
+                                <Button
+                                    Content="Success"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonSuccess}" />
+                                <Button
+                                    Content="Danger"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonDanger}" />
+                                <Button
+                                    Content="Warning"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonWarning}" />
+                                <Button
+                                    Content="Info"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonInfo}" />
+                            </atc:UniformSpacingPanel>
+
+                            <atc:UniformSpacingPanel
+                                ItemWidth="100"
+                                Orientation="Vertical"
+                                Spacing="10">
+                                <Button Content="Default" Style="{StaticResource ButtonDefault.Outline}" />
+                                <Button Content="Primary" Style="{StaticResource ButtonPrimary.Outline}" />
+                                <Button Content="Secondary" Style="{StaticResource ButtonSecondary.Outline}" />
+                                <Button Content="Success" Style="{StaticResource ButtonSuccess.Outline}" />
+                                <Button Content="Danger" Style="{StaticResource ButtonDanger.Outline}" />
+                                <Button Content="Warning" Style="{StaticResource ButtonWarning.Outline}" />
+                                <Button Content="Info" Style="{StaticResource ButtonInfo.Outline}" />
+                            </atc:UniformSpacingPanel>
+
+                            <atc:UniformSpacingPanel
+                                ItemWidth="100"
+                                Orientation="Vertical"
+                                Spacing="10">
+                                <Button
+                                    Content="Default"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonDefault.Outline}" />
+                                <Button
+                                    Content="Primary"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonPrimary.Outline}" />
+                                <Button
+                                    Content="Secondary"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonSecondary.Outline}" />
+                                <Button
+                                    Content="Success"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonSuccess.Outline}" />
+                                <Button
+                                    Content="Danger"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonDanger.Outline}" />
+                                <Button
+                                    Content="Warning"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonWarning.Outline}" />
+                                <Button
+                                    Content="Info"
+                                    IsEnabled="False"
+                                    Style="{StaticResource ButtonInfo.Outline}" />
+                            </atc:UniformSpacingPanel>
+
                         </atc:UniformSpacingPanel>
 
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Vertical"
-                            Spacing="10">
-                            <Button
-                                Content="Default"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonDefault}" />
-                            <Button
-                                Content="Primary"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonPrimary}" />
-                            <Button
-                                Content="Secondary"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonSecondary}" />
-                            <Button
-                                Content="Success"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonSuccess}" />
-                            <Button
-                                Content="Danger"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonDanger}" />
-                            <Button
-                                Content="Warning"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonWarning}" />
-                            <Button
-                                Content="Info"
-                                IsEnabled="False"
-                                Style="{StaticResource ButtonInfo}" />
-                        </atc:UniformSpacingPanel>
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
 
+                            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                                <Button Content="Default" Style="{StaticResource ButtonDefault.Small}" />
+                                <Button Content="Primary" Style="{StaticResource ButtonPrimary.Small}" />
+                                <Button Content="Secondary" Style="{StaticResource ButtonSecondary.Small}" />
+                                <Button Content="Success" Style="{StaticResource ButtonSuccess.Small}" />
+                                <Button Content="Danger" Style="{StaticResource ButtonDanger.Small}" />
+                                <Button Content="Warning" Style="{StaticResource ButtonWarning.Small}" />
+                                <Button Content="Info" Style="{StaticResource ButtonInfo.Small}" />
+                            </atc:UniformSpacingPanel>
+
+                            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                                <Button Content="Default" Style="{StaticResource ButtonDefault.Outline.Small}" />
+                                <Button Content="Primary" Style="{StaticResource ButtonPrimary.Outline.Small}" />
+                                <Button Content="Secondary" Style="{StaticResource ButtonSecondary.Outline.Small}" />
+                                <Button Content="Success" Style="{StaticResource ButtonSuccess.Outline.Small}" />
+                                <Button Content="Danger" Style="{StaticResource ButtonDanger.Outline.Small}" />
+                                <Button Content="Warning" Style="{StaticResource ButtonWarning.Outline.Small}" />
+                                <Button Content="Info" Style="{StaticResource ButtonInfo.Outline.Small}" />
+                            </atc:UniformSpacingPanel>
+
+                        </atc:UniformSpacingPanel>
                     </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>

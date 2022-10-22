@@ -21,7 +21,7 @@ internal class LabelControlOrientationToInformationIconMarginValueConverter : IV
         return orientation switch
         {
             Orientation.Horizontal => new Thickness(0, 5, 0, 0),
-            Orientation.Vertical => new Thickness(0, 31, 0, 0), //new Thickness(0, 26, 0, 0),
+            Orientation.Vertical => new Thickness(0, 31, 0, 0),
             _ => throw new SwitchCaseDefaultException(orientation),
         };
     }
