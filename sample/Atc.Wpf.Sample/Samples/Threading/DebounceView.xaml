@@ -43,32 +43,37 @@
         <GroupBox Header="Usage">
             <atc:GridEx
                 Margin="5"
-                Columns="Auto,Auto,Auto"
+                Columns="Auto,10,Auto,10,Auto"
                 Rows="Auto,*">
 
                 <atc:LabelContent
                     x:Name="LcSearch"
                     Grid.Row="0"
                     Grid.Column="0"
-                    LabelText="Search">
+                    HideAreas="All"
+                    LabelText="Search"
+                    LabelWidthNumber="50">
                     <TextBox KeyUp="SearchTextBoxOnKeyup" />
                 </atc:LabelContent>
 
                 <atc:LabelTextInfo
                     Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="2"
+                    HideAreas="All"
                     LabelText="Status"
                     Text="{Binding Path=Status}" />
 
                 <atc:LabelTextInfo
                     Grid.Row="0"
-                    Grid.Column="2"
+                    Grid.Column="4"
+                    HideAreas="All"
                     LabelText="Filter"
                     Text="{Binding Path=Filter}" />
 
                 <ListView
                     Grid.Row="2"
-                    Grid.ColumnSpan="3"
+                    Grid.ColumnSpan="5"
+                    Margin="0,10,0,0"
                     ItemsSource="{Binding Path=FoundItems}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
