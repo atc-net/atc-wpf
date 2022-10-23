@@ -19,15 +19,18 @@
             <Setter.Value>
                 <DataTemplate>
                     <atc:GridEx Columns="Auto,*,Auto" Rows="Auto,*,Auto">
-                        <Image
+                        <Grid
                             Grid.Row="{Binding RowIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                             Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                            Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                            Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                            Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" />
+                            VerticalAlignment="Center">
+                            <atc:AutoGreyableImage
+                                Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
+                                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" />
+                        </Grid>
                         <ContentPresenter
                             Grid.Row="1"
                             Grid.Column="1"
@@ -60,15 +63,18 @@
             VerticalAlignment="Center"
             Columns="Auto,*,Auto"
             Rows="Auto,*,Auto">
-            <Image
+            <Grid
                 Grid.Row="{Binding RowIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                 Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" />
+                VerticalAlignment="Center">
+                <atc:AutoGreyableImage
+                    Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                    Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                    Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
+                    IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                    Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" />
+            </Grid>
             <ContentPresenter
                 x:Name="PART_ContentPresenter"
                 Grid.Row="1"

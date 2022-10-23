@@ -27,8 +27,6 @@
                         Orientation="Vertical"
                         Spacing="10">
 
-                        <Button Content="Hello" />
-
                         <atc:UniformSpacingPanel
                             ItemWidth="100"
                             Orientation="Horizontal"

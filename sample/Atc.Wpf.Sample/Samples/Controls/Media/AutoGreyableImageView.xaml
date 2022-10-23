@@ -16,7 +16,7 @@
             Header="Features">
             <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                 <StackPanel Orientation="Vertical">
-                    <CheckBox x:Name="CbImage">Set IsEnabled on image</CheckBox>
+                    <CheckBox x:Name="CbImage" IsChecked="True">Set IsEnabled on image</CheckBox>
                 </StackPanel>
             </atc:UniformSpacingPanel>
         </GroupBox>

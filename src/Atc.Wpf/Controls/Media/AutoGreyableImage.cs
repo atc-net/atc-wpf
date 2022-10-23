@@ -13,12 +13,36 @@ public class AutoGreyableImage : Image
     /// </summary>
     static AutoGreyableImage()
     {
-        // Override the metadata of the IsEnabled property.
         IsEnabledProperty.OverrideMetadata(
             typeof(AutoGreyableImage),
             new FrameworkPropertyMetadata(
                 defaultValue: true,
                 OnIsEnabledChanged));
+
+        SourceProperty.OverrideMetadata(
+            typeof(AutoGreyableImage),
+            new FrameworkPropertyMetadata(
+                defaultValue: null,
+                OnSourceChanged));
+    }
+
+    /// <summary>
+    /// Called when [is source changed].
+    /// </summary>
+    /// <param name="d">The dependency object.</param>
+    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+    private static void OnSourceChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var autoGreyableImage = d as AutoGreyableImage;
+        if (autoGreyableImage?.Source is null ||
+            autoGreyableImage.Source is FormatConvertedBitmap)
+        {
+            return;
+        }
+
+        HandleAutoGreyableImage(autoGreyableImage, autoGreyableImage.IsEnabled);
     }
 
     /// <summary>
@@ -30,39 +54,47 @@ public class AutoGreyableImage : Image
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var autoGreyScaleImage = d as AutoGreyableImage;
-        if (autoGreyScaleImage?.Source is null)
+        var autoGreyableImage = d as AutoGreyableImage;
+        if (autoGreyableImage?.Source is null)
         {
             return;
         }
 
         var isEnable = e.NewValue is not null &&
                        Convert.ToBoolean(e.NewValue, GlobalizationConstants.EnglishCultureInfo);
+
+        HandleAutoGreyableImage(autoGreyableImage, isEnable);
+    }
+
+    private static void HandleAutoGreyableImage(
+        AutoGreyableImage autoGreyableImage,
+        bool isEnable)
+    {
         if (isEnable)
         {
             // Set the Source property to the original value.
-            if (!(autoGreyScaleImage is { Source: FormatConvertedBitmap formatConvertedBitmap }))
+            if (autoGreyableImage is not { Source: FormatConvertedBitmap formatConvertedBitmap })
             {
                 return;
             }
 
-            autoGreyScaleImage.Source = formatConvertedBitmap.Source;
+            autoGreyableImage.Source = formatConvertedBitmap.Source;
 
             // Reset the Opacity Mask
-            autoGreyScaleImage.OpacityMask = null;
+            autoGreyableImage.OpacityMask = null;
         }
         else
         {
-            var bitmapImage = autoGreyScaleImage.ToBitmapImage();
+            var bitmapImage = autoGreyableImage.ToBitmapImage();
             var bitmapImageHashCode = bitmapImage.GetHashCode();
 
             // Convert it to Gray
-            autoGreyScaleImage.Source = CacheFormatConvertedBitmap.GetOrAdd(
+            autoGreyableImage.Source = CacheFormatConvertedBitmap.GetOrAdd(
                 bitmapImageHashCode,
                 bitmapImage.ToFormatConvertedBitmapAsGray32());
 
             // Create Opacity Mask for greyscale image as FormatConvertedBitmap does not keep transparency info
-            autoGreyScaleImage.OpacityMask = CacheImageBrush.GetOrAdd(bitmapImageHashCode, new ImageBrush(bitmapImage));
+            autoGreyableImage.OpacityMask = CacheImageBrush.GetOrAdd(bitmapImageHashCode, new ImageBrush(bitmapImage));
         }
     }
 }
