@@ -10,7 +10,7 @@
     <GridLength x:Key="ToggleSwitchContentSpaceMargin">12</GridLength>
     <Thickness x:Key="ToggleSwitchTopHeaderMargin">0 0 0 4</Thickness>
     <system:Double x:Key="ToggleSwitchOnStrokeThickness">0</system:Double>
-    <system:Double x:Key="ToggleSwitchOffStrokeThickness">2</system:Double>
+    <system:Double x:Key="ToggleSwitchOffStrokeThickness">1</system:Double>
     <system:Double x:Key="ToggleSwitchThemeMinWidth">160</system:Double>
     <KeyTime x:Key="ToggleSwitchTranslateDuration">0:0:0.500</KeyTime>
 
@@ -32,11 +32,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding atcTheming:ControlsHelper.CornerRadius}"
                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                        <atcTheming:GridEx Rows="Auto,*">
 
                             <ContentPresenter
                                 x:Name="HeaderContentPresenter"
@@ -194,7 +190,7 @@
                                     </Thumb.Template>
                                 </Thumb>
                             </Grid>
-                        </Grid>
+                        </atcTheming:GridEx>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="ToggleStates">
                                 <VisualStateGroup.Transitions>
@@ -203,7 +199,6 @@
                                         GeneratedDuration="0"
                                         From="Dragging"
                                         To="On">
-
                                         <Storyboard>
                                             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="KnobTranslateTransform" Storyboard.TargetProperty="X">
                                                 <EasingDoubleKeyFrame KeyTime="{StaticResource ToggleSwitchTranslateDuration}" Value="24">
