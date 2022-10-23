@@ -19,6 +19,10 @@
             IsExpanded="True"
             SamplePath="BaseControls.DecimalXyBoxView" />
         <atc:SampleTreeViewItem
+            Header="ImageButton"
+            IsExpanded="True"
+            SamplePath="BaseControls.ImageButtonView" />
+        <atc:SampleTreeViewItem
             Header="IntegerBox"
             IsExpanded="True"
             SamplePath="BaseControls.IntegerBoxView" />

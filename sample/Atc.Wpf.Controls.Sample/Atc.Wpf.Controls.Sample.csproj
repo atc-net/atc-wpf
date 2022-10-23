@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\ok.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\ok.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.227" />
     <PackageReference Include="ControlzEx" Version="6.0.0-alpha0241" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
