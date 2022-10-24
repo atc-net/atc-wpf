@@ -88,8 +88,21 @@
     </Style>
 
     <Style
+        x:Key="AtcApps.Styles.Button.Large"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type ButtonBase}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="Button.Small"
         BasedOn="{StaticResource AtcApps.Styles.Button.Small}"
+        TargetType="{x:Type ButtonBase}" />
+
+    <Style
+        x:Key="Button.Large"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Large}"
         TargetType="{x:Type ButtonBase}" />
 
     <!--  Chromeless - ControlTemplate  -->
@@ -163,6 +176,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonDefault.Large"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonDefault.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -175,6 +196,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDefault.Outline.Large"
+        BasedOn="{StaticResource ButtonDefault.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -201,6 +230,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonPrimary.Large"
+        BasedOn="{StaticResource ButtonPrimary}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonPrimary.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -221,6 +258,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary.Outline.Large"
+        BasedOn="{StaticResource ButtonPrimary.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -247,6 +292,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonSecondary.Large"
+        BasedOn="{StaticResource ButtonSecondary}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonSecondary.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -267,6 +320,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary.Outline.Large"
+        BasedOn="{StaticResource ButtonSecondary.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -293,6 +354,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonSuccess.Large"
+        BasedOn="{StaticResource ButtonSuccess}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonSuccess.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -313,6 +382,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess.Outline.Large"
+        BasedOn="{StaticResource ButtonSuccess.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -339,6 +416,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonDanger.Large"
+        BasedOn="{StaticResource ButtonDanger}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonDanger.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -359,6 +444,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger.Outline.Large"
+        BasedOn="{StaticResource ButtonDanger.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -385,6 +478,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonWarning.Large"
+        BasedOn="{StaticResource ButtonWarning}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonWarning.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -405,6 +506,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning.Outline.Large"
+        BasedOn="{StaticResource ButtonWarning.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -431,6 +540,14 @@
     </Style>
 
     <Style
+        x:Key="ButtonInfo.Large"
+        BasedOn="{StaticResource ButtonInfo}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ButtonInfo.Outline"
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
@@ -451,6 +568,14 @@
         TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo.Outline.Large"
+        BasedOn="{StaticResource ButtonInfo.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
 </ResourceDictionary>
