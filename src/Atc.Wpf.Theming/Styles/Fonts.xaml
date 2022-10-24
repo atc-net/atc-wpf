@@ -17,12 +17,14 @@
     <system:Double x:Key="AtcApps.Font.Size.Window.Title">16</system:Double>
 
     <system:Double x:Key="AtcApps.Font.Size.Dialog.Button">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.Dialog.Button.Large">16</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Dialog.Message">14</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Dialog.Title">16</system:Double>
 
     <system:Double x:Key="AtcApps.Font.Size.Default">14</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Content">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Button">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.Button.Large">16</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.FloatingWatermark">10</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.StatusBar">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.TabItem">16</system:Double>

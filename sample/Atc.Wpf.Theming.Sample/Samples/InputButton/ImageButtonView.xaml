@@ -77,6 +77,50 @@
                                 Style="{StaticResource ImageButtonChromeless.Small}" />
                         </atc:UniformSpacingPanel>
 
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton
+                                Content="Hello"
+                                ImageSource="/Assets/ok.png"
+                                Style="{StaticResource ImageButton.Large}" />
+                            <atc:ImageButton
+                                Content="Hello"
+                                ImageSource="/Assets/ok.png"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Large}" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton ImageLocation="Center" ImageSource="/Assets/ok.png" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                ImageSource="/Assets/ok.png"
+                                IsEnabled="False" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                ImageSource="/Assets/ok.png"
+                                Style="{StaticResource ImageButton.Small}" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                ImageSource="/Assets/ok.png"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Small}" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                ImageSource="/Assets/ok.png"
+                                Style="{StaticResource ImageButton.Large}" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                ImageSource="/Assets/ok.png"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Large}" />
+                        </atc:UniformSpacingPanel>
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"
@@ -300,6 +344,68 @@
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
                                     Style="{StaticResource ImageButtonInfo.Outline.Small}" />
+                            </atc:UniformSpacingPanel>
+
+                            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                                <atc:ImageButton
+                                    Content="Default"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonDefault.Large}" />
+                                <atc:ImageButton
+                                    Content="Primary"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonPrimary.Large}" />
+                                <atc:ImageButton
+                                    Content="Secondary"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonSecondary.Large}" />
+                                <atc:ImageButton
+                                    Content="Success"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonSuccess.Large}" />
+                                <atc:ImageButton
+                                    Content="Danger"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonDanger.Large}" />
+                                <atc:ImageButton
+                                    Content="Warning"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonWarning.Large}" />
+                                <atc:ImageButton
+                                    Content="Info"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonInfo.Large}" />
+                            </atc:UniformSpacingPanel>
+
+                            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                                <atc:ImageButton
+                                    Content="Default"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonDefault.Outline.Large}" />
+                                <atc:ImageButton
+                                    Content="Primary"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonPrimary.Outline.Large}" />
+                                <atc:ImageButton
+                                    Content="Secondary"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonSecondary.Outline.Large}" />
+                                <atc:ImageButton
+                                    Content="Success"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonSuccess.Outline.Large}" />
+                                <atc:ImageButton
+                                    Content="Danger"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonDanger.Outline.Large}" />
+                                <atc:ImageButton
+                                    Content="Warning"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonWarning.Outline.Large}" />
+                                <atc:ImageButton
+                                    Content="Info"
+                                    ImageSource="/Assets/ok.png"
+                                    Style="{StaticResource ImageButtonInfo.Outline.Large}" />
                             </atc:UniformSpacingPanel>
 
                         </atc:UniformSpacingPanel>

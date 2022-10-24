@@ -15,6 +15,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="ImageHeight" Value="16" />
+        <Setter Property="ImageWidth" Value="16" />
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -52,8 +53,24 @@
     </Style>
 
     <Style
+        x:Key="AtcApps.Styles.ImageButton.Large"
+        BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButton.Small"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton.Small}"
+        TargetType="{x:Type baseControls:ImageButton}" />
+
+    <Style
+        x:Key="ImageButton.Large"
+        BasedOn="{StaticResource AtcApps.Styles.ImageButton.Large}"
         TargetType="{x:Type baseControls:ImageButton}" />
 
     <!--  Chromeless - ControlTemplate  -->
@@ -144,6 +161,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonDefault.Large"
+        BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonDefault.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -156,6 +184,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonDefault.Outline.Large"
+        BasedOn="{StaticResource ImageButtonDefault.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -182,6 +221,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonPrimary.Large"
+        BasedOn="{StaticResource ImageButtonPrimary}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonPrimary.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -202,6 +252,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonPrimary.Outline.Large"
+        BasedOn="{StaticResource ImageButtonPrimary.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -228,6 +289,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonSecondary.Large"
+        BasedOn="{StaticResource ImageButtonSecondary}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonSecondary.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -248,6 +320,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonSecondary.Outline.Large"
+        BasedOn="{StaticResource ImageButtonSecondary.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -274,6 +357,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonSuccess.Large"
+        BasedOn="{StaticResource ImageButtonSuccess}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonSuccess.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -294,6 +388,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonSuccess.Outline.Large"
+        BasedOn="{StaticResource ImageButtonSuccess.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -320,6 +425,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonDanger.Large"
+        BasedOn="{StaticResource ImageButtonDanger}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonDanger.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -340,6 +456,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonDanger.Outline.Large"
+        BasedOn="{StaticResource ImageButtonDanger.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -366,6 +493,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonWarning.Large"
+        BasedOn="{StaticResource ImageButtonWarning}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonWarning.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -386,6 +524,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonWarning.Outline.Large"
+        BasedOn="{StaticResource ImageButtonWarning.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style
@@ -412,6 +561,17 @@
     </Style>
 
     <Style
+        x:Key="ImageButtonInfo.Large"
+        BasedOn="{StaticResource ImageButtonInfo}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
         x:Key="ImageButtonInfo.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
@@ -432,6 +592,17 @@
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ImageButtonInfo.Outline.Large"
+        BasedOn="{StaticResource ImageButtonInfo.Outline}"
+        TargetType="{x:Type baseControls:ImageButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="ImageHeight" Value="32" />
+        <Setter Property="ImageWidth" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
 </ResourceDictionary>
