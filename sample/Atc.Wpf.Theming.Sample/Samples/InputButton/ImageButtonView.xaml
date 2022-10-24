@@ -162,6 +162,38 @@
                                 SvgImageSource="/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton ImageLocation="Center" SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                IsEnabled="False"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                Style="{StaticResource ImageButton.Small}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Small}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                Style="{StaticResource ImageButton.Large}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Large}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                        </atc:UniformSpacingPanel>
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"
