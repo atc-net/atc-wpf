@@ -2,10 +2,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.BaseControls.Internal.ValueConverters">
 
     <valueConverters:ImageLocationToMarginValueConverter x:Key="ImageLocationToMarginValueConverter" />
+    <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
 
     <!--  Base  -->
     <Style
@@ -30,7 +32,16 @@
                                 Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                                 IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" />
+                                Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Visibility="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                            <atc:SvgImage
+                                Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
+                                ControlSizeType="ContentToSizeNoStretch"
+                                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Source="{Binding SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Visibility="{Binding SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
                         </Grid>
                         <ContentPresenter
                             Grid.Row="1"

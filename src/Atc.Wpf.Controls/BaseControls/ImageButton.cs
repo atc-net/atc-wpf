@@ -52,6 +52,18 @@ public class ImageButton : Button
         set => SetValue(ImageSourceProperty, value);
     }
 
+    public static readonly DependencyProperty SvgImageSourceProperty = DependencyProperty.Register(
+        nameof(SvgImageSource),
+        typeof(string),
+        typeof(ImageButton),
+        new PropertyMetadata(propertyChangedCallback: null));
+
+    public string SvgImageSource
+    {
+        get => (string)GetValue(ImageSourceProperty);
+        set => SetValue(ImageSourceProperty, value);
+    }
+
     public static readonly DependencyProperty RowIndexProperty = DependencyProperty.Register(
         nameof(RowIndex),
         typeof(int),

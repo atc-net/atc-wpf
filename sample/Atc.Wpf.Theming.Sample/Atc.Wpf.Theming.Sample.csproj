@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\eggeaster.svg" />
     <None Remove="Assets\ok.png" />
   </ItemGroup>
 
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\eggeaster.svg" />
     <Resource Include="Assets\ok.png" />
   </ItemGroup>
 

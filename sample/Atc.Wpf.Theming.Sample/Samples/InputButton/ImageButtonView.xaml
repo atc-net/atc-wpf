@@ -121,6 +121,47 @@
                                 Style="{StaticResource ImageButton.Large}" />
                         </atc:UniformSpacingPanel>
 
+                        <atc:UniformSpacingPanel
+                            ItemWidth="100"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <atc:ImageButton Content="Hello" SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                Content="Hello"
+                                IsEnabled="False"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel
+                            ItemWidth="100"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <atc:ImageButton
+                                Content="Hello"
+                                Style="{StaticResource ImageButton.Small}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                Content="Hello"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Small}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel
+                            ItemWidth="100"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <atc:ImageButton
+                                Content="Hello"
+                                Style="{StaticResource ImageButton.Large}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                Content="Hello"
+                                IsEnabled="False"
+                                Style="{StaticResource ImageButton.Large}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                        </atc:UniformSpacingPanel>
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"
