@@ -44,7 +44,7 @@ public class ImageButton : Button
         nameof(ImageSource),
         typeof(ImageSource),
         typeof(ImageButton),
-        new PropertyMetadata(propertyChangedCallback: null));
+        new PropertyMetadata(defaultValue: default));
 
     public ImageSource ImageSource
     {
@@ -56,7 +56,7 @@ public class ImageButton : Button
         nameof(SvgImageSource),
         typeof(string),
         typeof(ImageButton),
-        new PropertyMetadata(propertyChangedCallback: null));
+        new PropertyMetadata(defaultValue: string.Empty));
 
     public string SvgImageSource
     {

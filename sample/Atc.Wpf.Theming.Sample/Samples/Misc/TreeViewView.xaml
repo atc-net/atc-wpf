@@ -5,9 +5,6 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:misc="clr-namespace:Atc.Wpf.Theming.Sample.Samples.Misc"
-    x:Name="UcListViewView"
-    d:DataContext="{d:DesignInstance Type=misc:TreeViewView}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
