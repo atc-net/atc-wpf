@@ -23,25 +23,25 @@
                 <DataTemplate>
                     <atc:GridEx Columns="Auto,*,Auto" Rows="Auto,*,Auto">
                         <Grid
-                            Grid.Row="{Binding RowIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                            Grid.Row="{Binding Path=RowIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                             Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                             <atc:AutoGreyableImage
-                                Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
-                                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
+                                IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Source="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Visibility="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
                             <atc:SvgImage
-                                Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
+                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                                 ControlSizeType="ContentToSizeNoStretch"
-                                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Source="{Binding SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="{Binding SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                                IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Visibility="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
                         </Grid>
                         <ContentPresenter
                             Grid.Row="1"
@@ -68,7 +68,7 @@
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -176,7 +176,7 @@
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -202,7 +202,7 @@
         BasedOn="{StaticResource ImageButtonDefault.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -236,7 +236,7 @@
         BasedOn="{StaticResource ImageButtonPrimary}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -270,7 +270,7 @@
         BasedOn="{StaticResource ImageButtonPrimary.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -304,7 +304,7 @@
         BasedOn="{StaticResource ImageButtonSecondary}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -338,7 +338,7 @@
         BasedOn="{StaticResource ImageButtonSecondary.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -372,7 +372,7 @@
         BasedOn="{StaticResource ImageButtonSuccess}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -406,7 +406,7 @@
         BasedOn="{StaticResource ImageButtonSuccess.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -440,7 +440,7 @@
         BasedOn="{StaticResource ImageButtonDanger}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -474,7 +474,7 @@
         BasedOn="{StaticResource ImageButtonDanger.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -508,7 +508,7 @@
         BasedOn="{StaticResource ImageButtonWarning}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -542,7 +542,7 @@
         BasedOn="{StaticResource ImageButtonWarning.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -576,7 +576,7 @@
         BasedOn="{StaticResource ImageButtonInfo}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />
@@ -610,7 +610,7 @@
         BasedOn="{StaticResource ImageButtonInfo.Outline}"
         TargetType="{x:Type baseControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
         <Setter Property="ImageWidth" Value="32" />
         <Setter Property="Padding" Value="10,0" />

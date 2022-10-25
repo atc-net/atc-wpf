@@ -96,7 +96,7 @@
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type ButtonBase}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -185,7 +185,7 @@
         BasedOn="{StaticResource AtcApps.Styles.Button}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -209,7 +209,7 @@
         BasedOn="{StaticResource ButtonDefault.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -241,7 +241,7 @@
         BasedOn="{StaticResource ButtonPrimary}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -273,7 +273,7 @@
         BasedOn="{StaticResource ButtonPrimary.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -305,7 +305,7 @@
         BasedOn="{StaticResource ButtonSecondary}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -337,7 +337,7 @@
         BasedOn="{StaticResource ButtonSecondary.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -369,7 +369,7 @@
         BasedOn="{StaticResource ButtonSuccess}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -401,7 +401,7 @@
         BasedOn="{StaticResource ButtonSuccess.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -433,7 +433,7 @@
         BasedOn="{StaticResource ButtonDanger}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -465,7 +465,7 @@
         BasedOn="{StaticResource ButtonDanger.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -497,7 +497,7 @@
         BasedOn="{StaticResource ButtonWarning}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -529,7 +529,7 @@
         BasedOn="{StaticResource ButtonWarning.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -561,7 +561,7 @@
         BasedOn="{StaticResource ButtonInfo}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
@@ -593,7 +593,7 @@
         BasedOn="{StaticResource ButtonInfo.Outline}"
         TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
-        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
 
