@@ -1,3 +1,5 @@
+using Atc.Wpf.Controls.Progressing;
+
 namespace Atc.Wpf.Controls.BaseControls;
 
 public class ImageButton : Button
@@ -86,6 +88,30 @@ public class ImageButton : Button
     {
         get => (int)GetValue(ColumnIndexProperty);
         set => SetValue(ColumnIndexProperty, value);
+    }
+
+    public static readonly DependencyProperty LoadingIndicatorModeProperty = DependencyProperty.Register(
+        nameof(LoadingIndicatorMode),
+        typeof(LoadingIndicatorType),
+        typeof(ImageButton),
+        new PropertyMetadata(LoadingIndicatorType.ArcsRing));
+
+    public LoadingIndicatorType LoadingIndicatorMode
+    {
+        get => (LoadingIndicatorType)GetValue(LoadingIndicatorModeProperty);
+        set => SetValue(LoadingIndicatorModeProperty, value);
+    }
+
+    public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
+        nameof(IsBusy),
+        typeof(bool),
+        typeof(ImageButton),
+        new PropertyMetadata(BooleanBoxes.FalseBox));
+
+    public bool IsBusy
+    {
+        get => (bool)GetValue(IsBusyProperty);
+        set => SetValue(IsBusyProperty, value);
     }
 
     static ImageButton()

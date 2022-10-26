@@ -14,7 +14,16 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+
+            <StackPanel>
+                <atc:LabelCheckBox
+                    x:Name="CbIsBusy"
+                    HideAreas="All"
+                    LabelText="IsBusy" />
+            </StackPanel>
+
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
@@ -29,10 +38,14 @@
                             ItemWidth="100"
                             Orientation="Horizontal"
                             Spacing="10">
-                            <atc:ImageButton Content="Hello" ImageSource="/Assets/ok.png" />
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}" />
+                            <atc:ImageButton
+                                Content="Hello"
+                                ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False" />
                         </atc:UniformSpacingPanel>
 
@@ -43,10 +56,12 @@
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButtonChromeless}" />
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButtonChromeless}" />
                         </atc:UniformSpacingPanel>
@@ -55,10 +70,12 @@
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButton.Small}" />
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButton.Small}" />
                         </atc:UniformSpacingPanel>
@@ -67,10 +84,12 @@
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButtonChromeless.Small}" />
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButtonChromeless.Small}" />
                         </atc:UniformSpacingPanel>
@@ -79,19 +98,25 @@
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButton.Large}" />
                             <atc:ImageButton
                                 Content="Hello"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButton.Large}" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-                            <atc:ImageButton ImageLocation="Center" ImageSource="/Assets/ok.png" />
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False" />
                         </atc:UniformSpacingPanel>
 
@@ -99,10 +124,12 @@
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButton.Small}" />
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButton.Small}" />
                         </atc:UniformSpacingPanel>
@@ -111,10 +138,12 @@
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButton.Large}" />
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 ImageSource="/Assets/ok.png"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButton.Large}" />
                         </atc:UniformSpacingPanel>
@@ -123,9 +152,13 @@
                             ItemWidth="100"
                             Orientation="Horizontal"
                             Spacing="10">
-                            <atc:ImageButton Content="Hello" SvgImageSource="/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 Content="Hello"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                Content="Hello"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
@@ -136,10 +169,12 @@
                             Spacing="10">
                             <atc:ImageButton
                                 Content="Hello"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButton.Small}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 Content="Hello"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButton.Small}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
@@ -151,31 +186,45 @@
                             Spacing="10">
                             <atc:ImageButton
                                 Content="Hello"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
+                                LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 Content="Hello"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
+                                LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-                            <atc:ImageButton ImageLocation="Center" SvgImageSource="/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 ImageLocation="Center"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
+                                LoadingIndicatorMode="Ring"
+                                SvgImageSource="/Assets/eggeaster.svg" />
+                            <atc:ImageButton
+                                ImageLocation="Center"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
+                                LoadingIndicatorMode="Ring"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                             <atc:ImageButton
                                 ImageLocation="Center"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
+                                LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Small}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 ImageLocation="Center"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
+                                LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Small}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
@@ -183,11 +232,15 @@
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                             <atc:ImageButton
                                 ImageLocation="Center"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
+                                LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 ImageLocation="Center"
+                                IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
+                                LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
                                 SvgImageSource="/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
@@ -208,30 +261,37 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDefault}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonPrimary}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSecondary}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSuccess}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDanger}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonWarning}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonInfo}" />
                             </atc:UniformSpacingPanel>
 
@@ -242,36 +302,43 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonDefault}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonPrimary}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonSecondary}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonSuccess}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonDanger}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonWarning}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonInfo}" />
                             </atc:UniformSpacingPanel>
@@ -283,30 +350,37 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDefault.Outline}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonPrimary.Outline}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSecondary.Outline}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSuccess.Outline}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDanger.Outline}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonWarning.Outline}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonInfo.Outline}" />
                             </atc:UniformSpacingPanel>
 
@@ -317,36 +391,43 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonDefault.Outline}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonPrimary.Outline}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonSecondary.Outline}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonSuccess.Outline}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonDanger.Outline}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonWarning.Outline}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     IsEnabled="False"
                                     Style="{StaticResource ImageButtonInfo.Outline}" />
                             </atc:UniformSpacingPanel>
@@ -359,30 +440,37 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDefault.Small}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonPrimary.Small}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSecondary.Small}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSuccess.Small}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDanger.Small}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonWarning.Small}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonInfo.Small}" />
                             </atc:UniformSpacingPanel>
 
@@ -390,30 +478,37 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDefault.Outline.Small}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonPrimary.Outline.Small}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSecondary.Outline.Small}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSuccess.Outline.Small}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDanger.Outline.Small}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonWarning.Outline.Small}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonInfo.Outline.Small}" />
                             </atc:UniformSpacingPanel>
 
@@ -421,30 +516,37 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDefault.Large}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonPrimary.Large}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSecondary.Large}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSuccess.Large}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDanger.Large}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonWarning.Large}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonInfo.Large}" />
                             </atc:UniformSpacingPanel>
 
@@ -452,30 +554,37 @@
                                 <atc:ImageButton
                                     Content="Default"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDefault.Outline.Large}" />
                                 <atc:ImageButton
                                     Content="Primary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonPrimary.Outline.Large}" />
                                 <atc:ImageButton
                                     Content="Secondary"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSecondary.Outline.Large}" />
                                 <atc:ImageButton
                                     Content="Success"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonSuccess.Outline.Large}" />
                                 <atc:ImageButton
                                     Content="Danger"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonDanger.Outline.Large}" />
                                 <atc:ImageButton
                                     Content="Warning"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonWarning.Outline.Large}" />
                                 <atc:ImageButton
                                     Content="Info"
                                     ImageSource="/Assets/ok.png"
+                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                     Style="{StaticResource ImageButtonInfo.Outline.Large}" />
                             </atc:UniformSpacingPanel>
 

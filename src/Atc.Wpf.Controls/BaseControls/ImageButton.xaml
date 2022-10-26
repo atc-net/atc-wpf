@@ -4,10 +4,16 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
+    xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.BaseControls.Internal.ValueConverters">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/LoadingIndicator.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <valueConverters:ImageLocationToMarginValueConverter x:Key="ImageLocationToMarginValueConverter" />
     <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
+    <atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter x:Key="StringNullOrEmptyToInverseBoolValueConverter" />
 
     <!--  Base  -->
     <Style
@@ -18,6 +24,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="ImageHeight" Value="16" />
         <Setter Property="ImageWidth" Value="16" />
+        <Setter Property="LoadingIndicatorMode" Value="ArcsRing" />
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -27,22 +34,37 @@
                             Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
+
+                            <progressing:LoadingIndicator
+                                x:Name="PART_LoadingIndicator"
+                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
+                                Padding="2"
+                                IsActive="False"
+                                Mode="{Binding Path=LoadingIndicatorMode, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Visibility="Collapsed" />
+
                             <atc:AutoGreyableImage
+                                x:Name="PART_Image"
                                 Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Source="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                                Visibility="Collapsed" />
+
                             <atc:SvgImage
+                                x:Name="PART_SvgImage"
                                 Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                                 ControlSizeType="ContentToSizeNoStretch"
                                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                                Visibility="Collapsed" />
                         </Grid>
+
                         <ContentPresenter
                             Grid.Row="1"
                             Grid.Column="1"
@@ -50,6 +72,61 @@
                             VerticalAlignment="Center"
                             Content="{TemplateBinding Content}" />
                     </atc:GridEx>
+
+                    <DataTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="True" />
+                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="True" />
+                            <Setter TargetName="PART_Image" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="True" />
+                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="False" />
+                                <Condition Binding="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
+                            <Setter TargetName="PART_Image" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="False" />
+                                <Condition Binding="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
+                            <Setter TargetName="PART_Image" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="True" />
+                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="False" />
+                                <Condition Binding="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
+                            <Setter TargetName="PART_Image" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="False" />
+                                <Condition Binding="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
+                            <Setter TargetName="PART_Image" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

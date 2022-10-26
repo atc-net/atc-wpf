@@ -94,9 +94,11 @@ public class LoadingIndicator : Control
         SetStoryBoardSpeedRatio(li.PART_Border, (double)e.NewValue);
     }
 
-    private static void OnIsActiveChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+    private static void OnIsActiveChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        var li = (LoadingIndicator)o;
+        var li = (LoadingIndicator)d;
 
         if (li.PART_Border == null)
         {
@@ -124,7 +126,9 @@ public class LoadingIndicator : Control
         }
     }
 
-    private static void SetStoryBoardSpeedRatio(FrameworkElement element, double speedRatio)
+    private static void SetStoryBoardSpeedRatio(
+        FrameworkElement element,
+        double speedRatio)
     {
         var activeStates = element.GetActiveVisualStates();
         foreach (var activeState in activeStates)

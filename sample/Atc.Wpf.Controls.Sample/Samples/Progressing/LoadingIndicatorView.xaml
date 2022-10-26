@@ -27,10 +27,45 @@
             <atc:UniformSpacingPanel
                 Margin="10"
                 HorizontalAlignment="Center"
+                Orientation="Vertical"
                 Spacing="50">
-                <atc:LoadingIndicator Mode="ArcsRing" />
-                <atc:LoadingIndicator Mode="Ring" />
-                <atc:LoadingIndicator Mode="ThreeDots" />
+
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
+                    <atc:LoadingIndicator Mode="ArcsRing" />
+                    <atc:LoadingIndicator Mode="Ring" />
+                    <atc:LoadingIndicator Mode="ThreeDots" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
+                    <atc:LoadingIndicator
+                        Width="32"
+                        Height="32"
+                        Mode="ArcsRing" />
+                    <atc:LoadingIndicator
+                        Width="32"
+                        Height="32"
+                        Mode="Ring" />
+                    <atc:LoadingIndicator
+                        Width="32"
+                        Height="32"
+                        Mode="ThreeDots" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
+                    <atc:LoadingIndicator
+                        Width="16"
+                        Height="16"
+                        Mode="ArcsRing" />
+                    <atc:LoadingIndicator
+                        Width="16"
+                        Height="16"
+                        Mode="Ring" />
+                    <atc:LoadingIndicator
+                        Width="16"
+                        Height="16"
+                        Mode="ThreeDots" />
+                </atc:UniformSpacingPanel>
+
             </atc:UniformSpacingPanel>
 
         </GroupBox>
