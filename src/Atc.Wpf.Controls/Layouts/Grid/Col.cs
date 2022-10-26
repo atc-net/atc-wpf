@@ -96,7 +96,7 @@ public class Col : ContentControl
                 case ColLayoutType.Auto:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(status), status, null);
+                    throw new SwitchCaseDefaultException(status);
             }
         }
 
