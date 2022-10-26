@@ -31,6 +31,46 @@
                             ShowClearTextButton="True"
                             WatermarkText="Fill out with text.." />
 
+                        <atc:LabelTextBox
+                            IsMandatory="True"
+                            LabelText="Email"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="Email"
+                            WatermarkText="Email address" />
+
+                        <atc:LabelTextBox
+                            IsMandatory="True"
+                            LabelText="Ftp(s) url"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="FtpOrFtps"
+                            WatermarkText="Ftp url" />
+
+                        <atc:LabelTextBox
+                            IsMandatory="True"
+                            LabelText="Http(s) url"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="HttpOrHttps"
+                            WatermarkText="Ftp url" />
+
+                        <atc:LabelTextBox
+                            IsMandatory="True"
+                            LabelText="IP address (v4)"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="IPv4Address"
+                            WatermarkText="IP address" />
+
+                        <atc:LabelTextBox
+                            IsMandatory="True"
+                            LabelText="OpcTcp url"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="OpcTcp"
+                            WatermarkText="OpcTcp url" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 

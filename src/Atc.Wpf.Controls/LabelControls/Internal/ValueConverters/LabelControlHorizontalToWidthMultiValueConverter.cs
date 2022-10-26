@@ -37,14 +37,16 @@ internal class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueCon
             case SizeDefinitionType.Percentage when width is < 0 or > 100:
                 throw new ConstraintException("Width in Percentage mode must be between 0 and 100.");
             case SizeDefinitionType.Percentage:
-            {
-                var leftWidth = (double)width / 100;
-                var rightWidth = (100 - (double)width) / 100;
-                var twoColumnWidth = $"{leftWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*,{rightWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*";
+                {
+                    var leftWidth = (double)width / 100;
+                    var rightWidth = (100 - (double)width) / 100;
+                    var twoColumnWidth = $"{leftWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*,{rightWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*";
 
-                return twoColumnWidth;
-            }
+                    return twoColumnWidth;
+                }
 
+            case SizeDefinitionType.Auto:
+                return "Auto,*";
             default:
                 throw new SwitchCaseDefaultException(sizeDefinition);
         }

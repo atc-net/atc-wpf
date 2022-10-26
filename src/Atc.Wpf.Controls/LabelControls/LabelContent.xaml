@@ -74,7 +74,8 @@
                                 <ContentControl
                                     x:Name="InputFieldHorizontal"
                                     Grid.Column="1"
-                                    Content="{TemplateBinding Content}" />
+                                    Content="{TemplateBinding Content}"
+                                    IsTabStop="False" />
 
                                 <TextBlock
                                     Grid.Row="1"
@@ -105,7 +106,8 @@
                                 <ContentControl
                                     x:Name="InputFieldVertical"
                                     Grid.Row="1"
-                                    Content="{TemplateBinding Content}" />
+                                    Content="{TemplateBinding Content}"
+                                    IsTabStop="False" />
 
                                 <TextBlock
                                     Grid.Row="2"
