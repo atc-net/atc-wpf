@@ -29,6 +29,7 @@ global using Atc.Wpf.Controls.LabelControls.Abstractions;
 global using Atc.Wpf.Controls.LabelControls.Enums;
 global using Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 global using Atc.Wpf.Controls.Layouts.Grid.Internal;
+global using Atc.Wpf.Controls.Progressing.Internal;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Theming;
 global using Atc.Wpf.Theming.Controls.Selectors;

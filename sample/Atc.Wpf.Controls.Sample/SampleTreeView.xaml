@@ -138,6 +138,10 @@
 
     <TreeViewItem Header="Progressing" IsExpanded="True">
         <atc:SampleTreeViewItem
+            Header="LoadingIndicator"
+            IsExpanded="True"
+            SamplePath="Progressing.LoadingIndicatorView" />
+        <atc:SampleTreeViewItem
             Header="BusyOverlay"
             IsExpanded="True"
             SamplePath="Progressing.BusyOverlayView" />
