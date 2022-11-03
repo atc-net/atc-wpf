@@ -22,6 +22,8 @@ public partial class MainWindow
     {
         var vm = DataContext as IMainWindowViewModel;
         vm!.OnLoaded(this, e);
+
+        Keyboard.Focus(TbSampleFilter);
     }
 
     private void OnClosing(
@@ -54,5 +56,52 @@ public partial class MainWindow
     {
         var vm = DataContext as IMainWindowViewModel;
         vm!.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
+    }
+
+    private void SampleFilterOnKeyUp(
+        object sender,
+        KeyEventArgs e)
+    {
+        if (sender is not TextBox textBox)
+        {
+            return;
+        }
+
+        _ = SetVisibilityByFilterTreeViewItems(StvSamples.Items, textBox.Text);
+    }
+
+    private static bool SetVisibilityByFilterTreeViewItems(
+        IEnumerable items,
+        string filter)
+    {
+        var showRoot = false;
+        foreach (var item in items)
+        {
+            if (item is not TreeViewItem treeViewItem)
+            {
+                continue;
+            }
+
+            var showBySubItems = SetVisibilityByFilterTreeViewItems(
+                treeViewItem.Items,
+                filter);
+
+            var header = treeViewItem.Header?.ToString();
+            var showByItem = string.IsNullOrEmpty(filter) ||
+                             string.IsNullOrEmpty(header) ||
+                             header.Contains(filter, StringComparison.OrdinalIgnoreCase);
+
+            treeViewItem.Visibility = showByItem || showBySubItems
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            if (!showRoot &&
+                treeViewItem.Visibility == Visibility.Visible)
+            {
+                showRoot = true;
+            }
+        }
+
+        return showRoot;
     }
 }

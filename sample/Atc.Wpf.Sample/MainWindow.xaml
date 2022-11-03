@@ -18,11 +18,20 @@
     mc:Ignorable="d">
 
     <atc:GridEx Columns="230,5,*,600" Rows="Auto,*,Auto">
-        <sample:SampleTreeView
+        <StackPanel
             Grid.Row="1"
             Grid.Column="0"
-            BorderThickness="0"
-            SelectedItemChanged="TreeViewOnSelectionChanged" />
+            Orientation="Vertical">
+            <TextBox
+                x:Name="TbSampleFilter"
+                Margin="5"
+                Focusable="True"
+                KeyUp="SampleFilterOnKeyUp" />
+            <sample:SampleTreeView
+                x:Name="StvSamples"
+                BorderThickness="0"
+                SelectedItemChanged="TreeViewOnSelectionChanged" />
+        </StackPanel>
 
         <Grid
             Grid.Row="1"
