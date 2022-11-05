@@ -155,12 +155,12 @@
                             <atc:ImageButton
                                 Content="Hello"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 Content="Hello"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel
@@ -171,13 +171,13 @@
                                 Content="Hello"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 Style="{StaticResource ImageButton.Small}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 Content="Hello"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 Style="{StaticResource ImageButton.Small}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel
@@ -189,14 +189,14 @@
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 Content="Hello"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
@@ -204,13 +204,13 @@
                                 ImageLocation="Center"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 LoadingIndicatorMode="Ring"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 LoadingIndicatorMode="Ring"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
@@ -219,14 +219,14 @@
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Small}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Small}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                         <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
@@ -235,14 +235,14 @@
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                             <atc:ImageButton
                                 ImageLocation="Center"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
                                 IsEnabled="False"
                                 LoadingIndicatorMode="Ring"
                                 Style="{StaticResource ImageButton.Large}"
-                                SvgImageSource="/Assets/eggeaster.svg" />
+                                SvgImageSource="/Atc.Wpf.Theming.Sample;component/Assets/eggeaster.svg" />
                         </atc:UniformSpacingPanel>
 
                     </atc:UniformSpacingPanel>
