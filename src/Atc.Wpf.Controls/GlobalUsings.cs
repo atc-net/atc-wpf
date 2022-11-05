@@ -22,6 +22,7 @@ global using System.Windows.Data;
 global using System.Windows.Input;
 global using System.Windows.Markup;
 global using System.Windows.Media;
+global using System.Windows.Media.Animation;
 global using System.Windows.Shapes;
 global using System.Windows.Threading;
 
@@ -31,6 +32,7 @@ global using Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 global using Atc.Wpf.Controls.Layouts.Grid.Internal;
 global using Atc.Wpf.Controls.Progressing.Internal;
 global using Atc.Wpf.Controls.Resources;
+global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Theming;
 global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.Wpf.Theming.Helpers;

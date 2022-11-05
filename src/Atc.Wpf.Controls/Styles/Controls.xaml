@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
+    xmlns:notifications="clr-namespace:Atc.Wpf.Controls.Notifications"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing">
 
     <ResourceDictionary.MergedDictionaries>
@@ -10,6 +11,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/ImageButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/ToggleSwitch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Divider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Notifications/ToastNotification.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/BusyOverlay.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/LoadingIndicator.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -20,6 +22,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type baseControls:IntegerBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type baseControls:ToggleSwitch}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type layouts:Divider}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToastNotification}" TargetType="{x:Type notifications:ToastNotification}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToastNotificationArea}" TargetType="{x:Type notifications:ToastNotificationArea}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.BusyOverlay}" TargetType="{x:Type progressing:BusyOverlay}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.LoadingIndicator}" TargetType="{x:Type progressing:LoadingIndicator}" />
 

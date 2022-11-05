@@ -136,6 +136,13 @@
             SamplePath="Layouts.DividerView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Notifications" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="ToastNotification"
+            IsExpanded="True"
+            SamplePath="Notifications.ToastNotificationView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Progressing" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="LoadingIndicator"
