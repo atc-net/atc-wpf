@@ -30,17 +30,4 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Samples\LabelControls\LabelComboBoxView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Samples\LabelControls\LabelComboBoxView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
 </Project>

@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\eggeaster.svg" />
+    <Resource Include="Assets\ok.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.227" />
     <PackageReference Include="ControlzEx" Version="6.0.0-alpha0241" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
@@ -24,11 +29,6 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Assets\eggeaster.svg" />
-    <Resource Include="Assets\ok.png" />
   </ItemGroup>
 
 </Project>
