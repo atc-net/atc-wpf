@@ -58,9 +58,9 @@ public partial class MainWindow
         vm!.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
     }
 
-    private void SampleFilterOnKeyUp(
+    private void SampleFilterOnTextChanged(
         object sender,
-        KeyEventArgs e)
+        TextChangedEventArgs e)
     {
         if (sender is not TextBox textBox)
         {
