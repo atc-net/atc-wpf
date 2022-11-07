@@ -17,12 +17,25 @@
     WindowState="{Binding Path=WindowState}"
     mc:Ignorable="d">
 
-    <atc:GridEx Columns="250,5,*,600" Rows="Auto,*,Auto">
-        <sample:SampleTreeView
-            Grid.Row="1"
-            Grid.Column="0"
-            BorderThickness="0"
-            SelectedItemChanged="TreeViewOnSelectionChanged" />
+    <atc:GridEx
+        Margin="0,1,0,0"
+        Columns="275,5,*,600"
+        Rows="Auto,*,Auto">
+        <DockPanel Grid.Row="1" Grid.Column="0">
+            <TextBox
+                x:Name="TbSampleFilter"
+                Margin="5"
+                atc:TextBoxHelper.ClearTextButton="True"
+                atc:TextBoxHelper.Watermark="Filter"
+                DockPanel.Dock="Top"
+                Focusable="True"
+                TextChanged="SampleFilterOnTextChanged" />
+            <sample:SampleTreeView
+                x:Name="StvSamples"
+                BorderThickness="0"
+                DockPanel.Dock="Bottom"
+                SelectedItemChanged="TreeViewOnSelectionChanged" />
+        </DockPanel>
 
         <Grid
             Grid.Row="1"

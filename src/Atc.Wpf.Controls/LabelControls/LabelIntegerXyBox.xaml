@@ -13,7 +13,7 @@
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
-        LabelText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=IntegerXyBox}"
+        LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerXyBox}}, Path=LabelText, FallbackValue=IntegerXyBox}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"

@@ -1,3 +1,4 @@
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 namespace Atc.Wpf.Controls.Layouts.Grid.Internal;
 
 internal class ColLayoutConverter : TypeConverter
@@ -8,22 +9,20 @@ internal class ColLayoutConverter : TypeConverter
     {
         ArgumentNullException.ThrowIfNull(context);
 
-        switch (Type.GetTypeCode(sourceType))
+        return Type.GetTypeCode(sourceType) switch
         {
-            case TypeCode.Int16:
-            case TypeCode.UInt16:
-            case TypeCode.Int32:
-            case TypeCode.UInt32:
-            case TypeCode.Int64:
-            case TypeCode.UInt64:
-            case TypeCode.Single:
-            case TypeCode.Double:
-            case TypeCode.Decimal:
-            case TypeCode.String:
-                return true;
-            default:
-                return false;
-        }
+            TypeCode.Int16 => true,
+            TypeCode.UInt16 => true,
+            TypeCode.Int32 => true,
+            TypeCode.UInt32 => true,
+            TypeCode.Int64 => true,
+            TypeCode.UInt64 => true,
+            TypeCode.Single => true,
+            TypeCode.Double => true,
+            TypeCode.Decimal => true,
+            TypeCode.String => true,
+            _ => false,
+        };
     }
 
     public override bool CanConvertTo(

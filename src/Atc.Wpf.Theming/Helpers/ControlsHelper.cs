@@ -90,6 +90,40 @@ public static class ControlsHelper
         Thickness value)
         => d.SetValue(FocusBorderThicknessProperty, value);
 
+    public static readonly DependencyProperty MouseOverBackgroundBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseOverBackgroundBrush",
+        typeof(Brush),
+        typeof(ControlsHelper),
+        new FrameworkPropertyMetadata(
+            Brushes.Transparent,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static Brush GetMouseOverBackgroundBrush(
+        DependencyObject d)
+        => (Brush)d.GetValue(MouseOverBackgroundBrushProperty);
+
+    public static void SetMouseOverBackgroundBrush(
+        DependencyObject d,
+        Brush value)
+        => d.SetValue(MouseOverBackgroundBrushProperty, value);
+
+    public static readonly DependencyProperty MouseOverForegroundBrushProperty = DependencyProperty.RegisterAttached(
+        "MouseOverForegroundBrush",
+        typeof(Brush),
+        typeof(ControlsHelper),
+        new FrameworkPropertyMetadata(
+            Brushes.Transparent,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static Brush GetMouseOverForegroundBrush(
+        DependencyObject d)
+        => (Brush)d.GetValue(MouseOverForegroundBrushProperty);
+
+    public static void SetMouseOverForegroundBrush(
+        DependencyObject d,
+        Brush value)
+        => d.SetValue(MouseOverForegroundBrushProperty, value);
+
     public static readonly DependencyProperty MouseOverBorderBrushProperty = DependencyProperty.RegisterAttached(
         "MouseOverBorderBrush",
         typeof(Brush),
@@ -106,6 +140,40 @@ public static class ControlsHelper
         DependencyObject d,
         Brush value)
         => d.SetValue(MouseOverBorderBrushProperty, value);
+
+    public static readonly DependencyProperty PressedBackgroundBrushProperty = DependencyProperty.RegisterAttached(
+        "PressedBackgroundBrush",
+        typeof(Brush),
+        typeof(ControlsHelper),
+        new FrameworkPropertyMetadata(
+            Brushes.Transparent,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static Brush GetPressedBackgroundBrush(
+        DependencyObject d)
+        => (Brush)d.GetValue(PressedBackgroundBrushProperty);
+
+    public static void SetPressedBackgroundBrush(
+        DependencyObject d,
+        Brush value)
+        => d.SetValue(PressedBackgroundBrushProperty, value);
+
+    public static readonly DependencyProperty PressedBorderBrushProperty = DependencyProperty.RegisterAttached(
+        "PressedBorderBrush",
+        typeof(Brush),
+        typeof(ControlsHelper),
+        new FrameworkPropertyMetadata(
+            Brushes.Transparent,
+            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static Brush GetPressedBorderBrush(
+        DependencyObject d)
+        => (Brush)d.GetValue(PressedBorderBrushProperty);
+
+    public static void SetPressedBorderBrush(
+        DependencyObject d,
+        Brush value)
+        => d.SetValue(PressedBorderBrushProperty, value);
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.RegisterAttached(
         "CornerRadius",

@@ -21,6 +21,10 @@
     <TreeViewItem Header="Controls - Layouts" IsExpanded="True">
         <atc:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.Layouts.AutoGridView" />
         <atc:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />
+        <atc:SampleTreeViewItem Header="GridLines" SamplePath="Controls.Layouts.GridLinesView" />
+        <atc:SampleTreeViewItem Header="PanelHelper" SamplePath="Controls.Layouts.PanelHelperView" />
+        <atc:SampleTreeViewItem Header="ReversibleStackPanel" SamplePath="Controls.Layouts.ReversibleStackPanelView" />
+        <atc:SampleTreeViewItem Header="StaggeredPanel" SamplePath="Controls.Layouts.StaggeredPanelView" />
         <atc:SampleTreeViewItem Header="UniformSpacingPanel" SamplePath="Controls.Layouts.UniformSpacingPanelView" />
     </TreeViewItem>
 

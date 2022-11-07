@@ -54,6 +54,7 @@
                         Text="{Binding DisplayName}" />
                     <TextBlock
                         Grid.Column="2"
+                        Margin="0,2,0,0"
                         VerticalAlignment="Center"
                         FontFamily="Courier New"
                         Foreground="{DynamicResource AtcApps.Brushes.Gray2}"

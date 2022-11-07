@@ -272,8 +272,15 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
 
     static ToggleSwitch()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleSwitch), new FrameworkPropertyMetadata(typeof(ToggleSwitch)));
-        EventManager.RegisterClassHandler(typeof(ToggleSwitch), MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnMouseLeftButtonDown), true);
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(ToggleSwitch),
+            new FrameworkPropertyMetadata(typeof(ToggleSwitch)));
+
+        EventManager.RegisterClassHandler(
+            typeof(ToggleSwitch),
+            MouseLeftButtonDownEvent,
+            new MouseButtonEventHandler(OnMouseLeftButtonDown),
+            handledEventsToo: true);
     }
 
     public ToggleSwitch()
@@ -326,7 +333,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
         UpdateHeaderContentPresenterVisibility();
         UpdateContentPresenterVisibility();
 
-        UpdateVisualStates(false);
+        UpdateVisualStates(useTransitions: false);
     }
 
     protected override void OnKeyUp(
@@ -407,7 +414,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
         }
 
         toggleSwitch.OnToggled();
-        toggleSwitch.UpdateVisualStates(true);
+        toggleSwitch.UpdateVisualStates(useTransitions: true);
     }
 
     private static void OnOffContentChanged(
@@ -423,7 +430,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
     private void OnIsEnabledChanged(
         object sender,
         DependencyPropertyChangedEventArgs e)
-        => UpdateVisualStates(true);
+        => UpdateVisualStates(useTransitions: true);
 
     private static void OnMouseLeftButtonDown(
         object sender,

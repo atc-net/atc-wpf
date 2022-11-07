@@ -1,0 +1,561 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <!--  https://getbootstrap.com/docs/5.0/customize/color/#theme-colors  -->
+
+    <!--  Colors Blue  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue100">#cfe2ff</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue200">#9ec5fe</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue300">#6ea8fe</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue400">#3d8bfd</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue500">#0d6efd</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue600">#0a58ca</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue700">#084298</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue800">#052c65</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Blue900">#031633</Color>
+
+    <!--  Colors Indigo  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo100">#e0cffc</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo200">#c29ffa</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo300">#a370f7</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo400">#8540f5</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo500">#6610f2</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo600">#520dc2</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo700">#3d0a91</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo800">#290661</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Indigo900">#140330</Color>
+
+    <!--  Colors Purple  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple100">#e2d9f3</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple200">#c5b3e6</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple300">#a98eda</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple400">#8c68cd</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple500">#6f42c1</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple600">#59359a</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple700">#432874</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple800">#2c1a4d</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Purple900">#160d27</Color>
+
+    <!--  Colors Pink  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink100">#f7d6e6</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink200">#efadce</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink300">#e685b5</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink400">#de5c9d</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink500">#d63384</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink600">#ab296a</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink700">#801f4f</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink800">#561435</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Pink900">#2b0a1a</Color>
+
+    <!--  Colors Red  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red100">#f8d7da</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red200">#f1aeb5</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red300">#ea868f</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red400">#e35d6a</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red500">#dc3545</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red600">#b02a37</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red700">#842029</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red800">#58151c</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Red900">#2c0b0e</Color>
+
+    <!--  Colors Orange  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange100">#ffe5d0</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange200">#fecba1</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange300">#feb2</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange400">#fd9843</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange500">#fd7e14</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange600">#ca6510</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange700">#984c0c</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange800">#653208</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Orange900">#331904</Color>
+
+    <!--  Colors Yellow  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow100">#fff3cd</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow200">#ffe69c</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow300">#ffda6a</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow400">#ffcd39</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow500">#ffc107</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow600">#cc9a06</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow700">#997404</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow800">#664d03</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Yellow900">#332701</Color>
+
+    <!--  Colors Green  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green100">#d1e7dd</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green200">#a3cfbb</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green300">#75b798</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green400">#479f76</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green500">#198754</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green600">#146c43</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green700">#0f5132</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green800">#0a3622</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Green900">#051b11</Color>
+
+    <!--  Colors Teal  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal100">#d2f4ea</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal200">#a6e9d5</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal300">#79dfc1</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal400">#4dd4ac</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal500">#20c997</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal600">#1aa179</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal700">#13795b</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal800">#0d503c</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Teal900">#06281e</Color>
+
+    <!--  Colors Cyan  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan100">#cff4fc</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan200">#9eeaf9</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan300">#6edff6</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan400">#3dd5f3</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan500">#0dcaf0</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan600">#0aa2c0</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan700">#087990</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan800">#055160</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Cyan900">#032830</Color>
+
+    <!--  Colors Gray  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray100">#f8f9fa</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray200">#e9ecef</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray300">#dee2e6</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray400">#ced4da</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray500">#adb5bd</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray600">#6c757d</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray700">#495057</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray800">#343a40</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.Gray900">#212529</Color>
+
+    <!--  Colors Misc  -->
+    <Color x:Key="AtcApps.Colors.Bootstrap.Black">#000</Color>
+    <Color x:Key="AtcApps.Colors.Bootstrap.White">#fff</Color>
+
+    <!--  Brushes Blue  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Blue900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Blue900}" />
+
+    <!--  Brushes Indigo  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Indigo900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Indigo900}" />
+
+    <!--  Brushes Purple  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Purple900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Purple900}" />
+
+    <!--  Brushes Pink  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Pink900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Pink900}" />
+
+    <!--  Brushes Red  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Red900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Red900}" />
+
+    <!--  Brushes Orange  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Orange900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Orange900}" />
+
+    <!--  Brushes Yellow  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Yellow900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Yellow900}" />
+
+    <!--  Brushes Green  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Green900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Green900}" />
+
+    <!--  Brushes Teal  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Teal900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Teal900}" />
+
+    <!--  Brushes Cyan  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Cyan900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Cyan900}" />
+
+    <!--  Brushes Gray  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray100"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray100}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray200"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray200}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray300"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray300}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray400"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray400}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray500"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray500}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray600"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray600}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray700"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray700}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray800"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray800}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Gray900"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Gray900}" />
+
+    <!--  Brushes Misc  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.Black"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.Black}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.Bootstrap.White"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Bootstrap.White}" />
+
+</ResourceDictionary>

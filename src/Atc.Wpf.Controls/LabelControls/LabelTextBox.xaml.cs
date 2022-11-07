@@ -59,7 +59,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(UseDefaultNotAllowedCharacters),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
 
     public bool UseDefaultNotAllowedCharacters
     {
@@ -83,7 +83,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(ShowClearTextButton),
         typeof(bool),
         typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
 
     public bool ShowClearTextButton
     {
@@ -107,6 +107,18 @@ public partial class LabelTextBox : ILabelTextBox
     {
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
+    }
+
+    public static readonly DependencyProperty ValidationFormatProperty = DependencyProperty.Register(
+        nameof(ValidationFormat),
+        typeof(TextBoxValidationRuleType),
+        typeof(LabelTextBox),
+        new PropertyMetadata(TextBoxValidationRuleType.None));
+
+    public TextBoxValidationRuleType ValidationFormat
+    {
+        get => (TextBoxValidationRuleType)GetValue(ValidationFormatProperty);
+        set => SetValue(ValidationFormatProperty, value);
     }
 
     public LabelTextBox()
@@ -147,29 +159,38 @@ public partial class LabelTextBox : ILabelTextBox
         if (labelTextBox.IsMandatory &&
             string.IsNullOrWhiteSpace(labelTextBox.Text))
         {
-            labelTextBox.ValidationText = "Field is required";
+            labelTextBox.ValidationText = "Field is required"; // TODO: Translate
             return;
         }
 
         if (labelTextBox.Text.Length < labelTextBox.MinLength)
         {
-            labelTextBox.ValidationText = $"Min length: {labelTextBox.MinLength}";
+            labelTextBox.ValidationText = $"Min length: {labelTextBox.MinLength}"; // TODO: Translate
             return;
         }
 
         if (labelTextBox.Text.Length > labelTextBox.MaxLength)
         {
-            labelTextBox.ValidationText = $"Max length: {labelTextBox.MaxLength}";
+            labelTextBox.ValidationText = $"Max length: {labelTextBox.MaxLength}"; // TODO: Translate
             return;
         }
 
-        if (!string.IsNullOrEmpty(labelTextBox.CharactersNotAllowed)
-            && labelTextBox.CharactersNotAllowed.Any(x => labelTextBox.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
+        if (!string.IsNullOrEmpty(labelTextBox.CharactersNotAllowed) &&
+            labelTextBox.CharactersNotAllowed.Any(x => labelTextBox.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
         {
-            labelTextBox.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(labelTextBox.CharactersNotAllowed, labelTextBox.Text)}";
+            labelTextBox.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(labelTextBox.CharactersNotAllowed, labelTextBox.Text)}"; // TODO: Translate
             return;
         }
 
-        labelTextBox.ValidationText = string.Empty;
+        var (isValid, errorMessage) = TextBoxValidationHelper.Validate(
+            labelTextBox.ValidationFormat,
+            labelTextBox.Text);
+
+        if (isValid)
+        {
+            labelTextBox.ValidationText = string.Empty;
+        }
+
+        labelTextBox.ValidationText = errorMessage;
     }
 }

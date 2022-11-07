@@ -3,8 +3,10 @@
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.ScrollViewer" TargetType="{x:Type ScrollViewer}" />
 
-    <!--  Light  -->
+    <Style
+        x:Key="AtcApps.Styles.ScrollViewer.TextControlContentHost"
+        BasedOn="{StaticResource AtcApps.Styles.ScrollViewer}"
+        TargetType="{x:Type ScrollViewer}" />
 
-    <!--  Dark  -->
 
 </ResourceDictionary>

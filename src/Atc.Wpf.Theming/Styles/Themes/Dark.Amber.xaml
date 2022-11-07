@@ -32,7 +32,7 @@
     <Color x:Key="AtcApps.Colors.SystemChromeMediumLow">#FF2B2B2B</Color>
     <Color x:Key="AtcApps.Colors.SystemChromeWhite">#FFFFFFFF</Color>
     <Color x:Key="AtcApps.Colors.SystemChromeGray">#FF767676</Color>
-    <Color x:Key="AtcApps.Colors.SystemListLow">#19FFFFFF</Color>
+    <Color x:Key="AtcApps.Colors.SystemListLow">#1FFFFFFF</Color>
     <Color x:Key="AtcApps.Colors.SystemListMedium">#33FFFFFF</Color>
     <Color x:Key="AtcApps.Colors.SystemErrorText">#FFF000</Color>
 
@@ -698,6 +698,12 @@
         x:Key="AtcApps.Brushes.ComboBox.PopupBorder"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Accent2}" />
+
+    <!--  Brushes: ListBox  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ListBox.Border"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.Gray8}" />
 
     <!--  Brushes: ListView  -->
     <SolidColorBrush

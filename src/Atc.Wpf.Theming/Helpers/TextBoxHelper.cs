@@ -3,6 +3,23 @@ namespace Atc.Wpf.Theming.Helpers;
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class TextBoxHelper
 {
+    public static readonly DependencyProperty ButtonHeightProperty = DependencyProperty.RegisterAttached(
+        "ButtonHeight",
+        typeof(double),
+        typeof(TextBoxHelper),
+        new FrameworkPropertyMetadata(
+            22d,
+            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
+
+    public static double GetButtonHeight(
+        DependencyObject d)
+        => (double)d.GetValue(ButtonHeightProperty);
+
+    public static void SetButtonHeight(
+        DependencyObject d,
+        double value)
+        => d.SetValue(ButtonHeightProperty, value);
+
     public static readonly DependencyProperty ButtonWidthProperty = DependencyProperty.RegisterAttached(
         "ButtonWidth",
         typeof(double),

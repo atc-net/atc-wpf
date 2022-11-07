@@ -31,6 +31,7 @@
                                 HorizontalScrollBarVisibility="Hidden"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 VerticalScrollBarVisibility="Hidden">
+                                <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
                                 <controls:GridViewHeaderRowPresenterEx
                                     x:Name="PART_HeaderRowPresenter"
                                     Margin="2,0,2,0"
@@ -43,6 +44,7 @@
                                     ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
                                     Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                             </ScrollViewer>
                             <ScrollContentPresenter
                                 x:Name="PART_ScrollContentPresenter"
@@ -55,6 +57,7 @@
                         <ScrollBar
                             x:Name="PART_HorizontalScrollBar"
                             Grid.Row="1"
+                            Grid.Column="0"
                             Cursor="Arrow"
                             Maximum="{TemplateBinding ScrollableWidth}"
                             Minimum="0.0"
@@ -64,6 +67,7 @@
                             Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                         <ScrollBar
                             x:Name="PART_VerticalScrollBar"
+                            Grid.Row="0"
                             Grid.Column="1"
                             Cursor="Arrow"
                             Maximum="{TemplateBinding ScrollableHeight}"
@@ -74,6 +78,7 @@
                             Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                         <DataTrigger Binding="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource Self}}" Value="{x:Null}">
                             <Setter TargetName="PART_HeaderRowPresenter" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
@@ -113,7 +118,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="GridViewColumnHeader">
+                <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
                     <Grid>
                         <Rectangle Fill="Transparent" IsHitTestVisible="True" />
                         <Border
@@ -159,7 +164,7 @@
                 <Setter Property="Opacity" Value="0.7" />
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="GridViewColumnHeader">
+                        <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
                             <Canvas Name="PART_FloatingHeaderCanvas">
                                 <Rectangle
                                     Width="{TemplateBinding ActualWidth}"
@@ -223,6 +228,7 @@
                             <Setter TargetName="PART_RowPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
+                        <!--  Selected  -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.SelectedBorderBrush), Mode=OneWay}" />
@@ -239,11 +245,10 @@
                             <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
                             <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
                         </MultiTrigger>
-
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.HoverSelectedBorderBrush), Mode=OneWay}" />
@@ -252,15 +257,39 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.HoverBorderBrush), Mode=OneWay}" />
                             <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
                             <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
                         </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsEnabled" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                                <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                                <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedBorderBrush), Mode=OneWay}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
 
+                        <!--  Not-Selected  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="helpers:ItemHelper.DisableAlternatingRowColoring" Value="False" />
+                                <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.AlternatingRowBackgroundBrush), Mode=OneWay}" />
+                        </MultiTrigger>
+
+                        <!--  Other  -->
                         <Trigger Property="helpers:ItemHelper.IsMouseLeftButtonPressed" Value="True">
                             <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.MouseLeftButtonPressedBorderBrush), Mode=OneWay}" />
@@ -273,7 +302,6 @@
                             <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
                             <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
                         </Trigger>
-
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledBorderBrush), Mode=OneWay}" />
@@ -281,18 +309,6 @@
                             <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
                             <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}" />
                         </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
-                                <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
-                                <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ItemHelper.DisabledSelectedBorderBrush), Mode=OneWay}" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -330,7 +346,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListView">
+                <ControlTemplate TargetType="{x:Type ListView}">
                     <Border
                         x:Name="Border"
                         Background="{TemplateBinding Background}"
@@ -365,6 +381,8 @@
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="helpers:ItemHelper.GridViewHeaderIndicatorBrush" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
+        <Setter Property="helpers:ItemHelper.AlternatingRowBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.SystemControlBackgroundListLow}" />
+        <Setter Property="helpers:ItemHelper.DisableAlternatingRowColoring" Value="False" />
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
         <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingStackPanel.IsVirtualizingWhenGrouping" Value="True" />

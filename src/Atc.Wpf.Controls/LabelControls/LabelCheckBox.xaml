@@ -11,7 +11,7 @@
         HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
-        LabelText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=ToggleSwitch}"
+        LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCheckBox}}, Path=LabelText, FallbackValue=CheckBox}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">

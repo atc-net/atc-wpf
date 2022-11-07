@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Asset2\**" />
-    <EmbeddedResource Remove="Asset2\**" />
-    <None Remove="Asset2\**" />
-    <Page Remove="Asset2\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Assets\a.svg" />
     <None Remove="Assets\eggeaster.svg" />
     <None Remove="Assets\road.jpg" />

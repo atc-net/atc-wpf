@@ -6,5 +6,6 @@
 [assembly: XmlnsDefinition(@"https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.BaseControls")]
 [assembly: XmlnsDefinition(@"https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.LabelControls")]
 [assembly: XmlnsDefinition(@"https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Layouts")]
+[assembly: XmlnsDefinition(@"https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Notifications")]
 [assembly: XmlnsDefinition(@"https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Progressing")]
 [assembly: XmlnsDefinition(@"https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Viewers")]

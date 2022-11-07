@@ -17,4 +17,9 @@ public enum SizeDefinitionType
     /// Use percentage.
     /// </summary>
     Percentage,
+
+    /// <summary>
+    /// Use Auto.
+    /// </summary>
+    Auto,
 }

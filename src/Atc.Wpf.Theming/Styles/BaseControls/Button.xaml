@@ -5,6 +5,10 @@
     xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators"
     xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Fonts.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.Button" TargetType="{x:Type ButtonBase}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray10}" />
@@ -50,15 +54,16 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.MouseOverBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.MouseOverForegroundBrush), Mode=OneWay}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.PressedBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.PressedBorderBrush), Mode=OneWay}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.FocusBorderBrush), Mode=OneWay}" />
-                            <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.FocusBorderThickness), Mode=OneWay}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7" />
@@ -71,9 +76,39 @@
         <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button}" />
         <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.Button}" />
         <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.Focus}" />
-        <Setter Property="helpers:ControlsHelper.FocusBorderThickness" Value="1" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.MouseOver}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.MouseOver}" />
     </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.Button.Small"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type ButtonBase}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.Button.Large"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type ButtonBase}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="Button.Small"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Small}"
+        TargetType="{x:Type ButtonBase}" />
+
+    <Style
+        x:Key="Button.Large"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Large}"
+        TargetType="{x:Type ButtonBase}" />
 
     <!--  Chromeless - ControlTemplate  -->
     <ControlTemplate x:Key="AtcApps.Templates.Button.Chromeless" TargetType="{x:Type ButtonBase}">
@@ -94,7 +129,7 @@
                 <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Control.Disabled}" />
+                <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -104,9 +139,462 @@
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Transparent}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template" Value="{StaticResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.Button.Chromeless.Small"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Chromeless}"
+        TargetType="{x:Type ButtonBase}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonChromeless"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Chromeless}"
+        TargetType="{x:Type ButtonBase}" />
+
+    <Style
+        x:Key="ButtonChromeless.Small"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Chromeless.Small}"
+        TargetType="{x:Type ButtonBase}" />
+
+    <!--  Bootstrap  -->
+    <Style
+        x:Key="ButtonDefault"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDefault.Small"
+        BasedOn="{StaticResource ButtonDefault}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDefault.Large"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDefault.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDefault.Outline.Small"
+        BasedOn="{StaticResource ButtonDefault.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDefault.Outline.Large"
+        BasedOn="{StaticResource ButtonDefault.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary.Small"
+        BasedOn="{StaticResource ButtonPrimary}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary.Large"
+        BasedOn="{StaticResource ButtonPrimary}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary.Outline.Small"
+        BasedOn="{StaticResource ButtonPrimary.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonPrimary.Outline.Large"
+        BasedOn="{StaticResource ButtonPrimary.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary.Small"
+        BasedOn="{StaticResource ButtonSecondary}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary.Large"
+        BasedOn="{StaticResource ButtonSecondary}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary.Outline.Small"
+        BasedOn="{StaticResource ButtonSecondary.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSecondary.Outline.Large"
+        BasedOn="{StaticResource ButtonSecondary.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess.Small"
+        BasedOn="{StaticResource ButtonSuccess}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess.Large"
+        BasedOn="{StaticResource ButtonSuccess}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess.Outline.Small"
+        BasedOn="{StaticResource ButtonSuccess.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonSuccess.Outline.Large"
+        BasedOn="{StaticResource ButtonSuccess.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger.Small"
+        BasedOn="{StaticResource ButtonDanger}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger.Large"
+        BasedOn="{StaticResource ButtonDanger}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger.Outline.Small"
+        BasedOn="{StaticResource ButtonDanger.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonDanger.Outline.Large"
+        BasedOn="{StaticResource ButtonDanger.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning.Small"
+        BasedOn="{StaticResource ButtonWarning}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning.Large"
+        BasedOn="{StaticResource ButtonWarning}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning.Outline.Small"
+        BasedOn="{StaticResource ButtonWarning.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonWarning.Outline.Large"
+        BasedOn="{StaticResource ButtonWarning.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan600}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo.Small"
+        BasedOn="{StaticResource ButtonInfo}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo.Large"
+        BasedOn="{StaticResource ButtonInfo}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="helpers:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="helpers:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+        <Setter Property="helpers:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo.Outline.Small"
+        BasedOn="{StaticResource ButtonInfo.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ButtonInfo.Outline.Large"
+        BasedOn="{StaticResource ButtonInfo.Outline}"
+        TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
 </ResourceDictionary>

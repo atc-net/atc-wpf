@@ -7,7 +7,7 @@ public class LabelDecimalNumberControl : LabelNumberControl, ILabelDecimalNumber
         typeof(decimal),
         typeof(LabelDecimalNumberControl),
         new FrameworkPropertyMetadata(
-            decimal.MaxValue,
+            defaultValue: decimal.MaxValue,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
 
     public decimal Maximum
@@ -21,7 +21,7 @@ public class LabelDecimalNumberControl : LabelNumberControl, ILabelDecimalNumber
         typeof(decimal),
         typeof(LabelDecimalNumberControl),
         new FrameworkPropertyMetadata(
-            decimal.MinValue,
+            defaultValue: decimal.MinValue,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
 
     public decimal Minimum

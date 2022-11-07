@@ -4,9 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:inputBox="clr-namespace:Atc.Wpf.Theming.Sample.Samples.InputBox"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=inputBox:TextBoxView}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">

@@ -6,20 +6,11 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
 {
-    public static new readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-        nameof(LabelText),
-        typeof(string),
-        typeof(LabelWellKnownColorSelector),
-        new FrameworkPropertyMetadata(
-            Miscellaneous.Color,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnLabelTextChanged));
-
     public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
         nameof(ShowAsteriskOnMandatory),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
 
     public bool ShowAsteriskOnMandatory
     {
@@ -31,7 +22,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
 
     public bool IsMandatory
     {
@@ -91,7 +82,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(ShowHexCode),
         typeof(bool),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
 
     public bool ShowHexCode
     {
@@ -120,6 +111,11 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
     {
         InitializeComponent();
 
+        if ("-Label-".Equals(LabelText, StringComparison.Ordinal))
+        {
+            LabelText = Miscellaneous.Color;
+        }
+
         CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
     }
 
@@ -127,29 +123,10 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         object? sender,
         UiCultureEventArgs e)
     {
-        if (string.IsNullOrEmpty(LabelText))
+        var s = Miscellaneous.ResourceManager.GetString(LabelText, e.OldCulture);
+        if (s is not null && s.Equals(LabelText, StringComparison.Ordinal))
         {
             LabelText = Miscellaneous.Color;
-        }
-        else
-        {
-            var s = Miscellaneous.ResourceManager.GetString(LabelText, e.OldCulture);
-            if (s is not null && s.Equals(LabelText, StringComparison.Ordinal))
-            {
-                LabelText = Miscellaneous.Color;
-            }
-        }
-    }
-
-    private static void OnLabelTextChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var labelWellKnownColorSelector = (LabelWellKnownColorSelector)d;
-
-        if (string.IsNullOrEmpty(labelWellKnownColorSelector.LabelText))
-        {
-            labelWellKnownColorSelector.LabelText = Miscellaneous.Color;
         }
     }
 
@@ -163,7 +140,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
             string.IsNullOrWhiteSpace(labelWellKnownColorSelector.SelectedKey) &&
             e.OldValue is not null)
         {
-            labelWellKnownColorSelector.ValidationText = "Field is required";
+            labelWellKnownColorSelector.ValidationText = Miscellaneous.FieldIsRequired;
             return;
         }
 

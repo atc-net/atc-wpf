@@ -70,6 +70,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Field is required.
+        /// </summary>
+        public static string FieldIsRequired {
+            get {
+                return ResourceManager.GetString("FieldIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {

@@ -32,7 +32,7 @@
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid>
                         <Border
-                            x:Name="Base"
+                            x:Name="PART_Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -88,6 +88,7 @@
                                 Grid.RowSpan="2"
                                 Grid.Column="1"
                                 Width="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
+                                MinHeight="22"
                                 Margin="0,-0.5,-0.5,0"
                                 Command="{TemplateBinding helpers:TextBoxHelper.ButtonCommand}"
                                 CommandParameter="{TemplateBinding helpers:TextBoxHelper.ButtonCommandParameter}"
@@ -164,13 +165,13 @@
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.MouseOverBorderBrush)}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.FocusBorderBrush)}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearTextButton" Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_ClearTextButton" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray5}" />

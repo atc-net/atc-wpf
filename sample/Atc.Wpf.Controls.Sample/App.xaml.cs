@@ -104,6 +104,8 @@ public partial class App
             .ConfigureAwait(false);
 
         AppDomain.CurrentDomain.TryLoadAssemblyIfNeeded("Atc.Wpf.Controls.dll");
+
+        Thread.CurrentThread.CurrentUICulture = GlobalizationConstants.EnglishCultureInfo;
         ThemeManager.Current.ChangeTheme(Current, "Light.Blue");
 
         var mainWindow = host

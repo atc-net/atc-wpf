@@ -167,8 +167,6 @@ public class SvgImage : Control
         set => SetValue(OverrideStrokeWidthProperty, value);
     }
 
-    [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "OK.")]
-    [SuppressMessage("Design", "MA0016:Prefer returning collection abstraction instead of implementation", Justification = "OK.")]
     public Dictionary<string, Brush> CustomBrushes
     {
         get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);

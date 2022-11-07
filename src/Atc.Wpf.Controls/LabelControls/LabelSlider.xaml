@@ -18,7 +18,7 @@
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
-        LabelText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=SliderBox}"
+        LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelSlider}}, Path=LabelText, FallbackValue=SliderBox}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"

@@ -34,13 +34,33 @@ public partial class ListViewView
                     new CultureInfo("en-US"))));
         Items.Add(
             new Person(
-                "Karren ",
+                "Karren",
                 "Koe",
                 21,
                 new Address(
                     "My Street 21",
                     "Anytown, New York",
                     "NY 1111",
+                    new CultureInfo("en-US"))));
+        Items.Add(
+            new Person(
+                "Noelle",
+                "Barr",
+                1,
+                new Address(
+                    "My Street 1",
+                    "Unknown",
+                    "Abc123",
+                    new CultureInfo("en-US"))));
+        Items.Add(
+            new Person(
+                "Batman",
+                "Forever",
+                1,
+                new Address(
+                    "My Street 1",
+                    "Unknown",
+                    "Abc123",
                     new CultureInfo("en-US"))));
     }
 

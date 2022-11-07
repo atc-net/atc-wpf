@@ -30,7 +30,7 @@
                         ValueHeight="400"
                         ValueWidth="400" />
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
                     <atc:LabelComboBox
                         x:Name="CbControlSizeType"
                         HideAreas="All"
@@ -41,7 +41,7 @@
                         x:Name="CbColor"
                         HideAreas="All"
                         SelectedKey="Transparent" />
-                </StackPanel>
+                </atc:UniformSpacingPanel>
             </atc:UniformSpacingPanel>
         </GroupBox>
 

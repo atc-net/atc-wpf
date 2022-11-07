@@ -14,6 +14,10 @@
             Header="Button"
             IsExpanded="True"
             SamplePath="InputButton.ButtonView" />
+        <atc:SampleTreeViewItem
+            Header="ImageButton"
+            IsExpanded="True"
+            SamplePath="InputButton.ImageButtonView" />
         <TreeViewItem
             Header="ToggleButton"
             IsEnabled="False"
@@ -41,10 +45,6 @@
             IsExpanded="True"
             SamplePath="InputBox.TextBoxView" />
         <TreeViewItem
-            Header="ListBox"
-            IsEnabled="False"
-            IsExpanded="True" />
-        <TreeViewItem
             Header="PasswordBox"
             IsEnabled="False"
             IsExpanded="True" />
@@ -64,6 +64,10 @@
             Header="Label"
             IsExpanded="True"
             SamplePath="Misc.LabelView" />
+        <atc:SampleTreeViewItem
+            Header="ListBox"
+            IsExpanded="True"
+            SamplePath="Misc.ListBoxView" />
         <atc:SampleTreeViewItem
             Header="ListView"
             IsExpanded="True"

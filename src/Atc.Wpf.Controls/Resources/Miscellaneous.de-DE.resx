@@ -126,4 +126,7 @@
   <data name="PleaseWait" xml:space="preserve">
     <value>Warten Sie mal</value>
   </data>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>Feld ist erforderlich</value>
+  </data>
 </root>

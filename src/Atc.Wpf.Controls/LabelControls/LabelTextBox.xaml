@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    IsTabStop="False"
     mc:Ignorable="d">
 
     <labelControls:LabelContent
@@ -13,7 +14,8 @@
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
-        LabelText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, FallbackValue=TextBox}"
+        IsTabStop="False"
+        LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=LabelText, FallbackValue=TextBox}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"

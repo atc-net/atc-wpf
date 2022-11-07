@@ -14,13 +14,53 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Vertical">
+                <atc:LabelSlider
+                    x:Name="LsSpacing"
+                    LabelText="Spacing"
+                    Minimum="1"
+                    Value="1" />
+            </atc:UniformSpacingPanel>
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
                 <StackPanel Orientation="Vertical">
 
-                    <atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="{Binding ElementName=LsSpacing, Path=Value}">
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Blue" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Red" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Green" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Yellow" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Blue" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Red" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Green" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Yellow" />
                         <Rectangle
                             Width="50"
                             Height="50"
@@ -39,7 +79,7 @@
                             Fill="Yellow" />
                     </atc:UniformSpacingPanel>
 
-                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="{Binding ElementName=LsSpacing, Path=Value}">
                         <Rectangle
                             Width="50"
                             Height="50"
@@ -56,9 +96,22 @@
                             Width="50"
                             Height="50"
                             Fill="Yellow" />
-                    </atc:UniformSpacingPanel>
-
-                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="20">
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Blue" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Red" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Green" />
+                        <Rectangle
+                            Width="50"
+                            Height="50"
+                            Fill="Yellow" />
                         <Rectangle
                             Width="50"
                             Height="50"

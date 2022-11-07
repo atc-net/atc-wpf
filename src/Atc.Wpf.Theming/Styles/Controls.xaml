@@ -79,6 +79,7 @@
     <CornerRadius x:Key="AtcApps.CornerRadius.NumericBox">3</CornerRadius>
     <CornerRadius x:Key="AtcApps.CornerRadius.TabControl">3</CornerRadius>
     <CornerRadius x:Key="AtcApps.CornerRadius.TextBox">3</CornerRadius>
+    <CornerRadius x:Key="AtcApps.CornerRadius.ToastNotification">8</CornerRadius>
     <CornerRadius x:Key="AtcApps.CornerRadius.TreeView">3</CornerRadius>
 
 </ResourceDictionary>

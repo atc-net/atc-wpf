@@ -50,7 +50,7 @@ public class Col : ContentControl
         nameof(IsFixed),
         typeof(bool),
         typeof(Col),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
 
     public bool IsFixed
     {
@@ -96,7 +96,7 @@ public class Col : ContentControl
                 case ColLayoutType.Auto:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(status), status, null);
+                    throw new SwitchCaseDefaultException(status);
             }
         }
 

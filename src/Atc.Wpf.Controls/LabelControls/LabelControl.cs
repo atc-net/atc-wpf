@@ -6,7 +6,7 @@ public class LabelControl : LabelControlBase, ILabelControl
         nameof(ShowAsteriskOnMandatory),
         typeof(bool),
         typeof(LabelControl),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
 
     public bool ShowAsteriskOnMandatory
     {
@@ -18,7 +18,7 @@ public class LabelControl : LabelControlBase, ILabelControl
         nameof(IsMandatory),
         typeof(bool),
         typeof(LabelControl),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
 
     public bool IsMandatory
     {
