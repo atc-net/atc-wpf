@@ -10,8 +10,8 @@ namespace Atc.Wpf.Controls.BaseControls;
 [StyleTypedProperty(Property = nameof(SpinButtonStyle), StyleTargetType = typeof(ButtonBase))]
 public class NumericBox : Control
 {
-    private const string PART_NumericDown = "PART_NumericDown";
-    private const string PART_NumericUp = "PART_NumericUp";
+    private const string PART_NumericDown = "PART_NumericDownButton";
+    private const string PART_NumericUp = "PART_NumericUpButton";
     private const string PART_TextBox = "PART_TextBox";
     private const string PART_ContentHost = "PART_ContentHost";
     private const double DefaultInterval = 1d;

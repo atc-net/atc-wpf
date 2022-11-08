@@ -226,6 +226,55 @@ public static class TextBoxHelper
         bool value)
         => d.SetValue(UseFloatingWatermarkProperty, BooleanBoxes.Box(value));
 
+    public static readonly DependencyProperty HasValidationErrorProperty = DependencyProperty.RegisterAttached(
+        "HasValidationError",
+        typeof(bool),
+        typeof(TextBoxHelper),
+        new FrameworkPropertyMetadata(
+            BooleanBoxes.FalseBox,
+            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender));
+
+    public static bool GetHasValidationError(
+        DependencyObject d)
+        => (bool)d.GetValue(HasValidationErrorProperty);
+
+    public static void SetHasValidationError(
+        DependencyObject d,
+        bool value)
+        => d.SetValue(HasValidationErrorProperty, BooleanBoxes.Box(value));
+
+    public static readonly DependencyProperty ShowToolTipProperty = DependencyProperty.RegisterAttached(
+        "ShowToolTip",
+        typeof(bool),
+        typeof(TextBoxHelper),
+        new FrameworkPropertyMetadata(
+            BooleanBoxes.FalseBox,
+            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender));
+
+    public static bool GetShowToolTip(
+        DependencyObject d)
+        => (bool)d.GetValue(ShowToolTipProperty);
+
+    public static void SetShowToolTip(
+        DependencyObject d,
+        bool value)
+        => d.SetValue(ShowToolTipProperty, BooleanBoxes.Box(value));
+
+    public static readonly DependencyProperty ToolTipTextProperty = DependencyProperty.RegisterAttached(
+        "ToolTipText",
+        typeof(string),
+        typeof(TextBoxHelper),
+        new UIPropertyMetadata(string.Empty));
+
+    public static string GetToolTipText(
+        DependencyObject d)
+        => (string)d.GetValue(ToolTipTextProperty);
+
+    public static void SetToolTipText(
+        DependencyObject d,
+        string value)
+        => d.SetValue(ToolTipTextProperty, value);
+
     public static readonly DependencyProperty WatermarkProperty = DependencyProperty.RegisterAttached(
         "Watermark",
         typeof(string),

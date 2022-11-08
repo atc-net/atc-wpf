@@ -53,7 +53,7 @@
                             Orientation="Horizontal"
                             ShowClearTextButton="True"
                             ValidationFormat="HttpOrHttps"
-                            WatermarkText="Ftp url" />
+                            WatermarkText="Http url" />
 
                         <atc:LabelTextBox
                             IsMandatory="True"
@@ -70,6 +70,15 @@
                             ShowClearTextButton="True"
                             ValidationFormat="OpcTcp"
                             WatermarkText="OpcTcp url" />
+
+                        <atc:LabelTextBox
+                            HideAreas="All"
+                            IsMandatory="True"
+                            LabelText="Email"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="Email"
+                            WatermarkText="Email address" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
