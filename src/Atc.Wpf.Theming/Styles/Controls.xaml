@@ -30,6 +30,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolTip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TreeView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ValidationError.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->

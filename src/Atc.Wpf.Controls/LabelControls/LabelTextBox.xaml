@@ -3,11 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     IsTabStop="False"
     mc:Ignorable="d">
+
+    <labelControls:LabelControl.Resources>
+        <valueConverters:LabelControlHideAreasToShowToolTipValueConverter x:Key="LabelControlHideAreasToShowToolTipValueConverter" />
+        <atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter x:Key="StringNullOrEmptyToInverseBoolValueConverter" />
+    </labelControls:LabelControl.Resources>
 
     <labelControls:LabelContent
         HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
@@ -26,6 +33,9 @@
 
         <TextBox
             atc:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=ShowClearTextButton}"
+            atc:TextBoxHelper.HasValidationError="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=ValidationText, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}"
+            atc:TextBoxHelper.ShowToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=HideAreas, Converter={StaticResource LabelControlHideAreasToShowToolTipValueConverter}}"
+            atc:TextBoxHelper.ToolTipText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=ValidationText}"
             atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=WatermarkText}"
             atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=WatermarkAlignment}"
             MaxLength="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=MaxLength}"

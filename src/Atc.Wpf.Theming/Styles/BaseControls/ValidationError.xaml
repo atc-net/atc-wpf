@@ -1,0 +1,10 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTemplate x:Key="AtcApps.Templates.ValidationError">
+        <DockPanel SnapsToDevicePixels="True">
+            <!--<TextBlock FontSize="20" Foreground="DeepPink">#</TextBlock>-->
+            <AdornedElementPlaceholder x:Name="placeholder" />
+        </DockPanel>
+    </ControlTemplate>
+
+</ResourceDictionary>

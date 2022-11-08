@@ -13,7 +13,6 @@
     <Style x:Key="AtcApps.Styles.Button.NumericBox.Spin" TargetType="{x:Type ButtonBase}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Transparent}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Padding" Value="0" />
@@ -46,7 +45,7 @@
                             <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.6" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.SystemControlForegroundChromeDisabledLow}" />
@@ -56,16 +55,6 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray5}" />
-                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
-                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <!--  Base  -->
@@ -73,36 +62,6 @@
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Control.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="ButtonDownContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Path
-                        Width="8"
-                        Height="8"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Data="{DynamicResource AtcApps.Geometry.Minus}"
-                        Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-                        IsHitTestVisible="False"
-                        Stretch="Uniform" />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="ButtonUpContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Path
-                        Width="8"
-                        Height="8"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Data="{DynamicResource AtcApps.Geometry.Plus}"
-                        Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-                        IsHitTestVisible="False"
-                        Stretch="Uniform" />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
         <Setter Property="ContextMenu" Value="{DynamicResource AtcApps.TextBox.ContextMenu}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
@@ -204,35 +163,60 @@
 
                             </atcTheming:GridEx>
 
+                            <!--
+                                Content="{TemplateBinding ButtonUpContent}"
+                                ContentStringFormat="{TemplateBinding ButtonUpContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ButtonUpContentTemplate}"
+                            -->
                             <RepeatButton
-                                x:Name="PART_NumericUp"
+                                x:Name="PART_NumericUpButton"
                                 Grid.Column="1"
                                 Width="{TemplateBinding UpDownButtonsWidth}"
                                 Margin="{TemplateBinding UpDownButtonsMargin}"
                                 atcTheming:ControlsHelper.CornerRadius="0"
                                 BorderThickness="0"
-                                Content="{TemplateBinding ButtonUpContent}"
-                                ContentStringFormat="{TemplateBinding ButtonUpContentStringFormat}"
-                                ContentTemplate="{TemplateBinding ButtonUpContentTemplate}"
                                 Delay="{TemplateBinding Delay}"
                                 Focusable="{TemplateBinding UpDownButtonsFocusable}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Style="{TemplateBinding SpinButtonStyle}" />
+                                Style="{TemplateBinding SpinButtonStyle}">
+                                <RepeatButton.Content>
+                                    <Path
+                                        x:Name="PART_NumericUpButtonIcon"
+                                        Width="8"
+                                        Height="8"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Data="{DynamicResource AtcApps.Geometry.Plus}"
+                                        Fill="{DynamicResource AtcApps.Brushes.Gray1}"
+                                        IsHitTestVisible="False"
+                                        Stretch="Uniform" />
+                                </RepeatButton.Content>
+                            </RepeatButton>
 
                             <RepeatButton
-                                x:Name="PART_NumericDown"
+                                x:Name="PART_NumericDownButton"
                                 Grid.Column="2"
                                 Width="{TemplateBinding UpDownButtonsWidth}"
                                 Margin="{TemplateBinding UpDownButtonsMargin}"
                                 atcTheming:ControlsHelper.CornerRadius="0"
                                 BorderThickness="0"
-                                Content="{TemplateBinding ButtonDownContent}"
-                                ContentStringFormat="{TemplateBinding ButtonDownContentStringFormat}"
-                                ContentTemplate="{TemplateBinding ButtonDownContentTemplate}"
                                 Delay="{TemplateBinding Delay}"
                                 Focusable="{TemplateBinding UpDownButtonsFocusable}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Style="{TemplateBinding SpinButtonStyle}" />
+                                Style="{TemplateBinding SpinButtonStyle}">
+                                <RepeatButton.Content>
+                                    <Path
+                                        x:Name="PART_NumericDownButtonIcon"
+                                        Width="8"
+                                        Height="8"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Data="{DynamicResource AtcApps.Geometry.Minus}"
+                                        Fill="{DynamicResource AtcApps.Brushes.Gray1}"
+                                        IsHitTestVisible="False"
+                                        Stretch="Uniform" />
+                                </RepeatButton.Content>
+                            </RepeatButton>
                         </Grid>
 
                         <Border
@@ -263,12 +247,12 @@
                             <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Margin" Value="-0.5,-0.5,0,0" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_NumericDown" Property="Margin" Value="-0.5,-0.5,0,0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Margin" Value="-0.5,-0.5,0,0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Margin" Value="-0.5,-0.5,0,0" />
                             <Setter TargetName="PART_Content" Property="Grid.Column" Value="2" />
                         </MultiTrigger>
                         <MultiTrigger>
@@ -279,12 +263,12 @@
                             <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericDown" Property="Margin" Value="-0.5,-0.5,0,0" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_NumericUp" Property="Margin" Value="-0.5,-0.5,0,0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Margin" Value="-0.5,-0.5,0,0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Margin" Value="-0.5,-0.5,0,0" />
                             <Setter TargetName="PART_Content" Property="Grid.Column" Value="2" />
                         </MultiTrigger>
                         <MultiTrigger>
@@ -295,12 +279,12 @@
                             <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_MiddleColumn" Property="Width" Value="*" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Margin" Value="-0.5,-0.5,0,0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Margin" Value="-0.5,-0.5,0,0" />
                             <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_NumericDownButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Grid.Column" Value="2" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -310,12 +294,12 @@
                             <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_MiddleColumn" Property="Width" Value="*" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericDown" Property="Margin" Value="-0.5,-0.5,0,0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Margin" Value="-0.5,-0.5,0,0" />
                             <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_NumericUpButton" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Grid.Column" Value="2" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -326,8 +310,8 @@
                             <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
                             <Setter TargetName="PART_Content" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Grid.Column" Value="1" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
@@ -336,8 +320,8 @@
                             <Setter Property="InterceptArrowKeys" Value="False" />
                             <Setter Property="InterceptManualEnter" Value="False" />
                             <Setter Property="InterceptMouseWheel" Value="False" />
-                            <Setter TargetName="PART_NumericDown" Property="IsEnabled" Value="False" />
-                            <Setter TargetName="PART_NumericUp" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_NumericDownButton" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_NumericUpButton" Property="IsEnabled" Value="False" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -349,13 +333,25 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atcTheming:ControlsHelper.MouseOverBorderBrush)}" />
                         </Trigger>
+                        <Trigger SourceName="PART_NumericUpButton" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_NumericUpButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </Trigger>
+                        <Trigger SourceName="PART_NumericUpButton" Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_NumericUpButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
+                        </Trigger>
+                        <Trigger SourceName="PART_NumericDownButton" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_NumericDownButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </Trigger>
+                        <Trigger SourceName="PART_NumericDownButton" Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_NumericUpButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
+                        </Trigger>
                         <Trigger SourceName="PART_TextBox" Property="IsSelectionActive" Value="True">
                             <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atcTheming:ControlsHelper.FocusBorderBrush)}" />
                             <Setter TargetName="FocusBorder" Property="BorderThickness" Value="1" />
                         </Trigger>
                         <Trigger Property="HideUpDownButtons" Value="True">
-                            <Setter TargetName="PART_NumericDown" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="PART_NumericUp" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_NumericDownButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_NumericUpButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

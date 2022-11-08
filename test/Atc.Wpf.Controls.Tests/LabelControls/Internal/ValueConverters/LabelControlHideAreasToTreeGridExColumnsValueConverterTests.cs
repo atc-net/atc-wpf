@@ -8,6 +8,7 @@ public class LabelControlHideAreasToTreeGridExColumnsValueConverterTests
     [InlineData("10,*,0", LabelControlHideAreasType.Information)]
     [InlineData("10,*,20", LabelControlHideAreasType.Validation)]
     [InlineData("0,*,0", LabelControlHideAreasType.AsteriskAndInformation)]
+    [InlineData("0,*,20", LabelControlHideAreasType.AsteriskAndValidation)]
     [InlineData("10,*,0", LabelControlHideAreasType.InformationAndValidation)]
     [InlineData("0,*,0", LabelControlHideAreasType.All)]
     public void Convert(string expected, LabelControlHideAreasType hideAreasType)

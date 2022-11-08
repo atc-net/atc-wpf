@@ -37,20 +37,18 @@
                                 Height="10"
                                 HorizontalAlignment="Center"
                                 Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
-                                Fill="{DynamicResource AtcApps.Brushes.Gray1}"
+                                Fill="{DynamicResource AtcApps.Brushes.Gray6}"
                                 IsHitTestVisible="False"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Stretch="Uniform" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger SourceName="BtnArrowBackground" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray5}" />
-                        </Trigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsPressed}" Value="True">
-                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
-                            <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+                        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
+                            <Setter TargetName="ArrowIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                         </DataTrigger>
+                        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -324,6 +322,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False" />
@@ -397,6 +396,7 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
                         </Trigger>
+                        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
