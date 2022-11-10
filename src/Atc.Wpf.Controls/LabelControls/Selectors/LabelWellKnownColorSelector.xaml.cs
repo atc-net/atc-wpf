@@ -46,7 +46,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         nameof(ValidationColor),
         typeof(SolidColorBrush),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(new SolidColorBrush(Colors.OrangeRed)));
+        new PropertyMetadata(Application.Current.Resources["AtcApps.Brushes.Control.Validation"] as SolidColorBrush));
 
     public SolidColorBrush ValidationColor
     {
@@ -105,7 +105,7 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public static event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
+    public event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
 
     public LabelWellKnownColorSelector()
     {
@@ -130,11 +130,20 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         }
     }
 
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectedKeyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var labelWellKnownColorSelector = (LabelWellKnownColorSelector)d;
+        var newValue = e.NewValue?.ToString();
+        var oldValue = e.OldValue?.ToString();
+
+        if (string.IsNullOrEmpty(newValue) &&
+            string.IsNullOrEmpty(oldValue))
+        {
+            return;
+        }
 
         if (labelWellKnownColorSelector.IsMandatory &&
             string.IsNullOrWhiteSpace(labelWellKnownColorSelector.SelectedKey) &&
@@ -147,14 +156,14 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         labelWellKnownColorSelector.ValidationText = string.Empty;
 
         var identifier = labelWellKnownColorSelector.Tag is null
-            ? "Color"
+            ? labelWellKnownColorSelector.LabelText
             : labelWellKnownColorSelector.Tag.ToString();
 
-        SelectedKeyChanged?.Invoke(
-            sender: null,
+        labelWellKnownColorSelector.SelectedKeyChanged?.Invoke(
+            labelWellKnownColorSelector,
             new SelectedKeyEventArgs(
                 identifier!,
-                e.NewValue?.ToString(),
-                e.OldValue?.ToString()));
+                newValue,
+                oldValue));
     }
 }
