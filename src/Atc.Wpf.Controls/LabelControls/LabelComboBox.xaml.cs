@@ -32,18 +32,27 @@ public partial class LabelComboBox : ILabelComboBox
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public static event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
+    public event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
 
     public LabelComboBox()
     {
         InitializeComponent();
     }
 
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectedKeyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var labelComboBox = (LabelComboBox)d;
+        var newValue = e.NewValue?.ToString();
+        var oldValue = e.OldValue?.ToString();
+
+        if (string.IsNullOrEmpty(newValue) &&
+            string.IsNullOrEmpty(oldValue))
+        {
+            return;
+        }
 
         if (labelComboBox.IsMandatory &&
             string.IsNullOrWhiteSpace(labelComboBox.SelectedKey) &&
@@ -59,11 +68,11 @@ public partial class LabelComboBox : ILabelComboBox
             ? labelComboBox.LabelText
             : labelComboBox.Tag.ToString();
 
-        SelectedKeyChanged?.Invoke(
-            sender: null,
+        labelComboBox.SelectedKeyChanged?.Invoke(
+            labelComboBox,
             new SelectedKeyEventArgs(
                 identifier!,
-                e.NewValue?.ToString(),
-                e.OldValue?.ToString()));
+                newValue,
+                oldValue));
     }
 }
