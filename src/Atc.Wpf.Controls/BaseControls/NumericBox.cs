@@ -218,6 +218,7 @@ public class NumericBox : Control
             OnValuePropertyChanged,
             (o, value) => CoerceValue(o, value).Item1));
 
+    [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
     public double? Value
     {
         get => (double?)GetValue(ValueProperty);
@@ -1031,6 +1032,7 @@ public class NumericBox : Control
         }
     }
 
+    [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "OK.")]
     protected void OnPreviewTextInput(
         object sender,
         TextCompositionEventArgs e)
@@ -1048,7 +1050,7 @@ public class NumericBox : Control
         manualChange = !e.Handled;
     }
 
-    [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.s")]
+    [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected virtual void OnValueChanged(
         double? oldValue,
