@@ -22,6 +22,7 @@
             Minimum="0"
             PrefixText="W:"
             SuffixText="px"
+            ValueChanged="OnValueWidthChanged"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueWidth, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
 
         <local:IntegerBox
@@ -31,6 +32,7 @@
             Minimum="0"
             PrefixText="H:"
             SuffixText="px"
+            ValueChanged="OnValueHeightChanged"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueHeight, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
 
     </atc:GridEx>

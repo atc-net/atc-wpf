@@ -25,7 +25,7 @@ global using System.Windows.Media;
 global using System.Windows.Media.Animation;
 global using System.Windows.Shapes;
 global using System.Windows.Threading;
-
+global using Atc.Wpf.Controls.BaseControls.Internal;
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
 global using Atc.Wpf.Controls.LabelControls.Enums;
 global using Atc.Wpf.Controls.LabelControls.Internal.Helpers;

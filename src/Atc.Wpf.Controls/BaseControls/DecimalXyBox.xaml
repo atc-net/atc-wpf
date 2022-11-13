@@ -22,6 +22,7 @@
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
             PrefixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=PrefixTextX}"
             SuffixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=SuffixText}"
+            ValueChanged="OnValueXChanged"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=ValueX, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
 
         <local:DecimalBox
@@ -31,6 +32,7 @@
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
             PrefixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=PrefixTextY}"
             SuffixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=SuffixText}"
+            ValueChanged="OnValueYChanged"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=ValueY, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
 
     </atc:GridEx>

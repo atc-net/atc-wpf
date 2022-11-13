@@ -5,6 +5,30 @@ namespace Atc.Wpf.Controls.BaseControls;
 /// </summary>
 public partial class IntegerXyBox
 {
+    public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(ValueXChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<int>),
+        typeof(IntegerXyBox));
+
+    public event RoutedPropertyChangedEventHandler<int> ValueXChanged
+    {
+        add => AddHandler(ValueXChangedEvent, value);
+        remove => RemoveHandler(ValueXChangedEvent, value);
+    }
+
+    public static readonly RoutedEvent ValueYChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(ValueYChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<int>),
+        typeof(IntegerXyBox));
+
+    public event RoutedPropertyChangedEventHandler<int> ValueYChanged
+    {
+        add => AddHandler(ValueYChangedEvent, value);
+        remove => RemoveHandler(ValueYChangedEvent, value);
+    }
+
     public static readonly DependencyProperty HideUpDownButtonsProperty = DependencyProperty.Register(
         nameof(HideUpDownButtons),
         typeof(bool),
@@ -94,7 +118,7 @@ public partial class IntegerXyBox
         new FrameworkPropertyMetadata(
             default(int),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null,
+            OnValueXLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -112,7 +136,7 @@ public partial class IntegerXyBox
         new FrameworkPropertyMetadata(
             default(int),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null,
+            OnValueYLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -123,8 +147,66 @@ public partial class IntegerXyBox
         set => SetValue(ValueYProperty, value);
     }
 
+    public event EventHandler<ChangedIntegerEventArgs>? ValueXLostFocus;
+
+    public event EventHandler<ChangedIntegerEventArgs>? ValueYLostFocus;
+
     public IntegerXyBox()
     {
         InitializeComponent();
+    }
+
+    private void OnValueXChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<double?> e)
+    {
+        if (e.OldValue is null || e.NewValue is null)
+        {
+            return;
+        }
+
+        RaiseEvent(new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, ValueXChangedEvent));
+    }
+
+    private void OnValueYChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<double?> e)
+    {
+        if (e.OldValue is null || e.NewValue is null)
+        {
+            return;
+        }
+
+        RaiseEvent(new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, ValueYChangedEvent));
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueXLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (IntegerXyBox)d;
+
+        control.ValueXLostFocus?.Invoke(
+            control,
+            new ChangedIntegerEventArgs(
+                ControlHelper.GetIdentifier(control),
+                (int)e.OldValue,
+                (int)e.NewValue));
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueYLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (IntegerXyBox)d;
+
+        control.ValueYLostFocus?.Invoke(
+            control,
+            new ChangedIntegerEventArgs(
+                ControlHelper.GetIdentifier(control),
+                (int)e.OldValue,
+                (int)e.NewValue));
     }
 }

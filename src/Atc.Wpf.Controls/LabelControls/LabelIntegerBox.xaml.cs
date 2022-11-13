@@ -64,7 +64,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         new FrameworkPropertyMetadata(
             default(int),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null,
+            OnValueLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -76,8 +76,34 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         set => SetValue(ValueProperty, value);
     }
 
+    public event EventHandler<ChangedIntegerEventArgs>? ValueLostFocus;
+
     public LabelIntegerBox()
     {
         InitializeComponent();
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelIntegerBox)d;
+        if (e.NewValue is not int newValue)
+        {
+            return;
+        }
+
+        if (e.OldValue is not int oldValue)
+        {
+            return;
+        }
+
+        control.ValueLostFocus?.Invoke(
+            control,
+            new ChangedIntegerEventArgs(
+                control.Identifier,
+                oldValue,
+                newValue));
     }
 }

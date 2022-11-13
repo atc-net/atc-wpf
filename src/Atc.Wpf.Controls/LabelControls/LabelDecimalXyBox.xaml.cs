@@ -5,6 +5,30 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelDecimalXyBox : ILabelDecimalXyBox
 {
+    public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(ValueXChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<decimal>),
+        typeof(LabelDecimalXyBox));
+
+    public event RoutedPropertyChangedEventHandler<decimal> ValueXChanged
+    {
+        add => AddHandler(ValueXChangedEvent, value);
+        remove => RemoveHandler(ValueXChangedEvent, value);
+    }
+
+    public static readonly RoutedEvent ValueYChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(ValueYChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<decimal>),
+        typeof(LabelDecimalXyBox));
+
+    public event RoutedPropertyChangedEventHandler<decimal> ValueYChanged
+    {
+        add => AddHandler(ValueYChangedEvent, value);
+        remove => RemoveHandler(ValueYChangedEvent, value);
+    }
+
     public static readonly DependencyProperty PrefixTextXProperty = DependencyProperty.Register(
         nameof(PrefixTextX),
         typeof(string),
@@ -54,7 +78,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         new FrameworkPropertyMetadata(
             default(decimal),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null,
+            OnValueXLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -72,7 +96,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         new FrameworkPropertyMetadata(
             default(decimal),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null,
+            OnValueYLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -83,8 +107,56 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         set => SetValue(ValueYProperty, value);
     }
 
+    public event EventHandler<ChangedDecimalEventArgs>? ValueXLostFocus;
+
+    public event EventHandler<ChangedDecimalEventArgs>? ValueYLostFocus;
+
     public LabelDecimalXyBox()
     {
         InitializeComponent();
+    }
+
+    private void OnValueXChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<decimal> e)
+    {
+        RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(e.OldValue, e.NewValue, ValueXChangedEvent));
+    }
+
+    private void OnValueYChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<decimal> e)
+    {
+        RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(e.OldValue, e.NewValue, ValueYChangedEvent));
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueXLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelDecimalXyBox)d;
+
+        control.ValueXLostFocus?.Invoke(
+            control,
+            new ChangedDecimalEventArgs(
+                ControlHelper.GetIdentifier(control),
+                (decimal)e.OldValue,
+                (decimal)e.NewValue));
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueYLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelDecimalXyBox)d;
+
+        control.ValueYLostFocus?.Invoke(
+            control,
+            new ChangedDecimalEventArgs(
+                ControlHelper.GetIdentifier(control),
+                (decimal)e.OldValue,
+                (decimal)e.NewValue));
     }
 }

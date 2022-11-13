@@ -24,7 +24,10 @@ public partial class LabelComboBox : ILabelComboBox
         new FrameworkPropertyMetadata(
             default(string),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectedKeyChanged));
+            OnSelectedKeyLostFocus,
+            coerceValueCallback: null,
+            isAnimationProhibited: true,
+            UpdateSourceTrigger.LostFocus));
 
     public string SelectedKey
     {
@@ -32,7 +35,7 @@ public partial class LabelComboBox : ILabelComboBox
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
+    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
 
     public LabelComboBox()
     {
@@ -40,11 +43,11 @@ public partial class LabelComboBox : ILabelComboBox
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    private static void OnSelectedKeyChanged(
+    private static void OnSelectedKeyLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var labelComboBox = (LabelComboBox)d;
+        var control = (LabelComboBox)d;
         var newValue = e.NewValue?.ToString();
         var oldValue = e.OldValue?.ToString();
 
@@ -54,25 +57,21 @@ public partial class LabelComboBox : ILabelComboBox
             return;
         }
 
-        if (labelComboBox.IsMandatory &&
-            string.IsNullOrWhiteSpace(labelComboBox.SelectedKey) &&
+        if (control.IsMandatory &&
+            string.IsNullOrWhiteSpace(control.SelectedKey) &&
             e.OldValue is not null)
         {
-            labelComboBox.ValidationText = "Field is required";
+            control.ValidationText = "Field is required";
             return;
         }
 
-        labelComboBox.ValidationText = string.Empty;
+        control.ValidationText = string.Empty;
 
-        var identifier = labelComboBox.Tag is null
-            ? labelComboBox.LabelText
-            : labelComboBox.Tag.ToString();
-
-        labelComboBox.SelectedKeyChanged?.Invoke(
-            labelComboBox,
-            new SelectedKeyEventArgs(
-                identifier!,
-                newValue,
-                oldValue));
+        control.SelectedKeyChanged?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                control.Identifier,
+                oldValue,
+                newValue));
     }
 }

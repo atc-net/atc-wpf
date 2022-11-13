@@ -64,7 +64,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         new FrameworkPropertyMetadata(
             default(decimal),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null,
+            OnValueLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -76,8 +76,34 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         set => SetValue(ValueProperty, value);
     }
 
+    public event EventHandler<ChangedDecimalEventArgs>? ValueChanged;
+
     public LabelDecimalBox()
     {
         InitializeComponent();
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelDecimalBox)d;
+        if (e.NewValue is not decimal newValue)
+        {
+            return;
+        }
+
+        if (e.OldValue is not decimal oldValue)
+        {
+            return;
+        }
+
+        control.ValueChanged?.Invoke(
+            control,
+            new ChangedDecimalEventArgs(
+                control.Identifier,
+                oldValue,
+                newValue));
     }
 }

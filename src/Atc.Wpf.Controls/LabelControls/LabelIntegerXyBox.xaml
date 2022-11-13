@@ -30,7 +30,9 @@
             PrefixTextY="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerXyBox}}, Path=PrefixTextY}"
             SuffixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerXyBox}}, Path=SuffixText}"
             ValueX="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerXyBox}}, Path=ValueX, FallbackValue=42}"
-            ValueY="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerXyBox}}, Path=ValueY, FallbackValue=42}" />
+            ValueXChanged="OnValueXChanged"
+            ValueY="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerXyBox}}, Path=ValueY, FallbackValue=42}"
+            ValueYChanged="OnValueYChanged" />
 
     </labelControls:LabelContent>
 

@@ -2,6 +2,8 @@ namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
 public interface ILabelControlBase
 {
+    string Identifier { get; }
+
     LabelControlHideAreasType HideAreas { get; set; }
 
     Orientation Orientation { get; set; }

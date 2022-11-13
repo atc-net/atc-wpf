@@ -408,7 +408,7 @@
         <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
         <Setter Property="helpers:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
+        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button}" />
         <Setter Property="helpers:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="helpers:TextBoxHelper.ButtonWidth" Value="22" />
     </Style>

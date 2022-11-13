@@ -624,7 +624,7 @@ public class NumericBox : Control
             return;
         }
 
-        if (numericBox.valueTextBox != null &&
+        if (numericBox.valueTextBox is not null &&
             numericBox.Value.HasValue)
         {
             numericBox.InternalSetText(numericBox.Value);
@@ -852,7 +852,7 @@ public class NumericBox : Control
         var numericBox = (NumericBox)sender;
         if ((!numericBox.InterceptManualEnter && !numericBox.IsReadOnly) ||
             !numericBox.Focusable ||
-            e.OriginalSource != numericBox)
+            !Equals(e.OriginalSource, numericBox))
         {
             return;
         }
@@ -1015,7 +1015,7 @@ public class NumericBox : Control
 
         var sv = TryFindScrollViewer();
 
-        if (sv != null && handlesMouseWheelScrolling.Value is not null)
+        if (sv is not null && handlesMouseWheelScrolling.Value is not null)
         {
             if (TrackMouseWheelWhenMouseOver)
             {
@@ -1032,7 +1032,7 @@ public class NumericBox : Control
         }
     }
 
-    [SuppressMessage("Security", "CA2109:Review visible event handlers", Justification = "OK.")]
+    [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "OK.")]
     protected void OnPreviewTextInput(
         object sender,
         TextCompositionEventArgs e)
@@ -1050,7 +1050,7 @@ public class NumericBox : Control
         manualChange = !e.Handled;
     }
 
-    [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.s")]
+    [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected virtual void OnValueChanged(
         double? oldValue,
@@ -1060,7 +1060,7 @@ public class NumericBox : Control
         {
             if (!newValue.HasValue)
             {
-                if (valueTextBox != null)
+                if (valueTextBox is not null)
                 {
                     valueTextBox.Text = null;
                 }
@@ -1085,7 +1085,7 @@ public class NumericBox : Control
 
             if (newValue <= Minimum)
             {
-                if (repeatDown != null)
+                if (repeatDown is not null)
                 {
                     repeatDown.IsEnabled = false;
                 }
@@ -1100,7 +1100,7 @@ public class NumericBox : Control
 
             if (newValue >= Maximum)
             {
-                if (repeatUp != null)
+                if (repeatUp is not null)
                 {
                     repeatUp.IsEnabled = false;
                 }
@@ -1112,7 +1112,7 @@ public class NumericBox : Control
                 }
             }
 
-            if (valueTextBox != null)
+            if (valueTextBox is not null)
             {
                 InternalSetText(newValue);
             }
@@ -1231,7 +1231,7 @@ public class NumericBox : Control
 
     private ScrollViewer? TryFindScrollViewer()
     {
-        if (scrollViewer != null)
+        if (scrollViewer is not null)
         {
             return scrollViewer;
         }
@@ -1239,7 +1239,7 @@ public class NumericBox : Control
         valueTextBox?.ApplyTemplate();
 
         scrollViewer = valueTextBox?.Template.FindName(PART_ContentHost, valueTextBox) as ScrollViewer;
-        if (scrollViewer != null)
+        if (scrollViewer is not null)
         {
             handlesMouseWheelScrolling = new Lazy<PropertyInfo?>(() => scrollViewer.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).SingleOrDefault(i => i.Name == "HandlesMouseWheelScrolling"));
         }
@@ -1288,16 +1288,18 @@ public class NumericBox : Control
 
         RaiseEvent(routedEvent);
 
-        if (!routedEvent.Handled)
+        if (routedEvent.Handled)
         {
-            ChangeValueBy(routedEvent.Interval);
+            return;
+        }
 
-            InternalSetText(Value);
+        ChangeValueBy(routedEvent.Interval);
 
-            if (valueTextBox is not null)
-            {
-                valueTextBox.CaretIndex = valueTextBox.Text.Length;
-            }
+        InternalSetText(Value);
+
+        if (valueTextBox is not null)
+        {
+            valueTextBox.CaretIndex = valueTextBox.Text.Length;
         }
     }
 
@@ -1332,7 +1334,7 @@ public class NumericBox : Control
 
     private void EnableDisableDown()
     {
-        if (repeatDown != null)
+        if (repeatDown is not null)
         {
             repeatDown.IsEnabled = Value is null || Value > Minimum;
         }
@@ -1340,7 +1342,7 @@ public class NumericBox : Control
 
     private void EnableDisableUp()
     {
-        if (repeatUp != null)
+        if (repeatUp is not null)
         {
             repeatUp.IsEnabled = Value is null || Value < Maximum;
         }
@@ -1356,31 +1358,34 @@ public class NumericBox : Control
         object sender,
         KeyEventArgs e)
     {
-        manualChange = manualChange
-                            || e.Key == Key.Back
-                            || e.Key == Key.Delete
-                            || e.Key == Key.Decimal
-                            || e.Key == Key.OemComma
-                            || e.Key == Key.OemPeriod;
+        manualChange = manualChange || e.Key is
+            Key.Back or
+            Key.Delete or
+            Key.Decimal or
+            Key.OemComma or
+            Key.OemPeriod;
 
         // Filter the Numpad's decimal-point key only
-        if (e.Key == Key.Decimal && DecimalPointCorrection != DecimalPointCorrectionMode.Inherits)
+        if (e.Key != Key.Decimal ||
+            DecimalPointCorrection == DecimalPointCorrectionMode.Inherits)
         {
-            // Mark the event as handled, so no further action will take place
-            e.Handled = true;
-
-            // Grab the originating TextBox control...
-            var textBox = (TextBoxBase)sender;
-
-            // The current correction mode...
-            var correctionMode = DecimalPointCorrection;
-
-            // And the culture of the NUD
-            var culture = SpecificCultureInfo;
-
-            // Surrogate the blocked key pressed
-            SimulateDecimalPointKeyPress(textBox, correctionMode, culture);
+            return;
         }
+
+        // Mark the event as handled, so no further action will take place
+        e.Handled = true;
+
+        // Grab the originating TextBox control...
+        var textBox = (TextBoxBase)sender;
+
+        // The current correction mode...
+        var correctionMode = DecimalPointCorrection;
+
+        // And the culture of the NUD
+        var culture = SpecificCultureInfo;
+
+        // Surrogate the blocked key pressed
+        SimulateDecimalPointKeyPress(textBox, correctionMode, culture);
     }
 
     private static void SimulateDecimalPointKeyPress(
@@ -1526,6 +1531,11 @@ public class NumericBox : Control
 
         if (text.Where(c => c == SpecificCultureInfo.NumberFormat.PositiveSign[0]).Skip(2).Any() ||
             text.Where(c => c == SpecificCultureInfo.NumberFormat.NegativeSign[0]).Skip(2).Any())
+        {
+            return false;
+        }
+
+        if (text.Any(char.IsLetter))
         {
             return false;
         }

@@ -76,29 +76,29 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
 
     private void MyLabel3HorizontalOnSelectedKeyChanged(
         object? sender,
-        SelectedKeyEventArgs e)
+        ChangedStringEventArgs e)
     {
-        if (string.IsNullOrEmpty(e.OldKey))
+        if (string.IsNullOrEmpty(e.OldValue))
         {
             return;
         }
 
         MessageBox.Show(
-            $"{e.Identifier}-Horizontal # From: {e.OldKey}, To: {e.NewKey}",
+            $"{e.Identifier}-Horizontal # From: {e.OldValue}, To: {e.NewValue}",
             "Event: MyLabel3HorizontalOnSelectedKeyChanged");
     }
 
     private void MyLabel3VerticalOnSelectedKeyChanged(
         object? sender,
-        SelectedKeyEventArgs e)
+        ChangedStringEventArgs e)
     {
-        if (string.IsNullOrEmpty(e.OldKey))
+        if (string.IsNullOrEmpty(e.OldValue))
         {
             return;
         }
 
         MessageBox.Show(
-            $"{e.Identifier}-Vertical # From: {e.OldKey}, To: {e.NewKey}",
+            $"{e.Identifier}-Vertical # From: {e.OldValue}, To: {e.NewValue}",
             "Event: MyLabel3VerticalOnSelectedKeyChanged");
     }
 }
