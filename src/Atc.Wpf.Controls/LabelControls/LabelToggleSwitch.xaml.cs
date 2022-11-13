@@ -54,7 +54,7 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
         new FrameworkPropertyMetadata(
             defaultValue: false,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null));
+            OnIsOnChanged));
 
     public bool IsOn
     {
@@ -62,8 +62,25 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
         set => SetValue(IsOnProperty, value);
     }
 
+    public event EventHandler<ChangedBooleanEventArgs>? IsOnChanged;
+
     public LabelToggleSwitch()
     {
         InitializeComponent();
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnIsOnChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelToggleSwitch)d;
+
+        control.IsOnChanged?.Invoke(
+            control,
+            new ChangedBooleanEventArgs(
+                control.Identifier,
+                control.IsOn,
+                !control.IsOn));
     }
 }

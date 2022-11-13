@@ -2,6 +2,9 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public class LabelControlBase : UserControl, ILabelControlBase
 {
+    public string Identifier
+        => ControlHelper.GetIdentifier(this, LabelText);
+
     public static readonly DependencyProperty HideAreasProperty = DependencyProperty.Register(
         nameof(HideAreas),
         typeof(LabelControlHideAreasType),
@@ -54,7 +57,7 @@ public class LabelControlBase : UserControl, ILabelControlBase
         nameof(LabelText),
         typeof(string),
         typeof(LabelControlBase),
-        new PropertyMetadata("-Label-"));
+        new PropertyMetadata(Constants.DefaultLabelControlLabel));
 
     public string LabelText
     {

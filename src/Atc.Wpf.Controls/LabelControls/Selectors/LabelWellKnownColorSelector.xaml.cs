@@ -97,7 +97,10 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         new FrameworkPropertyMetadata(
             default(string),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectedKeyChanged));
+            OnSelectedKeyLostFocus,
+            coerceValueCallback: null,
+            isAnimationProhibited: true,
+            UpdateSourceTrigger.LostFocus));
 
     public string SelectedKey
     {
@@ -105,13 +108,13 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<SelectedKeyEventArgs>? SelectedKeyChanged;
+    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
 
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();
 
-        if ("-Label-".Equals(LabelText, StringComparison.Ordinal))
+        if (Constants.DefaultLabelControlLabel.Equals(LabelText, StringComparison.Ordinal))
         {
             LabelText = Miscellaneous.Color;
         }
@@ -131,11 +134,11 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    private static void OnSelectedKeyChanged(
+    private static void OnSelectedKeyLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var labelWellKnownColorSelector = (LabelWellKnownColorSelector)d;
+        var control = (LabelWellKnownColorSelector)d;
         var newValue = e.NewValue?.ToString();
         var oldValue = e.OldValue?.ToString();
 
@@ -145,25 +148,21 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
             return;
         }
 
-        if (labelWellKnownColorSelector.IsMandatory &&
-            string.IsNullOrWhiteSpace(labelWellKnownColorSelector.SelectedKey) &&
+        if (control.IsMandatory &&
+            string.IsNullOrWhiteSpace(control.SelectedKey) &&
             e.OldValue is not null)
         {
-            labelWellKnownColorSelector.ValidationText = Miscellaneous.FieldIsRequired;
+            control.ValidationText = Miscellaneous.FieldIsRequired;
             return;
         }
 
-        labelWellKnownColorSelector.ValidationText = string.Empty;
+        control.ValidationText = string.Empty;
 
-        var identifier = labelWellKnownColorSelector.Tag is null
-            ? labelWellKnownColorSelector.LabelText
-            : labelWellKnownColorSelector.Tag.ToString();
-
-        labelWellKnownColorSelector.SelectedKeyChanged?.Invoke(
-            labelWellKnownColorSelector,
-            new SelectedKeyEventArgs(
-                identifier!,
-                newValue,
-                oldValue));
+        control.SelectedKeyChanged?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                control.Identifier,
+                oldValue,
+                newValue));
     }
 }

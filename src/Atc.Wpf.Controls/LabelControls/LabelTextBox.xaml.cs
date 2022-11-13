@@ -7,6 +7,18 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelTextBox : ILabelTextBox
 {
+    public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
+        nameof(TextChanged),
+        RoutingStrategy.Bubble,
+        typeof(RoutedPropertyChangedEventHandler<string>),
+        typeof(LabelPixelSizeBox));
+
+    public event RoutedPropertyChangedEventHandler<string> TextChanged
+    {
+        add => AddHandler(TextChangedEvent, value);
+        remove => RemoveHandler(TextChangedEvent, value);
+    }
+
     public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
         nameof(WatermarkText),
         typeof(string),
@@ -98,7 +110,7 @@ public partial class LabelTextBox : ILabelTextBox
         new FrameworkPropertyMetadata(
             string.Empty,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextPropertyChanged,
+            OnTextLostFocus,
             CoerceText,
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
@@ -120,6 +132,10 @@ public partial class LabelTextBox : ILabelTextBox
         get => (TextBoxValidationRuleType)GetValue(ValidationFormatProperty);
         set => SetValue(ValidationFormatProperty, value);
     }
+
+    public event EventHandler<ChangedStringEventArgs>? TextLostFocusValid;
+
+    public event EventHandler<ChangedStringEventArgs>? TextLostFocusInvalid;
 
     public LabelTextBox()
     {
@@ -150,47 +166,102 @@ public partial class LabelTextBox : ILabelTextBox
         object? value)
         => value ?? string.Empty;
 
-    private static void OnTextPropertyChanged(
+    private void OnTextChanged(
+        object sender,
+        TextChangedEventArgs e)
+    {
+        var control = (TextBox)sender;
+
+        RaiseEvent(new RoutedPropertyChangedEventArgs<string>(string.Empty, control.Text, TextChangedEvent));
+    }
+
+    private static void OnTextLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var labelTextBox = (LabelTextBox)d;
+        var control = (LabelTextBox)d;
 
-        if (labelTextBox.IsMandatory &&
-            string.IsNullOrWhiteSpace(labelTextBox.Text))
+        if (control.IsMandatory &&
+            string.IsNullOrWhiteSpace(control.Text))
         {
-            labelTextBox.ValidationText = "Field is required"; // TODO: Translate
+            control.ValidationText = "Field is required"; // TODO: Translate
+            OnTextLostFocusFireInvalidEvent(control, e);
             return;
         }
 
-        if (labelTextBox.Text.Length < labelTextBox.MinLength)
+        if (control.Text.Length < control.MinLength)
         {
-            labelTextBox.ValidationText = $"Min length: {labelTextBox.MinLength}"; // TODO: Translate
+            control.ValidationText = $"Min length: {control.MinLength}"; // TODO: Translate
+            OnTextLostFocusFireInvalidEvent(control, e);
             return;
         }
 
-        if (labelTextBox.Text.Length > labelTextBox.MaxLength)
+        if (control.Text.Length > control.MaxLength)
         {
-            labelTextBox.ValidationText = $"Max length: {labelTextBox.MaxLength}"; // TODO: Translate
+            control.ValidationText = $"Max length: {control.MaxLength}"; // TODO: Translate
+            OnTextLostFocusFireInvalidEvent(control, e);
             return;
         }
 
-        if (!string.IsNullOrEmpty(labelTextBox.CharactersNotAllowed) &&
-            labelTextBox.CharactersNotAllowed.Any(x => labelTextBox.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
+        if (!string.IsNullOrEmpty(control.CharactersNotAllowed) &&
+            control.CharactersNotAllowed.Any(x => control.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
         {
-            labelTextBox.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(labelTextBox.CharactersNotAllowed, labelTextBox.Text)}"; // TODO: Translate
+            control.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text)}"; // TODO: Translate
+            OnTextLostFocusFireInvalidEvent(control, e);
             return;
         }
 
         var (isValid, errorMessage) = TextBoxValidationHelper.Validate(
-            labelTextBox.ValidationFormat,
-            labelTextBox.Text);
+            control.ValidationFormat,
+            control.Text);
 
         if (isValid)
         {
-            labelTextBox.ValidationText = string.Empty;
+            control.ValidationText = string.Empty;
+            OnTextLostFocusFireValidEvent(control, e);
         }
+        else
+        {
+            control.ValidationText = errorMessage;
+            OnTextLostFocusFireInvalidEvent(control, e);
+        }
+    }
 
-        labelTextBox.ValidationText = errorMessage;
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnTextLostFocusFireValidEvent(
+        LabelTextBox control,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var newValue = e.NewValue is null
+            ? string.Empty
+            : e.NewValue.ToString();
+
+        control.TextLostFocusValid?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                ControlHelper.GetIdentifier(control),
+                oldValue: null,
+                newValue));
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnTextLostFocusFireInvalidEvent(
+        LabelTextBox control,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var oldValue = e.OldValue is null
+            ? string.Empty
+            : e.OldValue.ToString();
+
+        var newValue = e.NewValue is null
+            ? string.Empty
+            : e.NewValue.ToString();
+
+        control.TextLostFocusInvalid?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                ControlHelper.GetIdentifier(control),
+                oldValue,
+                newValue));
     }
 }

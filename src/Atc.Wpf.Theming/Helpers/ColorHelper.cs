@@ -124,7 +124,9 @@ public class ColorHelper
         }
         catch (FormatException)
         {
-            if (colorName is not null && !result.HasValue && !colorName.StartsWith('#'))
+            if (colorName is not null &&
+                !result.HasValue &&
+                !colorName.StartsWith('#'))
             {
                 result = ColorFromString("#" + colorName);
             }

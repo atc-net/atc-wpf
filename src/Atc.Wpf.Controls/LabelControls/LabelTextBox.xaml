@@ -40,7 +40,8 @@
             atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=WatermarkAlignment}"
             MaxLength="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=MaxLength}"
             MaxLines="1"
-            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=Text, FallbackValue=Text}" />
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=Text, FallbackValue=Text}"
+            TextChanged="OnTextChanged" />
 
     </labelControls:LabelContent>
 

@@ -62,7 +62,8 @@ public class ObservableDictionary<TKey, TValue>
     }
 
     private ObservableKeyValuePair<TKey, TValue>? GetKvpByTheKey(TKey key)
-        => ThisAsCollection().FirstOrDefault(i => i.Key != null && i.Key.Equals(key));
+        => ThisAsCollection().FirstOrDefault(i => i.Key is not null &&
+                                                  i.Key.Equals(key));
 
     public ICollection<TValue> Values
         => GetValues();

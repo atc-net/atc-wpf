@@ -12,7 +12,7 @@ public partial class LabelCheckBox : ILabelCheckBox
         new FrameworkPropertyMetadata(
             defaultValue: false,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null));
+            OnIsCheckedChanged));
 
     public bool IsChecked
     {
@@ -20,8 +20,25 @@ public partial class LabelCheckBox : ILabelCheckBox
         set => SetValue(IsCheckedProperty, value);
     }
 
+    public event EventHandler<ChangedBooleanEventArgs>? IsCheckedChanged;
+
     public LabelCheckBox()
     {
         InitializeComponent();
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnIsCheckedChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelCheckBox)d;
+
+        control.IsCheckedChanged?.Invoke(
+            control,
+            new ChangedBooleanEventArgs(
+                control.Identifier,
+                control.IsChecked,
+                !control.IsChecked));
     }
 }

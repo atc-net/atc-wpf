@@ -366,7 +366,7 @@
         <Setter Property="atcTheming:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
         <Setter Property="atcTheming:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
         <Setter Property="atcTheming:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="atcTheming:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
+        <Setter Property="atcTheming:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button}" />
         <Setter Property="atcTheming:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="atcTheming:TextBoxHelper.ButtonWidth" Value="22" />
         <Setter Property="atcTheming:TextBoxHelper.WatermarkAlignment" Value="Right" />

@@ -33,14 +33,6 @@ public partial class LabelSlider : ILabelSlider
         set => SetValue(MinimumProperty, value);
     }
 
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(int),
-        typeof(LabelSlider),
-        new FrameworkPropertyMetadata(
-            defaultValue: 0,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
     public static readonly DependencyProperty AutoToolTipPlacementProperty = DependencyProperty.Register(
         nameof(AutoToolTipPlacement),
         typeof(AutoToolTipPlacement),
@@ -77,6 +69,18 @@ public partial class LabelSlider : ILabelSlider
         set => SetValue(TickPlacementProperty, value);
     }
 
+    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+        nameof(Value),
+        typeof(int),
+        typeof(LabelSlider),
+        new FrameworkPropertyMetadata(
+            default(int),
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnValueChanged,
+            coerceValueCallback: null,
+            isAnimationProhibited: true,
+            UpdateSourceTrigger.PropertyChanged));
+
     [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
     public int Value
     {
@@ -84,8 +88,34 @@ public partial class LabelSlider : ILabelSlider
         set => SetValue(ValueProperty, value);
     }
 
+    public event EventHandler<ChangedIntegerEventArgs>? ValueChanged;
+
     public LabelSlider()
     {
         InitializeComponent();
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnValueChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelSlider)d;
+        if (e.NewValue is not int newValue)
+        {
+            return;
+        }
+
+        if (e.OldValue is not int oldValue)
+        {
+            return;
+        }
+
+        control.ValueChanged?.Invoke(
+            control,
+            new ChangedIntegerEventArgs(
+                control.Identifier,
+                oldValue,
+                newValue));
     }
 }
