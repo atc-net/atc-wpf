@@ -24,6 +24,12 @@ public partial class AccentColorSelector : INotifyPropertyChanged
     {
         InitializeComponent();
 
+        var detectTheme = ThemeManager.Current.DetectTheme(this);
+        if (detectTheme is not null)
+        {
+            SelectedKey = detectTheme.Name.Split('.').Last();
+        }
+
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
         PopulateData();

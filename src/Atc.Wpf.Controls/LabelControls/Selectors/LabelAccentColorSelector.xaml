@@ -14,7 +14,7 @@
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Theming.Resources.Miscellaneous,
-                                        Key=Theme}"
+                                        Key=Accent}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
