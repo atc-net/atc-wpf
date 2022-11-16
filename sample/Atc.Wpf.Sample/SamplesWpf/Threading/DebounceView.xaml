@@ -1,0 +1,91 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpf.Threading.DebounceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:threading="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Threading"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <threading:DebounceViewModel />
+    </UserControl.DataContext>
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Margin="0,0,50,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Fire after " />
+                        <ComboBox
+                            x:Name="CbDebounce"
+                            Width="60"
+                            Height="24"
+                            SelectedIndex="0">
+                            <ComboBoxItem>300</ComboBoxItem>
+                            <ComboBoxItem>500</ComboBoxItem>
+                            <ComboBoxItem>800</ComboBoxItem>
+                            <ComboBoxItem>1500</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock VerticalAlignment="Center" Text="ms after last keypress" />
+                    </StackPanel>
+                </StackPanel>
+            </atc:UniformSpacingPanel>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <atc:GridEx
+                Margin="5"
+                Columns="Auto,10,Auto,10,Auto"
+                Rows="Auto,*">
+
+                <atc:LabelContent
+                    x:Name="LcSearch"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HideAreas="All"
+                    LabelText="Search"
+                    LabelWidthNumber="50">
+                    <TextBox KeyUp="SearchTextBoxOnKeyup" />
+                </atc:LabelContent>
+
+                <atc:LabelTextInfo
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    HideAreas="All"
+                    LabelText="Status"
+                    Text="{Binding Path=Status}" />
+
+                <atc:LabelTextInfo
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    HideAreas="All"
+                    LabelText="Filter"
+                    Text="{Binding Path=Filter}" />
+
+                <ListView
+                    Grid.Row="2"
+                    Grid.ColumnSpan="5"
+                    Margin="0,10,0,0"
+                    ItemsSource="{Binding Path=FoundItems}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=.}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </atc:GridEx>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>

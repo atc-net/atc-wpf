@@ -67,7 +67,9 @@ public partial class MainWindow
             return;
         }
 
-        _ = SetVisibilityByFilterTreeViewItems(StvSamples.Items, textBox.Text);
+        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpf.Items, textBox.Text);
+        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfControls.Items, textBox.Text);
+        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfTheming.Items, textBox.Text);
     }
 
     private static bool SetVisibilityByFilterTreeViewItems(

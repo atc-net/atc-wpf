@@ -1,3 +1,4 @@
+// ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.SampleControls;
 
 [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "OK.")]
@@ -87,43 +88,6 @@ public class SampleViewerViewModel : ViewModelBase
         }
     }
 
-    private string ExtractClassName(
-        string classFullName)
-    {
-        return classFullName.Split('.').Last();
-    }
-
-    private DirectoryInfo? ExtractBasePath(
-        DirectoryInfo path)
-    {
-        if ("bin".Equals(path.Name, StringComparison.Ordinal))
-        {
-            return path.Parent;
-        }
-
-        return path.Parent is null
-            ? null
-            : ExtractBasePath(path.Parent);
-    }
-
-    private DirectoryInfo? ExtractSamplePath(
-        FileSystemInfo baseLocation,
-        string classViewName)
-    {
-        var files = Directory.GetFiles(baseLocation.FullName, $"{classViewName}.xaml", SearchOption.AllDirectories);
-        return files.Length == 1
-            ? new DirectoryInfo(files[0]).Parent
-            : null;
-    }
-
-    private string? ReadFileText(
-        string filePath)
-    {
-        return File.Exists(filePath)
-            ? File.ReadAllText(filePath)
-            : null;
-    }
-
     private void SampleItemMessageHandler(
         SampleItemMessage obj)
     {
@@ -155,11 +119,8 @@ public class SampleViewerViewModel : ViewModelBase
         string sampleHeader,
         string samplePath)
     {
-        var entryAssembly = Assembly.GetEntryAssembly();
-
-        var sampleType = entryAssembly!
-            .GetExportedTypes()
-            .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
+        var entryAssembly = Assembly.GetEntryAssembly()!;
+        var sampleType = GetTypeBySamplePath(entryAssembly, samplePath);
 
         if (sampleType is null)
         {
@@ -173,8 +134,8 @@ public class SampleViewerViewModel : ViewModelBase
             return;
         }
 
-        var entryAssemblyLocation = new DirectoryInfo(Path.GetDirectoryName(entryAssembly.Location)!);
-        var baseLocation = ExtractBasePath(entryAssemblyLocation);
+        var sampleTypeAssemblyLocation = new DirectoryInfo(Path.GetDirectoryName(sampleType.Assembly.Location)!);
+        var baseLocation = ExtractBasePath(sampleTypeAssemblyLocation);
         if (baseLocation is null)
         {
             MessageBox.Show("Can't find sample by invalid base location", "Error", MessageBoxButton.OK);
@@ -182,12 +143,17 @@ public class SampleViewerViewModel : ViewModelBase
         }
 
         var classViewName = ExtractClassName(instance.ToString()!);
-        var sampleLocation = ExtractSamplePath(baseLocation, classViewName);
+        var sampleLocation = ExtractSamplePath(baseLocation, classViewName, sampleType);
+        if (sampleLocation is null)
+        {
+            MessageBox.Show("Can't find sample by invalid location", "Error", MessageBoxButton.OK);
+            return;
+        }
 
         Header = sampleHeader;
         SampleContent = instance;
-        XamlCode = ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml"));
-        CodeBehindCode = ReadFileText(Path.Combine(sampleLocation!.FullName, classViewName + ".xaml.cs"));
+        XamlCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewName + ".xaml"));
+        CodeBehindCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewName + ".xaml.cs"));
 
         if (instance.DataContext is null ||
             nameof(SampleViewerViewModel).Equals(ExtractClassName(instance.DataContext.ToString()!), StringComparison.Ordinal))
@@ -197,7 +163,93 @@ public class SampleViewerViewModel : ViewModelBase
         else
         {
             var classViewModelName = ExtractClassName(instance.DataContext.ToString()!);
-            ViewModelCode = ReadFileText(Path.Combine(sampleLocation!.FullName, classViewModelName + ".cs"));
+            ViewModelCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewModelName + ".cs"));
         }
+    }
+
+    private static Type? GetTypeBySamplePath(
+        Assembly entryAssembly,
+        string samplePath)
+    {
+        var sampleType = entryAssembly
+            .GetExportedTypes()
+            .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
+
+        if (sampleType is not null)
+        {
+            return sampleType;
+        }
+
+        var assemblyStartName = entryAssembly.GetName().Name!.Split('.')[0];
+        foreach (var assembly in AppDomain.CurrentDomain
+                     .GetAssemblies()
+                     .Where(x => !x.IsDynamic &&
+                                 x.FullName!.StartsWith(assemblyStartName, StringComparison.Ordinal)))
+        {
+            sampleType = assembly
+                .GetExportedTypes()
+                .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
+
+            if (sampleType is not null)
+            {
+                return sampleType;
+            }
+        }
+
+        return null;
+    }
+
+    [SuppressMessage("Performance", "MA0098:Use indexer instead of LINQ methods", Justification = "OK.")]
+    private static string ExtractClassName(
+        string classFullName)
+    {
+        return classFullName.Split('.').Last();
+    }
+
+    private static DirectoryInfo? ExtractBasePath(
+        DirectoryInfo path)
+    {
+        if ("bin".Equals(path.Name, StringComparison.Ordinal))
+        {
+            return path.Parent;
+        }
+
+        return path.Parent is null
+            ? null
+            : ExtractBasePath(path.Parent);
+    }
+
+    private static DirectoryInfo? ExtractSamplePath(
+        FileSystemInfo baseLocation,
+        string classViewName,
+        Type sampleType)
+    {
+        var files = Directory.GetFiles(baseLocation.FullName, $"{classViewName}.xaml", SearchOption.AllDirectories);
+        switch (files.Length)
+        {
+            case 0:
+                return null;
+            case 1:
+                return new DirectoryInfo(files[0]).Parent;
+        }
+
+        foreach (var file in files)
+        {
+            var s = file.Replace("\\", ".", StringComparison.Ordinal);
+            if (s.Contains(sampleType.FullName!, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DirectoryInfo(file).Parent;
+            }
+        }
+
+        return null;
+    }
+
+    private static string? ReadFileText(
+        string filePath)
+    {
+        return File.Exists(filePath)
+            ? File.ReadAllText(filePath)
+            : null;
     }
 }

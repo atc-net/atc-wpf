@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Assets\a.svg" />
     <None Remove="Assets\eggeaster.svg" />
+    <None Remove="Assets\ok.png" />
     <None Remove="Assets\road.jpg" />
     <None Remove="Assets\shout.svg" />
   </ItemGroup>
@@ -17,6 +18,7 @@
   <ItemGroup>
     <Resource Include="Assets\a.svg" />
     <Resource Include="Assets\eggeaster.svg" />
+    <Resource Include="Assets\ok.png" />
     <Resource Include="Assets\road.jpg" />
     <Resource Include="Assets\shout.svg" />
   </ItemGroup>
@@ -33,6 +35,144 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SamplesWpfControls\BaseControls\DecimalBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\DecimalXyBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\ImageButtonView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\IntegerBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\IntegerXyBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\NumericBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\PixelSizeBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\BaseControls\ToggleSwitchView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelAccentColorSelectorView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelCheckBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelContentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelDecimalBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelDecimalXyBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelIntegerBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelIntegerXyBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelLanguageSelectorView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelMixBindingsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelMixCompactView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelMixView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelPixelSizeBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelSliderView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelTextBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelTextInfoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelThemeAndAccentColorSelectorsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelThemeSelectorView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelToggleSwitchView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\LabelControls\LabelWellKnownColorSelectorView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\Layouts\DividerView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\Notifications\ToastNotificationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\Progressing\BusyOverlayView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\Progressing\LoadingIndicatorView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfControls\Viewers\JsonViewerView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\InputBox\CheckBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\InputBox\ComboBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\InputBox\TextBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\InputButton\ButtonView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\InputButton\ImageButtonView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\InputButton\RadioButtonView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\Misc\LabelView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\Misc\ListBoxView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\Misc\ListViewView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\Misc\TabControlView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\Misc\TextBlockView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\Misc\TreeViewView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SamplesWpfTheming\MixView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>
