@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\info_help.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Miscellaneous.Designer.cs">
       <DependentUpon>Miscellaneous.resx</DependentUpon>
       <DesignTime>True</DesignTime>
