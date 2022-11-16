@@ -123,4 +123,7 @@
   <data name="Theme" xml:space="preserve">
     <value>Thema</value>
   </data>
+  <data name="Accent" xml:space="preserve">
+    <value>Akzent</value>
+  </data>
 </root>

@@ -1,21 +1,25 @@
 global using System.Collections;
 global using System.Collections.ObjectModel;
+global using System.Collections.Specialized;
 global using System.ComponentModel;
 global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
+global using System.Runtime.CompilerServices;
 global using System.Windows;
 global using System.Windows.Controls;
 global using System.Windows.Input;
 global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
-
+global using Atc.Wpf.Collections;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Controls.Media;
+global using Atc.Wpf.Controls.Notifications;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
+global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.SampleControls;
 
 global using ControlzEx.Theming;

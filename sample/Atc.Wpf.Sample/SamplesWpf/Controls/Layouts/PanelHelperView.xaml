@@ -1,0 +1,99 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpf.Controls.Layouts.PanelHelperView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="BaseRectangle" TargetType="{x:Type Rectangle}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="30" />
+        </Style>
+        <Style
+            x:Key="BlueRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Blue" />
+        </Style>
+        <Style
+            x:Key="RedRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Red" />
+        </Style>
+        <Style
+            x:Key="GreenRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Green" />
+        </Style>
+        <Style
+            x:Key="YellowRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Yellow" />
+        </Style>
+    </UserControl.Resources>
+
+    <WrapPanel atc:PanelHelper.ItemMargin="10" atc:PanelHelper.LastItemMargin="10 0">
+
+        <StackPanel
+            atc:PanelHelper.HorizontalSpacing="10"
+            Background="Aqua"
+            Orientation="Horizontal">
+            <Rectangle Style="{StaticResource BlueRectangle}" />
+            <Rectangle Style="{StaticResource RedRectangle}" />
+            <Rectangle Style="{StaticResource GreenRectangle}" />
+            <Rectangle Style="{StaticResource YellowRectangle}" />
+        </StackPanel>
+
+        <StackPanel
+            atc:PanelHelper.VerticalSpacing="10"
+            Background="Beige"
+            Orientation="Vertical">
+            <Rectangle Style="{StaticResource BlueRectangle}" />
+            <Rectangle Style="{StaticResource RedRectangle}" />
+            <Rectangle Style="{StaticResource GreenRectangle}" />
+            <Rectangle Style="{StaticResource YellowRectangle}" />
+        </StackPanel>
+
+        <StackPanel
+            atc:PanelHelper.HorizontalSpacing="40"
+            Background="DarkGray"
+            Orientation="Horizontal">
+            <Rectangle Style="{StaticResource BlueRectangle}" />
+            <Rectangle Style="{StaticResource RedRectangle}" />
+            <Rectangle Style="{StaticResource GreenRectangle}" />
+            <Rectangle Style="{StaticResource YellowRectangle}" />
+        </StackPanel>
+
+        <atc:GridEx
+            atc:PanelHelper.ItemMargin="10"
+            Columns="Auto,Auto"
+            Rows="Auto,Auto">
+            <Rectangle
+                Grid.Row="0"
+                Grid.Column="0"
+                Style="{StaticResource BlueRectangle}" />
+            <Rectangle
+                Grid.Row="0"
+                Grid.Column="1"
+                Style="{StaticResource RedRectangle}" />
+            <Rectangle
+                Grid.Row="1"
+                Grid.Column="0"
+                Style="{StaticResource GreenRectangle}" />
+            <Rectangle
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{StaticResource YellowRectangle}" />
+        </atc:GridEx>
+
+    </WrapPanel>
+
+</UserControl>

@@ -5,11 +5,11 @@ namespace Atc.Wpf.Messaging;
 /// </summary>
 public class Messenger : IMessenger
 {
-    private static readonly object CreationLock = new object();
+    private static readonly object CreationLock = new();
     private static IMessenger? defaultInstance;
-    private readonly object registerLock = new object();
-    private readonly Dictionary<Type, List<WeakActionAndToken>> recipientsOfSubclassesAction = new Dictionary<Type, List<WeakActionAndToken>>();
-    private readonly Dictionary<Type, List<WeakActionAndToken>> recipientsStrictAction = new Dictionary<Type, List<WeakActionAndToken>>();
+    private readonly object registerLock = new();
+    private readonly Dictionary<Type, List<WeakActionAndToken>> recipientsOfSubclassesAction = new();
+    private readonly Dictionary<Type, List<WeakActionAndToken>> recipientsStrictAction = new();
     private readonly SynchronizationContext? context = SynchronizationContext.Current;
     private bool isCleanupRegistered;
 

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf</Title>
     <PackageId>Atc.Wpf</PackageId>
@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.243" />
+    <PackageReference Include="Atc" Version="2.0.245" />
   </ItemGroup>
 
 </Project>

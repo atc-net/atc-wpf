@@ -14,7 +14,9 @@
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SampleTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfControlsTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfThemingTreeView}" />
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type atc:SampleTreeViewItem}" />
 
         </ResourceDictionary>

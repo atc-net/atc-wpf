@@ -61,6 +61,15 @@ namespace Atc.Wpf.Theming.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accent.
+        /// </summary>
+        public static string Accent {
+            get {
+                return ResourceManager.GetString("Accent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accent color.
         /// </summary>
         public static string AccentColor {
