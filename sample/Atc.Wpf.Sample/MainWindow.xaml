@@ -19,7 +19,7 @@
 
     <atc:GridEx
         Margin="0,1,0,0"
-        Columns="350,5,*,600"
+        Columns="400,5,*,600"
         Rows="Auto,*,Auto">
         <DockPanel Grid.Row="1" Grid.Column="0">
             <TextBox
@@ -30,28 +30,34 @@
                 DockPanel.Dock="Top"
                 Focusable="True"
                 TextChanged="SampleFilterOnTextChanged" />
-            <TabControl DockPanel.Dock="Bottom">
-                <TabItem Header="Atc.Wpf">
+            <TabControl DockPanel.Dock="Bottom" TabStripPlacement="Left">
+                <TabItem Header="Wpf">
                     <sample:SamplesWpfTreeView
                         x:Name="StvSampleWpf"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Atc.Wpf.Controls">
+                <TabItem Header="Wpf.Controls">
                     <sample:SamplesWpfControlsTreeView
                         x:Name="StvSampleWpfControls"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Atc.Wpf.Theming">
+                <TabItem Header="Wpf.Theming">
                     <sample:SamplesWpfThemingTreeView
                         x:Name="StvSampleWpfTheming"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
-
+                </TabItem>
+                <TabItem Header="Wpf.FontIcons">
+                    <sample:SamplesWpfFontIconsTreeView
+                        x:Name="StvSampleWpfFontIcons"
+                        BorderThickness="0"
+                        ScrollViewer.CanContentScroll="True"
+                        SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
             </TabControl>
         </DockPanel>

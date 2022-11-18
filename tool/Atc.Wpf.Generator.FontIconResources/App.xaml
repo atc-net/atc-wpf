@@ -1,9 +1,8 @@
 <Application
-    x:Class="Atc.Wpf.Sample.App"
+    x:Class="Atc.Wpf.Generator.FontIconResources.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-    xmlns:sample="clr-namespace:Atc.Wpf.Sample"
     Exit="ApplicationExit"
     Startup="ApplicationStartup">
     <Application.Resources>
@@ -13,12 +12,6 @@
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfTreeView}" />
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfControlsTreeView}" />
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfFontIconsTreeView}" />
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfThemingTreeView}" />
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type atc:SampleTreeViewItem}" />
 
         </ResourceDictionary>
     </Application.Resources>

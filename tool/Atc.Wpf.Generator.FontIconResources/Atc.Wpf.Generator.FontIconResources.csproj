@@ -8,24 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\a.svg" />
-    <None Remove="Assets\eggeaster.svg" />
-    <None Remove="Assets\ok.png" />
-    <None Remove="Assets\road.jpg" />
-    <None Remove="Assets\shout.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Assets\a.svg" />
-    <Resource Include="Assets\eggeaster.svg" />
-    <Resource Include="Assets\ok.png" />
-    <Resource Include="Assets\road.jpg" />
-    <Resource Include="Assets\shout.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.245" />
     <PackageReference Include="ControlzEx" Version="6.0.0-alpha0241" />
+    <PackageReference Include="CssParser" Version="1.3.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
@@ -33,9 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
-    <ProjectReference Include="..\..\src\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
-    <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+    <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
   </ItemGroup>
 
 </Project>

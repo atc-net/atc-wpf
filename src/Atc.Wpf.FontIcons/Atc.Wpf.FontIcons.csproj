@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.FontIcons</Title>
+    <PackageId>Atc.Wpf.FontIcons</PackageId>
+    <PackageTags>wpf;controls.font,icons</PackageTags>
+    <Description>A base library for building WPF application.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\fonts\fa-brands-400.ttf" />
+    <None Remove="Resources\fonts\fa-regular-400.ttf" />
+    <None Remove="Resources\fonts\fa-solid-900.ttf" />
+    <None Remove="Resources\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="Resources\fonts\icofont.ttf" />
+    <None Remove="Resources\fonts\materialdesignicons-webfont.ttf" />
+    <None Remove="Resources\fonts\weathericons-regular-webfont.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="2.0.245" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\fonts\fa-brands-400.ttf" />
+    <Resource Include="Resources\fonts\fa-regular-400.ttf" />
+    <Resource Include="Resources\fonts\fa-solid-900.ttf" />
+    <Resource Include="Resources\fonts\glyphicons-halflings-regular.ttf" />
+    <Resource Include="Resources\fonts\icofont.ttf" />
+    <Resource Include="Resources\fonts\materialdesignicons-webfont.ttf" />
+    <Resource Include="Resources\fonts\weathericons-regular-webfont.ttf" />
+  </ItemGroup>
+
+</Project>

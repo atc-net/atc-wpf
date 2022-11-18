@@ -1,0 +1,287 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfFontIcons.FontIconView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="1200"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                <atc:UniformSpacingPanel
+                    Width="300"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelCheckBox
+                        x:Name="SpinCheckBox"
+                        HideAreas="All"
+                        LabelText="Spin" />
+                    <atc:LabelSlider
+                        x:Name="SpinSlider"
+                        HideAreas="All"
+                        LabelText="Spin duration"
+                        Maximum="5"
+                        Minimum="0"
+                        Value="0" />
+                    <atc:LabelSlider
+                        x:Name="FontSizeSlider"
+                        HideAreas="All"
+                        LabelText="Font size"
+                        Maximum="200"
+                        Minimum="5"
+                        TickFrequency="10"
+                        Value="100" />
+                    <atc:LabelSlider
+                        x:Name="ImageSizeSlider"
+                        HideAreas="All"
+                        LabelText="Image size"
+                        Maximum="100"
+                        Minimum="12"
+                        TickFrequency="5"
+                        Value="48" />
+                    <atc:LabelComboBox
+                        x:Name="FlipOrientationComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type atc:FlipOrientationType}, None, True, True, Ascending, KeyAsString=True}}"
+                        LabelText="Flip orientation"
+                        SelectedKey="Normal" />
+                </atc:UniformSpacingPanel>
+                <atc:UniformSpacingPanel
+                    Width="300"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelWellKnownColorSelector
+                        x:Name="FontForegroundColorPicker"
+                        HideAreas="All"
+                        LabelText="Color Font"
+                        SelectedKey="Green" />
+                    <atc:LabelWellKnownColorSelector
+                        x:Name="ImageForegroundColorPicker"
+                        HideAreas="All"
+                        LabelText="Color Image"
+                        SelectedKey="Orange" />
+                    <atc:LabelComboBox
+                        x:Name="FontAwesomeBrandComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontAwesomeBrandType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FontAwesome Brand"
+                        SelectedKey="_500px" />
+                    <atc:LabelComboBox
+                        x:Name="FontAwesomeRegularComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontAwesomeRegularType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FontAwesome Regular"
+                        SelectedKey="AddressBook" />
+                    <atc:LabelComboBox
+                        x:Name="FontAwesomeSolidComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontAwesomeSolidType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FontAwesome Solid"
+                        SelectedKey="AddressBook" />
+                </atc:UniformSpacingPanel>
+                <atc:UniformSpacingPanel
+                    Width="300"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelComboBox
+                        x:Name="FontBootstrapComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontBootstrapType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FontBootstrap"
+                        SelectedKey="Adjust" />
+                    <atc:LabelComboBox
+                        x:Name="IcoFontComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:IcoFontType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="IcoFont"
+                        SelectedKey="_2checkout" />
+                    <atc:LabelComboBox
+                        x:Name="FontMaterialDesignComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontMaterialDesignType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FontMaterialDesign"
+                        SelectedKey="AccessPoint" />
+                    <atc:LabelComboBox
+                        x:Name="FontWeatherComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontWeatherType}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FontWeather"
+                        SelectedKey="Alien" />
+                </atc:UniformSpacingPanel>
+            </atc:UniformSpacingPanel>
+
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+
+            <WrapPanel Orientation="Horizontal">
+
+                <fontIcons:FontAwesomeBrand
+                    x:Name="Fab"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeBrandComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageAwesomeBrand
+                    x:Name="Iab"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeBrandComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontAwesomeRegular
+                    x:Name="Far"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeRegularComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageAwesomeRegular
+                    x:Name="Iar"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeRegularComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontAwesomeSolid
+                    x:Name="Fas"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeSolidComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageAwesomeSolid
+                    x:Name="Ias"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeSolidComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontBootstrap
+                    x:Name="Fb"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontBootstrapComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageBootstrap
+                    x:Name="Ib"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontBootstrapComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:IcoFont
+                    x:Name="Ico"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=IcoFontComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageIcoFont
+                    x:Name="Iico"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=IcoFontComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontMaterialDesign
+                    x:Name="Fmd"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontMaterialDesignComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageMaterialDesign
+                    x:Name="Imd"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontMaterialDesignComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontWeather
+                    x:Name="Fw"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontWeatherComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageWeather
+                    x:Name="Iw"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontWeatherComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+            </WrapPanel>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>

@@ -1,0 +1,25 @@
+﻿
+Font Awesome:
+http://fontawesome.io/icons
+
+Glyphicons:
+http://getbootstrap.com/components
+
+IcoFont:
+https://icofont.com
+
+MaterialDesign Icons:
+https://materialdesignicons.com
+
+Weather Icons:
+http://erikflowers.github.io/weather-icons
+
+
+
+Inspirred from:
+
+https://github.com/charri/Font-Awesome-WPF
+
+https://bitbucket.org/DanRoberts/cssparser
+
+https://github.com/TylerBrinks/ExCSS

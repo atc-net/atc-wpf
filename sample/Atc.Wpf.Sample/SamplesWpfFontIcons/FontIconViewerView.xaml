@@ -1,0 +1,124 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfFontIcons.FontIconViewerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfFontIcons"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="UcFontIconViewerView"
+    d:DataContext="{d:DesignInstance Type=local:FontIconViewerView}"
+    d:DesignHeight="600"
+    d:DesignWidth="1200"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+
+            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+
+                <atc:UniformSpacingPanel
+                    Width="180"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelCheckBox
+                        x:Name="FilterFontAwesomeBrand"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="FA Brand" />
+                    <atc:LabelCheckBox
+                        x:Name="FilterFontAwesomeRegular"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="FA Regular" />
+                    <atc:LabelCheckBox
+                        x:Name="FilterFontAwesomeSolid"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="FA Solid" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel
+                    Width="180"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelCheckBox
+                        x:Name="FilterBootstrap"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="Bootstrap" />
+                    <atc:LabelCheckBox
+                        x:Name="FilterIcoFont"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="IcoFont" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel
+                    Width="180"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelCheckBox
+                        x:Name="FilterMaterialDesign"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="Material Design" />
+                    <atc:LabelCheckBox
+                        x:Name="FilterWeather"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="Weather" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel
+                    Width="300"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelWellKnownColorSelector
+                        x:Name="IconColorPicker"
+                        HideAreas="All"
+                        LabelText="Color"
+                        SelectedKey="Green"
+                        SelectedKeyChanged="IconColorPickerOnSelectedKeyChanged" />
+                    <atc:LabelTextBox
+                        x:Name="FilterText"
+                        HideAreas="All"
+                        LabelText="Filter"
+                        TextChanged="FilterOnTextChanged" />
+                    <atc:LabelTextInfo
+                        x:Name="CountListOfIcons"
+                        HideAreas="All"
+                        LabelText="Icon counts" />
+                </atc:UniformSpacingPanel>
+
+            </atc:UniformSpacingPanel>
+
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+
+            <atc:BusyOverlay IsBusy="{Binding ElementName=UcFontIconViewerView, Path=IsBusy, Mode=OneWay}">
+                <atc:AutoGrid Rows="*,Auto">
+                    <ScrollViewer>
+                        <WrapPanel
+                            x:Name="ListOfIcons"
+                            VirtualizingStackPanel.IsVirtualizing="True"
+                            VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                    </ScrollViewer>
+                </atc:AutoGrid>
+            </atc:BusyOverlay>
+
+        </GroupBox>
+    </atc:AutoGrid>
+</UserControl>

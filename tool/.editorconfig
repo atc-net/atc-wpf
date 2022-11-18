@@ -1,0 +1,54 @@
+# ATC coding rules - https://github.com/atc-net/atc-coding-rules
+# Version: 1.0.0
+# Updated: 04-12-2020
+# Location: Sample
+# Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
+
+##########################################
+# Code Analyzers Rules
+##########################################
+[*.{cs,csx,cake}]
+
+# AsyncFixer
+# http://www.asyncfixer.com
+
+
+# Asyncify
+# https://github.com/hvanbakel/Asyncify-CSharp
+
+
+# Meziantou
+# https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
+
+
+# Microsoft - Code Analysis
+# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+
+
+# Microsoft - Compiler Errors
+# https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/
+
+
+# Microsoft - FxCop
+# https://github.com/dotnet/roslyn-analyzers
+
+
+# SecurityCodeScan
+# https://security-code-scan.github.io/
+
+
+# StyleCop
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+
+
+##########################################
+# Custom - Code Analyzers Rules
+##########################################
+
+dotnet_diagnostic.S1075.severity = none
+
+dotnet_diagnostic.CA2227.severity = none 		# Collection properties should be read only
+
+dotnet_diagnostic.SA1649.severity = none 		# File name should match - Recores
+
+dotnet_diagnostic.MA0048.severity = none 		# File name should match - Recores
