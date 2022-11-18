@@ -1,0 +1,18 @@
+<TreeView
+    x:Class="Atc.Wpf.Sample.SamplesWpfFontIconsTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="230"
+    mc:Ignorable="d">
+
+    <TreeViewItem Header="Font Icons" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="Static" SamplePath="FontIconStaticImageView" />
+        <atc:SampleTreeViewItem Header="Binding" SamplePath="FontIconView" />
+        <atc:SampleTreeViewItem Header="Viewer" SamplePath="FontIconViewerView" />
+    </TreeViewItem>
+
+</TreeView>

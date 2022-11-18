@@ -1,0 +1,42 @@
+<atcTheming:NiceWindow
+    x:Class="Atc.Wpf.Generator.FontIconResources.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Generator.FontIconResources"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="..:: Atc.Wpf.Generator.FontIconResources ::.."
+    Width="1024"
+    Height="768"
+    MinWidth="1024"
+    MinHeight="768"
+    d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+    ResizeMode="CanResizeWithGrip"
+    WindowStartupLocation="CenterScreen"
+    WindowState="{Binding Path=WindowState}"
+    mc:Ignorable="d">
+
+    <Grid Margin="50">
+
+        <atcTheming:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+
+            <atcTheming:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                <atcTheming:LabelTextBox LabelText="Resources Folder" Text="{Binding Path=ResourcesFolder}" />
+                <atcTheming:LabelTextBox LabelText="Output Folder" Text="{Binding Path=OutputEnumFolder}" />
+            </atcTheming:UniformSpacingPanel>
+
+            <atcTheming:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                <Button Command="{Binding Path=GenerateFontAwesomeBrandCommand}" Content="FontAwesome Brand" />
+                <Button Command="{Binding Path=GenerateFontAwesomeRegularCommand}" Content="FontAwesome Regular" />
+                <Button Command="{Binding Path=GenerateFontAwesomeSolidCommand}" Content="FontAwesome Solid" />
+                <Button Command="{Binding Path=GenerateBootstrapCommand}" Content="Bootstrap" />
+                <Button Command="{Binding Path=GenerateIcoCommand}" Content="Ico" />
+                <Button Command="{Binding Path=GenerateMaterialDesignCommand}" Content="Material-Design" />
+                <Button Command="{Binding Path=GenerateWeatherCommand}" Content="Weather" />
+            </atcTheming:UniformSpacingPanel>
+
+        </atcTheming:UniformSpacingPanel>
+
+    </Grid>
+</atcTheming:NiceWindow>
