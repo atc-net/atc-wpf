@@ -196,7 +196,7 @@ internal sealed class PaintServerManager
             return int.Parse(value, GlobalizationConstants.EnglishCultureInfo);
         }
 
-        var nr = int.Parse(value.Substring(0, value.Length - 1), GlobalizationConstants.EnglishCultureInfo);
+        var nr = int.Parse(value.AsSpan(0, value.Length - 1), GlobalizationConstants.EnglishCultureInfo);
         if (nr < 0)
         {
             nr = 255 - nr;
