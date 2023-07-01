@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// ValueConverter: Label-Control Orientation To Information-Icon Margin (Thickness).
 /// </summary>
 [ValueConversion(typeof(Orientation), typeof(Thickness))]
-internal class LabelControlOrientationToInformationIconMarginValueConverter : IValueConverter
+internal sealed class LabelControlOrientationToInformationIconMarginValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

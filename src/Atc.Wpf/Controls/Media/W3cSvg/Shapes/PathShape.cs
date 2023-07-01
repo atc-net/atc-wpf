@@ -3,9 +3,9 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "OK.")]
-internal class PathShape : Shape
+internal sealed class PathShape : Shape
 {
-    internal class CommandSplitter
+    internal sealed class CommandSplitter
     {
         // Command is from one non numeric character to the next (-.,space   is part of the numeric value since it defines a point)
         private readonly char[] commands = { 'm', 'M', 'z', 'Z', 'A', 'a', 'L', 'l', 'h', 'H', 'v', 'V', 'c', 'C', 's', 'S', 'q', 'Q' };
@@ -74,7 +74,7 @@ internal class PathShape : Shape
         public bool IsRelative => char.IsLower(Command);
     }
 
-    internal class MoveTo : PathElement
+    internal sealed class MoveTo : PathElement
     {
         public MoveTo(char command, StringSplitter value)
             : base(command)
@@ -87,7 +87,7 @@ internal class PathShape : Shape
         public Point Point { get; }
     }
 
-    internal class LineTo : PathElement
+    internal sealed class LineTo : PathElement
     {
         public LineTo(char command, StringSplitter value)
             : base(command)
@@ -134,7 +134,7 @@ internal class PathShape : Shape
         public Point[] Points { get; }
     }
 
-    internal class CurveTo : PathElement
+    internal sealed class CurveTo : PathElement
     {
         public CurveTo(char command, StringSplitter value)
             : base(command)
@@ -163,7 +163,7 @@ internal class PathShape : Shape
         public Point Point { get; }
     }
 
-    internal class QuadraticCurveTo : PathElement
+    internal sealed class QuadraticCurveTo : PathElement
     {
         public QuadraticCurveTo(char command, StringSplitter value)
             : base(command)
@@ -188,7 +188,7 @@ internal class PathShape : Shape
         public Point Point { get; }
     }
 
-    internal class EllipticalArcTo : PathElement
+    internal sealed class EllipticalArcTo : PathElement
     {
         public EllipticalArcTo(char command, StringSplitter value)
             : base(command)

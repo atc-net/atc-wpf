@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class TextShape : Shape
+internal sealed class TextShape : Shape
 {
     private static Fill? defaultFill;
     private static Stroke? defaultStroke;
@@ -57,7 +57,7 @@ internal class TextShape : Shape
         }
     }
 
-    internal class TSpan
+    internal sealed class TSpan
     {
         public class Element : Shape
         {

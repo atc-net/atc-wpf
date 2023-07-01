@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// ValueConverter: Label-Control Orientation To Information-Icon Padding (Thickness).
 /// </summary>
 [ValueConversion(typeof(Orientation), typeof(Thickness))]
-internal class LabelControlOrientationToAsteriskPaddingValueConverter : IValueConverter
+internal sealed class LabelControlOrientationToAsteriskPaddingValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

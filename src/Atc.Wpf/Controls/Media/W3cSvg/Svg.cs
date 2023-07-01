@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Media.W3cSvg;
 /// <summary>
 /// This is the class that reads and parses the XML file.
 /// </summary>
-internal class Svg
+internal sealed class Svg
 {
     private List<Shape>? elements;
     private Dictionary<string, Brush>? customBrushes;

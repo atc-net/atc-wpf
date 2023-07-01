@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Progressing.Internal;
 
-internal class IndicatorVisualStateGroupNames : MarkupExtension
+internal sealed class IndicatorVisualStateGroupNames : MarkupExtension
 {
     private static IndicatorVisualStateGroupNames? internalActiveStates;
     private static IndicatorVisualStateGroupNames? sizeStates;

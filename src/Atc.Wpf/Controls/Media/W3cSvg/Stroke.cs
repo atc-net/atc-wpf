@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg;
 
-internal class Stroke
+internal sealed class Stroke
 {
     public Stroke()
     {

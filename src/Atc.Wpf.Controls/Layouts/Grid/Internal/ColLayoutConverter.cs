@@ -1,7 +1,7 @@
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 namespace Atc.Wpf.Controls.Layouts.Grid.Internal;
 
-internal class ColLayoutConverter : TypeConverter
+internal sealed class ColLayoutConverter : TypeConverter
 {
     public override bool CanConvertFrom(
         ITypeDescriptorContext? context,

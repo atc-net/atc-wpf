@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// ValueConverter: Label-Control Orientation To Visibility.
 /// </summary>
 [ValueConversion(typeof(Orientation), typeof(Visibility))]
-internal class LabelControlOrientationToVisibilityValueConverter : IValueConverter
+internal sealed class LabelControlOrientationToVisibilityValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

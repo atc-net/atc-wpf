@@ -1,7 +1,7 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes.Filters;
 
-internal class FilterFeGaussianBlur : FilterBaseFe
+internal sealed class FilterFeGaussianBlur : FilterBaseFe
 {
     public FilterFeGaussianBlur(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)

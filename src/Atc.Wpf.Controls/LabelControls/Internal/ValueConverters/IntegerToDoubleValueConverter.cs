@@ -5,7 +5,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// </summary>
 [ValueConversion(typeof(int), typeof(double))]
 [ValueConversion(typeof(decimal), typeof(double))]
-internal class IntegerToDoubleValueConverter : IValueConverter
+internal sealed class IntegerToDoubleValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         => value switch

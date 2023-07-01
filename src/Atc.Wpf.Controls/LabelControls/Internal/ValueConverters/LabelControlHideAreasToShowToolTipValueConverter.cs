@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
 [ValueConversion(typeof(LabelControlHideAreasType), typeof(bool))]
-internal class LabelControlHideAreasToShowToolTipValueConverter : IValueConverter
+internal sealed class LabelControlHideAreasToShowToolTipValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

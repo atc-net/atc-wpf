@@ -1,7 +1,7 @@
 // ReSharper disable MemberCanBeMadeStatic.Global
 namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
-internal class PaintServerManager
+internal sealed class PaintServerManager
 {
     private readonly Dictionary<string, PaintServer> paintServers = new Dictionary<string, PaintServer>(StringComparer.Ordinal);
 

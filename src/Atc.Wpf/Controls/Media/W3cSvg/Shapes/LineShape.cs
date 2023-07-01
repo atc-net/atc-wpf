@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class LineShape : Shape
+internal sealed class LineShape : Shape
 {
     public LineShape(Svg svg, XmlNode node)
         : base(svg, node)

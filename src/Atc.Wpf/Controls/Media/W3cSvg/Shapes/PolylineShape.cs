@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class PolylineShape : Shape
+internal sealed class PolylineShape : Shape
 {
     public PolylineShape(Svg svg, XmlNode node)
         : base(svg, node)

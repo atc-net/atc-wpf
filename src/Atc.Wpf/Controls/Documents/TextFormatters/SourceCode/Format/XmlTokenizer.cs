@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 /// <summary>
 /// XML tokenizer, tokens are designed to match Visual Studio syntax highlighting.
 /// </summary>
-internal class XmlTokenizer
+internal sealed class XmlTokenizer
 {
     private string input = string.Empty;
     private int position;

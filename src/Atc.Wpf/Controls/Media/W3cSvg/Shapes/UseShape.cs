@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class UseShape : Shape
+internal sealed class UseShape : Shape
 {
     public UseShape(Svg svg, XmlNode node)
         : base(svg, node)

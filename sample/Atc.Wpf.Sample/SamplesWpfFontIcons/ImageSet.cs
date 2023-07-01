@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample.SamplesWpfFontIcons;
 
-internal class ImageSet
+internal sealed class ImageSet
 {
     public ImageSet(
         ImageSource imageSource,

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Animation;
 
-internal class AnimateTransform : AnimationBase
+internal sealed class AnimateTransform : AnimationBase
 {
     public AnimateTransform(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)

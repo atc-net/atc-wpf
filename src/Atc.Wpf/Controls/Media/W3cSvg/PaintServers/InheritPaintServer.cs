@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
-internal class InheritPaintServer : PaintServer
+internal sealed class InheritPaintServer : PaintServer
 {
     public InheritPaintServer(PaintServerManager owner)
         : base(owner)

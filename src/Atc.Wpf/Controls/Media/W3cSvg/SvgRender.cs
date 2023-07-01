@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg;
 
-internal class SvgRender
+internal sealed class SvgRender
 {
     public SvgRender()
         : this(FileSystemLoader.Instance)

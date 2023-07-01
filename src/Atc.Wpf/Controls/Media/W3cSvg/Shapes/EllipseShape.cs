@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class EllipseShape : Shape
+internal sealed class EllipseShape : Shape
 {
     public EllipseShape(Svg svg, XmlNode node)
         : base(svg, node)
