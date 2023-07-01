@@ -269,7 +269,7 @@ public static class GenerateHelper
                      in
                      from property
                          in properties
-                     where property.Value.Equals("content", StringComparison.CurrentCulture)
+                     where property.Value.Equals("content", StringComparison.OrdinalIgnoreCase)
                      select scopeList.Find(x =>
                          x.IndexInSource > property.IndexInSource &&
                          x.CharacterCategorisation == CharacterCategorisationOptions.Value &&

@@ -1,3 +1,4 @@
+// ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.FontIcons;
 
 [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "OK.")]
@@ -18,7 +19,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Brands", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Brands", StringComparison.OrdinalIgnoreCase));
     }
 
     public static FontFamily GetAwesomeRegular()
@@ -33,7 +34,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Free", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Free", StringComparison.OrdinalIgnoreCase));
     }
 
     public static FontFamily GetAwesomeSolid()
@@ -48,7 +49,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Free Solid", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Free Solid", StringComparison.OrdinalIgnoreCase));
     }
 
     public static FontFamily GetBootstrap()
@@ -63,7 +64,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#GlyphIcons Halflings", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#GlyphIcons Halflings", StringComparison.OrdinalIgnoreCase));
     }
 
     public static FontFamily GetIcoFont()
@@ -78,7 +79,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#IcoFont", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#IcoFont", StringComparison.OrdinalIgnoreCase));
     }
 
     public static FontFamily GetMaterialDesign()
@@ -93,7 +94,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#Material Design Icons", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#Material Design Icons", StringComparison.OrdinalIgnoreCase));
     }
 
     public static FontFamily GetWeather()
@@ -108,7 +109,7 @@ public static class ResourceFontHelper
             }
         }
 
-        return fontFamilies.First(x => x.Source.Equals("./#Weather Icons", StringComparison.CurrentCultureIgnoreCase));
+        return fontFamilies.First(x => x.Source.Equals("./#Weather Icons", StringComparison.OrdinalIgnoreCase));
     }
 
     [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
