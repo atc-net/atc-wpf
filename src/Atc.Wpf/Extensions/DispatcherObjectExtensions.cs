@@ -75,6 +75,6 @@ public static class DispatcherObjectExtensions
         ArgumentNullException.ThrowIfNull(dispatcherObject);
         ArgumentNullException.ThrowIfNull(invokeAction);
 
-        dispatcherObject.Dispatcher?.BeginInvoke(priority, new Action(() => invokeAction(dispatcherObject)));
+        _ = dispatcherObject.Dispatcher?.BeginInvoke(priority, new Action(() => invokeAction(dispatcherObject)));
     }
 }

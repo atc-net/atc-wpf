@@ -141,7 +141,7 @@ public class BusyOverlay : ContentControl
             displayAfterTimer.Stop();
             IsContentVisible = false;
 
-            FocusAfterBusy?.Dispatcher.BeginInvoke(
+            _ = FocusAfterBusy?.Dispatcher.BeginInvoke(
                 DispatcherPriority.Input,
                 new Action(() =>
                     {

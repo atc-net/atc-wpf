@@ -26,7 +26,7 @@ public partial class ThemeSelector : INotifyPropertyChanged
         var detectTheme = ThemeManager.Current.DetectTheme(this);
         if (detectTheme is not null)
         {
-            SelectedKey = detectTheme.Name.Split('.').First();
+            SelectedKey = detectTheme.Name.Split('.')[0];
         }
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;
@@ -89,7 +89,7 @@ public partial class ThemeSelector : INotifyPropertyChanged
                      .Themes
                      .GroupBy(x => x.BaseColorScheme, StringComparer.Ordinal)
                      .Select(x => x.First())
-                     .OrderBy(x => x.BaseColorScheme))
+                     .OrderBy(x => x.BaseColorScheme, StringComparer.Ordinal))
         {
             var translatedName = ColorNames.ResourceManager.GetString(
                 item.BaseColorScheme,
@@ -106,7 +106,7 @@ public partial class ThemeSelector : INotifyPropertyChanged
         }
 
         Items = Items
-            .OrderBy(x => x.DisplayName)
+            .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
             .ToList();
     }
 

@@ -3,6 +3,7 @@ namespace Atc.Wpf.FontIcons;
 
 [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
+[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "OK - LoadFonts do not ensure fontFamilies is not null.")]
 public static class ResourceFontHelper
 {
     private static List<FontFamily>? fontFamilies;

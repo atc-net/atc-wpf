@@ -1,6 +1,7 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Theming.Controls.Windows.Internal;
 
+[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "OK.")]
 internal static class NiceWindowExtensions
 {
     public static void SetIsHitTestVisibleInChromeProperty<T>(

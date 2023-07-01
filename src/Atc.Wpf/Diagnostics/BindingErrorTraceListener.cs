@@ -81,7 +81,7 @@ public class BindingErrorTraceListener : DefaultTraceListener
             return;
         }
 
-        if (ignoreErrorMessages.Any(x => message.Contains(x, StringComparison.Ordinal)))
+        if (ignoreErrorMessages.Exists(x => message.Contains(x, StringComparison.Ordinal)))
         {
             return;
         }

@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
 internal sealed class PaintServerManager
 {
-    private readonly Dictionary<string, PaintServer> paintServers = new Dictionary<string, PaintServer>(StringComparer.Ordinal);
+    private readonly Dictionary<string, PaintServer> paintServers = new(StringComparer.Ordinal);
 
     public void Create(Svg svg, XmlNode node)
     {
@@ -149,8 +149,8 @@ internal sealed class PaintServerManager
 
     public static Color KnownColor(string value)
     {
-        return ColorUtil.KnownColors.ContainsKey(value)
-            ? ColorUtil.KnownColors[value]
+        return ColorUtil.KnownColors.TryGetValue(value, out var color)
+            ? color
             : Colors.Black;
     }
 

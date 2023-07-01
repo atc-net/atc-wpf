@@ -505,3 +505,17 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 [*.cs]
 csharp_style_prefer_index_operator = false                                      # IDE0056
 csharp_style_prefer_range_operator = false                                      # IDE0057
+
+dotnet_diagnostic.CA1854.severity = none           # Prefer a 'TryGetValue' call over a Dictionary indexer access guarded by a 'ContainsKey' check to avoid double lookup
+
+dotnet_diagnostic.MA0011.severity = none           # Use an overload of 'ToString' that has a 'System.IFormatProvider' parameter
+dotnet_diagnostic.MA0131.severity = none           # ArgumentNullException.ThrowIfNull should not be used with non-nullable types
+
+dotnet_diagnostic.S1144.severity = none            # Remove the unused internal class
+dotnet_diagnostic.S2094.severity = none            # Remove this empty class, write its code or make it an "interface"
+dotnet_diagnostic.S2445.severity = none            # Do not lock on writable field 'items', use a readonly field instead
+dotnet_diagnostic.S3267.severity = none            # Loops should be simplified with "LINQ" expressions
+dotnet_diagnostic.S6602.severity = none            # "Find" method should be used instead of the "FirstOrDefault" extension method
+dotnet_diagnostic.S6603.severity = none            # The collection-specific "TrueForAll" method should be used instead of the "All" extension
+dotnet_diagnostic.S6605.severity = none            # Collection-specific "Exists" method should be used instead of the "Any" extension
+dotnet_diagnostic.S6608.severity = none            # Indexing at Count-1 should be used instead of the "Enumerable" extension method "Last"

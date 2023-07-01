@@ -394,7 +394,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
         => base.IsEnabledCore && CanExecute;
 
     protected override AutomationPeer OnCreateAutomationPeer()
-        => new Internal.ToggleSwitchAutomationPeer(this);
+        => new ToggleSwitchAutomationPeer(this);
 
     private static void OnIsOnChanged(
         DependencyObject d,
@@ -408,7 +408,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
             return;
         }
 
-        if (UIElementAutomationPeer.FromElement(toggleSwitch) is Internal.ToggleSwitchAutomationPeer peer)
+        if (UIElementAutomationPeer.FromElement(toggleSwitch) is ToggleSwitchAutomationPeer peer)
         {
             peer.RaiseToggleStatePropertyChangedEvent(oldValue, newValue);
         }

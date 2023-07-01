@@ -91,7 +91,7 @@ public partial class AccentColorSelector : INotifyPropertyChanged
                      .Themes
                      .GroupBy(x => x.ColorScheme, StringComparer.Ordinal)
                      .Select(x => x.First())
-                     .OrderBy(x => x.ColorScheme))
+                     .OrderBy(x => x.ColorScheme, StringComparer.Ordinal))
         {
             var translatedName = ColorNames.ResourceManager.GetString(
                 item.ColorScheme,
@@ -107,7 +107,7 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         }
 
         Items = list
-            .OrderBy(x => x.DisplayName)
+            .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
             .ToList();
     }
 

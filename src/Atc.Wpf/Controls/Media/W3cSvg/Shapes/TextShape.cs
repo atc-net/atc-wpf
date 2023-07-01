@@ -59,7 +59,7 @@ internal sealed class TextShape : Shape
 
     internal sealed class TSpan
     {
-        public class Element : Shape
+        public sealed class Element : Shape
         {
             public override Transform? Transform => Parent?.Transform;
 
@@ -116,7 +116,7 @@ internal sealed class TextShape : Shape
 
             if (tag.ElementType == TextShapeElementType.Text)
             {
-                Console.WriteLine($"{indent} '{tag.Text}'");
+                System.Console.WriteLine($"{indent} '{tag.Text}'");
             }
 
             if (tag.Children is null)

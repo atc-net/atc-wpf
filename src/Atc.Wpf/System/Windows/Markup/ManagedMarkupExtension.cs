@@ -41,7 +41,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     ///   <c>true</c> if this instance is target alive; otherwise, <c>false</c>.
     /// </value>
     public bool IsTargetAlive =>
-        targetObjects.Count == 0 || targetObjects.Any(reference => reference.IsAlive);
+        targetObjects.Count == 0 || targetObjects.Exists(reference => reference.IsAlive);
 
     /// <summary>
     /// Gets a value indicating whether this instance is in design mode.

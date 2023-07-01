@@ -171,9 +171,13 @@ public class ColorHelper
 
         colorNamesDictionary ??= ColorNamesDictionary;
 
-        var colorHex = useAlphaChannel ? color.ToString() : $"#{color.Value.R:X2}{color.Value.G:X2}{color.Value.B:X2}";
+        var colorHex = useAlphaChannel
+            ? color.ToString()
+            : $"#{color.Value.R:X2}{color.Value.G:X2}{color.Value.B:X2}";
 
-        return colorNamesDictionary.TryGetValue(color.Value, out var name) ? $"{name} ({colorHex})" : $"{colorHex}";
+        return colorNamesDictionary.TryGetValue(color.Value, out var name)
+            ? $"{name} ({colorHex})"
+            : $"{colorHex}";
     }
 
     /// <summary>

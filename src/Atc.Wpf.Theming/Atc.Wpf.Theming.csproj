@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ControlzEx" version="6.0.0-alpha0241" />
+    <PackageReference Include="ControlzEx" version="6.0.0" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
     <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha0100" PrivateAssets="all" IncludeAssets="build" />-->

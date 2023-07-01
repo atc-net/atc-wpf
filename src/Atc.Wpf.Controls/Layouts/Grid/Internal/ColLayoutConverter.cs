@@ -119,7 +119,7 @@ internal sealed class ColLayoutConverter : TypeConverter
         sb.Append(th.Xl.ToString(cultureInfo));
         sb.Append(listSeparator);
         sb.Append(th.Xxl.ToString(cultureInfo));
-        return th.ToString();
+        return sb.ToString();
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]

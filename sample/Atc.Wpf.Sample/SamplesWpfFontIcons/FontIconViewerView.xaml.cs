@@ -70,10 +70,10 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             return;
         }
 
-        var worker = new BackgroundWorker();
+        using var worker = new BackgroundWorker();
         worker.DoWork += (_, _) =>
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            _ = Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 ListOfIcons.Children.Clear();
 
@@ -85,7 +85,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
         worker.RunWorkerCompleted += (_, _) =>
         {
-            Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
+            _ = Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
         };
 
         IsBusy = true;
@@ -126,15 +126,15 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
     private void PopulateListOfIcons()
     {
-        var worker = new BackgroundWorker();
+        using var worker = new BackgroundWorker();
         worker.DoWork += (_, _) =>
         {
-            Application.Current.Dispatcher.BeginInvoke(UiPopulateListOfIcons);
+            _ = Application.Current.Dispatcher.BeginInvoke(UiPopulateListOfIcons);
         };
 
         worker.RunWorkerCompleted += (_, _) =>
         {
-            Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
+            _ = Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
         };
 
         IsBusy = true;
@@ -205,15 +205,15 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             return;
         }
 
-        var worker = new BackgroundWorker();
+        using var worker = new BackgroundWorker();
         worker.DoWork += (_, _) =>
         {
-            Application.Current.Dispatcher.BeginInvoke(() => UiFilterListOfIcons(filterText));
+            _ = Application.Current.Dispatcher.BeginInvoke(() => UiFilterListOfIcons(filterText));
         };
 
         worker.RunWorkerCompleted += (_, _) =>
         {
-            Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
+            _ = Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
         };
 
         IsBusy = true;
@@ -226,7 +226,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         filterText = filterText
             .Trim()
             .Replace(" ", string.Empty, StringComparison.Ordinal)
-            .ToLowerInvariant();
+            .ToLower(GlobalizationConstants.EnglishCultureInfo);
 
         FilterIcons(nameof(FontAwesomeBrandType), fontAwesomeBrandList, FilterFontAwesomeBrand.IsChecked, filterText);
         FilterIcons(nameof(FontAwesomeRegularType), fontAwesomeRegularList, FilterFontAwesomeRegular.IsChecked, filterText);
