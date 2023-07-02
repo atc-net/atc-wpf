@@ -6,8 +6,8 @@ namespace Atc.Wpf.Diagnostics;
 public class BindingErrorTraceListener : DefaultTraceListener
 {
     private static BindingErrorTraceListener? listener;
-    private readonly StringBuilder errorMessage = new StringBuilder();
-    private readonly List<string> ignoreErrorMessages = new List<string>();
+    private readonly StringBuilder errorMessage = new();
+    private readonly List<string> ignoreErrorMessages = new();
 
     /// <summary>
     /// Prevents a default instance of the <see cref="BindingErrorTraceListener" /> class from being created.

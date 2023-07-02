@@ -9,7 +9,7 @@ public class XamlFormatter : ITextFormatter
     /// <summary>
     /// The instance.
     /// </summary>
-    public static readonly XamlFormatter Instance = new XamlFormatter();
+    public static readonly XamlFormatter Instance = new();
 
     /// <summary>
     /// Colorizes the xaml.

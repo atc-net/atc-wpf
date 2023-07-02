@@ -102,7 +102,7 @@ internal sealed class Svg
         return shape;
     }
 
-    public PaintServerManager PaintServers { get; } = new PaintServerManager();
+    public PaintServerManager PaintServers { get; } = new();
 
     public IList<Shape> Elements
     {

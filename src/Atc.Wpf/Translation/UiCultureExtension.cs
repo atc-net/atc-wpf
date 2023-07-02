@@ -15,7 +15,7 @@ public class UiCultureExtension : ManagedMarkupExtension
     /// <summary>
     /// List of active extensions.
     /// </summary>
-    private static readonly MarkupExtensionManager MarkupExtensionManager = new MarkupExtensionManager(2);
+    private static readonly MarkupExtensionManager MarkupExtensionManager = new(2);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UiCultureExtension" /> class.

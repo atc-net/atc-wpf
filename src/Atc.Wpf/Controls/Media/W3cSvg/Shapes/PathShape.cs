@@ -10,7 +10,7 @@ internal sealed class PathShape : Shape
         // Command is from one non numeric character to the next (-.,space   is part of the numeric value since it defines a point)
         private readonly char[] commands = { 'm', 'M', 'z', 'Z', 'A', 'a', 'L', 'l', 'h', 'H', 'v', 'V', 'c', 'C', 's', 'S', 'q', 'Q' };
         private readonly string val;
-        private readonly StringSplitter splitter = new StringSplitter(string.Empty);
+        private readonly StringSplitter splitter = new(string.Empty);
         private int curPos = -1;
 
         public CommandSplitter(string value)
@@ -221,7 +221,7 @@ internal sealed class PathShape : Shape
         public bool LargeArc { get; }
     }
 
-    private readonly List<PathElement> elements = new List<PathElement>();
+    private readonly List<PathElement> elements = new();
 
     private static Fill? defaultFill;
 

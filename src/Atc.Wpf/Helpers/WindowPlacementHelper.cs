@@ -5,7 +5,7 @@ public static class WindowPlacementHelper
     private const int ShowNormal = 1;
     private const int ShowMinimized = 2;
     private static readonly Encoding Encoding = new UTF8Encoding();
-    private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(WINDOWPLACEMENT));
+    private static readonly XmlSerializer Serializer = new(typeof(WINDOWPLACEMENT));
 
     [SuppressMessage("Security", "CA5369:Use XmlReader for 'XmlSerializer.Deserialize()'", Justification = "OK.")]
     public static void SetPlacement(IntPtr windowHandle, string placementXml)

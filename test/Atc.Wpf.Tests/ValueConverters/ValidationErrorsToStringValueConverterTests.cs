@@ -6,13 +6,13 @@ public class ValidationErrorsToStringValueConverterTests
 
     private readonly KeyValuePair<string, string>[] inputSet1 =
     {
-        new KeyValuePair<string, string>("Key1", "Error1"),
+        new("Key1", "Error1"),
     };
 
     private readonly KeyValuePair<string, string>[] inputSet2 =
     {
-        new KeyValuePair<string, string>("Key1", "Error1"),
-        new KeyValuePair<string, string>("Key2", "Error2"),
+        new("Key1", "Error1"),
+        new("Key2", "Error2"),
     };
 
     [Theory]

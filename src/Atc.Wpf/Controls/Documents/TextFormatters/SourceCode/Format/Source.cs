@@ -66,7 +66,7 @@ public abstract class Source
     /// The regular expression used to capture language tokens.
     /// </summary>
     [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
-    protected Regex CodeRegex { get; set; } = new Regex("^");
+    protected Regex CodeRegex { get; set; } = new("^");
 
     /// <summary>
     /// This is a List of Run's that can be added later to the string of code.
