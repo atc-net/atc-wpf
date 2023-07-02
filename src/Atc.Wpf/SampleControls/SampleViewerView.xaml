@@ -29,7 +29,9 @@
             <TabItem Header="Sample" IsEnabled="{Binding Path=HasSampleContent}">
                 <ContentControl
                     Margin="5,10,5,5"
+                    Background="Transparent"
                     Content="{Binding Path=SampleContent}"
+                    Foreground="{Binding ElementName=UcSampleViewerView, Path=Foreground}"
                     ScrollViewer.CanContentScroll="True" />
             </TabItem>
             <TabItem Header="XAML" IsEnabled="{Binding Path=HasXamlCode}">
@@ -37,8 +39,9 @@
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                    Background="Transparent"
                     FontFamily="Courier New"
+                    Foreground="{Binding ElementName=UcSampleViewerView, Path=Foreground}"
                     HorizontalScrollBarVisibility="Auto"
                     IsReadOnly="True"
                     Text="{Binding Path=XamlCode}"
@@ -50,8 +53,9 @@
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                    Background="Transparent"
                     FontFamily="Courier New"
+                    Foreground="{Binding ElementName=UcSampleViewerView, Path=Foreground}"
                     HorizontalScrollBarVisibility="Auto"
                     IsReadOnly="True"
                     Text="{Binding Path=CodeBehindCode}"
@@ -63,8 +67,9 @@
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                    Background="Transparent"
                     FontFamily="Courier New"
+                    Foreground="{Binding ElementName=UcSampleViewerView, Path=Foreground}"
                     HorizontalScrollBarVisibility="Auto"
                     IsReadOnly="True"
                     Text="{Binding Path=ViewModelCode}"

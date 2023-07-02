@@ -1,3 +1,4 @@
+// ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 
 /// <summary>
@@ -108,9 +109,8 @@ public abstract class Code : Source
         {
             var reader = new StringReader(match.ToString());
             var sb = new StringBuilder();
-            string line;
             var firstLineRead = false;
-            while ((line = reader.ReadLine()!) is not null)
+            while (reader.ReadLine() is { } line)
             {
                 if (firstLineRead)
                 {
