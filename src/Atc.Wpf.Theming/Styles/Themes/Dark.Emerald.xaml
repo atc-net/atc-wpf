@@ -661,7 +661,7 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Control.Disabled"
         options:Freeze="True"
-        Color="#A5FFFFFF" />
+        Color="{StaticResource AtcApps.Colors.Gray10}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Control.Validation"
         options:Freeze="True"
