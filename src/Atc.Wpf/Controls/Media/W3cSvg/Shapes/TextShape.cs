@@ -16,7 +16,7 @@ internal sealed class TextShape : Shape
         Y = SvgXmlUtil.AttrValue(node, "y", 0);
         Text = node.InnerText;
         GetTextStyle();
-        if (node.InnerXml.IndexOf("<", StringComparison.Ordinal) != -1)
+        if (node.InnerXml.IndexOf('<', StringComparison.Ordinal) != -1)
         {
             TextSpan = ParseTSpan(svg, node.InnerXml);
         }
@@ -135,13 +135,13 @@ internal sealed class TextShape : Shape
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
         private static Element? NextTag(Svg svg, Element parent, string text, ref int curPos)
         {
-            var start = text.IndexOf("<", curPos, StringComparison.Ordinal);
+            var start = text.IndexOf('<', curPos);
             if (start < 0)
             {
                 return null;
             }
 
-            var end = text.IndexOf(">", start + 1, StringComparison.Ordinal);
+            var end = text.IndexOf('>', start + 1);
             if (end < 0)
             {
                 throw new Exception("Start '<' with no end '>'");
@@ -150,7 +150,7 @@ internal sealed class TextShape : Shape
             end++;
 
             var tagText = text.Substring(start, end - start);
-            if (tagText.IndexOf("<", 1, StringComparison.Ordinal) != -1)
+            if (tagText.IndexOf('<', 1) != -1)
             {
                 throw new Exception("Start '<' within tag 'tag'");
             }
@@ -172,7 +172,7 @@ internal sealed class TextShape : Shape
                 Text = text.Substring(start, end - start),
             };
 
-            if (tag.Text.IndexOf("<", 1, StringComparison.Ordinal) != -1)
+            if (tag.Text.IndexOf('<', 1) != -1)
             {
                 throw new Exception("Start '<' within tag 'tag'");
             }

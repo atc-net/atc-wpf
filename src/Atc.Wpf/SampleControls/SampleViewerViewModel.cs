@@ -235,7 +235,7 @@ public class SampleViewerViewModel : ViewModelBase
 
         foreach (var file in files)
         {
-            var s = file.Replace("\\", ".", StringComparison.Ordinal);
+            var s = file.Replace('\\', '.');
             if (s.Contains(sampleType.FullName!, StringComparison.OrdinalIgnoreCase))
             {
                 return new DirectoryInfo(file).Parent;

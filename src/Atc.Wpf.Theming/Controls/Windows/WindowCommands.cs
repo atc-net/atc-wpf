@@ -210,14 +210,14 @@ public class WindowCommands : ToolBar
             return;
         }
 
-        // ReSharper disable once NotAccessedVariable
-        var frameworkElement = item as FrameworkElement;
         if (item is not FrameworkElement)
         {
             windowCommandsItem.ApplyTemplate();
 
+
+            // ReSharper disable once NotAccessedVariable
             // ReSharper disable once RedundantAssignment
-            frameworkElement = windowCommandsItem.ContentTemplate?.LoadContent() as FrameworkElement;
+            _ = windowCommandsItem.ContentTemplate?.LoadContent() as FrameworkElement;
         }
 
         AttachVisibilityHandler(windowCommandsItem, item as UIElement);
