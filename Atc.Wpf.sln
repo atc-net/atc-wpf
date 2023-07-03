@@ -15,11 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0FA723AA-8BA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf", "src\Atc.Wpf\Atc.Wpf.csproj", "{0FBD009E-1905-4354-980E-9AD5199BD172}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{CCB6786B-31F4-40A2-A549-3F36F26641F2}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Theming", "src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj", "{50B9C861-0478-4AF3-958E-54F9AEC3A614}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Controls", "src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj", "{286557DA-8BB2-4302-B4C7-28CB81161B16}"
@@ -31,6 +26,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Generator.FontIconResources", "tool\Atc.Wpf.Generator.FontIconResources\Atc.Wpf.Generator.FontIconResources.csproj", "{A44E762D-9D36-462E-91DC-FDA18058556F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.FontIcons", "src\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj", "{BB036D9C-2C70-40FD-B997-338A46EE91AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{133AFD8A-A870-41D7-8A97-763A36D2502A}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
