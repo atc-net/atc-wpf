@@ -6,7 +6,7 @@ namespace Atc.Wpf.ValueConverters;
 /// This class cannot be inherited.
 /// </summary>
 [MarkupExtensionReturnType(typeof(MathDivideValueConverter))]
-public sealed class MathDivideValueConverter : MarkupMultiValueConverter
+public sealed class MathDivideValueConverter : MarkupMultiValueConverterBase
 {
     private static readonly MathValueConverter MathConverter = new() { Operation = MathOperation.Divide };
 

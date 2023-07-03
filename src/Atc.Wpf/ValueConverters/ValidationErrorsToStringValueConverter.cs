@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: ValidationErrors To String.
 /// </summary>
 [ValueConversion(typeof(ICollection<ValidationError>), typeof(string))]
-public class ValidationErrorsToStringValueConverter : MarkupExtension, IValueConverter
+public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IValueConverter
 {
     /// <summary>
     /// When implemented in a derived class, returns an object that is provided as the value of the target property for this markup extension.
@@ -22,7 +22,7 @@ public class ValidationErrorsToStringValueConverter : MarkupExtension, IValueCon
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return value is ICollection<ValidationError> errors
-            ? string.Join("\n", (from e in errors select e.ErrorContent as string).ToArray())
+            ? string.Join('\n', (from e in errors select e.ErrorContent as string).ToArray())
             : string.Empty;
     }
 

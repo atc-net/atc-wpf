@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Thickness To Thickness binding.
 /// </summary>
 [ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(ThicknessSideType))]
-public class ThicknessBindingValueConverter : IValueConverter
+public sealed class ThicknessBindingValueConverter : IValueConverter
 {
     public ThicknessSideType IgnoreThicknessSide { get; set; } = ThicknessSideType.None;
 

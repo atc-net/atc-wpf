@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Multi Bool To Bool.
 /// </summary>
 [ValueConversion(typeof(List<bool>), typeof(bool))]
-public class MultiBoolToBoolValueConverter : IMultiValueConverter
+public sealed class MultiBoolToBoolValueConverter : IMultiValueConverter
 {
     /// <inheritdoc />
     public object Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)

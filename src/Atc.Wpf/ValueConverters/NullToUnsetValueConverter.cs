@@ -1,7 +1,10 @@
 namespace Atc.Wpf.ValueConverters;
 
+/// <summary>
+/// ValueConverter: Object To DependencyProperty.UnsetValue.
+/// </summary>
 [ValueConversion(typeof(object), typeof(object))]
-public class NullToUnsetValueConverter : MarkupValueConverter
+public sealed class NullToUnsetValueConverter : MarkupValueConverterBase
 {
     protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

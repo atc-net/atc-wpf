@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: string-color-name To SolidColorBrush.
 /// </summary>
 [ValueConversion(typeof(string), typeof(Brush))]
-public class ColorNameToBrushValueConverter : IValueConverter
+public sealed class ColorNameToBrushValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

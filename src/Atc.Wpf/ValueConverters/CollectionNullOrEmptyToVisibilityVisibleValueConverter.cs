@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: ICollection Null Or Empty To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(ICollection), typeof(Visibility))]
-public class CollectionNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
+public sealed class CollectionNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

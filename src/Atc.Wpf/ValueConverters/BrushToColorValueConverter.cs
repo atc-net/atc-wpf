@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: (SolidColor)Brush To Color.
 /// </summary>
 [ValueConversion(typeof(SolidColorBrush), typeof(Color))]
-public class BrushToColorValueConverter : IValueConverter
+public sealed class BrushToColorValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

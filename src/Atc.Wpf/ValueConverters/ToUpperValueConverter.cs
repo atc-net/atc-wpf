@@ -6,7 +6,7 @@ namespace Atc.Wpf.ValueConverters;
 [MarkupExtensionReturnType(typeof(ToUpperValueConverter))]
 [ValueConversion(typeof(object), typeof(object))]
 [ValueConversion(typeof(string), typeof(string))]
-public class ToUpperValueConverter : MarkupValueConverter
+public sealed class ToUpperValueConverter : MarkupValueConverterBase
 {
     /// <inheritdoc />
     protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

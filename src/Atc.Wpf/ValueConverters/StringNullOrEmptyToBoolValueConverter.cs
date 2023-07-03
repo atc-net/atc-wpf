@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: String Null Or Empty To Bool.
 /// </summary>
 [ValueConversion(typeof(string), typeof(bool))]
-public class StringNullOrEmptyToBoolValueConverter : IValueConverter
+public sealed class StringNullOrEmptyToBoolValueConverter : IValueConverter
 {
     public static readonly StringNullOrEmptyToBoolValueConverter Instance = new();
 

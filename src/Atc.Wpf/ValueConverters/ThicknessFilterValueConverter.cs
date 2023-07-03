@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Thickness To Thickness with filter.
 /// </summary>
 [ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(ThicknessSideType))]
-public class ThicknessFilterValueConverter : IValueConverter
+public sealed class ThicknessFilterValueConverter : IValueConverter
 {
     public ThicknessSideType Filter { get; set; } = ThicknessSideType.None;
 

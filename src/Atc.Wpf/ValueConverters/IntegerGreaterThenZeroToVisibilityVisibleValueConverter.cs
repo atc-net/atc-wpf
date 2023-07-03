@@ -1,15 +1,25 @@
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>
-/// ValueConverter: String Null Or Empty To Visibility-Visible.
+/// ValueConverter: Integer > 0 To Visibility-Visible.
 /// </summary>
-[ValueConversion(typeof(string), typeof(Visibility))]
-public sealed class StringNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
+[ValueConversion(typeof(int), typeof(Visibility))]
+public class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is null || string.IsNullOrEmpty(value.ToString())
+        if (value is null)
+        {
+            return Visibility.Collapsed;
+        }
+
+        if (value is not int intValue)
+        {
+            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(int)");
+        }
+
+        return intValue > 0
             ? Visibility.Visible
             : Visibility.Collapsed;
     }

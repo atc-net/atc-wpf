@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Object Null To Bool.
 /// </summary>
 [ValueConversion(typeof(object), typeof(bool))]
-public class ObjectNullToBoolValueConverter : IValueConverter
+public sealed class ObjectNullToBoolValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

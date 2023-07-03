@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Bool To Width.
 /// </summary>
 [ValueConversion(typeof(bool), typeof(LengthConverter))]
-public class BoolToWidthValueConverter : IValueConverter
+public sealed class BoolToWidthValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

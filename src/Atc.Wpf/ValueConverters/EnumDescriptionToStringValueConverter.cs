@@ -3,7 +3,7 @@ namespace Atc.Wpf.ValueConverters;
 /// <summary>
 /// ValueConverter: Enum-Description To String.
 /// </summary>
-public class EnumDescriptionToStringValueConverter : IValueConverter
+public sealed class EnumDescriptionToStringValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: string-color-name To Color.
 /// </summary>
 [ValueConversion(typeof(string), typeof(Color))]
-public class ColorNameToColorValueConverter : IValueConverter
+public sealed class ColorNameToColorValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

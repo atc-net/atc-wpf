@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: String Null Or Empty To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(ThicknessSideType))]
-public class ThicknessToDoubleValueConverter : IValueConverter
+public sealed class ThicknessToDoubleValueConverter : IValueConverter
 {
     public ThicknessSideType TakeThicknessSide { get; set; } = ThicknessSideType.None;
 
