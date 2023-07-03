@@ -105,7 +105,7 @@ public class RelayCommandAsync : IRelayCommandAsync
 
         if (errorHandler is null)
         {
-            await ExecuteAsync(parameter);
+            await ExecuteAsync(parameter).ConfigureAwait(true);
             RaiseCanExecuteChanged();
             isExecuting = false;
         }
@@ -113,7 +113,7 @@ public class RelayCommandAsync : IRelayCommandAsync
         {
             try
             {
-                await ExecuteAsync(parameter);
+                await ExecuteAsync(parameter).ConfigureAwait(true);
                 RaiseCanExecuteChanged();
                 isExecuting = false;
             }

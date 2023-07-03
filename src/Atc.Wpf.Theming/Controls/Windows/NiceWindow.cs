@@ -914,7 +914,7 @@ public class NiceWindow : WindowChromeWindow
 
         if (!CanUseOverlayFadingStoryboard(sb, out var animation))
         {
-            ShowOverlay();
+            await ShowOverlayAsync().ConfigureAwait(true);
             return;
         }
 
@@ -966,7 +966,7 @@ public class NiceWindow : WindowChromeWindow
 
         if (!CanUseOverlayFadingStoryboard(sb, out var animation))
         {
-            HideOverlay();
+            await ShowOverlayAsync().ConfigureAwait(true);
             return;
         }
 
@@ -992,7 +992,7 @@ public class NiceWindow : WindowChromeWindow
 
         OverlayBox.BeginStoryboard(sb);
 
-        await tcs.Task;
+        await tcs.Task.ConfigureAwait(true);
     }
 
     public bool IsOverlayVisible()
