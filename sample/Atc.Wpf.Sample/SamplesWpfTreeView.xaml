@@ -60,4 +60,8 @@
         <atc:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Translation" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="ResxExtension" SamplePath="Translation.ResxExtensionView" />
+    </TreeViewItem>
+
 </TreeView>

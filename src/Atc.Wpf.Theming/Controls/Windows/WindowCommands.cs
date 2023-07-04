@@ -213,10 +213,6 @@ public class WindowCommands : ToolBar
         if (item is not FrameworkElement)
         {
             windowCommandsItem.ApplyTemplate();
-
-
-            // ReSharper disable once NotAccessedVariable
-            // ReSharper disable once RedundantAssignment
             _ = windowCommandsItem.ContentTemplate?.LoadContent() as FrameworkElement;
         }
 

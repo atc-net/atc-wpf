@@ -4,9 +4,29 @@
 
 This is a base libraries for building WPF application with the MVVM design pattern.
 
+# Table of contents
+- [Requirements](#requirements)
+- [NuGet Packages Provided in this Repository](#nuget-packages-provided-in-this-repository)
+- [Demonstration Application](#demonstration-application)
+  - [Playground and Viewer for a Given Control or Functionality](#playground-and-viewer-for-a-given-gontrol-or-functionality)
+  - [Initial glimpse at the sample application, which use atc-wpf libraries](#initial-glimpse-at-the-sample-application)
+- [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
+- [MVVM](#mvvm)
+- [Translation](#translation)
+- [ValueConverters](#valueconverters)
+  - [ValueConverters - Bool to X](#valueconverters-bool-to-x)
+  - [ValueConverters - String to X](#valueconverters-string-to-x)
+  - [ValueConverters - ICollection to X](#valueconverters-icollection-to-x)
+  - [ValueConverters - Object to X](#valueconverters-object-to-x)
+  - [ValueConverters - Markup to X](#valueconverters-markup-to-x)
+  - [ValueConverters - Others to X](#valueconverters-others-to-x)
+  - [ValueConverters - Math](#valueconverters-math)
+- [Media - ShaderEffects](#media-shadereffects)
+- [How to contribute](#how-to-contribute)
+
 ## Requirements
 
-* [.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+[.NET 7 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 
 ## NuGet Packages Provided in this Repository
 
@@ -36,7 +56,7 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 | Sample ![Img](docs/images/lm-wpf-replaycommandasync-sample.png)         | XAML ![Img](docs/images/lm-wpf-replaycommandasync-xaml.png)           |
 | CodeBehind ![Img](docs/images/lm-wpf-replaycommandasync-codebehind.png) | ViewModel ![Img](docs/images/lm-wpf-replaycommandasync-viewmodel.png) |
 
-### Initial glimpse at the sample application, which use atc-wpf libraries.
+### Initial glimpse at the demonstration application
 
 | Light-Mode                                                                   | Dark-Mode                                                                    |
 |------------------------------------------------------------------------------|------------------------------------------------------------------------------|
@@ -45,7 +65,7 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 | Wpf.Theming - ImageButton ![Img](docs/images/lm-wpf-theming-imagebutton.png) | Wpf.Theming - ImageButton ![Img](docs/images/dm-wpf-theming-imagebutton.png) |
 | Wpf.FontIcons - Viewer ![Img](docs/images/lm-wpf-fonicons-viewer.png)        | Wpf.FontIcons - Viewer ![Img](docs/images/dm-wpf-fonicons-viewer.png)        |
 
-## How to use
+## How to get started with atc-wpf
 
 First of all, include Nuget packages in the `.csproj` file like this:
 
@@ -80,9 +100,43 @@ Then update `App.xaml` like this:
 
 Now it is possible to use controls with theming and default WPF controls like TextBox, Button etc. with theme style.
 
+## MVVM
+
+The Windows Presentation Framework (WPF) takes full advantage of the Model-View-ViewModel (MVVM) pattern.
+
+Therefore `Atc.Wpf` provide a good starting point for using MVVM.
+
+| Tools set in the package | Description                                                                      |
+|--------------------------|                                                                                  |
+| ViewModelBase            | A base class for a the ViewModels                                                |
+| MainWindowViewModelBase  | A base class for a the MainWindow-ViewModel                                      |
+| ViewModelDialogBase      | A base class for a the Dialog-ViewModel                                          |
+| ObservableObject         | A base class for a observable class that implement a PropertyChangedEventHandler |
+| RelayCommand             | Command with `CanExecute`                                                        |
+| RelayCommand{T}          | Command with `CanExecute`                                                        |
+| RelayCommandAsync        | Command with `CanExecute` as async                                               |
+| RelayCommandAsync{T}     | Command with `CanExecute` as async                                               |
+
+## Translation
+
+It is very easy to localize an application by binding text to a resource assembly that contains the text. 
+This is a standard .NET Globalization and localization way, 
+but just with a xaml-markup extension to lookup the value by key.
+
+```xml
+<!-- Add xmlns:atcTranslation to root element -->
+<UserControl xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations">
+
+<!-- Example on bind to a key in a resx-file with full namespace  -->
+<TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=About}" />
+
+<!-- Example on bind to a key in a resx-file with full namespace and apply a prefix and suffix  -->
+<TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=About, Prefix='foo', Suffix='bar'}" />
+```
+
 ## ValueConverters
 
-### ValueConverters - Bool -> X
+### ValueConverters - Bool to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -93,7 +147,7 @@ Now it is possible to use controls with theming and default WPF controls like Te
 | Bool[] -> Bool            | MultiBoolToBoolValueConverter                            | All-True -> True                        | Not supported                           |
 | Bool[] -> Visibility      | MultiBoolToVisibilityVisibleValueConverter               | All-True -> Visible                     | Not supported                           |
 
-### ValueConverters - String -> X
+### ValueConverters - String to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -107,7 +161,7 @@ Now it is possible to use controls with theming and default WPF controls like Te
 | String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 | String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 
-### ValueConverters - ICollection -> X
+### ValueConverters - ICollection to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -116,7 +170,7 @@ Now it is possible to use controls with theming and default WPF controls like Te
 | ICollection -> Visibility | CollectionNullOrEmptyToVisibilityCollapsedValueConverter | NULL or empty -> Collapsed              | Not supported                           |
 | ICollection -> Visibility | CollectionNullOrEmptyToVisibilityVisibleValueConverter   | NULL or empty -> Visible                | Not supported                           |
 
-### ValueConverters - Object -> X
+### ValueConverters - Object to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -127,7 +181,7 @@ Now it is possible to use controls with theming and default WPF controls like Te
 | Object -> Visibility      | ObjectNotNullToVisibilityVisibleValueConverter           | NotNULL -> Visible                      | Not supported                           |
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
 
-### ValueConverters - Markup -> X
+### ValueConverters - Markup to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -135,7 +189,7 @@ Now it is possible to use controls with theming and default WPF controls like Te
 |                           | MarkupValueConverter                                     |                                         |                                         |
 |                           | MarkupValueConverterBase                                 |                                         |                                         |
 
-### ValueConverters - Others -> X
+### ValueConverters - Others to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |

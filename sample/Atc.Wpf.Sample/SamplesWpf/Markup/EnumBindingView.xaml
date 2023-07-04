@@ -17,50 +17,51 @@
             Padding="10"
             Header="Features" />
 
-        <GroupBox Header="Usage" />
-        <StackPanel Margin="200,20">
-            <ComboBox
-                Margin="10"
-                ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}}}"
-                SelectedIndex="0" />
-            <ComboBox
-                Margin="10"
-                ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}, PleaseSelect}}"
-                SelectedIndex="0" />
-            <ComboBox
-                Margin="10"
-                ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}, None, False, False}}"
-                SelectedIndex="0" />
-            <ComboBox
-                Margin="10"
-                ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}, IncludeAll, False, True, Descending}}"
-                SelectedIndex="0" />
+        <GroupBox Header="Usage">
+            <StackPanel Margin="200,20">
+                <ComboBox
+                    Margin="10"
+                    ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}}}"
+                    SelectedIndex="0" />
+                <ComboBox
+                    Margin="10"
+                    ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}, PleaseSelect}}"
+                    SelectedIndex="0" />
+                <ComboBox
+                    Margin="10"
+                    ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}, None, False, False}}"
+                    SelectedIndex="0" />
+                <ComboBox
+                    Margin="10"
+                    ItemsSource="{Binding Source={atc:EnumToArrayBindingSource {x:Type atcClr:LeftRightType}, IncludeAll, False, True, Descending}}"
+                    SelectedIndex="0" />
 
-            <ComboBox
-                Margin="10"
-                DisplayMemberPath="Value"
-                ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}}}"
-                SelectedIndex="0"
-                SelectedValuePath="Key" />
-            <ComboBox
-                Margin="10"
-                DisplayMemberPath="Value"
-                ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}, PleaseSelect}}"
-                SelectedIndex="0"
-                SelectedValuePath="Key" />
-            <ComboBox
-                Margin="10"
-                DisplayMemberPath="Value"
-                ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}, None}}"
-                SelectedIndex="0"
-                SelectedValuePath="Key" />
-            <ComboBox
-                Margin="10"
-                DisplayMemberPath="Value"
-                ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}, IncludeAll, False, True, Descending}}"
-                SelectedIndex="0"
-                SelectedValuePath="Key" />
-        </StackPanel>
+                <ComboBox
+                    Margin="10"
+                    DisplayMemberPath="Value"
+                    ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}}}"
+                    SelectedIndex="0"
+                    SelectedValuePath="Key" />
+                <ComboBox
+                    Margin="10"
+                    DisplayMemberPath="Value"
+                    ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}, PleaseSelect}}"
+                    SelectedIndex="0"
+                    SelectedValuePath="Key" />
+                <ComboBox
+                    Margin="10"
+                    DisplayMemberPath="Value"
+                    ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}, None}}"
+                    SelectedIndex="0"
+                    SelectedValuePath="Key" />
+                <ComboBox
+                    Margin="10"
+                    DisplayMemberPath="Value"
+                    ItemsSource="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcClr:LeftRightType}, IncludeAll, False, True, Descending}}"
+                    SelectedIndex="0"
+                    SelectedValuePath="Key" />
+            </StackPanel>
+        </GroupBox>
     </atc:AutoGrid>
 
 </UserControl>
