@@ -5,7 +5,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: ObservableDictionary To Dictionary.
 /// </summary>
 [ValueConversion(typeof(ObservableDictionary<object, string>), typeof(Dictionary<string, string>))]
-public class ObservableDictionaryToDictionaryOfStringsValueConverter : IValueConverter
+public sealed class ObservableDictionaryToDictionaryOfStringsValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

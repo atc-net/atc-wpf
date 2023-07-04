@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Bool To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(bool), typeof(Visibility))]
-public class BoolToVisibilityVisibleValueConverter : IValueConverter
+public sealed class BoolToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

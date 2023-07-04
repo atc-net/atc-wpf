@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// ValueConverter: Label-Control HideAreas To bool.
 /// </summary>
 [ValueConversion(typeof(LabelControlHideAreasType), typeof(bool))]
-internal class LabelControlHideAreasToBoolValueConverter : IValueConverter
+internal sealed class LabelControlHideAreasToBoolValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

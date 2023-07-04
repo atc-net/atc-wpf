@@ -5,7 +5,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// MultiValueConverter: Label-Control With To string of columns: "[0],[1]".
 /// </summary>
 [ValueConversion(typeof(int), typeof(string))]
-internal class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConverter
+internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

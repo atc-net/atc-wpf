@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: String Null Or Empty To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(string), typeof(Visibility))]
-public class StringNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
+public sealed class StringNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

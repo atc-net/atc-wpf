@@ -8,9 +8,9 @@
       "Name": "Dark",
       "Values": {
         "AtcApps.Colors.ThemeForeground": "#FFFFFFFF",
-        "AtcApps.Colors.ThemeForeground20": "#51FFFFFF",
+        "AtcApps.Colors.ThemeForegroundLight": "#FFF0F0F0",
         "AtcApps.Colors.ThemeBackground": "#FF252525",
-        "AtcApps.Colors.ThemeBackground20": "#51252525",
+        "AtcApps.Colors.ThemeBackgroundLight": "#FF303030",
         "AtcApps.Colors.Gray1": "#FFF9F9F9",
         "AtcApps.Colors.Gray2": "#FF7F7F7F",
         "AtcApps.Colors.Gray3": "#FF9D9D9D",
@@ -83,9 +83,9 @@
       "Name": "Light",
       "Values": {
         "AtcApps.Colors.ThemeForeground": "#FF000000",
-        "AtcApps.Colors.ThemeForeground20": "#51000000",
+        "AtcApps.Colors.ThemeForegroundLight": "#FF0F0F0F",
         "AtcApps.Colors.ThemeBackground": "#FFFFFFFF",
-        "AtcApps.Colors.ThemeBackground20": "#51FFFFFF",
+        "AtcApps.Colors.ThemeBackgroundLight": "#FFF0F0F0",
         "AtcApps.Colors.Gray1": "#FF333333",
         "AtcApps.Colors.Gray2": "#FF7F7F7F",
         "AtcApps.Colors.Gray3": "#FF9D9D9D",

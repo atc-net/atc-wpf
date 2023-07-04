@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg;
 
-internal class TextStyle
+internal sealed class TextStyle
 {
     public TextStyle(Shape owner)
     {

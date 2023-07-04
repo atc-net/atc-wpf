@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.ValueConverters;
+namespace Atc.Wpf.ValueConverters;
 
 [MarkupExtensionReturnType(typeof(MarkupMultiValueConverterBase))]
 public abstract class MarkupMultiValueConverterBase : MarkupExtension, IValueConverter, IMultiValueConverter

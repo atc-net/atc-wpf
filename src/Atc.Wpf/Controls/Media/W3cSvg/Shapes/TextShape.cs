@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class TextShape : Shape
+internal sealed class TextShape : Shape
 {
     private static Fill? defaultFill;
     private static Stroke? defaultStroke;
@@ -16,7 +16,7 @@ internal class TextShape : Shape
         Y = SvgXmlUtil.AttrValue(node, "y", 0);
         Text = node.InnerText;
         GetTextStyle();
-        if (node.InnerXml.IndexOf("<", StringComparison.Ordinal) != -1)
+        if (node.InnerXml.IndexOf('<', StringComparison.Ordinal) != -1)
         {
             TextSpan = ParseTSpan(svg, node.InnerXml);
         }
@@ -57,9 +57,9 @@ internal class TextShape : Shape
         }
     }
 
-    internal class TSpan
+    internal sealed class TSpan
     {
-        public class Element : Shape
+        public sealed class Element : Shape
         {
             public override Transform? Transform => Parent?.Transform;
 
@@ -116,7 +116,7 @@ internal class TextShape : Shape
 
             if (tag.ElementType == TextShapeElementType.Text)
             {
-                Console.WriteLine($"{indent} '{tag.Text}'");
+                System.Console.WriteLine($"{indent} '{tag.Text}'");
             }
 
             if (tag.Children is null)
@@ -135,13 +135,13 @@ internal class TextShape : Shape
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
         private static Element? NextTag(Svg svg, Element parent, string text, ref int curPos)
         {
-            var start = text.IndexOf("<", curPos, StringComparison.Ordinal);
+            var start = text.IndexOf('<', curPos);
             if (start < 0)
             {
                 return null;
             }
 
-            var end = text.IndexOf(">", start + 1, StringComparison.Ordinal);
+            var end = text.IndexOf('>', start + 1);
             if (end < 0)
             {
                 throw new Exception("Start '<' with no end '>'");
@@ -150,7 +150,7 @@ internal class TextShape : Shape
             end++;
 
             var tagText = text.Substring(start, end - start);
-            if (tagText.IndexOf("<", 1, StringComparison.Ordinal) != -1)
+            if (tagText.IndexOf('<', 1) != -1)
             {
                 throw new Exception("Start '<' within tag 'tag'");
             }
@@ -172,7 +172,7 @@ internal class TextShape : Shape
                 Text = text.Substring(start, end - start),
             };
 
-            if (tag.Text.IndexOf("<", 1, StringComparison.Ordinal) != -1)
+            if (tag.Text.IndexOf('<', 1) != -1)
             {
                 throw new Exception("Start '<' within tag 'tag'");
             }

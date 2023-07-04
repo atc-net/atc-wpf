@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Layouts.Grid.Internal;
 
-internal class TokenizerHelper
+internal sealed class TokenizerHelper
 {
     private string str = string.Empty;
     private char quoteChar;

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class RectangleShape : Shape
+internal sealed class RectangleShape : Shape
 {
     private static Fill? defaultFill;
 

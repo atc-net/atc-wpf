@@ -454,7 +454,7 @@ public abstract class NiceDialogBase : ContentControl
                 return;
             }
 
-            await WaitForCloseAsync();
+            await WaitForCloseAsync().ConfigureAwait(true);
 
             ParentDialogWindow.Close();
         }

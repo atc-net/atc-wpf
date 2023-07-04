@@ -114,7 +114,7 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
 
         if (errorHandler is null)
         {
-            await DoExecute(val);
+            await DoExecute(val).ConfigureAwait(true);
             RaiseCanExecuteChanged();
             isExecuting = false;
         }
@@ -122,7 +122,7 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
         {
             try
             {
-                await DoExecute(val);
+                await DoExecute(val).ConfigureAwait(true);
                 RaiseCanExecuteChanged();
                 isExecuting = false;
             }
@@ -156,16 +156,16 @@ public class RelayCommandAsync<T> : IRelayCommandAsync<T>
         {
             if (typeof(T).IsValueType)
             {
-                await ExecuteAsync(default!);
+                await ExecuteAsync(default!).ConfigureAwait(true);
             }
             else
             {
-                await execute((T)val!);
+                await execute((T)val!).ConfigureAwait(true);
             }
         }
         else
         {
-            await execute((T)val);
+            await execute((T)val).ConfigureAwait(true);
         }
     }
 }

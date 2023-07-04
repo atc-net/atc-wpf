@@ -69,8 +69,6 @@ public abstract class IconElement : Control
     protected virtual void OnInheritsForegroundFromVisualParentPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
-        ArgumentNullException.ThrowIfNull(e);
-
         if (e.OldValue == e.NewValue)
         {
             return;

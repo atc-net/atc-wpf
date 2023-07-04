@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Bool To Visibility-Collapsed.
 /// </summary>
 [ValueConversion(typeof(bool), typeof(Visibility))]
-public class BoolToVisibilityCollapsedValueConverter : IValueConverter
+public sealed class BoolToVisibilityCollapsedValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class PolygonShape : Shape
+internal sealed class PolygonShape : Shape
 {
     private static Fill? defaultFill;
 

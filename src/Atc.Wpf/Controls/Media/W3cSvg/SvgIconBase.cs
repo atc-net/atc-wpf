@@ -152,9 +152,9 @@ public abstract class SvgIconBase : MarkupExtension
                 break;
             case "data":
                 var sourceData = svgSource.OriginalString.Replace(" ", string.Empty, StringComparison.Ordinal);
-                var nColon = sourceData.IndexOf(":", StringComparison.OrdinalIgnoreCase);
-                var nSemiColon = sourceData.IndexOf(";", StringComparison.OrdinalIgnoreCase);
-                var nComma = sourceData.IndexOf(",", StringComparison.OrdinalIgnoreCase);
+                var nColon = sourceData.IndexOf(':', StringComparison.OrdinalIgnoreCase);
+                var nSemiColon = sourceData.IndexOf(';', StringComparison.OrdinalIgnoreCase);
+                var nComma = sourceData.IndexOf(',', StringComparison.OrdinalIgnoreCase);
                 var sMimeType = sourceData.Substring(nColon + 1, nSemiColon - nColon - 1);
                 var sEncoding = sourceData.Substring(nSemiColon + 1, nComma - nSemiColon - 1);
                 if (string.Equals(sMimeType.Trim(), "image/svg+xml", StringComparison.OrdinalIgnoreCase)

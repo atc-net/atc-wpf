@@ -3,7 +3,7 @@ namespace Atc.Wpf.Theming.Controls.Windows.Internal;
 /// <summary>
 /// This settings class is the default way to save the placement of the window
 /// </summary>
-internal class WindowApplicationSettings : ApplicationSettingsBase, IWindowPlacementSettings
+internal sealed class WindowApplicationSettings : ApplicationSettingsBase, IWindowPlacementSettings
 {
     public WindowApplicationSettings(Window window)
         : base(window.GetType().FullName)

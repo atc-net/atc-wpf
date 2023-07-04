@@ -5,7 +5,7 @@ namespace Atc.Wpf.ValueConverters;
 /// MultiValueConverter: Multi Bool To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(List<bool>), typeof(Visibility))]
-public class MultiBoolToVisibilityVisibleValueConverter : IMultiValueConverter
+public sealed class MultiBoolToVisibilityVisibleValueConverter : IMultiValueConverter
 {
     /// <inheritdoc />
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

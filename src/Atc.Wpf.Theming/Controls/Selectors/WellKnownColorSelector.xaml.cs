@@ -113,7 +113,7 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         }
 
         Items = list
-            .OrderBy(x => x.DisplayName)
+            .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
             .ToList();
     }
 }

@@ -25,7 +25,7 @@ public class ToastNotificationManager : IToastNotificationManager
 
         if (!dispatcher.CheckAccess())
         {
-            dispatcher.BeginInvoke(new Action(() => Show(useDesktop, content, areaName, expirationTime, onClick, onClose)));
+            _ = dispatcher.BeginInvoke(new Action(() => Show(useDesktop, content, areaName, expirationTime, onClick, onClose)));
             return;
         }
 

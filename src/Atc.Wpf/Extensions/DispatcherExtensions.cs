@@ -50,7 +50,7 @@ public static class DispatcherExtensions
         }
         else
         {
-            dispatcher.BeginInvoke(action, priority);
+            _ = dispatcher.BeginInvoke(action, priority);
         }
     }
 }

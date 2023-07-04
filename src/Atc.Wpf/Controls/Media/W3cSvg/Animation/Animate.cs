@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Controls.Media.W3cSvg.Animation;
 
-internal class Animate : AnimationBase
+internal sealed class Animate : AnimationBase
 {
     public Animate(Svg svg, XmlNode node, Shape parent)
         : base(svg, node, parent)

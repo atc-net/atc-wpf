@@ -76,6 +76,11 @@ public class ResxExtension : ManagedMarkupExtension
     public string? DefaultValue { get; set; }
 
     /// <summary>
+    /// Gets or sets the prefix.
+    /// </summary>
+    public string? Prefix { get; set; }
+
+    /// <summary>
     /// Gets or sets the suffix.
     /// </summary>
     public string? Suffix { get; set; }
@@ -130,10 +135,17 @@ public class ResxExtension : ManagedMarkupExtension
                 result = resourceManager.GetObject(Key, CultureManager.UiCulture);
             }
 
-            if (result is not null &&
-                !string.IsNullOrEmpty(Suffix))
+            if (result is not null)
             {
-                result += Suffix;
+                if (!string.IsNullOrEmpty(Prefix))
+                {
+                    result = Prefix + result;
+                }
+
+                if (!string.IsNullOrEmpty(Suffix))
+                {
+                    result += Suffix;
+                }
             }
         }
         catch
@@ -157,7 +169,7 @@ public class ResxExtension : ManagedMarkupExtension
             if (targetType == typeof(string) ||
                 targetType == typeof(object))
             {
-                result = "#" + key + Suffix;
+                result = "#" + Prefix + key + Suffix;
             }
         }
         else

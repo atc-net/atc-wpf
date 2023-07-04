@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
-internal class LinearGradientColorPaintServer : GradientColorPaintServer
+internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
 {
     public LinearGradientColorPaintServer(PaintServerManager owner, XmlNode node)
         : base(owner, node)

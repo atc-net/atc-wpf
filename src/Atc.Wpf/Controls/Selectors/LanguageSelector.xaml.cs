@@ -36,7 +36,7 @@ public partial class LanguageSelector
 
         var defaultCulture = Items.FirstOrDefault(x => x.Culture.Lcid == Thread.CurrentThread.CurrentUICulture.LCID);
         selectedKey = defaultCulture?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
-                      Items.First().Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+                      Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

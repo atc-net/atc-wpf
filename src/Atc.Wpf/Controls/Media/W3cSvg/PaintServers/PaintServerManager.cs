@@ -1,9 +1,9 @@
 // ReSharper disable MemberCanBeMadeStatic.Global
 namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
-internal class PaintServerManager
+internal sealed class PaintServerManager
 {
-    private readonly Dictionary<string, PaintServer> paintServers = new Dictionary<string, PaintServer>(StringComparer.Ordinal);
+    private readonly Dictionary<string, PaintServer> paintServers = new(StringComparer.Ordinal);
 
     public void Create(Svg svg, XmlNode node)
     {
@@ -149,8 +149,8 @@ internal class PaintServerManager
 
     public static Color KnownColor(string value)
     {
-        return ColorUtil.KnownColors.ContainsKey(value)
-            ? ColorUtil.KnownColors[value]
+        return ColorUtil.KnownColors.TryGetValue(value, out var color)
+            ? color
             : Colors.Black;
     }
 
@@ -196,7 +196,7 @@ internal class PaintServerManager
             return int.Parse(value, GlobalizationConstants.EnglishCultureInfo);
         }
 
-        var nr = int.Parse(value.Substring(0, value.Length - 1), GlobalizationConstants.EnglishCultureInfo);
+        var nr = int.Parse(value.AsSpan(0, value.Length - 1), GlobalizationConstants.EnglishCultureInfo);
         if (nr < 0)
         {
             nr = 255 - nr;

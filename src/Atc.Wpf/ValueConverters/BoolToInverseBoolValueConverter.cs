@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Bool To Inverse Bool.
 /// </summary>
 [ValueConversion(typeof(bool), typeof(bool))]
-public class BoolToInverseBoolValueConverter : IValueConverter
+public sealed class BoolToInverseBoolValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

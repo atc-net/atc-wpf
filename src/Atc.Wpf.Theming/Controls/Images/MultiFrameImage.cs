@@ -70,7 +70,7 @@ public class MultiFrameImage : Image
                 break;
             case MultiFrameImageMode.NoScaleSmallerFrame:
                 var maxSize = System.Math.Min(RenderSize.Width, RenderSize.Height);
-                var maxFrame = frames.LastOrDefault(f => f.Width <= maxSize && f.Height <= maxSize) ?? frames.First();
+                var maxFrame = frames.LastOrDefault(f => f.Width <= maxSize && f.Height <= maxSize) ?? frames[0];
                 dc.DrawImage(maxFrame, new Rect((RenderSize.Width - maxFrame.Width) / 2, (RenderSize.Height - maxFrame.Height) / 2, maxFrame.Width, maxFrame.Height));
                 break;
             default:

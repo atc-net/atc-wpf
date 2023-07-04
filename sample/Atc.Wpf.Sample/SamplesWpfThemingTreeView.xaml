@@ -50,10 +50,10 @@
             IsExpanded="True" />
     </TreeViewItem>
     <TreeViewItem Header="Layout" IsExpanded="True">
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="GroupBox"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Layout.GroupBoxView" />
     </TreeViewItem>
     <TreeViewItem Header="Misc" IsExpanded="True">
         <TreeViewItem
@@ -72,10 +72,10 @@
             Header="ListView"
             IsExpanded="True"
             SamplePath="Misc.ListViewView" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="Menu"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.MenuView" />
         <TreeViewItem
             Header="ScrollBar"
             IsEnabled="False"

@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: DoubleLongFormatType To FormatString
 /// </summary>
 [ValueConversion(typeof(StandardNumericFormatType), typeof(string))]
-public class StandardNumericFormatTypeToFormatStringValueConverter : IValueConverter
+public sealed class StandardNumericFormatTypeToFormatStringValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

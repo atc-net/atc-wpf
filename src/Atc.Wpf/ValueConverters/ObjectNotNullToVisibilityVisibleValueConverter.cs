@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Object NotNull To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(object), typeof(Visibility))]
-public class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
+public sealed class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)

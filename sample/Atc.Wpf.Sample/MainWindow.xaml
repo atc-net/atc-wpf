@@ -85,6 +85,7 @@
                     x:Name="SampleViewer"
                     Grid.Row="1"
                     Grid.ColumnSpan="5"
+                    Foreground="{DynamicResource AtcApps.Brushes.Text}"
                     HeaderForeground="{DynamicResource AtcApps.Brushes.Accent}" />
             </atc:GridEx>
         </Grid>

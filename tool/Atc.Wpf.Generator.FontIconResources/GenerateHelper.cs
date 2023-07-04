@@ -9,65 +9,100 @@ public static class GenerateHelper
     public static IList<LogKeyValueItem> GenerateFontAwesomeBrand(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\fontawesome.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\fa-brands-400.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"FontAwesomeBrandType.cs")),
             "fa");
+    }
 
     public static IList<LogKeyValueItem> GenerateFontAwesomeRegular(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\fontawesome.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\fa-regular-400.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"FontAwesomeRegularType.cs")),
             "fa");
+    }
 
     public static IList<LogKeyValueItem> GenerateFontAwesomeSolid(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\fontawesome.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\fa-solid-900.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"FontAwesomeSolidType.cs")),
             "fa");
+    }
 
     public static IList<LogKeyValueItem> GenerateBootstrap(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\bootstrap.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\glyphicons-halflings-regular.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"FontBootstrapType.cs")),
             "glyphicon");
+    }
 
     public static IList<LogKeyValueItem> GenerateIco(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\icofont.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\icofont.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"IcoFontType.cs")),
             "icofont");
+    }
 
     public static IList<LogKeyValueItem> GenerateMaterialDesign(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\materialdesignicons.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\materialdesignicons-webfont.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"FontMaterialDesignType.cs")),
             "mdi");
+    }
 
     public static IList<LogKeyValueItem> GenerateWeather(
         DirectoryInfo resourcesFolder,
         DirectoryInfo outputEnumFolder)
-        => GoCssParseAndGenerate(
+    {
+        ArgumentNullException.ThrowIfNull(resourcesFolder);
+        ArgumentNullException.ThrowIfNull(outputEnumFolder);
+
+        return GoCssParseAndGenerate(
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"css\\weather-icons.css")),
             new FileInfo(Path.Combine(resourcesFolder.FullName, @"fonts\weathericons-regular-webfont.ttf")),
             new FileInfo(Path.Combine(outputEnumFolder.FullName, @"FontWeatherType.cs")),
             "wi");
+    }
 
     [SuppressMessage("Performance", "MA0065:Default ValueType.Equals or HashCode is used for struct equality", Justification = "OK.")]
     public static IList<LogKeyValueItem> GoCssParseAndGenerate(
@@ -118,7 +153,7 @@ public static class GenerateHelper
             text = reader.ReadToEnd();
         }
 
-        var allCompacts = GetCategorisedCharacterStringsWithoutWhiteSpaces(text);
+        var allCompacts = GetCategorizedCharacterStringsWithoutWhiteSpaces(text);
         var collectedKeyValues = GetAllFontClassesWithContentValue(allCompacts, typeface, prefix);
         if (collectedKeyValues.Count <= 0)
         {
@@ -196,7 +231,7 @@ public static class GenerateHelper
         string key)
         => key
             .Replace(":before", string.Empty, StringComparison.Ordinal)
-            .ToLowerInvariant();
+            .ToLower(GlobalizationConstants.EnglishCultureInfo);
 
     [SuppressMessage("Usage", "MA0011:IFormatProvider is missing", Justification = "OK.")]
     private static string CreateEnumName(
@@ -204,10 +239,13 @@ public static class GenerateHelper
         string key)
     {
         var prefix = removePrefix.Replace(".", string.Empty, StringComparison.Ordinal);
-        var s = key.Replace(".", string.Empty, StringComparison.Ordinal).Replace(":before", string.Empty, StringComparison.Ordinal).ToLowerInvariant();
+        var s = key
+            .Replace(".", string.Empty, StringComparison.Ordinal)
+            .Replace(":before", string.Empty, StringComparison.Ordinal)
+            .ToLower(GlobalizationConstants.EnglishCultureInfo);
         if (s.StartsWith(prefix, StringComparison.CurrentCulture))
         {
-            s = s.Substring(prefix.Length);
+            s = s[prefix.Length..];
         }
 
         var sb = new StringBuilder();
@@ -232,7 +270,7 @@ public static class GenerateHelper
         s = sb.ToString();
         return char.IsDigit(s, 0)
             ? "_" + s
-            : $"{char.ToUpper(s[0])}{s.Substring(1)}";
+            : $"{char.ToUpper(s[0], GlobalizationConstants.EnglishCultureInfo)}{s[1..]}";
     }
 
     private static string CreateEnumValue(
@@ -241,7 +279,7 @@ public static class GenerateHelper
             .Replace("\"", string.Empty, StringComparison.Ordinal)
             .Replace("\\", string.Empty, StringComparison.Ordinal);
 
-    private static List<CategorisedCharacterString> GetCategorisedCharacterStringsWithoutWhiteSpaces(
+    private static List<CategorisedCharacterString> GetCategorizedCharacterStringsWithoutWhiteSpaces(
         string text)
     {
         IEnumerable<CategorisedCharacterString> all = CSSParser.Parser.ParseCSS(text);
@@ -269,7 +307,7 @@ public static class GenerateHelper
                      in
                      from property
                          in properties
-                     where property.Value.Equals("content", StringComparison.CurrentCulture)
+                     where property.Value.Equals("content", StringComparison.OrdinalIgnoreCase)
                      select scopeList.Find(x =>
                          x.IndexInSource > property.IndexInSource &&
                          x.CharacterCategorisation == CharacterCategorisationOptions.Value &&
@@ -298,7 +336,7 @@ public static class GenerateHelper
         }
 
         return tmpKeyValueFontList
-            .OrderBy(x => x.Key)
+            .OrderBy(x => x.Key, StringComparer.Ordinal)
             .ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
     }
 }

@@ -28,7 +28,6 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Shapes;
 global using System.Windows.Threading;
 
-global using Atc.Wpf.Controls;
 global using Atc.Wpf.Theming.Automation.Peers;
 global using Atc.Wpf.Theming.Behaviors;
 global using Atc.Wpf.Theming.Behaviors.Internal;
@@ -43,6 +42,7 @@ global using Atc.Wpf.Theming.Internal;
 global using Atc.Wpf.Theming.Primitives;
 global using Atc.Wpf.Theming.Resources;
 global using Atc.Wpf.Translation;
+global using Atc.Wpf.ValueConverters;
 
 global using ControlzEx;
 global using ControlzEx.Native;

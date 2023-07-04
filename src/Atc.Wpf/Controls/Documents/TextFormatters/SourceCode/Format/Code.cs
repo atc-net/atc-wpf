@@ -1,3 +1,4 @@
+// ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 
 /// <summary>
@@ -44,7 +45,9 @@ public abstract class Code : Source
         regAll.Append(')');
 
         // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-        var caseInsensitive = CaseSensitive ? 0 : RegexOptions.IgnoreCase;
+        var caseInsensitive = CaseSensitive
+            ? RegexOptions.None
+            : RegexOptions.IgnoreCase;
         CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive);
         CodeParagraphGlobal = new List<Run>();
     }
@@ -106,9 +109,8 @@ public abstract class Code : Source
         {
             var reader = new StringReader(match.ToString());
             var sb = new StringBuilder();
-            string line;
             var firstLineRead = false;
-            while ((line = reader.ReadLine()!) is not null)
+            while (reader.ReadLine() is { } line)
             {
                 if (firstLineRead)
                 {

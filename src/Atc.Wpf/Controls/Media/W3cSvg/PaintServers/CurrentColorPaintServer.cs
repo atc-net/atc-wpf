@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
-internal class CurrentColorPaintServer : PaintServer
+internal sealed class CurrentColorPaintServer : PaintServer
 {
     public CurrentColorPaintServer(PaintServerManager owner)
         : base(owner)

@@ -8,7 +8,7 @@
     xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters">
 
-    <valueConverters:ThicknessBindingValueConverter x:Key="ThicknessBindingConverter" />
+    <atcValueConverters:ThicknessBindingValueConverter x:Key="ThicknessBindingConverter" />
     <valueConverters:CornerRadiusBindingValueConverter x:Key="CornerRadiusBindingConverter" />
 
     <Thickness x:Key="GroupBoxHeaderThemePadding">4</Thickness>

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg;
 
-internal class StringSplitter
+internal sealed class StringSplitter
 {
     private string val;
     private int curPos;

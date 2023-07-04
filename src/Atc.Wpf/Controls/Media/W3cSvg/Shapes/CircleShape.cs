@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
-internal class CircleShape : Shape
+internal sealed class CircleShape : Shape
 {
     public CircleShape(Svg svg, XmlNode node)
         : base(svg, node)

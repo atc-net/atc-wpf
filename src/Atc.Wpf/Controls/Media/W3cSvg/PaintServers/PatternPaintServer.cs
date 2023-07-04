@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
-internal class PatternPaintServer : PaintServer
+internal sealed class PatternPaintServer : PaintServer
 {
     private readonly IList<Shape>? elements;
     private readonly IDictionary<string, PaintServer>? patternPaintServers;

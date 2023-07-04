@@ -6,7 +6,7 @@ namespace Atc.Wpf.ValueConverters;
 [MarkupExtensionReturnType(typeof(ToLowerValueConverter))]
 [ValueConversion(typeof(object), typeof(object))]
 [ValueConversion(typeof(string), typeof(string))]
-public class ToLowerValueConverter : MarkupValueConverter
+public sealed class ToLowerValueConverter : MarkupValueConverterBase
 {
     /// <inheritdoc />
     protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

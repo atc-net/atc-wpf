@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 /// ValueConverter: Label-Control HideAreas To Visibility.
 /// </summary>
 [ValueConversion(typeof(LabelControlHideAreasType), typeof(Visibility))]
-internal class LabelControlHideAreasToVisibilityValueConverter : IValueConverter
+internal sealed class LabelControlHideAreasToVisibilityValueConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

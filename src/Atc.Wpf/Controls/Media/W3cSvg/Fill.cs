@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg;
 
-internal class Fill
+internal sealed class Fill
 {
     public Fill()
     {

@@ -8,7 +8,7 @@ public class CSharpFormatter : ITextFormatter
     /// <summary>
     /// The instance.
     /// </summary>
-    public static readonly CSharpFormatter Instance = new CSharpFormatter();
+    public static readonly CSharpFormatter Instance = new();
 
     /// <summary>
     /// Gets the text.
