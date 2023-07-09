@@ -7,7 +7,6 @@ global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Reflection;
-global using System.Resources;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
 global using System.Runtime.Serialization;
@@ -28,6 +27,8 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Shapes;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Resources;
 global using Atc.Wpf.Theming.Automation.Peers;
 global using Atc.Wpf.Theming.Behaviors;
 global using Atc.Wpf.Theming.Behaviors.Internal;
@@ -37,10 +38,8 @@ global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Controls.Windows.Internal;
 global using Atc.Wpf.Theming.Decorators.Internal;
 global using Atc.Wpf.Theming.Exceptions;
-global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Theming.Internal;
 global using Atc.Wpf.Theming.Primitives;
-global using Atc.Wpf.Theming.Resources;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 

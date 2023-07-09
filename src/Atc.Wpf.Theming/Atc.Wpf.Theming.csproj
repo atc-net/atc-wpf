@@ -45,11 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\ColorNames.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ColorNames.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\Miscellaneous.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -58,16 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\ColorNames.da-DK.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ColorNames.de-DE.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ColorNames.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ColorNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Miscellaneous.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>

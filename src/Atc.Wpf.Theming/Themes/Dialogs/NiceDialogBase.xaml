@@ -1,8 +1,8 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Controls.Dialogs"
-    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:theming="clr-namespace:Atc.Wpf.Theming"
@@ -19,7 +19,7 @@
         <Setter Property="MinHeight" Value="35" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button.Dialogs}" />
+        <Setter Property="atc:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button.Dialogs}" />
     </Style>
 
     <Style
@@ -29,7 +29,7 @@
         <Setter Property="MinHeight" Value="35" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button.Dialogs.Accent}" />
+        <Setter Property="atc:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button.Dialogs.Accent}" />
     </Style>
 
     <Style
@@ -39,7 +39,7 @@
         <Setter Property="MinHeight" Value="35" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button.Dialogs.AccentHighlight}" />
+        <Setter Property="atc:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.Button.Dialogs.AccentHighlight}" />
     </Style>
 
     <Storyboard x:Key="AtcApps.Storyboard.Dialogs.Show" po:Freeze="True">

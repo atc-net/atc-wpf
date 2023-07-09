@@ -1,6 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers">
 
     <ResourceDictionary.MergedDictionaries>
@@ -35,7 +36,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding helpers:ControlsHelper.CornerRadius}"
+                            CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                         <Grid
@@ -75,10 +76,10 @@
                                 Foreground="{TemplateBinding Foreground}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Style="{DynamicResource AtcApps.Styles.TextBlock.Watermark}"
-                                Text="{TemplateBinding helpers:TextBoxHelper.Watermark}"
-                                TextAlignment="{TemplateBinding helpers:TextBoxHelper.WatermarkAlignment}"
-                                TextTrimming="{TemplateBinding helpers:TextBoxHelper.WatermarkTrimming}"
-                                TextWrapping="{TemplateBinding helpers:TextBoxHelper.WatermarkWrapping}"
+                                Text="{TemplateBinding atc:TextBoxHelper.Watermark}"
+                                TextAlignment="{TemplateBinding atc:TextBoxHelper.WatermarkAlignment}"
+                                TextTrimming="{TemplateBinding atc:TextBoxHelper.WatermarkTrimming}"
+                                TextWrapping="{TemplateBinding atc:TextBoxHelper.WatermarkWrapping}"
                                 Visibility="Collapsed" />
 
                             <Button
@@ -86,20 +87,20 @@
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="1"
-                                Width="{TemplateBinding helpers:TextBoxHelper.ButtonWidth}"
+                                Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
                                 MinHeight="22"
                                 Margin="0,-0.5,-0.5,0"
-                                Command="{TemplateBinding helpers:TextBoxHelper.ButtonCommand}"
-                                CommandParameter="{TemplateBinding helpers:TextBoxHelper.ButtonCommandParameter}"
-                                CommandTarget="{TemplateBinding helpers:TextBoxHelper.ButtonCommandTarget}"
-                                ContentTemplate="{TemplateBinding helpers:TextBoxHelper.ButtonContentTemplate}"
+                                Command="{TemplateBinding atc:TextBoxHelper.ButtonCommand}"
+                                CommandParameter="{TemplateBinding atc:TextBoxHelper.ButtonCommandParameter}"
+                                CommandTarget="{TemplateBinding atc:TextBoxHelper.ButtonCommandTarget}"
+                                ContentTemplate="{TemplateBinding atc:TextBoxHelper.ButtonContentTemplate}"
                                 Focusable="False"
-                                FontFamily="{TemplateBinding helpers:TextBoxHelper.ButtonFontFamily}"
-                                FontSize="{TemplateBinding helpers:TextBoxHelper.ButtonFontSize}"
+                                FontFamily="{TemplateBinding atc:TextBoxHelper.ButtonFontFamily}"
+                                FontSize="{TemplateBinding atc:TextBoxHelper.ButtonFontSize}"
                                 IsTabStop="False"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Style="{DynamicResource AtcApps.Styles.Button.Chromeless}"
-                                Template="{TemplateBinding helpers:TextBoxHelper.ButtonTemplate}"
+                                Template="{TemplateBinding atc:TextBoxHelper.ButtonTemplate}"
                                 Visibility="Visible">
                                 <Path
                                     x:Name="PART_ClearTextButtonIcon"
@@ -120,24 +121,24 @@
                             Background="{DynamicResource AtcApps.Brushes.Control.Disabled}"
                             BorderBrush="{DynamicResource AtcApps.Brushes.Control.Disabled}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding helpers:ControlsHelper.CornerRadius}"
+                            CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                             IsHitTestVisible="False"
                             Opacity="0"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
+                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="helpers:TextBoxHelper.ClearTextButton" Value="True">
+                        <Trigger Property="atc:TextBoxHelper.ClearTextButton" Value="True">
                             <Setter TargetName="PART_ClearTextButton" Property="Command" Value="{x:Static helpers:AtcAppsCommands.ClearControlCommand}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="helpers:TextBoxHelper.ClearTextButton" Value="False" />
-                                <Condition Property="helpers:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
+                                <Condition Property="atc:TextBoxHelper.ClearTextButton" Value="False" />
+                                <Condition Property="atc:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_ClearTextButton" Property="Visibility" Value="Collapsed" />
                         </MultiTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(helpers:TextBoxHelper.ButtonsAlignment)}" Value="Left">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(atc:TextBoxHelper.ButtonsAlignment)}" Value="Left">
                             <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
                             <Setter TargetName="PART_ClearTextButton" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1" />
@@ -151,26 +152,26 @@
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="helpers:TextBoxHelper.HasValidationError" Value="False" />
+                                <Condition Property="atc:TextBoxHelper.HasValidationError" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.MouseOverBorderBrush)}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsFocused" Value="True" />
-                                <Condition Property="helpers:TextBoxHelper.HasValidationError" Value="False" />
+                                <Condition Property="atc:TextBoxHelper.HasValidationError" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.FocusBorderBrush)}" />
                         </MultiTrigger>
-                        <Trigger Property="helpers:TextBoxHelper.HasValidationError" Value="True">
+                        <Trigger Property="atc:TextBoxHelper.HasValidationError" Value="True">
                             <Setter TargetName="PART_Border" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Control.Validation}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="helpers:TextBoxHelper.HasValidationError" Value="True" />
-                                <Condition Property="helpers:TextBoxHelper.ShowToolTip" Value="True" />
+                                <Condition Property="atc:TextBoxHelper.HasValidationError" Value="True" />
+                                <Condition Property="atc:TextBoxHelper.ShowToolTip" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_InnerGrid" Property="ToolTip" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TextBoxHelper.ToolTipText)}" />
+                            <Setter TargetName="PART_InnerGrid" Property="ToolTip" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TextBoxHelper.ToolTipText)}" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
@@ -183,7 +184,7 @@
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="helpers:TextBoxHelper.HasText" Value="False" />
+                                <Condition Property="atc:TextBoxHelper.HasText" Value="False" />
                                 <Condition Property="IsFocused" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
@@ -193,7 +194,7 @@
                                 <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.ExitGotFocus}" />
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
-                        <Trigger Property="helpers:TextBoxHelper.HasText" Value="True">
+                        <Trigger Property="atc:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.EnterHasText}" />
                             </Trigger.EnterActions>
@@ -206,16 +207,16 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource AtcApps.Templates.ValidationError}" />
-        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TextBox}" />
-        <Setter Property="helpers:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="helpers:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonContent" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.Text}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
-        <Setter Property="helpers:TextBoxHelper.ButtonWidth" Value="22" />
-        <Setter Property="helpers:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}" />
+        <Setter Property="atc:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TextBox}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.Focus}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border.MouseOver}" />
+        <Setter Property="atc:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="atc:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="atc:TextBoxHelper.ButtonContent" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
+        <Setter Property="atc:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.Text}" />
+        <Setter Property="atc:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
+        <Setter Property="atc:TextBoxHelper.ButtonWidth" Value="22" />
+        <Setter Property="atc:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}" />
     </Style>
 
 </ResourceDictionary>

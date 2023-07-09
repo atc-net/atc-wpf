@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Helpers;
 
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class StaticResourceHelper
 {
     public static readonly DependencyProperty PropertyProperty =
@@ -17,39 +18,22 @@ public static class StaticResourceHelper
             new PropertyMetadata(OnResourceKeyChanged));
 
     public static DependencyProperty GetProperty(
-        FrameworkElement
-            element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return (DependencyProperty)element.GetValue(PropertyProperty);
-    }
+        FrameworkElement element)
+        => (DependencyProperty)element.GetValue(PropertyProperty);
 
     public static void SetProperty(
         FrameworkElement element,
         DependencyProperty value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        element.SetValue(PropertyProperty, value);
-    }
+        => element.SetValue(PropertyProperty, value);
 
     public static object GetResourceKey(
         FrameworkElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        return element.GetValue(ResourceKeyProperty);
-    }
+        => element.GetValue(ResourceKeyProperty);
 
     public static void SetResourceKey(
         FrameworkElement element,
         object value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-
-        element.SetValue(ResourceKeyProperty, value);
-    }
+        => element.SetValue(ResourceKeyProperty, value);
 
     private static void OnPropertyChanged(
         DependencyObject d,

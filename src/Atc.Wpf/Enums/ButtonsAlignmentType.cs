@@ -1,5 +1,5 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.Theming;
+namespace Atc.Wpf;
 
 public enum ButtonsAlignmentType
 {

@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:controls="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:controlzEx="urn:controlzex"
     xmlns:images="clr-namespace:Atc.Wpf.Theming.Controls.Images"
     xmlns:primitives="clr-namespace:Atc.Wpf.Theming.Primitives"
-    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
+    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBlock.xaml" />
@@ -28,17 +28,17 @@
             <AdornerDecorator>
                 <Grid UseLayoutRounding="False">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Left}}" />
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Left}}" />
                         <!--  Icon  -->
                         <ColumnDefinition Width="Auto" />
                         <!--  Left window commands, title, right window commands  -->
                         <ColumnDefinition Width="*" />
                         <!--  Min, Max, Close buttons  -->
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Right}}" />
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Right}}" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}" />
+                        <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -143,7 +143,7 @@
                         UseLayoutRounding="True">
                         <atc:ContentPresenterEx
                             x:Name="PART_ContentPresenter"
-                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}"
+                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}"
                             UseLayoutRounding="False" />
                     </windows:NiceContentControl>
 
@@ -254,17 +254,17 @@
             <AdornerDecorator>
                 <Grid UseLayoutRounding="False">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Left}}" />
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Left}}" />
                         <!--  Icon  -->
                         <ColumnDefinition Width="Auto" />
                         <!--  Left window commands, title, right window commands  -->
                         <ColumnDefinition Width="*" />
                         <!--  Min, Max, Close buttons  -->
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Right}}" />
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Right}}" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}" />
+                        <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -375,7 +375,7 @@
                         UseLayoutRounding="True">
                         <atc:ContentPresenterEx
                             x:Name="PART_ContentPresenter"
-                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static controls:ThicknessSideType.Top}}"
+                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}"
                             UseLayoutRounding="False" />
                     </windows:NiceContentControl>
 

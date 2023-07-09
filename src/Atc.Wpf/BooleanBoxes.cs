@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming
+namespace Atc.Wpf
 {
     /// <summary>
     /// Helps boxing Boolean values.

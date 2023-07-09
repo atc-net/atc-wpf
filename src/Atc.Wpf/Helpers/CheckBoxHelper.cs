@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Helpers;
+namespace Atc.Wpf.Helpers;
 
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class CheckBoxHelper

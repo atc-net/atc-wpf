@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Helpers;
+namespace Atc.Wpf.Helpers;
 
 /// <summary>
 /// A Helper class for the Color-Struct.
@@ -49,10 +49,7 @@ public class ColorHelper
                 try
                 {
                     var color = (Color)(propertyInfo.GetValue(obj: null) ?? default(Color));
-                    if (!ColorNamesDictionary.ContainsKey(color))
-                    {
-                        ColorNamesDictionary.Add(color, propertyInfo.Name);
-                    }
+                    ColorNamesDictionary.TryAdd(color, propertyInfo.Name);
                 }
                 catch (Exception)
                 {

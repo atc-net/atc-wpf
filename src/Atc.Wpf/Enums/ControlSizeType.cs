@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Controls;
+namespace Atc.Wpf;
 
 /// <summary>
 /// This enum is used for controlling how the control is stretched to fill.

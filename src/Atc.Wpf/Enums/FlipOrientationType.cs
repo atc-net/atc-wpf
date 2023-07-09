@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Controls;
+namespace Atc.Wpf;
 
 /// <summary>
 /// Defines the different flip orientations that a icon can have.

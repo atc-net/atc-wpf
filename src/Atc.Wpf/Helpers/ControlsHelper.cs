@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Helpers;
+namespace Atc.Wpf.Helpers;
 
 /// <summary>
 /// A helper class that provides various controls.

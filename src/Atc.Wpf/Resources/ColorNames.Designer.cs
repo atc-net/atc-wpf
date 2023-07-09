@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Atc.Wpf.Theming.Resources {
+namespace Atc.Wpf.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Atc.Wpf.Theming.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Atc.Wpf.Theming.Resources.ColorNames", typeof(ColorNames).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Atc.Wpf.Resources.ColorNames", typeof(ColorNames).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

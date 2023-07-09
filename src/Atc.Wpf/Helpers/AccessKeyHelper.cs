@@ -1,8 +1,9 @@
-namespace Atc.Wpf.Theming.Helpers;
+namespace Atc.Wpf.Helpers;
 
 /// <summary>
 /// Class used to manage generic scoping of access keys.
 /// </summary>
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class AccessKeyHelper
 {
     /// <summary>
@@ -24,11 +25,7 @@ public static class AccessKeyHelper
     public static void SetIsAccessKeyScope(
         DependencyObject d,
         bool value)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        d.SetValue(IsAccessKeyScopeProperty, BooleanBoxes.Box(value));
-    }
+        => d.SetValue(IsAccessKeyScopeProperty, BooleanBoxes.Box(value));
 
     /// <summary>
     /// Gets the value of the IsAccessKeyScope attached property for the specified object
@@ -37,11 +34,7 @@ public static class AccessKeyHelper
     /// <returns>The value of IsAccessKeyScope attached property for the specified object</returns>
     public static bool GetIsAccessKeyScope(
         DependencyObject d)
-    {
-        ArgumentNullException.ThrowIfNull(d);
-
-        return (bool)d.GetValue(IsAccessKeyScopeProperty);
-    }
+        => (bool)d.GetValue(IsAccessKeyScopeProperty);
 
     private static void HandleIsAccessKeyScopePropertyChanged(
         DependencyObject d,

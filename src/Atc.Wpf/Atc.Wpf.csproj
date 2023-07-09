@@ -50,4 +50,27 @@
     <PackageReference Include="Atc" Version="2.0.326" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\ColorNames.Designer.cs">
+      <DependentUpon>ColorNames.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ColorNames.da-DK.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ColorNames.de-DE.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ColorNames.resx">
+      <LastGenOutput>ColorNames.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

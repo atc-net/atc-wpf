@@ -1,40 +1,40 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
-    xmlns:helper="clr-namespace:Atc.Wpf.Theming.Helpers"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:controls="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
 
     <ControlTemplate x:Key="AtcApps.Templates.Button.WindowCommands" TargetType="{x:Type Button}">
         <Grid Background="{TemplateBinding Background}">
-            <atc:ContentControlEx
+            <controls:ContentControlEx
                 x:Name="PART_ContentControlEx"
                 Padding="{TemplateBinding Padding}"
                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                 Content="{TemplateBinding Content}"
-                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helper:ControlsHelper.ContentCharacterCasing)}"
+                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.ContentCharacterCasing)}"
                 ContentStringFormat="{TemplateBinding ContentStringFormat}"
                 ContentTemplate="{TemplateBinding ContentTemplate}"
                 ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                RecognizesAccessKey="{TemplateBinding helper:ControlsHelper.RecognizesAccessKey}"
+                RecognizesAccessKey="{TemplateBinding atc:ControlsHelper.RecognizesAccessKey}"
                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="AtcApps.Templates.ToggleButton.WindowCommands" TargetType="{x:Type ToggleButton}">
         <Grid Background="{TemplateBinding Background}">
-            <atc:ContentControlEx
+            <controls:ContentControlEx
                 x:Name="PART_ContentControlEx"
                 Padding="{TemplateBinding Padding}"
                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                 Content="{TemplateBinding Content}"
-                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helper:ControlsHelper.ContentCharacterCasing)}"
+                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.ContentCharacterCasing)}"
                 ContentStringFormat="{TemplateBinding ContentStringFormat}"
                 ContentTemplate="{TemplateBinding ContentTemplate}"
                 ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                RecognizesAccessKey="{TemplateBinding helper:ControlsHelper.RecognizesAccessKey}"
+                RecognizesAccessKey="{TemplateBinding atc:ControlsHelper.RecognizesAccessKey}"
                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
         </Grid>
     </ControlTemplate>
@@ -257,7 +257,7 @@
         <Setter Property="LightTemplate" Value="{StaticResource AtcApps.Templates.WindowCommands}" />
         <Setter Property="Template" Value="{StaticResource AtcApps.Templates.WindowCommands}" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="helper:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.WindowCommands}" />
+        <Setter Property="atc:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.WindowCommands}" />
     </Style>
 
     <!--  ReSharper disable Xaml.PossibleNullReferenceException  -->
