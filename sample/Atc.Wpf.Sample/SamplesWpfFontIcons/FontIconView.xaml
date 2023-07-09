@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     d:DesignHeight="600"
     d:DesignWidth="1200"
     mc:Ignorable="d">
@@ -52,7 +53,7 @@
                     <atc:LabelComboBox
                         x:Name="FlipOrientationComboBox"
                         HideAreas="All"
-                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type atc:FlipOrientationType}, None, True, True, Ascending, KeyAsString=True}}"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type wpf:FlipOrientationType}, None, True, True, Ascending, KeyAsString=True}}"
                         LabelText="Flip orientation"
                         SelectedKey="Normal" />
                 </atc:UniformSpacingPanel>
