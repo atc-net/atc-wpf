@@ -100,14 +100,11 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                <Grid
+                                <atc:GridEx
                                     Margin="{Binding Converter={StaticResource TreeViewMarginConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                     VerticalAlignment="Stretch"
-                                    Background="Transparent">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                                    Background="Transparent"
+                                    Columns="Auto,*">
                                     <ToggleButton
                                         x:Name="Expander"
                                         Grid.Column="0"
@@ -121,7 +118,7 @@
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         ContentSource="Header"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                </Grid>
+                                </atc:GridEx>
                             </decorators:ClipBorder>
                         </Grid>
 
