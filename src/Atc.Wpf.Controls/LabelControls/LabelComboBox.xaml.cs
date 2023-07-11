@@ -42,12 +42,27 @@ public partial class LabelComboBox : ILabelComboBox
         InitializeComponent();
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    public override bool IsValid()
+    {
+        ValidateValue(default, this, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private static void OnSelectedKeyLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelComboBox)d;
+
+        ValidateValue(e, control, raiseEvents: true);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void ValidateValue(
+        DependencyPropertyChangedEventArgs e,
+        LabelComboBox control,
+        bool raiseEvents)
+    {
         var newValue = e.NewValue?.ToString();
         var oldValue = e.OldValue?.ToString();
 
@@ -61,17 +76,20 @@ public partial class LabelComboBox : ILabelComboBox
             string.IsNullOrWhiteSpace(control.SelectedKey) &&
             e.OldValue is not null)
         {
-            control.ValidationText = "Field is required";
+            control.ValidationText = "Field is required"; // TODO: Translate
             return;
         }
 
         control.ValidationText = string.Empty;
 
-        control.SelectedKeyChanged?.Invoke(
-            control,
-            new ChangedStringEventArgs(
-                control.Identifier,
-                oldValue,
-                newValue));
+        if (raiseEvents)
+        {
+            control.SelectedKeyChanged?.Invoke(
+                control,
+                new ChangedStringEventArgs(
+                    control.Identifier,
+                    oldValue,
+                    newValue));
+        }
     }
 }

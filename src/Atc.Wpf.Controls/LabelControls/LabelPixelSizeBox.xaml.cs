@@ -74,6 +74,11 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
         InitializeComponent();
     }
 
+    public override bool IsValid()
+    {
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private void OnValueWidthChanged(
         object sender,
         RoutedPropertyChangedEventArgs<int> e)
@@ -95,12 +100,23 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
     {
         var control = (LabelPixelSizeBox)d;
 
+        if (e.NewValue is not int newValue)
+        {
+            control.ValidationText = "Value should be a integer"; // TODO: Translate
+            return;
+        }
+
+        if (e.OldValue is not int oldValue)
+        {
+            return;
+        }
+
         control.ValueWidthLostFocus?.Invoke(
             control,
             new ChangedIntegerEventArgs(
                 ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
+                oldValue,
+                newValue));
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -110,11 +126,22 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
     {
         var control = (LabelPixelSizeBox)d;
 
+        if (e.NewValue is not int newValue)
+        {
+            control.ValidationText = "Value should be a integer"; // TODO: Translate
+            return;
+        }
+
+        if (e.OldValue is not int oldValue)
+        {
+            return;
+        }
+
         control.ValueHeightLostFocus?.Invoke(
             control,
             new ChangedIntegerEventArgs(
                 ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
+                oldValue,
+                newValue));
     }
 }

@@ -11,4 +11,6 @@ public interface ILabelControl : ILabelControlBase
     SolidColorBrush ValidationColor { get; set; }
 
     string ValidationText { get; set; }
+
+    bool IsValid();
 }

@@ -4,6 +4,10 @@ public interface ILabelControlBase
 {
     string Identifier { get; }
 
+    double Width { get; set; }
+
+    Brush Background { get; set; }
+
     LabelControlHideAreasType HideAreas { get; set; }
 
     Orientation Orientation { get; set; }

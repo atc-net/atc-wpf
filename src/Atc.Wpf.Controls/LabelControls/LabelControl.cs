@@ -61,4 +61,6 @@ public class LabelControl : LabelControlBase, ILabelControl
         get => (string)GetValue(ValidationTextProperty);
         set => SetValue(ValidationTextProperty, value);
     }
+
+    public virtual bool IsValid() => true;
 }
