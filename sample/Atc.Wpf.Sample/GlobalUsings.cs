@@ -16,6 +16,9 @@ global using System.Windows.Threading;
 
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Command;
+global using Atc.Wpf.Controls.Dialogs;
+global using Atc.Wpf.Controls.LabelControls;
+global using Atc.Wpf.Controls.LabelControls.Abstractions;
 global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Controls.Notifications;
 global using Atc.Wpf.Diagnostics;

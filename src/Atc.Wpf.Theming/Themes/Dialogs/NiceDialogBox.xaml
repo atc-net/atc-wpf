@@ -1,0 +1,24 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/NiceWindowButtons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="AtcApps.Styles.NiceDialogBox" TargetType="{x:Type dialogs:NiceDialogBox}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Dialog.Background}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Dialog.Foreground}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="KeyboardNavigation.ControlTabNavigation" Value="Cycle" />
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="Padding" Value="0,10,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+</ResourceDictionary>

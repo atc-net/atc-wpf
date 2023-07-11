@@ -247,25 +247,6 @@ public class NiceWindow : WindowChromeWindow
         set => SetValue(IsCloseButtonEnabledProperty, BooleanBoxes.Box(value));
     }
 
-    internal static readonly DependencyPropertyKey IsCloseButtonEnabledWithDialogPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsCloseButtonEnabledWithDialog),
-        typeof(bool),
-        typeof(NiceWindow),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public static readonly DependencyProperty IsCloseButtonEnabledWithDialogProperty = IsCloseButtonEnabledWithDialogPropertyKey.DependencyProperty;
-
-    /// <summary>
-    /// Gets whether if the close button is enabled if a dialog is open.
-    /// It's true if <see cref="ShowDialogsOverTitleBar"/> or the <see cref="DialogSettings.OwnerCanCloseWithDialog"/> is set to true
-    /// otherwise false.
-    /// </summary>
-    public bool IsCloseButtonEnabledWithDialog
-    {
-        get => (bool)GetValue(IsCloseButtonEnabledWithDialogProperty);
-        protected set => SetValue(IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(value));
-    }
-
     public static readonly DependencyProperty ShowSystemMenuProperty = DependencyProperty.Register(
         nameof(ShowSystemMenu),
         typeof(bool),
@@ -363,8 +344,7 @@ public class NiceWindow : WindowChromeWindow
         var window = (NiceWindow)dependencyObject;
 
         window.SizeChanged -= window.OnSizeChanged;
-        if (e.NewValue is HorizontalAlignment horizontalAlignment &&
-            horizontalAlignment == HorizontalAlignment.Center &&
+        if (e.NewValue is HorizontalAlignment.Center &&
             window.titleBar is not null)
         {
             window.SizeChanged += window.OnSizeChanged;
@@ -558,21 +538,6 @@ public class NiceWindow : WindowChromeWindow
     {
         get => (bool)GetValue(WindowTransitionsEnabledProperty);
         set => SetValue(WindowTransitionsEnabledProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty NiceDialogOptionsProperty = DependencyProperty.Register(
-        nameof(NiceDialogOptions),
-        typeof(DialogSettings),
-        typeof(NiceWindow),
-        new PropertyMetadata(default(DialogSettings)));
-
-    /// <summary>
-    /// Gets or sets the default settings for the dialogs.
-    /// </summary>
-    public DialogSettings? NiceDialogOptions
-    {
-        get => (DialogSettings?)GetValue(NiceDialogOptionsProperty);
-        set => SetValue(NiceDialogOptionsProperty, value);
     }
 
     public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.Register(
@@ -884,10 +849,10 @@ public class NiceWindow : WindowChromeWindow
             return false;
         }
 
-        return (sb.Duration.HasTimeSpan && sb.Duration.TimeSpan.Ticks > 0)
+        return sb.Duration is { HasTimeSpan: true, TimeSpan.Ticks: > 0 }
                || sb.AccelerationRatio > 0
                || sb.DecelerationRatio > 0
-               || (animation.Duration.HasTimeSpan && animation.Duration.TimeSpan.Ticks > 0)
+               || animation.Duration is { HasTimeSpan: true, TimeSpan.Ticks: > 0 }
                || animation.AccelerationRatio > 0
                || animation.DecelerationRatio > 0;
     }
@@ -1101,8 +1066,6 @@ public class NiceWindow : WindowChromeWindow
 
     public NiceWindow()
     {
-        SetCurrentValue(NiceDialogOptionsProperty, new DialogSettings());
-
         InitializeSettingsBehavior();
 
         DataContextChanged += OnDataContextChanged;
@@ -1128,13 +1091,6 @@ public class NiceWindow : WindowChromeWindow
         CancelEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
-
-        if (!e.Cancel )
-        {
-            //// Don't close window if there is a dialog still open
-            //// TODO: var dialog = await this.GetCurrentDialogAsync<NiceDialogBase>();
-            ////e.Cancel = dialog is not null && (ShowDialogsOverTitleBar || !dialog.DialogSettings.OwnerCanCloseWithDialog);
-        }
 
         base.OnClosing(e);
     }
@@ -1511,7 +1467,7 @@ public class NiceWindow : WindowChromeWindow
 
         var mousePos = e.GetPosition(window);
         if ((mousePos.Y <= window.TitleBarHeight && window.TitleBarHeight > 0) ||
-            (window.UseNoneWindowStyle && window.TitleBarHeight <= 0))
+            window is { UseNoneWindowStyle: true, TitleBarHeight: <= 0 })
         {
 #pragma warning disable 618
             ControlzEx.SystemCommands.ShowSystemMenuPhysicalCoordinates(window, window.PointToScreen(mousePos));
