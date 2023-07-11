@@ -6,7 +6,7 @@ public interface ILabelControlsFormColumn
 
     int ControlWidth { get; set; }
 
-    IReadOnlyList<ILabelControlBase> LabelControls { get; }
+    IList<ILabelControlBase> LabelControls { get; }
 
     int CalculateHeight();
 

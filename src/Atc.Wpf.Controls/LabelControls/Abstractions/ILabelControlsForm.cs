@@ -8,7 +8,7 @@ public interface ILabelControlsForm
 
     ICollection<ILabelControlsFormColumn>? Columns { get; set; }
 
-    void AddColumn(IReadOnlyList<ILabelControlBase> labelControls);
+    void AddColumn(IList<ILabelControlBase> labelControls);
 
     void AddColumn(ILabelControlsFormColumn labelControlsFormColumn);
 

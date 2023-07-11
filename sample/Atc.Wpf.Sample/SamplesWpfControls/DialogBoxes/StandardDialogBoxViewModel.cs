@@ -17,6 +17,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public static IRelayCommand ShowInputForm3ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm3ColumnsDialogBoxCommandHandler);
 
+    public static IRelayCommand ShowInputFormPersonWithDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithDataDialogBoxCommandHandler);
+
+    public static IRelayCommand ShowInputFormPersonWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithoutDataDialogBoxCommandHandler);
+
     private static void ShowInfoDialogBoxCommandHandler()
     {
         var dialogBox = new InfoDialogBox(
@@ -105,6 +109,54 @@ public class StandardDialogBoxViewModel : ViewModelBase
         labelControlsForm.AddColumn(CreateLabelControlsColumn1());
         labelControlsForm.AddColumn(CreateLabelControlsColumn2());
         labelControlsForm.AddColumn(CreateLabelControlsColumn3());
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        var dialogResult = dialogBox.ShowDialog();
+    }
+
+    private static void ShowInputFormPersonWithDataDialogBoxCommandHandler()
+    {
+        var person = new Person(
+            FirstName: "John",
+            LastName: "Doe",
+            Age: 33,
+            Address: new Address(
+                StreetName: "My street",
+                CityName: "My city",
+                PostalCode: "1234",
+                Country: new CultureInfo("da-DK")));
+
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        var dialogResult = dialogBox.ShowDialog();
+    }
+
+    private static void ShowInputFormPersonWithoutDataDialogBoxCommandHandler()
+    {
+        var person = new Person(
+            FirstName: string.Empty,
+            LastName: string.Empty,
+            Age: 0,
+            Address: new Address(
+                StreetName: string.Empty,
+                CityName: string.Empty,
+                PostalCode: string.Empty,
+                Country: new CultureInfo("en-US")));
+
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
 
         var dialogBox = new InputFormDialogBox(
             Application.Current.MainWindow!,

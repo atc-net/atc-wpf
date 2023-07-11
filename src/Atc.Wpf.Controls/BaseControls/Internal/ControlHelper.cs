@@ -8,7 +8,7 @@ internal static class ControlHelper
     {
         if (!string.IsNullOrEmpty(frameworkElement.Name))
         {
-            return frameworkElement.Name;
+            return frameworkElement.Name.PascalCase();
         }
 
         if (frameworkElement.Tag is not null)

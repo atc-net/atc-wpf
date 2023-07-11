@@ -42,7 +42,7 @@ public class LabelControl : LabelControlBase, ILabelControl
         nameof(ValidationColor),
         typeof(SolidColorBrush),
         typeof(LabelControl),
-        new PropertyMetadata(Application.Current.Resources["AtcApps.Brushes.Control.Validation"] as SolidColorBrush));
+        new PropertyMetadata(Application.Current?.Resources["AtcApps.Brushes.Control.Validation"] as SolidColorBrush ?? new SolidColorBrush(Colors.Red)));
 
     public SolidColorBrush ValidationColor
     {

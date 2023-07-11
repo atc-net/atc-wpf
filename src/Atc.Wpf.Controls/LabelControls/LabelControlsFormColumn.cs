@@ -6,7 +6,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
     private const int LabelControlsHeightForHorizontal = 77;
 
     public LabelControlsFormColumn(
-        IReadOnlyList<ILabelControlBase> labelControls)
+        IList<ILabelControlBase> labelControls)
     {
         ArgumentNullException.ThrowIfNull(labelControls);
 
@@ -17,7 +17,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
 
     public int ControlWidth { get; set; } = 300;
 
-    public IReadOnlyList<ILabelControlBase> LabelControls { get; }
+    public IList<ILabelControlBase> LabelControls { get; }
 
     public int CalculateHeight()
         => ControlOrientation == Orientation.Vertical

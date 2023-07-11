@@ -9,7 +9,7 @@ public class LabelControlsForm : ILabelControlsForm
     public ICollection<ILabelControlsFormColumn>? Columns { get; set; }
 
     public void AddColumn(
-        IReadOnlyList<ILabelControlBase> labelControls)
+        IList<ILabelControlBase> labelControls)
     {
         ArgumentNullException.ThrowIfNull(labelControls);
 
