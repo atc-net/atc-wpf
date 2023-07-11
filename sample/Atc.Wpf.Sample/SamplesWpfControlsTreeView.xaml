@@ -9,6 +9,12 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="DialogBoxes" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="Standard"
+            IsExpanded="True"
+            SamplePath="DialogBoxes.StandardDialogBoxView" />
+    </TreeViewItem>
     <TreeViewItem Header="Base Controls" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="DecimalBox"
