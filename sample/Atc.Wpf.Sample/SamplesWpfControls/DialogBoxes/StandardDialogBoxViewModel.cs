@@ -51,6 +51,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
             });
 
         var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var newText = ((LabelTextBox)dialogBox.Data).Text;
+        }
     }
 
     private static void ShowInputForm1ColumnDialogBoxCommandHandler()
@@ -88,6 +92,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
             labelControlsForm);
 
         var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
     }
 
     private static void ShowInputForm2ColumnsDialogBoxCommandHandler()
@@ -101,6 +109,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
             labelControlsForm);
 
         var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
     }
 
     private static void ShowInputForm3ColumnsDialogBoxCommandHandler()
@@ -115,6 +127,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
             labelControlsForm);
 
         var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
     }
 
     private static void ShowInputFormPersonWithDataDialogBoxCommandHandler()
@@ -139,6 +155,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
             labelControlsForm);
 
         var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
     }
 
     private static void ShowInputFormPersonWithoutDataDialogBoxCommandHandler()
@@ -163,6 +183,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
             labelControlsForm);
 
         var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
     }
 
     private static List<ILabelControlBase> CreateLabelControlsColumn1()

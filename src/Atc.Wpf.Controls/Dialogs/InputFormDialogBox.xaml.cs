@@ -7,7 +7,6 @@ namespace Atc.Wpf.Controls.Dialogs;
 public partial class InputFormDialogBox
 {
     private const int ScrollBarSize = 20;
-    private readonly ILabelControlsForm labelControlsForm;
 
     public InputFormDialogBox(
         Window owningWindow,
@@ -16,7 +15,7 @@ public partial class InputFormDialogBox
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
         this.OwningWindow = owningWindow;
-        this.labelControlsForm = labelControlsForm;
+        this.Data = labelControlsForm;
         this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
 
         SetContentControlSettings();
@@ -35,14 +34,16 @@ public partial class InputFormDialogBox
 
     public ContentControl ContentControl { get; set; } = new();
 
+    public ILabelControlsForm Data { get; }
+
     private void SetContentControlSettings()
     {
-        if (labelControlsForm.Columns is null)
+        if (Data.Columns is null)
         {
             return;
         }
 
-        foreach (var column in this.labelControlsForm.Columns)
+        foreach (var column in this.Data.Columns)
         {
             column.ControlOrientation = Settings.FromControlOrientation;
             column.ControlWidth = Settings.FromControlWidth;
@@ -52,22 +53,22 @@ public partial class InputFormDialogBox
     private void PopulateContentControl()
     {
         Height = HeaderControl is null
-            ? labelControlsForm.GetMaxHeight() +
+            ? Data.GetMaxHeight() +
               ScrollBarSize +
               ContentButton.Height
             : ContentTop.Height +
-              labelControlsForm.GetMaxHeight() +
+              Data.GetMaxHeight() +
               ScrollBarSize +
               ContentButton.Height;
 
         Width = ContentCenter.Padding.Left +
                 ContentCenter.Padding.Right +
-                labelControlsForm.GetMaxWidth() +
+                Data.GetMaxWidth() +
                 ScrollBarSize;
 
         ContentControl = new ContentControl
         {
-            Content = labelControlsForm.GeneratePanel(),
+            Content = Data.GeneratePanel(),
         };
     }
 
@@ -75,7 +76,7 @@ public partial class InputFormDialogBox
         object sender,
         RoutedEventArgs e)
     {
-        if (!labelControlsForm.IsValid())
+        if (!Data.IsValid())
         {
             return;
         }

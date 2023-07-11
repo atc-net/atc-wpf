@@ -13,4 +13,6 @@ public interface ILabelControlsFormColumn
     Panel GeneratePanel();
 
     bool IsValid();
+
+    Dictionary<string, object> GetKeyValues();
 }

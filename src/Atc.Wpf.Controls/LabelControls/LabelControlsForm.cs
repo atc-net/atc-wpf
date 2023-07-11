@@ -91,4 +91,23 @@ public class LabelControlsForm : ILabelControlsForm
 
         return isAllValid;
     }
+
+    public Dictionary<string, object> GetKeyValues()
+    {
+        if (Columns is null)
+        {
+            return new Dictionary<string, object>(StringComparer.Ordinal);
+        }
+
+        var result = new Dictionary<string, object>(StringComparer.Ordinal);
+        foreach (var column in Columns)
+        {
+            foreach (var item in column.GetKeyValues())
+            {
+                result.Add(item.Key, item.Value);
+            }
+        }
+
+        return result;
+    }
 }

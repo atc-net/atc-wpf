@@ -5,8 +5,6 @@ namespace Atc.Wpf.Controls.Dialogs;
 /// </summary>
 public partial class InputDialogBox
 {
-    private readonly ILabelControlBase labelControl;
-
     public InputDialogBox(
         Window owningWindow,
         ILabelControlBase labelControl)
@@ -16,7 +14,7 @@ public partial class InputDialogBox
         this.OwningWindow = owningWindow;
         this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
 
-        this.labelControl = labelControl;
+        this.Data = labelControl;
 
         PopulateContentControl();
 
@@ -32,13 +30,15 @@ public partial class InputDialogBox
 
     public ContentControl ContentControl { get; set; } = new();
 
+    public ILabelControlBase Data { get; }
+
     private void PopulateContentControl()
     {
-        labelControl.Orientation = Orientation.Vertical;
+        Data.Orientation = Orientation.Vertical;
 
         ContentControl = new ContentControl
         {
-            Content = labelControl,
+            Content = Data,
         };
     }
 
@@ -46,7 +46,7 @@ public partial class InputDialogBox
         object sender,
         RoutedEventArgs e)
     {
-        if (!labelControl.IsValid())
+        if (!Data.IsValid())
         {
             return;
         }

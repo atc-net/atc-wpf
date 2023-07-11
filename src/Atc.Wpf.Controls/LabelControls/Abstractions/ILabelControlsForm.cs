@@ -21,4 +21,6 @@ public interface ILabelControlsForm
     Panel GeneratePanel();
 
     bool IsValid();
+
+    Dictionary<string, object> GetKeyValues();
 }
