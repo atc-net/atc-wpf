@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 /// <summary>
-/// Interaction logic for ThemeSelector.xaml
+/// Interaction logic for ThemeSelector.
 /// </summary>
 public partial class ThemeSelector : INotifyPropertyChanged
 {
