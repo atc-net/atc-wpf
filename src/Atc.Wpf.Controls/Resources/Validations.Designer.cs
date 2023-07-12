@@ -151,6 +151,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regular expression don&apos;t match.
+        /// </summary>
+        public static string RegexPatternDontMatch {
+            get {
+                return ResourceManager.GetString("RegexPatternDontMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value should be a decimal.
         /// </summary>
         public static string ValueShouldBeADecimal {

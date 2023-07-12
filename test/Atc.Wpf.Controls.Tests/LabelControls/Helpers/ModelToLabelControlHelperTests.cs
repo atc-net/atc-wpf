@@ -9,13 +9,13 @@ public class ModelToLabelControlHelperTests
         var model = new PrimitiveTypesModel();
 
         // Act
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(
+        var actual = ModelToLabelControlHelper.GetLabelControls(
             model,
             includeReadOnly: true);
 
         // Assert
-        Assert.NotNull(labelControls);
-        Assert.Equal(13, labelControls.Count);
+        Assert.NotNull(actual);
+        Assert.Equal(13, actual.Count);
     }
 
     [StaFact]
@@ -34,6 +34,61 @@ public class ModelToLabelControlHelperTests
         Assert.Equal(4, labelControls.Count);
     }
 
+    [StaTheory]
+    [InlineData(true, "", "My city name")]
+    [InlineData(false, "Field is required", "")]
+    [InlineData(false, "Min. length: 2", "M")]
+    [InlineData(false, "Max. length: 16", "My city name - too long")]
+    public void GetLabelControls_Address_Validate_CityName(
+        bool expectedIsValid,
+        string expectedValidationText,
+        string? cityName)
+    {
+        // Arrange
+        var model = new Address
+        {
+            CityName = cityName,
+        };
+
+        // Act
+        var actual = ModelToLabelControlHelper.GetLabelControls(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        var controlPostalCode = actual.Single(x => x.Identifier == "CityName");
+        Assert.Equal(expectedIsValid, controlPostalCode.IsValid());
+        Assert.Equal(expectedValidationText, ((ILabelControl)controlPostalCode).ValidationText);
+    }
+
+    [StaTheory]
+    [InlineData(true, "", "1234")]
+    [InlineData(false, "Field is required", "")]
+    [InlineData(false, "Regular expression don't match", "12345")]
+    public void GetLabelControls_Address_Validate_PostalCode(
+        bool expectedIsValid,
+        string expectedValidationText,
+        string? postalCode)
+    {
+        // Arrange
+        var model = new Address
+        {
+            PostalCode = postalCode,
+        };
+
+        // Act
+        var actual = ModelToLabelControlHelper.GetLabelControls(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        var controlPostalCode = actual.Single(x => x.Identifier == "PostalCode");
+        Assert.Equal(expectedIsValid, controlPostalCode.IsValid());
+        Assert.Equal(expectedValidationText, ((ILabelControl)controlPostalCode).ValidationText);
+    }
+
     [StaFact]
     public void GetLabelControls_Person()
     {
@@ -41,12 +96,12 @@ public class ModelToLabelControlHelperTests
         var model = new Person();
 
         // Act
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(
+        var actual = ModelToLabelControlHelper.GetLabelControls(
             model,
             includeReadOnly: true);
 
         // Assert
-        Assert.NotNull(labelControls);
-        Assert.Equal(3, labelControls.Count);
+        Assert.NotNull(actual);
+        Assert.Equal(3, actual.Count);
     }
 }

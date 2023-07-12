@@ -92,6 +92,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(CharactersNotAllowedProperty, value);
     }
 
+    public static readonly DependencyProperty RegexPatternProperty = DependencyProperty.Register(
+        nameof(RegexPattern),
+        typeof(string),
+        typeof(LabelTextBox),
+        new PropertyMetadata(defaultValue: null));
+
+    public string? RegexPattern
+    {
+        get => (string?)GetValue(RegexPatternProperty);
+        set => SetValue(RegexPatternProperty, value);
+    }
+
     public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
         nameof(ShowClearTextButton),
         typeof(bool),
@@ -243,6 +255,21 @@ public partial class LabelTextBox : ILabelTextBox
             }
 
             return;
+        }
+
+        if (!string.IsNullOrEmpty(control.RegexPattern))
+        {
+            var regex = new Regex(control.RegexPattern, RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+            if (!regex.Match(control.Text).Success)
+            {
+                control.ValidationText = Validations.RegexPatternDontMatch;
+                if (raiseEvents)
+                {
+                    OnTextLostFocusFireInvalidEvent(control, e);
+                }
+
+                return;
+            }
         }
 
         var (isValid, errorMessage) = TextBoxValidationHelper.Validate(

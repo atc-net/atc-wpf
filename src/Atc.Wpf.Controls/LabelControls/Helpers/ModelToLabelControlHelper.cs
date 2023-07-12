@@ -291,7 +291,7 @@ public static class ModelToLabelControlHelper
         var regexAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RegularExpressionAttribute));
         if (regexAttribute is not null)
         {
-            // TODO: LabelTextBox should support Regex
+            control.RegexPattern = ((RegularExpressionAttribute)regexAttribute).Pattern;
         }
 
         return control;

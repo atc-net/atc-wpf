@@ -147,6 +147,9 @@
   <data name="NotAllowedFormat1" xml:space="preserve">
     <value>Nicht erlaubt: {0}</value>
   </data>
+  <data name="RegexPatternDontMatch" xml:space="preserve">
+    <value>Regulärer Ausdruck stimmt nicht überein</value>
+  </data>
   <data name="ValueShouldBeADecimal" xml:space="preserve">
     <value>Der Wert sollte eine Dezimalzahl sein</value>
   </data>
