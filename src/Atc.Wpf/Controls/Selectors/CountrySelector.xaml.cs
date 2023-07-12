@@ -3,16 +3,14 @@
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
-/// Interaction logic for LanguageSelector.
+/// Interaction logic for CountrySelector.
 /// </summary>
-public partial class LanguageSelector
+public partial class CountrySelector
 {
-    private bool processingOnLoaded;
-
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
         typeof(DropDownFirstItemType),
-        typeof(LanguageSelector),
+        typeof(CountrySelector),
         new PropertyMetadata(DropDownFirstItemType.None));
 
     public DropDownFirstItemType DropDownFirstItemType
@@ -24,7 +22,7 @@ public partial class LanguageSelector
     public static readonly DependencyProperty RenderFlagIndicatorTypeTypeProperty = DependencyProperty.Register(
         nameof(RenderFlagIndicatorType),
         typeof(RenderFlagIndicatorType),
-        typeof(LanguageSelector),
+        typeof(CountrySelector),
         new PropertyMetadata(RenderFlagIndicatorType.Flat16));
 
     public RenderFlagIndicatorType RenderFlagIndicatorType
@@ -33,22 +31,22 @@ public partial class LanguageSelector
         set => SetValue(RenderFlagIndicatorTypeTypeProperty, value);
     }
 
-    public static readonly DependencyProperty UseOnlySupportedLanguagesProperty = DependencyProperty.Register(
-        nameof(UseOnlySupportedLanguages),
+    public static readonly DependencyProperty UseOnlySupportedCountriesProperty = DependencyProperty.Register(
+        nameof(UseOnlySupportedCountries),
         typeof(bool),
-        typeof(LanguageSelector),
+        typeof(CountrySelector),
         new PropertyMetadata(defaultValue: true));
 
-    public bool UseOnlySupportedLanguages
+    public bool UseOnlySupportedCountries
     {
-        get => (bool)GetValue(UseOnlySupportedLanguagesProperty);
-        set => SetValue(UseOnlySupportedLanguagesProperty, value);
+        get => (bool)GetValue(UseOnlySupportedCountriesProperty);
+        set => SetValue(UseOnlySupportedCountriesProperty, value);
     }
 
     public static readonly DependencyProperty DefaultCultureLcidProperty = DependencyProperty.Register(
         nameof(DefaultCultureLcid),
         typeof(int?),
-        typeof(LanguageSelector),
+        typeof(CountrySelector),
         new PropertyMetadata(default(int?)));
 
     public int? DefaultCultureLcid
@@ -60,7 +58,7 @@ public partial class LanguageSelector
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
-        typeof(LanguageSelector),
+        typeof(CountrySelector),
         new PropertyMetadata(
             string.Empty,
             OnSelectedKeyChanged));
@@ -69,15 +67,9 @@ public partial class LanguageSelector
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var languageSelector = (LanguageSelector)d;
+        var countrySelector = (CountrySelector)d;
 
-        languageSelector.SetSelectedIndexBySelectedKey();
-
-        if (languageSelector is { processingOnLoaded: false, UpdateUiCultureOnChangeEvent: true } &&
-            !languageSelector.SelectedKey.StartsWith('-'))
-        {
-            CultureManager.UiCulture = new CultureInfo(int.Parse(languageSelector.SelectedKey, NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo));
-        }
+        countrySelector.SetSelectedIndexBySelectedKey();
     }
 
     public string SelectedKey
@@ -89,7 +81,7 @@ public partial class LanguageSelector
     public static readonly DependencyProperty UpdateUiCultureOnChangeEventProperty = DependencyProperty.Register(
         nameof(UpdateUiCultureOnChangeEvent),
         typeof(bool),
-        typeof(LanguageSelector),
+        typeof(CountrySelector),
         new PropertyMetadata(defaultValue: true));
 
     public bool UpdateUiCultureOnChangeEvent
@@ -98,7 +90,7 @@ public partial class LanguageSelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
-    public LanguageSelector()
+    public CountrySelector()
     {
         InitializeComponent();
 
@@ -109,7 +101,7 @@ public partial class LanguageSelector
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IList<LanguageItem> Items { get; } = new List<LanguageItem>();
+    public IList<CountryItem> Items { get; } = new List<CountryItem>();
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
@@ -136,13 +128,11 @@ public partial class LanguageSelector
         object sender,
         RoutedEventArgs e)
     {
-        processingOnLoaded = true;
-
-        var cultures = UseOnlySupportedLanguages
+        var cultures = UseOnlySupportedCountries
             ? ResourceHelper.GetSupportedCultures()
             : CultureHelper
                 .GetCulturesForCountries()
-                .OrderBy(x => x.LanguageDisplayName, StringComparer.Ordinal)
+                .OrderBy(x => x.CountryDisplayName, StringComparer.Ordinal)
                 .ToList();
 
         var flags = ResourceHelper.GetFlags(RenderFlagIndicatorType);
@@ -154,13 +144,13 @@ public partial class LanguageSelector
             case DropDownFirstItemType.None:
                 break;
             case DropDownFirstItemType.Blank:
-                Items.Add(CreateBlankLanguageItem());
+                Items.Add(CreateBlankCountryItem());
                 break;
             case DropDownFirstItemType.PleaseSelect:
-                Items.Add(CreateLanguageItem(DropDownFirstItemType));
+                Items.Add(CreateCountryItem(DropDownFirstItemType));
                 break;
             case DropDownFirstItemType.IncludeAll:
-                Items.Add(CreateLanguageItem(DropDownFirstItemType));
+                Items.Add(CreateCountryItem(DropDownFirstItemType));
                 break;
             default:
                 throw new SwitchCaseDefaultException(DropDownFirstItemType);
@@ -169,36 +159,34 @@ public partial class LanguageSelector
         foreach (var culture in cultures)
         {
             var (_, bitmapImage) = flags.FirstOrDefault(x => x.Key.Contains(culture.CountryCodeA2 + ".png", StringComparison.Ordinal));
-            Items.Add(new LanguageItem(culture, bitmapImage));
+            Items.Add(new CountryItem(culture, bitmapImage));
         }
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
-            SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
+            SelectedKey = GetDefaultCountryItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
                           Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
         }
         else
         {
             SetSelectedIndexBySelectedKey();
         }
-
-        processingOnLoaded = false;
     }
 
     private void SetSelectedIndexBySelectedKey()
     {
-        for (var i = 0; i < CbLanguages.Items.Count; i++)
+        for (var i = 0; i < CbCountries.Items.Count; i++)
         {
-            var item = (LanguageItem)CbLanguages.Items[i];
+            var item = (CountryItem)CbCountries.Items[i];
             if (SelectedKey == item.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo))
             {
-                CbLanguages.SelectedIndex = i;
+                CbCountries.SelectedIndex = i;
                 break;
             }
         }
     }
 
-    private static LanguageItem CreateBlankLanguageItem()
+    private static CountryItem CreateBlankCountryItem()
         => new(
             new Culture(
                 (int)DropDownFirstItemType.Blank,
@@ -218,15 +206,11 @@ public partial class LanguageSelector
                 string.Empty),
             Image: null);
 
-    private static LanguageItem CreateLanguageItem(
+    private static CountryItem CreateCountryItem(
         DropDownFirstItemType dropDownFirstItemType)
         => new(
             new Culture(
                 (int)dropDownFirstItemType,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
                 string.Empty,
                 dropDownFirstItemType.GetDescription(useLocalizedIfPossible: false),
                 dropDownFirstItemType.GetDescription(),
@@ -236,21 +220,25 @@ public partial class LanguageSelector
                 string.Empty,
                 string.Empty,
                 string.Empty,
+                string.Empty,
+                string.Empty,
+                string.Empty,
+                string.Empty,
                 string.Empty),
             Image: null);
 
-    private LanguageItem? GetDefaultLanguageItem()
+    private CountryItem? GetDefaultCountryItem()
     {
-        LanguageItem? defaultLanguageItem = null;
+        CountryItem? defaultCountryItem = null;
         if (DefaultCultureLcid.HasValue)
         {
-            var languageItem = Items.FirstOrDefault(x => x.Culture.Lcid == DefaultCultureLcid.Value);
-            if (languageItem is not null)
+            var countryItem = Items.FirstOrDefault(x => x.Culture.Lcid == DefaultCultureLcid.Value);
+            if (countryItem is not null)
             {
-                defaultLanguageItem = languageItem;
+                defaultCountryItem = countryItem;
             }
         }
 
-        return defaultLanguageItem ?? Items.FirstOrDefault(x => x.Culture.Lcid == Thread.CurrentThread.CurrentUICulture.LCID);
+        return defaultCountryItem;
     }
 }

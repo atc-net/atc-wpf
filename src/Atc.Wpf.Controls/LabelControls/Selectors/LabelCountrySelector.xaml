@@ -1,5 +1,5 @@
 <labelControls:LabelControlBase
-    x:Class="Atc.Wpf.Controls.LabelControls.LabelLanguageSelector"
+    x:Class="Atc.Wpf.Controls.LabelControls.LabelCountrySelector"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
@@ -14,18 +14,17 @@
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
-                                        Key=Language}"
+                                        Key=Country}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
 
-        <atcTheming:LanguageSelector
-            DefaultCultureLcid="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=DefaultCultureLcid}"
-            DropDownFirstItemType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=DropDownFirstItemType}"
-            RenderFlagIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=RenderFlagIndicatorType}"
-            SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=SelectedKey}"
-            UpdateUiCultureOnChangeEvent="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=UpdateUiCultureOnChangeEvent}"
-            UseOnlySupportedLanguages="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=UseOnlySupportedLanguages}" />
+        <atcTheming:CountrySelector
+            DefaultCultureLcid="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=DefaultCultureLcid}"
+            DropDownFirstItemType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=DropDownFirstItemType}"
+            RenderFlagIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=RenderFlagIndicatorType}"
+            SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=SelectedKey}"
+            UseOnlySupportedCountries="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=UseOnlySupportedCountries}" />
 
     </labelControls:LabelContent>
 

@@ -21,16 +21,60 @@
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">
 
-                        <atc:LabelLanguageSelector Orientation="Horizontal" />
+                        <atc:LabelLanguageSelector Orientation="Horizontal" UpdateUiCultureOnChangeEvent="False" />
 
-                        <atc:LabelLanguageSelector InformationText="This is a help text.." Orientation="Horizontal" />
+                        <atc:LabelLanguageSelector
+                            InformationText="This is a help text.."
+                            Orientation="Horizontal"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="None"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureLcid="-3"
+                            DropDownFirstItemType="PleaseSelect"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureLcid="1031"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
-                        <atc:LabelLanguageSelector Orientation="Vertical" />
+                        <atc:LabelLanguageSelector Orientation="Vertical" UpdateUiCultureOnChangeEvent="False" />
 
-                        <atc:LabelLanguageSelector InformationText="This is a help text.." Orientation="Vertical" />
+                        <atc:LabelLanguageSelector
+                            InformationText="This is a help text.."
+                            Orientation="Vertical"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="None"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureLcid="-3"
+                            DropDownFirstItemType="PleaseSelect"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureLcid="1031"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
 
                     </StackPanel>
                 </atc:GridEx>

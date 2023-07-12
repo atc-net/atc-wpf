@@ -53,6 +53,10 @@
     <TreeViewItem Header="Label Controls" IsExpanded="True">
         <TreeViewItem Header="Selectors" IsExpanded="True">
             <atc:SampleTreeViewItem
+                Header="LabelCountrySelector"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelCountrySelectorView" />
+            <atc:SampleTreeViewItem
                 Header="LabelLanguageSelector"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelLanguageSelectorView" />

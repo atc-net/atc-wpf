@@ -35,6 +35,8 @@
                         <Button Command="{Binding Path=ShowInputForm1ColumnDialogBoxCommand}" Content="Input Form 1 columns" />
                         <Button Command="{Binding Path=ShowInputForm2ColumnsDialogBoxCommand}" Content="Input Form 2 columns" />
                         <Button Command="{Binding Path=ShowInputForm3ColumnsDialogBoxCommand}" Content="Input Form 3 columns" />
+                        <Button Command="{Binding Path=ShowInputFormAddressWithDataDialogBoxCommands}" Content="Input Form - Address model with data" />
+                        <Button Command="{Binding Path=ShowInputFormAddressWithoutDataDialogBoxCommands}" Content="Input Form - Address model without data" />
                         <Button Command="{Binding Path=ShowInputFormPersonWithDataDialogBoxCommands}" Content="Input Form - Person model with data" />
                         <Button Command="{Binding Path=ShowInputFormPersonWithoutDataDialogBoxCommands}" Content="Input Form - Person model without data" />
                     </atc:UniformSpacingPanel>

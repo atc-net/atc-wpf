@@ -78,11 +78,11 @@ public class PrimitiveTypesModel
 
     public DateTimeOffset? PropertyDateTimeOffsetNullable { get; set; }
 
-    public CultureInfo PropertyCountry { get; set; } = CultureInfo.CurrentCulture;
+    public CultureInfo PropertyCountry { get; set; } = GlobalizationConstants.DanishCultureInfo;
 
     public CultureInfo? PropertyCountryNullable { get; set; }
 
-    public CultureInfo PropertyLanguage { get; set; } = CultureInfo.CurrentCulture;
+    public CultureInfo PropertyLanguage { get; set; } = GlobalizationConstants.DanishCultureInfo;
 
     public CultureInfo? PropertyLanguageNullable { get; set; }
 }

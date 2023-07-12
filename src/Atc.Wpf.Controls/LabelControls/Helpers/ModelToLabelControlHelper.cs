@@ -65,11 +65,11 @@ public static class ModelToLabelControlHelper
             {
                 if (propertyInfo.GetName().Contains("Country", StringComparison.OrdinalIgnoreCase))
                 {
-                    labelControls.Add(CreateLabelCountryPicker(propertyInfo, model, isReadOnly));
+                    labelControls.Add(CreateLabelCountrySelector(propertyInfo, model, isReadOnly));
                 }
                 else if (propertyInfo.GetName().Contains("Language", StringComparison.OrdinalIgnoreCase))
                 {
-                    labelControls.Add(CreateLabelLanguagePicker(propertyInfo, model, isReadOnly));
+                    labelControls.Add(CreateLabelLanguageSelector(propertyInfo, model, isReadOnly));
                 }
             }
             else
@@ -297,31 +297,21 @@ public static class ModelToLabelControlHelper
         return control;
     }
 
-    private static LabelComboBox CreateLabelCountryPicker<T>(
+    private static LabelCountrySelector CreateLabelCountrySelector<T>(
         PropertyInfo propertyInfo,
         T model,
         bool isReadOnly)
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        var control = new LabelComboBox
+        var control = new LabelCountrySelector
         {
             LabelText = propertyInfo.Name.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Items = new Dictionary<string, string>(StringComparer.Ordinal),
+            DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
+            UseOnlySupportedCountries = false,
+            // TODO: IsMandatory = propertyInfo.HasRequiredAttribute(),
         };
-
-        const DropDownFirstItemType firstItem = DropDownFirstItemType.PleaseSelect;
-        control.Items.Add(
-            DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
-            firstItem.ToString().NormalizePascalCase());
-
-        var countryNames = CultureHelper.GetCountryNames();
-        foreach (var country in countryNames)
-        {
-            control.Items.Add(country.Key.ToString(GlobalizationConstants.EnglishCultureInfo), country.Value);
-        }
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
         if (propertyObjectValue is not null)
@@ -334,31 +324,22 @@ public static class ModelToLabelControlHelper
         return control;
     }
 
-    private static LabelComboBox CreateLabelLanguagePicker<T>(
+    private static LabelLanguageSelector CreateLabelLanguageSelector<T>(
         PropertyInfo propertyInfo,
         T model,
         bool isReadOnly)
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        var control = new LabelComboBox
+        var control = new LabelLanguageSelector
         {
             LabelText = propertyInfo.Name.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Items = new Dictionary<string, string>(StringComparer.Ordinal),
+            DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
+            UseOnlySupportedLanguages = false,
+            UpdateUiCultureOnChangeEvent = false,
+            /// TODO: IsMandatory = propertyInfo.HasRequiredAttribute(),
         };
-
-        const DropDownFirstItemType firstItem = DropDownFirstItemType.PleaseSelect;
-        control.Items.Add(
-            DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
-            firstItem.ToString().NormalizePascalCase());
-
-        var languageNames = CultureHelper.GetLanguageNames();
-        foreach (var language in languageNames)
-        {
-            control.Items.Add(language.Key.ToString(GlobalizationConstants.EnglishCultureInfo), language.Value);
-        }
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
         if (propertyObjectValue is not null)

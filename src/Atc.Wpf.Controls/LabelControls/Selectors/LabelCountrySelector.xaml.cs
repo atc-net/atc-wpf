@@ -2,14 +2,14 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
-/// Interaction logic for LabelLanguageSelector.
+/// Interaction logic for LabelCountrySelector.
 /// </summary>
-public partial class LabelLanguageSelector : ILabelLanguageSelector
+public partial class LabelCountrySelector : ILabelCountrySelector
 {
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
         typeof(DropDownFirstItemType),
-        typeof(LabelLanguageSelector),
+        typeof(LabelCountrySelector),
         new PropertyMetadata(DropDownFirstItemType.None));
 
     public DropDownFirstItemType DropDownFirstItemType
@@ -21,7 +21,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
     public static readonly DependencyProperty RenderFlagIndicatorTypeTypeProperty = DependencyProperty.Register(
         nameof(RenderFlagIndicatorType),
         typeof(RenderFlagIndicatorType),
-        typeof(LabelLanguageSelector),
+        typeof(LabelCountrySelector),
         new PropertyMetadata(RenderFlagIndicatorType.Flat16));
 
     public RenderFlagIndicatorType RenderFlagIndicatorType
@@ -30,34 +30,28 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         set => SetValue(RenderFlagIndicatorTypeTypeProperty, value);
     }
 
-    public static readonly DependencyProperty UseOnlySupportedLanguagesProperty = DependencyProperty.Register(
-        nameof(UseOnlySupportedLanguages),
+    public static readonly DependencyProperty UseOnlySupportedCountriesProperty = DependencyProperty.Register(
+        nameof(UseOnlySupportedCountries),
         typeof(bool),
-        typeof(LabelLanguageSelector),
+        typeof(LabelCountrySelector),
         new PropertyMetadata(defaultValue: true));
 
-    public bool UseOnlySupportedLanguages
+    public bool UseOnlySupportedCountries
     {
-        get => (bool)GetValue(UseOnlySupportedLanguagesProperty);
-        set => SetValue(UseOnlySupportedLanguagesProperty, value);
+        get => (bool)GetValue(UseOnlySupportedCountriesProperty);
+        set => SetValue(UseOnlySupportedCountriesProperty, value);
     }
 
     public static readonly DependencyProperty DefaultCultureLcidProperty = DependencyProperty.Register(
         nameof(DefaultCultureLcid),
         typeof(int?),
-        typeof(LabelLanguageSelector),
+        typeof(LabelCountrySelector),
         new PropertyMetadata(default(int?)));
-
-    public int? DefaultCultureLcid
-    {
-        get => (int?)GetValue(DefaultCultureLcidProperty);
-        set => SetValue(DefaultCultureLcidProperty, value);
-    }
 
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
-        typeof(LabelLanguageSelector),
+        typeof(LabelCountrySelector),
         new PropertyMetadata(string.Empty));
 
     public string SelectedKey
@@ -66,19 +60,13 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public static readonly DependencyProperty UpdateUiCultureOnChangeEventProperty = DependencyProperty.Register(
-        nameof(UpdateUiCultureOnChangeEvent),
-        typeof(bool),
-        typeof(LabelLanguageSelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool UpdateUiCultureOnChangeEvent
+    public int? DefaultCultureLcid
     {
-        get => (bool)GetValue(UpdateUiCultureOnChangeEventProperty);
-        set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
+        get => (int?)GetValue(DefaultCultureLcidProperty);
+        set => SetValue(DefaultCultureLcidProperty, value);
     }
 
-    public LabelLanguageSelector()
+    public LabelCountrySelector()
     {
         InitializeComponent();
     }

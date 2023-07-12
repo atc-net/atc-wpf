@@ -17,6 +17,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public static IRelayCommand ShowInputForm3ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm3ColumnsDialogBoxCommandHandler);
 
+    public static IRelayCommand ShowInputFormAddressWithDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithDataDialogBoxCommandHandler);
+
+    public static IRelayCommand ShowInputFormAddressWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithoutDataDialogBoxCommandHandler);
+
     public static IRelayCommand ShowInputFormPersonWithDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithDataDialogBoxCommandHandler);
 
     public static IRelayCommand ShowInputFormPersonWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithoutDataDialogBoxCommandHandler);
@@ -121,6 +125,54 @@ public class StandardDialogBoxViewModel : ViewModelBase
         labelControlsForm.AddColumn(CreateLabelControlsColumn1());
         labelControlsForm.AddColumn(CreateLabelControlsColumn2());
         labelControlsForm.AddColumn(CreateLabelControlsColumn3());
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
+    }
+
+    private static void ShowInputFormAddressWithDataDialogBoxCommandHandler()
+    {
+        var address = new Address(
+            StreetName: "My street",
+            CityName: "My city",
+            PostalCode: "1234",
+            Country: new CultureInfo("da-DK"));
+
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(address);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+        }
+    }
+
+    private static void ShowInputFormAddressWithoutDataDialogBoxCommandHandler()
+    {
+        var address = new Address(
+            StreetName: string.Empty,
+            CityName: string.Empty,
+            PostalCode: string.Empty,
+            Country: new CultureInfo("en-US"));
+
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(address);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
 
         var dialogBox = new InputFormDialogBox(
             Application.Current.MainWindow!,

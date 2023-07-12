@@ -36,6 +36,7 @@ global using Atc.Wpf.Controls.Layouts.Grid.Internal;
 global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Controls.Progressing.Internal;
 global using Atc.Wpf.Controls.Resources;
+global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Theming.Controls.Selectors;

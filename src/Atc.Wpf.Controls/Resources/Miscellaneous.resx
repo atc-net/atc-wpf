@@ -123,6 +123,9 @@
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="FieldIsRequired" xml:space="preserve">
     <value>Field is required</value>
   </data>
