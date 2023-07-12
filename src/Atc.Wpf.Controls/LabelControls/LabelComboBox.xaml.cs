@@ -76,7 +76,7 @@ public partial class LabelComboBox : ILabelComboBox
             string.IsNullOrWhiteSpace(control.SelectedKey) &&
             e.OldValue is not null)
         {
-            control.ValidationText = "Field is required"; // TODO: Translate
+            control.ValidationText = Validations.FieldIsRequired;
             return;
         }
 

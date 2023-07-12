@@ -25,7 +25,7 @@ internal static class TextBoxValidationHelper
                 if (!value!.IsEmailAddress())
                 {
                     isValid = false;
-                    errorMessage = "Invalid email address"; // TODO: Translate
+                    errorMessage = Validations.InvalidEmailAddress;
                 }
 
                 break;
@@ -88,7 +88,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid FTP url"; // TODO: Translate
+        errorMessage = Validations.InvalidFtpUrl;
     }
 
     private static void ValidateHttpOrHttps(
@@ -111,7 +111,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid HTTP url"; // TODO: Translate
+        errorMessage = Validations.InvalidHttpUrl;
     }
 
     private static void ValidateIpAddress(
@@ -140,7 +140,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid IP address"; // TODO: Translate
+        errorMessage = Validations.InvalidIpAddres;
     }
 
     private static void ValidateOpcTcp(
@@ -161,7 +161,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid OPC-UA url"; // TODO: Translate
+        errorMessage = Validations.InvalidOpcUaUrl;
     }
 
     private static void ValidateTcp(
@@ -182,7 +182,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid TCP url"; // TODO: Translate
+        errorMessage = Validations.InvalidTcpUrl;
     }
 
     private static void ValidateUdp(
@@ -203,6 +203,6 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid TCP url"; // TODO: Translate
+        errorMessage = Validations.InvalidTcpUrl;
     }
 }

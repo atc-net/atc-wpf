@@ -144,7 +144,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
 
         if (e.NewValue is not decimal newValue)
         {
-            control.ValidationText = "Value should be a decimal"; // TODO: Translate
+            control.ValidationText = Validations.ValueShouldBeADecimal;
             return;
         }
 
@@ -170,7 +170,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
 
         if (e.NewValue is not decimal newValue)
         {
-            control.ValidationText = "Value should be a decimal"; // TODO: Translate
+            control.ValidationText = Validations.ValueShouldBeADecimal;
             return;
         }
 

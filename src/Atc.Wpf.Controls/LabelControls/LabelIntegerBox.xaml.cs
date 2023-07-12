@@ -97,7 +97,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
 
         if (e.NewValue is not int newValue)
         {
-            control.ValidationText = "Value should be a integer"; // TODO: Translate
+            control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
 

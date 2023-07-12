@@ -192,6 +192,7 @@ public partial class LabelTextBox : ILabelTextBox
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     private static void ValidateText(
         DependencyPropertyChangedEventArgs e,
         LabelTextBox control,
@@ -200,7 +201,7 @@ public partial class LabelTextBox : ILabelTextBox
         if (control.IsMandatory &&
             string.IsNullOrWhiteSpace(control.Text))
         {
-            control.ValidationText = "Field is required"; // TODO: Translate
+            control.ValidationText = Validations.FieldIsRequired;
             if (raiseEvents)
             {
                 OnTextLostFocusFireInvalidEvent(control, e);
@@ -211,7 +212,7 @@ public partial class LabelTextBox : ILabelTextBox
 
         if (control.Text.Length < control.MinLength)
         {
-            control.ValidationText = $"Min length: {control.MinLength}"; // TODO: Translate
+            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.MinValueFormat1, control.MinLength);
             if (raiseEvents)
             {
                 OnTextLostFocusFireInvalidEvent(control, e);
@@ -222,7 +223,7 @@ public partial class LabelTextBox : ILabelTextBox
 
         if (control.Text.Length > control.MaxLength)
         {
-            control.ValidationText = $"Max length: {control.MaxLength}"; // TODO: Translate
+            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.MaxValueFormat1, control.MaxLength);
 
             if (raiseEvents)
             {
@@ -235,7 +236,7 @@ public partial class LabelTextBox : ILabelTextBox
         if (!string.IsNullOrEmpty(control.CharactersNotAllowed) &&
             control.CharactersNotAllowed.Any(x => control.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
         {
-            control.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text)}"; // TODO: Translate
+            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.NotAllowedFormat1, GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text));
             if (raiseEvents)
             {
                 OnTextLostFocusFireInvalidEvent(control, e);
