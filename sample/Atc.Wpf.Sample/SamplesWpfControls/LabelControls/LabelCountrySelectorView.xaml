@@ -33,7 +33,13 @@
                             RenderFlagIndicatorType="Shiny16" />
 
                         <atc:LabelCountrySelector
-                            DefaultCultureLcid="1031"
+                            DefaultCultureIdentifier="1031"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UseOnlySupportedCountries="False" />
+
+                        <atc:LabelCountrySelector
+                            DefaultCultureIdentifier="de-DE"
                             Orientation="Horizontal"
                             RenderFlagIndicatorType="Shiny16"
                             UseOnlySupportedCountries="False" />
@@ -53,7 +59,13 @@
                             RenderFlagIndicatorType="Shiny16" />
 
                         <atc:LabelCountrySelector
-                            DefaultCultureLcid="1031"
+                            DefaultCultureIdentifier="1031"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UseOnlySupportedCountries="False" />
+
+                        <atc:LabelCountrySelector
+                            DefaultCultureIdentifier="de-DE"
                             Orientation="Vertical"
                             RenderFlagIndicatorType="Shiny16"
                             UseOnlySupportedCountries="False" />

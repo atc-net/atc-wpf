@@ -42,16 +42,16 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         set => SetValue(UseOnlySupportedLanguagesProperty, value);
     }
 
-    public static readonly DependencyProperty DefaultCultureLcidProperty = DependencyProperty.Register(
-        nameof(DefaultCultureLcid),
-        typeof(int?),
+    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
+        nameof(DefaultCultureIdentifier),
+        typeof(string),
         typeof(LabelLanguageSelector),
-        new PropertyMetadata(default(int?)));
+        new PropertyMetadata(default));
 
-    public int? DefaultCultureLcid
+    public string? DefaultCultureIdentifier
     {
-        get => (int?)GetValue(DefaultCultureLcidProperty);
-        set => SetValue(DefaultCultureLcidProperty, value);
+        get => (string?)GetValue(DefaultCultureIdentifierProperty);
+        set => SetValue(DefaultCultureIdentifierProperty, value);
     }
 
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(

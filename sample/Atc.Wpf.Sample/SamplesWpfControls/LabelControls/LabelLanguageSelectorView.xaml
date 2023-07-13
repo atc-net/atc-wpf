@@ -34,14 +34,21 @@
                             UpdateUiCultureOnChangeEvent="False" />
 
                         <atc:LabelLanguageSelector
-                            DefaultCultureLcid="-3"
+                            DefaultCultureIdentifier="-3"
                             DropDownFirstItemType="PleaseSelect"
                             Orientation="Horizontal"
                             RenderFlagIndicatorType="Shiny16"
                             UpdateUiCultureOnChangeEvent="False" />
 
                         <atc:LabelLanguageSelector
-                            DefaultCultureLcid="1031"
+                            DefaultCultureIdentifier="1031"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="de-DE"
                             Orientation="Horizontal"
                             RenderFlagIndicatorType="Shiny16"
                             UpdateUiCultureOnChangeEvent="False"
@@ -63,14 +70,21 @@
                             UpdateUiCultureOnChangeEvent="False" />
 
                         <atc:LabelLanguageSelector
-                            DefaultCultureLcid="-3"
+                            DefaultCultureIdentifier="-3"
                             DropDownFirstItemType="PleaseSelect"
                             Orientation="Vertical"
                             RenderFlagIndicatorType="Shiny16"
                             UpdateUiCultureOnChangeEvent="False" />
 
                         <atc:LabelLanguageSelector
-                            DefaultCultureLcid="1031"
+                            DefaultCultureIdentifier="1031"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="de-DE"
                             Orientation="Vertical"
                             RenderFlagIndicatorType="Shiny16"
                             UpdateUiCultureOnChangeEvent="False"

@@ -12,6 +12,7 @@ global using System.Windows.Threading;
 global using Atc.Data.Models;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Diagnostics;
+global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Mvvm;
 
 global using ControlzEx.Theming;

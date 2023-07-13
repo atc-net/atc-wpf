@@ -42,11 +42,17 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         set => SetValue(UseOnlySupportedCountriesProperty, value);
     }
 
-    public static readonly DependencyProperty DefaultCultureLcidProperty = DependencyProperty.Register(
-        nameof(DefaultCultureLcid),
-        typeof(int?),
+    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
+        nameof(DefaultCultureIdentifier),
+        typeof(string),
         typeof(LabelCountrySelector),
-        new PropertyMetadata(default(int?)));
+        new PropertyMetadata(default));
+
+    public string? DefaultCultureIdentifier
+    {
+        get => (string?)GetValue(DefaultCultureIdentifierProperty);
+        set => SetValue(DefaultCultureIdentifierProperty, value);
+    }
 
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
@@ -58,12 +64,6 @@ public partial class LabelCountrySelector : ILabelCountrySelector
     {
         get => (string)GetValue(SelectedKeyProperty);
         set => SetValue(SelectedKeyProperty, value);
-    }
-
-    public int? DefaultCultureLcid
-    {
-        get => (int?)GetValue(DefaultCultureLcidProperty);
-        set => SetValue(DefaultCultureLcidProperty, value);
     }
 
     public LabelCountrySelector()

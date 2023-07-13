@@ -20,7 +20,7 @@
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
 
         <atcTheming:CountrySelector
-            DefaultCultureLcid="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=DefaultCultureLcid}"
+            DefaultCultureIdentifier="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=DefaultCultureIdentifier}"
             DropDownFirstItemType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=DropDownFirstItemType}"
             RenderFlagIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=RenderFlagIndicatorType}"
             SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=SelectedKey}"

@@ -1,5 +1,6 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable InvertIf
+// ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
@@ -43,16 +44,16 @@ public partial class CountrySelector
         set => SetValue(UseOnlySupportedCountriesProperty, value);
     }
 
-    public static readonly DependencyProperty DefaultCultureLcidProperty = DependencyProperty.Register(
-        nameof(DefaultCultureLcid),
-        typeof(int?),
+    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
+        nameof(DefaultCultureIdentifier),
+        typeof(string),
         typeof(CountrySelector),
-        new PropertyMetadata(default(int?)));
+        new PropertyMetadata(default));
 
-    public int? DefaultCultureLcid
+    public string? DefaultCultureIdentifier
     {
-        get => (int?)GetValue(DefaultCultureLcidProperty);
-        set => SetValue(DefaultCultureLcidProperty, value);
+        get => (string?)GetValue(DefaultCultureIdentifierProperty);
+        set => SetValue(DefaultCultureIdentifierProperty, value);
     }
 
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
@@ -97,11 +98,12 @@ public partial class CountrySelector
         DataContext = this;
 
         Loaded += OnLoaded;
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IList<CountryItem> Items { get; } = new List<CountryItem>();
+    public ObservableCollectionEx<CountryItem> Items { get; } = new();
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
@@ -127,17 +129,19 @@ public partial class CountrySelector
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
+        => PopulateDataOnLoaded();
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+        => UpdateDataOnUiCultureChanged();
+
+    private void PopulateDataOnLoaded()
     {
-        var cultures = UseOnlySupportedCountries
-            ? ResourceHelper.GetSupportedCultures()
-            : CultureHelper
-                .GetCulturesForCountries()
-                .OrderBy(x => x.CountryDisplayName, StringComparer.Ordinal)
-                .ToList();
+        Items.SuppressOnChangedNotification = true;
 
+        var cultures = GetCultures();
         var flags = ResourceHelper.GetFlags(RenderFlagIndicatorType);
-
-        Items.Clear();
 
         switch (DropDownFirstItemType)
         {
@@ -159,7 +163,7 @@ public partial class CountrySelector
         foreach (var culture in cultures)
         {
             var (_, bitmapImage) = flags.FirstOrDefault(x => x.Key.Contains(culture.CountryCodeA2 + ".png", StringComparison.Ordinal));
-            Items.Add(new CountryItem(culture, bitmapImage));
+            Items.Add(new CountryItem(culture.Clone(), bitmapImage));
         }
 
         if (string.IsNullOrEmpty(SelectedKey))
@@ -171,10 +175,62 @@ public partial class CountrySelector
         {
             SetSelectedIndexBySelectedKey();
         }
+
+        Items.SuppressOnChangedNotification = false;
+    }
+
+    private void UpdateDataOnUiCultureChanged()
+    {
+        Items.SuppressOnChangedNotification = true;
+
+        var cultures = GetCultures();
+
+        foreach (var item in Items)
+        {
+            if (item.Culture.Lcid > 0)
+            {
+                var culture = cultures.Single(x => x.Lcid == item.Culture.Lcid);
+                item.Culture.CountryEnglishName = culture.CountryEnglishName;
+                item.Culture.CountryDisplayName = culture.CountryDisplayName;
+            }
+            else
+            {
+                var dropDownFirstItemType = (DropDownFirstItemType)item.Culture.Lcid;
+                switch (dropDownFirstItemType)
+                {
+                    case DropDownFirstItemType.None:
+                    case DropDownFirstItemType.Blank:
+                        break;
+                    case DropDownFirstItemType.PleaseSelect:
+                    case DropDownFirstItemType.IncludeAll:
+                        item.Culture.CountryEnglishName = dropDownFirstItemType.GetDescription(useLocalizedIfPossible: false);
+                        item.Culture.CountryDisplayName = dropDownFirstItemType.GetDescription();
+                        break;
+                    default:
+                        throw new SwitchCaseDefaultException(dropDownFirstItemType);
+                }
+            }
+        }
+
+        if (string.IsNullOrEmpty(SelectedKey))
+        {
+            SelectedKey = GetDefaultCountryItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
+                          Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+        }
+        else
+        {
+            SetSelectedIndexBySelectedKey();
+        }
+
+        Items.SuppressOnChangedNotification = false;
     }
 
     private void SetSelectedIndexBySelectedKey()
     {
+        var selectedKey = SelectedKey;
+        CbCountries.SelectedIndex = CbCountries.Items.Count - 1;
+        SelectedKey = selectedKey;
+
         for (var i = 0; i < CbCountries.Items.Count; i++)
         {
             var item = (CountryItem)CbCountries.Items[i];
@@ -184,6 +240,28 @@ public partial class CountrySelector
                 break;
             }
         }
+    }
+
+    private IList<Culture> GetCultures()
+    {
+        if (UseOnlySupportedCountries)
+        {
+            return ResourceHelper.GetSupportedCultures();
+        }
+
+        var countryNames = CultureHelper.GetCountryNames();
+
+        var list = new List<Culture>();
+        foreach (var item in countryNames)
+        {
+            var culture = CultureHelper.GetCultureByLcid(item.Key);
+            if (culture is not null)
+            {
+                list.Add(culture);
+            }
+        }
+
+        return list;
     }
 
     private static CountryItem CreateBlankCountryItem()
@@ -230,9 +308,12 @@ public partial class CountrySelector
     private CountryItem? GetDefaultCountryItem()
     {
         CountryItem? defaultCountryItem = null;
-        if (DefaultCultureLcid.HasValue)
+        if (!string.IsNullOrEmpty(DefaultCultureIdentifier))
         {
-            var countryItem = Items.FirstOrDefault(x => x.Culture.Lcid == DefaultCultureLcid.Value);
+            var countryItem = DefaultCultureIdentifier.IsDigitOnly()
+                ? Items.FirstOrDefault(x => x.Culture.Lcid == NumberHelper.ParseToInt(DefaultCultureIdentifier))
+                : Items.FirstOrDefault(x => x.Culture.Name == DefaultCultureIdentifier);
+
             if (countryItem is not null)
             {
                 defaultCountryItem = countryItem;

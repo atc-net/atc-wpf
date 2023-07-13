@@ -1,5 +1,6 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable InvertIf
+// ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
@@ -45,16 +46,16 @@ public partial class LanguageSelector
         set => SetValue(UseOnlySupportedLanguagesProperty, value);
     }
 
-    public static readonly DependencyProperty DefaultCultureLcidProperty = DependencyProperty.Register(
-        nameof(DefaultCultureLcid),
-        typeof(int?),
+    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
+        nameof(DefaultCultureIdentifier),
+        typeof(string),
         typeof(LanguageSelector),
-        new PropertyMetadata(default(int?)));
+        new PropertyMetadata(default));
 
-    public int? DefaultCultureLcid
+    public string? DefaultCultureIdentifier
     {
-        get => (int?)GetValue(DefaultCultureLcidProperty);
-        set => SetValue(DefaultCultureLcidProperty, value);
+        get => (string?)GetValue(DefaultCultureIdentifierProperty);
+        set => SetValue(DefaultCultureIdentifierProperty, value);
     }
 
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
@@ -74,9 +75,10 @@ public partial class LanguageSelector
         languageSelector.SetSelectedIndexBySelectedKey();
 
         if (languageSelector is { processingOnLoaded: false, UpdateUiCultureOnChangeEvent: true } &&
+            !string.IsNullOrEmpty(languageSelector.SelectedKey) &&
             !languageSelector.SelectedKey.StartsWith('-'))
         {
-            CultureManager.UiCulture = new CultureInfo(int.Parse(languageSelector.SelectedKey, NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo));
+            CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
         }
     }
 
@@ -105,11 +107,12 @@ public partial class LanguageSelector
         DataContext = this;
 
         Loaded += OnLoaded;
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IList<LanguageItem> Items { get; } = new List<LanguageItem>();
+    public ObservableCollectionEx<LanguageItem> Items { get; } = new();
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
@@ -138,16 +141,22 @@ public partial class LanguageSelector
     {
         processingOnLoaded = true;
 
-        var cultures = UseOnlySupportedLanguages
-            ? ResourceHelper.GetSupportedCultures()
-            : CultureHelper
-                .GetCulturesForCountries()
-                .OrderBy(x => x.LanguageDisplayName, StringComparer.Ordinal)
-                .ToList();
+        PopulateDataOnLoaded();
 
+        processingOnLoaded = false;
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+        => UpdateDataOnUiCultureChanged();
+
+    private void PopulateDataOnLoaded()
+    {
+        Items.SuppressOnChangedNotification = true;
+
+        var cultures = GetCultures();
         var flags = ResourceHelper.GetFlags(RenderFlagIndicatorType);
-
-        Items.Clear();
 
         switch (DropDownFirstItemType)
         {
@@ -169,7 +178,7 @@ public partial class LanguageSelector
         foreach (var culture in cultures)
         {
             var (_, bitmapImage) = flags.FirstOrDefault(x => x.Key.Contains(culture.CountryCodeA2 + ".png", StringComparison.Ordinal));
-            Items.Add(new LanguageItem(culture, bitmapImage));
+            Items.Add(new LanguageItem(culture.Clone(), bitmapImage));
         }
 
         if (string.IsNullOrEmpty(SelectedKey))
@@ -182,11 +191,63 @@ public partial class LanguageSelector
             SetSelectedIndexBySelectedKey();
         }
 
-        processingOnLoaded = false;
+        Items.SuppressOnChangedNotification = false;
+    }
+
+    private void UpdateDataOnUiCultureChanged()
+    {
+        Items.SuppressOnChangedNotification = true;
+
+        var cultures = GetCultures();
+
+        foreach (var item in Items)
+        {
+            if (item.Culture.Lcid > 0)
+            {
+                var culture = cultures.Single(x => x.Lcid == item.Culture.Lcid);
+                item.Culture.CountryEnglishName = culture.CountryEnglishName;
+                item.Culture.CountryDisplayName = culture.CountryDisplayName;
+                item.Culture.LanguageEnglishName = culture.LanguageEnglishName;
+                item.Culture.LanguageDisplayName = culture.LanguageDisplayName;
+            }
+            else
+            {
+                var dropDownFirstItemType = (DropDownFirstItemType)item.Culture.Lcid;
+                switch (dropDownFirstItemType)
+                {
+                    case DropDownFirstItemType.None:
+                    case DropDownFirstItemType.Blank:
+                        break;
+                    case DropDownFirstItemType.PleaseSelect:
+                    case DropDownFirstItemType.IncludeAll:
+                        item.Culture.LanguageEnglishName = dropDownFirstItemType.GetDescription(useLocalizedIfPossible: false);
+                        item.Culture.LanguageDisplayName = dropDownFirstItemType.GetDescription();
+                        break;
+                    default:
+                        throw new SwitchCaseDefaultException(dropDownFirstItemType);
+                }
+            }
+        }
+
+        if (string.IsNullOrEmpty(SelectedKey))
+        {
+            SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
+                          Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+        }
+        else
+        {
+            SetSelectedIndexBySelectedKey();
+        }
+
+        Items.SuppressOnChangedNotification = false;
     }
 
     private void SetSelectedIndexBySelectedKey()
     {
+        var selectedKey = SelectedKey;
+        CbLanguages.SelectedIndex = CbLanguages.Items.Count - 1;
+        SelectedKey = selectedKey;
+
         for (var i = 0; i < CbLanguages.Items.Count; i++)
         {
             var item = (LanguageItem)CbLanguages.Items[i];
@@ -196,6 +257,28 @@ public partial class LanguageSelector
                 break;
             }
         }
+    }
+
+    private IList<Culture> GetCultures()
+    {
+        if (UseOnlySupportedLanguages)
+        {
+            return ResourceHelper.GetSupportedCultures();
+        }
+
+        var languageNames = CultureHelper.GetLanguageNames(Thread.CurrentThread.CurrentUICulture.LCID);
+
+        var list = new List<Culture>();
+        foreach (var item in languageNames)
+        {
+            var culture = CultureHelper.GetCultureByLcid(item.Key);
+            if (culture is not null)
+            {
+                list.Add(culture);
+            }
+        }
+
+        return list;
     }
 
     private static LanguageItem CreateBlankLanguageItem()
@@ -242,9 +325,12 @@ public partial class LanguageSelector
     private LanguageItem? GetDefaultLanguageItem()
     {
         LanguageItem? defaultLanguageItem = null;
-        if (DefaultCultureLcid.HasValue)
+        if (!string.IsNullOrEmpty(DefaultCultureIdentifier))
         {
-            var languageItem = Items.FirstOrDefault(x => x.Culture.Lcid == DefaultCultureLcid.Value);
+            var languageItem = DefaultCultureIdentifier.IsDigitOnly()
+                ? Items.FirstOrDefault(x => x.Culture.Lcid == NumberHelper.ParseToInt(DefaultCultureIdentifier))
+                : Items.FirstOrDefault(x => x.Culture.Name == DefaultCultureIdentifier);
+
             if (languageItem is not null)
             {
                 defaultLanguageItem = languageItem;
