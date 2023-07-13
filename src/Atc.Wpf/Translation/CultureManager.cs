@@ -24,6 +24,14 @@ public static class CultureManager
 
     public static event EventHandler<UiCultureEventArgs>? UiCultureChanged;
 
+    public static void Set(
+        CultureInfo cultureInfo,
+        bool synchronizeThreadCultures)
+    {
+        SynchronizeThreadCulture = synchronizeThreadCultures;
+        UiCulture = cultureInfo;
+    }
+
     /// <summary>
     /// Gets or sets the UI culture.
     /// </summary>
