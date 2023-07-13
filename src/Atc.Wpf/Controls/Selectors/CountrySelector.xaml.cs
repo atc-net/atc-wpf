@@ -243,26 +243,9 @@ public partial class CountrySelector
     }
 
     private IList<Culture> GetCultures()
-    {
-        if (UseOnlySupportedCountries)
-        {
-            return ResourceHelper.GetSupportedCultures();
-        }
-
-        var countryNames = CultureHelper.GetCountryNames();
-
-        var list = new List<Culture>();
-        foreach (var item in countryNames)
-        {
-            var culture = CultureHelper.GetCultureByLcid(item.Key);
-            if (culture is not null)
-            {
-                list.Add(culture);
-            }
-        }
-
-        return list;
-    }
+        => UseOnlySupportedCountries
+            ? ResourceHelper.GetSupportedCultures()
+            : CultureHelper.GetCulturesForCountries();
 
     private static CountryItem CreateBlankCountryItem()
         => new(
