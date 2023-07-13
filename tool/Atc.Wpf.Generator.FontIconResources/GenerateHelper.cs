@@ -328,7 +328,7 @@ public static class GenerateHelper
                      .ToDictionary(x => x.Key.Replace(":before", string.Empty, StringComparison.Ordinal), x => x.Value, StringComparer.OrdinalIgnoreCase))
         {
             var s = item.Value.Replace("\"", string.Empty, StringComparison.Ordinal).Replace("\\", string.Empty, StringComparison.Ordinal);
-            var ik = int.Parse(s, NumberStyles.HexNumber, GlobalizationConstants.EnglishCultureInfo);
+            var ik = NumberHelper.ParseToInt(s);
             if (characterMap.ContainsKey(ik))
             {
                 tmpKeyValueFontList.Add(item.Key, item.Value);
