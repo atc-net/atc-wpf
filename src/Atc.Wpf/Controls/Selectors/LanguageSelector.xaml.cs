@@ -1,6 +1,8 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable InvertIf
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
@@ -8,7 +10,10 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </summary>
 public partial class LanguageSelector
 {
+    private static DateTime lastChanged = DateTime.MinValue;
+    private readonly ObservableCollectionEx<LanguageItem> items = new();
     private bool processingOnLoaded;
+    private bool processingSorting;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
@@ -74,10 +79,12 @@ public partial class LanguageSelector
 
         languageSelector.SetSelectedIndexBySelectedKey();
 
-        if (languageSelector is { processingOnLoaded: false, UpdateUiCultureOnChangeEvent: true } &&
+        if (languageSelector is { processingOnLoaded: false, processingSorting: false, UpdateUiCultureOnChangeEvent: true } &&
             !string.IsNullOrEmpty(languageSelector.SelectedKey) &&
-            !languageSelector.SelectedKey.StartsWith('-'))
+            !languageSelector.SelectedKey.StartsWith('-') &&
+            lastChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
         {
+            lastChanged = DateTime.Now;
             CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
         }
     }
@@ -112,7 +119,7 @@ public partial class LanguageSelector
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ObservableCollectionEx<LanguageItem> Items { get; } = new();
+    public ObservableCollectionEx<LanguageItem> Items => items;
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
@@ -229,6 +236,8 @@ public partial class LanguageSelector
             }
         }
 
+        SortItems();
+
         if (string.IsNullOrEmpty(SelectedKey))
         {
             SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
@@ -240,6 +249,27 @@ public partial class LanguageSelector
         }
 
         Items.SuppressOnChangedNotification = false;
+    }
+
+    private void SortItems()
+    {
+        processingSorting = true;
+
+        var firstItem = Items.FirstOrDefault(x => x.Culture.Lcid <= 0);
+        var sortedList = Items
+            .Where(x => x.Culture.Lcid > 0)
+            .OrderBy(x => x.Culture.LanguageDisplayName)
+            .ToList();
+
+        Items.Clear();
+        if (firstItem is not null)
+        {
+            Items.Add(firstItem);
+        }
+
+        Items.AddRange(sortedList);
+
+        processingSorting = false;
     }
 
     private void SetSelectedIndexBySelectedKey()
@@ -260,26 +290,9 @@ public partial class LanguageSelector
     }
 
     private IList<Culture> GetCultures()
-    {
-        if (UseOnlySupportedLanguages)
-        {
-            return ResourceHelper.GetSupportedCultures();
-        }
-
-        var languageNames = CultureHelper.GetLanguageNames(Thread.CurrentThread.CurrentUICulture.LCID);
-
-        var list = new List<Culture>();
-        foreach (var item in languageNames)
-        {
-            var culture = CultureHelper.GetCultureByLcid(item.Key);
-            if (culture is not null)
-            {
-                list.Add(culture);
-            }
-        }
-
-        return list;
-    }
+        => UseOnlySupportedLanguages
+            ? CultureHelper.GetSupportedCultures()
+            : CultureHelper.GetCulturesForLanguages();
 
     private static LanguageItem CreateBlankLanguageItem()
         => new(

@@ -1,6 +1,8 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable InvertIf
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
@@ -8,6 +10,8 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </summary>
 public partial class CountrySelector
 {
+    private readonly ObservableCollectionEx<CountryItem> items = new();
+
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
         typeof(DropDownFirstItemType),
@@ -103,7 +107,7 @@ public partial class CountrySelector
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ObservableCollectionEx<CountryItem> Items { get; } = new();
+    public ObservableCollectionEx<CountryItem> Items => items;
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
@@ -189,9 +193,12 @@ public partial class CountrySelector
         {
             if (item.Culture.Lcid > 0)
             {
-                var culture = cultures.Single(x => x.Lcid == item.Culture.Lcid);
-                item.Culture.CountryEnglishName = culture.CountryEnglishName;
-                item.Culture.CountryDisplayName = culture.CountryDisplayName;
+                var culture = cultures.SingleOrDefault(x => x.Lcid == item.Culture.Lcid);
+                if (culture is not null)
+                {
+                    item.Culture.CountryEnglishName = culture.CountryEnglishName;
+                    item.Culture.CountryDisplayName = culture.CountryDisplayName;
+                }
             }
             else
             {
@@ -212,6 +219,8 @@ public partial class CountrySelector
             }
         }
 
+        SortItems();
+
         if (string.IsNullOrEmpty(SelectedKey))
         {
             SelectedKey = GetDefaultCountryItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
@@ -223,6 +232,23 @@ public partial class CountrySelector
         }
 
         Items.SuppressOnChangedNotification = false;
+    }
+
+    private void SortItems()
+    {
+        var firstItem = Items.FirstOrDefault(x => x.Culture.Lcid <= 0);
+        var sortedList = Items
+            .Where(x => x.Culture.Lcid > 0)
+            .OrderBy(x => x.Culture.CountryDisplayName)
+            .ToList();
+
+        items.Clear();
+        if (firstItem is not null)
+        {
+            items.Add(firstItem);
+        }
+
+        items.AddRange(sortedList);
     }
 
     private void SetSelectedIndexBySelectedKey()
@@ -244,7 +270,7 @@ public partial class CountrySelector
 
     private IList<Culture> GetCultures()
         => UseOnlySupportedCountries
-            ? ResourceHelper.GetSupportedCultures()
+            ? CultureHelper.GetSupportedCultures()
             : CultureHelper.GetCulturesForCountries();
 
     private static CountryItem CreateBlankCountryItem()

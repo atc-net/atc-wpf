@@ -34,6 +34,7 @@
 
                         <atc:LabelCountrySelector
                             DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
                             Orientation="Horizontal"
                             RenderFlagIndicatorType="Shiny16"
                             UseOnlySupportedCountries="False" />
@@ -60,6 +61,7 @@
 
                         <atc:LabelCountrySelector
                             DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
                             Orientation="Vertical"
                             RenderFlagIndicatorType="Shiny16"
                             UseOnlySupportedCountries="False" />

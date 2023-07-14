@@ -42,6 +42,7 @@
 
                         <atc:LabelLanguageSelector
                             DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
                             Orientation="Horizontal"
                             RenderFlagIndicatorType="Shiny16"
                             UpdateUiCultureOnChangeEvent="False"
@@ -78,6 +79,7 @@
 
                         <atc:LabelLanguageSelector
                             DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
                             Orientation="Vertical"
                             RenderFlagIndicatorType="Shiny16"
                             UpdateUiCultureOnChangeEvent="False"
