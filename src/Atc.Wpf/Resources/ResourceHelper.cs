@@ -6,29 +6,6 @@ internal static class ResourceHelper
 {
     private static readonly Dictionary<string, BitmapImage> CacheFlags = new(StringComparer.Ordinal);
 
-    public static IList<Culture> GetSupportedCultures()
-    {
-        var lcids = new List<int>
-        {
-            GlobalizationLcidConstants.Denmark,
-            GlobalizationLcidConstants.Germany,
-            GlobalizationLcidConstants.UnitedStates,
-            GlobalizationLcidConstants.GreatBritain,
-        };
-
-        var cultures = new List<Culture>();
-        foreach (var lcid in lcids)
-        {
-            var culture = CultureHelper.GetCultureByLcid(lcid);
-            if (culture is not null)
-            {
-                cultures.Add(culture);
-            }
-        }
-
-        return cultures;
-    }
-
     public static Dictionary<string, BitmapImage> GetFlags(
         RenderFlagIndicatorType renderFlagIndicatorType)
     {
