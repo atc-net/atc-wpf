@@ -15,11 +15,11 @@ public sealed class JValueTypeToColorValueConverter : IValueConverter
 
         return jValue.Type switch
         {
-            JTokenType.String => new BrushConverter().ConvertFrom("#4e9a06"),
-            JTokenType.Float => new BrushConverter().ConvertFrom("#ad7fa8"),
-            JTokenType.Integer => new BrushConverter().ConvertFrom("#ad7fa8"),
-            JTokenType.Boolean => new BrushConverter().ConvertFrom("#c4a000"),
-            JTokenType.Null => new SolidColorBrush(Colors.OrangeRed),
+            JTokenType.String => Constants.JTokenColorString,
+            JTokenType.Float => Constants.JTokenColorFloat,
+            JTokenType.Integer => Constants.JTokenColorInteger,
+            JTokenType.Boolean => Constants.JTokenColorBoolean,
+            JTokenType.Null => Constants.JTokenColorNull,
             _ => value,
         };
     }

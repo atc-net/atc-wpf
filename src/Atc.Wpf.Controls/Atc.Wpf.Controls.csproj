@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\collapse.svg" />
+    <None Remove="Resources\expand.svg" />
     <None Remove="Resources\information.svg" />
     <None Remove="Resources\question-mark.svg" />
     <None Remove="Resources\question.svg" />
@@ -25,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\collapse.svg" />
+    <Resource Include="Resources\expand.svg" />
     <Resource Include="Resources\information.svg" />
     <Resource Include="Resources\info_help.svg" />
     <Resource Include="Resources\question-mark.svg" />
