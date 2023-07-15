@@ -5,45 +5,64 @@ namespace Atc.Wpf.Sample.SamplesWpfControls.DialogBoxes;
 [SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "OK.")]
 public class StandardDialogBoxViewModel : ViewModelBase
 {
-    public static IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);
+    private static readonly JsonSerializerOptions JsonOptions = Serialization.JsonSerializerOptionsFactory.Create();
+    private string jsonResult = string.Empty;
 
-    public static IRelayCommand ShowQuestionDialogBoxCommand => new RelayCommand(ShowQuestionDialogBoxCommandHandler);
+    public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputDialogBoxCommand => new RelayCommand(ShowInputDialogBoxCommandHandler);
+    public IRelayCommand ShowQuestionDialogBoxCommand => new RelayCommand(ShowQuestionDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputForm1ColumnDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnDialogBoxCommandHandler);
+    public IRelayCommand ShowInputDialogBoxCommand => new RelayCommand(ShowInputDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputForm2ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm2ColumnsDialogBoxCommandHandler);
+    public IRelayCommand ShowInputForm1ColumnDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputForm3ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm3ColumnsDialogBoxCommandHandler);
+    public IRelayCommand ShowInputForm2ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm2ColumnsDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputFormAddressWithDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithDataDialogBoxCommandHandler);
+    public IRelayCommand ShowInputForm3ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm3ColumnsDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputFormAddressWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithoutDataDialogBoxCommandHandler);
+    public IRelayCommand ShowInputFormAddressWithDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithDataDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputFormPersonWithDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithDataDialogBoxCommandHandler);
+    public IRelayCommand ShowInputFormAddressWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithoutDataDialogBoxCommandHandler);
 
-    public static IRelayCommand ShowInputFormPersonWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithoutDataDialogBoxCommandHandler);
+    public IRelayCommand ShowInputFormPersonWithDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithDataDialogBoxCommandHandler);
 
-    private static void ShowInfoDialogBoxCommandHandler()
+    public IRelayCommand ShowInputFormPersonWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithoutDataDialogBoxCommandHandler);
+
+    public string JsonResult
+    {
+        get => jsonResult;
+        set
+        {
+            jsonResult = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private void ShowInfoDialogBoxCommandHandler()
     {
         var dialogBox = new InfoDialogBox(
             Application.Current.MainWindow!,
             "Hello world");
 
         var dialogResult = dialogBox.ShowDialog();
+        JsonResult = dialogResult.HasValue && dialogResult.Value
+            ? CreateJson(dialogBox.Settings.AffirmativeButtonText)
+            : CreateJson(dialogBox.Settings.NegativeButtonText);
     }
 
-    private static void ShowQuestionDialogBoxCommandHandler()
+    private void ShowQuestionDialogBoxCommandHandler()
     {
         var dialogBox = new QuestionDialogBox(
             Application.Current.MainWindow!,
             "Are you sure to delete item?");
 
         var dialogResult = dialogBox.ShowDialog();
+        JsonResult = dialogResult.HasValue && dialogResult.Value
+            ? CreateJson(dialogBox.Settings.AffirmativeButtonText)
+            : CreateJson(dialogBox.Settings.NegativeButtonText);
     }
 
-    private static void ShowInputDialogBoxCommandHandler()
+    private void ShowInputDialogBoxCommandHandler()
     {
         var dialogBox = new InputDialogBox(
             Application.Current.MainWindow!,
@@ -58,10 +77,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var newText = ((LabelTextBox)dialogBox.Data).Text;
+            JsonResult = CreateJson(newText);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputForm1ColumnDialogBoxCommandHandler()
+    private void ShowInputForm1ColumnDialogBoxCommandHandler()
     {
         var labelControls = new List<ILabelControlBase>
         {
@@ -99,10 +123,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputForm2ColumnsDialogBoxCommandHandler()
+    private void ShowInputForm2ColumnsDialogBoxCommandHandler()
     {
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(CreateLabelControlsColumn1());
@@ -116,10 +145,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputForm3ColumnsDialogBoxCommandHandler()
+    private void ShowInputForm3ColumnsDialogBoxCommandHandler()
     {
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(CreateLabelControlsColumn1());
@@ -134,10 +168,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputFormAddressWithDataDialogBoxCommandHandler()
+    private void ShowInputFormAddressWithDataDialogBoxCommandHandler()
     {
         var address = new Address(
             StreetName: "My street",
@@ -158,10 +197,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputFormAddressWithoutDataDialogBoxCommandHandler()
+    private void ShowInputFormAddressWithoutDataDialogBoxCommandHandler()
     {
         var address = new Address(
             StreetName: string.Empty,
@@ -182,10 +226,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputFormPersonWithDataDialogBoxCommandHandler()
+    private void ShowInputFormPersonWithDataDialogBoxCommandHandler()
     {
         var person = new Person(
             FirstName: "John",
@@ -210,10 +259,15 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
-    private static void ShowInputFormPersonWithoutDataDialogBoxCommandHandler()
+    private void ShowInputFormPersonWithoutDataDialogBoxCommandHandler()
     {
         var person = new Person(
             FirstName: string.Empty,
@@ -238,6 +292,11 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
         }
     }
 
@@ -292,4 +351,8 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 },
             },
         };
+
+    private string CreateJson(
+        string value)
+        => JsonResult = JsonSerializer.Serialize(value);
 }

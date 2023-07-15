@@ -44,7 +44,9 @@
                         Grid.Column="2"
                         Margin="10"
                         Orientation="Vertical"
-                        Spacing="10" />
+                        Spacing="10">
+                        <atc:JsonViewer BorderBrush="Transparent" Data="{Binding Path=JsonResult}" />
+                    </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>
