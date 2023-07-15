@@ -15,6 +15,7 @@ global using System.Windows.Media;
 global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
 
+global using Atc.Helpers;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Controls.Dialogs;
@@ -26,7 +27,6 @@ global using Atc.Wpf.Controls.Notifications;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.FontIcons;
 global using Atc.Wpf.FontIcons.ValueConverters;
-global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Sample.Models;

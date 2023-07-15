@@ -14,7 +14,8 @@
         x:Name="CbCountries"
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
         SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
-        SelectedValuePath="Culture.Lcid">
+        SelectedValuePath="Culture.Lcid"
+        SelectionChanged="OnSelectionChanged">
         <ComboBox.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">

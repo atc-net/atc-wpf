@@ -1,5 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
-public interface ILabelLanguageSelector : ILabelControlBase
+public interface ILabelLanguageSelector : ILabelControl
 {
 }

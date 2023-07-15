@@ -42,8 +42,7 @@
                         <atc:LabelCountrySelector
                             DefaultCultureIdentifier="de-DE"
                             Orientation="Horizontal"
-                            RenderFlagIndicatorType="Shiny16"
-                            UseOnlySupportedCountries="False" />
+                            RenderFlagIndicatorType="Shiny16" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">

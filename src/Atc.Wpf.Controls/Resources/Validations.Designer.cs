@@ -151,6 +151,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plase select a {0}.
+        /// </summary>
+        public static string PlaseSelect {
+            get {
+                return ResourceManager.GetString("PlaseSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regular expression don&apos;t match.
         /// </summary>
         public static string RegexPatternDontMatch {

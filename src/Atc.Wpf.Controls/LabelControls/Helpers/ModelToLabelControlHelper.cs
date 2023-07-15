@@ -310,7 +310,7 @@ public static class ModelToLabelControlHelper
             IsEnabled = !isReadOnly,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             UseOnlySupportedCountries = false,
-            // TODO: IsMandatory = propertyInfo.HasRequiredAttribute(),
+            IsMandatory = propertyInfo.HasRequiredAttribute(),
         };
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
@@ -338,7 +338,7 @@ public static class ModelToLabelControlHelper
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             UseOnlySupportedLanguages = false,
             UpdateUiCultureOnChangeEvent = false,
-            /// TODO: IsMandatory = propertyInfo.HasRequiredAttribute(),
+            IsMandatory = propertyInfo.HasRequiredAttribute(),
         };
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);

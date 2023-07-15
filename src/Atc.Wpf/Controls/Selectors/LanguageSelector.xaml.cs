@@ -3,6 +3,7 @@
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable ConvertToAutoPropertyWhenPossible
+// ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
@@ -10,10 +11,13 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </summary>
 public partial class LanguageSelector
 {
-    private static DateTime lastChanged = DateTime.MinValue;
     private readonly ObservableCollectionEx<LanguageItem> items = new();
+    private static DateTime lastKeyChanged = DateTime.MinValue;
+    private DateTime lastItemChanged = DateTime.MinValue;
+    private LanguageItem? lastChangedToItem;
     private bool processingOnLoaded;
     private bool processingSorting;
+    private bool raiseSelectionChanged;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
@@ -82,9 +86,9 @@ public partial class LanguageSelector
         if (languageSelector is { processingOnLoaded: false, processingSorting: false, UpdateUiCultureOnChangeEvent: true } &&
             !string.IsNullOrEmpty(languageSelector.SelectedKey) &&
             !languageSelector.SelectedKey.StartsWith('-') &&
-            lastChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
+            lastKeyChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
         {
-            lastChanged = DateTime.Now;
+            lastKeyChanged = DateTime.Now;
             CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
         }
     }
@@ -107,6 +111,10 @@ public partial class LanguageSelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+
     public LanguageSelector()
     {
         InitializeComponent();
@@ -116,8 +124,6 @@ public partial class LanguageSelector
         Loaded += OnLoaded;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public ObservableCollectionEx<LanguageItem> Items => items;
 
@@ -240,8 +246,10 @@ public partial class LanguageSelector
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
+            raiseSelectionChanged = true;
             SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
                           Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+            raiseSelectionChanged = false;
         }
         else
         {
@@ -258,7 +266,7 @@ public partial class LanguageSelector
         var firstItem = Items.FirstOrDefault(x => x.Culture.Lcid <= 0);
         var sortedList = Items
             .Where(x => x.Culture.Lcid > 0)
-            .OrderBy(x => x.Culture.LanguageDisplayName)
+            .OrderBy(x => x.Culture.LanguageDisplayName, StringComparer.Ordinal)
             .ToList();
 
         Items.Clear();
@@ -283,7 +291,12 @@ public partial class LanguageSelector
             var item = (LanguageItem)CbLanguages.Items[i];
             if (SelectedKey == item.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo))
             {
+                raiseSelectionChanged = true;
+
                 CbLanguages.SelectedIndex = i;
+                OnSelectionChanged(this, item);
+
+                raiseSelectionChanged = false;
                 break;
             }
         }
@@ -340,7 +353,7 @@ public partial class LanguageSelector
         LanguageItem? defaultLanguageItem = null;
         if (!string.IsNullOrEmpty(DefaultCultureIdentifier))
         {
-            var languageItem = DefaultCultureIdentifier.IsDigitOnly()
+            var languageItem = NumberHelper.IsInt(DefaultCultureIdentifier)
                 ? Items.FirstOrDefault(x => x.Culture.Lcid == NumberHelper.ParseToInt(DefaultCultureIdentifier))
                 : Items.FirstOrDefault(x => x.Culture.Name == DefaultCultureIdentifier);
 
@@ -351,5 +364,48 @@ public partial class LanguageSelector
         }
 
         return defaultLanguageItem ?? Items.FirstOrDefault(x => x.Culture.Lcid == Thread.CurrentThread.CurrentUICulture.LCID);
+    }
+
+    private void OnSelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e)
+    {
+        if (processingOnLoaded ||
+            !raiseSelectionChanged)
+        {
+            return;
+        }
+
+        OnSelectionChanged(sender, (LanguageItem)e.AddedItems[0]!);
+    }
+
+    [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK.")]
+    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
+    private void OnSelectionChanged(
+        object sender,
+        LanguageItem languageItem)
+    {
+        if (processingOnLoaded ||
+            !raiseSelectionChanged)
+        {
+            return;
+        }
+
+        if ((lastChangedToItem is null ||
+            languageItem.Culture.Lcid != lastChangedToItem.Culture.Lcid) &&
+            lastItemChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
+        {
+            lastItemChanged = DateTime.Now;
+            lastChangedToItem = languageItem;
+
+            Debug.WriteLine($"LanguageSelector - Change to: {languageItem.Culture.Lcid} ({languageItem.Culture.Name})");
+
+            SelectorChanged?.Invoke(
+                this,
+                new ChangedStringEventArgs(
+                identifier: Guid.Empty.ToString(),
+                oldValue: null,
+                newValue: languageItem.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo)));
+        }
     }
 }

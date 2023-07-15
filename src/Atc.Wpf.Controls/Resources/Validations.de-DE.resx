@@ -156,4 +156,7 @@
   <data name="ValueShouldBeAInteger" xml:space="preserve">
     <value>Der Wert sollte eine Ganzzahl sein</value>
   </data>
+  <data name="PlaseSelect" xml:space="preserve">
+    <value>Bitte wähle ein {0}</value>
+  </data>
 </root>

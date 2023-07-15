@@ -147,6 +147,9 @@
   <data name="NotAllowedFormat1" xml:space="preserve">
     <value>Not allowed: {0}</value>
   </data>
+  <data name="PlaseSelect" xml:space="preserve">
+    <value>Plase select a {0}</value>
+  </data>
   <data name="RegexPatternDontMatch" xml:space="preserve">
     <value>Regular expression don't match</value>
   </data>
