@@ -564,4 +564,7 @@
   <data name="Taupe" xml:space="preserve">
     <value>Taupe</value>
   </data>
+  <data name="_Color" xml:space="preserve">
+    <value>Farve</value>
+  </data>
 </root>

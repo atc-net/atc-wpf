@@ -85,6 +85,8 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
+    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
+
     public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
 
     public LabelLanguageSelector()

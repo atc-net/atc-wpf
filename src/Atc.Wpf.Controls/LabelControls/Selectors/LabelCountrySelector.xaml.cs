@@ -72,6 +72,8 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
+    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
+
     public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
 
     public LabelCountrySelector()

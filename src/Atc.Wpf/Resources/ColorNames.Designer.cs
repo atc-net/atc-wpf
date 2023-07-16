@@ -61,6 +61,15 @@ namespace Atc.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string _Color {
+            get {
+                return ResourceManager.GetString("_Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alice Blue.
         /// </summary>
         public static string AliceBlue {
