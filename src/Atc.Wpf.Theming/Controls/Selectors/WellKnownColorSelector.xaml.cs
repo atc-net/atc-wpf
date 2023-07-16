@@ -1,5 +1,6 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable InvertIf
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 /// <summary>
@@ -81,21 +82,6 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(
-        ref T field,
-        T value,
-        [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return false;
-        }
-
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
     }
 
     private void OnLoaded(
@@ -217,9 +203,9 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
 
     private void SortItems()
     {
-        var firstItem = Items.FirstOrDefault(x => x.Name.StartsWith("-", StringComparison.Ordinal));
+        var firstItem = Items.FirstOrDefault(x => x.Name.StartsWith('-'));
         var sortedList = Items
-            .Where(x => !x.Name.StartsWith("#", StringComparison.Ordinal))
+            .Where(x => !x.Name.StartsWith('#'))
             .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
             .ToList();
 
