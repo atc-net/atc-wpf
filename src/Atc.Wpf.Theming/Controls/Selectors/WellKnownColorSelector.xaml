@@ -18,6 +18,7 @@
     </UserControl.Resources>
 
     <ComboBox
+        x:Name="CbColors"
         IsSynchronizedWithCurrentItem="True"
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
         SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"

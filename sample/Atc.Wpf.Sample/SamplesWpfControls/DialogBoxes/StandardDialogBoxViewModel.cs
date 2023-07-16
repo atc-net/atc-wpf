@@ -10,8 +10,8 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public StandardDialogBoxViewModel()
     {
-        jsonOptions = Serialization.JsonSerializerOptionsFactory.Create();
-        jsonOptions.Converters.Add(new CultureInfoConverter());
+        jsonOptions = Atc.Serialization.JsonSerializerOptionsFactory.Create();
+        jsonOptions.Converters.Add(new JsonCultureInfoToNameConverter());
     }
 
     public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);

@@ -17,6 +17,7 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
 
 global using Atc.Helpers;
+global using Atc.Serialization.JsonConverters;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Controls.Dialogs;

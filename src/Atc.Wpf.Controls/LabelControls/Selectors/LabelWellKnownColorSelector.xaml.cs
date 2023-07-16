@@ -6,66 +6,6 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// </summary>
 public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
 {
-    public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
-        nameof(ShowAsteriskOnMandatory),
-        typeof(bool),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
-
-    public bool ShowAsteriskOnMandatory
-    {
-        get => (bool)GetValue(ShowAsteriskOnMandatoryProperty);
-        set => SetValue(ShowAsteriskOnMandatoryProperty, value);
-    }
-
-    public static readonly DependencyProperty IsMandatoryProperty = DependencyProperty.Register(
-        nameof(IsMandatory),
-        typeof(bool),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
-
-    public bool IsMandatory
-    {
-        get => (bool)GetValue(IsMandatoryProperty);
-        set => SetValue(IsMandatoryProperty, value);
-    }
-
-    public static readonly DependencyProperty MandatoryColorProperty = DependencyProperty.Register(
-        nameof(MandatoryColor),
-        typeof(SolidColorBrush),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(new SolidColorBrush(Colors.Red)));
-
-    public SolidColorBrush MandatoryColor
-    {
-        get => (SolidColorBrush)GetValue(MandatoryColorProperty);
-        set => SetValue(MandatoryColorProperty, value);
-    }
-
-    public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
-        nameof(ValidationColor),
-        typeof(SolidColorBrush),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(Application.Current.Resources["AtcApps.Brushes.Control.Validation"] as SolidColorBrush));
-
-    public SolidColorBrush ValidationColor
-    {
-        get => (SolidColorBrush)GetValue(ValidationColorProperty);
-        set => SetValue(ValidationColorProperty, value);
-    }
-
-    public static readonly DependencyProperty ValidationTextProperty = DependencyProperty.Register(
-        nameof(ValidationText),
-        typeof(string),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(default(string)));
-
-    public string ValidationText
-    {
-        get => (string)GetValue(ValidationTextProperty);
-        set => SetValue(ValidationTextProperty, value);
-    }
-
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderColorIndicatorType),
         typeof(RenderColorIndicatorType),

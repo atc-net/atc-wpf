@@ -61,6 +61,10 @@ public static class ModelToLabelControlHelper
             {
                 labelControls.Add(CreateLabelTextBox(propertyInfo, model, isReadOnly));
             }
+            else if (propertyInfo.PropertyType == typeof(Color))
+            {
+                labelControls.Add(CreateLabelColorSelector(propertyInfo, model, isReadOnly));
+            }
             else if (propertyInfo.PropertyType == typeof(CultureInfo))
             {
                 if (propertyInfo.GetName().Contains("Country", StringComparison.OrdinalIgnoreCase))
@@ -292,6 +296,32 @@ public static class ModelToLabelControlHelper
         if (regexAttribute is not null)
         {
             control.RegexPattern = ((RegularExpressionAttribute)regexAttribute).Pattern;
+        }
+
+        return control;
+    }
+
+    private static LabelWellKnownColorSelector CreateLabelColorSelector<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        var control = new LabelWellKnownColorSelector
+        {
+            LabelText = propertyInfo.Name.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            //DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
+            //UseOnlySupportedCountries = false,
+            IsMandatory = propertyInfo.HasRequiredAttribute(),
+        };
+
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            var cultureInfoName = propertyObjectValue.ToString()!;
+            control.SelectedKey = cultureInfoName;
         }
 
         return control;

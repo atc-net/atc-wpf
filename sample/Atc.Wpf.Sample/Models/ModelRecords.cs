@@ -28,7 +28,7 @@ public record Address
     [RegularExpression("^\\d{4}$")]
     public string PostalCode { get; init; }
 
-    public CultureInfo Country { get; init; }
+    public CultureInfo? Country { get; init; }
 }
 
 public record Person
@@ -55,6 +55,8 @@ public record Person
 
     [Range(1, 99)]
     public int Age { get; init; }
+
+    public Color FavoriteColor { get; init; }
 
     public Address Address { get; init; }
 }
