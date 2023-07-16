@@ -5,8 +5,14 @@ namespace Atc.Wpf.Sample.SamplesWpfControls.DialogBoxes;
 [SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "OK.")]
 public class StandardDialogBoxViewModel : ViewModelBase
 {
-    private static readonly JsonSerializerOptions JsonOptions = Serialization.JsonSerializerOptionsFactory.Create();
+    private readonly JsonSerializerOptions? jsonOptions;
     private string jsonResult = string.Empty;
+
+    public StandardDialogBoxViewModel()
+    {
+        jsonOptions = Serialization.JsonSerializerOptionsFactory.Create();
+        jsonOptions.Converters.Add(new CultureInfoConverter());
+    }
 
     public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);
 
@@ -123,7 +129,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -145,7 +151,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -168,7 +174,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -179,10 +185,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
     private void ShowInputFormAddressWithDataDialogBoxCommandHandler()
     {
         var address = new Address(
-            StreetName: "My street",
-            CityName: "My city",
-            PostalCode: "1234",
-            Country: new CultureInfo("da-DK"));
+            streetName: "My street",
+            cityName: "My city",
+            postalCode: "1234",
+            country: new CultureInfo("da-DK"));
 
         var labelControls = ModelToLabelControlHelper.GetLabelControls(address);
 
@@ -197,7 +203,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -208,10 +214,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
     private void ShowInputFormAddressWithoutDataDialogBoxCommandHandler()
     {
         var address = new Address(
-            StreetName: string.Empty,
-            CityName: string.Empty,
-            PostalCode: string.Empty,
-            Country: new CultureInfo("en-US"));
+            streetName: string.Empty,
+            cityName: string.Empty,
+            postalCode: string.Empty,
+            country: new CultureInfo("en-US"));
 
         var labelControls = ModelToLabelControlHelper.GetLabelControls(address);
 
@@ -226,7 +232,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -237,14 +243,14 @@ public class StandardDialogBoxViewModel : ViewModelBase
     private void ShowInputFormPersonWithDataDialogBoxCommandHandler()
     {
         var person = new Person(
-            FirstName: "John",
-            LastName: "Doe",
-            Age: 33,
-            Address: new Address(
-                StreetName: "My street",
-                CityName: "My city",
-                PostalCode: "1234",
-                Country: new CultureInfo("da-DK")));
+            firstName: "John",
+            lastName: "Doe",
+            age: 33,
+            address: new Address(
+                streetName: "My street",
+                cityName: "My city",
+                postalCode: "1234",
+                country: new CultureInfo("da-DK")));
 
         var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
 
@@ -259,7 +265,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -270,14 +276,14 @@ public class StandardDialogBoxViewModel : ViewModelBase
     private void ShowInputFormPersonWithoutDataDialogBoxCommandHandler()
     {
         var person = new Person(
-            FirstName: string.Empty,
-            LastName: string.Empty,
-            Age: 0,
-            Address: new Address(
-                StreetName: string.Empty,
-                CityName: string.Empty,
-                PostalCode: string.Empty,
-                Country: new CultureInfo("en-US")));
+            firstName: string.Empty,
+            lastName: string.Empty,
+            age: 0,
+            address: new Address(
+                streetName: string.Empty,
+                cityName: string.Empty,
+                postalCode: string.Empty,
+                country: new CultureInfo("en-US")));
 
         var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
 
@@ -292,7 +298,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
         if (dialogResult.HasValue && dialogResult.Value)
         {
             var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, JsonOptions);
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {
@@ -354,5 +360,5 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     private string CreateJson(
         string value)
-        => JsonResult = JsonSerializer.Serialize(value);
+        => JsonResult = $"{{ \"Value\": \"{value}\" }}";
 }

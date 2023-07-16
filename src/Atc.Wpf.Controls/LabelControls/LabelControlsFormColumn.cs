@@ -65,6 +65,11 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         var result = new Dictionary<string, object>(StringComparer.Ordinal);
         foreach (var control in LabelControls)
         {
+            if (!control.IsValid())
+            {
+                continue;
+            }
+
             switch (control)
             {
                 case LabelCheckBox labelCheckBox:
@@ -87,6 +92,12 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                     break;
                 case LabelTextBox labelTextBox:
                     result.Add(control.Identifier, labelTextBox.Text);
+                    break;
+                case LabelCountrySelector labelCountrySelector:
+                    result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.SelectedKey)));
+                    break;
+                case LabelLanguageSelector labelLanguageSelector:
+                    result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.SelectedKey)));
                     break;
             }
         }

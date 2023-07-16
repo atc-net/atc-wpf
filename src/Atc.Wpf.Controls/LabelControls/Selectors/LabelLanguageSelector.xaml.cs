@@ -131,6 +131,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
             return;
         }
 
+        control.SelectedKey = e.NewValue!;
         control.ValidationText = string.Empty;
     }
 

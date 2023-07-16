@@ -3,6 +3,7 @@
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable ConvertToAutoPropertyWhenPossible
+// ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
@@ -13,7 +14,7 @@ public partial class CountrySelector
     private readonly ObservableCollectionEx<CountryItem> items = new();
     private DateTime lastItemChanged = DateTime.MinValue;
     private CountryItem? lastChangedToItem;
-    private bool raiseSelectionChanged;
+    private bool processingUiCultureChanged;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
@@ -70,15 +71,6 @@ public partial class CountrySelector
         new PropertyMetadata(
             string.Empty,
             OnSelectedKeyChanged));
-
-    private static void OnSelectedKeyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var countrySelector = (CountrySelector)d;
-
-        countrySelector.SetSelectedIndexBySelectedKey();
-    }
 
     public string SelectedKey
     {
@@ -190,6 +182,7 @@ public partial class CountrySelector
 
     private void UpdateDataOnUiCultureChanged()
     {
+        processingUiCultureChanged = true;
         Items.SuppressOnChangedNotification = true;
 
         var cultures = GetCultures();
@@ -228,10 +221,8 @@ public partial class CountrySelector
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
-            raiseSelectionChanged = true;
             SelectedKey = GetDefaultCountryItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
                           Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
-            raiseSelectionChanged = false;
         }
         else
         {
@@ -239,6 +230,7 @@ public partial class CountrySelector
         }
 
         Items.SuppressOnChangedNotification = false;
+        processingUiCultureChanged = false;
     }
 
     private void SortItems()
@@ -260,29 +252,45 @@ public partial class CountrySelector
 
     private void SetSelectedIndexBySelectedKey()
     {
-        var selectedKey = SelectedKey;
-        CbCountries.SelectedIndex = CbCountries.Items.Count - 1;
-        SelectedKey = selectedKey;
+        UpdateTranslationForSelectedItem();
 
         for (var i = 0; i < CbCountries.Items.Count; i++)
         {
             var item = (CountryItem)CbCountries.Items[i];
             if (SelectedKey == item.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo))
             {
-                raiseSelectionChanged = true;
-
                 CbCountries.SelectedIndex = i;
-                OnSelectionChanged(this, item);
+                if (!processingUiCultureChanged)
+                {
+                    OnSelectionChanged(this, item);
+                }
 
-                raiseSelectionChanged = false;
                 break;
             }
         }
     }
 
+    private void UpdateTranslationForSelectedItem()
+    {
+        if (CbCountries.SelectedIndex != -1)
+        {
+            var backupIndex = CbCountries.SelectedIndex;
+            if (CbCountries.Items.Count > backupIndex)
+            {
+                CbCountries.SelectedIndex = backupIndex + 1;
+            }
+            else
+            {
+                CbCountries.SelectedIndex = backupIndex - 1;
+            }
+
+            CbCountries.SelectedIndex = backupIndex;
+        }
+    }
+
     private IList<Culture> GetCultures()
         => UseOnlySupportedCountries
-            ? CultureHelper.GetSupportedCultures()
+            ? CultureHelper.GetSupportedCultures(Thread.CurrentThread.CurrentUICulture.LCID)
             : CultureHelper.GetCulturesForCountries();
 
     private static CountryItem CreateBlankCountryItem()
@@ -344,17 +352,19 @@ public partial class CountrySelector
         return defaultCountryItem;
     }
 
+    private static void OnSelectedKeyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var countrySelector = (CountrySelector)d;
+
+        countrySelector.SetSelectedIndexBySelectedKey();
+    }
+
     private void OnSelectionChanged(
         object sender,
         SelectionChangedEventArgs e)
-    {
-        if (!raiseSelectionChanged)
-        {
-            return;
-        }
-
-        OnSelectionChanged(sender, (CountryItem)e.AddedItems[0]!);
-    }
+        => OnSelectionChanged(sender, (CountryItem)e.AddedItems[0]!);
 
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK.")]
     [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
@@ -362,7 +372,8 @@ public partial class CountrySelector
         object sender,
         CountryItem countryItem)
     {
-        if (!raiseSelectionChanged)
+        if (processingUiCultureChanged ||
+            Items.SuppressOnChangedNotification)
         {
             return;
         }

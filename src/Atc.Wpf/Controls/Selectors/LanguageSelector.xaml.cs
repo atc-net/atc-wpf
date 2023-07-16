@@ -15,9 +15,7 @@ public partial class LanguageSelector
     private static DateTime lastKeyChanged = DateTime.MinValue;
     private DateTime lastItemChanged = DateTime.MinValue;
     private LanguageItem? lastChangedToItem;
-    private bool processingOnLoaded;
-    private bool processingSorting;
-    private bool raiseSelectionChanged;
+    private bool processingUiCultureChanged;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
@@ -74,24 +72,6 @@ public partial class LanguageSelector
         new PropertyMetadata(
             string.Empty,
             OnSelectedKeyChanged));
-
-    private static void OnSelectedKeyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var languageSelector = (LanguageSelector)d;
-
-        languageSelector.SetSelectedIndexBySelectedKey();
-
-        if (languageSelector is { processingOnLoaded: false, processingSorting: false, UpdateUiCultureOnChangeEvent: true } &&
-            !string.IsNullOrEmpty(languageSelector.SelectedKey) &&
-            !languageSelector.SelectedKey.StartsWith('-') &&
-            lastKeyChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
-        {
-            lastKeyChanged = DateTime.Now;
-            CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
-        }
-    }
 
     public string SelectedKey
     {
@@ -151,13 +131,7 @@ public partial class LanguageSelector
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        processingOnLoaded = true;
-
-        PopulateDataOnLoaded();
-
-        processingOnLoaded = false;
-    }
+        => PopulateDataOnLoaded();
 
     private void OnUiCultureChanged(
         object? sender,
@@ -209,6 +183,7 @@ public partial class LanguageSelector
 
     private void UpdateDataOnUiCultureChanged()
     {
+        processingUiCultureChanged = true;
         Items.SuppressOnChangedNotification = true;
 
         var cultures = GetCultures();
@@ -246,10 +221,8 @@ public partial class LanguageSelector
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
-            raiseSelectionChanged = true;
             SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
                           Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
-            raiseSelectionChanged = false;
         }
         else
         {
@@ -257,12 +230,11 @@ public partial class LanguageSelector
         }
 
         Items.SuppressOnChangedNotification = false;
+        processingUiCultureChanged = false;
     }
 
     private void SortItems()
     {
-        processingSorting = true;
-
         var firstItem = Items.FirstOrDefault(x => x.Culture.Lcid <= 0);
         var sortedList = Items
             .Where(x => x.Culture.Lcid > 0)
@@ -276,35 +248,49 @@ public partial class LanguageSelector
         }
 
         Items.AddRange(sortedList);
-
-        processingSorting = false;
     }
 
     private void SetSelectedIndexBySelectedKey()
     {
-        var selectedKey = SelectedKey;
-        CbLanguages.SelectedIndex = CbLanguages.Items.Count - 1;
-        SelectedKey = selectedKey;
+        UpdateTranslationForSelectedItem();
 
         for (var i = 0; i < CbLanguages.Items.Count; i++)
         {
             var item = (LanguageItem)CbLanguages.Items[i];
             if (SelectedKey == item.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo))
             {
-                raiseSelectionChanged = true;
-
                 CbLanguages.SelectedIndex = i;
-                OnSelectionChanged(this, item);
+                if (!processingUiCultureChanged)
+                {
+                    OnSelectionChanged(this, item);
+                }
 
-                raiseSelectionChanged = false;
                 break;
             }
         }
     }
 
+    private void UpdateTranslationForSelectedItem()
+    {
+        if (CbLanguages.SelectedIndex != -1)
+        {
+            var backupIndex = CbLanguages.SelectedIndex;
+            if (CbLanguages.Items.Count > backupIndex)
+            {
+                CbLanguages.SelectedIndex = backupIndex + 1;
+            }
+            else
+            {
+                CbLanguages.SelectedIndex = backupIndex - 1;
+            }
+
+            CbLanguages.SelectedIndex = backupIndex;
+        }
+    }
+
     private IList<Culture> GetCultures()
         => UseOnlySupportedLanguages
-            ? CultureHelper.GetSupportedCultures()
+            ? CultureHelper.GetSupportedCultures(Thread.CurrentThread.CurrentUICulture.LCID)
             : CultureHelper.GetCulturesForLanguages();
 
     private static LanguageItem CreateBlankLanguageItem()
@@ -366,18 +352,28 @@ public partial class LanguageSelector
         return defaultLanguageItem ?? Items.FirstOrDefault(x => x.Culture.Lcid == Thread.CurrentThread.CurrentUICulture.LCID);
     }
 
+    private static void OnSelectedKeyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var languageSelector = (LanguageSelector)d;
+
+        languageSelector.SetSelectedIndexBySelectedKey();
+
+        if (languageSelector is { processingUiCultureChanged: false, UpdateUiCultureOnChangeEvent: true } &&
+            !string.IsNullOrEmpty(languageSelector.SelectedKey) &&
+            !languageSelector.SelectedKey.StartsWith('-') &&
+            lastKeyChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
+        {
+            lastKeyChanged = DateTime.Now;
+            CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
+        }
+    }
+
     private void OnSelectionChanged(
         object sender,
         SelectionChangedEventArgs e)
-    {
-        if (processingOnLoaded ||
-            !raiseSelectionChanged)
-        {
-            return;
-        }
-
-        OnSelectionChanged(sender, (LanguageItem)e.AddedItems[0]!);
-    }
+        => OnSelectionChanged(sender, (LanguageItem)e.AddedItems[0]!);
 
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK.")]
     [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
@@ -385,8 +381,8 @@ public partial class LanguageSelector
         object sender,
         LanguageItem languageItem)
     {
-        if (processingOnLoaded ||
-            !raiseSelectionChanged)
+        if (processingUiCultureChanged ||
+            Items.SuppressOnChangedNotification)
         {
             return;
         }

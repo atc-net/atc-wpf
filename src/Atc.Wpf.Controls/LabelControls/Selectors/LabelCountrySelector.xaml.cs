@@ -118,6 +118,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
             return;
         }
 
+        control.SelectedKey = e.NewValue!;
         control.ValidationText = string.Empty;
     }
 
