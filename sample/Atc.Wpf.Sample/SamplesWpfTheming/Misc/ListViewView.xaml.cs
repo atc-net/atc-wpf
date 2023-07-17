@@ -17,6 +17,7 @@ public partial class ListViewView
                 "John",
                 "Doe",
                 42,
+                Colors.DarkCyan,
                 new Address(
                     "123 Main St",
                     "Anytown, Califonia",
@@ -27,6 +28,7 @@ public partial class ListViewView
                 "Juan",
                 "Doe",
                 38,
+                Colors.DarkCyan,
                 new Address(
                     "123 Main St",
                     "Anytown, Califonia",
@@ -37,6 +39,7 @@ public partial class ListViewView
                 "Karren",
                 "Koe",
                 21,
+                Colors.DarkCyan,
                 new Address(
                     "My Street 21",
                     "Anytown, New York",
@@ -47,6 +50,7 @@ public partial class ListViewView
                 "Noelle",
                 "Barr",
                 1,
+                Colors.DarkCyan,
                 new Address(
                     "My Street 1",
                     "Unknown",
@@ -57,6 +61,7 @@ public partial class ListViewView
                 "Batman",
                 "Forever",
                 1,
+                Colors.DarkCyan,
                 new Address(
                     "My Street 1",
                     "Unknown",

@@ -61,7 +61,8 @@ public static class ModelToLabelControlHelper
             {
                 labelControls.Add(CreateLabelTextBox(propertyInfo, model, isReadOnly));
             }
-            else if (propertyInfo.PropertyType == typeof(Color))
+            else if (propertyInfo.PropertyType == typeof(Color) ||
+                     propertyInfo.PropertyType == typeof(Color?))
             {
                 labelControls.Add(CreateLabelColorSelector(propertyInfo, model, isReadOnly));
             }
@@ -313,14 +314,22 @@ public static class ModelToLabelControlHelper
             LabelText = propertyInfo.Name.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
+            IsMandatory = propertyInfo.HasRequiredAttribute() || !IsNullable(propertyInfo),
         };
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
         if (propertyObjectValue is not null)
         {
-            var cultureInfoName = propertyObjectValue.ToString()!;
-            control.SelectedKey = cultureInfoName;
+            var colorCode = propertyObjectValue.ToString()!;
+            if ("#00000000".Equals(colorCode, StringComparison.Ordinal))
+            {
+                control.DefaultColorName = ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
+            else
+            {
+                var colorName = ColorUtil.GetColorNameFromHex(colorCode);
+                control.DefaultColorName = colorName ?? ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
         }
 
         return control;
@@ -339,7 +348,7 @@ public static class ModelToLabelControlHelper
             IsEnabled = !isReadOnly,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             UseOnlySupportedCountries = false,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
+            IsMandatory = propertyInfo.HasRequiredAttribute() || !IsNullable(propertyInfo),
         };
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
@@ -367,7 +376,7 @@ public static class ModelToLabelControlHelper
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             UseOnlySupportedLanguages = false,
             UpdateUiCultureOnChangeEvent = false,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
+            IsMandatory = propertyInfo.HasRequiredAttribute() || !IsNullable(propertyInfo),
         };
 
         var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
@@ -404,5 +413,13 @@ public static class ModelToLabelControlHelper
         var type = target.GetType();
         var properties = type.GetProperties();
         return properties.SingleOrDefault(x => x.Name == fieldName);
+    }
+
+    // TODO: Atc - Extensions
+    public static bool IsNullable(
+        PropertyInfo propertyInfo)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+        return Nullable.GetUnderlyingType(propertyInfo.PropertyType) != null;
     }
 }

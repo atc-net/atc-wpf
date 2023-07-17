@@ -155,11 +155,13 @@ public class ColorHelper
     /// <param name="color">color</param>
     /// <param name="colorNamesDictionary">Optional: The dictionary where the ColorName should be looked up</param>
     /// <param name="useAlphaChannel">Set this value to <see langword="false"/> if the alpha-channel should be omitted</param>
+    /// <param name="includeColorHex">Set this value to <see langword="false"/> if hex code should be included</param>
     /// <returns>the local color name or null if the given color doesn't have a name</returns>
     public virtual string? GetColorName(
         Color? color,
         Dictionary<Color, string>? colorNamesDictionary,
-        bool useAlphaChannel)
+        bool useAlphaChannel,
+        bool includeColorHex)
     {
         if (color is null)
         {
@@ -172,50 +174,36 @@ public class ColorHelper
             ? color.ToString()
             : $"#{color.Value.R:X2}{color.Value.G:X2}{color.Value.B:X2}";
 
-        return colorNamesDictionary.TryGetValue(color.Value, out var name)
-            ? $"{name} ({colorHex})"
-            : $"{colorHex}";
+        if (useAlphaChannel && "#00000000".Equals(colorHex, StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        if ("#000000".Equals(colorHex, StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        if (colorNamesDictionary.TryGetValue(color.Value, out var name))
+        {
+            return includeColorHex
+                ? $"{name} ({colorHex})"
+                : name;
+        }
+
+        return colorHex;
     }
 
     /// <summary>
     /// Searches for the localized name of a given <paramref name="color"/> by using the default <see cref="ColorNamesDictionary"/>
     /// </summary>
     /// <param name="color">color</param>
+    /// <param name="useAlphaChannel">Set this value to <see langword="false"/> if the alpha-channel should be omitted</param>
+    /// <param name="includeColorHex">Set this value to <see langword="false"/> if hex code should be included</param>
     /// <returns>the local color name or null if the given color doesn't have a name</returns>
     public string? GetColorName(
-        Color? color)
-        => GetColorName(color, colorNamesDictionary: null, useAlphaChannel: true);
-
-    /// <summary>
-    /// Gets the basic color names.
-    /// </summary>
-    /// <remarks>
-    /// https://en.wikipedia.org/wiki/Web_colors
-    /// </remarks>>
-    public static IList<string> GetBasicColorNames()
-    {
-        var list = new List<string>
-        {
-            "White",
-            "Silver",
-            "Gray",
-            "Black",
-            "Red",
-            "Maroon",
-            "Yellow",
-            "Olive",
-            "Lime",
-            "Green",
-            "Aqua",
-            "Teal",
-            "Blue",
-            "Navy",
-            "Fuchsia",
-            "Purple",
-        };
-
-        return list
-            .OrderBy(x => x, StringComparer.Ordinal)
-            .ToList();
-    }
+        Color color,
+        bool useAlphaChannel = true,
+        bool includeColorHex = true)
+        => GetColorName(color, colorNamesDictionary: null, useAlphaChannel, includeColorHex);
 }

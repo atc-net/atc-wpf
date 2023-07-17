@@ -186,18 +186,9 @@ public partial class WellKnownColorSelector
     }
 
     private IEnumerable<string> GetColorNames()
-    {
-        if (UseOnlyBasicColors)
-        {
-            return ColorHelper.GetBasicColorNames();
-        }
-
-        var colorsInfo = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
-        return colorsInfo
-            .Select(x => x.Name)
-            .OrderBy(x => x, StringComparer.Ordinal)
-            .ToList();
-    }
+        => UseOnlyBasicColors
+            ? ColorUtil.GetBasicColorNames()
+            : ColorUtil.GetKnownColorNames();
 
     private void SetSelectedIndexBySelectedKey()
     {

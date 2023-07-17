@@ -12,6 +12,8 @@ public class StandardDialogBoxViewModel : ViewModelBase
     {
         jsonOptions = Atc.Serialization.JsonSerializerOptionsFactory.Create();
         jsonOptions.Converters.Add(new JsonCultureInfoToNameConverter());
+        ////jsonOptions.Converters.Add(new JsonColorToHexConverter());
+        jsonOptions.Converters.Add(new JsonColorToNameConverter());
     }
 
     public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);
@@ -246,6 +248,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             firstName: "John",
             lastName: "Doe",
             age: 33,
+            favoriteColor: Colors.DarkCyan,
             address: new Address(
                 streetName: "My street",
                 cityName: "My city",
@@ -279,6 +282,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             firstName: string.Empty,
             lastName: string.Empty,
             age: 0,
+            favoriteColor: null,
             address: new Address(
                 streetName: string.Empty,
                 cityName: string.Empty,

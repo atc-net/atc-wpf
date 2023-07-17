@@ -37,11 +37,17 @@ public record Person
         string firstName,
         string lastName,
         int age,
+        Color? favoriteColor,
         Address address)
     {
         FirstName = firstName;
         LastName = lastName;
         Age = age;
+        if (favoriteColor.HasValue)
+        {
+            FavoriteColor = favoriteColor.Value;
+        }
+
         Address = address;
     }
 

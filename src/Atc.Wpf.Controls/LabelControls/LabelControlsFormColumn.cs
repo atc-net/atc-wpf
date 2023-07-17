@@ -55,6 +55,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         return isAllValid;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public Dictionary<string, object> GetKeyValues()
     {
         if (LabelControls is null)
@@ -94,10 +95,26 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.Identifier, labelTextBox.Text);
                     break;
                 case LabelCountrySelector labelCountrySelector:
-                    result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.SelectedKey)));
+                    if (NumberHelper.IsInt(labelCountrySelector.SelectedKey))
+                    {
+                        result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.SelectedKey)));
+                    }
+
                     break;
                 case LabelLanguageSelector labelLanguageSelector:
-                    result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.SelectedKey)));
+                    if (NumberHelper.IsInt(labelLanguageSelector.SelectedKey))
+                    {
+                        result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.SelectedKey)));
+                    }
+
+                    break;
+                case LabelWellKnownColorSelector labelWellKnownColorSelector:
+                    var color = ColorUtil.GetColorFromName(labelWellKnownColorSelector.SelectedKey);
+                    if (color is not null)
+                    {
+                        result.Add(control.Identifier, (Color)color);
+                    }
+
                     break;
             }
         }
