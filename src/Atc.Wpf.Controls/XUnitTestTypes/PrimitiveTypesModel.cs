@@ -85,4 +85,12 @@ public class PrimitiveTypesModel
     public CultureInfo PropertyLanguage { get; set; } = GlobalizationConstants.DanishCultureInfo;
 
     public CultureInfo? PropertyLanguageNullable { get; set; }
+
+    public Size PropertySize { get; set; }
+
+    public Size? PropertySizeNullable { get; set; }
+
+    public Point2D PropertyPoint2D { get; set; }
+
+    public Point2D? PropertyPoint2DNullable { get; set; }
 }

@@ -17,12 +17,30 @@ public partial class InputFormDialogBox
         this.OwningWindow = owningWindow;
         this.Data = labelControlsForm;
         this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-
-        SetContentControlSettings();
+        this.Settings.FromUseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
 
         InitializeComponent();
         DataContext = this;
 
+        SetContentControlSettings();
+        PopulateContentControl();
+    }
+
+    public InputFormDialogBox(
+        Window owningWindow,
+        ILabelControlsForm labelControlsForm,
+        DialogBoxSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(labelControlsForm);
+
+        this.OwningWindow = owningWindow;
+        this.Data = labelControlsForm;
+        this.Settings = settings;
+
+        InitializeComponent();
+        DataContext = this;
+
+        SetContentControlSettings();
         PopulateContentControl();
     }
 
@@ -38,20 +56,40 @@ public partial class InputFormDialogBox
 
     private void SetContentControlSettings()
     {
-        if (Data.Columns is null)
+        if (Data.Rows is null)
         {
             return;
         }
 
-        foreach (var column in this.Data.Columns)
+        foreach (var row in Data.Rows)
         {
-            column.ControlOrientation = Settings.FromControlOrientation;
-            column.ControlWidth = Settings.FromControlWidth;
+            if (row.Columns is null)
+            {
+                continue;
+            }
+
+            foreach (var column in row.Columns)
+            {
+                column.SetSettings(
+                    Settings.FromUseGroupBox,
+                    Settings.FromControlOrientation,
+                    Settings.FromControlWidth);
+            }
         }
     }
 
     private void PopulateContentControl()
     {
+        Width = ContentCenter.Padding.Left +
+                ContentCenter.Padding.Right +
+                Data.GetMaxWidth() +
+                ScrollBarSize;
+
+        if (Width > Settings.FromMaxWidth)
+        {
+            Width = Settings.FromMaxWidth;
+        }
+
         Height = HeaderControl is null
             ? Data.GetMaxHeight() +
               ScrollBarSize +
@@ -61,10 +99,10 @@ public partial class InputFormDialogBox
               ScrollBarSize +
               ContentButton.Height;
 
-        Width = ContentCenter.Padding.Left +
-                ContentCenter.Padding.Right +
-                Data.GetMaxWidth() +
-                ScrollBarSize;
+        if (Height > Settings.FromMaxHeight)
+        {
+            Height = Settings.FromMaxHeight;
+        }
 
         ContentControl = new ContentControl
         {

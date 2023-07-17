@@ -28,7 +28,11 @@ public record Address
     [RegularExpression("^\\d{4}$")]
     public string PostalCode { get; init; }
 
+    [Required]
     public CultureInfo? Country { get; init; }
+
+    [Required]
+    public Point2D? LocationCoordinates { get; init; }
 }
 
 public record Person
@@ -48,7 +52,7 @@ public record Person
             FavoriteColor = favoriteColor.Value;
         }
 
-        Address = address;
+        MyAddress = address;
     }
 
     [Required]
@@ -64,5 +68,24 @@ public record Person
 
     public Color FavoriteColor { get; init; }
 
-    public Address Address { get; init; }
+    public Address MyAddress { get; init; }
+}
+
+public record Account
+{
+    public Account(
+        string accountNumber,
+        Person primaryContactPerson)
+    {
+        AccountNumber = accountNumber;
+        PrimaryContactPerson = primaryContactPerson;
+    }
+
+    public Guid Id { get; } = Guid.NewGuid();
+
+    [Required]
+    [MinLength(2)]
+    public string AccountNumber { get; init; }
+
+    public Person PrimaryContactPerson { get; init; }
 }

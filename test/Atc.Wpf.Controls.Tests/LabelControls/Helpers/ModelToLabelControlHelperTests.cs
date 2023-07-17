@@ -15,7 +15,7 @@ public class ModelToLabelControlHelperTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(13, actual.Count);
+        Assert.Equal(32, actual.Count);
     }
 
     [StaFact]

@@ -111,7 +111,13 @@ public class DialogBoxSettings
 
     public Orientation FromControlOrientation { get; set; } = Orientation.Vertical;
 
-    public int FromControlWidth { get; set; } = 300;
+    public int FromMaxWidth { get; set; } = 1920;
+
+    public int FromMaxHeight { get; set; } = 1200;
+
+    public bool FromUseGroupBox { get; set; }
+
+    public int FromControlWidth { get; set; } = 320;
 
     public static DialogBoxSettings Create(DialogBoxType dialogBoxType)
         => new(dialogBoxType);

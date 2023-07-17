@@ -33,7 +33,7 @@
                                     <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />
                                     <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last-Name" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Age}" Header="Age" />
-                                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Address" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding MyAddress}" Header="Address" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -47,7 +47,7 @@
                                     <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />
                                     <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last-Name" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Age}" Header="Age" />
-                                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Address" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding MyAddress}" Header="Address" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -68,7 +68,7 @@
                                     <GridViewColumn DisplayMemberBinding="{Binding FirstName}" Header="First-Name" />
                                     <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Last-Name" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Age}" Header="Age" />
-                                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Address" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding MyAddress}" Header="Address" />
                                 </GridView>
                             </ListView.View>
                         </ListView>

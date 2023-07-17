@@ -1,7 +1,10 @@
+// ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+// ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Controls.LabelControls;
 
 public class LabelControlsFormColumn : ILabelControlsFormColumn
 {
+    private const int GroupBoxMarginHeight = 20;
     private const int LabelControlsHeightForVertical = 103;
     private const int LabelControlsHeightForHorizontal = 77;
 
@@ -13,33 +16,50 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         this.LabelControls = labelControls;
     }
 
-    public Orientation ControlOrientation { get; set; } = Orientation.Vertical;
+    public bool UseGroupBox { get; set; }
 
-    public int ControlWidth { get; set; } = 300;
+    public Orientation ControlOrientation { get; set; }
+
+    public int ControlWidth { get; set; }
 
     public IList<ILabelControlBase> LabelControls { get; }
 
+    public void SetSettings(
+        bool useGroupBox,
+        Orientation controlOrientation,
+        int controlWidth)
+    {
+        UseGroupBox = useGroupBox;
+        ControlOrientation = controlOrientation;
+        ControlWidth = controlWidth;
+    }
+
+    public bool HasMultiGroupIdentifiers()
+        => GetGroupIdentifiers()
+            .Skip(1)
+            .Any();
+
+    public IList<string?> GetGroupIdentifiers()
+        => LabelControls
+            .Select(x => x.GroupIdentifier)
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+
+    public IList<ILabelControlBase> GetLabelControlsByGroupIdentifier(
+        string? groupIdentifier)
+        => LabelControls
+            .Where(x => x.GroupIdentifier == groupIdentifier)
+            .ToList();
+
     public int CalculateHeight()
-        => ControlOrientation == Orientation.Vertical
-            ? LabelControls.Sum(_ => LabelControlsHeightForVertical)
-            : LabelControls.Sum(_ => LabelControlsHeightForHorizontal);
+        => UseGroupBox
+            ? CalculateHeightWithGroupBoxes()
+            : CalculateHeightWithOutGroupBoxes();
 
     public Panel GeneratePanel()
-    {
-        var stackPanel = new StackPanel
-        {
-            Orientation = Orientation.Vertical,
-        };
-
-        foreach (var labelControl in LabelControls)
-        {
-            labelControl.Orientation = ControlOrientation;
-            labelControl.Width = ControlWidth;
-            stackPanel.Children.Add((UIElement)labelControl);
-        }
-
-        return stackPanel;
-    }
+        => UseGroupBox
+            ? GeneratePanelWithGroupBoxes()
+            : GeneratePanelWithOutGroupBoxes();
 
     public bool IsValid()
     {
@@ -82,6 +102,16 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelDecimalBox labelDecimalBox:
                     result.Add(control.Identifier, labelDecimalBox.Value);
                     break;
+                case LabelDecimalXyBox labelDecimalXyBox:
+                    if (labelDecimalXyBox.InputDataType == typeof(Point2D) ||
+                        labelDecimalXyBox.InputDataType == typeof(Point2D?))
+                    {
+                        result.Add(control.Identifier, new Point2D(
+                            (double)labelDecimalXyBox.ValueX,
+                            (double)labelDecimalXyBox.ValueY));
+                    }
+
+                    break;
                 case LabelIntegerBox labelIntegerBox:
                     result.Add(control.Identifier, labelIntegerBox.Value);
                     break;
@@ -120,5 +150,92 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         }
 
         return result;
+    }
+
+    public int CalculateHeightWithGroupBoxes()
+    {
+        var maxHeight = 0;
+        foreach (var groupIdentifier in GetGroupIdentifiers())
+        {
+            var labelControls = LabelControls
+                .Where(x => x.GroupIdentifier == groupIdentifier)
+                .ToList();
+
+            var heightForGroupIdentifiers = ControlOrientation == Orientation.Vertical
+                ? labelControls.Sum(_ => LabelControlsHeightForVertical)
+                : labelControls.Sum(_ => LabelControlsHeightForHorizontal);
+
+            heightForGroupIdentifiers += GroupBoxMarginHeight;
+
+            if (heightForGroupIdentifiers > maxHeight)
+            {
+                maxHeight = heightForGroupIdentifiers;
+            }
+        }
+
+        return maxHeight;
+    }
+
+    public int CalculateHeightWithOutGroupBoxes()
+    {
+        return ControlOrientation == Orientation.Vertical
+            ? LabelControls.Sum(_ => LabelControlsHeightForVertical)
+            : LabelControls.Sum(_ => LabelControlsHeightForHorizontal);
+    }
+
+    private Panel GeneratePanelWithGroupBoxes()
+    {
+        var stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+        };
+
+        foreach (var groupIdentifier in GetGroupIdentifiers())
+        {
+            var stackPanelItems = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+            };
+
+            var groupBox = new GroupBox
+            {
+                Header = groupIdentifier,
+                Margin = new Thickness(5, 5, 5, 5),
+            };
+
+            var labelControls = LabelControls
+                .Where(x => x.GroupIdentifier == groupIdentifier)
+                .ToList();
+
+            foreach (var labelControl in labelControls)
+            {
+                labelControl.Orientation = ControlOrientation;
+                labelControl.Width = ControlWidth;
+                stackPanelItems.Children.Add((UIElement)labelControl);
+            }
+
+            groupBox.Content = stackPanelItems;
+
+            stackPanel.Children.Add(groupBox);
+        }
+
+        return stackPanel;
+    }
+
+    private Panel GeneratePanelWithOutGroupBoxes()
+    {
+        var stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+        };
+
+        foreach (var labelControl in LabelControls)
+        {
+            labelControl.Orientation = ControlOrientation;
+            labelControl.Width = ControlWidth;
+            stackPanel.Children.Add((UIElement)labelControl);
+        }
+
+        return stackPanel;
     }
 }

@@ -39,6 +39,8 @@
                         <Button Command="{Binding Path=ShowInputFormAddressWithoutDataDialogBoxCommands}" Content="Input Form - Address model without data" />
                         <Button Command="{Binding Path=ShowInputFormPersonWithDataDialogBoxCommands}" Content="Input Form - Person model with data" />
                         <Button Command="{Binding Path=ShowInputFormPersonWithoutDataDialogBoxCommands}" Content="Input Form - Person model without data" />
+                        <Button Command="{Binding Path=ShowInputFormAccountWithDataDialogBoxCommands}" Content="Input Form - Account model with data" />
+                        <Button Command="{Binding Path=ShowInputFormAccountWithoutDataDialogBoxCommands}" Content="Input Form - Account model without data" />
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"

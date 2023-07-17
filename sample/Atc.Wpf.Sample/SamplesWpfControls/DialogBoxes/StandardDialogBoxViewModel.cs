@@ -36,6 +36,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public IRelayCommand ShowInputFormPersonWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithoutDataDialogBoxCommandHandler);
 
+    public IRelayCommand ShowInputFormAccountWithDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithDataDialogBoxCommandHandler);
+
+    public IRelayCommand ShowInputFormAccountWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithoutDataDialogBoxCommandHandler);
+
     public string JsonResult
     {
         get => jsonResult;
@@ -255,7 +259,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 postalCode: "1234",
                 country: new CultureInfo("da-DK")));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(person, includeReadOnly: false, "MyPerson");
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);
@@ -290,6 +294,78 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 country: new CultureInfo("en-US")));
 
         var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
+        }
+    }
+
+    private void ShowInputFormAccountWithDataDialogBoxCommandHandler()
+    {
+        var account = new Account(
+            accountNumber: "6545643218",
+            primaryContactPerson: new Person(
+                firstName: "John",
+                lastName: "Doe",
+                age: 33,
+                favoriteColor: Colors.DarkCyan,
+                address: new Address(
+                    streetName: "My street",
+                    cityName: "My city",
+                    postalCode: "1234",
+                    country: new CultureInfo("da-DK"))));
+
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(account);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
+        }
+    }
+
+    private void ShowInputFormAccountWithoutDataDialogBoxCommandHandler()
+    {
+        var account = new Account(
+            accountNumber: string.Empty,
+            primaryContactPerson: new Person(
+                firstName: string.Empty,
+                lastName: string.Empty,
+                age: 0,
+                favoriteColor: null,
+                address: new Address(
+                    streetName: string.Empty,
+                    cityName: string.Empty,
+                    postalCode: string.Empty,
+                    country: new CultureInfo("en-US"))));
+
+        var labelControls = ModelToLabelControlHelper.GetLabelControls(account);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);

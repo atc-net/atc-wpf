@@ -2,17 +2,15 @@ namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
 public interface ILabelControlsForm
 {
-    Orientation ControlsOrientation { get; set; }
-
-    int ControlsWidth { get; set; }
-
-    ICollection<ILabelControlsFormColumn>? Columns { get; set; }
+    IList<ILabelControlsFormRow>? Rows { get; set; }
 
     void AddColumn(IList<ILabelControlBase> labelControls);
 
     void AddColumn(ILabelControlsFormColumn labelControlsFormColumn);
 
     void Clear();
+
+    bool HasMultiGroupIdentifiers();
 
     int GetMaxHeight();
 

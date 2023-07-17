@@ -72,6 +72,8 @@ public static class ColorUtil
     /// <returns>The color from color-name.</returns>
     public static Color? GetColorFromName(string colorName)
     {
+        ArgumentException.ThrowIfNullOrEmpty(colorName);
+
         if (colorName.StartsWith('-'))
         {
             return null;
