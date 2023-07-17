@@ -151,11 +151,11 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plase select a {0}.
+        ///   Looks up a localized string similar to Please select a {0}.
         /// </summary>
-        public static string PlaseSelect {
+        public static string PleaseSelect {
             get {
-                return ResourceManager.GetString("PlaseSelect", resourceCulture);
+                return ResourceManager.GetString("PleaseSelect", resourceCulture);
             }
         }
         

@@ -224,7 +224,11 @@ public partial class LabelTextBox : ILabelTextBox
 
         if (control.Text.Length < control.MinLength)
         {
-            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.MinValueFormat1, control.MinLength);
+            control.ValidationText = string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.MinValueFormat1,
+                control.MinLength);
+
             if (raiseEvents)
             {
                 OnTextLostFocusFireInvalidEvent(control, e);
@@ -235,7 +239,10 @@ public partial class LabelTextBox : ILabelTextBox
 
         if (control.Text.Length > control.MaxLength)
         {
-            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.MaxValueFormat1, control.MaxLength);
+            control.ValidationText = string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.MaxValueFormat1,
+                control.MaxLength);
 
             if (raiseEvents)
             {
@@ -248,7 +255,11 @@ public partial class LabelTextBox : ILabelTextBox
         if (!string.IsNullOrEmpty(control.CharactersNotAllowed) &&
             control.CharactersNotAllowed.Any(x => control.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
         {
-            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.NotAllowedFormat1, GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text));
+            control.ValidationText = string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.NotAllowedFormat1,
+                GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text));
+
             if (raiseEvents)
             {
                 OnTextLostFocusFireInvalidEvent(control, e);

@@ -90,7 +90,7 @@
                         HideAreas="All"
                         LabelText="Color"
                         SelectedKey="Green"
-                        SelectedKeyChanged="IconColorPickerOnSelectedKeyChanged" />
+                        SelectorChanged="IconColorPickerOnSelectorChanged" />
                     <atc:LabelTextBox
                         x:Name="FilterText"
                         HideAreas="All"

@@ -62,7 +62,7 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private void MyLabel3HorizontalOnSelectedKeyChanged(
+    private void MyLabel3HorizontalOnSelectorChanged(
         object? sender,
         ChangedStringEventArgs e)
     {
@@ -73,10 +73,10 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
 
         MessageBox.Show(
             $"{e.Identifier}-Horizontal # From: {e.OldValue}, To: {e.NewValue}",
-            "Event: MyLabel3HorizontalOnSelectedKeyChanged");
+            "Event: MyLabel3HorizontalOnSelectorChanged");
     }
 
-    private void MyLabel3VerticalOnSelectedKeyChanged(
+    private void MyLabel3VerticalOnSelectorChanged(
         object? sender,
         ChangedStringEventArgs e)
     {
@@ -87,6 +87,6 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
 
         MessageBox.Show(
             $"{e.Identifier}-Vertical # From: {e.OldValue}, To: {e.NewValue}",
-            "Event: MyLabel3VerticalOnSelectedKeyChanged");
+            "Event: MyLabel3VerticalOnSelectorChanged");
     }
 }

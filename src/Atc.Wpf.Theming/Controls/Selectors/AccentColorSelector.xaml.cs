@@ -86,7 +86,7 @@ public partial class AccentColorSelector : INotifyPropertyChanged
                 new ColorItem(
                     item.ColorScheme,
                     translatedName ?? "#" + item.ColorScheme,
-                    displayHexCode: string.Empty,
+                    DisplayHexCode: string.Empty,
                     item.ShowcaseBrush,
                     item.ShowcaseBrush));
         }

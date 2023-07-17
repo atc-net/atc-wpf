@@ -72,7 +72,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
+    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
 
     public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
 
@@ -83,8 +83,60 @@ public partial class LabelCountrySelector : ILabelCountrySelector
 
     public override bool IsValid()
     {
-        ValidateValue(default, this, raiseEvents: false);
+        ValidateValue(default, this, SelectedKey, raiseEvents: false);
         return string.IsNullOrEmpty(ValidationText);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    private static void ValidateValue(
+        DependencyPropertyChangedEventArgs e,
+        LabelCountrySelector control,
+        string? selectedKey,
+        bool raiseEvents)
+    {
+        if (control.IsMandatory)
+        {
+            if (string.IsNullOrWhiteSpace(selectedKey))
+            {
+                control.ValidationText = Validations.FieldIsRequired;
+                if (raiseEvents)
+                {
+                    OnSelectorLostFocusFireInvalidEvent(control, e);
+                }
+
+                return;
+            }
+
+            if (selectedKey == ((int)control.DropDownFirstItemType).ToString(GlobalizationConstants.EnglishCultureInfo))
+            {
+                control.ValidationText = string.Format(
+                    CultureInfo.CurrentUICulture,
+                    Validations.PleaseSelect,
+                    Atc.Resources.Country._Country.ToLower(Thread.CurrentThread.CurrentUICulture));
+
+                if (raiseEvents)
+                {
+                    OnSelectorLostFocusFireInvalidEvent(control, e);
+                }
+
+                return;
+            }
+        }
+
+        control.ValidationText = string.Empty;
+
+        if (!raiseEvents)
+        {
+            return;
+        }
+
+        control.SelectorChanged?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                control.Identifier,
+                e.OldValue?.ToString(),
+                selectedKey));
     }
 
     private static void OnSelectorLostFocus(
@@ -93,68 +145,15 @@ public partial class LabelCountrySelector : ILabelCountrySelector
     {
         var control = (LabelCountrySelector)d;
 
-        ValidateValue(e, control, raiseEvents: true);
+        ValidateValue(e, control, control.SelectedKey, raiseEvents: true);
     }
 
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     private void OnSelectorChanged(
         object? sender,
         ChangedStringEventArgs e)
     {
-        var control = this;
-
         Debug.WriteLine($"LabelCountrySelector - Change to: {e.NewValue}");
-
-        if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(e.NewValue))
-        {
-            control.ValidationText = Validations.FieldIsRequired;
-            return;
-        }
-
-        var newLcid = NumberHelper.ParseToInt(e.NewValue!);
-
-        if (newLcid <= 0)
-        {
-            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.PlaseSelect, Atc.Resources.Country._Country.ToLower(Thread.CurrentThread.CurrentUICulture));
-            return;
-        }
-
-        control.SelectedKey = e.NewValue!;
-        control.ValidationText = string.Empty;
-    }
-
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private static void ValidateValue(
-        DependencyPropertyChangedEventArgs e,
-        LabelCountrySelector control,
-        bool raiseEvents)
-    {
-        if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.SelectedKey))
-        {
-            control.ValidationText = Validations.FieldIsRequired;
-            if (raiseEvents)
-            {
-                OnSelectorLostFocusFireInvalidEvent(control, e);
-            }
-
-            return;
-        }
-
-        if (control.SelectedKey.StartsWith('-'))
-        {
-            control.ValidationText = string.Format(CultureInfo.CurrentUICulture, Validations.PlaseSelect, Atc.Resources.Country._Country.ToLower(Thread.CurrentThread.CurrentUICulture));
-            if (raiseEvents)
-            {
-                OnSelectorLostFocusFireInvalidEvent(control, e);
-            }
-
-            return;
-        }
-
-        control.ValidationText = string.Empty;
+        ValidateValue(default, this, e.NewValue, raiseEvents: false);
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]

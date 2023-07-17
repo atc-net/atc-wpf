@@ -42,7 +42,7 @@
                             LabelText="MyLabel3"
                             Orientation="Horizontal"
                             SelectedKey="{Binding ElementName=UcLabelComboBoxView, Path=MyLabel3HorizontalSelectedKey}"
-                            SelectedKeyChanged="MyLabel3HorizontalOnSelectedKeyChanged" />
+                            SelectorChanged="MyLabel3HorizontalOnSelectorChanged" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
@@ -66,7 +66,7 @@
                             LabelText="MyLabel3"
                             Orientation="Vertical"
                             SelectedKey="{Binding ElementName=UcLabelComboBoxView, Path=MyLabel3VerticalSelectedKey}"
-                            SelectedKeyChanged="MyLabel3VerticalOnSelectedKeyChanged" />
+                            SelectorChanged="MyLabel3VerticalOnSelectorChanged" />
 
                     </StackPanel>
                 </atc:GridEx>

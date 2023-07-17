@@ -23,11 +23,13 @@
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
         <atcTheming:WellKnownColorSelector
+            DefaultColorName="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=DefaultColorName}"
             DropDownFirstItemType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=DropDownFirstItemType}"
             RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=RenderColorIndicatorType}"
             SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=SelectedKey, Mode=TwoWay}"
             SelectorChanged="OnSelectorChanged"
-            ShowHexCode="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=ShowHexCode}" />
+            ShowHexCode="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=ShowHexCode}"
+            UseOnlyBasicColors="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=UseOnlyBasicColors}" />
 
     </labelControls:LabelContent>
 

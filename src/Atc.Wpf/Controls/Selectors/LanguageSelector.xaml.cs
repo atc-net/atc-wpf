@@ -1,8 +1,8 @@
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 // ReSharper disable IdentifierTypo
 // ReSharper disable InvertIf
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable ConvertToAutoPropertyWhenPossible
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.Selectors;
 
@@ -13,8 +13,7 @@ public partial class LanguageSelector
 {
     private readonly ObservableCollectionEx<LanguageItem> items = new();
     private static DateTime lastKeyChanged = DateTime.MinValue;
-    private DateTime lastItemChanged = DateTime.MinValue;
-    private LanguageItem? lastChangedToItem;
+    private int? lastLcid;
     private bool processingUiCultureChanged;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
@@ -91,8 +90,6 @@ public partial class LanguageSelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
     public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
 
     public LanguageSelector()
@@ -107,21 +104,10 @@ public partial class LanguageSelector
 
     public ObservableCollectionEx<LanguageItem> Items => items;
 
-    protected virtual void OnPropertyChanged(
-        [CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
         => PopulateDataOnLoaded();
-
-    private void OnUiCultureChanged(
-        object? sender,
-        UiCultureEventArgs e)
-        => UpdateDataOnUiCultureChanged();
 
     private void PopulateDataOnLoaded()
     {
@@ -260,7 +246,7 @@ public partial class LanguageSelector
         if (CbLanguages.SelectedIndex != -1)
         {
             var backupIndex = CbLanguages.SelectedIndex;
-            if (CbLanguages.Items.Count > backupIndex)
+            if (CbLanguages.Items.Count > backupIndex + 1)
             {
                 CbLanguages.SelectedIndex = backupIndex + 1;
             }
@@ -337,6 +323,11 @@ public partial class LanguageSelector
         return defaultLanguageItem ?? Items.FirstOrDefault(x => x.Culture.Lcid == Thread.CurrentThread.CurrentUICulture.LCID);
     }
 
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+        => UpdateDataOnUiCultureChanged();
+
     private static void OnSelectedKeyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -358,10 +349,14 @@ public partial class LanguageSelector
     private void OnSelectionChanged(
         object sender,
         SelectionChangedEventArgs e)
-        => OnSelectionChanged(sender, (LanguageItem)e.AddedItems[0]!);
+    {
+        if (e.AddedItems.Count == 1)
+        {
+            OnSelectionChanged(sender, (LanguageItem)e.AddedItems[0]!);
+        }
+    }
 
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK.")]
-    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
     private void OnSelectionChanged(
         object sender,
         LanguageItem languageItem)
@@ -372,21 +367,21 @@ public partial class LanguageSelector
             return;
         }
 
-        if ((lastChangedToItem is null ||
-            languageItem.Culture.Lcid != lastChangedToItem.Culture.Lcid) &&
-            lastItemChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
+        if (lastLcid is not null &&
+            lastLcid == languageItem.Culture.Lcid)
         {
-            lastItemChanged = DateTime.Now;
-            lastChangedToItem = languageItem;
-
-            Debug.WriteLine($"LanguageSelector - Change to: {languageItem.Culture.Lcid} ({languageItem.Culture.Name})");
-
-            SelectorChanged?.Invoke(
-                this,
-                new ChangedStringEventArgs(
-                identifier: Guid.Empty.ToString(),
-                oldValue: null,
-                newValue: languageItem.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo)));
+            return;
         }
+
+        lastLcid = languageItem.Culture.Lcid;
+
+        Debug.WriteLine($"LanguageSelector - Change to: {languageItem.Culture.Lcid} ({languageItem.Culture.Name})");
+
+        SelectorChanged?.Invoke(
+            this,
+            new ChangedStringEventArgs(
+            identifier: Guid.Empty.ToString(),
+            oldValue: null,
+            newValue: languageItem.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo)));
     }
 }

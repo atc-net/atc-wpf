@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AliceBlue" xml:space="preserve">
-    <value>Aliceblau</value>
+    <value>Alice blau</value>
   </data>
   <data name="AntiqueWhite" xml:space="preserve">
     <value>Antikweiß</value>
@@ -130,49 +130,49 @@
     <value>Aquamarin</value>
   </data>
   <data name="Azure" xml:space="preserve">
-    <value>Azur</value>
+    <value>Azurblau</value>
   </data>
   <data name="Beige" xml:space="preserve">
     <value>Beige</value>
   </data>
   <data name="Bisque" xml:space="preserve">
-    <value>Bisquit</value>
+    <value>Biskuitcremesuppe</value>
   </data>
   <data name="Black" xml:space="preserve">
     <value>Schwarz</value>
   </data>
   <data name="BlanchedAlmond" xml:space="preserve">
-    <value>Mandelweiß</value>
+    <value>Blanchierte Mandel</value>
   </data>
   <data name="Blue" xml:space="preserve">
     <value>Blau</value>
   </data>
   <data name="BlueViolet" xml:space="preserve">
-    <value>blauviolett</value>
+    <value>Blau violett</value>
   </data>
   <data name="Brown" xml:space="preserve">
     <value>Braun</value>
   </data>
   <data name="BurlyWood" xml:space="preserve">
-    <value>Burlywood</value>
+    <value>Kräftiges Holz</value>
   </data>
   <data name="CadetBlue" xml:space="preserve">
     <value>Kadettenblau</value>
   </data>
   <data name="Chartreuse" xml:space="preserve">
-    <value>Likörgrün</value>
+    <value>Chartreuse</value>
   </data>
   <data name="Chocolate" xml:space="preserve">
     <value>Schokolade</value>
   </data>
   <data name="Coral" xml:space="preserve">
-    <value>Korallenrot</value>
+    <value>Koralle</value>
   </data>
   <data name="CornflowerBlue" xml:space="preserve">
     <value>Kornblumenblau</value>
   </data>
   <data name="Cornsilk" xml:space="preserve">
-    <value>Kornseide</value>
+    <value>Maisseide</value>
   </data>
   <data name="Crimson" xml:space="preserve">
     <value>Purpur</value>
@@ -205,7 +205,7 @@
     <value>Dunkelorange</value>
   </data>
   <data name="DarkOrchid" xml:space="preserve">
-    <value>Dunkel-Orchidee</value>
+    <value>Dunkle-Orchidee</value>
   </data>
   <data name="DarkRed" xml:space="preserve">
     <value>Dunkelrot</value>
@@ -223,7 +223,7 @@
     <value>Dunkel-Schiefergrau</value>
   </data>
   <data name="DarkTurquoise" xml:space="preserve">
-    <value>Dunkeltürkis</value>
+    <value>Dunkel-Türkis</value>
   </data>
   <data name="DarkViolet" xml:space="preserve">
     <value>Dunkelviolett</value>
@@ -490,7 +490,7 @@
     <value>Schiefergrau</value>
   </data>
   <data name="Snow" xml:space="preserve">
-    <value>Schneeweiß</value>
+    <value>Schnee</value>
   </data>
   <data name="SpringGreen" xml:space="preserve">
     <value>Frühlingsgrün</value>
@@ -499,7 +499,7 @@
     <value>Stahlblau</value>
   </data>
   <data name="Tan" xml:space="preserve">
-    <value>Hautfarben</value>
+    <value>Bräunen</value>
   </data>
   <data name="Teal" xml:space="preserve">
     <value>Krickentengrün</value>
@@ -526,7 +526,7 @@
     <value>Weiß</value>
   </data>
   <data name="WhiteSmoke" xml:space="preserve">
-    <value>Rauch</value>
+    <value>Weißer Rauch</value>
   </data>
   <data name="Yellow" xml:space="preserve">
     <value>Gelb</value>

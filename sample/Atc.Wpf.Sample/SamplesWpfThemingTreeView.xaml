@@ -49,6 +49,12 @@
             IsEnabled="False"
             IsExpanded="True" />
     </TreeViewItem>
+    <TreeViewItem Header="Input - Selector" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="WellKnownColorSelector"
+            IsExpanded="True"
+            SamplePath="InputSelector.WellKnownColorSelectorView" />
+    </TreeViewItem>
     <TreeViewItem Header="Layout" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="GroupBox"

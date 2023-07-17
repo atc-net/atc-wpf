@@ -185,4 +185,37 @@ public class ColorHelper
     public string? GetColorName(
         Color? color)
         => GetColorName(color, colorNamesDictionary: null, useAlphaChannel: true);
+
+    /// <summary>
+    /// Gets the basic color names.
+    /// </summary>
+    /// <remarks>
+    /// https://en.wikipedia.org/wiki/Web_colors
+    /// </remarks>>
+    public static IList<string> GetBasicColorNames()
+    {
+        var list = new List<string>
+        {
+            "White",
+            "Silver",
+            "Gray",
+            "Black",
+            "Red",
+            "Maroon",
+            "Yellow",
+            "Olive",
+            "Lime",
+            "Green",
+            "Aqua",
+            "Teal",
+            "Blue",
+            "Navy",
+            "Fuchsia",
+            "Purple",
+        };
+
+        return list
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToList();
+    }
 }

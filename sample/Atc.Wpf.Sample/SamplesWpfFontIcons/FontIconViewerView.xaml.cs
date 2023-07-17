@@ -60,7 +60,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         PopulateListOfIcons();
     }
 
-    private void IconColorPickerOnSelectedKeyChanged(
+    private void IconColorPickerOnSelectorChanged(
         object? sender,
         ChangedStringEventArgs e)
     {

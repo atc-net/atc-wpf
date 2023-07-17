@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -147,8 +147,8 @@
   <data name="NotAllowedFormat1" xml:space="preserve">
     <value>Not allowed: {0}</value>
   </data>
-  <data name="PlaseSelect" xml:space="preserve">
-    <value>Plase select a {0}</value>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>Please select a {0}</value>
   </data>
   <data name="RegexPatternDontMatch" xml:space="preserve">
     <value>Regular expression don't match</value>

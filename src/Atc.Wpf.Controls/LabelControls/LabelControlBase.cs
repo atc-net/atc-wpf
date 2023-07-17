@@ -3,7 +3,9 @@ namespace Atc.Wpf.Controls.LabelControls;
 public class LabelControlBase : UserControl, ILabelControlBase
 {
     public string Identifier
-        => ControlHelper.GetIdentifier(this, LabelText.PascalCase(removeSeparators: true));
+        => LabelText == Constants.DefaultLabelControlLabel
+            ? LabelText
+            : ControlHelper.GetIdentifier(this, LabelText.PascalCase(removeSeparators: true));
 
     public static readonly DependencyProperty HideAreasProperty = DependencyProperty.Register(
         nameof(HideAreas),

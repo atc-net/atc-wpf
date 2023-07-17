@@ -1,14 +1,15 @@
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable InvertIf
 // ReSharper disable ConvertToAutoPropertyWhenPossible
+// ReSharper disable InvertIf
+// ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 /// <summary>
 /// Interaction logic for WellKnownColorSelector.
 /// </summary>
-public partial class WellKnownColorSelector : INotifyPropertyChanged
+public partial class WellKnownColorSelector
 {
-    private readonly ObservableCollectionEx<ColorItem> items = new();
+    private string? lastName;
     private bool processingUiCultureChanged;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
@@ -47,6 +48,30 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         set => SetValue(ShowHexCodeProperty, value);
     }
 
+    public static readonly DependencyProperty UseOnlyBasicColorsProperty = DependencyProperty.Register(
+        nameof(UseOnlyBasicColors),
+        typeof(bool),
+        typeof(WellKnownColorSelector),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool UseOnlyBasicColors
+    {
+        get => (bool)GetValue(UseOnlyBasicColorsProperty);
+        set => SetValue(UseOnlyBasicColorsProperty, value);
+    }
+
+    public static readonly DependencyProperty DefaultColorNameProperty = DependencyProperty.Register(
+        nameof(DefaultColorName),
+        typeof(string),
+        typeof(WellKnownColorSelector),
+        new PropertyMetadata(default));
+
+    public string? DefaultColorName
+    {
+        get => (string?)GetValue(DefaultColorNameProperty);
+        set => SetValue(DefaultColorNameProperty, value);
+    }
+
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -61,8 +86,6 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
     public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
 
     public WellKnownColorSelector()
@@ -72,32 +95,42 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         DataContext = this;
 
         Loaded += OnLoaded;
-
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
-    public ObservableCollectionEx<ColorItem> Items => items;
-
-    protected virtual void OnPropertyChanged(
-        [CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    public ObservableCollectionEx<ColorItem> Items { get; } = new();
 
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
         => PopulateDataOnLoaded();
 
-    private void OnUiCultureChanged(
-        object? sender,
-        UiCultureEventArgs e)
-        => UpdateDataOnUiCultureChanged();
-
     private void PopulateDataOnLoaded()
     {
         Items.SuppressOnChangedNotification = true;
 
+        PopulateData(setSelected: true);
+
+        Items.SuppressOnChangedNotification = false;
+    }
+
+    private void UpdateDataOnUiCultureChanged()
+    {
+        processingUiCultureChanged = true;
+        Items.SuppressOnChangedNotification = true;
+
+        var backupSelectedKey = SelectedKey;
+        Items.Clear();
+        PopulateData(setSelected: false);
+        SelectedKey = backupSelectedKey;
+
+        Items.SuppressOnChangedNotification = false;
+        processingUiCultureChanged = false;
+    }
+
+    private void PopulateData(
+        bool setSelected)
+    {
         switch (DropDownFirstItemType)
         {
             case DropDownFirstItemType.None:
@@ -115,8 +148,10 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
                 throw new SwitchCaseDefaultException(DropDownFirstItemType);
         }
 
-        var colorsInfo = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
-        foreach (var itemName in colorsInfo.Select(x => x.Name))
+        var colorNames = GetColorNames();
+
+        var list = new List<ColorItem>();
+        foreach (var itemName in colorNames)
         {
             var translatedName = ColorNames.ResourceManager.GetString(
                 itemName,
@@ -125,7 +160,7 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
             var color = (Color)ColorConverter.ConvertFromString(itemName);
             var showcaseBrush = new SolidColorBrush(color);
 
-            Items.Add(
+            list.Add(
                 new ColorItem(
                     itemName,
                     translatedName ?? "#" + itemName,
@@ -134,98 +169,50 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
                     showcaseBrush));
         }
 
-        if (string.IsNullOrEmpty(SelectedKey))
-        {
-            SelectedKey = GetDefaultColorItem()?.Name ??
-                          Items[0].Name;
-        }
-        else
-        {
-            SetSelectedIndexBySelectedKey();
-        }
+        Items.AddRange(list.OrderBy(x => x.DisplayName, StringComparer.Ordinal));
 
-        Items.SuppressOnChangedNotification = false;
-    }
-
-    private void UpdateDataOnUiCultureChanged()
-    {
-        processingUiCultureChanged = true;
-        Items.SuppressOnChangedNotification = true;
-
-        var colorsInfo = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
-        foreach (var item in Items)
+        if (setSelected)
         {
-            if (!NumberHelper.IsInt(item.Name))
+            if (string.IsNullOrEmpty(SelectedKey))
             {
-                var colorInfo = colorsInfo.SingleOrDefault(x => x.Name == item.Name);
-                if (colorInfo is not null)
-                {
-                    var translatedName = ColorNames.ResourceManager.GetString(
-                        colorInfo.Name,
-                        CultureInfo.CurrentUICulture)!;
-
-                    item.DisplayName = translatedName;
-                }
+                SelectedKey = GetDefaultColorItem()?.Name ??
+                              Items[0].Name;
             }
             else
             {
-                var dropDownFirstItemType = (DropDownFirstItemType)NumberHelper.ParseToInt(item.Name);
-                switch (dropDownFirstItemType)
-                {
-                    case DropDownFirstItemType.None:
-                    case DropDownFirstItemType.Blank:
-                        break;
-                    case DropDownFirstItemType.PleaseSelect:
-                    case DropDownFirstItemType.IncludeAll:
-                        item.DisplayName = dropDownFirstItemType.GetDescription();
-                        break;
-                    default:
-                        throw new SwitchCaseDefaultException(dropDownFirstItemType);
-                }
+                SetSelectedIndexBySelectedKey();
             }
         }
-
-        SortItems();
-
-        if (string.IsNullOrEmpty(SelectedKey))
-        {
-            SelectedKey = GetDefaultColorItem()?.Name ??
-                          Items[0].Name;
-        }
-        else
-        {
-            SetSelectedIndexBySelectedKey();
-        }
-
-        Items.SuppressOnChangedNotification = false;
-        processingUiCultureChanged = false;
     }
 
-    private void SortItems()
+    private IEnumerable<string> GetColorNames()
     {
-        var firstItem = Items.FirstOrDefault(x => x.Name.StartsWith('-'));
-        var sortedList = Items
-            .Where(x => !x.Name.StartsWith('#'))
-            .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
-            .ToList();
-
-        items.Clear();
-        if (firstItem is not null)
+        if (UseOnlyBasicColors)
         {
-            items.Add(firstItem);
+            return ColorHelper.GetBasicColorNames();
         }
 
-        items.AddRange(sortedList);
+        var colorsInfo = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
+        return colorsInfo
+            .Select(x => x.Name)
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToList();
     }
 
     private void SetSelectedIndexBySelectedKey()
     {
         UpdateTranslationForSelectedItem();
 
+        if (CbColors.SelectedValue is null)
+        {
+            return;
+        }
+
+        var selectedValue = CbColors.SelectedValue.ToString();
         for (var i = 0; i < CbColors.Items.Count; i++)
         {
             var item = (ColorItem)CbColors.Items[i];
-            if (SelectedKey == item.Name.ToString(GlobalizationConstants.EnglishCultureInfo))
+            if (item.Name == selectedValue)
             {
                 CbColors.SelectedIndex = i;
                 if (!processingUiCultureChanged)
@@ -243,7 +230,7 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         if (CbColors.SelectedIndex != -1)
         {
             var backupIndex = CbColors.SelectedIndex;
-            if (CbColors.Items.Count > backupIndex)
+            if (CbColors.Items.Count > backupIndex + 1)
             {
                 CbColors.SelectedIndex = backupIndex + 1;
             }
@@ -260,36 +247,38 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
         => new(
             ((int)DropDownFirstItemType.Blank).ToString(GlobalizationConstants.EnglishCultureInfo),
             string.Empty,
-            "#",
-            Brushes.Pink,
-            Brushes.Pink);
+            string.Empty,
+            Brushes.Transparent,
+            Brushes.Transparent);
 
     private static ColorItem CreateColorItem(
         DropDownFirstItemType dropDownFirstItemType)
         => new(
             ((int)dropDownFirstItemType).ToString(GlobalizationConstants.EnglishCultureInfo),
             dropDownFirstItemType.GetDescription(),
-            "#",
-            Brushes.Pink,
-            Brushes.Pink);
+            string.Empty,
+            Brushes.Transparent,
+            Brushes.Transparent);
 
     private ColorItem? GetDefaultColorItem()
     {
         ColorItem? defaultColorItem = null;
-        //if (!string.IsNullOrEmpty(DefaultCultureIdentifier))
-        //{
-        //    var countryItem = NumberHelper.IsInt(DefaultCultureIdentifier)
-        //        ? Items.FirstOrDefault(x => x.Culture.Lcid == NumberHelper.ParseToInt(DefaultCultureIdentifier))
-        //        : Items.FirstOrDefault(x => x.Culture.Name == DefaultCultureIdentifier);
-
-        //    if (countryItem is not null)
-        //    {
-        //        defaultColorItem = countryItem;
-        //    }
-        //}
+        if (!string.IsNullOrEmpty(DefaultColorName))
+        {
+            var countryItem = Items.FirstOrDefault(x => x.Name == DefaultColorName);
+            if (countryItem is not null)
+            {
+                defaultColorItem = countryItem;
+            }
+        }
 
         return defaultColorItem;
     }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+        => UpdateDataOnUiCultureChanged();
 
     private static void OnSelectedKeyChanged(
         DependencyObject d,
@@ -297,16 +286,24 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
     {
         var colorSelector = (WellKnownColorSelector)d;
 
-        colorSelector.SetSelectedIndexBySelectedKey();
+        if (!colorSelector.processingUiCultureChanged)
+        {
+            colorSelector.SetSelectedIndexBySelectedKey();
+        }
     }
 
     private void OnSelectionChanged(
         object sender,
         SelectionChangedEventArgs e)
-        => OnSelectionChanged(sender, (ColorItem)e.AddedItems[0]!);
+    {
+        if (!processingUiCultureChanged &&
+            e.AddedItems.Count == 1)
+        {
+            OnSelectionChanged(sender, (ColorItem)e.AddedItems[0]!);
+        }
+    }
 
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK.")]
-    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
     private void OnSelectionChanged(
         object sender,
         ColorItem colorItem)
@@ -317,7 +314,27 @@ public partial class WellKnownColorSelector : INotifyPropertyChanged
             return;
         }
 
-        Debug.WriteLine($"ColorSelector - Change to: {colorItem.Name} ({colorItem.DisplayHexCode})");
+        if (lastName is null)
+        {
+            if (colorItem.Name.StartsWith('-'))
+            {
+                return;
+            }
+
+            if (DefaultColorName is not null &&
+                DefaultColorName == colorItem.Name)
+            {
+                return;
+            }
+        }
+        else if (lastName == colorItem.Name)
+        {
+            return;
+        }
+
+        lastName = colorItem.Name;
+
+        Debug.WriteLine($"WellKnownColorSelector - Change to: {colorItem.Name} ({colorItem.DisplayHexCode})");
 
         SelectorChanged?.Invoke(
             this,

@@ -1,8 +1,8 @@
+// ReSharper disable ConvertToAutoProperty
+// ReSharper disable ConvertToAutoPropertyWhenPossible
 // ReSharper disable IdentifierTypo
 // ReSharper disable InvertIf
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable ConvertToAutoPropertyWhenPossible
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.Selectors;
 
@@ -12,8 +12,7 @@ namespace Atc.Wpf.Controls.Selectors;
 public partial class CountrySelector
 {
     private readonly ObservableCollectionEx<CountryItem> items = new();
-    private DateTime lastItemChanged = DateTime.MinValue;
-    private CountryItem? lastChangedToItem;
+    private int? lastLcid;
     private bool processingUiCultureChanged;
 
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
@@ -90,8 +89,6 @@ public partial class CountrySelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
     public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
 
     public CountrySelector()
@@ -106,21 +103,10 @@ public partial class CountrySelector
 
     public ObservableCollectionEx<CountryItem> Items => items;
 
-    protected virtual void OnPropertyChanged(
-        [CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
         => PopulateDataOnLoaded();
-
-    private void OnUiCultureChanged(
-        object? sender,
-        UiCultureEventArgs e)
-        => UpdateDataOnUiCultureChanged();
 
     private void PopulateDataOnLoaded()
     {
@@ -260,7 +246,7 @@ public partial class CountrySelector
         if (CbCountries.SelectedIndex != -1)
         {
             var backupIndex = CbCountries.SelectedIndex;
-            if (CbCountries.Items.Count > backupIndex)
+            if (CbCountries.Items.Count > backupIndex + 1)
             {
                 CbCountries.SelectedIndex = backupIndex + 1;
             }
@@ -337,6 +323,11 @@ public partial class CountrySelector
         return defaultCountryItem;
     }
 
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+        => UpdateDataOnUiCultureChanged();
+
     private static void OnSelectedKeyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -349,10 +340,14 @@ public partial class CountrySelector
     private void OnSelectionChanged(
         object sender,
         SelectionChangedEventArgs e)
-        => OnSelectionChanged(sender, (CountryItem)e.AddedItems[0]!);
+    {
+        if (e.AddedItems.Count == 1)
+        {
+            OnSelectionChanged(sender, (CountryItem)e.AddedItems[0]!);
+        }
+    }
 
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "OK.")]
-    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
     private void OnSelectionChanged(
         object sender,
         CountryItem countryItem)
@@ -363,21 +358,21 @@ public partial class CountrySelector
             return;
         }
 
-        if ((lastChangedToItem is null ||
-             countryItem.Culture.Lcid != lastChangedToItem.Culture.Lcid) &&
-            lastItemChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
+        if (lastLcid is not null &&
+            lastLcid == countryItem.Culture.Lcid)
         {
-            lastItemChanged = DateTime.Now;
-            lastChangedToItem = countryItem;
-
-            Debug.WriteLine($"CountrySelector - Change to: {countryItem.Culture.Lcid} ({countryItem.Culture.Name})");
-
-            SelectorChanged?.Invoke(
-                this,
-                new ChangedStringEventArgs(
-                    identifier: Guid.Empty.ToString(),
-                    oldValue: null,
-                    newValue: countryItem.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo)));
+            return;
         }
+
+        lastLcid = countryItem.Culture.Lcid;
+
+        Debug.WriteLine($"CountrySelector - Change to: {countryItem.Culture.Lcid} ({countryItem.Culture.Name})");
+
+        SelectorChanged?.Invoke(
+            this,
+            new ChangedStringEventArgs(
+                identifier: Guid.Empty.ToString(),
+                oldValue: null,
+                newValue: countryItem.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo)));
     }
 }

@@ -312,8 +312,7 @@ public static class ModelToLabelControlHelper
         {
             LabelText = propertyInfo.Name.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
-            //DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            //UseOnlySupportedCountries = false,
+            DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             IsMandatory = propertyInfo.HasRequiredAttribute(),
         };
 
