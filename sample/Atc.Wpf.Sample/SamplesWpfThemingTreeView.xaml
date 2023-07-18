@@ -82,14 +82,14 @@
             Header="Menu"
             IsExpanded="True"
             SamplePath="Misc.MenuView" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="ScrollBar"
-            IsEnabled="False"
-            IsExpanded="True" />
-        <TreeViewItem
+            IsExpanded="True"
+            SamplePath="Misc.ScrollBarView" />
+        <atc:SampleTreeViewItem
             Header="ScrollViewer"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.ScrollViewerView" />
         <TreeViewItem
             Header="Slider"
             IsEnabled="False"
