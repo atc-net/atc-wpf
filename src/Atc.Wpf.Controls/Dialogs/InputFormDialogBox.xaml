@@ -6,6 +6,7 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs;assembly=Atc.Wpf.Theming"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:local="clr-namespace:Atc.Wpf.Controls.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=local:InputFormDialogBox,
@@ -68,15 +69,11 @@
             </atc:UniformSpacingPanel>
         </Border>
 
-        <ScrollViewer
-            x:Name="ContentCenter"
-            Padding="30,15"
-            HorizontalScrollBarVisibility="Auto"
-            VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="ContentCenter" Padding="30,15">
             <ContentControl
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="{Binding Path=ContentControl}" />
+                Content="{Binding Path=LabelInputFormPanel}" />
         </ScrollViewer>
 
     </DockPanel>

@@ -149,7 +149,7 @@ public class LabelControlsForm : ILabelControlsForm
                     controlsWidth = column.ControlWidth;
                 }
 
-                if (numberOfColumnsWithGroupBox > 2)
+                if (numberOfColumnsWithGroupBox > 1)
                 {
                     marginOffset = (numberOfColumnsWithGroupBox - 1) * GroupBoxMarginWidth;
                 }

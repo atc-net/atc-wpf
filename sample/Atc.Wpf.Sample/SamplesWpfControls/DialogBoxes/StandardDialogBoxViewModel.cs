@@ -1,8 +1,6 @@
 // ReSharper disable UnusedVariable
 namespace Atc.Wpf.Sample.SamplesWpfControls.DialogBoxes;
 
-[SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "OK.")]
-[SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "OK.")]
 public class StandardDialogBoxViewModel : ViewModelBase
 {
     private readonly JsonSerializerOptions? jsonOptions;

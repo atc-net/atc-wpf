@@ -60,6 +60,8 @@ public class DialogBoxSettings
             default:
                 throw new SwitchCaseDefaultException(dialogBoxType);
         }
+
+        Form = new LabelInputFormPanelSettings();
     }
 
     public SvgImage? ContentSvgImage { get; set; }
@@ -109,15 +111,7 @@ public class DialogBoxSettings
 
     public SolidColorBrush NegativeButtonForeground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundResourceKey];
 
-    public Orientation FromControlOrientation { get; set; } = Orientation.Vertical;
-
-    public int FromMaxWidth { get; set; } = 1920;
-
-    public int FromMaxHeight { get; set; } = 1200;
-
-    public bool FromUseGroupBox { get; set; }
-
-    public int FromControlWidth { get; set; } = 320;
+    public LabelInputFormPanelSettings Form { get; set; }
 
     public static DialogBoxSettings Create(DialogBoxType dialogBoxType)
         => new(dialogBoxType);

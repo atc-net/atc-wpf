@@ -7,6 +7,8 @@ public class AtcThumb : Thumb, IAtcThumb
     protected override void OnPreviewTouchDown(
         TouchEventArgs e)
     {
+        ArgumentNullException.ThrowIfNull(e);
+
         ReleaseCurrentDevice();
         CaptureCurrentDevice(e);
     }
@@ -20,6 +22,8 @@ public class AtcThumb : Thumb, IAtcThumb
     protected override void OnLostTouchCapture(
         TouchEventArgs e)
     {
+        ArgumentNullException.ThrowIfNull(e);
+
         if (currentDevice == null)
         {
             return;

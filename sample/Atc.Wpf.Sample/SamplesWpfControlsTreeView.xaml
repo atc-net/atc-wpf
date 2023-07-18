@@ -137,6 +137,10 @@
             Header="Label-MIX-Bindings"
             IsExpanded="True"
             SamplePath="LabelControls.LabelMixBindingsView" />
+        <atc:SampleTreeViewItem
+            Header="Label-InputFormPanel"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelInputFormPanelView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Layouts" IsExpanded="True">

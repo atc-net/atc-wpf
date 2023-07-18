@@ -2,7 +2,6 @@ namespace Atc.Wpf.Controls.LabelControls.Abstractions;
 
 public interface ILabelControlsFormColumn
 {
-
     public bool UseGroupBox { get; set; }
 
     Orientation ControlOrientation { get; set; }

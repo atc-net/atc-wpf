@@ -15,15 +15,13 @@ public partial class InputFormDialogBox
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
         this.OwningWindow = owningWindow;
-        this.Data = labelControlsForm;
         this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-        this.Settings.FromUseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
+        this.Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
 
         InitializeComponent();
         DataContext = this;
 
-        SetContentControlSettings();
-        PopulateContentControl();
+        PopulateLabelInputFormPanel(labelControlsForm);
     }
 
     public InputFormDialogBox(
@@ -34,14 +32,12 @@ public partial class InputFormDialogBox
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
         this.OwningWindow = owningWindow;
-        this.Data = labelControlsForm;
         this.Settings = settings;
 
         InitializeComponent();
         DataContext = this;
 
-        SetContentControlSettings();
-        PopulateContentControl();
+        PopulateLabelInputFormPanel(labelControlsForm);
     }
 
     public Window OwningWindow { get; private set; }
@@ -50,44 +46,25 @@ public partial class InputFormDialogBox
 
     public ContentControl? HeaderControl { get; set; }
 
-    public ContentControl ContentControl { get; set; } = new();
+    public LabelInputFormPanel LabelInputFormPanel { get; } = new();
 
-    public ILabelControlsForm Data { get; }
+    public ILabelControlsForm Data => LabelInputFormPanel.Data;
 
-    private void SetContentControlSettings()
+    private void PopulateLabelInputFormPanel(
+        ILabelControlsForm labelControlsForm)
     {
-        if (Data.Rows is null)
-        {
-            return;
-        }
+        LabelInputFormPanel.Render(
+            this.Settings.Form,
+            labelControlsForm);
 
-        foreach (var row in Data.Rows)
-        {
-            if (row.Columns is null)
-            {
-                continue;
-            }
-
-            foreach (var column in row.Columns)
-            {
-                column.SetSettings(
-                    Settings.FromUseGroupBox,
-                    Settings.FromControlOrientation,
-                    Settings.FromControlWidth);
-            }
-        }
-    }
-
-    private void PopulateContentControl()
-    {
         Width = ContentCenter.Padding.Left +
                 ContentCenter.Padding.Right +
                 Data.GetMaxWidth() +
                 ScrollBarSize;
 
-        if (Width > Settings.FromMaxWidth)
+        if (Width > Settings.Form.MaxWidth)
         {
-            Width = Settings.FromMaxWidth;
+            Width = Settings.Form.MaxWidth;
         }
 
         Height = HeaderControl is null
@@ -98,23 +75,13 @@ public partial class InputFormDialogBox
               Data.GetMaxHeight() +
               ScrollBarSize +
               ContentButton.Height;
-
-        if (Height > Settings.FromMaxHeight)
-        {
-            Height = Settings.FromMaxHeight;
-        }
-
-        ContentControl = new ContentControl
-        {
-            Content = Data.GeneratePanel(),
-        };
     }
 
     private void OnOkClick(
         object sender,
         RoutedEventArgs e)
     {
-        if (!Data.IsValid())
+        if (!LabelInputFormPanel.Data.IsValid())
         {
             return;
         }
