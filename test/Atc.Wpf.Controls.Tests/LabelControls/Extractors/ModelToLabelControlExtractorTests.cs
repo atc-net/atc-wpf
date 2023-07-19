@@ -1,6 +1,6 @@
-namespace Atc.Wpf.Controls.Tests.LabelControls.Helpers;
+namespace Atc.Wpf.Controls.Tests.LabelControls.Extractors;
 
-public class ModelToLabelControlHelperTests
+public class ModelToLabelControlExtractorTests
 {
     [StaFact]
     public void GetLabelControls_PrimitiveTypesModel()
@@ -9,7 +9,7 @@ public class ModelToLabelControlHelperTests
         var model = new PrimitiveTypesModel();
 
         // Act
-        var actual = ModelToLabelControlHelper.GetLabelControls(
+        var actual = ModelToLabelControlExtractor.Extract(
             model,
             includeReadOnly: true);
 
@@ -25,7 +25,7 @@ public class ModelToLabelControlHelperTests
         var model = new Address();
 
         // Act
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(
+        var labelControls = ModelToLabelControlExtractor.Extract(
             model,
             includeReadOnly: true);
 
@@ -51,7 +51,7 @@ public class ModelToLabelControlHelperTests
         };
 
         // Act
-        var actual = ModelToLabelControlHelper.GetLabelControls(
+        var actual = ModelToLabelControlExtractor.Extract(
             model,
             includeReadOnly: true);
 
@@ -78,7 +78,7 @@ public class ModelToLabelControlHelperTests
         };
 
         // Act
-        var actual = ModelToLabelControlHelper.GetLabelControls(
+        var actual = ModelToLabelControlExtractor.Extract(
             model,
             includeReadOnly: true);
 
@@ -96,12 +96,28 @@ public class ModelToLabelControlHelperTests
         var model = new Person();
 
         // Act
-        var actual = ModelToLabelControlHelper.GetLabelControls(
+        var actual = ModelToLabelControlExtractor.Extract(
             model,
             includeReadOnly: true);
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(3, actual.Count);
+        Assert.Equal(7, actual.Count);
+    }
+
+    [StaFact]
+    public void GetLabelControls_Account()
+    {
+        // Arrange
+        var model = new Account();
+
+        // Act
+        var actual = ModelToLabelControlExtractor.Extract(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.Equal(9, actual.Count);
     }
 }

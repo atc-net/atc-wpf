@@ -194,7 +194,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             postalCode: "1234",
             country: new CultureInfo("da-DK"));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(address);
+        var labelControls = ModelToLabelControlExtractor.Extract(address);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);
@@ -223,7 +223,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             postalCode: string.Empty,
             country: new CultureInfo("en-US"));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(address);
+        var labelControls = ModelToLabelControlExtractor.Extract(address);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);
@@ -257,7 +257,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 postalCode: "1234",
                 country: new CultureInfo("da-DK")));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(person, includeReadOnly: false, "MyPerson");
+        var labelControls = ModelToLabelControlExtractor.Extract(person, includeReadOnly: false, "MyPerson");
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);
@@ -291,7 +291,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 postalCode: string.Empty,
                 country: new CultureInfo("en-US")));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(person);
+        var labelControls = ModelToLabelControlExtractor.Extract(person);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);
@@ -327,7 +327,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                     postalCode: "1234",
                     country: new CultureInfo("da-DK"))));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(account);
+        var labelControls = ModelToLabelControlExtractor.Extract(account);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);
@@ -363,7 +363,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                     postalCode: string.Empty,
                     country: new CultureInfo("en-US"))));
 
-        var labelControls = ModelToLabelControlHelper.GetLabelControls(account);
+        var labelControls = ModelToLabelControlExtractor.Extract(account);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);

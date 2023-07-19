@@ -1,22 +1,21 @@
-// ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable InvertIf
-namespace Atc.Wpf.Controls.LabelControls.Helpers;
+namespace Atc.Wpf.Controls.LabelControls.Extractors;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-public static class ModelToLabelControlHelper
+public static class ModelToLabelControlExtractor
 {
-    public static IList<ILabelControlBase> GetLabelControls<T>(
-        T model,
+    public static IList<ILabelControlBase> Extract<T>(
+        [DisallowNull] T model,
         bool includeReadOnly = true,
         string groupIdentifier = "")
-        => ExtractLabelControls(
+        => ExtractType(
             model,
             includeReadOnly,
             groupIdentifier,
             string.Empty);
 
-    private static IList<ILabelControlBase> ExtractLabelControls<T>(
-        T model,
+    private static IList<ILabelControlBase> ExtractType<T>(
+        [DisallowNull] T model,
         bool includeReadOnly,
         string groupIdentifier,
         string parentGroupIdentifier)
@@ -26,7 +25,7 @@ public static class ModelToLabelControlHelper
         var labelControls = new List<ILabelControlBase>();
 
         var type = model.GetType();
-        var typeGroupIdentifier = GetTypeGroupIdentifier<T>(model, groupIdentifier, parentGroupIdentifier);
+        var typeGroupIdentifier = GetTypeGroupIdentifier(model, groupIdentifier, parentGroupIdentifier);
 
         var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (var propertyInfo in properties)
@@ -53,7 +52,7 @@ public static class ModelToLabelControlHelper
                 }
             }
 
-            if (ExtractLabelControl(model, propertyInfo, labelControls, typeGroupIdentifier, isReadOnly))
+            if (Extract(model, propertyInfo, labelControls, typeGroupIdentifier, isReadOnly))
             {
                 continue;
             }
@@ -74,20 +73,10 @@ public static class ModelToLabelControlHelper
                 continue;
             }
 
-            if (!propertyInfo.PropertyType.IsPrimitive)
+            if (!propertyInfo.PropertyType.IsPrimitive &&
+                ExtractComplexType(model, includeReadOnly, propertyInfo, labelControls, typeGroupIdentifier))
             {
-                var subModel = propertyInfo.GetValue(model);
-                if (subModel is not null)
-                {
-                    labelControls.AddRange(
-                        ExtractLabelControls(
-                            subModel,
-                            includeReadOnly,
-                            propertyInfo.Name,
-                            typeGroupIdentifier));
-
-                    continue;
-                }
+                continue;
             }
 
             Trace.WriteLine($"ModelToLabelControlHelper is not supporting dataType yet: {propertyInfo.PropertyType}");
@@ -96,10 +85,60 @@ public static class ModelToLabelControlHelper
         return labelControls;
     }
 
-    private static bool ExtractLabelControl<T>(
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]
+    private static bool ExtractComplexType<T>(
         [DisallowNull] T model,
+        bool includeReadOnly,
         PropertyInfo propertyInfo,
         List<ILabelControlBase> labelControls,
+        string typeGroupIdentifier)
+    {
+        var subModel = propertyInfo.GetValue(model);
+        if (subModel is not null)
+        {
+            labelControls.AddRange(
+                ExtractType(
+                    subModel,
+                    includeReadOnly,
+                    propertyInfo.Name,
+                    typeGroupIdentifier));
+
+            return true;
+        }
+
+        var nonNullableType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+        if (nonNullableType is not null)
+        {
+            object? newSubModel = null;
+            try
+            {
+                newSubModel = Activator.CreateInstance(nonNullableType);
+            }
+            catch
+            {
+                // Skip
+            }
+
+            if (newSubModel is not null)
+            {
+                labelControls.AddRange(
+                    ExtractType(
+                        newSubModel,
+                        includeReadOnly,
+                        propertyInfo.Name,
+                        typeGroupIdentifier));
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool Extract<T>(
+        [DisallowNull] T model,
+        PropertyInfo propertyInfo,
+        ICollection<ILabelControlBase> labelControls,
         string typeGroupIdentifier,
         bool isReadOnly)
     {
@@ -213,423 +252,6 @@ public static class ModelToLabelControlHelper
             : $"{parentGroupIdentifier}.{groupIdentifier}";
     }
 
-    private static LabelComboBox CreateLabelEnumPicker<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelComboBox
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Items = new Dictionary<string, string>(StringComparer.Ordinal),
-        };
-
-        const DropDownFirstItemType firstItem = DropDownFirstItemType.PleaseSelect;
-        control.Items.Add(
-            DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
-            firstItem.ToString().NormalizePascalCase());
-
-        var nonNullableType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-        foreach (var enumValue in nonNullableType.GetEnumValues())
-        {
-            var s = enumValue.ToString()!;
-            if (s.Equals("None", StringComparison.Ordinal) ||
-                s.Equals("Unknown", StringComparison.Ordinal) ||
-                s.Equals("Default", StringComparison.Ordinal))
-            {
-                continue;
-            }
-
-            control.Items.Add(s, s.NormalizePascalCase());
-        }
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
-        {
-            control.SelectedKey = propertyObjectValue.ToString()!;
-        }
-
-        return control;
-    }
-
-    private static LabelCheckBox CreateLabelCheckBox<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        bool? propertyValue = null;
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null &&
-            bool.TryParse(
-                propertyObjectValue.ToString(),
-                out var result))
-        {
-            propertyValue = result;
-        }
-
-        var control = new LabelCheckBox
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsChecked = propertyValue ?? false,
-        };
-
-        return control;
-    }
-
-    private static LabelDecimalBox CreateLabelDecimalBox<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly,
-        Type inputType)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelDecimalBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            WatermarkText = propertyInfo.GetDescription().NormalizePascalCase(),
-        };
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        control.Value = propertyObjectValue switch
-        {
-            decimal dec => dec,
-            double dub => (decimal)dub,
-            float flo => (decimal)flo,
-            _ => 0,
-        };
-
-        var customAttributes = propertyInfo
-            .GetCustomAttributes()
-            .ToArray();
-
-        if (!customAttributes.Any())
-        {
-            return control;
-        }
-
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
-        {
-            control.Minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
-        }
-
-        return control;
-    }
-
-    private static LabelDecimalXyBox CreateLabelDecimalXyBox<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly,
-        Type inputType)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelDecimalXyBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-        };
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        switch (propertyObjectValue)
-        {
-            case Size size:
-                control.ValueX = (decimal)size.Width;
-                control.ValueY = (decimal)size.Height;
-                break;
-            case Point2D point2D:
-                control.ValueX = (decimal)point2D.X;
-                control.ValueY = (decimal)point2D.Y;
-                break;
-        }
-
-        var customAttributes = propertyInfo
-            .GetCustomAttributes()
-            .ToArray();
-
-        if (!customAttributes.Any())
-        {
-            return control;
-        }
-
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
-        {
-            control.Minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
-        }
-
-        return control;
-    }
-
-    private static LabelIntegerBox CreateLabelIntegerBox<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly,
-        Type inputType)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        int? propertyValue = null;
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null &&
-            int.TryParse(
-                propertyObjectValue.ToString(),
-                NumberStyles.Any,
-                GlobalizationConstants.EnglishCultureInfo,
-                out var result))
-        {
-            propertyValue = result;
-        }
-
-        var control = new LabelIntegerBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Value = propertyValue ?? 0,
-            WatermarkText = propertyInfo.GetDescription().NormalizePascalCase(),
-        };
-
-        var customAttributes = propertyInfo
-            .GetCustomAttributes()
-            .ToArray();
-
-        if (!customAttributes.Any())
-        {
-            return control;
-        }
-
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
-        {
-            control.Minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
-        }
-
-        return control;
-    }
-
-    private static LabelPixelSizeBox CreateLabelPixelSizeBox<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly,
-        Type inputType)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelPixelSizeBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-        };
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        switch (propertyObjectValue)
-        {
-            case Size size:
-                control.ValueWidth = (int)size.Width;
-                control.ValueHeight = (int)size.Height;
-                break;
-        }
-
-        var customAttributes = propertyInfo
-            .GetCustomAttributes()
-            .ToArray();
-
-        if (!customAttributes.Any())
-        {
-            return control;
-        }
-
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
-        {
-            control.Minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
-        }
-
-        return control;
-    }
-
-    private static LabelTextBox CreateLabelTextBox<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var propertyValue = string.Empty;
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
-        {
-            propertyValue = propertyObjectValue.ToString()!;
-        }
-
-        var control = new LabelTextBox
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Text = propertyValue,
-            WatermarkText = propertyInfo.GetDescription().NormalizePascalCase(),
-        };
-
-        var customAttributes = propertyInfo
-            .GetCustomAttributes()
-            .ToArray();
-
-        if (!customAttributes.Any())
-        {
-            return control;
-        }
-
-        var minLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(MinLengthAttribute));
-        if (minLengthAttribute is not null)
-        {
-            control.MinLength = (uint)((MinLengthAttribute)minLengthAttribute).Length;
-        }
-
-        var maxLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(MaxLengthAttribute));
-        if (maxLengthAttribute is not null)
-        {
-            control.MaxLength = (uint)((MaxLengthAttribute)maxLengthAttribute).Length;
-        }
-
-        var regexAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RegularExpressionAttribute));
-        if (regexAttribute is not null)
-        {
-            control.RegexPattern = ((RegularExpressionAttribute)regexAttribute).Pattern;
-        }
-
-        return control;
-    }
-
-    private static LabelWellKnownColorSelector CreateLabelColorSelector<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelWellKnownColorSelector
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            IsMandatory = propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
-        };
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
-        {
-            var colorCode = propertyObjectValue.ToString()!;
-            if ("#00000000".Equals(colorCode, StringComparison.Ordinal))
-            {
-                control.DefaultColorName = ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
-            }
-            else
-            {
-                var colorName = ColorUtil.GetColorNameFromHex(colorCode);
-                control.DefaultColorName = colorName ?? ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
-            }
-        }
-
-        return control;
-    }
-
-    private static LabelCountrySelector CreateLabelCountrySelector<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelCountrySelector
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            UseOnlySupportedCountries = false,
-            IsMandatory = propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
-        };
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
-        {
-            var cultureInfoName = propertyObjectValue.ToString()!;
-            var cultureInfo = new CultureInfo(cultureInfoName);
-            control.SelectedKey = cultureInfo.LCID.ToString(GlobalizationConstants.EnglishCultureInfo);
-        }
-
-        return control;
-    }
-
-    private static LabelLanguageSelector CreateLabelLanguageSelector<T>(
-        PropertyInfo propertyInfo,
-        T model,
-        string groupIdentifier,
-        bool isReadOnly)
-    {
-        ArgumentNullException.ThrowIfNull(model);
-
-        var control = new LabelLanguageSelector
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            UseOnlySupportedLanguages = false,
-            UpdateUiCultureOnChangeEvent = false,
-            IsMandatory = propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
-        };
-
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
-        {
-            var cultureInfoName = propertyObjectValue.ToString()!;
-            var cultureInfo = new CultureInfo(cultureInfoName);
-            control.SelectedKey = cultureInfo.LCID.ToString(GlobalizationConstants.EnglishCultureInfo);
-        }
-
-        return control;
-    }
-
     private static object? GetPropertyValue(
         object target,
         string fieldName)
@@ -637,10 +259,7 @@ public static class ModelToLabelControlHelper
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(fieldName);
 
-        var propertyInfo = GetPropertyInfo(target, fieldName);
-        return propertyInfo == null
-            ? null
-            : propertyInfo.GetValue(target);
+        return GetPropertyInfo(target, fieldName)?.GetValue(target);
     }
 
     private static PropertyInfo? GetPropertyInfo(
@@ -653,5 +272,270 @@ public static class ModelToLabelControlHelper
         var type = target.GetType();
         var properties = type.GetProperties();
         return properties.SingleOrDefault(x => x.Name == fieldName);
+    }
+
+    private static LabelComboBox CreateLabelEnumPicker<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        string? selectedKey = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            selectedKey = propertyObjectValue.ToString()!;
+        }
+
+        return LabelControlFactory.CreateLabelEnumPicker(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            selectedKey);
+    }
+
+    private static LabelCheckBox CreateLabelCheckBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        bool? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null &&
+            bool.TryParse(
+                propertyObjectValue.ToString(),
+                out var result))
+        {
+            value = result;
+        }
+
+        return LabelControlFactory.CreateLabelCheckBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelDecimalBox CreateLabelDecimalBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly,
+        Type inputType)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        var value = propertyObjectValue switch
+        {
+            decimal dec => dec,
+            double dub => (decimal)dub,
+            float flo => (decimal)flo,
+            _ => 0,
+        };
+
+        return LabelControlFactory.CreateLabelDecimalBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            inputType,
+            value);
+    }
+
+    private static LabelDecimalXyBox CreateLabelDecimalXyBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly,
+        Type inputType)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        decimal valueX = 0;
+        decimal valueY = 0;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        switch (propertyObjectValue)
+        {
+            case Size size:
+                valueX = (decimal)size.Width;
+                valueY = (decimal)size.Height;
+                break;
+            case Point2D point2D:
+                valueX = (decimal)point2D.X;
+                valueY = (decimal)point2D.Y;
+                break;
+        }
+
+        return LabelControlFactory.CreateLabelDecimalXyBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            inputType,
+            valueX,
+            valueY);
+    }
+
+    private static LabelIntegerBox CreateLabelIntegerBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly,
+        Type inputType)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        int? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null &&
+            int.TryParse(
+                propertyObjectValue.ToString(),
+                NumberStyles.Any,
+                GlobalizationConstants.EnglishCultureInfo,
+                out var result))
+        {
+            value = result;
+        }
+
+        return LabelControlFactory.CreateLabelIntegerBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            inputType,
+            value);
+    }
+
+    private static LabelPixelSizeBox CreateLabelPixelSizeBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly,
+        Type inputType)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        var valueWidth = 0;
+        var valueHeight = 0;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        switch (propertyObjectValue)
+        {
+            case Size size:
+                valueWidth = (int)size.Width;
+                valueHeight = (int)size.Height;
+                break;
+        }
+
+        return LabelControlFactory.CreateLabelPixelSizeBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            inputType,
+            valueWidth,
+            valueHeight);
+    }
+
+    private static LabelTextBox CreateLabelTextBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        var value = string.Empty;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            value = propertyObjectValue.ToString()!;
+        }
+
+        return LabelControlFactory.CreateLabelTextBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelWellKnownColorSelector CreateLabelColorSelector<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        string? defaultColorName = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            var colorCode = propertyObjectValue.ToString()!;
+            if ("#00000000".Equals(colorCode, StringComparison.Ordinal))
+            {
+                defaultColorName = ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
+            else
+            {
+                var colorName = ColorUtil.GetColorNameFromHex(colorCode);
+                defaultColorName = colorName ?? ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
+        }
+
+        return LabelControlFactory.CreateLabelWellKnownColorSelector(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            defaultColorName);
+    }
+
+    private static LabelCountrySelector CreateLabelCountrySelector<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        string? selectedKey = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            var cultureInfoName = propertyObjectValue.ToString()!;
+            var cultureInfo = new CultureInfo(cultureInfoName);
+            selectedKey = cultureInfo.LCID.ToString(GlobalizationConstants.EnglishCultureInfo);
+        }
+
+        return LabelControlFactory.CreateLabelCountrySelector(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            selectedKey);
+    }
+
+    private static LabelLanguageSelector CreateLabelLanguageSelector<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        string? selectedKey = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            var cultureInfoName = propertyObjectValue.ToString()!;
+            var cultureInfo = new CultureInfo(cultureInfoName);
+            selectedKey = cultureInfo.LCID.ToString(GlobalizationConstants.EnglishCultureInfo);
+        }
+
+        return LabelControlFactory.CreateLabelLanguageSelector(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            selectedKey);
     }
 }
