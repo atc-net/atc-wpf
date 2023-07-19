@@ -8,6 +8,7 @@
     xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs;assembly=Atc.Wpf.Theming"
     xmlns:local="clr-namespace:Atc.Wpf.Controls.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="{Binding Path=Settings.TitleBarText}"
     d:DataContext="{d:DesignInstance Type=local:QuestionDialogBox,
                                      IsDesignTimeCreatable=True}"
     d:Height="200"

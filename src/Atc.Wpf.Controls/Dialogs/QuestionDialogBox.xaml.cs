@@ -6,10 +6,11 @@ namespace Atc.Wpf.Controls.Dialogs;
 public partial class QuestionDialogBox
 {
     public QuestionDialogBox(
-        Window owningWindow)
+        Window owningWindow,
+        DialogBoxSettings settings)
     {
         this.OwningWindow = owningWindow;
-        this.Settings = DialogBoxSettings.Create(DialogBoxType.YesNo);
+        this.Settings = settings;
 
         InitializeComponent();
         DataContext = this;
@@ -17,8 +18,21 @@ public partial class QuestionDialogBox
 
     public QuestionDialogBox(
         Window owningWindow,
+        DialogBoxSettings settings,
         string contentText)
-        : this(owningWindow)
+        : this(
+            owningWindow,
+            settings)
+    {
+        PopulateContentControl(contentText);
+    }
+
+    public QuestionDialogBox(
+        Window owningWindow,
+        string contentText)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.YesNo))
     {
         PopulateContentControl(contentText);
     }

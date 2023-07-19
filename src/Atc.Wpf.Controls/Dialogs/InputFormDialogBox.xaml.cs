@@ -62,9 +62,9 @@ public partial class InputFormDialogBox
                 Data.GetMaxWidth() +
                 ScrollBarSize;
 
-        if (Width > Settings.Form.MaxWidth)
+        if (Width > Settings.Form.MaxSize.Width)
         {
-            Width = Settings.Form.MaxWidth;
+            Width = Settings.Form.MaxSize.Width;
         }
 
         Height = HeaderControl is null
@@ -75,6 +75,11 @@ public partial class InputFormDialogBox
               Data.GetMaxHeight() +
               ScrollBarSize +
               ContentButton.Height;
+
+        if (Height > Settings.Form.MaxSize.Height)
+        {
+            Height = Settings.Form.MaxSize.Height;
+        }
     }
 
     private void OnOkClick(

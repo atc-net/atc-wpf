@@ -64,6 +64,8 @@ public class DialogBoxSettings
         Form = new LabelInputFormPanelSettings();
     }
 
+    public string TitleBarText { get; set; } = string.Empty;
+
     public SvgImage? ContentSvgImage { get; set; }
 
     public bool UsePrimaryAccentColor

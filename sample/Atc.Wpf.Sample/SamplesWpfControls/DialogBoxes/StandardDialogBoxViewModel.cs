@@ -54,6 +54,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
     {
         var dialogBox = new InfoDialogBox(
             Application.Current.MainWindow!,
+            new DialogBoxSettings(DialogBoxType.Ok)
+            {
+                TitleBarText = "This is a information",
+            },
             "Hello world");
 
         var dialogResult = dialogBox.ShowDialog();

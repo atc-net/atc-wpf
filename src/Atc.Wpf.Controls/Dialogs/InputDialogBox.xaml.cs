@@ -7,19 +7,28 @@ public partial class InputDialogBox
 {
     public InputDialogBox(
         Window owningWindow,
+        DialogBoxSettings settings,
         ILabelControlBase labelControl)
     {
-        ArgumentNullException.ThrowIfNull(labelControl);
-
         this.OwningWindow = owningWindow;
-        this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
+        this.Settings = settings;
 
         this.Data = labelControl;
 
-        PopulateContentControl();
-
         InitializeComponent();
         DataContext = this;
+
+        PopulateContentControl();
+    }
+
+    public InputDialogBox(
+        Window owningWindow,
+        ILabelControlBase labelControl)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.OkCancel),
+            labelControl)
+    {
     }
 
     public Window OwningWindow { get; private set; }
