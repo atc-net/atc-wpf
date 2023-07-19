@@ -38,7 +38,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public IRelayCommand ShowInputFormAccountWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithoutDataDialogBoxCommandHandler);
 
-    public IRelayCommand ShowInputForm1ColumnByDictionaryDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnByDictionaryDialogBoxCommandHandler);
+    public IRelayCommand ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnByLabelControlsDataDialogBoxCommandHandler);
 
     public string JsonResult
     {
@@ -389,47 +389,35 @@ public class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
-    private void ShowInputForm1ColumnByDictionaryDialogBoxCommandHandler()
+    private void ShowInputForm1ColumnByLabelControlsDataDialogBoxCommandHandler()
     {
-        var dictionary = new Dictionary<string, LabelControlData>(StringComparer.Ordinal)
+        var listOfLabelControlsData = new List<LabelControlData>()
         {
+            new(
+                dataType: typeof(string),
+                labelText: "MyFirstName")
             {
-                "FirstName",
-                new LabelControlData(
-                    dataType: typeof(string),
-                    labelText: "MyFirstName")
-                {
-                    IsMandatory = true,
-                }
+                IsMandatory = true,
             },
+            new(
+                dataType: typeof(string),
+                labelText: "MyLastName")
             {
-                "LastName",
-                new LabelControlData(
-                    dataType: typeof(string),
-                    labelText: "MyLastName")
-                {
-                    IsMandatory = true,
-                    Minimum = 2,
-                }
+                IsMandatory = true,
+                Minimum = 2,
             },
+            new(
+                dataType: typeof(int),
+                labelText: "Age")
             {
-                "Age",
-                new LabelControlData(
-                    dataType: typeof(int),
-                    labelText: "Age")
-                {
-                    Minimum = 0,
-                }
+                Minimum = 0,
             },
-            {
-                "Note",
-                new LabelControlData(
-                    dataType: typeof(string),
-                    labelText: "Note")
-            },
+            new(
+                dataType: typeof(string),
+                labelText: "Note"),
         };
 
-        var labelControls = DictionaryToLabelControlExtractor.Extract(dictionary);
+        var labelControls = LabelControlDataToLabelControlExtractor.Extract(listOfLabelControlsData);
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);

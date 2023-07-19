@@ -67,7 +67,7 @@
                                 Command="{Binding Path=ShowInputFormAccountWithoutDataDialogBoxCommands}"
                                 Content="Input Form - Account model without data" />
                         </atc:GridEx>
-                        <Button Command="{Binding Path=ShowInputForm1ColumnByDictionaryDialogBoxCommand}" Content="Input Form 1 columns by Dictionary" />
+                        <Button Command="{Binding Path=ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand}" Content="Input Form 1 columns by LabelControlsData" />
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"

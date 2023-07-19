@@ -10,6 +10,8 @@ public class Account
 
     public Person? PrimaryContactPerson { get; set; }
 
+    public DayOfWeek FirstDayOfWeek { get; init; } = DayOfWeek.Monday;
+
     public override string ToString()
-        => $"{nameof(Id)}: {Id}, {nameof(AccountNumber)}: {AccountNumber}, {nameof(PrimaryContactPerson)}: {PrimaryContactPerson}";
+        => $"{nameof(Id)}: {Id}, {nameof(AccountNumber)}: {AccountNumber}, {nameof(PrimaryContactPerson)}: {PrimaryContactPerson}, {nameof(FirstDayOfWeek)}: {FirstDayOfWeek}";
 }

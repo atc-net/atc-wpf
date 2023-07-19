@@ -88,4 +88,6 @@ public record Account
     public string AccountNumber { get; init; }
 
     public Person PrimaryContactPerson { get; init; }
+
+    public DayOfWeek FirstDayOfWeek { get; init; } = DayOfWeek.Monday;
 }

@@ -118,6 +118,6 @@ public class ModelToLabelControlExtractorTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(9, actual.Count);
+        Assert.Equal(10, actual.Count);
     }
 }

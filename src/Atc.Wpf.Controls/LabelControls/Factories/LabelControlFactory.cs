@@ -11,12 +11,29 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
+        return CreateLabelEnumPicker(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            selectedKey,
+            propertyInfo.PropertyType);
+    }
+
+    public static LabelComboBox CreateLabelEnumPicker(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string? selectedKey,
+        Type inputDataType)
+    {
         var control = new LabelComboBox
         {
             GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
+            LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
+            IsMandatory = isMandatory,
             Items = new Dictionary<string, string>(StringComparer.Ordinal),
         };
 
@@ -25,18 +42,21 @@ public static class LabelControlFactory
             DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
             firstItem.ToString().NormalizePascalCase());
 
-        var nonNullableType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-        foreach (var enumValue in nonNullableType.GetEnumValues())
+        var nonNullableType = Nullable.GetUnderlyingType(inputDataType) ?? inputDataType;
+        if (nonNullableType is not null)
         {
-            var s = enumValue.ToString()!;
-            if (s.Equals("None", StringComparison.Ordinal) ||
-                s.Equals("Unknown", StringComparison.Ordinal) ||
-                s.Equals("Default", StringComparison.Ordinal))
+            foreach (var enumValue in nonNullableType.GetEnumValues())
             {
-                continue;
-            }
+                var s = enumValue.ToString()!;
+                if (s.Equals("None", StringComparison.Ordinal) ||
+                    s.Equals("Unknown", StringComparison.Ordinal) ||
+                    s.Equals("Default", StringComparison.Ordinal))
+                {
+                    continue;
+                }
 
-            control.Items.Add(s, s.NormalizePascalCase());
+                control.Items.Add(s, s.NormalizePascalCase());
+            }
         }
 
         if (selectedKey is not null)
@@ -66,6 +86,23 @@ public static class LabelControlFactory
         return control;
     }
 
+    public static LabelCheckBox CreateLabelCheckBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool? value)
+    {
+        var control = new LabelCheckBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsChecked = value ?? false,
+        };
+
+        return control;
+    }
+
     public static LabelDecimalBox CreateLabelDecimalBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -75,31 +112,65 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        var control = new LabelDecimalBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            WatermarkText = propertyInfo.GetDescription().NormalizePascalCase(),
-            Value = value,
-        };
+        decimal? minimum = null;
+        decimal? maximum = null;
 
         var customAttributes = propertyInfo
             .GetCustomAttributes()
             .ToArray();
 
-        if (!customAttributes.Any())
+        if (customAttributes.Any())
         {
-            return control;
+            var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
+            if (rangeLengthAttribute is not null)
+            {
+                minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
+                maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
+            }
         }
 
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
+        return CreateLabelDecimalBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            inputType,
+            value,
+            minimum,
+            maximum);
+    }
+
+    public static LabelDecimalBox CreateLabelDecimalBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        decimal? value,
+        decimal? minimum,
+        decimal? maximum)
+    {
+        var control = new LabelDecimalBox
         {
-            control.Minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            Value = value ?? 0,
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        if (minimum.HasValue)
+        {
+            control.Minimum = minimum.Value;
+        }
+
+        if (maximum.HasValue)
+        {
+            control.Maximum = maximum.Value;
         }
 
         return control;
@@ -115,31 +186,65 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        var control = new LabelDecimalXyBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            ValueX = valueX,
-            ValueY = valueY,
-        };
+        decimal? minimum = null;
+        decimal? maximum = null;
 
         var customAttributes = propertyInfo
             .GetCustomAttributes()
             .ToArray();
 
-        if (!customAttributes.Any())
+        if (customAttributes.Any())
         {
-            return control;
+            var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
+            if (rangeLengthAttribute is not null)
+            {
+                minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
+                maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
+            }
         }
 
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
+        return CreateLabelDecimalXyBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            inputType,
+            valueX,
+            valueY,
+            minimum,
+            maximum);
+    }
+
+    public static LabelDecimalXyBox CreateLabelDecimalXyBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        Type inputDataType,
+        decimal? valueX,
+        decimal? valueY,
+        decimal? minimum,
+        decimal? maximum)
+    {
+        var control = new LabelDecimalXyBox
         {
-            control.Minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            ValueX = valueX ?? 0,
+            ValueY = valueY ?? 0,
+        };
+
+        if (minimum.HasValue)
+        {
+            control.Minimum = minimum.Value;
+        }
+
+        if (maximum.HasValue)
+        {
+            control.Maximum = maximum.Value;
         }
 
         return control;
@@ -154,31 +259,65 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        var control = new LabelIntegerBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Value = value ?? 0,
-            WatermarkText = propertyInfo.GetDescription().NormalizePascalCase(),
-        };
+        int? minimum = null;
+        int? maximum = null;
 
         var customAttributes = propertyInfo
             .GetCustomAttributes()
             .ToArray();
 
-        if (!customAttributes.Any())
+        if (customAttributes.Any())
         {
-            return control;
+            var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
+            if (rangeLengthAttribute is not null)
+            {
+                minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
+                maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
+            }
         }
 
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
+        return CreateLabelIntegerBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            inputType,
+            value,
+            minimum,
+            maximum);
+    }
+
+    public static LabelIntegerBox CreateLabelIntegerBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        int? value,
+        int? minimum,
+        int? maximum)
+    {
+        var control = new LabelIntegerBox
         {
-            control.Minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            Value = value ?? 0,
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        if (minimum.HasValue)
+        {
+            control.Minimum = minimum.Value;
+        }
+
+        if (maximum.HasValue)
+        {
+            control.Maximum = maximum.Value;
         }
 
         return control;
@@ -194,31 +333,67 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        var control = new LabelPixelSizeBox
-        {
-            GroupIdentifier = groupIdentifier,
-            InputDataType = inputType,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            ValueWidth = valueWidth,
-            ValueHeight = valueHeight,
-        };
+        int? minimum = null;
+        int? maximum = null;
 
         var customAttributes = propertyInfo
             .GetCustomAttributes()
             .ToArray();
 
-        if (!customAttributes.Any())
+        if (customAttributes.Any())
         {
-            return control;
+            var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
+            if (rangeLengthAttribute is not null)
+            {
+                minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
+                maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
+            }
         }
 
-        var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
-        if (rangeLengthAttribute is not null)
+        return CreateLabelPixelSizeBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            inputType,
+            valueWidth,
+            valueHeight,
+            minimum,
+            maximum);
+    }
+
+    public static LabelPixelSizeBox CreateLabelPixelSizeBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        Type inputDataType,
+        int? valueWidth,
+        int? valueHeight,
+        int? minimum,
+        int? maximum)
+    {
+        var control = new LabelPixelSizeBox
         {
-            control.Minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
-            control.Maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            ValueWidth = valueWidth ?? 0,
+            ValueHeight = valueHeight ?? 0,
+            Minimum = minimum ?? 0,
+            Maximum = maximum ?? 0,
+        };
+
+        if (minimum.HasValue)
+        {
+            control.Minimum = minimum.Value;
+        }
+
+        if (maximum.HasValue)
+        {
+            control.Maximum = maximum.Value;
         }
 
         return control;
@@ -232,13 +407,13 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        var customAttributes = propertyInfo
-            .GetCustomAttributes()
-            .ToArray();
-
         uint? minLength = null;
         uint? maxLength = null;
         string? regexPattern = null;
+
+        var customAttributes = propertyInfo
+            .GetCustomAttributes()
+            .ToArray();
 
         if (customAttributes.Any())
         {
@@ -268,6 +443,7 @@ public static class LabelControlFactory
             isReadOnly,
             propertyInfo.HasRequiredAttribute(),
             propertyInfo.GetDescription(),
+            propertyInfo.PropertyType,
             value,
             minLength,
             maxLength,
@@ -280,7 +456,8 @@ public static class LabelControlFactory
         bool isReadOnly,
         bool isMandatory,
         string watermarkText,
-        string value,
+        Type inputDataType,
+        string? value,
         uint? minLength,
         uint? maxLength,
         string? regexPattern)
@@ -291,7 +468,8 @@ public static class LabelControlFactory
             LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
             IsMandatory = isMandatory,
-            Text = value,
+            InputDataType = inputDataType,
+            Text = value ?? string.Empty,
             WatermarkText = watermarkText.NormalizePascalCase(),
         };
 
@@ -321,13 +499,31 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
+        return CreateLabelWellKnownColorSelector(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
+            propertyInfo.PropertyType,
+            defaultColorName);
+    }
+
+    public static LabelWellKnownColorSelector CreateLabelWellKnownColorSelector(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        Type inputDataType,
+        string? defaultColorName)
+    {
         var control = new LabelWellKnownColorSelector
         {
             GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
+            LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            IsMandatory = propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
             DefaultColorName = defaultColorName,
         };
 
@@ -338,24 +534,37 @@ public static class LabelControlFactory
         PropertyInfo propertyInfo,
         string groupIdentifier,
         bool isReadOnly,
-        string? selectedKey)
+        string? defaultCultureIdentifier)
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
+        return CreateLabelCountrySelector(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
+            propertyInfo.PropertyType,
+            defaultCultureIdentifier);
+    }
+
+    public static LabelCountrySelector CreateLabelCountrySelector(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        Type inputDataType,
+        string? defaultCultureIdentifier)
+    {
         var control = new LabelCountrySelector
         {
             GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
+            LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            UseOnlySupportedCountries = false,
-            IsMandatory = propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
+            DefaultCultureIdentifier = defaultCultureIdentifier,
         };
-
-        if (selectedKey is not null)
-        {
-            control.SelectedKey = selectedKey;
-        }
 
         return control;
     }
@@ -364,25 +573,39 @@ public static class LabelControlFactory
         PropertyInfo propertyInfo,
         string groupIdentifier,
         bool isReadOnly,
-        string? selectedKey)
+        string? defaultCultureIdentifier)
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
+        return CreateLabelLanguageSelector(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
+            propertyInfo.PropertyType,
+            defaultCultureIdentifier);
+    }
+
+    public static LabelLanguageSelector CreateLabelLanguageSelector(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        Type inputDataType,
+        string? defaultCultureIdentifier)
+    {
         var control = new LabelLanguageSelector
         {
             GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
+            LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
+            DefaultCultureIdentifier = defaultCultureIdentifier,
             UseOnlySupportedLanguages = false,
             UpdateUiCultureOnChangeEvent = false,
-            IsMandatory = propertyInfo.HasRequiredAttribute() || !propertyInfo.IsNullable(),
         };
-
-        if (selectedKey is not null)
-        {
-            control.SelectedKey = selectedKey;
-        }
 
         return control;
     }
