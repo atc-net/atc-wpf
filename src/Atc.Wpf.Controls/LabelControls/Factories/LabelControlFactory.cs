@@ -232,41 +232,82 @@ public static class LabelControlFactory
     {
         ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        var control = new LabelTextBox
-        {
-            GroupIdentifier = groupIdentifier,
-            LabelText = propertyInfo.Name.NormalizePascalCase(),
-            IsEnabled = !isReadOnly,
-            IsMandatory = propertyInfo.HasRequiredAttribute(),
-            Text = value,
-            WatermarkText = propertyInfo.GetDescription().NormalizePascalCase(),
-        };
-
         var customAttributes = propertyInfo
             .GetCustomAttributes()
             .ToArray();
 
-        if (!customAttributes.Any())
+        uint? minLength = null;
+        uint? maxLength = null;
+        string? regexPattern = null;
+
+        if (customAttributes.Any())
         {
-            return control;
+            var minLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(MinLengthAttribute));
+            if (minLengthAttribute is not null)
+            {
+                minLength = (uint)((MinLengthAttribute)minLengthAttribute).Length;
+            }
+
+            var maxLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(MaxLengthAttribute));
+            if (maxLengthAttribute is not null)
+            {
+                maxLength = (uint)((MaxLengthAttribute)maxLengthAttribute).Length;
+            }
+
+            var regexAttribute =
+                customAttributes.FirstOrDefault(x => x.GetType() == typeof(RegularExpressionAttribute));
+            if (regexAttribute is not null)
+            {
+                regexPattern = ((RegularExpressionAttribute)regexAttribute).Pattern;
+            }
         }
 
-        var minLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(MinLengthAttribute));
-        if (minLengthAttribute is not null)
+        return CreateLabelTextBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            value,
+            minLength,
+            maxLength,
+            regexPattern);
+    }
+
+    public static LabelTextBox CreateLabelTextBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        string value,
+        uint? minLength,
+        uint? maxLength,
+        string? regexPattern)
+    {
+        var control = new LabelTextBox
         {
-            control.MinLength = (uint)((MinLengthAttribute)minLengthAttribute).Length;
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            Text = value,
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        if (minLength.HasValue)
+        {
+            control.MinLength = minLength.Value;
         }
 
-        var maxLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(MaxLengthAttribute));
-        if (maxLengthAttribute is not null)
+        if (maxLength.HasValue)
         {
-            control.MaxLength = (uint)((MaxLengthAttribute)maxLengthAttribute).Length;
+            control.MaxLength = maxLength.Value;
         }
 
-        var regexAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RegularExpressionAttribute));
-        if (regexAttribute is not null)
+        if (regexPattern is not null)
         {
-            control.RegexPattern = ((RegularExpressionAttribute)regexAttribute).Pattern;
+            control.RegexPattern = regexPattern;
         }
 
         return control;

@@ -154,7 +154,10 @@ public class LabelInputFormPanelViewModel : ViewModelBase
                 postalCode: "1234",
                 country: new CultureInfo("da-DK")));
 
-        var labelControls = ModelToLabelControlExtractor.Extract(person, includeReadOnly: false, "MyPerson");
+        var labelControls = ModelToLabelControlExtractor.Extract(
+            person,
+            includeReadOnly: false,
+            groupIdentifier: "MyPerson");
 
         var labelControlsForm = new LabelControlsForm();
         labelControlsForm.AddColumn(labelControls);

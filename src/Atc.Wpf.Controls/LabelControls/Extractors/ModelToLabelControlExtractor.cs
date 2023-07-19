@@ -1,4 +1,5 @@
 // ReSharper disable InvertIf
+// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Controls.LabelControls.Extractors;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
