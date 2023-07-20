@@ -32,7 +32,7 @@ internal static class TextBoxValidationHelper
             case TextBoxValidationRuleType.Ftp:
             case TextBoxValidationRuleType.Ftps:
             case TextBoxValidationRuleType.FtpOrFtps:
-                ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: true);
+                ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: true, allowFtps: true);
                 break;
             case TextBoxValidationRuleType.Http:
                 ValidateHttpOrHttps(value, ref isValid, ref errorMessage, allowHttp: true, allowHttps: false);
@@ -72,14 +72,15 @@ internal static class TextBoxValidationHelper
         string? value,
         ref bool isValid,
         ref string errorMessage,
-        bool allowFtp)
+        bool allowFtp,
+        bool allowFtps)
     {
-        // TODO: UriAttribute is missing 'allowFtps'
         var validation = new UriAttribute(
             required: true,
             allowHttp: false,
             allowHttps: false,
             allowFtp: allowFtp,
+            allowFtps: allowFtps,
             allowFile: false,
             allowOpcTcp: false);
         if (validation.IsValid(value))
@@ -103,6 +104,7 @@ internal static class TextBoxValidationHelper
             allowHttp: allowHttp,
             allowHttps: allowHttps,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: false);
         if (validation.IsValid(value))
@@ -153,6 +155,7 @@ internal static class TextBoxValidationHelper
             allowHttp: false,
             allowHttps: false,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: true);
         if (validation.IsValid(value))
@@ -174,6 +177,7 @@ internal static class TextBoxValidationHelper
             allowHttp: false,
             allowHttps: false,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: true);
         if (validation.IsValid(value))
@@ -195,6 +199,7 @@ internal static class TextBoxValidationHelper
             allowHttp: false,
             allowHttps: false,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: true);
         if (validation.IsValid(value))

@@ -1,5 +1,4 @@
 // ReSharper disable InconsistentNaming
-
 namespace Atc.Wpf.Theming.Controls.Windows;
 
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]

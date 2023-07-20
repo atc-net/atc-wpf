@@ -107,7 +107,7 @@ public static class ModelToLabelControlExtractor
             return true;
         }
 
-        var nonNullableType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+        var nonNullableType = propertyInfo.PropertyType.GetNonNullableType();
         if (nonNullableType is not null)
         {
             object? newSubModel = null;
@@ -143,7 +143,7 @@ public static class ModelToLabelControlExtractor
         string typeGroupIdentifier,
         bool isReadOnly)
     {
-        var nonNullableType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+        var nonNullableType = propertyInfo.PropertyType.GetNonNullableType();
         if (nonNullableType.IsEnum)
         {
             labelControls.Add(CreateLabelEnumPicker(propertyInfo, model, typeGroupIdentifier, isReadOnly));

@@ -1,3 +1,4 @@
+#pragma warning disable SA1402
 // ReSharper disable ConvertToPrimaryConstructor
 namespace Atc.Wpf.Sample.Models;
 
@@ -91,3 +92,4 @@ public record Account
 
     public DayOfWeek FirstDayOfWeek { get; init; } = DayOfWeek.Monday;
 }
+#pragma warning restore SA1402

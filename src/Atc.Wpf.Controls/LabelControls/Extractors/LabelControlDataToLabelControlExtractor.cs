@@ -16,7 +16,7 @@ public static class LabelControlDataToLabelControlExtractor
         {
             var type = controlData.DataType;
 
-            var nonNullableType = Nullable.GetUnderlyingType(type) ?? type;
+            var nonNullableType = type.GetNonNullableType();
             if (nonNullableType.IsEnum)
             {
                 labelControls.Add(

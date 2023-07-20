@@ -42,21 +42,18 @@ public static class LabelControlFactory
             DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
             firstItem.ToString().NormalizePascalCase());
 
-        var nonNullableType = Nullable.GetUnderlyingType(inputDataType) ?? inputDataType;
-        if (nonNullableType is not null)
+        var nonNullableType = inputDataType.GetNonNullableType();
+        foreach (var enumValue in nonNullableType.GetEnumValues())
         {
-            foreach (var enumValue in nonNullableType.GetEnumValues())
+            var s = enumValue.ToString()!;
+            if (s.Equals("None", StringComparison.Ordinal) ||
+                s.Equals("Unknown", StringComparison.Ordinal) ||
+                s.Equals("Default", StringComparison.Ordinal))
             {
-                var s = enumValue.ToString()!;
-                if (s.Equals("None", StringComparison.Ordinal) ||
-                    s.Equals("Unknown", StringComparison.Ordinal) ||
-                    s.Equals("Default", StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                control.Items.Add(s, s.NormalizePascalCase());
+                continue;
             }
+
+            control.Items.Add(s, s.NormalizePascalCase());
         }
 
         if (selectedKey is not null)
