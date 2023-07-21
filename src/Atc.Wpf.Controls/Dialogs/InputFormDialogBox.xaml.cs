@@ -11,33 +11,37 @@ public partial class InputFormDialogBox
     public InputFormDialogBox(
         Window owningWindow,
         ILabelControlsForm labelControlsForm)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.OkCancel),
+            labelControlsForm)
     {
-        ArgumentNullException.ThrowIfNull(labelControlsForm);
-
-        this.OwningWindow = owningWindow;
-        this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-        this.Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
-
-        InitializeComponent();
-        DataContext = this;
-
-        PopulateLabelInputFormPanel(labelControlsForm);
     }
 
     public InputFormDialogBox(
         Window owningWindow,
-        ILabelControlsForm labelControlsForm,
-        DialogBoxSettings settings)
+        string titleBarText,
+        ILabelControlsForm labelControlsForm)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.OkCancel),
+            labelControlsForm)
+    {
+        this.Settings.TitleBarText = titleBarText;
+    }
+
+    public InputFormDialogBox(
+        Window owningWindow,
+        DialogBoxSettings settings,
+        ILabelControlsForm labelControlsForm)
     {
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
         this.OwningWindow = owningWindow;
         this.Settings = settings;
+        this.Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
 
-        InitializeComponent();
-        DataContext = this;
-
-        PopulateLabelInputFormPanel(labelControlsForm);
+        InitializeDialogBox(labelControlsForm);
     }
 
     public Window OwningWindow { get; private set; }
@@ -49,6 +53,16 @@ public partial class InputFormDialogBox
     public LabelInputFormPanel LabelInputFormPanel { get; } = new();
 
     public ILabelControlsForm Data => LabelInputFormPanel.Data;
+
+    private void InitializeDialogBox(
+        ILabelControlsForm labelControlsForm)
+    {
+        InitializeComponent();
+
+        DataContext = this;
+
+        PopulateLabelInputFormPanel(labelControlsForm);
+    }
 
     private void PopulateLabelInputFormPanel(
         ILabelControlsForm labelControlsForm)

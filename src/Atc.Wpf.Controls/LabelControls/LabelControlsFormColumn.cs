@@ -94,47 +94,47 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
             switch (control)
             {
                 case LabelCheckBox labelCheckBox:
-                    result.Add(control.Identifier, labelCheckBox.IsChecked);
+                    result.Add(control.GetFullIdentifier(), labelCheckBox.IsChecked);
                     break;
                 case LabelComboBox labelComboBox:
-                    result.Add(control.Identifier, labelComboBox.SelectedKey);
+                    result.Add(control.GetFullIdentifier(), labelComboBox.SelectedKey);
                     break;
                 case LabelDecimalBox labelDecimalBox:
-                    result.Add(control.Identifier, labelDecimalBox.Value);
+                    result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
                     break;
                 case LabelDecimalXyBox labelDecimalXyBox:
                     if (labelDecimalXyBox.InputDataType == typeof(Point2D) ||
                         labelDecimalXyBox.InputDataType == typeof(Point2D?))
                     {
-                        result.Add(control.Identifier, new Point2D(
+                        result.Add(control.GetFullIdentifier(), new Point2D(
                             (double)labelDecimalXyBox.ValueX,
                             (double)labelDecimalXyBox.ValueY));
                     }
 
                     break;
                 case LabelIntegerBox labelIntegerBox:
-                    result.Add(control.Identifier, labelIntegerBox.Value);
+                    result.Add(control.GetFullIdentifier(), labelIntegerBox.Value);
                     break;
                 case LabelPixelSizeBox labelPixelSizeBox:
-                    result.Add(control.Identifier, new Size(labelPixelSizeBox.ValueWidth, labelPixelSizeBox.ValueHeight));
+                    result.Add(control.GetFullIdentifier(), new Size(labelPixelSizeBox.ValueWidth, labelPixelSizeBox.ValueHeight));
                     break;
                 case LabelSlider labelSlider:
-                    result.Add(control.Identifier, labelSlider.Value);
+                    result.Add(control.GetFullIdentifier(), labelSlider.Value);
                     break;
                 case LabelTextBox labelTextBox:
-                    result.Add(control.Identifier, labelTextBox.Text);
+                    result.Add(control.GetFullIdentifier(), labelTextBox.Text);
                     break;
                 case LabelCountrySelector labelCountrySelector:
                     if (NumberHelper.IsInt(labelCountrySelector.SelectedKey))
                     {
-                        result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.SelectedKey)));
+                        result.Add(control.GetFullIdentifier(), new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.SelectedKey)));
                     }
 
                     break;
                 case LabelLanguageSelector labelLanguageSelector:
                     if (NumberHelper.IsInt(labelLanguageSelector.SelectedKey))
                     {
-                        result.Add(control.Identifier, new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.SelectedKey)));
+                        result.Add(control.GetFullIdentifier(), new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.SelectedKey)));
                     }
 
                     break;
@@ -142,7 +142,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                     var color = ColorUtil.GetColorFromName(labelWellKnownColorSelector.SelectedKey);
                     if (color is not null)
                     {
-                        result.Add(control.Identifier, (Color)color);
+                        result.Add(control.GetFullIdentifier(), (Color)color);
                     }
 
                     break;

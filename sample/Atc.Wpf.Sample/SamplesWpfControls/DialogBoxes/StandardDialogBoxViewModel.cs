@@ -5,6 +5,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
 {
     private readonly JsonSerializerOptions? jsonOptions;
     private string jsonResult = string.Empty;
+    private bool showResultAsKeyValues = true;
 
     public StandardDialogBoxViewModel()
     {
@@ -39,6 +40,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
     public IRelayCommand ShowInputFormAccountWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithoutDataDialogBoxCommandHandler);
 
     public IRelayCommand ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnByLabelControlsDataDialogBoxCommandHandler);
+
+    public bool ShowResultAsKeyValues
+    {
+        get => showResultAsKeyValues;
+        set
+        {
+            showResultAsKeyValues = value;
+            RaisePropertyChanged();
+        }
+    }
 
     public string JsonResult
     {
@@ -212,8 +223,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
         var dialogResult = dialogBox.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
-            var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            if (ShowResultAsKeyValues)
+            {
+                var data = dialogBox.Data.GetKeyValues();
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
+            else
+            {
+                var data = LabelControlsFormToModelFactory.Create<Address>(dialogBox.Data);
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
         }
         else
         {
@@ -241,8 +260,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
         var dialogResult = dialogBox.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
-            var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            if (ShowResultAsKeyValues)
+            {
+                var data = dialogBox.Data.GetKeyValues();
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
+            else
+            {
+                var data = LabelControlsFormToModelFactory.Create<Account>(dialogBox.Data);
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
         }
         else
         {
@@ -278,8 +305,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
         var dialogResult = dialogBox.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
-            var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            if (ShowResultAsKeyValues)
+            {
+                var data = dialogBox.Data.GetKeyValues();
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
+            else
+            {
+                var data = LabelControlsFormToModelFactory.Create<Person>(dialogBox.Data);
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
         }
         else
         {
@@ -312,8 +347,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
         var dialogResult = dialogBox.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
-            var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            if (ShowResultAsKeyValues)
+            {
+                var data = dialogBox.Data.GetKeyValues();
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
+            else
+            {
+                var data = LabelControlsFormToModelFactory.Create<Person>(dialogBox.Data);
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
         }
         else
         {
@@ -348,8 +391,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
         var dialogResult = dialogBox.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
-            var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            if (ShowResultAsKeyValues)
+            {
+                var data = dialogBox.Data.GetKeyValues();
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
+            else
+            {
+                var data = LabelControlsFormToModelFactory.Create<Account>(dialogBox.Data);
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
         }
         else
         {
@@ -384,8 +435,16 @@ public class StandardDialogBoxViewModel : ViewModelBase
         var dialogResult = dialogBox.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
-            var data = dialogBox.Data.GetKeyValues();
-            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            if (ShowResultAsKeyValues)
+            {
+                var data = dialogBox.Data.GetKeyValues();
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
+            else
+            {
+                var data = LabelControlsFormToModelFactory.Create<Account>(dialogBox.Data);
+                JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+            }
         }
         else
         {

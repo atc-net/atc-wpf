@@ -19,7 +19,12 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+            <atc:LabelCheckBox
+                IsChecked="{Binding Path=ShowResultAsKeyValues}"
+                LabelText="Show result as key-values"
+                LabelWidthNumber="140" />
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>

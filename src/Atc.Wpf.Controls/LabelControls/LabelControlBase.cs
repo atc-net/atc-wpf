@@ -114,4 +114,9 @@ public class LabelControlBase : UserControl, ILabelControlBase
         get => (Color)GetValue(InformationColorProperty);
         set => SetValue(InformationColorProperty, value);
     }
+
+    public string GetFullIdentifier()
+        => string.IsNullOrEmpty(GroupIdentifier)
+            ? Identifier
+            : $"{GroupIdentifier}.{Identifier}";
 }

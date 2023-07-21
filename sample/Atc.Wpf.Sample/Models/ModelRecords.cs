@@ -69,6 +69,8 @@ public record Person
 
     public Color FavoriteColor { get; init; }
 
+    public CultureInfo? PreferredLanguage { get; init; }
+
     public Address MyAddress { get; init; }
 }
 

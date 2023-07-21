@@ -7,34 +7,35 @@ public partial class InfoDialogBox
 {
     public InfoDialogBox(
         Window owningWindow,
-        DialogBoxSettings settings)
+        string contentText)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.Ok),
+            contentText)
     {
-        this.OwningWindow = owningWindow;
-        this.Settings = settings;
+    }
 
-        InitializeComponent();
-        DataContext = this;
+    public InfoDialogBox(
+        Window owningWindow,
+        string titleBarText,
+        string contentText)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.Ok),
+            contentText)
+    {
+        this.Settings.TitleBarText = titleBarText;
     }
 
     public InfoDialogBox(
         Window owningWindow,
         DialogBoxSettings settings,
         string contentText)
-        : this(
-            owningWindow,
-            settings)
     {
-        PopulateContentControl(contentText);
-    }
+        this.OwningWindow = owningWindow;
+        this.Settings = settings;
 
-    public InfoDialogBox(
-        Window owningWindow,
-        string contentText)
-        : this(
-            owningWindow,
-            DialogBoxSettings.Create(DialogBoxType.Ok))
-    {
-        PopulateContentControl(contentText);
+        InitializeDialogBox(contentText);
     }
 
     public Window OwningWindow { get; private set; }
@@ -44,6 +45,16 @@ public partial class InfoDialogBox
     public ContentControl? HeaderControl { get; set; }
 
     public ContentControl ContentControl { get; set; } = new();
+
+    private void InitializeDialogBox(
+        string contentText)
+    {
+        InitializeComponent();
+
+        DataContext = this;
+
+        PopulateContentControl(contentText);
+    }
 
     private void PopulateContentControl(
         string contentText)

@@ -7,6 +7,28 @@ public partial class InputDialogBox
 {
     public InputDialogBox(
         Window owningWindow,
+        ILabelControlBase labelControl)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.OkCancel),
+            labelControl)
+    {
+    }
+
+    public InputDialogBox(
+        Window owningWindow,
+        string titleBarText,
+        ILabelControlBase labelControl)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.OkCancel),
+            labelControl)
+    {
+        this.Settings.TitleBarText = titleBarText;
+    }
+
+    public InputDialogBox(
+        Window owningWindow,
         DialogBoxSettings settings,
         ILabelControlBase labelControl)
     {
@@ -15,21 +37,34 @@ public partial class InputDialogBox
 
         this.Data = labelControl;
 
-        InitializeComponent();
-        DataContext = this;
-
-        PopulateContentControl();
+        InitializeDialogBox();
     }
 
-    public InputDialogBox(
-        Window owningWindow,
-        ILabelControlBase labelControl)
-        : this(
-            owningWindow,
-            DialogBoxSettings.Create(DialogBoxType.OkCancel),
-            labelControl)
-    {
-    }
+    //public InputDialogBox(
+    //    Window owningWindow,
+    //    DialogBoxSettings settings,
+    //    ILabelControlBase labelControl)
+    //{
+    //    this.OwningWindow = owningWindow;
+    //    this.Settings = settings;
+
+    //    this.Data = labelControl;
+
+    //    InitializeComponent();
+    //    DataContext = this;
+
+    //    PopulateContentControl();
+    //}
+
+    //public InputDialogBox(
+    //    Window owningWindow,
+    //    ILabelControlBase labelControl)
+    //    : this(
+    //        owningWindow,
+    //        DialogBoxSettings.Create(DialogBoxType.OkCancel),
+    //        labelControl)
+    //{
+    //}
 
     public Window OwningWindow { get; private set; }
 
@@ -40,6 +75,15 @@ public partial class InputDialogBox
     public ContentControl ContentControl { get; set; } = new();
 
     public ILabelControlBase Data { get; }
+
+    private void InitializeDialogBox()
+    {
+        InitializeComponent();
+
+        DataContext = this;
+
+        PopulateContentControl();
+    }
 
     private void PopulateContentControl()
     {

@@ -83,7 +83,13 @@ public partial class LabelCountrySelector : ILabelCountrySelector
 
     public override bool IsValid()
     {
-        ValidateValue(default, this, SelectedKey, raiseEvents: false);
+        var validateKey = SelectedKey;
+        if (string.IsNullOrEmpty(validateKey))
+        {
+            validateKey = this.FindChild<CountrySelector>()?.SelectedKey ?? string.Empty;
+        }
+
+        ValidateValue(default, this, validateKey, raiseEvents: false);
         return string.IsNullOrEmpty(ValidationText);
     }
 

@@ -7,34 +7,35 @@ public partial class QuestionDialogBox
 {
     public QuestionDialogBox(
         Window owningWindow,
-        DialogBoxSettings settings)
+        string contentText)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.YesNo),
+            contentText)
     {
-        this.OwningWindow = owningWindow;
-        this.Settings = settings;
+    }
 
-        InitializeComponent();
-        DataContext = this;
+    public QuestionDialogBox(
+        Window owningWindow,
+        string titleBarText,
+        string contentText)
+        : this(
+            owningWindow,
+            DialogBoxSettings.Create(DialogBoxType.YesNo),
+            contentText)
+    {
+        this.Settings.TitleBarText = titleBarText;
     }
 
     public QuestionDialogBox(
         Window owningWindow,
         DialogBoxSettings settings,
         string contentText)
-        : this(
-            owningWindow,
-            settings)
     {
-        PopulateContentControl(contentText);
-    }
+        this.OwningWindow = owningWindow;
+        this.Settings = settings;
 
-    public QuestionDialogBox(
-        Window owningWindow,
-        string contentText)
-        : this(
-            owningWindow,
-            DialogBoxSettings.Create(DialogBoxType.YesNo))
-    {
-        PopulateContentControl(contentText);
+        InitializeDialogBox(contentText);
     }
 
     public Window OwningWindow { get; private set; }
@@ -44,6 +45,16 @@ public partial class QuestionDialogBox
     public ContentControl? HeaderControl { get; set; }
 
     public ContentControl ContentControl { get; set; } = new();
+
+    private void InitializeDialogBox(
+        string contentText)
+    {
+        InitializeComponent();
+
+        DataContext = this;
+
+        PopulateContentControl(contentText);
+    }
 
     private void PopulateContentControl(
         string contentText)

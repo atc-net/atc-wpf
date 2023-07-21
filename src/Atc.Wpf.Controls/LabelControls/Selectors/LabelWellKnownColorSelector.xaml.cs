@@ -106,7 +106,13 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 
     public override bool IsValid()
     {
-        ValidateValue(default, this, SelectedKey, raiseEvents: false);
+        var validateKey = SelectedKey;
+        if (string.IsNullOrEmpty(validateKey))
+        {
+            validateKey = this.FindChild<WellKnownColorSelector>()?.SelectedKey ?? string.Empty;
+        }
+
+        ValidateValue(default, this, validateKey, raiseEvents: false);
         return string.IsNullOrEmpty(ValidationText);
     }
 
