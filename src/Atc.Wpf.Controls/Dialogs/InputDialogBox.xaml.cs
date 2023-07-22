@@ -40,32 +40,6 @@ public partial class InputDialogBox
         InitializeDialogBox();
     }
 
-    //public InputDialogBox(
-    //    Window owningWindow,
-    //    DialogBoxSettings settings,
-    //    ILabelControlBase labelControl)
-    //{
-    //    this.OwningWindow = owningWindow;
-    //    this.Settings = settings;
-
-    //    this.Data = labelControl;
-
-    //    InitializeComponent();
-    //    DataContext = this;
-
-    //    PopulateContentControl();
-    //}
-
-    //public InputDialogBox(
-    //    Window owningWindow,
-    //    ILabelControlBase labelControl)
-    //    : this(
-    //        owningWindow,
-    //        DialogBoxSettings.Create(DialogBoxType.OkCancel),
-    //        labelControl)
-    //{
-    //}
-
     public Window OwningWindow { get; private set; }
 
     public DialogBoxSettings Settings { get; }
