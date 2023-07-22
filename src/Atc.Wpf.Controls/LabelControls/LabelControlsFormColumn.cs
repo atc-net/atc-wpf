@@ -1,3 +1,4 @@
+// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Controls.LabelControls;
@@ -125,16 +126,16 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelTextBox.Text);
                     break;
                 case LabelCountrySelector labelCountrySelector:
-                    if (NumberHelper.IsInt(labelCountrySelector.SelectedKey))
+                    if (NumberHelper.IsInt(labelCountrySelector.GetKey()))
                     {
-                        result.Add(control.GetFullIdentifier(), new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.SelectedKey)));
+                        result.Add(control.GetFullIdentifier(), new CultureInfo(NumberHelper.ParseToInt(labelCountrySelector.GetKey())));
                     }
 
                     break;
                 case LabelLanguageSelector labelLanguageSelector:
-                    if (NumberHelper.IsInt(labelLanguageSelector.SelectedKey))
+                    if (NumberHelper.IsInt(labelLanguageSelector.GetKey()))
                     {
-                        result.Add(control.GetFullIdentifier(), new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.SelectedKey)));
+                        result.Add(control.GetFullIdentifier(), new CultureInfo(NumberHelper.ParseToInt(labelLanguageSelector.GetKey())));
                     }
 
                     break;

@@ -94,15 +94,20 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         InitializeComponent();
     }
 
-    public override bool IsValid()
+    public string GetKey()
     {
-        var validateKey = SelectedKey;
-        if (string.IsNullOrEmpty(validateKey))
+        var key = SelectedKey;
+        if (string.IsNullOrEmpty(key))
         {
-            validateKey = this.FindChild<LanguageSelector>()?.SelectedKey ?? string.Empty;
+            key = this.FindChild<LanguageSelector>()?.SelectedKey ?? string.Empty;
         }
 
-        ValidateValue(default, this, validateKey, raiseEvents: false);
+        return key;
+    }
+
+    public override bool IsValid()
+    {
+        ValidateValue(default, this, GetKey(), raiseEvents: false);
         return string.IsNullOrEmpty(ValidationText);
     }
 

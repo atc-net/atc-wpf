@@ -5,13 +5,12 @@ public class StandardDialogBoxViewModel : ViewModelBase
 {
     private readonly JsonSerializerOptions? jsonOptions;
     private string jsonResult = string.Empty;
-    private bool showResultAsKeyValues = true;
+    private bool showResultAsKeyValues;
 
     public StandardDialogBoxViewModel()
     {
         jsonOptions = Atc.Serialization.JsonSerializerOptionsFactory.Create();
         jsonOptions.Converters.Add(new JsonCultureInfoToNameConverter());
-        ////jsonOptions.Converters.Add(new JsonColorToHexConverter());
         jsonOptions.Converters.Add(new JsonColorToNameConverter());
     }
 
@@ -230,7 +229,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             }
             else
             {
-                var data = LabelControlsFormToModelFactory.Create<Address>(dialogBox.Data);
+                var data = LabelControlsFormToModelWriter.Update(address, dialogBox.Data);
                 JsonResult = JsonSerializer.Serialize(data, jsonOptions);
             }
         }
@@ -267,7 +266,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             }
             else
             {
-                var data = LabelControlsFormToModelFactory.Create<Account>(dialogBox.Data);
+                var data = LabelControlsFormToModelWriter.Update(address, dialogBox.Data);
                 JsonResult = JsonSerializer.Serialize(data, jsonOptions);
             }
         }
@@ -284,7 +283,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             lastName: "Doe",
             age: 33,
             favoriteColor: Colors.DarkCyan,
-            address: new Address(
+            myAddress: new Address(
                 streetName: "My street",
                 cityName: "My city",
                 postalCode: "1234",
@@ -312,7 +311,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             }
             else
             {
-                var data = LabelControlsFormToModelFactory.Create<Person>(dialogBox.Data);
+                var data = LabelControlsFormToModelWriter.Update(person, dialogBox.Data);
                 JsonResult = JsonSerializer.Serialize(data, jsonOptions);
             }
         }
@@ -328,8 +327,8 @@ public class StandardDialogBoxViewModel : ViewModelBase
             firstName: string.Empty,
             lastName: string.Empty,
             age: 0,
-            favoriteColor: null,
-            address: new Address(
+            favoriteColor: Colors.Aqua,
+            myAddress: new Address(
                 streetName: string.Empty,
                 cityName: string.Empty,
                 postalCode: string.Empty,
@@ -354,7 +353,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             }
             else
             {
-                var data = LabelControlsFormToModelFactory.Create<Person>(dialogBox.Data);
+                var data = LabelControlsFormToModelWriter.Update(person, dialogBox.Data);
                 JsonResult = JsonSerializer.Serialize(data, jsonOptions);
             }
         }
@@ -373,7 +372,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 lastName: "Doe",
                 age: 33,
                 favoriteColor: Colors.DarkCyan,
-                address: new Address(
+                myAddress: new Address(
                     streetName: "My street",
                     cityName: "My city",
                     postalCode: "1234",
@@ -398,7 +397,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             }
             else
             {
-                var data = LabelControlsFormToModelFactory.Create<Account>(dialogBox.Data);
+                var data = LabelControlsFormToModelWriter.Update(account, dialogBox.Data);
                 JsonResult = JsonSerializer.Serialize(data, jsonOptions);
             }
         }
@@ -416,8 +415,8 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 firstName: string.Empty,
                 lastName: string.Empty,
                 age: 0,
-                favoriteColor: null,
-                address: new Address(
+                favoriteColor: Colors.Aqua,
+                myAddress: new Address(
                     streetName: string.Empty,
                     cityName: string.Empty,
                     postalCode: string.Empty,
@@ -442,7 +441,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
             }
             else
             {
-                var data = LabelControlsFormToModelFactory.Create<Account>(dialogBox.Data);
+                var data = LabelControlsFormToModelWriter.Update(account, dialogBox.Data);
                 JsonResult = JsonSerializer.Serialize(data, jsonOptions);
             }
         }

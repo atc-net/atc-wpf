@@ -4,17 +4,27 @@ public static class LabelControlsFormToModelFactory
 {
     public static T Create<T>(
         ILabelControlsForm labelControlsForm)
+        where T : new()
     {
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
-        return Create<T>(labelControlsForm.GetKeyValues());
+        var instance = new T();
+
+        return LabelControlsFormToModelWriter.Update<T>(
+            instance,
+            labelControlsForm.GetKeyValues());
     }
 
     public static T Create<T>(
         Dictionary<string, object> keyValues)
+        where T : new()
     {
         ArgumentNullException.ThrowIfNull(keyValues);
 
-        throw new NotImplementedException();
+        var instance = new T();
+
+        return LabelControlsFormToModelWriter.Update<T>(
+            instance,
+            keyValues);
     }
 }

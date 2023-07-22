@@ -148,7 +148,7 @@ public class LabelInputFormPanelViewModel : ViewModelBase
             lastName: "Doe",
             age: 33,
             favoriteColor: Colors.DarkCyan,
-            address: new Address(
+            myAddress: new Address(
                 streetName: "My street",
                 cityName: "My city",
                 postalCode: "1234",
@@ -175,8 +175,8 @@ public class LabelInputFormPanelViewModel : ViewModelBase
             firstName: string.Empty,
             lastName: string.Empty,
             age: 0,
-            favoriteColor: null,
-            address: new Address(
+            favoriteColor: Colors.Aqua,
+            myAddress: new Address(
                 streetName: string.Empty,
                 cityName: string.Empty,
                 postalCode: string.Empty,
@@ -203,7 +203,7 @@ public class LabelInputFormPanelViewModel : ViewModelBase
                 lastName: "Doe",
                 age: 33,
                 favoriteColor: Colors.DarkCyan,
-                address: new Address(
+                myAddress: new Address(
                     streetName: "My street",
                     cityName: "My city",
                     postalCode: "1234",
@@ -229,8 +229,8 @@ public class LabelInputFormPanelViewModel : ViewModelBase
                 firstName: string.Empty,
                 lastName: string.Empty,
                 age: 0,
-                favoriteColor: null,
-                address: new Address(
+                favoriteColor: Colors.Aqua,
+                myAddress: new Address(
                     streetName: string.Empty,
                     cityName: string.Empty,
                     postalCode: string.Empty,

@@ -82,7 +82,7 @@ public static class ColorUtil
         var knownColors = GetKnownColors();
         return (from item
                 in knownColors
-                where item.Value.ToString(GlobalizationConstants.EnglishCultureInfo) == colorName
+                where item.Key.ToString(GlobalizationConstants.EnglishCultureInfo) == colorName
                 select item.Value)
             .FirstOrDefault();
     }
