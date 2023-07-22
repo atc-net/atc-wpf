@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.LabelControls.Enums;
 
 public enum TextBoxValidationRuleType

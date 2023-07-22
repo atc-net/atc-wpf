@@ -10,7 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.326" />
+    <None Remove="Resources\collapse.svg" />
+    <None Remove="Resources\expand.svg" />
+    <None Remove="Resources\information.svg" />
+    <None Remove="Resources\question-mark.svg" />
+    <None Remove="Resources\question.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="2.0.343" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\collapse.svg" />
+    <Resource Include="Resources\expand.svg" />
+    <Resource Include="Resources\information.svg" />
     <Resource Include="Resources\info_help.svg" />
+    <Resource Include="Resources\question-mark.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +39,11 @@
       <DependentUpon>Miscellaneous.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Validations.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Validations.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -42,6 +59,16 @@
     <EmbeddedResource Update="Resources\Miscellaneous.resx">
       <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validations.da-DK.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validations.de-DE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validations.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Validations.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

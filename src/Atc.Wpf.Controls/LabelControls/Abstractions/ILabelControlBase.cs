@@ -4,6 +4,14 @@ public interface ILabelControlBase
 {
     string Identifier { get; }
 
+    string? GroupIdentifier { get; set; }
+
+    Type? InputDataType { get; set; }
+
+    double Width { get; set; }
+
+    Brush Background { get; set; }
+
     LabelControlHideAreasType HideAreas { get; set; }
 
     Orientation Orientation { get; set; }
@@ -17,4 +25,6 @@ public interface ILabelControlBase
     string InformationText { get; set; }
 
     Color InformationColor { get; set; }
+
+    string GetFullIdentifier();
 }

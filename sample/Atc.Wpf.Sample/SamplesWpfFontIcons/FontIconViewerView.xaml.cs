@@ -24,13 +24,13 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         DataContext = this;
 
         fontConverter = new FontIconImageSourceValueConverter();
-        fontAwesomeBrandList = Enum<FontAwesomeBrandType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
-        fontAwesomeRegularList = Enum<FontAwesomeRegularType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
-        fontAwesomeSolidList = Enum<FontAwesomeSolidType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
-        fontBootstrapList = Enum<FontBootstrapType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
-        fontIcoFontList = Enum<IcoFontType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
-        fontMaterialDesignList = Enum<FontMaterialDesignType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
-        fontWeatherList = Enum<FontWeatherType>.ToDictionaryWithStringKey(DropDownFirstItemType.None, useDescriptionAttribute: true, includeDefault: false);
+        fontAwesomeBrandList = Enum<FontAwesomeBrandType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontAwesomeRegularList = Enum<FontAwesomeRegularType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontAwesomeSolidList = Enum<FontAwesomeSolidType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontBootstrapList = Enum<FontBootstrapType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontIcoFontList = Enum<IcoFontType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontMaterialDesignList = Enum<FontMaterialDesignType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontWeatherList = Enum<FontWeatherType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
 
         FilterFontAwesomeBrand.LabelText += $" ({fontAwesomeBrandList.Count})";
         FilterFontAwesomeRegular.LabelText += $" ({fontAwesomeRegularList.Count})";
@@ -60,7 +60,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         PopulateListOfIcons();
     }
 
-    private void IconColorPickerOnSelectedKeyChanged(
+    private void IconColorPickerOnSelectorChanged(
         object? sender,
         ChangedStringEventArgs e)
     {
@@ -330,20 +330,5 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(
-        ref T field,
-        T value,
-        [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return false;
-        }
-
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
     }
 }

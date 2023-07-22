@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace Atc.Wpf.Controls;
+namespace Atc.Wpf;
 
 public enum SizeDefinitionType
 {

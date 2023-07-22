@@ -19,7 +19,8 @@ public class ColorToNameValueConverter : MarkupMultiValueConverterBase
         return (ColorHelper ?? ColorHelper.DefaultInstance).GetColorName(
             value as Color?,
             parameter as Dictionary<Color, string>,
-            useAlphaChannel: true);
+            useAlphaChannel: true,
+            includeColorHex: true);
     }
 
     /// <summary>
@@ -45,7 +46,8 @@ public class ColorToNameValueConverter : MarkupMultiValueConverterBase
         return colorHelper.GetColorName(
             color,
             colorNamesDictionary,
-            useAlphaChannel ?? true);
+            useAlphaChannel ?? true,
+            includeColorHex: true);
     }
 
     /// <summary>

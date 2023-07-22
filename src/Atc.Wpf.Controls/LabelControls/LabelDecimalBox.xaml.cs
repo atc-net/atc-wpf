@@ -83,14 +83,30 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         InitializeComponent();
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    public override bool IsValid()
+    {
+        ValidateValue(default, this, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private static void OnValueLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelDecimalBox)d;
+
+        ValidateValue(e, control, raiseEvents: true);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void ValidateValue(
+        DependencyPropertyChangedEventArgs e,
+        LabelDecimalBox control,
+        bool raiseEvents)
+    {
         if (e.NewValue is not decimal newValue)
         {
+            control.ValidationText = Validations.ValueShouldBeADecimal;
             return;
         }
 
@@ -99,11 +115,14 @@ public partial class LabelDecimalBox : ILabelDecimalBox
             return;
         }
 
-        control.ValueChanged?.Invoke(
-            control,
-            new ChangedDecimalEventArgs(
-                control.Identifier,
-                oldValue,
-                newValue));
+        if (raiseEvents)
+        {
+            control.ValueChanged?.Invoke(
+                control,
+                new ChangedDecimalEventArgs(
+                    control.Identifier,
+                    oldValue,
+                    newValue));
+        }
     }
 }

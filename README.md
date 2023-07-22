@@ -176,6 +176,7 @@ but just with a xaml-markup extension to lookup the value by key.
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
 | Object -> Bool            | IsNotNullValueConverter                                  | <>Null -> True and Null -> False        | Not supported                           |
 | Object -> Bool            | IsNullValueConverter                                     | Null -> True and <>Null -> False        | Not supported                           |
+| Null -> X                 | NullCheckValueConverter                                  | NULL -> Parameter if set                | Not supported                           |
 | Null -> UnsetValue        | NullToUnsetValueConverter                                | NULL -> DependencyProperty.UnsetValue   | Object -> DependencyProperty.UnsetValue |
 | Object -> Bool            | ObjectNotNullToBoolValueConverter                        | NotNULL -> True                         | Not supported                           |
 | Object -> Visibility      | ObjectNotNullToVisibilityVisibleValueConverter           | NotNULL -> Visible                      | Not supported                           |

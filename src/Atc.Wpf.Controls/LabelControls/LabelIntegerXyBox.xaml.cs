@@ -116,6 +116,11 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
         InitializeComponent();
     }
 
+    public override bool IsValid()
+    {
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private void OnValueXChanged(
         object sender,
         RoutedPropertyChangedEventArgs<int> e)
@@ -137,12 +142,23 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
     {
         var control = (LabelIntegerXyBox)d;
 
+        if (e.NewValue is not int newValue)
+        {
+            control.ValidationText = Validations.ValueShouldBeAInteger;
+            return;
+        }
+
+        if (e.OldValue is not int oldValue)
+        {
+            return;
+        }
+
         control.ValueXLostFocus?.Invoke(
             control,
             new ChangedIntegerEventArgs(
                 ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
+                oldValue,
+                newValue));
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -152,11 +168,22 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
     {
         var control = (LabelIntegerXyBox)d;
 
+        if (e.NewValue is not int newValue)
+        {
+            control.ValidationText = Validations.ValueShouldBeAInteger;
+            return;
+        }
+
+        if (e.OldValue is not int oldValue)
+        {
+            return;
+        }
+
         control.ValueYLostFocus?.Invoke(
             control,
             new ChangedIntegerEventArgs(
                 ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
+                oldValue,
+                newValue));
     }
 }

@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 /// <summary>
-/// Interaction logic for ThemeSelector.xaml
+/// Interaction logic for ThemeSelector.
 /// </summary>
 public partial class ThemeSelector : INotifyPropertyChanged
 {
@@ -59,21 +59,6 @@ public partial class ThemeSelector : INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(
-        ref T field,
-        T value,
-        [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return false;
-        }
-
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
     }
 
     private void PopulateData()

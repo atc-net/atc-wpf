@@ -5,6 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     x:Name="UcLabelComboBoxView"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -23,14 +24,14 @@
                     <StackPanel Grid.Column="0" Margin="10">
 
                         <atc:LabelComboBox
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel1"
                             Orientation="Horizontal" />
 
                         <atc:LabelComboBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
 
@@ -41,20 +42,20 @@
                             LabelText="MyLabel3"
                             Orientation="Horizontal"
                             SelectedKey="{Binding ElementName=UcLabelComboBoxView, Path=MyLabel3HorizontalSelectedKey}"
-                            SelectedKeyChanged="MyLabel3HorizontalOnSelectedKeyChanged" />
+                            SelectorChanged="MyLabel3HorizontalOnSelectorChanged" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
                         <atc:LabelComboBox
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel3"
                             Orientation="Vertical" />
 
                         <atc:LabelComboBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel4"
                             Orientation="Vertical" />
 
@@ -65,7 +66,7 @@
                             LabelText="MyLabel3"
                             Orientation="Vertical"
                             SelectedKey="{Binding ElementName=UcLabelComboBoxView, Path=MyLabel3VerticalSelectedKey}"
-                            SelectedKeyChanged="MyLabel3VerticalOnSelectedKeyChanged" />
+                            SelectorChanged="MyLabel3VerticalOnSelectorChanged" />
 
                     </StackPanel>
                 </atc:GridEx>

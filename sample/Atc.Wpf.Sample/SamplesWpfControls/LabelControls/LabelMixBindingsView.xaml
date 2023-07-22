@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     x:Name="UcLabelControlToCommandView"
     d:DataContext="{d:DesignInstance Type=labelControls:LabelMixBindingsViewModel}"
     d:DesignHeight="450"
@@ -38,7 +39,7 @@
 
                         <atc:LabelComboBox
                             IsMandatory="False"
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="Field-Select-1"
                             Orientation="Horizontal"
                             SelectedKey="{Binding Path=FieldSelectedKey1}" />

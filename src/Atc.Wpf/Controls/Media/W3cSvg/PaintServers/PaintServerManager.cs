@@ -193,7 +193,7 @@ internal sealed class PaintServerManager
     {
         if (!value.EndsWith('%'))
         {
-            return int.Parse(value, GlobalizationConstants.EnglishCultureInfo);
+            return NumberHelper.ParseToInt(value);
         }
 
         var nr = int.Parse(value.AsSpan(0, value.Length - 1), GlobalizationConstants.EnglishCultureInfo);

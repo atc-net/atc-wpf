@@ -1,0 +1,82 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.LabelControls.LabelCountrySelectorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features" />
+
+        <GroupBox Header="Usage">
+            <ScrollViewer>
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
+
+                        <atc:LabelCountrySelector Orientation="Horizontal" />
+
+                        <atc:LabelCountrySelector InformationText="This is a help text.." Orientation="Horizontal" />
+
+                        <atc:LabelCountrySelector Orientation="Horizontal" RenderFlagIndicatorType="None" />
+
+                        <atc:LabelCountrySelector
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16" />
+
+                        <atc:LabelCountrySelector
+                            DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UseOnlySupportedCountries="False" />
+
+                        <atc:LabelCountrySelector
+                            DefaultCultureIdentifier="de-DE"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16" />
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelCountrySelector Orientation="Vertical" />
+
+                        <atc:LabelCountrySelector InformationText="This is a help text.." Orientation="Vertical" />
+
+                        <atc:LabelCountrySelector Orientation="Vertical" RenderFlagIndicatorType="None" />
+
+                        <atc:LabelCountrySelector
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16" />
+
+                        <atc:LabelCountrySelector
+                            DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UseOnlySupportedCountries="False" />
+
+                        <atc:LabelCountrySelector
+                            DefaultCultureIdentifier="de-DE"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UseOnlySupportedCountries="False" />
+
+                    </StackPanel>
+                </atc:GridEx>
+            </ScrollViewer>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>

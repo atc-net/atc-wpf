@@ -5,6 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -37,7 +38,7 @@
                             HideAreas="All"
                             InformationText="This is a help text.."
                             IsMandatory="True"
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyComboBox"
                             Orientation="Horizontal"
                             SelectedKey="None" />
@@ -123,7 +124,7 @@
                             HideAreas="All"
                             InformationText="This is a help text.."
                             IsMandatory="True"
-                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atc:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyComboBox"
                             Orientation="Vertical"
                             SelectedKey="None" />

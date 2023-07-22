@@ -3,7 +3,33 @@ namespace Atc.Wpf.Controls.LabelControls;
 public class LabelControlBase : UserControl, ILabelControlBase
 {
     public string Identifier
-        => ControlHelper.GetIdentifier(this, LabelText);
+        => LabelText == Constants.DefaultLabelControlLabel
+            ? LabelText
+            : ControlHelper.GetIdentifier(this, LabelText.PascalCase(removeSeparators: true));
+
+    public static readonly DependencyProperty GroupIdentifierProperty = DependencyProperty.Register(
+        nameof(GroupIdentifier),
+        typeof(string),
+        typeof(LabelControlBase),
+        new PropertyMetadata(default(string?)));
+
+    public string? GroupIdentifier
+    {
+        get => (string?)GetValue(GroupIdentifierProperty);
+        set => SetValue(GroupIdentifierProperty, value);
+    }
+
+    public static readonly DependencyProperty InputDataTypeProperty = DependencyProperty.Register(
+        nameof(InputDataType),
+        typeof(Type),
+        typeof(LabelControlBase),
+        new PropertyMetadata(default(Type?)));
+
+    public Type? InputDataType
+    {
+        get => (Type?)GetValue(InputDataTypeProperty);
+        set => SetValue(InputDataTypeProperty, value);
+    }
 
     public static readonly DependencyProperty HideAreasProperty = DependencyProperty.Register(
         nameof(HideAreas),
@@ -88,4 +114,9 @@ public class LabelControlBase : UserControl, ILabelControlBase
         get => (Color)GetValue(InformationColorProperty);
         set => SetValue(InformationColorProperty, value);
     }
+
+    public string GetFullIdentifier()
+        => string.IsNullOrEmpty(GroupIdentifier)
+            ? Identifier
+            : $"{GroupIdentifier}.{Identifier}";
 }

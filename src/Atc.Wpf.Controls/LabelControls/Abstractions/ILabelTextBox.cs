@@ -14,6 +14,8 @@ public interface ILabelTextBox : ILabelControl
 
     string CharactersNotAllowed { get; set; }
 
+    string? RegexPattern { get; set; }
+
     bool ShowClearTextButton { get; set; }
 
     string Text { get; set; }

@@ -4,66 +4,21 @@ namespace Atc.Wpf.Controls.LabelControls;
 /// <summary>
 /// Interaction logic for LabelWellKnownColorSelector.
 /// </summary>
-public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
+public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 {
-    public static readonly DependencyProperty ShowAsteriskOnMandatoryProperty = DependencyProperty.Register(
-        nameof(ShowAsteriskOnMandatory),
-        typeof(bool),
+    private bool isFirstOnSelectedKeyLostFocus;
+    private string? lastSelectedKey;
+
+    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
+        nameof(DropDownFirstItemType),
+        typeof(DropDownFirstItemType),
         typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
+        new PropertyMetadata(DropDownFirstItemType.None));
 
-    public bool ShowAsteriskOnMandatory
+    public DropDownFirstItemType DropDownFirstItemType
     {
-        get => (bool)GetValue(ShowAsteriskOnMandatoryProperty);
-        set => SetValue(ShowAsteriskOnMandatoryProperty, value);
-    }
-
-    public static readonly DependencyProperty IsMandatoryProperty = DependencyProperty.Register(
-        nameof(IsMandatory),
-        typeof(bool),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
-
-    public bool IsMandatory
-    {
-        get => (bool)GetValue(IsMandatoryProperty);
-        set => SetValue(IsMandatoryProperty, value);
-    }
-
-    public static readonly DependencyProperty MandatoryColorProperty = DependencyProperty.Register(
-        nameof(MandatoryColor),
-        typeof(SolidColorBrush),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(new SolidColorBrush(Colors.Red)));
-
-    public SolidColorBrush MandatoryColor
-    {
-        get => (SolidColorBrush)GetValue(MandatoryColorProperty);
-        set => SetValue(MandatoryColorProperty, value);
-    }
-
-    public static readonly DependencyProperty ValidationColorProperty = DependencyProperty.Register(
-        nameof(ValidationColor),
-        typeof(SolidColorBrush),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(Application.Current.Resources["AtcApps.Brushes.Control.Validation"] as SolidColorBrush));
-
-    public SolidColorBrush ValidationColor
-    {
-        get => (SolidColorBrush)GetValue(ValidationColorProperty);
-        set => SetValue(ValidationColorProperty, value);
-    }
-
-    public static readonly DependencyProperty ValidationTextProperty = DependencyProperty.Register(
-        nameof(ValidationText),
-        typeof(string),
-        typeof(LabelWellKnownColorSelector),
-        new PropertyMetadata(default(string)));
-
-    public string ValidationText
-    {
-        get => (string)GetValue(ValidationTextProperty);
-        set => SetValue(ValidationTextProperty, value);
+        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
+        set => SetValue(DropDownFirstItemTypeProperty, value);
     }
 
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
@@ -90,6 +45,30 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         set => SetValue(ShowHexCodeProperty, value);
     }
 
+    public static readonly DependencyProperty UseOnlyBasicColorsProperty = DependencyProperty.Register(
+        nameof(UseOnlyBasicColors),
+        typeof(bool),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(defaultValue: false));
+
+    public bool UseOnlyBasicColors
+    {
+        get => (bool)GetValue(UseOnlyBasicColorsProperty);
+        set => SetValue(UseOnlyBasicColorsProperty, value);
+    }
+
+    public static readonly DependencyProperty DefaultColorNameProperty = DependencyProperty.Register(
+        nameof(DefaultColorName),
+        typeof(string),
+        typeof(LabelWellKnownColorSelector),
+        new PropertyMetadata(default));
+
+    public string? DefaultColorName
+    {
+        get => (string?)GetValue(DefaultColorNameProperty);
+        set => SetValue(DefaultColorNameProperty, value);
+    }
+
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -108,18 +87,85 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
+    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+
+    public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
 
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();
 
+        isFirstOnSelectedKeyLostFocus = true;
         if (Constants.DefaultLabelControlLabel.Equals(LabelText, StringComparison.Ordinal))
         {
             LabelText = Miscellaneous.Color;
         }
 
         CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
+    }
+
+    public override bool IsValid()
+    {
+        var validateKey = SelectedKey;
+        if (string.IsNullOrEmpty(validateKey))
+        {
+            validateKey = this.FindChild<WellKnownColorSelector>()?.SelectedKey ?? string.Empty;
+        }
+
+        ValidateValue(default, this, validateKey, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    private static void ValidateValue(
+        DependencyPropertyChangedEventArgs e,
+        LabelWellKnownColorSelector control,
+        string? selectedKey,
+        bool raiseEvents)
+    {
+        if (control.IsMandatory)
+        {
+            if (string.IsNullOrWhiteSpace(selectedKey))
+            {
+                control.ValidationText = Validations.FieldIsRequired;
+                if (raiseEvents)
+                {
+                    OnSelectorLostFocusFireInvalidEvent(control, e);
+                }
+
+                return;
+            }
+
+            if (selectedKey == ((int)control.DropDownFirstItemType).ToString(GlobalizationConstants.EnglishCultureInfo))
+            {
+                control.ValidationText = string.Format(
+                    CultureInfo.CurrentUICulture,
+                    Validations.PleaseSelect,
+                    Wpf.Resources.ColorNames._Color.ToLower(Thread.CurrentThread.CurrentUICulture));
+
+                if (raiseEvents)
+                {
+                    OnSelectorLostFocusFireInvalidEvent(control, e);
+                }
+
+                return;
+            }
+        }
+
+        control.ValidationText = string.Empty;
+
+        if (!raiseEvents)
+        {
+            return;
+        }
+
+        control.SelectorChanged?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                control.Identifier,
+                e.OldValue?.ToString(),
+                selectedKey));
     }
 
     private void OnCultureManagerUiCultureChanged(
@@ -133,35 +179,53 @@ public partial class LabelWellKnownColorSelector : ILabelComboBoxBase
         }
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectedKeyLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelWellKnownColorSelector)d;
-        var newValue = e.NewValue?.ToString();
-        var oldValue = e.OldValue?.ToString();
 
-        if (string.IsNullOrEmpty(newValue) &&
-            string.IsNullOrEmpty(oldValue))
+        if (control.SelectedKey is null ||
+            control.SelectedKey == control.lastSelectedKey)
         {
             return;
         }
 
-        if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.SelectedKey) &&
-            e.OldValue is not null)
+        if (control.isFirstOnSelectedKeyLostFocus)
         {
-            control.ValidationText = Miscellaneous.FieldIsRequired;
+            control.isFirstOnSelectedKeyLostFocus = false;
+            control.lastSelectedKey = control.SelectedKey;
             return;
         }
 
-        control.ValidationText = string.Empty;
+        ValidateValue(e, control, control.SelectedKey, raiseEvents: true);
+    }
 
-        control.SelectedKeyChanged?.Invoke(
+    private void OnSelectorChanged(
+        object? sender,
+        ChangedStringEventArgs e)
+    {
+        Debug.WriteLine($"LabelWellKnownColorSelector - Change to: {e.NewValue}");
+        ValidateValue(default, this, e.NewValue, raiseEvents: false);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnSelectorLostFocusFireInvalidEvent(
+        LabelWellKnownColorSelector control,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var oldValue = e.OldValue is null
+            ? string.Empty
+            : e.OldValue.ToString();
+
+        var newValue = e.NewValue is null
+            ? string.Empty
+            : e.NewValue.ToString();
+
+        control.SelectorLostFocusInvalid?.Invoke(
             control,
             new ChangedStringEventArgs(
-                control.Identifier,
+                ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
     }

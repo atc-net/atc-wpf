@@ -35,42 +35,96 @@ public partial class LabelComboBox : ILabelComboBox
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
+    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+
+    public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
 
     public LabelComboBox()
     {
         InitializeComponent();
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    private static void OnSelectedKeyLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    public override bool IsValid()
     {
-        var control = (LabelComboBox)d;
-        var newValue = e.NewValue?.ToString();
-        var oldValue = e.OldValue?.ToString();
+        ValidateValue(default, this, SelectedKey, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
+    }
 
-        if (string.IsNullOrEmpty(newValue) &&
-            string.IsNullOrEmpty(oldValue))
-        {
-            return;
-        }
-
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void ValidateValue(
+        DependencyPropertyChangedEventArgs e,
+        LabelComboBox control,
+        string? selectedKey,
+        bool raiseEvents)
+    {
         if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.SelectedKey) &&
-            e.OldValue is not null)
+            string.IsNullOrWhiteSpace(selectedKey))
         {
-            control.ValidationText = "Field is required";
+            control.ValidationText = Validations.FieldIsRequired;
+            if (raiseEvents)
+            {
+                OnSelectorLostFocusFireInvalidEvent(control, e);
+            }
+
             return;
         }
 
         control.ValidationText = string.Empty;
 
-        control.SelectedKeyChanged?.Invoke(
+        if (!raiseEvents)
+        {
+            return;
+        }
+
+        control.SelectorChanged?.Invoke(
             control,
             new ChangedStringEventArgs(
                 control.Identifier,
+                e.OldValue?.ToString(),
+                selectedKey));
+    }
+
+    private static void OnSelectedKeyLostFocus(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelComboBox)d;
+
+        ValidateValue(e, control, control.SelectedKey, raiseEvents: true);
+    }
+
+    private void OnSelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e)
+    {
+        if (e.AddedItems.Count != 1)
+        {
+            return;
+        }
+
+        var newValue = e.AddedItems[0]!.ToString()!;
+
+        Debug.WriteLine($"LabelComboBox - Change to: {newValue}");
+        ValidateValue(default, this, newValue, raiseEvents: false);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void OnSelectorLostFocusFireInvalidEvent(
+        LabelComboBox control,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var oldValue = e.OldValue is null
+            ? string.Empty
+            : e.OldValue.ToString();
+
+        var newValue = e.NewValue is null
+            ? string.Empty
+            : e.NewValue.ToString();
+
+        control.SelectorLostFocusInvalid?.Invoke(
+            control,
+            new ChangedStringEventArgs(
+                ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
     }

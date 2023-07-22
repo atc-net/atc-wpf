@@ -1,3 +1,5 @@
+using System.Windows.Controls;
+
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -95,14 +97,30 @@ public partial class LabelSlider : ILabelSlider
         InitializeComponent();
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    public override bool IsValid()
+    {
+        ValidateValue(default, this, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private static void OnValueChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelSlider)d;
+
+        ValidateValue(e, control, raiseEvents: true);
+    }
+
+    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void ValidateValue(
+        DependencyPropertyChangedEventArgs e,
+        LabelSlider control,
+        bool raiseEvents)
+    {
         if (e.NewValue is not int newValue)
         {
+            control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
 
@@ -111,11 +129,14 @@ public partial class LabelSlider : ILabelSlider
             return;
         }
 
-        control.ValueChanged?.Invoke(
-            control,
-            new ChangedIntegerEventArgs(
-                control.Identifier,
-                oldValue,
-                newValue));
+        if (raiseEvents)
+        {
+            control.ValueChanged?.Invoke(
+                control,
+                new ChangedIntegerEventArgs(
+                    control.Identifier,
+                    oldValue,
+                    newValue));
+        }
     }
 }

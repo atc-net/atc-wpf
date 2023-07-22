@@ -1,4 +1,4 @@
-<labelControls:LabelControlBase
+<labelControls:LabelControl
     x:Class="Atc.Wpf.Controls.LabelControls.LabelWellKnownColorSelector"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -23,10 +23,14 @@
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
         <atcTheming:WellKnownColorSelector
+            DefaultColorName="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=DefaultColorName}"
+            DropDownFirstItemType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=DropDownFirstItemType}"
             RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=RenderColorIndicatorType}"
             SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=SelectedKey, Mode=TwoWay}"
-            ShowHexCode="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=ShowHexCode}" />
+            SelectorChanged="OnSelectorChanged"
+            ShowHexCode="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=ShowHexCode}"
+            UseOnlyBasicColors="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelWellKnownColorSelector}}, Path=UseOnlyBasicColors}" />
 
     </labelControls:LabelContent>
 
-</labelControls:LabelControlBase>
+</labelControls:LabelControl>

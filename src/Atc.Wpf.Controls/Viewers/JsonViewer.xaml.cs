@@ -1,13 +1,37 @@
 namespace Atc.Wpf.Controls.Viewers;
 
 /// <summary>
-/// Interaction logic for JsonViewer.xaml
+/// Interaction logic for JsonViewer.
 /// </summary>
 public partial class JsonViewer
 {
     public JsonViewer()
     {
         InitializeComponent();
+    }
+
+    public static readonly DependencyProperty ShowActionAndInformationBarProperty = DependencyProperty.Register(
+        nameof(ShowActionAndInformationBar),
+        typeof(bool),
+        typeof(JsonViewer),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool ShowActionAndInformationBar
+    {
+        get => (bool)GetValue(ShowActionAndInformationBarProperty);
+        set => SetValue(ShowActionAndInformationBarProperty, value);
+    }
+
+    public static readonly DependencyProperty StartExpandedProperty = DependencyProperty.Register(
+        nameof(StartExpanded),
+        typeof(bool),
+        typeof(JsonViewer),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool StartExpanded
+    {
+        get => (bool)GetValue(StartExpandedProperty);
+        set => SetValue(StartExpandedProperty, value);
     }
 
     public static readonly DependencyProperty DataProperty = DependencyProperty.Register(
@@ -23,8 +47,19 @@ public partial class JsonViewer
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    public void Load(string json)
+    public void Load(
+        string json)
     {
+        if (string.IsNullOrEmpty(json))
+        {
+            return;
+        }
+
+        if (!json.IsFormatJson())
+        {
+            MessageBox.Show("Invalid JSON format.");
+        }
+
         JsonTreeView.ItemsSource = null;
         JsonTreeView.Items.Clear();
 
@@ -64,8 +99,17 @@ public partial class JsonViewer
 
         var control = (JsonViewer)d;
         control.Load(jsonData);
-        control.ToggleItems(isExpanded: true);
     }
+
+    private void ExpandAll(
+        object sender,
+        RoutedEventArgs e)
+        => ToggleItems(isExpanded: true);
+
+    private void CollapseAll(
+        object sender,
+        RoutedEventArgs e)
+        => ToggleItems(isExpanded: false);
 
     private void ToggleItems(
         bool isExpanded)

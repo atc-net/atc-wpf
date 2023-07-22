@@ -1,10 +1,10 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controls="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators"
-    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <system:Double x:Key="TabControlUnderlineThickness">1</system:Double>
@@ -57,7 +57,7 @@
 
     <!--  ItemBase  -->
     <Style x:Key="AtcApps.Styles.TabItem" TargetType="{x:Type TabItem}">
-        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(helpers:HeaderedControlHelper.HeaderBackground), Mode=OneWay, FallbackValue={x:Static Brushes.Transparent}}" />
+        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:HeaderedControlHelper.HeaderBackground), Mode=OneWay, FallbackValue={x:Static Brushes.Transparent}}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -67,7 +67,7 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="MinHeight" Value="5" />
         <Setter Property="MinWidth" Value="5" />
-        <Setter Property="Padding" Value="{Binding RelativeSource={RelativeSource Self}, Path=(helpers:HeaderedControlHelper.HeaderMargin), FallbackValue='6 2', Mode=OneWay}" />
+        <Setter Property="Padding" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:HeaderedControlHelper.HeaderMargin), FallbackValue='6 2', Mode=OneWay}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -78,7 +78,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding helpers:ControlsHelper.CornerRadius}"
+                        CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <Grid
                             HorizontalAlignment="Stretch"
@@ -97,31 +97,31 @@
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Margin="{TemplateBinding Padding}"
-                                HorizontalAlignment="{TemplateBinding helpers:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
-                                VerticalAlignment="{TemplateBinding helpers:HeaderedControlHelper.HeaderVerticalContentAlignment}"
+                                HorizontalAlignment="{TemplateBinding atc:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding atc:HeaderedControlHelper.HeaderVerticalContentAlignment}"
                                 Content="{TemplateBinding Header}"
-                                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.ContentCharacterCasing)}"
+                                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.ContentCharacterCasing)}"
                                 ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                 ContentTemplate="{TemplateBinding HeaderTemplate}"
                                 ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                FontFamily="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontFamily}"
-                                FontSize="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontSize}"
-                                FontStretch="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontStretch}"
+                                FontFamily="{TemplateBinding atc:HeaderedControlHelper.HeaderFontFamily}"
+                                FontSize="{TemplateBinding atc:HeaderedControlHelper.HeaderFontSize}"
+                                FontStretch="{TemplateBinding atc:HeaderedControlHelper.HeaderFontStretch}"
                                 FontStyle="{TemplateBinding FontStyle}"
-                                FontWeight="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontWeight}"
-                                Foreground="{TemplateBinding helpers:HeaderedControlHelper.HeaderForeground}"
-                                RecognizesAccessKey="{TemplateBinding helpers:ControlsHelper.RecognizesAccessKey}"
+                                FontWeight="{TemplateBinding atc:HeaderedControlHelper.HeaderFontWeight}"
+                                Foreground="{TemplateBinding atc:HeaderedControlHelper.HeaderForeground}"
+                                RecognizesAccessKey="{TemplateBinding atc:ControlsHelper.RecognizesAccessKey}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="False" />
                             <controls:Underline
                                 x:Name="Underline"
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="{TemplateBinding helpers:TabControlHelper.UnderlineMargin}"
+                                Margin="{TemplateBinding atc:TabControlHelper.UnderlineMargin}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{x:Null}"
-                                BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TabControlHelper.UnderlineBrush), Mode=OneWay}"
+                                BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TabControlHelper.UnderlineBrush), Mode=OneWay}"
                                 LineExtent="{DynamicResource TabItemUnderlineExtent}"
                                 LineThickness="{DynamicResource TabItemUnderlineThickness}"
                                 Placement="Bottom"
@@ -162,34 +162,34 @@
                             <Setter TargetName="PART_ContentTopRow" Property="Height" Value="Auto" />
                         </Trigger>
 
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="None">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="None">
                             <Setter TargetName="Underline" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="SelectedTabItem">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="SelectedTabItem">
                             <Setter TargetName="Underline" Property="LineExtent" Value="{DynamicResource TabItemUnderlineExtentSelectedTabItem}" />
                             <Setter TargetName="Underline" Property="LineThickness" Value="{DynamicResource TabItemUnderlineThicknessSelectedTabItem}" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="TabPanel">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="TabPanel">
                             <Setter TargetName="Underline" Property="LineExtent" Value="{DynamicResource TabItemUnderlineExtentTabPanel}" />
                             <Setter TargetName="Underline" Property="LineThickness" Value="{DynamicResource TabItemUnderlineThicknessTabPanel}" />
                         </DataTrigger>
 
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
-                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
+                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
                         </Trigger>
 
                         <!--  Selected  -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="TabPanel" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="TabPanel" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="LineThickness" Value="{DynamicResource TabItemSelectedUnderlineThicknessTabPanel}" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="SelectedTabItem" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="SelectedTabItem" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="LineThickness" Value="{DynamicResource TabItemSelectedUnderlineThicknessSelectedTabItem}" />
@@ -197,13 +197,13 @@
 
                         <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Gray.MouseOver}" />
-                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}" />
+                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}" />
                         </Trigger>
 
                         <!--  MouseOver  -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="TabPanel" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="TabPanel" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" />
                                 <Condition Binding="{Binding ElementName=Border, Path=IsMouseOver}" Value="True" />
                             </MultiDataTrigger.Conditions>
@@ -211,7 +211,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.Underlined)}" Value="SelectedTabItem" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.Underlined)}" Value="SelectedTabItem" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" />
                                 <Condition Binding="{Binding ElementName=Border, Path=IsMouseOver}" Value="True" />
                             </MultiDataTrigger.Conditions>
@@ -224,12 +224,12 @@
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
-                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}" />
+                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}" />
                         </MultiTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -240,7 +240,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -251,7 +251,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -262,7 +262,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement), Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -274,7 +274,7 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Top" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Top" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -285,7 +285,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Top" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Top" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -296,7 +296,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Top" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Top" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -307,55 +307,55 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Top" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
-                        </MultiDataTrigger>
-
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Top" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
+                        </MultiDataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
                             <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
                             <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
                             <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
@@ -364,7 +364,7 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Left" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -375,7 +375,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Left" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -386,7 +386,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Left" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -397,7 +397,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Left" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -409,7 +409,7 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Right" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -420,7 +420,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Right" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
@@ -431,7 +431,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Right" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -442,7 +442,7 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement)}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement)}" Value="Right" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
@@ -456,21 +456,21 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=VerticalContentAlignment, Mode=OneWay, FallbackValue={x:Static VerticalAlignment.Stretch}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderBackground), Mode=OneWay, FallbackValue={x:Static Brushes.Transparent}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderFontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderFontFamily), Mode=OneWay, FallbackValue={x:Static SystemFonts.MessageFontFamily}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderFontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderFontSize), Mode=OneWay, FallbackValue={x:Static SystemFonts.MessageFontSize}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderFontStretch" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderFontStretch), Mode=OneWay, FallbackValue={x:Static FontStretches.Normal}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderFontWeight" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderFontWeight), Mode=OneWay, FallbackValue={x:Static SystemFonts.MessageFontWeight}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderForeground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderForeground), Mode=OneWay, FallbackValue={x:Static SystemColors.ControlTextBrush}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderHorizontalContentAlignment" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderHorizontalContentAlignment), Mode=OneWay, FallbackValue={x:Static HorizontalAlignment.Stretch}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderMargin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderMargin), Mode=OneWay, FallbackValue='6 2'}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderVerticalContentAlignment" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:HeaderedControlHelper.HeaderVerticalContentAlignment), Mode=OneWay, FallbackValue={x:Static VerticalAlignment.Center}}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlineBrush), Mode=OneWay, FallbackValue={x:Null}}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineMargin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlineMargin), Mode=OneWay, FallbackValue=0}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineMouseOverBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay, FallbackValue={x:Null}}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay, FallbackValue={x:Null}}" />
-        <Setter Property="helpers:TabControlHelper.UnderlinePlacement" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlinePlacement), Mode=OneWay, FallbackValue={x:Null}}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(helpers:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay, FallbackValue={x:Null}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderBackground), Mode=OneWay, FallbackValue={x:Static Brushes.Transparent}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderFontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderFontFamily), Mode=OneWay, FallbackValue={x:Static SystemFonts.MessageFontFamily}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderFontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderFontSize), Mode=OneWay, FallbackValue={x:Static SystemFonts.MessageFontSize}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderFontStretch" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderFontStretch), Mode=OneWay, FallbackValue={x:Static FontStretches.Normal}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderFontWeight" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderFontWeight), Mode=OneWay, FallbackValue={x:Static SystemFonts.MessageFontWeight}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderForeground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderForeground), Mode=OneWay, FallbackValue={x:Static SystemColors.ControlTextBrush}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderHorizontalContentAlignment" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderHorizontalContentAlignment), Mode=OneWay, FallbackValue={x:Static HorizontalAlignment.Stretch}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderMargin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderMargin), Mode=OneWay, FallbackValue='6 2'}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderVerticalContentAlignment" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:HeaderedControlHelper.HeaderVerticalContentAlignment), Mode=OneWay, FallbackValue={x:Static VerticalAlignment.Center}}" />
+        <Setter Property="atc:TabControlHelper.UnderlineBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlineBrush), Mode=OneWay, FallbackValue={x:Null}}" />
+        <Setter Property="atc:TabControlHelper.UnderlineMargin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlineMargin), Mode=OneWay, FallbackValue=0}" />
+        <Setter Property="atc:TabControlHelper.UnderlineMouseOverBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay, FallbackValue={x:Null}}" />
+        <Setter Property="atc:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay, FallbackValue={x:Null}}" />
+        <Setter Property="atc:TabControlHelper.UnderlinePlacement" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlinePlacement), Mode=OneWay, FallbackValue={x:Null}}" />
+        <Setter Property="atc:TabControlHelper.UnderlineSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(atc:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay, FallbackValue={x:Null}}" />
     </Style>
 
     <!--  Base  -->
@@ -500,7 +500,7 @@
                             <controls:Underline
                                 x:Name="Underline"
                                 Background="Transparent"
-                                BorderBrush="{TemplateBinding helpers:TabControlHelper.UnderlineBrush}"
+                                BorderBrush="{TemplateBinding atc:TabControlHelper.UnderlineBrush}"
                                 LineThickness="{DynamicResource TabControlUnderlineThickness}"
                                 Placement="Bottom"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
@@ -517,7 +517,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding helpers:ControlsHelper.CornerRadius}"
+                            CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                             KeyboardNavigation.DirectionalNavigation="Contained"
                             KeyboardNavigation.TabIndex="2"
                             KeyboardNavigation.TabNavigation="Local"
@@ -530,7 +530,7 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="helpers:TabControlHelper.Underlined" Value="TabPanel">
+                        <Trigger Property="atc:TabControlHelper.Underlined" Value="TabPanel">
                             <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
@@ -570,15 +570,15 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TabControl}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, FallbackValue={x:Static Brushes.Transparent}}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.TabItem}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Gray}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderMargin" Value="6 2" />
-        <Setter Property="helpers:TabControlHelper.UnderlineBrush" Value="{DynamicResource AtcApps.Brushes.Gray}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource AtcApps.Brushes.Gray.MouseOver}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
-        <Setter Property="helpers:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="atc:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TabControl}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, FallbackValue={x:Static Brushes.Transparent}}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.TabItem}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderMargin" Value="6 2" />
+        <Setter Property="atc:TabControlHelper.UnderlineBrush" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+        <Setter Property="atc:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource AtcApps.Brushes.Gray.MouseOver}" />
+        <Setter Property="atc:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+        <Setter Property="atc:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
     </Style>
 
 </ResourceDictionary>

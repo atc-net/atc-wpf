@@ -83,14 +83,21 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         InitializeComponent();
     }
 
+    public override bool IsValid()
+    {
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnValueLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelIntegerBox)d;
+
         if (e.NewValue is not int newValue)
         {
+            control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
 

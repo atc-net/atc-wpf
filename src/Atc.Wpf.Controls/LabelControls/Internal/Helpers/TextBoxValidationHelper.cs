@@ -25,14 +25,14 @@ internal static class TextBoxValidationHelper
                 if (!value!.IsEmailAddress())
                 {
                     isValid = false;
-                    errorMessage = "Invalid email address"; // TODO: Translate
+                    errorMessage = Validations.InvalidEmailAddress;
                 }
 
                 break;
             case TextBoxValidationRuleType.Ftp:
             case TextBoxValidationRuleType.Ftps:
             case TextBoxValidationRuleType.FtpOrFtps:
-                ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: true);
+                ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: true, allowFtps: true);
                 break;
             case TextBoxValidationRuleType.Http:
                 ValidateHttpOrHttps(value, ref isValid, ref errorMessage, allowHttp: true, allowHttps: false);
@@ -72,14 +72,15 @@ internal static class TextBoxValidationHelper
         string? value,
         ref bool isValid,
         ref string errorMessage,
-        bool allowFtp)
+        bool allowFtp,
+        bool allowFtps)
     {
-        // TODO: UriAttribute is missing 'allowFtps'
         var validation = new UriAttribute(
             required: true,
             allowHttp: false,
             allowHttps: false,
             allowFtp: allowFtp,
+            allowFtps: allowFtps,
             allowFile: false,
             allowOpcTcp: false);
         if (validation.IsValid(value))
@@ -88,7 +89,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid FTP url"; // TODO: Translate
+        errorMessage = Validations.InvalidFtpUrl;
     }
 
     private static void ValidateHttpOrHttps(
@@ -103,6 +104,7 @@ internal static class TextBoxValidationHelper
             allowHttp: allowHttp,
             allowHttps: allowHttps,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: false);
         if (validation.IsValid(value))
@@ -111,7 +113,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid HTTP url"; // TODO: Translate
+        errorMessage = Validations.InvalidHttpUrl;
     }
 
     private static void ValidateIpAddress(
@@ -140,7 +142,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid IP address"; // TODO: Translate
+        errorMessage = Validations.InvalidIpAddres;
     }
 
     private static void ValidateOpcTcp(
@@ -153,6 +155,7 @@ internal static class TextBoxValidationHelper
             allowHttp: false,
             allowHttps: false,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: true);
         if (validation.IsValid(value))
@@ -161,7 +164,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid OPC-UA url"; // TODO: Translate
+        errorMessage = Validations.InvalidOpcUaUrl;
     }
 
     private static void ValidateTcp(
@@ -174,6 +177,7 @@ internal static class TextBoxValidationHelper
             allowHttp: false,
             allowHttps: false,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: true);
         if (validation.IsValid(value))
@@ -182,7 +186,7 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid TCP url"; // TODO: Translate
+        errorMessage = Validations.InvalidTcpUrl;
     }
 
     private static void ValidateUdp(
@@ -195,6 +199,7 @@ internal static class TextBoxValidationHelper
             allowHttp: false,
             allowHttps: false,
             allowFtp: false,
+            allowFtps: false,
             allowFile: false,
             allowOpcTcp: true);
         if (validation.IsValid(value))
@@ -203,6 +208,6 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = "Invalid TCP url"; // TODO: Translate
+        errorMessage = Validations.InvalidTcpUrl;
     }
 }

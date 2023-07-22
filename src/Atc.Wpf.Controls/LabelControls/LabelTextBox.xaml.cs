@@ -1,5 +1,6 @@
 // ReSharper disable InvertIf
 // ReSharper disable RedundantJumpStatement
+// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -91,6 +92,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(CharactersNotAllowedProperty, value);
     }
 
+    public static readonly DependencyProperty RegexPatternProperty = DependencyProperty.Register(
+        nameof(RegexPattern),
+        typeof(string),
+        typeof(LabelTextBox),
+        new PropertyMetadata(defaultValue: null));
+
+    public string? RegexPattern
+    {
+        get => (string?)GetValue(RegexPatternProperty);
+        set => SetValue(RegexPatternProperty, value);
+    }
+
     public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
         nameof(ShowClearTextButton),
         typeof(bool),
@@ -142,6 +155,12 @@ public partial class LabelTextBox : ILabelTextBox
         InitializeComponent();
     }
 
+    public override bool IsValid()
+    {
+        ValidateText(default, this, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private static string GetOnlyUsedNotAllowedCharacters(
         string charactersNotAllowed,
         string text)
@@ -181,34 +200,87 @@ public partial class LabelTextBox : ILabelTextBox
     {
         var control = (LabelTextBox)d;
 
+        ValidateText(e, control, raiseEvents: true);
+    }
+
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    private static void ValidateText(
+        DependencyPropertyChangedEventArgs e,
+        LabelTextBox control,
+        bool raiseEvents)
+    {
         if (control.IsMandatory &&
             string.IsNullOrWhiteSpace(control.Text))
         {
-            control.ValidationText = "Field is required"; // TODO: Translate
-            OnTextLostFocusFireInvalidEvent(control, e);
+            control.ValidationText = Validations.FieldIsRequired;
+            if (raiseEvents)
+            {
+                OnTextLostFocusFireInvalidEvent(control, e);
+            }
+
             return;
         }
 
         if (control.Text.Length < control.MinLength)
         {
-            control.ValidationText = $"Min length: {control.MinLength}"; // TODO: Translate
-            OnTextLostFocusFireInvalidEvent(control, e);
+            control.ValidationText = string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.MinValueFormat1,
+                control.MinLength);
+
+            if (raiseEvents)
+            {
+                OnTextLostFocusFireInvalidEvent(control, e);
+            }
+
             return;
         }
 
         if (control.Text.Length > control.MaxLength)
         {
-            control.ValidationText = $"Max length: {control.MaxLength}"; // TODO: Translate
-            OnTextLostFocusFireInvalidEvent(control, e);
+            control.ValidationText = string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.MaxValueFormat1,
+                control.MaxLength);
+
+            if (raiseEvents)
+            {
+                OnTextLostFocusFireInvalidEvent(control, e);
+            }
+
             return;
         }
 
         if (!string.IsNullOrEmpty(control.CharactersNotAllowed) &&
             control.CharactersNotAllowed.Any(x => control.Text.Contains(x, StringComparison.OrdinalIgnoreCase)))
         {
-            control.ValidationText = $"Not allowed: {GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text)}"; // TODO: Translate
-            OnTextLostFocusFireInvalidEvent(control, e);
+            control.ValidationText = string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.NotAllowedFormat1,
+                GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text));
+
+            if (raiseEvents)
+            {
+                OnTextLostFocusFireInvalidEvent(control, e);
+            }
+
             return;
+        }
+
+        if (!string.IsNullOrEmpty(control.RegexPattern))
+        {
+            var regex = new Regex(control.RegexPattern, RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+            if (!regex.Match(control.Text).Success)
+            {
+                control.ValidationText = Validations.RegexPatternDontMatch;
+                if (raiseEvents)
+                {
+                    OnTextLostFocusFireInvalidEvent(control, e);
+                }
+
+                return;
+            }
         }
 
         var (isValid, errorMessage) = TextBoxValidationHelper.Validate(
@@ -218,12 +290,18 @@ public partial class LabelTextBox : ILabelTextBox
         if (isValid)
         {
             control.ValidationText = string.Empty;
-            OnTextLostFocusFireValidEvent(control, e);
+            if (raiseEvents)
+            {
+                OnTextLostFocusFireValidEvent(control, e);
+            }
         }
         else
         {
             control.ValidationText = errorMessage;
-            OnTextLostFocusFireInvalidEvent(control, e);
+            if (raiseEvents)
+            {
+                OnTextLostFocusFireInvalidEvent(control, e);
+            }
         }
     }
 

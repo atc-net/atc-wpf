@@ -20,12 +20,29 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+
+            <atc:UniformSpacingPanel Orientation="Horizontal">
+                <atc:LabelCheckBox
+                    x:Name="LcbShowActionAndInformationBar"
+                    IsChecked="True"
+                    LabelText="Show Action Bar" />
+
+                <atc:LabelCheckBox
+                    x:Name="LcbStartExpanded"
+                    IsChecked="True"
+                    LabelText="Start Expanded" />
+            </atc:UniformSpacingPanel>
+
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
 
-                <viewers:JsonViewer Data="{Binding Path=JsonData}" />
+                <viewers:JsonViewer
+                    Data="{Binding Path=JsonData}"
+                    ShowActionAndInformationBar="{Binding ElementName=LcbShowActionAndInformationBar, Path=IsChecked}"
+                    StartExpanded="{Binding ElementName=LcbStartExpanded, Path=IsChecked}" />
 
             </ScrollViewer>
         </GroupBox>

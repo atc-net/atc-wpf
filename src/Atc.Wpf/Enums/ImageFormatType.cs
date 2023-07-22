@@ -1,5 +1,5 @@
 // ReSharper disable once CheckNamespace
-namespace System.Windows.Media.Imaging;
+namespace Atc.Wpf;
 
 /// <summary>
 /// Enumeration: ImageFormatType.

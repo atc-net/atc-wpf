@@ -5,4 +5,7 @@ public record ColorItem(
     string DisplayName,
     string DisplayHexCode,
     Brush BorderColorBrush,
-    Brush ColorBrush);
+    Brush ColorBrush)
+{
+    public string DisplayName { get; set; } = DisplayName;
+}

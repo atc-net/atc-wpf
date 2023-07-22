@@ -18,10 +18,11 @@
     </UserControl.Resources>
 
     <ComboBox
-        IsSynchronizedWithCurrentItem="True"
+        x:Name="CbColors"
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
         SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
-        SelectedValuePath="Name">
+        SelectedValuePath="Name"
+        SelectionChanged="OnSelectionChanged">
         <ComboBox.ItemContainerStyle>
             <Style TargetType="{x:Type ComboBoxItem}">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />

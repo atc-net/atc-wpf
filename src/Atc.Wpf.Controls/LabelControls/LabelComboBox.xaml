@@ -25,7 +25,8 @@
             DisplayMemberPath="Value"
             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelComboBox}}, Path=Items}"
             SelectedValue="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelComboBox}}, Path=SelectedKey}"
-            SelectedValuePath="Key" />
+            SelectedValuePath="Key"
+            SelectionChanged="OnSelectionChanged" />
 
     </labelControls:LabelContent>
 

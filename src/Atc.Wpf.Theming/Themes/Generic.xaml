@@ -2,14 +2,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
-    xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Controls.Dialogs"
+    xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs"
     xmlns:theming="clr-namespace:Atc.Wpf.Theming.Theming"
     xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Fonts.xaml" />
 
-        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Themes/Dialogs/NiceDialogBase.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Themes/Dialogs/NiceDialogBox.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Themes/Windows/ContentControlEx.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Themes/Windows/NiceContentControl.xaml" />
@@ -20,7 +20,7 @@
 
     <theming:AtcAppsLibraryThemeProvider x:Key="{x:Static theming:AtcAppsLibraryThemeProvider.DefaultInstance}" />
 
-    <Style BasedOn="{StaticResource AtcApps.Styles.NiceDialogBase}" TargetType="{x:Type dialogs:NiceDialogBase}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.NiceDialogBox}" TargetType="{x:Type dialogs:NiceDialogBox}" />
 
     <Style BasedOn="{StaticResource AtcApps.Styles.ContentControlEx}" TargetType="{x:Type atc:ContentControlEx}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.NiceThumbContentControl}" TargetType="{x:Type windows:NiceThumbContentControl}" />

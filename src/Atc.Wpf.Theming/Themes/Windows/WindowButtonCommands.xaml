@@ -1,11 +1,11 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controls="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:controlzex="urn:controlzex"
-    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows">
+    xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
 
     <ControlTemplate x:Key="AtcApps.Templates.WindowButtonCommands" TargetType="{x:Type windows:WindowButtonCommands}">
         <StackPanel Orientation="Horizontal">
@@ -20,7 +20,7 @@
                 IsEnabled="{Binding IsMinButtonEnabled, RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}}"
                 ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
                 <Button.Visibility>
-                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static controls:WindowResizeModeButtonType.Min}">
+                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static wpf:WindowResizeModeButtonType.Min}">
                         <Binding
                             Mode="OneWay"
                             Path="ShowMinButton"
@@ -51,7 +51,7 @@
                 IsEnabled="{Binding IsMaxRestoreButtonEnabled, RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}}"
                 ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
                 <Button.Visibility>
-                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static controls:WindowResizeModeButtonType.Max}">
+                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static wpf:WindowResizeModeButtonType.Max}">
                         <Binding
                             Mode="OneWay"
                             Path="ShowMaxRestoreButton"
@@ -87,7 +87,7 @@
                 RenderOptions.EdgeMode="Aliased"
                 ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
                 <Button.Visibility>
-                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static controls:WindowResizeModeButtonType.Close}">
+                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static wpf:WindowResizeModeButtonType.Close}">
                         <Binding
                             Mode="OneWay"
                             Path="ShowCloseButton"
@@ -161,7 +161,7 @@
                 ToolTip="{Binding Minimize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                 UseLayoutRounding="True">
                 <Button.Visibility>
-                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static controls:WindowResizeModeButtonType.Min}">
+                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static wpf:WindowResizeModeButtonType.Min}">
                         <Binding
                             Mode="OneWay"
                             Path="ShowMinButton"
@@ -200,7 +200,7 @@
                 ToolTip="{Binding Maximize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                 UseLayoutRounding="True">
                 <Button.Visibility>
-                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static controls:WindowResizeModeButtonType.Max}">
+                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static wpf:WindowResizeModeButtonType.Max}">
                         <Binding
                             Mode="OneWay"
                             Path="ShowMaxRestoreButton"
@@ -241,7 +241,7 @@
                 ToolTip="{Binding Close, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                 UseLayoutRounding="True">
                 <Button.Visibility>
-                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static controls:WindowResizeModeButtonType.Close}">
+                    <MultiBinding Converter="{x:Static atcValueConverters:WindowResizeModeMinMaxButtonVisibilityMultiValueConverter.Instance}" ConverterParameter="{x:Static wpf:WindowResizeModeButtonType.Close}">
                         <Binding
                             Mode="OneWay"
                             Path="ShowCloseButton"

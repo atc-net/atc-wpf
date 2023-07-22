@@ -66,6 +66,51 @@ public static class ColorUtil
     }
 
     /// <summary>
+    /// Gets the color from color-name.
+    /// </summary>
+    /// <param name="colorName">Color.name.</param>
+    /// <returns>The color from color-name.</returns>
+    public static Color? GetColorFromName(string colorName)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(colorName);
+
+        if (colorName.StartsWith('-'))
+        {
+            return null;
+        }
+
+        var knownColors = GetKnownColors();
+        return (from item
+                in knownColors
+                where item.Key.ToString(GlobalizationConstants.EnglishCultureInfo) == colorName
+                select item.Value)
+            .FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Gets the color-name from hex.
+    /// </summary>
+    /// <param name="hexaColor">Color of the hexa.</param>
+    /// <returns>The color from hexa color.</returns>
+    public static string? GetColorNameFromHex(string hexaColor)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(hexaColor);
+
+        if (hexaColor.Length == 9 && hexaColor.StartsWith("#00", StringComparison.Ordinal))
+        {
+            hexaColor = hexaColor.Replace("#00", "#FF", StringComparison.Ordinal);
+        }
+
+        var color = GetColorFromHex(hexaColor);
+        var knownColors = GetKnownColors();
+        return (from item
+                in knownColors
+                where item.Value.ToString(GlobalizationConstants.EnglishCultureInfo) == color.ToString(GlobalizationConstants.EnglishCultureInfo)
+                select item.Key)
+            .FirstOrDefault();
+    }
+
+    /// <summary>
     /// Formats the color string.
     /// </summary>
     /// <param name="stringToFormat">
@@ -325,5 +370,50 @@ public static class ColorUtil
     {
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
         return colorProperties.ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Gets the known color names.
+    /// </summary>
+    public static IList<string> GetKnownColorNames()
+    {
+        var colorsInfo = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
+        return colorsInfo
+            .Select(x => x.Name)
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Gets the basic color names.
+    /// </summary>
+    /// <remarks>
+    /// https://en.wikipedia.org/wiki/Web_colors
+    /// </remarks>>
+    public static IList<string> GetBasicColorNames()
+    {
+        var list = new List<string>
+        {
+            "White",
+            "Silver",
+            "Gray",
+            "Black",
+            "Red",
+            "Maroon",
+            "Yellow",
+            "Olive",
+            "Lime",
+            "Green",
+            "Aqua",
+            "Teal",
+            "Blue",
+            "Navy",
+            "Fuchsia",
+            "Purple",
+        };
+
+        return list
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToList();
     }
 }

@@ -65,6 +65,17 @@
                             ShowAsteriskOnMandatory="True"
                             ShowHexCode="True" />
 
+                        <atc:LabelWellKnownColorSelector
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelWellKnownColorSelector
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Horizontal"
+                            UseOnlyBasicColors="True" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
@@ -111,6 +122,17 @@
                             SelectedKey="Red"
                             ShowAsteriskOnMandatory="True"
                             ShowHexCode="True" />
+
+                        <atc:LabelWellKnownColorSelector
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Vertical" />
+
+                        <atc:LabelWellKnownColorSelector
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Vertical"
+                            UseOnlyBasicColors="True" />
 
                     </StackPanel>
                 </atc:GridEx>

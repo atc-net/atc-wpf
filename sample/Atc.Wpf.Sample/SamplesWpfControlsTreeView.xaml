@@ -9,6 +9,12 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="DialogBoxes" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="Standard"
+            IsExpanded="True"
+            SamplePath="DialogBoxes.StandardDialogBoxView" />
+    </TreeViewItem>
     <TreeViewItem Header="Base Controls" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="DecimalBox"
@@ -46,6 +52,10 @@
 
     <TreeViewItem Header="Label Controls" IsExpanded="True">
         <TreeViewItem Header="Selectors" IsExpanded="True">
+            <atc:SampleTreeViewItem
+                Header="LabelCountrySelector"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelCountrySelectorView" />
             <atc:SampleTreeViewItem
                 Header="LabelLanguageSelector"
                 IsExpanded="True"
@@ -127,6 +137,10 @@
             Header="Label-MIX-Bindings"
             IsExpanded="True"
             SamplePath="LabelControls.LabelMixBindingsView" />
+        <atc:SampleTreeViewItem
+            Header="Label-InputFormPanel"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelInputFormPanelView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Layouts" IsExpanded="True">

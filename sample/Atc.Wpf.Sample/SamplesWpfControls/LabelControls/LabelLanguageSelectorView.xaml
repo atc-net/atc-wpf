@@ -21,16 +21,78 @@
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">
 
-                        <atc:LabelLanguageSelector Orientation="Horizontal" />
+                        <atc:LabelLanguageSelector Orientation="Horizontal" UpdateUiCultureOnChangeEvent="False" />
 
-                        <atc:LabelLanguageSelector InformationText="This is a help text.." Orientation="Horizontal" />
+                        <atc:LabelLanguageSelector
+                            InformationText="This is a help text.."
+                            Orientation="Horizontal"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="None"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="-3"
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="de-DE"
+                            Orientation="Horizontal"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
-                        <atc:LabelLanguageSelector Orientation="Vertical" />
+                        <atc:LabelLanguageSelector Orientation="Vertical" UpdateUiCultureOnChangeEvent="False" />
 
-                        <atc:LabelLanguageSelector InformationText="This is a help text.." Orientation="Vertical" />
+                        <atc:LabelLanguageSelector
+                            InformationText="This is a help text.."
+                            Orientation="Vertical"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="None"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="-3"
+                            DropDownFirstItemType="PleaseSelect"
+                            IsMandatory="True"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="1031"
+                            DropDownFirstItemType="PleaseSelect"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
+
+                        <atc:LabelLanguageSelector
+                            DefaultCultureIdentifier="de-DE"
+                            Orientation="Vertical"
+                            RenderFlagIndicatorType="Shiny16"
+                            UpdateUiCultureOnChangeEvent="False"
+                            UseOnlySupportedLanguages="False" />
 
                     </StackPanel>
                 </atc:GridEx>

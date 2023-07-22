@@ -25,7 +25,7 @@ public partial class DebounceView
             return;
         }
 
-        var delayMs = int.Parse(s, NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo);
+        var delayMs = NumberHelper.ParseToInt(s);
 
         // Fire after [delayMs]ms after last keypress
         debounceTimer.Debounce(delayMs, async _ =>
@@ -33,7 +33,9 @@ public partial class DebounceView
             var vm = DataContext as DebounceViewModel;
             if (LcSearch.Content is TextBox searchBox)
             {
-                await vm!.Search(searchBox.Text);
+                await vm!
+                    .Search(searchBox.Text)
+                    .ConfigureAwait(true);
             }
         });
     }

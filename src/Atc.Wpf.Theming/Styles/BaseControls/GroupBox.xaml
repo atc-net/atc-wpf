@@ -5,8 +5,8 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controls="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:enums="clr-namespace:Atc.Wpf.Theming"
-    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
-    xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters">
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
 
     <atcValueConverters:ThicknessBindingValueConverter x:Key="ThicknessBindingConverter" />
     <valueConverters:CornerRadiusBindingValueConverter x:Key="CornerRadiusBindingConverter" />
@@ -32,38 +32,38 @@
                         <Border
                             x:Name="HeaderSite"
                             Grid.Row="0"
-                            Background="{TemplateBinding helpers:HeaderedControlHelper.HeaderBackground}"
+                            Background="{TemplateBinding atc:HeaderedControlHelper.HeaderBackground}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static enums:RadiusType.Bottom}}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static enums:RadiusType.Bottom}}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="True">
                             <controls:ContentControlEx
                                 x:Name="HeaderContent"
-                                Margin="{TemplateBinding helpers:HeaderedControlHelper.HeaderMargin}"
-                                HorizontalAlignment="{TemplateBinding helpers:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
-                                VerticalAlignment="{TemplateBinding helpers:HeaderedControlHelper.HeaderVerticalContentAlignment}"
+                                Margin="{TemplateBinding atc:HeaderedControlHelper.HeaderMargin}"
+                                HorizontalAlignment="{TemplateBinding atc:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding atc:HeaderedControlHelper.HeaderVerticalContentAlignment}"
                                 Content="{TemplateBinding Header}"
-                                ContentCharacterCasing="{TemplateBinding helpers:ControlsHelper.ContentCharacterCasing}"
+                                ContentCharacterCasing="{TemplateBinding atc:ControlsHelper.ContentCharacterCasing}"
                                 ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                 ContentTemplate="{TemplateBinding HeaderTemplate}"
                                 ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                FontFamily="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontFamily}"
-                                FontSize="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontSize}"
-                                FontStretch="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontStretch}"
-                                FontWeight="{TemplateBinding helpers:HeaderedControlHelper.HeaderFontWeight}"
-                                RecognizesAccessKey="{TemplateBinding helpers:ControlsHelper.RecognizesAccessKey}"
+                                FontFamily="{TemplateBinding atc:HeaderedControlHelper.HeaderFontFamily}"
+                                FontSize="{TemplateBinding atc:HeaderedControlHelper.HeaderFontSize}"
+                                FontStretch="{TemplateBinding atc:HeaderedControlHelper.HeaderFontStretch}"
+                                FontWeight="{TemplateBinding atc:HeaderedControlHelper.HeaderFontWeight}"
+                                RecognizesAccessKey="{TemplateBinding atc:ControlsHelper.RecognizesAccessKey}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="False">
                                 <TextElement.Foreground>
                                     <MultiBinding Converter="{x:Static atcValueConverters:BackgroundToForegroundValueConverter.Instance}">
                                         <Binding
                                             Mode="OneWay"
-                                            Path="(helpers:HeaderedControlHelper.HeaderBackground)"
+                                            Path="(atc:HeaderedControlHelper.HeaderBackground)"
                                             RelativeSource="{RelativeSource TemplatedParent}" />
                                         <Binding
                                             Mode="OneWay"
-                                            Path="(helpers:HeaderedControlHelper.HeaderForeground)"
+                                            Path="(atc:HeaderedControlHelper.HeaderForeground)"
                                             RelativeSource="{RelativeSource TemplatedParent}" />
                                     </MultiBinding>
                                 </TextElement.Foreground>
@@ -73,8 +73,8 @@
                             Grid.Row="1"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static atc:ThicknessSideType.Top}}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static enums:RadiusType.Top}}"
+                            BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static enums:RadiusType.Top}}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="True">
                             <ContentPresenter
@@ -88,12 +88,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="helpers:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.GroupBox}" />
-        <Setter Property="helpers:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.GroupBox}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderForeground" Value="{x:Null}" />
-        <Setter Property="helpers:HeaderedControlHelper.HeaderMargin" Value="{DynamicResource GroupBoxHeaderThemePadding}" />
+        <Setter Property="atc:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.GroupBox}" />
+        <Setter Property="atc:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.GroupBox}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderForeground" Value="{x:Null}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderMargin" Value="{DynamicResource GroupBoxHeaderThemePadding}" />
     </Style>
 
 </ResourceDictionary>
