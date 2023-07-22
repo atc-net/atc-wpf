@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Controls.Tests.LabelControls.Extractors;
 
+[Collection(nameof(TestCollection))]
+[Trait(Traits.Category, Traits.Categories.Integration)]
+[Trait(Traits.Category, Traits.Categories.SkipWhenLiveUnitTesting)]
 public class ModelToLabelControlExtractorTests
 {
     [StaFact]

@@ -7,3 +7,6 @@ global using Atc.Wpf.Controls.LabelControls.Factories;
 global using Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 global using Atc.Wpf.Controls.LabelControls.Writers;
 global using Atc.Wpf.Controls.XUnitTestTypes;
+global using Atc.XUnit;
+
+global using Xunit.Sdk;
