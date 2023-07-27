@@ -27,21 +27,21 @@
 
                         <ScrollViewer Width="200" Height="100">
                             <TextBlock
-                                Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
                                 FontSize="80"
                                 Text="Hello world" />
                         </ScrollViewer>
 
                         <ScrollViewer Width="200" Height="100">
                             <TextBlock
-                                Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
                                 FontSize="30"
                                 Text="Hello world" />
                         </ScrollViewer>
 
                         <ScrollViewer Width="200" Height="130">
                             <TextBlock
-                                Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
                                 FontSize="80"
                                 Text="Hello world" />
                         </ScrollViewer>
@@ -59,7 +59,7 @@
                             HorizontalScrollBarVisibility="Auto"
                             VerticalScrollBarVisibility="Auto">
                             <TextBlock
-                                Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
                                 FontSize="80"
                                 Text="Hello world" />
                         </ScrollViewer>
@@ -70,7 +70,7 @@
                             HorizontalScrollBarVisibility="Visible"
                             VerticalScrollBarVisibility="Visible">
                             <TextBlock
-                                Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
                                 FontSize="80"
                                 Text="Hello world" />
                         </ScrollViewer>
@@ -81,7 +81,7 @@
                             HorizontalScrollBarVisibility="Hidden"
                             VerticalScrollBarVisibility="Hidden">
                             <TextBlock
-                                Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
                                 FontSize="80"
                                 Text="Hello world" />
                         </ScrollViewer>

@@ -29,7 +29,7 @@
 
         <Border
             Height="50"
-            Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+            Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
             DockPanel.Dock="Top"
@@ -39,7 +39,7 @@
 
         <Border
             Height="50"
-            Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+            Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,1,0,0"
             DockPanel.Dock="Bottom">
