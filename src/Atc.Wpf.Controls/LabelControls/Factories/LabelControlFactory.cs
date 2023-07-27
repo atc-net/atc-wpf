@@ -561,6 +561,7 @@ public static class LabelControlFactory
             InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             DefaultCultureIdentifier = defaultCultureIdentifier,
+            UseOnlySupportedCountries = false,
         };
 
         return control;
