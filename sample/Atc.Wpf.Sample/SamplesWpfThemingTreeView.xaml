@@ -110,10 +110,14 @@
             Header="TreeView"
             IsExpanded="True"
             SamplePath="Misc.TreeViewView" />
+        <atc:SampleTreeViewItem
+            Header="Mix"
+            IsExpanded="True"
+            SamplePath="Misc.MixView" />
+        <atc:SampleTreeViewItem
+            Header="Brushes"
+            IsExpanded="True"
+            SamplePath="Misc.BrushesView" />
     </TreeViewItem>
-    <atc:SampleTreeViewItem
-        Header="Mix"
-        IsExpanded="True"
-        SamplePath="MixView" />
 
 </TreeView>

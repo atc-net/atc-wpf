@@ -90,4 +90,9 @@ public record Account
 
     public DayOfWeek FirstDayOfWeek { get; init; } = DayOfWeek.Monday;
 }
+
+public record BrushInfo(
+    string Key,
+    string DisplayName,
+    SolidColorBrush Brush);
 #pragma warning restore SA1402

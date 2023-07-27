@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfTheming;
+namespace Atc.Wpf.Sample.SamplesWpfTheming.Misc;
 
 /// <summary>
 /// Interaction logic for MixView.
