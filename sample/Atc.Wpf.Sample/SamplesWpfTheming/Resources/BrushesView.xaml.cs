@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfTheming.Misc;
+namespace Atc.Wpf.Sample.SamplesWpfTheming.Resources;
 
 /// <summary>
 /// Interaction logic for BrushesView.
@@ -49,8 +49,36 @@ public partial class BrushesView : INotifyPropertyChanged
         object sender,
         RoutedPropertyChangedEventArgs<string> e)
     {
-        filterText = e.NewValue;
+        filterText = e.NewValue.Replace("AtcApps.Brushes.", string.Empty, StringComparison.Ordinal);
         PopulateBrushes();
+    }
+
+    private void OnCopyKeyToClipboardClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (sender is not MenuItem item ||
+            item.CommandParameter is null)
+        {
+            return;
+        }
+
+        var key = item.CommandParameter.ToString()!;
+        Clipboard.SetText(key);
+    }
+
+    private void OnCopyColorCodeToClipboardClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (sender is not MenuItem item ||
+            item.CommandParameter is null)
+        {
+            return;
+        }
+
+        var brush = item.CommandParameter;
+        Clipboard.SetText(brush.ToString()!);
     }
 
     private void PopulateBrushes()
@@ -68,38 +96,7 @@ public partial class BrushesView : INotifyPropertyChanged
 
         foreach (var level1MergedDictionaries in lightTheme.Resources.MergedDictionaries)
         {
-            foreach (var level2MergedDictionaries in level1MergedDictionaries.MergedDictionaries)
-            {
-                foreach (var dictKey in level2MergedDictionaries.Keys)
-                {
-                    var key = dictKey.ToString()!;
-                    if (level2MergedDictionaries[dictKey] is not SolidColorBrush brush)
-                    {
-                        continue;
-                    }
-
-                    var displayName = key.Replace("AtcApps.Brushes.", string.Empty, StringComparison.Ordinal);
-                    if (filterText.Length > 0)
-                    {
-                        if (displayName.Contains(filterText, StringComparison.OrdinalIgnoreCase))
-                        {
-                            filteredBrushes.Add(
-                                new BrushInfo(
-                                    key,
-                                    displayName,
-                                    brush));
-                        }
-                    }
-                    else
-                    {
-                        filteredBrushes.Add(
-                            new BrushInfo(
-                                key,
-                                displayName,
-                                brush));
-                    }
-                }
-            }
+            CollectResources(level1MergedDictionaries, filteredBrushes);
         }
 
         BrushItemsControlForLightMode.ItemsSource = filteredBrushes.OrderBy(x => x.DisplayName, StringComparer.Ordinal);
@@ -114,29 +111,30 @@ public partial class BrushesView : INotifyPropertyChanged
 
         foreach (var level1MergedDictionaries in darkTheme.Resources.MergedDictionaries)
         {
-            foreach (var level2MergedDictionaries in level1MergedDictionaries.MergedDictionaries)
-            {
-                foreach (var dictKey in level2MergedDictionaries.Keys)
-                {
-                    var key = dictKey.ToString()!;
-                    if (level2MergedDictionaries[dictKey] is not SolidColorBrush brush)
-                    {
-                        continue;
-                    }
+            CollectResources(level1MergedDictionaries, filteredBrushes);
+        }
 
-                    var displayName = key.Replace("AtcApps.Brushes.", string.Empty, StringComparison.Ordinal);
-                    if (filterText.Length > 0)
-                    {
-                        if (displayName.Contains(filterText, StringComparison.OrdinalIgnoreCase))
-                        {
-                            filteredBrushes.Add(
-                                new BrushInfo(
-                                    key,
-                                    displayName,
-                                    brush));
-                        }
-                    }
-                    else
+        BrushItemsControlForDarkMode.ItemsSource = filteredBrushes.OrderBy(x => x.DisplayName, StringComparer.Ordinal);
+    }
+
+    private void CollectResources(
+        ResourceDictionary resourceDictionary,
+        ICollection<BrushInfo> filteredBrushes)
+    {
+        foreach (var resourceDict in resourceDictionary.MergedDictionaries)
+        {
+            foreach (var dictKey in resourceDict.Keys)
+            {
+                var key = dictKey.ToString()!;
+                if (resourceDict[dictKey] is not SolidColorBrush brush)
+                {
+                    continue;
+                }
+
+                var displayName = key.Replace("AtcApps.Brushes.", string.Empty, StringComparison.Ordinal);
+                if (filterText.Length > 0)
+                {
+                    if (displayName.Contains(filterText, StringComparison.OrdinalIgnoreCase))
                     {
                         filteredBrushes.Add(
                             new BrushInfo(
@@ -145,9 +143,15 @@ public partial class BrushesView : INotifyPropertyChanged
                                 brush));
                     }
                 }
+                else
+                {
+                    filteredBrushes.Add(
+                        new BrushInfo(
+                            key,
+                            displayName,
+                            brush));
+                }
             }
         }
-
-        BrushItemsControlForDarkMode.ItemsSource = filteredBrushes.OrderBy(x => x.DisplayName, StringComparer.Ordinal);
     }
 }
