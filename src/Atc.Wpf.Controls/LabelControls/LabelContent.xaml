@@ -20,7 +20,7 @@
         <valueConverters:LabelControlHideAreasToTreeGridExColumnsValueConverter x:Key="LabelControlHideAreasToTreeGridExColumnsValueConverter" />
         <valueConverters:LabelControlHorizontalToWidthMultiValueConverter x:Key="LabelControlHorizontalToWidthMultiValueConverter" />
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
-        <valueConverters:LabelControlOrientationToAsteriskPaddingValueConverter x:Key="LabelControlOrientationToAsteriskPaddingValueConverter" />
+        <valueConverters:LabelControlOrientationToAsteriskMarginValueConverter x:Key="LabelControlOrientationToAsteriskMarginValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
     </labelControls:LabelControl.Resources>
 
@@ -32,13 +32,13 @@
 
                         <atc:GridEx Columns="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas, Converter={StaticResource LabelControlHideAreasToTreeGridExColumnsValueConverter}}" Rows="Auto">
 
-                            <TextBlock
+                            <Ellipse
                                 Grid.Column="0"
-                                Padding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskPaddingValueConverter}}"
-                                FontWeight="Bold"
-                                Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor, FallbackValue=Red}"
-                                Text="*">
-                                <TextBlock.Visibility>
+                                Width="5"
+                                Height="5"
+                                Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToAsteriskMarginValueConverter}}"
+                                Fill="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor, FallbackValue=Red}">
+                                <Ellipse.Visibility>
                                     <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
                                         <Binding
                                             Converter="{StaticResource LabelControlHideAreasToBoolValueConverter}"
@@ -48,8 +48,8 @@
                                         <Binding Path="ShowAsteriskOnMandatory" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                         <Binding Path="IsMandatory" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
-                                </TextBlock.Visibility>
-                            </TextBlock>
+                                </Ellipse.Visibility>
+                            </Ellipse>
 
                             <!--  Orientation="Horizontal" mode  -->
                             <atc:GridEx
