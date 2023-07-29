@@ -12,7 +12,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(TextChanged),
         RoutingStrategy.Bubble,
         typeof(RoutedPropertyChangedEventHandler<string>),
-        typeof(LabelPixelSizeBox));
+        typeof(LabelTextBox));
 
     public event RoutedPropertyChangedEventHandler<string> TextChanged
     {
