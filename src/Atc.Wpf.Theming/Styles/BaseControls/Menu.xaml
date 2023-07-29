@@ -207,7 +207,7 @@
                     <Border
                         x:Name="SubMenuBorder"
                         Padding="2"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground2}"
                         BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                         BorderThickness="1">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
@@ -444,7 +444,7 @@
                     <Border
                         x:Name="SubMenuBorder"
                         Padding="2"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground2}"
                         BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                         BorderThickness="1">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
@@ -523,7 +523,7 @@
                 <Setter Property="Padding" Value="6,0" />
             </Trigger>
             <Trigger Property="Role" Value="TopLevelItem">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground1}" />
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                 <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
@@ -537,7 +537,7 @@
 
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.Menu" TargetType="{x:Type Menu}">
-        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground1}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
         <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
         <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />

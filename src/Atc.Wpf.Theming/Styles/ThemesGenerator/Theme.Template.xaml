@@ -455,7 +455,6 @@
 
     <!--  Base Colors  -->
     <Color x:Key="AtcApps.Colors.ThemeBackground">{{AtcApps.Colors.ThemeBackground}}</Color>
-    <Color x:Key="AtcApps.Colors.ThemeBackground0">{{AtcApps.Colors.ThemeBackground0}}</Color>
     <Color x:Key="AtcApps.Colors.ThemeBackground1">{{AtcApps.Colors.ThemeBackground1}}</Color>
     <Color x:Key="AtcApps.Colors.ThemeBackground2">{{AtcApps.Colors.ThemeBackground2}}</Color>
     <Color x:Key="AtcApps.Colors.ThemeBackground3">{{AtcApps.Colors.ThemeBackground3}}</Color>
@@ -470,7 +469,6 @@
     <Color x:Key="AtcApps.Colors.ThemeForeground3">{{AtcApps.Colors.ThemeForeground3}}</Color>
     <Color x:Key="AtcApps.Colors.ThemeForeground2">{{AtcApps.Colors.ThemeForeground2}}</Color>
     <Color x:Key="AtcApps.Colors.ThemeForeground1">{{AtcApps.Colors.ThemeForeground1}}</Color>
-    <Color x:Key="AtcApps.Colors.ThemeForeground0">{{AtcApps.Colors.ThemeForeground0}}</Color>
     <Color x:Key="AtcApps.Colors.ThemeForeground">{{AtcApps.Colors.ThemeForeground}}</Color>
     <Color x:Key="AtcApps.Colors.IdealForeground">{{AtcApps.Colors.IdealForeground}}</Color>
     <Color x:Key="AtcApps.Colors.Gray1">{{AtcApps.Colors.Gray1}}</Color>
@@ -498,10 +496,6 @@
         x:Key="AtcApps.Brushes.ThemeBackground"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ThemeBackground0"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackground0}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ThemeBackground1"
         options:Freeze="True"
@@ -558,10 +552,6 @@
         x:Key="AtcApps.Brushes.ThemeForeground1"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.ThemeForeground1}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ThemeForeground0"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForeground0}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ThemeForeground"
         options:Freeze="True"
