@@ -159,4 +159,13 @@
   <data name="PleaseSelect" xml:space="preserve">
     <value>Bitte wähle ein {0}</value>
   </data>
+  <data name="InvalidDate1" xml:space="preserve">
+    <value>Ungültiges Datum ({0})</value>
+  </data>
+  <data name="InvalidDate2" xml:space="preserve">
+    <value>Ungültiges Datum ({0} - {1})</value>
+  </data>
+  <data name="InvalidTime" xml:space="preserve">
+    <value>Ungültige Zeit</value>
+  </data>
 </root>

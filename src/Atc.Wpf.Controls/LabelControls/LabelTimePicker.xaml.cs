@@ -187,7 +187,7 @@ public partial class LabelTimePicker : ILabelTimePicker
                 DateTimeStyles.None,
                 out _))
         {
-            control.ValidationText = "Invalid time"; // TODO: Translate..
+            control.ValidationText = Validations.InvalidTime;
 
             if (raiseEvents)
             {

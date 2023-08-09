@@ -70,6 +70,24 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid date ({0}).
+        /// </summary>
+        public static string InvalidDate1 {
+            get {
+                return ResourceManager.GetString("InvalidDate1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid date ({0} - {1}).
+        /// </summary>
+        public static string InvalidDate2 {
+            get {
+                return ResourceManager.GetString("InvalidDate2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email address.
         /// </summary>
         public static string InvalidEmailAddress {
@@ -120,6 +138,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string InvalidTcpUrl {
             get {
                 return ResourceManager.GetString("InvalidTcpUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid time.
+        /// </summary>
+        public static string InvalidTime {
+            get {
+                return ResourceManager.GetString("InvalidTime", resourceCulture);
             }
         }
         

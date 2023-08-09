@@ -321,6 +321,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         }
     }
 
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     private static void ValidateText(
         DependencyPropertyChangedEventArgs e,
         LabelDateTimePicker control,
@@ -346,8 +347,16 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
                 out _))
         {
             control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
-                ? $"Invalid date ({Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern} - {Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern})" // TODO: Translate..
-                : $"Invalid date ({Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern} - {Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern})"; // TODO: Translate..
+                ? string.Format(
+                    CultureInfo.CurrentUICulture,
+                    Validations.InvalidDate2,
+                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern,
+                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
+                : string.Format(
+                    CultureInfo.CurrentUICulture,
+                    Validations.InvalidDate2,
+                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern,
+                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
 
             if (raiseEvents)
             {
