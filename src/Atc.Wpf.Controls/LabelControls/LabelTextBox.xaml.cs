@@ -44,6 +44,18 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(WatermarkAlignmentProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
+    }
+
     public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(
         nameof(MaxLength),
         typeof(uint),

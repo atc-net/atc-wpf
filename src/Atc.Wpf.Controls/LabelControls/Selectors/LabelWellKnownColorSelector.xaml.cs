@@ -101,7 +101,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
             LabelText = Miscellaneous.Color;
         }
 
-        CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
     public override bool IsValid()
@@ -168,7 +168,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
                 selectedKey));
     }
 
-    private void OnCultureManagerUiCultureChanged(
+    private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
     {

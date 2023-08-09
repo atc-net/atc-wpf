@@ -185,6 +185,7 @@ public class SvgImage : Control
     {
         if (svgRender?.Svg is not null)
         {
+            svgRender.OverrideColor = OverrideColor;
             var svgDrawing = svgRender.CreateDrawing(svgRender.Svg);
             SetImage(svgDrawing);
         }

@@ -58,5 +58,6 @@ global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Resources;
 global using Atc.Wpf.Translation;
+global using Atc.Wpf.ValueConverters;
 global using Atc.Wpf.WindowsNative.Structs;
 global using Atc.Wpf.WindowsNative.User32;

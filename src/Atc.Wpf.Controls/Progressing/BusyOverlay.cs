@@ -106,10 +106,10 @@ public class BusyOverlay : ContentControl
     {
         displayAfterTimer.Tick += DisplayAfterTimerElapsed;
 
-        CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
-    private void OnCultureManagerUiCultureChanged(
+    private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
     {

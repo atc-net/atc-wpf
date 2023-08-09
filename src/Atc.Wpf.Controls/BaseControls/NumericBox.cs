@@ -558,10 +558,10 @@ public class NumericBox : Control
 
     public NumericBox()
     {
-        CultureManager.UiCultureChanged += OnCultureManagerUiCultureChanged;
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
-    private void OnCultureManagerUiCultureChanged(
+    private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
     {
