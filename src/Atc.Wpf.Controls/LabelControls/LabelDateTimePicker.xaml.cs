@@ -1,7 +1,5 @@
 // ReSharper disable InvertIf
 
-using Atc.Wpf.Controls.BaseControls;
-
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>

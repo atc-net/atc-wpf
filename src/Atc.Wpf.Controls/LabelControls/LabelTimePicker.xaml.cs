@@ -1,6 +1,3 @@
-using Atc.Wpf.Controls.BaseControls;
-using System.Windows.Media.TextFormatting;
-
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>

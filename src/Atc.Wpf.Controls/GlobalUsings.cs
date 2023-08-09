@@ -31,6 +31,7 @@ global using System.Windows.Threading;
 global using Atc.Helpers;
 global using Atc.Serialization;
 global using Atc.Serialization.JsonConverters;
+global using Atc.Wpf.Controls.BaseControls;
 global using Atc.Wpf.Controls.BaseControls.Internal;
 global using Atc.Wpf.Controls.LabelControls;
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
