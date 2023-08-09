@@ -7,7 +7,7 @@ namespace Atc.Wpf.ValueConverters;
 public class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is null)
         {
@@ -25,7 +25,7 @@ public class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueCon
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

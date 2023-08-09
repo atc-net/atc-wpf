@@ -32,5 +32,5 @@ public struct RECT
         Bottom += dy;
     }
 
-    public bool IsEmpty => Left >= Right || Top >= Bottom;
+    public readonly bool IsEmpty => Left >= Right || Top >= Bottom;
 }

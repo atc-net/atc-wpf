@@ -19,7 +19,7 @@ public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IV
     }
 
     /// <inheritdoc />
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is ICollection<ValidationError> errors
             ? string.Join('\n', (from e in errors select e.ErrorContent as string).ToArray())
@@ -27,7 +27,7 @@ public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IV
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

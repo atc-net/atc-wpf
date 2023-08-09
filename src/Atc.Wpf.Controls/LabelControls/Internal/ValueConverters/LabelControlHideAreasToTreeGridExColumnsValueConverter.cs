@@ -7,7 +7,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 internal sealed class LabelControlHideAreasToTreeGridExColumnsValueConverter : IValueConverter
 {
     [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not LabelControlHideAreasType currentHideAreasType)
         {
@@ -29,7 +29,7 @@ internal sealed class LabelControlHideAreasToTreeGridExColumnsValueConverter : I
         return $"{widthLeft},*,{widthRight}";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

@@ -6,7 +6,7 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(LogCategoryType), typeof(SolidColorBrush))]
 public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is null)
         {
@@ -34,7 +34,7 @@ public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
         };
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

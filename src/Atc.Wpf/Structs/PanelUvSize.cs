@@ -43,7 +43,7 @@ public struct PanelUvSize : IEquatable<PanelUvSize>
 
     public double Width
     {
-        get => orientation == Orientation.Horizontal ? U : V;
+        readonly get => orientation == Orientation.Horizontal ? U : V;
         private set
         {
             if (orientation == Orientation.Horizontal)
@@ -59,7 +59,7 @@ public struct PanelUvSize : IEquatable<PanelUvSize>
 
     public double Height
     {
-        get => orientation == Orientation.Horizontal ? V : U;
+        readonly get => orientation == Orientation.Horizontal ? V : U;
         private set
         {
             if (orientation == Orientation.Horizontal)
@@ -83,9 +83,9 @@ public struct PanelUvSize : IEquatable<PanelUvSize>
         => U.Equals(other.U) &&
            V.Equals(other.V);
 
-    public override bool Equals(object? obj)
+    public override readonly bool Equals(object? obj)
         => obj is PanelUvSize x && Equals(x);
 
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
         => HashCode.Combine((int)orientation, U, V);
 }

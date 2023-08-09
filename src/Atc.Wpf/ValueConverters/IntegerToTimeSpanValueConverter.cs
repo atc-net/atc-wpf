@@ -6,7 +6,7 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(int), typeof(TimeSpan))]
 public class IntegerToTimeSpanValueConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
 
@@ -18,7 +18,7 @@ public class IntegerToTimeSpanValueConverter : IValueConverter
         return TimeSpan.FromMilliseconds(intValue);
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

@@ -6,7 +6,7 @@ namespace Atc.Wpf.Controls.BaseControls.Internal.ValueConverters;
 [ValueConversion(typeof(ImageLocation), typeof(Thickness))]
 internal sealed class ImageLocationToMarginValueConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not ImageLocation imageLocation)
         {
@@ -24,7 +24,7 @@ internal sealed class ImageLocationToMarginValueConverter : IValueConverter
         };
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }
