@@ -1,4 +1,7 @@
 // ReSharper disable InvertIf
+
+using Atc.Wpf.Controls.BaseControls;
+
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -318,6 +321,18 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         if (calender.SelectedDate.HasValue)
         {
             TextDate = GetSelectedDateAsText(calender.SelectedDate.Value);
+        }
+    }
+
+    private void OnClockPickerSelectedClockChanged(
+        object? sender,
+        RoutedEventArgs e)
+    {
+        var clockPicker = (ClockPicker)sender!;
+
+        if (clockPicker.SelectedDateTime.HasValue)
+        {
+            TextTime = GetSelectedTimeAsText(clockPicker.SelectedDateTime.Value);
         }
     }
 

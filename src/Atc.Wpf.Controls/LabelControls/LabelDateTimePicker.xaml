@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -31,7 +32,7 @@
         ValidationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor}"
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
-        <atc:GridEx Columns="*,5,Auto,10,65,5,Auto" Rows="Auto">
+        <atc:GridEx Columns="*,5,Auto,10,80,5,Auto" Rows="Auto">
 
             <TextBox
                 Grid.Row="0"
@@ -156,7 +157,7 @@
                 IsOpen="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=OpenClock}"
                 Placement="Bottom"
                 StaysOpen="False">
-                <TextBlock Text="TODO: Imp. Clock." />
+                <baseControls:ClockPicker SelectedClockChanged="OnClockPickerSelectedClockChanged" SelectedDateTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=SelectedDate}" />
             </Popup>
 
         </atc:GridEx>

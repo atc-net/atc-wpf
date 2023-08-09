@@ -1,3 +1,6 @@
+using Atc.Wpf.Controls.BaseControls;
+using System.Windows.Media.TextFormatting;
+
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -119,6 +122,11 @@ public partial class LabelTimePicker : ILabelTimePicker
         UiCultureEventArgs e)
     {
         SetDefaultWatermarkIfNeeded();
+
+        if (SelectedTime.HasValue)
+        {
+            Text = GetSelectedTimeAsText(SelectedTime.Value);
+        }
     }
 
     private void OnTextTimeChanged(
@@ -161,6 +169,18 @@ public partial class LabelTimePicker : ILabelTimePicker
         }
 
         control.SelectedTime = null;
+    }
+
+    private void OnClockPickerSelectedClockChanged(
+        object? sender,
+        RoutedEventArgs e)
+    {
+        var clockPicker = (ClockPicker)sender!;
+
+        if (clockPicker.SelectedDateTime.HasValue)
+        {
+            Text = GetSelectedTimeAsText(clockPicker.SelectedDateTime.Value);
+        }
     }
 
     private static void ValidateText(
@@ -285,4 +305,9 @@ public partial class LabelTimePicker : ILabelTimePicker
             WatermarkText = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern;
         }
     }
+
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    private static string GetSelectedTimeAsText(
+        DateTime dateTime)
+        => dateTime.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
 }
