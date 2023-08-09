@@ -12,7 +12,7 @@ public partial class LabelTextBox : ILabelTextBox
         nameof(TextChanged),
         RoutingStrategy.Bubble,
         typeof(RoutedPropertyChangedEventHandler<string>),
-        typeof(LabelPixelSizeBox));
+        typeof(LabelTextBox));
 
     public event RoutedPropertyChangedEventHandler<string> TextChanged
     {
@@ -42,6 +42,18 @@ public partial class LabelTextBox : ILabelTextBox
     {
         get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
         set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(LabelTextBox),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
     }
 
     public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(

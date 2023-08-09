@@ -74,9 +74,11 @@ public record Account
 {
     public Account(
         string accountNumber,
+        DateTime createdDate,
         Person primaryContactPerson)
     {
         AccountNumber = accountNumber;
+        CreatedDate = createdDate;
         PrimaryContactPerson = primaryContactPerson;
     }
 
@@ -86,8 +88,16 @@ public record Account
     [MinLength(2)]
     public string AccountNumber { get; init; }
 
+    [Required]
+    public DateTime CreatedDate { get; init; }
+
     public Person PrimaryContactPerson { get; init; }
 
     public DayOfWeek FirstDayOfWeek { get; init; } = DayOfWeek.Monday;
 }
+
+public record BrushInfo(
+    string Key,
+    string DisplayName,
+    SolidColorBrush Brush);
 #pragma warning restore SA1402

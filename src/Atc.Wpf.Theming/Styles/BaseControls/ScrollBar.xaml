@@ -107,7 +107,7 @@
                             StrokeThickness="{TemplateBinding BorderThickness}" />
                         <Rectangle
                             x:Name="MouseOverRectangle"
-                            Fill="{DynamicResource AtcApps.Brushes.Gray4}"
+                            Fill="{DynamicResource AtcApps.Brushes.ThemeForeground4}"
                             Opacity="0"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             StrokeThickness="{TemplateBinding BorderThickness}" />
@@ -137,7 +137,10 @@
     </Style>
 
     <ControlTemplate x:Key="AtcApps.Templates.ScrollBar.Horizontal" TargetType="{x:Type ScrollBar}">
-        <Grid x:Name="HorizontalRoot" Height="{TemplateBinding Height}">
+        <Grid
+            x:Name="HorizontalRoot"
+            Height="{TemplateBinding Height}"
+            Background="{DynamicResource AtcApps.Brushes.ScrollBar.Background}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="0.00001*" />
@@ -186,7 +189,10 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="AtcApps.Templates.ScrollBar.Vertical" TargetType="{x:Type ScrollBar}">
-        <Grid x:Name="VerticalRoot" Width="{TemplateBinding Width}">
+        <Grid
+            x:Name="VerticalRoot"
+            Width="{TemplateBinding Width}"
+            Background="{DynamicResource AtcApps.Brushes.ScrollBar.Background}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="0.00001*" />

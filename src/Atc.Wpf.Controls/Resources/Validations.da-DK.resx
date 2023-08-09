@@ -159,4 +159,13 @@
   <data name="PleaseSelect" xml:space="preserve">
     <value>Vælg venligst et {0}</value>
   </data>
+  <data name="InvalidDate1" xml:space="preserve">
+    <value>Ugyldig dato ({0})</value>
+  </data>
+  <data name="InvalidDate2" xml:space="preserve">
+    <value>Ugyldig dato ({0} - {1})</value>
+  </data>
+  <data name="InvalidTime" xml:space="preserve">
+    <value>Ugyldig tid</value>
+  </data>
 </root>

@@ -6,6 +6,8 @@ public interface ILabelTextBox : ILabelControl
 
     TextAlignment WatermarkAlignment { get; set; }
 
+    TextTrimming WatermarkTrimming { get; set; }
+
     uint MaxLength { get; set; }
 
     uint MinLength { get; set; }

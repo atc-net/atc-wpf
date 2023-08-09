@@ -28,6 +28,10 @@ public class LabelControlData
 
     public decimal? Maximum { get; set; }
 
+    public DateTime? MinimumDateTime { get; set; }
+
+    public DateTime? MaximumDateTime { get; set; }
+
     public string? RegexPattern { get; set; }
 
     public override string ToString()

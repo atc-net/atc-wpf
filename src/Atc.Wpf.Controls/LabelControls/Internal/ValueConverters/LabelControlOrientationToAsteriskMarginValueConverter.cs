@@ -1,10 +1,10 @@
 namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
 /// <summary>
-/// ValueConverter: Label-Control Orientation To Information-Icon Padding (Thickness).
+/// ValueConverter: Label-Control Orientation To Information-Icon Margin (Thickness).
 /// </summary>
 [ValueConversion(typeof(Orientation), typeof(Thickness))]
-internal sealed class LabelControlOrientationToAsteriskPaddingValueConverter : IValueConverter
+internal sealed class LabelControlOrientationToAsteriskMarginValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -20,13 +20,13 @@ internal sealed class LabelControlOrientationToAsteriskPaddingValueConverter : I
 
         return orientation switch
         {
-            Orientation.Horizontal => new Thickness(0, 7, 0, 0),
-            Orientation.Vertical => new Thickness(0, 7, 0, 0),
+            Orientation.Horizontal => new Thickness(0, -24, 0, 0),
+            Orientation.Vertical => new Thickness(0, -50, 0, 0),
             _ => throw new SwitchCaseDefaultException(orientation),
         };
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

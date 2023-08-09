@@ -9,6 +9,17 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="Resources" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="Colors"
+            IsExpanded="True"
+            SamplePath="Resources.ColorsView" />
+        <atc:SampleTreeViewItem
+            Header="Brushes"
+            IsExpanded="True"
+            SamplePath="Resources.BrushesView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Input - Button" IsExpanded="True">
         <atc:SampleTreeViewItem
             Header="Button"
@@ -50,6 +61,10 @@
             IsExpanded="True" />
     </TreeViewItem>
     <TreeViewItem Header="Input - Selector" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="Calendar"
+            IsExpanded="True"
+            SamplePath="InputSelector.CalendarView" />
         <atc:SampleTreeViewItem
             Header="WellKnownColorSelector"
             IsExpanded="True"
@@ -110,10 +125,10 @@
             Header="TreeView"
             IsExpanded="True"
             SamplePath="Misc.TreeViewView" />
+        <atc:SampleTreeViewItem
+            Header="Mix"
+            IsExpanded="True"
+            SamplePath="Misc.MixView" />
     </TreeViewItem>
-    <atc:SampleTreeViewItem
-        Header="Mix"
-        IsExpanded="True"
-        SamplePath="MixView" />
 
 </TreeView>

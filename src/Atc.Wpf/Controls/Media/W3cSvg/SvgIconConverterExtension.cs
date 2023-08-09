@@ -118,7 +118,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
         return null;
     }
 
-    public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return null;
     }
@@ -172,8 +172,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             }
 
             // Try getting it as resource file...
-            var inputUri = uriConverter.ConvertFrom(inputParameter) as Uri;
-            if (inputUri is not null)
+            if (uriConverter.ConvertFrom(inputParameter) is Uri inputUri)
             {
                 if (inputUri.IsAbsoluteUri)
                 {

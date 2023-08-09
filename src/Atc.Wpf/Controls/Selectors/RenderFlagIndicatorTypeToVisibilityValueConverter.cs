@@ -6,7 +6,7 @@ namespace Atc.Wpf.Controls.Selectors;
 [ValueConversion(typeof(RenderFlagIndicatorType), typeof(Visibility))]
 public class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
 
@@ -25,7 +25,7 @@ public class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueConverter
             : Visibility.Collapsed;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

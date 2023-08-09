@@ -29,6 +29,18 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         set => SetValue(WatermarkAlignmentProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(LabelIntegerBox),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
+    }
+
     public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
         nameof(PrefixText),
         typeof(string),

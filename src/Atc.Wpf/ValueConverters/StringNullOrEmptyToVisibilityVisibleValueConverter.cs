@@ -7,7 +7,7 @@ namespace Atc.Wpf.ValueConverters;
 public sealed class StringNullOrEmptyToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is null || string.IsNullOrEmpty(value.ToString())
             ? Visibility.Visible
@@ -15,7 +15,7 @@ public sealed class StringNullOrEmptyToVisibilityVisibleValueConverter : IValueC
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

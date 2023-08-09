@@ -40,20 +40,20 @@ public static class LabelControlFactory
         const DropDownFirstItemType firstItem = DropDownFirstItemType.PleaseSelect;
         control.Items.Add(
             DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
-            firstItem.ToString().NormalizePascalCase());
+            firstItem.GetDescription());
 
         var nonNullableType = inputDataType.GetNonNullableType();
-        foreach (var enumValue in nonNullableType.GetEnumValues())
+        foreach (Enum enumValue in nonNullableType.GetEnumValues())
         {
-            var s = enumValue.ToString()!;
-            if (s.Equals("None", StringComparison.Ordinal) ||
-                s.Equals("Unknown", StringComparison.Ordinal) ||
-                s.Equals("Default", StringComparison.Ordinal))
+            var key = enumValue.ToString();
+            if (key.Equals("None", StringComparison.Ordinal) ||
+                key.Equals("Unknown", StringComparison.Ordinal) ||
+                key.Equals("Default", StringComparison.Ordinal))
             {
                 continue;
             }
 
-            control.Items.Add(s, s.NormalizePascalCase());
+            control.Items.Add(key, enumValue.GetDescription().NormalizePascalCase());
         }
 
         if (selectedKey is not null)
@@ -488,6 +488,185 @@ public static class LabelControlFactory
         return control;
     }
 
+    public static LabelDateTimePicker CreateLabelDateTimePicker(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        DateTime? value)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        return CreateLabelDateTimePicker(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            propertyInfo.PropertyType,
+            value);
+    }
+
+    public static LabelDateTimePicker CreateLabelDateTimePicker(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        DateTime? value,
+        DateTime? minDateTime = null,
+        DateTime? maxDateTime = null)
+    {
+        var control = new LabelDateTimePicker
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            SelectedDate = value,
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        if (minDateTime.HasValue)
+        {
+            control.DisplayDateStart = minDateTime;
+        }
+
+        if (maxDateTime.HasValue)
+        {
+            control.DisplayDateEnd = maxDateTime;
+        }
+
+        return control;
+    }
+
+    public static LabelDatePicker CreateLabelDatePicker(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        DateOnly? value)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        return CreateLabelDatePicker(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            propertyInfo.PropertyType,
+            value);
+    }
+
+    public static LabelDatePicker CreateLabelDatePicker(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        DateOnly? value,
+        DateOnly? minDate = null,
+        DateOnly? maxDate = null)
+    {
+        var control = new LabelDatePicker
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            SelectedDate = value is null
+                ? null
+                : new DateTime(
+                    value.Value.Year,
+                    value.Value.Month,
+                    value.Value.Day,
+                    0,
+                    0,
+                    0,
+                    DateTimeKind.Unspecified),
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        if (minDate.HasValue)
+        {
+            control.DisplayDateStart = new DateTime(
+                minDate.Value.Year,
+                minDate.Value.Month,
+                minDate.Value.Day,
+                0,
+                0,
+                0,
+                DateTimeKind.Unspecified);
+        }
+
+        if (maxDate.HasValue)
+        {
+            control.DisplayDateEnd = new DateTime(
+                maxDate.Value.Year,
+                maxDate.Value.Month,
+                maxDate.Value.Day,
+                0,
+                0,
+                0,
+                DateTimeKind.Unspecified);
+        }
+
+        return control;
+    }
+
+    public static LabelTimePicker CreateLabelTimePicker(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        TimeOnly? value)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        return CreateLabelTimePicker(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            propertyInfo.PropertyType,
+            value);
+    }
+
+    public static LabelTimePicker CreateLabelTimePicker(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        TimeOnly? value)
+    {
+        var control = new LabelTimePicker
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            SelectedTime = value is null
+                ? null
+                : new DateTime(
+                    DateTime.MinValue.Year,
+                    DateTime.MinValue.Month,
+                    DateTime.MinValue.Day,
+                    value.Value.Hour,
+                    value.Value.Minute,
+                    value.Value.Second,
+                    DateTimeKind.Unspecified),
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        return control;
+    }
+
     public static LabelWellKnownColorSelector CreateLabelWellKnownColorSelector(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -561,6 +740,7 @@ public static class LabelControlFactory
             InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             DefaultCultureIdentifier = defaultCultureIdentifier,
+            UseOnlySupportedCountries = false,
         };
 
         return control;

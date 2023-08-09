@@ -16,7 +16,7 @@ internal sealed class SvgRender
 
     public bool UseAnimations { get; init; }
 
-    public Color? OverrideColor { get; init; }
+    public Color? OverrideColor { get; set; }
 
     public double? OverrideStrokeWidth { get; set; }
 

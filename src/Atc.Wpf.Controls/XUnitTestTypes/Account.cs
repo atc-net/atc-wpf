@@ -8,6 +8,9 @@ public class Account
     [MinLength(2)]
     public string AccountNumber { get; set; } = string.Empty;
 
+    [Required]
+    public DateTime CreatedDate { get; init; } = DateTime.Now.AddYears(-2).AddDays(3);
+
     public Person? PrimaryContactPerson { get; set; }
 
     public DayOfWeek FirstDayOfWeek { get; init; } = DayOfWeek.Monday;

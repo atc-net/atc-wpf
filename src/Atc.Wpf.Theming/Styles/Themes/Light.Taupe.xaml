@@ -454,10 +454,22 @@
     <Color x:Key="AtcApps.Colors.Accent4">#3387794E</Color>
 
     <!--  Base Colors  -->
-    <Color x:Key="AtcApps.Colors.ThemeForeground">#FF000000</Color>
-    <Color x:Key="AtcApps.Colors.ThemeForegroundLight">#FF0F0F0F</Color>
     <Color x:Key="AtcApps.Colors.ThemeBackground">#FFFFFFFF</Color>
-    <Color x:Key="AtcApps.Colors.ThemeBackgroundLight">#FFF0F0F0</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground1">#FFF2F2F2</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground2">#FFF0F0F0</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground3">#FFE6E6E6</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground4">#FFD9D9D9</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground5">#FFCCCCCC</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground6">#FFBFBFBF</Color>
+    <Color x:Key="AtcApps.Colors.ThemeBackground7">#FFB3B3B3</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground7">#FFA6A6A6</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground6">#FF999999</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground5">#FF8C8C8C</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground4">#FF808080</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground3">#FF737373</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground2">#FF666666</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground1">#FF595959</Color>
+    <Color x:Key="AtcApps.Colors.ThemeForeground">#FF000000</Color>
     <Color x:Key="AtcApps.Colors.IdealForeground">White</Color>
     <Color x:Key="AtcApps.Colors.Gray1">#FF333333</Color>
     <Color x:Key="AtcApps.Colors.Gray2">#FF7F7F7F</Color>
@@ -485,17 +497,65 @@
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.ThemeBackground}" />
     <SolidColorBrush
-        x:Key="AtcApps.Brushes.ThemeBackgroundLight"
+        x:Key="AtcApps.Brushes.ThemeBackground1"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeBackgroundLight}" />
+        Color="{StaticResource AtcApps.Colors.ThemeBackground1}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground2"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground2}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground3"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground3}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground4"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground4}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground5"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground5}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground6"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeBackground7"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeBackground7}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground7"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground7}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground6"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground6}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground5"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground5}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground4"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground4}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground3"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground3}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground2"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground2}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ThemeForeground1"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.ThemeForeground1}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.ThemeForeground"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.ThemeForeground}" />
-    <SolidColorBrush
-        x:Key="AtcApps.Brushes.ThemeForegroundLight"
-        options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.ThemeForegroundLight}" />
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Text"
         options:Freeze="True"
@@ -721,6 +781,12 @@
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Gray8}" />
 
+    <!--  Brushes: ScrollBar  -->
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.ScrollBar.Background"
+        options:Freeze="True"
+        Color="#FFEEEEEE" />
+
     <!--  Brushes: Slider  -->
     <SolidColorBrush
         x:Key="AtcApps.Brushes.SliderValue.Disabled"
@@ -773,7 +839,7 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Thumb"
         options:Freeze="True"
-        Color="{StaticResource AtcApps.Colors.Gray5}" />
+        Color="{StaticResource AtcApps.Colors.ThemeBackground5}" />
     <LinearGradientBrush x:Key="AtcApps.Brushes.Progress" options:Freeze="True" StartPoint="1.002,0.5" EndPoint="0.001,0.5">
         <GradientStop Offset="0" Color="{StaticResource AtcApps.Colors.Highlight}" />
         <GradientStop Offset="1" Color="{StaticResource AtcApps.Colors.Accent3}" />

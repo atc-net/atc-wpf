@@ -74,7 +74,7 @@
                                     <Binding Path="ViewportHeight" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
                                 </MultiBinding>
                             </RepeatButton.Visibility>
-                            <Path Data="{StaticResource UpArrow}" Fill="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}" />
+                            <Path Data="{StaticResource UpArrow}" Fill="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                         </RepeatButton>
                         <RepeatButton
                             Grid.Row="2"
@@ -94,7 +94,7 @@
                                     <Binding Path="ViewportHeight" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
                                 </MultiBinding>
                             </RepeatButton.Visibility>
-                            <Path Data="{StaticResource DownArrow}" Fill="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}" />
+                            <Path Data="{StaticResource DownArrow}" Fill="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                         </RepeatButton>
                     </atc:GridEx>
                 </ControlTemplate>
@@ -125,7 +125,7 @@
                     Margin="3"
                     VerticalAlignment="Center"
                     Data="{StaticResource Checkmark}"
-                    Fill="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}"
+                    Fill="{DynamicResource AtcApps.Brushes.ThemeForeground1}"
                     FlowDirection="LeftToRight"
                     Visibility="Collapsed" />
                 <ContentPresenter
@@ -207,7 +207,7 @@
                     <Border
                         x:Name="SubMenuBorder"
                         Padding="2"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground2}"
                         BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                         BorderThickness="1">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
@@ -313,7 +313,7 @@
                         Width="10"
                         Height="11"
                         Data="{StaticResource Checkmark}"
-                        Fill="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}"
+                        Fill="{DynamicResource AtcApps.Brushes.ThemeForeground1}"
                         FlowDirection="LeftToRight" />
                 </Border>
                 <ContentPresenter
@@ -406,7 +406,7 @@
                         Width="9"
                         Height="11"
                         Data="{DynamicResource Checkmark}"
-                        Fill="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}"
+                        Fill="{DynamicResource AtcApps.Brushes.ThemeForeground1}"
                         FlowDirection="LeftToRight" />
                 </Border>
                 <ContentPresenter
@@ -430,7 +430,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Data="{StaticResource RightArrow}"
-                    Fill="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}" />
+                    Fill="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                 <Popup
                     x:Name="PART_Popup"
                     Grid.Column="0"
@@ -444,7 +444,7 @@
                     <Border
                         x:Name="SubMenuBorder"
                         Padding="2"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground2}"
                         BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                         BorderThickness="1">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
@@ -518,14 +518,14 @@
             <Trigger Property="Role" Value="TopLevelHeader">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}" />
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                 <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
                 <Setter Property="Padding" Value="6,0" />
             </Trigger>
             <Trigger Property="Role" Value="TopLevelItem">
-                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}" />
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
-                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForegroundLight}" />
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                 <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
                 <Setter Property="Padding" Value="6,0" />
             </Trigger>
@@ -537,7 +537,7 @@
 
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.Menu" TargetType="{x:Type Menu}">
-        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackgroundLight}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
         <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
         <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />

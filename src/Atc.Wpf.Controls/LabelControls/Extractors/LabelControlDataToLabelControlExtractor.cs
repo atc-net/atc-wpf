@@ -191,6 +191,66 @@ public static class LabelControlDataToLabelControlExtractor
                 continue;
             }
 
+            if (type == typeof(DateTime) ||
+                type == typeof(DateTime?) ||
+                type == typeof(DateTimeOffset) ||
+                type == typeof(DateTimeOffset?))
+            {
+                DateTime? minDateTime = null;
+                if (controlData.MinimumDateTime is not null)
+                {
+                    minDateTime = (DateTime)controlData.MinimumDateTime;
+                }
+
+                DateTime? maxDateTime = null;
+                if (controlData.MaximumDateTime is not null)
+                {
+                    maxDateTime = (DateTime)controlData.MaximumDateTime;
+                }
+
+                labelControls.Add(
+                    LabelControlFactory.CreateLabelDateTimePicker(
+                        groupIdentifier: groupIdentifier,
+                        labelText: controlData.LabelText,
+                        isReadOnly: controlData.IsReadOnly,
+                        isMandatory: controlData.IsMandatory,
+                        watermarkText: controlData.WatermarkText ?? string.Empty,
+                        inputDataType: type,
+                        value: (DateTime?)controlData.Value,
+                        minDateTime: minDateTime,
+                        maxDateTime: maxDateTime));
+                continue;
+            }
+
+            if (type == typeof(DateOnly) ||
+                type == typeof(DateOnly?))
+            {
+                DateOnly? minDateTime = null;
+                if (controlData.MinimumDateTime is not null)
+                {
+                    minDateTime = DateOnly.FromDateTime((DateTime)controlData.MinimumDateTime);
+                }
+
+                DateOnly? maxDateTime = null;
+                if (controlData.MaximumDateTime is not null)
+                {
+                    maxDateTime = DateOnly.FromDateTime((DateTime)controlData.MaximumDateTime);
+                }
+
+                labelControls.Add(
+                    LabelControlFactory.CreateLabelDatePicker(
+                        groupIdentifier: groupIdentifier,
+                        labelText: controlData.LabelText,
+                        isReadOnly: controlData.IsReadOnly,
+                        isMandatory: controlData.IsMandatory,
+                        watermarkText: controlData.WatermarkText ?? string.Empty,
+                        inputDataType: type,
+                        value: (DateOnly?)controlData.Value,
+                        minDate: minDateTime,
+                        maxDate: maxDateTime));
+                continue;
+            }
+
             if (type == typeof(Color) ||
                 type == typeof(Color?))
             {

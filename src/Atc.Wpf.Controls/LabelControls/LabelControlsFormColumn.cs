@@ -125,6 +125,15 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelTextBox labelTextBox:
                     result.Add(control.GetFullIdentifier(), labelTextBox.Text);
                     break;
+                case LabelDateTimePicker labelDateTimePicker:
+                    result.Add(control.GetFullIdentifier(), labelDateTimePicker.SelectedDate ?? DateTime.MinValue);
+                    break;
+                case LabelDatePicker labelDatePicker:
+                    result.Add(control.GetFullIdentifier(), labelDatePicker.SelectedDate ?? DateTime.MinValue);
+                    break;
+                case LabelTimePicker labelTimePicker:
+                    result.Add(control.GetFullIdentifier(), labelTimePicker.SelectedTime ?? DateTime.MinValue);
+                    break;
                 case LabelCountrySelector labelCountrySelector:
                     if (NumberHelper.IsInt(labelCountrySelector.GetKey()))
                     {

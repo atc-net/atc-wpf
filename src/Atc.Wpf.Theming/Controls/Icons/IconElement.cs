@@ -1,8 +1,10 @@
+// ReSharper disable EmptyConstructor
 namespace Atc.Wpf.Theming.Controls.Icons;
 
 /// <summary>
 /// Represents the base class for an icon UI element.
 /// </summary>
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public abstract class IconElement : Control
 {
     private bool isForegroundPropertyDefaultOrInherited = true;
@@ -66,6 +68,7 @@ public abstract class IconElement : Control
         protected set => SetValue(InheritsForegroundFromVisualParentPropertyKey, BooleanBoxes.Box(value));
     }
 
+    [SuppressMessage("Minor", "S1125:Boolean literals should not be redundant", Justification = "OK.")]
     protected virtual void OnInheritsForegroundFromVisualParentPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
@@ -108,4 +111,19 @@ public abstract class IconElement : Control
         DependencyPropertyChangedEventArgs e)
     {
     }
+
+    public static readonly DependencyProperty GeometryProperty = DependencyProperty.RegisterAttached(
+        "Geometry",
+        typeof(Geometry),
+        typeof(IconElement),
+        new PropertyMetadata(default(Geometry)));
+
+    public static void SetGeometry(
+        DependencyObject element,
+        Geometry value)
+        => element.SetValue(GeometryProperty, value);
+
+    public static Geometry GetGeometry(
+        DependencyObject element)
+        => (Geometry)element.GetValue(GeometryProperty);
 }

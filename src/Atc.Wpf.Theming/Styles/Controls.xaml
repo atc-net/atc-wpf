@@ -7,9 +7,11 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/ControlsStoryboard.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/NiceWindowButtons.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Calendar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ContextMenu.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/DatePicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Expander.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/GroupBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Label.xaml" />
@@ -40,10 +42,12 @@
         TargetType="{x:Type windows:NiceWindow}" />
 
     <Style BasedOn="{StaticResource AtcApps.Styles.Button}" TargetType="{x:Type Button}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Calendar}" TargetType="{x:Type Calendar}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.CheckBox}" TargetType="{x:Type CheckBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ComboBox}" TargetType="{x:Type ComboBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ComboBoxItem}" TargetType="{x:Type ComboBoxItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ContextMenu}" TargetType="{x:Type ContextMenu}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DatePicker}" TargetType="{x:Type DatePicker}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Expander}" TargetType="{x:Type Expander}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GroupBox}" TargetType="{x:Type GroupBox}" />

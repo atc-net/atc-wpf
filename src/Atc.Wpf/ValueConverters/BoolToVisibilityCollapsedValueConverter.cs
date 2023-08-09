@@ -7,7 +7,7 @@ namespace Atc.Wpf.ValueConverters;
 public sealed class BoolToVisibilityCollapsedValueConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
 
@@ -22,7 +22,7 @@ public sealed class BoolToVisibilityCollapsedValueConverter : IValueConverter
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
 

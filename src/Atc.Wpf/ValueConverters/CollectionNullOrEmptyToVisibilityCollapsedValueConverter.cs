@@ -7,7 +7,7 @@ namespace Atc.Wpf.ValueConverters;
 public sealed class CollectionNullOrEmptyToVisibilityCollapsedValueConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is not ICollection collectionValue || collectionValue.Count == 0
             ? Visibility.Collapsed
@@ -15,7 +15,7 @@ public sealed class CollectionNullOrEmptyToVisibilityCollapsedValueConverter : I
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException("This is a OneWay converter.");
     }

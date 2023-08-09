@@ -18,7 +18,7 @@ public class ModelToLabelControlExtractorTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(32, actual.Count);
+        Assert.Equal(40, actual.Count);
     }
 
     [StaFact]
@@ -121,6 +121,6 @@ public class ModelToLabelControlExtractorTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(10, actual.Count);
+        Assert.Equal(11, actual.Count);
     }
 }
