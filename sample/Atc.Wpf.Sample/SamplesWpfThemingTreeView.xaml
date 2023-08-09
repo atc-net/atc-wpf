@@ -62,6 +62,10 @@
     </TreeViewItem>
     <TreeViewItem Header="Input - Selector" IsExpanded="True">
         <atc:SampleTreeViewItem
+            Header="Calendar"
+            IsExpanded="True"
+            SamplePath="InputSelector.CalendarView" />
+        <atc:SampleTreeViewItem
             Header="WellKnownColorSelector"
             IsExpanded="True"
             SamplePath="InputSelector.WellKnownColorSelectorView" />

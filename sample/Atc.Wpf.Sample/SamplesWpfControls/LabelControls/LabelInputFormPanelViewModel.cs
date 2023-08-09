@@ -198,6 +198,7 @@ public class LabelInputFormPanelViewModel : ViewModelBase
     {
         var account = new Account(
             accountNumber: "6545643218",
+            createdDate: DateTime.Now.AddYears(-2).AddDays(3),
             primaryContactPerson: new Person(
                 firstName: "John",
                 lastName: "Doe",
@@ -225,6 +226,7 @@ public class LabelInputFormPanelViewModel : ViewModelBase
     {
         var account = new Account(
             accountNumber: string.Empty,
+            createdDate: DateTime.Now.AddYears(-2).AddDays(3),
             primaryContactPerson: new Person(
                 firstName: string.Empty,
                 lastName: string.Empty,

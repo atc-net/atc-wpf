@@ -207,6 +207,29 @@ public static class ModelToLabelControlExtractor
             return true;
         }
 
+        if (propertyInfo.PropertyType == typeof(DateTime) ||
+            propertyInfo.PropertyType == typeof(DateTime?) ||
+            propertyInfo.PropertyType == typeof(DateTimeOffset) ||
+            propertyInfo.PropertyType == typeof(DateTimeOffset?))
+        {
+            labelControls.Add(CreateLabelDateTimePicker(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
+        if (propertyInfo.PropertyType == typeof(DateOnly) ||
+            propertyInfo.PropertyType == typeof(DateOnly?))
+        {
+            labelControls.Add(CreateLabelDatePicker(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
+        if (propertyInfo.PropertyType == typeof(TimeOnly) ||
+            propertyInfo.PropertyType == typeof(TimeOnly?))
+        {
+            labelControls.Add(CreateLabelTimePicker(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
         if (propertyInfo.PropertyType == typeof(Color) ||
             propertyInfo.PropertyType == typeof(Color?))
         {
@@ -455,6 +478,72 @@ public static class ModelToLabelControlExtractor
         }
 
         return LabelControlFactory.CreateLabelTextBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelDateTimePicker CreateLabelDateTimePicker<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        DateTime? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            value = propertyObjectValue as DateTime?;
+        }
+
+        return LabelControlFactory.CreateLabelDateTimePicker(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelDatePicker CreateLabelDatePicker<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        DateOnly? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            value = propertyObjectValue as DateOnly?;
+        }
+
+        return LabelControlFactory.CreateLabelDatePicker(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelTimePicker CreateLabelTimePicker<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        TimeOnly? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            value = propertyObjectValue as TimeOnly?;
+        }
+
+        return LabelControlFactory.CreateLabelTimePicker(
             propertyInfo,
             groupIdentifier,
             isReadOnly,

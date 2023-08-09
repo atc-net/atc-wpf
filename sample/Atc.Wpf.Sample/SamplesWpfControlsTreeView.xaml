@@ -77,6 +77,20 @@
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelWellKnownColorSelectorView" />
         </TreeViewItem>
+        <TreeViewItem Header="Pickers" IsExpanded="True">
+            <atc:SampleTreeViewItem
+                Header="LabelDateTimePicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelDateTimePickerView" />
+            <atc:SampleTreeViewItem
+                Header="LabelDatePicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelDatePickerView" />
+            <atc:SampleTreeViewItem
+                Header="LabelTimePicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelTimePickerView" />
+        </TreeViewItem>
         <atc:SampleTreeViewItem
             Header="LabelCheckBox"
             IsExpanded="True"
