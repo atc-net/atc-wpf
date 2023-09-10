@@ -187,7 +187,7 @@
                             Stretch="Fill" />
                         <Rectangle
                             x:Name="DayButtonFocusVisual"
-                            IsHitTestVisible="false"
+                            IsHitTestVisible="False"
                             RadiusX="5"
                             RadiusY="5"
                             Visibility="Collapsed">
@@ -393,7 +393,7 @@
                         </ContentPresenter>
                         <Rectangle
                             x:Name="CalendarButtonFocusVisual"
-                            IsHitTestVisible="false"
+                            IsHitTestVisible="False"
                             RadiusX="5"
                             RadiusY="5"
                             Visibility="Collapsed">
