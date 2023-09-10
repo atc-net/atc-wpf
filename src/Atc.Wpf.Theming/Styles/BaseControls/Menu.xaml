@@ -28,7 +28,7 @@
                         Background="Transparent"
                         BorderBrush="Transparent"
                         BorderThickness="1"
-                        SnapsToDevicePixels="true">
+                        SnapsToDevicePixels="True">
                         <ContentPresenter
                             Margin="6"
                             HorizontalAlignment="Center"
@@ -52,7 +52,7 @@
                     <atc:GridEx
                         Columns="*"
                         Rows="Auto,*,Auto"
-                        SnapsToDevicePixels="true">
+                        SnapsToDevicePixels="True">
                         <Border Grid.Row="1" Grid.Column="0">
                             <ScrollContentPresenter Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}" />
                         </Border>
@@ -61,7 +61,7 @@
                             Grid.Column="0"
                             Command="{x:Static ScrollBar.LineUpCommand}"
                             CommandTarget="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            Focusable="false"
+                            Focusable="False"
                             Style="{StaticResource MenuScrollButton}">
                             <RepeatButton.Visibility>
                                 <MultiBinding
@@ -81,7 +81,7 @@
                             Grid.Column="0"
                             Command="{x:Static ScrollBar.LineDownCommand}"
                             CommandTarget="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            Focusable="false"
+                            Focusable="False"
                             Style="{StaticResource MenuScrollButton}">
                             <RepeatButton.Visibility>
                                 <MultiBinding
@@ -108,7 +108,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
-            SnapsToDevicePixels="true">
+            SnapsToDevicePixels="True">
             <atc:GridEx VerticalAlignment="Center" Columns="Auto,Auto">
                 <ContentPresenter
                     x:Name="Icon"
@@ -140,7 +140,7 @@
             <Trigger Property="Icon" Value="{x:Null}">
                 <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
             </Trigger>
-            <Trigger Property="IsChecked" Value="true">
+            <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
                 <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
             </Trigger>
@@ -169,7 +169,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
-            SnapsToDevicePixels="true">
+            SnapsToDevicePixels="True">
             <atc:GridEx VerticalAlignment="Center" Columns="Auto,Auto">
                 <ContentPresenter
                     x:Name="Icon"
@@ -198,8 +198,8 @@
                 <Popup
                     x:Name="PART_Popup"
                     Grid.Column="0"
-                    AllowsTransparency="true"
-                    Focusable="false"
+                    AllowsTransparency="True"
+                    Focusable="False"
                     IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     Placement="Bottom"
                     PlacementTarget="{Binding ElementName=templateRoot}"
@@ -208,7 +208,7 @@
                         x:Name="SubMenuBorder"
                         Padding="2"
                         Background="{DynamicResource AtcApps.Brushes.ThemeBackground2}"
-                        BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.ThemeForeground1}"
                         BorderThickness="1">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
                             <Grid RenderOptions.ClearTypeHint="Enabled">
@@ -230,7 +230,7 @@
                                     Fill="{StaticResource Menu.Static.Separator}" />
                                 <ItemsPresenter
                                     x:Name="ItemsPresenter"
-                                    Grid.IsSharedSizeScope="true"
+                                    Grid.IsSharedSizeScope="True"
                                     KeyboardNavigation.DirectionalNavigation="Cycle"
                                     KeyboardNavigation.TabNavigation="Cycle"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
@@ -241,13 +241,13 @@
             </atc:GridEx>
         </Border>
         <ControlTemplate.Triggers>
-            <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+            <Trigger Property="IsSuspendingPopupAnimation" Value="True">
                 <Setter TargetName="PART_Popup" Property="PopupAnimation" Value="None" />
             </Trigger>
             <Trigger Property="Icon" Value="{x:Null}">
                 <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
             </Trigger>
-            <Trigger Property="IsChecked" Value="true">
+            <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
                 <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
             </Trigger>
@@ -259,7 +259,7 @@
                 <Setter TargetName="templateRoot" Property="TextElement.Foreground" Value="{StaticResource Menu.Disabled.Foreground}" />
                 <Setter TargetName="GlyphPanel" Property="Fill" Value="{StaticResource Menu.Disabled.Foreground}" />
             </Trigger>
-            <Trigger SourceName="SubMenuScrollViewer" Property="ScrollViewer.CanContentScroll" Value="false">
+            <Trigger SourceName="SubMenuScrollViewer" Property="ScrollViewer.CanContentScroll" Value="False">
                 <Setter TargetName="OpaqueRect" Property="Canvas.Top" Value="{Binding VerticalOffset, ElementName=SubMenuScrollViewer}" />
                 <Setter TargetName="OpaqueRect" Property="Canvas.Left" Value="{Binding HorizontalOffset, ElementName=SubMenuScrollViewer}" />
             </Trigger>
@@ -273,7 +273,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
-            SnapsToDevicePixels="true">
+            SnapsToDevicePixels="True">
             <Grid Margin="-1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -368,7 +368,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
-            SnapsToDevicePixels="true">
+            SnapsToDevicePixels="True">
             <Grid Margin="-1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -434,8 +434,8 @@
                 <Popup
                     x:Name="PART_Popup"
                     Grid.Column="0"
-                    AllowsTransparency="true"
-                    Focusable="false"
+                    AllowsTransparency="True"
+                    Focusable="False"
                     HorizontalOffset="-2"
                     IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     Placement="Right"
@@ -445,7 +445,7 @@
                         x:Name="SubMenuBorder"
                         Padding="2"
                         Background="{DynamicResource AtcApps.Brushes.ThemeBackground2}"
-                        BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.ThemeForeground1}"
                         BorderThickness="1">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
                             <Grid RenderOptions.ClearTypeHint="Enabled">
@@ -467,7 +467,7 @@
                                     Fill="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
                                 <ItemsPresenter
                                     x:Name="ItemsPresenter"
-                                    Grid.IsSharedSizeScope="true"
+                                    Grid.IsSharedSizeScope="True"
                                     KeyboardNavigation.DirectionalNavigation="Cycle"
                                     KeyboardNavigation.TabNavigation="Cycle"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
@@ -478,7 +478,7 @@
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
-            <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+            <Trigger Property="IsSuspendingPopupAnimation" Value="True">
                 <Setter TargetName="PART_Popup" Property="PopupAnimation" Value="None" />
             </Trigger>
             <Trigger Property="Icon" Value="{x:Null}">
@@ -497,7 +497,7 @@
                 <Setter TargetName="Glyph" Property="Fill" Value="{StaticResource Menu.Disabled.Foreground}" />
                 <Setter TargetName="RightArrow" Property="Fill" Value="{StaticResource Menu.Disabled.Foreground}" />
             </Trigger>
-            <Trigger SourceName="SubMenuScrollViewer" Property="ScrollViewer.CanContentScroll" Value="false">
+            <Trigger SourceName="SubMenuScrollViewer" Property="ScrollViewer.CanContentScroll" Value="False">
                 <Setter TargetName="OpaqueRect" Property="Canvas.Top" Value="{Binding VerticalOffset, ElementName=SubMenuScrollViewer}" />
                 <Setter TargetName="OpaqueRect" Property="Canvas.Left" Value="{Binding HorizontalOffset, ElementName=SubMenuScrollViewer}" />
             </Trigger>
@@ -517,6 +517,7 @@
         <Style.Triggers>
             <Trigger Property="Role" Value="TopLevelHeader">
                 <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
                 <Setter Property="BorderBrush" Value="Transparent" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
                 <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
@@ -538,11 +539,13 @@
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.Menu" TargetType="{x:Type Menu}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
         <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
         <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground1}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -553,7 +556,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        SnapsToDevicePixels="true">
+                        SnapsToDevicePixels="True">
                         <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                 </ControlTemplate>

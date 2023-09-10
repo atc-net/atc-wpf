@@ -124,7 +124,6 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-
             <WrapPanel Orientation="Horizontal">
 
                 <fontIcons:FontAwesomeBrand
@@ -283,6 +282,7 @@
 
             </WrapPanel>
         </GroupBox>
+
     </atc:AutoGrid>
 
 </UserControl>
