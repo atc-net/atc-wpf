@@ -109,16 +109,16 @@
         <GroupBox Header="Usage">
 
             <atc:BusyOverlay IsBusy="{Binding ElementName=UcFontIconViewerView, Path=IsBusy, Mode=OneWay}">
-                <atc:AutoGrid Rows="*,Auto">
-                    <ScrollViewer>
-                        <WrapPanel
-                            x:Name="ListOfIcons"
-                            VirtualizingStackPanel.IsVirtualizing="True"
-                            VirtualizingStackPanel.VirtualizationMode="Recycling" />
-                    </ScrollViewer>
-                </atc:AutoGrid>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <WrapPanel
+                        x:Name="ListOfIcons"
+                        VirtualizingStackPanel.IsVirtualizing="True"
+                        VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                </ScrollViewer>
             </atc:BusyOverlay>
 
         </GroupBox>
+
     </atc:AutoGrid>
+
 </UserControl>
