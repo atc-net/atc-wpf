@@ -514,8 +514,11 @@ dotnet_diagnostic.MA0131.severity = none           # ArgumentNullException.Throw
 dotnet_diagnostic.S1144.severity = none            # Remove the unused internal class
 dotnet_diagnostic.S2094.severity = none            # Remove this empty class, write its code or make it an "interface"
 dotnet_diagnostic.S2445.severity = none            # Do not lock on writable field 'items', use a readonly field instead
+dotnet_diagnostic.S2583.severity = none            # https://rules.sonarsource.com/csharp/RSPEC-2583
+dotnet_diagnostic.S2589.severity = none            # https://rules.sonarsource.com/csharp/RSPEC-2589
 dotnet_diagnostic.S3267.severity = none            # Loops should be simplified with "LINQ" expressions
 dotnet_diagnostic.S6602.severity = none            # "Find" method should be used instead of the "FirstOrDefault" extension method
 dotnet_diagnostic.S6603.severity = none            # The collection-specific "TrueForAll" method should be used instead of the "All" extension
 dotnet_diagnostic.S6605.severity = none            # Collection-specific "Exists" method should be used instead of the "Any" extension
 dotnet_diagnostic.S6608.severity = none            # Indexing at Count-1 should be used instead of the "Enumerable" extension method "Last"
+
