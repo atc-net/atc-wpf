@@ -70,14 +70,28 @@
                         </Menu>
 
                     </atc:UniformSpacingPanel>
+
                     <atc:UniformSpacingPanel
                         Grid.Column="2"
                         Margin="10"
                         Orientation="Vertical"
                         Spacing="10" />
+
+                    <atc:GridEx.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Item1" />
+                            <MenuItem Header="Item2" />
+                            <Separator />
+                            <MenuItem Header="Item3">
+                                <MenuItem Header="Item1.a" />
+                                <MenuItem Header="Item2.b" />
+                            </MenuItem>
+                        </ContextMenu>
+                    </atc:GridEx.ContextMenu>
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>
+
     </atc:AutoGrid>
 
 </UserControl>
