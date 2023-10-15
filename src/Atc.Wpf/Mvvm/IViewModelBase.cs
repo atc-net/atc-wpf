@@ -44,6 +44,18 @@ public interface IViewModelBase : IObservableObject, ICleanup
     bool IsSelected { get; set; }
 
     /// <summary>
+    /// Sets a value indicating whether this instance is busy.<br />
+    /// This is the almost the same as setting the <see cref="IsBusy"/> property directly,
+    /// but with a small delay on 1 millisecond is added, to give the UI thread
+    /// a moment to refresh / update the sate on the a Busy-Indicator.<br />
+    /// </summary>
+    /// <param name="value">The value to set <see cref="IsBusy"/> property.</param>
+    /// <remarks>
+    /// How to use: <code>await SetIsBusy(value: true).ConfigureAwait(false);</code>
+    /// </remarks>
+    public Task SetIsBusy(bool value);
+
+    /// <summary>
     /// Broadcasts the specified old value.
     /// </summary>
     /// <typeparam name="T">The type.</typeparam>
