@@ -13,12 +13,14 @@
     <None Remove="Resources\collapse.svg" />
     <None Remove="Resources\expand.svg" />
     <None Remove="Resources\information.svg" />
+    <None Remove="Resources\LogCategoryIcons\error.svg" />
+    <None Remove="Resources\LogCategoryIcons\warning.svg" />
     <None Remove="Resources\question-mark.svg" />
     <None Remove="Resources\question.svg" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.349" />
+    <PackageReference Include="Atc" Version="2.0.367" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,11 +29,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\collapse.svg" />
-    <Resource Include="Resources\expand.svg" />
-    <Resource Include="Resources\information.svg" />
-    <Resource Include="Resources\info_help.svg" />
-    <Resource Include="Resources\question-mark.svg" />
+    <Resource Include="Resources\Icons\collapse.svg" />
+    <Resource Include="Resources\Icons\expand.svg" />
+    <Resource Include="Resources\LogCategoryIcons\information.svg" />
+    <Resource Include="Resources\Icons\info_help.svg" />
+    <Resource Include="Resources\Icons\question-mark.svg" />
+    <Resource Include="Resources\LogCategoryIcons\error.svg" />
+    <Resource Include="Resources\LogCategoryIcons\warning.svg" />
   </ItemGroup>
 
   <ItemGroup>
