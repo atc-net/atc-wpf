@@ -35,19 +35,22 @@
                         <atc:LabelDateTimePicker
                             LabelText="MyLabel3"
                             Orientation="Horizontal"
-                            SelectedDate="8/25/2023" />
+                            TextDate="8/25/2023"
+                            TextTime="14:47" />
 
                         <atc:LabelDateTimePicker
                             LabelText="MyLabel4"
                             Orientation="Horizontal"
-                            SelectedDate="8/25/2023"
+                            TextDate="8/25/2023"
+                            TextTime="14:47"
                             WatermarkText="Select a date" />
 
                         <atc:LabelDateTimePicker
                             IsMandatory="True"
                             LabelText="MyLabel5"
                             Orientation="Horizontal"
-                            SelectedDate="8/25/2023"
+                            TextDate="8/25/2023"
+                            TextTime="14:47"
                             WatermarkText="Select a date" />
 
                     </StackPanel>
@@ -62,8 +65,9 @@
                             IsMandatory="True"
                             LabelText="MyLabel7"
                             Orientation="Vertical"
-                            SelectedDate="8/25/2023"
                             SelectedDateFormat="Long"
+                            TextDate="Friday, August 25, 2023"
+                            TextTime="14:47"
                             WatermarkText="Select a date" />
 
                     </StackPanel>

@@ -122,7 +122,7 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         if (SelectedTime.HasValue)
         {
-            Text = GetSelectedTimeAsText(SelectedTime.Value);
+            Text = SelectedTime.Value.ToShortTimeStringUsingCurrentUiCulture();
         }
     }
 
@@ -137,18 +137,15 @@ public partial class LabelTimePicker : ILabelTimePicker
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(control.Text) ||
-            !DateTime.TryParse(
-                $"{DateTime.Now.ToShortDateString()} {control.Text}",
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+        if (DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+                control.Text,
                 out var result))
         {
-            SelectedTime = null;
+            SelectedTime = result;
         }
         else
         {
-            SelectedTime = result;
+            SelectedTime = null;
         }
     }
 
@@ -176,7 +173,7 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         if (clockPicker.SelectedDateTime.HasValue)
         {
-            Text = GetSelectedTimeAsText(clockPicker.SelectedDateTime.Value);
+            Text = clockPicker.SelectedDateTime.Value.ToShortTimeStringUsingCurrentUiCulture();
         }
     }
 
@@ -197,12 +194,14 @@ public partial class LabelTimePicker : ILabelTimePicker
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(control.Text) &&
-            !DateTime.TryParse(
-                $"{DateTime.Now.ToShortDateString()} {control.Text}",
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+        if (DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+                control.Text,
                 out _))
+        {
+            control.ValidationText = string.Empty;
+            OnLostFocusFireValidEvent(control, e);
+        }
+        else
         {
             control.ValidationText = Validations.InvalidTime;
 
@@ -210,12 +209,7 @@ public partial class LabelTimePicker : ILabelTimePicker
             {
                 OnLostFocusFireInvalidEvent(control, e);
             }
-
-            return;
         }
-
-        control.ValidationText = string.Empty;
-        OnLostFocusFireValidEvent(control, e);
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -225,10 +219,8 @@ public partial class LabelTimePicker : ILabelTimePicker
     {
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTime.TryParse(
-                e.OldValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+                e.OldValue.ToString()!,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -236,10 +228,8 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTime.TryParse(
-                e.NewValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+                e.NewValue.ToString()!,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -260,10 +250,8 @@ public partial class LabelTimePicker : ILabelTimePicker
     {
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTime.TryParse(
-                e.OldValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+                e.OldValue.ToString()!,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -271,10 +259,8 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTime.TryParse(
-                e.NewValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+                e.NewValue.ToString()!,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -302,9 +288,4 @@ public partial class LabelTimePicker : ILabelTimePicker
             WatermarkText = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern;
         }
     }
-
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private static string GetSelectedTimeAsText(
-        DateTime dateTime)
-        => dateTime.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
 }

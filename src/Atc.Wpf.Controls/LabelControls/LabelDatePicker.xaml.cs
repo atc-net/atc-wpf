@@ -214,18 +214,16 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         var control = (TextBox)sender;
 
-        if (string.IsNullOrWhiteSpace(control.Text) ||
-            !DateTime.TryParse(
+        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                SelectedDateFormat,
                 control.Text,
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
                 out var result))
         {
-            SelectedDate = null;
+            SelectedDate = result;
         }
         else
         {
-            SelectedDate = result;
+            SelectedDate = null;
         }
     }
 
@@ -275,12 +273,15 @@ public partial class LabelDatePicker : ILabelDatePicker
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(control.Text) &&
-            !DateTime.TryParse(
+        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
                 control.Text,
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
                 out _))
+        {
+            control.ValidationText = string.Empty;
+            OnLostFocusFireValidEvent(control, e);
+        }
+        else
         {
             control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
                 ? string.Format(
@@ -296,12 +297,7 @@ public partial class LabelDatePicker : ILabelDatePicker
             {
                 OnLostFocusFireInvalidEvent(control, e);
             }
-
-            return;
         }
-
-        control.ValidationText = string.Empty;
-        OnLostFocusFireValidEvent(control, e);
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -311,10 +307,9 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTime.TryParse(
-                e.OldValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.OldValue.ToString()!,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -322,10 +317,9 @@ public partial class LabelDatePicker : ILabelDatePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTime.TryParse(
-                e.NewValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.NewValue.ToString()!,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -346,10 +340,9 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTime.TryParse(
-                e.OldValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.OldValue.ToString()!,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -357,10 +350,9 @@ public partial class LabelDatePicker : ILabelDatePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTime.TryParse(
-                e.NewValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.NewValue.ToString()!,
                 out var resultNew))
         {
             newValue = resultNew;

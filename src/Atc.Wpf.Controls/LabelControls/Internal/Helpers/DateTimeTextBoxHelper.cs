@@ -4,13 +4,52 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 
 internal static class DateTimeTextBoxHelper
 {
+    public static bool TryParseUsingCurrentUiCulture(
+        DatePickerFormat datePickerFormat,
+        string value,
+        out DateTime result)
+    {
+        result = DateTime.MinValue;
+        switch (datePickerFormat)
+        {
+            case DatePickerFormat.Long:
+                if (!string.IsNullOrWhiteSpace(value) &&
+                    DateTime.TryParse(
+                        value,
+                        Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
+                        DateTimeStyles.None,
+                        out var resLong))
+                {
+                    result = resLong;
+                    return true;
+                }
+
+                break;
+            case DatePickerFormat.Short:
+                if (DateTimeHelper.TryParseShortDateUsingCurrentUiCulture(
+                        value,
+                        out var resShort))
+                {
+                    result = resShort;
+                    return true;
+                }
+
+                break;
+            default:
+                throw new SwitchExpressionException(datePickerFormat);
+        }
+
+        return false;
+    }
+
     public static bool HandlePrerequisiteForOnTextTimeChanged(
         TextBox control,
         TextChangedEventArgs e)
     {
         var textChange = e.Changes.First();
 
-        var use24Hours = !Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern.StartsWith("h:", StringComparison.Ordinal);
+        var use24Hours = !(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern.StartsWith("h:", StringComparison.Ordinal) ||
+                           Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern.StartsWith("h.", StringComparison.Ordinal));
 
         if (textChange.AddedLength == 1)
         {

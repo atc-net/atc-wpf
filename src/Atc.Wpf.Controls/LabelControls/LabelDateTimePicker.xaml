@@ -44,7 +44,7 @@
                 atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkAlignment}"
                 atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTrimming}"
-                MaxLength="10"
+                MaxLength="30"
                 MaxLines="1"
                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=TextDate}"
                 TextChanged="OnTextDateChanged" />
