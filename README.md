@@ -201,6 +201,7 @@ but just with a xaml-markup extension to lookup the value by key.
 | Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed and 1 -> Visible         | Not supported                           |
 | Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | Not supported                           |
 | LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> Green                    | Not supported                           |
+| LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> Green                    | Not supported                           |
 |                           | ObservableDictionaryToDictionaryOfStringsValueConverter  |                                         |                                         |
 |                           | ThicknessBindingValueConverter                           |                                         | DependencyProperty.UnsetValue           |
 |                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |

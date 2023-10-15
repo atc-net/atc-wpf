@@ -70,26 +70,20 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             return;
         }
 
-        using var worker = new BackgroundWorker();
-        worker.DoWork += (_, _) =>
-        {
-            _ = Application.Current.Dispatcher.BeginInvoke(() =>
+        IsBusy = true;
+
+        _ = Application.Current.Dispatcher.BeginInvoke(
+            new Action(() =>
             {
                 ListOfIcons.Children.Clear();
 
                 UiPopulateListOfIcons();
 
                 UiFilterListOfIcons(FilterText.Text);
-            });
-        };
 
-        worker.RunWorkerCompleted += (_, _) =>
-        {
-            _ = Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
-        };
-
-        IsBusy = true;
-        worker.RunWorkerAsync();
+                IsBusy = false;
+            }),
+            DispatcherPriority.Background);
     }
 
     private void FilterCheckBoxOnIsCheckedChanged(
@@ -126,19 +120,16 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
     private void PopulateListOfIcons()
     {
-        using var worker = new BackgroundWorker();
-        worker.DoWork += (_, _) =>
-        {
-            _ = Application.Current.Dispatcher.BeginInvoke(UiPopulateListOfIcons);
-        };
-
-        worker.RunWorkerCompleted += (_, _) =>
-        {
-            _ = Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
-        };
-
         IsBusy = true;
-        worker.RunWorkerAsync();
+
+        _ = Application.Current.Dispatcher.BeginInvoke(
+            new Action(() =>
+            {
+                UiPopulateListOfIcons();
+
+                IsBusy = false;
+            }),
+            DispatcherPriority.Background);
     }
 
     private void UiPopulateListOfIcons()
@@ -205,19 +196,16 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             return;
         }
 
-        using var worker = new BackgroundWorker();
-        worker.DoWork += (_, _) =>
-        {
-            _ = Application.Current.Dispatcher.BeginInvoke(() => UiFilterListOfIcons(filterText));
-        };
-
-        worker.RunWorkerCompleted += (_, _) =>
-        {
-            _ = Application.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
-        };
-
         IsBusy = true;
-        worker.RunWorkerAsync();
+
+        _ = Application.Current.Dispatcher.BeginInvoke(
+            new Action(() =>
+            {
+                UiFilterListOfIcons(filterText);
+
+                IsBusy = false;
+            }),
+            DispatcherPriority.Background);
     }
 
     private void UiFilterListOfIcons(

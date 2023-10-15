@@ -125,12 +125,12 @@
                 <baseControls:ImageButton
                     Click="ExpandAll"
                     ImageLocation="Center"
-                    SvgImageSource="/Atc.Wpf.Controls;component/Resources/expand.svg"
+                    SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg"
                     ToolTip="Expand All" />
                 <baseControls:ImageButton
                     Click="CollapseAll"
                     ImageLocation="Center"
-                    SvgImageSource="/Atc.Wpf.Controls;component/Resources/collapse.svg"
+                    SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/collapse.svg"
                     ToolTip="Collapse All" />
                 <Border
                     Background="{x:Static controls:Constants.JTokenColorString}"
