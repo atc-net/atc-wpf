@@ -123,7 +123,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
             {
                 control.ValidationText = string.Format(
                     CultureInfo.CurrentUICulture,
-                    Validations.PleaseSelect,
+                    Validations.PleaseSelect1,
                     Atc.Resources.Country._Country.ToLower(Thread.CurrentThread.CurrentUICulture));
 
                 if (raiseEvents)

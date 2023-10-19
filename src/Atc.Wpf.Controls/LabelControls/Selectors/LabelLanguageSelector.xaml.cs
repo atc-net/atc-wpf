@@ -136,7 +136,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
             {
                 control.ValidationText = string.Format(
                     CultureInfo.CurrentUICulture,
-                    Validations.PleaseSelect,
+                    Validations.PleaseSelect1,
                     Atc.Resources.Language._Language.ToLower(Thread.CurrentThread.CurrentUICulture));
 
                 if (raiseEvents)

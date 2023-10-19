@@ -141,7 +141,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
             {
                 control.ValidationText = string.Format(
                     CultureInfo.CurrentUICulture,
-                    Validations.PleaseSelect,
+                    Validations.PleaseSelect1,
                     Wpf.Resources.ColorNames._Color.ToLower(Thread.CurrentThread.CurrentUICulture));
 
                 if (raiseEvents)

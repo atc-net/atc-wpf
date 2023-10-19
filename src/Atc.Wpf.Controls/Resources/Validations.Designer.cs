@@ -180,9 +180,9 @@ namespace Atc.Wpf.Controls.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Please select a {0}.
         /// </summary>
-        public static string PleaseSelect {
+        public static string PleaseSelect1 {
             get {
-                return ResourceManager.GetString("PleaseSelect", resourceCulture);
+                return ResourceManager.GetString("PleaseSelect1", resourceCulture);
             }
         }
         
