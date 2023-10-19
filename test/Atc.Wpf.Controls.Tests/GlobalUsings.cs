@@ -1,3 +1,4 @@
+global using System.Reflection;
 global using System.Windows;
 
 global using Atc.Wpf.Controls.LabelControls;

@@ -3,12 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
     <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.367" />
+    <PackageReference Include="Atc" Version="2.0.378" />
+    <PackageReference Include="Atc.XUnit" Version="2.0.378" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
-    <PackageReference Include="xunit" Version="2.5.2" />
+    <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
