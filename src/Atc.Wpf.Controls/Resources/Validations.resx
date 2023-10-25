@@ -156,7 +156,7 @@
   <data name="NotAllowedFormat1" xml:space="preserve">
     <value>Not allowed: {0}</value>
   </data>
-  <data name="PleaseSelect" xml:space="preserve">
+  <data name="PleaseSelect1" xml:space="preserve">
     <value>Please select a {0}</value>
   </data>
   <data name="RegexPatternDontMatch" xml:space="preserve">

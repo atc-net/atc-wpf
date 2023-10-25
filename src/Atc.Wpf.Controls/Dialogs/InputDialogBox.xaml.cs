@@ -34,6 +34,8 @@ public partial class InputDialogBox
     {
         this.OwningWindow = owningWindow;
         this.Settings = settings;
+        this.Width = this.Settings.Width;
+        this.Height = this.Settings.Height;
 
         this.Data = labelControl;
 

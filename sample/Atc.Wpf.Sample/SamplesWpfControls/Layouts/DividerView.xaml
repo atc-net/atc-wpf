@@ -23,28 +23,28 @@
                     <atc:SvgImage
                         Width="50"
                         Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/info_help.svg" />
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
 
                     <atc:Divider Orientation="Vertical" />
 
                     <atc:SvgImage
                         Width="50"
                         Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/info_help.svg" />
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
 
                     <atc:Divider LineStroke="Orange" Orientation="Vertical" />
 
                     <atc:SvgImage
                         Width="50"
                         Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/info_help.svg" />
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
 
                     <atc:Divider LineStrokeDashArray="5" Orientation="Vertical" />
 
                     <atc:SvgImage
                         Width="50"
                         Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/info_help.svg" />
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
                 </StackPanel>
 
                 <atc:Divider
@@ -57,7 +57,7 @@
                     <atc:SvgImage
                         Width="50"
                         Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/info_help.svg" />
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
 
                     <atc:Divider
                         LineStroke="Chocolate"

@@ -16,6 +16,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);
 
+    public IRelayCommand ShowInfoWarningDialogBoxCommand => new RelayCommand(ShowInfoWarningDialogBoxCommandHandler);
+
+    public IRelayCommand ShowInfoErrorDialogBoxCommand => new RelayCommand(ShowInfoErrorDialogBoxCommandHandler);
+
     public IRelayCommand ShowQuestionDialogBoxCommand => new RelayCommand(ShowQuestionDialogBoxCommandHandler);
 
     public IRelayCommand ShowInputDialogBoxCommand => new RelayCommand(ShowInputDialogBoxCommandHandler);
@@ -68,7 +72,39 @@ public class StandardDialogBoxViewModel : ViewModelBase
             {
                 TitleBarText = "This is a information",
             },
-            "Hello world");
+            "Hello information");
+
+        var dialogResult = dialogBox.ShowDialog();
+        JsonResult = dialogResult.HasValue && dialogResult.Value
+            ? CreateJson(dialogBox.Settings.AffirmativeButtonText)
+            : CreateJson(dialogBox.Settings.NegativeButtonText);
+    }
+
+    private void ShowInfoWarningDialogBoxCommandHandler()
+    {
+        var dialogBox = new InfoDialogBox(
+            Application.Current.MainWindow!,
+            new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Warning)
+            {
+                TitleBarText = "This is a warning",
+            },
+            "Hello warning");
+
+        var dialogResult = dialogBox.ShowDialog();
+        JsonResult = dialogResult.HasValue && dialogResult.Value
+            ? CreateJson(dialogBox.Settings.AffirmativeButtonText)
+            : CreateJson(dialogBox.Settings.NegativeButtonText);
+    }
+
+    private void ShowInfoErrorDialogBoxCommandHandler()
+    {
+        var dialogBox = new InfoDialogBox(
+            Application.Current.MainWindow!,
+            new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
+            {
+                TitleBarText = "This is a error",
+            },
+            "Hello error");
 
         var dialogResult = dialogBox.ShowDialog();
         JsonResult = dialogResult.HasValue && dialogResult.Value

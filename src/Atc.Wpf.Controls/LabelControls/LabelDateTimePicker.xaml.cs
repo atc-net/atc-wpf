@@ -1,5 +1,4 @@
 // ReSharper disable InvertIf
-
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -230,7 +229,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             TextDate = GetSelectedDateAsText(SelectedDate.Value);
             if (SelectedDate.HasValue)
             {
-                TextTime = GetSelectedTimeAsText(SelectedDate.Value);
+                TextTime = SelectedDate.Value.ToShortTimeStringUsingCurrentUiCulture();
             }
         }
     }
@@ -253,18 +252,16 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     {
         var control = (TextBox)sender;
 
-        if (string.IsNullOrWhiteSpace(control.Text) ||
-            !DateTime.TryParse(
+        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                SelectedDateFormat,
                 $"{control.Text} {TextTime}",
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
                 out var result))
         {
-            SelectedDate = null;
+            SelectedDate = result;
         }
         else
         {
-            SelectedDate = result;
+            SelectedDate = null;
         }
     }
 
@@ -279,18 +276,16 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(control.Text) ||
-            !DateTime.TryParse(
+        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                SelectedDateFormat,
                 $"{TextDate} {control.Text}",
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
                 out var result))
         {
-            SelectedDate = null;
+            SelectedDate = result;
         }
         else
         {
-            SelectedDate = result;
+            SelectedDate = null;
         }
     }
 
@@ -330,7 +325,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         if (clockPicker.SelectedDateTime.HasValue)
         {
-            TextTime = GetSelectedTimeAsText(clockPicker.SelectedDateTime.Value);
+            TextTime = clockPicker.SelectedDateTime.Value.ToShortTimeStringUsingCurrentUiCulture();
         }
     }
 
@@ -352,12 +347,15 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(control.TextDate) &&
-            !DateTime.TryParse(
+        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
                 control.TextDate,
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
                 out _))
+        {
+            control.ValidationText = string.Empty;
+            OnLostFocusFireValidEvent(control, e);
+        }
+        else
         {
             control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
                 ? string.Format(
@@ -375,12 +373,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             {
                 OnLostFocusFireInvalidEvent(control, e);
             }
-
-            return;
         }
-
-        control.ValidationText = string.Empty;
-        OnLostFocusFireValidEvent(control, e);
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -390,10 +383,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     {
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTime.TryParse(
-                e.OldValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.OldValue.ToString()!,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -401,10 +393,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTime.TryParse(
-                e.NewValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.NewValue.ToString()!,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -425,10 +416,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     {
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTime.TryParse(
-                e.OldValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.OldValue.ToString()!,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -436,10 +426,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTime.TryParse(
-                e.NewValue.ToString(),
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
-                DateTimeStyles.None,
+            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+                control.SelectedDateFormat,
+                e.NewValue.ToString()!,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -525,9 +514,4 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         return s;
     }
-
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private static string GetSelectedTimeAsText(
-        DateTime dateTime)
-        => dateTime.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
 }

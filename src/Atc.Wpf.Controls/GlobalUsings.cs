@@ -51,6 +51,7 @@ global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
+global using Atc.Wpf.ValueConverters;
 
 global using ControlzEx.Theming;
 

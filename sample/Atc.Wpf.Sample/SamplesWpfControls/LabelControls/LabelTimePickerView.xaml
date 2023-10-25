@@ -34,19 +34,19 @@
                         <atc:LabelTimePicker
                             LabelText="MyLabel3"
                             Orientation="Horizontal"
-                            SelectedTime="14:47" />
+                            Text="14:47" />
 
                         <atc:LabelTimePicker
                             LabelText="MyLabel4"
                             Orientation="Horizontal"
-                            SelectedTime="14:47"
+                            Text="14:47"
                             WatermarkText="Select a time..." />
 
                         <atc:LabelTimePicker
                             IsMandatory="True"
                             LabelText="MyLabel5"
                             Orientation="Horizontal"
-                            SelectedTime="14:47"
+                            Text="14:47"
                             WatermarkText="Select a time..." />
 
                     </StackPanel>
@@ -58,7 +58,7 @@
                             IsMandatory="True"
                             LabelText="MyLabel7"
                             Orientation="Vertical"
-                            SelectedTime="14:47"
+                            Text="14:47"
                             WatermarkText="Select a time..." />
 
                     </StackPanel>

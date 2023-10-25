@@ -39,6 +39,8 @@ public partial class InputFormDialogBox
 
         this.OwningWindow = owningWindow;
         this.Settings = settings;
+        this.Width = this.Settings.Width;
+        this.Height = this.Settings.Height;
         this.Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
 
         InitializeDialogBox(labelControlsForm);

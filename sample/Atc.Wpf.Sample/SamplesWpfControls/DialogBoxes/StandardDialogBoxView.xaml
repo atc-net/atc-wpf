@@ -35,6 +35,8 @@
                         Orientation="Vertical"
                         Spacing="10">
                         <Button Command="{Binding Path=ShowInfoDialogBoxCommand}" Content="Info" />
+                        <Button Command="{Binding Path=ShowInfoWarningDialogBoxCommand}" Content="Warning" />
+                        <Button Command="{Binding Path=ShowInfoErrorDialogBoxCommand}" Content="Error" />
                         <Button Command="{Binding Path=ShowQuestionDialogBoxCommand}" Content="Question" />
                         <Button Command="{Binding Path=ShowInputDialogBoxCommand}" Content="Input" />
                         <Button Command="{Binding Path=ShowInputForm1ColumnDialogBoxCommand}" Content="Input Form 1 columns" />
