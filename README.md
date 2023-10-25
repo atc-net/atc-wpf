@@ -180,6 +180,7 @@ but just with a xaml-markup extension to lookup the value by key.
 | Null -> UnsetValue        | NullToUnsetValueConverter                                | NULL -> DependencyProperty.UnsetValue   | Object -> DependencyProperty.UnsetValue |
 | Object -> Bool            | ObjectNotNullToBoolValueConverter                        | NotNULL -> True                         | Not supported                           |
 | Object -> Visibility      | ObjectNotNullToVisibilityVisibleValueConverter           | NotNULL -> Visible                      | Not supported                           |
+| Object -> Visibility      | ObjectNullToVisibilityCollapsedValueConverter            | NULL -> Collapsed                       | Not supported                           |
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
 
 ### ValueConverters - Markup to X
