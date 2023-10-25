@@ -267,6 +267,27 @@ public static class BitmapSourceExtensions
         return bitmapSource.ToBitmapImage(ImageFormatType.Png, newWidth);
     }
 
+    public static string ToBase64DataImage(
+        this BitmapSource bitmapSource,
+        ImageFormatType imageFormatType = ImageFormatType.Png)
+    {
+        ArgumentNullException.ThrowIfNull(bitmapSource);
+
+        var encoder = BitmapEncoderFactory.Create(imageFormatType);
+
+        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+        string base64String;
+        using (var ms = new MemoryStream())
+        {
+            encoder.Save(ms);
+            var imageBytes = ms.ToArray();
+            base64String = Convert.ToBase64String(imageBytes);
+        }
+
+        return $"data:image/{imageFormatType.ToStringLowerCase()};base64,{base64String}";
+    }
+
     public static BitmapSource ToBitmapSourceAsGray32(
         this BitmapSource bitmapSource)
     {
