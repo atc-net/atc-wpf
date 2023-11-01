@@ -47,6 +47,16 @@ public partial class LabelInputFormPanel
         PopulateContentControl();
     }
 
+    public void ReRender()
+    {
+        SetContentControlSettings();
+
+        if (ContentControl.Content is Panel panel)
+        {
+            UpdateSettingContentControls(panel);
+        }
+    }
+
     private void SetContentControlSettings()
     {
         if (Data.Rows is null)
@@ -77,5 +87,32 @@ public partial class LabelInputFormPanel
         {
             Content = Data.GeneratePanel(),
         };
+    }
+
+    private void UpdateSettingContentControls(
+        Panel panel)
+    {
+        foreach (UIElement uiElement in panel.Children)
+        {
+            switch (uiElement)
+            {
+                case Panel subPanel:
+                    UpdateSettingContentControls(subPanel);
+                    break;
+                case GroupBox groupBox:
+                {
+                    if (groupBox.Content is Panel groupBoxSubPanel)
+                    {
+                        UpdateSettingContentControls(groupBoxSubPanel);
+                    }
+
+                    break;
+                }
+
+                case ILabelControlBase labelControl:
+                    labelControl.Orientation = Settings.ControlOrientation;
+                    break;
+            }
+        }
     }
 }

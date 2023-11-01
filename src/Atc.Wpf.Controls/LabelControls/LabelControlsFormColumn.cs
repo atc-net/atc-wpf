@@ -5,9 +5,9 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public class LabelControlsFormColumn : ILabelControlsFormColumn
 {
-    private const int GroupBoxMarginHeight = 20;
-    private const int LabelControlsHeightForVertical = 103;
-    private const int LabelControlsHeightForHorizontal = 77;
+    private const int LabelControlsHeightForSpace = 20;
+    private const int LabelControlsHeightForVertical = 98;
+    private const int LabelControlsHeightForHorizontal = 72;
 
     public LabelControlsFormColumn(
         IList<ILabelControlBase> labelControls)
@@ -33,6 +33,10 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         UseGroupBox = useGroupBox;
         ControlOrientation = controlOrientation;
         ControlWidth = controlWidth;
+        foreach (var labelControl in LabelControls)
+        {
+            labelControl.Orientation = controlOrientation;
+        }
     }
 
     public bool HasMultiGroupIdentifiers()
@@ -55,12 +59,12 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
     public int CalculateHeight()
         => UseGroupBox
             ? CalculateHeightWithGroupBoxes()
-            : CalculateHeightWithOutGroupBoxes();
+            : CalculateHeightWithoutGroupBoxes();
 
     public Panel GeneratePanel()
         => UseGroupBox
             ? GeneratePanelWithGroupBoxes()
-            : GeneratePanelWithOutGroupBoxes();
+            : GeneratePanelWithoutGroupBoxes();
 
     public bool IsValid()
     {
@@ -171,11 +175,23 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                 .Where(x => x.GroupIdentifier == groupIdentifier)
                 .ToList();
 
-            var heightForGroupIdentifiers = ControlOrientation == Orientation.Vertical
-                ? labelControls.Sum(_ => LabelControlsHeightForVertical)
-                : labelControls.Sum(_ => LabelControlsHeightForHorizontal);
+            var heightForGroupIdentifiers = 0;
+            foreach (var labelControl in labelControls)
+            {
+                if (labelControl.Orientation == Orientation.Vertical)
+                {
+                    heightForGroupIdentifiers += LabelControlsHeightForVertical;
+                }
+                else
+                {
+                    heightForGroupIdentifiers += LabelControlsHeightForHorizontal;
+                }
+            }
 
-            heightForGroupIdentifiers += GroupBoxMarginHeight;
+            if (labelControls.Count > 1)
+            {
+                maxHeight -= (labelControls.Count - 1) * LabelControlsHeightForSpace;
+            }
 
             if (heightForGroupIdentifiers > maxHeight)
             {
@@ -186,11 +202,27 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         return maxHeight;
     }
 
-    public int CalculateHeightWithOutGroupBoxes()
+    public int CalculateHeightWithoutGroupBoxes()
     {
-        return ControlOrientation == Orientation.Vertical
-            ? LabelControls.Sum(_ => LabelControlsHeightForVertical)
-            : LabelControls.Sum(_ => LabelControlsHeightForHorizontal);
+        var maxHeight = 0;
+        foreach (var labelControl in LabelControls)
+        {
+            if (labelControl.Orientation == Orientation.Vertical)
+            {
+                maxHeight += LabelControlsHeightForVertical;
+            }
+            else
+            {
+                maxHeight += LabelControlsHeightForHorizontal;
+            }
+        }
+
+        if (LabelControls.Count > 1)
+        {
+            maxHeight -= (LabelControls.Count - 1) * LabelControlsHeightForSpace;
+        }
+
+        return maxHeight;
     }
 
     private Panel GeneratePanelWithGroupBoxes()
@@ -232,7 +264,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
         return stackPanel;
     }
 
-    private Panel GeneratePanelWithOutGroupBoxes()
+    private Panel GeneratePanelWithoutGroupBoxes()
     {
         var stackPanel = new StackPanel
         {
@@ -248,4 +280,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
 
         return stackPanel;
     }
+
+    public override string ToString()
+        => $"{nameof(UseGroupBox)}: {UseGroupBox}, {nameof(ControlOrientation)}: {ControlOrientation}, {nameof(ControlWidth)}: {ControlWidth}, {nameof(LabelControls)}.Count: {LabelControls.Count}";
 }

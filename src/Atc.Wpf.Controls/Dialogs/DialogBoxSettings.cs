@@ -141,6 +141,9 @@ public class DialogBoxSettings
         DialogBoxType dialogBoxType)
         => new(dialogBoxType);
 
+    public override string ToString()
+        => $"{nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(TitleBarText)}: {TitleBarText}, {nameof(Form)}: ({Form})";
+
     private void SetContentSvgImage()
     {
         switch (dialogBoxType)

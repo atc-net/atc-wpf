@@ -3,7 +3,8 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public class LabelControlsForm : ILabelControlsForm
 {
-    private const int GroupBoxMarginWidth = 40;
+    private const int GroupBoxWidthForSpace = 20;
+    private const int GroupBoxWidthForMargin = 10;
 
     public IList<ILabelControlsFormRow>? Rows { get; set; }
 
@@ -149,9 +150,9 @@ public class LabelControlsForm : ILabelControlsForm
                     controlsWidth = column.ControlWidth;
                 }
 
-                if (numberOfColumnsWithGroupBox > 1)
+                if (numberOfColumnsWithGroupBox > 0)
                 {
-                    marginOffset = (numberOfColumnsWithGroupBox - 1) * GroupBoxMarginWidth;
+                    marginOffset += numberOfColumnsWithGroupBox * (GroupBoxWidthForSpace + GroupBoxWidthForMargin);
                 }
             }
 
@@ -252,5 +253,23 @@ public class LabelControlsForm : ILabelControlsForm
         }
 
         return result;
+    }
+
+    public override string ToString()
+    {
+        if (Rows is null)
+        {
+            return "No LabelControls";
+        }
+
+        var rowLineInfo = new List<string>();
+        for (var i = 0; i < Rows.Count; i++)
+        {
+            var row = Rows[i];
+            var totalRowHeight = row.Columns?.Sum(x => x.CalculateHeight()) ?? 0;
+            rowLineInfo.Add($"Row {i}: ColCount={row.Columns?.Count ?? 0}, TotalRowHeight={totalRowHeight}");
+        }
+
+        return string.Join(" # ", rowLineInfo);
     }
 }

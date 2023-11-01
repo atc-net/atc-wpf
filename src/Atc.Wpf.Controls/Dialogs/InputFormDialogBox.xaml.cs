@@ -32,6 +32,22 @@ public partial class InputFormDialogBox
 
     public InputFormDialogBox(
         Window owningWindow,
+        LabelInputFormPanelSettings formPanelSettings,
+        ILabelControlsForm labelControlsForm)
+    {
+        ArgumentNullException.ThrowIfNull(labelControlsForm);
+
+        this.OwningWindow = owningWindow;
+        this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
+        this.Width = this.Settings.Width;
+        this.Height = this.Settings.Height;
+        this.Settings.Form = formPanelSettings;
+
+        InitializeDialogBox(labelControlsForm);
+    }
+
+    public InputFormDialogBox(
+        Window owningWindow,
         DialogBoxSettings settings,
         ILabelControlsForm labelControlsForm)
     {
@@ -56,6 +72,13 @@ public partial class InputFormDialogBox
 
     public ILabelControlsForm Data => LabelInputFormPanel.Data;
 
+    public void ReRender()
+    {
+        LabelInputFormPanel.ReRender();
+
+        UpdateWidthAndHeight();
+    }
+
     private void InitializeDialogBox(
         ILabelControlsForm labelControlsForm)
     {
@@ -73,6 +96,11 @@ public partial class InputFormDialogBox
             this.Settings.Form,
             labelControlsForm);
 
+        UpdateWidthAndHeight();
+    }
+
+    private void UpdateWidthAndHeight()
+    {
         Width = ContentCenter.Padding.Left +
                 ContentCenter.Padding.Right +
                 Data.GetMaxWidth() +
@@ -83,14 +111,16 @@ public partial class InputFormDialogBox
             Width = Settings.Form.MaxSize.Width;
         }
 
-        Height = HeaderControl is null
-            ? Data.GetMaxHeight() +
-              ScrollBarSize +
-              ContentButton.Height
-            : ContentTop.Height +
-              Data.GetMaxHeight() +
-              ScrollBarSize +
-              ContentButton.Height;
+        Height = ContentCenter.Padding.Top +
+                 ContentCenter.Padding.Bottom +
+                 ContentButton.Height +
+                 Data.GetMaxHeight() +
+                 ScrollBarSize;
+
+        if (HeaderControl is not null)
+        {
+            Height += ContentTop.Height;
+        }
 
         if (Height > Settings.Form.MaxSize.Height)
         {
