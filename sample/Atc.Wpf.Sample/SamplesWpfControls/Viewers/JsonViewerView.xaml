@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewers="clr-namespace:Atc.Wpf.Controls.Viewers;assembly=Atc.Wpf.Controls"
     xmlns:vm="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Viewers"
-    d:DesignHeight="450"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     mc:Ignorable="d">
 

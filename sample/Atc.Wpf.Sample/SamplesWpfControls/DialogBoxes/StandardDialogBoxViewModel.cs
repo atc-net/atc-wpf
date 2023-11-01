@@ -24,6 +24,10 @@ public class StandardDialogBoxViewModel : ViewModelBase
 
     public IRelayCommand ShowInputDialogBoxCommand => new RelayCommand(ShowInputDialogBoxCommandHandler);
 
+    public IRelayCommand<int> ShowInputForm1ColumnXFieldVerticalDialogBoxCommand => new RelayCommand<int>(ShowInputForm1ColumnXFieldVerticalDialogBoxCommandHandler);
+
+    public IRelayCommand<int> ShowInputForm1ColumnXFieldHorizontalDialogBoxCommand => new RelayCommand<int>(ShowInputForm1ColumnXFieldHorizontalDialogBoxCommandHandler);
+
     public IRelayCommand ShowInputForm1ColumnDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnDialogBoxCommandHandler);
 
     public IRelayCommand ShowInputForm2ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm2ColumnsDialogBoxCommandHandler);
@@ -140,6 +144,78 @@ public class StandardDialogBoxViewModel : ViewModelBase
         {
             var newText = ((LabelTextBox)dialogBox.Data).Text;
             JsonResult = CreateJson(newText);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
+        }
+    }
+
+    private void ShowInputForm1ColumnXFieldVerticalDialogBoxCommandHandler(
+        int numberOfControls)
+    {
+        var labelControls = new List<ILabelControlBase>();
+
+        for (var i = 0; i < numberOfControls; i++)
+        {
+            labelControls.Add(
+                new LabelTextBox
+                {
+                    LabelText = $"Name{i}",
+                });
+        }
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        dialogBox.Settings.Form.ControlOrientation = Orientation.Vertical;
+        dialogBox.LabelInputFormPanel.ReRender();
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
+        }
+        else
+        {
+            JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
+        }
+    }
+
+    private void ShowInputForm1ColumnXFieldHorizontalDialogBoxCommandHandler(
+        int numberOfControls)
+    {
+        var labelControls = new List<ILabelControlBase>();
+
+        for (var i = 0; i < numberOfControls; i++)
+        {
+            labelControls.Add(
+                new LabelTextBox
+                {
+                    LabelText = $"Name{i}",
+                });
+        }
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        var dialogBox = new InputFormDialogBox(
+            Application.Current.MainWindow!,
+            labelControlsForm);
+
+        dialogBox.Settings.Form.ControlOrientation = Orientation.Horizontal;
+        dialogBox.ReRender();
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            var data = dialogBox.Data.GetKeyValues();
+            JsonResult = JsonSerializer.Serialize(data, jsonOptions);
         }
         else
         {

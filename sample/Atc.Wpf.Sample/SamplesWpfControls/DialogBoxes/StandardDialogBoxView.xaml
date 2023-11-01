@@ -39,6 +39,54 @@
                         <Button Command="{Binding Path=ShowInfoErrorDialogBoxCommand}" Content="Error" />
                         <Button Command="{Binding Path=ShowQuestionDialogBoxCommand}" Content="Question" />
                         <Button Command="{Binding Path=ShowInputDialogBoxCommand}" Content="Input" />
+                        <Grid>
+                            <atc:UniformSpacingPanel
+                                HorizontalAlignment="Center"
+                                ItemWidth="100"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldVerticalDialogBoxCommand}"
+                                    CommandParameter="1"
+                                    Content="IF.V. 1col, 1field" />
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldVerticalDialogBoxCommand}"
+                                    CommandParameter="2"
+                                    Content="IF.V. 1col, 2field" />
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldVerticalDialogBoxCommand}"
+                                    CommandParameter="3"
+                                    Content="IF.V. 1col, 3field" />
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldVerticalDialogBoxCommand}"
+                                    CommandParameter="4"
+                                    Content="IF.V. 1col, 4field" />
+                            </atc:UniformSpacingPanel>
+                        </Grid>
+                        <Grid>
+                            <atc:UniformSpacingPanel
+                                HorizontalAlignment="Center"
+                                ItemWidth="100"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldHorizontalDialogBoxCommand}"
+                                    CommandParameter="1"
+                                    Content="IF.H. 1col, 1field" />
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldHorizontalDialogBoxCommand}"
+                                    CommandParameter="2"
+                                    Content="IF.H. 1col, 2field" />
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldHorizontalDialogBoxCommand}"
+                                    CommandParameter="3"
+                                    Content="IF.H. 1col, 3field" />
+                                <Button
+                                    Command="{Binding Path=ShowInputForm1ColumnXFieldHorizontalDialogBoxCommand}"
+                                    CommandParameter="4"
+                                    Content="IF.H. 1col, 4field" />
+                            </atc:UniformSpacingPanel>
+                        </Grid>
                         <Button Command="{Binding Path=ShowInputForm1ColumnDialogBoxCommand}" Content="Input Form 1 columns" />
                         <Button Command="{Binding Path=ShowInputForm2ColumnsDialogBoxCommand}" Content="Input Form 2 columns" />
                         <Button Command="{Binding Path=ShowInputForm3ColumnsDialogBoxCommand}" Content="Input Form 3 columns" />
