@@ -167,6 +167,39 @@
                         Text="Boolean" />
                 </Border>
                 <Border
+                    Background="{x:Static controls:Constants.JTokenColorDate}"
+                    BorderBrush="{x:Static controls:Constants.JTokenColorDate}"
+                    BorderThickness="1"
+                    CornerRadius="3">
+                    <TextBlock
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                        Foreground="WhiteSmoke"
+                        Text="Date" />
+                </Border>
+                <Border
+                    Background="{x:Static controls:Constants.JTokenColorGuid}"
+                    BorderBrush="{x:Static controls:Constants.JTokenColorGuid}"
+                    BorderThickness="1"
+                    CornerRadius="3">
+                    <TextBlock
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                        Foreground="WhiteSmoke"
+                        Text="Guid" />
+                </Border>
+                <Border
+                    Background="{x:Static controls:Constants.JTokenColorUri}"
+                    BorderBrush="{x:Static controls:Constants.JTokenColorUri}"
+                    BorderThickness="1"
+                    CornerRadius="3">
+                    <TextBlock
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                        Foreground="WhiteSmoke"
+                        Text="Uri" />
+                </Border>
+                <Border
                     Background="{x:Static controls:Constants.JTokenColorNull}"
                     BorderBrush="{x:Static controls:Constants.JTokenColorNull}"
                     BorderThickness="1"
