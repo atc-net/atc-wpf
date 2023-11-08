@@ -103,6 +103,20 @@ public class LabelControlBase : UserControl, ILabelControlBase
         set => SetValue(InformationTextProperty, value);
     }
 
+    public static readonly DependencyProperty InformationContentProperty = DependencyProperty.Register(
+        nameof(InformationContent),
+        typeof(object),
+        typeof(LabelControlBase),
+        new FrameworkPropertyMetadata(
+            defaultValue: null,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public object? InformationContent
+    {
+        get => (object?)GetValue(InformationContentProperty);
+        set => SetValue(InformationContentProperty, value);
+    }
+
     public static readonly DependencyProperty InformationColorProperty = DependencyProperty.Register(
         nameof(InformationColor),
         typeof(Color),

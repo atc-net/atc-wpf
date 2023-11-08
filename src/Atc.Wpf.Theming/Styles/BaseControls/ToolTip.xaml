@@ -2,8 +2,8 @@
 
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.ToolTip" TargetType="{x:Type ToolTip}">
-        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ThemeForeground6}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.ToolTip}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />

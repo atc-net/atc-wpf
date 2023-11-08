@@ -86,12 +86,37 @@
                         <atc:LabelTextBox LabelText="MyLabel3" Orientation="Vertical" />
 
                         <atc:LabelTextBox
+                            InformationColor="Green"
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelText="MyLabel4"
                             Orientation="Vertical"
                             ShowClearTextButton="True"
                             WatermarkText="Fill out with text.." />
+
+                        <atc:LabelTextBox
+                            InformationColor="Chocolate"
+                            InformationContent="This is a help text.."
+                            IsMandatory="True"
+                            LabelText="MyLabel5"
+                            Orientation="Vertical"
+                            ShowClearTextButton="True"
+                            WatermarkText="Fill out with text.." />
+
+                        <atc:LabelTextBox
+                            IsMandatory="True"
+                            LabelText="MyLabel6"
+                            Orientation="Vertical"
+                            ShowClearTextButton="True"
+                            WatermarkText="Fill out with text..">
+                            <atc:LabelTextBox.InformationContent>
+                                <StackPanel>
+                                    <atc:LabelTextInfo LabelText="Info 1" Text="My Info 1" />
+                                    <atc:LabelTextInfo LabelText="Info 2" Text="My Info 2" />
+                                    <atc:LabelTextInfo LabelText="Info 3" Text="My Info 3" />
+                                </StackPanel>
+                            </atc:LabelTextBox.InformationContent>
+                        </atc:LabelTextBox>
 
                     </StackPanel>
                 </atc:GridEx>
