@@ -8,12 +8,15 @@
     xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
+    x:Name="Lc"
     MinWidth="200"
     mc:Ignorable="d">
 
     <labelControls:LabelControl.Resources>
         <atcValueConverters:MultiBoolToVisibilityVisibleValueConverter x:Key="MultiBoolToVisibilityVisibleValueConverter" />
+        <atcValueConverters:IsNotNullValueConverter x:Key="IsNotNullValueConverter" />
         <atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter x:Key="StringNullOrEmptyToInverseBoolValueConverter" />
+        <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
         <valueConverters:LabelControlHideAreasForValidationToGridExRowsValueConverter x:Key="LabelControlHideAreasForValidationToGridExRowsValueConverter" />
         <valueConverters:LabelControlHideAreasToBoolValueConverter x:Key="LabelControlHideAreasToBoolValueConverter" />
         <valueConverters:LabelControlHideAreasToVisibilityValueConverter x:Key="LabelControlHideAreasToVisibilityValueConverter" />
@@ -22,6 +25,7 @@
         <valueConverters:LabelControlOrientationToVisibilityValueConverter x:Key="LabelControlOrientationToVisibilityValueConverter" />
         <valueConverters:LabelControlOrientationToAsteriskMarginValueConverter x:Key="LabelControlOrientationToAsteriskMarginValueConverter" />
         <valueConverters:LabelControlOrientationToInformationIconMarginValueConverter x:Key="LabelControlOrientationToInformationIconMarginValueConverter" />
+        <valueConverters:LabelControlInformationMultiBoolToVisibilityVisibleValueConverter x:Key="LabelControlInformationMultiBoolToVisibilityVisibleValueConverter" />
     </labelControls:LabelControl.Resources>
 
     <labelControls:LabelControl.Style>
@@ -124,19 +128,21 @@
                                 Height="16"
                                 Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={StaticResource LabelControlOrientationToInformationIconMarginValueConverter}}"
                                 VerticalAlignment="Top"
-                                OverrideColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor, FallbackValue=DodgerBlue}"
+                                OverrideColor="{Binding ElementName=Lc, Path=InformationColor}"
                                 Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg">
                                 <atc:SvgImage.ToolTip>
                                     <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                                     <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" Style="{StaticResource AtcApps.Styles.ToolTip}">
-                                        <StackPanel>
-                                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationText}" />
+                                        <StackPanel Orientation="Vertical">
+                                            <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationText}" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationText, Converter={StaticResource StringNullOrEmptyToVisibilityCollapsedValueConverter}}" />
+                                            <ContentControl Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationContent}" />
+                                            <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                                         </StackPanel>
                                     </ToolTip>
                                 </atc:SvgImage.ToolTip>
                                 <atc:SvgImage.Visibility>
-                                    <MultiBinding Converter="{StaticResource MultiBoolToVisibilityVisibleValueConverter}">
+                                    <MultiBinding Converter="{StaticResource LabelControlInformationMultiBoolToVisibilityVisibleValueConverter}">
                                         <Binding
                                             Converter="{StaticResource LabelControlHideAreasToBoolValueConverter}"
                                             ConverterParameter="{x:Static labelControls:LabelControlHideAreasType.Information}"
@@ -145,6 +151,10 @@
                                         <Binding
                                             Converter="{StaticResource StringNullOrEmptyToInverseBoolValueConverter}"
                                             Path="InformationText"
+                                            RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding
+                                            Converter="{StaticResource IsNotNullValueConverter}"
+                                            Path="InformationContent"
                                             RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </atc:SvgImage.Visibility>
