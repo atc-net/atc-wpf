@@ -19,6 +19,7 @@
     <labelControls:LabelContent
         HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+        InformationContent="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationContent}"
         InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
         IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
         IsTabStop="False"

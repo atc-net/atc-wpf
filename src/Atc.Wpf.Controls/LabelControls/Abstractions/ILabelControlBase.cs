@@ -24,6 +24,8 @@ public interface ILabelControlBase
 
     string InformationText { get; set; }
 
+    object? InformationContent { get; set; }
+
     Color InformationColor { get; set; }
 
     string GetFullIdentifier();
