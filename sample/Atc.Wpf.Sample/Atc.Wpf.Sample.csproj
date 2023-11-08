@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.380" />
+    <PackageReference Include="Atc" Version="2.0.386" />
     <PackageReference Include="ControlzEx" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0-preview.6.23329.7" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0-preview.6.23329.7" />
