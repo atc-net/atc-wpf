@@ -50,10 +50,11 @@ public interface IViewModelBase : IObservableObject, ICleanup
     /// a moment to refresh / update the sate on the a Busy-Indicator.<br />
     /// </summary>
     /// <param name="value">The value to set <see cref="IsBusy"/> property.</param>
+    /// <param name="delayInMs">The delay in millisecond.</param>
     /// <remarks>
     /// How to use: <code>await SetIsBusy(value: true).ConfigureAwait(false);</code>
     /// </remarks>
-    public Task SetIsBusy(bool value);
+    public Task SetIsBusy(bool value, ushort delayInMs = 1);
 
     /// <summary>
     /// Broadcasts the specified old value.
