@@ -109,12 +109,12 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
     protected IMessenger MessengerInstance { get; init; }
 
     /// <inheritdoc />
-    public Task SetIsBusy(bool value)
+    public Task SetIsBusy(bool value, ushort delayInMs = 1)
     {
         IsBusy = value;
 
         // Give the UI a moment to refresh - show BusyIndicator.
-        return Task.Delay(1, CancellationToken.None);
+        return Task.Delay(delayInMs, CancellationToken.None);
     }
 
     /// <inheritdoc />
