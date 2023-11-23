@@ -21,9 +21,8 @@ public static class GlobalizationHelper
         ArgumentNullException.ThrowIfNull(resxName);
 
         // ReSharper disable once InlineOutVariableDeclaration
-        WeakReference? reference;
         ResourceManager? resourceManager = null;
-        if (ResourceManagers.TryGetValue(resxName, out reference))
+        if (ResourceManagers.TryGetValue(resxName, out var reference))
         {
             resourceManager = reference.Target as ResourceManager;
 
