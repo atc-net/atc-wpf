@@ -14,14 +14,14 @@ public class MainWindowViewModelBaseTests
     [InlineData(true, false, "IsSelected")]
     [InlineData(true, false, "WindowState")]
     [SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "OK.")]
-    public void RaisePropertyChanged(bool expected, bool expectedAsEmpty, string propertyName)
+    public void RaisePropertyChanged(bool expected, bool expectedAsEmpty, string? propertyName)
     {
         // Arrange
         var sut = new TestMainWindowViewModelBase();
         var actual = false;
         sut.PropertyChanged += (_, e) =>
         {
-            actual = TestHelper.HandlePropertyChangedEventArgs(e, expectedAsEmpty, propertyName);
+            actual = TestHelper.HandlePropertyChangedEventArgs(e, expectedAsEmpty, propertyName!);
         };
 
         // Act

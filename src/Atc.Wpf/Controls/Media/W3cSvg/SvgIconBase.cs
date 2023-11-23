@@ -115,7 +115,7 @@ public abstract class SvgIconBase : MarkupExtension
                 }
 
             case "pack":
-                var svgStreamInfo = svgSource.ToString().IndexOf("siteoforigin", StringComparison.OrdinalIgnoreCase) != -1
+                var svgStreamInfo = svgSource.ToString().Contains("siteoforigin", StringComparison.OrdinalIgnoreCase)
                     ? Application.GetRemoteStream(svgSource)
                     : Application.GetResourceStream(svgSource);
 

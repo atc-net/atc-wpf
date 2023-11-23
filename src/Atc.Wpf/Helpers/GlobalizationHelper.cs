@@ -18,10 +18,7 @@ public static class GlobalizationHelper
     /// <remarks>Caches resource managers to improve performance.</remarks>
     public static ResourceManager GetResourceManager(string resxName)
     {
-        if (resxName is null)
-        {
-            throw new ArgumentNullException(nameof(resxName));
-        }
+        ArgumentNullException.ThrowIfNull(resxName);
 
         // ReSharper disable once InlineOutVariableDeclaration
         WeakReference? reference;

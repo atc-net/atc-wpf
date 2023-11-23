@@ -16,10 +16,7 @@ public static class ControlExtensions
     public static void BeginSpin<T>(this T control)
         where T : FrameworkElement, ISpinable
     {
-        if (control is null)
-        {
-            throw new ArgumentNullException(nameof(control));
-        }
+        ArgumentNullException.ThrowIfNull(control);
 
         var transformGroup = control.RenderTransform as TransformGroup ?? new TransformGroup();
 
@@ -77,10 +74,7 @@ public static class ControlExtensions
     public static void StopSpin<T>(this T control)
         where T : FrameworkElement?, ISpinable?
     {
-        if (control is null)
-        {
-            throw new ArgumentNullException(nameof(control));
-        }
+        ArgumentNullException.ThrowIfNull(control);
 
         var spinnerName = GetSpinnerName(control);
         if (control.Resources[spinnerName] is not Storyboard storyboard)
@@ -100,10 +94,7 @@ public static class ControlExtensions
     public static void SetRotation<T>(this T control)
         where T : FrameworkElement, IRotatable
     {
-        if (control is null)
-        {
-            throw new ArgumentNullException(nameof(control));
-        }
+        ArgumentNullException.ThrowIfNull(control);
 
         var transformGroup = control.RenderTransform as TransformGroup ?? new TransformGroup();
 
@@ -128,10 +119,7 @@ public static class ControlExtensions
     public static void SetFlipOrientation<T>(this T control)
         where T : FrameworkElement, IFlippable
     {
-        if (control is null)
-        {
-            throw new ArgumentNullException(nameof(control));
-        }
+        ArgumentNullException.ThrowIfNull(control);
 
         var transformGroup = control.RenderTransform as TransformGroup ?? new TransformGroup();
 

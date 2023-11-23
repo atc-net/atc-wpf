@@ -8,7 +8,7 @@ public class ObjectNotNullToVisibilityVisibleValueConverterTests
     [InlineData(Visibility.Collapsed, null)]
     [InlineData(Visibility.Visible, true)]
     [InlineData(Visibility.Visible, "Hello")]
-    public void Convert(Visibility expected, object input)
+    public void Convert(Visibility expected, object? input)
         => Assert.Equal(
             expected,
             converter.Convert(input, targetType: null, parameter: null, culture: null));
@@ -26,7 +26,7 @@ public class ObjectNotNullToVisibilityVisibleValueConverterTests
     [InlineData(Visibility.Collapsed, null, Visibility.Visible)]
     [InlineData(Visibility.Visible, true, Visibility.Visible)]
     [InlineData(Visibility.Visible, "Hello", Visibility.Visible)]
-    public void Convert_Parameter(Visibility expected, object input, object parameter)
+    public void Convert_Parameter(Visibility expected, object? input, object? parameter)
         => Assert.Equal(
             expected,
             converter.Convert(input, targetType: null, parameter, culture: null));

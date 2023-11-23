@@ -142,10 +142,7 @@ public class FontAwesomeRegular : TextBlock, ISpinable, IRotatable, IFlippable
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d == null)
-        {
-            throw new ArgumentNullException(nameof(d));
-        }
+        ArgumentNullException.ThrowIfNull(d);
 
         if (d is not FontAwesomeRegular fontAwesome ||
             fontAwesome.Spin ||

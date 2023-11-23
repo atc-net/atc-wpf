@@ -77,9 +77,9 @@ public partial class App
         DispatcherUnhandledExceptionEventArgs e)
     {
         var exceptionMessage = e.Exception.GetMessage(includeInnerMessage: true);
-        if (exceptionMessage.IndexOf(
+        if (exceptionMessage.Contains(
                 "BindingExpression:Path=HorizontalContentAlignment; DataItem=null; target element is 'ComboBoxItem'",
-                StringComparison.Ordinal) != -1)
+                StringComparison.Ordinal))
         {
             e.Handled = true;
             return;

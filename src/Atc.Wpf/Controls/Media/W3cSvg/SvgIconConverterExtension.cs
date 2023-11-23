@@ -194,7 +194,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             }
 
             svgPath = inputParameter;
-            if (inputParameter.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            if (inputParameter.StartsWith('/'))
             {
                 svgPath = svgPath.TrimStart('/');
             }

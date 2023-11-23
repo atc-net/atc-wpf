@@ -40,10 +40,7 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
     public void AddRange(
         IEnumerable<T> list)
     {
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
+        ArgumentNullException.ThrowIfNull(list);
 
         suppressNotification = true;
         foreach (var item in list)

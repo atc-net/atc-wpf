@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class TextShape : Shape
@@ -16,7 +17,7 @@ internal sealed class TextShape : Shape
         Y = SvgXmlUtil.AttrValue(node, "y", 0);
         Text = node.InnerText;
         GetTextStyle();
-        if (node.InnerXml.IndexOf('<', StringComparison.Ordinal) != -1)
+        if (node.InnerXml.Contains('<', StringComparison.Ordinal))
         {
             TextSpan = ParseTSpan(svg, node.InnerXml);
         }
@@ -110,7 +111,7 @@ internal sealed class TextShape : Shape
             return Parse(svg, text, ref curPos, parent: null, root);
         }
 
-        public void Print(Element tag, string indent)
+        public static void Print(Element tag, string indent)
         {
             ArgumentNullException.ThrowIfNull(tag);
 

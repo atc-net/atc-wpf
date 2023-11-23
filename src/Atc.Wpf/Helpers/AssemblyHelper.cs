@@ -4,10 +4,7 @@ public static class AssemblyHelper
 {
     public static Assembly? FindResourceAssembly(string resxName)
     {
-        if (resxName is null)
-        {
-            throw new ArgumentNullException(nameof(resxName));
-        }
+        ArgumentNullException.ThrowIfNull(resxName);
 
         var assembly = Assembly.GetEntryAssembly();
 
