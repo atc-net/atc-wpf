@@ -507,6 +507,8 @@ csharp_style_prefer_index_operator = false                                      
 csharp_style_prefer_range_operator = false                                      # IDE0057
 
 dotnet_diagnostic.CA1854.severity = none           # Prefer a 'TryGetValue' call over a Dictionary indexer access guarded by a 'ContainsKey' check to avoid double lookup
+dotnet_diagnostic.CA1859.severity = none           # Change type of field 'XXX' from 'XXX' to 'YYY' for improved performance
+dotnet_diagnostic.CA1861.severity = none           # Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array
 
 dotnet_diagnostic.MA0011.severity = none           # Use an overload of 'ToString' that has a 'System.IFormatProvider' parameter
 dotnet_diagnostic.MA0131.severity = none           # ArgumentNullException.ThrowIfNull should not be used with non-nullable types
