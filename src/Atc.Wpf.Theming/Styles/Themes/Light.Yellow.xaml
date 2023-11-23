@@ -470,7 +470,7 @@
     <Color x:Key="AtcApps.Colors.ThemeForeground2">#FF666666</Color>
     <Color x:Key="AtcApps.Colors.ThemeForeground1">#FF595959</Color>
     <Color x:Key="AtcApps.Colors.ThemeForeground">#FF000000</Color>
-    <Color x:Key="AtcApps.Colors.IdealForeground">Black</Color>
+    <Color x:Key="AtcApps.Colors.IdealForeground">White</Color>
     <Color x:Key="AtcApps.Colors.Gray1">#FF333333</Color>
     <Color x:Key="AtcApps.Colors.Gray2">#FF7F7F7F</Color>
     <Color x:Key="AtcApps.Colors.Gray3">#FF9D9D9D</Color>

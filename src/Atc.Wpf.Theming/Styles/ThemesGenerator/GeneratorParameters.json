@@ -432,8 +432,7 @@
         "AtcApps.Colors.Accent2": "#99FEDE06",
         "AtcApps.Colors.Accent3": "#66FEDE06",
         "AtcApps.Colors.Accent4": "#33FEDE06",
-        "AtcApps.Colors.Highlight": "#FFBBA404",
-        "AtcApps.Colors.IdealForeground": "Black"
+        "AtcApps.Colors.Highlight": "#FFBBA404"
       }
     }
   ]
