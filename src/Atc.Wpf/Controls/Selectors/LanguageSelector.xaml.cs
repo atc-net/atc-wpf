@@ -111,6 +111,11 @@ public partial class LanguageSelector
 
     private void PopulateDataOnLoaded()
     {
+        if (Items.Count > 0)
+        {
+            return;
+        }
+
         Items.SuppressOnChangedNotification = true;
 
         var cultures = GetCultures();
@@ -227,7 +232,7 @@ public partial class LanguageSelector
 
         for (var i = 0; i < CbLanguages.Items.Count; i++)
         {
-            var item = (LanguageItem)CbLanguages.Items[i];
+            var item = (LanguageItem)CbLanguages.Items[i]!;
             if (SelectedKey == item.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo))
             {
                 CbLanguages.SelectedIndex = i;
@@ -342,7 +347,10 @@ public partial class LanguageSelector
             lastKeyChanged.DateTimeDiff(DateTime.Now, DateTimeDiffCompareType.Seconds) > 1)
         {
             lastKeyChanged = DateTime.Now;
-            CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
+            if (CultureManager.UiCulture.LCID.ToString(GlobalizationConstants.EnglishCultureInfo) != languageSelector.SelectedKey)
+            {
+                CultureManager.UiCulture = new CultureInfo(NumberHelper.ParseToInt(languageSelector.SelectedKey));
+            }
         }
     }
 
