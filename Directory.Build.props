@@ -20,11 +20,11 @@
 
   <PropertyGroup Label="Compile settings">
     <Nullable>enable</Nullable>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1573,1591,1712,CA1014,MC3074,NU5104</NoWarn>
+    <NoWarn>1573,1591,1712,CA1014,SA1516,CA1812,MC3074,NU5104</NoWarn>
 
     <!-- Used by code coverage -->
     <DebugType>full</DebugType>
@@ -32,9 +32,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Analyzer settings">
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisLevel>latest-All</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
