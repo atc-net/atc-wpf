@@ -75,6 +75,10 @@
             Header="GroupBox"
             IsExpanded="True"
             SamplePath="Layout.GroupBoxView" />
+        <atc:SampleTreeViewItem
+            Header="GridSplitter"
+            IsExpanded="True"
+            SamplePath="Layout.GridSplitterView" />
     </TreeViewItem>
     <TreeViewItem Header="Misc" IsExpanded="True">
         <TreeViewItem
@@ -117,10 +121,10 @@
             Header="TextBlock"
             IsExpanded="True"
             SamplePath="Misc.TextBlockView" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="ToolBar"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.ToolBarView" />
         <atc:SampleTreeViewItem
             Header="TreeView"
             IsExpanded="True"

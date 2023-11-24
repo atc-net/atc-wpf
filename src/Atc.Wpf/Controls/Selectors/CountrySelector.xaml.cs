@@ -110,6 +110,11 @@ public partial class CountrySelector
 
     private void PopulateDataOnLoaded()
     {
+        if (Items.Count > 0)
+        {
+            return;
+        }
+
         Items.SuppressOnChangedNotification = true;
 
         var cultures = GetCultures();
@@ -227,7 +232,7 @@ public partial class CountrySelector
 
         for (var i = 0; i < CbCountries.Items.Count; i++)
         {
-            var item = (CountryItem)CbCountries.Items[i];
+            var item = (CountryItem)CbCountries.Items[i]!;
             if (SelectedKey == item.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo))
             {
                 CbCountries.SelectedIndex = i;

@@ -12,10 +12,7 @@ public class JsonColorToHexConverter : JsonConverter<Color>
 
     public override void Write(Utf8JsonWriter writer, Color value, JsonSerializerOptions options)
     {
-        if (writer is null)
-        {
-            throw new ArgumentNullException(nameof(writer));
-        }
+        ArgumentNullException.ThrowIfNull(writer);
 
         if (string.IsNullOrEmpty(value.ToString(GlobalizationConstants.EnglishCultureInfo)))
         {

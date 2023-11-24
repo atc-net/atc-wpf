@@ -9,10 +9,7 @@ public sealed class StandardNumericFormatTypeToFormatStringValueConverter : IVal
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         var formatType = Enum<StandardNumericFormatType>.Parse(value.ToString()!, ignoreCase: false);
 

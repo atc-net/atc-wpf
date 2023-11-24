@@ -115,7 +115,7 @@ public abstract class SvgIconBase : MarkupExtension
                 }
 
             case "pack":
-                var svgStreamInfo = svgSource.ToString().IndexOf("siteoforigin", StringComparison.OrdinalIgnoreCase) != -1
+                var svgStreamInfo = svgSource.ToString().Contains("siteoforigin", StringComparison.OrdinalIgnoreCase)
                     ? Application.GetRemoteStream(svgSource)
                     : Application.GetResourceStream(svgSource);
 
@@ -271,17 +271,13 @@ public abstract class SvgIconBase : MarkupExtension
         }
         catch (Exception ex)
         {
-            if (asm is null)
-            {
-                asm = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                        where !assembly.IsDynamic
-                        let assemblyName = Path.GetFileName(assembly.Location).Trim()
-                        where assemblyName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)
-                              && !string.Equals(assemblyName, "XDesProc.exe", StringComparison.OrdinalIgnoreCase)
-                        select assembly
-                    )
-                    .FirstOrDefault();
-            }
+            asm ??= (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                    where !assembly.IsDynamic
+                    let assemblyName = Path.GetFileName(assembly.Location).Trim()
+                    where assemblyName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)
+                          && !string.Equals(assemblyName, "XDesProc.exe", StringComparison.OrdinalIgnoreCase)
+                    select assembly
+                ).FirstOrDefault();
 
             Trace.TraceError(ex.ToString());
         }

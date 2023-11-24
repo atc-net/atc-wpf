@@ -169,7 +169,7 @@ public sealed class SvgIconExtension : SvgIconBase
             }
 
             tmp = svgPath;
-            if (svgPath.StartsWith("/", StringComparison.OrdinalIgnoreCase))
+            if (svgPath.StartsWith('/'))
             {
                 tmp = tmp.TrimStart('/');
             }

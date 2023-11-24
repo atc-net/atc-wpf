@@ -9,7 +9,7 @@ public class BoolToWidthValueConverterTests
     [InlineData(double.NaN, true, null)]
     [InlineData(10, true, 10)]
     [InlineData(double.NaN, true, "Auto")]
-    public void Convert(double expected, bool input, object parameter)
+    public void Convert(double expected, bool input, object? parameter)
         => Assert.Equal(
             expected,
             converter.Convert(input, targetType: null, parameter, culture: null));

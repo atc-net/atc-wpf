@@ -13,6 +13,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ContextMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/DatePicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Expander.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/GridSplitter.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/GroupBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ListBox.xaml" />
@@ -30,6 +31,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolBarTray.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolTip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ValidationError.xaml" />
@@ -49,6 +51,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.ContextMenu}" TargetType="{x:Type ContextMenu}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.DatePicker}" TargetType="{x:Type DatePicker}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Expander}" TargetType="{x:Type Expander}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.GridSplitter}" TargetType="{x:Type GridSplitter}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GroupBox}" TargetType="{x:Type GroupBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Label}" TargetType="{x:Type Label}" />
@@ -72,6 +75,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.TabControl}" TargetType="{x:Type TabControl}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TabItem}" TargetType="{x:Type TabItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToolBar}" TargetType="{x:Type ToolBar}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToolBarTray}" TargetType="{x:Type ToolBarTray}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToolTip}" TargetType="{x:Type ToolTip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type TreeView}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type TreeViewItem}" />

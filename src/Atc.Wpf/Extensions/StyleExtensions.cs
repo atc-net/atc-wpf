@@ -7,15 +7,8 @@ public static class StyleExtensions
         this Style style1,
         Style style2)
     {
-        if (style1 == null)
-        {
-            throw new ArgumentNullException(nameof(style1));
-        }
-
-        if (style2 == null)
-        {
-            throw new ArgumentNullException(nameof(style2));
-        }
+        ArgumentNullException.ThrowIfNull(style1);
+        ArgumentNullException.ThrowIfNull(style2);
 
         if (style1.TargetType.IsAssignableFrom(style2.TargetType))
         {

@@ -74,6 +74,7 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         var list = new List<ColorItem>();
         foreach (var item in ThemeManager.Current
                      .Themes
+                     .Where(x => !x.ColorScheme.Contains('.', StringComparison.Ordinal))
                      .GroupBy(x => x.ColorScheme, StringComparer.Ordinal)
                      .Select(x => x.First())
                      .OrderBy(x => x.ColorScheme, StringComparer.Ordinal))
