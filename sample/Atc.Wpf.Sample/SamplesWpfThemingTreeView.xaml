@@ -121,10 +121,10 @@
             Header="TextBlock"
             IsExpanded="True"
             SamplePath="Misc.TextBlockView" />
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="ToolBar"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="Misc.ToolBarView" />
         <atc:SampleTreeViewItem
             Header="TreeView"
             IsExpanded="True"

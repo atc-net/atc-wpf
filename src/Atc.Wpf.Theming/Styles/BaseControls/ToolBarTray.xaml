@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Base  -->
+    <Style x:Key="AtcApps.Styles.ToolBarTray" TargetType="{x:Type ToolBarTray}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
+    </Style>
+
+</ResourceDictionary>

@@ -10,17 +10,23 @@
   <ItemGroup>
     <None Remove="Assets\a.svg" />
     <None Remove="Assets\eggeaster.svg" />
+    <None Remove="Assets\error.png" />
+    <None Remove="Assets\information2.png" />
     <None Remove="Assets\ok.png" />
     <None Remove="Assets\road.jpg" />
     <None Remove="Assets\shout.svg" />
+    <None Remove="Assets\warning.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\a.svg" />
     <Resource Include="Assets\eggeaster.svg" />
+    <Resource Include="Assets\error.png" />
+    <Resource Include="Assets\information2.png" />
     <Resource Include="Assets\ok.png" />
     <Resource Include="Assets\road.jpg" />
     <Resource Include="Assets\shout.svg" />
+    <Resource Include="Assets\warning.png" />
   </ItemGroup>
 
   <ItemGroup>

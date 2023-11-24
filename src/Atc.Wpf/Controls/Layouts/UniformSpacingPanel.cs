@@ -3,12 +3,7 @@ namespace Atc.Wpf.Controls.Layouts;
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
 public class UniformSpacingPanel : Panel
 {
-    private Orientation orientation;
-
-    public UniformSpacingPanel()
-    {
-        orientation = Orientation.Horizontal;
-    }
+    private Orientation orientation = Orientation.Horizontal;
 
     public static readonly DependencyProperty OrientationProperty = StackPanel.OrientationProperty.AddOwner(
         typeof(UniformSpacingPanel),
