@@ -5,28 +5,30 @@
 This is a base libraries for building WPF application with the MVVM design pattern.
 
 # Table of contents
-- [Requirements](#requirements)
-- [NuGet Packages Provided in this Repository](#nuget-packages-provided-in-this-repository)
-- [Demonstration Application](#demonstration-application)
-  - [Playground and Viewer for a Given Control or Functionality](#playground-and-viewer-for-a-given-gontrol-or-functionality)
-  - [Initial glimpse at the sample application, which use atc-wpf libraries](#initial-glimpse-at-the-sample-application)
-- [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
-- [MVVM](#mvvm)
-- [Translation](#translation)
-- [ValueConverters](#valueconverters)
-  - [ValueConverters - Bool to X](#valueconverters-bool-to-x)
-  - [ValueConverters - String to X](#valueconverters-string-to-x)
-  - [ValueConverters - ICollection to X](#valueconverters-icollection-to-x)
-  - [ValueConverters - Object to X](#valueconverters-object-to-x)
-  - [ValueConverters - Markup to X](#valueconverters-markup-to-x)
-  - [ValueConverters - Others to X](#valueconverters-others-to-x)
-  - [ValueConverters - Math](#valueconverters-math)
-- [Media - ShaderEffects](#media-shadereffects)
-- [How to contribute](#how-to-contribute)
+- [ATC.Net WPF](#atcnet-wpf)
+- [Table of contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [NuGet Packages Provided in this Repository](#nuget-packages-provided-in-this-repository)
+  - [Demonstration Application](#demonstration-application)
+    - [Playground and Viewer for a Given Control or Functionality](#playground-and-viewer-for-a-given-control-or-functionality)
+    - [Initial glimpse at the demonstration application](#initial-glimpse-at-the-demonstration-application)
+  - [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
+  - [MVVM](#mvvm)
+  - [Translation](#translation)
+  - [ValueConverters](#valueconverters)
+    - [ValueConverters - Bool to X](#valueconverters---bool-to-x)
+    - [ValueConverters - String to X](#valueconverters---string-to-x)
+    - [ValueConverters - ICollection to X](#valueconverters---icollection-to-x)
+    - [ValueConverters - Object to X](#valueconverters---object-to-x)
+    - [ValueConverters - Markup to X](#valueconverters---markup-to-x)
+    - [ValueConverters - Others to X](#valueconverters---others-to-x)
+    - [ValueConverters - Math](#valueconverters---math)
+  - [Media - ShaderEffects](#media---shadereffects)
+  - [How to contribute](#how-to-contribute)
 
 ## Requirements
 
-[.NET 7 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+[.NET 8 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 ## NuGet Packages Provided in this Repository
 
