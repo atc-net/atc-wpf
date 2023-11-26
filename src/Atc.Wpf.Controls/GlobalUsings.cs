@@ -6,6 +6,7 @@ global using System.Data;
 global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
+global using System.IO;
 global using System.Net;
 global using System.Net.Sockets;
 global using System.Reflection;
@@ -54,5 +55,7 @@ global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 
 global using ControlzEx.Theming;
+
+global using Microsoft.Win32;
 
 global using Newtonsoft.Json.Linq;

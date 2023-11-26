@@ -2,7 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:controls="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:controlzex="urn:controlzex"
     xmlns:windows="clr-namespace:Atc.Wpf.Theming.Controls.Windows"
     xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
@@ -123,7 +122,6 @@
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}, Path=IsCloseButtonEnabled}" Value="True" />
                     <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}, Path=IsAnyDialogOpen}" Value="True" />
-                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}, Path=IsCloseButtonEnabledWithDialog}" Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter TargetName="PART_Close" Property="IsEnabled" Value="False" />
             </MultiDataTrigger>
@@ -269,7 +267,6 @@
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}, Path=IsCloseButtonEnabled}" Value="True" />
                     <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}, Path=IsAnyDialogOpen}" Value="True" />
-                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type windows:NiceWindow}}, Path=IsCloseButtonEnabledWithDialog}" Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter TargetName="PART_Close" Property="IsEnabled" Value="False" />
             </MultiDataTrigger>
