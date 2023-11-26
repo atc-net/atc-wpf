@@ -48,6 +48,14 @@
             Header="ToggleSwitch"
             IsExpanded="True"
             SamplePath="BaseControls.ToggleSwitchView" />
+        <atc:SampleTreeViewItem
+            Header="DirectoryPicker"
+            IsExpanded="True"
+            SamplePath="BaseControls.DirectoryPickerView" />
+        <atc:SampleTreeViewItem
+            Header="FilePicker"
+            IsExpanded="True"
+            SamplePath="BaseControls.FilePickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Label Controls" IsExpanded="True">
@@ -90,6 +98,14 @@
                 Header="LabelTimePicker"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelTimePickerView" />
+            <atc:SampleTreeViewItem
+                Header="LabelDirectoryPicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelDirectoryPickerView" />
+            <atc:SampleTreeViewItem
+                Header="LabelFilePicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelFilePickerView" />
         </TreeViewItem>
         <atc:SampleTreeViewItem
             Header="LabelCheckBox"
