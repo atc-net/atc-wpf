@@ -19,16 +19,24 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
-                    <StackPanel Grid.Column="0" Margin="10">
+                    <atc:UniformSpacingPanel
+                        Grid.Column="0"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <atc:DirectoryPicker />
 
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="10">
+                        <atc:DirectoryPicker Title="- Select Directory - " />
+
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <atc:DirectoryPicker />
 
-                    </StackPanel>
+                    </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>

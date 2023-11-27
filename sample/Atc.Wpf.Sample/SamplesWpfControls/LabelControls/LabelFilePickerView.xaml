@@ -19,16 +19,50 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
-                    <StackPanel Grid.Column="0" Margin="10">
+                    <atc:UniformSpacingPanel
+                        Grid.Column="0"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <atc:LabelFilePicker LabelText="MyLabel1" Orientation="Horizontal" />
 
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="10">
+                        <atc:LabelFilePicker
+                            IsMandatory="True"
+                            LabelText="MyLabel2"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelFilePicker
+                            IsMandatory="True"
+                            LabelText="MyLabel3"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True" />
+
+                        <atc:LabelFilePicker
+                            AllowOnlyExisting="True"
+                            IsMandatory="True"
+                            LabelText="MyLabel4"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True" />
+
+                        <atc:LabelFilePicker
+                            AllowOnlyExisting="True"
+                            Filter="Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*"
+                            InitialDirectory="C:\Temp"
+                            IsMandatory="True"
+                            LabelText="MyLabel5"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            UsePreviewPane="True" />
+
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <atc:LabelFilePicker LabelText="MyLabel3" Orientation="Vertical" />
 
-                    </StackPanel>
+                    </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>

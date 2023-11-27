@@ -25,7 +25,16 @@
         ValidationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor}"
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
-        <baseControls:FilePicker />
+        <baseControls:FilePicker
+            AllowOnlyExisting="False"
+            DefaultDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=DefaultDirectory}"
+            Filter="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=Filter}"
+            InitialDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=InitialDirectory}"
+            RootDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=RootDirectory}"
+            ShowClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=ShowClearTextButton}"
+            UsePreviewPane="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=UsePreviewPane}"
+            ValueChanged="OnValueChanged"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=Value}" />
 
     </labelControls:LabelContent>
 

@@ -25,7 +25,13 @@
         ValidationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor}"
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
-        <baseControls:DirectoryPicker />
+        <baseControls:DirectoryPicker
+            DefaultDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=DefaultDirectory}"
+            InitialDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=InitialDirectory}"
+            RootDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=RootDirectory}"
+            ShowClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=ShowClearTextButton}"
+            ValueChanged="OnValueChanged"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=Value}" />
 
     </labelControls:LabelContent>
 
