@@ -526,4 +526,3 @@ dotnet_diagnostic.S6602.severity = none            # "Find" method should be use
 dotnet_diagnostic.S6603.severity = none            # The collection-specific "TrueForAll" method should be used instead of the "All" extension
 dotnet_diagnostic.S6605.severity = none            # Collection-specific "Exists" method should be used instead of the "Any" extension
 dotnet_diagnostic.S6608.severity = none            # Indexing at Count-1 should be used instead of the "Enumerable" extension method "Last"
-
