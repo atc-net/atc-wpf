@@ -23,6 +23,7 @@
                 Height="16"
                 ControlSizeType="ContentToSizeNoStretch"
                 IsTabStop="False"
+                OverrideColor="{DynamicResource AtcApps.Colors.ThemeForeground}"
                 Source="/Atc.Wpf.Controls;component/Resources/Icons/folder.svg" />
         </Button>
     </atc:GridEx>

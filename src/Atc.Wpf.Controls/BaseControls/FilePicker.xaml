@@ -21,7 +21,9 @@
             <atc:SvgImage
                 Width="16"
                 Height="16"
+                ControlSizeType="ContentToSizeNoStretch"
                 IsTabStop="False"
+                OverrideStrokeColor="{DynamicResource AtcApps.Colors.ThemeForeground}"
                 Source="/Atc.Wpf.Controls;component/Resources/Icons/file.svg" />
         </Button>
     </atc:GridEx>
