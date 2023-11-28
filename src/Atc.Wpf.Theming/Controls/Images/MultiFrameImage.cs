@@ -65,7 +65,7 @@ public class MultiFrameImage : Image
         {
             case MultiFrameImageMode.ScaleDownLargerFrame:
                 var minSize = System.Math.Max(RenderSize.Width, RenderSize.Height);
-                var minFrame = frames.FirstOrDefault(f => f.Width >= minSize && f.Height >= minSize) ?? frames.Last();
+                var minFrame = frames.Find(f => f.Width >= minSize && f.Height >= minSize) ?? frames.Last();
                 dc.DrawImage(minFrame, new Rect(0, 0, RenderSize.Width, RenderSize.Height));
                 break;
             case MultiFrameImageMode.NoScaleSmallerFrame:
