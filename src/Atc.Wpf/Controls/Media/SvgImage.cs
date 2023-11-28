@@ -76,6 +76,12 @@ public class SvgImage : Control
         typeof(SvgImage),
         new PropertyMetadata(propertyChangedCallback: null));
 
+    private static readonly DependencyProperty OverrideStrokeColorProperty = DependencyProperty.Register(
+        nameof(OverrideStrokeColor),
+        typeof(Color?),
+        typeof(SvgImage),
+        new PropertyMetadata(propertyChangedCallback: null));
+
     private static readonly DependencyProperty OverrideStrokeWidthProperty = DependencyProperty.Register(
         nameof(OverrideStrokeWidth),
         typeof(double?),
@@ -161,6 +167,12 @@ public class SvgImage : Control
         set => SetValue(OverrideColorProperty, value);
     }
 
+    public Color? OverrideStrokeColor
+    {
+        get => (Color?)GetValue(OverrideStrokeColorProperty);
+        set => SetValue(OverrideStrokeColorProperty, value);
+    }
+
     public double? OverrideStrokeWidth
     {
         get => (double?)GetValue(OverrideStrokeWidthProperty);
@@ -186,6 +198,7 @@ public class SvgImage : Control
         if (svgRender?.Svg is not null)
         {
             svgRender.OverrideColor = OverrideColor;
+            svgRender.OverrideStrokeColor = OverrideStrokeColor;
             var svgDrawing = svgRender.CreateDrawing(svgRender.Svg);
             SetImage(svgDrawing);
         }
@@ -503,8 +516,9 @@ public class SvgImage : Control
         svgRender = new SvgRender
         {
             ExternalFileLoader = ExternalFileLoader,
-            OverrideColor = OverrideColor,
             CustomBrushes = CustomBrushes,
+            OverrideColor = OverrideColor,
+            OverrideStrokeColor = OverrideStrokeColor,
             OverrideStrokeWidth = OverrideStrokeWidth,
             UseAnimations = UseAnimations,
         };

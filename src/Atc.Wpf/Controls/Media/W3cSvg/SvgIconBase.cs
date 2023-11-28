@@ -24,6 +24,8 @@ public abstract class SvgIconBase : MarkupExtension
 
     public Color? OverrideColor { get; set; }
 
+    public Color? OverrideStrokeColor { get; set; }
+
     /// <summary>
     /// Gets or sets the main culture information used for rendering texts.
     /// </summary>
@@ -109,7 +111,7 @@ public abstract class SvgIconBase : MarkupExtension
             case "file":
             case "https":
             case "http":
-                using (var reader = new SvgFileReader(OverrideColor))
+                using (var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor))
                 {
                     return reader.Read(svgSource);
                 }
@@ -130,7 +132,7 @@ public abstract class SvgIconBase : MarkupExtension
                     {
                         using var stream = svgStream;
                         using var zipStream = new GZipStream(svgStream, CompressionMode.Decompress);
-                        using var reader = new SvgFileReader(OverrideColor);
+                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
                         var drawGroup = reader.Read(zipStream);
                         if (drawGroup is not null)
                         {
@@ -140,7 +142,7 @@ public abstract class SvgIconBase : MarkupExtension
                     else
                     {
                         using var stream = svgStream;
-                        using var reader = new SvgFileReader(OverrideColor);
+                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
                         var drawGroup = reader.Read(svgStream);
                         if (drawGroup is not null)
                         {
@@ -167,7 +169,7 @@ public abstract class SvgIconBase : MarkupExtension
                     {
                         using var stream = new MemoryStream(imageBytes);
                         using var zipStream = new GZipStream(stream, CompressionMode.Decompress);
-                        using var reader = new SvgFileReader(OverrideColor);
+                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
                         var drawGroup = reader.Read(zipStream);
                         if (drawGroup is not null)
                         {
@@ -177,7 +179,7 @@ public abstract class SvgIconBase : MarkupExtension
                     else
                     {
                         using var stream = new MemoryStream(imageBytes);
-                        using var reader = new SvgFileReader(OverrideColor);
+                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
                         var drawGroup = reader.Read(stream);
                         if (drawGroup is not null)
                         {

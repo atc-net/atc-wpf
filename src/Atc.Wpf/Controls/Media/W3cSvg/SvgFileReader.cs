@@ -5,12 +5,15 @@ internal sealed class SvgFileReader : IDisposable
 {
     public const string GZipSignature = "H4sI"; // (the Base64 encoded version "1F 8B 08")
 
-    public SvgFileReader(Color? overrideColor)
+    public SvgFileReader(Color? overrideColor, Color? overrideStrokeColor)
     {
         OverrideColor = overrideColor;
+        OverrideStrokeColor = overrideStrokeColor;
     }
 
     private Color? OverrideColor { get; }
+
+    private Color? OverrideStrokeColor { get; }
 
     public DrawingGroup Read(Uri fileUri)
     {
@@ -22,6 +25,7 @@ internal sealed class SvgFileReader : IDisposable
         var svgRender = new SvgRender(new FileSystemLoader())
         {
             OverrideColor = OverrideColor,
+            OverrideStrokeColor = OverrideStrokeColor,
         };
 
         return svgRender.LoadDrawing(fileUri);
@@ -37,6 +41,7 @@ internal sealed class SvgFileReader : IDisposable
         var svgRender = new SvgRender(new FileSystemLoader())
         {
             OverrideColor = OverrideColor,
+            OverrideStrokeColor = OverrideStrokeColor,
         };
 
         return svgRender.LoadDrawing(stream);
