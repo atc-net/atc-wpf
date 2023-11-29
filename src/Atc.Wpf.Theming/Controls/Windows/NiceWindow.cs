@@ -1,4 +1,5 @@
 // ReSharper disable InconsistentNaming
+// ReSharper disable InvertIf
 // ReSharper disable NotAccessedField.Global
 namespace Atc.Wpf.Theming.Controls.Windows;
 
@@ -1080,6 +1081,13 @@ public class NiceWindow : WindowChromeWindow
 
         ThemeManager.Current.ThemeChanged += HandleThemeManagerThemeChanged;
         Unloaded += (_, _) => ThemeManager.Current.ThemeChanged -= HandleThemeManagerThemeChanged;
+
+        if (CornerPreference != ControlzEx.Behaviors.WindowCornerPreference.Default)
+        {
+            var backupCornerPreference = CornerPreference;
+            CornerPreference = ControlzEx.Behaviors.WindowCornerPreference.Default;
+            CornerPreference = backupCornerPreference;
+        }
     }
 
     private void InitializeSettingsBehavior()
