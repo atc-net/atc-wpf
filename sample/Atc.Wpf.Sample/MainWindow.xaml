@@ -12,6 +12,7 @@
     MinWidth="1024"
     MinHeight="768"
     d:DataContext="{d:DesignInstance Type=sample:MainWindowViewModel}"
+    Icon="Assets\atc.png"
     WindowStartupLocation="CenterScreen"
     WindowState="{Binding Path=WindowState}"
     mc:Ignorable="d">
