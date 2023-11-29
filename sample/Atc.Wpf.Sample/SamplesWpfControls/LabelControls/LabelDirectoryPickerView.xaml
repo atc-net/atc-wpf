@@ -45,6 +45,15 @@
                             Orientation="Horizontal"
                             ShowClearTextButton="True" />
 
+                        <atc:LabelDirectoryPicker
+                            AllowOnlyExisting="True"
+                            InitialDirectory="C:\Temp"
+                            IsMandatory="True"
+                            LabelText="MyLabel5"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            WatermarkText="Select a directory" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"

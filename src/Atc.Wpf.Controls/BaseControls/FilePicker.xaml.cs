@@ -76,6 +76,42 @@ public partial class FilePicker
         set => SetValue(ShowClearTextButtonProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
+        typeof(string),
+        typeof(FilePicker),
+        new PropertyMetadata(defaultValue: string.Empty));
+
+    public string WatermarkText
+    {
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(FilePicker),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(FilePicker),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
+    }
+
     public static readonly DependencyProperty AllowOnlyExistingProperty = DependencyProperty.Register(
         nameof(AllowOnlyExisting),
         typeof(bool),

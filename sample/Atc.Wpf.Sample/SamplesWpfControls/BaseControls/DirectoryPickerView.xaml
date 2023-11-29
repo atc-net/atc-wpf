@@ -28,6 +28,8 @@
 
                         <atc:DirectoryPicker Title="- Select Directory - " />
 
+                        <atc:DirectoryPicker Title="- Select Directory - " WatermarkText="Select a directory" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"

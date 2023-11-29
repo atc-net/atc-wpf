@@ -104,6 +104,42 @@ public partial class LabelFilePicker : ILabelFilePicker
         set => SetValue(RootDirectoryProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
+        typeof(string),
+        typeof(LabelFilePicker),
+        new PropertyMetadata(defaultValue: string.Empty));
+
+    public string WatermarkText
+    {
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(LabelFilePicker),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(LabelFilePicker),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
+    }
+
     public event EventHandler<ChangedFileInfoEventArgs>? LostFocusValid;
 
     public event EventHandler<ChangedFileInfoEventArgs>? LostFocusInvalid;
@@ -111,6 +147,12 @@ public partial class LabelFilePicker : ILabelFilePicker
     public LabelFilePicker()
     {
         InitializeComponent();
+    }
+
+    public override bool IsValid()
+    {
+        Validate(this, default!, raiseEvents: false);
+        return string.IsNullOrEmpty(ValidationText);
     }
 
     private void OnValueChanged(

@@ -34,6 +34,9 @@
             ShowClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=ShowClearTextButton}"
             UsePreviewPane="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=UsePreviewPane}"
             ValueChanged="OnValueChanged"
+            WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=WatermarkAlignment}"
+            WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=WatermarkText}"
+            WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=WatermarkTrimming}"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelFilePicker}}, Path=Value}" />
 
     </labelControls:LabelContent>

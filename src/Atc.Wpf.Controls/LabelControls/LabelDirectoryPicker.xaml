@@ -31,6 +31,9 @@
             RootDirectory="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=RootDirectory}"
             ShowClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=ShowClearTextButton}"
             ValueChanged="OnValueChanged"
+            WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=WatermarkAlignment}"
+            WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=WatermarkText}"
+            WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=WatermarkTrimming}"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDirectoryPicker}}, Path=Value}" />
 
     </labelControls:LabelContent>

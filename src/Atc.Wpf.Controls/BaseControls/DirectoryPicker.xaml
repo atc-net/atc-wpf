@@ -13,6 +13,9 @@
         <TextBox
             Grid.Column="0"
             atc:TextBoxHelper.ClearTextButton="{Binding Path=ShowClearTextButton}"
+            atc:TextBoxHelper.Watermark="{Binding Path=WatermarkText}"
+            atc:TextBoxHelper.WatermarkAlignment="{Binding Path=WatermarkAlignment}"
+            atc:TextBoxHelper.WatermarkTrimming="{Binding Path=WatermarkTrimming}"
             Text="{Binding Path=DisplayValue}" />
         <Button
             Grid.Column="2"

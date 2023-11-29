@@ -76,6 +76,42 @@ public partial class DirectoryPicker
         set => SetValue(ShowClearTextButtonProperty, value);
     }
 
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
+        typeof(string),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(defaultValue: string.Empty));
+
+    public string WatermarkText
+    {
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
+    }
+
     public static readonly DependencyProperty DefaultDirectoryProperty = DependencyProperty.Register(
         nameof(DefaultDirectory),
         typeof(string),

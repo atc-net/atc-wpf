@@ -54,6 +54,17 @@
                             ShowClearTextButton="True"
                             UsePreviewPane="True" />
 
+                        <atc:LabelFilePicker
+                            AllowOnlyExisting="True"
+                            Filter="Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*"
+                            InitialDirectory="C:\Temp"
+                            IsMandatory="True"
+                            LabelText="MyLabel6"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            UsePreviewPane="True"
+                            WatermarkText="Select a file" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"
