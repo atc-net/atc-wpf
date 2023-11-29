@@ -182,7 +182,7 @@ public partial class LabelFilePicker : ILabelFilePicker
 
         if (control.Value is not null && control.AllowOnlyExisting && !File.Exists(control.Value.FullName))
         {
-            control.ValidationText = "File don't exist"; // TODO: Translation
+            control.ValidationText = Validations.FileDoNotExist;
             if (raiseEvents)
             {
                 OnLostFocusFireInvalidEvent(control, e);

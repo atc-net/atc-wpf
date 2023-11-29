@@ -147,6 +147,12 @@
   <data name="PleaseWait" xml:space="preserve">
     <value>Please wait</value>
   </data>
+  <data name="SelectDirectory" xml:space="preserve">
+    <value>Select a directory</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Select a file</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>

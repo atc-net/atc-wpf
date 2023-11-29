@@ -150,4 +150,10 @@
   <data name="Minute" xml:space="preserve">
     <value>Minute</value>
   </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Vælg en fil</value>
+  </data>
+  <data name="SelectDirectory" xml:space="preserve">
+    <value>Vælg en mappe</value>
+  </data>
 </root>

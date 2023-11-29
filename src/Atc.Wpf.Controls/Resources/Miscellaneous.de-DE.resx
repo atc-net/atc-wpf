@@ -150,4 +150,10 @@
   <data name="Minute" xml:space="preserve">
     <value>Minute</value>
   </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Wählen Sie eine Datei aus</value>
+  </data>
+  <data name="SelectDirectory" xml:space="preserve">
+    <value>Wählen Sie ein Verzeichnis aus</value>
+  </data>
 </root>

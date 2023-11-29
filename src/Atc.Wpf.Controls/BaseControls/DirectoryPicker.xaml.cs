@@ -230,7 +230,7 @@ public partial class DirectoryPicker
         {
             Multiselect = false,
             Title = string.IsNullOrEmpty(Title)
-                ? "Select Directory" // TODO: Translation
+                ? Miscellaneous.SelectDirectory
                 : Title,
             DefaultDirectory = DefaultDirectory,
             InitialDirectory = InitialDirectory,

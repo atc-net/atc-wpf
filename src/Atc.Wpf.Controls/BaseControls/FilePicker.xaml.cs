@@ -266,7 +266,7 @@ public partial class FilePicker
         {
             Multiselect = false,
             Title = string.IsNullOrEmpty(Title)
-                ? "Select File" // TODO: Translation
+                ? Miscellaneous.SelectFile
                 : Title,
             DefaultDirectory = DefaultDirectory,
             InitialDirectory = InitialDirectory,

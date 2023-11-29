@@ -158,7 +158,7 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
 
         if (control.Value is not null && control.AllowOnlyExisting && !Directory.Exists(control.Value.FullName))
         {
-            control.ValidationText = "Directory don't exist"; // TODO: Translation
+            control.ValidationText = Validations.DirectoryDoNotExist;
             if (raiseEvents)
             {
                 OnLostFocusFireInvalidEvent(control, e);
