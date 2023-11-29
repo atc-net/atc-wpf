@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Assets\a.svg" />
+    <None Remove="Assets\atc.png" />
     <None Remove="Assets\eggeaster.svg" />
     <None Remove="Assets\error.png" />
     <None Remove="Assets\information2.png" />
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\a.svg" />
+    <Resource Include="Assets\atc.png" />
     <Resource Include="Assets\eggeaster.svg" />
     <Resource Include="Assets\error.png" />
     <Resource Include="Assets\information2.png" />
@@ -30,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.386" />
+    <PackageReference Include="Atc" Version="2.0.395" />
     <PackageReference Include="ControlzEx" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />

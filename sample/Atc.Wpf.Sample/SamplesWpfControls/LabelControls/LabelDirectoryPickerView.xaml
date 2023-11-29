@@ -19,16 +19,50 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
-                    <StackPanel Grid.Column="0" Margin="10">
+                    <atc:UniformSpacingPanel
+                        Grid.Column="0"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <atc:LabelDirectoryPicker LabelText="MyLabel1" Orientation="Horizontal" />
 
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="10">
+                        <atc:LabelDirectoryPicker
+                            IsMandatory="True"
+                            LabelText="MyLabel2"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelDirectoryPicker
+                            IsMandatory="True"
+                            LabelText="MyLabel3"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True" />
+
+                        <atc:LabelDirectoryPicker
+                            AllowOnlyExisting="True"
+                            InitialDirectory="C:\Temp"
+                            IsMandatory="True"
+                            LabelText="MyLabel4"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True" />
+
+                        <atc:LabelDirectoryPicker
+                            AllowOnlyExisting="True"
+                            InitialDirectory="C:\Temp"
+                            IsMandatory="True"
+                            LabelText="MyLabel5"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            WatermarkText="Select a directory" />
+
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        Spacing="10">
 
                         <atc:LabelDirectoryPicker LabelText="MyLabel3" Orientation="Vertical" />
 
-                    </StackPanel>
+                    </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>

@@ -92,4 +92,68 @@ public class LabelControlsFormToModelFactoryTests
         Assert.NotNull(actual.PrimaryContactPerson.Address.Country);
         Assert.Equal("da-DK", actual.PrimaryContactPerson.Address.Country.Name);
     }
+
+    [StaFact]
+    public void Create_DriveItem_From_KeyValues()
+    {
+        // Arrange
+        var keyValues = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["DriveItem.Name"] = "Hallo",
+            ["DriveItem.Directory"] = new DirectoryInfo(@"C:\Temp"),
+            ["DriveItem.File"] = new FileInfo(@"C:\Temp\test.txt"),
+        };
+
+        // Act
+        var actual = LabelControlsFormToModelFactory.Create<DriveItem>(keyValues);
+
+        // Arrange
+        Assert.NotNull(actual);
+        Assert.Equal(@"Hallo", actual.Name);
+        Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
+        Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
+    }
+
+    [StaFact]
+    public void Create_DriveItem()
+    {
+        // Arrange
+        var driveItem = new DriveItem();
+
+        var labelControls = ModelToLabelControlExtractor.Extract(driveItem);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+
+        foreach (var row in labelControlsForm.Rows!)
+        {
+            foreach (var column in row.Columns!)
+            {
+                foreach (var labelControl in column.LabelControls)
+                {
+                    switch (labelControl)
+                    {
+                        case LabelTextBox { Identifier: "Name" } labelTextBox:
+                            labelTextBox.Text = "Hallo";
+                            break;
+                        case LabelDirectoryPicker { Identifier: "Directory" } labelDirectoryPicker:
+                            labelDirectoryPicker.Value = new DirectoryInfo(@"C:\Temp");
+                            break;
+                        case LabelFilePicker { Identifier: "File" } labelFilePicker:
+                            labelFilePicker.Value = new FileInfo(@"C:\Temp\test.txt");
+                            break;
+                    }
+                }
+            }
+        }
+
+        // Act
+        var actual = LabelControlsFormToModelFactory.Create<DriveItem>(labelControlsForm);
+
+        // Arrange
+        Assert.NotNull(actual);
+        Assert.Equal(@"Hallo", actual.Name);
+        Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
+        Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
+    }
 }

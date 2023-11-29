@@ -202,8 +202,8 @@ public partial class WellKnownColorSelector
         var selectedValue = CbColors.SelectedValue.ToString();
         for (var i = 0; i < CbColors.Items.Count; i++)
         {
-            var item = (ColorItem)CbColors.Items[i];
-            if (item.Name == selectedValue)
+            if (CbColors.Items[i] is ColorItem item &&
+                item.Name == selectedValue)
             {
                 CbColors.SelectedIndex = i;
                 if (!processingUiCultureChanged)

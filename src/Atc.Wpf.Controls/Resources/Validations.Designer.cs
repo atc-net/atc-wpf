@@ -61,11 +61,29 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory don&apos;t exist.
+        /// </summary>
+        public static string DirectoryDoNotExist {
+            get {
+                return ResourceManager.GetString("DirectoryDoNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field is required.
         /// </summary>
         public static string FieldIsRequired {
             get {
                 return ResourceManager.GetString("FieldIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File don&apos;t exist.
+        /// </summary>
+        public static string FileDoNotExist {
+            get {
+                return ResourceManager.GetString("FileDoNotExist", resourceCulture);
             }
         }
         

@@ -18,6 +18,8 @@ internal sealed class SvgRender
 
     public Color? OverrideColor { get; set; }
 
+    public Color? OverrideStrokeColor { get; set; }
+
     public double? OverrideStrokeWidth { get; set; }
 
     private Dictionary<string, Brush>? customBrushes;
@@ -108,7 +110,11 @@ internal sealed class SvgRender
             }
 
             var brush = stroke.StrokeBrush(Svg, this, shape, shape.Opacity, geometry.Bounds);
-            if (OverrideColor is not null)
+            if (OverrideStrokeColor is not null)
+            {
+                brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideStrokeColor.Value.R, OverrideStrokeColor.Value.G, OverrideStrokeColor.Value.B));
+            }
+            else if (OverrideColor is not null)
             {
                 brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
             }

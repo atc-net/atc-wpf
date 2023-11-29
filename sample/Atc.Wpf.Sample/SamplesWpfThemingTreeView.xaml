@@ -81,10 +81,10 @@
             SamplePath="Layout.GridSplitterView" />
     </TreeViewItem>
     <TreeViewItem Header="Misc" IsExpanded="True">
-        <TreeViewItem
+        <atc:SampleTreeViewItem
             Header="Expander"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsEnabled="True"
+            SamplePath="Misc.ExpanderView" />
         <atc:SampleTreeViewItem
             Header="Label"
             IsExpanded="True"

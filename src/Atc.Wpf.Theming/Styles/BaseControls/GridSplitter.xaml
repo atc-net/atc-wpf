@@ -3,7 +3,8 @@
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.GridSplitter" TargetType="{x:Type GridSplitter}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground1}" />
-        <Setter Property="Height" Value="8" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type GridSplitter}">
@@ -12,28 +13,77 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <Canvas
-                            Width="50"
-                            Height="6"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
+                            x:Name="PART_Canvas"
                             RenderOptions.EdgeMode="Aliased"
                             UseLayoutRounding="True">
+                            <!--  Lines for horizontal splitter  -->
                             <Line
+                                x:Name="HorizontalLine1"
                                 Stroke="{DynamicResource AtcApps.Brushes.ThemeForeground7}"
                                 StrokeThickness="1"
                                 X1="0"
                                 X2="50"
-                                Y1="1"
-                                Y2="1" />
+                                Y1="2"
+                                Y2="2" />
                             <Line
+                                x:Name="HorizontalLine2"
                                 Stroke="{DynamicResource AtcApps.Brushes.ThemeForeground7}"
                                 StrokeThickness="1"
                                 X1="0"
                                 X2="50"
-                                Y1="5"
-                                Y2="5" />
+                                Y1="6"
+                                Y2="6" />
+                            <!--  Lines for vertical splitter  -->
+                            <Line
+                                x:Name="VerticalLine1"
+                                Stroke="{DynamicResource AtcApps.Brushes.ThemeForeground7}"
+                                StrokeThickness="1"
+                                X1="2"
+                                X2="2"
+                                Y1="0"
+                                Y2="50" />
+                            <Line
+                                x:Name="VerticalLine2"
+                                Stroke="{DynamicResource AtcApps.Brushes.ThemeForeground7}"
+                                StrokeThickness="1"
+                                X1="6"
+                                X2="6"
+                                Y1="0"
+                                Y2="50" />
                         </Canvas>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ResizeDirection" Value="Auto">
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="PART_Canvas" Property="Width" Value="50" />
+                            <Setter TargetName="PART_Canvas" Property="Height" Value="8" />
+                            <Setter TargetName="HorizontalLine1" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="HorizontalLine2" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="VerticalLine1" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="VerticalLine2" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ResizeDirection" Value="Rows">
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="PART_Canvas" Property="Width" Value="50" />
+                            <Setter TargetName="PART_Canvas" Property="Height" Value="8" />
+                            <Setter TargetName="HorizontalLine1" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="HorizontalLine2" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="VerticalLine1" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="VerticalLine2" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ResizeDirection" Value="Columns">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="PART_Canvas" Property="Width" Value="8" />
+                            <Setter TargetName="PART_Canvas" Property="Height" Value="50" />
+                            <Setter TargetName="HorizontalLine1" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="HorizontalLine2" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="VerticalLine1" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="VerticalLine2" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -12,7 +12,10 @@
     <atc:GridEx Columns="*,10,Auto">
         <TextBox
             Grid.Column="0"
-            atc:TextBoxHelper.ClearTextButton="True"
+            atc:TextBoxHelper.ClearTextButton="{Binding Path=ShowClearTextButton}"
+            atc:TextBoxHelper.Watermark="{Binding Path=WatermarkText}"
+            atc:TextBoxHelper.WatermarkAlignment="{Binding Path=WatermarkAlignment}"
+            atc:TextBoxHelper.WatermarkTrimming="{Binding Path=WatermarkTrimming}"
             Text="{Binding Path=DisplayValue}" />
         <Button
             Grid.Column="2"
@@ -22,6 +25,8 @@
                 Width="16"
                 Height="16"
                 ControlSizeType="ContentToSizeNoStretch"
+                IsTabStop="False"
+                OverrideColor="{DynamicResource AtcApps.Colors.ThemeForeground}"
                 Source="/Atc.Wpf.Controls;component/Resources/Icons/folder.svg" />
         </Button>
     </atc:GridEx>

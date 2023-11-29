@@ -20,7 +20,7 @@
             Margin="0,0,0,10"
             Padding="10"
             Header="Features">
-            <atc:GridEx Columns="*,10,*,10,*" Rows="Auto,10,Auto,10,Auto">
+            <atc:GridEx Columns="*,10,*,10,*" Rows="Auto,10,Auto,10,Auto,10,Auto">
                 <Button
                     Grid.Row="0"
                     Grid.Column="0"
@@ -36,6 +36,11 @@
                     Grid.Column="0"
                     Command="{Binding Path=ShowInputForm3ColumnsCommand}"
                     Content="Input Form 3 columns" />
+                <Button
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Command="{Binding Path=ShowInputForm4ColumnsCommand}"
+                    Content="Input Form 4 columns" />
                 <Button
                     Grid.Row="0"
                     Grid.Column="2"

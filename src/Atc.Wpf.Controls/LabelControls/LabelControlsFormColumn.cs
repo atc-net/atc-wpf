@@ -138,6 +138,20 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelTimePicker labelTimePicker:
                     result.Add(control.GetFullIdentifier(), labelTimePicker.SelectedTime ?? DateTime.MinValue);
                     break;
+                case LabelDirectoryPicker labelDirectoryPicker:
+                    if (labelDirectoryPicker.Value is not null)
+                    {
+                        result.Add(control.GetFullIdentifier(), labelDirectoryPicker.Value);
+                    }
+
+                    break;
+                case LabelFilePicker labelFilePicker:
+                    if (labelFilePicker.Value is not null)
+                    {
+                        result.Add(control.GetFullIdentifier(), labelFilePicker.Value);
+                    }
+
+                    break;
                 case LabelCountrySelector labelCountrySelector:
                     if (NumberHelper.IsInt(labelCountrySelector.GetKey()))
                     {

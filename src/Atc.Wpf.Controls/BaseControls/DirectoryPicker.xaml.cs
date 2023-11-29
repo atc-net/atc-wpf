@@ -4,6 +4,8 @@ namespace Atc.Wpf.Controls.BaseControls;
 /// <summary>
 /// Interaction logic for DirectoryPicker.
 /// </summary>
+[SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
+[SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class DirectoryPicker
 {
     public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
@@ -28,7 +30,6 @@ public partial class DirectoryPicker
             OnValuePropertyChanged,
             (o, value) => CoerceValue(o, value).Item1));
 
-    [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
     public DirectoryInfo? Value
     {
         get => (DirectoryInfo?)GetValue(ValueProperty);
@@ -51,6 +52,102 @@ public partial class DirectoryPicker
         set => SetValue(FullNameProperty, value);
     }
 
+    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+        nameof(Title),
+        typeof(string),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(default(string)));
+
+    public string Title
+    {
+        get => (string)GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
+        nameof(ShowClearTextButton),
+        typeof(bool),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(default(bool)));
+
+    public bool ShowClearTextButton
+    {
+        get => (bool)GetValue(ShowClearTextButtonProperty);
+        set => SetValue(ShowClearTextButtonProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
+        nameof(WatermarkText),
+        typeof(string),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(defaultValue: string.Empty));
+
+    public string WatermarkText
+    {
+        get => (string)GetValue(WatermarkTextProperty);
+        set => SetValue(WatermarkTextProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
+        nameof(WatermarkAlignment),
+        typeof(TextAlignment),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(default(TextAlignment)));
+
+    public TextAlignment WatermarkAlignment
+    {
+        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
+        set => SetValue(WatermarkAlignmentProperty, value);
+    }
+
+    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
+        nameof(WatermarkTrimming),
+        typeof(TextTrimming),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(default(TextTrimming)));
+
+    public TextTrimming WatermarkTrimming
+    {
+        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
+        set => SetValue(WatermarkTrimmingProperty, value);
+    }
+
+    public static readonly DependencyProperty DefaultDirectoryProperty = DependencyProperty.Register(
+        nameof(DefaultDirectory),
+        typeof(string),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(string.Empty));
+
+    public string DefaultDirectory
+    {
+        get => (string)GetValue(DefaultDirectoryProperty);
+        set => SetValue(DefaultDirectoryProperty, value);
+    }
+
+    public static readonly DependencyProperty InitialDirectoryProperty = DependencyProperty.Register(
+        nameof(InitialDirectory),
+        typeof(string),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(string.Empty));
+
+    public string InitialDirectory
+    {
+        get => (string)GetValue(InitialDirectoryProperty);
+        set => SetValue(InitialDirectoryProperty, value);
+    }
+
+    public static readonly DependencyProperty RootDirectoryProperty = DependencyProperty.Register(
+        nameof(RootDirectory),
+        typeof(string),
+        typeof(DirectoryPicker),
+        new PropertyMetadata(string.Empty));
+
+    public string RootDirectory
+    {
+        get => (string)GetValue(RootDirectoryProperty);
+        set => SetValue(RootDirectoryProperty, value);
+    }
+
     public DirectoryPicker()
     {
         InitializeComponent();
@@ -58,7 +155,6 @@ public partial class DirectoryPicker
         DataContext = this;
     }
 
-    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
     private static Tuple<DirectoryInfo?, bool> CoerceValue(
         DependencyObject d,
         object? baseValue)
@@ -80,21 +176,20 @@ public partial class DirectoryPicker
         (d as DirectoryPicker)?.OnValueChanged((DirectoryInfo?)e.OldValue, (DirectoryInfo?)e.NewValue);
     }
 
-    [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.")]
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected virtual void OnValueChanged(
         DirectoryInfo? oldValue,
         DirectoryInfo? newValue)
     {
-        if (!Equals(oldValue, newValue))
+        if (Equals(oldValue, newValue))
         {
-            DisplayValue = newValue?.FullName;
-
-            RaiseEvent(new RoutedPropertyChangedEventArgs<DirectoryInfo?>(oldValue, newValue, ValueChangedEvent));
+            return;
         }
+
+        DisplayValue = newValue?.FullName;
+
+        RaiseEvent(new RoutedPropertyChangedEventArgs<DirectoryInfo?>(oldValue, newValue, ValueChangedEvent));
     }
 
-    [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
     private static Tuple<string?, bool> CoerceDisplayValue(
         DependencyObject d,
         object? baseValue)
@@ -121,33 +216,31 @@ public partial class DirectoryPicker
         var value = e.NewValue?.ToString();
         if (directoryPicker.Value?.ToString() != value)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                directoryPicker.Value = null;
-            }
-            else
-            {
-                directoryPicker.Value = new DirectoryInfo(value);
-            }
+            directoryPicker.Value = string.IsNullOrEmpty(value)
+                ? null
+                : new DirectoryInfo(value);
         }
     }
 
-    private void OnClick(object sender, RoutedEventArgs e)
+    private void OnClick(
+        object sender,
+        RoutedEventArgs e)
     {
         var folderDialog = new OpenFolderDialog
         {
-            Title = "Select Directory",
             Multiselect = false,
+            Title = string.IsNullOrEmpty(Title)
+                ? Miscellaneous.SelectDirectory
+                : Title,
+            DefaultDirectory = DefaultDirectory,
+            InitialDirectory = InitialDirectory,
+            RootDirectory = RootDirectory,
         };
 
         var dialogResult = folderDialog.ShowDialog();
         if (dialogResult.HasValue && dialogResult.Value)
         {
             Value = new DirectoryInfo(folderDialog.FolderName);
-        }
-        else
-        {
-            Value = null;
         }
     }
 }

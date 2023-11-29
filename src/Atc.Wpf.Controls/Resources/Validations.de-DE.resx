@@ -168,4 +168,10 @@
   <data name="InvalidTime" xml:space="preserve">
     <value>Ungültige Zeit</value>
   </data>
+  <data name="FileDoNotExist" xml:space="preserve">
+    <value>Datei existiert nicht</value>
+  </data>
+  <data name="DirectoryDoNotExist" xml:space="preserve">
+    <value>Verzeichnis existiert nicht</value>
+  </data>
 </root>

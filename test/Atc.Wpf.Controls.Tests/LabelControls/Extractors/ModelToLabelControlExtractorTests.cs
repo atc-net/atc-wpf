@@ -123,4 +123,20 @@ public class ModelToLabelControlExtractorTests
         Assert.NotNull(actual);
         Assert.Equal(11, actual.Count);
     }
+
+    [StaFact]
+    public void GetLabelControls_DriveItem()
+    {
+        // Arrange
+        var model = new DriveItem();
+
+        // Act
+        var actual = ModelToLabelControlExtractor.Extract(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.Equal(3, actual.Count);
+    }
 }

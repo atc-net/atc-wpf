@@ -1,4 +1,5 @@
 // ReSharper disable InconsistentNaming
+// ReSharper disable InvertIf
 // ReSharper disable NotAccessedField.Global
 namespace Atc.Wpf.Theming.Controls.Windows;
 
@@ -75,6 +76,51 @@ public class NiceWindow : WindowChromeWindow
     {
         get => (bool)GetValue(ShowIconOnTitleBarProperty);
         set => SetValue(ShowIconOnTitleBarProperty, BooleanBoxes.Box(value));
+    }
+
+    public static readonly DependencyProperty IconWidthProperty = DependencyProperty.Register(
+        nameof(IconWidth),
+        typeof(double),
+        typeof(NiceWindow),
+        new PropertyMetadata(20.0));
+
+    /// <summary>
+    /// Gets or sets the the width for the icon.
+    /// </summary>
+    public double IconWidth
+    {
+        get => (double)GetValue(IconWidthProperty);
+        set => SetValue(IconWidthProperty, value);
+    }
+
+    public static readonly DependencyProperty IconHeightProperty = DependencyProperty.Register(
+        nameof(IconHeight),
+        typeof(double),
+        typeof(NiceWindow),
+        new PropertyMetadata(20.0));
+
+    /// <summary>
+    /// Gets or sets the the height for the icon.
+    /// </summary>
+    public double IconHeight
+    {
+        get => (double)GetValue(IconHeightProperty);
+        set => SetValue(IconHeightProperty, value);
+    }
+
+    public static readonly DependencyProperty IconMarginProperty = DependencyProperty.Register(
+        nameof(IconMargin),
+        typeof(Thickness),
+        typeof(NiceWindow),
+        new PropertyMetadata(new Thickness(10, 3, 10, 3)));
+
+    /// <summary>
+    /// Gets or sets the the margin for the icon.
+    /// </summary>
+    public Thickness IconMargin
+    {
+        get => (Thickness)GetValue(IconMarginProperty);
+        set => SetValue(IconMarginProperty, value);
     }
 
     public static readonly DependencyProperty IconEdgeModeProperty = DependencyProperty.Register(
@@ -1080,6 +1126,13 @@ public class NiceWindow : WindowChromeWindow
 
         ThemeManager.Current.ThemeChanged += HandleThemeManagerThemeChanged;
         Unloaded += (_, _) => ThemeManager.Current.ThemeChanged -= HandleThemeManagerThemeChanged;
+
+        if (CornerPreference != ControlzEx.Behaviors.WindowCornerPreference.Default)
+        {
+            var backupCornerPreference = CornerPreference;
+            CornerPreference = ControlzEx.Behaviors.WindowCornerPreference.Default;
+            CornerPreference = backupCornerPreference;
+        }
     }
 
     private void InitializeSettingsBehavior()
