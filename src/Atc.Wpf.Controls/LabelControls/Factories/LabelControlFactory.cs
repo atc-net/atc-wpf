@@ -667,6 +667,88 @@ public static class LabelControlFactory
         return control;
     }
 
+    public static LabelDirectoryPicker CreateLabelDirectoryPicker(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        DirectoryInfo? value)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        return CreateLabelDirectoryPicker(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            propertyInfo.PropertyType,
+            value);
+    }
+
+    public static LabelDirectoryPicker CreateLabelDirectoryPicker(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        DirectoryInfo? value)
+    {
+        var control = new LabelDirectoryPicker
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            Value = value,
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        return control;
+    }
+
+    public static LabelFilePicker CreateLabelFilePicker(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        FileInfo? value)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        return CreateLabelFilePicker(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            propertyInfo.GetDescription(),
+            propertyInfo.PropertyType,
+            value);
+    }
+
+    public static LabelFilePicker CreateLabelFilePicker(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        string watermarkText,
+        Type inputDataType,
+        FileInfo? value)
+    {
+        var control = new LabelFilePicker
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            InputDataType = inputDataType,
+            Value = value,
+            WatermarkText = watermarkText.NormalizePascalCase(),
+        };
+
+        return control;
+    }
+
     public static LabelWellKnownColorSelector CreateLabelWellKnownColorSelector(
         PropertyInfo propertyInfo,
         string groupIdentifier,

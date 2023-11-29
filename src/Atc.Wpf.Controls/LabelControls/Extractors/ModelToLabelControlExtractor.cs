@@ -230,6 +230,18 @@ public static class ModelToLabelControlExtractor
             return true;
         }
 
+        if (propertyInfo.PropertyType == typeof(DirectoryInfo))
+        {
+            labelControls.Add(CreateLabelDirectoryPicker(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
+        if (propertyInfo.PropertyType == typeof(FileInfo))
+        {
+            labelControls.Add(CreateLabelFilePicker(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
         if (propertyInfo.PropertyType == typeof(Color) ||
             propertyInfo.PropertyType == typeof(Color?))
         {
@@ -544,6 +556,50 @@ public static class ModelToLabelControlExtractor
         }
 
         return LabelControlFactory.CreateLabelTimePicker(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelDirectoryPicker CreateLabelDirectoryPicker<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        DirectoryInfo? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            value = propertyObjectValue as DirectoryInfo;
+        }
+
+        return LabelControlFactory.CreateLabelDirectoryPicker(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            value);
+    }
+
+    private static LabelFilePicker CreateLabelFilePicker<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        FileInfo? value = null;
+        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
+        if (propertyObjectValue is not null)
+        {
+            value = propertyObjectValue as FileInfo;
+        }
+
+        return LabelControlFactory.CreateLabelFilePicker(
             propertyInfo,
             groupIdentifier,
             isReadOnly,

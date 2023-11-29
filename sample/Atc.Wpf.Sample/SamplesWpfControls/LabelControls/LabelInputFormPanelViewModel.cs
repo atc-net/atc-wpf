@@ -15,6 +15,8 @@ public class LabelInputFormPanelViewModel : ViewModelBase
 
     public IRelayCommand ShowInputForm3ColumnsCommand => new RelayCommand(ShowInputForm3ColumnsCommandHandler);
 
+    public IRelayCommand ShowInputForm4ColumnsCommand => new RelayCommand(ShowInputForm4ColumnsCommandHandler);
+
     public IRelayCommand ShowInputFormAddressWithDataCommands => new RelayCommand(ShowInputFormAddressWithDataCommandHandler);
 
     public IRelayCommand ShowInputFormAddressWithoutDataCommands => new RelayCommand(ShowInputFormAddressWithoutDataCommandHandler);
@@ -93,6 +95,21 @@ public class LabelInputFormPanelViewModel : ViewModelBase
         labelControlsForm.AddColumn(CreateLabelControlsColumn1());
         labelControlsForm.AddColumn(CreateLabelControlsColumn2());
         labelControlsForm.AddColumn(CreateLabelControlsColumn3());
+
+        var labelInputFormPanel = new LabelInputFormPanel(
+            new LabelInputFormPanelSettings(),
+            labelControlsForm);
+
+        FormPanel = labelInputFormPanel;
+    }
+
+    private void ShowInputForm4ColumnsCommandHandler()
+    {
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(CreateLabelControlsColumn1());
+        labelControlsForm.AddColumn(CreateLabelControlsColumn2());
+        labelControlsForm.AddColumn(CreateLabelControlsColumn3());
+        labelControlsForm.AddColumn(CreateLabelControlsColumn4());
 
         var labelInputFormPanel = new LabelInputFormPanel(
             new LabelInputFormPanelSettings(),
@@ -299,6 +316,19 @@ public class LabelInputFormPanelViewModel : ViewModelBase
                     { "Item4", "Item 4" },
                     { "Item5", "Item 5" },
                 },
+            },
+        };
+
+    private static List<ILabelControlBase> CreateLabelControlsColumn4()
+        => new()
+        {
+            new LabelFilePicker
+            {
+                LabelText = "My file",
+            },
+            new LabelDirectoryPicker
+            {
+                LabelText = "My directory",
             },
         };
 }
