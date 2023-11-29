@@ -138,11 +138,5 @@ public class ModelToLabelControlExtractorTests
         // Assert
         Assert.NotNull(actual);
         Assert.Equal(3, actual.Count);
-
-        var controlDirectory = actual.Single(x => x.Identifier == "Directory");
-        var isValid1 = controlDirectory.IsValid();
-
-        var controlFile = actual.Single(x => x.Identifier == "File");
-        var isValid2 = controlFile.IsValid();
     }
 }
