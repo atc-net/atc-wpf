@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.386" />
+    <PackageReference Include="Atc" Version="2.0.395" />
   </ItemGroup>
 
   <ItemGroup>
