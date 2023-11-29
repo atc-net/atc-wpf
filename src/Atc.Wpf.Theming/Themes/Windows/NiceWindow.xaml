@@ -50,9 +50,9 @@
                             x:Name="PART_Icon"
                             Grid.Row="0"
                             Grid.Column="0"
-                            Height="20"
-                            MinWidth="20"
-                            Margin="10,3"
+                            Width="{TemplateBinding IconWidth}"
+                            Height="{TemplateBinding IconHeight}"
+                            Margin="{TemplateBinding IconMargin}"
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             Panel.ZIndex="1"
@@ -247,7 +247,9 @@
 
     <Style TargetType="{x:Type windows:NiceWindow}">
         <Setter Property="CornerPreference" Value="Default" />
-        <Setter Property="TitleAlignment" Value="Center" />
+        <Setter Property="IconWidth" Value="20" />
+        <Setter Property="IconHeight" Value="20" />
+        <Setter Property="IconMargin" Value="10,3" />
         <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
@@ -264,11 +266,11 @@
         <Setter Property="Template" Value="{StaticResource AtcApps.Templates.NiceWindow}" />
         <Setter Property="TextElement.FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
         <Setter Property="TitleForeground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
+        <Setter Property="TitleAlignment" Value="Center" />
         <Setter Property="TitleTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock
-                        Margin="8,-1,1,0"
                         VerticalAlignment="Center"
                         FontFamily="{DynamicResource AtcApps.Fonts.Family.Window.Title}"
                         FontSize="{DynamicResource AtcApps.Font.Size.Window.Title}"
