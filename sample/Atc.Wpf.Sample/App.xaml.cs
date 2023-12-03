@@ -103,9 +103,9 @@ public partial class App
             .StartAsync()
             .ConfigureAwait(false);
 
-        CultureManager.Set(
+        CultureManager.SetCultures(
             GlobalizationConstants.EnglishCultureInfo,
-            synchronizeThreadCultures: false);
+            GlobalizationConstants.EnglishCultureInfo);
 
         ThemeManager.Current.ChangeTheme(
             Current,
