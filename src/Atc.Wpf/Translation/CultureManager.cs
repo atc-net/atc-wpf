@@ -43,7 +43,9 @@ public static class CultureManager
 
             var oldUiCulture = new CultureInfo(uiCulture.LCID);
             uiCulture = value;
-            Thread.CurrentThread.CurrentUICulture = value;
+
+            CultureInfo.DefaultThreadCurrentUICulture = value;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.DefaultThreadCurrentUICulture;
             if (SynchronizeThreadCulture)
             {
                 SetBackendCulture(value);
@@ -133,8 +135,10 @@ public static class CultureManager
     {
         ArgumentNullException.ThrowIfNull(backendCultureInfo);
 
-        Thread.CurrentThread.CurrentCulture = backendCultureInfo.IsNeutralCulture
+        CultureInfo.DefaultThreadCurrentCulture = backendCultureInfo.IsNeutralCulture
             ? CultureInfo.CreateSpecificCulture(backendCultureInfo.Name)
             : backendCultureInfo;
+
+        Thread.CurrentThread.CurrentCulture = CultureInfo.DefaultThreadCurrentCulture;
     }
 }
