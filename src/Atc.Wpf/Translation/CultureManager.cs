@@ -24,14 +24,6 @@ public static class CultureManager
 
     public static event EventHandler<UiCultureEventArgs>? UiCultureChanged;
 
-    public static void Set(
-        CultureInfo cultureInfo,
-        bool synchronizeThreadCultures)
-    {
-        SynchronizeThreadCulture = synchronizeThreadCultures;
-        UiCulture = cultureInfo;
-    }
-
     /// <summary>
     /// Gets or sets the UI culture.
     /// </summary>
@@ -54,7 +46,7 @@ public static class CultureManager
             Thread.CurrentThread.CurrentUICulture = value;
             if (SynchronizeThreadCulture)
             {
-                SetThreadCulture(value);
+                SetBackendCulture(value);
             }
 
             UiCultureExtension.UpdateAllTargets();
@@ -83,21 +75,66 @@ public static class CultureManager
             synchronizeThreadCulture = value;
             if (value)
             {
-                SetThreadCulture(UiCulture);
+                SetBackendCulture(UiCulture);
             }
         }
     }
 
     /// <summary>
-    /// Set the thread culture to the given culture.
+    /// Set the UI culture to the given culture and the backend culture to 'en-US'.
     /// </summary>
-    /// <param name="value">The culture to set.</param>
-    /// <remarks>If the culture is neutral then creates a specific culture.</remarks>
-    private static void SetThreadCulture(
-        CultureInfo value)
+    /// <param name="uiCultureInfo">The UI culture to set.</param>
+    /// <param name="synchronizeThreadCultures">The synchronizeThreadCultures to set.</param>
+    public static void SetCultures(
+        CultureInfo uiCultureInfo,
+        bool synchronizeThreadCultures)
+        => SetCultures(
+            uiCultureInfo,
+            GlobalizationConstants.EnglishCultureInfo,
+            synchronizeThreadCultures);
+
+    /// <summary>
+    /// Set the cultures to the given cultures.
+    /// </summary>
+    /// <param name="backendCultureInfo">The backend culture to set.</param>
+    /// <param name="uiCultureInfo">The UI culture to set.</param>
+    /// <param name="synchronizeThreadCultures">The synchronizeThreadCultures to set.</param>
+    public static void SetCultures(
+        CultureInfo backendCultureInfo,
+        CultureInfo uiCultureInfo,
+        bool synchronizeThreadCultures = false)
     {
-        Thread.CurrentThread.CurrentCulture = value.IsNeutralCulture
-            ? CultureInfo.CreateSpecificCulture(value.Name)
-            : value;
+        ArgumentNullException.ThrowIfNull(backendCultureInfo);
+
+        SynchronizeThreadCulture = synchronizeThreadCultures;
+        SetBackendCulture(backendCultureInfo);
+        UiCulture = uiCultureInfo;
+    }
+
+    /// <summary>
+    /// Set the UI culture to the given culture.
+    /// </summary>
+    /// <param name="uiCultureInfo">The UI culture to set.</param>
+    public static void SetUiCulture(
+        CultureInfo uiCultureInfo)
+    {
+        ArgumentNullException.ThrowIfNull(uiCultureInfo);
+
+        UiCulture = uiCultureInfo;
+    }
+
+    /// <summary>
+    /// Set the backend culture to the given culture.
+    /// </summary>
+    /// <param name="backendCultureInfo">The backend culture to set.</param>
+    /// <remarks>If the culture is neutral then creates a specific culture.</remarks>
+    public static void SetBackendCulture(
+        CultureInfo backendCultureInfo)
+    {
+        ArgumentNullException.ThrowIfNull(backendCultureInfo);
+
+        Thread.CurrentThread.CurrentCulture = backendCultureInfo.IsNeutralCulture
+            ? CultureInfo.CreateSpecificCulture(backendCultureInfo.Name)
+            : backendCultureInfo;
     }
 }
