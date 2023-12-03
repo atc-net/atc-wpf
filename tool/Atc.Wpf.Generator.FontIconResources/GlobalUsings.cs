@@ -13,7 +13,7 @@ global using Atc.Helpers;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.Mvvm;
-
+global using Atc.Wpf.Translation;
 global using ControlzEx.Theming;
 
 global using CSSParser.ContentProcessors;
