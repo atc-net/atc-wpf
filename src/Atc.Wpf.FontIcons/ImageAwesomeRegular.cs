@@ -119,13 +119,22 @@ public class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippable
         set => SetValue(FlipOrientationProperty, value);
     }
 
-    public static DrawingImage CreateImageSource(
+    public static ImageSource CreateImageSource(
         FontAwesomeRegularType fontIconType,
         Brush foregroundBrush,
         double emSize = 100)
     {
         var iconChar = char.ConvertFromUtf32((int)fontIconType);
         return FontIconHelper.CreateImageSource(FontAwesomeRegularTypeface, iconChar, foregroundBrush, emSize);
+    }
+
+    public static DrawingImage CreateDrawingImage(
+        FontAwesomeRegularType fontIconType,
+        Brush foregroundBrush,
+        double emSize = 100)
+    {
+        var iconChar = char.ConvertFromUtf32((int)fontIconType);
+        return FontIconHelper.CreateDrawingImage(FontAwesomeRegularTypeface, iconChar, foregroundBrush, emSize);
     }
 
     private static void OnIconPropertyChanged(
