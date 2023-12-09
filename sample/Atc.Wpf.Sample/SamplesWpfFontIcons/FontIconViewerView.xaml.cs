@@ -7,7 +7,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 {
     private const int FilterDebounceDelayMs = 500;
     private readonly DebounceDispatcher debounceDispatcher = new();
-    private readonly FontIconImageSourceValueConverter fontConverter;
+    private readonly FontIconDrawingImageValueConverter fontConverter;
     private readonly Dictionary<string, string> fontAwesomeBrandList;
     private readonly Dictionary<string, string> fontAwesomeRegularList;
     private readonly Dictionary<string, string> fontAwesomeSolidList;
@@ -23,7 +23,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
         DataContext = this;
 
-        fontConverter = new FontIconImageSourceValueConverter();
+        fontConverter = new FontIconDrawingImageValueConverter();
         fontAwesomeBrandList = Enum<FontAwesomeBrandType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
         fontAwesomeRegularList = Enum<FontAwesomeRegularType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
         fontAwesomeSolidList = Enum<FontAwesomeSolidType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);

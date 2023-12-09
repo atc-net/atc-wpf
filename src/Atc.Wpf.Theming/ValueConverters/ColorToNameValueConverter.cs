@@ -81,6 +81,6 @@ public class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <throws><see cref="NotSupportedException"/></throws>
     public override object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
     {
-        throw new NotSupportedException();
+        throw new NotSupportedException("This is a OneWay converter.");
     }
 }

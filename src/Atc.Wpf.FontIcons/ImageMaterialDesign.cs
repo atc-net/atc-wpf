@@ -119,13 +119,22 @@ public class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippable
         set => SetValue(FlipOrientationProperty, value);
     }
 
-    public static DrawingImage CreateImageSource(
+    public static ImageSource CreateImageSource(
         FontMaterialDesignType fontIconType,
         Brush foregroundBrush,
         double emSize = 100)
     {
         var iconChar = char.ConvertFromUtf32((int)fontIconType);
         return FontIconHelper.CreateImageSource(FontMaterialDesignTypeface, iconChar, foregroundBrush, emSize);
+    }
+
+    public static DrawingImage CreateDrawingImage(
+        FontMaterialDesignType fontIconType,
+        Brush foregroundBrush,
+        double emSize = 100)
+    {
+        var iconChar = char.ConvertFromUtf32((int)fontIconType);
+        return FontIconHelper.CreateDrawingImage(FontMaterialDesignTypeface, iconChar, foregroundBrush, emSize);
     }
 
     private static void OnIconPropertyChanged(

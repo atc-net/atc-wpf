@@ -23,7 +23,7 @@ internal static class FontIconHelper
                 : value;
     }
 
-    internal static DrawingImage CreateImageSource(
+    internal static ImageSource CreateImageSource(
         Typeface typeface,
         string iconChar,
         Brush foregroundBrush,
@@ -36,7 +36,50 @@ internal static class FontIconHelper
             typeface,
             emSize,
             foregroundBrush,
-            1)
+            pixelsPerDip: 1)
+        {
+            TextAlignment = TextAlignment.Center,
+        };
+
+        var width = (int)formattedText.Width > 0
+            ? (int)formattedText.Width
+            : (int)(emSize * iconChar.Length);
+
+        var widthHalf = width / 2;
+        var height = (int)formattedText.Height;
+
+        var drawingVisual = new DrawingVisual();
+        using (var drawingContext = drawingVisual.RenderOpen())
+        {
+            drawingContext.DrawText(formattedText, new Point(widthHalf, 0));
+        }
+
+        var renderTargetBitmap = new RenderTargetBitmap(
+            width,
+            height,
+            96,
+            96,
+            PixelFormats.Pbgra32);
+
+        renderTargetBitmap.Render(drawingVisual);
+        renderTargetBitmap.Freeze();
+        return renderTargetBitmap;
+    }
+
+    internal static DrawingImage CreateDrawingImage(
+        Typeface typeface,
+        string iconChar,
+        Brush foregroundBrush,
+        double emSize = 100)
+    {
+        var formattedText = new FormattedText(
+            iconChar,
+            CultureInfo.InvariantCulture,
+            FlowDirection.LeftToRight,
+            typeface,
+            emSize,
+            foregroundBrush,
+            pixelsPerDip: 1)
         {
             TextAlignment = TextAlignment.Center,
         };

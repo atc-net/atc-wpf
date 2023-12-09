@@ -119,13 +119,22 @@ public class ImageWeather : Image, ISpinable, IRotatable, IFlippable
         set => SetValue(FlipOrientationProperty, value);
     }
 
-    public static DrawingImage CreateImageSource(
+    public static ImageSource CreateImageSource(
         FontWeatherType fontIconType,
         Brush foregroundBrush,
         double emSize = 100)
     {
         var iconChar = char.ConvertFromUtf32((int)fontIconType);
         return FontIconHelper.CreateImageSource(FontWeatherTypeface, iconChar, foregroundBrush, emSize);
+    }
+
+    public static DrawingImage CreateDrawingImage(
+        FontWeatherType fontIconType,
+        Brush foregroundBrush,
+        double emSize = 100)
+    {
+        var iconChar = char.ConvertFromUtf32((int)fontIconType);
+        return FontIconHelper.CreateDrawingImage(FontWeatherTypeface, iconChar, foregroundBrush, emSize);
     }
 
     private static void OnIconPropertyChanged(

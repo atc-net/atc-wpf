@@ -5,6 +5,7 @@
 This is a base libraries for building WPF application with the MVVM design pattern.
 
 # Table of contents
+
 - [ATC.Net WPF](#atcnet-wpf)
 - [Table of contents](#table-of-contents)
   - [Requirements](#requirements)
@@ -15,7 +16,8 @@ This is a base libraries for building WPF application with the MVVM design patte
   - [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
   - [MVVM](#mvvm)
   - [Translation](#translation)
-  - [ValueConverters](#valueconverters)
+  - [Media - ShaderEffects](#media---shadereffects)
+  - [ValueConverters in Atc.Wpf](#valueconverters-in-atcwpf)
     - [ValueConverters - Bool to X](#valueconverters---bool-to-x)
     - [ValueConverters - String to X](#valueconverters---string-to-x)
     - [ValueConverters - ICollection to X](#valueconverters---icollection-to-x)
@@ -23,7 +25,8 @@ This is a base libraries for building WPF application with the MVVM design patte
     - [ValueConverters - Markup to X](#valueconverters---markup-to-x)
     - [ValueConverters - Others to X](#valueconverters---others-to-x)
     - [ValueConverters - Math](#valueconverters---math)
-  - [Media - ShaderEffects](#media---shadereffects)
+  - [ValueConverters in Atc.Wpf.FontIcons](#valueconverters-in-atcwpffonticons)
+  - [ValueConverters in Atc.Wpf.Theming](#valueconverters-in-atcwpftheming)
   - [How to contribute](#how-to-contribute)
 
 ## Requirements
@@ -41,13 +44,14 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 ## Demonstration Application
 
-The demonstration application, `Atc.Wpf.Sample`, functions as a control explorer. 
-It provides quick visualization of a given control, along with options for 
+The demonstration application, `Atc.Wpf.Sample`, functions as a control explorer.
+It provides quick visualization of a given control, along with options for
 copying and pasting the XAML markup and/or the C# code for how to use it.
 
 ### Playground and Viewer for a Given Control or Functionality
 
 The following example is taken from the ReplayCommandAsync which illustrates its usage:
+
 - The `Sample` tab shows how to use the control or feature.
 - The `XAML` tab displays the corresponding XAML markup.
 - The `CodeBehind` tab reveals the underlying code-behind.
@@ -121,8 +125,8 @@ Therefore `Atc.Wpf` provide a good starting point for using MVVM.
 
 ## Translation
 
-It is very easy to localize an application by binding text to a resource assembly that contains the text. 
-This is a standard .NET Globalization and localization way, 
+It is very easy to localize an application by binding text to a resource assembly that contains the text.
+This is a standard .NET Globalization and localization way,
 but just with a xaml-markup extension to lookup the value by key.
 
 ```xml
@@ -136,7 +140,18 @@ but just with a xaml-markup extension to lookup the value by key.
 <TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=About, Prefix='foo', Suffix='bar'}" />
 ```
 
-## ValueConverters
+## Media - ShaderEffects
+
+| Type                          | Parameters and range values                                                 |
+| ----------------------------- | --------------------------------------------------------------------------- |
+| ContrastAdjustShaderEffect    | Brightness (-1.0 to 1.0 default 0.0) and Contrast (-1.0 to 1.0 default 0.0) |
+| DesaturateShaderEffect        | Strength (0.0 to 1.0 default 0.0)                                           |
+| FadeShaderEffect              | Strength (0.0 to 1.0 default 0.0) and Color (color)                         |
+| InvertColorsShaderEffect      | None                                                                        |
+| MonochromeShaderEffect        | Color (color)                                                               |
+| SaturateShaderEffect          | Progress                                                                    |
+
+## ValueConverters in Atc.Wpf
 
 ### ValueConverters - Bool to X
 
@@ -222,18 +237,21 @@ but just with a xaml-markup extension to lookup the value by key.
 |                           | MathSubtractValueConverter                               |                                         |                                         |
 |                           | MathValueConverter                                       |                                         |                                         |
 
+## ValueConverters in Atc.Wpf.FontIcons
 
-## Media - ShaderEffects
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| FontIcon -> DrawingImage  | FontIconDrawingImageValueConverter                       |                                         |                                         |
+| FontIcon -> ImageSource   | FontIconImageSourceValueConverter                        |                                         |                                         |
 
-| Type                          | Parameters and range values                                                 |
-| ----------------------------- | --------------------------------------------------------------------------- |
-| ContrastAdjustShaderEffect    | Brightness (-1.0 to 1.0 default 0.0) and Contrast (-1.0 to 1.0 default 0.0) |
-| DesaturateShaderEffect        | Strength (0.0 to 1.0 default 0.0)                                           |
-| FadeShaderEffect              | Strength (0.0 to 1.0 default 0.0) and Color (color)                         |
-| InvertColorsShaderEffect      | None                                                                        |
-| MonochromeShaderEffect        | Color (color)                                                               |
-| SaturateShaderEffect          | Progress                                                                    |
+## ValueConverters in Atc.Wpf.Theming
 
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+|                           | ColorToNameValueConverter                                |                                         | Not supported                           |
+|                           | CornerRadiusBindingValueConverter                        |                                         | DependencyProperty.UnsetValue           |
+|                           | CornerRadiusFilterValueConverter                         |                                         | DependencyProperty.UnsetValue           |
+|                           | TreeViewMarginValueConverter                             |                                         | DependencyProperty.UnsetValue           |
 
 ## How to contribute
 
