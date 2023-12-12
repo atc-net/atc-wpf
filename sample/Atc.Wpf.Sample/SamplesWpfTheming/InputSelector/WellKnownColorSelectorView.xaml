@@ -35,6 +35,8 @@
 
                         <atc:WellKnownColorSelector DropDownFirstItemType="PleaseSelect" UseOnlyBasicColors="True" />
 
+                        <atc:WellKnownColorSelector SelectedKey="LightBlue" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"
