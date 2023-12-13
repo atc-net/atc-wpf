@@ -171,6 +171,8 @@ public partial class WellKnownColorSelector
 
         Items.AddRange(list.OrderBy(x => x.DisplayName, StringComparer.Ordinal));
 
+        UpdateTranslationForSelectedItem();
+
         if (setSelected)
         {
             if (string.IsNullOrEmpty(SelectedKey))
@@ -192,8 +194,6 @@ public partial class WellKnownColorSelector
 
     private void SetSelectedIndexBySelectedKey()
     {
-        UpdateTranslationForSelectedItem();
-
         if (CbColors.SelectedValue is null)
         {
             return;
@@ -205,10 +205,13 @@ public partial class WellKnownColorSelector
             if (CbColors.Items[i] is ColorItem item &&
                 item.Name == selectedValue)
             {
-                CbColors.SelectedIndex = i;
-                if (!processingUiCultureChanged)
+                if (CbColors.SelectedIndex != i)
                 {
-                    OnSelectionChanged(this, item);
+                    CbColors.SelectedIndex = i;
+                    if (!processingUiCultureChanged)
+                    {
+                        OnSelectionChanged(this, item);
+                    }
                 }
 
                 break;
@@ -220,6 +223,8 @@ public partial class WellKnownColorSelector
     {
         if (CbColors.SelectedIndex != -1)
         {
+            processingUiCultureChanged = true;
+
             var backupIndex = CbColors.SelectedIndex;
             if (CbColors.Items.Count > backupIndex + 1)
             {
@@ -231,6 +236,8 @@ public partial class WellKnownColorSelector
             }
 
             CbColors.SelectedIndex = backupIndex;
+
+            processingUiCultureChanged = false;
         }
     }
 
