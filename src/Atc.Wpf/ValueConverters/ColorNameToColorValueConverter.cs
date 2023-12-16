@@ -19,12 +19,8 @@ public sealed class ColorNameToColorValueConverter : IValueConverter
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(string)");
         }
 
-        if (!ColorUtil.KnownColors.TryGetValue(stringValue, out var color))
-        {
-            throw new InvalidCastException($"{stringValue} is not a valid color");
-        }
-
-        return color;
+        var color = ColorHelper.GetColorFromString(stringValue, GlobalizationConstants.EnglishCultureInfo);
+        return color ?? throw new InvalidCastException($"{stringValue} is not a valid color");
     }
 
     /// <inheritdoc />
@@ -35,14 +31,15 @@ public sealed class ColorNameToColorValueConverter : IValueConverter
             return "DeepPink";
         }
 
-        if (value is not Color)
+        if (value is not Color color)
         {
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
         }
 
-        var knownColor = ColorUtil.KnownColors.FirstOrDefault(x => x.Value.ToString(GlobalizationConstants.EnglishCultureInfo) == value.ToString());
-        return string.IsNullOrEmpty(knownColor.Key)
+        var colorName = ColorHelper.GetColorNameFromColor(color);
+
+        return string.IsNullOrEmpty(colorName)
             ? value.ToString()!
-            : knownColor.Key;
+            : colorName;
     }
 }

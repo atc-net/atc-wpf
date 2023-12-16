@@ -19,12 +19,8 @@ public sealed class ColorNameToBrushValueConverter : IValueConverter
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(string)");
         }
 
-        if (!ColorUtil.KnownColors.TryGetValue(stringValue, out var color))
-        {
-            throw new InvalidCastException($"{stringValue} is not a valid brush");
-        }
-
-        return new SolidColorBrush(color);
+        var brush = SolidColorBrushHelper.GetBrushFromString(stringValue, GlobalizationConstants.EnglishCultureInfo);
+        return brush ?? throw new InvalidCastException($"{stringValue} is not a valid brush");
     }
 
     /// <inheritdoc />
@@ -35,14 +31,15 @@ public sealed class ColorNameToBrushValueConverter : IValueConverter
             return "DeepPink";
         }
 
-        if (value is not Brush)
+        if (value is not SolidColorBrush brush)
         {
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Brush)");
         }
 
-        var knownColor = ColorUtil.KnownColors.FirstOrDefault(x => x.Value.ToString(GlobalizationConstants.EnglishCultureInfo) == value.ToString());
-        return string.IsNullOrEmpty(knownColor.Key)
+        var brushName = SolidColorBrushHelper.GetBrushNameFromBrush(brush);
+
+        return string.IsNullOrEmpty(brushName)
             ? value.ToString()!
-            : knownColor.Key;
+            : brushName;
     }
 }

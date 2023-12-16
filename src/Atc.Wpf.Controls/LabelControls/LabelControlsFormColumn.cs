@@ -167,7 +167,7 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
 
                     break;
                 case LabelWellKnownColorSelector labelWellKnownColorSelector:
-                    var color = ColorUtil.GetColorFromName(labelWellKnownColorSelector.SelectedKey);
+                    var color = ColorHelper.GetColorFromName(labelWellKnownColorSelector.SelectedKey, GlobalizationConstants.EnglishCultureInfo);
                     if (color is not null)
                     {
                         result.Add(control.GetFullIdentifier(), (Color)color);

@@ -4,8 +4,6 @@ namespace Atc.Wpf.Theming.ValueConverters;
 [ValueConversion(typeof(Color), typeof(string))]
 public class ColorToNameValueConverter : MarkupMultiValueConverterBase
 {
-    public ColorHelper? ColorHelper { get; set; }
-
     /// <summary>
     /// Converts a given <see cref="Color"/> to its Name
     /// </summary>
@@ -16,11 +14,12 @@ public class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <returns>The name of the color or the Hex-Code if no name is available</returns>
     public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return (ColorHelper ?? ColorHelper.DefaultInstance).GetColorName(
-            value as Color?,
-            parameter as Dictionary<Color, string>,
-            useAlphaChannel: true,
-            includeColorHex: true);
+        if (value is Color color)
+        {
+            return ColorHelper.GetColorNameFromColor(color);
+        }
+
+        return Colors.Pink;
     }
 
     /// <summary>
@@ -38,16 +37,12 @@ public class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <returns>The name of the color or the Hex-Code if no name is available</returns>
     public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
     {
-        var color = values?.FirstOrDefault(x => x?.GetType() == typeof(Color)) as Color?;
-        var colorNamesDictionary = values?.FirstOrDefault(x => x.GetType() == typeof(Dictionary<Color, string>)) as Dictionary<Color, string>;
-        var useAlphaChannel = values?.FirstOrDefault(x => x?.GetType() == typeof(bool)) as bool?;
-        var colorHelper = values?.FirstOrDefault(x => x is ColorHelper) as ColorHelper ?? (ColorHelper ?? ColorHelper.DefaultInstance);
+        if (values?.FirstOrDefault(x => x?.GetType() == typeof(Color)) is Color color)
+        {
+            return ColorHelper.GetColorNameFromColor(color, CultureInfo.InvariantCulture);
+        }
 
-        return colorHelper.GetColorName(
-            color,
-            colorNamesDictionary,
-            useAlphaChannel ?? true,
-            includeColorHex: true);
+        return Colors.Pink;
     }
 
     /// <summary>
@@ -62,9 +57,7 @@ public class ColorToNameValueConverter : MarkupMultiValueConverterBase
     {
         if (value is string text)
         {
-            return (ColorHelper ?? ColorHelper.DefaultInstance).ColorFromString(
-                text,
-                parameter as Dictionary<Color, string>) ?? Binding.DoNothing;
+            return ColorHelper.GetColorFromString(text, CultureInfo.InvariantCulture);
         }
 
         Trace.TraceError($"Unable to convert the provided value '{value}' to System.Windows.Media.Color");

@@ -625,7 +625,7 @@ public static class ModelToLabelControlExtractor
             }
             else
             {
-                var colorName = ColorUtil.GetColorNameFromHex(colorCode);
+                var colorName = ColorHelper.GetColorNameFromHex(colorCode);
                 defaultColorName = colorName ?? ((int)DropDownFirstItemType.PleaseSelect).ToString(GlobalizationConstants.EnglishCultureInfo);
             }
         }

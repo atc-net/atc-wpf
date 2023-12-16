@@ -189,8 +189,8 @@ public partial class WellKnownColorSelector
 
     private IEnumerable<string> GetColorNames()
         => UseOnlyBasicColors
-            ? ColorUtil.GetBasicColorNames()
-            : ColorUtil.GetKnownColorNames();
+            ? ColorHelper.GetBasicColorNames()
+            : ColorHelper.GetBaseColorNames();
 
     private void SetSelectedIndexBySelectedKey()
     {

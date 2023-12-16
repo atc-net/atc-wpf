@@ -65,12 +65,17 @@ internal abstract class GradientColorPaintServer : PaintServer
             var stopOpacity = SvgXmlUtil.AttrValue(childNode, "stop-opacity", 1);
 
             var color = stopColor.StartsWith('#')
-                ? ColorUtil.GetColorFromHex(stopColor)
+                ? ColorHelper.GetColorFromHex(stopColor)
                 : PaintServerManager.KnownColor(stopColor);
+
+            if (color is null)
+            {
+                continue;
+            }
 
             if (!stopOpacity.Equals(1))
             {
-                color = Color.FromArgb((byte)(stopOpacity * 255), color.R, color.G, color.B);
+                color = Color.FromArgb((byte)(stopOpacity * 255), color.Value.R, color.Value.G, color.Value.B);
             }
 
             if (offset > 1)
@@ -78,7 +83,7 @@ internal abstract class GradientColorPaintServer : PaintServer
                 offset /= 100;
             }
 
-            gradientStop.Add(new GradientStop(color, offset));
+            gradientStop.Add(new GradientStop(color.Value, offset));
         }
     }
 

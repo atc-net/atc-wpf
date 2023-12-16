@@ -149,9 +149,8 @@ internal sealed class PaintServerManager
 
     public static Color KnownColor(string value)
     {
-        return ColorUtil.KnownColors.TryGetValue(value, out var color)
-            ? color
-            : Colors.Black;
+        var color = ColorHelper.GetColorFromString(value, GlobalizationConstants.EnglishCultureInfo);
+        return color ?? Colors.Black;
     }
 
     private string ParseSolidColor(string value)
@@ -162,7 +161,13 @@ internal sealed class PaintServerManager
             return id;
         }
 
-        var paintServer = new SolidColorPaintServer(this, ColorUtil.GetColorFromHex(value));
+        var color = ColorHelper.GetColorFromHex(value);
+        if (color is null)
+        {
+            return id;
+        }
+
+        var paintServer = new SolidColorPaintServer(this, color.Value);
         paintServers[id] = paintServer;
         return id;
     }
@@ -212,13 +217,14 @@ internal sealed class PaintServerManager
             return value;
         }
 
-        if (ColorUtil.KnownColors.TryGetValue(value, out var color))
+        var color = ColorHelper.GetColorFromString(value, GlobalizationConstants.EnglishCultureInfo);
+        if (!color.HasValue)
         {
-            var paintServer = new SolidColorPaintServer(this, color);
-            paintServers[value] = paintServer;
-            return value;
+            return null;
         }
 
-        return null;
+        var paintServer = new SolidColorPaintServer(this, color.Value);
+        paintServers[value] = paintServer;
+        return value;
     }
 }
