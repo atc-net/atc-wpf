@@ -1,27 +1,23 @@
-// ReSharper disable once CheckNamespace
-// ReSharper disable ConvertIfStatementToSwitchStatement
-namespace System.Windows.Media;
+namespace Atc.Wpf.Extensions;
 
 public static class SolidColorBrushExtensions
 {
-    // ReSharper disable once UnusedParameter.Global
-    public static SolidColorBrush GetFromHex(
-        this SolidColorBrush solidColorBrush,
-        string hexValue)
-    {
-        ArgumentNullException.ThrowIfNull(solidColorBrush);
-        ArgumentNullException.ThrowIfNull(hexValue);
+    public static string? GetBrushKey(
+        this SolidColorBrush brush)
+        => SolidColorBrushHelper.GetBrushKeyFromBrush(brush);
 
-        if (!hexValue.StartsWith('#') &&
-            hexValue.Length is 3 or 6 or 8)
-        {
-            hexValue = $"#{hexValue}";
-        }
-        else if (!hexValue.StartsWith('#'))
-        {
-            throw new ArgumentException("It is not hex value", nameof(hexValue));
-        }
+    public static string? GetBrushName(
+        this SolidColorBrush brush)
+        => SolidColorBrushHelper.GetBrushNameFromBrush(brush);
 
-        return new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexValue));
-    }
+    public static string? GetBrushName(
+        this SolidColorBrush brush,
+        CultureInfo culture,
+        bool includeColorHex = false,
+        bool useAlphaChannel = true)
+        => SolidColorBrushHelper.GetBrushNameFromBrush(
+            brush,
+            culture,
+            includeColorHex,
+            useAlphaChannel);
 }

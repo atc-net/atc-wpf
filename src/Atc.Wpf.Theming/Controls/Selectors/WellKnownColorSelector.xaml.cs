@@ -128,6 +128,7 @@ public partial class WellKnownColorSelector
         processingUiCultureChanged = false;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void PopulateData(
         bool setSelected)
     {
@@ -148,25 +149,32 @@ public partial class WellKnownColorSelector
                 throw new SwitchCaseDefaultException(DropDownFirstItemType);
         }
 
-        var colorNames = GetColorNames();
+        var coloKeys = GetColorKeys();
 
         var list = new List<ColorItem>();
-        foreach (var itemName in colorNames)
+        foreach (var itemKey in coloKeys)
         {
-            var translatedName = ColorNames.ResourceManager.GetString(
-                itemName,
-                CultureInfo.CurrentUICulture);
+            var translatedName = ColorHelper.GetColorNameFromKey(itemKey, CultureInfo.CurrentUICulture);
 
-            var color = (Color)ColorConverter.ConvertFromString(itemName);
-            var showcaseBrush = new SolidColorBrush(color);
+            var color = ColorHelper.GetColorFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
+            if (color is null)
+            {
+                continue;
+            }
+
+            var showcaseBrush = SolidColorBrushHelper.GetBrushFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
+            if (showcaseBrush is null)
+            {
+                continue;
+            }
 
             list.Add(
                 new ColorItem(
-                    itemName,
-                    translatedName ?? "#" + itemName,
-                    color.ToString(GlobalizationConstants.EnglishCultureInfo),
-                    showcaseBrush,
-                    showcaseBrush));
+                    Key: itemKey,
+                    DisplayName: translatedName ?? "#" + itemKey,
+                    DisplayHexCode: color.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
+                    BorderColorBrush: showcaseBrush,
+                    ColorBrush: showcaseBrush));
         }
 
         Items.AddRange(list.OrderBy(x => x.DisplayName, StringComparer.Ordinal));
@@ -177,8 +185,8 @@ public partial class WellKnownColorSelector
         {
             if (string.IsNullOrEmpty(SelectedKey))
             {
-                SelectedKey = GetDefaultColorItem()?.Name ??
-                              Items[0].Name;
+                SelectedKey = GetDefaultColorItem()?.Key ??
+                              Items[0].Key;
             }
             else
             {
@@ -187,10 +195,10 @@ public partial class WellKnownColorSelector
         }
     }
 
-    private IEnumerable<string> GetColorNames()
+    private IEnumerable<string> GetColorKeys()
         => UseOnlyBasicColors
-            ? ColorUtil.GetBasicColorNames()
-            : ColorUtil.GetKnownColorNames();
+            ? ColorHelper.GetBasicColorKeys()
+            : ColorHelper.GetColorKeys();
 
     private void SetSelectedIndexBySelectedKey()
     {
@@ -203,7 +211,7 @@ public partial class WellKnownColorSelector
         for (var i = 0; i < CbColors.Items.Count; i++)
         {
             if (CbColors.Items[i] is ColorItem item &&
-                item.Name == selectedValue)
+                item.Key == selectedValue)
             {
                 if (CbColors.SelectedIndex != i)
                 {
@@ -263,7 +271,7 @@ public partial class WellKnownColorSelector
         ColorItem? defaultColorItem = null;
         if (!string.IsNullOrEmpty(DefaultColorName))
         {
-            var countryItem = Items.FirstOrDefault(x => x.Name == DefaultColorName);
+            var countryItem = Items.FirstOrDefault(x => x.Key == DefaultColorName);
             if (countryItem is not null)
             {
                 defaultColorItem = countryItem;
@@ -314,31 +322,31 @@ public partial class WellKnownColorSelector
 
         if (lastName is null)
         {
-            if (colorItem.Name.StartsWith('-'))
+            if (colorItem.Key.StartsWith('-'))
             {
                 return;
             }
 
             if (DefaultColorName is not null &&
-                DefaultColorName == colorItem.Name)
+                DefaultColorName == colorItem.Key)
             {
                 return;
             }
         }
-        else if (lastName == colorItem.Name)
+        else if (lastName == colorItem.Key)
         {
             return;
         }
 
-        lastName = colorItem.Name;
+        lastName = colorItem.Key;
 
-        Debug.WriteLine($"WellKnownColorSelector - Change to: {colorItem.Name} ({colorItem.DisplayHexCode})");
+        Debug.WriteLine($"WellKnownColorSelector - Change to: {colorItem.Key} ({colorItem.DisplayHexCode})");
 
         SelectorChanged?.Invoke(
             this,
             new ChangedStringEventArgs(
                 identifier: Guid.Empty.ToString(),
                 oldValue: null,
-                newValue: colorItem.Name));
+                newValue: colorItem.Key));
     }
 }

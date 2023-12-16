@@ -191,10 +191,10 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
             return;
         }
 
+        control.lastSelectedKey = control.SelectedKey;
         if (control.isFirstOnSelectedKeyLostFocus)
         {
             control.isFirstOnSelectedKeyLostFocus = false;
-            control.lastSelectedKey = control.SelectedKey;
             return;
         }
 
