@@ -191,7 +191,31 @@ public static class ColorHelper
     public static string? GetColorKeyFromHex(
         string hexValue)
     {
+        ArgumentException.ThrowIfNullOrEmpty(hexValue);
+
+        if (!hexValue.StartsWith('#') &&
+            !hexValue.StartsWith("0x", StringComparison.Ordinal))
+        {
+            throw new ArgumentException("It is not a hex value", nameof(hexValue));
+        }
+
         EnsureBaseColors();
+
+        if (hexValue.StartsWith('#') &&
+            hexValue.Length == 7)
+        {
+            hexValue = hexValue.Replace("#", "#FF", StringComparison.Ordinal);
+        }
+        else if (hexValue.StartsWith("0x", StringComparison.Ordinal) &&
+                 hexValue.Length == 8)
+        {
+            hexValue = hexValue.Replace("0x", "0xFF", StringComparison.Ordinal);
+        }
+
+        if (hexValue.StartsWith("0x", StringComparison.Ordinal))
+        {
+            hexValue = hexValue.Replace("0x", "#", StringComparison.Ordinal);
+        }
 
         return BaseColors
             .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), hexValue, StringComparison.Ordinal))

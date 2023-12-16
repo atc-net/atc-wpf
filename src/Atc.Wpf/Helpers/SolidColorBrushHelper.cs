@@ -4,7 +4,6 @@ namespace Atc.Wpf.Helpers;
 /// <summary>
 /// A Helper class for the SolidColorBrush.
 /// </summary>
-[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 public static class SolidColorBrushHelper
 {
     private static readonly ConcurrentDictionary<string, SolidColorBrush> BaseBrushes = new(StringComparer.Ordinal);
@@ -152,6 +151,40 @@ public static class SolidColorBrushHelper
             : $"#{brush.Color.R:X2}{brush.Color.G:X2}{brush.Color.B:X2}";
 
         return $"{brushName} ({colorHex})";
+    }
+
+    public static string? GetBrushKeyFromHex(
+        string hexValue)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(hexValue);
+
+        if (!hexValue.StartsWith('#') &&
+            !hexValue.StartsWith("0x", StringComparison.Ordinal))
+        {
+            throw new ArgumentException("It is not a hex value", nameof(hexValue));
+        }
+
+        EnsureBaseBrushes();
+
+        if (hexValue.StartsWith('#') &&
+            hexValue.Length == 7)
+        {
+            hexValue = hexValue.Replace("#", "#FF", StringComparison.Ordinal);
+        }
+        else if (hexValue.StartsWith("0x", StringComparison.Ordinal) &&
+                 hexValue.Length == 8)
+        {
+            hexValue = hexValue.Replace("0x", "0xFF", StringComparison.Ordinal);
+        }
+
+        if (hexValue.StartsWith("0x", StringComparison.Ordinal))
+        {
+            hexValue = hexValue.Replace("0x", "#", StringComparison.Ordinal);
+        }
+
+        return BaseBrushes
+            .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), hexValue, StringComparison.Ordinal))
+            .Key;
     }
 
     public static string? GetBrushNameFromHex(
