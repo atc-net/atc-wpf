@@ -10,6 +10,15 @@ public static class ColorHelper
     private static readonly ConcurrentDictionary<string, Color> BaseColors = new(StringComparer.Ordinal);
     private static readonly ConcurrentDictionary<int, Dictionary<Color, string>> ColorNames = new();
 
+    public static void InitializeWithSupportedLanguages()
+    {
+        EnsureBaseColors();
+        EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.UnitedStates));
+        EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.GreatBritain));
+        EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Denmark));
+        EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Germany));
+    }
+
     public static Color? GetColorFromString(
         string value)
         => GetColorFromString(value, CultureInfo.CurrentUICulture);
@@ -36,6 +45,7 @@ public static class ColorHelper
         if (!value.Contains(' ', StringComparison.Ordinal))
         {
             EnsureBaseColors();
+
             if (BaseColors.TryGetValue(value, out var baseColor))
             {
                 return baseColor;
@@ -101,13 +111,16 @@ public static class ColorHelper
             .ToList();
     }
 
-    public static IList<string> GetBaseColorNames()
+    public static IList<string> GetColorKeys()
     {
         EnsureBaseColors();
-        return BaseColors.Select(x => x.Key).ToList();
+
+        return BaseColors
+            .Select(x => x.Key)
+            .ToList();
     }
 
-    public static IList<string> GetBasicColorNames()
+    public static IList<string> GetBasicColorKeys()
     {
         var list = new List<string>
         {
@@ -134,10 +147,11 @@ public static class ColorHelper
             .ToList();
     }
 
-    public static string? GetBaseColorNameFromColor(
+    public static string? GetColorKeyFromColor(
         Color brush)
     {
         EnsureBaseColors();
+
         return BaseColors
             .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), brush.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.Ordinal))
             .Key;
@@ -174,10 +188,11 @@ public static class ColorHelper
         return $"{colorName} ({colorHex})";
     }
 
-    public static string? GetBaseColorNameFromHex(
+    public static string? GetColorKeyFromHex(
         string hexValue)
     {
         EnsureBaseColors();
+
         return BaseColors
             .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), hexValue, StringComparison.Ordinal))
             .Key;
@@ -203,6 +218,29 @@ public static class ColorHelper
                 useAlphaChannel);
     }
 
+    public static string? GetColorNameFromKey(
+        string colorKey,
+        CultureInfo culture)
+    {
+        EnsureBaseColors();
+
+        if ("Aqua".Equals(colorKey, StringComparison.Ordinal))
+        {
+            colorKey = "Cyan";
+        }
+        else if ("Fuchsia".Equals(colorKey, StringComparison.Ordinal))
+        {
+            colorKey = "Magenta";
+        }
+
+        var item = BaseColors
+            .FirstOrDefault(x => string.Equals(x.Key, colorKey, StringComparison.Ordinal));
+
+        return string.IsNullOrEmpty(item.Key)
+            ? null
+            : GetColorNameFromColor(item.Value, culture);
+    }
+
     private static void EnsureBaseColors()
     {
         if (!BaseColors.IsEmpty)
@@ -213,7 +251,8 @@ public static class ColorHelper
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
 
         var colorDictionary = colorProperties
-            .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.OrdinalIgnoreCase)
+            .Where(x => x.Name != "Aqua" && x.Name != "Fuchsia")
+            .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.Ordinal)
             .OrderBy(x => x.Key, StringComparer.Ordinal);
 
         foreach (var item in colorDictionary)
@@ -246,18 +285,28 @@ public static class ColorHelper
             return;
         }
 
+        EnsureBaseColors();
+
         foreach (var entry in resourceSet.OfType<DictionaryEntry>())
         {
+            var entryKey = entry.Key.ToString()!;
+            if (string.IsNullOrEmpty(BaseColors.FirstOrDefault(x => x.Key == entryKey).Key) ||
+                "Aqua".Equals(entryKey, StringComparison.Ordinal) ||
+                "Fuchsia".Equals(entryKey, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             try
             {
-                if (ColorConverter.ConvertFromString(entry.Key.ToString()) is Color color)
+                if (ColorConverter.ConvertFromString(entryKey) is Color color)
                 {
                     dictionary.Add(color, entry.Value!.ToString()!);
                 }
             }
-            catch (Exception)
+            catch
             {
-                Trace.TraceError($"{entry.Key} is not a valid color key!");
+                // Ignored
             }
         }
 

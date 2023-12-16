@@ -30,6 +30,7 @@ global using Atc.Wpf.Controls.Notifications;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.FontIcons;
 global using Atc.Wpf.FontIcons.ValueConverters;
+global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Sample.Models;

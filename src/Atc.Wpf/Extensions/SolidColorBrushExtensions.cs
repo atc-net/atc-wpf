@@ -2,9 +2,9 @@ namespace Atc.Wpf.Extensions;
 
 public static class SolidColorBrushExtensions
 {
-    public static string? GetBaseBrushName(
+    public static string? GetBrushKey(
         this SolidColorBrush brush)
-        => SolidColorBrushHelper.GetBaseBrushNameFromBrush(brush);
+        => SolidColorBrushHelper.GetBrushKeyFromBrush(brush);
 
     public static string? GetBrushName(
         this SolidColorBrush brush)

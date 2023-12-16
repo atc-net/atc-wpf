@@ -7,11 +7,11 @@ public class SolidColorBrushHelperTests
     public void BrushCollectionCount()
     {
         var allBrushNames = SolidColorBrushHelper.GetAllBrushNames(CultureInfo.CurrentUICulture);
-        var baseBrushNames = SolidColorBrushHelper.GetBaseBrushNames();
+        var baseBrushNames = SolidColorBrushHelper.GetBrushKeys();
         var basicBrushNames = SolidColorBrushHelper.GetBasicBrushNames();
 
         Assert.Equal(139, allBrushNames.Count);
-        Assert.Equal(141, baseBrushNames.Count);
+        Assert.Equal(139, baseBrushNames.Count);
         Assert.Equal(16, basicBrushNames.Count);
     }
 

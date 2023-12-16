@@ -10,6 +10,15 @@ public static class SolidColorBrushHelper
     private static readonly ConcurrentDictionary<string, SolidColorBrush> BaseBrushes = new(StringComparer.Ordinal);
     private static readonly ConcurrentDictionary<int, Dictionary<SolidColorBrush, string>> BrushNames = new();
 
+    public static void InitializeWithSupportedLanguages()
+    {
+        EnsureBaseBrushes();
+        EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.UnitedStates));
+        EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.GreatBritain));
+        EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Denmark));
+        EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Germany));
+    }
+
     public static SolidColorBrush? GetBrushFromString(
         string value)
         => GetBrushFromString(value, CultureInfo.CurrentUICulture);
@@ -36,6 +45,7 @@ public static class SolidColorBrushHelper
         if (!value.Contains(' ', StringComparison.Ordinal))
         {
             EnsureBaseBrushes();
+
             if (BaseBrushes.TryGetValue(value, out var baseBrush))
             {
                 return baseBrush;
@@ -91,19 +101,23 @@ public static class SolidColorBrushHelper
         CultureInfo culture)
         => ColorHelper.GetAllColorNames(culture);
 
-    public static IList<string> GetBaseBrushNames()
+    public static IList<string> GetBrushKeys()
     {
         EnsureBaseBrushes();
-        return BaseBrushes.Select(x => x.Key).ToList();
+
+        return BaseBrushes
+            .Select(x => x.Key)
+            .ToList();
     }
 
     public static IList<string> GetBasicBrushNames()
-        => ColorHelper.GetBasicColorNames();
+        => ColorHelper.GetBasicColorKeys();
 
-    public static string? GetBaseBrushNameFromBrush(
+    public static string? GetBrushKeyFromBrush(
         SolidColorBrush brush)
     {
         EnsureBaseBrushes();
+
         return BaseBrushes
             .FirstOrDefault(x => string.Equals(x.Value.Color.ToString(GlobalizationConstants.EnglishCultureInfo), brush.Color.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.Ordinal))
             .Key;
@@ -160,6 +174,29 @@ public static class SolidColorBrushHelper
                 useAlphaChannel);
     }
 
+    public static string? GetBrushNameFromKey(
+        string brushKey,
+        CultureInfo culture)
+    {
+        EnsureBaseBrushes();
+
+        if ("Aqua".Equals(brushKey, StringComparison.Ordinal))
+        {
+            brushKey = "Cyan";
+        }
+        else if ("Fuchsia".Equals(brushKey, StringComparison.Ordinal))
+        {
+            brushKey = "Magenta";
+        }
+
+        var item = BaseBrushes
+            .FirstOrDefault(x => string.Equals(x.Key, brushKey, StringComparison.Ordinal));
+
+        return string.IsNullOrEmpty(item.Key)
+            ? null
+            : GetBrushNameFromBrush(item.Value, culture);
+    }
+
     private static void EnsureBaseBrushes()
     {
         if (!BaseBrushes.IsEmpty)
@@ -170,6 +207,7 @@ public static class SolidColorBrushHelper
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
 
         var colorDictionary = colorProperties
+            .Where(x => x.Name != "Aqua" && x.Name != "Fuchsia")
             .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.OrdinalIgnoreCase)
             .OrderBy(x => x.Key, StringComparer.Ordinal);
 
@@ -206,20 +244,31 @@ public static class SolidColorBrushHelper
             return;
         }
 
+        EnsureBaseBrushes();
+
         foreach (var entry in resourceSet.OfType<DictionaryEntry>())
         {
+            var entryKey = entry.Key.ToString()!;
+            if (string.IsNullOrEmpty(BaseBrushes.FirstOrDefault(x => x.Key == entryKey).Key) ||
+                "Aqua".Equals(entryKey, StringComparison.Ordinal) ||
+                "Fuchsia".Equals(entryKey, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             try
             {
-                if (ColorConverter.ConvertFromString(entry.Key.ToString()) is Color color)
+                if (ColorConverter.ConvertFromString(entryKey) is Color color)
                 {
                     var brush = new SolidColorBrush(color);
                     brush.Freeze();
+
                     dictionary.Add(brush, entry.Value!.ToString()!);
                 }
             }
-            catch (Exception)
+            catch (FormatException)
             {
-                Trace.TraceError($"{entry.Key} is not a valid color key!");
+                // Ignored
             }
         }
 

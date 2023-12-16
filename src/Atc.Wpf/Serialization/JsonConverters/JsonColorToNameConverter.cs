@@ -20,7 +20,7 @@ public class JsonColorToNameConverter : JsonConverter<Color?>
         }
         else
         {
-            var colorName = ColorHelper.GetBaseColorNameFromHex(value.Value.ToString(GlobalizationConstants.EnglishCultureInfo));
+            var colorName = ColorHelper.GetColorKeyFromHex(value.Value.ToString(GlobalizationConstants.EnglishCultureInfo));
             if (string.IsNullOrEmpty(colorName))
             {
                 writer.WriteNullValue();

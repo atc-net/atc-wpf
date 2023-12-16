@@ -6,13 +6,13 @@ public class ColorHelperTests
     [Fact]
     public void ColorCollectionCount()
     {
-        var allColorNames = ColorHelper.GetAllColorNames(CultureInfo.CurrentUICulture);
-        var baseColorNames = ColorHelper.GetBaseColorNames();
-        var basicColorNames = ColorHelper.GetBasicColorNames();
+        var colorNames = ColorHelper.GetAllColorNames(CultureInfo.CurrentUICulture);
+        var colorKeys = ColorHelper.GetColorKeys();
+        var basicColorKeys = ColorHelper.GetBasicColorKeys();
 
-        Assert.Equal(139, allColorNames.Count);
-        Assert.Equal(141, baseColorNames.Count);
-        Assert.Equal(16, basicColorNames.Count);
+        Assert.Equal(139, colorNames.Count);
+        Assert.Equal(139, colorKeys.Count);
+        Assert.Equal(16, basicColorKeys.Count);
     }
 
     [Theory]

@@ -26,7 +26,7 @@ public class JsonSolidColorBrushToNameConverter : JsonConverter<SolidColorBrush?
         }
         else
         {
-            var brushName = SolidColorBrushHelper.GetBaseBrushNameFromBrush(value);
+            var brushName = SolidColorBrushHelper.GetBrushKeyFromBrush(value);
             if (string.IsNullOrEmpty(brushName))
             {
                 writer.WriteNullValue();

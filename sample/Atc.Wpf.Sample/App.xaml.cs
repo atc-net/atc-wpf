@@ -107,6 +107,9 @@ public partial class App
             GlobalizationConstants.EnglishCultureInfo,
             GlobalizationConstants.EnglishCultureInfo);
 
+        ColorHelper.InitializeWithSupportedLanguages();
+        SolidColorBrushHelper.InitializeWithSupportedLanguages();
+
         ThemeManager.Current.ChangeTheme(
             Current,
             "Light.Blue");

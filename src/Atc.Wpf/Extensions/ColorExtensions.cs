@@ -2,9 +2,9 @@ namespace Atc.Wpf.Extensions;
 
 public static class ColorExtensions
 {
-    public static string? GetBaseBrushName(
+    public static string? GetBrushKey(
         this Color color)
-        => ColorHelper.GetBaseColorNameFromColor(color);
+        => ColorHelper.GetColorKeyFromColor(color);
 
     public static string? GetColorName(
         this Color color)

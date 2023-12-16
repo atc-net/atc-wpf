@@ -128,6 +128,7 @@ public partial class WellKnownColorSelector
         processingUiCultureChanged = false;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void PopulateData(
         bool setSelected)
     {
@@ -148,23 +149,30 @@ public partial class WellKnownColorSelector
                 throw new SwitchCaseDefaultException(DropDownFirstItemType);
         }
 
-        var colorNames = GetColorNames();
+        var coloKeys = GetColorKeys();
 
         var list = new List<ColorItem>();
-        foreach (var itemName in colorNames)
+        foreach (var itemKey in coloKeys)
         {
-            var translatedName = ColorNames.ResourceManager.GetString(
-                itemName,
-                CultureInfo.CurrentUICulture);
+            var translatedName = ColorHelper.GetColorNameFromKey(itemKey, CultureInfo.CurrentUICulture);
 
-            var color = (Color)ColorConverter.ConvertFromString(itemName);
-            var showcaseBrush = new SolidColorBrush(color);
+            var color = ColorHelper.GetColorFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
+            if (color is null)
+            {
+                continue;
+            }
+
+            var showcaseBrush = SolidColorBrushHelper.GetBrushFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
+            if (showcaseBrush is null)
+            {
+                continue;
+            }
 
             list.Add(
                 new ColorItem(
-                    itemName,
-                    translatedName ?? "#" + itemName,
-                    color.ToString(GlobalizationConstants.EnglishCultureInfo),
+                    itemKey,
+                    translatedName ?? "#" + itemKey,
+                    color.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
                     showcaseBrush,
                     showcaseBrush));
         }
@@ -187,10 +195,10 @@ public partial class WellKnownColorSelector
         }
     }
 
-    private IEnumerable<string> GetColorNames()
+    private IEnumerable<string> GetColorKeys()
         => UseOnlyBasicColors
-            ? ColorHelper.GetBasicColorNames()
-            : ColorHelper.GetBaseColorNames();
+            ? ColorHelper.GetBasicColorKeys()
+            : ColorHelper.GetColorKeys();
 
     private void SetSelectedIndexBySelectedKey()
     {
