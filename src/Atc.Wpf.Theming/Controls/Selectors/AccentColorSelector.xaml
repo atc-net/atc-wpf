@@ -18,7 +18,7 @@
         IsSynchronizedWithCurrentItem="True"
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
         SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
-        SelectedValuePath="Name">
+        SelectedValuePath="Key">
         <ComboBox.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">

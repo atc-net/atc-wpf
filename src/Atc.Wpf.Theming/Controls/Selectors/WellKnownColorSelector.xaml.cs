@@ -170,11 +170,11 @@ public partial class WellKnownColorSelector
 
             list.Add(
                 new ColorItem(
-                    itemKey,
-                    translatedName ?? "#" + itemKey,
-                    color.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
-                    showcaseBrush,
-                    showcaseBrush));
+                    Key: itemKey,
+                    DisplayName: translatedName ?? "#" + itemKey,
+                    DisplayHexCode: color.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
+                    BorderColorBrush: showcaseBrush,
+                    ColorBrush: showcaseBrush));
         }
 
         Items.AddRange(list.OrderBy(x => x.DisplayName, StringComparer.Ordinal));
@@ -185,8 +185,8 @@ public partial class WellKnownColorSelector
         {
             if (string.IsNullOrEmpty(SelectedKey))
             {
-                SelectedKey = GetDefaultColorItem()?.Name ??
-                              Items[0].Name;
+                SelectedKey = GetDefaultColorItem()?.Key ??
+                              Items[0].Key;
             }
             else
             {
@@ -211,7 +211,7 @@ public partial class WellKnownColorSelector
         for (var i = 0; i < CbColors.Items.Count; i++)
         {
             if (CbColors.Items[i] is ColorItem item &&
-                item.Name == selectedValue)
+                item.Key == selectedValue)
             {
                 if (CbColors.SelectedIndex != i)
                 {
@@ -271,7 +271,7 @@ public partial class WellKnownColorSelector
         ColorItem? defaultColorItem = null;
         if (!string.IsNullOrEmpty(DefaultColorName))
         {
-            var countryItem = Items.FirstOrDefault(x => x.Name == DefaultColorName);
+            var countryItem = Items.FirstOrDefault(x => x.Key == DefaultColorName);
             if (countryItem is not null)
             {
                 defaultColorItem = countryItem;
@@ -322,31 +322,31 @@ public partial class WellKnownColorSelector
 
         if (lastName is null)
         {
-            if (colorItem.Name.StartsWith('-'))
+            if (colorItem.Key.StartsWith('-'))
             {
                 return;
             }
 
             if (DefaultColorName is not null &&
-                DefaultColorName == colorItem.Name)
+                DefaultColorName == colorItem.Key)
             {
                 return;
             }
         }
-        else if (lastName == colorItem.Name)
+        else if (lastName == colorItem.Key)
         {
             return;
         }
 
-        lastName = colorItem.Name;
+        lastName = colorItem.Key;
 
-        Debug.WriteLine($"WellKnownColorSelector - Change to: {colorItem.Name} ({colorItem.DisplayHexCode})");
+        Debug.WriteLine($"WellKnownColorSelector - Change to: {colorItem.Key} ({colorItem.DisplayHexCode})");
 
         SelectorChanged?.Invoke(
             this,
             new ChangedStringEventArgs(
                 identifier: Guid.Empty.ToString(),
                 oldValue: null,
-                newValue: colorItem.Name));
+                newValue: colorItem.Key));
     }
 }

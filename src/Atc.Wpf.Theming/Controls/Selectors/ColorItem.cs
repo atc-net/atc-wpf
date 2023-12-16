@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
 public record ColorItem(
-    string Name,
+    string Key,
     string DisplayName,
     string DisplayHexCode,
     Brush BorderColorBrush,
