@@ -2,7 +2,7 @@ namespace Atc.Wpf.Controls.BaseControls.Internal;
 
 public class ToggleSwitchAutomationPeer : FrameworkElementAutomationPeer, IToggleProvider
 {
-    public ToggleSwitchAutomationPeer([NotNull] ToggleSwitch owner)
+    public ToggleSwitchAutomationPeer(ToggleSwitch owner)
         : base(owner)
     {
     }
