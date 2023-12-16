@@ -38,7 +38,7 @@ public partial class LabelCheckBox : ILabelCheckBox
             control,
             new ChangedBooleanEventArgs(
                 control.Identifier,
-                control.IsChecked,
-                !control.IsChecked));
+                !control.IsChecked,
+                control.IsChecked));
     }
 }
