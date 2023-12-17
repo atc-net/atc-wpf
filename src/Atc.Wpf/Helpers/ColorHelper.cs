@@ -30,16 +30,21 @@ public static class ColorHelper
         ArgumentException.ThrowIfNullOrEmpty(value);
         ArgumentNullException.ThrowIfNull(culture);
 
-        EnsureColorNamesForCulture(culture);
-
-        var colorKey = GetColorKeyFromCulture(culture);
-
-        if (value.StartsWith('#') &&
-            ColorConverter.ConvertFromString(value) is Color color)
+        if (value.StartsWith('#'))
         {
-            return ColorNames[colorKey]
-                .FirstOrDefault(x => string.Equals(x.Key.ToString(GlobalizationConstants.EnglishCultureInfo), color.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.OrdinalIgnoreCase))
-                .Key;
+            try
+            {
+                if (ColorConverter.ConvertFromString(value) is Color color)
+                {
+                    return color;
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         if (!value.Contains(' ', StringComparison.Ordinal))
@@ -52,7 +57,9 @@ public static class ColorHelper
             }
         }
 
-        return ColorNames[colorKey]
+        EnsureColorNamesForCulture(culture);
+
+        return ColorNames[GetColorKeyFromCulture(culture)]
             .FirstOrDefault(x => string.Equals(x.Value, value, StringComparison.OrdinalIgnoreCase))
             .Key;
     }

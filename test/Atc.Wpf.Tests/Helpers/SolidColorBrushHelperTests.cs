@@ -34,6 +34,8 @@ public class SolidColorBrushHelperTests
     }
 
     [Theory]
+    [InlineData("#FF333333", 0x33, 0x33, 0x33)]
+    [InlineData("#FF666666", 0x66, 0x66, 0x66)]
     [InlineData("#FF00CED1", 0, 206, 209)]
     [InlineData("#00CED1", 0, 206, 209)]
     [InlineData("#FF2F4F4F", 47, 79, 79)]
