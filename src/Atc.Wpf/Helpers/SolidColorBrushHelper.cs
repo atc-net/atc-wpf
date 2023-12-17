@@ -4,6 +4,7 @@ namespace Atc.Wpf.Helpers;
 /// <summary>
 /// A Helper class for the SolidColorBrush.
 /// </summary>
+[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 public static class SolidColorBrushHelper
 {
     private static readonly ConcurrentDictionary<string, SolidColorBrush> BaseBrushes = new(StringComparer.Ordinal);
@@ -29,16 +30,21 @@ public static class SolidColorBrushHelper
         ArgumentException.ThrowIfNullOrEmpty(value);
         ArgumentNullException.ThrowIfNull(culture);
 
-        EnsureBrushNamesForCulture(culture);
-
-        var brushKey = GetBrushKeyFromCulture(culture);
-
-        if (value.StartsWith('#') &&
-            ColorConverter.ConvertFromString(value) is Color color)
+        if (value.StartsWith('#'))
         {
-            return BrushNames[brushKey]
-                .FirstOrDefault(x => string.Equals(x.Key.Color.ToString(GlobalizationConstants.EnglishCultureInfo), color.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.OrdinalIgnoreCase))
-                .Key;
+            try
+            {
+                if (ColorConverter.ConvertFromString(value) is Color color)
+                {
+                    return new SolidColorBrush(color);
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         if (!value.Contains(' ', StringComparison.Ordinal))
@@ -51,7 +57,9 @@ public static class SolidColorBrushHelper
             }
         }
 
-        return BrushNames[brushKey]
+        EnsureBrushNamesForCulture(culture);
+
+        return BrushNames[GetBrushKeyFromCulture(culture)]
             .FirstOrDefault(x => string.Equals(x.Value, value, StringComparison.OrdinalIgnoreCase))
             .Key;
     }
