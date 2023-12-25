@@ -29,7 +29,7 @@ public static class ImageExtensions
         throw new FormatException("image.Source");
     }
 
-    public static Image AutoGreyImage(
+    public static Image AutoGrey(
         this Image image,
         bool isEnabled)
     {
