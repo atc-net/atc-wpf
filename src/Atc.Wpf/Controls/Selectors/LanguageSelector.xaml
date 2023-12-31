@@ -43,7 +43,7 @@
                     <TextBlock Text="{Binding Culture.LanguageDisplayName}" />
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=UseOnlySupportedLanguages, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}">
                         <TextBlock Text=" - " />
-                        <TextBlock Text="{Binding Culture.CountryDisplayName}" />
+                        <TextBlock Text="{Binding Path=Culture.CountryDisplayName}" />
                     </StackPanel>
                 </StackPanel>
             </DataTemplate>

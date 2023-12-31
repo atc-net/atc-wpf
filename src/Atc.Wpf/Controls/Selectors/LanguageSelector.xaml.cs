@@ -146,8 +146,15 @@ public partial class LanguageSelector
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
-            SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
-                          Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+            if (DropDownFirstItemType != DropDownFirstItemType.None)
+            {
+                SelectedKey = ((int)DropDownFirstItemType).ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
+            else
+            {
+                SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
+                              Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
         }
         else
         {
@@ -197,8 +204,17 @@ public partial class LanguageSelector
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
-            SelectedKey = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo) ??
-                          Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+            var key = GetDefaultLanguageItem()?.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+            if (key is null &&
+                Items.Count > 0)
+            {
+                key = Items[0].Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo);
+            }
+
+            if (key is not null)
+            {
+                SelectedKey = key;
+            }
         }
         else
         {

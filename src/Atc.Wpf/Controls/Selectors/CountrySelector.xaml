@@ -35,7 +35,7 @@
                             </Style>
                         </Image.Style>
                     </Image>
-                    <TextBlock Text="{Binding Culture.CountryDisplayName}" />
+                    <TextBlock Text="{Binding Path=Culture.CountryDisplayName}" />
                 </StackPanel>
             </DataTemplate>
         </ComboBox.ItemTemplate>
