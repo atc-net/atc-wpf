@@ -69,6 +69,10 @@
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelLanguageSelectorView" />
             <atc:SampleTreeViewItem
+                Header="LabelFontFamilySelector"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelFontFamilySelectorView" />
+            <atc:SampleTreeViewItem
                 Header="LabelThemeSelector"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelThemeSelectorView" />
