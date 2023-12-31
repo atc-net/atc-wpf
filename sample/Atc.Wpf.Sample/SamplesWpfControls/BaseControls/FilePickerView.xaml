@@ -34,11 +34,7 @@
                     <atc:UniformSpacingPanel
                         Grid.Column="1"
                         Orientation="Vertical"
-                        Spacing="10">
-
-                        <atc:FilePicker />
-
-                    </atc:UniformSpacingPanel>
+                        Spacing="10" />
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>
