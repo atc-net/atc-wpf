@@ -129,6 +129,9 @@
   <data name="FieldIsRequired" xml:space="preserve">
     <value>Field is required</value>
   </data>
+  <data name="Font" xml:space="preserve">
+    <value>Font</value>
+  </data>
   <data name="Hour" xml:space="preserve">
     <value>Hour</value>
   </data>

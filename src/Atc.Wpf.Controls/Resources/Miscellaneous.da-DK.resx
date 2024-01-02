@@ -156,4 +156,7 @@
   <data name="SelectDirectory" xml:space="preserve">
     <value>Vælg en mappe</value>
   </data>
+  <data name="Font" xml:space="preserve">
+    <value>Font</value>
+  </data>
 </root>
