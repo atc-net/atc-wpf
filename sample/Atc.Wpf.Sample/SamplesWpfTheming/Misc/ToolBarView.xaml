@@ -19,9 +19,12 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
 
-                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
+                <atc:GridEx
+                    Columns="*,10,*"
+                    Rows="*,10,*"
+                    ShowGridLines="True">
 
-                    <StackPanel Grid.Column="0">
+                    <StackPanel Grid.Row="0" Grid.Column="0">
 
                         <ToolBarTray>
                             <ToolBar>
@@ -54,8 +57,59 @@
 
                     </StackPanel>
 
+                    <StackPanel Grid.Row="2" Grid.Column="0">
 
-                    <StackPanel Grid.Column="2">
+                        <ToolBarTray>
+                            <ToolBar>
+                                <Button Content="Copy2" />
+                                <Button Content="Paste2" IsEnabled="False" />
+                                <Button Content="Cut2" />
+                                <Separator Margin="5,0" />
+                                <ToggleButton>
+                                    <Image
+                                        Width="16"
+                                        Height="16"
+                                        Source="../../Assets/information2.png" />
+                                </ToggleButton>
+                                <ToggleButton>
+                                    <Image
+                                        Width="16"
+                                        Height="16"
+                                        Source="../../Assets/warning.png" />
+                                </ToggleButton>
+                                <ToggleButton>
+                                    <Image
+                                        Width="16"
+                                        Height="16"
+                                        Source="../../Assets/error.png" />
+                                </ToggleButton>
+                                <Separator Margin="5,0" />
+                                <TextBox Width="80" Text="Hallo" />
+                                <Separator Margin="5,0" />
+                                <TextBox
+                                    Width="80"
+                                    IsEnabled="False"
+                                    Text="Hallo" />
+                                <Separator Margin="5,0" />
+                                <Button>
+                                    <atc:AutoGreyableImage
+                                        Width="16"
+                                        Height="16"
+                                        Source="../../Assets/ok.png" />
+                                </Button>
+                                <Button IsEnabled="False">
+                                    <atc:AutoGreyableImage
+                                        Width="16"
+                                        Height="16"
+                                        Source="../../Assets/ok.png" />
+                                </Button>
+                            </ToolBar>
+                        </ToolBarTray>
+
+                    </StackPanel>
+
+
+                    <StackPanel Grid.Row="0" Grid.Column="2">
 
                         <ToolBarTray>
                             <ToolBar>
