@@ -163,11 +163,6 @@
 
                             </atcTheming:GridEx>
 
-                            <!--
-                                Content="{TemplateBinding ButtonUpContent}"
-                                ContentStringFormat="{TemplateBinding ButtonUpContentStringFormat}"
-                                ContentTemplate="{TemplateBinding ButtonUpContentTemplate}"
-                            -->
                             <RepeatButton
                                 x:Name="PART_NumericUpButton"
                                 Grid.Column="1"
@@ -352,6 +347,13 @@
                         <Trigger Property="HideUpDownButtons" Value="True">
                             <Setter TargetName="PART_NumericDownButton" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_NumericUpButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter TargetName="PART_NumericDownButton" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_NumericDownButtonIcon" Property="Opacity" Value="0.4" />
+                            <Setter TargetName="PART_NumericUpButton" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_NumericUpButtonIcon" Property="Opacity" Value="0.4" />
+                            <Setter TargetName="PART_TextBox" Property="IsEnabled" Value="False" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

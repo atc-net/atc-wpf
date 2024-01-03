@@ -1,6 +1,7 @@
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable InconsistentNaming
-
+// ReSharper disable CommentTypo
+// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Controls.BaseControls;
 
 [SuppressMessage("Performance", "MA0023:Add RegexOptions.ExplicitCapture", Justification = "OK.")]
@@ -850,7 +851,7 @@ public class NumericBox : Control
         }
 
         var numericBox = (NumericBox)sender;
-        if ((!numericBox.InterceptManualEnter && !numericBox.IsReadOnly) ||
+        if (numericBox is { InterceptManualEnter: false, IsReadOnly: false } ||
             !numericBox.Focusable ||
             !Equals(e.OriginalSource, numericBox))
         {
@@ -877,7 +878,6 @@ public class NumericBox : Control
 
         repeatUp = GetTemplateChild(PART_NumericUp) as RepeatButton;
         repeatDown = GetTemplateChild(PART_NumericDown) as RepeatButton;
-
         valueTextBox = GetTemplateChild(PART_TextBox) as TextBox;
 
         if (repeatUp is null || repeatDown is null || valueTextBox is null)
@@ -1044,10 +1044,28 @@ public class NumericBox : Control
         var fullText = textBox.Text
             .Remove(textBox.SelectionStart, textBox.SelectionLength)
             .Insert(textBox.CaretIndex, e.Text);
-        var textIsValid = ValidateText(fullText, out var convertedValue);
 
-        e.Handled = !textIsValid || CoerceValue(this, convertedValue as double?).Item2;
-        manualChange = !e.Handled;
+        var isInvalid = !ValidateText(fullText, out var convertedValue);
+
+        if (isInvalid)
+        {
+            e.Handled = true;
+            manualChange = false;
+            return;
+        }
+
+        var isValueInvalid = CoerceValue(this, convertedValue as double?).Item2;
+        if (isValueInvalid &&
+            convertedValue >= Minimum &&
+            convertedValue <= Maximum)
+        {
+            e.Handled = true;
+            manualChange = false;
+            return;
+        }
+
+        e.Handled = false;
+        manualChange = true;
     }
 
     [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.")]
@@ -1062,7 +1080,7 @@ public class NumericBox : Control
             {
                 if (valueTextBox is not null)
                 {
-                    valueTextBox.Text = null;
+                    valueTextBox.Text = string.Empty;
                 }
 
                 if (!Equals(oldValue, newValue))
@@ -1131,7 +1149,7 @@ public class NumericBox : Control
         {
             if (valueTextBox is not null)
             {
-                valueTextBox.Text = null;
+                valueTextBox.Text = string.Empty;
             }
 
             return;
@@ -1415,13 +1433,15 @@ public class NumericBox : Control
         object? sender,
         RoutedEventArgs e)
     {
-        if (valueTextBox is not null)
+        if (valueTextBox is null)
         {
-            manualChange = false;
-            valueTextBox.TextChanged -= OnTextChanged;
-            InternalSetText(Value);
-            valueTextBox.TextChanged += OnTextChanged;
+            return;
         }
+
+        manualChange = false;
+        valueTextBox.TextChanged -= OnTextChanged;
+        InternalSetText(Value);
+        valueTextBox.TextChanged += OnTextChanged;
     }
 
     private void OnTextChanged(

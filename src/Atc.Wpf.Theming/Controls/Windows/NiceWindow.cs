@@ -85,7 +85,7 @@ public class NiceWindow : WindowChromeWindow
         new PropertyMetadata(20.0));
 
     /// <summary>
-    /// Gets or sets the the width for the icon.
+    /// Gets or sets the width for the icon.
     /// </summary>
     public double IconWidth
     {
@@ -100,7 +100,7 @@ public class NiceWindow : WindowChromeWindow
         new PropertyMetadata(20.0));
 
     /// <summary>
-    /// Gets or sets the the height for the icon.
+    /// Gets or sets the height for the icon.
     /// </summary>
     public double IconHeight
     {
@@ -115,7 +115,7 @@ public class NiceWindow : WindowChromeWindow
         new PropertyMetadata(new Thickness(10, 3, 10, 3)));
 
     /// <summary>
-    /// Gets or sets the the margin for the icon.
+    /// Gets or sets the margin for the icon.
     /// </summary>
     public Thickness IconMargin
     {

@@ -20,7 +20,8 @@
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
         SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
         SelectedValuePath="Culture.Lcid"
-        SelectionChanged="OnSelectionChanged">
+        SelectionChanged="OnSelectionChanged"
+        TextSearch.TextPath="Culture.CountryDisplayName">
         <ComboBox.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">
@@ -43,7 +44,7 @@
                     <TextBlock Text="{Binding Culture.LanguageDisplayName}" />
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=UseOnlySupportedLanguages, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}">
                         <TextBlock Text=" - " />
-                        <TextBlock Text="{Binding Culture.CountryDisplayName}" />
+                        <TextBlock Text="{Binding Path=Culture.CountryDisplayName}" />
                     </StackPanel>
                 </StackPanel>
             </DataTemplate>

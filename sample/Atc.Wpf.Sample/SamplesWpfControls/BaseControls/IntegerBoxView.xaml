@@ -42,11 +42,29 @@
                             PrefixText="P123"
                             SuffixText="S123" />
 
+                        <atc:IntegerBox IsEnabled="False" />
+
+                        <atc:IntegerBox IsReadOnly="True" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"
                         Orientation="Vertical"
-                        Spacing="10" />
+                        Spacing="10">
+
+                        <atc:IntegerBox
+                            Maximum="1000"
+                            Minimum="10"
+                            TextAlignment="Center"
+                            Value="23" />
+
+                        <atc:IntegerBox
+                            Maximum="-10"
+                            Minimum="-1000"
+                            TextAlignment="Center"
+                            Value="-23" />
+
+                    </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>
         </GroupBox>
