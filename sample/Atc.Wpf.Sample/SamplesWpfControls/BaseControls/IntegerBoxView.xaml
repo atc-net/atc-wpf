@@ -58,6 +58,12 @@
                             TextAlignment="Center"
                             Value="23" />
 
+                        <atc:IntegerBox
+                            Maximum="-10"
+                            Minimum="-1000"
+                            TextAlignment="Center"
+                            Value="-23" />
+
                     </atc:UniformSpacingPanel>
                 </atc:GridEx>
             </ScrollViewer>
