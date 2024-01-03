@@ -169,6 +169,7 @@
 
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.ComboBox" TargetType="{x:Type ComboBox}">
+        <Setter Property="IsTextSearchEnabled" Value="True" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
