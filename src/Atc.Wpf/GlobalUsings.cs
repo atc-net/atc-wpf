@@ -43,6 +43,7 @@ global using Atc.Wpf.Collections;
 global using Atc.Wpf.Command;
 global using Atc.Wpf.Controls.Documents.TextFormatters;
 global using Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
+global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Controls.Media.W3cSvg.Animation;
 global using Atc.Wpf.Controls.Media.W3cSvg.FileLoaders;
 global using Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
