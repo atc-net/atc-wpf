@@ -22,7 +22,8 @@
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
         SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SelectedKey, Mode=TwoWay}"
         SelectedValuePath="Key"
-        SelectionChanged="OnSelectionChanged">
+        SelectionChanged="OnSelectionChanged"
+        TextSearch.TextPath="DisplayName">
         <ComboBox.ItemContainerStyle>
             <Style TargetType="{x:Type ComboBoxItem}">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
