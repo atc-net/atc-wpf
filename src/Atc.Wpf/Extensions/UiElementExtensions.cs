@@ -6,7 +6,7 @@ public static class UiElementExtensions
 {
     public static BitmapSource SnapShotToBitmap(
         this UIElement uiElement,
-        double zoomFactor)
+        double zoomFactor = 1)
         => uiElement.SnapShotToBitmap(zoomFactor, zoomFactor);
 
     public static BitmapSource SnapShotToBitmap(

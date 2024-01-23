@@ -77,4 +77,38 @@ public static class MenuItemFactory
         menuItem.CommandParameter = commandParameter;
         return menuItem;
     }
+
+    public static MenuItem Create(
+        string labelText,
+        ImageSource icon,
+        ICommand command,
+        string inputGestureText)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(labelText);
+        ArgumentNullException.ThrowIfNull(icon);
+        ArgumentNullException.ThrowIfNull(command);
+        ArgumentException.ThrowIfNullOrEmpty(inputGestureText);
+
+        var menuItem = Create(labelText, icon, command);
+        menuItem.InputGestureText = inputGestureText;
+        return menuItem;
+    }
+
+    public static MenuItem Create(
+        string labelText,
+        ImageSource icon,
+        ICommand command,
+        object commandParameter,
+        string inputGestureText)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(labelText);
+        ArgumentNullException.ThrowIfNull(icon);
+        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(commandParameter);
+        ArgumentException.ThrowIfNullOrEmpty(inputGestureText);
+
+        var menuItem = Create(labelText, icon, command, commandParameter);
+        menuItem.InputGestureText = inputGestureText;
+        return menuItem;
+    }
 }
