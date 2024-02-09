@@ -1,4 +1,5 @@
 global using System.Collections;
+global using System.Collections.Specialized;
 global using System.ComponentModel;
 global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.Design.Serialization;
@@ -46,7 +47,6 @@ global using Atc.Wpf.Controls.Progressing.Internal;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Helpers;
-global using Atc.Wpf.Media;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Controls.Selectors;
@@ -57,5 +57,6 @@ global using Atc.Wpf.ValueConverters;
 global using ControlzEx.Theming;
 
 global using Microsoft.Win32;
+global using Microsoft.Xaml.Behaviors;
 
 global using Newtonsoft.Json.Linq;

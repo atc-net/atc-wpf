@@ -65,12 +65,17 @@ public class ToastNotification : ContentControl
             closeButton.Click += OnCloseButtonOnClick;
         }
 
-        var storyboards = Template.Triggers.OfType<EventTrigger>()
+        var storyboards = Template.Triggers.OfType<System.Windows.EventTrigger>()
             .FirstOrDefault(x => x.RoutedEvent == NotificationCloseInvokedEvent)?.Actions.OfType<BeginStoryboard>()
             .Select(a => a.Storyboard);
 
         closingAnimationTime = new TimeSpan(
-            storyboards?.Max(x => System.Math.Min((x.Duration.HasTimeSpan ? x.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero) : TimeSpan.MaxValue).Ticks, x.Children.Select(ch => ch.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero)).Max().Ticks)) ?? 0);
+            storyboards?.Max(x =>
+                System.Math.Min(
+                    (x.Duration.HasTimeSpan
+                        ? x.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero)
+                        : TimeSpan.MaxValue).Ticks,
+                    x.Children.Select(ch => ch.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero)).Max().Ticks)) ?? 0);
     }
 
     [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK - Need 'async void' and not 'async Task'")]
