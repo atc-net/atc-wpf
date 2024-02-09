@@ -1,5 +1,4 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-
 namespace Atc.Wpf.Theming.Behaviors;
 
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
