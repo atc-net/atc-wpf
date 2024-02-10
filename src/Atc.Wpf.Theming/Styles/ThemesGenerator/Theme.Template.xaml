@@ -484,6 +484,8 @@
     <Color x:Key="AtcApps.Colors.Gray">{{AtcApps.Colors.Gray}}</Color>
     <Color x:Key="AtcApps.Colors.Gray.MouseOver">{{AtcApps.Colors.Gray.MouseOver}}</Color>
     <Color x:Key="AtcApps.Colors.Gray.SemiTransparent">{{AtcApps.Colors.Gray.SemiTransparent}}</Color>
+    <Color x:Key="AtcApps.Colors.SelectionOverlayBackground">{{AtcApps.Colors.SelectionOverlayBackground}}</Color>
+    <Color x:Key="AtcApps.Colors.SelectionOverlayBorder">{{AtcApps.Colors.SelectionOverlayBorder}}</Color>
 
     <!--  Controls Colors  -->
     <Color x:Key="AtcApps.Colors.ProgressIndeterminate1">#33878787</Color>
@@ -660,6 +662,14 @@
         x:Key="AtcApps.Brushes.Gray.SemiTransparent"
         options:Freeze="True"
         Color="{StaticResource AtcApps.Colors.Gray.SemiTransparent}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SelectionOverlayBackground"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SelectionOverlayBackground}" />
+    <SolidColorBrush
+        x:Key="AtcApps.Brushes.SelectionOverlayBorder"
+        options:Freeze="True"
+        Color="{StaticResource AtcApps.Colors.SelectionOverlayBorder}" />
 
     <!--  Brushes: Window  -->
     <SolidColorBrush

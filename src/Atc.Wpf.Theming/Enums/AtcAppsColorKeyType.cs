@@ -36,4 +36,6 @@ public enum AtcAppsColorKeyType
     Gray8,
     Gray9,
     Gray10,
+    SelectionOverlayBackground,
+    SelectionOverlayBorder,
 }
