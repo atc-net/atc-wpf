@@ -5,6 +5,11 @@ public static class ThemeManagerHelper
     private static readonly ConcurrentDictionary<string, Color> CacheColors = new(StringComparer.Ordinal);
     private static readonly ConcurrentDictionary<string, SolidColorBrush> CacheBrushes = new(StringComparer.Ordinal);
 
+    static ThemeManagerHelper()
+    {
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+    }
+
     public static Color GetColorByResourceKey(
         AtcAppsColorKeyType colorKey)
         => GetColorByResourceKey(colorKey.ToString());
@@ -76,5 +81,13 @@ public static class ThemeManagerHelper
         var brush = new SolidColorBrush(color);
         brush.Freeze();
         return brush;
+    }
+
+    private static void OnThemeChanged(
+        object? sender,
+        ThemeChangedEventArgs e)
+    {
+        CacheColors.Clear();
+        CacheBrushes.Clear();
     }
 }
