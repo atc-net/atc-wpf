@@ -36,4 +36,6 @@ public enum AtcAppsBrushKeyType
     Gray8,
     Gray9,
     Gray10,
+    SelectionOverlayBackground,
+    SelectionOverlayBorder,
 }
