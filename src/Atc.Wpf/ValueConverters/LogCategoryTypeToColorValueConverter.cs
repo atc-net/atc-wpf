@@ -27,7 +27,7 @@ public sealed class LogCategoryTypeToColorValueConverter : IValueConverter
             LogCategoryType.Audit => Colors.AntiqueWhite,
             LogCategoryType.Service => Colors.BurlyWood,
             LogCategoryType.UI => Colors.Aquamarine,
-            LogCategoryType.Information => Colors.Green,
+            LogCategoryType.Information => Colors.DodgerBlue,
             LogCategoryType.Debug => Colors.CadetBlue,
             LogCategoryType.Trace => Colors.Gray,
             _ => throw new SwitchCaseDefaultException(type),
