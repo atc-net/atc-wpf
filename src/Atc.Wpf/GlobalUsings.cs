@@ -54,7 +54,6 @@ global using Atc.Wpf.Controls.W3cSvg;
 global using Atc.Wpf.Extensions.Internal;
 global using Atc.Wpf.Factories;
 global using Atc.Wpf.Helpers;
-global using Atc.Wpf.Media;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Resources;
@@ -62,3 +61,5 @@ global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 global using Atc.Wpf.WindowsNative.Structs;
 global using Atc.Wpf.WindowsNative.User32;
+
+global using Microsoft.Extensions.Logging;
