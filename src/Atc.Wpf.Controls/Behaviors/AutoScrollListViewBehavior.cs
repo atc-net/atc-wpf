@@ -18,7 +18,9 @@ public class AutoScrollListViewBehavior : Behavior<ListView>
         ((INotifyCollectionChanged)items).CollectionChanged -= OnCollectionChanged;
     }
 
-    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnCollectionChanged(
+        object? sender,
+        NotifyCollectionChangedEventArgs e)
     {
         var listView = AssociatedObject;
         if (listView.Items.Count <= 1)

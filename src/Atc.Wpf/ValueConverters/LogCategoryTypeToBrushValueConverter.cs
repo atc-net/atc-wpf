@@ -27,7 +27,7 @@ public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
             LogCategoryType.Audit => Brushes.AntiqueWhite,
             LogCategoryType.Service => Brushes.BurlyWood,
             LogCategoryType.UI => Brushes.Aquamarine,
-            LogCategoryType.Information => Brushes.Green,
+            LogCategoryType.Information => Brushes.DodgerBlue,
             LogCategoryType.Debug => Brushes.CadetBlue,
             LogCategoryType.Trace => Brushes.Gray,
             _ => throw new SwitchCaseDefaultException(type),

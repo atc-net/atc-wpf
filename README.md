@@ -221,8 +221,10 @@ but just with a xaml-markup extension to lookup the value by key.
 | Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
 | Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed and 1 -> Visible         | Not supported                           |
 | Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | Not supported                           |
-| LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> Green                    | Not supported                           |
-| LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> Green                    | Not supported                           |
+| LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> DodgerBlue               | Not supported                           |
+| LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> DodgerBlue               | Not supported                           |
+| LogLevel -> Brush         | LogLevelToBrushValueConverter                            | Information -> DodgerBlue               | Not supported                           |
+| LogLevel -> Color         | LogLevelToColorValueConverter                            | Information -> DodgerBlue               | Not supported                           |
 |                           | ObservableDictionaryToDictionaryOfStringsValueConverter  |                                         |                                         |
 |                           | ThicknessBindingValueConverter                           |                                         | DependencyProperty.UnsetValue           |
 |                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |
