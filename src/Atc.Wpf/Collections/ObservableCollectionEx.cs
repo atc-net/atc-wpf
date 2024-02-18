@@ -1,6 +1,10 @@
 namespace Atc.Wpf.Collections;
 
-/// <inheritdoc />
+/// <summary>
+/// Extends ObservableCollection&lt;T&gt; to provide enhanced features such as the ability to suppress collection changed notifications
+/// and efficiently add multiple items with a single notification. This is useful in scenarios where bulk updates are needed,
+/// improving performance by minimizing UI updates and providing a more efficient way to refresh bound views.
+/// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public class ObservableCollectionEx<T> : ObservableCollection<T>
 {
@@ -34,9 +38,13 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
     }
 
     /// <summary>
-    /// Adds the range.
+    /// Adds a range of items to the collection. This method temporarily suppresses collection changed notifications,
+    /// allowing for the bulk addition of items without triggering individual UI updates for each addition.
+    /// A single collection changed notification is raised after all items are added, improving performance and responsiveness
+    /// when updating bound views with multiple items at once.
     /// </summary>
-    /// <param name="list">The list.</param>
+    /// <param name="list">The collection of items to be added to the ObservableCollectionEx. The items in this collection
+    /// will be added to the ObservableCollectionEx, and a single notification will be raised after all items are added.</param>
     public void AddRange(
         IEnumerable<T> list)
     {
@@ -52,7 +60,34 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
         OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list));
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Forces a refresh of any views bound to this collection. This method raises a collection changed notification
+    /// with the Reset action, indicating to bound views that they should re-evaluate the entire collection. This is
+    /// particularly useful for manually triggering UI updates in response to changes in the collection that are not
+    /// automatically captured by the standard collection changed notifications.
+    /// </summary>
+    /// <remarks>
+    /// When the <see cref="Refresh"/> method is called, it triggers a <see cref="NotifyCollectionChangedAction.Reset"/>
+    /// notification on the collection. This is the equivalent of telling any bound views that they should discard their
+    /// current state and re-evaluate the entire collection. This can be useful in scenarios where the collection has been
+    /// modified in a way that is not automatically detectable by the bound views (e.g., when properties of items within
+    /// the collection have changed without modifying the collection itself).
+    /// It's important to use this method judiciously as it can be resource-intensive in scenarios where the bound view is
+    /// large or complex, since it effectively requires the view to be re-rendered from scratch.
+    /// </remarks>
+    public void Refresh()
+    {
+        OnCollectionChanged(
+            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+    }
+
+    /// <summary>
+    /// Forces a refresh of any views bound to this collection. This method raises a collection changed notification
+    /// with the Reset action, indicating to bound views that they should re-evaluate the entire collection. This is
+    /// particularly useful for manually triggering UI updates in response to changes in the collection that are not
+    /// automatically captured by the standard collection changed notifications.
+    /// </summary>
+    /// <param name="e">The NotifyCollectionChanged EventArgs.</param>
     protected override void OnCollectionChanged(
         NotifyCollectionChangedEventArgs e)
     {
