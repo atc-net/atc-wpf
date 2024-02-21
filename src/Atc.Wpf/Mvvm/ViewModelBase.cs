@@ -3,7 +3,7 @@
 namespace Atc.Wpf.Mvvm;
 
 /// <summary>
-/// A base class for a the ViewModel class, to be used in the MVVM pattern design.
+/// A base class for the ViewModel class, to be used in the MVVM pattern design.
 /// </summary>
 public abstract class ViewModelBase : ObservableObject, IViewModelBase
 {
