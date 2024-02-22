@@ -66,6 +66,18 @@ public class ImageButton : Button
         set => SetValue(ImageSourceProperty, value);
     }
 
+    public static readonly DependencyProperty SvgImageOverrideColorProperty = DependencyProperty.Register(
+        nameof(SvgImageOverrideColor),
+        typeof(Color?),
+        typeof(ImageButton),
+        new PropertyMetadata(default(Color?)));
+
+    public Color? SvgImageOverrideColor
+    {
+        get => (Color?)GetValue(SvgImageOverrideColorProperty);
+        set => SetValue(SvgImageOverrideColorProperty, value);
+    }
+
     public static readonly DependencyProperty RowIndexProperty = DependencyProperty.Register(
         nameof(RowIndex),
         typeof(int),

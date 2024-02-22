@@ -42,6 +42,27 @@ internal static class DateTimeTextBoxHelper
         return false;
     }
 
+    public static bool TryParseUsingCurrentUiCulture(
+        string dateValue,
+        string timeValue,
+        out DateTime result)
+    {
+        result = DateTime.MinValue;
+        if (!string.IsNullOrWhiteSpace(dateValue) &&
+            !string.IsNullOrWhiteSpace(timeValue) &&
+            DateTime.TryParse(
+                $"{dateValue} {timeValue}",
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
+                DateTimeStyles.None,
+                out var resShort))
+        {
+            result = resShort;
+            return true;
+        }
+
+        return false;
+    }
+
     public static bool HandlePrerequisiteForOnTextTimeChanged(
         TextBox control,
         TextChangedEventArgs e)

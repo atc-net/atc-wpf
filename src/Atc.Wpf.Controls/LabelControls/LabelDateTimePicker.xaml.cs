@@ -1,4 +1,5 @@
 // ReSharper disable InvertIf
+// ReSharper disable ConvertIfStatementToSwitchStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -82,7 +83,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         nameof(SelectedDateFormat),
         typeof(DatePickerFormat),
         typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: DatePickerFormat.Long));
+        new PropertyMetadata(defaultValue: DatePickerFormat.Short));
 
     public DatePickerFormat SelectedDateFormat
     {
@@ -253,8 +254,8 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         var control = (TextBox)sender;
 
         if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
-                SelectedDateFormat,
-                $"{control.Text} {TextTime}",
+                control.Text,
+                TextTime,
                 out var result))
         {
             SelectedDate = result;
@@ -277,8 +278,8 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         }
 
         if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
-                SelectedDateFormat,
-                $"{TextDate} {control.Text}",
+                TextDate,
+                control.Text,
                 out var result))
         {
             SelectedDate = result;
@@ -347,32 +348,48 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             return;
         }
 
+        if (!control.IsMandatory &&
+            string.IsNullOrWhiteSpace(control.TextDate) &&
+            string.IsNullOrWhiteSpace(control.TextTime))
+        {
+            control.ValidationText = string.Empty;
+            if (raiseEvents)
+            {
+                OnLostFocusFireValidEvent(control, e);
+            }
+
+            return;
+        }
+
         if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
-                control.SelectedDateFormat,
                 control.TextDate,
+                control.TextTime,
                 out _))
         {
             control.ValidationText = string.Empty;
-            OnLostFocusFireValidEvent(control, e);
-        }
-        else
-        {
-            control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
-                ? string.Format(
-                    CultureInfo.CurrentUICulture,
-                    Validations.InvalidDate2,
-                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern,
-                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
-                : string.Format(
-                    CultureInfo.CurrentUICulture,
-                    Validations.InvalidDate2,
-                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern,
-                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
-
             if (raiseEvents)
             {
-                OnLostFocusFireInvalidEvent(control, e);
+                OnLostFocusFireValidEvent(control, e);
             }
+
+            return;
+        }
+
+        control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
+            ? string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.InvalidDate2,
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern,
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
+            : string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.InvalidDate2,
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern,
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
+
+        if (raiseEvents)
+        {
+            OnLostFocusFireInvalidEvent(control, e);
         }
     }
 

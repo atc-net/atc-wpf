@@ -61,6 +61,7 @@
                                 Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={StaticResource ImageLocationToMarginValueConverter}}"
                                 ControlSizeType="ContentToSizeNoStretch"
                                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                OverrideColor="{Binding Path=SvgImageOverrideColor, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Visibility="Collapsed" />
                         </Grid>

@@ -194,21 +194,36 @@ public partial class LabelTimePicker : ILabelTimePicker
             return;
         }
 
+        if (!control.IsMandatory &&
+            string.IsNullOrWhiteSpace(control.Text))
+        {
+            control.ValidationText = string.Empty;
+            if (raiseEvents)
+            {
+                OnLostFocusFireValidEvent(control, e);
+            }
+
+            return;
+        }
+
         if (DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
                 control.Text,
                 out _))
         {
             control.ValidationText = string.Empty;
-            OnLostFocusFireValidEvent(control, e);
-        }
-        else
-        {
-            control.ValidationText = Validations.InvalidTime;
-
             if (raiseEvents)
             {
-                OnLostFocusFireInvalidEvent(control, e);
+                OnLostFocusFireValidEvent(control, e);
             }
+
+            return;
+        }
+
+        control.ValidationText = Validations.InvalidTime;
+
+        if (raiseEvents)
+        {
+            OnLostFocusFireInvalidEvent(control, e);
         }
     }
 
