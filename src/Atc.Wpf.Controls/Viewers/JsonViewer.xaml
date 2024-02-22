@@ -222,7 +222,7 @@
             ItemTemplateSelector="{StaticResource JPropertyDataTemplateSelector}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                    <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, FallbackValue=False}" />
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
