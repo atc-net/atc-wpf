@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
     xmlns:controls="clr-namespace:Atc.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:jLinq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
@@ -21,6 +20,7 @@
 
     <UserControl.Resources>
 
+        <atcValueConverters:MathSubtractValueConverter x:Key="MathSubtractValueConverter" />
         <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
         <valueConverters:MethodToValueConverter x:Key="MethodToValueConverter" />
         <valueConverters:ComplexPropertyMethodToValueConverter x:Key="ComplexPropertyMethodToValueConverter" />
@@ -77,10 +77,16 @@
                 <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
                 <TextBlock Text="  " />
                 <TextBlock
-                    Width="300"
                     Foreground="{Binding Converter={StaticResource JPropertyTypeToColorConverter}}"
                     Text="{Binding Path=Value, Converter={StaticResource JValueConverter}}"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap">
+                    <TextBlock.Width>
+                        <MultiBinding Converter="{StaticResource MathSubtractValueConverter}">
+                            <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
+                            <Binding Source="250" />
+                        </MultiBinding>
+                    </TextBlock.Width>
+                </TextBlock>
             </StackPanel>
         </DataTemplate>
 
@@ -107,10 +113,16 @@
 
         <DataTemplate DataType="{x:Type jLinq:JValue}">
             <TextBlock
-                Width="300"
                 Foreground="{Binding Converter={StaticResource JValueTypeToColorConverter}}"
                 Text="{Binding Converter={StaticResource JValueConverter}}"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap">
+                <TextBlock.Width>
+                    <MultiBinding Converter="{StaticResource MathSubtractValueConverter}">
+                        <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
+                        <Binding Source="250" />
+                    </MultiBinding>
+                </TextBlock.Width>
+            </TextBlock>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -122,16 +134,20 @@
                 Orientation="Horizontal"
                 Spacing="10"
                 Visibility="{Binding Path=ShowActionAndInformationBar, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}">
-                <baseControls:ImageButton
-                    Click="ExpandAll"
-                    ImageLocation="Center"
-                    SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg"
-                    ToolTip="Expand All" />
-                <baseControls:ImageButton
-                    Click="CollapseAll"
-                    ImageLocation="Center"
-                    SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/collapse.svg"
-                    ToolTip="Collapse All" />
+                <Button Click="ExpandAll" ToolTip="Expand All">
+                    <atc:SvgImage
+                        Width="16"
+                        Height="16"
+                        OverrideColor="DarkOrange"
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
+                </Button>
+                <Button Click="CollapseAll" ToolTip="Collapse All">
+                    <atc:SvgImage
+                        Width="16"
+                        Height="16"
+                        OverrideColor="DarkOrange"
+                        Source="/Atc.Wpf.Controls;component/Resources/Icons/collapse.svg" />
+                </Button>
                 <Border
                     Background="{x:Static controls:Constants.JTokenColorString}"
                     BorderBrush="{x:Static controls:Constants.JTokenColorString}"
@@ -222,6 +238,8 @@
             ItemTemplateSelector="{StaticResource JPropertyDataTemplateSelector}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
                     <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, FallbackValue=False}" />
                 </Style>
             </TreeView.ItemContainerStyle>
