@@ -1,3 +1,4 @@
+// ReSharper disable ConvertIfStatementToSwitchStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -273,30 +274,45 @@ public partial class LabelDatePicker : ILabelDatePicker
             return;
         }
 
+        if (!control.IsMandatory &&
+            string.IsNullOrWhiteSpace(control.Text))
+        {
+            control.ValidationText = string.Empty;
+            if (raiseEvents)
+            {
+                OnLostFocusFireValidEvent(control, e);
+            }
+
+            return;
+        }
+
         if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
                 control.SelectedDateFormat,
                 control.Text,
                 out _))
         {
             control.ValidationText = string.Empty;
-            OnLostFocusFireValidEvent(control, e);
-        }
-        else
-        {
-            control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
-                ? string.Format(
-                    CultureInfo.CurrentUICulture,
-                    Validations.InvalidDate1,
-                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)
-                : string.Format(
-                    CultureInfo.CurrentUICulture,
-                    Validations.InvalidDate1,
-                    Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern);
-
             if (raiseEvents)
             {
-                OnLostFocusFireInvalidEvent(control, e);
+                OnLostFocusFireValidEvent(control, e);
             }
+
+            return;
+        }
+
+        control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
+            ? string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.InvalidDate1,
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)
+            : string.Format(
+                CultureInfo.CurrentUICulture,
+                Validations.InvalidDate1,
+                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern);
+
+        if (raiseEvents)
+        {
+            OnLostFocusFireInvalidEvent(control, e);
         }
     }
 
