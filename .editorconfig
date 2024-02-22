@@ -509,6 +509,7 @@ csharp_style_prefer_range_operator = false         # IDE0057
 dotnet_diagnostic.CA1854.severity = none           # Prefer a 'TryGetValue' call over a Dictionary indexer access guarded by a 'ContainsKey' check to avoid double lookup
 dotnet_diagnostic.CA1859.severity = none           # Change type of field 'XXX' from 'XXX' to 'YYY' for improved performance
 dotnet_diagnostic.CA1860.severity = none           # Prefer comparing 'Length' to 0 rather than using 'Any()', both for clarity and for performance
+dotnet_diagnostic.CA1822.severity = none           # Mark members as static
 dotnet_diagnostic.CA1861.severity = none           # Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array
 dotnet_diagnostic.CA1863.severity = none           # Cache a 'XXX' for repeated use in this formatting operation
 dotnet_diagnostic.CA1870.severity = none           # Use a cached 'XXX' instance for improved searching performance
