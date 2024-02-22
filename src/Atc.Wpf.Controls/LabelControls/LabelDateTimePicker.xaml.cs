@@ -82,7 +82,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         nameof(SelectedDateFormat),
         typeof(DatePickerFormat),
         typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: DatePickerFormat.Short));
+        new PropertyMetadata(defaultValue: DatePickerFormat.Long));
 
     public DatePickerFormat SelectedDateFormat
     {
