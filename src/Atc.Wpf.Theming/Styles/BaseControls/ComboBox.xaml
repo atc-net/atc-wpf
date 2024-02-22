@@ -384,7 +384,7 @@
                                 <Condition Property="IsEditable" Value="False" />
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray9}" />
+                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground1}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
                         </MultiTrigger>
                         <MultiTrigger>
