@@ -14,7 +14,7 @@ public partial class JsonViewer
         nameof(ShowActionAndInformationBar),
         typeof(bool),
         typeof(JsonViewer),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(BooleanBoxes.TrueBox));
 
     public bool ShowActionAndInformationBar
     {
@@ -22,11 +22,23 @@ public partial class JsonViewer
         set => SetValue(ShowActionAndInformationBarProperty, value);
     }
 
+    public static readonly DependencyProperty SuppressErrorMessagesProperty = DependencyProperty.Register(
+        nameof(SuppressErrorMessages),
+        typeof(bool),
+        typeof(JsonViewer),
+        new PropertyMetadata(BooleanBoxes.FalseBox));
+
+    public bool SuppressErrorMessages
+    {
+        get => (bool)GetValue(SuppressErrorMessagesProperty);
+        set => SetValue(SuppressErrorMessagesProperty, value);
+    }
+
     public static readonly DependencyProperty StartExpandedProperty = DependencyProperty.Register(
         nameof(StartExpanded),
         typeof(bool),
         typeof(JsonViewer),
-        new PropertyMetadata(defaultValue: true));
+        new PropertyMetadata(BooleanBoxes.TrueBox));
 
     public bool StartExpanded
     {
@@ -55,13 +67,18 @@ public partial class JsonViewer
             return;
         }
 
-        if (!json.IsFormatJson())
-        {
-            MessageBox.Show("Invalid JSON format.");
-        }
-
         JsonTreeView.ItemsSource = null;
         JsonTreeView.Items.Clear();
+
+        if (!json.IsFormatJson())
+        {
+            if (!SuppressErrorMessages)
+            {
+                MessageBox.Show("Invalid JSON format.");
+            }
+
+            return;
+        }
 
         var children = new List<JToken>();
 
