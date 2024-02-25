@@ -45,10 +45,10 @@
                 atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkAlignment}"
                 atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTrimming}"
+                KeyDown="OnDateTextKeyDown"
                 MaxLength="30"
                 MaxLines="1"
-                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=TextDate}"
-                TextChanged="OnTextDateChanged" />
+                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=TextDate}" />
 
             <ToggleButton
                 Grid.Row="0"
@@ -100,7 +100,6 @@
                     FirstDayOfWeek="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=FirstDayOfWeek}"
                     IsTodayHighlighted="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=IsTodayHighlighted}"
                     SelectedDate="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=SelectedDate}"
-                    SelectedDatesChanged="OnCalendarSelectedDatesChanged"
                     SelectionMode="SingleDate" />
             </Popup>
 
@@ -112,10 +111,10 @@
                 atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTimeText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkAlignment}"
                 atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTrimming}"
+                KeyDown="OnTimeTextKeyDown"
                 MaxLength="8"
                 MaxLines="1"
-                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=TextTime}"
-                TextChanged="OnTextTimeChanged" />
+                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=TextTime}" />
 
             <ToggleButton
                 Grid.Row="0"
@@ -158,7 +157,7 @@
                 IsOpen="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=OpenClock}"
                 Placement="Bottom"
                 StaysOpen="False">
-                <baseControls:ClockPicker SelectedClockChanged="OnClockPickerSelectedClockChanged" SelectedDateTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=SelectedDate}" />
+                <baseControls:ClockPicker SelectedClockChanged="OnClockPickerSelectedClockChanged" SelectedDateTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=SelectedDate, Mode=TwoWay}" />
             </Popup>
 
         </atc:GridEx>

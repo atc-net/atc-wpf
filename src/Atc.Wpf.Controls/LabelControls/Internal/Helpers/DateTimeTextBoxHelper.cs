@@ -4,9 +4,64 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 
 internal static class DateTimeTextBoxHelper
 {
-    public static bool TryParseUsingCurrentUiCulture(
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    public static string GetSelectedDateAsText(
+        DateTime dateTime,
+        DatePickerFormat datePickerFormat,
+        CultureInfo cultureInfo)
+    {
+        ArgumentNullException.ThrowIfNull(dateTime);
+        ArgumentNullException.ThrowIfNull(datePickerFormat);
+        ArgumentNullException.ThrowIfNull(cultureInfo);
+
+        if (datePickerFormat == DatePickerFormat.Short ||
+            (datePickerFormat == DatePickerFormat.Long &&
+             Thread.CurrentThread.CurrentUICulture.LCID == GlobalizationConstants.EnglishCultureInfo.LCID))
+        {
+            return dateTime.ToString(
+                datePickerFormat == DatePickerFormat.Short
+                    ? cultureInfo.DateTimeFormat.ShortDatePattern
+                    : cultureInfo.DateTimeFormat.LongDatePattern);
+        }
+
+        var s = dateTime.ToString(cultureInfo.DateTimeFormat.LongDatePattern);
+
+        if (s.StartsWith(nameof(DayOfWeek.Sunday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Sunday), DayOfWeekHelper.GetDescription(DayOfWeek.Sunday, cultureInfo), StringComparison.Ordinal);
+        }
+        else if (s.StartsWith(nameof(DayOfWeek.Monday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Monday), DayOfWeekHelper.GetDescription(DayOfWeek.Monday, cultureInfo), StringComparison.Ordinal);
+        }
+        else if (s.StartsWith(nameof(DayOfWeek.Tuesday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Tuesday), DayOfWeekHelper.GetDescription(DayOfWeek.Tuesday, cultureInfo), StringComparison.Ordinal);
+        }
+        else if (s.StartsWith(nameof(DayOfWeek.Wednesday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Wednesday), DayOfWeekHelper.GetDescription(DayOfWeek.Wednesday, cultureInfo), StringComparison.Ordinal);
+        }
+        else if (s.StartsWith(nameof(DayOfWeek.Thursday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Thursday), DayOfWeekHelper.GetDescription(DayOfWeek.Thursday, cultureInfo), StringComparison.Ordinal);
+        }
+        else if (s.StartsWith(nameof(DayOfWeek.Friday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Friday), DayOfWeekHelper.GetDescription(DayOfWeek.Friday, cultureInfo), StringComparison.Ordinal);
+        }
+        else if (s.StartsWith(nameof(DayOfWeek.Saturday), StringComparison.Ordinal))
+        {
+            s = s.Replace(nameof(DayOfWeek.Saturday), DayOfWeekHelper.GetDescription(DayOfWeek.Saturday, cultureInfo), StringComparison.Ordinal);
+        }
+
+        return s;
+    }
+
+    public static bool TryParseUsingSpecificCulture(
         DatePickerFormat datePickerFormat,
         string value,
+        CultureInfo cultureInfo,
         out DateTime result)
     {
         result = DateTime.MinValue;
@@ -16,7 +71,7 @@ internal static class DateTimeTextBoxHelper
                 if (!string.IsNullOrWhiteSpace(value) &&
                     DateTime.TryParse(
                         value,
-                        Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
+                        cultureInfo.DateTimeFormat,
                         DateTimeStyles.None,
                         out var resLong))
                 {
@@ -26,8 +81,9 @@ internal static class DateTimeTextBoxHelper
 
                 break;
             case DatePickerFormat.Short:
-                if (DateTimeHelper.TryParseShortDateUsingCurrentUiCulture(
+                if (DateTimeHelper.TryParseShortDateUsingSpecificCulture(
                         value,
+                        cultureInfo,
                         out var resShort))
                 {
                     result = resShort;
@@ -42,9 +98,10 @@ internal static class DateTimeTextBoxHelper
         return false;
     }
 
-    public static bool TryParseUsingCurrentUiCulture(
+    public static bool TryParseUsingSpecificCulture(
         string dateValue,
         string timeValue,
+        CultureInfo cultureInfo,
         out DateTime result)
     {
         result = DateTime.MinValue;
@@ -52,7 +109,7 @@ internal static class DateTimeTextBoxHelper
             !string.IsNullOrWhiteSpace(timeValue) &&
             DateTime.TryParse(
                 $"{dateValue} {timeValue}",
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat,
+                cultureInfo.DateTimeFormat,
                 DateTimeStyles.None,
                 out var resShort))
         {
@@ -65,12 +122,13 @@ internal static class DateTimeTextBoxHelper
 
     public static bool HandlePrerequisiteForOnTextTimeChanged(
         TextBox control,
+        CultureInfo cultureInfo,
         TextChangedEventArgs e)
     {
         var textChange = e.Changes.First();
 
-        var use24Hours = !(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern.StartsWith("h:", StringComparison.Ordinal) ||
-                           Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern.StartsWith("h.", StringComparison.Ordinal));
+        var use24Hours = !(cultureInfo.DateTimeFormat.ShortTimePattern.StartsWith("h:", StringComparison.Ordinal) ||
+                           cultureInfo.DateTimeFormat.ShortTimePattern.StartsWith("h.", StringComparison.Ordinal));
 
         if (textChange.AddedLength == 1)
         {
@@ -84,7 +142,7 @@ internal static class DateTimeTextBoxHelper
             }
             else
             {
-                if (!HandlePrerequisiteForOnTextTimeChangedAddedOneLetter(control, lastChar, use24Hours))
+                if (!HandlePrerequisiteForOnTextTimeChangedAddedOneLetter(control, cultureInfo, lastChar, use24Hours))
                 {
                     return false;
                 }
@@ -160,6 +218,7 @@ internal static class DateTimeTextBoxHelper
 
     private static bool HandlePrerequisiteForOnTextTimeChangedAddedOneLetter(
         TextBox control,
+        CultureInfo cultureInfo,
         string lastChar,
         bool use24Hours)
     {
@@ -174,7 +233,7 @@ internal static class DateTimeTextBoxHelper
         }
 
         if (!use24Hours &&
-            !HandlePrerequisiteForOnTextTimeChangedAddedOneLetterAmPmPart(control, lastChar, ref isHandled))
+            !HandlePrerequisiteForOnTextTimeChangedAddedOneLetterAmPmPart(control, cultureInfo, lastChar, ref isHandled))
         {
             return false;
         }
@@ -191,6 +250,7 @@ internal static class DateTimeTextBoxHelper
 
     private static bool HandlePrerequisiteForOnTextTimeChangedAddedOneLetterAmPmPart(
         TextBox control,
+        CultureInfo cultureInfo,
         string lastChar,
         ref bool isHandled)
     {
@@ -212,7 +272,7 @@ internal static class DateTimeTextBoxHelper
         if (lastChar.Equals("a", StringComparison.OrdinalIgnoreCase) ||
             lastChar.Equals("p", StringComparison.OrdinalIgnoreCase))
         {
-            control.Text = control.Text.ToUpper(Thread.CurrentThread.CurrentUICulture);
+            control.Text = control.Text.ToUpper(cultureInfo);
             var sa = control.Text.Split(' ');
             if (sa.Length != 2 || sa[1].Length != 1)
             {
@@ -227,7 +287,7 @@ internal static class DateTimeTextBoxHelper
         }
         else if (lastChar.Equals("m", StringComparison.OrdinalIgnoreCase))
         {
-            control.Text = control.Text.ToUpper(Thread.CurrentThread.CurrentUICulture);
+            control.Text = control.Text.ToUpper(cultureInfo);
             var sa = control.Text.Split(' ');
             if (sa.Length != 2 || sa[1].Length != 2)
             {

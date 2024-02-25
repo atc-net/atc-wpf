@@ -45,10 +45,10 @@
                 atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=WatermarkText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=WatermarkAlignment}"
                 atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=WatermarkTrimming}"
+                KeyDown="OnTimeTextKeyDown"
                 MaxLength="8"
                 MaxLines="1"
-                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=Text}"
-                TextChanged="OnTextTimeChanged" />
+                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=Text}" />
 
             <ToggleButton
                 Grid.Row="0"

@@ -9,12 +9,27 @@ public partial class LabelTimePicker : ILabelTimePicker
         nameof(SelectedTime),
         typeof(DateTime?),
         typeof(LabelTimePicker),
-        new PropertyMetadata(default(DateTime?)));
+        new FrameworkPropertyMetadata(
+            default(DateTime?),
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnSelectedTimeChanged));
 
     public DateTime? SelectedTime
     {
         get => (DateTime?)GetValue(SelectedTimeProperty);
         set => SetValue(SelectedTimeProperty, value);
+    }
+
+    public static readonly DependencyProperty CustomCultureProperty = DependencyProperty.Register(
+        nameof(CustomCulture),
+        typeof(CultureInfo),
+        typeof(LabelTimePicker),
+        new PropertyMetadata(default(CultureInfo?)));
+
+    public CultureInfo? CustomCulture
+    {
+        get => (CultureInfo?)GetValue(CustomCultureProperty);
+        set => SetValue(CustomCultureProperty, value);
     }
 
     public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
@@ -111,42 +126,53 @@ public partial class LabelTimePicker : ILabelTimePicker
         object sender,
         RoutedEventArgs e)
     {
-        SetDefaultWatermarkIfNeeded();
+        var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+        SetDefaultWatermarkIfNeeded(cultureInfo);
     }
 
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
     {
-        SetDefaultWatermarkIfNeeded();
+        var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+        SetDefaultWatermarkIfNeeded(cultureInfo);
 
         if (SelectedTime.HasValue)
         {
-            Text = SelectedTime.Value.ToShortTimeStringUsingCurrentUiCulture();
+            SetCurrentValue(
+                TextProperty,
+                SelectedTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo));
         }
     }
 
-    private void OnTextTimeChanged(
+    private void OnTimeTextKeyDown(
         object sender,
-        TextChangedEventArgs e)
+        KeyEventArgs e)
     {
-        var control = (TextBox)sender;
-
-        if (!DateTimeTextBoxHelper.HandlePrerequisiteForOnTextTimeChanged(control, e))
+        if (e.Key != Key.Enter)
         {
             return;
         }
 
-        if (DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
-                control.Text,
-                out var result))
+        if (sender is not DependencyObject parent)
         {
-            SelectedTime = result;
+            return;
         }
-        else
+
+        var control = VisualTreeHelperEx.FindParent<LabelTimePicker>(parent);
+        if (control is null ||
+            sender is not TextBox textBox)
         {
-            SelectedTime = null;
+            return;
         }
+
+        control.SetCurrentValue(TextProperty, textBox.Text);
+
+        var dateTime = ValidateText(control);
+
+        UpdateSelectedTime(control, dateTime);
     }
 
     private static void OnTextLostFocus(
@@ -155,14 +181,19 @@ public partial class LabelTimePicker : ILabelTimePicker
     {
         var control = (LabelTimePicker)d;
 
-        ValidateText(e, control, raiseEvents: true);
-
-        if (string.IsNullOrEmpty(control.ValidationText))
+        if (StackTraceHelper.ContainsPropertyName(nameof(OnSelectedTimeChanged)))
         {
             return;
         }
 
-        control.SelectedTime = null;
+        if (StackTraceHelper.ContainsPropertyName("ClearControl"))
+        {
+            control.Text = string.Empty;
+        }
+
+        var dateTime = ValidateText(e, control, raiseEvents: true);
+
+        UpdateSelectedTime(control, dateTime);
     }
 
     private void OnClockPickerSelectedClockChanged(
@@ -171,60 +202,120 @@ public partial class LabelTimePicker : ILabelTimePicker
     {
         var clockPicker = (ClockPicker)sender!;
 
-        if (clockPicker.SelectedDateTime.HasValue)
+        if (!clockPicker.SelectedDateTime.HasValue)
         {
-            Text = clockPicker.SelectedDateTime.Value.ToShortTimeStringUsingCurrentUiCulture();
+            return;
+        }
+
+        var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+        var shortTime = clockPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
+
+        if (shortTime.Equals(Text, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        SetCurrentValue(TextProperty, shortTime);
+    }
+
+    private static void OnSelectedTimeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelTimePicker)d;
+
+        if (control.SelectedTime is null)
+        {
+            control.SetCurrentValue(TextProperty, string.Empty);
+        }
+        else
+        {
+            var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+            control.SetCurrentValue(
+                TextProperty,
+                control.SelectedTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo));
         }
     }
 
-    private static void ValidateText(
+    private static void UpdateSelectedTime(
+        LabelTimePicker control,
+        DateTime? dateTime)
+    {
+        if (control.SelectedTime == dateTime)
+        {
+            return;
+        }
+
+        if (dateTime is not null &&
+            string.IsNullOrEmpty(control.ValidationText))
+        {
+            control.SelectedTime = dateTime;
+        }
+        else
+        {
+            control.SelectedTime = null;
+        }
+    }
+
+    private static DateTime? ValidateText(
         DependencyPropertyChangedEventArgs e,
         LabelTimePicker control,
         bool raiseEvents)
     {
-        if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.Text))
+        var dateTime = ValidateText(control);
+
+        if (raiseEvents)
         {
-            control.ValidationText = Validations.FieldIsRequired;
-            if (raiseEvents)
+            if (string.IsNullOrEmpty(control.ValidationText))
+            {
+                OnLostFocusFireValidEvent(control, e);
+            }
+            else
             {
                 OnLostFocusFireInvalidEvent(control, e);
             }
-
-            return;
         }
 
-        if (!control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.Text))
+        return dateTime;
+    }
+
+    private static DateTime? ValidateText(
+        LabelTimePicker control)
+    {
+        var isTimeEmpty = string.IsNullOrWhiteSpace(control.Text);
+
+        if (control.IsMandatory)
         {
-            control.ValidationText = string.Empty;
-            if (raiseEvents)
+            if (isTimeEmpty)
             {
-                OnLostFocusFireValidEvent(control, e);
+                control.ValidationText = Validations.FieldIsRequired;
+                return null;
             }
-
-            return;
+        }
+        else
+        {
+            if (isTimeEmpty)
+            {
+                control.ValidationText = string.Empty;
+                return null;
+            }
         }
 
-        if (DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+        if (DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
                 control.Text,
-                out _))
+                cultureInfo,
+                out var dateTime))
         {
             control.ValidationText = string.Empty;
-            if (raiseEvents)
-            {
-                OnLostFocusFireValidEvent(control, e);
-            }
-
-            return;
+            return dateTime;
         }
 
         control.ValidationText = Validations.InvalidTime;
 
-        if (raiseEvents)
-        {
-            OnLostFocusFireInvalidEvent(control, e);
-        }
+        return null;
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -232,10 +323,13 @@ public partial class LabelTimePicker : ILabelTimePicker
         LabelTimePicker control,
         DependencyPropertyChangedEventArgs e)
     {
+        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
                 e.OldValue.ToString()!,
+                cultureInfo,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -243,8 +337,9 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
                 e.NewValue.ToString()!,
+                cultureInfo,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -263,10 +358,13 @@ public partial class LabelTimePicker : ILabelTimePicker
         LabelTimePicker control,
         DependencyPropertyChangedEventArgs e)
     {
+        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
                 e.OldValue.ToString()!,
+                cultureInfo,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -274,8 +372,9 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingCurrentUiCulture(
+            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
                 e.NewValue.ToString()!,
+                cultureInfo,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -294,13 +393,14 @@ public partial class LabelTimePicker : ILabelTimePicker
         object? value)
         => value ?? string.Empty;
 
-    private void SetDefaultWatermarkIfNeeded()
+    private void SetDefaultWatermarkIfNeeded(
+        CultureInfo cultureInfo)
     {
         if (string.IsNullOrEmpty(WatermarkText) ||
             WatermarkText.Contains(':', StringComparison.Ordinal) ||
             WatermarkText.Contains('.', StringComparison.Ordinal))
         {
-            WatermarkText = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern;
+            WatermarkText = cultureInfo.DateTimeFormat.ShortTimePattern;
         }
     }
 }

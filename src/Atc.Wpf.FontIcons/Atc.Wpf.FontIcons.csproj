@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.422" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
   </ItemGroup>
 
