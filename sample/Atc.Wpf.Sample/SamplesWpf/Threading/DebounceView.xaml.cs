@@ -12,7 +12,6 @@ public partial class DebounceView
         InitializeComponent();
     }
 
-    [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK.")]
     private void SearchTextBoxOnKeyup(
         object sender,
         KeyEventArgs e)
@@ -28,15 +27,31 @@ public partial class DebounceView
         var delayMs = NumberHelper.ParseToInt(s);
 
         // Fire after [delayMs]ms after last keypress
-        debounceTimer.Debounce(delayMs, async _ =>
+        debounceTimer.Debounce(delayMs, _ => ExecuteSearch());
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK")]
+    [SuppressMessage("Usage", "MA0134:Observe result of async calls", Justification = "OK")]
+    private void ExecuteSearch()
+    {
+        if (DataContext is not DebounceViewModel vm)
         {
-            var vm = DataContext as DebounceViewModel;
-            if (LcSearch.Content is TextBox searchBox)
+            return;
+        }
+
+        if (LcSearch.Content is TextBox searchBox)
+        {
+            Task.Run(async () =>
             {
-                await vm!
-                    .Search(searchBox.Text)
-                    .ConfigureAwait(true);
-            }
-        });
+                try
+                {
+                    await vm.Search(searchBox.Text).ConfigureAwait(false);
+                }
+                catch
+                {
+                    // Swallow exception
+                }
+            });
+        }
     }
 }
