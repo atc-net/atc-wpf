@@ -66,5 +66,5 @@ internal sealed class RectangleShape : Shape
         }
     }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}, {nameof(Fill)}: {Fill}";
+    public override string ToString() => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}";
 }

@@ -33,5 +33,5 @@ internal sealed class PolygonShape : Shape
 
     public override Fill? Fill => base.Fill ?? defaultFill;
 
-    public override string ToString() => $"{base.ToString()}, {nameof(Points)}: {Points}, {nameof(Fill)}: {Fill}";
+    public override string ToString() => $"{base.ToString()}, {nameof(Points)}: {Points}";
 }
