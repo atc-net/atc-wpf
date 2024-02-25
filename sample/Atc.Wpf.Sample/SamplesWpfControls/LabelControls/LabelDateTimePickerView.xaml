@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=labelControls:LabelDateTimePickerView}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -14,7 +16,23 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+            <atc:GridEx Columns="Auto,10,300,10,Auto">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text="Binding to the first usage 'MyLabel1':" />
+                <TextBlock
+                    Grid.Column="2"
+                    FontSize="24"
+                    Text="{Binding ElementName=DtpMyLabel1, Path=SelectedDate}" />
+                <Button
+                    Grid.Column="4"
+                    Click="OnClickDtpMyLabel1"
+                    Content="Clear" />
+            </atc:GridEx>
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
@@ -22,10 +40,11 @@
                     <StackPanel Grid.Column="0" Margin="10">
 
                         <atc:LabelDateTimePicker
+                            x:Name="DtpMyLabel1"
+                            CustomCulture="{Binding Path=DanishCultureInfo}"
                             FirstDayOfWeek="Wednesday"
                             LabelText="MyLabel1"
-                            Orientation="Horizontal"
-                            WatermarkText="Hello watermark" />
+                            Orientation="Horizontal" />
 
                         <atc:LabelDateTimePicker
                             IsEnabled="False"

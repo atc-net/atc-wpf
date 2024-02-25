@@ -1,4 +1,5 @@
 // ReSharper disable ConvertIfStatementToSwitchStatement
+// ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -70,7 +71,10 @@ public partial class LabelDatePicker : ILabelDatePicker
         nameof(SelectedDate),
         typeof(DateTime?),
         typeof(LabelDatePicker),
-        new PropertyMetadata(default(DateTime?)));
+        new FrameworkPropertyMetadata(
+            default(DateTime?),
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnSelectedDateChanged));
 
     public DateTime? SelectedDate
     {
@@ -88,6 +92,18 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         get => (DatePickerFormat)GetValue(SelectedDateFormatProperty);
         set => SetValue(SelectedDateFormatProperty, value);
+    }
+
+    public static readonly DependencyProperty CustomCultureProperty = DependencyProperty.Register(
+        nameof(CustomCulture),
+        typeof(CultureInfo),
+        typeof(LabelDatePicker),
+        new PropertyMetadata(default(CultureInfo?)));
+
+    public CultureInfo? CustomCulture
+    {
+        get => (CultureInfo?)GetValue(CustomCultureProperty);
+        set => SetValue(CustomCultureProperty, value);
     }
 
     public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
@@ -185,18 +201,27 @@ public partial class LabelDatePicker : ILabelDatePicker
         object sender,
         RoutedEventArgs e)
     {
-        SetDefaultWatermarkIfNeeded();
+        var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+        SetDefaultWatermarkIfNeeded(cultureInfo);
     }
 
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
     {
-        SetDefaultWatermarkIfNeeded();
+        var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+        SetDefaultWatermarkIfNeeded(cultureInfo);
 
         if (SelectedDate.HasValue)
         {
-            Text = GetSelectedDateAsText(SelectedDate.Value);
+            SetCurrentValue(
+                TextProperty,
+                DateTimeTextBoxHelper.GetSelectedDateAsText(
+                    SelectedDate.Value,
+                    SelectedDateFormat,
+                    cultureInfo));
         }
     }
 
@@ -209,23 +234,32 @@ public partial class LabelDatePicker : ILabelDatePicker
         datePickerImage.ReRenderSvg();
     }
 
-    private void OnTextDateChanged(
+    private void OnDateTextKeyDown(
         object sender,
-        TextChangedEventArgs e)
+        KeyEventArgs e)
     {
-        var control = (TextBox)sender;
+        if (e.Key != Key.Enter)
+        {
+            return;
+        }
 
-        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
-                SelectedDateFormat,
-                control.Text,
-                out var result))
+        if (sender is not DependencyObject parent)
         {
-            SelectedDate = result;
+            return;
         }
-        else
+
+        var control = VisualTreeHelperEx.FindParent<LabelDatePicker>(parent);
+        if (control is null ||
+            sender is not TextBox textBox)
         {
-            SelectedDate = null;
+            return;
         }
+
+        control.SetCurrentValue(TextProperty, textBox.Text);
+
+        var dateTime = ValidateText(control);
+
+        UpdateSelectedDate(control, dateTime);
     }
 
     private static void OnTextLostFocus(
@@ -234,86 +268,132 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         var control = (LabelDatePicker)d;
 
-        ValidateText(e, control, raiseEvents: true);
-
-        if (string.IsNullOrEmpty(control.ValidationText))
+        if (StackTraceHelper.ContainsPropertyName(nameof(OnSelectedDateChanged)))
         {
             return;
         }
 
-        control.SelectedDate = null;
+        if (StackTraceHelper.ContainsPropertyName("ClearControl"))
+        {
+            control.Text = string.Empty;
+        }
+
+        var dateTime = ValidateText(e, control, raiseEvents: true);
+
+        UpdateSelectedDate(control, dateTime);
     }
 
-    private void OnCalendarSelectedDatesChanged(
-        object? sender,
-        SelectionChangedEventArgs e)
+    private static void OnSelectedDateChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        var calender = (System.Windows.Controls.Calendar)sender!;
+        var control = (LabelDatePicker)d;
 
-        if (calender.SelectedDate.HasValue)
+        if (control.SelectedDate is null)
         {
-            Text = GetSelectedDateAsText(calender.SelectedDate.Value);
+            control.SetCurrentValue(TextProperty, string.Empty);
+        }
+        else
+        {
+            var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+            control.SetCurrentValue(
+                TextProperty,
+                DateTimeTextBoxHelper.GetSelectedDateAsText(
+                    control.SelectedDate.Value,
+                    control.SelectedDateFormat,
+                    cultureInfo));
         }
     }
 
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private static void ValidateText(
+    private static void UpdateSelectedDate(
+        LabelDatePicker control,
+        DateTime? dateTime)
+    {
+        if (control.SelectedDate == dateTime)
+        {
+            return;
+        }
+
+        if (dateTime is not null &&
+            string.IsNullOrEmpty(control.ValidationText))
+        {
+            control.SelectedDate = dateTime;
+        }
+        else
+        {
+            control.SelectedDate = null;
+        }
+    }
+
+    private static DateTime? ValidateText(
         DependencyPropertyChangedEventArgs e,
         LabelDatePicker control,
         bool raiseEvents)
     {
-        if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.Text))
+        var dateTime = ValidateText(control);
+
+        if (raiseEvents)
         {
-            control.ValidationText = Validations.FieldIsRequired;
-            if (raiseEvents)
+            if (string.IsNullOrEmpty(control.ValidationText))
+            {
+                OnLostFocusFireValidEvent(control, e);
+            }
+            else
             {
                 OnLostFocusFireInvalidEvent(control, e);
             }
-
-            return;
         }
 
-        if (!control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.Text))
+        return dateTime;
+    }
+
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    private static DateTime? ValidateText(
+        LabelDatePicker control)
+    {
+        var isDateEmpty = string.IsNullOrWhiteSpace(control.Text);
+
+        if (control.IsMandatory)
         {
-            control.ValidationText = string.Empty;
-            if (raiseEvents)
+            if (isDateEmpty)
             {
-                OnLostFocusFireValidEvent(control, e);
+                control.ValidationText = Validations.FieldIsRequired;
+                return null;
             }
-
-            return;
+        }
+        else
+        {
+            if (isDateEmpty)
+            {
+                control.ValidationText = string.Empty;
+                return null;
+            }
         }
 
-        if (DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
+        if (DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
                 control.SelectedDateFormat,
                 control.Text,
-                out _))
+                cultureInfo,
+                out var dateTime))
         {
             control.ValidationText = string.Empty;
-            if (raiseEvents)
-            {
-                OnLostFocusFireValidEvent(control, e);
-            }
-
-            return;
+            return dateTime;
         }
 
         control.ValidationText = control.SelectedDateFormat == DatePickerFormat.Short
             ? string.Format(
                 CultureInfo.CurrentUICulture,
                 Validations.InvalidDate1,
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)
+                cultureInfo.DateTimeFormat.ShortDatePattern)
             : string.Format(
                 CultureInfo.CurrentUICulture,
                 Validations.InvalidDate1,
-                Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern);
+                cultureInfo.DateTimeFormat.LongDatePattern);
 
-        if (raiseEvents)
-        {
-            OnLostFocusFireInvalidEvent(control, e);
-        }
+        return null;
     }
 
     [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
@@ -321,11 +401,14 @@ public partial class LabelDatePicker : ILabelDatePicker
         LabelDatePicker control,
         DependencyPropertyChangedEventArgs e)
     {
+        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
                 control.SelectedDateFormat,
                 e.OldValue.ToString()!,
+                cultureInfo,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -333,9 +416,10 @@ public partial class LabelDatePicker : ILabelDatePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
                 control.SelectedDateFormat,
                 e.NewValue.ToString()!,
+                cultureInfo,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -354,11 +438,14 @@ public partial class LabelDatePicker : ILabelDatePicker
         LabelDatePicker control,
         DependencyPropertyChangedEventArgs e)
     {
+        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
+
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
                 control.SelectedDateFormat,
                 e.OldValue.ToString()!,
+                cultureInfo,
                 out var resultOld))
         {
             oldValue = resultOld;
@@ -366,9 +453,10 @@ public partial class LabelDatePicker : ILabelDatePicker
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingCurrentUiCulture(
+            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
                 control.SelectedDateFormat,
                 e.NewValue.ToString()!,
+                cultureInfo,
                 out var resultNew))
         {
             newValue = resultNew;
@@ -387,7 +475,8 @@ public partial class LabelDatePicker : ILabelDatePicker
         object? value)
         => value ?? string.Empty;
 
-    private void SetDefaultWatermarkIfNeeded()
+    private void SetDefaultWatermarkIfNeeded(
+        CultureInfo cultureInfo)
     {
         if (string.IsNullOrEmpty(WatermarkText) ||
             WatermarkText.Contains('/', StringComparison.Ordinal) ||
@@ -395,56 +484,8 @@ public partial class LabelDatePicker : ILabelDatePicker
             WatermarkText.Contains(',', StringComparison.Ordinal))
         {
             WatermarkText = SelectedDateFormat == DatePickerFormat.Short
-                ? Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern
-                : Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern;
+                ? cultureInfo.DateTimeFormat.ShortDatePattern
+                : cultureInfo.DateTimeFormat.LongDatePattern;
         }
-    }
-
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private string GetSelectedDateAsText(
-        DateTime dateTime)
-    {
-        if (SelectedDateFormat == DatePickerFormat.Short ||
-            (SelectedDateFormat == DatePickerFormat.Long &&
-             Thread.CurrentThread.CurrentUICulture.LCID == GlobalizationConstants.EnglishCultureInfo.LCID))
-        {
-            return dateTime.ToString(
-                SelectedDateFormat == DatePickerFormat.Short
-                    ? Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern
-                    : Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern);
-        }
-
-        var s = dateTime.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.LongDatePattern);
-
-        if (s.StartsWith(nameof(DayOfWeek.Sunday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Sunday), DayOfWeekHelper.GetDescription(DayOfWeek.Sunday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-        else if (s.StartsWith(nameof(DayOfWeek.Monday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Monday), DayOfWeekHelper.GetDescription(DayOfWeek.Monday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-        else if (s.StartsWith(nameof(DayOfWeek.Tuesday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Tuesday), DayOfWeekHelper.GetDescription(DayOfWeek.Tuesday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-        else if (s.StartsWith(nameof(DayOfWeek.Wednesday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Wednesday), DayOfWeekHelper.GetDescription(DayOfWeek.Wednesday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-        else if (s.StartsWith(nameof(DayOfWeek.Thursday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Thursday), DayOfWeekHelper.GetDescription(DayOfWeek.Thursday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-        else if (s.StartsWith(nameof(DayOfWeek.Friday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Friday), DayOfWeekHelper.GetDescription(DayOfWeek.Friday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-        else if (s.StartsWith(nameof(DayOfWeek.Saturday), StringComparison.Ordinal))
-        {
-            s = s.Replace(nameof(DayOfWeek.Saturday), DayOfWeekHelper.GetDescription(DayOfWeek.Saturday, Thread.CurrentThread.CurrentUICulture), StringComparison.Ordinal);
-        }
-
-        return s;
     }
 }
