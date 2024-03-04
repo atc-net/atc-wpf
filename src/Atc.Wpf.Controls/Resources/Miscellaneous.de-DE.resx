@@ -159,4 +159,16 @@
   <data name="Font" xml:space="preserve">
     <value>Font</value>
   </data>
+  <data name="AvailableColors" xml:space="preserve">
+    <value>Verfügbare Farben</value>
+  </data>
+  <data name="StandardColors" xml:space="preserve">
+    <value>Standardfarben</value>
+  </data>
+  <data name="ColorBeforeAndAfter" xml:space="preserve">
+    <value>Farbe vorher und nachher</value>
+  </data>
+  <data name="ColorPicker" xml:space="preserve">
+    <value>Farbwähler</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available Colors.
+        /// </summary>
+        public static string AvailableColors {
+            get {
+                return ResourceManager.GetString("AvailableColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -75,6 +84,24 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Color {
             get {
                 return ResourceManager.GetString("Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color before and after.
+        /// </summary>
+        public static string ColorBeforeAndAfter {
+            get {
+                return ResourceManager.GetString("ColorBeforeAndAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color Picker.
+        /// </summary>
+        public static string ColorPicker {
+            get {
+                return ResourceManager.GetString("ColorPicker", resourceCulture);
             }
         }
         
@@ -174,6 +201,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string SelectFile {
             get {
                 return ResourceManager.GetString("SelectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard Colors.
+        /// </summary>
+        public static string StandardColors {
+            get {
+                return ResourceManager.GetString("StandardColors", resourceCulture);
             }
         }
         

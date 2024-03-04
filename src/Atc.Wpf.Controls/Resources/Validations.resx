@@ -138,6 +138,15 @@
   <data name="InvalidFtpUrl" xml:space="preserve">
     <value>Invalid FTP url</value>
   </data>
+  <data name="InvalidHexArgb" xml:space="preserve">
+    <value>Invalid Hex ARGB format</value>
+  </data>
+  <data name="InvalidHexRgb" xml:space="preserve">
+    <value>Invalid Hex RGB format</value>
+  </data>
+  <data name="InvalidHttpsUrl" xml:space="preserve">
+    <value>Invalid HTTPS url</value>
+  </data>
   <data name="InvalidHttpUrl" xml:space="preserve">
     <value>Invalid HTTP url</value>
   </data>
