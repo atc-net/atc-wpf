@@ -28,6 +28,8 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Shapes;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Collections;
+global using Atc.Wpf.Data.Models;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Resources;
 global using Atc.Wpf.Theming.Automation.Peers;
@@ -53,4 +55,3 @@ global using Windows.Win32;
 global using Windows.Win32.Foundation;
 global using Windows.Win32.Graphics.Gdi;
 global using Windows.Win32.UI.WindowsAndMessaging;
-global using Atc.Wpf.Collections;
