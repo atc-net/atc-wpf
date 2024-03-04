@@ -29,7 +29,7 @@ public class HexColorToColorKeyValueConverterTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.IsType<SolidColorBrush>(actual);
+        Assert.IsType<Color>(actual);
         Assert.Equal(expected, actual.ToString());
     }
 }

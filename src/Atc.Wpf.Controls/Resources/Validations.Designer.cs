@@ -124,6 +124,33 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Hex ARGB format.
+        /// </summary>
+        public static string InvalidHexArgb {
+            get {
+                return ResourceManager.GetString("InvalidHexArgb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Hex RGB format.
+        /// </summary>
+        public static string InvalidHexRgb {
+            get {
+                return ResourceManager.GetString("InvalidHexRgb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid HTTPS url.
+        /// </summary>
+        public static string InvalidHttpsUrl {
+            get {
+                return ResourceManager.GetString("InvalidHttpsUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid HTTP url.
         /// </summary>
         public static string InvalidHttpUrl {

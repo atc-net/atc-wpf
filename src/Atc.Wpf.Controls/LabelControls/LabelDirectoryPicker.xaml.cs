@@ -116,9 +116,9 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
         set => SetValue(WatermarkTrimmingProperty, value);
     }
 
-    public event EventHandler<ChangedDirectoryInfoEventArgs>? LostFocusValid;
+    public event EventHandler<ValueChangedEventArgs<DirectoryInfo?>>? LostFocusValid;
 
-    public event EventHandler<ChangedDirectoryInfoEventArgs>? LostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<DirectoryInfo?>>? LostFocusInvalid;
 
     public LabelDirectoryPicker()
     {
@@ -176,7 +176,7 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
     {
         control.LostFocusValid?.Invoke(
             control,
-            new ChangedDirectoryInfoEventArgs(
+            new ValueChangedEventArgs<DirectoryInfo?>(
                 ControlHelper.GetIdentifier(control),
                 e.OldValue,
                 e.NewValue));
@@ -188,7 +188,7 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
     {
         control.LostFocusInvalid?.Invoke(
             control,
-            new ChangedDirectoryInfoEventArgs(
+            new ValueChangedEventArgs<DirectoryInfo?>(
                 ControlHelper.GetIdentifier(control),
                 e.OldValue,
                 e.NewValue));

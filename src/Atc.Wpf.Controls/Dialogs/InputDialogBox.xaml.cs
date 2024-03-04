@@ -24,7 +24,7 @@ public partial class InputDialogBox
             DialogBoxSettings.Create(DialogBoxType.OkCancel),
             labelControl)
     {
-        this.Settings.TitleBarText = titleBarText;
+        Settings.TitleBarText = titleBarText;
     }
 
     public InputDialogBox(
@@ -32,12 +32,12 @@ public partial class InputDialogBox
         DialogBoxSettings settings,
         ILabelControlBase labelControl)
     {
-        this.OwningWindow = owningWindow;
-        this.Settings = settings;
-        this.Width = this.Settings.Width;
-        this.Height = this.Settings.Height;
+        OwningWindow = owningWindow;
+        Settings = settings;
+        Width = Settings.Width;
+        Height = Settings.Height;
 
-        this.Data = labelControl;
+        Data = labelControl;
 
         InitializeDialogBox();
     }

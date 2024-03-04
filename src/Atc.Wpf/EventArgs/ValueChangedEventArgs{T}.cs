@@ -1,12 +1,14 @@
 // ReSharper disable CheckNamespace
+// ReSharper disable ConvertToPrimaryConstructor
 namespace Atc.Wpf;
 
-public class ChangedFileInfoEventArgs : EventArgs
+public class ValueChangedEventArgs<T> : EventArgs
 {
-    public ChangedFileInfoEventArgs(
+    [SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "OK.")]
+    public ValueChangedEventArgs(
         string identifier,
-        FileInfo? oldValue,
-        FileInfo? newValue)
+        T oldValue,
+        T newValue)
     {
         Identifier = identifier;
         OldValue = oldValue;
@@ -15,9 +17,9 @@ public class ChangedFileInfoEventArgs : EventArgs
 
     public string Identifier { get; }
 
-    public FileInfo? OldValue { get; }
+    public T OldValue { get; }
 
-    public FileInfo? NewValue { get; }
+    public T NewValue { get; }
 
     public override string ToString()
         => $"{nameof(Identifier)}: {Identifier}, {nameof(OldValue)}: {OldValue}, {nameof(NewValue)}: {NewValue}";

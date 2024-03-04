@@ -11,7 +11,7 @@ public class ColorHelperTests
         var basicColorKeys = ColorHelper.GetBasicColorKeys();
 
         Assert.Equal(139, colorNames.Count);
-        Assert.Equal(139, colorKeys.Count);
+        Assert.Equal(141, colorKeys.Count);
         Assert.Equal(16, basicColorKeys.Count);
     }
 

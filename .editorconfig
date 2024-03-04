@@ -518,6 +518,8 @@ dotnet_diagnostic.MA0011.severity = none           # Use an overload of 'ToStrin
 dotnet_diagnostic.MA0041.severity = none           # Make property static (deprecated, use CA1822 instead)
 dotnet_diagnostic.MA0131.severity = none           # ArgumentNullException.ThrowIfNull should not be used with non-nullable types
 
+dotnet_diagnostic.SA1010.severity = none           # Opening square brackets must be spaced correctly
+
 dotnet_diagnostic.S1144.severity = none            # Remove the unused internal class
 dotnet_diagnostic.S2094.severity = none            # Remove this empty class, write its code or make it an "interface"
 dotnet_diagnostic.S2445.severity = none            # Do not lock on writable field 'items', use a readonly field instead

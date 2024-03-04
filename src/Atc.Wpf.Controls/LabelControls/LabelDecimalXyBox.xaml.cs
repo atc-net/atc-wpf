@@ -107,9 +107,9 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         set => SetValue(ValueYProperty, value);
     }
 
-    public event EventHandler<ChangedDecimalEventArgs>? ValueXLostFocus;
+    public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueXLostFocus;
 
-    public event EventHandler<ChangedDecimalEventArgs>? ValueYLostFocus;
+    public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueYLostFocus;
 
     public LabelDecimalXyBox()
     {
@@ -155,7 +155,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
 
         control.ValueXLostFocus?.Invoke(
             control,
-            new ChangedDecimalEventArgs(
+            new ValueChangedEventArgs<decimal?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
@@ -181,7 +181,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
 
         control.ValueYLostFocus?.Invoke(
             control,
-            new ChangedDecimalEventArgs(
+            new ValueChangedEventArgs<decimal?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

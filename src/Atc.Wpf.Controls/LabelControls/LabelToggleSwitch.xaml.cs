@@ -62,7 +62,7 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
         set => SetValue(IsOnProperty, value);
     }
 
-    public event EventHandler<ChangedBooleanEventArgs>? IsOnChanged;
+    public event EventHandler<ValueChangedEventArgs<bool>>? IsOnChanged;
 
     public LabelToggleSwitch()
     {
@@ -78,7 +78,7 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
 
         control.IsOnChanged?.Invoke(
             control,
-            new ChangedBooleanEventArgs(
+            new ValueChangedEventArgs<bool>(
                 control.Identifier,
                 control.IsOn,
                 !control.IsOn));

@@ -24,7 +24,7 @@ public partial class QuestionDialogBox
             DialogBoxSettings.Create(DialogBoxType.YesNo),
             contentText)
     {
-        this.Settings.TitleBarText = titleBarText;
+        Settings.TitleBarText = titleBarText;
     }
 
     public QuestionDialogBox(
@@ -32,10 +32,10 @@ public partial class QuestionDialogBox
         DialogBoxSettings settings,
         string contentText)
     {
-        this.OwningWindow = owningWindow;
-        this.Settings = settings;
-        this.Width = this.Settings.Width;
-        this.Height = this.Settings.Height;
+        OwningWindow = owningWindow;
+        Settings = settings;
+        Width = Settings.Width;
+        Height = Settings.Height;
 
         InitializeDialogBox(contentText);
     }

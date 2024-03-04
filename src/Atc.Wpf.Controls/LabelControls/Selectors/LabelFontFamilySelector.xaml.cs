@@ -36,9 +36,9 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
     public LabelFontFamilySelector()
     {
@@ -108,7 +108,7 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
 
         control.SelectorChanged?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 control.Identifier,
                 e.OldValue?.ToString(),
                 selectedKey));
@@ -125,7 +125,7 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
 
     private void OnSelectorChanged(
         object? sender,
-        ChangedStringEventArgs e)
+        ValueChangedEventArgs<string?> e)
     {
         Debug.WriteLine($"LabelFontFamilySelector - Change to: {e.NewValue}");
         ValidateValue(default, this, e.NewValue, raiseEvents: false);
@@ -146,7 +146,7 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
 
         control.SelectorLostFocusInvalid?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

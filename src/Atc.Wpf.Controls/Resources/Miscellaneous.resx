@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AvailableColors" xml:space="preserve">
+    <value>Available Colors</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
+  </data>
+  <data name="ColorBeforeAndAfter" xml:space="preserve">
+    <value>Color before and after</value>
+  </data>
+  <data name="ColorPicker" xml:space="preserve">
+    <value>Color Picker</value>
   </data>
   <data name="Country" xml:space="preserve">
     <value>Country</value>
@@ -155,6 +164,9 @@
   </data>
   <data name="SelectFile" xml:space="preserve">
     <value>Select a file</value>
+  </data>
+  <data name="StandardColors" xml:space="preserve">
+    <value>Standard Colors</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

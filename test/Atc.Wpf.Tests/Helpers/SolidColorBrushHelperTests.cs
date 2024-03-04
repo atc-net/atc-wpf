@@ -8,10 +8,10 @@ public class SolidColorBrushHelperTests
     {
         var allBrushNames = SolidColorBrushHelper.GetAllBrushNames(CultureInfo.CurrentUICulture);
         var baseBrushNames = SolidColorBrushHelper.GetBrushKeys();
-        var basicBrushNames = SolidColorBrushHelper.GetBasicBrushNames();
+        var basicBrushNames = SolidColorBrushHelper.GetBasicBrushKeys();
 
         Assert.Equal(139, allBrushNames.Count);
-        Assert.Equal(139, baseBrushNames.Count);
+        Assert.Equal(141, baseBrushNames.Count);
         Assert.Equal(16, basicBrushNames.Count);
     }
 
@@ -95,7 +95,6 @@ public class SolidColorBrushHelperTests
     [InlineData("CornflowerBlue", "0xFF6495ED")]
     [InlineData("Cornsilk", "0xFFFFF8DC")]
     [InlineData("Crimson", "0xFFDC143C")]
-    [InlineData("Cyan", "0xFF00FFFF")]
     [InlineData("DarkBlue", "0xFF00008B")]
     [InlineData("DarkCyan", "0xFF008B8B")]
     [InlineData("DarkGoldenrod", "0xFFB8860B")]

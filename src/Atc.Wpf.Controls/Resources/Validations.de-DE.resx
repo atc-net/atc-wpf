@@ -174,4 +174,13 @@
   <data name="DirectoryDoNotExist" xml:space="preserve">
     <value>Verzeichnis existiert nicht</value>
   </data>
+  <data name="InvalidHexArgb" xml:space="preserve">
+    <value>Ungültiges Hex-ARGB-Format</value>
+  </data>
+  <data name="InvalidHexRgb" xml:space="preserve">
+    <value>Ungültiges Hex-RGB-Format</value>
+  </data>
+  <data name="InvalidHttpsUrl" xml:space="preserve">
+    <value>Ungültige HTTPS-URL</value>
+  </data>
 </root>

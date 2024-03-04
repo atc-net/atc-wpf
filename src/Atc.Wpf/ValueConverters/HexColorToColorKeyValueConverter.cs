@@ -23,7 +23,7 @@ public class HexColorToColorKeyValueConverter : IValueConverter
 
         var str = value.ToString()!;
 
-        return SolidColorBrushHelper.GetBrushKeyFromHex(str);
+        return ColorHelper.GetColorKeyFromHex(str);
     }
 
     public object? ConvertBack(
@@ -39,6 +39,6 @@ public class HexColorToColorKeyValueConverter : IValueConverter
 
         var str = value.ToString()!;
 
-        return SolidColorBrushHelper.GetBrushFromString(str, GlobalizationConstants.EnglishCultureInfo);
+        return ColorHelper.GetColorFromString(str, GlobalizationConstants.EnglishCultureInfo);
     }
 }

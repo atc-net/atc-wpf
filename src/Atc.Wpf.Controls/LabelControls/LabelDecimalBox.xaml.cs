@@ -76,7 +76,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         set => SetValue(ValueProperty, value);
     }
 
-    public event EventHandler<ChangedDecimalEventArgs>? ValueChanged;
+    public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueChanged;
 
     public LabelDecimalBox()
     {
@@ -119,7 +119,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         {
             control.ValueChanged?.Invoke(
                 control,
-                new ChangedDecimalEventArgs(
+                new ValueChangedEventArgs<decimal?>(
                     control.Identifier,
                     oldValue,
                     newValue));

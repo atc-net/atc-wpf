@@ -1,5 +1,3 @@
-using System.Windows.Controls;
-
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -90,7 +88,7 @@ public partial class LabelSlider : ILabelSlider
         set => SetValue(ValueProperty, value);
     }
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueChanged;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueChanged;
 
     public LabelSlider()
     {
@@ -133,7 +131,7 @@ public partial class LabelSlider : ILabelSlider
         {
             control.ValueChanged?.Invoke(
                 control,
-                new ChangedIntegerEventArgs(
+                new ValueChangedEventArgs<int?>(
                     control.Identifier,
                     oldValue,
                     newValue));

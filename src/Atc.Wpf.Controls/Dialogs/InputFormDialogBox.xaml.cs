@@ -27,7 +27,7 @@ public partial class InputFormDialogBox
             DialogBoxSettings.Create(DialogBoxType.OkCancel),
             labelControlsForm)
     {
-        this.Settings.TitleBarText = titleBarText;
+        Settings.TitleBarText = titleBarText;
     }
 
     public InputFormDialogBox(
@@ -37,11 +37,11 @@ public partial class InputFormDialogBox
     {
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
-        this.OwningWindow = owningWindow;
-        this.Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-        this.Width = this.Settings.Width;
-        this.Height = this.Settings.Height;
-        this.Settings.Form = formPanelSettings;
+        OwningWindow = owningWindow;
+        Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
+        Width = Settings.Width;
+        Height = Settings.Height;
+        Settings.Form = formPanelSettings;
 
         InitializeDialogBox(labelControlsForm);
     }
@@ -53,11 +53,11 @@ public partial class InputFormDialogBox
     {
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
-        this.OwningWindow = owningWindow;
-        this.Settings = settings;
-        this.Width = this.Settings.Width;
-        this.Height = this.Settings.Height;
-        this.Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
+        OwningWindow = owningWindow;
+        Settings = settings;
+        Width = Settings.Width;
+        Height = Settings.Height;
+        Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
 
         InitializeDialogBox(labelControlsForm);
     }
@@ -93,7 +93,7 @@ public partial class InputFormDialogBox
         ILabelControlsForm labelControlsForm)
     {
         LabelInputFormPanel.Render(
-            this.Settings.Form,
+            Settings.Form,
             labelControlsForm);
 
         UpdateWidthAndHeight();

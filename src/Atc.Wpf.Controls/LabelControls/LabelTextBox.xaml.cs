@@ -158,9 +158,9 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(ValidationFormatProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? TextLostFocusValid;
+    public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusValid;
 
-    public event EventHandler<ChangedStringEventArgs>? TextLostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusInvalid;
 
     public LabelTextBox()
     {
@@ -328,7 +328,7 @@ public partial class LabelTextBox : ILabelTextBox
 
         control.TextLostFocusValid?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue: null,
                 newValue));
@@ -349,7 +349,7 @@ public partial class LabelTextBox : ILabelTextBox
 
         control.TextLostFocusInvalid?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

@@ -3,6 +3,7 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 
 internal static class TextBoxValidationHelper
 {
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static (bool IsValid, string ErrorMessage) Validate(
         TextBoxValidationRuleType validationRule,
         string? value,
@@ -42,6 +43,12 @@ internal static class TextBoxValidationHelper
                 break;
             case TextBoxValidationRuleType.HttpOrHttps:
                 ValidateHttpOrHttps(value, ref isValid, ref errorMessage, allowHttp: true, allowHttps: true);
+                break;
+            case TextBoxValidationRuleType.HexRGB:
+                ValidateHexRgb(value, ref isValid, ref errorMessage);
+                break;
+            case TextBoxValidationRuleType.HexARGB:
+                ValidateHexArgb(value, ref isValid, ref errorMessage);
                 break;
             case TextBoxValidationRuleType.IPAddress:
                 ValidateIpAddress(value, ref isValid, ref errorMessage, allowV4: true, allowV6: true);
@@ -113,7 +120,51 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = Validations.InvalidHttpUrl;
+        errorMessage = allowHttp
+            ? Validations.InvalidHttpUrl
+            : Validations.InvalidHttpsUrl;
+    }
+
+    private static void ValidateHexRgb(
+        string? value,
+        ref bool isValid,
+        ref string errorMessage)
+    {
+        const string pattern = @"^#?([0-9A-Fa-f]{6})$";
+
+        if (!string.IsNullOrEmpty(value) &&
+            Regex.IsMatch(
+                value,
+                pattern,
+                RegexOptions.ExplicitCapture,
+                TimeSpan.FromSeconds(1)))
+        {
+            return;
+        }
+
+        isValid = false;
+        errorMessage = Validations.InvalidHexRgb;
+    }
+
+    private static void ValidateHexArgb(
+        string? value,
+        ref bool isValid,
+        ref string errorMessage)
+    {
+        const string pattern = @"^#?([0-9A-Fa-f]{8})$";
+
+        if (!string.IsNullOrEmpty(value) &&
+            Regex.IsMatch(
+                value,
+                pattern,
+                RegexOptions.ExplicitCapture,
+                TimeSpan.FromSeconds(1)))
+        {
+            return;
+        }
+
+        isValid = false;
+        errorMessage = Validations.InvalidHexArgb;
     }
 
     private static void ValidateIpAddress(

@@ -4,5 +4,5 @@ public interface ILabelComboBoxBase : ILabelControlBase
 {
     string SelectedKey { get; set; }
 
-    static event EventHandler<ChangedStringEventArgs>? SelectedKeyChanged;
+    static event EventHandler<ValueChangedEventArgs<string?>>? SelectedKeyChanged;
 }

@@ -44,7 +44,7 @@ public static class DependencyObjectExtensions
     /// this method falls back to the logical tree of the element.
     /// </summary>
     /// <param name="child">The item to be processed.</param>
-    /// <returns>The submitted item's parent, if available. Otherwise null.</returns>
+    /// <returns>The submitted item's parent if available, otherwise null.</returns>
     public static DependencyObject? GetParentObject(
         this DependencyObject? child)
     {
@@ -73,7 +73,7 @@ public static class DependencyObjectExtensions
             return childParent;
         }
 
-        // Also try searching for parent in framework elements (such as DockPanel, etc)
+        // Also try searching for parent in framework elements (such as DockPanel, etc.)
         if (child is FrameworkElement frameworkElement)
         {
             var parent = frameworkElement.Parent;
@@ -101,7 +101,7 @@ public static class DependencyObjectExtensions
     {
         if (parent is not null)
         {
-            if (!forceUsingTheVisualTreeHelper && (parent is ContentElement || parent is FrameworkElement))
+            if (!forceUsingTheVisualTreeHelper && parent is ContentElement or FrameworkElement)
             {
                 foreach (var obj in LogicalTreeHelper.GetChildren(parent))
                 {
@@ -212,7 +212,7 @@ public static class DependencyObjectExtensions
                 // Recursively drill down the tree
                 foundChild = FindChild<T>(child, childName);
 
-                // If the child is found, break so we do not overwrite the found child.
+                // If the child is found, break, so we do not overwrite the found child.
                 if (foundChild is not null)
                 {
                     break;
@@ -221,7 +221,8 @@ public static class DependencyObjectExtensions
             else if (!string.IsNullOrEmpty(childName))
             {
                 // If the child's name is set for search
-                if (currentChild is IFrameworkInputElement frameworkInputElement && frameworkInputElement.Name == childName)
+                if (currentChild is IFrameworkInputElement frameworkInputElement &&
+                    frameworkInputElement.Name == childName)
                 {
                     // if the child's name is of the request name
                     foundChild = currentChild;
@@ -231,7 +232,7 @@ public static class DependencyObjectExtensions
                 // Recursively drill down the tree
                 foundChild = FindChild<T>(currentChild, childName);
 
-                // If the child is found, break so we do not overwrite the found child.
+                // If the child is found, break, so we do not overwrite the found child.
                 if (foundChild is not null)
                 {
                     break;

@@ -1,4 +1,5 @@
 // ReSharper disable InvertIf
+// ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Helpers;
 
 /// <summary>
@@ -17,6 +18,32 @@ public static class SolidColorBrushHelper
         EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.GreatBritain));
         EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Denmark));
         EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Germany));
+    }
+
+    public static SolidColorBrush[] GetBrushes()
+    {
+        EnsureBaseBrushes();
+
+        return BaseBrushes
+            .Select(x => x.Value)
+            .ToArray();
+    }
+
+    public static SolidColorBrush[] GetBasicBrushes()
+    {
+        EnsureBaseBrushes();
+
+        var brushes = new List<SolidColorBrush>();
+        foreach (var key in GetBasicBrushKeys())
+        {
+            var brushFromKey = GetBrushFromName(key, GlobalizationConstants.EnglishCultureInfo);
+            if (brushFromKey is not null)
+            {
+                brushes.Add(brushFromKey);
+            }
+        }
+
+        return [.. brushes];
     }
 
     public static SolidColorBrush? GetBrushFromString(
@@ -117,7 +144,7 @@ public static class SolidColorBrushHelper
             .ToList();
     }
 
-    public static IList<string> GetBasicBrushNames()
+    public static IList<string> GetBasicBrushKeys()
         => ColorHelper.GetBasicColorKeys();
 
     public static string? GetBrushKeyFromBrush(
@@ -248,7 +275,6 @@ public static class SolidColorBrushHelper
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
 
         var colorDictionary = colorProperties
-            .Where(x => x.Name != "Aqua" && x.Name != "Fuchsia")
             .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.OrdinalIgnoreCase)
             .OrderBy(x => x.Key, StringComparer.Ordinal);
 

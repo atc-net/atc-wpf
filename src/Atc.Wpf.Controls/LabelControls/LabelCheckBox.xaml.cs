@@ -20,7 +20,7 @@ public partial class LabelCheckBox : ILabelCheckBox
         set => SetValue(IsCheckedProperty, value);
     }
 
-    public event EventHandler<ChangedBooleanEventArgs>? IsCheckedChanged;
+    public event EventHandler<ValueChangedEventArgs<bool>>? IsCheckedChanged;
 
     public LabelCheckBox()
     {
@@ -36,7 +36,7 @@ public partial class LabelCheckBox : ILabelCheckBox
 
         control.IsCheckedChanged?.Invoke(
             control,
-            new ChangedBooleanEventArgs(
+            new ValueChangedEventArgs<bool>(
                 control.Identifier,
                 !control.IsChecked,
                 control.IsChecked));

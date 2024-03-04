@@ -214,9 +214,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         set => SetValue(OpenClockProperty, value);
     }
 
-    public event EventHandler<ChangedDateTimeEventArgs>? LostFocusValid;
+    public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 
-    public event EventHandler<ChangedDateTimeEventArgs>? LostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusInvalid;
 
     public LabelDateTimePicker()
     {
@@ -316,19 +316,19 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         UpdateSelectedDate(control, dateTime);
     }
 
-    private void OnClockPickerSelectedClockChanged(
+    private void OnClockPanelPickerSelectedClockChanged(
         object? sender,
         RoutedEventArgs e)
     {
-        var clockPicker = (ClockPicker)sender!;
+        var clockPanelPicker = (ClockPanelPicker)sender!;
 
-        if (!clockPicker.SelectedDateTime.HasValue)
+        if (!clockPanelPicker.SelectedDateTime.HasValue)
         {
             return;
         }
 
         var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-        var shortTime = clockPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
+        var shortTime = clockPanelPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
 
         if (shortTime.Equals(TextTime, StringComparison.Ordinal))
         {
@@ -519,7 +519,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         control.LostFocusValid?.Invoke(
             control,
-            new ChangedDateTimeEventArgs(
+            new ValueChangedEventArgs<DateTime?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
@@ -556,7 +556,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         control.LostFocusInvalid?.Invoke(
             control,
-            new ChangedDateTimeEventArgs(
+            new ValueChangedEventArgs<DateTime?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

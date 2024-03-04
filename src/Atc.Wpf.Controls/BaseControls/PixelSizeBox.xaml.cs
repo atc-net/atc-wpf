@@ -91,9 +91,9 @@ public partial class PixelSizeBox
         set => SetValue(ValueHeightProperty, value);
     }
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueWidthLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueHeightLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueHeightLostFocus;
 
     public PixelSizeBox()
     {
@@ -133,7 +133,7 @@ public partial class PixelSizeBox
 
         control.ValueWidthLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 (int)e.OldValue,
                 (int)e.NewValue));
@@ -148,7 +148,7 @@ public partial class PixelSizeBox
 
         control.ValueHeightLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 (int)e.OldValue,
                 (int)e.NewValue));

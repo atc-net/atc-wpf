@@ -87,9 +87,9 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
     public LabelWellKnownColorSelector()
     {
@@ -162,7 +162,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 
         control.SelectorChanged?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 control.Identifier,
                 e.OldValue?.ToString(),
                 selectedKey));
@@ -203,7 +203,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 
     private void OnSelectorChanged(
         object? sender,
-        ChangedStringEventArgs e)
+        ValueChangedEventArgs<string?> e)
     {
         Debug.WriteLine($"LabelWellKnownColorSelector - Change to: {e.NewValue}");
         ValidateValue(default, this, e.NewValue, raiseEvents: false);
@@ -224,7 +224,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 
         control.SelectorLostFocusInvalid?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

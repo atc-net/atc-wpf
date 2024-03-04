@@ -33,6 +33,7 @@
             atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=WatermarkText}"
             atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=WatermarkAlignment}"
             atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=WatermarkTrimming}"
+            ButtonsAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=ButtonsAlignment}"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelIntegerBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"

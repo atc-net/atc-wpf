@@ -91,7 +91,7 @@
                 IsOpen="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=OpenClock}"
                 Placement="Bottom"
                 StaysOpen="False">
-                <baseControls:ClockPicker SelectedClockChanged="OnClockPickerSelectedClockChanged" SelectedDateTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=SelectedTime}" />
+                <baseControls:ClockPanelPicker SelectedClockChanged="OnClockPanelPickerSelectedClockChanged" SelectedDateTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTimePicker}}, Path=SelectedTime}" />
             </Popup>
 
         </atc:GridEx>

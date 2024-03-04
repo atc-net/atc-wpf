@@ -86,7 +86,7 @@ public partial class WellKnownColorSelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
     public WellKnownColorSelector()
     {
@@ -149,35 +149,11 @@ public partial class WellKnownColorSelector
                 throw new SwitchCaseDefaultException(DropDownFirstItemType);
         }
 
-        var coloKeys = GetColorKeys();
+        var colorItems = UseOnlyBasicColors
+            ? ColorItemHelper.GetBasicColorItems()
+            : ColorItemHelper.GetColorItems();
 
-        var list = new List<ColorItem>();
-        foreach (var itemKey in coloKeys)
-        {
-            var translatedName = ColorHelper.GetColorNameFromKey(itemKey, CultureInfo.CurrentUICulture);
-
-            var color = ColorHelper.GetColorFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
-            if (color is null)
-            {
-                continue;
-            }
-
-            var showcaseBrush = SolidColorBrushHelper.GetBrushFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
-            if (showcaseBrush is null)
-            {
-                continue;
-            }
-
-            list.Add(
-                new ColorItem(
-                    Key: itemKey,
-                    DisplayName: translatedName ?? "#" + itemKey,
-                    DisplayHexCode: color.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
-                    BorderColorBrush: showcaseBrush,
-                    ColorBrush: showcaseBrush));
-        }
-
-        Items.AddRange(list.OrderBy(x => x.DisplayName, StringComparer.Ordinal));
+        Items.AddRange(colorItems);
 
         UpdateTranslationForSelectedItem();
 
@@ -194,11 +170,6 @@ public partial class WellKnownColorSelector
             }
         }
     }
-
-    private IEnumerable<string> GetColorKeys()
-        => UseOnlyBasicColors
-            ? ColorHelper.GetBasicColorKeys()
-            : ColorHelper.GetColorKeys();
 
     private void SetSelectedIndexBySelectedKey()
     {
@@ -344,7 +315,7 @@ public partial class WellKnownColorSelector
 
         SelectorChanged?.Invoke(
             this,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 identifier: Guid.Empty.ToString(),
                 oldValue: null,
                 newValue: colorItem.Key));

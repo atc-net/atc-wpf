@@ -89,7 +89,7 @@ public partial class CountrySelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
     public CountrySelector()
     {
@@ -391,7 +391,7 @@ public partial class CountrySelector
 
         SelectorChanged?.Invoke(
             this,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 identifier: Guid.Empty.ToString(),
                 oldValue: null,
                 newValue: countryItem.Culture.Lcid.ToString(GlobalizationConstants.EnglishCultureInfo)));

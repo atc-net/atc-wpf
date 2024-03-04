@@ -34,7 +34,7 @@ public partial class FontFamilySelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
     public FontFamilySelector()
     {
@@ -166,7 +166,7 @@ public partial class FontFamilySelector
 
         SelectorChanged?.Invoke(
             this,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 identifier: Guid.Empty.ToString(),
                 oldValue: null,
                 newValue: fontFamilyItem.DisplayName));

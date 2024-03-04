@@ -1,4 +1,6 @@
 // ReSharper disable InvertIf
+// ReSharper disable InconsistentNaming
+// ReSharper disable MoveLocalFunctionAfterJumpStatement
 namespace Atc.Wpf.Helpers;
 
 /// <summary>
@@ -17,6 +19,32 @@ public static class ColorHelper
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.GreatBritain));
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Denmark));
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Germany));
+    }
+
+    public static Color[] GetColors()
+    {
+        EnsureBaseColors();
+
+        return BaseColors
+            .Select(x => x.Value)
+            .ToArray();
+    }
+
+    public static Color[] GetBasicColors()
+    {
+        EnsureBaseColors();
+
+        var colors = new List<Color>();
+        foreach (var key in GetBasicColorKeys())
+        {
+            var colorFromKey = GetColorFromName(key, GlobalizationConstants.EnglishCultureInfo);
+            if (colorFromKey is { } color)
+            {
+                colors.Add(color);
+            }
+        }
+
+        return [.. colors];
     }
 
     public static Color? GetColorFromString(
@@ -224,6 +252,11 @@ public static class ColorHelper
             hexValue = hexValue.Replace("0x", "#", StringComparison.Ordinal);
         }
 
+        if (hexValue == "#FF00FFFF")
+        {
+            return "Cyan";
+        }
+
         return BaseColors
             .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), hexValue, StringComparison.Ordinal))
             .Key;
@@ -255,21 +288,55 @@ public static class ColorHelper
     {
         EnsureBaseColors();
 
-        if ("Aqua".Equals(colorKey, StringComparison.Ordinal))
-        {
-            colorKey = "Cyan";
-        }
-        else if ("Fuchsia".Equals(colorKey, StringComparison.Ordinal))
-        {
-            colorKey = "Magenta";
-        }
-
         var item = BaseColors
             .FirstOrDefault(x => string.Equals(x.Key, colorKey, StringComparison.Ordinal));
 
         return string.IsNullOrEmpty(item.Key)
             ? null
             : GetColorNameFromColor(item.Value, culture);
+    }
+
+    /// <summary>
+    /// Get a color from HSV / HSB values.
+    /// </summary>
+    /// <param name="h">Hue, [0 - 360]</param>
+    /// <param name="s">Saturation, [0, 1]</param>
+    /// <param name="v">Value, [0, 1]</param>
+    /// <returns>The color created from hsv values.</returns>
+    /// <remarks>Algorithm from https://en.wikipedia.org/wiki/HSL_and_HSV #From Hsv</remarks>
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "OK.")]
+    public static Color GetColorFromHsv(
+        double h,
+        double s,
+        double v)
+    {
+        h = Clamp(h, 0, 360);
+        s = Clamp(s, 0, 1);
+        v = Clamp(v, 0, 1);
+
+        byte f(double n)
+        {
+            var k = (n + (h / 60)) % 6;
+            var value = v - (v * s * System.Math.Max(System.Math.Min(System.Math.Min(k, 4 - k), 1), 0));
+            return (byte)System.Math.Round(value * 255);
+        }
+
+        return Color.FromRgb(f(5), f(3), f(1));
+    }
+
+    private static double Clamp(
+        double value,
+        double min,
+        double max)
+    {
+        if (value < min)
+        {
+            return min;
+        }
+
+        return value > max
+            ? max
+            : value;
     }
 
     private static void EnsureBaseColors()
@@ -282,7 +349,6 @@ public static class ColorHelper
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
 
         var colorDictionary = colorProperties
-            .Where(x => x.Name != "Aqua" && x.Name != "Fuchsia")
             .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.Ordinal)
             .OrderBy(x => x.Key, StringComparer.Ordinal);
 
@@ -321,9 +387,7 @@ public static class ColorHelper
         foreach (var entry in resourceSet.OfType<DictionaryEntry>())
         {
             var entryKey = entry.Key.ToString()!;
-            if (string.IsNullOrEmpty(BaseColors.FirstOrDefault(x => x.Key == entryKey).Key) ||
-                "Aqua".Equals(entryKey, StringComparison.Ordinal) ||
-                "Fuchsia".Equals(entryKey, StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(BaseColors.FirstOrDefault(x => x.Key == entryKey).Key))
             {
                 continue;
             }

@@ -65,9 +65,9 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
         set => SetValue(ValueHeightProperty, value);
     }
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueWidthLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueHeightLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueHeightLostFocus;
 
     public LabelPixelSizeBox()
     {
@@ -113,7 +113,7 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
 
         control.ValueWidthLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
@@ -139,7 +139,7 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
 
         control.ValueHeightLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

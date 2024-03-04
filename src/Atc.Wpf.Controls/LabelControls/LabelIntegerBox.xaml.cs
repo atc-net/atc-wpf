@@ -88,7 +88,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         set => SetValue(ValueProperty, value);
     }
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueLostFocus;
 
     public LabelIntegerBox()
     {
@@ -120,7 +120,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
 
         control.ValueLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 control.Identifier,
                 oldValue,
                 newValue));

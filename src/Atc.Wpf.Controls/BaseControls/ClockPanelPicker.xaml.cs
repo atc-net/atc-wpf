@@ -1,9 +1,9 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
 /// <summary>
-/// Interaction logic for ClockPicker.
+/// Interaction logic for ClockPanelPicker.
 /// </summary>
-public partial class ClockPicker : INotifyPropertyChanged
+public partial class ClockPanelPicker : INotifyPropertyChanged
 {
     private IDictionary<string, string> hours = new Dictionary<string, string>(StringComparer.Ordinal);
     private IDictionary<string, string> minutes = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -16,7 +16,7 @@ public partial class ClockPicker : INotifyPropertyChanged
         nameof(SelectedClockChanged),
         RoutingStrategy.Direct,
         typeof(EventHandler<RoutedEventArgs>),
-        typeof(ClockPicker));
+        typeof(ClockPanelPicker));
 
     public event EventHandler<RoutedEventArgs> SelectedClockChanged
     {
@@ -27,7 +27,7 @@ public partial class ClockPicker : INotifyPropertyChanged
     public static readonly DependencyProperty SelectedDateTimeProperty = DependencyProperty.Register(
         nameof(SelectedDateTime),
         typeof(DateTime?),
-        typeof(ClockPicker),
+        typeof(ClockPanelPicker),
         new PropertyMetadata(default(DateTime?)));
 
     public DateTime? SelectedDateTime
@@ -36,7 +36,7 @@ public partial class ClockPicker : INotifyPropertyChanged
         set => SetValue(SelectedDateTimeProperty, value);
     }
 
-    public ClockPicker()
+    public ClockPanelPicker()
     {
         InitializeComponent();
         DataContext = this;

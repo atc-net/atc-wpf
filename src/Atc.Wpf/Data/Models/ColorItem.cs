@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Theming.Controls.Selectors;
+namespace Atc.Wpf.Data.Models;
 
 public record ColorItem(
     string Key,

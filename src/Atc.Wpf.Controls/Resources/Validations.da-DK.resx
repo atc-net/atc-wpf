@@ -174,4 +174,13 @@
   <data name="DirectoryDoNotExist" xml:space="preserve">
     <value>Mappen eksisterer ikke</value>
   </data>
+  <data name="InvalidHexArgb" xml:space="preserve">
+    <value>Ugyldigt Hex ARGB-format</value>
+  </data>
+  <data name="InvalidHexRgb" xml:space="preserve">
+    <value>Ugyldigt Hex RGB-format</value>
+  </data>
+  <data name="InvalidHttpsUrl" xml:space="preserve">
+    <value>Ugyldig HTTPS webadresse</value>
+  </data>
 </root>
