@@ -8,6 +8,8 @@ public enum TextBoxValidationRuleType
     Ftp,
     Ftps,
     FtpOrFtps,
+    HexRGB,
+    HexARGB,
     Http,
     Https,
     HttpOrHttps,
