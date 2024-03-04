@@ -1,4 +1,5 @@
-namespace Atc.Wpf.Extensions;
+// ReSharper disable once CheckNamespace
+namespace System.Windows.Media;
 
 public static class ColorExtensions
 {
@@ -20,6 +21,57 @@ public static class ColorExtensions
             culture,
             includeColorHex,
             useAlphaChannel);
+
+    /// <summary>
+    /// Gets hue in HSB model.
+    /// </summary>
+    /// <param name="color">The color.</param>
+    /// <returns>The hue of the color from [0, 360]</returns>
+    public static double GetHue(
+        this Color color)
+        => System.Drawing.Color
+            .FromArgb(
+                color.A,
+                color.R,
+                color.G,
+                color.B)
+            .GetHue();
+
+    /// <summary>
+    /// Gets the brightness in HSB model.
+    /// </summary>
+    /// <param name="color">The color.</param>
+    /// <returns>The brightness of the color from [0, 1]</returns>
+    public static double GetBrightness(
+        this Color color)
+    {
+        // HSL to HSB conversion
+        var c = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+        var hslSat = c.GetSaturation();
+        var l = c.GetBrightness();
+
+        return l + (hslSat * System.Math.Min(l, 1 - l));
+    }
+
+    /// <summary>
+    /// Gets the saturation in HSB model.
+    /// </summary>
+    /// <param name="color">The color</param>
+    /// <returns>The saturation of the color from [0, 1]</returns>
+    public static double GetSaturation(this Color color)
+    {
+        // HSL to HSB conversion
+        var c = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+        var l = c.GetBrightness();
+        var b = GetBrightness(color);
+
+        if (b == 0)
+        {
+            return 0;
+        }
+
+        return 2 - (2 * l / b);
+    }
 
     /// <summary>
     /// Linearly interpolates between two colors.
