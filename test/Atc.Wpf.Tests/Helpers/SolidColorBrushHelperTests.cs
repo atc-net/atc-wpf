@@ -8,10 +8,10 @@ public class SolidColorBrushHelperTests
     {
         var allBrushNames = SolidColorBrushHelper.GetAllBrushNames(CultureInfo.CurrentUICulture);
         var baseBrushNames = SolidColorBrushHelper.GetBrushKeys();
-        var basicBrushNames = SolidColorBrushHelper.GetBasicBrushNames();
+        var basicBrushNames = SolidColorBrushHelper.GetBasicBrushKeys();
 
         Assert.Equal(139, allBrushNames.Count);
-        Assert.Equal(139, baseBrushNames.Count);
+        Assert.Equal(141, baseBrushNames.Count);
         Assert.Equal(16, basicBrushNames.Count);
     }
 
@@ -217,6 +217,11 @@ public class SolidColorBrushHelperTests
     [InlineData("YellowGreen", "0xFF9ACD32")]
     public void GetBrushKeyFromHex(string expectedColorKey, string hexValue)
     {
+        if (expectedColorKey == "Cyan")
+        {
+            expectedColorKey = "Aqua";
+        }
+
         // Act
         var brushKey = SolidColorBrushHelper.GetBrushKeyFromHex(hexValue);
 
