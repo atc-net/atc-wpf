@@ -32,6 +32,7 @@
         <baseControls:DecimalBox
             atcTheming:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=WatermarkText}"
             atcTheming:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=WatermarkAlignment}"
+            ButtonsAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=ButtonsAlignment}"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
