@@ -56,6 +56,22 @@
             Header="FilePicker"
             IsExpanded="True"
             SamplePath="BaseControls.FilePickerView" />
+        <atc:SampleTreeViewItem
+            Header="ColorPicker"
+            IsExpanded="True"
+            SamplePath="BaseControls.ColorPickerView" />
+
+    </TreeViewItem>
+
+    <TreeViewItem Header="Color Controls" IsExpanded="True">
+        <atc:SampleTreeViewItem
+            Header="AdvancedColorPickerView"
+            IsExpanded="True"
+            SamplePath="ColorControls.AdvancedColorPickerView" />
+        <atc:SampleTreeViewItem
+            Header="SaturationBrightnessPicker"
+            IsExpanded="True"
+            SamplePath="ColorControls.SaturationBrightnessPickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Label Controls" IsExpanded="True">
@@ -110,6 +126,10 @@
                 Header="LabelFilePicker"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelFilePickerView" />
+            <atc:SampleTreeViewItem
+                Header="LabelColorPicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelColorPickerView" />
         </TreeViewItem>
         <atc:SampleTreeViewItem
             Header="LabelCheckBox"
