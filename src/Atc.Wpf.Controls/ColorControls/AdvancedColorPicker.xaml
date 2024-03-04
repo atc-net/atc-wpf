@@ -48,7 +48,7 @@
                 Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
                                              Key=AvailableColors}"
                 Visibility="{Binding Path=ShowAvailableColors, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
-                <colorControls:WellKnownColorPicker ShowOnlyStandard="False" />
+                <colorControls:WellKnownColorPicker ShowOnlyBasicColors="False" />
             </GroupBox>
 
             <GroupBox
@@ -56,7 +56,7 @@
                 Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
                                              Key=StandardColors}"
                 Visibility="{Binding Path=ShowStandardColors, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
-                <colorControls:WellKnownColorPicker ShowOnlyStandard="True" />
+                <colorControls:WellKnownColorPicker ShowOnlyBasicColors="True" />
             </GroupBox>
 
         </atc:GridEx>

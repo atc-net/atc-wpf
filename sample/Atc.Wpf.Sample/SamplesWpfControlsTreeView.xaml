@@ -69,9 +69,17 @@
             IsExpanded="True"
             SamplePath="ColorControls.AdvancedColorPickerView" />
         <atc:SampleTreeViewItem
+            Header="HueSlider"
+            IsExpanded="True"
+            SamplePath="ColorControls.HueSliderView" />
+        <atc:SampleTreeViewItem
             Header="SaturationBrightnessPicker"
             IsExpanded="True"
             SamplePath="ColorControls.SaturationBrightnessPickerView" />
+        <atc:SampleTreeViewItem
+            Header="WellKnownColorPicker"
+            IsExpanded="True"
+            SamplePath="ColorControls.WellKnownColorPickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Label Controls" IsExpanded="True">

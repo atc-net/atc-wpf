@@ -6,18 +6,18 @@ namespace Atc.Wpf.Controls.ColorControls;
 [SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "OK.")]
 public partial class WellKnownColorPicker
 {
-    public static readonly DependencyProperty ShowOnlyStandardProperty = DependencyProperty.Register(
-        nameof(ShowOnlyStandard),
+    public static readonly DependencyProperty ShowOnlyBasicColorsProperty = DependencyProperty.Register(
+        nameof(ShowOnlyBasicColors),
         typeof(bool),
         typeof(WellKnownColorPicker),
         new PropertyMetadata(
             BooleanBoxes.FalseBox,
             OnShowOnlyStandardChanged));
 
-    public bool ShowOnlyStandard
+    public bool ShowOnlyBasicColors
     {
-        get => (bool)GetValue(ShowOnlyStandardProperty);
-        set => SetValue(ShowOnlyStandardProperty, value);
+        get => (bool)GetValue(ShowOnlyBasicColorsProperty);
+        set => SetValue(ShowOnlyBasicColorsProperty, value);
     }
 
     public static readonly DependencyProperty PaletteProperty = DependencyProperty.Register(
@@ -52,7 +52,7 @@ public partial class WellKnownColorPicker
 
         control.Palette = [];
         control.Palette.AddRange(
-            control.ShowOnlyStandard
+            control.ShowOnlyBasicColors
                 ? ColorItemHelper.GetBasicColorItems()
                 : ColorItemHelper.GetColorItems());
     }
