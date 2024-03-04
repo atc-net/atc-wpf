@@ -30,9 +30,12 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
             }
 
             suppressNotification = value;
+
             if (!suppressNotification)
             {
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                OnCollectionChanged(
+                    new NotifyCollectionChangedEventArgs(
+                        NotifyCollectionChangedAction.Reset));
             }
         }
     }
@@ -51,13 +54,18 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
         ArgumentNullException.ThrowIfNull(list);
 
         suppressNotification = true;
+
         foreach (var item in list)
         {
             Add(item);
         }
 
         suppressNotification = false;
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list));
+
+        OnCollectionChanged(
+            new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Add,
+                list));
     }
 
     /// <summary>
@@ -78,7 +86,8 @@ public class ObservableCollectionEx<T> : ObservableCollection<T>
     public void Refresh()
     {
         OnCollectionChanged(
-            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Reset));
     }
 
     /// <summary>
