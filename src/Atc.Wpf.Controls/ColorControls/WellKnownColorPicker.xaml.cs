@@ -22,13 +22,13 @@ public partial class WellKnownColorPicker
 
     public static readonly DependencyProperty PaletteProperty = DependencyProperty.Register(
         nameof(Palette),
-        typeof(List<Color>),
+        typeof(List<ColorItem>),
         typeof(WellKnownColorPicker),
-        new PropertyMetadata(default(List<Color>)));
+        new PropertyMetadata(default(List<ColorItem>)));
 
-    public List<Color> Palette
+    public List<ColorItem> Palette
     {
-        get => (List<Color>)GetValue(PaletteProperty);
+        get => (List<ColorItem>)GetValue(PaletteProperty);
         set => SetValue(PaletteProperty, value);
     }
 
@@ -41,7 +41,7 @@ public partial class WellKnownColorPicker
         DataContext = this;
 
         Palette = [];
-        Palette.AddRange(ColorHelper.GetColors());
+        Palette.AddRange(ColorItemHelper.GetColorItems());
     }
 
     private static void OnShowOnlyStandardChanged(
@@ -53,8 +53,8 @@ public partial class WellKnownColorPicker
         control.Palette = [];
         control.Palette.AddRange(
             control.ShowOnlyStandard
-                ? ColorHelper.GetBasicColors()
-                : ColorHelper.GetColors());
+                ? ColorItemHelper.GetBasicColorItems()
+                : ColorItemHelper.GetColorItems());
     }
 
     private void OnPaletteColorClick(

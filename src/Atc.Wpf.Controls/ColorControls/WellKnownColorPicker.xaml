@@ -23,14 +23,19 @@
                     Width="16"
                     Height="16"
                     Margin="2"
+                    Background="{Binding Path=ColorBrush}"
                     BorderThickness="1"
                     Click="OnPaletteColorClick">
-                    <Button.Resources>
-                        <SolidColorBrush x:Key="ButtonBackgroundProxyBrush" Color="{Binding}" />
-                    </Button.Resources>
-                    <Button.Background>
-                        <StaticResource ResourceKey="ButtonBackgroundProxyBrush" />
-                    </Button.Background>
+                    <Button.ToolTip>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} ({1})">
+                                    <Binding Path="DisplayName" />
+                                    <Binding Path="DisplayHexCode" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Button.ToolTip>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Style.Triggers>
