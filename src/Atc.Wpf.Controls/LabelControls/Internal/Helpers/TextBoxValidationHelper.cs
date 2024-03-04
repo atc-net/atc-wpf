@@ -120,7 +120,9 @@ internal static class TextBoxValidationHelper
         }
 
         isValid = false;
-        errorMessage = Validations.InvalidHttpUrl;
+        errorMessage = allowHttp
+            ? Validations.InvalidHttpUrl
+            : Validations.InvalidHttpsUrl;
     }
 
     private static void ValidateHexRgb(
