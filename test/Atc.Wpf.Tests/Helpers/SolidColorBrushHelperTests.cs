@@ -95,7 +95,6 @@ public class SolidColorBrushHelperTests
     [InlineData("CornflowerBlue", "0xFF6495ED")]
     [InlineData("Cornsilk", "0xFFFFF8DC")]
     [InlineData("Crimson", "0xFFDC143C")]
-    [InlineData("Cyan", "0xFF00FFFF")]
     [InlineData("DarkBlue", "0xFF00008B")]
     [InlineData("DarkCyan", "0xFF008B8B")]
     [InlineData("DarkGoldenrod", "0xFFB8860B")]
@@ -217,11 +216,6 @@ public class SolidColorBrushHelperTests
     [InlineData("YellowGreen", "0xFF9ACD32")]
     public void GetBrushKeyFromHex(string expectedColorKey, string hexValue)
     {
-        if (expectedColorKey == "Cyan")
-        {
-            expectedColorKey = "Aqua";
-        }
-
         // Act
         var brushKey = SolidColorBrushHelper.GetBrushKeyFromHex(hexValue);
 
