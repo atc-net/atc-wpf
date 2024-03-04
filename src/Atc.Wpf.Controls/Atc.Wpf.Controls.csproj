@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="Resources\collapse.svg" />
     <None Remove="Resources\expand.svg" />
+    <None Remove="Resources\Icons\color_palette.svg" />
     <None Remove="Resources\Icons\file.svg" />
     <None Remove="Resources\Icons\folder.svg" />
     <None Remove="Resources\information.svg" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\collapse.svg" />
     <Resource Include="Resources\Icons\expand.svg" />
+    <Resource Include="Resources\Icons\color_palette.svg" />
     <Resource Include="Resources\Icons\file.svg" />
     <Resource Include="Resources\Icons\folder.svg" />
     <Resource Include="Resources\LogCategoryIcons\information.svg" />
