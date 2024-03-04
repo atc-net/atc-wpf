@@ -316,19 +316,19 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         UpdateSelectedDate(control, dateTime);
     }
 
-    private void OnClockPickerSelectedClockChanged(
+    private void OnClockPanelPickerSelectedClockChanged(
         object? sender,
         RoutedEventArgs e)
     {
-        var clockPicker = (ClockPicker)sender!;
+        var clockPanelPicker = (ClockPanelPicker)sender!;
 
-        if (!clockPicker.SelectedDateTime.HasValue)
+        if (!clockPanelPicker.SelectedDateTime.HasValue)
         {
             return;
         }
 
         var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-        var shortTime = clockPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
+        var shortTime = clockPanelPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
 
         if (shortTime.Equals(TextTime, StringComparison.Ordinal))
         {
