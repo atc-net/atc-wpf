@@ -35,9 +35,9 @@ public partial class LabelComboBox : ILabelComboBox
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
     public LabelComboBox()
     {
@@ -78,7 +78,7 @@ public partial class LabelComboBox : ILabelComboBox
 
         control.SelectorChanged?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 control.Identifier,
                 e.OldValue?.ToString(),
                 selectedKey));
@@ -123,7 +123,7 @@ public partial class LabelComboBox : ILabelComboBox
 
         control.SelectorLostFocusInvalid?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

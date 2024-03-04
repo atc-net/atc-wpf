@@ -64,7 +64,7 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
 
     private void MyLabel3HorizontalOnSelectorChanged(
         object? sender,
-        ChangedStringEventArgs e)
+        ValueChangedEventArgs<string?> e)
     {
         if (string.IsNullOrEmpty(e.OldValue))
         {
@@ -78,7 +78,7 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
 
     private void MyLabel3VerticalOnSelectorChanged(
         object? sender,
-        ChangedStringEventArgs e)
+        ValueChangedEventArgs<string?> e)
     {
         if (string.IsNullOrEmpty(e.OldValue))
         {

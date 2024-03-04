@@ -140,9 +140,9 @@ public partial class LabelFilePicker : ILabelFilePicker
         set => SetValue(WatermarkTrimmingProperty, value);
     }
 
-    public event EventHandler<ChangedFileInfoEventArgs>? LostFocusValid;
+    public event EventHandler<ValueChangedEventArgs<FileInfo?>>? LostFocusValid;
 
-    public event EventHandler<ChangedFileInfoEventArgs>? LostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<FileInfo?>>? LostFocusInvalid;
 
     public LabelFilePicker()
     {
@@ -200,7 +200,7 @@ public partial class LabelFilePicker : ILabelFilePicker
     {
         control.LostFocusValid?.Invoke(
             control,
-            new ChangedFileInfoEventArgs(
+            new ValueChangedEventArgs<FileInfo?>(
                 ControlHelper.GetIdentifier(control),
                 e.OldValue,
                 e.NewValue));
@@ -212,7 +212,7 @@ public partial class LabelFilePicker : ILabelFilePicker
     {
         control.LostFocusInvalid?.Invoke(
             control,
-            new ChangedFileInfoEventArgs(
+            new ValueChangedEventArgs<FileInfo?>(
                 ControlHelper.GetIdentifier(control),
                 e.OldValue,
                 e.NewValue));

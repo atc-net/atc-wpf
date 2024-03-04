@@ -147,9 +147,9 @@ public partial class IntegerXyBox
         set => SetValue(ValueYProperty, value);
     }
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueXLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueXLostFocus;
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueYLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueYLostFocus;
 
     public IntegerXyBox()
     {
@@ -189,7 +189,7 @@ public partial class IntegerXyBox
 
         control.ValueXLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 (int)e.OldValue,
                 (int)e.NewValue));
@@ -204,7 +204,7 @@ public partial class IntegerXyBox
 
         control.ValueYLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 (int)e.OldValue,
                 (int)e.NewValue));

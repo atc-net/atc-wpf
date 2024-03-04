@@ -62,7 +62,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
     private void IconColorPickerOnSelectorChanged(
         object? sender,
-        ChangedStringEventArgs e)
+        ValueChangedEventArgs<string?> e)
     {
         if (ListOfIcons is null ||
             ListOfIcons.Children.Count == 0)
@@ -88,7 +88,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
     private void FilterCheckBoxOnIsCheckedChanged(
         object sender,
-        ChangedBooleanEventArgs e)
+        ValueChangedEventArgs<bool> e)
     {
         if (ListOfIcons is null ||
             ListOfIcons.Children.Count == 0)

@@ -86,7 +86,7 @@ public partial class WellKnownColorSelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
     public WellKnownColorSelector()
     {
@@ -344,7 +344,7 @@ public partial class WellKnownColorSelector
 
         SelectorChanged?.Invoke(
             this,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 identifier: Guid.Empty.ToString(),
                 oldValue: null,
                 newValue: colorItem.Key));

@@ -85,9 +85,9 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorChanged;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
-    public event EventHandler<ChangedStringEventArgs>? SelectorLostFocusInvalid;
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
     public LabelLanguageSelector()
     {
@@ -157,7 +157,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
 
         control.SelectorChanged?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 control.Identifier,
                 e.OldValue?.ToString(),
                 selectedKey));
@@ -174,7 +174,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
 
     private void OnSelectorChanged(
         object? sender,
-        ChangedStringEventArgs e)
+        ValueChangedEventArgs<string?> e)
     {
         Debug.WriteLine($"LabelLanguageSelector - Change to: {e.NewValue}");
         ValidateValue(default, this, e.NewValue, raiseEvents: false);
@@ -195,7 +195,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
 
         control.SelectorLostFocusInvalid?.Invoke(
             control,
-            new ChangedStringEventArgs(
+            new ValueChangedEventArgs<string?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));

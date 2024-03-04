@@ -107,9 +107,9 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
         set => SetValue(ValueYProperty, value);
     }
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueXLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueXLostFocus;
 
-    public event EventHandler<ChangedIntegerEventArgs>? ValueYLostFocus;
+    public event EventHandler<ValueChangedEventArgs<int?>>? ValueYLostFocus;
 
     public LabelIntegerXyBox()
     {
@@ -155,7 +155,7 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
 
         control.ValueXLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
@@ -181,7 +181,7 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
 
         control.ValueYLostFocus?.Invoke(
             control,
-            new ChangedIntegerEventArgs(
+            new ValueChangedEventArgs<int?>(
                 ControlHelper.GetIdentifier(control),
                 oldValue,
                 newValue));
