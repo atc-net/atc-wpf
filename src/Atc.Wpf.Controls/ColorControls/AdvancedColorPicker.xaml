@@ -23,6 +23,7 @@
                 <ResourceDictionary Source="Internal/ColorControlResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleConverter" />
             <atcValueConverters:ColorHexToColorValueConverter x:Key="ColorHexToColorConverter" />
             <internal:UnitToPercentValueConverter x:Key="UnitToPercentConverter" />
         </ResourceDictionary>
@@ -39,28 +40,41 @@
                 Grid.Row="0"
                 Brightness="{Binding Path=Brightness, Mode=TwoWay}"
                 Hue="{Binding Path=Hue, Mode=OneWay}"
-                Saturation="{Binding Path=Saturation, Mode=TwoWay}" />
+                Saturation="{Binding Path=Saturation, Mode=TwoWay}"
+                Visibility="{Binding Path=ShowSaturationBrightnessPicker, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
 
-            <GroupBox Grid.Row="2" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=AvailableColors}">
-                <colorControls:WellKnownColorPicker />
+            <GroupBox
+                Grid.Row="2"
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                             Key=AvailableColors}"
+                Visibility="{Binding Path=ShowAvailableColors, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
+                <colorControls:WellKnownColorPicker ShowOnlyStandard="False" />
             </GroupBox>
 
-            <GroupBox Grid.Row="4" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=StandardColors}">
+            <GroupBox
+                Grid.Row="4"
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                             Key=StandardColors}"
+                Visibility="{Binding Path=ShowStandardColors, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
                 <colorControls:WellKnownColorPicker ShowOnlyStandard="True" />
             </GroupBox>
 
         </atc:GridEx>
 
-        <colorControls:HueSlider Width="50" Hue="{Binding Path=Hue, Mode=TwoWay}" />
+        <colorControls:HueSlider
+            Width="50"
+            Hue="{Binding Path=Hue, Mode=TwoWay}"
+            Visibility="{Binding Path=ShowHueSlider, Converter={StaticResource BoolToVisibilityVisibleConverter}}" />
 
         <colorControls:TransparencySlider
             Width="50"
             Alpha="{Binding Path=Alpha, Mode=TwoWay}"
+            Visibility="{Binding Path=ShowTransparencySlider, Converter={StaticResource BoolToVisibilityVisibleConverter}}"
             Color="{Binding Path=Color, Mode=OneWay}" />
 
         <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
 
-            <GroupBox Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ColorBeforeAndAfter}">
+            <GroupBox Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ColorBeforeAndAfter}" Visibility="{Binding Path=ShowBeforeAfterColorResult, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
                 <atc:GridEx Columns="*" Rows="34,34">
                     <Grid Grid.Row="0">
                         <Rectangle>
@@ -97,7 +111,7 @@
                 </atc:GridEx>
             </GroupBox>
 
-            <GroupBox Header="HSV:">
+            <GroupBox Header="HSV:" Visibility="{Binding Path=ShowHsv, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
                 <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
                     <labelControls:LabelIntegerBox
                         ButtonsAlignment="Opposite"
@@ -129,7 +143,7 @@
                 </atc:UniformSpacingPanel>
             </GroupBox>
 
-            <GroupBox Header="RGB/A:">
+            <GroupBox Header="RGB/A:" Visibility="{Binding Path=ShowRgba, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
                 <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
                     <labelControls:LabelIntegerBox
                         ButtonsAlignment="Opposite"
@@ -168,7 +182,7 @@
                 </atc:UniformSpacingPanel>
             </GroupBox>
 
-            <GroupBox Header="RGB/A:">
+            <GroupBox Header="A-RGB:" Visibility="{Binding Path=ShowArgb, Converter={StaticResource BoolToVisibilityVisibleConverter}}">
                 <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
                     <labelControls:LabelTextBox
                         HideAreas="AsteriskAndInformation"

@@ -6,8 +6,8 @@
     xmlns:colorControls="clr-namespace:Atc.Wpf.Controls.ColorControls;assembly=Atc.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="600"
-    d:DesignWidth="800"
+    d:DesignHeight="750"
+    d:DesignWidth="850"
     mc:Ignorable="d">
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
@@ -16,40 +16,85 @@
             Margin="0,0,0,10"
             Padding="10"
             Header="Features">
-            <atc:GridEx Columns="Auto,10,300,10,Auto">
+            <atc:GridEx Columns="Auto,10,150,10,Auto,10,Auto,10,Auto">
                 <TextBlock
                     Grid.Column="0"
                     VerticalAlignment="Center"
                     FontSize="18"
-                    Text="Binding to the first usage 'MyColorPanelPicker1':" />
+                    Text="Color:" />
                 <Rectangle
                     Grid.Column="2"
                     Width="100"
                     Height="32"
-                    Fill="{Binding ElementName=MyColorPanelPicker1, Path=ColorAsBrush}" />
+                    Fill="{Binding ElementName=UcAdvancedColorPicker, Path=ColorAsBrush}" />
+                <WrapPanel Grid.Column="4" Orientation="Vertical">
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowSaturationBrightnessPicker}"
+                        LabelText="Show Saturation/Brightness"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowAvailableColors}"
+                        LabelText="Show Advanced Colors"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowStandardColors}"
+                        LabelText="Show Standard Colors"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                </WrapPanel>
+                <WrapPanel Grid.Column="6" Orientation="Vertical">
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowHueSlider}"
+                        LabelText="Show Hue-Slider"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowTransparencySlider}"
+                        LabelText="Show Transparency-Slider"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                </WrapPanel>
+                <WrapPanel Grid.Column="8" Orientation="Vertical">
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowBeforeAfterColorResult}"
+                        LabelText="Show Before/After"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowHsv}"
+                        LabelText="Show HSV"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowRgba}"
+                        LabelText="Show RGBA"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding ElementName=UcAdvancedColorPicker, Path=ShowArgb}"
+                        LabelText="Show ARGB"
+                        LabelWidthNumber="150"
+                        LabelWidthSizeDefinition="Pixel" />
+                </WrapPanel>
             </atc:GridEx>
         </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-                <atc:GridEx Columns="*,*" ShowGridLines="True">
-                    <atc:UniformSpacingPanel
-                        Grid.Column="0"
-                        Orientation="Vertical"
-                        Spacing="10">
 
-                        <colorControls:AdvancedColorPicker x:Name="MyColorPanelPicker1" />
+                <colorControls:AdvancedColorPicker x:Name="UcAdvancedColorPicker" />
 
-                    </atc:UniformSpacingPanel>
-                    <atc:UniformSpacingPanel
-                        Grid.Column="1"
-                        Orientation="Vertical"
-                        Spacing="10">
-
-                        <!--<colorControls:ColorPanelPicker />-->
-
-                    </atc:UniformSpacingPanel>
-                </atc:GridEx>
             </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>
