@@ -11,7 +11,7 @@ namespace System.Windows.Markup;
 public sealed class MarkupExtensionManager
 {
     /// <summary>
-    /// The interval at which to cleanup and remove extensions.
+    /// The interval at which to clean up and remove extensions.
     /// </summary>
     private readonly int cleanupInterval;
 
@@ -24,7 +24,7 @@ public sealed class MarkupExtensionManager
     /// Initializes a new instance of the <see cref="MarkupExtensionManager" /> class.
     /// </summary>
     /// <param name="cleanupInterval">
-    /// The interval at which to cleanup and remove extensions associated with garbage
+    /// The interval at which to clean up and remove extensions associated with garbage
     /// collected targets.  This specifies the number of new Markup Extensions that are
     /// created before a cleanup is triggered.
     /// </param>

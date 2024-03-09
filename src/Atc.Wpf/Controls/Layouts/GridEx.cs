@@ -17,9 +17,9 @@ namespace Atc.Wpf.Controls.Layouts;
 /// - pixels
 /// - auto (size to column content)
 /// - * (star - size proportional to grid) -->
-/// <Grid Rows="2*,Auto,*,66" Columns="2*,*,Auto">
+/// <atc:GridEx Rows="2*,Auto,*,66" Columns="2*,*,Auto">
 /// <!-- grid content -->
-/// </Grid>
+/// </atc:GridEx>
 /// ]]>
 /// </example>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
