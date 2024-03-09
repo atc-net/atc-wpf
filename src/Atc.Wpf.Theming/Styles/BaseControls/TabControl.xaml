@@ -179,6 +179,10 @@
                             <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
                         </Trigger>
 
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                        </Trigger>
+
                         <!--  Selected  -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
