@@ -41,6 +41,11 @@
         </TreeViewItem>
     </TreeViewItem>
 
+    <TreeViewItem Header="Markup" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="Markup-Style" SamplePath="Markup.MarkupStyleView" />
+        <atc:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Media" IsExpanded="True">
         <TreeViewItem Header="ShaderEffects" IsExpanded="True">
             <atc:SampleTreeViewItem Header="Contrast Adjust" SamplePath="Media.ShaderEffects.ContrastAdjustShaderEffectView" />
@@ -52,8 +57,8 @@
         </TreeViewItem>
     </TreeViewItem>
 
-    <TreeViewItem Header="Markup - Inputs" IsExpanded="True">
-        <atc:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
+    <TreeViewItem Header="SampleControls" IsExpanded="True">
+        <atc:SampleTreeViewItem Header="SampleViewer" SamplePath="SampleControls.SampleViewerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Threading" IsExpanded="True">

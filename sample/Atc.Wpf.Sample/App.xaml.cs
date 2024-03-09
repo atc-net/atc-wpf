@@ -112,7 +112,7 @@ public partial class App
 
         ThemeManager.Current.ChangeTheme(
             Current,
-            "Dark.Blue");
+            "Light.Blue");
 
         var mainWindow = host
             .Services
