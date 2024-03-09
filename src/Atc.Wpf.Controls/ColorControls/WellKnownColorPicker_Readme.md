@@ -1,4 +1,41 @@
-# Color Codes
+# WellKnownColorPicker
+
+The `WellKnownColorPicker` control can render a list of color defined as `well known` by a alias name.
+
+## Example for WellKnownColorPicker usages
+
+```xml
+<WellKnownColorPicker ShowOnlyBasicColors="False" />
+```
+
+## Properties
+
+| Property            | Description                      |
+|---------------------|----------------------------------|
+| ShowOnlyBasicColors | If `true`, limit to basic color  |
+
+## Basic Color Codes
+
+| Color-Key | Hex code |
+|-|-|
+| White | 0xFFFFFFFF |
+| Silver | 0xFFC0C0C0 |
+| Gray | 0xFF808080 |
+| Black | 0xFF000000 |
+| Red | 0xFFFF0000 |
+| Maroon | 0xFF800000 |
+| Yellow | 0xFFFFFF00 |
+| Olive | 0xFF808000 |
+| Lime | 0xFF00FF00 |
+| Green | 0xFF008000 |
+| Aqua | 0xFF00FFFF |
+| Teal | 0xFF008080 |
+| Blue | 0xFF0000FF |
+| Navy | 0xFF000080 |
+| Fuchsia | 0xFFFF00FF |
+| Purple | 0xFF800080 |
+
+## Color Codes
 
 | Color-Key | Hex code |
 |-|-|
