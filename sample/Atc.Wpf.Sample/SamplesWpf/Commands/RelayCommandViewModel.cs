@@ -10,6 +10,8 @@ public class RelayCommandViewModel : ViewModelBase
 
     public IRelayCommand<string> Test3Command => new RelayCommand<string>(Test3CommandHandler);
 
+    public IRelayCommand<string> Test4Command => new RelayCommand<string>(Test4CommandHandler, CanTest4CommandHandler);
+
     public bool IsTestEnabled
     {
         get => isTestEnabled;
@@ -33,5 +35,15 @@ public class RelayCommandViewModel : ViewModelBase
     private void Test3CommandHandler(string obj)
     {
         _ = MessageBox.Show("Test3-command is hit", $"CommandParameter: {obj}", MessageBoxButton.OK);
+    }
+
+    private bool CanTest4CommandHandler(string obj)
+    {
+        return IsTestEnabled;
+    }
+
+    private void Test4CommandHandler(string obj)
+    {
+        _ = MessageBox.Show("Test4-command is hit", $"CommandParameter: {obj}", MessageBoxButton.OK);
     }
 }
