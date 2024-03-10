@@ -10,6 +10,8 @@ within your applications.
 `PanelHelper` seamlessly integrates with a variety of panel controls in 
 the WPF framework, including but not limited to:
 
+- Grid
+- GridEx
 - DockPanel
 - PanelEx
 - StackPanel
@@ -31,6 +33,16 @@ the WPF framework, including but not limited to:
 </WrapPanel>
 ```
 
+```xml
+<!-- Example: Set the horizontal and vertical spacing to 10. -->
+<WrapPanel
+   atc:PanelHelper.Spacing="10">
+
+   <!-- panel content -->
+
+</WrapPanel>
+```
+
 ## The equvalent example with UniformSpacingPanel usages
 
 ```xml
@@ -46,7 +58,8 @@ the WPF framework, including but not limited to:
 
 ## Properties
 
-| Property          | Type        | Description                                                          |
-|-------------------|-------------|----------------------------------------------------------------------|
-| HorizontalSpacing | double      | Set the horizontal spacing between the panel's items                 |
-| VerticalSpacing   | double      | Set the vertical spacing between the panel's items                   |
+| Property          | Type        | Description                                                           |
+|-------------------|-------------|-----------------------------------------------------------------------|
+| HorizontalSpacing | double      | Set the horizontal spacing between the panel's items                  |
+| VerticalSpacing   | double      | Set the vertical spacing between the panel's items                    |
+| Spacing           | double      | Set both the  horizontal & vertical spacing between the panel's items |

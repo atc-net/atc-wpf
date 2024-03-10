@@ -89,14 +89,25 @@
                         Minimum="0"
                         Value="30" />
                 </atc:UniformSpacingPanel>
+                <atc:UniformSpacingPanel Width="300" Orientation="Vertical">
+                    <atc:LabelSlider
+                        x:Name="LsSpacing"
+                        LabelText="Spacing"
+                        Minimum="0"
+                        Value="20" />
+                </atc:UniformSpacingPanel>
             </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                <atc:GridEx
+                    Columns="*,*"
+                    Rows="*,*"
+                    ShowGridLines="True">
 
                     <atc:GridEx
+                        Grid.Row="0"
                         Grid.Column="0"
                         atc:PanelHelper.HorizontalSpacing="{Binding ElementName=LsHorizontalSpacing, Path=Value}"
                         atc:PanelHelper.VerticalSpacing="{Binding ElementName=LsVerticalSpacing, Path=Value}"
@@ -141,17 +152,86 @@
                             Style="{StaticResource LimeRectangle}" />
                     </atc:GridEx>
 
-                    <WrapPanel
+                    <atc:GridEx
+                        Grid.Row="0"
                         Grid.Column="1"
+                        atc:PanelHelper.Spacing="{Binding ElementName=LsSpacing, Path=Value}"
+                        Background="DarkGray"
+                        Columns="Auto,Auto,Auto"
+                        Rows="Auto,Auto,Auto">
+                        <Rectangle
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Style="{StaticResource BlueRectangle}" />
+                        <Rectangle
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{StaticResource RedRectangle}" />
+                        <Rectangle
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Style="{StaticResource OliveRectangle}" />
+                        <Rectangle
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Style="{StaticResource GreenRectangle}" />
+                        <Rectangle
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource YellowRectangle}" />
+                        <Rectangle
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Style="{StaticResource CyanRectangle}" />
+                        <Rectangle
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Style="{StaticResource CoralRectangle}" />
+                        <Rectangle
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Style="{StaticResource LimeRectangle}" />
+                    </atc:GridEx>
+
+                    <WrapPanel
+                        Grid.Row="1"
+                        Grid.Column="0"
                         Width="200"
                         atc:PanelHelper.HorizontalSpacing="{Binding ElementName=LsHorizontalSpacing, Path=Value}"
                         atc:PanelHelper.VerticalSpacing="{Binding ElementName=LsVerticalSpacing, Path=Value}"
-                        Background="Aqua"
+                        Background="DarkTurquoise"
                         Orientation="Horizontal">
                         <Rectangle Style="{StaticResource BlueRectangle}" />
                         <Rectangle Style="{StaticResource RedRectangle}" />
+                        <Rectangle Style="{StaticResource OliveRectangle}" />
                         <Rectangle Style="{StaticResource GreenRectangle}" />
                         <Rectangle Style="{StaticResource YellowRectangle}" />
+                        <Rectangle Style="{StaticResource CyanRectangle}" />
+                        <Rectangle Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle Style="{StaticResource CoralRectangle}" />
+                        <Rectangle Style="{StaticResource LimeRectangle}" />
+                    </WrapPanel>
+
+                    <WrapPanel
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="200"
+                        atc:PanelHelper.Spacing="{Binding ElementName=LsSpacing, Path=Value}"
+                        Background="DarkCyan"
+                        Orientation="Horizontal">
+                        <Rectangle Style="{StaticResource BlueRectangle}" />
+                        <Rectangle Style="{StaticResource RedRectangle}" />
+                        <Rectangle Style="{StaticResource OliveRectangle}" />
+                        <Rectangle Style="{StaticResource GreenRectangle}" />
+                        <Rectangle Style="{StaticResource YellowRectangle}" />
+                        <Rectangle Style="{StaticResource CyanRectangle}" />
+                        <Rectangle Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle Style="{StaticResource CoralRectangle}" />
+                        <Rectangle Style="{StaticResource LimeRectangle}" />
                     </WrapPanel>
 
                 </atc:GridEx>

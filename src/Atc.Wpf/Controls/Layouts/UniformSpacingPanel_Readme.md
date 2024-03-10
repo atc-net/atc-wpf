@@ -16,6 +16,17 @@ The `UniformSpacingPanel` control is a extensions of the `Panel` control.
 </UniformSpacingPanel>
 ```
 
+```xml
+<!-- Example: Set the horizontal and vertical spacing to 10. -->
+<UniformSpacingPanel
+   Spacing="10"
+   Orientation="Horizontal">
+
+   <!-- panel content -->
+
+</UniformSpacingPanel>
+```
+
 ## The equvalent example with PanelHelper usages
 
 ```xml

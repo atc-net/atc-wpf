@@ -30,6 +30,25 @@ namespace Atc.Wpf.Helpers;
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class PanelHelper
 {
+    private static readonly Thickness ZeroThickness = new(0);
+
+    public static readonly DependencyProperty SpacingProperty = DependencyProperty.RegisterAttached(
+        "Spacing",
+        typeof(double),
+        typeof(PanelHelper),
+        new UIPropertyMetadata(
+            defaultValue: 0d,
+            OnSpacingChanged));
+
+    public static double GetSpacing(
+        DependencyObject obj)
+        => (double)obj.GetValue(SpacingProperty);
+
+    public static void SetSpacing(
+        DependencyObject obj,
+        double space)
+        => obj.SetValue(SpacingProperty, space);
+
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.RegisterAttached(
         "HorizontalSpacing",
         typeof(double),
@@ -98,6 +117,26 @@ public static class PanelHelper
         Thickness value)
         => obj.SetValue(LastItemMarginProperty, value);
 
+    private static void OnSpacingChanged(
+        object sender,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not Panel panel)
+        {
+            return;
+        }
+
+        var space = (double)e.NewValue;
+        var obj = (DependencyObject)sender;
+
+        var itemThickness = GetItemMargin(panel);
+        itemThickness.Right = space;
+        itemThickness.Bottom = space;
+
+        SetItemMargin(obj, itemThickness);
+        SetLastItemMargin(obj, ZeroThickness);
+    }
+
     private static void OnHorizontalSpacingChanged(
         object sender,
         DependencyPropertyChangedEventArgs e)
@@ -114,7 +153,7 @@ public static class PanelHelper
         itemThickness.Right = space;
 
         SetItemMargin(obj, itemThickness);
-        SetLastItemMargin(obj, new Thickness(0));
+        SetLastItemMargin(obj, ZeroThickness);
     }
 
     private static void OnVerticalSpacingChanged(
@@ -133,7 +172,7 @@ public static class PanelHelper
         itemThickness.Bottom = space;
 
         SetItemMargin(obj, itemThickness);
-        SetLastItemMargin(obj, new Thickness(0));
+        SetLastItemMargin(obj, ZeroThickness);
     }
 
     private static void OnItemMarginChanged(
