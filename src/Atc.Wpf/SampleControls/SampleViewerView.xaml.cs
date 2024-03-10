@@ -16,7 +16,7 @@ public partial class SampleViewerView
         get => (SolidColorBrush)GetValue(HeaderForegroundProperty);
         set => SetValue(HeaderForegroundProperty, value);
     }
-    
+
     public SampleViewerView()
     {
         InitializeComponent();
