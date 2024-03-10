@@ -16,8 +16,13 @@ This is a base libraries for building WPF application with the MVVM design patte
   - [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
   - [Readme's for each NuGet Package area](#readmes-for-each-nuget-package-area)
     - [Atc.Wpf](#atcwpf)
+      - [Controls](#controls)
+      - [Misc](#misc)
     - [Atc.Wpf.Controls](#atcwpfcontrols)
+      - [Controls](#controls-1)
+      - [Misc](#misc-1)
     - [Atc.Wpf.FontIcons](#atcwpffonticons)
+      - [Misc](#misc-2)
     - [Atc.Wpf.Theming](#atcwpftheming)
   - [How to contribute](#how-to-contribute)
 
@@ -118,6 +123,7 @@ MarkupStyleView_Readme
 #### Misc
 
 - [MVVM framework](src/Atc.Wpf/Mvvm/@Readme.md)
+  - [RelayCommand's](src/Atc.Wpf/Command/@Readme.md)
 - [ShaderEffects](src/Atc.Wpf/Media/ShaderEffects/@Readme.md)
   - [How to use HLSL Shader Compiler](src/Atc.Wpf/Media/ShaderEffects/Shaders/@Readme.md)
 - [Tranlation & localizaion](src/Atc.Wpf/Translation/@Readme.md)
