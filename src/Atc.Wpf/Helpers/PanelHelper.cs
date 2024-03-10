@@ -36,7 +36,7 @@ public static class PanelHelper
         typeof(PanelHelper),
         new UIPropertyMetadata(
             defaultValue: 0d,
-            HorizontalSpacingChanged));
+            OnHorizontalSpacingChanged));
 
     public static double GetHorizontalSpacing(
         DependencyObject obj)
@@ -53,7 +53,7 @@ public static class PanelHelper
         typeof(PanelHelper),
         new UIPropertyMetadata(
             defaultValue: 0d,
-            VerticalSpacingChanged));
+            OnVerticalSpacingChanged));
 
     public static double GetVerticalSpacing(
         DependencyObject obj)
@@ -70,13 +70,13 @@ public static class PanelHelper
         typeof(PanelHelper),
         new UIPropertyMetadata(
             new Thickness(0),
-            ItemMarginChanged));
+            OnItemMarginChanged));
 
     public static Thickness GetItemMargin(
         DependencyObject obj)
         => (Thickness)obj.GetValue(ItemMarginProperty);
 
-    public static void SetItemMargin(
+    private static void SetItemMargin(
         DependencyObject obj,
         Thickness value)
         => obj.SetValue(ItemMarginProperty, value);
@@ -87,40 +87,56 @@ public static class PanelHelper
         typeof(PanelHelper),
         new UIPropertyMetadata(
             new Thickness(0),
-            ItemMarginChanged));
+            OnItemMarginChanged));
 
     public static Thickness GetLastItemMargin(
         DependencyObject obj)
         => (Thickness)obj.GetValue(LastItemMarginProperty);
 
-    public static void SetLastItemMargin(
+    private static void SetLastItemMargin(
         DependencyObject obj,
         Thickness value)
         => obj.SetValue(LastItemMarginProperty, value);
 
-    private static void HorizontalSpacingChanged(
+    private static void OnHorizontalSpacingChanged(
         object sender,
         DependencyPropertyChangedEventArgs e)
     {
+        if (sender is not Panel panel)
+        {
+            return;
+        }
+
         var space = (double)e.NewValue;
         var obj = (DependencyObject)sender;
 
-        SetItemMargin(obj, new Thickness(0, 0, space, 0));
+        var itemThickness = GetItemMargin(panel);
+        itemThickness.Right = space;
+
+        SetItemMargin(obj, itemThickness);
         SetLastItemMargin(obj, new Thickness(0));
     }
 
-    private static void VerticalSpacingChanged(
+    private static void OnVerticalSpacingChanged(
         object sender,
         DependencyPropertyChangedEventArgs e)
     {
+        if (sender is not Panel panel)
+        {
+            return;
+        }
+
         var space = (double)e.NewValue;
         var obj = (DependencyObject)sender;
 
-        SetItemMargin(obj, new Thickness(0, 0, 0, space));
+        var itemThickness = GetItemMargin(panel);
+        itemThickness.Bottom = space;
+
+        SetItemMargin(obj, itemThickness);
         SetLastItemMargin(obj, new Thickness(0));
     }
 
-    private static void ItemMarginChanged(
+    private static void OnItemMarginChanged(
         object sender,
         DependencyPropertyChangedEventArgs e)
     {
@@ -155,10 +171,7 @@ public static class PanelHelper
                 continue;
             }
 
-            var isLastItem = i == panel.Children.Count - 1;
-            fe.Margin = isLastItem
-                ? GetLastItemMargin(panel)
-                : GetItemMargin(panel);
+            fe.Margin = GetItemMargin(panel);
         }
     }
 }
