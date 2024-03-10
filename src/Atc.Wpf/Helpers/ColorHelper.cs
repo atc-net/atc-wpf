@@ -396,7 +396,7 @@ public static class ColorHelper
             {
                 if (ColorConverter.ConvertFromString(entryKey) is Color color)
                 {
-                    dictionary.Add(color, entry.Value!.ToString()!);
+                    dictionary.TryAdd(color, entry.Value!.ToString()!);
                 }
             }
             catch

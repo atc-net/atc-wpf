@@ -330,7 +330,7 @@ public static class SolidColorBrushHelper
                     var brush = new SolidColorBrush(color);
                     brush.Freeze();
 
-                    dictionary.Add(brush, entry.Value!.ToString()!);
+                    dictionary.TryAdd(brush, entry.Value!.ToString()!);
                 }
             }
             catch (FormatException)
