@@ -24,24 +24,30 @@
         <GroupBox Header="Usage">
             <ScrollViewer>
 
-                <StackPanel Margin="10" Orientation="Vertical">
-                    <StackPanel Margin="10" Orientation="Vertical">
-                        <Button Command="{Binding Path=Test1Command}" Content="Button with no canExecute" />
-                    </StackPanel>
-                    <StackPanel Margin="10" Orientation="Vertical">
-                        <CheckBox
-                            Margin="0,0,0,10"
-                            Content="IsTestEnabled"
-                            IsChecked="{Binding Path=IsTestEnabled}" />
-                        <Button Command="{Binding Path=Test2Command}" Content="Button with canExecute depend on Checkbox 'IsTestEnabled'" />
-                    </StackPanel>
-                    <StackPanel Margin="10" Orientation="Vertical">
-                        <Button
-                            Command="{Binding Path=Test3Command}"
-                            CommandParameter="Hello"
-                            Content="Button with no canExecute, and have a string as CommandParameter" />
-                    </StackPanel>
-                </StackPanel>
+                <atc:UniformSpacingPanel
+                    Margin="40"
+                    Orientation="Vertical"
+                    Spacing="20">
+
+                    <Button Command="{Binding Path=Test1Command}" Content="Button with no canExecute" />
+
+                    <CheckBox
+                        Margin="0,0,0,10"
+                        Content="IsTestEnabled"
+                        IsChecked="{Binding Path=IsTestEnabled}" />
+                    <Button Command="{Binding Path=Test2Command}" Content="Button with canExecute depend on Checkbox 'IsTestEnabled'" />
+
+                    <Button
+                        Command="{Binding Path=Test3Command}"
+                        CommandParameter="Hello"
+                        Content="Button with no canExecute, and have a string as CommandParameter" />
+
+                    <Button
+                        Command="{Binding Path=Test4Command}"
+                        CommandParameter="Hello word"
+                        Content="Button with canExecute method depend on Checkbox 'IsTestEnabled', and have a string as CommandParameter" />
+
+                </atc:UniformSpacingPanel>
 
             </ScrollViewer>
         </GroupBox>

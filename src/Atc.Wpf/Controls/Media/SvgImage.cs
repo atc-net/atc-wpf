@@ -2,9 +2,6 @@
 // ReSharper disable InvertIf
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
-
-using Atc.Wpf.Controls.Media.W3cSvg;
-
 namespace Atc.Wpf.Controls.Media;
 
 /// <summary>

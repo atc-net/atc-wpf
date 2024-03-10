@@ -111,7 +111,6 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// <summary>
     /// Update the associated target.
     /// </summary>
-    [SuppressMessage("Major Code Smell", "S3267:Loops should be simplified with \"LINQ\" expressions", Justification = "OK.")]
     public void UpdateTarget()
     {
         if (targetProperty is null)

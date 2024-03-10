@@ -20,5 +20,7 @@ public partial class SampleViewerView
     public SampleViewerView()
     {
         InitializeComponent();
+
+        DataContext = new SampleViewerViewModel();
     }
 }

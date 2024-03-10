@@ -9,16 +9,16 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
-    <TreeViewItem Header="Commands" IsExpanded="True">
+    <TreeViewItem Header="Commands">
         <atc:SampleTreeViewItem Header="RelayCommand" SamplePath="Commands.RelayCommandView" />
         <atc:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Controls - Inputs" IsExpanded="True">
+    <TreeViewItem Header="Controls - Inputs">
         <atc:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="Controls.Inputs.RichTextBoxExView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Controls - Layouts" IsExpanded="True">
+    <TreeViewItem Header="Controls - Layouts">
         <atc:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.Layouts.AutoGridView" />
         <atc:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />
         <atc:SampleTreeViewItem Header="GridLines" SamplePath="Controls.Layouts.GridLinesView" />
@@ -28,21 +28,26 @@
         <atc:SampleTreeViewItem Header="UniformSpacingPanel" SamplePath="Controls.Layouts.UniformSpacingPanelView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Controls - Media" IsExpanded="True">
+    <TreeViewItem Header="Controls - Media">
         <atc:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.Media.AutoGreyableImageView" />
         <atc:SampleTreeViewItem Header="SvgImage" SamplePath="Controls.Media.SvgImageView" />
         <atc:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.Media.SvgImageListView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Extensions" IsExpanded="True">
-        <TreeViewItem Header="BitmapSource" IsExpanded="True">
+    <TreeViewItem Header="Extensions">
+        <TreeViewItem Header="BitmapSource">
             <atc:SampleTreeViewItem Header="Invert Colors" SamplePath="Extensions.BitmapSourceInvertColorsView" />
             <atc:SampleTreeViewItem Header="To Resized BitmapImage" SamplePath="Extensions.BitmapSourceToResizedBitmapImageView" />
         </TreeViewItem>
     </TreeViewItem>
 
-    <TreeViewItem Header="Media" IsExpanded="True">
-        <TreeViewItem Header="ShaderEffects" IsExpanded="True">
+    <TreeViewItem Header="Markup">
+        <atc:SampleTreeViewItem Header="Markup-Style" SamplePath="Markup.MarkupStyleView" />
+        <atc:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Media">
+        <TreeViewItem Header="ShaderEffects">
             <atc:SampleTreeViewItem Header="Contrast Adjust" SamplePath="Media.ShaderEffects.ContrastAdjustShaderEffectView" />
             <atc:SampleTreeViewItem Header="Desaturate" SamplePath="Media.ShaderEffects.DesaturateShaderEffectView" />
             <atc:SampleTreeViewItem Header="Fade" SamplePath="Media.ShaderEffects.FadeShaderEffectView" />
@@ -52,15 +57,15 @@
         </TreeViewItem>
     </TreeViewItem>
 
-    <TreeViewItem Header="Markup - Inputs" IsExpanded="True">
-        <atc:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
+    <TreeViewItem Header="SampleControls">
+        <atc:SampleTreeViewItem Header="SampleViewer" SamplePath="SampleControls.SampleViewerView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Threading" IsExpanded="True">
+    <TreeViewItem Header="Threading">
         <atc:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Translation" IsExpanded="True">
+    <TreeViewItem Header="Translation">
         <atc:SampleTreeViewItem Header="ResxExtension" SamplePath="Translation.ResxExtensionView" />
     </TreeViewItem>
 

@@ -9,128 +9,176 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <Style x:Key="BaseRectangle" TargetType="{x:Type Rectangle}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="30" />
+        </Style>
+        <Style
+            x:Key="BlueRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Blue" />
+        </Style>
+        <Style
+            x:Key="RedRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Red" />
+        </Style>
+        <Style
+            x:Key="GreenRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Green" />
+        </Style>
+        <Style
+            x:Key="YellowRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Yellow" />
+        </Style>
+        <Style
+            x:Key="CoralRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Coral" />
+        </Style>
+        <Style
+            x:Key="CyanRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Cyan" />
+        </Style>
+        <Style
+            x:Key="FuchsiaRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Fuchsia" />
+        </Style>
+        <Style
+            x:Key="LimeRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Lime" />
+        </Style>
+        <Style
+            x:Key="OliveRectangle"
+            BasedOn="{StaticResource BaseRectangle}"
+            TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="Olive" />
+        </Style>
+    </UserControl.Resources>
+
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
             Header="Features">
-            <atc:UniformSpacingPanel Orientation="Vertical">
-                <atc:LabelSlider
-                    x:Name="LsSpacing"
-                    LabelText="Spacing"
-                    Minimum="1"
-                    Value="1" />
+            <atc:UniformSpacingPanel HorizontalAlignment="Stretch">
+                <atc:UniformSpacingPanel Width="300" Orientation="Vertical">
+                    <atc:LabelSlider
+                        x:Name="LsHorizontalSpacing"
+                        LabelText="Horizontal Spacing"
+                        Minimum="0"
+                        Value="20" />
+                    <atc:LabelSlider
+                        x:Name="LsVerticalSpacing"
+                        LabelText="Vertical Spacing"
+                        Minimum="0"
+                        Value="30" />
+                </atc:UniformSpacingPanel>
+                <atc:UniformSpacingPanel Width="300" Orientation="Vertical">
+                    <atc:LabelSlider
+                        x:Name="LsSpacing"
+                        LabelText="Spacing"
+                        Minimum="0"
+                        Value="20" />
+                </atc:UniformSpacingPanel>
             </atc:UniformSpacingPanel>
         </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
-                <StackPanel Orientation="Vertical">
+                <atc:GridEx
+                    Columns="300,300"
+                    Rows="Auto,Auto"
+                    ShowGridLines="True">
 
-                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="{Binding ElementName=LsSpacing, Path=Value}">
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Blue" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Red" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Green" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Yellow" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Blue" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Red" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Green" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Yellow" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Blue" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Red" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Green" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Yellow" />
+                    <atc:UniformSpacingPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="Silver"
+                        HorizontalSpacing="{Binding ElementName=LsHorizontalSpacing, Path=Value}"
+                        Orientation="Horizontal"
+                        VerticalSpacing="{Binding ElementName=LsVerticalSpacing, Path=Value}">
+                        <Rectangle Style="{StaticResource BlueRectangle}" />
+                        <Rectangle Style="{StaticResource RedRectangle}" />
+                        <Rectangle Style="{StaticResource OliveRectangle}" />
+                        <Rectangle Style="{StaticResource GreenRectangle}" />
+                        <Rectangle Style="{StaticResource YellowRectangle}" />
+                        <Rectangle Style="{StaticResource CyanRectangle}" />
+                        <Rectangle Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle Style="{StaticResource CoralRectangle}" />
+                        <Rectangle Style="{StaticResource LimeRectangle}" />
                     </atc:UniformSpacingPanel>
 
-                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="{Binding ElementName=LsSpacing, Path=Value}">
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Blue" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Red" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Green" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Yellow" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Blue" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Red" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Green" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Yellow" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Blue" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Red" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Green" />
-                        <Rectangle
-                            Width="50"
-                            Height="50"
-                            Fill="Yellow" />
+                    <atc:UniformSpacingPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Background="DarkGray"
+                        Orientation="Horizontal"
+                        Spacing="{Binding ElementName=LsSpacing, Path=Value}">
+                        <Rectangle Style="{StaticResource BlueRectangle}" />
+                        <Rectangle Style="{StaticResource RedRectangle}" />
+                        <Rectangle Style="{StaticResource OliveRectangle}" />
+                        <Rectangle Style="{StaticResource GreenRectangle}" />
+                        <Rectangle Style="{StaticResource YellowRectangle}" />
+                        <Rectangle Style="{StaticResource CyanRectangle}" />
+                        <Rectangle Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle Style="{StaticResource CoralRectangle}" />
+                        <Rectangle Style="{StaticResource LimeRectangle}" />
                     </atc:UniformSpacingPanel>
 
-                </StackPanel>
+                    <atc:UniformSpacingPanel
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="200"
+                        Background="DarkTurquoise"
+                        HorizontalSpacing="{Binding ElementName=LsHorizontalSpacing, Path=Value}"
+                        Orientation="Vertical"
+                        VerticalSpacing="{Binding ElementName=LsVerticalSpacing, Path=Value}">
+                        <Rectangle Style="{StaticResource BlueRectangle}" />
+                        <Rectangle Style="{StaticResource RedRectangle}" />
+                        <Rectangle Style="{StaticResource OliveRectangle}" />
+                        <Rectangle Style="{StaticResource GreenRectangle}" />
+                        <Rectangle Style="{StaticResource YellowRectangle}" />
+                        <Rectangle Style="{StaticResource CyanRectangle}" />
+                        <Rectangle Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle Style="{StaticResource CoralRectangle}" />
+                        <Rectangle Style="{StaticResource LimeRectangle}" />
+                    </atc:UniformSpacingPanel>
+
+                    <atc:UniformSpacingPanel
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="200"
+                        Background="DarkCyan"
+                        Orientation="Vertical"
+                        Spacing="{Binding ElementName=LsSpacing, Path=Value}">
+                        <Rectangle Style="{StaticResource BlueRectangle}" />
+                        <Rectangle Style="{StaticResource RedRectangle}" />
+                        <Rectangle Style="{StaticResource OliveRectangle}" />
+                        <Rectangle Style="{StaticResource GreenRectangle}" />
+                        <Rectangle Style="{StaticResource YellowRectangle}" />
+                        <Rectangle Style="{StaticResource CyanRectangle}" />
+                        <Rectangle Style="{StaticResource FuchsiaRectangle}" />
+                        <Rectangle Style="{StaticResource CoralRectangle}" />
+                        <Rectangle Style="{StaticResource LimeRectangle}" />
+                    </atc:UniformSpacingPanel>
+
+                </atc:GridEx>
             </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>

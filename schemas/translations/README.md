@@ -1,3 +1,3 @@
-# ATC.WPF - Schemas for ValueConverters
+# ATC.WPF - Schemas for Translation and localization
 
 XmlnsDefinition will be added in the near feature...

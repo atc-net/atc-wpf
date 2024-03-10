@@ -14,19 +14,16 @@ This is a base libraries for building WPF application with the MVVM design patte
     - [Playground and Viewer for a Given Control or Functionality](#playground-and-viewer-for-a-given-control-or-functionality)
     - [Initial glimpse at the demonstration application](#initial-glimpse-at-the-demonstration-application)
   - [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
-  - [MVVM](#mvvm)
-  - [Translation](#translation)
-  - [Media - ShaderEffects](#media---shadereffects)
-  - [ValueConverters in Atc.Wpf](#valueconverters-in-atcwpf)
-    - [ValueConverters - Bool to X](#valueconverters---bool-to-x)
-    - [ValueConverters - String to X](#valueconverters---string-to-x)
-    - [ValueConverters - ICollection to X](#valueconverters---icollection-to-x)
-    - [ValueConverters - Object to X](#valueconverters---object-to-x)
-    - [ValueConverters - Markup to X](#valueconverters---markup-to-x)
-    - [ValueConverters - Others to X](#valueconverters---others-to-x)
-    - [ValueConverters - Math](#valueconverters---math)
-  - [ValueConverters in Atc.Wpf.FontIcons](#valueconverters-in-atcwpffonticons)
-  - [ValueConverters in Atc.Wpf.Theming](#valueconverters-in-atcwpftheming)
+  - [Readme's for each NuGet Package area](#readmes-for-each-nuget-package-area)
+    - [Atc.Wpf](#atcwpf)
+      - [Controls](#controls)
+      - [Misc](#misc)
+    - [Atc.Wpf.Controls](#atcwpfcontrols)
+      - [Controls](#controls-1)
+      - [Misc](#misc-1)
+    - [Atc.Wpf.FontIcons](#atcwpffonticons)
+      - [Misc](#misc-2)
+    - [Atc.Wpf.Theming](#atcwpftheming)
   - [How to contribute](#how-to-contribute)
 
 ## Requirements
@@ -56,6 +53,7 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 - The `XAML` tab displays the corresponding XAML markup.
 - The `CodeBehind` tab reveals the underlying code-behind.
 - The `ViewModel` tab displays the associated ViewModel, if used.
+- The `Readme` tab displays the associated [control]_Readme.md, if exist.
 
 |                                                                         |                                                                       |
 |-------------------------------------------------------------------------|-----------------------------------------------------------------------|
@@ -106,159 +104,51 @@ Then update `App.xaml` like this:
 
 Now it is possible to use controls with theming and default WPF controls like TextBox, Button etc. with theme style.
 
-## MVVM
+## Readme's for each NuGet Package area
 
-The Windows Presentation Framework (WPF) takes full advantage of the Model-View-ViewModel (MVVM) pattern.
+***Note: Right now, it is a limit amount of controls and components there is documented with a `Readme.md` file.
+Therefore run the `Atc.Wpf.Sample` application to explore all the controls and components.*** :-)
 
-Therefore `Atc.Wpf` provide a good starting point for using MVVM.
+### Atc.Wpf
 
-| Tools set in the package | Description                                                                      |
-|--------------------------|                                                                                  |
-| ViewModelBase            | A base class for a the ViewModels                                                |
-| MainWindowViewModelBase  | A base class for a the MainWindow-ViewModel                                      |
-| ViewModelDialogBase      | A base class for a the Dialog-ViewModel                                          |
-| ObservableObject         | A base class for a observable class that implement a PropertyChangedEventHandler |
-| RelayCommand             | Command with `CanExecute`                                                        |
-| RelayCommand{T}          | Command with `CanExecute`                                                        |
-| RelayCommandAsync        | Command with `CanExecute` as async                                               |
-| RelayCommandAsync{T}     | Command with `CanExecute` as async                                               |
+#### Controls
 
-## Translation
+- [GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)
+- [StaggeredPanel](src/Atc.Wpf/Controls/Layouts/StaggeredPanel_Readme.md)
+- [UniformSpacingPanel](src/Atc.Wpf/Controls/Layouts/UniformSpacingPanel_Readme.md)
+- [SvgImage](src/Atc.Wpf/Controls/Media/SvgImage_Readme.md)
+- Control Helpers
+  - [PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)
+- [SampleViewer](src/Atc.Wpf/SampleControls/SampleViewerView_Readme.md)
 
-It is very easy to localize an application by binding text to a resource assembly that contains the text.
-This is a standard .NET Globalization and localization way,
-but just with a xaml-markup extension to lookup the value by key.
+#### Misc
 
-```xml
-<!-- Add xmlns:atcTranslation to root element -->
-<UserControl xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations">
+- [MVVM framework](src/Atc.Wpf/Mvvm/@Readme.md)
+  - [RelayCommand's](src/Atc.Wpf/Command/@Readme.md)
+- [ShaderEffects](src/Atc.Wpf/Media/ShaderEffects/@Readme.md)
+  - [How to use HLSL Shader Compiler](src/Atc.Wpf/Media/ShaderEffects/Shaders/@Readme.md)
+- [Tranlation & localizaion](src/Atc.Wpf/Translation/@Readme.md)
+- [ValueConverters](src/Atc.Wpf/ValueConverters/@Readme.md)
 
-<!-- Example on bind to a key in a resx-file with full namespace  -->
-<TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=About}" />
+### Atc.Wpf.Controls
 
-<!-- Example on bind to a key in a resx-file with full namespace and apply a prefix and suffix  -->
-<TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=About, Prefix='foo', Suffix='bar'}" />
-```
+#### Controls
 
-## Media - ShaderEffects
+- [WellKnownColorPicker](src/Atc.Wpf.Controls/ColorControls/WellKnownColorPicker_Readme.md)
 
-| Type                          | Parameters and range values                                                 |
-| ----------------------------- | --------------------------------------------------------------------------- |
-| ContrastAdjustShaderEffect    | Brightness (-1.0 to 1.0 default 0.0) and Contrast (-1.0 to 1.0 default 0.0) |
-| DesaturateShaderEffect        | Strength (0.0 to 1.0 default 0.0)                                           |
-| FadeShaderEffect              | Strength (0.0 to 1.0 default 0.0) and Color (color)                         |
-| InvertColorsShaderEffect      | None                                                                        |
-| MonochromeShaderEffect        | Color (color)                                                               |
-| SaturateShaderEffect          | Progress                                                                    |
+#### Misc
 
-## ValueConverters in Atc.Wpf
+- [ValueConverters](src/Atc.Wpf.Controls/ValueConverters/@Readme.md)
 
-### ValueConverters - Bool to X
+### Atc.Wpf.FontIcons
 
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| Bool -> Bool              | BoolToInverseBoolValueConverter                          | True -> False and False -> True         | False -> True and False -> False        |
-| Bool -> Visibility        | BoolToVisibilityCollapsedValueConverter                  | True -> Collapsed and False -> Visible  | Collapsed -> True and Visible -> False  |
-| Bool -> Visibility        | BoolToVisibilityVisibleValueConverter                    | True -> Visible and False -> Collapsed  | Visible -> True and Collapsed -> False  |
-| Bool -> With              | BoolToWidthValueConverter                                | true, 10 -> 10 and true, "Auto" -> *    | Not supported                           |
-| Bool[] -> Bool            | MultiBoolToBoolValueConverter                            | All-True -> True                        | Not supported                           |
-| Bool[] -> Visibility      | MultiBoolToVisibilityVisibleValueConverter               | All-True -> Visible                     | Not supported                           |
+#### Misc
 
-### ValueConverters - String to X
+- [ValueConverters](src/Atc.Wpf.FontIcons/ValueConverters/@Readme.md)
 
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| String -> Brush           | ColorNameToBrushValueConverter                           | "Green" -> Brushs.Green                 | Brushs.Green -> "Green"                 |
-| String -> Color           | ColorNameToColorValueConverter                           | "Green" -> Colors.Green                 | Colors.Green -> "Green"                 |
-| String -> "NumericFormat" | StandardNumericFormatTypeToFormatStringValueConverter    | StandardNumericFormatType -> String     | Not supported                           |
-| String -> Bool            | StringNullOrEmptyToBoolValueConverter                    | NULL or empty -> True                   | Not supported                           |
-| String -> Bool            | StringNullOrEmptyToInverseBoolValueConverter             | NULL or empty -> False                  | Not supported                           |
-| String -> Visibility      | StringNullOrEmptyToVisibilityCollapsedValueConverter     | NULL or empty -> Collapsed              | Not supported                           |
-| String -> Visibility      | StringNullOrEmptyToVisibilityVisibleValueConverter       | NULL or empty -> Visible                | Not supported                           |
-| String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
-| String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
+### Atc.Wpf.Theming
 
-### ValueConverters - ICollection to X
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| ICollection -> Bool       | CollectionNullOrEmptyToBoolValueConverter                | NULL or empty -> True                   | Not supported                           |
-| ICollection -> Bool       | CollectionNullOrEmptyToInverseBoolValueConverter         | NULL or empty -> False                  | Not supported                           |
-| ICollection -> Visibility | CollectionNullOrEmptyToVisibilityCollapsedValueConverter | NULL or empty -> Collapsed              | Not supported                           |
-| ICollection -> Visibility | CollectionNullOrEmptyToVisibilityVisibleValueConverter   | NULL or empty -> Visible                | Not supported                           |
-
-### ValueConverters - Object to X
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| Object -> Bool            | IsNotNullValueConverter                                  | <>Null -> True and Null -> False        | Not supported                           |
-| Object -> Bool            | IsNullValueConverter                                     | Null -> True and <>Null -> False        | Not supported                           |
-| Null -> X                 | NullCheckValueConverter                                  | NULL -> Parameter if set                | Not supported                           |
-| Null -> UnsetValue        | NullToUnsetValueConverter                                | NULL -> DependencyProperty.UnsetValue   | Object -> DependencyProperty.UnsetValue |
-| Object -> Bool            | ObjectNotNullToBoolValueConverter                        | NotNULL -> True                         | Not supported                           |
-| Object -> Visibility      | ObjectNotNullToVisibilityVisibleValueConverter           | NotNULL -> Visible                      | Not supported                           |
-| Object -> Visibility      | ObjectNullToVisibilityCollapsedValueConverter            | NULL -> Collapsed                       | Not supported                           |
-| Object[] -> Visibility    | MultiObjectNullToVisibilityCollapsedValueConverter       | All-NULL -> Collapsed                   | Not supported                           |
-| Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
-
-
-### ValueConverters - Markup to X
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| Base converter            | MarkupMultiValueConverterBase                            | Base converter - no examples            | Base converter - no examples            |
-|                           | MarkupValueConverter                                     |                                         |                                         |
-|                           | MarkupValueConverterBase                                 |                                         |                                         |
-
-### ValueConverters - Others to X
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-|                           | BackgroundToForegroundValueConverter                     |                                         |                                         |
-| Brush -> Color            | BrushToColorValueConverter                               | Brushs.Green -> Colors.Green            | Colors.Green -> Brushs.Green            |
-| Color -> Brush            | ColorToBrushValueConverter                               | Colors.Green -> Brushs.Green            | Brushs.Green -> Colors.Green            |
-| Color -> SolidColor       | ColorToSolidColorValueConverter                          | Colors.Green -> Colors.Green            | Not supported            |
-| Color -> String           | ColorHexToColorValueConverter                            | "#FF00FF00" -> "Green"                  | "Green" -> "#FF00FF00"                  |
-| Hex-Color -> Color-Key    | HexColorToColorKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Brushs.Green                 |
-| Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
-| Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed and 1 -> Visible         | Not supported                           |
-| Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | Not supported                           |
-| LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> DodgerBlue               | Not supported                           |
-| LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> DodgerBlue               | Not supported                           |
-| LogLevel -> Brush         | LogLevelToBrushValueConverter                            | Information -> DodgerBlue               | Not supported                           |
-| LogLevel -> Color         | LogLevelToColorValueConverter                            | Information -> DodgerBlue               | Not supported                           |
-|                           | ObservableDictionaryToDictionaryOfStringsValueConverter  |                                         |                                         |
-|                           | ThicknessBindingValueConverter                           |                                         | DependencyProperty.UnsetValue           |
-|                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |
-|                           | ThicknessToDoubleValueConverter                          |                                         | DependencyProperty.UnsetValue           |
-| Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |
-|                           | WindowResizeModeMinMaxButtonVisibilityMultiValueConverter|                                         |                                         |
-
-### ValueConverters - Math
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-|                           | MathAddValueConverter                                    |                                         |                                         |
-|                           | MathDivideValueConverter                                 |                                         |                                         |
-|                           | MathMultiplyValueConverter                               |                                         |                                         |
-|                           | MathSubtractValueConverter                               |                                         |                                         |
-|                           | MathValueConverter                                       |                                         |                                         |
-
-## ValueConverters in Atc.Wpf.FontIcons
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| FontIcon -> DrawingImage  | FontIconDrawingImageValueConverter                       |                                         |                                         |
-| FontIcon -> ImageSource   | FontIconImageSourceValueConverter                        |                                         |                                         |
-
-## ValueConverters in Atc.Wpf.Theming
-
-| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-|                           | ColorToNameValueConverter                                |                                         | Not supported                           |
-|                           | CornerRadiusBindingValueConverter                        |                                         | DependencyProperty.UnsetValue           |
-|                           | CornerRadiusFilterValueConverter                         |                                         | DependencyProperty.UnsetValue           |
-|                           | TreeViewMarginValueConverter                             |                                         | DependencyProperty.UnsetValue           |
+- [ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)
 
 ## How to contribute
 

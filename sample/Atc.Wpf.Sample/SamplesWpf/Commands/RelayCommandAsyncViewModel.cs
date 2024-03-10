@@ -10,6 +10,8 @@ public class RelayCommandAsyncViewModel : ViewModelBase
 
     public IRelayCommandAsync<string> Test3Command => new RelayCommandAsync<string>(Test3CommandHandler);
 
+    public IRelayCommandAsync<string> Test4Command => new RelayCommandAsync<string>(Test4CommandHandler, CanTest4CommandHandler);
+
     public bool IsTestEnabled
     {
         get => isTestEnabled;
@@ -36,5 +38,16 @@ public class RelayCommandAsyncViewModel : ViewModelBase
     {
         await Task.Delay(1000, CancellationToken.None).ConfigureAwait(false);
         _ = MessageBox.Show("Test3-command is hit", $"CommandParameter: {obj}", MessageBoxButton.OK);
+    }
+
+    private bool CanTest4CommandHandler(string obj)
+    {
+        return IsTestEnabled;
+    }
+
+    private async Task Test4CommandHandler(string obj)
+    {
+        await Task.Delay(1000, CancellationToken.None).ConfigureAwait(false);
+        _ = MessageBox.Show("Test4-command is hit", $"CommandParameter: {obj}", MessageBoxButton.OK);
     }
 }

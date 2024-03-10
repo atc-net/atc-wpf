@@ -1,7 +1,6 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.SampleControls;
 
-[SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "OK.")]
 public class SampleViewerViewModel : ViewModelBase
 {
     public SampleViewerViewModel()
@@ -9,12 +8,14 @@ public class SampleViewerViewModel : ViewModelBase
         Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
     }
 
+    private FileInfo[]? readmeMarkdownFiles;
     private int tabSelectedIndex;
     private string? header;
     private UserControl? sampleContent;
     private string? xamlCode;
     private string? codeBehindCode;
     private string? viewModelCode;
+    private string? readmeMarkdown;
 
     public int TabSelectedIndex
     {
@@ -33,6 +34,8 @@ public class SampleViewerViewModel : ViewModelBase
     public bool HasCodeBehindCode => CodeBehindCode is not null;
 
     public bool HasViewModelCode => ViewModelCode is not null;
+
+    public bool HasReadmeMarkdown => ReadmeMarkdown is not null;
 
     public string? Header
     {
@@ -85,6 +88,17 @@ public class SampleViewerViewModel : ViewModelBase
             viewModelCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasViewModelCode));
+        }
+    }
+
+    public string? ReadmeMarkdown
+    {
+        get => readmeMarkdown;
+        set
+        {
+            readmeMarkdown = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(HasReadmeMarkdown));
         }
     }
 
@@ -165,6 +179,103 @@ public class SampleViewerViewModel : ViewModelBase
             var classViewModelName = ExtractClassName(instance.DataContext.ToString()!);
             ViewModelCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewModelName + ".cs"));
         }
+
+        LoadAndRenderReadmeMarkdownIfPossible(classViewName);
+    }
+
+    private void LoadAndRenderReadmeMarkdownIfPossible(
+        string classViewName)
+    {
+        ReadmeMarkdown = null;
+        if (readmeMarkdownFiles is null)
+        {
+            PrepareReadmeReferences();
+        }
+
+        if (readmeMarkdownFiles is null)
+        {
+            return;
+        }
+
+        var readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.Name.StartsWith(classViewName + "_Readme", StringComparison.OrdinalIgnoreCase));
+        if (readmeMarkdownFile is null &&
+            classViewName.EndsWith("View", StringComparison.Ordinal))
+        {
+            var className = classViewName.Replace("View", string.Empty, StringComparison.Ordinal);
+            readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.Name.StartsWith(className + "_Readme", StringComparison.OrdinalIgnoreCase));
+
+            if (readmeMarkdownFile is null)
+            {
+                var type = FindCustomTypeByName(className);
+                if (type?.FullName is not null)
+                {
+                    var sa = type.FullName.Split('.', StringSplitOptions.RemoveEmptyEntries);
+                    if (sa.Length > 2)
+                    {
+                        var classFolder = sa[^2];
+                        readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.FullName.EndsWith($"\\{classFolder}\\@Readme.md", StringComparison.OrdinalIgnoreCase));
+                    }
+                }
+            }
+        }
+
+        if (readmeMarkdownFile is null)
+        {
+            return;
+        }
+
+        var readmeMarkdownTxt = FileHelper.ReadAllText(readmeMarkdownFile);
+        ReadmeMarkdown = readmeMarkdownTxt;
+    }
+
+    private static Type? FindCustomTypeByName(string className)
+    {
+        var type = Type.GetType(className);
+        if (type is not null)
+        {
+            return type;
+        }
+
+        var customAssemblies = AppDomain
+            .CurrentDomain
+            .GetCustomAssemblies()
+            .OrderBy(x => x.FullName, StringComparer.Ordinal);
+
+        foreach (var customAssembly in customAssemblies)
+        {
+            var exportedTypes = customAssembly.GetExportedTypes();
+
+            type = exportedTypes.FirstOrDefault(x => x.Name.Equals(className, StringComparison.Ordinal));
+
+            if (type is not null)
+            {
+                break;
+            }
+        }
+
+        return type;
+    }
+
+    private static string GetBasePath()
+    {
+        var entryAssembly = Assembly.GetEntryAssembly()!;
+        var assemblyLocation = entryAssembly.Location;
+
+        var indexOf = assemblyLocation.IndexOf("\\sample", StringComparison.OrdinalIgnoreCase);
+        var baseLocation = indexOf == -1
+            ? assemblyLocation
+            : assemblyLocation[..indexOf];
+
+        return baseLocation;
+    }
+
+    public void PrepareReadmeReferences()
+    {
+        var basePath = GetBasePath();
+
+        readmeMarkdownFiles = FileHelper.GetFiles(basePath, "*.md")
+            .Where(x => x.Name.Contains("readme", StringComparison.OrdinalIgnoreCase))
+            .ToArray();
     }
 
     private static Type? GetTypeBySamplePath(

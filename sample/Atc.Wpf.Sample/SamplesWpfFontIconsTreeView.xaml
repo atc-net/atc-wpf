@@ -9,7 +9,7 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
-    <TreeViewItem Header="Font Icons" IsExpanded="True">
+    <TreeViewItem Header="Font Icons">
         <atc:SampleTreeViewItem Header="Static" SamplePath="FontIconStaticImageView" />
         <atc:SampleTreeViewItem Header="Binding" SamplePath="FontIconView" />
         <atc:SampleTreeViewItem Header="Viewer" SamplePath="FontIconViewerView" />

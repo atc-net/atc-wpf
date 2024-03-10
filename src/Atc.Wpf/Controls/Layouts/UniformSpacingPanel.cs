@@ -154,7 +154,7 @@ public class UniformSpacingPanel : Panel
 
     private static bool IsSpacingValid(
         object value)
-        => value is double spacing && (double.IsNaN(spacing) || spacing > 0);
+        => value is double spacing && (double.IsNaN(spacing) || spacing >= 0);
 
     private void ArrangeWrapLine(
         double v,
