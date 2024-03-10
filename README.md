@@ -106,7 +106,8 @@ Now it is possible to use controls with theming and default WPF controls like Te
 
 ## Readme's for each NuGet Package area
 
-MarkupStyleView_Readme
+***Note: Right now, it is a limit amount of controls and components there is documented with a `Readme.md` file.
+Therefore run the `Atc.Wpf.Sample` application to explore all the controls and components.*** :-)
 
 ### Atc.Wpf
 
