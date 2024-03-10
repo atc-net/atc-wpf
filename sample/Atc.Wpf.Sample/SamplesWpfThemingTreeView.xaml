@@ -9,7 +9,7 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
-    <TreeViewItem Header="Resources" IsExpanded="True">
+    <TreeViewItem Header="Resources">
         <atc:SampleTreeViewItem
             Header="Colors"
             IsExpanded="True"
@@ -20,7 +20,7 @@
             SamplePath="Resources.BrushesView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Input - Button" IsExpanded="True">
+    <TreeViewItem Header="Input - Button">
         <atc:SampleTreeViewItem
             Header="Button"
             IsExpanded="True"
@@ -42,7 +42,7 @@
             IsEnabled="False"
             IsExpanded="True" />
     </TreeViewItem>
-    <TreeViewItem Header="Input - Box" IsExpanded="True">
+    <TreeViewItem Header="Input - Box">
         <atc:SampleTreeViewItem
             Header="CheckBox"
             IsExpanded="True"
@@ -60,7 +60,7 @@
             IsEnabled="False"
             IsExpanded="True" />
     </TreeViewItem>
-    <TreeViewItem Header="Input - Selector" IsExpanded="True">
+    <TreeViewItem Header="Input - Selector">
         <atc:SampleTreeViewItem
             Header="Calendar"
             IsExpanded="True"
@@ -70,7 +70,7 @@
             IsExpanded="True"
             SamplePath="InputSelector.WellKnownColorSelectorView" />
     </TreeViewItem>
-    <TreeViewItem Header="Layout" IsExpanded="True">
+    <TreeViewItem Header="Layout">
         <atc:SampleTreeViewItem
             Header="GroupBox"
             IsExpanded="True"
@@ -80,7 +80,7 @@
             IsExpanded="True"
             SamplePath="Layout.GridSplitterView" />
     </TreeViewItem>
-    <TreeViewItem Header="Misc" IsExpanded="True">
+    <TreeViewItem Header="Misc">
         <atc:SampleTreeViewItem
             Header="Expander"
             IsEnabled="True"

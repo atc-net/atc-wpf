@@ -30,7 +30,10 @@
                 DockPanel.Dock="Top"
                 Focusable="True"
                 TextChanged="SampleFilterOnTextChanged" />
-            <TabControl DockPanel.Dock="Bottom" TabStripPlacement="Left">
+            <TabControl
+                Margin="0,0,5,10"
+                DockPanel.Dock="Bottom"
+                TabStripPlacement="Left">
                 <TabItem Header="Wpf">
                     <sample:SamplesWpfTreeView
                         x:Name="StvSampleWpf"

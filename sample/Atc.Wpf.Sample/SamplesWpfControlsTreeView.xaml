@@ -9,13 +9,13 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
-    <TreeViewItem Header="DialogBoxes" IsExpanded="True">
+    <TreeViewItem Header="DialogBoxes">
         <atc:SampleTreeViewItem
             Header="Standard"
             IsExpanded="True"
             SamplePath="DialogBoxes.StandardDialogBoxView" />
     </TreeViewItem>
-    <TreeViewItem Header="Base Controls" IsExpanded="True">
+    <TreeViewItem Header="Base Controls">
         <atc:SampleTreeViewItem
             Header="DecimalBox"
             IsExpanded="True"
@@ -63,7 +63,7 @@
 
     </TreeViewItem>
 
-    <TreeViewItem Header="Color Controls" IsExpanded="True">
+    <TreeViewItem Header="Color Controls">
         <atc:SampleTreeViewItem
             Header="AdvancedColorPickerView"
             IsExpanded="True"
@@ -82,8 +82,8 @@
             SamplePath="ColorControls.WellKnownColorPickerView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Label Controls" IsExpanded="True">
-        <TreeViewItem Header="Selectors" IsExpanded="True">
+    <TreeViewItem Header="Label Controls">
+        <TreeViewItem Header="Selectors">
             <atc:SampleTreeViewItem
                 Header="LabelCountrySelector"
                 IsExpanded="True"
@@ -113,7 +113,7 @@
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelWellKnownColorSelectorView" />
         </TreeViewItem>
-        <TreeViewItem Header="Pickers" IsExpanded="True">
+        <TreeViewItem Header="Pickers">
             <atc:SampleTreeViewItem
                 Header="LabelDateTimePicker"
                 IsExpanded="True"
@@ -205,21 +205,21 @@
             SamplePath="LabelControls.LabelInputFormPanelView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Layouts" IsExpanded="True">
+    <TreeViewItem Header="Layouts">
         <atc:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Notifications" IsExpanded="True">
+    <TreeViewItem Header="Notifications">
         <atc:SampleTreeViewItem
             Header="ToastNotification"
             IsExpanded="True"
             SamplePath="Notifications.ToastNotificationView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Progressing" IsExpanded="True">
+    <TreeViewItem Header="Progressing">
         <atc:SampleTreeViewItem
             Header="LoadingIndicator"
             IsExpanded="True"
@@ -230,7 +230,7 @@
             SamplePath="Progressing.BusyOverlayView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Viewers" IsExpanded="True">
+    <TreeViewItem Header="Viewers">
         <atc:SampleTreeViewItem
             Header="JsonViewer"
             IsExpanded="True"
