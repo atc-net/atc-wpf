@@ -15,4 +15,4 @@ Therefore `Atc.Wpf` provide a good starting point for using MVVM.
 | RelayCommandAsync        | Command with `CanExecute` as async                                               |
 | RelayCommandAsync{T}     | Command with `CanExecute` as async                                               |
 
-See more about [RelayCommand's](src/Atc.Wpf/Command/@Readme.md) and how to use them.
+See more about [RelayCommand's](../Command/@Readme.md) and how to use them.
