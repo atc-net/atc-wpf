@@ -52,7 +52,7 @@ The `GridEx` control is a extensions of the `Grid` control.
 
 ## Properties
 
-| Property | Description                                                          |
-|----------|----------------------------------------------------------------------|
-| Rows     | Comma seperated **Height** and allow `Auto`, `pixel`, `*`, `number*` |
-| Columns  | Comma seperated **Width** and allow `Auto`, `pixel`, `*`, `number*`  |
+| Property | Type        | Description                                                          |
+|----------|-------------|----------------------------------------------------------------------|
+| Rows     | string      | Comma seperated **Height** and allow `Auto`, `pixel`, `*`, `number*` |
+| Columns  | string      | Comma seperated **Width** and allow `Auto`, `pixel`, `*`, `number*`  |

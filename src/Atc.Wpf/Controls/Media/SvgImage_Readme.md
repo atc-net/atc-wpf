@@ -19,19 +19,19 @@ The `SvgImage` control is a control that can render a SVG drawing as image.
 
 ## Properties
 
-| Property            | Description                                                                       |
-|---------------------|-----------------------------------------------------------------------------------|
-| Background          | Background brush                                                                  |
-| ControlSizeType     | How to stretched/resize/scale the drawing                                         |
-| Source              | The relative URL - For assembly component, rember to set "Build action"=Resource) |
-| FileSource          | [TODO] |
-| ImageSource         | [TODO] |
-| UseAnimations       | [TODO] |
-| OverrideColor       | [TODO] |
-| OverrideStrokeColor | [TODO] |
-| OverrideStrokeWidth | [TODO] |
-| CustomBrushes       | [TODO] |
-| ExternalFileLoader  | [TODO] |
+| Property            | Type        | Description                                                                       |
+|---------------------|-------------------------------------------------------------------------------------------------|
+| Background          | Brush       | Background brush                                                                  |
+| ControlSizeType     | ControlSizeType | How to stretched/resize/scale the drawing                                     |
+| Source              | string      | The relative URL - For assembly component, rember to set "Build action=Resource"  |
+| FileSource          | [TODO]      | [TODO] |
+| ImageSource         | [TODO]      | [TODO] |
+| UseAnimations       | [TODO]      | [TODO] |
+| OverrideColor       | [TODO]      | [TODO] |
+| OverrideStrokeColor | [TODO]      | [TODO] |
+| OverrideStrokeWidth | [TODO]      | [TODO] |
+| CustomBrushes       | [TODO]      | [TODO] |
+| ExternalFileLoader  | [TODO]      | [TODO] |
 
 ## Methods
 

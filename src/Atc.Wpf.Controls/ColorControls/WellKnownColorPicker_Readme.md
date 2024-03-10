@@ -10,9 +10,9 @@ The `WellKnownColorPicker` control can render a list of color defined as `well k
 
 ## Properties
 
-| Property            | Description                      |
-|---------------------|----------------------------------|
-| ShowOnlyBasicColors | If `true`, limit to basic color  |
+| Property            | Type        | Description                      |
+|---------------------|-------------|----------------------------------|
+| ShowOnlyBasicColors | bool        | If `true`, limit to basic color  |
 
 ## Basic Color Codes
 
