@@ -108,7 +108,11 @@ MarkupStyleView_Readme
 #### Controls
 
 - [GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)
+- [StaggeredPanel](src/Atc.Wpf/Controls/Layouts/StaggeredPanel_Readme.md)
+- [UniformSpacingPanel](src/Atc.Wpf/Controls/Layouts/UniformSpacingPanel_Readme.md)
 - [SvgImage](src/Atc.Wpf/Controls/Media/SvgImage_Readme.md)
+- Control Helpers
+  - [PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)
 - [SampleViewer](src/Atc.Wpf/SampleControls/SampleViewerView_Readme.md)
 
 #### Misc
