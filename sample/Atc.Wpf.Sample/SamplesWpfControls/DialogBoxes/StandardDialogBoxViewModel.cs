@@ -47,6 +47,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
     public IRelayCommand ShowInputFormAccountWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithoutDataDialogBoxCommandHandler);
 
     public IRelayCommand ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnByLabelControlsDataDialogBoxCommandHandler);
+    public IRelayCommand ShowBasicApplicationSettingsDialogBoxCommand => new RelayCommand(ShowBasicApplicationSettingsDialogBoxCommandHandler);
 
     public bool ShowResultAsKeyValues
     {
@@ -611,6 +612,32 @@ public class StandardDialogBoxViewModel : ViewModelBase
         else
         {
             JsonResult = CreateJson(dialogBox.Settings.NegativeButtonText);
+        }
+    }
+
+    private void ShowBasicApplicationSettingsDialogBoxCommandHandler()
+    {
+        var dialogBox = new BasicApplicationSettingsDialogBox
+        {
+            DataContext = new BasicApplicationSettingsDialogBoxViewModel(
+                new DirectoryInfo(@"C:\Temp"),
+                new BasicApplicationSettingsViewModel(
+                    new BasicApplicationOptions
+                    {
+                        Theme = ThemeManager.Current.DetectTheme(Application.Current)!.Name,
+                        Language = CultureManager.UiCulture.Name,
+                        OpenRecentFileOnStartup = true,
+                    })),
+        };
+
+        var dialogResult = dialogBox.ShowDialog();
+        if (dialogResult.HasValue && dialogResult.Value)
+        {
+            JsonResult = dialogBox.GetDataAsJson();
+        }
+        else
+        {
+            JsonResult = "{}";
         }
     }
 
