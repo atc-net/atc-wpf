@@ -32,12 +32,13 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 ## NuGet Packages Provided in this Repository
 
-| Nuget package     | Description                                         | Dependencies              |
-|-------------------|-----------------------------------------------------|---------------------------|
-| Atc.Wpf           | Base Controls, ValueConverters, Extensions etc.     | Atc                       |
-| Atc.FontIcons     | Render Svg and Img resources based on fonts         | Atc.Wpf                   |
-| Atc.Theming       | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                   |
-| Atc.Controls      | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming |
+| Nuget package       | Description                                         | Dependencies              |
+|---------------------|-----------------------------------------------------|---------------------------|
+| Atc.Wpf             | Base Controls, ValueConverters, Extensions etc.     | Atc                       |
+| Atc.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                   |
+| Atc.Theming         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                   |
+| Atc.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming |
+| Atc.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming |
 
 ## Demonstration Application
 
@@ -119,7 +120,6 @@ Therefore run the `Atc.Wpf.Sample` application to explore all the controls and c
 - [SvgImage](src/Atc.Wpf/Controls/Media/SvgImage_Readme.md)
 - Control Helpers
   - [PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)
-- [SampleViewer](src/Atc.Wpf/SampleControls/SampleViewerView_Readme.md)
 
 #### Misc
 

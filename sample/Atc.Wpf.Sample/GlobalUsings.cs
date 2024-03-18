@@ -27,6 +27,10 @@ global using Atc.Wpf.Controls.LabelControls.Extractors;
 global using Atc.Wpf.Controls.LabelControls.Writers;
 global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Controls.Notifications;
+global using Atc.Wpf.Controls.Options;
+global using Atc.Wpf.Controls.Sample;
+global using Atc.Wpf.Controls.SettingsControls;
+global using Atc.Wpf.Data;
 global using Atc.Wpf.Diagnostics;
 global using Atc.Wpf.FontIcons;
 global using Atc.Wpf.FontIcons.ValueConverters;
@@ -34,12 +38,12 @@ global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Messaging;
 global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Sample.Models;
-global using Atc.Wpf.SampleControls;
 global using Atc.Wpf.Serialization.JsonConverters;
+global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
 
 global using ControlzEx.Theming;
-
+global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;

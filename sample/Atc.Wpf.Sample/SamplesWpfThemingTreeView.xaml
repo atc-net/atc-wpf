@@ -2,30 +2,30 @@
     x:Class="Atc.Wpf.Sample.SamplesWpfThemingTreeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="450"
     d:DesignWidth="230"
     mc:Ignorable="d">
 
     <TreeViewItem Header="Resources">
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Colors"
             IsExpanded="True"
             SamplePath="Resources.ColorsView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Brushes"
             IsExpanded="True"
             SamplePath="Resources.BrushesView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Input - Button">
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Button"
             IsExpanded="True"
             SamplePath="InputButton.ButtonView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ImageButton"
             IsExpanded="True"
             SamplePath="InputButton.ImageButtonView" />
@@ -33,7 +33,7 @@
             Header="ToggleButton"
             IsEnabled="False"
             IsExpanded="True" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="RadioButton"
             IsExpanded="True"
             SamplePath="InputButton.RadioButtonView" />
@@ -43,15 +43,15 @@
             IsExpanded="True" />
     </TreeViewItem>
     <TreeViewItem Header="Input - Box">
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="CheckBox"
             IsExpanded="True"
             SamplePath="InputBox.CheckBoxView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ComboBox"
             IsExpanded="True"
             SamplePath="InputBox.ComboBoxView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="TextBox"
             IsExpanded="True"
             SamplePath="InputBox.TextBoxView" />
@@ -61,51 +61,51 @@
             IsExpanded="True" />
     </TreeViewItem>
     <TreeViewItem Header="Input - Selector">
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Calendar"
             IsExpanded="True"
             SamplePath="InputSelector.CalendarView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="WellKnownColorSelector"
             IsExpanded="True"
             SamplePath="InputSelector.WellKnownColorSelectorView" />
     </TreeViewItem>
     <TreeViewItem Header="Layout">
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="GroupBox"
             IsExpanded="True"
             SamplePath="Layout.GroupBoxView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="GridSplitter"
             IsExpanded="True"
             SamplePath="Layout.GridSplitterView" />
     </TreeViewItem>
     <TreeViewItem Header="Misc">
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Expander"
             IsEnabled="True"
             SamplePath="Misc.ExpanderView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Label"
             IsExpanded="True"
             SamplePath="Misc.LabelView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ListBox"
             IsExpanded="True"
             SamplePath="Misc.ListBoxView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ListView"
             IsExpanded="True"
             SamplePath="Misc.ListViewView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Menu"
             IsExpanded="True"
             SamplePath="Misc.MenuView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ScrollBar"
             IsExpanded="True"
             SamplePath="Misc.ScrollBarView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ScrollViewer"
             IsExpanded="True"
             SamplePath="Misc.ScrollViewerView" />
@@ -113,23 +113,23 @@
             Header="Slider"
             IsEnabled="False"
             IsExpanded="True" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="TabControl"
             IsExpanded="True"
             SamplePath="Misc.TabControlView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="TextBlock"
             IsExpanded="True"
             SamplePath="Misc.TextBlockView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="ToolBar"
             IsExpanded="True"
             SamplePath="Misc.ToolBarView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="TreeView"
             IsExpanded="True"
             SamplePath="Misc.TreeViewView" />
-        <atc:SampleTreeViewItem
+        <sample:SampleTreeViewItem
             Header="Mix"
             IsExpanded="True"
             SamplePath="Misc.MixView" />

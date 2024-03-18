@@ -2,71 +2,67 @@
     x:Class="Atc.Wpf.Sample.SamplesWpfTreeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="450"
     d:DesignWidth="230"
     mc:Ignorable="d">
 
     <TreeViewItem Header="Commands">
-        <atc:SampleTreeViewItem Header="RelayCommand" SamplePath="Commands.RelayCommandView" />
-        <atc:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />
+        <sample:SampleTreeViewItem Header="RelayCommand" SamplePath="Commands.RelayCommandView" />
+        <sample:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Controls - Inputs">
-        <atc:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="Controls.Inputs.RichTextBoxExView" />
+        <sample:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="Controls.Inputs.RichTextBoxExView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Controls - Layouts">
-        <atc:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.Layouts.AutoGridView" />
-        <atc:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />
-        <atc:SampleTreeViewItem Header="GridLines" SamplePath="Controls.Layouts.GridLinesView" />
-        <atc:SampleTreeViewItem Header="PanelHelper" SamplePath="Controls.Layouts.PanelHelperView" />
-        <atc:SampleTreeViewItem Header="ReversibleStackPanel" SamplePath="Controls.Layouts.ReversibleStackPanelView" />
-        <atc:SampleTreeViewItem Header="StaggeredPanel" SamplePath="Controls.Layouts.StaggeredPanelView" />
-        <atc:SampleTreeViewItem Header="UniformSpacingPanel" SamplePath="Controls.Layouts.UniformSpacingPanelView" />
+        <sample:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.Layouts.AutoGridView" />
+        <sample:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />
+        <sample:SampleTreeViewItem Header="GridLines" SamplePath="Controls.Layouts.GridLinesView" />
+        <sample:SampleTreeViewItem Header="PanelHelper" SamplePath="Controls.Layouts.PanelHelperView" />
+        <sample:SampleTreeViewItem Header="ReversibleStackPanel" SamplePath="Controls.Layouts.ReversibleStackPanelView" />
+        <sample:SampleTreeViewItem Header="StaggeredPanel" SamplePath="Controls.Layouts.StaggeredPanelView" />
+        <sample:SampleTreeViewItem Header="UniformSpacingPanel" SamplePath="Controls.Layouts.UniformSpacingPanelView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Controls - Media">
-        <atc:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.Media.AutoGreyableImageView" />
-        <atc:SampleTreeViewItem Header="SvgImage" SamplePath="Controls.Media.SvgImageView" />
-        <atc:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.Media.SvgImageListView" />
+        <sample:SampleTreeViewItem Header="AutoGreyableImage" SamplePath="Controls.Media.AutoGreyableImageView" />
+        <sample:SampleTreeViewItem Header="SvgImage" SamplePath="Controls.Media.SvgImageView" />
+        <sample:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.Media.SvgImageListView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Extensions">
         <TreeViewItem Header="BitmapSource">
-            <atc:SampleTreeViewItem Header="Invert Colors" SamplePath="Extensions.BitmapSourceInvertColorsView" />
-            <atc:SampleTreeViewItem Header="To Resized BitmapImage" SamplePath="Extensions.BitmapSourceToResizedBitmapImageView" />
+            <sample:SampleTreeViewItem Header="Invert Colors" SamplePath="Extensions.BitmapSourceInvertColorsView" />
+            <sample:SampleTreeViewItem Header="To Resized BitmapImage" SamplePath="Extensions.BitmapSourceToResizedBitmapImageView" />
         </TreeViewItem>
     </TreeViewItem>
 
     <TreeViewItem Header="Markup">
-        <atc:SampleTreeViewItem Header="Markup-Style" SamplePath="Markup.MarkupStyleView" />
-        <atc:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
+        <sample:SampleTreeViewItem Header="Markup-Style" SamplePath="Markup.MarkupStyleView" />
+        <sample:SampleTreeViewItem Header="Enum-Binding" SamplePath="Markup.EnumBindingView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Media">
         <TreeViewItem Header="ShaderEffects">
-            <atc:SampleTreeViewItem Header="Contrast Adjust" SamplePath="Media.ShaderEffects.ContrastAdjustShaderEffectView" />
-            <atc:SampleTreeViewItem Header="Desaturate" SamplePath="Media.ShaderEffects.DesaturateShaderEffectView" />
-            <atc:SampleTreeViewItem Header="Fade" SamplePath="Media.ShaderEffects.FadeShaderEffectView" />
-            <atc:SampleTreeViewItem Header="Invert Colors" SamplePath="Media.ShaderEffects.InvertColorsShaderEffectView" />
-            <atc:SampleTreeViewItem Header="Monochrome" SamplePath="Media.ShaderEffects.MonochromeShaderEffectView" />
-            <atc:SampleTreeViewItem Header="Saturate" SamplePath="Media.ShaderEffects.SaturateShaderEffectView" />
+            <sample:SampleTreeViewItem Header="Contrast Adjust" SamplePath="Media.ShaderEffects.ContrastAdjustShaderEffectView" />
+            <sample:SampleTreeViewItem Header="Desaturate" SamplePath="Media.ShaderEffects.DesaturateShaderEffectView" />
+            <sample:SampleTreeViewItem Header="Fade" SamplePath="Media.ShaderEffects.FadeShaderEffectView" />
+            <sample:SampleTreeViewItem Header="Invert Colors" SamplePath="Media.ShaderEffects.InvertColorsShaderEffectView" />
+            <sample:SampleTreeViewItem Header="Monochrome" SamplePath="Media.ShaderEffects.MonochromeShaderEffectView" />
+            <sample:SampleTreeViewItem Header="Saturate" SamplePath="Media.ShaderEffects.SaturateShaderEffectView" />
         </TreeViewItem>
     </TreeViewItem>
 
-    <TreeViewItem Header="SampleControls">
-        <atc:SampleTreeViewItem Header="SampleViewer" SamplePath="SampleControls.SampleViewerView" />
-    </TreeViewItem>
-
     <TreeViewItem Header="Threading">
-        <atc:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
+        <sample:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Translation">
-        <atc:SampleTreeViewItem Header="ResxExtension" SamplePath="Translation.ResxExtensionView" />
+        <sample:SampleTreeViewItem Header="ResxExtension" SamplePath="Translation.ResxExtensionView" />
     </TreeViewItem>
 
 </TreeView>

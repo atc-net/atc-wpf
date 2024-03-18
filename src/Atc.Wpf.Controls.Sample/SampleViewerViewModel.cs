@@ -1,5 +1,5 @@
 // ReSharper disable LoopCanBeConvertedToQuery
-namespace Atc.Wpf.SampleControls;
+namespace Atc.Wpf.Controls.Sample;
 
 public class SampleViewerViewModel : ViewModelBase
 {

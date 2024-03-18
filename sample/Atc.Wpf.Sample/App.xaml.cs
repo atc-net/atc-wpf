@@ -7,6 +7,7 @@ namespace Atc.Wpf.Sample;
 public partial class App
 {
     private readonly IHost host;
+    private IConfiguration? configuration;
 
     public App()
     {
@@ -17,8 +18,22 @@ public partial class App
                     .AddDebug()
                     .SetMinimumLevel(LogLevel.Trace);
             })
+            .ConfigureAppConfiguration((_, configurationBuilder) =>
+            {
+                configuration = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(AtcFileNameConstants.AppSettings, optional: false, reloadOnChange: true)
+                    .AddJsonFile(AtcFileNameConstants.AppSettingsCustom, optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables()
+                    .Build();
+            })
             .ConfigureServices((_, services) =>
             {
+                services
+                    .AddOptions<BasicApplicationOptions>()
+                    .Bind(configuration!.GetRequiredSection(BasicApplicationOptions.SectionName))
+                    .ValidateDataAnnotations()
+                    .ValidateOnStart();
+
                 services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
                 services.AddSingleton<MainWindow>();
             })
@@ -103,16 +118,17 @@ public partial class App
             .StartAsync()
             .ConfigureAwait(false);
 
-        CultureManager.SetCultures(
-            GlobalizationConstants.EnglishCultureInfo,
-            GlobalizationConstants.EnglishCultureInfo);
+        var applicationOptions = new BasicApplicationOptions();
+        configuration!
+            .GetRequiredSection(BasicApplicationOptions.SectionName)
+            .Bind(applicationOptions);
+
+        CultureManager.SetCultures(applicationOptions.Language);
+
+        ThemeManagerHelper.SetThemeAndAccent(Current, applicationOptions.Theme);
 
         ColorHelper.InitializeWithSupportedLanguages();
         SolidColorBrushHelper.InitializeWithSupportedLanguages();
-
-        ThemeManager.Current.ChangeTheme(
-            Current,
-            "Light.Blue");
 
         var mainWindow = host
             .Services

@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogBoxes="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.DialogBoxes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="800"
+    d:DesignWidth="1000"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
@@ -123,6 +123,7 @@
                                 Content="Input Form - Account model without data" />
                         </atc:GridEx>
                         <Button Command="{Binding Path=ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand}" Content="Input Form 1 columns by LabelControlsData" />
+                        <Button Command="{Binding Path=ShowBasicApplicationSettingsDialogBoxCommand}" Content="ApplicationSettings" />
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"

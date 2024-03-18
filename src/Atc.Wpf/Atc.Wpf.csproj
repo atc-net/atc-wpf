@@ -1008,7 +1008,6 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.433" />
-    <PackageReference Include="MdXaml" Version="1.27.0" />
   </ItemGroup>
 
   <ItemGroup>

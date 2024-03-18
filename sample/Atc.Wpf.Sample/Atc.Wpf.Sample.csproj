@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.custom.json" />
+    <None Remove="appsettings.json" />
     <None Remove="Assets\a.svg" />
     <None Remove="Assets\atc.png" />
     <None Remove="Assets\eggeaster.svg" />
@@ -17,6 +23,18 @@
     <None Remove="Assets\road.jpg" />
     <None Remove="Assets\shout.svg" />
     <None Remove="Assets\warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.custom.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AssemblyInfo.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,11 +53,13 @@
     <PackageReference Include="Atc" Version="2.0.433" />
     <PackageReference Include="ControlzEx" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />

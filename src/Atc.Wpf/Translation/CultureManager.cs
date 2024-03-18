@@ -114,6 +114,34 @@ public static class CultureManager
     }
 
     /// <summary>
+    /// Set the cultures to the given cultures.
+    /// </summary>
+    /// <param name="cultureName">The cultureName to set.</param>
+    /// <param name="synchronizeThreadCultures">The synchronizeThreadCultures to set.</param>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK")]
+    public static void SetCultures(
+        string cultureName,
+        bool synchronizeThreadCultures = false)
+    {
+        ArgumentNullException.ThrowIfNull(cultureName);
+
+        SynchronizeThreadCulture = synchronizeThreadCultures;
+
+        try
+        {
+            SetCultures(
+                GlobalizationConstants.EnglishCultureInfo,
+                cultureName is null ? GlobalizationConstants.EnglishCultureInfo : new CultureInfo(cultureName));
+        }
+        catch
+        {
+            SetCultures(
+                GlobalizationConstants.EnglishCultureInfo,
+                GlobalizationConstants.EnglishCultureInfo);
+        }
+    }
+
+    /// <summary>
     /// Set the UI culture to the given culture.
     /// </summary>
     /// <param name="uiCultureInfo">The UI culture to set.</param>

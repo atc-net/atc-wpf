@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SampleControls;
+namespace Atc.Wpf.Controls.Sample;
 
 /// <summary>
 /// Interaction logic for SampleViewerView.
