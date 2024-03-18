@@ -83,6 +83,17 @@ public static class ThemeManagerHelper
         return brush;
     }
 
+    public static void SetThemeAndAccent(
+        Application current,
+        string themeAndAccent)
+    {
+        var theme = string.IsNullOrEmpty(themeAndAccent)
+            ? "Light.Blue"
+            : themeAndAccent;
+
+        ThemeManager.Current.ChangeTheme(current, theme);
+    }
+
     private static void OnThemeChanged(
         object? sender,
         ThemeChangedEventArgs e)

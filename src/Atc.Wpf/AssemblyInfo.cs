@@ -6,7 +6,6 @@
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Selectors")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Helpers")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.MarkupExtensions")]
-[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.SampleControls")]
 
 [assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters", "atcValueConverters")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters", "Atc.Wpf.ValueConverters")]

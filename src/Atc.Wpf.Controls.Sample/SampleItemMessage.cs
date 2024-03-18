@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SampleControls;
+namespace Atc.Wpf.Controls.Sample;
 
 public class SampleItemMessage : MessageBase
 {

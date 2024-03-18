@@ -1,3 +1,0 @@
-# SampleViewerView
-
-TODO: Comming soon...

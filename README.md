@@ -119,7 +119,6 @@ Therefore run the `Atc.Wpf.Sample` application to explore all the controls and c
 - [SvgImage](src/Atc.Wpf/Controls/Media/SvgImage_Readme.md)
 - Control Helpers
   - [PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)
-- [SampleViewer](src/Atc.Wpf/SampleControls/SampleViewerView_Readme.md)
 
 #### Misc
 

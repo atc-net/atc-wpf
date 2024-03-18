@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample"
+    xmlns:sampleControls="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     Title="..:: Atc.Wpf.Sample ::.."
     Width="1600"
     Height="1000"
@@ -84,7 +85,7 @@
                     Width="500"
                     LabelWidthNumber="50"
                     LabelWidthSizeDefinition="Pixel" />
-                <atc:SampleViewerView
+                <sampleControls:SampleViewerView
                     x:Name="SampleViewer"
                     Grid.Row="1"
                     Grid.ColumnSpan="5"

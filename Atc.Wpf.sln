@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{133AFD8A-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atc.Wpf.Theming.Tests", "test\Atc.Wpf.Theming.Tests\Atc.Wpf.Theming.Tests.csproj", "{4E2CF798-516C-4A4B-8240-04476E6A9F65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.Wpf.Controls.Sample", "src\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj", "{F4BE59B5-26CB-46DB-B290-2049EF656693}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{4E2CF798-516C-4A4B-8240-04476E6A9F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E2CF798-516C-4A4B-8240-04476E6A9F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E2CF798-516C-4A4B-8240-04476E6A9F65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4BE59B5-26CB-46DB-B290-2049EF656693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4BE59B5-26CB-46DB-B290-2049EF656693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4BE59B5-26CB-46DB-B290-2049EF656693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4BE59B5-26CB-46DB-B290-2049EF656693}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,9 +96,10 @@ Global
 		{A44E762D-9D36-462E-91DC-FDA18058556F} = {4E909F95-FAC5-4A3F-AEC6-DEAB535BEC64}
 		{BB036D9C-2C70-40FD-B997-338A46EE91AC} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
 		{4E2CF798-516C-4A4B-8240-04476E6A9F65} = {2C893B25-2401-44B7-9FDA-7DC496C00D2B}
+		{F4BE59B5-26CB-46DB-B290-2049EF656693} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
 		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationTail"]}
+		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
 	EndGlobalSection
 EndGlobal

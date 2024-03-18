@@ -2,7 +2,7 @@
     x:Class="Atc.Wpf.Sample.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcSample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample"
     Exit="ApplicationExit"
     Startup="ApplicationStartup">
@@ -20,7 +20,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground4}" />
             </Style>
 
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type atc:SampleTreeViewItem}">
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type atcSample:SampleTreeViewItem}">
                 <Setter Property="IsExpanded" Value="True" />
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
