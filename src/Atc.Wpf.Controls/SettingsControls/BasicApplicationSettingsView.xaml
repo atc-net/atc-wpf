@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Controls.LabelControls"
@@ -29,7 +30,8 @@
         <labelControls:LabelCheckBox
             HideAreas="InformationAndValidation"
             IsChecked="{Binding Path=OpenRecentFileOnStartup}"
-            LabelText="?Open recent file on startup"
+            LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                            Key=OpenRecentFileOnStartup}"
             LabelWidthNumber="210"
             Visibility="{Binding Path=ShowOpenRecentFileOnStartup, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}" />
 

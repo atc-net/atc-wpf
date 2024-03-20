@@ -178,6 +178,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open recent file on startup.
+        /// </summary>
+        public static string OpenRecentFileOnStartup {
+            get {
+                return ResourceManager.GetString("OpenRecentFileOnStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please wait.
         /// </summary>
         public static string PleaseWait {

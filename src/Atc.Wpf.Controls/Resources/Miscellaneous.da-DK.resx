@@ -171,4 +171,7 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Farvevælger</value>
   </data>
+  <data name="OpenRecentFileOnStartup" xml:space="preserve">
+    <value>Åbn den seneste fil ved opstart</value>
+  </data>
 </root>
