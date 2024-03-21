@@ -64,9 +64,10 @@
 |                           | BackgroundToForegroundValueConverter                     |                                         |                                         |
 | Brush -> Color            | BrushToColorValueConverter                               | Brushs.Green -> Colors.Green            | Colors.Green -> Brushs.Green            |
 | Color -> Brush            | ColorToBrushValueConverter                               | Colors.Green -> Brushs.Green            | Brushs.Green -> Colors.Green            |
-| Color -> SolidColor       | ColorToSolidColorValueConverter                          | Colors.Green -> Colors.Green            | Not supported            |
+| Color -> SolidColor       | ColorToSolidColorValueConverter                          | Colors.Green -> Colors.Green            | Not supported                           |
 | Color -> String           | ColorHexToColorValueConverter                            | "#FF00FF00" -> "Green"                  | "Green" -> "#FF00FF00"                  |
-| Hex-Color -> Color-Key    | HexColorToColorKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Brushs.Green                 |
+| Hex-Brush -> Brush-Key    | HexBrushToBrushKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Brushs.Green                 |
+| Hex-Color -> Color-Key    | HexColorToColorKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Color.Green                  |
 | Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
 | Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed and 1 -> Visible         | Not supported                           |
 | Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | Not supported                           |

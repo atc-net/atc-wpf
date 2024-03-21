@@ -4,10 +4,10 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Hex-Color To Color/Brush-Key.
 /// </summary>
 /// <remarks>
-/// Convert back is from: name/key to Color.
+/// Convert back is from: name/key to SolidColorBrush.
 /// </remarks>
 [ValueConversion(typeof(string), typeof(string))]
-public class HexColorToColorKeyValueConverter : IValueConverter
+public class HexBrushToBrushKeyValueConverter : IValueConverter
 {
     public object? Convert(
         object? value,
@@ -23,7 +23,7 @@ public class HexColorToColorKeyValueConverter : IValueConverter
 
         var str = value.ToString()!;
 
-        return ColorHelper.GetColorKeyFromHex(str);
+        return SolidColorBrushHelper.GetBrushKeyFromHex(str);
     }
 
     public object? ConvertBack(
@@ -39,6 +39,6 @@ public class HexColorToColorKeyValueConverter : IValueConverter
 
         var str = value.ToString()!;
 
-        return ColorHelper.GetColorFromString(str, GlobalizationConstants.EnglishCultureInfo);
+        return SolidColorBrushHelper.GetBrushFromString(str, GlobalizationConstants.EnglishCultureInfo);
     }
 }
