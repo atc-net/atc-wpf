@@ -174,4 +174,7 @@
   <data name="OpenRecentFileOnStartup" xml:space="preserve">
     <value>Åbn den seneste fil ved opstart</value>
   </data>
+  <data name="ApplicationSettings" xml:space="preserve">
+    <value>Applikationsindstillinger</value>
+  </data>
 </root>
