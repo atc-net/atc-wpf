@@ -174,6 +174,17 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                     }
 
                     break;
+                case LabelContent labelContent:
+                    if (labelContent.Content is FrameworkElement { DataContext: ViewModelBase } labelContentFrameworkElement)
+                    {
+                        var tag = labelContent.Tag?.ToString();
+                        if (!string.IsNullOrEmpty(tag))
+                        {
+                            result.Add(tag, labelContentFrameworkElement.DataContext);
+                        }
+                    }
+
+                    break;
             }
         }
 
