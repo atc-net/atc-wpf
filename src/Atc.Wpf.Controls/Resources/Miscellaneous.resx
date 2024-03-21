@@ -156,6 +156,9 @@
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="OpenRecentFileOnStartup" xml:space="preserve">
+    <value>Open recent file on startup</value>
+  </data>
   <data name="PleaseWait" xml:space="preserve">
     <value>Please wait</value>
   </data>
