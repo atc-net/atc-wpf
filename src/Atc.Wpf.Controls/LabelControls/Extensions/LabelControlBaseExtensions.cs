@@ -15,6 +15,20 @@ public static class LabelControlBaseExtensions
         ArgumentNullException.ThrowIfNull(labelControls);
         ArgumentException.ThrowIfNullOrEmpty(identifier);
 
-        return labelControls.Find(x => x.Identifier == identifier) as T;
+        if (labelControls.Find(x => x.Identifier == identifier || x.GetFullIdentifier() == identifier) is T labelControl)
+        {
+            return labelControl;
+        }
+
+        foreach (var lc in labelControls)
+        {
+            if (lc is FrameworkElement { Tag: not null } frameworkElement &&
+                frameworkElement.Tag.ToString() == identifier)
+            {
+                return lc as T;
+            }
+        }
+
+        return null;
     }
 }

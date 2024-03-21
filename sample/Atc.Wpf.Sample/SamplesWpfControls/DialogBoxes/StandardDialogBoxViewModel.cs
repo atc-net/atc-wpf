@@ -642,8 +642,8 @@ public class StandardDialogBoxViewModel : ViewModelBase
     }
 
     private static List<ILabelControlBase> CreateLabelControlsColumn1()
-        => new()
-        {
+        =>
+        [
             new LabelTextBox
             {
                 LabelText = "FirstName",
@@ -656,11 +656,11 @@ public class StandardDialogBoxViewModel : ViewModelBase
                 IsMandatory = true,
                 MinLength = 2,
             },
-        };
+        ];
 
     private static List<ILabelControlBase> CreateLabelControlsColumn2()
-        => new()
-        {
+        =>
+        [
             new LabelIntegerBox
             {
                 LabelText = "Age",
@@ -670,11 +670,11 @@ public class StandardDialogBoxViewModel : ViewModelBase
             {
                 LabelText = "Note",
             },
-        };
+        ];
 
     private static List<ILabelControlBase> CreateLabelControlsColumn3()
-        => new()
-        {
+        =>
+        [
             new LabelCheckBox
             {
                 LabelText = "Use Foo",
@@ -691,7 +691,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
                     { "Item5", "Item 5" },
                 },
             },
-        };
+        ];
 
     private string CreateJson(
         string value)
