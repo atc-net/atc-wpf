@@ -29,6 +29,28 @@ public partial class QuestionDialogBox
 
     public QuestionDialogBox(
         Window owningWindow,
+        string titleBarText,
+        string headerText,
+        string contentText)
+        : this(
+            owningWindow,
+            titleBarText,
+            contentText)
+    {
+        HeaderControl = new ContentControl
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Content = new TextBlock
+            {
+                Text = headerText,
+                FontSize = 24,
+            },
+        };
+    }
+
+    public QuestionDialogBox(
+        Window owningWindow,
         DialogBoxSettings settings,
         string contentText)
     {

@@ -32,6 +32,30 @@ public partial class InputFormDialogBox
 
     public InputFormDialogBox(
         Window owningWindow,
+        string titleBarText,
+        string headerText,
+        ILabelControlsForm labelControlsForm)
+        : this(
+            owningWindow,
+            titleBarText,
+            labelControlsForm)
+    {
+        HeaderControl = new ContentControl
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Content = new TextBlock
+            {
+                Text = headerText,
+                FontSize = 24,
+            },
+        };
+
+        UpdateWidthAndHeight();
+    }
+
+    public InputFormDialogBox(
+        Window owningWindow,
         LabelInputFormPanelSettings formPanelSettings,
         ILabelControlsForm labelControlsForm)
     {
