@@ -21,6 +21,8 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
         ApplicationSettings = basicApplicationSettingsViewModel.Clone();
         applicationSettingsBackup = basicApplicationSettingsViewModel.Clone();
 
+        TitleBarText = Miscellaneous.ApplicationSettings;
+
         ThemeManager.Current.ThemeChanged += OnThemeChanged;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
@@ -34,7 +36,26 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
         dataDirectory = applicationDataDirectory;
     }
 
+    public string TitleBarText { get; set; }
+
+    public ContentControl? HeaderControl { get; set; }
+
     public BasicApplicationSettingsViewModel ApplicationSettings { get; set; }
+
+    public void SetHeaderControlInsteadOfTitleBarText()
+    {
+        TitleBarText = string.Empty;
+        HeaderControl = new ContentControl
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Content = new TextBlock
+            {
+                Text = Miscellaneous.ApplicationSettings,
+                FontSize = 24,
+            },
+        };
+    }
 
     public string ToJson()
     {

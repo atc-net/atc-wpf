@@ -28,15 +28,18 @@
     <DockPanel>
 
         <Border
+            x:Name="ContentTop"
+            Height="50"
             Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
             DockPanel.Dock="Top"
             Visibility="{Binding Path=HeaderControl, Converter={StaticResource ObjectNotNullToVisibilityVisibleValueConverter}}">
-            <ContentControl Margin="30" Content="{Binding Path=HeaderControl}" />
+            <ContentControl Content="{Binding Path=HeaderControl}" />
         </Border>
 
         <Border
+            x:Name="ContentButton"
             Height="50"
             Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
