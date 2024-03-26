@@ -101,6 +101,9 @@ public class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelCheckBox labelCheckBox:
                     result.Add(control.GetFullIdentifier(), labelCheckBox.IsChecked);
                     break;
+                case LabelToggleSwitch labelToggleSwitch:
+                    result.Add(control.GetFullIdentifier(), labelToggleSwitch.IsOn);
+                    break;
                 case LabelComboBox labelComboBox:
                     result.Add(control.GetFullIdentifier(), labelComboBox.SelectedKey);
                     break;
