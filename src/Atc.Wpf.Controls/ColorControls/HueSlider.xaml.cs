@@ -45,7 +45,7 @@ public partial class HueSlider
 
         // Make it so that the arrow doesn't jump back to the top when it goes to the bottom
         var mousePos = Mouse.GetPosition(this);
-        if (percent == 0 && ActualHeight - mousePos.Y < 1)
+        if (percent.IsZero() && ActualHeight - mousePos.Y < 1)
         {
             percent = 1;
         }

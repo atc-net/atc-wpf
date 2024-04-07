@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.433" />
+    <PackageReference Include="Atc" Version="2.0.462" />
     <PackageReference Include="ControlzEx" version="6.0.0" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->

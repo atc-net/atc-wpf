@@ -70,7 +70,7 @@ public static class ModelToLabelControlExtractor
                 propertyInfo.PropertyType == typeof(DateTimeOffset) ||
                 propertyInfo.PropertyType == typeof(DateTimeOffset?))
             {
-                Trace.WriteLine($"ModelToLabelControlHelper is not supporting dataType yet: {propertyInfo.PropertyType}");
+                Trace.TraceWarning($"ModelToLabelControlHelper is not supporting dataType yet: {propertyInfo.PropertyType}");
                 continue;
             }
 
@@ -80,7 +80,7 @@ public static class ModelToLabelControlExtractor
                 continue;
             }
 
-            Trace.WriteLine($"ModelToLabelControlHelper is not supporting dataType yet: {propertyInfo.PropertyType}");
+            Trace.TraceWarning($"ModelToLabelControlHelper is not supporting dataType yet: {propertyInfo.PropertyType}");
         }
 
         return labelControls;

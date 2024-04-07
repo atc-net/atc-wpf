@@ -57,7 +57,6 @@ global using Atc.Wpf.Extensions.Internal;
 global using Atc.Wpf.Factories;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Messaging;
-global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Resources;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;

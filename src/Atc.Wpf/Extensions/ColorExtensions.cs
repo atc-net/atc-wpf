@@ -65,7 +65,7 @@ public static class ColorExtensions
         var l = c.GetBrightness();
         var b = GetBrightness(color);
 
-        if (b == 0)
+        if (b.IsZero())
         {
             return 0;
         }

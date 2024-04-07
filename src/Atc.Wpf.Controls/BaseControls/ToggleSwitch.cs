@@ -485,7 +485,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
         DragDeltaEventArgs e)
     {
         e.Handled = true;
-        if (e.HorizontalChange == 0)
+        if (e.HorizontalChange.IsZero())
         {
             return;
         }
