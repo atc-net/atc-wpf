@@ -12,12 +12,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: ⚙️ Setup dotnet 8.0.x
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -37,12 +37,12 @@ jobs:
       - dotnet-build
     steps:
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: ⚙️ Setup dotnet 8.0.x
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
