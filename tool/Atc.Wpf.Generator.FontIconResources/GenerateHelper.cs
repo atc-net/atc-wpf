@@ -233,7 +233,7 @@ public static class GenerateHelper
             .Replace(":before", string.Empty, StringComparison.Ordinal)
             .ToLower(GlobalizationConstants.EnglishCultureInfo);
 
-    [SuppressMessage("Usage", "MA0011:IFormatProvider is missing", Justification = "OK.")]
+    [SuppressMessage("Code Smell", "S127:Do not update the loop counter 'i' within the loop body", Justification = "OK.")]
     private static string CreateEnumName(
         string removePrefix,
         string key)

@@ -96,7 +96,7 @@ internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
                 scale = X2;
             }
 
-            if (scale != 0)
+            if (!scale.IsZero())
             {
                 X1 /= scale;
                 X2 /= scale;
@@ -119,11 +119,13 @@ internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
                 scale = Y2;
             }
 
-            if (scale != 0)
+            if (scale.IsZero())
             {
-                Y1 /= scale;
-                Y2 /= scale;
+                return;
             }
+
+            Y1 /= scale;
+            Y2 /= scale;
         }
     }
 
