@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controls="clr-namespace:Atc.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -134,14 +135,14 @@
                 Orientation="Horizontal"
                 Spacing="10"
                 Visibility="{Binding Path=ShowActionAndInformationBar, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}">
-                <Button Click="ExpandAll" ToolTip="Expand All">
+                <Button Click="ExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
                     <atc:SvgImage
                         Width="16"
                         Height="16"
                         OverrideColor="DarkOrange"
                         Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
                 </Button>
-                <Button Click="CollapseAll" ToolTip="Collapse All">
+                <Button Click="CollapseAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CollapseAll}">
                     <atc:SvgImage
                         Width="16"
                         Height="16"
@@ -243,6 +244,37 @@
                     <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, FallbackValue=False}" />
                 </Style>
             </TreeView.ItemContainerStyle>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Click="ExpandAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
+                        <MenuItem.Icon>
+                            <atc:SvgImage
+                                Width="16"
+                                Height="16"
+                                OverrideColor="DarkOrange"
+                                Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Click="CollapseAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CollapseAll}">
+                        <MenuItem.Icon>
+                            <atc:SvgImage
+                                Width="16"
+                                Height="16"
+                                OverrideColor="DarkOrange"
+                                Source="/Atc.Wpf.Controls;component/Resources/Icons/collapse.svg" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Click="CopyToClipboard" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CopyToClipboard}">
+                        <MenuItem.Icon>
+                            <atc:SvgImage
+                                Width="16"
+                                Height="16"
+                                Source="/Atc.Wpf.Controls;component/Resources/Icons/clipboard.svg" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
         </TreeView>
     </DockPanel>
 
