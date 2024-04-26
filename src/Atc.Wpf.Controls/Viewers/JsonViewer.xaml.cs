@@ -118,6 +118,14 @@ public partial class JsonViewer
         control.Load(jsonData);
     }
 
+    private void CopyToClipboard(
+        object sender,
+        RoutedEventArgs e)
+        => Clipboard.SetText(
+            string.IsNullOrEmpty(Data)
+                ? "{ }"
+                : Data);
+
     private void ExpandAll(
         object sender,
         RoutedEventArgs e)

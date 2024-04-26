@@ -182,7 +182,7 @@ internal sealed class SvgRender
         }
         else
         {
-            geometryDrawing.Brush = shape.Fill.FillBrush(Svg, this, shape, shape.Opacity, geometry.Bounds);
+            geometryDrawing.Brush = Svg.Fill ?? shape.Fill.FillBrush(Svg, this, shape, shape.Opacity, geometry.Bounds);
             if (OverrideColor is not null)
             {
                 geometryDrawing.Brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));

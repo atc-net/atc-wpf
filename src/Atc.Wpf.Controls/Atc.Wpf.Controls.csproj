@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="Resources\collapse.svg" />
     <None Remove="Resources\expand.svg" />
+    <None Remove="Resources\Icons\clipboard.svg" />
     <None Remove="Resources\Icons\color_palette.svg" />
     <None Remove="Resources\Icons\file.svg" />
     <None Remove="Resources\Icons\folder.svg" />
@@ -23,7 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.462" />
+    <Resource Include="Resources\Icons\clipboard.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="2.0.472" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

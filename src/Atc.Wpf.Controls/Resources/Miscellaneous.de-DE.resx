@@ -177,4 +177,13 @@
   <data name="ApplicationSettings" xml:space="preserve">
     <value>Anwendungseinstellungen</value>
   </data>
+  <data name="CollapseAll" xml:space="preserve">
+    <value>Alles reduzieren</value>
+  </data>
+  <data name="ExpandAll" xml:space="preserve">
+    <value>Alle erweitern</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>In die Zwischenablage kopieren</value>
+  </data>
 </root>

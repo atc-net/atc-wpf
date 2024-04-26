@@ -177,4 +177,13 @@
   <data name="ApplicationSettings" xml:space="preserve">
     <value>Applikationsindstillinger</value>
   </data>
+  <data name="CollapseAll" xml:space="preserve">
+    <value>Skjul alle</value>
+  </data>
+  <data name="ExpandAll" xml:space="preserve">
+    <value>Udvid alle</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Kopier til udklipsholder</value>
+  </data>
 </root>
