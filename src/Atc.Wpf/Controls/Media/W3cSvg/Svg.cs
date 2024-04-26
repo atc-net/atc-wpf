@@ -64,6 +64,10 @@ internal sealed class Svg
 
     public Size Size { get; set; }
 
+    public Brush? Fill { get; set; }
+
+    public Brush? Stroke { get; set; }
+
     public IExternalFileLoader? ExternalFileLoader { get; }
 
     public Dictionary<string, Brush>? CustomBrushes
@@ -299,6 +303,18 @@ internal sealed class Svg
             SvgXmlUtil.AttrValue(node, "width", 300),
             SvgXmlUtil.AttrValue(node, "height", 150));
 
+        var fill = node.Attributes?.GetNamedItem("fill");
+        if (fill?.Value is not null)
+        {
+            Fill = SolidColorBrushHelper.GetBrushFromString(fill.Value, GlobalizationConstants.EnglishCultureInfo);
+        }
+
+        var stroke = node.Attributes?.GetNamedItem("stroke");
+        if (stroke?.Value is not null)
+        {
+            Stroke = SolidColorBrushHelper.GetBrushFromString(stroke.Value, GlobalizationConstants.EnglishCultureInfo);
+        }
+
         var lstElements = new List<Shape>();
         if (node.Name != SvgTagConstants.Svg && node.Name != SvgTagConstants.Pattern)
         {
@@ -307,7 +323,7 @@ internal sealed class Svg
 
         foreach (XmlNode childNode in node.ChildNodes)
         {
-            Atc.Wpf.Controls.Media.W3cSvg.Shapes.Group.AddToList(this, lstElements, childNode, parent: null);
+            W3cSvg.Shapes.Group.AddToList(this, lstElements, childNode, parent: null);
         }
 
         return lstElements;
