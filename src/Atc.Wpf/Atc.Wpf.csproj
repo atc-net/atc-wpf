@@ -1007,7 +1007,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.462" />
+    <PackageReference Include="Atc" Version="2.0.472" />
   </ItemGroup>
 
   <ItemGroup>
