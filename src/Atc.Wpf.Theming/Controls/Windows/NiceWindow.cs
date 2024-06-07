@@ -1045,7 +1045,7 @@ public class NiceWindow : WindowChromeWindow
     public void StoreFocus(
         IInputElement? thisElement = null)
     {
-        this.BeginInvoke(() =>
+        this.Invoke(() =>
         {
             restoreFocus = thisElement ?? restoreFocus ?? FocusManager.GetFocusedElement(this);
         });
@@ -1058,7 +1058,7 @@ public class NiceWindow : WindowChromeWindow
             return;
         }
 
-        this.BeginInvoke(() =>
+        this.Invoke(() =>
         {
             Keyboard.Focus(restoreFocus);
             restoreFocus = null;
