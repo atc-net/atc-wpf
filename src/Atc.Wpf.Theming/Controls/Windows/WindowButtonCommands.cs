@@ -212,7 +212,7 @@ public class WindowButtonCommands : ContentControl
         CommandBindings.Add(new CommandBinding(System.Windows.SystemCommands.RestoreWindowCommand, RestoreWindow));
         CommandBindings.Add(new CommandBinding(System.Windows.SystemCommands.CloseWindowCommand, CloseWindow));
 
-        this.BeginInvoke(
+        this.Invoke(
             () =>
             {
                 if (ParentWindow is null)
