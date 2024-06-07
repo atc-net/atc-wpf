@@ -2,16 +2,17 @@
 namespace System.Windows.Threading;
 
 /// <summary>
-/// Extension methods for Dispatcher.
+/// Provides extension methods for the <see cref="Dispatcher"/> class to invoke actions based on thread access requirements.
 /// </summary>
 public static class DispatcherExtensions
 {
     /// <summary>
-    /// Invokes if required.
+    /// Invokes the specified action on the dispatcher thread if required, otherwise executes it directly.
     /// </summary>
-    /// <param name="dispatcher">The dispatcher.</param>
-    /// <param name="action">The action.</param>
-    /// <param name="priority">The priority.</param>
+    /// <param name="dispatcher">The dispatcher to use for invoking the action.</param>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="priority">The priority at which the action is invoked, if required. The default is <see cref="DispatcherPriority.Normal"/>.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dispatcher"/> or <paramref name="action"/> is null.</exception>
     public static void InvokeIfRequired(
         this Dispatcher dispatcher,
         Action action,
@@ -31,12 +32,14 @@ public static class DispatcherExtensions
     }
 
     /// <summary>
-    /// Begins the invoke if required.
+    /// Asynchronously invokes the specified action on the dispatcher thread if required, otherwise executes it directly.
     /// </summary>
-    /// <param name="dispatcher">The dispatcher.</param>
-    /// <param name="action">The action.</param>
-    /// <param name="priority">The priority.</param>
-    public static void BeginInvokeIfRequired(
+    /// <param name="dispatcher">The dispatcher to use for invoking the action.</param>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="priority">The priority at which the action is invoked, if required. The default is <see cref="DispatcherPriority.Normal"/>.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dispatcher"/> or <paramref name="action"/> is null.</exception>
+    public static async Task InvokeAsyncIfRequired(
         this Dispatcher dispatcher,
         Action action,
         DispatcherPriority priority = DispatcherPriority.Normal)
@@ -50,7 +53,33 @@ public static class DispatcherExtensions
         }
         else
         {
-            _ = dispatcher.BeginInvoke(action, priority);
+            await dispatcher.InvokeAsync(action, priority);
+        }
+    }
+
+    /// <summary>
+    /// Asynchronously begins invoking the specified action on the dispatcher thread if required, otherwise executes it directly.
+    /// </summary>
+    /// <param name="dispatcher">The dispatcher to use for invoking the action.</param>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="priority">The priority at which the action is invoked, if required. The default is <see cref="DispatcherPriority.Normal"/>.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dispatcher"/> or <paramref name="action"/> is null.</exception>
+    public static async Task BeginInvokeIfRequired(
+        this Dispatcher dispatcher,
+        Action action,
+        DispatcherPriority priority = DispatcherPriority.Normal)
+    {
+        ArgumentNullException.ThrowIfNull(dispatcher);
+        ArgumentNullException.ThrowIfNull(action);
+
+        if (dispatcher.CheckAccess())
+        {
+            action();
+        }
+        else
+        {
+            await dispatcher.BeginInvoke(action, priority);
         }
     }
 }
