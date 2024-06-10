@@ -10,6 +10,11 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
         get => windowState;
         set
         {
+            if (windowState == value)
+            {
+                return;
+            }
+
             windowState = value;
             RaisePropertyChanged();
         }

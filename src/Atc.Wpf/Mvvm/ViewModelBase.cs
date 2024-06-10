@@ -38,6 +38,11 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
         get => isEnable;
         set
         {
+            if (isEnable == value)
+            {
+                return;
+            }
+
             isEnable = value;
             RaisePropertyChanged();
         }
@@ -65,6 +70,11 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
         get => isBusy;
         set
         {
+            if (isBusy == value)
+            {
+                return;
+            }
+
             isBusy = value;
             RaisePropertyChanged();
         }
@@ -76,6 +86,11 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
         get => isDirty;
         set
         {
+            if (isDirty == value)
+            {
+                return;
+            }
+
             isDirty = value;
             RaisePropertyChanged();
         }
@@ -87,6 +102,11 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
         get => isSelected;
         set
         {
+            if (isSelected == value)
+            {
+                return;
+            }
+
             isSelected = value;
             RaisePropertyChanged();
         }
