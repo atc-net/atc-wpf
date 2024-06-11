@@ -22,7 +22,8 @@ public class PlainTextFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
-    public void SetText(FlowDocument document, string text)
+    /// <param name="themeMode">The ThemeMode.</param>
+    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 

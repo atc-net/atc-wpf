@@ -99,9 +99,10 @@ public abstract class Code : Source
     /// </summary>
     /// <param name="match">The <see cref="Match" /> resulting from a
     /// single regular expression match.</param>
+    /// <param name="themeMode">The ThemeMode.</param>
     /// <returns>A string containing the HTML code fragment.</returns>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    protected override string MatchEval(Match match)
+    protected override string MatchEval(Match match, ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(match);
 
@@ -125,7 +126,10 @@ public abstract class Code : Source
             {
                 var run = new Run(sb.ToString())
                 {
-                    Foreground = new SolidColorBrush(Color.FromRgb(0, 128, 0)),
+                    Foreground = new SolidColorBrush(
+                        themeMode == ThemeMode.Light
+                            ? Color.FromRgb(0, 128, 0)
+                            : Color.FromRgb(87, 166, 74)),
                 };
 
                 CodeParagraphGlobal.Add(run);
@@ -139,7 +143,10 @@ public abstract class Code : Source
         {
             var run = new Run(match.ToString())
             {
-                Foreground = new SolidColorBrush(Color.FromRgb(0, 96, 128)),
+                Foreground = new SolidColorBrush(
+                    themeMode == ThemeMode.Light
+                        ? Color.FromRgb(179, 90, 45)
+                        : Color.FromRgb(214, 157, 133)),
             };
 
             CodeParagraphGlobal.Add(run);
@@ -151,7 +158,7 @@ public abstract class Code : Source
         {
             var run = new Run(match.ToString())
             {
-                Foreground = new SolidColorBrush(Color.FromRgb(204, 102, 51)),
+                Foreground = new SolidColorBrush(Color.FromRgb(155, 155, 143)),
             };
 
             CodeParagraphGlobal.Add(run);
@@ -163,7 +170,10 @@ public abstract class Code : Source
         {
             var run = new Run(match.ToString())
             {
-                Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 255)),
+                Foreground = new SolidColorBrush(
+                    themeMode == ThemeMode.Light
+                        ? Color.FromRgb(0, 0, 255)
+                        : Color.FromRgb(86, 156, 214)),
             };
 
             CodeParagraphGlobal.Add(run);

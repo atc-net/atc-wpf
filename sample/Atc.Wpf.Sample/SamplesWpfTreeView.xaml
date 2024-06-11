@@ -14,10 +14,6 @@
         <sample:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Controls - Inputs">
-        <sample:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="Controls.Inputs.RichTextBoxExView" />
-    </TreeViewItem>
-
     <TreeViewItem Header="Controls - Layouts">
         <sample:SampleTreeViewItem Header="AutoGrid" SamplePath="Controls.Layouts.AutoGridView" />
         <sample:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />

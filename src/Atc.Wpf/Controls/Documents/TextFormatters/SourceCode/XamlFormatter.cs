@@ -1,4 +1,5 @@
 // ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode;
 
 /// <summary>
@@ -16,8 +17,9 @@ public class XamlFormatter : ITextFormatter
     /// </summary>
     /// <param name="xamlText">The xaml text.</param>
     /// <param name="targetDoc">The target document.</param>
+    /// <param name="themeMode">The ThemeMode.</param>
     /// <returns>The flowDocument.</returns>
-    public static FlowDocument ColorizeXaml(string xamlText, FlowDocument targetDoc)
+    public static FlowDocument ColorizeXaml(string xamlText, FlowDocument targetDoc, ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(xamlText);
         ArgumentNullException.ThrowIfNull(targetDoc);
@@ -33,7 +35,9 @@ public class XamlFormatter : ITextFormatter
         {
             var tokenText = xamlText.Substring(position, token.Length);
             tokenTexts.Add(tokenText);
-            var color = ColorForToken(token);
+            var color = themeMode == ThemeMode.Light
+                ? LightColorForToken(token)
+                : DarkColorForToken(token);
             colors.Add(color);
             position += token.Length;
         }
@@ -72,18 +76,19 @@ public class XamlFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
-    public void SetText(FlowDocument document, string text)
+    /// <param name="themeMode">The ThemeMode.</param>
+    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 
         document.Blocks.Clear();
         document.SetCurrentValue(FlowDocument.PageWidthProperty, 2500D);
-        ColorizeXaml(text, document);
+        ColorizeXaml(text, document, themeMode);
     }
 
-    private static Color ColorForToken(XmlToken token)
+    private static Color LightColorForToken(XmlToken token)
     {
-        var color = Color.FromRgb(0, 0, 0);
+        var color = Color.FromRgb(231, 84, 128);
         switch (token.Kind)
         {
             case XmlTokenKind.Open:
@@ -111,6 +116,42 @@ public class XamlFormatter : ITextFormatter
                 break;
             case XmlTokenKind.CommentText:
                 color = Color.FromRgb(0, 128, 0);
+                break;
+        }
+
+        return color;
+    }
+
+    private static Color DarkColorForToken(XmlToken token)
+    {
+        var color = Color.FromRgb(231, 84, 128);
+        switch (token.Kind)
+        {
+            case XmlTokenKind.Open:
+            case XmlTokenKind.OpenClose:
+            case XmlTokenKind.Close:
+            case XmlTokenKind.SelfClose:
+            case XmlTokenKind.CommentBegin:
+            case XmlTokenKind.CommentEnd:
+            case XmlTokenKind.CDataBegin:
+            case XmlTokenKind.CDataEnd:
+            case XmlTokenKind.Equals:
+            case XmlTokenKind.OpenProcessingInstruction:
+            case XmlTokenKind.CloseProcessingInstruction:
+            case XmlTokenKind.AttributeValue:
+                color = Color.FromRgb(86, 156, 214);
+                break;
+            case XmlTokenKind.ElementName:
+                color = Color.FromRgb(255, 255, 255);
+                break;
+            case XmlTokenKind.TextContent:
+                break;
+            case XmlTokenKind.AttributeName:
+            case XmlTokenKind.Entity:
+                color = Color.FromRgb(146, 202, 244);
+                break;
+            case XmlTokenKind.CommentText:
+                color = Color.FromRgb(87, 166, 74);
                 break;
         }
 

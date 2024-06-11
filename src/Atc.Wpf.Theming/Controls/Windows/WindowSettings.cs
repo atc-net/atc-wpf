@@ -21,8 +21,8 @@ public class WindowPlacementSetting
         {
             length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(),
             showCmd = (SHOW_WINDOW_CMD)showCmd,
-            ptMinPosition = new POINT { x = (int)minPosition.X, y = (int)minPosition.Y },
-            ptMaxPosition = new POINT { x = (int)maxPosition.X, y = (int)maxPosition.Y },
+            ptMinPosition = new System.Drawing.Point { X = (int)minPosition.X, Y = (int)minPosition.Y },
+            ptMaxPosition = new System.Drawing.Point { X = (int)maxPosition.X, Y = (int)maxPosition.Y },
             rcNormalPosition = new RECT
             {
                 left = (int)normalPosition.X,
@@ -38,8 +38,8 @@ public class WindowPlacementSetting
         return new WindowPlacementSetting
         {
             showCmd = (uint)windowPlacement.showCmd,
-            minPosition = new Point(windowPlacement.ptMinPosition.x, windowPlacement.ptMinPosition.y),
-            maxPosition = new Point(windowPlacement.ptMaxPosition.x, windowPlacement.ptMaxPosition.y),
+            minPosition = new Point(windowPlacement.ptMinPosition.X, windowPlacement.ptMinPosition.Y),
+            maxPosition = new Point(windowPlacement.ptMaxPosition.X, windowPlacement.ptMaxPosition.Y),
             normalPosition = new Rect(
                 windowPlacement.rcNormalPosition.left,
                 windowPlacement.rcNormalPosition.top,

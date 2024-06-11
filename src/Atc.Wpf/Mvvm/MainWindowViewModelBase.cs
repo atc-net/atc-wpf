@@ -10,6 +10,11 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
         get => windowState;
         set
         {
+            if (windowState == value)
+            {
+                return;
+            }
+
             windowState = value;
             RaisePropertyChanged();
         }
@@ -23,7 +28,12 @@ public class MainWindowViewModelBase : ViewModelBase, IMainWindowViewModelBase
         object sender,
         RoutedEventArgs e)
     {
-        // Method intentionally left empty.
+        if (sender is FrameworkElement frameworkElement &&
+            (frameworkElement.Width >= SystemParameters.PrimaryScreenWidth ||
+             frameworkElement.Height >= SystemParameters.PrimaryScreenHeight))
+        {
+            WindowState = WindowState.Maximized;
+        }
     }
 
     /// <inheritdoc />

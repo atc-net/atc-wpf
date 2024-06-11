@@ -1,11 +1,20 @@
-namespace Atc.Wpf.Controls.Inputs;
+namespace Atc.Wpf.Controls.BaseControls;
 
 /// <summary>
-/// RichTextBoxEx is a extension of the <see cref="RichTextBox" />.
+/// RichTextBoxEx is an extension of the <see cref="RichTextBox" />.
 /// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public class RichTextBoxEx : RichTextBox
 {
+    public static readonly DependencyProperty ThemeModeProperty = DependencyProperty.Register(
+        nameof(ThemeMode),
+        typeof(ThemeMode),
+        typeof(RichTextBoxEx),
+        new FrameworkPropertyMetadata(
+            ThemeMode.Light,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnThemeModeChanged));
+
     /// <summary>
     /// The text property.
     /// </summary>
@@ -40,6 +49,22 @@ public class RichTextBoxEx : RichTextBox
     /// </summary>
     public RichTextBoxEx()
     {
+        var contextMenu = new ContextMenu();
+        var copyMenuItem = new MenuItem
+        {
+            Header = Miscellaneous.CopyToClipboard,
+            Icon = new SvgImage
+            {
+                Width = 16,
+                Height = 16,
+                Source = "/Atc.Wpf.Controls;component/Resources/Icons/clipboard.svg",
+            },
+        };
+        copyMenuItem.Click += OnCopyToClipboardClick;
+        contextMenu.Items.Add(copyMenuItem);
+        ContextMenu = contextMenu;
+
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
     }
 
     /// <summary>
@@ -49,6 +74,18 @@ public class RichTextBoxEx : RichTextBox
     public RichTextBoxEx(FlowDocument document)
         : base(document)
     {
+    }
+
+    /// <summary>
+    /// Gets or sets the text.
+    /// </summary>
+    /// <value>
+    /// The text.
+    /// </value>
+    public ThemeMode ThemeMode
+    {
+        get => (ThemeMode)GetValue(ThemeModeProperty);
+        set => SetValue(ThemeModeProperty, value);
     }
 
     /// <summary>
@@ -140,11 +177,33 @@ public class RichTextBoxEx : RichTextBox
         UpdateTextFromDocument();
     }
 
-    /// <summary>
-    /// Called when [text property changed].
-    /// </summary>
-    /// <param name="d">The dependency object.</param>
-    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+    private void OnCopyToClipboardClick(
+        object sender,
+        RoutedEventArgs e)
+        => Clipboard.SetText(Text);
+
+    private void OnThemeChanged(
+        object? sender,
+        ThemeChangedEventArgs e)
+    {
+        if (Enum<ThemeMode>.TryParse(e.NewTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
+        {
+            ThemeMode = themeModeValue;
+        }
+    }
+
+    private static void OnThemeModeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not RichTextBoxEx richTextBoxEx)
+        {
+            return;
+        }
+
+        richTextBoxEx.UpdateDocumentFromText();
+    }
+
     private static void OnTextChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -157,11 +216,6 @@ public class RichTextBoxEx : RichTextBox
         richTextBoxEx.UpdateDocumentFromText();
     }
 
-    /// <summary>
-    /// Coerces the text property.
-    /// </summary>
-    /// <param name="d">The dependency object.</param>
-    /// <param name="value">The value.</param>
     private static object CoerceText(
         DependencyObject d,
         object? value)
@@ -169,11 +223,6 @@ public class RichTextBoxEx : RichTextBox
         return value ?? string.Empty;
     }
 
-    /// <summary>
-    /// Called when [text formatter property changed].
-    /// </summary>
-    /// <param name="d">The dependency object.</param>
-    /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
     private static void OnTextFormatterChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -188,9 +237,6 @@ public class RichTextBoxEx : RichTextBox
             (ITextFormatter)e.NewValue);
     }
 
-    /// <summary>
-    /// Updates the text from document.
-    /// </summary>
     private void UpdateTextFromDocument()
     {
         if (preventTextUpdate)
@@ -203,9 +249,6 @@ public class RichTextBoxEx : RichTextBox
         preventDocumentUpdate = false;
     }
 
-    /// <summary>
-    /// Updates the document from text.
-    /// </summary>
     private void UpdateDocumentFromText()
     {
         if (preventDocumentUpdate)
@@ -214,7 +257,7 @@ public class RichTextBoxEx : RichTextBox
         }
 
         preventTextUpdate = true;
-        TextFormatter.SetText(Document, Text);
+        TextFormatter.SetText(Document, Text, ThemeMode);
         preventTextUpdate = false;
     }
 }
