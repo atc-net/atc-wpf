@@ -25,8 +25,9 @@ public class RtfFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
+    /// <param name="themeMode">The ThemeMode.</param>
     /// <exception cref="InvalidDataException">Data provided is not in the correct RTF format.</exception>
-    public void SetText(FlowDocument document, string text)
+    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 

@@ -54,6 +54,7 @@
                     IsReadOnly="True"
                     Text="{Binding Path=XamlCode}"
                     TextFormatter="{x:Static sourceCode:XamlFormatter.Instance}"
+                    ThemeMode="{Binding Path=ThemeMode}"
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
             <TabItem Header="CodeBehind" IsEnabled="{Binding Path=HasCodeBehindCode}">
@@ -68,6 +69,7 @@
                     IsReadOnly="True"
                     Text="{Binding Path=CodeBehindCode}"
                     TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
+                    ThemeMode="{Binding Path=ThemeMode}"
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
             <TabItem Header="ViewModel" IsEnabled="{Binding Path=HasViewModelCode}">
@@ -82,6 +84,7 @@
                     IsReadOnly="True"
                     Text="{Binding Path=ViewModelCode}"
                     TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
+                    ThemeMode="{Binding Path=ThemeMode}"
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
             <TabItem Header="Readme" IsEnabled="{Binding Path=HasReadmeMarkdown}">

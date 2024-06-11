@@ -6,6 +6,15 @@ namespace Atc.Wpf.Controls.Inputs;
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public class RichTextBoxEx : RichTextBox
 {
+    public static readonly DependencyProperty ThemeModeProperty = DependencyProperty.Register(
+        nameof(ThemeMode),
+        typeof(ThemeMode),
+        typeof(RichTextBoxEx),
+        new FrameworkPropertyMetadata(
+            ThemeMode.Light,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnThemeModeChanged));
+
     /// <summary>
     /// The text property.
     /// </summary>
@@ -49,6 +58,18 @@ public class RichTextBoxEx : RichTextBox
     public RichTextBoxEx(FlowDocument document)
         : base(document)
     {
+    }
+
+    /// <summary>
+    /// Gets or sets the text.
+    /// </summary>
+    /// <value>
+    /// The text.
+    /// </value>
+    public ThemeMode ThemeMode
+    {
+        get => (ThemeMode)GetValue(ThemeModeProperty);
+        set => SetValue(ThemeModeProperty, value);
     }
 
     /// <summary>
@@ -140,6 +161,18 @@ public class RichTextBoxEx : RichTextBox
         UpdateTextFromDocument();
     }
 
+    private static void OnThemeModeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not RichTextBoxEx richTextBoxEx)
+        {
+            return;
+        }
+
+        richTextBoxEx.UpdateDocumentFromText();
+    }
+
     /// <summary>
     /// Called when [text property changed].
     /// </summary>
@@ -214,7 +247,7 @@ public class RichTextBoxEx : RichTextBox
         }
 
         preventTextUpdate = true;
-        TextFormatter.SetText(Document, Text);
+        TextFormatter.SetText(Document, Text, ThemeMode);
         preventTextUpdate = false;
     }
 }

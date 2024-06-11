@@ -27,14 +27,15 @@ public class CSharpFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
-    public void SetText(FlowDocument document, string text)
+    /// <param name="themeMode">The ThemeMode.</param>
+    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 
         document.Blocks.Clear();
         document.SetCurrentValue(FlowDocument.PageWidthProperty, 2500D);
         var cSharp = new CSharp();
-        var p = cSharp.FormatCode(text);
+        var p = cSharp.FormatCode(text, themeMode);
         document.Blocks.Add(p);
     }
 }
