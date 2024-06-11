@@ -158,7 +158,7 @@ public abstract class Code : Source
         {
             var run = new Run(match.ToString())
             {
-                Foreground = new SolidColorBrush(Color.FromRgb(155, 155 ,143)),
+                Foreground = new SolidColorBrush(Color.FromRgb(155, 155, 143)),
             };
 
             CodeParagraphGlobal.Add(run);

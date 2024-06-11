@@ -5,7 +5,6 @@ public class SampleViewerViewModel : ViewModelBase
 {
     public SampleViewerViewModel()
     {
-        ThemeManager.Current.ThemeChanged += OnThemeChanged;
         Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
     }
 
@@ -17,7 +16,6 @@ public class SampleViewerViewModel : ViewModelBase
     private string? codeBehindCode;
     private string? viewModelCode;
     private string? readmeMarkdown;
-    private ThemeMode themeMode;
 
     public int TabSelectedIndex
     {
@@ -38,21 +36,6 @@ public class SampleViewerViewModel : ViewModelBase
     public bool HasViewModelCode => ViewModelCode is not null;
 
     public bool HasReadmeMarkdown => ReadmeMarkdown is not null;
-
-    public ThemeMode ThemeMode
-    {
-        get => themeMode;
-        set
-        {
-            if (value == themeMode)
-            {
-                return;
-            }
-
-            themeMode = value;
-            RaisePropertyChanged();
-        }
-    }
 
     public string? Header
     {
@@ -116,16 +99,6 @@ public class SampleViewerViewModel : ViewModelBase
             readmeMarkdown = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasReadmeMarkdown));
-        }
-    }
-
-    private void OnThemeChanged(
-        object? sender,
-        ThemeChangedEventArgs e)
-    {
-        if (Enum<ThemeMode>.TryParse(e.NewTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
-        {
-            ThemeMode = themeModeValue;
         }
     }
 
