@@ -43,8 +43,10 @@
 | Null -> X                 | NullCheckValueConverter                                  | NULL -> Parameter if set                | Not supported                           |
 | Null -> UnsetValue        | NullToUnsetValueConverter                                | NULL -> DependencyProperty.UnsetValue   | Object -> DependencyProperty.UnsetValue |
 | Object -> Bool            | ObjectNotNullToBoolValueConverter                        | NotNULL -> True                         | Not supported                           |
+| Object -> Visibility      | ObjectNotNullToVisibilityCollapsedValueConverter         | NotNULL -> Collapsed                      | Not supported                           |
 | Object -> Visibility      | ObjectNotNullToVisibilityVisibleValueConverter           | NotNULL -> Visible                      | Not supported                           |
 | Object -> Visibility      | ObjectNullToVisibilityCollapsedValueConverter            | NULL -> Collapsed                       | Not supported                           |
+| Object -> Visibility      | ObjectNullToVisibilityVisibleValueConverter              | NULL -> Visible                         | Not supported                           |
 | Object[] -> Visibility    | MultiObjectNullToVisibilityCollapsedValueConverter       | All-NULL -> Collapsed                   | Not supported                           |
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
 
