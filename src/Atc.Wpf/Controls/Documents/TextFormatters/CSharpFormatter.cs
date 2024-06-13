@@ -1,7 +1,7 @@
-namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode;
+namespace Atc.Wpf.Controls.Documents.TextFormatters;
 
 /// <summary>
-/// Formats the RichTextBox text as colored C#.
+/// Formats the FlowDocument text as colored C#.
 /// </summary>
 public class CSharpFormatter : ITextFormatter
 {
@@ -15,7 +15,8 @@ public class CSharpFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    public string GetText(FlowDocument document)
+    public string GetText(
+        FlowDocument document)
     {
         ArgumentNullException.ThrowIfNull(document);
 
@@ -28,9 +29,13 @@ public class CSharpFormatter : ITextFormatter
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
     /// <param name="themeMode">The ThemeMode.</param>
-    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
+    public void SetText(
+        FlowDocument document,
+        string text,
+        ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(text);
 
         document.Blocks.Clear();
         document.SetCurrentValue(FlowDocument.PageWidthProperty, 2500D);

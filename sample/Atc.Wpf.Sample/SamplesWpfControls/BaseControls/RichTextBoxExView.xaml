@@ -5,55 +5,62 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sourceCode="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters.SourceCode;assembly=Atc.Wpf"
+    xmlns:textFormatters="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters;assembly=Atc.Wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
-
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
-
+    <Grid>
         <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:AutoGrid Columns="*" Rows="*,*">
-                    <atc:AutoGrid Columns="*" Rows="Auto,*">
-                        <TextBlock Text="XAML in RichTextBoxEx" />
-                        <atc:RichTextBoxEx
-                            Margin="5,10,5,5"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                            FontFamily="Courier New"
-                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                            HorizontalScrollBarVisibility="Auto"
-                            IsReadOnly="True"
-                            Text="{Binding Path=DataContext.XamlCode, Mode=OneTime}"
-                            TextFormatter="{x:Static sourceCode:XamlFormatter.Instance}"
-                            VerticalScrollBarVisibility="Auto" />
-                    </atc:AutoGrid>
+            <TabControl>
 
-                    <atc:AutoGrid Columns="*" Rows="Auto,*">
-                        <TextBlock Text="C# code in RichTextBoxEx" />
-                        <atc:RichTextBoxEx
-                            Margin="5,10,5,5"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                            FontFamily="Courier New"
-                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                            HorizontalScrollBarVisibility="Auto"
-                            IsReadOnly="True"
-                            Text="{Binding Path=DataContext.CSharpCode, Mode=OneTime}"
-                            TextFormatter="{x:Static sourceCode:CSharpFormatter.Instance}"
-                            VerticalScrollBarVisibility="Auto" />
-                    </atc:AutoGrid>
-                </atc:AutoGrid>
-            </ScrollViewer>
+                <TabItem Header=" XAML ">
+                    <atc:RichTextBoxEx
+                        Margin="5,10,5,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        FontFamily="Courier New"
+                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                        HorizontalScrollBarVisibility="Auto"
+                        IsReadOnly="True"
+                        Text="{Binding Path=DataContext.XamlCode, Mode=OneTime}"
+                        TextFormatter="{x:Static textFormatters:XamlFormatter.Instance}"
+                        VerticalScrollBarVisibility="Auto" />
+                </TabItem>
+
+                <TabItem Header=" C# ">
+                    <atc:RichTextBoxEx
+                        Margin="5,10,5,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        FontFamily="Courier New"
+                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                        HorizontalScrollBarVisibility="Auto"
+                        IsReadOnly="True"
+                        Text="{Binding Path=DataContext.CSharpCode, Mode=OneTime}"
+                        TextFormatter="{x:Static textFormatters:CSharpFormatter.Instance}"
+                        VerticalScrollBarVisibility="Auto" />
+                </TabItem>
+
+                <TabItem Header=" JSON ">
+                    <atc:RichTextBoxEx
+                        Margin="5,10,5,5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        FontFamily="Courier New"
+                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                        HorizontalScrollBarVisibility="Auto"
+                        IsReadOnly="True"
+                        Text="{Binding Path=DataContext.JsonText, Mode=OneTime}"
+                        TextFormatter="{x:Static textFormatters:JsonFormatter.Instance}"
+                        VerticalScrollBarVisibility="Auto" />
+                </TabItem>
+
+            </TabControl>
         </GroupBox>
-    </atc:AutoGrid>
+    </Grid>
 
 </UserControl>
