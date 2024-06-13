@@ -10,7 +10,8 @@ public interface ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    string GetText(FlowDocument document);
+    string GetText(
+        FlowDocument document);
 
     /// <summary>
     /// Sets the text.
@@ -18,5 +19,8 @@ public interface ITextFormatter
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
     /// <param name="themeMode">The ThemeMode.</param>
-    void SetText(FlowDocument document, string text, ThemeMode themeMode);
+    void SetText(
+        FlowDocument document,
+        string text,
+        ThemeMode themeMode);
 }

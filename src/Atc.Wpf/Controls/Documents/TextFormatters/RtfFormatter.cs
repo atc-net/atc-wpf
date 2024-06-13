@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Documents.TextFormatters;
 
 /// <summary>
-/// Formats the RichTextBox text as RTF.
+/// Formats the FlowDocument text as RTF.
 /// </summary>
 public class RtfFormatter : ITextFormatter
 {
@@ -10,7 +10,8 @@ public class RtfFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    public string GetText(FlowDocument document)
+    public string GetText(
+        FlowDocument document)
     {
         ArgumentNullException.ThrowIfNull(document);
 
@@ -27,7 +28,10 @@ public class RtfFormatter : ITextFormatter
     /// <param name="text">The text.</param>
     /// <param name="themeMode">The ThemeMode.</param>
     /// <exception cref="InvalidDataException">Data provided is not in the correct RTF format.</exception>
-    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
+    public void SetText(
+        FlowDocument document,
+        string text,
+        ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 

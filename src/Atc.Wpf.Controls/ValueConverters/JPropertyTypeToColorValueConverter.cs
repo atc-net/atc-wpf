@@ -16,14 +16,14 @@ public sealed class JPropertyTypeToColorValueConverter : IValueConverter
 
         return jProperty.Value.Type switch
         {
-            JTokenType.String => GetStringTypeColor(jProperty.Value.ToString()!),
-            JTokenType.Float => Constants.JTokenColorFloat,
-            JTokenType.Integer => Constants.JTokenColorInteger,
-            JTokenType.Boolean => Constants.JTokenColorBoolean,
-            JTokenType.Date => Constants.JTokenColorDate,
-            JTokenType.Guid => Constants.JTokenColorGuid,
-            JTokenType.Uri => Constants.JTokenColorUri,
-            JTokenType.Null => Constants.JTokenColorNull,
+            JTokenType.String => GetStringTypeColor(jProperty.Value.ToString()),
+            JTokenType.Float => JsonColorSchema.FloatBrush,
+            JTokenType.Integer => JsonColorSchema.IntegerBrush,
+            JTokenType.Boolean => JsonColorSchema.BooleanBrush,
+            JTokenType.Date => JsonColorSchema.DateBrush,
+            JTokenType.Guid => JsonColorSchema.GuidBrush,
+            JTokenType.Uri => JsonColorSchema.UriBrush,
+            JTokenType.Null => JsonColorSchema.NullBrush,
             _ => value,
         };
     }
@@ -39,14 +39,14 @@ public sealed class JPropertyTypeToColorValueConverter : IValueConverter
     {
         if (Guid.TryParse(value, out _))
         {
-            return Constants.JTokenColorGuid;
+            return JsonColorSchema.GuidBrush;
         }
 
         if (Uri.IsWellFormedUriString(value, UriKind.Absolute))
         {
-            return Constants.JTokenColorUri;
+            return JsonColorSchema.UriBrush;
         }
 
-        return Constants.JTokenColorString;
+        return JsonColorSchema.StringBrush;
     }
 }

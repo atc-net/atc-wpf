@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Documents.TextFormatters;
 
 /// <summary>
-/// Formats the RichTextBox text as plain text.
+/// Formats the FlowDocument text as plain text.
 /// </summary>
 public class PlainTextFormatter : ITextFormatter
 {
@@ -10,7 +10,8 @@ public class PlainTextFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    public string GetText(FlowDocument document)
+    public string GetText(
+        FlowDocument document)
     {
         ArgumentNullException.ThrowIfNull(document);
 
@@ -23,7 +24,10 @@ public class PlainTextFormatter : ITextFormatter
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
     /// <param name="themeMode">The ThemeMode.</param>
-    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
+    public void SetText(
+        FlowDocument document,
+        string text,
+        ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 

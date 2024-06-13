@@ -2,10 +2,10 @@ namespace Atc.Wpf.Controls.ValueConverters;
 
 public sealed class JValueConverter : IValueConverter
 {
-    public object Convert(
-        object value,
+    public object? Convert(
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture)
     {
         if (value is not JValue jValue)
@@ -22,9 +22,9 @@ public sealed class JValueConverter : IValueConverter
     }
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture)
         => throw new NotSupportedException(GetType().Name + " can only be used for one way conversion.");
 }

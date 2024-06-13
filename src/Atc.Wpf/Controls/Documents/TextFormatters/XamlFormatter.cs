@@ -1,23 +1,28 @@
+// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 namespace Atc.Wpf.Controls.Documents.TextFormatters;
 
 /// <summary>
-/// Formats the RichTextBox text as Xaml.
+/// Formats the FlowDocument text as colored Xaml.
 /// </summary>
 public class XamlFormatter : ITextFormatter
 {
+    /// <summary>
+    /// The instance.
+    /// </summary>
+    public static readonly XamlFormatter Instance = new();
+
     /// <summary>
     /// Gets the text.
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    public string GetText(FlowDocument document)
+    public string GetText(
+        FlowDocument document)
     {
         ArgumentNullException.ThrowIfNull(document);
 
-        var tr = new TextRange(document.ContentStart, document.ContentEnd);
-        using var memoryStream = new MemoryStream();
-        tr.Save(memoryStream, DataFormats.Xaml);
-        return Encoding.Default.GetString(memoryStream.ToArray());
+        return new TextRange(document.ContentStart, document.ContentEnd).Text;
     }
 
     /// <summary>
@@ -26,29 +31,137 @@ public class XamlFormatter : ITextFormatter
     /// <param name="document">The document.</param>
     /// <param name="text">The text.</param>
     /// <param name="themeMode">The ThemeMode.</param>
-    /// <exception cref="InvalidDataException">Data provided is not in the correct Xaml format.</exception>
-    public void SetText(FlowDocument document, string text, ThemeMode themeMode)
+    public void SetText(
+        FlowDocument document,
+        string text,
+        ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(document);
 
-        try
+        document.Blocks.Clear();
+        document.SetCurrentValue(FlowDocument.PageWidthProperty, 2500D);
+        ColorizeXaml(document, text, themeMode);
+    }
+
+    /// <summary>
+    /// Colorizes the xaml.
+    /// </summary>
+    /// <param name="document">The target document.</param>
+    /// <param name="text">The text.</param>
+    /// <param name="themeMode">The ThemeMode.</param>
+    /// <returns>The flowDocument.</returns>
+    public static FlowDocument ColorizeXaml(
+        FlowDocument document,
+        string text,
+        ThemeMode themeMode)
+    {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(text);
+
+        var tokenizer = new XmlTokenizer();
+        var mode = XmlTokenizerMode.OutsideElement;
+
+        var tokens = tokenizer.Tokenize(text, ref mode);
+        var tokenTexts = new List<string>(tokens.Count);
+        var colors = new List<Color>(tokens.Count);
+        var position = 0;
+        foreach (var token in tokens)
         {
-            //// If the text is null/empty clear the contents of the RTB. If you were to pass a null/empty string
-            //// to the TextRange.Load method an exception would occur.
-            if (string.IsNullOrEmpty(text))
-            {
-                document.Blocks.Clear();
-            }
-            else
-            {
-                var tr = new TextRange(document.ContentStart, document.ContentEnd);
-                using var memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
-                tr.Load(memoryStream, DataFormats.Xaml);
-            }
+            var tokenText = text.Substring(position, token.Length);
+            tokenTexts.Add(tokenText);
+            var color = themeMode == ThemeMode.Light
+                ? LightColorForToken(token)
+                : DarkColorForToken(token);
+            colors.Add(color);
+            position += token.Length;
         }
-        catch
+
+        var p = new Paragraph();
+
+        // Loop through tokens
+        for (var i = 0; i < tokenTexts.Count; i++)
         {
-            throw new InvalidDataException("Data provided is not in the correct Xaml format.");
+            var run = new Run(tokenTexts[i])
+            {
+                Foreground = new SolidColorBrush(colors[i]),
+            };
+            p.Inlines.Add(run);
         }
+
+        document.Blocks.Add(p);
+
+        return document;
+    }
+
+    private static Color LightColorForToken(XmlToken token)
+    {
+        var color = Color.FromRgb(231, 84, 128);
+        switch (token.Kind)
+        {
+            case XmlTokenKind.Open:
+            case XmlTokenKind.OpenClose:
+            case XmlTokenKind.Close:
+            case XmlTokenKind.SelfClose:
+            case XmlTokenKind.CommentBegin:
+            case XmlTokenKind.CommentEnd:
+            case XmlTokenKind.CDataBegin:
+            case XmlTokenKind.CDataEnd:
+            case XmlTokenKind.Equals:
+            case XmlTokenKind.OpenProcessingInstruction:
+            case XmlTokenKind.CloseProcessingInstruction:
+            case XmlTokenKind.AttributeValue:
+                color = Color.FromRgb(0, 0, 255);
+                break;
+            case XmlTokenKind.ElementName:
+                color = Color.FromRgb(163, 21, 21);
+                break;
+            case XmlTokenKind.TextContent:
+                break;
+            case XmlTokenKind.AttributeName:
+            case XmlTokenKind.Entity:
+                color = Color.FromRgb(255, 0, 0);
+                break;
+            case XmlTokenKind.CommentText:
+                color = Color.FromRgb(0, 128, 0);
+                break;
+        }
+
+        return color;
+    }
+
+    private static Color DarkColorForToken(XmlToken token)
+    {
+        var color = Color.FromRgb(231, 84, 128);
+        switch (token.Kind)
+        {
+            case XmlTokenKind.Open:
+            case XmlTokenKind.OpenClose:
+            case XmlTokenKind.Close:
+            case XmlTokenKind.SelfClose:
+            case XmlTokenKind.CommentBegin:
+            case XmlTokenKind.CommentEnd:
+            case XmlTokenKind.CDataBegin:
+            case XmlTokenKind.CDataEnd:
+            case XmlTokenKind.Equals:
+            case XmlTokenKind.OpenProcessingInstruction:
+            case XmlTokenKind.CloseProcessingInstruction:
+            case XmlTokenKind.AttributeValue:
+                color = Color.FromRgb(86, 156, 214);
+                break;
+            case XmlTokenKind.ElementName:
+                color = Color.FromRgb(255, 255, 255);
+                break;
+            case XmlTokenKind.TextContent:
+                break;
+            case XmlTokenKind.AttributeName:
+            case XmlTokenKind.Entity:
+                color = Color.FromRgb(146, 202, 244);
+                break;
+            case XmlTokenKind.CommentText:
+                color = Color.FromRgb(87, 166, 74);
+                break;
+        }
+
+        return color;
     }
 }

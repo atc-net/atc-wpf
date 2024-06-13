@@ -3,9 +3,9 @@ namespace Atc.Wpf.Controls.ValueConverters;
 public sealed class JValueTypeToColorValueConverter : IValueConverter
 {
     public object? Convert(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture)
     {
         if (value is not JValue jValue)
@@ -15,19 +15,19 @@ public sealed class JValueTypeToColorValueConverter : IValueConverter
 
         return jValue.Type switch
         {
-            JTokenType.String => Constants.JTokenColorString,
-            JTokenType.Float => Constants.JTokenColorFloat,
-            JTokenType.Integer => Constants.JTokenColorInteger,
-            JTokenType.Boolean => Constants.JTokenColorBoolean,
-            JTokenType.Null => Constants.JTokenColorNull,
+            JTokenType.String => JsonColorSchema.StringBrush,
+            JTokenType.Float => JsonColorSchema.FloatBrush,
+            JTokenType.Integer => JsonColorSchema.IntegerBrush,
+            JTokenType.Boolean => JsonColorSchema.BooleanBrush,
+            JTokenType.Null => JsonColorSchema.NullBrush,
             _ => value,
         };
     }
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture)
         => throw new NotSupportedException(GetType().Name + " can only be used for one way conversion.");
 }

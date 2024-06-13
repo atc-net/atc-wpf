@@ -5,7 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:controls="clr-namespace:Atc.Wpf.Controls"
+    xmlns:colorSchemas="clr-namespace:Atc.Wpf.Controls.Documents.ColorSchemas;assembly=Atc.Wpf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:jLinq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -30,6 +30,17 @@
         <valueConverters:JValueTypeToColorValueConverter x:Key="JValueTypeToColorConverter" />
         <valueConverters:JArrayLengthValueConverter x:Key="JArrayLengthConverter" />
 
+        <Style x:Key="TreeViewItemStackPanel" TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=IsSelected}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <HierarchicalDataTemplate DataType="{x:Type jLinq:JArray}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
             <StackPanel Margin="1" Orientation="Horizontal">
                 <TextBlock
@@ -47,9 +58,11 @@
             x:Key="ArrayPropertyTemplate"
             DataType="{x:Type jLinq:JProperty}"
             ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
-            <StackPanel Margin="1" Orientation="Horizontal">
-                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding Path=Name, Mode=OneWay}" />
-                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
+            <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
+                <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
+                    <Run Text="{Binding Path=Name, Mode=OneWay}" />
+                    <Run Text=": " />
+                </TextBlock>
                 <TextBlock
                     Margin="0,0,5,0"
                     Padding="3,0,3,1"
@@ -65,18 +78,21 @@
             x:Key="ObjectPropertyTemplate"
             DataType="{x:Type jLinq:JProperty}"
             ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
-            <StackPanel Margin="1" Orientation="Horizontal">
-                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding Path=Name, Mode=OneWay}" />
-                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
+            <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
+                <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}" Text="{Binding Path=Name, Mode=OneWay}">
+                    <Run Text="{Binding Path=Name, Mode=OneWay}" />
+                    <Run Text=": " />
+                </TextBlock>
                 <TextBlock Foreground="#729fcf" Text="{}{ }" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
         <DataTemplate x:Key="PrimitivePropertyTemplate" DataType="{x:Type jLinq:JProperty}">
-            <StackPanel Margin="1" Orientation="Horizontal">
-                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding Path=Name, Mode=OneWay}" />
-                <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text=" : " />
-                <TextBlock Text="  " />
+            <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
+                <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
+                    <Run Text="{Binding Path=Name, Mode=OneWay}" />
+                    <Run Text=":   " />
+                </TextBlock>
                 <TextBlock
                     Foreground="{Binding Converter={StaticResource JPropertyTypeToColorConverter}}"
                     Text="{Binding Path=Value, Converter={StaticResource JValueConverter}}"
@@ -92,7 +108,7 @@
         </DataTemplate>
 
         <HierarchicalDataTemplate DataType="{x:Type jLinq:JObject}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
-            <StackPanel Margin="1" Orientation="Horizontal">
+            <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Text=" " />
                 <TextBlock Foreground="#729fcf" Text="{}{ }" />
             </StackPanel>
@@ -113,17 +129,19 @@
             PrimitivePropertyTemplate="{StaticResource PrimitivePropertyTemplate}" />
 
         <DataTemplate DataType="{x:Type jLinq:JValue}">
-            <TextBlock
-                Foreground="{Binding Converter={StaticResource JValueTypeToColorConverter}}"
-                Text="{Binding Converter={StaticResource JValueConverter}}"
-                TextWrapping="Wrap">
-                <TextBlock.Width>
-                    <MultiBinding Converter="{StaticResource MathSubtractValueConverter}">
-                        <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
-                        <Binding Source="250" />
-                    </MultiBinding>
-                </TextBlock.Width>
-            </TextBlock>
+            <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
+                <TextBlock
+                    Foreground="{Binding Converter={StaticResource JValueTypeToColorConverter}}"
+                    Text="{Binding Converter={StaticResource JValueConverter}}"
+                    TextWrapping="Wrap">
+                    <TextBlock.Width>
+                        <MultiBinding Converter="{StaticResource MathSubtractValueConverter}">
+                            <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
+                            <Binding Source="250" />
+                        </MultiBinding>
+                    </TextBlock.Width>
+                </TextBlock>
+            </StackPanel>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -150,20 +168,20 @@
                         Source="/Atc.Wpf.Controls;component/Resources/Icons/collapse.svg" />
                 </Button>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorString}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorString}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.StringBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.StringBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
                         Margin="5,0"
                         VerticalAlignment="Center"
-                        Background="{x:Static controls:Constants.JTokenColorString}"
+                        Background="{x:Static colorSchemas:JsonColorSchema.StringBrush}"
                         Foreground="WhiteSmoke"
                         Text="String" />
                 </Border>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorFloat}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorFloat}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.FloatBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.FloatBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -173,8 +191,8 @@
                         Text="Number" />
                 </Border>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorBoolean}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorBoolean}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.BooleanBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.BooleanBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -184,8 +202,8 @@
                         Text="Boolean" />
                 </Border>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorDate}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorDate}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.DateBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.DateBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -195,8 +213,8 @@
                         Text="Date" />
                 </Border>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorGuid}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorGuid}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.GuidBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.GuidBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -206,8 +224,8 @@
                         Text="Guid" />
                 </Border>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorUri}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorUri}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.UriBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.UriBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -217,8 +235,8 @@
                         Text="Uri" />
                 </Border>
                 <Border
-                    Background="{x:Static controls:Constants.JTokenColorNull}"
-                    BorderBrush="{x:Static controls:Constants.JTokenColorNull}"
+                    Background="{x:Static colorSchemas:JsonColorSchema.NullBrush}"
+                    BorderBrush="{x:Static colorSchemas:JsonColorSchema.NullBrush}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -237,13 +255,6 @@
             DockPanel.Dock="Bottom"
             IsTextSearchEnabled="True"
             ItemTemplateSelector="{StaticResource JPropertyDataTemplateSelector}">
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                    <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, FallbackValue=False}" />
-                </Style>
-            </TreeView.ItemContainerStyle>
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Click="ExpandAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
@@ -275,6 +286,13 @@
                     </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, FallbackValue=False}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
         </TreeView>
     </DockPanel>
 

@@ -2,13 +2,11 @@ namespace Atc.Wpf.Controls.TemplateSelectors;
 
 public sealed class JPropertyDataTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate? PrimitivePropertyTemplate { get; set; }
-
-    public DataTemplate? ComplexPropertyTemplate { get; set; }
+    public DataTemplate? ObjectPropertyTemplate { get; set; }
 
     public DataTemplate? ArrayPropertyTemplate { get; set; }
 
-    public DataTemplate? ObjectPropertyTemplate { get; set; }
+    public DataTemplate? PrimitivePropertyTemplate { get; set; }
 
     public override DataTemplate? SelectTemplate(
         object? item,
