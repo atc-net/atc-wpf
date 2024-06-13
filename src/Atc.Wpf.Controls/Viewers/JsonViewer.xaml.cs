@@ -8,6 +8,15 @@ public partial class JsonViewer
     public JsonViewer()
     {
         InitializeComponent();
+
+        var detectTheme = ThemeManager.Current.DetectTheme();
+        if (detectTheme is not null &&
+            Enum<ThemeMode>.TryParse(detectTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
+        {
+            ThemeMode = themeModeValue;
+        }
+
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
     }
 
     public static readonly DependencyProperty ShowActionAndInformationBarProperty = DependencyProperty.Register(
@@ -58,6 +67,21 @@ public partial class JsonViewer
         set => SetValue(DataProperty, value);
     }
 
+    public static readonly DependencyProperty ThemeModeProperty = DependencyProperty.Register(
+        nameof(ThemeMode),
+        typeof(ThemeMode),
+        typeof(JsonViewer),
+        new FrameworkPropertyMetadata(
+            ThemeMode.Light,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+            OnThemeModeChanged));
+
+    public ThemeMode ThemeMode
+    {
+        get => (ThemeMode)GetValue(ThemeModeProperty);
+        set => SetValue(ThemeModeProperty, value);
+    }
+
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public void Load(
         string json)
@@ -99,6 +123,28 @@ public partial class JsonViewer
         }
     }
 
+    private void OnThemeChanged(
+        object? sender,
+        ThemeChangedEventArgs e)
+    {
+        if (Enum<ThemeMode>.TryParse(e.NewTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
+        {
+            ThemeMode = themeModeValue;
+        }
+    }
+
+    private static void OnThemeModeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not JsonViewer jsonViewer)
+        {
+            return;
+        }
+
+        jsonViewer.Load(jsonViewer.Data);
+    }
+
     private static void OnDataChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs args)
@@ -114,8 +160,12 @@ public partial class JsonViewer
             return;
         }
 
-        var control = (JsonViewer)d;
-        control.Load(jsonData);
+        if (d is not JsonViewer jsonViewer)
+        {
+            return;
+        }
+
+        jsonViewer.Load(jsonData);
     }
 
     private void CopyToClipboard(

@@ -60,7 +60,10 @@
             Header="ColorPicker"
             IsExpanded="True"
             SamplePath="BaseControls.ColorPickerView" />
-        <sample:SampleTreeViewItem Header="RichTextBoxEx" SamplePath="BaseControls.RichTextBoxExView" />
+        <sample:SampleTreeViewItem
+            Header="RichTextBoxEx"
+            IsExpanded="True"
+            SamplePath="BaseControls.RichTextBoxExView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Color Controls">

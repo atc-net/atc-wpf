@@ -5,7 +5,7 @@ public sealed class ComplexPropertyMethodToValueConverter : IValueConverter
     public object? Convert(
         object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture)
     {
         if (value == null || parameter is not string methodName)
@@ -19,15 +19,15 @@ public sealed class ComplexPropertyMethodToValueConverter : IValueConverter
             return null;
         }
 
-        var invocationResult = methodInfo.Invoke(value, Array.Empty<object>());
+        var invocationResult = methodInfo.Invoke(value, []);
         var jTokens = (IEnumerable<JToken>)invocationResult!;
         return jTokens.First().Children();
     }
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture)
         => throw new NotSupportedException(GetType().Name + " can only be used for one way conversion.");
 }

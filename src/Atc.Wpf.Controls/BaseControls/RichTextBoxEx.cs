@@ -6,6 +6,9 @@ namespace Atc.Wpf.Controls.BaseControls;
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public class RichTextBoxEx : RichTextBox
 {
+    /// <summary>
+    /// The ThemeMode property.
+    /// </summary>
     public static readonly DependencyProperty ThemeModeProperty = DependencyProperty.Register(
         nameof(ThemeMode),
         typeof(ThemeMode),
@@ -77,7 +80,7 @@ public class RichTextBoxEx : RichTextBox
     }
 
     /// <summary>
-    /// Gets or sets the text.
+    /// Gets or sets the ThemeMode.
     /// </summary>
     /// <value>
     /// The text.
