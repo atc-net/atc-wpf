@@ -99,7 +99,7 @@ Global
 		{F4BE59B5-26CB-46DB-B290-2049EF656693} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationTail"]}
 		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
+		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationTail"]}
 	EndGlobalSection
 EndGlobal

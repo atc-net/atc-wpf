@@ -22,7 +22,7 @@ public static class WindowPlacementHelper
             using var memoryStream = new MemoryStream(xmlBytes);
             var placement = (WINDOWPLACEMENT)Serializer.Deserialize(memoryStream)!;
 
-            placement.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
+            placement.length = Marshal.SizeOf<WINDOWPLACEMENT>();
             placement.flags = 0;
             placement.showCmd = placement.showCmd == ShowMinimized
                 ? ShowNormal

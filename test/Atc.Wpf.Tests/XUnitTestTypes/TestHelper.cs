@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.XUnitTestTypes;
 
-public static class TestHelper
+internal static class TestHelper
 {
     public static bool HandlePropertyChangedEventArgs(
         PropertyChangedEventArgs eventArgs,

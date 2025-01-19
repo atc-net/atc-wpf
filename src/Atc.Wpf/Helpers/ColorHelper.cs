@@ -202,7 +202,6 @@ public static class ColorHelper
         bool includeColorHex = false,
         bool useAlphaChannel = true)
     {
-        ArgumentNullException.ThrowIfNull(color);
         ArgumentNullException.ThrowIfNull(culture);
 
         EnsureColorNamesForCulture(culture);

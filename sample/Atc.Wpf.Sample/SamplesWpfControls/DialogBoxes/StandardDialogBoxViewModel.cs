@@ -10,7 +10,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
     public StandardDialogBoxViewModel()
     {
         jsonOptions = Atc.Serialization.JsonSerializerOptionsFactory.Create();
-        jsonOptions.Converters.Add(new JsonCultureInfoToNameConverter());
+        jsonOptions.Converters.Add(new CultureInfoToNameJsonConverter());
         jsonOptions.Converters.Add(new JsonColorToNameConverter());
     }
 

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.XUnitTestTypes;
 
-public class TestMainWindowViewModelBase : MainWindowViewModelBase
+internal sealed class TestMainWindowViewModelBase : MainWindowViewModelBase
 {
     private bool isBoolProperty;
     private bool isBoolPropertyWithExpression;

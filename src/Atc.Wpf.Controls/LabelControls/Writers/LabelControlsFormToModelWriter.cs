@@ -24,10 +24,10 @@ public static class LabelControlsFormToModelWriter
         var serializerOptions = JsonSerializerOptionsFactory.Create();
         serializerOptions.PropertyNamingPolicy = null;
         serializerOptions.Converters.Add(new JsonColorToHexConverter());
-        serializerOptions.Converters.Add(new JsonCultureInfoToNameConverter());
-        serializerOptions.Converters.Add(new JsonDirectoryInfoToFullNameConverter());
-        serializerOptions.Converters.Add(new JsonFileInfoToFullNameConverter());
-        serializerOptions.Converters.Add(new JsonUriToAbsoluteUriConverter());
+        serializerOptions.Converters.Add(new CultureInfoToNameJsonConverter());
+        serializerOptions.Converters.Add(new DirectoryInfoToFullNameJsonConverter());
+        serializerOptions.Converters.Add(new FileInfoToFullNameJsonConverter());
+        serializerOptions.Converters.Add(new UriToAbsoluteUriJsonConverter());
 
         return Update(instance, keyValues, serializerOptions);
     }
