@@ -4,6 +4,7 @@ public static class BitmapImageHelper
 {
     private const string Base64Header = "base64,";
 
+    [SuppressMessage("X", "S1696:Do not catch NullReferenceException", Justification = "OK.")]
     public static BitmapImage? ConvertFromBase64(
         string base64Value)
     {
@@ -20,24 +21,26 @@ public static class BitmapImageHelper
 
         var imageBytes = Convert.FromBase64String(base64Value);
 
-        var bitmap = new BitmapImage();
         try
         {
-            using (var ms = new MemoryStream(imageBytes))
-            {
-                ms.Position = 0;
-                bitmap.BeginInit();
-                bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.UriSource = null;
-                bitmap.StreamSource = ms;
-                bitmap.EndInit();
-            }
+            using var ms = new MemoryStream(imageBytes);
+            ms.Position = 0;
 
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = null;
+            bitmap.StreamSource = ms;
+            bitmap.EndInit();
             bitmap.Freeze();
             return bitmap;
         }
         catch (NotSupportedException)
+        {
+            return null;
+        }
+        catch (NullReferenceException)
         {
             return null;
         }
