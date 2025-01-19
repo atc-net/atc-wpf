@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.XUnitTestTypes;
 
-public class ComplexData
+internal sealed class ComplexData
 {
     public Color? MyColor { get; set; }
 

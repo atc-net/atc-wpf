@@ -87,11 +87,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
             else if (value is not null)
             {
                 inputUri = uriConverter.ConvertFrom(value) as Uri;
-                if (inputUri is null)
-                {
-                    inputUri = ResolveUri(value.ToString()!);
-                }
-                else if (!inputUri.IsAbsoluteUri)
+                if (inputUri is null || !inputUri.IsAbsoluteUri)
                 {
                     inputUri = ResolveUri(value.ToString()!);
                 }

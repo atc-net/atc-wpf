@@ -182,6 +182,7 @@ internal sealed class TextShape : Shape
             return tag;
         }
 
+        [SuppressMessage("Usage", "CA1514:Uses a redundant length calculation that can be removed", Justification = "OK.")]
         [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "OK.")]
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
         private static Element? Parse(Svg svg, string text, ref int curPos, Element? parent, Element? curTag)

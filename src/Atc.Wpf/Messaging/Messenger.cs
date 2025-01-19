@@ -167,6 +167,7 @@ public class Messenger : IMessenger
     /// Sets the Messenger's default (static) instance to null.
     /// </summary>
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "OK - By design.")]
+    [SuppressMessage("Performance", "S2325:Mark members as static", Justification = "OK - By design.")]
     public void ResetAll()
     {
         Reset();

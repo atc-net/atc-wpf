@@ -61,6 +61,7 @@ namespace Atc.Wpf.Theming.Controls
         public const string StateHidden = "Hidden";
         public const string GroupVisibility = "VisibilityStates";
 
+        [SuppressMessage("Minor Code Smell", "S3236:Remove this argument from the method call; it hides the caller information", Justification = "OK.")]
         [SuppressMessage("Minor Code Smell", "S3267:Loops should be simplified with \"LINQ\" expressions", Justification = "OK.")]
         public static void GoToState(Control control, bool useTransitions, params string[] stateNames)
         {

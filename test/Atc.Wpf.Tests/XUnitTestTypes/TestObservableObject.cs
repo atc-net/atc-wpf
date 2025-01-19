@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.XUnitTestTypes;
 
-public class TestObservableObject : ObservableObject
+internal sealed class TestObservableObject : ObservableObject
 {
     private bool isBoolProperty;
     private bool isBoolPropertyWithExpression;

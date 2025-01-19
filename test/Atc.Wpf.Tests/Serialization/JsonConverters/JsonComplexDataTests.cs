@@ -7,8 +7,8 @@ public class JsonComplexDataTests
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        jsonSerializerOptions.Converters.Add(new JsonColorToHexConverter());
-        jsonSerializerOptions.Converters.Add(new JsonSolidColorBrushToHexConverter());
+        jsonSerializerOptions.Converters.Add(new ColorToHexJsonConverter());
+        jsonSerializerOptions.Converters.Add(new SolidColorBrushToHexJsonConverter());
 
         var data = new ComplexData
         {
@@ -37,8 +37,8 @@ public class JsonComplexDataTests
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        jsonSerializerOptions.Converters.Add(new JsonColorToHexConverter());
-        jsonSerializerOptions.Converters.Add(new JsonSolidColorBrushToHexConverter());
+        jsonSerializerOptions.Converters.Add(new ColorToHexJsonConverter());
+        jsonSerializerOptions.Converters.Add(new SolidColorBrushToHexJsonConverter());
 
         const string data = "{\r\n" +
                             "  \"myColor\": \"#FFFF0000\",\r\n" +
@@ -67,8 +67,8 @@ public class JsonComplexDataTests
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        jsonSerializerOptions.Converters.Add(new JsonColorToNameConverter());
-        jsonSerializerOptions.Converters.Add(new JsonSolidColorBrushToNameConverter());
+        jsonSerializerOptions.Converters.Add(new ColorToNameJsonConverter());
+        jsonSerializerOptions.Converters.Add(new SolidColorBrushToNameJsonConverter());
 
         var data = new ComplexData
         {
@@ -97,8 +97,8 @@ public class JsonComplexDataTests
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        jsonSerializerOptions.Converters.Add(new JsonColorToNameConverter());
-        jsonSerializerOptions.Converters.Add(new JsonSolidColorBrushToNameConverter());
+        jsonSerializerOptions.Converters.Add(new ColorToNameJsonConverter());
+        jsonSerializerOptions.Converters.Add(new SolidColorBrushToNameJsonConverter());
 
         const string data = "{\r\n" +
                             "  \"myColor\": \"Red\",\r\n" +

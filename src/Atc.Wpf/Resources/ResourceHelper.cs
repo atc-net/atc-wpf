@@ -46,12 +46,17 @@ internal static class ResourceHelper
             }
             else
             {
+                using var stream = assembly.GetManifestResourceStream(flagLocation)!;
+                stream.Position = 0;
+
                 var bitmap = new BitmapImage();
-                using var stream = assembly.GetManifestResourceStream(flagLocation);
                 bitmap.BeginInit();
-                bitmap.StreamSource = stream;
+                bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.UriSource = null;
+                bitmap.StreamSource = stream;
                 bitmap.EndInit();
+                bitmap.Freeze();
 
                 flagBitmaps.Add(flagLocation, bitmap);
 

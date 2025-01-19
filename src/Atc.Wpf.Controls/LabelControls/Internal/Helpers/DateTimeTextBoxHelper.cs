@@ -10,8 +10,6 @@ internal static class DateTimeTextBoxHelper
         DatePickerFormat datePickerFormat,
         CultureInfo cultureInfo)
     {
-        ArgumentNullException.ThrowIfNull(dateTime);
-        ArgumentNullException.ThrowIfNull(datePickerFormat);
         ArgumentNullException.ThrowIfNull(cultureInfo);
 
         if (datePickerFormat == DatePickerFormat.Short ||

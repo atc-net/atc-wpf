@@ -1,16 +1,16 @@
 namespace Atc.Wpf.Serialization.JsonConverters;
 
-public class JsonSolidColorBrushToNameConverter : JsonConverter<SolidColorBrush?>
+public class SolidColorBrushToHexJsonConverter : JsonConverter<SolidColorBrush?>
 {
     public override SolidColorBrush? Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options)
     {
-        var colorName = reader.GetString();
-        return string.IsNullOrEmpty(colorName)
+        var hexaColor = reader.GetString();
+        return string.IsNullOrEmpty(hexaColor)
             ? null
-            : SolidColorBrushHelper.GetBrushFromName(colorName, CultureInfo.InvariantCulture);
+            : SolidColorBrushHelper.GetBrushFromHex(hexaColor);
     }
 
     public override void Write(
@@ -20,21 +20,15 @@ public class JsonSolidColorBrushToNameConverter : JsonConverter<SolidColorBrush?
     {
         ArgumentNullException.ThrowIfNull(writer);
 
+        ArgumentNullException.ThrowIfNull(writer);
+
         if (string.IsNullOrEmpty(value?.ToString(GlobalizationConstants.EnglishCultureInfo)))
         {
             writer.WriteNullValue();
         }
         else
         {
-            var brushName = SolidColorBrushHelper.GetBrushKeyFromBrush(value);
-            if (string.IsNullOrEmpty(brushName))
-            {
-                writer.WriteNullValue();
-            }
-            else
-            {
-                writer.WriteStringValue(brushName);
-            }
+            writer.WriteStringValue(value.ToString(GlobalizationConstants.EnglishCultureInfo));
         }
     }
 }
