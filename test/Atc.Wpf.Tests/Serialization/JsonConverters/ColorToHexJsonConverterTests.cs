@@ -1,16 +1,16 @@
 namespace Atc.Wpf.Tests.Serialization.JsonConverters;
 
 [Collection("Sequential")]
-public class JsonColorToNameConverterTests
+public class ColorToHexJsonConverterTests
 {
     [StaTheory]
-    [InlineData("Red")]
-    public void Read_ShouldReturnExpectedColor(string colorName)
+    [InlineData("#FFFF0000")]
+    public void Read_ShouldReturnExpectedColor(string colorAsHex)
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        var jsonConverter = new JsonColorToNameConverter();
-        var json = $"\"{colorName}\"";
+        var jsonConverter = new ColorToHexJsonConverter();
+        var json = $"\"{colorAsHex}\"";
         var utf8JsonReader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json));
 
         utf8JsonReader.Read();
@@ -20,7 +20,7 @@ public class JsonColorToNameConverterTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(ColorHelper.GetColorFromName(colorName, CultureInfo.InvariantCulture), result);
+        Assert.Equal(colorAsHex, result.ToString());
     }
 
     [StaTheory]
@@ -29,7 +29,7 @@ public class JsonColorToNameConverterTests
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        var jsonConverter = new JsonColorToNameConverter();
+        var jsonConverter = new ColorToHexJsonConverter();
         var memoryStream = new MemoryStream();
         using var utf8JsonWriter = new Utf8JsonWriter(memoryStream);
         var color = ColorHelper.GetColorFromName(colorName, CultureInfo.InvariantCulture) ?? Colors.Transparent;
@@ -42,6 +42,6 @@ public class JsonColorToNameConverterTests
         var result = Encoding.UTF8.GetString(memoryStream.ToArray());
 
         Assert.NotNull(result);
-        Assert.Equal($"\"{ColorHelper.GetColorNameFromColor(color)}\"", result);
+        Assert.Equal($"\"{color}\"", result);
     }
 }

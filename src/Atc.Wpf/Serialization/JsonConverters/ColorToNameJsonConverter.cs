@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Serialization.JsonConverters;
 
-public class JsonColorToNameConverter : JsonConverter<Color?>
+public class ColorToNameJsonConverter : JsonConverter<Color?>
 {
     public override Color? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

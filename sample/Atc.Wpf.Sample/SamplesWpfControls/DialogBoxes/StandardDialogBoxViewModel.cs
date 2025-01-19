@@ -11,7 +11,7 @@ public class StandardDialogBoxViewModel : ViewModelBase
     {
         jsonOptions = Atc.Serialization.JsonSerializerOptionsFactory.Create();
         jsonOptions.Converters.Add(new CultureInfoToNameJsonConverter());
-        jsonOptions.Converters.Add(new JsonColorToNameConverter());
+        jsonOptions.Converters.Add(new ColorToNameJsonConverter());
     }
 
     public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);

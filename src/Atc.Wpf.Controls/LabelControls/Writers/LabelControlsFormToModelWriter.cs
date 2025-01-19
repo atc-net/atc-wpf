@@ -23,7 +23,7 @@ public static class LabelControlsFormToModelWriter
 
         var serializerOptions = JsonSerializerOptionsFactory.Create();
         serializerOptions.PropertyNamingPolicy = null;
-        serializerOptions.Converters.Add(new JsonColorToHexConverter());
+        serializerOptions.Converters.Add(new ColorToHexJsonConverter());
         serializerOptions.Converters.Add(new CultureInfoToNameJsonConverter());
         serializerOptions.Converters.Add(new DirectoryInfoToFullNameJsonConverter());
         serializerOptions.Converters.Add(new FileInfoToFullNameJsonConverter());

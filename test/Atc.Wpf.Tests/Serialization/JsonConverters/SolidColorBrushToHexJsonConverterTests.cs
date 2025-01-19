@@ -1,16 +1,16 @@
 namespace Atc.Wpf.Tests.Serialization.JsonConverters;
 
 [Collection("Sequential")]
-public class JsonColorToHexConverterTests
+public class SolidColorBrushToHexJsonConverterTests
 {
     [StaTheory]
     [InlineData("#FFFF0000")]
-    public void Read_ShouldReturnExpectedColor(string colorAsHex)
+    public void Read_ShouldReturnExpectedSolidColorBrush(string brushAsHex)
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        var jsonConverter = new JsonColorToHexConverter();
-        var json = $"\"{colorAsHex}\"";
+        var jsonConverter = new SolidColorBrushToHexJsonConverter();
+        var json = $"\"{brushAsHex}\"";
         var utf8JsonReader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json));
 
         utf8JsonReader.Read();
@@ -20,28 +20,32 @@ public class JsonColorToHexConverterTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(colorAsHex, result.ToString());
+        Assert.Equal(
+            brushAsHex,
+            result.ToString(GlobalizationConstants.EnglishCultureInfo));
     }
 
     [StaTheory]
     [InlineData("Red")]
-    public void Write_ShouldWriteColorNameToUtf8JsonWriter(string colorName)
+    public void Write_ShouldWriteSolidColorBrushNameToUtf8JsonWriter(string brushName)
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
-        var jsonConverter = new JsonColorToHexConverter();
+        var jsonConverter = new SolidColorBrushToHexJsonConverter();
         var memoryStream = new MemoryStream();
         using var utf8JsonWriter = new Utf8JsonWriter(memoryStream);
-        var color = ColorHelper.GetColorFromName(colorName, CultureInfo.InvariantCulture) ?? Colors.Transparent;
+        var solidColorBrush = SolidColorBrushHelper.GetBrushFromName(brushName, CultureInfo.InvariantCulture) ?? Brushes.Transparent;
 
         // Act
-        jsonConverter.Write(utf8JsonWriter, color, jsonSerializerOptions);
+        jsonConverter.Write(utf8JsonWriter, solidColorBrush, jsonSerializerOptions);
 
         // Assert
         utf8JsonWriter.Flush();
         var result = Encoding.UTF8.GetString(memoryStream.ToArray());
 
         Assert.NotNull(result);
-        Assert.Equal($"\"{color}\"", result);
+        Assert.Equal(
+            $"\"{solidColorBrush}\"",
+            result);
     }
 }
