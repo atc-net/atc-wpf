@@ -7,5 +7,6 @@ global using Atc.Wpf.SourceGenerators.Inspectors;
 global using Atc.Wpf.SourceGenerators.Models;
 
 global using Microsoft.CodeAnalysis;
+global using Microsoft.CodeAnalysis.CSharp;
 global using Microsoft.CodeAnalysis.CSharp.Syntax;
 global using Microsoft.CodeAnalysis.Text;
