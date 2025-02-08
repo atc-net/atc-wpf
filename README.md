@@ -32,13 +32,13 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 ## NuGet Packages Provided in this Repository
 
-| Nuget package       | Description                                         | Dependencies              |
-|---------------------|-----------------------------------------------------|---------------------------|
-| Atc.Wpf             | Base Controls, ValueConverters, Extensions etc.     | Atc                       |
-| Atc.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                   |
-| Atc.Theming         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                   |
-| Atc.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming |
-| Atc.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming |
+| Nuget package           | Description                                         | Dependencies                   |
+|-------------------------|-----------------------------------------------------|--------------------------------|
+| Atc.Wpf                 | Base Controls, ValueConverters, Extensions etc.     | Atc & Atc.Wpf.SourceGenerators |
+| Atc.Wpf.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming      |
+| Atc.Wpf.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming      |
+| Atc.Wpf.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                        |
+| Atc.Wpf.Theming         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                        |
 
 ## Demonstration Application
 
