@@ -14,14 +14,11 @@ internal static class WinApiHelper
     {
         user32 ??= PInvoke.LoadLibrary(System.IO.Path.Combine(Environment.SystemDirectory, "User32.dll"));
 
-        var chars = new char[256];
+        Span<char> buffer = new char[256];
 
-        fixed (char* pChars = chars)
-        {
-            return PInvoke.LoadString(user32, id, pChars, chars.Length) == 0
-                ? $"String with id '{id}' could not be found."
-                : new string(chars).Replace("&", string.Empty, StringComparison.Ordinal);
-        }
+        var result = PInvoke.LoadString(user32, id, buffer, buffer.Length);
+        return result == 0 ? $"String with id '{id}' could not be found." :
+            new string(buffer.Slice(0, result)).Replace("&", string.Empty, StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -42,17 +39,18 @@ internal static class WinApiHelper
 
         // Try to get the monitor from where the owner stays and use the working area for window size properties
         var monitor = PInvoke.MonitorFromWindow(new HWND(source.Handle), MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
-        if (monitor != IntPtr.Zero)
+        if (monitor == IntPtr.Zero)
         {
-            var monitorInfo = new MONITORINFO
-            {
-                cbSize = (uint)Marshal.SizeOf<MONITORINFO>(),
-            };
-            PInvoke.GetMonitorInfo(monitor, &monitorInfo);
-            return new Size(monitorInfo.rcWork.right - monitorInfo.rcWork.left, monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
+            return default;
         }
 
-        return default;
+        var monitorInfo = new MONITORINFO
+        {
+            cbSize = (uint)Marshal.SizeOf<MONITORINFO>(),
+        };
+
+        PInvoke.GetMonitorInfo(monitor, &monitorInfo);
+        return new Size(monitorInfo.rcWork.right - monitorInfo.rcWork.left, monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
     }
 
     /// <summary>
@@ -118,7 +116,7 @@ internal static class WinApiHelper
             source.RootVisual is null ||
             source.Handle == IntPtr.Zero)
         {
-            return default;
+            return null;
         }
 
         var bufferSize = PInvoke.GetWindowTextLength(new HWND(source.Handle)) + 1;
