@@ -119,8 +119,9 @@ internal static class AttributeDataExtensions
         }
 
         var alsoNotifyPropertyAttributes = attributeData
-            .Where(x => x.AttributeClass is not null &&
-                        x.AttributeClass.Name == NameConstants.AlsoNotifyPropertyAttribute)
+            .Where(x => x.AttributeClass?.Name
+                is NameConstants.AlsoNotifyPropertyAttribute
+                or NameConstants.AlsoNotifyProperty)
             .ToList();
 
         var alsoNotifyPropertyNamesToInvalidate = alsoNotifyPropertyAttributes.ExtractConstructorArgumentValues();

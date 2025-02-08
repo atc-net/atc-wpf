@@ -206,7 +206,9 @@ public class SampleViewerViewModel : ViewModelBase
 
             if (readmeMarkdownFile is null)
             {
-                var type = FindCustomTypeByName(className);
+                var type = FindCustomTypeByName(classViewName) ??
+                           FindCustomTypeByName(className);
+
                 if (type?.FullName is not null)
                 {
                     var sa = type.FullName.Split('.', StringSplitOptions.RemoveEmptyEntries);
@@ -214,6 +216,11 @@ public class SampleViewerViewModel : ViewModelBase
                     {
                         var classFolder = sa[^2];
                         readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.FullName.EndsWith($"\\{classFolder}\\@Readme.md", StringComparison.OrdinalIgnoreCase));
+                        if (readmeMarkdownFile is null && classFolder.EndsWith('s'))
+                        {
+                            classFolder = classFolder[..^1];
+                            readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.FullName.EndsWith($"\\{classFolder}\\@Readme.md", StringComparison.OrdinalIgnoreCase));
+                        }
                     }
                 }
             }
@@ -245,7 +252,9 @@ public class SampleViewerViewModel : ViewModelBase
         {
             var exportedTypes = customAssembly.GetExportedTypes();
 
-            type = exportedTypes.FirstOrDefault(x => x.Name.Equals(className, StringComparison.Ordinal));
+            type = exportedTypes.FirstOrDefault(x => x.Name.Equals(className, StringComparison.Ordinal) &&
+                                                     !x.FullName!.Contains("Models", StringComparison.Ordinal) &&
+                                                     !x.FullName!.Contains("XUnitTestTypes", StringComparison.Ordinal));
 
             if (type is not null)
             {

@@ -5,6 +5,7 @@
     <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <IsPackable>false</IsPackable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -59,6 +60,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Atc.Wpf.SourceGenerators\Atc.Wpf.SourceGenerators.csproj"
+                      ReferenceOutputAssembly="false"
+                      OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />

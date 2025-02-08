@@ -1,3 +1,4 @@
+// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.SourceGenerators.Generators;
 
 [Generator]
@@ -27,8 +28,19 @@ public class ViewModelGenerator : IIncrementalGenerator
 
     private static bool IsSyntaxTargetViewModel(
         SyntaxNode syntaxNode)
-        => syntaxNode is ClassDeclarationSyntax classDeclarationSyntax &&
-            classDeclarationSyntax.Identifier.Text.Contains(NameConstants.ViewModel);
+    {
+        if (!syntaxNode.HasPublicPartialClassDeclarationWithIdentifierContainsViewModel())
+        {
+            return false;
+        }
+
+        if (!syntaxNode.HasClassDeclarationWithValidObservableFields())
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private static ViewModelToGenerate? GetSemanticTargetViewModelToGenerate(
         GeneratorSyntaxContext context)

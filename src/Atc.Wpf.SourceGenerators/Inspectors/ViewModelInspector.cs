@@ -30,8 +30,9 @@ internal static class ViewModelInspector
         var attributes = fieldSymbol.GetAttributes();
 
         var observablePropertyAttribute = attributes
-            .FirstOrDefault(x => x.AttributeClass is not null &&
-                                 x.AttributeClass.Name == NameConstants.ObservablePropertyAttribute);
+            .FirstOrDefault(x => x.AttributeClass?.Name
+                is NameConstants.ObservablePropertyAttribute
+                or NameConstants.ObservableProperty);
 
         if (observablePropertyAttribute is null)
         {
