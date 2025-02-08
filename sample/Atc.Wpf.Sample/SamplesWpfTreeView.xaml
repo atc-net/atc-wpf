@@ -53,6 +53,10 @@
         </TreeViewItem>
     </TreeViewItem>
 
+    <TreeViewItem Header="Mvvm">
+        <sample:SampleTreeViewItem Header="PersonView - SourceGenerator" SamplePath="Mvvm.PersonView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Threading">
         <sample:SampleTreeViewItem Header="Debounce" SamplePath="Threading.DebounceView" />
     </TreeViewItem>
