@@ -118,17 +118,17 @@ internal static class AttributeDataExtensions
             result.AddRange(observablePropertyNamesToInvalidate);
         }
 
-        var alsoNotifyPropertyAttributes = attributeData
+        var notifyPropertyChangedForAttributes = attributeData
             .Where(x => x.AttributeClass?.Name
-                is NameConstants.AlsoNotifyPropertyAttribute
-                or NameConstants.AlsoNotifyProperty)
+                is NameConstants.NotifyPropertyChangedForAttribute
+                or NameConstants.NotifyPropertyChangedFor)
             .ToList();
 
-        var alsoNotifyPropertyNamesToInvalidate = alsoNotifyPropertyAttributes.ExtractConstructorArgumentValues();
-        if (alsoNotifyPropertyNamesToInvalidate is not null)
+        var notifyPropertyChangedForNamesToInvalidate = notifyPropertyChangedForAttributes.ExtractConstructorArgumentValues();
+        if (notifyPropertyChangedForNamesToInvalidate is not null)
         {
             result ??= [];
-            result.AddRange(alsoNotifyPropertyNamesToInvalidate);
+            result.AddRange(notifyPropertyChangedForNamesToInvalidate);
         }
 
         return result;

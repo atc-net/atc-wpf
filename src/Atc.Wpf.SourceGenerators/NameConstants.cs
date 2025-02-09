@@ -7,8 +7,8 @@ internal static class NameConstants
     public const string ObservablePropertyAttribute = nameof(ObservablePropertyAttribute);
     public const string ObservableProperty = nameof(ObservableProperty);
 
-    public const string AlsoNotifyPropertyAttribute = nameof(AlsoNotifyPropertyAttribute);
-    public const string AlsoNotifyProperty = nameof(AlsoNotifyProperty);
+    public const string NotifyPropertyChangedForAttribute = nameof(NotifyPropertyChangedForAttribute);
+    public const string NotifyPropertyChangedFor = nameof(NotifyPropertyChangedFor);
 
     public const string PropertyName = nameof(PropertyName);
 

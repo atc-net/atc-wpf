@@ -4,13 +4,15 @@ namespace Atc.Wpf.Sample.SamplesWpf.Mvvm;
 public partial class PersonViewModel : ViewModelBase
 {
     [ObservableProperty]
-    [AlsoNotifyProperty(nameof(FullName))]
+    [NotifyPropertyChangedFor(nameof(FullName))]
+    [Required]
+    [MinLength(2)]
     private string firstName = "John";
 
     [ObservableProperty]
-    [AlsoNotifyProperty(nameof(FullName), nameof(Age))]
-    [AlsoNotifyProperty(nameof(Email))]
-    [AlsoNotifyProperty(nameof(TheProperty))]
+    [NotifyPropertyChangedFor(nameof(FullName), nameof(Age))]
+    [NotifyPropertyChangedFor(nameof(Email))]
+    [NotifyPropertyChangedFor(nameof(TheProperty))]
     private string? lastName = "Doe";
 
     [ObservableProperty]
