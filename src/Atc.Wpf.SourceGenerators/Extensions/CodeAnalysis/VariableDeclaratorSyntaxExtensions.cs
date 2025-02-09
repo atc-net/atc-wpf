@@ -1,22 +1,10 @@
-namespace Atc.Wpf.SourceGenerators.Extensions;
+namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
 internal static class VariableDeclaratorSyntaxExtensions
 {
     public static string GetFieldName(
         this VariableDeclaratorSyntax variableDeclaratorSyntax)
-    {
-        var fieldName = variableDeclaratorSyntax.Identifier.Text;
-        if (fieldName.StartsWith("m_", StringComparison.Ordinal))
-        {
-            fieldName = fieldName.Substring(2);
-        }
-        else if (fieldName.StartsWith("_", StringComparison.Ordinal))
-        {
-            fieldName = fieldName.Substring(1);
-        }
-
-        return fieldName;
-    }
+        => variableDeclaratorSyntax.Identifier.Text.StripPrefixFromField();
 
     public static bool HasValidBackingFieldName(
         this VariableDeclaratorSyntax variableDeclaratorSyntax)

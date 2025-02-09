@@ -5,6 +5,7 @@ internal static class ViewModelInspector
     internal static ViewModelInspectorResult Inspect(
         INamedTypeSymbol viewModelClassSymbol)
     {
+        var relayCommandsToGenerate = new List<RelayCommandToGenerate>();
         var propertiesToGenerate = new List<PropertyToGenerate>();
 
         var viewModelMemberSymbols = viewModelClassSymbol.GetMembers();
@@ -13,6 +14,9 @@ internal static class ViewModelInspector
         {
             switch (memberSymbol)
             {
+                case IMethodSymbol methodSymbol:
+                    AppendRelayCommandsToGenerate(methodSymbol, relayCommandsToGenerate);
+                    break;
                 case IFieldSymbol fieldSymbol:
                     AppendPropertiesToGenerate(fieldSymbol, propertiesToGenerate);
                     break;
@@ -20,7 +24,48 @@ internal static class ViewModelInspector
         }
 
         return new ViewModelInspectorResult(
+            relayCommandsToGenerate,
             propertiesToGenerate);
+    }
+
+    private static void AppendRelayCommandsToGenerate(
+        IMethodSymbol methodSymbol,
+        List<RelayCommandToGenerate> relayCommandsToGenerate)
+    {
+        var relayCommandAttribute = methodSymbol.GetAttributes()
+            .FirstOrDefault(attr => attr.AttributeClass?.Name
+                is NameConstants.RelayCommandAttribute
+                or NameConstants.RelayCommand);
+
+        if (relayCommandAttribute is null)
+        {
+            return;
+        }
+
+        var commandName = relayCommandAttribute.ExtractRelayCommandName(methodSymbol.Name);
+        var canExecuteMethodName = relayCommandAttribute.ExtractRelayCommandCanExecuteName();
+
+        string? parameterType = null;
+        switch (methodSymbol.Parameters.Length)
+        {
+            case 1:
+                parameterType = methodSymbol.Parameters[0].Type.ToDisplayString();
+                break;
+            case > 1:
+                return;
+        }
+
+        var isAsync = methodSymbol.ReturnType.Name
+            is NameConstants.Task
+            or NameConstants.ValueTask;
+
+        relayCommandsToGenerate.Add(
+            new RelayCommandToGenerate(
+                commandName,
+                methodSymbol.Name,
+                parameterType,
+                canExecuteMethodName,
+                isAsync));
     }
 
     private static void AppendPropertiesToGenerate(

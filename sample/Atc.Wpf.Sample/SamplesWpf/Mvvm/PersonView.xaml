@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvvm="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Mvvm"
-    d:DesignHeight="450"
+    d:DesignHeight="550"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
@@ -47,6 +47,14 @@
                     <atc:LabelTextBox LabelText="TheProperty" Text="{Binding Path=TheProperty}" />
 
                     <atc:LabelTextInfo LabelText="FullName" Text="{Binding Path=FullName}" />
+
+                    <atc:UniformSpacingPanel
+                        HorizontalAlignment="Center"
+                        HorizontalSpacing="50"
+                        Orientation="Horizontal">
+                        <Button Command="{Binding Path=ShowDataCommand}" Content="Show data" />
+                        <Button Command="{Binding Path=SaveHandlerCommand}" Content="Save data" />
+                    </atc:UniformSpacingPanel>
 
                 </atc:UniformSpacingPanel>
 

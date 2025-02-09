@@ -4,7 +4,7 @@ namespace Atc.Wpf.SourceGenerators.Tests.Generators;
 public class ViewModelGeneratorTests : GeneratorTestBase
 {
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_IsWellDefined()
+    public void GeneratorViewModel_ObservableProperty_Name()
     {
         const string inputCode =
             """
@@ -37,6 +37,50 @@ public class ViewModelGeneratorTests : GeneratorTestBase
             
                         name = value;
                         RaisePropertyChanged(nameof(Name));
+                    }
+                }
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_ObservableProperty_CustomName()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [ObservableProperty("MyName)]
+                private string name;
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public string MyName
+                {
+                    get => name;
+                    set
+                    {
+                        if (name == value)
+                        {
+                            return;
+                        }
+            
+                        name = value;
+                        RaisePropertyChanged(nameof(MyName));
                     }
                 }
             }
@@ -162,7 +206,7 @@ public class ViewModelGeneratorTests : GeneratorTestBase
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperties_With_NotifyPropertiesChangedFor_IsWellDefined()
+    public void GeneratorViewModel_ObservableProperties_With_NotifyPropertiesChangedFor()
     {
         const string inputCode =
             """
@@ -213,6 +257,7 @@ public class ViewModelGeneratorTests : GeneratorTestBase
 
                         firstName = value;
                         RaisePropertyChanged(nameof(FirstName));
+                        RaisePropertyChanged(nameof(FullName));
                     }
                 }
 
@@ -228,6 +273,10 @@ public class ViewModelGeneratorTests : GeneratorTestBase
 
                         lastName = value;
                         RaisePropertyChanged(nameof(LastName));
+                        RaisePropertyChanged(nameof(FullName));
+                        RaisePropertyChanged(nameof(Age));
+                        RaisePropertyChanged(nameof(Email));
+                        RaisePropertyChanged(nameof(TheProperty));
                     }
                 }
 
@@ -261,7 +310,7 @@ public class ViewModelGeneratorTests : GeneratorTestBase
                     }
                 }
 
-                public string? MyTestProperty
+                public string? TheProperty
                 {
                     get => myTestProperty;
                     set
@@ -272,9 +321,510 @@ public class ViewModelGeneratorTests : GeneratorTestBase
                         }
 
                         myTestProperty = value;
-                        RaisePropertyChanged(nameof(MyTestProperty));
+                        RaisePropertyChanged(nameof(TheProperty));
+                        RaisePropertyChanged(nameof(FullName));
+                        RaisePropertyChanged(nameof(Age));
                     }
                 }
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_NoParameter()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand]
+                public void Save()
+                {
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand SaveCommand => new RelayCommand(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_NoParameter_CustomName()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand("MySave")]
+                public void Save()
+                {
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand MySaveCommand => new RelayCommand(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_ParameterString()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand]
+                public void Save(string val)
+                {
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand<string> SaveCommand => new RelayCommand<string>(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_ParameterInt()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand]
+                public void Save(int val)
+                {
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand<int> SaveCommand => new RelayCommand<int>(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_NoParameter_CanExecute()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand(CanExecute = nameof(CanSave))]
+                public void Save()
+                {
+                }
+                
+                public bool CanSave()
+                {
+                    return true;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand SaveCommand => new RelayCommand(Save, CanSave);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_ParameterString_CanExecute()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand(CanExecute = nameof(CanSave))]
+                public void Save(string val)
+                {
+                }
+                
+                public bool CanSave()
+                {
+                    return true;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand<string> SaveCommand => new RelayCommand<string>(Save, CanSave);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_RelayCommand_ParameterInt_CanExecute()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand(CanExecute = nameof(CanSave))]
+                public void Save(int val)
+                {
+                }
+                
+                public bool CanSave()
+                {
+                    return true;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommand<int> SaveCommand => new RelayCommand<int>(Save, CanSave);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_NoParameter()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand]
+                public Task Save()
+                {
+                    return Task.CompletedTask;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync SaveCommand => new RelayCommandAsync(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_NoParameter_CustomName()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand("MySave")]
+                public Task Save()
+                {
+                    return Task.CompletedTask;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync MySaveCommand => new RelayCommandAsync(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_ParameterString()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand]
+                public Task Save(string val)
+                {
+                    return Task.CompletedTask;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync<string> SaveCommand => new RelayCommandAsync<string>(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_ParameterInt()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand]
+                public Task Save(int val)
+                {
+                    return Task.CompletedTask;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync<int> SaveCommand => new RelayCommandAsync<int>(Save);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_NoParameter_CanExecute()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand(CanExecute = nameof(CanSave))]
+                public Task Save()
+                {
+                    return Task.CompletedTask;
+                }
+                
+                public bool CanSave()
+                {
+                    return true;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync SaveCommand => new RelayCommandAsync(Save, CanSave);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_ParameterString_CanExecute()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand(CanExecute = nameof(CanSave))]
+                public Task Save(string val)
+                {
+                    return Task.CompletedTask;
+                }
+                
+                public bool CanSave(string val)
+                {
+                    return true;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync<string> SaveCommand => new RelayCommandAsync<string>(Save, CanSave);
+            }
+            """;
+
+        var generatorResult = GeneratorViewModel(inputCode);
+
+        AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
+    }
+
+    [Fact]
+    public void GeneratorViewModel_AsyncRelayCommand_ParameterInt_CanExecute()
+    {
+        const string inputCode =
+            """
+            namespace TestNamespace;
+
+            public partial class TestViewModel : ViewModelBase
+            {
+                [RelayCommand(CanExecute = nameof(CanSave))]
+                public Task Save(int val)
+                {
+                    return Task.CompletedTask;
+                }
+
+                public bool CanSave(int val)
+                {
+                    return true;
+                }
+            }
+            """;
+
+        const string expectedCode =
+            """
+            #nullable enable
+
+            namespace TestNamespace;
+
+            public partial class TestViewModel
+            {
+                public IRelayCommandAsync<int> SaveCommand => new RelayCommandAsync<int>(Save, CanSave);
             }
             """;
 
