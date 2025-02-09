@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SourceGenerators.Extensions;
+namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
 internal static class GeneratorSyntaxContextExtensions
 {

@@ -1,10 +1,14 @@
 namespace Atc.Wpf.SourceGenerators.Models;
 
 internal sealed class ViewModelInspectorResult(
+    List<RelayCommandToGenerate> relayCommandsToGenerate,
     List<PropertyToGenerate> propertiesToGenerate)
 {
+    public List<RelayCommandToGenerate> RelayCommandsToGenerate { get; } = relayCommandsToGenerate;
+
     public List<PropertyToGenerate> PropertiesToGenerate { get; } = propertiesToGenerate;
 
     public bool FoundAnythingToGenerate
-        => PropertiesToGenerate.Count > 0;
+        => RelayCommandsToGenerate.Count > 0 ||
+           PropertiesToGenerate.Count > 0;
 }

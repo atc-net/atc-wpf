@@ -28,7 +28,7 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 ## Requirements
 
-[.NET 8 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+[.NET 9 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 ## NuGet Packages Provided in this Repository
 
@@ -149,6 +149,16 @@ Therefore run the `Atc.Wpf.Sample` application to explore all the controls and c
 ### Atc.Wpf.Theming
 
 - [ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)
+
+### Source Generators
+
+In MVVM, certain attributes help automate boilerplate code using source generators.
+
+Example for ViewModel classes  
+
+![MVVM Source Generation](docs/images/mvvm-source-generated.png)
+
+For more details, see the [MVVM](src/Atc.Wpf/Mvvm/@Readme.md) section.
 
 ## How to contribute
 

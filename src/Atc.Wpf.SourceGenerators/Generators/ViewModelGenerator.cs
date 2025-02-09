@@ -34,18 +34,24 @@ public class ViewModelGenerator : IIncrementalGenerator
             return false;
         }
 
-        if (!syntaxNode.HasClassDeclarationWithValidObservableFields())
+        if (syntaxNode.HasClassDeclarationWithValidObservableFields())
         {
-            return false;
+            return true;
         }
 
-        return true;
+        if (syntaxNode.HasClassDeclarationWithValidRelayCommandMethods())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private static ViewModelToGenerate? GetSemanticTargetViewModelToGenerate(
         GeneratorSyntaxContext context)
     {
-        var viewModelClassSymbol = context.GetNamedTypeSymbolFromClassDeclarationSyntax();
+        var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
+        var viewModelClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
         var viewModelMemberInspectorResult = ViewModelInspector.Inspect(viewModelClassSymbol);
 
@@ -59,6 +65,7 @@ public class ViewModelGenerator : IIncrementalGenerator
             className: viewModelClassSymbol.Name,
             accessModifier: viewModelClassSymbol.GetAccessModifier())
         {
+            RelayCommandsToGenerate = viewModelMemberInspectorResult.RelayCommandsToGenerate,
             PropertiesToGenerate = viewModelMemberInspectorResult.PropertiesToGenerate,
         };
 
@@ -77,6 +84,8 @@ public class ViewModelGenerator : IIncrementalGenerator
         var viewModelBuilder = new ViewModelBuilder();
 
         viewModelBuilder.GenerateStart(viewModelToGenerate);
+
+        viewModelBuilder.GenerateRelayCommands(viewModelToGenerate.RelayCommandsToGenerate);
 
         viewModelBuilder.GenerateProperties(viewModelToGenerate.PropertiesToGenerate);
 

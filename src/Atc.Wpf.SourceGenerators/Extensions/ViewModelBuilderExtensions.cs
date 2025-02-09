@@ -22,6 +22,21 @@ internal static class ViewModelBuilderExtensions
         vmBuilder.AppendLine("}");
     }
 
+    internal static void GenerateRelayCommands(
+        this ViewModelBuilder vmBuilder,
+        IEnumerable<RelayCommandToGenerate>? relayCommandsToGenerate)
+    {
+        if (relayCommandsToGenerate is null)
+        {
+            return;
+        }
+
+        foreach (var relayCommandToGenerate in relayCommandsToGenerate)
+        {
+            GenerateRelayCommand(vmBuilder, relayCommandToGenerate);
+        }
+    }
+
     internal static void GenerateProperties(
         this ViewModelBuilder vmBuilder,
         IEnumerable<PropertyToGenerate>? propertiesToGenerate)
@@ -45,6 +60,33 @@ internal static class ViewModelBuilderExtensions
         return SourceText.From(
             str,
             Encoding.UTF8);
+    }
+
+    private static void GenerateRelayCommand(
+        ViewModelBuilder vmBuilder,
+        RelayCommandToGenerate relayCommandToGenerate)
+    {
+        vmBuilder.AppendLineBeforeMember();
+
+        var interfaceType = relayCommandToGenerate.IsAsync
+            ? NameConstants.IRelayCommandAsync
+            : NameConstants.IRelayCommand;
+
+        var implementationType = relayCommandToGenerate.IsAsync
+            ? NameConstants.RelayCommandAsync
+            : NameConstants.RelayCommand;
+
+        var generic = relayCommandToGenerate.ParameterType is null
+            ? string.Empty
+            : $"<{relayCommandToGenerate.ParameterType}>";
+
+        var constructorParameters = relayCommandToGenerate.CanExecuteMethodName is null
+            ? $"{relayCommandToGenerate.MethodName}"
+            : $"{relayCommandToGenerate.MethodName}, {relayCommandToGenerate.CanExecuteMethodName}";
+
+        var commandLine = $"public {interfaceType}{generic} {relayCommandToGenerate.CommandName} => new {implementationType}{generic}({constructorParameters});";
+
+        vmBuilder.AppendLine(commandLine);
     }
 
     private static void GenerateProperty(

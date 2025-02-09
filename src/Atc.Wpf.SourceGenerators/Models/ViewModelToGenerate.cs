@@ -12,6 +12,8 @@ internal sealed class ViewModelToGenerate(
 
     public string? ClassAccessModifier { get; } = accessModifier;
 
+    public IList<RelayCommandToGenerate>? RelayCommandsToGenerate { get; set; }
+
     public IList<PropertyToGenerate>? PropertiesToGenerate { get; set; }
 
     public string GeneratedFileName => $"{NamespaceName}.{ClassName}.g.cs";

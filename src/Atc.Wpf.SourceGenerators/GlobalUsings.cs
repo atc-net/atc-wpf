@@ -3,6 +3,7 @@ global using System.Text;
 
 global using Atc.Wpf.SourceGenerators.Builders;
 global using Atc.Wpf.SourceGenerators.Extensions;
+global using Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 global using Atc.Wpf.SourceGenerators.Inspectors;
 global using Atc.Wpf.SourceGenerators.Models;
 

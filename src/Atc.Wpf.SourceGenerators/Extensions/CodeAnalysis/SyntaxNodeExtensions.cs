@@ -1,5 +1,5 @@
 // ReSharper disable InvertIf
-namespace Atc.Wpf.SourceGenerators.Extensions;
+namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
 internal static class SyntaxNodeExtensions
 {
@@ -31,6 +31,36 @@ internal static class SyntaxNodeExtensions
             if (memberDeclaratorSyntax is FieldDeclarationSyntax fieldDeclaration)
             {
                 if (!fieldDeclaration.IsValidObservableBackingField())
+                {
+                    return false;
+                }
+
+                foundValidCandidate = true;
+            }
+        }
+
+        return foundValidCandidate;
+    }
+
+    public static bool HasClassDeclarationWithValidRelayCommandMethods(
+        this SyntaxNode syntaxNode)
+    {
+        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
+        {
+            return false;
+        }
+
+        var foundValidCandidate = false;
+        foreach (var memberDeclaratorSyntax in classDeclarationSyntax.Members)
+        {
+            if (memberDeclaratorSyntax is MethodDeclarationSyntax methodDeclaration)
+            {
+                if (!methodDeclaration.HasRelayCommandAttribute())
+                {
+                    continue;
+                }
+
+                if (!methodDeclaration.IsValidRelayCommandMethod())
                 {
                     return false;
                 }
