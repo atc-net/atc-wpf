@@ -6,15 +6,15 @@ namespace Atc.Wpf.Mvvm;
 /// notifications should also be raised for the specified dependent properties.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-public sealed class AlsoNotifyPropertyAttribute : Attribute
+public sealed class NotifyPropertyChangedForAttribute : Attribute
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="AlsoNotifyPropertyAttribute"/> class.
+    /// Initializes a new instance of the <see cref="NotifyPropertyChangedForAttribute"/> class.
     /// </summary>
     /// <param name="dependentProperties">
     /// The names of the dependent properties that should also raise a property change notification.
     /// </param>
-    public AlsoNotifyPropertyAttribute(params string[] dependentProperties)
+    public NotifyPropertyChangedForAttribute(params string[] dependentProperties)
     {
         DependentProperties = dependentProperties;
     }

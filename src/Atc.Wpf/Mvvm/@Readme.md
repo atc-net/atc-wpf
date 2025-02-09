@@ -56,10 +56,10 @@ public class MyViewModel : ViewModelBase
 [ObservableProperty("myName", nameof(FullName), nameof(Age))] private string name;
 
 // Also notifies the property "Email"
-[AlsoNotifyProperty(nameof(Email))]
+[NotifyPropertyChangedFor(nameof(Email))]
 
 // Also notifies the properties "FullName" and "Age"
-[AlsoNotifyProperty(nameof(FullName), nameof(Age))]
+[NotifyPropertyChangedFor(nameof(FullName), nameof(Age))]
 ```
 
 ## Example ViewModelBase with ObservablePropertyAttribute usages
@@ -97,20 +97,20 @@ public partial class TestViewModel
 }
 ```
 
-## Example ViewModelBase with ObservablePropertyAttribute and AlsoNotifyPropertyAttribute usages
+## Example ViewModelBase with ObservablePropertyAttribute and NotifyPropertyChangedForAttribute usages
 ```csharp
 namespace TestNamespace;
 
 public partial class PersonViewModel : ViewModelBase
 {
     [ObservableProperty()]
-    [AlsoNotifyProperty(nameof(FullName))]
+    [NotifyPropertyChanged(nameof(FullName))]
     private string firstName = string.Empty;
             
     [ObservableProperty()]
-    [AlsoNotifyProperty(nameof(FullName), nameof(Age))]
-    [AlsoNotifyProperty(nameof(Email))]
-    [AlsoNotifyProperty(nameof(TheProperty))]
+    [NotifyPropertyChanged(nameof(FullName), nameof(Age))]
+    [NotifyPropertyChanged(nameof(Email))]
+    [NotifyPropertyChanged(nameof(TheProperty))]
     private string? lastName;
             
     [ObservableProperty()]

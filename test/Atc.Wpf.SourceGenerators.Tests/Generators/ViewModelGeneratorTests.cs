@@ -162,7 +162,7 @@ public class ViewModelGeneratorTests : GeneratorTestBase
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperties_With_AlsoNotifyProperties_IsWellDefined()
+    public void GeneratorViewModel_ObservableProperties_With_NotifyPropertiesChangedFor_IsWellDefined()
     {
         const string inputCode =
             """
@@ -171,13 +171,13 @@ public class ViewModelGeneratorTests : GeneratorTestBase
             public partial class PersonViewModel : ViewModelBase
             {
                 [ObservableProperty]
-                [AlsoNotifyProperty(nameof(FullName))]
+                [NotifyPropertyChangedFor(nameof(FullName))]
                 private string firstName = string.Empty;
             
                 [ObservableProperty]
-                [AlsoNotifyProperty(nameof(FullName), nameof(Age))]
-                [AlsoNotifyProperty(nameof(Email))]
-                [AlsoNotifyProperty(nameof(TheProperty))]
+                [NotifyPropertyChangedFor(nameof(FullName), nameof(Age))]
+                [NotifyPropertyChangedFor(nameof(Email))]
+                [NotifyPropertyChangedFor(nameof(TheProperty))]
                 private string? lastName;
             
                 [ObservableProperty]
