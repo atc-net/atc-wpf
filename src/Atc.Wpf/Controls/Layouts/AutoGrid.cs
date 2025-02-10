@@ -208,8 +208,8 @@ public class AutoGrid : Grid
     /// <summary>
     /// Gets or sets a value indicating whether the children are automatically indexed.
     /// <remarks>
-    /// The default is <c>true</c>.
-    /// Note that if children are already indexed, setting this property to <c>false</c> will not remove their indices.
+    /// The default is <see langword="true" />.
+    /// Note that if children are already indexed, setting this property to <see langword="false" /> will not remove their indices.
     /// </remarks>
     /// </summary>
     [Category("Layout")]

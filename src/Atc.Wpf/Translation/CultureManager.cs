@@ -66,7 +66,7 @@ public static class CultureManager
     /// Gets or sets a value indicating whether [synchronize thread culture].
     /// </summary>
     /// <value>
-    ///   <c>true</c> if [synchronize thread culture]; otherwise, <c>false</c>.
+    ///   <see langword="true" /> if [synchronize thread culture]; otherwise, <see langword="false" />.
     /// </value>
     public static bool SynchronizeThreadCulture
     {

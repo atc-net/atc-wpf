@@ -38,7 +38,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// Gets a value indicating whether this instance is target alive.
     /// </summary>
     /// <value>
-    ///   <c>true</c> if this instance is target alive; otherwise, <c>false</c>.
+    ///   <see langword="true" /> if this instance is target alive; otherwise, <see langword="false" />.
     /// </value>
     public bool IsTargetAlive =>
         targetObjects.Count == 0 || targetObjects.Exists(reference => reference.IsAlive);
@@ -47,7 +47,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     /// Gets a value indicating whether this instance is in design mode.
     /// </summary>
     /// <value>
-    ///   <c>true</c> if this instance is in design mode; otherwise, <c>false</c>.
+    ///   <see langword="true" /> if this instance is in design mode; otherwise, <see langword="false" />.
     /// </value>
     protected bool IsInDesignMode =>
         targetObjects
