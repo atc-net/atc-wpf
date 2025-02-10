@@ -25,7 +25,7 @@
                         Orientation="Vertical"
                         Spacing="10">
 
-                        <TextBlock Text="Hallo world" />
+                        <TextBlock Text="Hello world" />
 
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel

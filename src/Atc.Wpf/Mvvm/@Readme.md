@@ -209,7 +209,7 @@ public partial class PersonViewModel : ViewModelBase
         var dialogBox = new InfoDialogBox(
             Application.Current.MainWindow!,
             new DialogBoxSettings(DialogBoxType.Ok),
-            "Hallo to SaveHandler method");
+            "Hello to SaveHandler method");
 
         dialogBox.Show();
     }

@@ -25,7 +25,7 @@
                         Orientation="Vertical"
                         Spacing="10">
 
-                        <Label Content="Hallo world" />
+                        <Label Content="Hello world" />
 
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel

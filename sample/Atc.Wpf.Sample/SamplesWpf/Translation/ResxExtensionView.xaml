@@ -28,7 +28,7 @@
                 <atc:LabelTextInfo LabelText="Subscriptions" Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=Subscriptions}" />
                 <atc:LabelTextInfo LabelText="Errors" Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=Errors}" />
                 <atc:LabelTextInfo LabelText="Warnings" Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=Warnings}" />
-                <atc:LabelTextInfo LabelText="Missing translation" Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=HalloWorld}" />
+                <atc:LabelTextInfo LabelText="Missing translation" Text="{atcTranslation:Resx ResxName=Atc.Wpf.Sample.Resource.Word, Key=HelloWorld}" />
             </StackPanel>
         </GroupBox>
     </atc:AutoGrid>

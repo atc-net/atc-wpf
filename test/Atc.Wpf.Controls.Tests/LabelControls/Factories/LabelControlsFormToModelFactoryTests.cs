@@ -99,7 +99,7 @@ public class LabelControlsFormToModelFactoryTests
         // Arrange
         var keyValues = new Dictionary<string, object>(StringComparer.Ordinal)
         {
-            ["DriveItem.Name"] = "Hallo",
+            ["DriveItem.Name"] = "Hello",
             ["DriveItem.Directory"] = new DirectoryInfo(@"C:\Temp"),
             ["DriveItem.File"] = new FileInfo(@"C:\Temp\test.txt"),
         };
@@ -109,7 +109,7 @@ public class LabelControlsFormToModelFactoryTests
 
         // Arrange
         Assert.NotNull(actual);
-        Assert.Equal(@"Hallo", actual.Name);
+        Assert.Equal(@"Hello", actual.Name);
         Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
         Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
     }
@@ -134,7 +134,7 @@ public class LabelControlsFormToModelFactoryTests
                     switch (labelControl)
                     {
                         case LabelTextBox { Identifier: "Name" } labelTextBox:
-                            labelTextBox.Text = "Hallo";
+                            labelTextBox.Text = "Hello";
                             break;
                         case LabelDirectoryPicker { Identifier: "Directory" } labelDirectoryPicker:
                             labelDirectoryPicker.Value = new DirectoryInfo(@"C:\Temp");
@@ -152,7 +152,7 @@ public class LabelControlsFormToModelFactoryTests
 
         // Arrange
         Assert.NotNull(actual);
-        Assert.Equal(@"Hallo", actual.Name);
+        Assert.Equal(@"Hello", actual.Name);
         Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
         Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
     }
