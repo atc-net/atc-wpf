@@ -84,17 +84,30 @@ internal static class ViewModelBuilderExtensions
             ? NameConstants.RelayCommandAsync
             : NameConstants.RelayCommand;
 
-        var generic = relayCommandToGenerate.ParameterType is null
-            ? string.Empty
-            : $"<{relayCommandToGenerate.ParameterType}>";
+        if (relayCommandToGenerate.ParameterValues is null)
+        {
+            var generic = relayCommandToGenerate.ParameterType is null
+                ? string.Empty
+                : $"<{relayCommandToGenerate.ParameterType}>";
 
-        var constructorParameters = relayCommandToGenerate.CanExecuteMethodName is null
-            ? $"{relayCommandToGenerate.MethodName}"
-            : $"{relayCommandToGenerate.MethodName}, {relayCommandToGenerate.CanExecuteMethodName}";
+            var constructorParameters = relayCommandToGenerate.CanExecuteMethodName is null
+                ? $"{relayCommandToGenerate.MethodName}"
+                : $"{relayCommandToGenerate.MethodName}, {relayCommandToGenerate.CanExecuteMethodName}";
 
-        var commandLine = $"public {interfaceType}{generic} {relayCommandToGenerate.CommandName} => new {implementationType}{generic}({constructorParameters});";
+            var commandLine = $"public {interfaceType}{generic} {relayCommandToGenerate.CommandName} => new {implementationType}{generic}({constructorParameters});";
 
-        vmBuilder.AppendLine(commandLine);
+            vmBuilder.AppendLine(commandLine);
+        }
+        else
+        {
+            var constructorParameters = string.Join(", ", relayCommandToGenerate.ParameterValues);
+
+            var commandLine = relayCommandToGenerate.CanExecuteMethodName is null
+                ? $"public {interfaceType} {relayCommandToGenerate.CommandName} => new {implementationType}(() => {relayCommandToGenerate.MethodName}({constructorParameters}));"
+                : $"public {interfaceType} {relayCommandToGenerate.CommandName} => new {implementationType}(() => {relayCommandToGenerate.MethodName}({constructorParameters}), {relayCommandToGenerate.CanExecuteMethodName}({constructorParameters}));";
+
+            vmBuilder.AppendLine(commandLine);
+        }
     }
 
     private static void GenerateProperty(

@@ -105,6 +105,41 @@ internal static class AttributeDataExtensions
         return relayCommandCanExecuteName?.EnsureFirstCharacterToUpper();
     }
 
+    public static string[]? ExtractRelayCommandParameterValues(
+        this AttributeData attributeData)
+    {
+        List<string>? result = null;
+
+        // Syntax check
+        var str = attributeData.ApplicationSyntaxReference?.GetSyntax().ToFullString();
+        if (str is not null && str.Contains('('))
+        {
+            var parameters = str.ExtractAttributeParameters();
+            if (parameters.Length > 0)
+            {
+                foreach (var parameter in parameters)
+                {
+                    if (parameter.StartsWith(NameConstants.ParameterValue + " =", StringComparison.Ordinal))
+                    {
+                        result ??= [];
+                        result.Add(parameter.ExtractParameterValue());
+                    }
+                    else if (parameter.StartsWith(NameConstants.ParameterValues + " =", StringComparison.Ordinal))
+                    {
+                        result ??= [];
+                        result.AddRange(
+                            parameter
+                                .ExtractParameterValue()
+                                .Split(',')
+                                .Select(s => s.Trim()));
+                    }
+                }
+            }
+        }
+
+        return result?.ToArray();
+    }
+
     public static string ExtractPropertyName(
         this AttributeData attributeData,
         string backingFieldName)

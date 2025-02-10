@@ -32,11 +32,31 @@ internal static class ViewModelInspector
         IMethodSymbol methodSymbol,
         List<RelayCommandToGenerate> relayCommandsToGenerate)
     {
-        var relayCommandAttribute = methodSymbol.GetAttributes()
-            .FirstOrDefault(attr => attr.AttributeClass?.Name
+        var relayCommandAttributes = methodSymbol.GetAttributes()
+            .Where(attr => attr.AttributeClass?.Name
                 is NameConstants.RelayCommandAttribute
-                or NameConstants.RelayCommand);
+                or NameConstants.RelayCommand)
+            .ToList();
 
+        if (relayCommandAttributes.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var relayCommandAttribute in relayCommandAttributes)
+        {
+            AppendRelayCommandToGenerate(
+                methodSymbol,
+                relayCommandAttribute,
+                relayCommandsToGenerate);
+        }
+    }
+
+    private static void AppendRelayCommandToGenerate(
+        IMethodSymbol methodSymbol,
+        AttributeData relayCommandAttribute,
+        List<RelayCommandToGenerate> relayCommandsToGenerate)
+    {
         if (relayCommandAttribute is null)
         {
             return;
@@ -45,14 +65,19 @@ internal static class ViewModelInspector
         var commandName = relayCommandAttribute.ExtractRelayCommandName(methodSymbol.Name);
         var canExecuteMethodName = relayCommandAttribute.ExtractRelayCommandCanExecuteName();
 
+        var parameterValues = relayCommandAttribute.ExtractRelayCommandParameterValues();
+
         string? parameterType = null;
-        switch (methodSymbol.Parameters.Length)
+        if (parameterValues is null || parameterValues.Length == 1)
         {
-            case 1:
-                parameterType = methodSymbol.Parameters[0].Type.ToDisplayString();
-                break;
-            case > 1:
-                return;
+            switch (methodSymbol.Parameters.Length)
+            {
+                case 1:
+                    parameterType = methodSymbol.Parameters[0].Type.ToDisplayString();
+                    break;
+                case > 1:
+                    return;
+            }
         }
 
         var isAsync = methodSymbol.ReturnType.Name
@@ -65,6 +90,7 @@ internal static class ViewModelInspector
                 methodSymbol.Name,
                 parameterType,
                 canExecuteMethodName,
+                parameterValues,
                 isAsync));
     }
 
