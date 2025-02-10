@@ -2,6 +2,7 @@
 namespace Atc.Wpf.Theming.Behaviors;
 
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
+[SuppressMessage("Design", "MA0150:Do not call the default object.ToString explicitly", Justification = "OK.")]
 public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
 {
     /// <inheritdoc />
@@ -106,13 +107,9 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
     private void LoadWindowState()
     {
         var window = AssociatedObject;
-        if (window is null)
-        {
-            return;
-        }
 
-        var settings = window.GetWindowPlacementSettings();
-        if (settings is null || !window.SaveWindowPosition)
+        var settings = window?.GetWindowPlacementSettings();
+        if (settings is null || !window!.SaveWindowPosition)
         {
             return;
         }
