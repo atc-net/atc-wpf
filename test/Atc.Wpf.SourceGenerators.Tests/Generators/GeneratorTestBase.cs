@@ -15,7 +15,7 @@ public abstract class GeneratorTestBase
             .ToArray<MetadataReference>();
     }
 
-    internal static GeneratorRunResult GeneratorViewModel(
+    internal static (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) GeneratorViewModel(
         string inputCode)
     {
         var inputCompilation = CreateCompilation(inputCode);
@@ -27,24 +27,24 @@ public abstract class GeneratorTestBase
         driver = driver.RunGeneratorsAndUpdateCompilation(
             inputCompilation,
             out _,
-            out _);
+            out var diagnostics);
 
         var runResult = driver.GetRunResult();
 
         var generatorResult = runResult.Results[0];
 
-        return generatorResult;
+        return (generatorResult, diagnostics);
     }
 
     internal void AssertGeneratorRunResultAsEqual(
         string expectedCode,
-        GeneratorRunResult generatorResult)
+        (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) generatorResult)
     {
         var generatedCode = string.Empty;
 
-        if (generatorResult.GeneratedSources.Length == 1)
+        if (generatorResult.GeneratorResult.GeneratedSources.Length == 1)
         {
-            generatedCode = generatorResult.GeneratedSources[0].SourceText.ToString();
+            generatedCode = generatorResult.GeneratorResult.GeneratedSources[0].SourceText.ToString();
             if (expectedCode == generatedCode)
             {
                 return;
@@ -61,19 +61,46 @@ public abstract class GeneratorTestBase
     }
 
     internal void AssertGeneratorRunResultIsEmpty(
-        GeneratorRunResult generatorResult)
+        (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) generatorResult)
     {
-        if (generatorResult.GeneratedSources.Length == 0)
+        if (generatorResult.GeneratorResult.GeneratedSources.Length == 0)
         {
             return;
         }
 
-        var generatedCode = generatorResult.GeneratedSources[0].SourceText.ToString();
+        var generatedCode = generatorResult.GeneratorResult.GeneratedSources[0].SourceText.ToString();
 
         var testResults = new List<TestResult>
         {
-            new(true, 0, $"Expected no code!{Environment.NewLine}{Environment.NewLine}"),
+            new(true, 0, $"Expected no code:{Environment.NewLine}{Environment.NewLine}"),
             new(true, 0, $"Generated code:{Environment.NewLine}{generatedCode}{Environment.NewLine}{Environment.NewLine}"),
+        };
+
+        TestResultHelper.AssertOnTestResults(testResults);
+    }
+
+    internal void AssertGeneratorRunResultHasDiagnostics(
+        string[] diagnosticCodes,
+        (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) generatorResult)
+    {
+        var collectedCodes = generatorResult.Diagnostics
+            .Select(diagnostic => diagnostic.Id)
+            .Order(StringComparer.Ordinal)
+            .ToList();
+
+        var orderedDiagnosticCodes = diagnosticCodes
+            .Order(StringComparer.Ordinal)
+            .ToList();
+
+        if (collectedCodes.SequenceEqual(orderedDiagnosticCodes, StringComparer.Ordinal))
+        {
+            return;
+        }
+
+        var testResults = new List<TestResult>
+        {
+            new(true, 0, $"Expected error codes:{Environment.NewLine}{string.Join(", ", diagnosticCodes)}{Environment.NewLine}{Environment.NewLine}"),
+            new(true, 0, $"Collected error codes:{Environment.NewLine}{string.Join(", ", collectedCodes)}{Environment.NewLine}{Environment.NewLine}"),
         };
 
         TestResultHelper.AssertOnTestResults(testResults);

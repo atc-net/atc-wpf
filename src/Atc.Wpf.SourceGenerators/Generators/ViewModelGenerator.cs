@@ -85,7 +85,14 @@ public class ViewModelGenerator : IIncrementalGenerator
 
         viewModelBuilder.GenerateStart(viewModelToGenerate);
 
-        viewModelBuilder.GenerateRelayCommands(viewModelToGenerate.RelayCommandsToGenerate);
+        if (viewModelToGenerate.ContainsRelayCommandNameDuplicates)
+        {
+            context.ReportDiagnostic(DiagnosticFactory.CreateContainsDuplicateNamesForRelayCommand());
+        }
+        else
+        {
+            viewModelBuilder.GenerateRelayCommands(viewModelToGenerate.RelayCommandsToGenerate);
+        }
 
         viewModelBuilder.GenerateProperties(viewModelToGenerate.PropertiesToGenerate);
 
