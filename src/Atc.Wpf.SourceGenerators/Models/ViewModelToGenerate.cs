@@ -17,4 +17,7 @@ internal sealed class ViewModelToGenerate(
     public IList<PropertyToGenerate>? PropertiesToGenerate { get; set; }
 
     public string GeneratedFileName => $"{NamespaceName}.{ClassName}.g.cs";
+
+    public override string ToString()
+        => $"{nameof(NamespaceName)}: {NamespaceName}, {nameof(ClassName)}: {ClassName}, {nameof(ClassAccessModifier)}: {ClassAccessModifier}, {nameof(RelayCommandsToGenerate)}.Count: {RelayCommandsToGenerate?.Count}, {nameof(PropertiesToGenerate)}.Count: {PropertiesToGenerate?.Count}, {nameof(GeneratedFileName)}: {GeneratedFileName}";
 }

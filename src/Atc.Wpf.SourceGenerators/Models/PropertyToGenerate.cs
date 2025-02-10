@@ -13,4 +13,7 @@ internal sealed class PropertyToGenerate(
     public string BackingFieldName { get; } = backingFieldName;
 
     public ICollection<string>? PropertyNamesToInvalidate { get; set; }
+
+    public override string ToString()
+        => $"{nameof(Name)}: {Name}, {nameof(Type)}: {Type}, {nameof(BackingFieldName)}: {BackingFieldName}, {nameof(PropertyNamesToInvalidate)}.Count: {PropertyNamesToInvalidate?.Count}";
 }

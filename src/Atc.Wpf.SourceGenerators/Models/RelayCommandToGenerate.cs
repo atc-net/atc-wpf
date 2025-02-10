@@ -17,4 +17,7 @@ internal sealed class RelayCommandToGenerate(
     public string? CanExecuteMethodName { get; } = canExecuteMethodName;
 
     public bool IsAsync { get; } = isAsync;
+
+    public override string ToString()
+        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterType)}: {ParameterType}, {nameof(CanExecuteMethodName)}: {CanExecuteMethodName}, {nameof(IsAsync)}: {IsAsync}";
 }
