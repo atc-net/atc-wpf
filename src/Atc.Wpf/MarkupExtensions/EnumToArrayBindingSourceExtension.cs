@@ -57,8 +57,8 @@ public class EnumToArrayBindingSourceExtension : MarkupExtension
     /// </summary>
     /// <param name="enumType">Type of the enum.</param>
     /// <param name="firstItemType">First type of the item.</param>
-    /// <param name="includeDefault">if set to <c>true</c> [include default].</param>
-    /// <param name="useDescriptionAttribute">if set to <c>true</c> [use description attribute].</param>
+    /// <param name="includeDefault">if set to <see langword="true" /> [include default].</param>
+    /// <param name="useDescriptionAttribute">if set to <see langword="true" /> [use description attribute].</param>
     public EnumToArrayBindingSourceExtension(
         Type enumType,
         DropDownFirstItemType firstItemType = DropDownFirstItemType.None,
@@ -78,8 +78,8 @@ public class EnumToArrayBindingSourceExtension : MarkupExtension
     /// </summary>
     /// <param name="enumType">Type of the enum.</param>
     /// <param name="firstItemType">First type of the item.</param>
-    /// <param name="includeDefault">if set to <c>true</c> [include default].</param>
-    /// <param name="useDescriptionAttribute">if set to <c>true</c> [use description attribute].</param>
+    /// <param name="includeDefault">if set to <see langword="true" /> [include default].</param>
+    /// <param name="useDescriptionAttribute">if set to <see langword="true" /> [use description attribute].</param>
     /// <param name="sortDirectionType">Type of the sort direction.</param>
     public EnumToArrayBindingSourceExtension(
         Type enumType,
@@ -138,7 +138,7 @@ public class EnumToArrayBindingSourceExtension : MarkupExtension
     /// Gets or sets a value indicating whether [include default].
     /// </summary>
     /// <value>
-    ///   <c>true</c> if [include default]; otherwise, <c>false</c>.
+    ///   <see langword="true" /> if [include default]; otherwise, <see langword="false" />.
     /// </value>
     public bool IncludeDefault { get; set; }
 
@@ -146,7 +146,7 @@ public class EnumToArrayBindingSourceExtension : MarkupExtension
     /// Gets or sets a value indicating whether [use description attribute].
     /// </summary>
     /// <value>
-    /// <c>true</c> if [use description attribute]; otherwise, <c>false</c>.
+    /// <see langword="true" /> if [use description attribute]; otherwise, <see langword="false" />.
     /// </value>
     public bool UseDescriptionAttribute { get; set; }
 

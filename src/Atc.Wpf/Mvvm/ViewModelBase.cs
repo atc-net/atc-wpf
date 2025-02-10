@@ -116,7 +116,7 @@ public abstract class ViewModelBase : ObservableObject, IViewModelBase
     /// Gets a value indicating whether this instance is in design mode.
     /// </summary>
     /// <value>
-    ///   <c>true</c> if this instance is in design mode; otherwise, <c>false</c>.
+    ///   <see langword="true" /> if this instance is in design mode; otherwise, <see langword="false" />.
     /// </value>
     public static bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
 

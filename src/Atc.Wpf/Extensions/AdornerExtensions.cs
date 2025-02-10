@@ -49,7 +49,7 @@ public static class AdornerExtensions
     /// <param name="adornerLayer">The adorner layer.</param>
     /// <param name="uiElement">The UI element.</param>
     /// <returns>
-    ///   <c>true</c> if the specified adorner layer contains adorner; otherwise, <c>false</c>.
+    ///   <see langword="true" /> if the specified adorner layer contains adorner; otherwise, <see langword="false" />.
     /// </returns>
     public static bool ContainsAdorner<T>(
         this AdornerLayer adornerLayer,
