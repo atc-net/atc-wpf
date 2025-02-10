@@ -18,6 +18,20 @@ internal sealed class ViewModelToGenerate(
 
     public string GeneratedFileName => $"{NamespaceName}.{ClassName}.g.cs";
 
+    public bool ContainsRelayCommandNameDuplicates
+    {
+        get
+        {
+            if (RelayCommandsToGenerate is null)
+            {
+                return false;
+            }
+
+            var names = RelayCommandsToGenerate.Select(x => x.CommandName).ToArray();
+            return names.Length != names.Distinct(StringComparer.Ordinal).Count();
+        }
+    }
+
     public override string ToString()
         => $"{nameof(NamespaceName)}: {NamespaceName}, {nameof(ClassName)}: {ClassName}, {nameof(ClassAccessModifier)}: {ClassAccessModifier}, {nameof(RelayCommandsToGenerate)}.Count: {RelayCommandsToGenerate?.Count}, {nameof(PropertiesToGenerate)}.Count: {PropertiesToGenerate?.Count}, {nameof(GeneratedFileName)}: {GeneratedFileName}";
 }
