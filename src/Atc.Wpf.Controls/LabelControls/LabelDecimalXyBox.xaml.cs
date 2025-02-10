@@ -1,3 +1,4 @@
+// ReSharper disable PreferConcreteValueOverDefault
 namespace Atc.Wpf.Controls.LabelControls;
 
 /// <summary>
@@ -76,7 +77,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         typeof(decimal),
         typeof(LabelDecimalXyBox),
         new FrameworkPropertyMetadata(
-            0,
+            default(decimal),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueXLostFocus,
             coerceValueCallback: null,
@@ -94,7 +95,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         typeof(decimal),
         typeof(LabelDecimalXyBox),
         new FrameworkPropertyMetadata(
-            0,
+            default(decimal),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueYLostFocus,
             coerceValueCallback: null,
