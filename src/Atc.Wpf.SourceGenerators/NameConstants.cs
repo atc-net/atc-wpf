@@ -6,6 +6,7 @@ internal static class NameConstants
     public const string Command = nameof(Command);
     public const string CommandName = nameof(CommandName);
     public const string DependentProperties = nameof(DependentProperties);
+    public const string Handler = nameof(Handler);
     public const string IRelayCommand = nameof(IRelayCommand);
     public const string IRelayCommandAsync = nameof(IRelayCommandAsync);
     public const string NotifyPropertyChangedFor = nameof(NotifyPropertyChangedFor);

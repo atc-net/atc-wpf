@@ -53,6 +53,11 @@ internal static class AttributeDataExtensions
 
         relayCommandName ??= defaultName;
 
+        if (relayCommandName.EndsWith(NameConstants.Handler, StringComparison.Ordinal))
+        {
+            relayCommandName = relayCommandName.Substring(0, relayCommandName.Length - NameConstants.Handler.Length);
+        }
+
         return relayCommandName.EnsureFirstCharacterToUpper() + NameConstants.Command;
     }
 
