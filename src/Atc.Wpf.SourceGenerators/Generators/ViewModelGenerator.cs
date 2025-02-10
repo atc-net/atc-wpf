@@ -8,9 +8,9 @@ public class ViewModelGenerator : IIncrementalGenerator
         IncrementalGeneratorInitializationContext context)
     {
         //// #if DEBUG
-        ////         if (!Debugger.IsAttached)
+        ////         if (!System.Diagnostics.Debugger.IsAttached)
         ////         {
-        ////             Debugger.Launch();
+        ////             System.Diagnostics.Debugger.Launch();
         ////         }
         //// #endif
 
