@@ -30,6 +30,11 @@ internal static class SyntaxNodeExtensions
         {
             if (memberDeclaratorSyntax is FieldDeclarationSyntax fieldDeclaration)
             {
+                if (!fieldDeclaration.HasObservablePropertyAttribute())
+                {
+                    continue;
+                }
+
                 if (!fieldDeclaration.IsValidObservableBackingField())
                 {
                     return false;
