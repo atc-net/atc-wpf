@@ -61,6 +61,12 @@ public class MyViewModel : ViewModelBase
 // Generates a property named "MyName" and notifies FullName and Age
 [ObservableProperty(nameof(MyName), nameof(FullName), nameof(Age))] private string name;
 
+// Generates a property named "MyName" and notifies FullName and Age
+[ObservableProperty(nameof(MyName), DependentProperties = [nameof(FullName), nameof(Age)])] private string name;
+
+// Generates a property named "Name" and notifies FullName and Age
+[ObservableProperty(DependentProperties = [nameof(FullName), nameof(Age)])]
+
 // Notifies the property "Email"
 [NotifyPropertyChangedFor(nameof(Email))]
 
@@ -112,10 +118,23 @@ public class MyViewModel : ViewModelBase
 
 // Generates an asynchronous RelayCommand with async keyword and CanExecute function
 [RelayCommand(CanExecute = nameof(CanSave))] public async Task Save();
+
+// Generates multi asynchronous RelayCommand with async keyword with multiple parameters
+[RelayCommand("MyTestLeft", ParameterValues = [LeftTopRightBottomType.Left, 1])]
+[RelayCommand("MyTestTop", ParameterValues = [LeftTopRightBottomType.Top, 1])]
+[RelayCommand("MyTestRight", ParameterValues = [LeftTopRightBottomType.Right, 1])]
+[RelayCommand("MyTestBottom", ParameterValues = [LeftTopRightBottomType.Bottom, 1])]
+public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int steps)
+
+// Generates multi asynchronous RelayCommand with async keyword and CanExecute function with multiple parameters
+[RelayCommand("MyTestLeft", CanExecute = nameof(CanTestDirection), ParameterValues = [LeftTopRightBottomType.Left, 1])]
+[RelayCommand("MyTestTop", CanExecute = nameof(CanTestDirection), ParameterValues = [LeftTopRightBottomType.Top, 1])]
+[RelayCommand("MyTestRight", CanExecute = nameof(CanTestDirection), ParameterValues = [LeftTopRightBottomType.Right, 1])]
+[RelayCommand("MyTestBottom", CanExecute = nameof(CanTestDirection), ParameterValues = [LeftTopRightBottomType.Bottom, 1])]
+public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int steps)
 ```
 
 > Note: The `RelayCommand` attribute is used to generate a `RelayCommand` property for a method in a ViewModel class.
-
 
 ---
 

@@ -13,6 +13,8 @@ internal static class NameConstants
     public const string NotifyPropertyChangedForAttribute = nameof(NotifyPropertyChangedForAttribute);
     public const string ObservableProperty = nameof(ObservableProperty);
     public const string ObservablePropertyAttribute = nameof(ObservablePropertyAttribute);
+    public const string ParameterValue = nameof(ParameterValue);
+    public const string ParameterValues = nameof(ParameterValues);
     public const string PropertyName = nameof(PropertyName);
     public const string RelayCommand = nameof(RelayCommand);
     public const string RelayCommandAsync = nameof(RelayCommandAsync);
