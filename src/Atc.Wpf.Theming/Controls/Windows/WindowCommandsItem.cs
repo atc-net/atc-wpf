@@ -3,7 +3,7 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 
 [TemplatePart(Name = PART_ContentPresenter, Type = typeof(UIElement))]
 [TemplatePart(Name = PART_Separator, Type = typeof(UIElement))]
-public class WindowCommandsItem : ContentControl
+public sealed class WindowCommandsItem : ContentControl
 {
     private const string PART_ContentPresenter = "PART_ContentPresenter";
     private const string PART_Separator = "PART_Separator";
@@ -38,7 +38,7 @@ public class WindowCommandsItem : ContentControl
     public WindowCommands? ParentWindowCommands
     {
         get => (WindowCommands?)GetValue(ParentWindowCommandsProperty);
-        protected set => SetValue(ParentWindowCommandsPropertyKey, value);
+        set => SetValue(ParentWindowCommandsPropertyKey, value);
     }
 
     static WindowCommandsItem()

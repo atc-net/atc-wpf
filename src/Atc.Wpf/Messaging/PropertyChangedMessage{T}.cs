@@ -8,7 +8,7 @@ namespace Atc.Wpf.Messaging;
 /// a recipient using the messaging system.
 /// </summary>
 /// <typeparam name="T">The type of the OldValue and NewValue property.</typeparam>
-public class PropertyChangedMessage<T> : PropertyChangedMessageBase
+public sealed class PropertyChangedMessage<T> : PropertyChangedMessageBase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PropertyChangedMessage{T}" /> class.

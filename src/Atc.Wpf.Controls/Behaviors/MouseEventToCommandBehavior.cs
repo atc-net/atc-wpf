@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Behaviors;
 
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public class MouseEventToCommandBehavior : Behavior<UIElement>
+public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
 {
     private const int DoubleClickTimeMs = 500;
 

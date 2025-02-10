@@ -1,5 +1,5 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-public class IntegerBox : NumericBox
+public sealed class IntegerBox : NumericBox
 {
 }

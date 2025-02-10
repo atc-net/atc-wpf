@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class StringNullOrEmptyToVisibilityCollapsedValueConverterTests
+public sealed class StringNullOrEmptyToVisibilityCollapsedValueConverterTests
 {
     private readonly IValueConverter converter = new StringNullOrEmptyToVisibilityCollapsedValueConverter();
 

@@ -1,7 +1,7 @@
 // ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
 namespace Atc.Wpf.Controls.Options;
 
-public class RecentOpenFilesOption
+public sealed class RecentOpenFilesOption
 {
     public const string SectionName = "RecentOpenFiles";
 

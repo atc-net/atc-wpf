@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.XUnitTestTypes;
 
-public class PrimitiveTypesModel
+public sealed class PrimitiveTypesModel
 {
     public byte PropertyByte { get; set; }
 

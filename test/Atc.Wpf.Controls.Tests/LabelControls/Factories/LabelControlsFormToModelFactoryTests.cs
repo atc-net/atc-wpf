@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Tests.LabelControls.Factories;
 [Collection(nameof(TestCollection))]
 [Trait(Traits.Category, Traits.Categories.Integration)]
 [Trait(Traits.Category, Traits.Categories.SkipWhenLiveUnitTesting)]
-public class LabelControlsFormToModelFactoryTests
+public sealed class LabelControlsFormToModelFactoryTests
 {
     [StaFact]
     public void Create_Account_From_KeyValues()

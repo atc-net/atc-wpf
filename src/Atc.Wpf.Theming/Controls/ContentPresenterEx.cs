@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.Controls;
 
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public class ContentPresenterEx : ContentPresenter
+public sealed class ContentPresenterEx : ContentPresenter
 {
     static ContentPresenterEx()
     {

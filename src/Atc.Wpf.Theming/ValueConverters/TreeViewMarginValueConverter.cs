@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.ValueConverters;
 
 [ValueConversion(typeof(TreeViewItem), typeof(Thickness))]
-public class TreeViewMarginValueConverter : IValueConverter
+public sealed class TreeViewMarginValueConverter : IValueConverter
 {
     public double Length { get; set; }
 

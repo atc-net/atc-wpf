@@ -9,7 +9,7 @@ namespace Atc.Wpf.MarkupExtensions;
 /// </example>
 // ReSharper disable RedundantOverload.Global
 [SuppressMessage("Blocker Code Smell", "S3427:Method overloads with default parameter values should not overlap ", Justification = "WPF markup need to have overload constructors in order to work.")]
-public class EnumToArrayBindingSourceExtension : MarkupExtension
+public sealed class EnumToArrayBindingSourceExtension : MarkupExtension
 {
     private Type? enumType;
 

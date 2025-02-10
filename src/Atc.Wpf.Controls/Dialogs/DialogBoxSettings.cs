@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
-public class DialogBoxSettings
+public sealed class DialogBoxSettings
 {
     private const string DefaultButtonBackgroundResourceKey = "AtcApps.Brushes.Gray10";
     private const string DefaultButtonForegroundResourceKey = "AtcApps.Brushes.ThemeForeground";

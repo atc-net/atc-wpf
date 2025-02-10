@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.ViewModels;
 
-public class RecentOpenFileViewModel : ViewModelBase
+public sealed class RecentOpenFileViewModel : ViewModelBase
 {
     private readonly DirectoryInfo applicationDataDirectory;
     private DateTime timeStamp;

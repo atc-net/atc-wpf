@@ -1,7 +1,7 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.ValueConverters;
 
-public class RectangleCircularValueConverter : IMultiValueConverter
+public sealed class RectangleCircularValueConverter : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

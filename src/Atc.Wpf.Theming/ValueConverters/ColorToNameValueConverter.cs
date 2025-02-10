@@ -2,7 +2,7 @@ namespace Atc.Wpf.Theming.ValueConverters;
 
 [MarkupExtensionReturnType(typeof(ColorToNameValueConverter))]
 [ValueConversion(typeof(Color), typeof(string))]
-public class ColorToNameValueConverter : MarkupMultiValueConverterBase
+public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
 {
     /// <summary>
     /// Converts a given <see cref="Color"/> to its Name

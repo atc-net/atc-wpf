@@ -2,12 +2,12 @@
 namespace System;
 
 /// <summary>
-/// Stores an Func without causing a hard reference
+/// Stores a Func without causing a hard reference
 /// to be created to the Func owner. The owner can be garbage collected at any time.
 /// </summary>
 /// <typeparam name="T">The type of the Func parameter.</typeparam>
 /// <typeparam name="TResult">The type of the Func return value.</typeparam>
-public class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResult
+public sealed class WeakFunc<T, TResult> : WeakFunc<TResult>, IExecuteWithObjectAndResult
 {
     private Func<T, TResult>? staticFunc;
 

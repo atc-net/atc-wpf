@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Controls;
 
-public class AtcThumb : Thumb, IAtcThumb
+public sealed class AtcThumb : Thumb, IAtcThumb
 {
     private TouchDevice? currentDevice;
 

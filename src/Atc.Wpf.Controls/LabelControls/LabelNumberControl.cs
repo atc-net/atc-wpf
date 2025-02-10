@@ -20,7 +20,7 @@ public class LabelNumberControl : LabelControl, ILabelNumberControl
         nameof(HideUpDownButtons),
         typeof(bool),
         typeof(LabelNumberControl),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(false));
 
     public bool HideUpDownButtons
     {

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Notifications;
 
-public class ToastNotificationArea : Control
+public sealed class ToastNotificationArea : Control
 {
     private IList? items;
 

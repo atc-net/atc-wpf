@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class HexBrushToBrushKeyValueConverterTests
+public sealed class HexBrushToBrushKeyValueConverterTests
 {
     private readonly IValueConverter converter = new HexBrushToBrushKeyValueConverter();
 

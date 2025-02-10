@@ -1,7 +1,7 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Controls.LabelControls;
 
-public class LabelControlsForm : ILabelControlsForm
+public sealed class LabelControlsForm : ILabelControlsForm
 {
     private const int GroupBoxWidthForSpace = 20;
     private const int GroupBoxWidthForMargin = 10;

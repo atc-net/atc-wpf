@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class ValidationErrorsToStringValueConverterTests
+public sealed class ValidationErrorsToStringValueConverterTests
 {
     private readonly IValueConverter converter = new ValidationErrorsToStringValueConverter();
 

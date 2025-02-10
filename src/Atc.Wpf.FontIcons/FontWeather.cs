@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons;
 
-public class FontWeather : TextBlock, ISpinable, IRotatable, IFlippable
+public sealed class FontWeather : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
     /// Identifies the Icon dependency property.

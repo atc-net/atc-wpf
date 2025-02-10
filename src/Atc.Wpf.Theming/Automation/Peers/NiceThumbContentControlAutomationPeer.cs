@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Automation.Peers;
 
-public class NiceThumbContentControlAutomationPeer : FrameworkElementAutomationPeer
+public sealed class NiceThumbContentControlAutomationPeer : FrameworkElementAutomationPeer
 {
     public NiceThumbContentControlAutomationPeer(FrameworkElement owner)
         : base(owner)

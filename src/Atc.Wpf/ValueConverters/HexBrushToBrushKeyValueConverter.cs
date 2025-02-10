@@ -7,7 +7,7 @@ namespace Atc.Wpf.ValueConverters;
 /// Convert back is from: name/key to SolidColorBrush.
 /// </remarks>
 [ValueConversion(typeof(string), typeof(string))]
-public class HexBrushToBrushKeyValueConverter : IValueConverter
+public sealed class HexBrushToBrushKeyValueConverter : IValueConverter
 {
     public object? Convert(
         object? value,

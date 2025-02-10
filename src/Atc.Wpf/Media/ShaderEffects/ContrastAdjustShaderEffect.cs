@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
-public class ContrastAdjustShaderEffect : ShaderEffectBase
+public sealed class ContrastAdjustShaderEffect : ShaderEffectBase
 {
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty(

@@ -1,7 +1,7 @@
 // ReSharper disable UnusedVariable
 namespace Atc.Wpf.Sample.SamplesWpfControls.DialogBoxes;
 
-public class StandardDialogBoxViewModel : ViewModelBase
+public sealed class StandardDialogBoxViewModel : ViewModelBase
 {
     private readonly JsonSerializerOptions? jsonOptions;
     private string jsonResult = string.Empty;

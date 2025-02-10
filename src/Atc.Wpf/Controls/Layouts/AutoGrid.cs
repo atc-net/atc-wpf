@@ -7,7 +7,7 @@ namespace Atc.Wpf.Controls.Layouts;
 ///
 /// Partially based on work at http://rachel53461.wordpress.com/2011/09/17/wpf-grids-rowcolumn-count-properties.
 /// </summary>
-public class AutoGrid : Grid
+public sealed class AutoGrid : Grid
 {
     /// <summary>
     /// The child horizontal alignment property

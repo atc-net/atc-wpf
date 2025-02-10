@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.LabelControls;
 
-public class LabelInputFormPanelViewModel : ViewModelBase
+public sealed class LabelInputFormPanelViewModel : ViewModelBase
 {
     private readonly LabelInputFormPanelSettings formSettingsForModel = new()
     {

@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Tests.Helpers;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-public class GridHelperTests
+public sealed class GridHelperTests
 {
     [Fact]
     public void CalculatorRowCountByScreenFormat43()

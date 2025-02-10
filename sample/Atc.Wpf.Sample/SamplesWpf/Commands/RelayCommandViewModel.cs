@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Commands;
 
-public class RelayCommandViewModel : ViewModelBase
+public sealed class RelayCommandViewModel : ViewModelBase
 {
     private bool isTestEnabled;
 

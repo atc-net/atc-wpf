@@ -1,7 +1,7 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.Layouts;
 
-public class StaggeredPanel : Panel
+public sealed class StaggeredPanel : Panel
 {
     private double itemWidth;
 

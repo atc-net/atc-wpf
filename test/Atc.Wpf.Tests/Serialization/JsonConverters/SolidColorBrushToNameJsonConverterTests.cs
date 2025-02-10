@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Tests.Serialization.JsonConverters;
 
 [Collection("Sequential")]
-public class SolidColorBrushToNameJsonConverterTests
+public sealed class SolidColorBrushToNameJsonConverterTests
 {
     [StaTheory]
     [InlineData("Red")]

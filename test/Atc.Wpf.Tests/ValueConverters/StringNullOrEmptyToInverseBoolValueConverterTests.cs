@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class StringNullOrEmptyToInverseBoolValueConverterTests
+public sealed class StringNullOrEmptyToInverseBoolValueConverterTests
 {
     private readonly IValueConverter converter = new StringNullOrEmptyToInverseBoolValueConverter();
 

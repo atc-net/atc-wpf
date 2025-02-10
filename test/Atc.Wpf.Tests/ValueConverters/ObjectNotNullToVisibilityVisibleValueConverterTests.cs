@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class ObjectNotNullToVisibilityVisibleValueConverterTests
+public sealed class ObjectNotNullToVisibilityVisibleValueConverterTests
 {
     private readonly IValueConverter converter = new ObjectNotNullToVisibilityVisibleValueConverter();
 

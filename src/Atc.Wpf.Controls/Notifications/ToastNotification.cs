@@ -2,7 +2,7 @@ namespace Atc.Wpf.Controls.Notifications;
 
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
-public class ToastNotification : ContentControl
+public sealed class ToastNotification : ContentControl
 {
     private TimeSpan closingAnimationTime = TimeSpan.Zero;
 

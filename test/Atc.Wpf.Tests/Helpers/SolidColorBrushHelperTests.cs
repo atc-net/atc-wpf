@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Tests.Helpers;
 
-public class SolidColorBrushHelperTests
+public sealed class SolidColorBrushHelperTests
 {
     [Fact]
     public void BrushCollectionCount()

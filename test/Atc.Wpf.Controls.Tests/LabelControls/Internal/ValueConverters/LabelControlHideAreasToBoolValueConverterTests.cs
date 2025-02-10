@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Tests.LabelControls.Internal.ValueConverters;
 
-public class LabelControlHideAreasToBoolValueConverterTests
+public sealed class LabelControlHideAreasToBoolValueConverterTests
 {
     [Theory]
     [InlineData(true, LabelControlHideAreasType.None, LabelControlHideAreasType.None)]

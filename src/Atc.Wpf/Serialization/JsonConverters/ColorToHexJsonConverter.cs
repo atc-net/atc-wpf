@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Serialization.JsonConverters;
 
-public class ColorToHexJsonConverter : JsonConverter<Color?>
+public sealed class ColorToHexJsonConverter : JsonConverter<Color?>
 {
     public override Color? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

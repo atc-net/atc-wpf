@@ -4,7 +4,7 @@ namespace Atc.Wpf.DependencyObjects;
 /// Message listener, singleton pattern.
 /// Inherit from DependencyObject to implement DataBinding.
 /// </summary>
-public class MessageListener : DependencyObject
+public sealed class MessageListener : DependencyObject
 {
     /// <summary>
     /// Message Property.

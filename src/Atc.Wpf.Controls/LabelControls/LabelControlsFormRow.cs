@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-public class LabelControlsFormRow : ILabelControlsFormRow
+public sealed class LabelControlsFormRow : ILabelControlsFormRow
 {
     public LabelControlsFormRow()
     {

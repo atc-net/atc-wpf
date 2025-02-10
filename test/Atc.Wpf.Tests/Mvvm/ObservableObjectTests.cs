@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.Mvvm;
 
-public class ObservableObjectTests
+public sealed class ObservableObjectTests
 {
     [Theory]
     [InlineData(true, true, null)]

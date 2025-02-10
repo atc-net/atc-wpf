@@ -2,7 +2,7 @@ using Atc.Wpf.Controls.Progressing;
 
 namespace Atc.Wpf.Controls.BaseControls;
 
-public class ImageButton : Button
+public sealed class ImageButton : Button
 {
     public static readonly DependencyProperty ImageWidthProperty = DependencyProperty.Register(
         nameof(ImageWidth),

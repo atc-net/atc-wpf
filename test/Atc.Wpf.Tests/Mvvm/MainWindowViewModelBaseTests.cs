@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.Mvvm;
 
-public class MainWindowViewModelBaseTests
+public sealed class MainWindowViewModelBaseTests
 {
     [Theory]
     [InlineData(true, true, null)]

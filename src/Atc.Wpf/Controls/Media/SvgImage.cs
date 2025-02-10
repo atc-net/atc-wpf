@@ -11,7 +11,7 @@ namespace Atc.Wpf.Controls.Media;
 /// multiple controls to share the same drawing instance.
 /// </summary>
 [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "OK.")]
-public class SvgImage : Control
+public sealed class SvgImage : Control
 {
     private readonly TranslateTransform translateTransform = new();
     private readonly ScaleTransform scaleTransform = new();
@@ -24,7 +24,7 @@ public class SvgImage : Control
         typeof(Brush),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(
-            default(Brush),
+            null,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
             OnBackgroundChanged));
 

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Options;
 
-public class RecentOpenFileOption
+public sealed class RecentOpenFileOption
 {
     public const string SectionName = "RecentOpenFile";
 

@@ -2,7 +2,7 @@
 namespace Atc.Wpf.Theming.Behaviors;
 
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-public class WindowsSettingBehavior : Behavior<NiceWindow>
+public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
 {
     /// <inheritdoc />
     protected override void OnAttached()

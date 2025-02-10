@@ -1,9 +1,8 @@
 // ReSharper disable LoopCanBeConvertedToQuery
-
 namespace Atc.Wpf.Theming.Controls.Windows;
 
 [StyleTypedProperty(Property = nameof(ItemContainerStyle), StyleTargetType = typeof(WindowCommands))]
-public class WindowCommands : ToolBar
+public sealed class WindowCommands : ToolBar
 {
     public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
         nameof(Theme),
@@ -175,7 +174,7 @@ public class WindowCommands : ToolBar
     public Window? ParentWindow
     {
         get => (Window?)GetValue(ParentWindowProperty);
-        protected set => SetValue(ParentWindowPropertyKey, value);
+        set => SetValue(ParentWindowPropertyKey, value);
     }
 
     static WindowCommands()

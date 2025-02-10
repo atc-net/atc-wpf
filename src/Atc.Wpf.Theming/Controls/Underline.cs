@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.Controls;
 
 [TemplatePart(Name = UnderlineBorderPartName, Type = typeof(Border))]
-public class Underline : ContentControl
+public sealed class Underline : ContentControl
 {
     public const string UnderlineBorderPartName = "PART_UnderlineBorder";
     private Border? underlineBorder;

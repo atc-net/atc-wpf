@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class ObjectNullToBoolValueConverterTests
+public sealed class ObjectNullToBoolValueConverterTests
 {
     private readonly IValueConverter converter = new ObjectNullToBoolValueConverter();
 

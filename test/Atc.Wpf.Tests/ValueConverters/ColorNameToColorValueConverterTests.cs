@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class ColorNameToColorValueConverterTests
+public sealed class ColorNameToColorValueConverterTests
 {
     private readonly IValueConverter converter = new ColorNameToColorValueConverter();
 

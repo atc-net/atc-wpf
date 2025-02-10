@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons;
 
-public class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
+public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
     /// Identifies the Foreground dependency property.

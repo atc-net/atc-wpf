@@ -6,7 +6,7 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [SuppressMessage("WpfAnalyzers.TemplatePart", "WPF0132:Use PART prefix", Justification = "OK.")]
 [TemplatePart(Name = "AfterLoadedStoryboard", Type = typeof(Storyboard))]
 [TemplatePart(Name = "AfterLoadedReverseStoryboard", Type = typeof(Storyboard))]
-public class NiceContentControl : ContentControl
+public sealed class NiceContentControl : ContentControl
 {
     private Storyboard? afterLoadedStoryboard;
     private Storyboard? afterLoadedReverseStoryboard;
@@ -101,7 +101,7 @@ public class NiceContentControl : ContentControl
     public bool IsTransitioning
     {
         get => (bool)GetValue(IsTransitioningProperty);
-        protected set => SetValue(IsTransitioningPropertyKey, BooleanBoxes.Box(value));
+        set => SetValue(IsTransitioningPropertyKey, BooleanBoxes.Box(value));
     }
 
     public NiceContentControl()

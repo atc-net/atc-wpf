@@ -8,7 +8,7 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "OK.")]
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "OK.")]
 [SuppressMessage("Minor Code Smell", "S1104:Fields should not have public accessibility", Justification = "OK.")]
-public class WindowPlacementSetting
+public sealed class WindowPlacementSetting
 {
     public uint showCmd;
     public Point minPosition;

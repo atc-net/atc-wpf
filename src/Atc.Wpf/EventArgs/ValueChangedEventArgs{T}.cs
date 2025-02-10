@@ -2,7 +2,7 @@
 // ReSharper disable ConvertToPrimaryConstructor
 namespace Atc.Wpf;
 
-public class ValueChangedEventArgs<T> : EventArgs
+public sealed class ValueChangedEventArgs<T> : EventArgs
 {
     [SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "OK.")]
     public ValueChangedEventArgs(

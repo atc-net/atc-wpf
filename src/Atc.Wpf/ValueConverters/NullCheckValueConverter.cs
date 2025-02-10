@@ -6,7 +6,7 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 [ValueConversion(typeof(object), typeof(object))]
 
-public class NullCheckValueConverter : IValueConverter
+public sealed class NullCheckValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -2,7 +2,7 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Tests.Command;
 
-public class RelayCommandAsyncTests
+public sealed class RelayCommandAsyncTests
 {
     [Theory]
     [InlineData(0, true, 0)]

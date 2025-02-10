@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
 [TypeConverter(typeof(ColLayoutConverter))]
-public class ColLayout : MarkupExtension
+public sealed class ColLayout : MarkupExtension
 {
     public static readonly int ColMaxCellCount = 24;
     public static readonly int HalfColMaxCellCount = 12;

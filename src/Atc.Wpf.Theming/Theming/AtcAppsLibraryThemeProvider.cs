@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Theming;
 
-public class AtcAppsLibraryThemeProvider : LibraryThemeProvider
+public sealed class AtcAppsLibraryThemeProvider : LibraryThemeProvider
 {
     public static readonly AtcAppsLibraryThemeProvider DefaultInstance = new();
 

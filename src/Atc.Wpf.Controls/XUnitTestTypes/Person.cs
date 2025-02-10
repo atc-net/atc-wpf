@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.XUnitTestTypes;
 
-public class Person
+public sealed class Person
 {
     [Required]
     [MinLength(2)]

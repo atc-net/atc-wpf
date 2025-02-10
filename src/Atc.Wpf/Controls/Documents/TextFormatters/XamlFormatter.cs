@@ -5,7 +5,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters;
 /// <summary>
 /// Formats the FlowDocument text as colored Xaml.
 /// </summary>
-public class XamlFormatter : ITextFormatter
+public sealed class XamlFormatter : ITextFormatter
 {
     /// <summary>
     /// The instance.

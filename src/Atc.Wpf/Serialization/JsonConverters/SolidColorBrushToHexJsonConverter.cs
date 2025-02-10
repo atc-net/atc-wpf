@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Serialization.JsonConverters;
 
-public class SolidColorBrushToHexJsonConverter : JsonConverter<SolidColorBrush?>
+public sealed class SolidColorBrushToHexJsonConverter : JsonConverter<SolidColorBrush?>
 {
     public override SolidColorBrush? Read(
         ref Utf8JsonReader reader,

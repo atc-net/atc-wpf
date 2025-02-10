@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Tests.Serialization.JsonConverters;
 
 [Collection("Sequential")]
-public class SolidColorBrushToHexJsonConverterTests
+public sealed class SolidColorBrushToHexJsonConverterTests
 {
     [StaTheory]
     [InlineData("#FFFF0000")]

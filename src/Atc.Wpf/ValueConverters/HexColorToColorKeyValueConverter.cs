@@ -7,7 +7,7 @@ namespace Atc.Wpf.ValueConverters;
 /// Convert back is from: name/key to Color.
 /// </remarks>
 [ValueConversion(typeof(string), typeof(string))]
-public class HexColorToColorKeyValueConverter : IValueConverter
+public sealed class HexColorToColorKeyValueConverter : IValueConverter
 {
     public object? Convert(
         object? value,

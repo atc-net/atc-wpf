@@ -6,7 +6,7 @@ namespace System;
 /// to be created to the Action's owner. The owner can be garbage collected at any time.
 /// </summary>
 /// <typeparam name="T">The type of the Action's parameter.</typeparam>
-public class WeakAction<T> : WeakAction, IExecuteWithObject
+public sealed class WeakAction<T> : WeakAction, IExecuteWithObject
 {
     private Action<T>? staticAction;
 

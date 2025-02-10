@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Notifications.Messages;
 
-public class ToastNotificationMessage : MessageBase
+public sealed class ToastNotificationMessage : MessageBase
 {
     public ToastNotificationMessage(
         ToastNotificationType toastNotificationType,

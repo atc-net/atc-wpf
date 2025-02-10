@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters;
 /// <summary>
 /// Formats the FlowDocument text as colored C#.
 /// </summary>
-public class CSharpFormatter : ITextFormatter
+public sealed class CSharpFormatter : ITextFormatter
 {
     /// <summary>
     /// The instance.

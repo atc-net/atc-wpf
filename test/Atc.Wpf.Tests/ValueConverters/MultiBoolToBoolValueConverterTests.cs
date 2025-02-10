@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class MultiBoolToBoolValueConverterTests
+public sealed class MultiBoolToBoolValueConverterTests
 {
     private readonly IMultiValueConverter converter = new MultiBoolToBoolValueConverter();
     private readonly object[] inputSet1 = { true, true, true };
@@ -16,7 +16,7 @@ public class MultiBoolToBoolValueConverterTests
         {
             1 => inputSet1,
             2 => inputSet2,
-            _ => Array.Empty<object>(),
+            _ => [],
         };
 
         // Atc

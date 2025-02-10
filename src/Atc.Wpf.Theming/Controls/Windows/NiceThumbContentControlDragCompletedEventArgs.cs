@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Controls.Windows;
 
-public class NiceThumbContentControlDragCompletedEventArgs : DragCompletedEventArgs
+public sealed class NiceThumbContentControlDragCompletedEventArgs : DragCompletedEventArgs
 {
     public NiceThumbContentControlDragCompletedEventArgs(
         double horizontalOffset,

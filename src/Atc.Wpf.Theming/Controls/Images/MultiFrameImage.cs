@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Controls.Images;
 
-public class MultiFrameImage : Image
+public sealed class MultiFrameImage : Image
 {
     public static readonly DependencyProperty MultiFrameImageModeProperty = DependencyProperty.Register(
         nameof(MultiFrameImageMode),

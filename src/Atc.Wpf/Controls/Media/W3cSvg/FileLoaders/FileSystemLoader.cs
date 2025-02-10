@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.FileLoaders;
 
-public class FileSystemLoader : IExternalFileLoader
+public sealed class FileSystemLoader : IExternalFileLoader
 {
     static FileSystemLoader()
     {

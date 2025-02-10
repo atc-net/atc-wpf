@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// MultiValueConverter: Multi Object Null To Visibility-Collapsed.
 /// </summary>
 [ValueConversion(typeof(List<object>), typeof(Visibility))]
-public class MultiObjectNullToVisibilityCollapsedValueConverter : IMultiValueConverter
+public sealed class MultiObjectNullToVisibilityCollapsedValueConverter : IMultiValueConverter
 {
     public object Convert(
         object[] values,

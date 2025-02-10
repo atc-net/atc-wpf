@@ -9,7 +9,7 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [StyleTypedProperty(Property = nameof(DarkMinButtonStyle), StyleTargetType = typeof(Button))]
 [StyleTypedProperty(Property = nameof(DarkMaxButtonStyle), StyleTargetType = typeof(Button))]
 [StyleTypedProperty(Property = nameof(DarkCloseButtonStyle), StyleTargetType = typeof(Button))]
-public class WindowButtonCommands : ContentControl
+public sealed class WindowButtonCommands : ContentControl
 {
     public event ClosingWindowEventHandler? ClosingWindow;
 
@@ -197,7 +197,7 @@ public class WindowButtonCommands : ContentControl
     public Window? ParentWindow
     {
         get => (Window?)GetValue(ParentWindowProperty);
-        protected set => SetValue(ParentWindowPropertyKey, value);
+        set => SetValue(ParentWindowPropertyKey, value);
     }
 
     static WindowButtonCommands()

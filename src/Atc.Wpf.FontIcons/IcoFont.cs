@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons;
 
-public class IcoFont : TextBlock, ISpinable, IRotatable, IFlippable
+public sealed class IcoFont : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
     /// Identifies the Icon dependency property.

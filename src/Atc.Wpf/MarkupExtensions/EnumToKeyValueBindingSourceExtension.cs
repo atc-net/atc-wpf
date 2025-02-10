@@ -8,7 +8,7 @@ namespace Atc.Wpf.MarkupExtensions;
 ///     <![CDATA[<ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:TheEnum}}}"/>]]>
 /// </example>
 [SuppressMessage("Blocker Code Smell", "S3427:Method overloads with default parameter values should not overlap ", Justification = "WPF markup need to have overload constructors in order to work.")]
-public class EnumToKeyValueBindingSourceExtension : MarkupExtension
+public sealed class EnumToKeyValueBindingSourceExtension : MarkupExtension
 {
     private Type? enumType;
 

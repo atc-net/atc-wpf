@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Notifications;
 
-public class ToastNotificationManager : IToastNotificationManager
+public sealed class ToastNotificationManager : IToastNotificationManager
 {
     private readonly Dispatcher dispatcher;
     private static readonly List<ToastNotificationArea> Areas = new();

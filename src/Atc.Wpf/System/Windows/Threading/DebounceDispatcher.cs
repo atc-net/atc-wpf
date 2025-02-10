@@ -15,7 +15,7 @@ namespace System.Windows.Threading;
 /// <remarks>
 /// Inspiration source: https://weblog.west-wind.com/posts/2017/jul/02/debouncing-and-throttling-dispatcher-events
 /// </remarks>
-public class DebounceDispatcher
+public sealed class DebounceDispatcher
 {
     private DispatcherTimer? timer;
 

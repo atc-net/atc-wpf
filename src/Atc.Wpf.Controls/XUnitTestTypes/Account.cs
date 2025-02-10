@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.XUnitTestTypes;
 
-public class Account
+public sealed class Account
 {
     public Guid Id { get; } = Guid.NewGuid();
 

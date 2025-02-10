@@ -4,7 +4,7 @@ namespace Atc.Wpf.DependencyObjects;
 /// Message listener, singleton pattern.
 /// Inherit from DependencyObject to implement DataBinding.
 /// </summary>
-public class PercentListener : DependencyObject
+public sealed class PercentListener : DependencyObject
 {
     /// <summary>
     /// Percent Property.
