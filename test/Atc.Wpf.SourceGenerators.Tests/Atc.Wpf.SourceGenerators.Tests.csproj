@@ -27,8 +27,4 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.SourceGenerators\Atc.Wpf.SourceGenerators.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="XUnitTestTypes\" />
-  </ItemGroup>
-
 </Project>

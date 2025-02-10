@@ -1,3 +1,4 @@
+// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Sample.SamplesWpf.Mvvm;
 
 [SuppressMessage("Maintainability", "CA1507:Use nameof to express symbol names", Justification = "OK.")]

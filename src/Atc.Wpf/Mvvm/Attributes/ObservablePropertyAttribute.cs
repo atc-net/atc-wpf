@@ -26,6 +26,11 @@ public sealed class ObservablePropertyAttribute : Attribute
         PropertyName = propertyName;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ObservablePropertyAttribute"/> class.
+    /// </summary>
+    /// <param name="propertyName">The name of the property to generate</param>
+    /// <param name="dependentProperties">The name of the dependent properties to generate</param>
     public ObservablePropertyAttribute(
         string propertyName,
         params string[] dependentProperties)
@@ -35,12 +40,12 @@ public sealed class ObservablePropertyAttribute : Attribute
     }
 
     /// <summary>
-    /// Gets or sets the name of property to generate.
+    /// Gets the name of property to generate.
     /// </summary>
     public string? PropertyName { get; }
 
     /// <summary>
-    /// Gets the dependent property names.
+    /// Gets or sets the dependent property names.
     /// </summary>
-    public string[]? DependentProperties { get; }
+    public string[]? DependentProperties { get; set; }
 }
