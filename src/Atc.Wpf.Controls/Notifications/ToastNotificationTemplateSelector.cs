@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Notifications;
 
-public class ToastNotificationTemplateSelector : DataTemplateSelector
+public sealed class ToastNotificationTemplateSelector : DataTemplateSelector
 {
     private DataTemplate? defaultStringTemplate;
     private DataTemplate? defaultToastNotificationTemplate;

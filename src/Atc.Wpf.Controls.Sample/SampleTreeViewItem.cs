@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Sample;
 
-public class SampleTreeViewItem : TreeViewItem
+public sealed class SampleTreeViewItem : TreeViewItem
 {
     /// <summary>
     /// The sample path property.

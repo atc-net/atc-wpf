@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.ValueConverters;
 
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
-public class CornerRadiusBindingValueConverter : IValueConverter
+public sealed class CornerRadiusBindingValueConverter : IValueConverter
 {
     public RadiusType IgnoreRadius { get; set; } = RadiusType.None;
 

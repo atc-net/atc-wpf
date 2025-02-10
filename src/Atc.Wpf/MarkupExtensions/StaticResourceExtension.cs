@@ -6,7 +6,7 @@ namespace Atc.Wpf.MarkupExtensions;
 /// </summary>
 [MarkupExtensionReturnType(typeof(object))]
 [Localizability(LocalizationCategory.NeverLocalize)]
-public class StaticResourceExtension : System.Windows.StaticResourceExtension
+public sealed class StaticResourceExtension : System.Windows.StaticResourceExtension
 {
     public StaticResourceExtension()
     {

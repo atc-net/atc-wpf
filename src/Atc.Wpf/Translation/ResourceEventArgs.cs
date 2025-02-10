@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Translation;
 
-public class ResourceEventArgs : EventArgs
+public sealed class ResourceEventArgs : EventArgs
 {
     public ResourceEventArgs(
         string resxName,

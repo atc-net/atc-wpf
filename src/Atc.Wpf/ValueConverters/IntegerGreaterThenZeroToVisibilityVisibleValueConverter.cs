@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Integer > 0 To Visibility-Visible.
 /// </summary>
 [ValueConversion(typeof(int), typeof(Visibility))]
-public class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueConverter
+public sealed class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

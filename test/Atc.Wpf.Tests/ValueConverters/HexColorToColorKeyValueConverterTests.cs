@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class HexColorToColorKeyValueConverterTests
+public sealed class HexColorToColorKeyValueConverterTests
 {
     private readonly IValueConverter converter = new HexColorToColorKeyValueConverter();
 

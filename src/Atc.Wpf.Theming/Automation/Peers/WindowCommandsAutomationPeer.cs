@@ -1,7 +1,7 @@
 // ReSharper disable SuggestBaseTypeForParameterInConstructor
 namespace Atc.Wpf.Theming.Automation.Peers;
 
-public class WindowCommandsAutomationPeer : FrameworkElementAutomationPeer
+public sealed class WindowCommandsAutomationPeer : FrameworkElementAutomationPeer
 {
     public WindowCommandsAutomationPeer(
         WindowCommands owner)

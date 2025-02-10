@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class BoolToWidthValueConverterTests
+public sealed class BoolToWidthValueConverterTests
 {
     private readonly IValueConverter converter = new BoolToWidthValueConverter();
 

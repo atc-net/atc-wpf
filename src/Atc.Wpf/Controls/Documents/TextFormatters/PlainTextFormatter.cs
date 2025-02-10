@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters;
 /// <summary>
 /// Formats the FlowDocument text as plain text.
 /// </summary>
-public class PlainTextFormatter : ITextFormatter
+public sealed class PlainTextFormatter : ITextFormatter
 {
     /// <summary>
     /// Gets the text.

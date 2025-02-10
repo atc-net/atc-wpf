@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.LabelControls;
 
-public class LabelMixBindingsViewModel : ViewModelBase
+public sealed class LabelMixBindingsViewModel : ViewModelBase
 {
     private bool fieldBool1;
     private string fieldSelectedKey1 = string.Empty;

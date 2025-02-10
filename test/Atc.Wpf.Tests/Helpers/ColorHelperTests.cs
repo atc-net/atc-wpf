@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Tests.Helpers;
 
-public class ColorHelperTests
+public sealed class ColorHelperTests
 {
     [Fact]
     public void ColorCollectionCount()

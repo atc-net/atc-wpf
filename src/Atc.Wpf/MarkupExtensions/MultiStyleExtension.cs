@@ -1,7 +1,7 @@
 namespace Atc.Wpf.MarkupExtensions;
 
 [MarkupExtensionReturnType(typeof(Style))]
-public class MultiStyleExtension : MarkupExtension
+public sealed class MultiStyleExtension : MarkupExtension
 {
     private readonly string[] resourceKeys;
 

@@ -76,7 +76,7 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
         typeof(int),
         typeof(LabelIntegerXyBox),
         new FrameworkPropertyMetadata(
-            default(int),
+            0,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueXLostFocus,
             coerceValueCallback: null,
@@ -94,7 +94,7 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
         typeof(int),
         typeof(LabelIntegerXyBox),
         new FrameworkPropertyMetadata(
-            default(int),
+            0,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueYLostFocus,
             coerceValueCallback: null,

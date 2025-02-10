@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 /// CSharp.
 /// </summary>
 [SuppressMessage("Usage", "CA1724", Justification = "OK.")]
-public class CSharp : CLike
+public sealed class CSharp : CLike
 {
     /// <summary>
     /// The list of C# keywords.

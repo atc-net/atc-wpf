@@ -1,7 +1,7 @@
 // ReSharper disable PossibleNullReferenceException
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class BrushToColorValueConverterTests
+public sealed class BrushToColorValueConverterTests
 {
     private readonly IValueConverter converter = new BrushToColorValueConverter();
 

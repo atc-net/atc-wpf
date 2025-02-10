@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.Selectors;
 /// ValueConverter: RenderFlagIndicatorType To Visibility.
 /// </summary>
 [ValueConversion(typeof(RenderFlagIndicatorType), typeof(Visibility))]
-public class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueConverter
+public sealed class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters;
 /// <summary>
 /// Formats the FlowDocument text as RTF.
 /// </summary>
-public class RtfFormatter : ITextFormatter
+public sealed class RtfFormatter : ITextFormatter
 {
     /// <summary>
     /// Gets the text.

@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Layouts;
 
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public class PanelEx : Panel
+public sealed class PanelEx : Panel
 {
     protected override Size MeasureOverride(
         Size availableSize)

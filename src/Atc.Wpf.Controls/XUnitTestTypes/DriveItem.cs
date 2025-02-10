@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.XUnitTestTypes;
 
-public class DriveItem
+public sealed class DriveItem
 {
     [Required]
     [MinLength(2)]

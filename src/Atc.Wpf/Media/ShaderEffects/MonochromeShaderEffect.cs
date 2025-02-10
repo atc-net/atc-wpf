@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
-public class MonochromeShaderEffect : ShaderEffectBase
+public sealed class MonochromeShaderEffect : ShaderEffectBase
 {
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty(

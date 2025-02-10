@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Translation;
 
-public class UiCultureEventArgs : EventArgs
+public sealed class UiCultureEventArgs : EventArgs
 {
     public UiCultureEventArgs(
         CultureInfo oldCulture,

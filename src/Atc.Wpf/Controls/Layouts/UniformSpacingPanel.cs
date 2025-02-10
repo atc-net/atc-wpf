@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Layouts;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-public class UniformSpacingPanel : Panel
+public sealed class UniformSpacingPanel : Panel
 {
     private Orientation orientation = Orientation.Horizontal;
 

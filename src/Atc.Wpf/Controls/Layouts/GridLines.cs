@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-public class GridLines : ContentControl
+public sealed class GridLines : ContentControl
 {
     private readonly Canvas containerCanvas = new();
 

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Behaviors;
 
-public class AutoScrollListViewBehavior : Behavior<ListView>
+public sealed class AutoScrollListViewBehavior : Behavior<ListView>
 {
     public static readonly DependencyProperty ScrollDirectionProperty =
         DependencyProperty.Register(

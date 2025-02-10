@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Sample;
 
-public class SampleItemMessage : MessageBase
+public sealed class SampleItemMessage : MessageBase
 {
     public SampleItemMessage(string? header, string? sampleItemPath)
     {

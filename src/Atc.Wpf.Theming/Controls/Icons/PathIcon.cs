@@ -5,7 +5,7 @@ namespace Atc.Wpf.Theming.Controls.Icons;
 /// Represents an icon that uses a vector path as its content.
 /// </summary>
 [TemplatePart(Name = nameof(PART_Path), Type = typeof(Path))]
-public class PathIcon : IconElement
+public sealed class PathIcon : IconElement
 {
     private Path? PART_Path { get; set; }
 

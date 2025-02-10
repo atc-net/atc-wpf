@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons;
 
-public class ImageAwesomeBrand : Image, ISpinable, IRotatable, IFlippable
+public sealed class ImageAwesomeBrand : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
     /// Identifies the Foreground dependency property.

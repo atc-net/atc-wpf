@@ -23,7 +23,7 @@ namespace Atc.Wpf.Controls.Layouts;
 /// ]]>
 /// </example>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public class GridEx : Grid
+public sealed class GridEx : Grid
 {
     /// <summary>
     /// The rows dependency property.

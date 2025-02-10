@@ -5,7 +5,7 @@ namespace Atc.Wpf.Theming.Controls.Icons;
 /// Represents an icon that uses a glyph from the specified font.
 /// </summary>
 [TemplatePart(Name = nameof(PART_Glyph), Type = typeof(TextBlock))]
-public class FontIcon : IconElement
+public sealed class FontIcon : IconElement
 {
     public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register(
         nameof(Glyph),

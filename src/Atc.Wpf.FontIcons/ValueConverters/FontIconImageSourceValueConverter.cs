@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons.ValueConverters;
 
-public class FontIconImageSourceValueConverter : MarkupExtension, IValueConverter
+public sealed class FontIconImageSourceValueConverter : MarkupExtension, IValueConverter
 {
     public override object ProvideValue(IServiceProvider serviceProvider)
     {

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons;
 
-public class FontAwesomeBrand : TextBlock, ISpinable, IRotatable, IFlippable
+public sealed class FontAwesomeBrand : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
     /// Identifies the Icon dependency property.

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.FontIcons;
 
-public class ImageWeather : Image, ISpinable, IRotatable, IFlippable
+public sealed class ImageWeather : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
     /// Identifies the Foreground dependency property.

@@ -9,7 +9,7 @@ namespace Atc.Wpf.Messaging;
 /// </summary>
 /// <typeparam name="TCallbackParameter">The type of the callback method's
 /// only parameter.</typeparam>
-public class NotificationMessageAction<TCallbackParameter> : NotificationMessageWithCallback
+public sealed class NotificationMessageAction<TCallbackParameter> : NotificationMessageWithCallback
 {
     /// <summary>
     /// Initializes a new instance of the

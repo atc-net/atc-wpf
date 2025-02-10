@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
-public class Row : Panel
+public sealed class Row : Panel
 {
     private ColLayoutType layoutStatus;
     private double maxChildDesiredHeight;

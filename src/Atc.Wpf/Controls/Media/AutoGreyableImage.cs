@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Media;
 /// <summary>
 /// Auto Greyable Image.
 /// </summary>
-public class AutoGreyableImage : Image
+public sealed class AutoGreyableImage : Image
 {
     private static readonly ConcurrentDictionary<int, FormatConvertedBitmap> CacheFormatConvertedBitmap = new();
     private static readonly ConcurrentDictionary<int, ImageBrush> CacheImageBrush = new();

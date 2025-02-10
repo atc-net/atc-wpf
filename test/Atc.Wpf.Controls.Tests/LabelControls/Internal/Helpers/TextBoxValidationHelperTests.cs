@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Controls.Tests.LabelControls.Internal.Helpers;
 
-public class TextBoxValidationHelperTests
+public sealed class TextBoxValidationHelperTests
 {
     [Theory]
     [InlineData(TextBoxValidationRuleType.Email, true, "", "john.doe@example.com")]

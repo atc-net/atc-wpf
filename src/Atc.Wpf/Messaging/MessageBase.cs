@@ -3,7 +3,7 @@
 namespace Atc.Wpf.Messaging;
 
 /// <summary>
-/// Base class for all messages broad-casted by the Messenger.
+/// Base class for all messages broadcast by the Messenger.
 /// You can create your own message types by extending this class.
 /// </summary>
 public class MessageBase

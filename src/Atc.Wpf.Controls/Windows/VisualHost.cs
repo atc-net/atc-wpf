@@ -3,7 +3,7 @@ namespace Atc.Wpf.Controls.Windows;
 /// <summary>
 /// VisualHost.
 /// </summary>
-public class VisualHost : FrameworkElement
+public sealed class VisualHost : FrameworkElement
 {
     private readonly VisualCollection visualCollection;
 

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Tests.LabelControls.Internal.ValueConverters;
 
-public class LabelControlHideAreasToTreeGridExColumnsValueConverterTests
+public sealed class LabelControlHideAreasToTreeGridExColumnsValueConverterTests
 {
     [Theory]
     [InlineData("10,*,20", LabelControlHideAreasType.None)]

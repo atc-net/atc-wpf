@@ -2,7 +2,7 @@
 namespace Atc.Wpf.SourceGenerators.Generators;
 
 [Generator]
-public class ViewModelGenerator : IIncrementalGenerator
+public sealed class ViewModelGenerator : IIncrementalGenerator
 {
     public void Initialize(
         IncrementalGeneratorInitializationContext context)

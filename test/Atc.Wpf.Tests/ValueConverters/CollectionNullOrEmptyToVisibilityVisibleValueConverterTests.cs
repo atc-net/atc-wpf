@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class CollectionNullOrEmptyToVisibilityVisibleValueConverterTests
+public sealed class CollectionNullOrEmptyToVisibilityVisibleValueConverterTests
 {
     private readonly IValueConverter converter = new CollectionNullOrEmptyToVisibilityVisibleValueConverter();
 

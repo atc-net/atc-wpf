@@ -2,7 +2,7 @@
 namespace Atc.Wpf.Controls.Progressing;
 
 [TemplatePart(Name = TemplateBorderName, Type = typeof(Border))]
-public class LoadingIndicator : Control
+public sealed class LoadingIndicator : Control
 {
     internal const string TemplateBorderName = "PART_Border";
 

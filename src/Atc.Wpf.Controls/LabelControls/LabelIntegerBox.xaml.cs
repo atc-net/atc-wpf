@@ -74,7 +74,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         typeof(int),
         typeof(LabelIntegerBox),
         new FrameworkPropertyMetadata(
-            default(int),
+            0,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueLostFocus,
             coerceValueCallback: null,

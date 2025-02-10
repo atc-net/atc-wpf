@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-public class ReversibleStackPanel : StackPanel
+public sealed class ReversibleStackPanel : StackPanel
 {
     public static readonly DependencyProperty ReverseOrderProperty = DependencyProperty.Register(
         nameof(ReverseOrder),

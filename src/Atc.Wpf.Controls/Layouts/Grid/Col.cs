@@ -1,7 +1,7 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
-public class Col : ContentControl
+public sealed class Col : ContentControl
 {
     public static readonly DependencyProperty LayoutProperty = DependencyProperty.Register(
         nameof(Layout),

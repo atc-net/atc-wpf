@@ -34,7 +34,7 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
         typeof(int),
         typeof(LabelPixelSizeBox),
         new FrameworkPropertyMetadata(
-            default(int),
+            0,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueWidthLostFocus,
             coerceValueCallback: null,
@@ -52,7 +52,7 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
         typeof(int),
         typeof(LabelPixelSizeBox),
         new FrameworkPropertyMetadata(
-            default(int),
+            0,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueHeightLostFocus,
             coerceValueCallback: null,

@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters;
 /// <summary>
 /// Formats the FlowDocument text as Json.
 /// </summary>
-public class JsonFormatter : ITextFormatter
+public sealed class JsonFormatter : ITextFormatter
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {

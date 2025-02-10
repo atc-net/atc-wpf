@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.Serialization.JsonConverters;
 
-public class JsonComplexDataTests
+public sealed class JsonComplexDataTests
 {
     [Fact]
     public void ToJsonHex()

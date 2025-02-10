@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class MultiObjectNullToVisibilityCollapsedValueConverterTests
+public sealed class MultiObjectNullToVisibilityCollapsedValueConverterTests
 {
     private readonly IMultiValueConverter converter = new MultiObjectNullToVisibilityCollapsedValueConverter();
 

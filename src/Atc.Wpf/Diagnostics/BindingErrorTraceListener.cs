@@ -3,7 +3,7 @@ namespace Atc.Wpf.Diagnostics;
 /// <summary>
 /// A class that listens to binding errors and forwards them as message boxes.
 /// </summary>
-public class BindingErrorTraceListener : DefaultTraceListener
+public sealed class BindingErrorTraceListener : DefaultTraceListener
 {
     private static BindingErrorTraceListener? listener;
     private readonly StringBuilder errorMessage = new();

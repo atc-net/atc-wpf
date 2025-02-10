@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Layouts;
 
 [ContentProperty(nameof(Content))]
-public class Divider : Control
+public sealed class Divider : Control
 {
     public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(
         nameof(Content),

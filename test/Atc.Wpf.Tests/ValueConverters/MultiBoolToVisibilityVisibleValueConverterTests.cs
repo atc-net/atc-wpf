@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class MultiBoolToVisibilityVisibleValueConverterTests
+public sealed class MultiBoolToVisibilityVisibleValueConverterTests
 {
     private readonly IMultiValueConverter converter = new MultiBoolToVisibilityVisibleValueConverter();
 

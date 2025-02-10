@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-public class LabelInputFormPanelSettings
+public sealed class LabelInputFormPanelSettings
 {
     public Size MaxSize { get; set; } = new(1920, 1200);
 

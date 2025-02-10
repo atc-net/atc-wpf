@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class EnumDescriptionToStringValueConverterTests
+public sealed class EnumDescriptionToStringValueConverterTests
 {
     private readonly IValueConverter converter = new EnumDescriptionToStringValueConverter();
 

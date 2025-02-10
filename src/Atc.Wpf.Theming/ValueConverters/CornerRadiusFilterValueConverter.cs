@@ -2,7 +2,7 @@ namespace Atc.Wpf.Theming.ValueConverters;
 
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
 [ValueConversion(typeof(CornerRadius), typeof(double), ParameterType = typeof(RadiusType))]
-public class CornerRadiusFilterValueConverter : IValueConverter
+public sealed class CornerRadiusFilterValueConverter : IValueConverter
 {
     public RadiusType Filter { get; set; } = RadiusType.None;
 

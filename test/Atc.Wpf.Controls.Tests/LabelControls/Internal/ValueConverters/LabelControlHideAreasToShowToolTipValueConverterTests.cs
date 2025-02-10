@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Tests.LabelControls.Internal.ValueConverters;
 
-public class LabelControlHideAreasToShowToolTipValueConverterTests
+public sealed class LabelControlHideAreasToShowToolTipValueConverterTests
 {
     [Theory]
     [InlineData(false, LabelControlHideAreasType.None)]

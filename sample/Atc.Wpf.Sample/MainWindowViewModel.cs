@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample;
 
-public class MainWindowViewModel : MainWindowViewModelBase, IMainWindowViewModel
+public sealed class MainWindowViewModel : MainWindowViewModelBase, IMainWindowViewModel
 {
     public void UpdateSelectedView(
         SampleTreeViewItem? sampleTreeViewItem)

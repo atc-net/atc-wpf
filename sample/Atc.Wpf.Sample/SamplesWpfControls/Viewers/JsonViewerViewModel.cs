@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.Viewers;
 
-public class JsonViewerViewModel : ViewModelBase
+public sealed class JsonViewerViewModel : ViewModelBase
 {
     private string jsonData = string.Empty;
 

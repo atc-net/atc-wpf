@@ -6,7 +6,7 @@ namespace Atc.Wpf.Collections;
 /// improving performance by minimizing UI updates and providing a more efficient way to refresh bound views.
 /// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public class ObservableCollectionEx<T> : ObservableCollection<T>
+public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
 {
     private bool suppressNotification;
 

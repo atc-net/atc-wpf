@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
-public class BoolToVisibilityCollapsedValueConverterTests
+public sealed class BoolToVisibilityCollapsedValueConverterTests
 {
     private readonly IValueConverter converter = new BoolToVisibilityCollapsedValueConverter();
 

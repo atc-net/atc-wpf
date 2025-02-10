@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Controls.Windows;
 
-public class NiceThumbContentControl : ContentControlEx, INiceThumb
+public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
 {
     private TouchDevice? currentDevice;
     private Point startDragPoint;
@@ -70,7 +70,7 @@ public class NiceThumbContentControl : ContentControlEx, INiceThumb
     public bool IsDragging
     {
         get => (bool)GetValue(IsDraggingProperty);
-        protected set => SetValue(IsDraggingPropertyKey, BooleanBoxes.Box(value));
+        set => SetValue(IsDraggingPropertyKey, BooleanBoxes.Box(value));
     }
 
     public void CancelDragAction()

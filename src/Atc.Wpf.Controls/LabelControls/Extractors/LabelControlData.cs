@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.LabelControls.Extractors;
 
-public class LabelControlData
+public sealed class LabelControlData
 {
     public LabelControlData(
         Type dataType,

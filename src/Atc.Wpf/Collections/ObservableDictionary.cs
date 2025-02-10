@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Collections;
 
-public class ObservableDictionary<TKey, TValue>
+public sealed class ObservableDictionary<TKey, TValue>
     : ObservableCollection<ObservableKeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>
 {
     public void Add(TKey key, TValue value)

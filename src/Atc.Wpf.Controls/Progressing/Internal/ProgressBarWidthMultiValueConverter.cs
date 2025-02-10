@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Progressing.Internal;
 
-public class ProgressBarWidthMultiValueConverter : IMultiValueConverter
+public sealed class ProgressBarWidthMultiValueConverter : IMultiValueConverter
 {
     public object Convert(object[]? values, Type targetType, object parameter, CultureInfo culture)
     {

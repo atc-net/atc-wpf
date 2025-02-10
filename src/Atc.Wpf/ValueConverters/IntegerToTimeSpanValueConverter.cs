@@ -4,7 +4,7 @@ namespace Atc.Wpf.ValueConverters;
 /// ValueConverter: Integer To TimeSpan.
 /// </summary>
 [ValueConversion(typeof(int), typeof(TimeSpan))]
-public class IntegerToTimeSpanValueConverter : IValueConverter
+public sealed class IntegerToTimeSpanValueConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

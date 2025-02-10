@@ -3,7 +3,7 @@ namespace Atc.Wpf.Theming.Controls;
 
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "OK.")]
-public class GridViewHeaderRowPresenterEx : GridViewHeaderRowPresenter
+public sealed class GridViewHeaderRowPresenterEx : GridViewHeaderRowPresenter
 {
     protected override void OnVisualChildrenChanged(
         DependencyObject visualAdded,

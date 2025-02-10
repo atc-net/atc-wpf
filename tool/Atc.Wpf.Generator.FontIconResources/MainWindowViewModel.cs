@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Generator.FontIconResources;
 
-public class MainWindowViewModel : MainWindowViewModelBase, IMainWindowViewModel
+public sealed class MainWindowViewModel : MainWindowViewModelBase, IMainWindowViewModel
 {
     private string? resourcesFolder;
     private string? outputEnumFolder;

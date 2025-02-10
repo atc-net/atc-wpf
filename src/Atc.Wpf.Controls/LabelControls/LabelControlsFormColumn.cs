@@ -3,7 +3,7 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Controls.LabelControls;
 
-public class LabelControlsFormColumn : ILabelControlsFormColumn
+public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 {
     private const int LabelControlsHeightForSpace = 20;
     private const int LabelControlsHeightForVertical = 98;

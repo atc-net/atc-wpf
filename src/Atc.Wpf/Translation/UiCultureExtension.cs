@@ -2,7 +2,7 @@
 namespace Atc.Wpf.Translation;
 
 /// <summary>
-/// Markup Extension used to dynamically set the Language property of an Markup element to the
+/// Markup Extension used to dynamically set the Language property of a Markup element to
 /// the current <see cref="CultureManager.UiCulture" /> property value.
 /// </summary>
 /// <remarks>
@@ -10,7 +10,7 @@ namespace Atc.Wpf.Translation;
 /// extension allows you to dynamically change the language based on the current <see cref="CultureManager.UiCulture" />.
 /// </remarks>
 [MarkupExtensionReturnType(typeof(XmlLanguage))]
-public class UiCultureExtension : ManagedMarkupExtension
+public sealed class UiCultureExtension : ManagedMarkupExtension
 {
     /// <summary>
     /// List of active extensions.

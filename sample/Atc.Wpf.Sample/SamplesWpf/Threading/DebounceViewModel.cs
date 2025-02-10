@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Threading;
 
-public class DebounceViewModel : ViewModelBase
+public sealed class DebounceViewModel : ViewModelBase
 {
     private readonly Collection<string> totalItems;
     private string status;
@@ -8,8 +8,8 @@ public class DebounceViewModel : ViewModelBase
 
     public DebounceViewModel()
     {
-        totalItems = new Collection<string>
-        {
+        totalItems =
+        [
             "John Doe",
             "Jane Doe",
             "Len Kaden",
@@ -19,9 +19,9 @@ public class DebounceViewModel : ViewModelBase
             "Harrison Leilani",
             "Cruz Melodie",
             "Hakeem Rose",
-            "Rafael Wanda",
-        };
-        FoundItems = new ObservableCollection<string>();
+            "Rafael Wanda"
+        ];
+        FoundItems = [];
         status = string.Empty;
         filter = string.Empty;
     }

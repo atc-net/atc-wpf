@@ -9,7 +9,7 @@ namespace Atc.Wpf.Translation;
 /// </summary>
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 [MarkupExtensionReturnType(typeof(object))]
-public class ResxExtension : ManagedMarkupExtension
+public sealed class ResxExtension : ManagedMarkupExtension
 {
     /// <summary>
     /// Defines the handling method for the <see cref="Resource" /> event.

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Theming.Primitives;
 
-public class NiceThumb : Thumb, INiceThumb
+public sealed class NiceThumb : Thumb, INiceThumb
 {
     private TouchDevice? currentDevice;
 

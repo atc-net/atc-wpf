@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Tests.Helpers;
 
-public class ColorItemHelperTests
+public sealed class ColorItemHelperTests
 {
     [Theory]
     [InlineData(GlobalizationLcidConstants.Denmark, "Red", "#FFFF0000", "Rød")]

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests.Command;
 
-public class RelayCommandGenericTests
+public sealed class RelayCommandGenericTests
 {
     [Theory]
     [InlineData(0, true, 0)]

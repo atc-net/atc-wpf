@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Tests.LabelControls.Internal.ValueConverters;
 
-public class LabelControlHideAreasToVisibilityValueConverterTests
+public sealed class LabelControlHideAreasToVisibilityValueConverterTests
 {
     [Theory]
     [InlineData(Visibility.Visible, LabelControlHideAreasType.None, LabelControlHideAreasType.None)]

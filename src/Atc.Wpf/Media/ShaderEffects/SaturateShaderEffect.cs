@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
-public class SaturateShaderEffect : ShaderEffectBase
+public sealed class SaturateShaderEffect : ShaderEffectBase
 {
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty(
@@ -20,7 +20,7 @@ public class SaturateShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(SaturateShaderEffect),
             new UIPropertyMetadata(
-                default(double),
+                0,
                 PixelShaderConstantCallback(0)));
 
     public override string Name => "Saturate";

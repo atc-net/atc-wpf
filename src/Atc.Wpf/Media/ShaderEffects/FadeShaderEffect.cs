@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
-public class FadeShaderEffect : ShaderEffectBase
+public sealed class FadeShaderEffect : ShaderEffectBase
 {
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty(
@@ -14,7 +14,7 @@ public class FadeShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(FadeShaderEffect),
             new UIPropertyMetadata(
-                default(double),
+                0,
                 PixelShaderConstantCallback(0)));
 
     public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(

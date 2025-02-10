@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.XUnitTestTypes;
 
-public class Address
+public sealed class Address
 {
     [Required]
     [MinLength(2)]

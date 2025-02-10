@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Tests;
 
-public class CodeComplianceTests
+public sealed class CodeComplianceTests
 {
     private readonly Assembly sourceAssembly = typeof(IAssemblyMarkerAtcWpf).Assembly;
 
