@@ -66,7 +66,7 @@ public partial class RichTextBoxExView
         """
         {
           "Application": {
-            "String": "Hallo world",
+            "String": "Hello world",
             "Boolean": true,
             "Integer": 27,
             "Float": 5.5,

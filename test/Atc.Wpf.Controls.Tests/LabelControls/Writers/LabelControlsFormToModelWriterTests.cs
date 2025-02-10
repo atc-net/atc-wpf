@@ -110,7 +110,7 @@ public class LabelControlsFormToModelWriterTests
         labelControlsForm.AddColumn(labelControls);
 
         var keyValues = labelControlsForm.GetKeyValues();
-        keyValues["DriveItem.Name"] = "Hallo";
+        keyValues["DriveItem.Name"] = "Hello";
         keyValues["DriveItem.Directory"] = new DirectoryInfo(@"C:\Temp");
         keyValues["DriveItem.File"] = new FileInfo(@"C:\Temp\test.txt");
 
@@ -119,7 +119,7 @@ public class LabelControlsFormToModelWriterTests
 
         // Arrange
         Assert.NotNull(actual);
-        Assert.Equal(@"Hallo", actual.Name);
+        Assert.Equal(@"Hello", actual.Name);
         Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
         Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
     }
@@ -144,7 +144,7 @@ public class LabelControlsFormToModelWriterTests
                     switch (labelControl)
                     {
                         case LabelTextBox { Identifier: "Name" } labelTextBox:
-                            labelTextBox.Text = "Hallo";
+                            labelTextBox.Text = "Hello";
                             break;
                         case LabelDirectoryPicker { Identifier: "Directory" } labelDirectoryPicker:
                             labelDirectoryPicker.Value = new DirectoryInfo(@"C:\Temp");
@@ -162,7 +162,7 @@ public class LabelControlsFormToModelWriterTests
 
         // Arrange
         Assert.NotNull(actual);
-        Assert.Equal(@"Hallo", actual.Name);
+        Assert.Equal(@"Hello", actual.Name);
         Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
         Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
     }

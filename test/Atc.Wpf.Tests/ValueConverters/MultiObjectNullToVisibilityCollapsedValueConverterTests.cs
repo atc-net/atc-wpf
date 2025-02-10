@@ -9,10 +9,10 @@ public class MultiObjectNullToVisibilityCollapsedValueConverterTests
     [InlineData(Visibility.Collapsed, new object[] { null })]
     [InlineData(Visibility.Visible, new object[] { false })]
     [InlineData(Visibility.Visible, new object[] { true })]
-    [InlineData(Visibility.Visible, new object[] { "Hallo" })]
+    [InlineData(Visibility.Visible, new object[] { "Hello" })]
     [InlineData(Visibility.Collapsed, new object[] { false, null })]
     [InlineData(Visibility.Collapsed, new object[] { true, null })]
-    [InlineData(Visibility.Collapsed, new object[] { "Hallo", null })]
+    [InlineData(Visibility.Collapsed, new object[] { "Hello", null })]
     public void Convert(Visibility expected, object[]? input)
         => Assert.Equal(
             expected,

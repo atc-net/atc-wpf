@@ -32,7 +32,7 @@
                                 <Button Content="Paste" />
                                 <Button Content="Cut" />
                                 <Separator Margin="5,0" />
-                                <TextBox Width="150" Text="Hallo" />
+                                <TextBox Width="150" Text="Hello" />
                                 <Separator />
                                 <ToggleButton>
                                     <Image
@@ -84,12 +84,12 @@
                                         Source="../../Assets/error.png" />
                                 </ToggleButton>
                                 <Separator Margin="5,0" />
-                                <TextBox Width="80" Text="Hallo" />
+                                <TextBox Width="80" Text="Hello" />
                                 <Separator Margin="5,0" />
                                 <TextBox
                                     Width="80"
                                     IsEnabled="False"
-                                    Text="Hallo" />
+                                    Text="Hello" />
                                 <Separator Margin="5,0" />
                                 <Button>
                                     <atc:AutoGreyableImage
@@ -117,7 +117,7 @@
                                 <Button Content="Paste" />
                                 <Button Content="Cut" />
                                 <Separator Margin="5,0" />
-                                <TextBox Width="150" Text="Hallo" />
+                                <TextBox Width="150" Text="Hello" />
                                 <Separator />
                                 <CheckBox Content="CheckBox 1" />
                                 <CheckBox Content="CheckBox 2" />
