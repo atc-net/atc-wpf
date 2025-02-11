@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SourceGenerators.Models;
+namespace Atc.Wpf.SourceGenerators.Models.ViewModel;
 
 internal sealed class ViewModelInspectorResult(
     List<RelayCommandToGenerate> relayCommandsToGenerate,

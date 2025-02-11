@@ -160,6 +160,70 @@ Example for ViewModel classes
 
 For more details, see the [MVVM](src/Atc.Wpf/Mvvm/@Readme.md) section.
 
+### DependencyProperty
+
+### Human made Code for complex property
+
+```csharp
+[DependencyProperty<bool>("IsRunning")]
+public partial class MyControl : UserControl
+{
+}
+```
+
+### Human made Code for simple property
+
+```csharp
+[DependencyProperty<bool>("IsRunning"]
+public partial class MyControl : UserControl
+{
+}
+```
+
+### Generated Code for simple property
+
+```csharp
+public partial class MyControl
+{
+    public static readonly DependencyProperty IsRunningProperty = DependencyProperty.Register(
+        nameof(IsRunning),
+        typeof(bool),
+        typeof(MyControl),
+        new FrameworkPropertyMetadata(defaultValue: BooleanBoxes.TrueBox);
+            
+    public bool IsRunning
+    {
+        get => (bool)GetValue(IsRunningProperty);
+        set => SetValue(IsRunningProperty, value);
+    }
+}
+```
+
+### Generated Code for complex property
+
+```csharp
+public partial class MyControl
+{
+    public static readonly DependencyProperty IsRunningProperty = DependencyProperty.Register(
+        nameof(IsRunning),
+        typeof(bool),
+        typeof(MyControl),
+        new FrameworkPropertyMetadata(
+            defaultValue: BooleanBoxes.TrueBox,
+            propertyChangedCallback: PropertyChangedCallback,
+            coerceValueCallback: CoerceValueCallback,
+            flags: FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+            defaultUpdateSourceTrigger: UpdateSourceTrigger.Default,
+            isAnimationProhibited: true));
+            
+    public bool IsRunning
+    {
+        get => (bool)GetValue(IsRunningProperty);
+        set => SetValue(IsRunningProperty, value);
+    }
+}
+```
+
 ## How to contribute
 
 [Contribution Guidelines](https://atc-net.github.io/introduction/about-atc#how-to-contribute)

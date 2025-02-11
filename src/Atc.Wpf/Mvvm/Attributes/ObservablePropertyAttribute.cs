@@ -3,7 +3,7 @@
 namespace Atc.Wpf.Mvvm;
 
 /// <summary>
-/// Specifies that a property in the ViewModel should be generated for a field.
+/// Specifies a property in the ViewModel that should be generated for a field.
 /// The class need to inherits from <see cref="IViewModelBase"/>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]

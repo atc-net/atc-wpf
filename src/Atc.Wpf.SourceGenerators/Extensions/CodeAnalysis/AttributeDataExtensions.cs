@@ -119,12 +119,8 @@ internal static class AttributeDataExtensions
             {
                 foreach (var parameter in parameters)
                 {
-                    if (parameter.StartsWith(NameConstants.ParameterValue + " =", StringComparison.Ordinal))
-                    {
-                        result ??= [];
-                        result.Add(parameter.ExtractParameterValue());
-                    }
-                    else if (parameter.StartsWith(NameConstants.ParameterValues + " =", StringComparison.Ordinal))
+                    var parameterTrim = parameter.Replace(" ", string.Empty);
+                    if (parameterTrim.StartsWith(NameConstants.ParameterValues + "=", StringComparison.Ordinal))
                     {
                         result ??= [];
                         result.AddRange(
@@ -132,6 +128,11 @@ internal static class AttributeDataExtensions
                                 .ExtractParameterValue()
                                 .Split(',')
                                 .Select(s => s.Trim()));
+                    }
+                    else if (parameterTrim.StartsWith(NameConstants.ParameterValue + "=", StringComparison.Ordinal))
+                    {
+                        result ??= [];
+                        result.Add(parameter.ExtractParameterValue());
                     }
                 }
             }
