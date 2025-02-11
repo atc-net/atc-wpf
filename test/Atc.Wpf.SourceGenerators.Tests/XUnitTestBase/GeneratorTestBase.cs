@@ -1,5 +1,5 @@
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
-namespace Atc.Wpf.SourceGenerators.Tests.Generators;
+namespace Atc.Wpf.SourceGenerators.Tests.XUnitTestBase;
 
 public abstract class GeneratorTestBase
 {
@@ -15,14 +15,15 @@ public abstract class GeneratorTestBase
             .ToArray<MetadataReference>();
     }
 
-    internal static (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) GeneratorViewModel(
+    internal static (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) RunGenerator<T>(
         string inputCode)
+        where T : IIncrementalGenerator, new()
     {
         var inputCompilation = CreateCompilation(inputCode);
 
-        ViewModelGenerator generator = new();
+        T generator = new();
 
-        GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
+        GeneratorDriver driver = CSharpGeneratorDriver.Create(incrementalGenerators: generator);
 
         driver = driver.RunGeneratorsAndUpdateCompilation(
             inputCompilation,

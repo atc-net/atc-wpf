@@ -53,6 +53,11 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
         var viewModelClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
+        if (!viewModelClassSymbol.IsInheritsFromIObservableObject())
+        {
+            return null;
+        }
+
         var viewModelMemberInspectorResult = ViewModelInspector.Inspect(viewModelClassSymbol);
 
         if (!viewModelMemberInspectorResult.FoundAnythingToGenerate)

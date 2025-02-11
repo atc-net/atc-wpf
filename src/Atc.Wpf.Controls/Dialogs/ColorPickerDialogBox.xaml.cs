@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
 /// <summary>
-/// Interaction logic for ColorPickerDialogBox.xaml
+/// Interaction logic for ColorPickerDialogBox.
 /// </summary>
 public partial class ColorPickerDialogBox
 {

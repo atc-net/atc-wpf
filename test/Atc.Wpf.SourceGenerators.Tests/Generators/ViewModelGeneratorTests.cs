@@ -4,7 +4,7 @@ namespace Atc.Wpf.SourceGenerators.Tests.Generators;
 public sealed class ViewModelGeneratorTests : GeneratorTestBase
 {
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name()
+    public void ObservableProperty_Name()
     {
         const string inputCode =
             """
@@ -45,13 +45,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_CustomName()
+    public void ObservableProperty_CustomName()
     {
         const string inputCode =
             """
@@ -92,13 +92,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_SealedAccessor()
+    public void ObservableProperty_Name_SealedAccessor()
     {
         const string inputCode =
             """
@@ -139,13 +139,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_MainWindowViewModel()
+    public void ObservableProperty_Name_MainWindowViewModel()
     {
         const string inputCode =
             """
@@ -199,13 +199,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ClassName_Invalid()
+    public void ClassName_Invalid()
     {
         const string inputCode =
             """
@@ -218,13 +218,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             }
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultIsEmpty(generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ClassAccessor_Invalid()
+    public void ClassAccessor_Invalid()
     {
         const string inputCode =
             """
@@ -237,13 +237,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             }
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultIsEmpty(generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_Invalid_AccessorPublic()
+    public void ObservableProperty_Name_Invalid_AccessorPublic()
     {
         const string inputCode =
             """
@@ -256,13 +256,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             }
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultIsEmpty(generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_Invalid_AccessorProtected()
+    public void ObservableProperty_Name_Invalid_AccessorProtected()
     {
         const string inputCode =
             """
@@ -275,13 +275,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             }
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultIsEmpty(generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_Invalid_AccessorInternal()
+    public void ObservableProperty_Name_Invalid_AccessorInternal()
     {
         const string inputCode =
             """
@@ -294,13 +294,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             }
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultIsEmpty(generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperty_Name_Invalid_Casing()
+    public void ObservableProperty_Name_Invalid_Casing()
     {
         const string inputCode =
             """
@@ -313,13 +313,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             }
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultIsEmpty(generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_ObservableProperties_With_NotifyPropertiesChangedFor()
+    public void ObservableProperties_With_NotifyPropertiesChangedFor()
     {
         const string inputCode =
             """
@@ -445,13 +445,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_NoParameter()
+    public void RelayCommand_NoParameter()
     {
         const string inputCode =
             """
@@ -482,13 +482,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_NoParameter_CustomName()
+    public void RelayCommand_NoParameter_CustomName()
     {
         const string inputCode =
             """
@@ -519,13 +519,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_NoParameter_MethodHandlerName()
+    public void RelayCommand_NoParameter_MethodHandlerName()
     {
         const string inputCode =
             """
@@ -556,13 +556,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterString()
+    public void RelayCommand_ParameterString()
     {
         const string inputCode =
             """
@@ -593,13 +593,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterInt()
+    public void RelayCommand_ParameterInt()
     {
         const string inputCode =
             """
@@ -630,13 +630,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterTuple()
+    public void RelayCommand_ParameterTuple()
     {
         const string inputCode =
             """
@@ -667,13 +667,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_NoParameter_CanExecute()
+    public void RelayCommand_NoParameter_CanExecute()
     {
         const string inputCode =
             """
@@ -709,13 +709,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterString_CanExecute()
+    public void RelayCommand_ParameterString_CanExecute()
     {
         const string inputCode =
             """
@@ -751,13 +751,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterInt_CanExecute()
+    public void RelayCommand_ParameterInt_CanExecute()
     {
         const string inputCode =
             """
@@ -793,13 +793,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterValue_Single()
+    public void RelayCommand_ParameterValue_Single()
     {
         const string inputCode =
             """
@@ -830,13 +830,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterValue_Multi()
+    public void RelayCommand_ParameterValue_Multi()
     {
         const string inputCode =
             """
@@ -876,13 +876,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterValues_Multi()
+    public void RelayCommand_ParameterValues_Multi()
     {
         const string inputCode =
             """
@@ -922,13 +922,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterValues_Multi_Invalid_DuplicateName()
+    public void RelayCommand_ParameterValues_Multi_Invalid_DuplicateName()
     {
         const string inputCode =
             """
@@ -948,13 +948,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
 
         var expectedErrorCodes = new[] { "AtcWpfSG0001" };
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultHasDiagnostics(expectedErrorCodes, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_RelayCommand_ParameterValues_Multi_CanExecute()
+    public void RelayCommand_ParameterValues_Multi_CanExecute()
     {
         const string inputCode =
             """
@@ -999,13 +999,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_NoParameter()
+    public void AsyncRelayCommand_NoParameter()
     {
         const string inputCode =
             """
@@ -1037,13 +1037,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_NoParameter_MethodHandlerName()
+    public void AsyncRelayCommand_NoParameter_MethodHandlerName()
     {
         const string inputCode =
             """
@@ -1075,13 +1075,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_NoParameter_CustomName()
+    public void AsyncRelayCommand_NoParameter_CustomName()
     {
         const string inputCode =
             """
@@ -1113,13 +1113,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterString()
+    public void AsyncRelayCommand_ParameterString()
     {
         const string inputCode =
             """
@@ -1151,13 +1151,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterInt()
+    public void AsyncRelayCommand_ParameterInt()
     {
         const string inputCode =
             """
@@ -1189,13 +1189,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterTuple()
+    public void AsyncRelayCommand_ParameterTuple()
     {
         const string inputCode =
             """
@@ -1227,13 +1227,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_NoParameter_CanExecute()
+    public void AsyncRelayCommand_NoParameter_CanExecute()
     {
         const string inputCode =
             """
@@ -1270,13 +1270,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterString_CanExecute()
+    public void AsyncRelayCommand_ParameterString_CanExecute()
     {
         const string inputCode =
             """
@@ -1313,13 +1313,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterInt_CanExecute()
+    public void AsyncRelayCommand_ParameterInt_CanExecute()
     {
         const string inputCode =
             """
@@ -1356,13 +1356,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterValue_Single()
+    public void AsyncRelayCommand_ParameterValue_Single()
     {
         const string inputCode =
             """
@@ -1394,13 +1394,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterValue_Multi()
+    public void AsyncRelayCommand_ParameterValue_Multi()
     {
         const string inputCode =
             """
@@ -1441,13 +1441,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterValues_Multi()
+    public void AsyncRelayCommand_ParameterValues_Multi()
     {
         const string inputCode =
             """
@@ -1488,13 +1488,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterValues_Multi_Invalid_DuplicateName()
+    public void AsyncRelayCommand_ParameterValues_Multi_Invalid_DuplicateName()
     {
         const string inputCode =
             """
@@ -1515,13 +1515,13 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
 
         var expectedErrorCodes = new[] { "AtcWpfSG0001" };
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultHasDiagnostics(expectedErrorCodes, generatorResult);
     }
 
     [Fact]
-    public void GeneratorViewModel_AsyncRelayCommand_ParameterValues_Multi_CanExecute()
+    public void AsyncRelayCommand_ParameterValues_Multi_CanExecute()
     {
         const string inputCode =
             """
@@ -1567,7 +1567,7 @@ public sealed class ViewModelGeneratorTests : GeneratorTestBase
             #nullable disable
             """;
 
-        var generatorResult = GeneratorViewModel(inputCode);
+        var generatorResult = RunGenerator<ViewModelGenerator>(inputCode);
 
         AssertGeneratorRunResultAsEqual(expectedCode, generatorResult);
     }

@@ -142,7 +142,7 @@ public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int ste
 
 This is a simple example of a `TestViewModel` class with a single `ObservableProperty`.
 
-### Humen made Code
+### Human made Code
 
 ```csharp
 namespace TestNamespace;
@@ -186,7 +186,7 @@ public partial class TestViewModel
 
 This is a more complex example of a `PersonViewModel` class with multiple properties and commands.
 
-### Humen made Code
+### Human made Code
 
 ```csharp
 namespace TestNamespace;

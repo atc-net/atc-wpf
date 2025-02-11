@@ -94,11 +94,23 @@ public static class StringExtensions
             value = value.Substring(indexOfEqual);
         }
 
-        return value
+        value = value
             .Replace("=", string.Empty)
             .Replace("[", string.Empty)
             .Replace("]", string.Empty)
+            .Replace("\"", string.Empty)
             .Trim();
+
+        var start = value.IndexOf('(');
+        if (start == -1)
+        {
+            return value;
+        }
+
+        var end = value.IndexOf(')');
+        value = value.Substring(start + 1, end - start - 1);
+
+        return value;
     }
 
     public static string StripPrefixFromField(
