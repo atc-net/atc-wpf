@@ -18,7 +18,9 @@ internal static class FrameworkElementBuilderExtensions
         builder.AppendLine();
         builder.AppendLine($"namespace {frameworkElementToGenerate.NamespaceName};");
         builder.AppendLine();
-        builder.AppendLine($"{frameworkElementToGenerate.ClassAccessModifier} partial class {frameworkElementToGenerate.ClassName}");
+        builder.AppendLine(frameworkElementToGenerate.IsStatic
+            ? $"{frameworkElementToGenerate.ClassAccessModifier} static partial class {frameworkElementToGenerate.ClassName}"
+            : $"{frameworkElementToGenerate.ClassAccessModifier} partial class {frameworkElementToGenerate.ClassName}");
         builder.AppendLine("{");
         builder.IncreaseIndent();
     }
@@ -35,6 +37,21 @@ internal static class FrameworkElementBuilderExtensions
         foreach (var propertyToGenerate in dependencyPropertiesToGenerate)
         {
             GenerateDependencyProperty(builder, propertyToGenerate);
+        }
+    }
+
+    public static void GenerateAttachedProperties(
+        this FrameworkElementBuilder builder,
+        IEnumerable<AttachedPropertyToGenerate>? attachedPropertiesToGenerate)
+    {
+        if (attachedPropertiesToGenerate is null)
+        {
+            return;
+        }
+
+        foreach (var propertyToGenerate in attachedPropertiesToGenerate)
+        {
+            GenerateAttachedProperty(builder, propertyToGenerate);
         }
     }
 
@@ -71,7 +88,43 @@ internal static class FrameworkElementBuilderExtensions
 
         builder.DecreaseIndent();
 
-        GenerateClrProperty(builder, p);
+        GenerateClrDependencyProperty(builder, p);
+    }
+
+    private static void GenerateAttachedProperty(
+        FrameworkElementBuilder builder,
+        AttachedPropertyToGenerate p)
+    {
+        builder.AppendLineBeforeMember();
+        builder.AppendLine($"public static readonly DependencyProperty {p.Name}Property = DependencyProperty.RegisterAttached(");
+        builder.IncreaseIndent();
+        builder.AppendLine($"\"{p.Name}\",");
+        builder.AppendLine($"typeof({p.Type}),");
+        builder.AppendLine($"typeof({p.OwnerType}),");
+
+        if (string.IsNullOrEmpty(p.PropertyChangedCallback) && string.IsNullOrEmpty(p.CoerceValueCallback))
+        {
+            builder.AppendLine($"new PropertyMetadata(defaultValue: {p.DefaultValue}));");
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(p.Flags) &&
+                string.IsNullOrEmpty(p.DefaultUpdateSourceTrigger) &&
+                p.IsAnimationProhibited is null)
+            {
+                GeneratePropertyMetadataExtended(builder, p);
+            }
+            else
+            {
+                GenerateFrameworkPropertyMetadata(builder, p);
+            }
+
+            builder.DecreaseIndent();
+        }
+
+        builder.DecreaseIndent();
+
+        GenerateClrAttachedMethods(builder, p);
     }
 
     private static void GeneratePropertyMetadataExtended(
@@ -145,7 +198,7 @@ internal static class FrameworkElementBuilderExtensions
         builder.AppendLine("));");
     }
 
-    private static void GenerateClrProperty(
+    private static void GenerateClrDependencyProperty(
         FrameworkElementBuilder builder,
         DependencyPropertyToGenerate p)
     {
@@ -168,5 +221,44 @@ internal static class FrameworkElementBuilderExtensions
         builder.AppendLine("set => SetValue(IsRunningProperty, value);");
         builder.DecreaseIndent();
         builder.AppendLine("}");
+    }
+
+    private static void GenerateClrAttachedMethods(
+        FrameworkElementBuilder builder,
+        AttachedPropertyToGenerate p)
+    {
+        builder.AppendLine();
+
+        if (!string.IsNullOrEmpty(p.Category))
+        {
+            builder.AppendLine($"[Category(\"{p.Category}\")]");
+        }
+
+        if (!string.IsNullOrEmpty(p.Description))
+        {
+            builder.AppendLine($"[Description(\"Get: {p.Description}\")]");
+        }
+
+        builder.AppendLine($"public static {p.Type} Get{p.Name}(UIElement element)");
+        builder.IncreaseIndent();
+        builder.AppendLine($"=> element is not null && (bool)element.GetValue({p.Name}Property);");
+        builder.DecreaseIndent();
+
+        if (!string.IsNullOrEmpty(p.Category))
+        {
+            builder.AppendLine($"[Category(\"{p.Category}\")]");
+        }
+
+        if (!string.IsNullOrEmpty(p.Description))
+        {
+            builder.AppendLine($"[Description(\"Set: {p.Description}\")]");
+        }
+
+        builder.AppendLine();
+
+        builder.AppendLine($"public static void Set{p.Name}(UIElement element, {p.Type} value)");
+        builder.IncreaseIndent();
+        builder.AppendLine($"=> element?.SetValue({p.Name}Property, value);");
+        builder.DecreaseIndent();
     }
 }

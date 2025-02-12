@@ -1,9 +1,9 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf;
 
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "OK.")]
+[SuppressMessage("Performance", "CA1813:Avoid unsealed attributes", Justification = "OK.")]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public sealed class DependencyPropertyAttribute<T>(string propertyName) : Attribute
+public class DependencyPropertyAttribute<T>(string propertyName) : Attribute
 {
     public string? PropertyName { get; } = propertyName;
 

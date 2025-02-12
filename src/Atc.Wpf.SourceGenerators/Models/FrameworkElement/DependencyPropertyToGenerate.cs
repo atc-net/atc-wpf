@@ -1,6 +1,6 @@
 namespace Atc.Wpf.SourceGenerators.Models.FrameworkElement;
 
-internal sealed class DependencyPropertyToGenerate(
+internal class DependencyPropertyToGenerate(
     string ownerType,
     string name,
     string type,

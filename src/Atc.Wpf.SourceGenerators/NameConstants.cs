@@ -2,6 +2,8 @@ namespace Atc.Wpf.SourceGenerators;
 
 internal static class NameConstants
 {
+    public const string AttachedProperty = nameof(AttachedProperty);
+    public const string AttachedPropertyAttribute = nameof(AttachedPropertyAttribute);
     public const string CanExecute = nameof(CanExecute);
     public const string Category = nameof(Category);
     public const string Command = nameof(Command);

@@ -8,7 +8,8 @@ internal sealed class ViewModelToGenerate(
     : GenerateBase(
         namespaceName,
         className,
-        accessModifier)
+        accessModifier,
+        isStatic: false)
 {
     public IList<RelayCommandToGenerate>? RelayCommandsToGenerate { get; set; }
 
