@@ -1,10 +1,12 @@
-# MVVM
+# MVVM in WPF
 
-The Windows Presentation Foundation (WPF) fully supports the Model-View-ViewModel (MVVM) pattern.
+Windows Presentation Foundation (WPF) fully supports the **Model-View-ViewModel (MVVM)** pattern, which promotes a clear separation of concerns between the UI and business logic.
 
-The `Atc.Wpf` library provides a solid foundation for implementing MVVM effectively.
+The **Atc.Wpf** library provides a robust foundation for implementing MVVM effectively, reducing boilerplate code and simplifying development.
 
 ## Features
+
+The `Atc.Wpf` library offers a variety of base classes and utilities to streamline MVVM implementation:
 
 | Component                 | Description                                                                      |
 |---------------------------|--------------------------------------------------------------------------------|
@@ -17,11 +19,13 @@ The `Atc.Wpf` library provides a solid foundation for implementing MVVM effectiv
 | `RelayCommandAsync`       | An asynchronous command supporting `CanExecute`.                               |
 | `RelayCommandAsync<T>`    | An asynchronous command with a generic parameter and `CanExecute`.             |
 
-For more details on commands, see the [RelayCommand documentation](../SourceGenerators/ViewModel.md).
+For detailed information about commands, refer to the [RelayCommand documentation](../SourceGenerators/ViewModel.md).
 
 ---
 
 ### Getting started using `ViewModelBase`
+
+Below is a simple example demonstrating how to create a ViewModel using `ViewModelBase`:
 
 ```csharp
 public class MyViewModel : ViewModelBase
@@ -44,5 +48,3 @@ public class MyViewModel : ViewModelBase
     }
 }
 ```
-
----

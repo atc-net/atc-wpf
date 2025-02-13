@@ -5,6 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="UcDependencyProperty"
     d:DesignHeight="600"
     d:DesignWidth="600"
     mc:Ignorable="d">
@@ -16,12 +17,30 @@
             Padding="10"
             Header="Features">
 
-            <WrapPanel />
+            <WrapPanel>
+
+                <atc:LabelToggleSwitch IsOn="{Binding ElementName=UcDependencyProperty, Path=IsRunning}" LabelText="Start / Stop spinner" />
+
+            </WrapPanel>
 
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <TextBlock Text="Hello DependencyPropertyView" />
+            <atc:UniformSpacingPanel
+                Margin="40"
+                Orientation="Vertical"
+                Spacing="10">
+
+                <atc:BusyOverlay IsBusy="{Binding ElementName=UcDependencyProperty, Path=IsRunning}">
+                    <TextBlock
+                        Margin="100"
+                        HorizontalAlignment="Center"
+                        Background="Beige"
+                        FontSize="36"
+                        Text="Hello world" />
+                </atc:BusyOverlay>
+
+            </atc:UniformSpacingPanel>
         </GroupBox>
 
     </atc:AutoGrid>

@@ -58,3 +58,5 @@ dotnet_diagnostic.CA2227.severity = none 		# Collection properties should be rea
 dotnet_diagnostic.SA1649.severity = none 		# File name should match - Recores
 
 dotnet_diagnostic.MA0048.severity = none 		# File name should match - Recores
+
+dotnet_diagnostic.S3400.severity = none 		#

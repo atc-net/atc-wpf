@@ -1,6 +1,6 @@
 ### AttachedProperty
 
-### Human made Code for simple property
+### Human-Written Code for simple property
 
 ```csharp
 [AttachedProperty<bool>("Circular"]

@@ -5,9 +5,14 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sourceWpfSourceGenerators="clr-namespace:Atc.Wpf.Sample.SourceWpfSourceGenerators"
     d:DesignHeight="600"
     d:DesignWidth="600"
     mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <sourceWpfSourceGenerators:PersonViewModel />
+    </UserControl.DataContext>
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
@@ -21,7 +26,43 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <TextBlock Text="Hello ViewModelView" />
+            <ScrollViewer>
+
+                <atc:UniformSpacingPanel
+                    Margin="40"
+                    Orientation="Vertical"
+                    Spacing="10">
+
+                    <atc:LabelTextBox LabelText="FirstName" Text="{Binding Path=FirstName}" />
+
+                    <atc:LabelTextBox LabelText="LastName" Text="{Binding Path=LastName}" />
+
+                    <atc:LabelIntegerBox
+                        LabelText="Age"
+                        Maximum="120"
+                        Minimum="0"
+                        Value="{Binding Path=Age}" />
+
+                    <atc:LabelTextBox
+                        LabelText="Email"
+                        Text="{Binding Path=Email}"
+                        ValidationFormat="Email" />
+
+                    <atc:LabelTextBox LabelText="TheProperty" Text="{Binding Path=TheProperty}" />
+
+                    <atc:LabelTextInfo LabelText="FullName" Text="{Binding Path=FullName}" />
+
+                    <atc:UniformSpacingPanel
+                        HorizontalAlignment="Center"
+                        HorizontalSpacing="50"
+                        Orientation="Horizontal">
+                        <Button Command="{Binding Path=ShowDataCommand}" Content="Show data" />
+                        <Button Command="{Binding Path=SaveCommand}" Content="Save data" />
+                    </atc:UniformSpacingPanel>
+
+                </atc:UniformSpacingPanel>
+
+            </ScrollViewer>
         </GroupBox>
 
     </atc:AutoGrid>
