@@ -1,55 +1,8 @@
-# MVVM
-
-The Windows Presentation Foundation (WPF) fully supports the Model-View-ViewModel (MVVM) pattern.
-
-The `Atc.Wpf` library provides a solid foundation for implementing MVVM effectively.
-
-## Features
-
-| Component                 | Description                                                                      |
-|---------------------------|--------------------------------------------------------------------------------|
-| `ViewModelBase`           | A base class for ViewModels.                                                   |
-| `MainWindowViewModelBase` | A base class for the main window ViewModel.                                    |
-| `ViewModelDialogBase`     | A base class for dialog ViewModels.                                            |
-| `ObservableObject`        | A base class for observable objects implementing `INotifyPropertyChanged`.     |
-| `RelayCommand`            | A command supporting `CanExecute`.                                             |
-| `RelayCommand<T>`         | A command with a generic parameter and `CanExecute`.                           |
-| `RelayCommandAsync`       | An asynchronous command supporting `CanExecute`.                               |
-| `RelayCommandAsync<T>`    | An asynchronous command with a generic parameter and `CanExecute`.             |
-
-For more details on commands, see the [RelayCommand documentation](../Command/@Readme.md).
-
----
-
-## Example: Using `ViewModelBase`
-
-```csharp
-public class MyViewModel : ViewModelBase
-{
-    private string myProperty;
-    
-    public string MyProperty
-    {
-        get => myProperty;
-        set
-        {
-            if (myProperty == value)
-            {
-                return;
-            }
-            
-            myProperty = value;
-            RaisePropertyChanged();
-        }
-    }
-}
-```
-
----
+# ViewModel with SourceGeneration
 
 ## Attributes for Property Source-Generation
 
-### Quick Start Tips
+### Quick Start Tips for Properties
 
 ```csharp
 // Generates a property named "Name"
@@ -75,12 +28,12 @@ public class MyViewModel : ViewModelBase
 ```
 
 > Note: The `ObservableProperty` attribute automatically generates a property for a private field in a ViewModel class.
-> The `NotifyPropertyChangedFor` attribute triggers change notifications for other properties when the annotated property changes. 
+> The `NotifyPropertyChangedFor` attribute triggers change notifications for other properties when the annotated property changes.
 > Multiple properties can be notified, but an ObservableProperty must be defined for it to work.
 
 ## Attributes for RelayCommand Source-Generation
 
-### Quick Start Tips
+### Quick Start Tips for RelayCommands
 
 ```csharp
 // Generates a RelayCommand named "SaveCommand"
@@ -138,14 +91,12 @@ public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int ste
 
 ---
 
-## Example: TestViewModel
+## Simple ObservableProperty example
 
 This is a simple example of a `TestViewModel` class with a single `ObservableProperty`.
 
-### Human made Code
-
 ```csharp
-namespace TestNamespace;
+// Human made code
 
 public partial class TestViewModel : ViewModelBase
 {
@@ -154,12 +105,8 @@ public partial class TestViewModel : ViewModelBase
 }
 ```
 
-### Generated Code
-
 ```csharp
-#nullable enable
-
-namespace TestNamespace;
+// Generated code
 
 public partial class TestViewModel
 {
@@ -172,7 +119,7 @@ public partial class TestViewModel
             {
                 return;
             }
-            
+
             name = value;
             RaisePropertyChanged(nameof(Name));
         }
@@ -182,14 +129,12 @@ public partial class TestViewModel
 
 ---
 
-## Example: PersonViewModel
+## Complex ObservableProperty and RelayCommand example
 
 This is a more complex example of a `PersonViewModel` class with multiple properties and commands.
 
-### Human made Code
-
 ```csharp
-namespace TestNamespace;
+// Human made code
 
 public partial class PersonViewModel : ViewModelBase
 {
@@ -240,12 +185,8 @@ public partial class PersonViewModel : ViewModelBase
     }
 ```
 
-### Generated Code
-
 ```csharp
-#nullable enable
-
-namespace TestNamespace;
+// Generated code
 
 public partial class PersonViewModel
 {

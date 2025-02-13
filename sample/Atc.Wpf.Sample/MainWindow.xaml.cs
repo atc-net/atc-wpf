@@ -69,6 +69,7 @@ public partial class MainWindow
 
         _ = SetVisibilityByFilterTreeViewItems(StvSampleWpf.Items, textBox.Text);
         _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfControls.Items, textBox.Text);
+        _ = SetVisibilityByFilterTreeViewItems(StvSamplesWpfSourceGeneratorsTreeView.Items, textBox.Text);
         _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfFontIcons.Items, textBox.Text);
         _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfTheming.Items, textBox.Text);
     }

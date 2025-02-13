@@ -84,7 +84,7 @@ public sealed class SvgImage : Control
         typeof(double?),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(
-            default,
+            null,
             FrameworkPropertyMetadataOptions.AffectsRender,
             OverrideStrokeWidthPropertyChanged));
 
@@ -93,7 +93,7 @@ public sealed class SvgImage : Control
         typeof(Dictionary<string, Brush>),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(
-            default,
+            null,
             FrameworkPropertyMetadataOptions.AffectsRender,
             CustomBrushesPropertyChanged));
 

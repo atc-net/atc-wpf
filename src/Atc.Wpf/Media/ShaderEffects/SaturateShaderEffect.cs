@@ -20,7 +20,7 @@ public sealed class SaturateShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(SaturateShaderEffect),
             new UIPropertyMetadata(
-                0,
+                0d,
                 PixelShaderConstantCallback(0)));
 
     public override string Name => "Saturate";

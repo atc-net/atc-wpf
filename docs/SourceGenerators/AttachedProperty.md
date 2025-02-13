@@ -1,0 +1,1 @@
+# AttachedProperty with SourceGeneration
