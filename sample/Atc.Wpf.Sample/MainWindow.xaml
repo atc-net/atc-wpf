@@ -20,7 +20,7 @@
 
     <atc:GridEx
         Margin="0,1,0,0"
-        Columns="400,5,*,600"
+        Columns="500,5,*"
         Rows="Auto,*,Auto">
         <DockPanel Grid.Row="1" Grid.Column="0">
             <TextBox
@@ -52,6 +52,13 @@
                 <TabItem Header="Wpf.Theming">
                     <sample:SamplesWpfThemingTreeView
                         x:Name="StvSampleWpfTheming"
+                        BorderThickness="0"
+                        ScrollViewer.CanContentScroll="True"
+                        SelectedItemChanged="TreeViewOnSelectionChanged" />
+                </TabItem>
+                <TabItem Header="Wpf.SourceGenerators">
+                    <sample:SamplesWpfSourceGeneratorsTreeView
+                        x:Name="StvSamplesWpfSourceGeneratorsTreeView"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />

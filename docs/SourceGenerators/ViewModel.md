@@ -1,55 +1,52 @@
-# MVVM
+# ⚙️ ViewModel with Source Generation
 
-The Windows Presentation Foundation (WPF) fully supports the Model-View-ViewModel (MVVM) pattern.
-
-The `Atc.Wpf` library provides a solid foundation for implementing MVVM effectively.
-
-## Features
-
-| Component                 | Description                                                                      |
-|---------------------------|--------------------------------------------------------------------------------|
-| `ViewModelBase`           | A base class for ViewModels.                                                   |
-| `MainWindowViewModelBase` | A base class for the main window ViewModel.                                    |
-| `ViewModelDialogBase`     | A base class for dialog ViewModels.                                            |
-| `ObservableObject`        | A base class for observable objects implementing `INotifyPropertyChanged`.     |
-| `RelayCommand`            | A command supporting `CanExecute`.                                             |
-| `RelayCommand<T>`         | A command with a generic parameter and `CanExecute`.                           |
-| `RelayCommandAsync`       | An asynchronous command supporting `CanExecute`.                               |
-| `RelayCommandAsync<T>`    | An asynchronous command with a generic parameter and `CanExecute`.             |
-
-For more details on commands, see the [RelayCommand documentation](../Command/@Readme.md).
+The **Atc.Wpf Source Generators** simplify ViewModel development by reducing boilerplate code for properties and commands. With attributes like `ObservableProperty` and `RelayCommand`, you can focus on business logic while automatically handling property change notifications and command implementations.
 
 ---
 
-## Example: Using `ViewModelBase`
+## 🏗️ Setting Up Your First ViewModel
+
+### ✨ Creating a Simple ViewModel
+
+Let's start by defining a ViewModel using source generators.
 
 ```csharp
-public class MyViewModel : ViewModelBase
+public partial class TestViewModel : ViewModelBase
 {
-    private string myProperty;
-    
-    public string MyProperty
-    {
-        get => myProperty;
-        set
-        {
-            if (myProperty == value)
-            {
-                return;
-            }
-            
-            myProperty = value;
-            RaisePropertyChanged();
-        }
-    }
+    [ObservableProperty]
+    private string name;
 }
 ```
 
+### 🔍 What's Happening Here?
+
+`ObservableProperty` automatically generates the `Name` property, including `INotifyPropertyChanged` support.
+`RelayCommand` generates a `SayHelloCommand`, which can be bound to a button in the UI.
+
+### 🖥️ XAML Binding Example
+
+```xml
+<Window xmlns:local="clr-namespace:MyApp.ViewModels">
+    <Window.DataContext>
+        <local:MyViewModel/>
+    </Window.DataContext>
+
+    <StackPanel>
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+        <Button Content="Say Hello" Command="{Binding SayHelloCommand}" />
+    </StackPanel>
+</Window>
+```
+
+This setup allows the UI to dynamically update when the Name property changes.
+
 ---
 
-## Attributes for Property Source-Generation
+## 📌 Attributes for Property Source Generation
 
-### Quick Start Tips
+The `ObservableProperty` attribute automatically generates properties from private fields, including `INotifyPropertyChanged` support.
+
+### 🛠 Quick Start: Using `ObservableProperty`
 
 ```csharp
 // Generates a property named "Name"
@@ -63,7 +60,11 @@ public class MyViewModel : ViewModelBase
 
 // Generates a property named "MyName" and notifies FullName and Age
 [ObservableProperty(nameof(MyName), DependentProperties = [nameof(FullName), nameof(Age)])] private string name;
+```
 
+### 🔔 Notifying Other Properties
+
+```csharp
 // Generates a property named "Name" and notifies FullName and Age
 [ObservableProperty(DependentProperties = [nameof(FullName), nameof(Age)])]
 
@@ -74,13 +75,17 @@ public class MyViewModel : ViewModelBase
 [NotifyPropertyChangedFor(nameof(FullName), nameof(Age))]
 ```
 
-> Note: The `ObservableProperty` attribute automatically generates a property for a private field in a ViewModel class.
-> The `NotifyPropertyChangedFor` attribute triggers change notifications for other properties when the annotated property changes. 
-> Multiple properties can be notified, but an ObservableProperty must be defined for it to work.
+**Note:**
 
-## Attributes for RelayCommand Source-Generation
+- `ObservableProperty` creates a public property from a private field and implements change notification.
 
-### Quick Start Tips
+- `NotifyPropertyChangedFor` ensures that when the annotated property changes, specified dependent properties also get notified.
+
+## ⚡ Attributes for `RelayCommand` Source-Generation
+
+The `RelayCommand` attribute generates `IRelayCommand` properties, eliminating manual command setup.
+
+### 🛠 Quick Start Tips for RelayCommands
 
 ```csharp
 // Generates a RelayCommand named "SaveCommand"
@@ -88,13 +93,21 @@ public class MyViewModel : ViewModelBase
 
 // Generates a RelayCommand named "MySaveCommand"
 [RelayCommand("MySave")] public void Save();
+```
 
+### 🏷️ Commands with CanExecute Logic
+
+```csharp
 // Generates a RelayCommand that takes a string parameter
 [RelayCommand()] public void Save(string text);
 
 // Generates a RelayCommand with CanExecute function
 [RelayCommand(CanExecute = nameof(CanSave))] public void Save();
+```
 
+### 🔄 Asynchronous Commands
+
+```csharp
 // Generates an asynchronous RelayCommand
 [RelayCommand()] public Task Save();
 
@@ -118,7 +131,11 @@ public class MyViewModel : ViewModelBase
 
 // Generates an asynchronous RelayCommand with async keyword and CanExecute function
 [RelayCommand(CanExecute = nameof(CanSave))] public async Task Save();
+```
 
+### 🔁 Multi-Parameter Commands
+
+```csharp
 // Generates multi asynchronous RelayCommand with async keyword with multiple parameters
 [RelayCommand("MyTestLeft", ParameterValues = [LeftTopRightBottomType.Left, 1])]
 [RelayCommand("MyTestTop", ParameterValues = [LeftTopRightBottomType.Top, 1])]
@@ -134,19 +151,132 @@ public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int ste
 public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int steps)
 ```
 
-> Note: The `RelayCommand` attribute is used to generate a `RelayCommand` property for a method in a ViewModel class.
+**Note:**
+
+- The `RelayCommand` attribute generates an `IRelayCommand` pproperty linked to the annotated method.
+- `CanExecute` logic can be specified to control when the command is executable.
 
 ---
 
-## Example: TestViewModel
+## 🎯 Real-World Use Cases
 
-This is a simple example of a `TestViewModel` class with a single `ObservableProperty`.
-
-### Human made Code
+### 📅 Scenario 1: A User Profile Form
 
 ```csharp
-namespace TestNamespace;
+public partial class UserProfileViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FullName))]
+    private string firstName;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FullName))]
+    private string lastName;
+
+    public string FullName => $"{FirstName} {LastName}";
+
+    [RelayCommand]
+    private void SaveProfile()
+    {
+        MessageBox.Show($"Profile Saved: {FullName}");
+    }
+}
+```
+
+#### 🔗 XAML Binding where Context is UserProfileViewModel
+
+```xml
+<TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+<TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+<TextBlock Text="{Binding FullName}" />
+<Button Content="Save" Command="{Binding SaveProfileCommand}" />
+```
+
+#### 🔥 Result for UserProfileViewModel binding
+
+The FullName property updates automatically when FirstName or LastName changes
+
+### 📑 Scenario 2: Fetching Data from an API
+
+A ViewModel that fetches data asynchronously and enables/disables a button based on loading state.
+
+```csharp
+public partial class DataViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    private string data;
+
+    [ObservableProperty]
+    private bool isLoading;
+
+    [RelayCommand(CanExecute = nameof(CanFetchData))]
+    private async Task FetchData()
+    {
+        IsLoading = true;
+        await Task.Delay(2000); // Simulate API call
+        Data = "Fetched Data from API";
+        IsLoading = false;
+    }
+
+    private bool CanFetchData() => !IsLoading;
+}
+```
+
+#### 🔗 XAML Binding where Context is DataViewModel
+
+```xml
+<Button Content="Fetch Data" Command="{Binding FetchDataCommand}" IsEnabled="{Binding CanFetchDataCommand}" />
+<TextBlock Text="{Binding Data}" />
+```
+
+#### 🔥 Result for DataViewModel binding
+
+The button is disabled while data is being fetched, preventing multiple API calls.
+
+## 🛠 Troubleshooting
+
+### 🚧 Properties Are Not Updating in UI?
+
+✅ Ensure your ViewModel inherits from ViewModelBase, which includes INotifyPropertyChanged.
+
+```csharp
+public partial class MyViewModel : ViewModelBase { }
+```
+
+### 🚧 Commands Are Not Executing?
+
+✅ Check if your command has a valid CanExecute method.
+
+```csharp
+[RelayCommand(CanExecute = nameof(CanSave))]
+private void Save() { /* ... */ }
+
+private bool CanSave() => !string.IsNullOrEmpty(Name);
+```
+
+---
+
+## 📌 Summary
+
+- ✔️ **Use `ObservableProperty`** to eliminate manual property creation.
+- ✔️ **Use `NotifyPropertyChangedFor`** to notify dependent properties.
+- ✔️ **Use `RelayCommand`** for automatic command generation.
+- ✔️ **Use async commands** for better UI responsiveness.
+- ✔️ **Improve performance** by leveraging `CanExecute` for commands.
+
+### 🚀 Why Use Atc.Wpf Source Generators?
+
+- ✅ **Reduces boilerplate** – Write less code, get more done.
+- ✅ **Improves maintainability** – Focus on business logic instead of plumbing.
+- ✅ **Enhances MVVM architecture** – Ensures best practices in WPF development.
+
+---
+
+## 🔎 Behind the scenes
+
+### 📝 Human made code - for simple example
+
+```csharp
 public partial class TestViewModel : ViewModelBase
 {
     [ObservableProperty]
@@ -154,13 +284,9 @@ public partial class TestViewModel : ViewModelBase
 }
 ```
 
-### Generated Code
+### ⚙️ Auto-Generated code - for simple example
 
 ```csharp
-#nullable enable
-
-namespace TestNamespace;
-
 public partial class TestViewModel
 {
     public string Name
@@ -172,7 +298,7 @@ public partial class TestViewModel
             {
                 return;
             }
-            
+
             name = value;
             RaisePropertyChanged(nameof(Name));
         }
@@ -180,17 +306,9 @@ public partial class TestViewModel
 }
 ```
 
----
-
-## Example: PersonViewModel
-
-This is a more complex example of a `PersonViewModel` class with multiple properties and commands.
-
-### Human made Code
+### 📝 Human made code - for advanced example
 
 ```csharp
-namespace TestNamespace;
-
 public partial class PersonViewModel : ViewModelBase
 {
     [ObservableProperty]
@@ -240,13 +358,9 @@ public partial class PersonViewModel : ViewModelBase
     }
 ```
 
-### Generated Code
+### ⚙️ Auto-Generated code - for advanced example
 
 ```csharp
-#nullable enable
-
-namespace TestNamespace;
-
 public partial class PersonViewModel
 {
     public IRelayCommand ShowDataCommand => new RelayCommand(ShowData);

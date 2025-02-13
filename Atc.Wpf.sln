@@ -40,6 +40,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.Wpf.SourceGenerators", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atc.Wpf.SourceGenerators.Tests", "test\Atc.Wpf.SourceGenerators.Tests\Atc.Wpf.SourceGenerators.Tests.csproj", "{6B9C0EC5-1D71-4B95-96C8-E5A7FCDF8276}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGenerators", "SourceGenerators", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\SourceGenerators\AttachedProperty.md = docs\SourceGenerators\AttachedProperty.md
+		docs\SourceGenerators\DependencyProperty.md = docs\SourceGenerators\DependencyProperty.md
+		docs\SourceGenerators\ViewModel.md = docs\SourceGenerators\ViewModel.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvvm", "Mvvm", "{02E4711C-F1F1-4682-8111-47957F772DDD}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Mvvm\@Readme.md = docs\Mvvm\@Readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,9 +123,11 @@ Global
 		{F4BE59B5-26CB-46DB-B290-2049EF656693} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
 		{104F4D6B-3991-4FBA-9234-0B37DF6BB292} = {0FA723AA-8BA7-42AD-9C08-6491F364A258}
 		{6B9C0EC5-1D71-4B95-96C8-E5A7FCDF8276} = {2C893B25-2401-44B7-9FDA-7DC496C00D2B}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {133AFD8A-A870-41D7-8A97-763A36D2502A}
+		{02E4711C-F1F1-4682-8111-47957F772DDD} = {133AFD8A-A870-41D7-8A97-763A36D2502A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
 		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationTail"]}
+		SolutionGuid = {7A92D7EC-F444-456B-A86C-D6683E016C35}
 	EndGlobalSection
 EndGlobal
