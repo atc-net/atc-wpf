@@ -35,6 +35,7 @@ internal static class NameConstants
     public const string RelayCommandAsync = nameof(RelayCommandAsync);
     public const string RelayCommandAttribute = nameof(RelayCommandAttribute);
     public const string Task = nameof(Task);
+    public const string ValidateValueCallback = nameof(ValidateValueCallback);
     public const string ValueTask = nameof(ValueTask);
     public const string ViewModel = nameof(ViewModel);
     public const string ViewModelBase = nameof(ViewModelBase);

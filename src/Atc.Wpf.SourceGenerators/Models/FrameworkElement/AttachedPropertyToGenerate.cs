@@ -7,18 +7,20 @@ internal sealed class AttachedPropertyToGenerate(
     object? defaultValue,
     string? propertyChangedCallback,
     string? coerceValueCallback,
+    string? validateValueCallback,
     string? flags,
     string? defaultUpdateSourceTrigger,
     bool? isAnimationProhibited,
     string? category,
     string? description)
-    : DependencyPropertyToGenerate(
+    : BasePropertyToGenerate(
         ownerType,
         name,
         type,
         defaultValue,
         propertyChangedCallback,
         coerceValueCallback,
+        validateValueCallback,
         flags,
         defaultUpdateSourceTrigger,
         isAnimationProhibited,

@@ -15,6 +15,8 @@ public class DependencyPropertyAttribute<T>(string propertyName) : Attribute
 
     public string? CoerceValueCallback { get; set; }
 
+    public string? ValidateValueCallback { get; set; }
+
     public FrameworkPropertyMetadataOptions Flags { get; set; }
 
     public UpdateSourceTrigger DefaultUpdateSourceTrigger { get; set; }

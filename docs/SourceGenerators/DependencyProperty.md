@@ -111,46 +111,54 @@ public partial class MyControl
     CoerceValueCallback = nameof(CoerceValueCallback),
     Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
     DefaultUpdateSourceTrigger = UpdateSourceTrigger.Default,
-    IsAnimationProhibited = true)]
+    IsAnimationProhibited = true,
+    ValidateValueCallback = nameof(ValidateValueCallback))]
 public partial class MyControl : UserControl
 {
     private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
+        throw new NotImplementedException();
     }
 
-    private static void CoerceValueCallback(DependencyObject d, object baseValue)
+    private static object CoerceValueCallback(DependencyObject d, object baseValue)
     {
+        throw new NotImplementedException();
+    }
+
+    private static bool ValidateValueCallback(object value)
+    {
+        throw new NotImplementedException();
     }
 }
 ```
 
 **In this example:**
 
-- **`[DependencyProperty<bool>("IsRunning")]`**
+- `[DependencyProperty<bool>("IsRunning")]`
   - Declares a **dependency property** named `IsRunning` of type `bool` for `MyControl`.
   - The source generator will automatically create a `DependencyProperty` field and a CLR property wrapper.
 
-- **`DefaultValue = false`**
+- `DefaultValue = false`
   - Specifies the default value of `IsRunning` as `false`.
   - This means that when an instance of `MyControl` is created, `IsRunning` will be `false` unless explicitly set.
 
-- **`PropertyChangedCallback = nameof(PropertyChangedCallback)`**
+- `PropertyChangedCallback = nameof(PropertyChangedCallback)`
   - Assigns a **property changed callback method**, which is invoked whenever the property's value changes.
   - In this example, `PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)` is defined as a static method.
   - This method allows you to **respond to property changes**, such as triggering UI updates or executing business logic.
 
-- **`CoerceValueCallback = nameof(CoerceValueCallback)`**
+- `CoerceValueCallback = nameof(CoerceValueCallback)`
   - Assigns a **coerce value callback method**, which is called before setting the property’s value.
   - This function allows validation, restricting the range of acceptable values, or adjusting the value based on other conditions.
   - For instance, if `IsRunning` should never be `true` under specific circumstances, the `CoerceValueCallback` could enforce that rule.
 
-- **`Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender`**
+- `Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender`
   - Configures how the property affects the **WPF layout system** when it changes.
   - `AffectsMeasure`: Triggers a re-measure of the UI element if this property changes.
   - `AffectsRender`: Causes a re-render of the control when this property is modified.
   - These options ensure that any UI elements depending on `IsRunning` will **recalculate their size and appearance** accordingly.
 
-- **`FrameworkPropertyMetadataOptions`**
+- `FrameworkPropertyMetadataOptions`
   - A flag-based enumeration used to specify additional **property behavior** in WPF.
   - Other possible values include:
     - `AffectsParentMeasure`: Causes a layout pass on the parent when the property changes.
@@ -159,7 +167,7 @@ public partial class MyControl : UserControl
     - `BindsTwoWayByDefault`: Sets the default binding mode to **TwoWay**.
   - These flags **optimize performance** by ensuring layout changes only occur when necessary.
 
-- **`DefaultUpdateSourceTrigger = UpdateSourceTrigger.Default`**
+- `DefaultUpdateSourceTrigger = UpdateSourceTrigger.Default`
   - Specifies how **data binding** updates the property's source.
   - The `Default` value means that the **default behavior of the property type** is used.
   - Other possible values:
@@ -167,11 +175,18 @@ public partial class MyControl : UserControl
     - `LostFocus`: Updates the source when the control loses focus (e.g., leaving a text box).
     - `Explicit`: Requires manual invocation of `BindingExpression.UpdateSource()`.
 
-- **`IsAnimationProhibited = true`**
+- `IsAnimationProhibited = true`
   - Prevents animations from affecting this property.
   - Some dependency properties allow animations to change their values smoothly over time.
   - By setting `IsAnimationProhibited = true`, you ensure that **no animations** can modify `IsRunning`.
   - This is useful for properties where **instant updates are required**, such as boolean state changes.
+
+- `ValidateValueCallback = nameof(ValidateValueCallback)`
+  - Assigns a **validation callback method**, which ensures that only valid values are assigned to the dependency property.
+  - This function **executes before** the property value is set, allowing you to **reject invalid values** before they are applied.
+  - The `ValidateValueCallback` method should return a `bool`:
+    - `true`: The value is accepted and applied to the property.
+    - `false`: The value is considered invalid, and an exception is thrown.
 
 ---
 
@@ -192,7 +207,8 @@ public partial class MyControl
             coerceValueCallback: CoerceValueCallback,
             flags: FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
             defaultUpdateSourceTrigger: UpdateSourceTrigger.Default,
-            isAnimationProhibited: true));
+            isAnimationProhibited: true,
+            validateValueCallback = ValidateValueCallback));
 
     public bool IsRunning
     {

@@ -23,6 +23,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => tabSelectedIndex;
         set
         {
+            if (tabSelectedIndex == value)
+            {
+                return;
+            }
+
             tabSelectedIndex = value;
             RaisePropertyChanged();
         }
@@ -43,6 +48,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => header;
         set
         {
+            if (header == value)
+            {
+                return;
+            }
+
             header = value;
             RaisePropertyChanged();
         }
@@ -53,6 +63,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => sampleContent;
         set
         {
+            if (sampleContent == value)
+            {
+                return;
+            }
+
             sampleContent = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasSampleContent));
@@ -64,6 +79,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => xamlCode;
         set
         {
+            if (xamlCode == value)
+            {
+                return;
+            }
+
             xamlCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasXamlCode));
@@ -75,6 +95,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => codeBehindCode;
         set
         {
+            if (codeBehindCode == value)
+            {
+                return;
+            }
+
             codeBehindCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasCodeBehindCode));
@@ -86,6 +111,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => viewModelCode;
         set
         {
+            if (viewModelCode == value)
+            {
+                return;
+            }
+
             viewModelCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasViewModelCode));
@@ -97,6 +127,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => markdownDocument;
         set
         {
+            if (markdownDocument == value)
+            {
+                return;
+            }
+
             markdownDocument = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasMarkdownDocument));
@@ -108,6 +143,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => startOnMarkdownDocument;
         set
         {
+            if (startOnMarkdownDocument == value)
+            {
+                return;
+            }
+
             startOnMarkdownDocument = value;
             RaisePropertyChanged();
         }

@@ -307,7 +307,7 @@ internal static class AttributeDataExtensions
         }
 
         var typeSymbol = propertyAttribute.AttributeClass.TypeArguments[0];
-        type = typeSymbol.ToDisplayString();
+        type = typeSymbol.ToDisplayString().EnsureCSharpAliasIfNeeded();
 
         if (type == "bool")
         {
