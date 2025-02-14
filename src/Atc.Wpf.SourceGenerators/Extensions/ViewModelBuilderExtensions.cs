@@ -67,17 +67,29 @@ internal static class ViewModelBuilderExtensions
 
         if (relayCommandToGenerate.ParameterValues is null)
         {
-            var generic = relayCommandToGenerate.ParameterType is null
-                ? string.Empty
-                : $"<{relayCommandToGenerate.ParameterType}>";
+            if (relayCommandToGenerate.ParameterType is not null &&
+                relayCommandToGenerate.ParameterType.EndsWith(nameof(CancellationToken), StringComparison.Ordinal))
+            {
+                var commandLine = relayCommandToGenerate.CanExecuteMethodName is null
+                    ? $"public {interfaceType} {relayCommandToGenerate.CommandName} => new {implementationType}(() => {relayCommandToGenerate.MethodName}(CancellationToken.None));"
+                    : $"public {interfaceType} {relayCommandToGenerate.CommandName} => new {implementationType}(() => {relayCommandToGenerate.MethodName}(CancellationToken.None), {relayCommandToGenerate.CanExecuteMethodName}());";
 
-            var constructorParameters = relayCommandToGenerate.CanExecuteMethodName is null
-                ? $"{relayCommandToGenerate.MethodName}"
-                : $"{relayCommandToGenerate.MethodName}, {relayCommandToGenerate.CanExecuteMethodName}";
+                builder.AppendLine(commandLine);
+            }
+            else
+            {
+                var generic = relayCommandToGenerate.ParameterType is null
+                    ? string.Empty
+                    : $"<{relayCommandToGenerate.ParameterType}>";
 
-            var commandLine = $"public {interfaceType}{generic} {relayCommandToGenerate.CommandName} => new {implementationType}{generic}({constructorParameters});";
+                var constructorParameters = relayCommandToGenerate.CanExecuteMethodName is null
+                    ? $"{relayCommandToGenerate.MethodName}"
+                    : $"{relayCommandToGenerate.MethodName}, {relayCommandToGenerate.CanExecuteMethodName}";
 
-            builder.AppendLine(commandLine);
+                var commandLine = $"public {interfaceType}{generic} {relayCommandToGenerate.CommandName} => new {implementationType}{generic}({constructorParameters});";
+
+                builder.AppendLine(commandLine);
+            }
         }
         else
         {

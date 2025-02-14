@@ -5,8 +5,8 @@ internal sealed class RelayCommandToGenerate(
     string commandName,
     string methodName,
     string? parameterType,
-    string? canExecuteMethodName,
     string[]? parameterValues,
+    string? canExecuteMethodName,
     bool isAsync)
 {
     public string CommandName { get; } = commandName;
@@ -15,12 +15,12 @@ internal sealed class RelayCommandToGenerate(
 
     public string? ParameterType { get; } = parameterType;
 
-    public string? CanExecuteMethodName { get; } = canExecuteMethodName;
-
     public string[]? ParameterValues { get; } = parameterValues;
+
+    public string? CanExecuteMethodName { get; } = canExecuteMethodName;
 
     public bool IsAsync { get; } = isAsync;
 
     public override string ToString()
-        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterType)}: {ParameterType}, {nameof(CanExecuteMethodName)}: {CanExecuteMethodName}, {nameof(ParameterValues)}.Count: {ParameterValues?.Length}, {nameof(IsAsync)}: {IsAsync}";
+        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterType)}: {ParameterType}, {nameof(ParameterValues)}.Count: {ParameterValues?.Length}, {nameof(CanExecuteMethodName)}: {CanExecuteMethodName}, {nameof(IsAsync)}: {IsAsync}";
 }

@@ -57,11 +57,6 @@ internal static class ViewModelInspector
         AttributeData relayCommandAttribute,
         List<RelayCommandToGenerate> relayCommandsToGenerate)
     {
-        if (relayCommandAttribute is null)
-        {
-            return;
-        }
-
         var commandName = relayCommandAttribute.ExtractRelayCommandName(methodSymbol.Name);
         var canExecuteMethodName = relayCommandAttribute.ExtractRelayCommandCanExecuteName();
 
@@ -89,8 +84,8 @@ internal static class ViewModelInspector
                 commandName,
                 methodSymbol.Name,
                 parameterType,
-                canExecuteMethodName,
                 parameterValues,
+                canExecuteMethodName,
                 isAsync));
     }
 
