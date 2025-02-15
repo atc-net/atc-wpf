@@ -213,10 +213,10 @@ public partial class DataViewModel : ViewModelBase
     private bool isLoading;
 
     [RelayCommand(CanExecute = nameof(CanFetchData))]
-    private async Task FetchData()
+    private async Task FetchData(CancellationToken cancellationToken)
     {
         IsLoading = true;
-        await Task.Delay(2000, CancellationToken.None).ConfigureAwait(false); // Simulate API call
+        await Task.Delay(2000, cancellationToken).ConfigureAwait(false); // Simulate API call
         Data = "Fetched Data from API";
         IsLoading = false;
     }

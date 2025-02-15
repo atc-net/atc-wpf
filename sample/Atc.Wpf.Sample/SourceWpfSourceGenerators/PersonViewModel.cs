@@ -12,7 +12,7 @@ public partial class PersonViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(FullName), nameof(Age))]
     [NotifyPropertyChangedFor(nameof(Email))]
     [NotifyPropertyChangedFor(nameof(TheProperty))]
-    private string? lastName = "Doe";
+    private string? lastName;
 
     [ObservableProperty]
     private int age = 27;
@@ -28,23 +28,32 @@ public partial class PersonViewModel : ViewModelBase
     [RelayCommand]
     public void ShowData()
     {
-        // TODO: Implement ShowData - it could be a dialog box
-    }
-
-    [RelayCommand(CanExecute = nameof(CanSaveHandler))]
-    public void SaveHandler()
-    {
         var dialogBox = new InfoDialogBox(
             Application.Current.MainWindow!,
             new DialogBoxSettings(DialogBoxType.Ok),
-            "Hello to SaveHandler method");
+            $"Data: {FullName}");
 
-        dialogBox.Show();
+        dialogBox.ShowDialog();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSaveHandler))]
+    public async Task SaveHandler(CancellationToken cancellationToken)
+    {
+        await Task.Delay(500, cancellationToken).ConfigureAwait(false);
+
+        await Application.Current.Dispatcher.BeginInvoke(() =>
+        {
+            var dialogBox = new InfoDialogBox(
+                Application.Current.MainWindow!,
+                new DialogBoxSettings(DialogBoxType.Ok),
+                "Hello from SaveHandler method");
+
+            dialogBox.ShowDialog();
+        });
     }
 
     public bool CanSaveHandler()
-    {
-        // TODO: Implement validation
-        return true;
-    }
+        => !string.IsNullOrEmpty(FirstName) &&
+           !string.IsNullOrEmpty(LastName) &&
+           Age > 0;
 }
