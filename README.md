@@ -4,30 +4,6 @@
 
 This is a base libraries for building WPF application with the MVVM design pattern.
 
-# Table of contents
-
-- [ATC.Net WPF](#atcnet-wpf)
-- [Table of contents](#table-of-contents)
-  - [Requirements](#requirements)
-  - [NuGet Packages Provided in this Repository](#nuget-packages-provided-in-this-repository)
-- [🔎 Demonstration Application](#-demonstration-application)
-  - [Playground and Viewer for a Given Control or Functionality](#playground-and-viewer-for-a-given-control-or-functionality)
-    - [Initial glimpse at the demonstration application](#initial-glimpse-at-the-demonstration-application)
-- [🚀 How to get started with atc-wpf](#-how-to-get-started-with-atc-wpf)
-  - [WPF with MVVM Easily Separate UI and Business Logic](#wpf-with-mvvm-easily-separate-ui-and-business-logic)
-- [📝 Readme's for each NuGet Package area](#-readmes-for-each-nuget-package-area)
-  - [💟 Atc.Wpf](#-atcwpf)
-    - [Controls](#controls)
-    - [Misc](#misc)
-  - [💟 Atc.Wpf.Controls](#-atcwpfcontrols)
-    - [Controls](#controls-1)
-    - [Misc](#misc-1)
-  - [💟 Atc.Wpf.FontIcons](#-atcwpffonticons)
-    - [Misc](#misc-2)
-  - [💟 Atc.Wpf.Theming](#-atcwpftheming)
-- [⚙️ Source Generators](#️-source-generators)
-- [How to contribute](#how-to-contribute)
-
 ## Requirements
 
 [.NET 9 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
@@ -72,7 +48,7 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 | Wpf.Theming - ImageButton ![Img](docs/images/lm-wpf-theming-imagebutton.png) | Wpf.Theming - ImageButton ![Img](docs/images/dm-wpf-theming-imagebutton.png) |
 | Wpf.FontIcons - Viewer ![Img](docs/images/lm-wpf-fonicons-viewer.png)        | Wpf.FontIcons - Viewer ![Img](docs/images/dm-wpf-fonicons-viewer.png)        |
 
-# 🚀 How to get started with atc-wpf
+# 🚀 How to get started with Atc's WPF
 
 First of all, include Nuget packages in the `.csproj` file like this:
 
