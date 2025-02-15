@@ -10,22 +10,22 @@ This is a base libraries for building WPF application with the MVVM design patte
 - [Table of contents](#table-of-contents)
   - [Requirements](#requirements)
   - [NuGet Packages Provided in this Repository](#nuget-packages-provided-in-this-repository)
-- [Demonstration Application](#demonstration-application)
+- [🔎 Demonstration Application](#-demonstration-application)
   - [Playground and Viewer for a Given Control or Functionality](#playground-and-viewer-for-a-given-control-or-functionality)
     - [Initial glimpse at the demonstration application](#initial-glimpse-at-the-demonstration-application)
-- [How to get started with atc-wpf](#how-to-get-started-with-atc-wpf)
-  - [WPF with MVVM – Easily Separate UI and Business Logic](#wpf-with-mvvm--easily-separate-ui-and-business-logic)
-- [Readme's for each NuGet Package area](#readmes-for-each-nuget-package-area)
-  - [Atc.Wpf](#atcwpf)
+- [🚀 How to get started with atc-wpf](#-how-to-get-started-with-atc-wpf)
+  - [WPF with MVVM Easily Separate UI and Business Logic](#wpf-with-mvvm-easily-separate-ui-and-business-logic)
+- [📝 Readme's for each NuGet Package area](#-readmes-for-each-nuget-package-area)
+  - [💟 Atc.Wpf](#-atcwpf)
     - [Controls](#controls)
     - [Misc](#misc)
-  - [Atc.Wpf.Controls](#atcwpfcontrols)
+  - [💟 Atc.Wpf.Controls](#-atcwpfcontrols)
     - [Controls](#controls-1)
     - [Misc](#misc-1)
-  - [Atc.Wpf.FontIcons](#atcwpffonticons)
+  - [💟 Atc.Wpf.FontIcons](#-atcwpffonticons)
     - [Misc](#misc-2)
-  - [Atc.Wpf.Theming](#atcwpftheming)
-- [Source Generators](#source-generators)
+  - [💟 Atc.Wpf.Theming](#-atcwpftheming)
+- [⚙️ Source Generators](#️-source-generators)
 - [How to contribute](#how-to-contribute)
 
 ## Requirements
@@ -36,13 +36,13 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 | Nuget package           | Description                                         | Dependencies                   |
 |-------------------------|-----------------------------------------------------|--------------------------------|
-| Atc.Wpf                 | Base Controls, ValueConverters, Extensions etc.     | Atc & Atc.Wpf.SourceGenerators |
-| Atc.Wpf.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming      |
-| Atc.Wpf.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming      |
-| Atc.Wpf.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                        |
-| Atc.Wpf.Theming         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                        |
+| 💟 Atc.Wpf                 | Base Controls, ValueConverters, Extensions etc.     | Atc & Atc.Wpf.SourceGenerators |
+| 💟 Atc.Wpf.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming      |
+| 💟 Atc.Wpf.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming      |
+| 💟 Atc.Wpf.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                        |
+| 💟 Atc.Wpf.Theming         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                        |
 
-# Demonstration Application
+# 🔎 Demonstration Application
 
 The demonstration application, `Atc.Wpf.Sample`, functions as a control explorer.
 It provides quick visualization of a given control, along with options for
@@ -72,7 +72,7 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 | Wpf.Theming - ImageButton ![Img](docs/images/lm-wpf-theming-imagebutton.png) | Wpf.Theming - ImageButton ![Img](docs/images/dm-wpf-theming-imagebutton.png) |
 | Wpf.FontIcons - Viewer ![Img](docs/images/lm-wpf-fonicons-viewer.png)        | Wpf.FontIcons - Viewer ![Img](docs/images/dm-wpf-fonicons-viewer.png)        |
 
-# How to get started with atc-wpf
+# 🚀 How to get started with atc-wpf
 
 First of all, include Nuget packages in the `.csproj` file like this:
 
@@ -107,7 +107,7 @@ Then update `App.xaml` like this:
 
 Now it is possible to use controls with theming and default WPF controls like TextBox, Button etc. with theme style.
 
-## WPF with MVVM – Easily Separate UI and Business Logic
+## WPF with MVVM Easily Separate UI and Business Logic
 
 With the `Atc.Wpf`, package, it is very easy to get startet with the nice `MVVM pattern`
 
@@ -117,12 +117,12 @@ Please read more here:
   - [Observerble properties](docs/Mvvm/@Readme.md)
   - [RelayCommands](docs/Mvvm/@Readme.md)
 
-# Readme's for each NuGet Package area
+# 📝 Readme's for each NuGet Package area
 
 ***Note: Right now, it is a limit amount of controls and components there is documented with a `Readme.md` file.
-Therefore run the `Atc.Wpf.Sample` application to explore all the controls and components.*** :-)
+Therefore run the `Atc.Wpf.Sample` application to explore all the controls and components.*** 😊
 
-## Atc.Wpf
+## 💟 Atc.Wpf
 
 ### Controls
 
@@ -142,7 +142,7 @@ Therefore run the `Atc.Wpf.Sample` application to explore all the controls and c
 - [Tranlation & localizaion](src/Atc.Wpf/Translation/@Readme.md)
 - [ValueConverters](src/Atc.Wpf/ValueConverters/@Readme.md)
 
-## Atc.Wpf.Controls
+## 💟 Atc.Wpf.Controls
 
 ### Controls
 
@@ -152,17 +152,17 @@ Therefore run the `Atc.Wpf.Sample` application to explore all the controls and c
 
 - [ValueConverters](src/Atc.Wpf.Controls/ValueConverters/@Readme.md)
 
-## Atc.Wpf.FontIcons
+## 💟 Atc.Wpf.FontIcons
 
 ### Misc
 
 - [ValueConverters](src/Atc.Wpf.FontIcons/ValueConverters/@Readme.md)
 
-## Atc.Wpf.Theming
+## 💟 Atc.Wpf.Theming
 
 - [ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)
 
-# Source Generators
+# ⚙️ Source Generators
 
 In for WPF, certain attributes help automate boilerplate code using source generators.
 
