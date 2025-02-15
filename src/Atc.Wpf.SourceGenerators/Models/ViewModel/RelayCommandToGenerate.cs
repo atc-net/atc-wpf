@@ -4,7 +4,7 @@ namespace Atc.Wpf.SourceGenerators.Models.ViewModel;
 internal sealed class RelayCommandToGenerate(
     string commandName,
     string methodName,
-    string? parameterType,
+    string[]? parameterTypes,
     string[]? parameterValues,
     string? canExecuteMethodName,
     bool isAsync)
@@ -13,7 +13,7 @@ internal sealed class RelayCommandToGenerate(
 
     public string MethodName { get; } = methodName;
 
-    public string? ParameterType { get; } = parameterType;
+    public string[]? ParameterTypes { get; } = parameterTypes;
 
     public string[]? ParameterValues { get; } = parameterValues;
 
@@ -22,5 +22,5 @@ internal sealed class RelayCommandToGenerate(
     public bool IsAsync { get; } = isAsync;
 
     public override string ToString()
-        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterType)}: {ParameterType}, {nameof(ParameterValues)}.Count: {ParameterValues?.Length}, {nameof(CanExecuteMethodName)}: {CanExecuteMethodName}, {nameof(IsAsync)}: {IsAsync}";
+        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterTypes)}.Count: {ParameterTypes?.Length}, {nameof(ParameterValues)}.Count: {ParameterValues?.Length}, {nameof(CanExecuteMethodName)}: {CanExecuteMethodName}, {nameof(IsAsync)}: {IsAsync}";
 }

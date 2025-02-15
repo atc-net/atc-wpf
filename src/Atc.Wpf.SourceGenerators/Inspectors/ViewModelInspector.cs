@@ -62,17 +62,12 @@ internal static class ViewModelInspector
 
         var parameterValues = relayCommandAttribute.ExtractRelayCommandParameterValues();
 
-        string? parameterType = null;
-        if (parameterValues is null || parameterValues.Length == 1)
+        List<string>? parameterTypes = null;
+        if (methodSymbol.Parameters.Length > 0)
         {
-            switch (methodSymbol.Parameters.Length)
-            {
-                case 1:
-                    parameterType = methodSymbol.Parameters[0].Type.ToDisplayString();
-                    break;
-                case > 1:
-                    return;
-            }
+            parameterTypes = methodSymbol.Parameters
+                .Select(parameterSymbol => parameterSymbol.Type.ToDisplayString())
+                .ToList();
         }
 
         var isAsync = methodSymbol.ReturnType.Name
@@ -83,7 +78,7 @@ internal static class ViewModelInspector
             new RelayCommandToGenerate(
                 commandName,
                 methodSymbol.Name,
-                parameterType,
+                parameterTypes?.ToArray(),
                 parameterValues,
                 canExecuteMethodName,
                 isAsync));
