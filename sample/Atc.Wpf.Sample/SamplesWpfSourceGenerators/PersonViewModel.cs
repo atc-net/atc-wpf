@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SourceWpfSourceGenerators;
+namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
 public partial class PersonViewModel : ViewModelBase
 {

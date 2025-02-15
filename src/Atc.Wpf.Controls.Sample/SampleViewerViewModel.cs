@@ -234,6 +234,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
         LoadAndRenderMarkdownDocumentIfPossible(sampleLocation, classViewName);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void LoadAndRenderMarkdownDocumentIfPossible(
         DirectoryInfo sampleLocation,
         string classViewName)
@@ -250,11 +251,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
             return;
         }
 
-        var docSection = sampleLocation.Name.Replace("SourceWpf", string.Empty, StringComparison.Ordinal);
-
         var className = classViewName.EndsWith(classViewName, StringComparison.Ordinal)
             ? classViewName[..^4]
             : classViewName;
+
+        var docSection = sampleLocation.Name.Replace("SamplesWpf", string.Empty, StringComparison.Ordinal);
 
         var markdownFile = FindMarkdownFile(Path.Combine("docs", docSection, className)) ??
                            FindMarkdownFile(className + "_Readme");
@@ -275,6 +276,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
                     {
                         classFolder = classFolder[..^1];
                         markdownFile = FindMarkdownFile(Path.Combine(classFolder, "@Readme"));
+                    }
+
+                    if (markdownFile is not null && classFolder == "ValueConverters")
+                    {
+                        StartOnMarkdownDocument = true;
                     }
                 }
             }
@@ -301,7 +307,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
             endPath += ".md";
         }
 
-        return markdownDocumentsFiles!.SingleOrDefault(x => x.FullName.EndsWith(endPath, StringComparison.OrdinalIgnoreCase));
+        return markdownDocumentsFiles!.FirstOrDefault(x => x.FullName.EndsWith(endPath, StringComparison.OrdinalIgnoreCase));
     }
 
     private static Type? FindCustomTypeByName(string className)

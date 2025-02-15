@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
-    d:DesignHeight="450"
+    d:DesignHeight="1200"
     d:DesignWidth="230"
     mc:Ignorable="d">
 
@@ -65,4 +65,7 @@
         <sample:SampleTreeViewItem Header="ResxExtension" SamplePath="Translation.ResxExtensionView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="ValueConverters">
+        <sample:SampleTreeViewItem Header="List value converters" SamplePath="ValueConverters.ValueConvertersView" />
+    </TreeViewItem>
 </TreeView>

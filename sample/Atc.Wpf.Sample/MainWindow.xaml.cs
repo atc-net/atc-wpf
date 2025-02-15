@@ -5,58 +5,58 @@ namespace Atc.Wpf.Sample;
 /// </summary>
 public partial class MainWindow
 {
+    private IMainWindowViewModel GetViewModel() => (IMainWindowViewModel)DataContext!;
+
+    private readonly TreeView[] sampleTreeViews;
+
     public MainWindow(IMainWindowViewModel viewModel)
     {
         InitializeComponent();
+
         DataContext = viewModel;
 
         Loaded += OnLoaded;
         Closing += OnClosing;
         KeyDown += OnKeyDown;
         KeyUp += OnKeyUp;
+
+        sampleTreeViews =
+        [
+            StvSampleWpf,
+            StvSampleWpfControls,
+            StvSamplesWpfSourceGeneratorsTreeView,
+            StvSampleWpfFontIcons,
+            StvSampleWpfTheming,
+        ];
     }
 
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
     {
-        var vm = DataContext as IMainWindowViewModel;
-        vm!.OnLoaded(this, e);
-
+        GetViewModel().OnLoaded(this, e);
         Keyboard.Focus(TbSampleFilter);
     }
 
     private void OnClosing(
         object? sender,
         CancelEventArgs e)
-    {
-        var vm = DataContext as IMainWindowViewModel;
-        vm!.OnClosing(this, e);
-    }
+        => GetViewModel().OnClosing(this, e);
 
     private void OnKeyDown(
         object sender,
         KeyEventArgs e)
-    {
-        var vm = DataContext as IMainWindowViewModel;
-        vm!.OnKeyDown(this, e);
-    }
+        => GetViewModel().OnKeyDown(this, e);
 
     private void OnKeyUp(
         object sender,
         KeyEventArgs e)
-    {
-        var vm = DataContext as IMainWindowViewModel;
-        vm!.OnKeyUp(this, e);
-    }
+        => GetViewModel().OnKeyUp(this, e);
 
     private void TreeViewOnSelectionChanged(
         object sender,
         RoutedPropertyChangedEventArgs<object> e)
-    {
-        var vm = DataContext as IMainWindowViewModel;
-        vm!.UpdateSelectedView(e.NewValue as SampleTreeViewItem);
-    }
+        => GetViewModel().UpdateSelectedView(e.NewValue as SampleTreeViewItem);
 
     private void SampleFilterOnTextChanged(
         object sender,
@@ -67,11 +67,10 @@ public partial class MainWindow
             return;
         }
 
-        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpf.Items, textBox.Text);
-        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfControls.Items, textBox.Text);
-        _ = SetVisibilityByFilterTreeViewItems(StvSamplesWpfSourceGeneratorsTreeView.Items, textBox.Text);
-        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfFontIcons.Items, textBox.Text);
-        _ = SetVisibilityByFilterTreeViewItems(StvSampleWpfTheming.Items, textBox.Text);
+        foreach (var sampleTreeView in sampleTreeViews)
+        {
+            _ = SetVisibilityByFilterTreeViewItems(sampleTreeView.Items, textBox.Text);
+        }
     }
 
     private static bool SetVisibilityByFilterTreeViewItems(
@@ -107,5 +106,39 @@ public partial class MainWindow
         }
 
         return showRoot;
+    }
+
+    private void SampleExpandAll(
+        object sender,
+        RoutedEventArgs e)
+        => ProcessTreeViewItems(expand: true);
+
+    private void SampleCollapseAll(
+        object sender,
+        RoutedEventArgs e)
+        => ProcessTreeViewItems(expand: false);
+
+    private void ProcessTreeViewItems(
+        bool expand)
+    {
+        foreach (var treeView in sampleTreeViews)
+        {
+            foreach (TreeViewItem item in treeView.Items)
+            {
+                SetTreeViewItemExpansion(item, expand);
+            }
+        }
+    }
+
+    private static void SetTreeViewItemExpansion(
+        TreeViewItem treeViewItem,
+        bool expand)
+    {
+        treeViewItem.IsExpanded = expand;
+
+        foreach (TreeViewItem item in treeViewItem.Items)
+        {
+            SetTreeViewItemExpansion(item, expand);
+        }
     }
 }
