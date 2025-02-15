@@ -1,8 +1,10 @@
 // ReSharper disable InvertIf
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 namespace Atc.Wpf.Controls.Layouts;
 
 public sealed class StaggeredPanel : Panel
 {
+    private const int ArrayMaxItems = 10_000;
     private double itemWidth;
 
     public static readonly DependencyProperty DesiredItemWidthProperty = DependencyProperty.Register(
@@ -104,6 +106,7 @@ public sealed class StaggeredPanel : Panel
             itemWidth = availableWidth / numItems;
         }
 
+        numItems = System.Math.Min(numItems, ArrayMaxItems);
         var itemHeights = new double[numItems];
         var itemsPerColumn = new double[numItems];
 
@@ -147,6 +150,7 @@ public sealed class StaggeredPanel : Panel
                 break;
         }
 
+        numColumns = System.Math.Min(numColumns, ArrayMaxItems);
         var columnHeights = new double[numColumns];
         var itemsPerColumn = new double[numColumns];
 

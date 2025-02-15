@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/ReadmeMarkdownStyle.xaml" />
+                <ResourceDictionary Source="Styles/MarkdownDocumentStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -84,15 +84,18 @@
                     TextFormatter="{x:Static textFormatters:CSharpFormatter.Instance}"
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
-            <TabItem Header="Readme" IsEnabled="{Binding Path=HasReadmeMarkdown}">
+            <TabItem
+                Header="Readme"
+                IsEnabled="{Binding Path=HasMarkdownDocument}"
+                IsSelected="{Binding Path=StartOnMarkdownDocument}">
                 <mdXaml:MarkdownScrollViewer
                     Margin="5,10,5,5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     ClickAction="SafetyDisplayWithRelativePath"
                     HorizontalScrollBarVisibility="Auto"
-                    Markdown="{Binding Path=ReadmeMarkdown}"
-                    MarkdownStyle="{StaticResource ReadmeMarkdownStyle}"
+                    Markdown="{Binding Path=MarkdownDocument}"
+                    MarkdownStyle="{StaticResource MarkdownDocumentStyle}"
                     VerticalScrollBarVisibility="Auto" />
             </TabItem>
         </TabControl>

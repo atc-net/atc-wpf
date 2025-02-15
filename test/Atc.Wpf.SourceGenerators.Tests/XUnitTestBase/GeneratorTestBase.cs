@@ -46,7 +46,7 @@ public abstract class GeneratorTestBase
         if (generatorResult.GeneratorResult.GeneratedSources.Length == 1)
         {
             generatedCode = generatorResult.GeneratorResult.GeneratedSources[0].SourceText.ToString();
-            if (expectedCode == generatedCode)
+            if (expectedCode.EnsureEnvironmentNewLines() == generatedCode.EnsureEnvironmentNewLines())
             {
                 return;
             }

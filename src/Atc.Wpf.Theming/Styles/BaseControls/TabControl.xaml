@@ -577,7 +577,7 @@
         <Setter Property="atc:ControlsHelper.CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.TabControl}" />
         <Setter Property="atc:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, FallbackValue={x:Static Brushes.Transparent}}" />
         <Setter Property="atc:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource AtcApps.Font.Size.TabItem}" />
-        <Setter Property="atc:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+        <Setter Property="atc:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Gray2}" />
         <Setter Property="atc:HeaderedControlHelper.HeaderMargin" Value="6 2" />
         <Setter Property="atc:TabControlHelper.UnderlineBrush" Value="{DynamicResource AtcApps.Brushes.Gray}" />
         <Setter Property="atc:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource AtcApps.Brushes.Gray.MouseOver}" />

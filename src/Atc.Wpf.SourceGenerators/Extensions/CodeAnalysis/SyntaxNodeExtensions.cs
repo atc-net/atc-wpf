@@ -113,4 +113,28 @@ internal static class SyntaxNodeExtensions
 
         return foundValidCandidate;
     }
+
+    public static bool HasClassDeclarationWithValidAttachedProperties(
+        this SyntaxNode syntaxNode)
+    {
+        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
+        {
+            return false;
+        }
+
+        var foundValidCandidate = false;
+
+        foreach (var attributeListSyntax in classDeclarationSyntax.AttributeLists)
+        {
+            var dependencyPropertyAttributes = attributeListSyntax.Attributes
+                .Where(x => x.Name.ToString().StartsWith(NameConstants.AttachedProperty, StringComparison.Ordinal));
+
+            if (dependencyPropertyAttributes.Any())
+            {
+                foundValidCandidate = true;
+            }
+        }
+
+        return foundValidCandidate;
+    }
 }

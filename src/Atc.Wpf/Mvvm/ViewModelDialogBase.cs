@@ -12,6 +12,11 @@ public class ViewModelDialogBase : ViewModelBase
         get => dialogResult;
         set
         {
+            if (dialogResult == value)
+            {
+                return;
+            }
+
             dialogResult = value;
             RaisePropertyChanged();
         }

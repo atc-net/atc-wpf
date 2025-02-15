@@ -32,7 +32,24 @@ internal static class ViewModelBuilderExtensions
 
         foreach (var relayCommandToGenerate in relayCommandsToGenerate)
         {
-            GenerateRelayCommand(builder, relayCommandToGenerate);
+            builder.AppendLineBeforeMember();
+
+            var interfaceType = relayCommandToGenerate.IsAsync
+                ? NameConstants.IRelayCommandAsync
+                : NameConstants.IRelayCommand;
+
+            var implementationType = relayCommandToGenerate.IsAsync
+                ? NameConstants.RelayCommandAsync
+                : NameConstants.RelayCommand;
+
+            if (relayCommandToGenerate.ParameterValues is null)
+            {
+                GenerateRelayCommandWithOutParameterValues(builder, relayCommandToGenerate, interfaceType, implementationType);
+            }
+            else
+            {
+                GenerateRelayCommandWithParameterValues(builder, relayCommandToGenerate, interfaceType, implementationType);
+            }
         }
     }
 
@@ -51,44 +68,154 @@ internal static class ViewModelBuilderExtensions
         }
     }
 
-    private static void GenerateRelayCommand(
+    private static void GenerateRelayCommandWithOutParameterValues(
         ViewModelBuilder builder,
-        RelayCommandToGenerate relayCommandToGenerate)
+        RelayCommandToGenerate rc,
+        string interfaceType,
+        string implementationType)
     {
-        builder.AppendLineBeforeMember();
-
-        var interfaceType = relayCommandToGenerate.IsAsync
-            ? NameConstants.IRelayCommandAsync
-            : NameConstants.IRelayCommand;
-
-        var implementationType = relayCommandToGenerate.IsAsync
-            ? NameConstants.RelayCommandAsync
-            : NameConstants.RelayCommand;
-
-        if (relayCommandToGenerate.ParameterValues is null)
+        if (rc.ParameterTypes is null || rc.ParameterTypes.Length == 0)
         {
-            var generic = relayCommandToGenerate.ParameterType is null
-                ? string.Empty
-                : $"<{relayCommandToGenerate.ParameterType}>";
+            var cmd = GenerateCommandLine(
+                interfaceType,
+                implementationType,
+                rc.CommandName,
+                rc.MethodName,
+                rc.CanExecuteMethodName);
+            builder.AppendLine(cmd);
+        }
+        else if (rc.ParameterTypes.Length == 1)
+        {
+            var parameterType = rc.ParameterTypes[0];
 
-            var constructorParameters = relayCommandToGenerate.CanExecuteMethodName is null
-                ? $"{relayCommandToGenerate.MethodName}"
-                : $"{relayCommandToGenerate.MethodName}, {relayCommandToGenerate.CanExecuteMethodName}";
-
-            var commandLine = $"public {interfaceType}{generic} {relayCommandToGenerate.CommandName} => new {implementationType}{generic}({constructorParameters});";
-
-            builder.AppendLine(commandLine);
+            if (parameterType.EndsWith(nameof(CancellationToken), StringComparison.Ordinal))
+            {
+                var cmd = GenerateCommandLine(
+                    interfaceType,
+                    implementationType,
+                    rc.CommandName,
+                    $"{rc.MethodName}(CancellationToken.None)",
+                    rc.CanExecuteMethodName,
+                    isLambda: true);
+                builder.AppendLine(cmd);
+            }
+            else
+            {
+                var generic = $"<{parameterType}>";
+                var cmd = GenerateCommandLine(
+                    $"{interfaceType}{generic}",
+                    $"{implementationType}{generic}",
+                    rc.CommandName,
+                    rc.MethodName,
+                    rc.CanExecuteMethodName);
+                builder.AppendLine(cmd);
+            }
         }
         else
         {
-            var constructorParameters = string.Join(", ", relayCommandToGenerate.ParameterValues);
+            var (tupleGeneric, constructorParametersMulti, filteredConstructorParameters) = GetConstructorParametersWithParameterTypes(rc);
 
-            var commandLine = relayCommandToGenerate.CanExecuteMethodName is null
-                ? $"public {interfaceType} {relayCommandToGenerate.CommandName} => new {implementationType}(() => {relayCommandToGenerate.MethodName}({constructorParameters}));"
-                : $"public {interfaceType} {relayCommandToGenerate.CommandName} => new {implementationType}(() => {relayCommandToGenerate.MethodName}({constructorParameters}), {relayCommandToGenerate.CanExecuteMethodName}({constructorParameters}));";
-
-            builder.AppendLine(commandLine);
+            var cmd = GenerateCommandLine(
+                $"{interfaceType}{tupleGeneric}",
+                $"{implementationType}{tupleGeneric}",
+                rc.CommandName,
+                $"x => {rc.MethodName}({constructorParametersMulti})",
+                rc.CanExecuteMethodName is null ? null : $"x => {rc.CanExecuteMethodName}({filteredConstructorParameters})");
+            builder.AppendLine(cmd);
         }
+    }
+
+    private static void GenerateRelayCommandWithParameterValues(
+        ViewModelBuilder builder,
+        RelayCommandToGenerate rc,
+        string interfaceType,
+        string implementationType)
+    {
+        if (rc.ParameterValues!.Length == 1)
+        {
+            var cmd = GenerateCommandLine(
+                interfaceType: interfaceType,
+                implementationType,
+                rc.CommandName,
+                $"() => {rc.MethodName}({rc.ParameterValues[0]})",
+                rc.CanExecuteMethodName);
+            builder.AppendLine(cmd);
+        }
+        else
+        {
+            var constructorParameters = string.Join(", ", rc.ParameterValues!);
+            if (rc.CanExecuteMethodName is null)
+            {
+                var cmd = GenerateCommandLine(
+                    interfaceType: interfaceType,
+                    implementationType,
+                    rc.CommandName,
+                    $"() => {rc.MethodName}({constructorParameters})");
+                builder.AppendLine(cmd);
+            }
+            else
+            {
+                var cmd = GenerateCommandLine(
+                    interfaceType: interfaceType,
+                    implementationType,
+                    rc.CommandName,
+                    $"() => {rc.MethodName}({constructorParameters})",
+                    $"{rc.CanExecuteMethodName}({constructorParameters})");
+                builder.AppendLine(cmd);
+            }
+        }
+    }
+
+    private static (
+        string Generic,
+        string ConstructorParameters,
+        string FilteredConstructorParameters) GetConstructorParametersWithParameterTypes(
+        RelayCommandToGenerate rc)
+    {
+        var filteredParameterTypes = rc.ParameterTypes!.Where(x => !x.EndsWith(nameof(CancellationToken), StringComparison.Ordinal));
+        var generic = $"<({string.Join(", ", filteredParameterTypes)})>";
+
+        var constructorParametersList = new List<string>();
+        var tupleItemNumber = 0;
+
+        foreach (var parameterType in rc.ParameterTypes!)
+        {
+            if (parameterType.EndsWith(nameof(CancellationToken), StringComparison.Ordinal))
+            {
+                constructorParametersList.Add("CancellationToken.None");
+            }
+            else
+            {
+                tupleItemNumber++;
+                constructorParametersList.Add($"x.Item{tupleItemNumber}");
+            }
+        }
+
+        var constructorParameters = string.Join(", ", constructorParametersList);
+        var filteredConstructorParameters = string.Join(", ", constructorParametersList.Where(x => !x.Contains(nameof(CancellationToken))));
+
+        return (generic, constructorParameters, filteredConstructorParameters);
+    }
+
+    private static string GenerateCommandLine(
+        string interfaceType,
+        string implementationType,
+        string commandName,
+        string constructorParameters,
+        string? canExecuteMethodName = null,
+        bool isLambda = false)
+    {
+        var lambdaPrefix = isLambda ? "() => " : string.Empty;
+        var commandInstance = $"new {implementationType}({lambdaPrefix}{constructorParameters}";
+
+        if (canExecuteMethodName is not null)
+        {
+            commandInstance += $", {canExecuteMethodName}";
+        }
+
+        commandInstance += ");";
+
+        return $"public {interfaceType} {commandName} => {commandInstance}";
     }
 
     private static void GenerateProperty(

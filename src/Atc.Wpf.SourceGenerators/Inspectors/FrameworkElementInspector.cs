@@ -1,173 +1,219 @@
 namespace Atc.Wpf.SourceGenerators.Inspectors;
 
+[SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
 internal static class FrameworkElementInspector
 {
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static FrameworkElementInspectorResult Inspect(
         INamedTypeSymbol frameworkElementClassSymbol)
     {
-        var dependencyPropertiesToGenerate = new List<DependencyPropertyToGenerate>();
+        var dependencyPropertiesToGenerate = CollectPropertiesToGenerate<DependencyPropertyToGenerate>(
+            frameworkElementClassSymbol,
+            NameConstants.DependencyPropertyAttribute,
+            NameConstants.DependencyProperty);
+
+        var attachedPropertiesToGenerate = CollectPropertiesToGenerate<AttachedPropertyToGenerate>(
+            frameworkElementClassSymbol,
+            NameConstants.AttachedPropertyAttribute,
+            NameConstants.AttachedProperty);
+
+        return new FrameworkElementInspectorResult(
+            dependencyPropertiesToGenerate,
+            attachedPropertiesToGenerate);
+    }
+
+    private static List<T> CollectPropertiesToGenerate<T>(
+        INamedTypeSymbol frameworkElementClassSymbol,
+        string attributeName1,
+        string attributeName2)
+        where T : BasePropertyToGenerate
+    {
+        var propertiesToGenerate = new List<T>();
 
         var attributes = frameworkElementClassSymbol.GetAttributes();
 
-        var dependencyPropertyAttributes = attributes
-            .Where(x => x.AttributeClass?.Name
-                is NameConstants.DependencyPropertyAttribute
-                or NameConstants.DependencyProperty);
+        var propertyAttributes = attributes
+            .Where(x => x.AttributeClass?.Name is var attrName
+                        && (attrName == attributeName1 || attrName == attributeName2));
 
         var ownerType = frameworkElementClassSymbol.Name;
 
-        foreach (var dependencyPropertyAttribute in dependencyPropertyAttributes)
+        foreach (var propertyAttribute in propertyAttributes)
         {
-            var propertyName = dependencyPropertyAttribute.ExtractPropertyName(string.Empty);
-            var type = "int";
+            var propertyName = propertyAttribute.ExtractPropertyName(string.Empty);
             object? defaultValue = null;
+            var type = propertyAttribute.ExtractClassFirstArgumentType(ref defaultValue);
             string? propertyChangedCallback = null;
             string? coerceValueCallback = null;
+            string? validateValueCallback = null;
             string? flags = null;
             string? defaultUpdateSourceTrigger = null;
             bool? isAnimationProhibited = null;
             string? category = null;
             string? description = null;
 
-            if (dependencyPropertyAttribute.AttributeClass is { TypeArguments.Length: 1 })
+            var parameters = propertyAttribute.ApplicationSyntaxReference?
+                .GetSyntax()
+                .ToFullString()
+                .ExtractAttributeParameters();
+
+            if (propertyAttribute.NamedArguments.Length == 0 && parameters is not null)
             {
-                var typeSymbol = dependencyPropertyAttribute.AttributeClass.TypeArguments[0];
-                type = typeSymbol.ToDisplayString();
-
-                if (type == "bool")
+                // Syntax-based extraction
+                foreach (var parameter in parameters)
                 {
-                    defaultValue = "false";
-                }
-            }
-
-            if (dependencyPropertyAttribute.NamedArguments.Length == 0)
-            {
-                // Syntax check
-                var str = dependencyPropertyAttribute.ApplicationSyntaxReference?.GetSyntax().ToFullString();
-                if (str is not null && str.Contains('('))
-                {
-                    var parameters = str.ExtractAttributeParameters();
-                    foreach (var parameter in parameters)
-                    {
-                        if (parameter == propertyName)
-                        {
-                            continue;
-                        }
-
-                        var parameterTrim = parameter.Replace(" ", string.Empty);
-                        if (parameterTrim.StartsWith(NameConstants.DefaultValue + "=", StringComparison.CurrentCulture))
-                        {
-                            defaultValue = parameter.ExtractParameterValue();
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.PropertyChangedCallback + "=", StringComparison.CurrentCulture))
-                        {
-                            propertyChangedCallback = parameter.ExtractParameterValue();
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.CoerceValueCallback + "=", StringComparison.CurrentCulture))
-                        {
-                            coerceValueCallback = parameter.ExtractParameterValue();
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.Flags + "=", StringComparison.CurrentCulture))
-                        {
-                            flags = parameter.ExtractParameterValue();
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.DefaultUpdateSourceTrigger + "=", StringComparison.CurrentCulture))
-                        {
-                            defaultUpdateSourceTrigger = parameter.ExtractParameterValue();
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.IsAnimationProhibited + "=", StringComparison.CurrentCulture))
-                        {
-                            isAnimationProhibited = "true".Equals(parameter.ExtractParameterValue(), StringComparison.OrdinalIgnoreCase);
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.Category + "=", StringComparison.CurrentCulture))
-                        {
-                            category = parameter.ExtractParameterValue();
-                        }
-                        else if (parameterTrim.StartsWith(NameConstants.Description + "=", StringComparison.CurrentCulture))
-                        {
-                            description = parameter.ExtractParameterValue();
-                        }
-                    }
+                    ExtractsAttributeParametersFromTheSyntaxCheck(
+                        parameter,
+                        ref defaultValue,
+                        ref propertyChangedCallback,
+                        ref coerceValueCallback,
+                        ref validateValueCallback,
+                        ref flags,
+                        ref defaultUpdateSourceTrigger,
+                        ref isAnimationProhibited,
+                        ref category,
+                        ref description);
                 }
             }
             else
             {
-                var parameters = dependencyPropertyAttribute.ApplicationSyntaxReference?
-                    .GetSyntax()
-                    .ToFullString()
-                    .ExtractAttributeParameters();
-
-                // Runtime check
-                foreach (var arg in dependencyPropertyAttribute.NamedArguments)
+                // Runtime-based extraction
+                foreach (var arg in propertyAttribute.NamedArguments)
                 {
-                    switch (arg.Key)
-                    {
-                        case NameConstants.DefaultValue:
-                            defaultValue = arg.Value.Value;
-                            break;
-                        case NameConstants.PropertyChangedCallback:
-                            propertyChangedCallback = arg.Value.Value?.ToString();
-                            break;
-                        case NameConstants.CoerceValueCallback:
-                            coerceValueCallback = arg.Value.Value?.ToString();
-                            break;
-                        case NameConstants.Flags:
-                            flags = parameters?
-                                .FirstOrDefault(x => x.StartsWith(NameConstants.Flags, StringComparison.Ordinal))?
-                                .Replace(NameConstants.Flags, string.Empty)
-                                .Replace("=", string.Empty)
-                                .Trim();
-                            break;
-                        case NameConstants.DefaultUpdateSourceTrigger:
-                            defaultUpdateSourceTrigger = parameters?
-                                .FirstOrDefault(x => x.StartsWith(NameConstants.DefaultUpdateSourceTrigger, StringComparison.Ordinal))?
-                                .Replace(NameConstants.DefaultUpdateSourceTrigger, string.Empty)
-                                .Replace("=", string.Empty)
-                                .Trim();
-                            break;
-                        case NameConstants.IsAnimationProhibited:
-                            isAnimationProhibited = "true".Equals(arg.Value.Value?.ToString(), StringComparison.OrdinalIgnoreCase);
-                            break;
-                        case NameConstants.Category:
-                            category = arg.Value.Value?.ToString();
-                            break;
-                        case NameConstants.Description:
-                            description = arg.Value.Value?.ToString();
-                            break;
-                    }
+                    ExtractsNamedArgumentValuesAtRuntime(
+                        arg.Key,
+                        arg.Value.Value,
+                        ref defaultValue,
+                        ref propertyChangedCallback,
+                        ref coerceValueCallback,
+                        ref validateValueCallback,
+                        ref flags,
+                        ref defaultUpdateSourceTrigger,
+                        ref isAnimationProhibited,
+                        ref category,
+                        ref description,
+                        parameters);
                 }
             }
 
-            if (defaultValue is not null)
-            {
-                defaultValue = defaultValue.ToString() switch
-                {
-                    "" => "string.Empty",
-                    "true" => "BooleanBoxes.TrueBox",
-                    "True" => "BooleanBoxes.TrueBox",
-                    "false" => "BooleanBoxes.FalseBox",
-                    "False" => "BooleanBoxes.FalseBox",
-                    _ => defaultValue,
-                };
-            }
+            defaultValue = defaultValue is null && type.IsSimpleType()
+                ? SimpleTypeFactory.CreateDefaultValueAsStrForType(type)
+                : defaultValue?.TransformDefaultValueIfNeeded(type);
 
-            dependencyPropertiesToGenerate.Add(
-                new DependencyPropertyToGenerate(
+            propertiesToGenerate.Add(
+                (T)Activator.CreateInstance(
+                    typeof(T),
                     ownerType,
                     propertyName,
                     type,
                     defaultValue,
                     propertyChangedCallback,
                     coerceValueCallback,
+                    validateValueCallback,
                     flags,
                     defaultUpdateSourceTrigger,
                     isAnimationProhibited,
                     category,
-                    description));
+                    description)!);
         }
 
-        return new FrameworkElementInspectorResult(
-            dependencyPropertiesToGenerate);
+        return propertiesToGenerate;
+    }
+
+    private static void ExtractsAttributeParametersFromTheSyntaxCheck(
+        string parameter,
+        ref object? defaultValue,
+        ref string? propertyChangedCallback,
+        ref string? coerceValueCallback,
+        ref string? validateValueCallback,
+        ref string? flags,
+        ref string? defaultUpdateSourceTrigger,
+        ref bool? isAnimationProhibited,
+        ref string? category,
+        ref string? description)
+    {
+        var parameterTrim = parameter.Replace(" ", string.Empty);
+
+        if (parameterTrim.StartsWith(NameConstants.DefaultValue + "=", StringComparison.CurrentCulture))
+        {
+            defaultValue = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.PropertyChangedCallback + "=", StringComparison.CurrentCulture))
+        {
+            propertyChangedCallback = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.CoerceValueCallback + "=", StringComparison.CurrentCulture))
+        {
+            coerceValueCallback = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.ValidateValueCallback + "=", StringComparison.CurrentCulture))
+        {
+            validateValueCallback = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.Flags + "=", StringComparison.CurrentCulture))
+        {
+            flags = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.DefaultUpdateSourceTrigger + "=", StringComparison.CurrentCulture))
+        {
+            defaultUpdateSourceTrigger = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.IsAnimationProhibited + "=", StringComparison.CurrentCulture))
+        {
+            isAnimationProhibited = "true".Equals(parameter.ExtractParameterValue(), StringComparison.OrdinalIgnoreCase);
+        }
+        else if (parameterTrim.StartsWith(NameConstants.Category + "=", StringComparison.CurrentCulture))
+        {
+            category = parameter.ExtractParameterValue();
+        }
+        else if (parameterTrim.StartsWith(NameConstants.Description + "=", StringComparison.CurrentCulture))
+        {
+            description = parameter.ExtractParameterValue();
+        }
+    }
+
+    private static void ExtractsNamedArgumentValuesAtRuntime(
+        string key,
+        object? value,
+        ref object? defaultValue,
+        ref string? propertyChangedCallback,
+        ref string? coerceValueCallback,
+        ref string? validateValueCallback,
+        ref string? flags,
+        ref string? defaultUpdateSourceTrigger,
+        ref bool? isAnimationProhibited,
+        ref string? category,
+        ref string? description,
+        IEnumerable<string>? parameters)
+    {
+        switch (key)
+        {
+            case NameConstants.DefaultValue:
+                defaultValue = value;
+                break;
+            case NameConstants.PropertyChangedCallback:
+                propertyChangedCallback = value?.ToString();
+                break;
+            case NameConstants.CoerceValueCallback:
+                coerceValueCallback = value?.ToString();
+                break;
+            case NameConstants.ValidateValueCallback:
+                validateValueCallback = value?.ToString();
+                break;
+            case NameConstants.Flags:
+                flags = parameters.ExtractParameterValueFromList(NameConstants.Flags);
+                break;
+            case NameConstants.DefaultUpdateSourceTrigger:
+                defaultUpdateSourceTrigger = parameters.ExtractParameterValueFromList(NameConstants.DefaultUpdateSourceTrigger);
+                break;
+            case NameConstants.IsAnimationProhibited:
+                isAnimationProhibited = "true".Equals(value?.ToString(), StringComparison.OrdinalIgnoreCase);
+                break;
+            case NameConstants.Category:
+                category = value?.ToString();
+                break;
+            case NameConstants.Description:
+                description = value?.ToString();
+                break;
+        }
     }
 }

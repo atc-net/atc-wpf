@@ -14,7 +14,7 @@ public sealed class FadeShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(FadeShaderEffect),
             new UIPropertyMetadata(
-                0,
+                0d,
                 PixelShaderConstantCallback(0)));
 
     public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(

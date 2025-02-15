@@ -8,20 +8,26 @@ public sealed class SampleViewerViewModel : ViewModelBase
         Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
     }
 
-    private FileInfo[]? readmeMarkdownFiles;
+    private FileInfo[]? markdownDocumentsFiles;
     private int tabSelectedIndex;
     private string? header;
     private UserControl? sampleContent;
     private string? xamlCode;
     private string? codeBehindCode;
     private string? viewModelCode;
-    private string? readmeMarkdown;
+    private string? markdownDocument;
+    private bool startOnMarkdownDocument;
 
     public int TabSelectedIndex
     {
         get => tabSelectedIndex;
         set
         {
+            if (tabSelectedIndex == value)
+            {
+                return;
+            }
+
             tabSelectedIndex = value;
             RaisePropertyChanged();
         }
@@ -35,13 +41,18 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
     public bool HasViewModelCode => ViewModelCode is not null;
 
-    public bool HasReadmeMarkdown => ReadmeMarkdown is not null;
+    public bool HasMarkdownDocument => MarkdownDocument is not null;
 
     public string? Header
     {
         get => header;
         set
         {
+            if (header == value)
+            {
+                return;
+            }
+
             header = value;
             RaisePropertyChanged();
         }
@@ -52,6 +63,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => sampleContent;
         set
         {
+            if (sampleContent == value)
+            {
+                return;
+            }
+
             sampleContent = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasSampleContent));
@@ -63,6 +79,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => xamlCode;
         set
         {
+            if (xamlCode == value)
+            {
+                return;
+            }
+
             xamlCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasXamlCode));
@@ -74,6 +95,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => codeBehindCode;
         set
         {
+            if (codeBehindCode == value)
+            {
+                return;
+            }
+
             codeBehindCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasCodeBehindCode));
@@ -85,20 +111,45 @@ public sealed class SampleViewerViewModel : ViewModelBase
         get => viewModelCode;
         set
         {
+            if (viewModelCode == value)
+            {
+                return;
+            }
+
             viewModelCode = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(HasViewModelCode));
         }
     }
 
-    public string? ReadmeMarkdown
+    public string? MarkdownDocument
     {
-        get => readmeMarkdown;
+        get => markdownDocument;
         set
         {
-            readmeMarkdown = value;
+            if (markdownDocument == value)
+            {
+                return;
+            }
+
+            markdownDocument = value;
             RaisePropertyChanged();
-            RaisePropertyChanged(nameof(HasReadmeMarkdown));
+            RaisePropertyChanged(nameof(HasMarkdownDocument));
+        }
+    }
+
+    public bool StartOnMarkdownDocument
+    {
+        get => startOnMarkdownDocument;
+        set
+        {
+            if (startOnMarkdownDocument == value)
+            {
+                return;
+            }
+
+            startOnMarkdownDocument = value;
+            RaisePropertyChanged();
         }
     }
 
@@ -180,59 +231,83 @@ public sealed class SampleViewerViewModel : ViewModelBase
             ViewModelCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewModelName + ".cs"));
         }
 
-        LoadAndRenderReadmeMarkdownIfPossible(classViewName);
+        LoadAndRenderMarkdownDocumentIfPossible(sampleLocation, classViewName);
     }
 
-    private void LoadAndRenderReadmeMarkdownIfPossible(
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    private void LoadAndRenderMarkdownDocumentIfPossible(
+        DirectoryInfo sampleLocation,
         string classViewName)
     {
-        ReadmeMarkdown = null;
-        if (readmeMarkdownFiles is null)
+        MarkdownDocument = null;
+        StartOnMarkdownDocument = false;
+        if (markdownDocumentsFiles is null)
         {
             PrepareReadmeReferences();
         }
 
-        if (readmeMarkdownFiles is null)
+        if (markdownDocumentsFiles is null)
         {
             return;
         }
 
-        var readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.Name.StartsWith(classViewName + "_Readme", StringComparison.OrdinalIgnoreCase));
-        if (readmeMarkdownFile is null &&
-            classViewName.EndsWith("View", StringComparison.Ordinal))
+        var className = classViewName.EndsWith(classViewName, StringComparison.Ordinal)
+            ? classViewName[..^4]
+            : classViewName;
+
+        var docSection = sampleLocation.Name.Replace("SamplesWpf", string.Empty, StringComparison.Ordinal);
+
+        var markdownFile = FindMarkdownFile(Path.Combine("docs", docSection, className)) ??
+                           FindMarkdownFile(className + "_Readme");
+
+        if (markdownFile is null)
         {
-            var className = classViewName.Replace("View", string.Empty, StringComparison.Ordinal);
-            readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.Name.StartsWith(className + "_Readme", StringComparison.OrdinalIgnoreCase));
+            var type = FindCustomTypeByName(classViewName) ??
+                       FindCustomTypeByName(className);
 
-            if (readmeMarkdownFile is null)
+            if (type?.FullName is not null)
             {
-                var type = FindCustomTypeByName(classViewName) ??
-                           FindCustomTypeByName(className);
-
-                if (type?.FullName is not null)
+                var sa = type.FullName.Split('.', StringSplitOptions.RemoveEmptyEntries);
+                if (sa.Length > 2)
                 {
-                    var sa = type.FullName.Split('.', StringSplitOptions.RemoveEmptyEntries);
-                    if (sa.Length > 2)
+                    var classFolder = sa[^2];
+                    markdownFile = FindMarkdownFile(Path.Combine(classFolder, "@Readme"));
+                    if (markdownFile is null && classFolder.EndsWith('s'))
                     {
-                        var classFolder = sa[^2];
-                        readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.FullName.EndsWith($"\\{classFolder}\\@Readme.md", StringComparison.OrdinalIgnoreCase));
-                        if (readmeMarkdownFile is null && classFolder.EndsWith('s'))
-                        {
-                            classFolder = classFolder[..^1];
-                            readmeMarkdownFile = readmeMarkdownFiles.SingleOrDefault(x => x.FullName.EndsWith($"\\{classFolder}\\@Readme.md", StringComparison.OrdinalIgnoreCase));
-                        }
+                        classFolder = classFolder[..^1];
+                        markdownFile = FindMarkdownFile(Path.Combine(classFolder, "@Readme"));
+                    }
+
+                    if (markdownFile is not null && classFolder == "ValueConverters")
+                    {
+                        StartOnMarkdownDocument = true;
                     }
                 }
             }
+
+            markdownFile ??= FindMarkdownFile(classViewName + "_Readme");
+        }
+        else
+        {
+            StartOnMarkdownDocument = true;
         }
 
-        if (readmeMarkdownFile is null)
+        if (markdownFile is null)
         {
             return;
         }
 
-        var readmeMarkdownTxt = FileHelper.ReadAllText(readmeMarkdownFile);
-        ReadmeMarkdown = readmeMarkdownTxt;
+        MarkdownDocument = FileHelper.ReadAllText(markdownFile);
+    }
+
+    private FileInfo? FindMarkdownFile(string endPath)
+    {
+        if (!endPath.EndsWith(".md", StringComparison.Ordinal))
+        {
+            endPath += ".md";
+        }
+
+        return markdownDocumentsFiles!.FirstOrDefault(x => x.FullName.EndsWith(endPath, StringComparison.OrdinalIgnoreCase));
     }
 
     private static Type? FindCustomTypeByName(string className)
@@ -282,9 +357,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
     {
         var basePath = GetBasePath();
 
-        readmeMarkdownFiles = FileHelper.GetFiles(basePath, "*.md")
-            .Where(x => x.Name.Contains("readme", StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+        markdownDocumentsFiles = FileHelper.GetFiles(basePath, "*.md").ToArray();
     }
 
     private static Type? GetTypeBySamplePath(

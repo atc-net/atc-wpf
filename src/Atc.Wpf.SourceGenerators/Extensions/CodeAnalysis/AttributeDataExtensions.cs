@@ -295,4 +295,25 @@ internal static class AttributeDataExtensions
 
         return result;
     }
+
+    public static string ExtractClassFirstArgumentType(
+        this AttributeData propertyAttribute,
+        ref object? defaultValue)
+    {
+        var type = "int";
+        if (propertyAttribute.AttributeClass is not { TypeArguments.Length: 1 })
+        {
+            return type;
+        }
+
+        var typeSymbol = propertyAttribute.AttributeClass.TypeArguments[0];
+        type = typeSymbol.ToDisplayString().EnsureCSharpAliasIfNeeded();
+
+        if (type == "bool")
+        {
+            defaultValue = "false";
+        }
+
+        return type;
+    }
 }

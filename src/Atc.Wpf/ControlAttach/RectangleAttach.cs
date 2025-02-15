@@ -8,8 +8,17 @@ public static class RectangleAttach
         typeof(bool),
         typeof(RectangleAttach),
         new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            OnCircularChanged));
+            defaultValue: BooleanBoxes.FalseBox,
+            propertyChangedCallback: OnCircularChanged));
+
+    public static void SetCircular(
+        DependencyObject element,
+        bool value)
+        => element.SetValue(CircularProperty, BooleanBoxes.Box(value));
+
+    public static bool GetCircular(
+        DependencyObject element)
+        => (bool)element.GetValue(CircularProperty);
 
     private static void OnCircularChanged(
         DependencyObject d,
@@ -40,13 +49,4 @@ public static class RectangleAttach
             BindingOperations.ClearBinding(rectangle, System.Windows.Shapes.Rectangle.RadiusYProperty);
         }
     }
-
-    public static void SetCircular(
-        DependencyObject element,
-        bool value)
-        => element.SetValue(CircularProperty, BooleanBoxes.Box(value));
-
-    public static bool GetCircular(
-        DependencyObject element)
-        => (bool)element.GetValue(CircularProperty);
 }

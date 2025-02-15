@@ -14,7 +14,7 @@ public sealed class DesaturateShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(DesaturateShaderEffect),
             new UIPropertyMetadata(
-                0,
+                0d,
                 PixelShaderConstantCallback(0)));
 
     public override string Name => "Desaturate";

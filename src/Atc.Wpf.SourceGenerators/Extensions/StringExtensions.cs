@@ -2,6 +2,25 @@ namespace Atc.Wpf.SourceGenerators.Extensions;
 
 public static class StringExtensions
 {
+    private static readonly Dictionary<string, string> TypeAliases = new(StringComparer.Ordinal)
+    {
+        { nameof(Boolean), "bool" },
+        { nameof(Byte), "byte" },
+        { nameof(SByte), "sbyte" },
+        { nameof(Char), "char" },
+        { nameof(Decimal), "decimal" },
+        { nameof(Double), "double" },
+        { nameof(Single), "float" },
+        { nameof(Int32), "int" },
+        { nameof(UInt32), "uint" },
+        { nameof(Int16), "short" },
+        { nameof(UInt16), "ushort" },
+        { nameof(Int64), "long" },
+        { nameof(UInt64), "ulong" },
+        { nameof(Object), "object" },
+        { nameof(String), "string" },
+    };
+
     public static string EnsureFirstCharacterToUpper(
         this string value)
     {
@@ -132,4 +151,21 @@ public static class StringExtensions
 
         return fieldName;
     }
+
+    public static string EnsureCSharpAliasIfNeeded(
+        this string typeName)
+        => TypeAliases.TryGetValue(typeName, out var alias)
+            ? alias
+            : typeName;
+
+    public static bool IsSimpleType(
+        this string value)
+        => value
+            is "bool"
+            or "decimal"
+            or "double"
+            or "float"
+            or "int"
+            or "long"
+            or "string";
 }

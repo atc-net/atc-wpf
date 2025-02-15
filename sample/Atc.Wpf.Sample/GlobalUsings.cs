@@ -12,6 +12,7 @@ global using System.Text;
 global using System.Text.Json;
 global using System.Windows;
 global using System.Windows.Controls;
+global using System.Windows.Data;
 global using System.Windows.Input;
 global using System.Windows.Media;
 global using System.Windows.Media.Imaging;
@@ -42,7 +43,7 @@ global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
-
+global using Atc.Wpf.ValueConverters;
 global using ControlzEx.Theming;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;

@@ -40,6 +40,11 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
             return true;
         }
 
+        if (syntaxNode.HasClassDeclarationWithValidAttachedProperties())
+        {
+            return true;
+        }
+
         return false;
     }
 
@@ -51,12 +56,19 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
 
         var frameworkElementInspectorResult = FrameworkElementInspector.Inspect(frameworkElementClassSymbol);
 
+        if (!frameworkElementInspectorResult.FoundAnythingToGenerate)
+        {
+            return null;
+        }
+
         var frameworkElementToGenerate = new FrameworkElementToGenerate(
             namespaceName: frameworkElementClassSymbol.ContainingNamespace.ToDisplayString(),
             className: frameworkElementClassSymbol.Name,
-            accessModifier: frameworkElementClassSymbol.GetAccessModifier())
+            accessModifier: frameworkElementClassSymbol.GetAccessModifier(),
+            isStatic: frameworkElementInspectorResult.IsStatic)
         {
             DependencyPropertiesToGenerate = frameworkElementInspectorResult.DependencyPropertiesToGenerate,
+            AttachedPropertiesToGenerate = frameworkElementInspectorResult.AttachedPropertiesToGenerate,
         };
 
         return frameworkElementToGenerate;
@@ -64,25 +76,34 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
 
     private static void Execute(
         SourceProductionContext context,
-        FrameworkElementToGenerate? dependencyObjectToGenerate)
+        FrameworkElementToGenerate? frameworkElementToGenerate)
     {
-        if (dependencyObjectToGenerate is null)
+        if (frameworkElementToGenerate is null)
         {
             return;
         }
 
-        var dependencyObjectBuilder = new FrameworkElementBuilder();
+        var frameworkElementBuilder = new FrameworkElementBuilder();
 
-        dependencyObjectBuilder.GenerateStart(dependencyObjectToGenerate);
+        if (frameworkElementToGenerate.DependencyPropertiesToGenerate?.Count > 0)
+        {
+            frameworkElementBuilder.GenerateStart(frameworkElementToGenerate);
 
-        dependencyObjectBuilder.GenerateDependencyProperties(dependencyObjectToGenerate.DependencyPropertiesToGenerate);
+            frameworkElementBuilder.GenerateDependencyProperties(frameworkElementToGenerate.DependencyPropertiesToGenerate);
+        }
+        else
+        {
+            frameworkElementBuilder.GenerateStart(frameworkElementToGenerate);
 
-        dependencyObjectBuilder.GenerateEnd();
+            frameworkElementBuilder.GenerateAttachedProperties(frameworkElementToGenerate.AttachedPropertiesToGenerate);
+        }
 
-        var sourceText = dependencyObjectBuilder.ToSourceText();
+        frameworkElementBuilder.GenerateEnd();
+
+        var sourceText = frameworkElementBuilder.ToSourceText();
 
         context.AddSource(
-            dependencyObjectToGenerate.GeneratedFileName,
+            frameworkElementToGenerate.GeneratedFileName,
             sourceText);
     }
 }
