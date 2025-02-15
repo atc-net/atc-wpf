@@ -2,9 +2,8 @@ namespace Atc.Wpf.Controls.Media.W3cSvg;
 
 internal static class CssStyleParser
 {
-    [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
     [SuppressMessage("Performance", "MA0023:Add RegexOptions.ExplicitCapture", Justification = "OK.")]
-    private static readonly Regex RxStyle = new("([\\.,<>a-zA-Z0-9: \\-#]*){([^}]*)}", RegexOptions.Compiled | RegexOptions.Singleline);
+    private static readonly Regex RxStyle = new("([\\.,<>a-zA-Z0-9: \\-#]*){([^}]*)}", RegexOptions.Compiled | RegexOptions.Singleline, TimeSpan.FromSeconds(5));
 
     public static void ParseStyle(Svg svg, string style)
     {

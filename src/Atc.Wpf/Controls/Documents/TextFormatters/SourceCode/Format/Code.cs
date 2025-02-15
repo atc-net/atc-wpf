@@ -4,7 +4,6 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 /// <summary>
 /// Provides a base class for formatting most programming languages.
 /// </summary>
-[SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
 [SuppressMessage("Design", "MA0056:Do not call overridable members in constructor", Justification = "OK.")]
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public abstract class Code : Source
@@ -15,10 +14,10 @@ public abstract class Code : Source
     protected Code()
     {
         // generate the keyword and preprocessor regexes from the keyword lists
-        var r = new Regex(@"\w+|-\w+|#\w+|@@\w+|#(?:\\(?:s|w)(?:\*|\+)?\w+)+|@\\w\*+");
+        var r = new Regex(@"\w+|-\w+|#\w+|@@\w+|#(?:\\(?:s|w)(?:\*|\+)?\w+)+|@\\w\*+", RegexOptions.None, TimeSpan.FromSeconds(5));
         var regKeyword = r.Replace(Keywords, @"(?<=^|\W)$0(?=\W)");
         var regPreproc = r.Replace(Preprocessors, @"(?<=^|\s)$0(?=\s|$)");
-        r = new Regex(@" +");
+        r = new Regex(@" +", RegexOptions.None, TimeSpan.FromSeconds(5));
         regKeyword = r.Replace(regKeyword, @"|");
         regPreproc = r.Replace(regPreproc, @"|");
 
@@ -48,14 +47,14 @@ public abstract class Code : Source
         var caseInsensitive = CaseSensitive
             ? RegexOptions.None
             : RegexOptions.IgnoreCase;
-        CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive);
+        CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive, TimeSpan.FromSeconds(5));
         CodeParagraphGlobal = new List<Run>();
     }
 
     /// <summary>
-    /// Determines if the language is case sensitive.
+    /// Determines if the language is case-sensitive.
     /// </summary>
-    /// <value><b>true</b> if the language is case sensitive, <b>false</b>
+    /// <value><b>true</b> if the language is case-sensitive, <b>false</b>
     /// otherwise. The default is true.</value>
     /// <remarks>
     /// A case-insensitive language formatter must override this
@@ -135,7 +134,7 @@ public abstract class Code : Source
                 CodeParagraphGlobal.Add(run);
             }
 
-            return "::::::";
+            return FormattingMarker;
         }
 
         // string literal
@@ -150,7 +149,7 @@ public abstract class Code : Source
             };
 
             CodeParagraphGlobal.Add(run);
-            return "::::::";
+            return FormattingMarker;
         }
 
         // preprocessor keyword
@@ -162,7 +161,7 @@ public abstract class Code : Source
             };
 
             CodeParagraphGlobal.Add(run);
-            return "::::::";
+            return FormattingMarker;
         }
 
         // keyword
@@ -177,7 +176,7 @@ public abstract class Code : Source
             };
 
             CodeParagraphGlobal.Add(run);
-            return "::::::";
+            return FormattingMarker;
         }
 
         return string.Empty;

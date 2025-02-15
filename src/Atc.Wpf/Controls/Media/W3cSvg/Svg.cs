@@ -3,6 +3,7 @@ namespace Atc.Wpf.Controls.Media.W3cSvg;
 /// <summary>
 /// This is the class that reads and parses the XML file.
 /// </summary>
+[SuppressMessage("Maintainability", "S1144:Unused private types or members should be removed", Justification = "OK.")]
 internal sealed class Svg
 {
     private List<Shape>? elements;
@@ -247,7 +248,6 @@ internal sealed class Svg
         elements = Parse(svgTag);
     }
 
-    [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
     [SuppressMessage("Performance", "MA0078:Use 'Cast' instead of 'Select' to cast", Justification = "OK.")]
     private void LoadStyles(XmlNode doc)
     {
@@ -269,7 +269,7 @@ internal sealed class Svg
 
         foreach (var node in cssUrlNodes)
         {
-            var url = Regex.Match(node.Data, "href=\"(?<url>.*?)\"").Groups["url"].Value;
+            var url = Regex.Match(node.Data, "href=\"(?<url>.*?)\"", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups["url"].Value;
             var stream = ExternalFileLoader.LoadFile(url, Filename);
             if (stream is null)
             {
