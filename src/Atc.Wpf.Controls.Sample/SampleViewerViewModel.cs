@@ -3,6 +3,8 @@ namespace Atc.Wpf.Controls.Sample;
 
 public sealed class SampleViewerViewModel : ViewModelBase
 {
+    private const string Error = "Error";
+
     public SampleViewerViewModel()
     {
         Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
@@ -189,13 +191,13 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
         if (sampleType is null)
         {
-            _ = MessageBox.Show($"Can't find sample by path '{samplePath}'", "Error", MessageBoxButton.OK);
+            _ = MessageBox.Show($"Can't find sample by path '{samplePath}'", Error, MessageBoxButton.OK);
             return;
         }
 
         if (Activator.CreateInstance(sampleType) is not UserControl instance)
         {
-            MessageBox.Show($"Can't create instance of sample by path '{samplePath}'", "Error", MessageBoxButton.OK);
+            MessageBox.Show($"Can't create instance of sample by path '{samplePath}'", Error, MessageBoxButton.OK);
             return;
         }
 
@@ -203,7 +205,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
         var baseLocation = ExtractBasePath(sampleTypeAssemblyLocation);
         if (baseLocation is null)
         {
-            MessageBox.Show("Can't find sample by invalid base location", "Error", MessageBoxButton.OK);
+            MessageBox.Show("Can't find sample by invalid base location", Error, MessageBoxButton.OK);
             return;
         }
 
@@ -211,7 +213,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
         var sampleLocation = ExtractSamplePath(baseLocation, classViewName, sampleType);
         if (sampleLocation is null)
         {
-            MessageBox.Show("Can't find sample by invalid location", "Error", MessageBoxButton.OK);
+            MessageBox.Show("Can't find sample by invalid location", Error, MessageBoxButton.OK);
             return;
         }
 
@@ -257,8 +259,15 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
         var docSection = sampleLocation.Name.Replace("SamplesWpf", string.Empty, StringComparison.Ordinal);
 
-        var markdownFile = FindMarkdownFile(Path.Combine("docs", docSection, className)) ??
-                           FindMarkdownFile(className + "_Readme");
+        var markdownFile = FindMarkdownFile(Path.Combine("docs", docSection, className));
+        if (markdownFile is null)
+        {
+            markdownFile = FindMarkdownFile(className + "_Readme");
+        }
+        else
+        {
+            StartOnMarkdownDocument = true;
+        }
 
         if (markdownFile is null)
         {
@@ -286,10 +295,6 @@ public sealed class SampleViewerViewModel : ViewModelBase
             }
 
             markdownFile ??= FindMarkdownFile(classViewName + "_Readme");
-        }
-        else
-        {
-            StartOnMarkdownDocument = true;
         }
 
         if (markdownFile is null)

@@ -9,7 +9,8 @@ public partial class MainWindow
 
     private readonly TreeView[] sampleTreeViews;
 
-    public MainWindow(IMainWindowViewModel viewModel)
+    public MainWindow(
+        IMainWindowViewModel viewModel)
     {
         InitializeComponent();
 

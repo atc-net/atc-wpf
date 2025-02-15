@@ -22,6 +22,8 @@ namespace Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
 /// </remarks>
 public abstract class Source
 {
+    public const string FormattingMarker = "::::::";
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Source"/> class.
     /// </summary>
@@ -65,8 +67,7 @@ public abstract class Source
     /// <summary>
     /// The regular expression used to capture language tokens.
     /// </summary>
-    [SuppressMessage("Security", "MA0009:Add regex evaluation timeout", Justification = "OK.")]
-    protected Regex CodeRegex { get; set; } = new("^");
+    protected Regex CodeRegex { get; set; } = new("^", RegexOptions.None, TimeSpan.FromSeconds(5));
 
     /// <summary>
     /// This is a List of Run's that can be added later to the string of code.
@@ -102,7 +103,7 @@ public abstract class Source
         var codeParagraph = new Paragraph();
         var sb = new StringBuilder(source);
         source = CodeRegex.Replace(sb.ToString(), match => MatchEval(match, themeMode));
-        string[] characters = ["::::::"];
+        string[] characters = [FormattingMarker];
 
         var split = source.Split(characters, StringSplitOptions.None);
         var currentChunk = 0;
