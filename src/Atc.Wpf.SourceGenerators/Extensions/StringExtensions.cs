@@ -169,6 +169,29 @@ public static class StringExtensions
         return fieldName;
     }
 
+    public static string EnsureValidRelayCommandName(
+        this string relayCommandName)
+    {
+        if (relayCommandName.EndsWith(NameConstants.Command + NameConstants.Command, StringComparison.Ordinal))
+        {
+            relayCommandName = relayCommandName.Substring(0, relayCommandName.Length - NameConstants.Command.Length);
+        }
+
+        if (relayCommandName.EndsWith(NameConstants.Command, StringComparison.Ordinal))
+        {
+            return relayCommandName.EnsureFirstCharacterToUpper() + "X";
+        }
+
+        if (relayCommandName.EndsWith(NameConstants.Handler, StringComparison.Ordinal))
+        {
+            relayCommandName = relayCommandName.Substring(0, relayCommandName.Length - NameConstants.Handler.Length);
+        }
+
+        return relayCommandName.EndsWith(NameConstants.Command, StringComparison.Ordinal)
+            ? relayCommandName.EnsureFirstCharacterToUpper()
+            : relayCommandName.EnsureFirstCharacterToUpper() + NameConstants.Command;
+    }
+
     public static string EnsureCSharpAliasIfNeeded(
         this string typeName)
         => TypeAliases.TryGetValue(typeName, out var alias)
