@@ -172,6 +172,11 @@ public static class StringExtensions
     public static string EnsureValidRelayCommandName(
         this string relayCommandName)
     {
+        if (relayCommandName is null)
+        {
+            throw new ArgumentNullException(nameof(relayCommandName));
+        }
+
         if (relayCommandName.EndsWith(NameConstants.Command + NameConstants.Command, StringComparison.Ordinal))
         {
             relayCommandName = relayCommandName.Substring(0, relayCommandName.Length - NameConstants.Command.Length);
