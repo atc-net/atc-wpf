@@ -65,7 +65,8 @@ internal static class ViewModelInspector
         var usePropertyForCanExecute = false;
         if (canExecuteName is not null)
         {
-            usePropertyForCanExecute = viewModelMemberSymbols.HasPropertyName(canExecuteName);
+            usePropertyForCanExecute = viewModelMemberSymbols.HasPropertyName(canExecuteName) ||
+                                       viewModelMemberSymbols.HasObservableFieldName(canExecuteName);
         }
 
         var parameterValues = relayCommandAttribute.ExtractRelayCommandParameterValues();
