@@ -81,7 +81,7 @@ internal static class ViewModelBuilderExtensions
                 implementationType,
                 rc.CommandName,
                 rc.MethodName,
-                rc.CanExecuteMethodName);
+                rc.CanExecuteName);
             builder.AppendLine(cmd);
         }
         else if (rc.ParameterTypes.Length == 1)
@@ -95,7 +95,7 @@ internal static class ViewModelBuilderExtensions
                     implementationType,
                     rc.CommandName,
                     $"{rc.MethodName}(CancellationToken.None)",
-                    rc.CanExecuteMethodName,
+                    rc.CanExecuteName,
                     isLambda: true);
                 builder.AppendLine(cmd);
             }
@@ -107,21 +107,33 @@ internal static class ViewModelBuilderExtensions
                     $"{implementationType}{generic}",
                     rc.CommandName,
                     rc.MethodName,
-                    rc.CanExecuteMethodName);
+                    rc.CanExecuteName);
                 builder.AppendLine(cmd);
             }
         }
         else
         {
             var (tupleGeneric, constructorParametersMulti, filteredConstructorParameters) = GetConstructorParametersWithParameterTypes(rc);
-
-            var cmd = GenerateCommandLine(
-                $"{interfaceType}{tupleGeneric}",
-                $"{implementationType}{tupleGeneric}",
-                rc.CommandName,
-                $"x => {rc.MethodName}({constructorParametersMulti})",
-                rc.CanExecuteMethodName is null ? null : $"x => {rc.CanExecuteMethodName}({filteredConstructorParameters})");
-            builder.AppendLine(cmd);
+            if (rc.UsePropertyForCanExecute)
+            {
+                var cmd = GenerateCommandLine(
+                    $"{interfaceType}{tupleGeneric}",
+                    $"{implementationType}{tupleGeneric}",
+                    rc.CommandName,
+                    $"x => {rc.MethodName}({constructorParametersMulti})",
+                    rc.CanExecuteName is null ? null : $"x => {rc.CanExecuteName}");
+                builder.AppendLine(cmd);
+            }
+            else
+            {
+                var cmd = GenerateCommandLine(
+                    $"{interfaceType}{tupleGeneric}",
+                    $"{implementationType}{tupleGeneric}",
+                    rc.CommandName,
+                    $"x => {rc.MethodName}({constructorParametersMulti})",
+                    rc.CanExecuteName is null ? null : $"x => {rc.CanExecuteName}({filteredConstructorParameters})");
+                builder.AppendLine(cmd);
+            }
         }
     }
 
@@ -134,20 +146,20 @@ internal static class ViewModelBuilderExtensions
         if (rc.ParameterValues!.Length == 1)
         {
             var cmd = GenerateCommandLine(
-                interfaceType: interfaceType,
+                interfaceType,
                 implementationType,
                 rc.CommandName,
                 $"() => {rc.MethodName}({rc.ParameterValues[0]})",
-                rc.CanExecuteMethodName);
+                rc.CanExecuteName);
             builder.AppendLine(cmd);
         }
         else
         {
             var constructorParameters = string.Join(", ", rc.ParameterValues!);
-            if (rc.CanExecuteMethodName is null)
+            if (rc.CanExecuteName is null)
             {
                 var cmd = GenerateCommandLine(
-                    interfaceType: interfaceType,
+                    interfaceType,
                     implementationType,
                     rc.CommandName,
                     $"() => {rc.MethodName}({constructorParameters})");
@@ -155,13 +167,26 @@ internal static class ViewModelBuilderExtensions
             }
             else
             {
-                var cmd = GenerateCommandLine(
-                    interfaceType: interfaceType,
-                    implementationType,
-                    rc.CommandName,
-                    $"() => {rc.MethodName}({constructorParameters})",
-                    $"{rc.CanExecuteMethodName}({constructorParameters})");
-                builder.AppendLine(cmd);
+                if (rc.UsePropertyForCanExecute)
+                {
+                    var cmd = GenerateCommandLine(
+                        interfaceType,
+                        implementationType,
+                        rc.CommandName,
+                        $"() => {rc.MethodName}({constructorParameters})",
+                        $"{rc.CanExecuteName}");
+                    builder.AppendLine(cmd);
+                }
+                else
+                {
+                    var cmd = GenerateCommandLine(
+                        interfaceType,
+                        implementationType,
+                        rc.CommandName,
+                        $"() => {rc.MethodName}({constructorParameters})",
+                        $"{rc.CanExecuteName}({constructorParameters})");
+                    builder.AppendLine(cmd);
+                }
             }
         }
     }
@@ -202,15 +227,15 @@ internal static class ViewModelBuilderExtensions
         string implementationType,
         string commandName,
         string constructorParameters,
-        string? canExecuteMethodName = null,
+        string? canExecuteName = null,
         bool isLambda = false)
     {
         var lambdaPrefix = isLambda ? "() => " : string.Empty;
         var commandInstance = $"new {implementationType}({lambdaPrefix}{constructorParameters}";
 
-        if (canExecuteMethodName is not null)
+        if (canExecuteName is not null)
         {
-            commandInstance += $", {canExecuteMethodName}";
+            commandInstance += $", {canExecuteName}";
         }
 
         commandInstance += ");";
