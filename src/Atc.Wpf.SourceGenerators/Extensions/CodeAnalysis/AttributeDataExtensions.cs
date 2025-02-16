@@ -80,7 +80,11 @@ internal static class AttributeDataExtensions
                     {
                         if (parameter.StartsWith(NameConstants.CanExecute, StringComparison.Ordinal))
                         {
-                            relayCommandCanExecuteName = parameter.ExtractAttributeParameters()[0];
+                            relayCommandCanExecuteName = parameter
+                                .ExtractAttributeParameters()[0]
+                                .Replace(NameConstants.CanExecute, string.Empty)
+                                .Replace("=", string.Empty)
+                                .Trim();
                             break;
                         }
                     }

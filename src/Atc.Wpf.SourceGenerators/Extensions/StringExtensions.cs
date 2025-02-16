@@ -1,5 +1,6 @@
 namespace Atc.Wpf.SourceGenerators.Extensions;
 
+[SuppressMessage("Design", "CA1308:Teplace the call to 'ToLowerInvariant' with 'ToUpperInvariant'", Justification = "OK.")]
 public static class StringExtensions
 {
     private static readonly Dictionary<string, string> TypeAliases = new(StringComparer.Ordinal)
@@ -34,6 +35,22 @@ public static class StringExtensions
             0 => value,
             1 => value.ToUpperInvariant(),
             _ => char.ToUpperInvariant(value[0]) + value.Substring(1),
+        };
+    }
+
+    public static string EnsureFirstCharacterToLower(
+        this string value)
+    {
+        if (value is null)
+        {
+            throw new ArgumentNullException(nameof(value));
+        }
+
+        return value.Length switch
+        {
+            0 => value,
+            1 => value.ToLowerInvariant(),
+            _ => char.ToLowerInvariant(value[0]) + value.Substring(1),
         };
     }
 
