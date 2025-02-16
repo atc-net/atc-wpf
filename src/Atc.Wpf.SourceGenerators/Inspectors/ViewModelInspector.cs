@@ -15,7 +15,7 @@ internal static class ViewModelInspector
             switch (memberSymbol)
             {
                 case IMethodSymbol methodSymbol:
-                    AppendRelayCommandsToGenerate(methodSymbol, relayCommandsToGenerate);
+                    AppendRelayCommandsToGenerate(methodSymbol, viewModelMemberSymbols, relayCommandsToGenerate);
                     break;
                 case IFieldSymbol fieldSymbol:
                     AppendPropertiesToGenerate(fieldSymbol, propertiesToGenerate);
@@ -30,6 +30,7 @@ internal static class ViewModelInspector
 
     private static void AppendRelayCommandsToGenerate(
         IMethodSymbol methodSymbol,
+        ImmutableArray<ISymbol> viewModelMemberSymbols,
         List<RelayCommandToGenerate> relayCommandsToGenerate)
     {
         var relayCommandAttributes = methodSymbol.GetAttributes()
@@ -47,6 +48,7 @@ internal static class ViewModelInspector
         {
             AppendRelayCommandToGenerate(
                 methodSymbol,
+                viewModelMemberSymbols,
                 relayCommandAttribute,
                 relayCommandsToGenerate);
         }
@@ -54,11 +56,17 @@ internal static class ViewModelInspector
 
     private static void AppendRelayCommandToGenerate(
         IMethodSymbol methodSymbol,
+        ImmutableArray<ISymbol> viewModelMemberSymbols,
         AttributeData relayCommandAttribute,
         List<RelayCommandToGenerate> relayCommandsToGenerate)
     {
         var commandName = relayCommandAttribute.ExtractRelayCommandName(methodSymbol.Name);
-        var canExecuteMethodName = relayCommandAttribute.ExtractRelayCommandCanExecuteName();
+        var canExecuteName = relayCommandAttribute.ExtractRelayCommandCanExecuteName();
+        var usePropertyForCanExecute = false;
+        if (canExecuteName is not null)
+        {
+            usePropertyForCanExecute = viewModelMemberSymbols.HasPropertyName(canExecuteName);
+        }
 
         var parameterValues = relayCommandAttribute.ExtractRelayCommandParameterValues();
 
@@ -80,7 +88,8 @@ internal static class ViewModelInspector
                 methodSymbol.Name,
                 parameterTypes?.ToArray(),
                 parameterValues,
-                canExecuteMethodName,
+                canExecuteName,
+                usePropertyForCanExecute,
                 isAsync));
     }
 
