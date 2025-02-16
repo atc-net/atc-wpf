@@ -2,6 +2,7 @@
 namespace Atc.Wpf.Controls;
 
 [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "OK.")]
+[SuppressMessage("Maintainability", "S2342:Enumeration types should comply with a naming convention", Justification = "OK.")]
 [Flags]
 public enum NumericInput
 {
