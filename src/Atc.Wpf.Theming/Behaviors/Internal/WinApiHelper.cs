@@ -1,6 +1,8 @@
 // ReSharper disable MergeIntoPattern
+// ReSharper disable RedundantUnsafeContext
 namespace Atc.Wpf.Theming.Behaviors.Internal;
 
+[SuppressMessage("Security", "S6640:Make sure that using \"unsafe\" is safe here", Justification = "OK - By design.")]
 internal static class WinApiHelper
 {
     private static SafeHandle? user32;
@@ -18,7 +20,7 @@ internal static class WinApiHelper
 
         var result = PInvoke.LoadString(user32, id, buffer, buffer.Length);
         return result == 0 ? $"String with id '{id}' could not be found." :
-            new string(buffer.Slice(0, result)).Replace("&", string.Empty, StringComparison.Ordinal);
+            new string(buffer[..result]).Replace("&", string.Empty, StringComparison.Ordinal);
     }
 
     /// <summary>

@@ -3,6 +3,7 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "OK.")]
+[SuppressMessage("Maintainability", "S1144:Unused private types or members should be removed", Justification = "OK.")]
 internal sealed class PathShape : Shape
 {
     internal sealed class CommandSplitter
