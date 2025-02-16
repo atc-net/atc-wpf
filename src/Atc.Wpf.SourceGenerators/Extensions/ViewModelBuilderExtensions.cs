@@ -82,7 +82,8 @@ internal static class ViewModelBuilderExtensions
                 implementationType,
                 rc.CommandName,
                 rc.MethodName,
-                rc.CanExecuteName);
+                rc.CanExecuteName,
+                rc.UsePropertyForCanExecute);
             builder.AppendLine(cmd);
         }
         else if (rc.ParameterTypes.Length == 1)
@@ -108,7 +109,8 @@ internal static class ViewModelBuilderExtensions
                     $"{implementationType}{generic}",
                     rc.CommandName,
                     rc.MethodName,
-                    rc.CanExecuteName);
+                    rc.CanExecuteName,
+                    rc.UsePropertyForCanExecute);
                 builder.AppendLine(cmd);
             }
         }
@@ -229,6 +231,7 @@ internal static class ViewModelBuilderExtensions
         string commandName,
         string constructorParameters,
         string? canExecuteName = null,
+        bool usePropertyForCanExecute = false,
         bool isLambda = false)
     {
         var lambdaPrefix = isLambda ? "() => " : string.Empty;
@@ -236,7 +239,21 @@ internal static class ViewModelBuilderExtensions
 
         if (canExecuteName is not null)
         {
-            commandInstance += $", {canExecuteName}";
+            if (usePropertyForCanExecute)
+            {
+                if (interfaceType.Contains('<'))
+                {
+                    commandInstance += $", _ => {canExecuteName}";
+                }
+                else
+                {
+                    commandInstance += $", () => {canExecuteName}";
+                }
+            }
+            else
+            {
+                commandInstance += $", {canExecuteName}";
+            }
         }
 
         commandInstance += ");";
