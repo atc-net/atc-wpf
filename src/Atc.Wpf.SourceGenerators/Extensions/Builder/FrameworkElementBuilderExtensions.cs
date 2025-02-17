@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SourceGenerators.Extensions;
+namespace Atc.Wpf.SourceGenerators.Extensions.Builder;
 
 [SuppressMessage("Design", "CA1308:Teplace the call to 'ToLowerInvariant' with 'ToUpperInvariant'", Justification = "OK.")]
 internal static class FrameworkElementBuilderExtensions

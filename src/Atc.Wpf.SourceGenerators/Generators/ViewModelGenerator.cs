@@ -1,4 +1,3 @@
-// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.SourceGenerators.Generators;
 
 [Generator]
@@ -18,33 +17,48 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             .CreateSyntaxProvider(
                 predicate: static (syntaxNode, _) => IsSyntaxTargetViewModel(syntaxNode),
                 transform: static (context, _) => GetSemanticTargetViewModelToGenerate(context))
-            .Where(target => target is not null);
+            .Where(target => target is not null)
+            .Collect()
+            .Select((viewModels, _) => viewModels
+                .GroupBy(vm => vm!.GeneratedFileName, StringComparer.Ordinal)
+                .Select(group => group.First())
+                .ToImmutableArray());
 
         context.RegisterSourceOutput(
             viewModelsToGenerate,
-            static (spc, source)
-                => Execute(spc, source));
+            static (spc, sources) =>
+            {
+                foreach (var source in sources)
+                {
+                    Execute(spc, source);
+                }
+            });
     }
 
     private static bool IsSyntaxTargetViewModel(
         SyntaxNode syntaxNode)
     {
-        if (!syntaxNode.HasPublicPartialClassDeclarationWithIdentifierContainsViewModel())
+        if (!syntaxNode.HasPartialClassDeclaration())
         {
             return false;
         }
 
-        if (syntaxNode.HasClassDeclarationWithValidObservableFields())
+        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
         {
-            return true;
+            return false;
         }
 
-        if (syntaxNode.HasClassDeclarationWithValidRelayCommandMethods())
+        if (!classDeclarationSyntax.HasBaseClassWithName(
+                NameConstants.ViewModelBase,
+                NameConstants.MainWindowViewModelBase,
+                NameConstants.ViewModelDialogBase,
+                NameConstants.ObservableObject))
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return syntaxNode.HasClassDeclarationWithValidObservableFields() ||
+               syntaxNode.HasClassDeclarationWithValidRelayCommandMethods();
     }
 
     private static ViewModelToGenerate? GetSemanticTargetViewModelToGenerate(
@@ -58,9 +72,31 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             return null;
         }
 
-        var viewModelMemberInspectorResult = ViewModelInspector.Inspect(viewModelClassSymbol);
+        var allPartialDeclarations = context
+            .SemanticModel
+            .Compilation
+            .GetAllPartialClassDeclarations(viewModelClassSymbol);
 
-        if (!viewModelMemberInspectorResult.FoundAnythingToGenerate)
+        var allProperties = new List<PropertyToGenerate>();
+        var allCommands = new List<RelayCommandToGenerate>();
+
+        foreach (var partialClassSyntax in allPartialDeclarations)
+        {
+            if (context.SemanticModel.Compilation
+                    .GetSemanticModel(partialClassSyntax.SyntaxTree)
+                    .GetDeclaredSymbol(partialClassSyntax) is not { } partialClassSymbol)
+            {
+                continue;
+            }
+
+            var result = ViewModelInspector.Inspect(partialClassSymbol);
+
+            result.ApplyCommandsAndProperties(
+                allCommands,
+                allProperties);
+        }
+
+        if (!allProperties.Any() && !allCommands.Any())
         {
             return null;
         }
@@ -70,8 +106,8 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             className: viewModelClassSymbol.Name,
             accessModifier: viewModelClassSymbol.GetAccessModifier())
         {
-            RelayCommandsToGenerate = viewModelMemberInspectorResult.RelayCommandsToGenerate,
-            PropertiesToGenerate = viewModelMemberInspectorResult.PropertiesToGenerate,
+            RelayCommandsToGenerate = allCommands,
+            PropertiesToGenerate = allProperties,
         };
 
         return viewModelToGenerate;

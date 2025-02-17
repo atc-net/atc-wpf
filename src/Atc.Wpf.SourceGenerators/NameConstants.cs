@@ -2,8 +2,10 @@ namespace Atc.Wpf.SourceGenerators;
 
 internal static class NameConstants
 {
+    public const string Attach = nameof(Attach);
     public const string AttachedProperty = nameof(AttachedProperty);
     public const string AttachedPropertyAttribute = nameof(AttachedPropertyAttribute);
+    public const string Behavior = nameof(Behavior);
     public const string CanExecute = nameof(CanExecute);
     public const string Category = nameof(Category);
     public const string Command = nameof(Command);
@@ -13,9 +15,11 @@ internal static class NameConstants
     public const string DefaultUpdateSourceTrigger = nameof(DefaultUpdateSourceTrigger);
     public const string DependencyProperty = nameof(DependencyProperty);
     public const string DependencyPropertyAttribute = nameof(DependencyPropertyAttribute);
+    public const string DependencyObject = nameof(DependencyObject);
     public const string DependentProperties = nameof(DependentProperties);
     public const string Description = nameof(Description);
     public const string Flags = nameof(Flags);
+    public const string FrameworkElement = nameof(FrameworkElement);
     public const string Handler = nameof(Handler);
     public const string IObservableObject = nameof(IObservableObject);
     public const string IRelayCommand = nameof(IRelayCommand);
@@ -35,6 +39,7 @@ internal static class NameConstants
     public const string RelayCommandAsync = nameof(RelayCommandAsync);
     public const string RelayCommandAttribute = nameof(RelayCommandAttribute);
     public const string Task = nameof(Task);
+    public const string UserControl = nameof(UserControl);
     public const string ValidateValueCallback = nameof(ValidateValueCallback);
     public const string ValueTask = nameof(ValueTask);
     public const string ViewModel = nameof(ViewModel);

@@ -1,5 +1,3 @@
-// ReSharper disable ConvertIfStatementToReturnStatement
-// ReSharper disable ReturnTypeCanBeNotNullable
 namespace Atc.Wpf.SourceGenerators.Generators;
 
 [Generator]
@@ -17,7 +15,7 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
 
         var viewModelsToGenerate = context.SyntaxProvider
             .CreateSyntaxProvider(
-                predicate: static (syntaxNode, _) => IsSyntaxTargetViewModel(syntaxNode),
+                predicate: static (syntaxNode, _) => IsSyntaxTargetFrameworkElement(syntaxNode),
                 transform: static (context, _) => GetSemanticTargetFrameworkElementToGenerate(context))
             .Where(target => target is not null);
 
@@ -27,22 +25,27 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
                 => Execute(spc, source));
     }
 
-    private static bool IsSyntaxTargetViewModel(
+    private static bool IsSyntaxTargetFrameworkElement(
         SyntaxNode syntaxNode)
     {
-        if (!syntaxNode.HasPublicPartialClassDeclaration())
+        if (!syntaxNode.HasPartialClassDeclaration())
         {
             return false;
         }
 
-        if (syntaxNode.HasClassDeclarationWithValidDependencyProperties())
+        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
         {
-            return true;
+            return false;
         }
 
-        if (syntaxNode.HasClassDeclarationWithValidAttachedProperties())
+        if (classDeclarationSyntax.BaseList is null ||
+            classDeclarationSyntax.HasBaseClassWithName(NameConstants.UserControl) ||
+            classDeclarationSyntax.Identifier.ToString().EndsWith(NameConstants.Attach, StringComparison.Ordinal) ||
+            classDeclarationSyntax.Identifier.ToString().EndsWith(NameConstants.Behavior, StringComparison.Ordinal))
         {
-            return true;
+            return syntaxNode.HasClassDeclarationWithValidAttachedProperties() ||
+                   syntaxNode.HasClassDeclarationWithValidDependencyProperties() ||
+                   syntaxNode.HasClassDeclarationWithValidRelayCommandMethods();
         }
 
         return false;
@@ -53,6 +56,21 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
         var frameworkElementClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
+
+        if (frameworkElementClassSymbol is null)
+        {
+            return null;
+        }
+
+        if (!classDeclarationSyntax.HasBaseClassWithName(NameConstants.UserControl) &&
+            !frameworkElementClassSymbol.InheritsFrom(
+                NameConstants.DependencyObject,
+                NameConstants.FrameworkElement) &&
+            !frameworkElementClassSymbol.Name.EndsWith(NameConstants.Attach, StringComparison.Ordinal) &&
+            !frameworkElementClassSymbol.Name.EndsWith(NameConstants.Behavior, StringComparison.Ordinal))
+        {
+            return null;
+        }
 
         var frameworkElementInspectorResult = FrameworkElementInspector.Inspect(frameworkElementClassSymbol);
 

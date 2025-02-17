@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpf.ControlAttach;
+namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
 [AttachedProperty<bool>("Circular", PropertyChangedCallback = nameof(OnCircularChanged))]
 public static partial class MyAttach

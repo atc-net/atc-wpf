@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SourceGenerators.Extensions;
+namespace Atc.Wpf.SourceGenerators.Extensions.Builder;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
 internal static class ViewModelBuilderExtensions
