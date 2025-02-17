@@ -16,18 +16,10 @@ internal static class SyntaxNodeExtensions
                classDeclaration.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword));
     }
 
-    public static bool HasPublicPartialClassDeclarationWithIdentifierContainsViewModel(
+    public static bool HasPartialClassDeclaration(
         this SyntaxNode syntaxNode)
-    {
-        if (syntaxNode is not ClassDeclarationSyntax classDeclaration)
-        {
-            return false;
-        }
-
-        return classDeclaration.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)) &&
-               classDeclaration.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword)) &&
-               classDeclaration.Identifier.Text.Contains(NameConstants.ViewModel);
-    }
+        => syntaxNode is ClassDeclarationSyntax classDeclaration &&
+           classDeclaration.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword));
 
     public static bool HasClassDeclarationWithValidObservableFields(
         this SyntaxNode syntaxNode)

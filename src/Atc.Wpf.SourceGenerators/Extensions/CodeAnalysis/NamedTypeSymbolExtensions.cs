@@ -35,4 +35,27 @@ internal static class NamedTypeSymbolExtensions
 
         return false;
     }
+
+    public static bool InheritsFrom(
+        this INamedTypeSymbol namedTypeSymbol,
+        params string[] baseClassNames)
+    {
+        if (namedTypeSymbol is null)
+        {
+            throw new ArgumentNullException(nameof(namedTypeSymbol));
+        }
+
+        var baseType = namedTypeSymbol.BaseType;
+        while (baseType is not null)
+        {
+            if (baseClassNames.Contains(baseType.Name, StringComparer.Ordinal))
+            {
+                return true;
+            }
+
+            baseType = baseType.BaseType;
+        }
+
+        return false;
+    }
 }
