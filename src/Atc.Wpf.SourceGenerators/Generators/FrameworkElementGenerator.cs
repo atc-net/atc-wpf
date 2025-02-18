@@ -1,8 +1,15 @@
 namespace Atc.Wpf.SourceGenerators.Generators;
 
+/// <summary>
+/// Source generator for generating framework element properties and commands.
+/// </summary>
 [Generator]
 public sealed class FrameworkElementGenerator : IIncrementalGenerator
 {
+    /// <summary>
+    /// Initializes the source generator.
+    /// </summary>
+    /// <param name="context">The initialization context.</param>
     public void Initialize(
         IncrementalGeneratorInitializationContext context)
     {
@@ -15,66 +22,116 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
 
         var viewModelsToGenerate = context.SyntaxProvider
             .CreateSyntaxProvider(
-                predicate: static (syntaxNode, _) => IsSyntaxTargetFrameworkElement(syntaxNode),
+                predicate: static (syntaxNode, _) => IsSyntaxTargetPartialClass(syntaxNode),
                 transform: static (context, _) => GetSemanticTargetFrameworkElementToGenerate(context))
-            .Where(target => target is not null);
+            .Where(target => target is not null)
+            .Collect()
+            .Select((viewModels, _) => viewModels
+                .GroupBy(vm => vm!.GeneratedFileName, StringComparer.Ordinal)
+                .Select(group => group.First())
+                .ToImmutableArray());
 
         context.RegisterSourceOutput(
             viewModelsToGenerate,
-            static (spc, source)
-                => Execute(spc, source));
+            static (spc, sources) =>
+            {
+                foreach (var source in sources)
+                {
+                    Execute(spc, source);
+                }
+            });
     }
 
-    private static bool IsSyntaxTargetFrameworkElement(
+    /// <summary>
+    /// Determines if a given syntax node is a valid target for processing as a partial class.
+    /// </summary>
+    /// <param name="syntaxNode">The syntax node to check.</param>
+    /// <returns>True if the node is a valid target; otherwise, false.</returns>
+    /// <remarks>
+    /// This method checks for partial class declarations to allow the generator to correctly
+    /// collect and process class definitions that are split across multiple files. Partial
+    /// classes are essential for scenarios where different aspects of a ViewModel or
+    /// FrameworkElement are defined separately but should be combined into a single generated output.
+    /// </remarks>
+    private static bool IsSyntaxTargetPartialClass(
         SyntaxNode syntaxNode)
-    {
-        if (!syntaxNode.HasPartialClassDeclaration())
-        {
-            return false;
-        }
+        => syntaxNode.HasPartialClassDeclaration();
 
-        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
-        {
-            return false;
-        }
-
-        if (classDeclarationSyntax.BaseList is null ||
-            classDeclarationSyntax.HasBaseClassWithName(NameConstants.UserControl) ||
-            classDeclarationSyntax.Identifier.ToString().EndsWith(NameConstants.Attach, StringComparison.Ordinal) ||
-            classDeclarationSyntax.Identifier.ToString().EndsWith(NameConstants.Behavior, StringComparison.Ordinal))
-        {
-            return syntaxNode.HasClassDeclarationWithValidAttachedProperties() ||
-                   syntaxNode.HasClassDeclarationWithValidDependencyProperties() ||
-                   syntaxNode.HasClassDeclarationWithValidRelayCommandMethods();
-        }
-
-        return false;
-    }
-
+    /// <summary>
+    /// Extracts the semantic target framework element to generate.
+    /// </summary>
+    /// <param name="context">The generator syntax context.</param>
+    /// <returns>A FrameworkElementToGenerate object if valid; otherwise, null.</returns>
+    /// <remarks>
+    /// This method uses <c>HasBaseClassFromFrameworkElementOrEndsOnAttachOrBehavior</c> to ensure the element
+    /// inherits from a valid base class or follows a recognized naming convention.
+    ///
+    /// The valid base classes or naming conventions are:
+    /// <list type="bullet">
+    /// <item><description>UserControl</description></item>
+    /// <item><description>DependencyObject</description></item>
+    /// <item><description>FrameworkElement</description></item>
+    /// <item><description>Class name ending with "Attach"</description></item>
+    /// <item><description>Class name ending with "Behavior"</description></item>
+    /// </list>
+    /// </remarks>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private static FrameworkElementToGenerate? GetSemanticTargetFrameworkElementToGenerate(
         GeneratorSyntaxContext context)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-        var frameworkElementClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
+        var frameworkElementClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
 
         if (frameworkElementClassSymbol is null)
         {
             return null;
         }
 
-        if (!classDeclarationSyntax.HasBaseClassWithName(NameConstants.UserControl) &&
-            !frameworkElementClassSymbol.InheritsFrom(
-                NameConstants.DependencyObject,
-                NameConstants.FrameworkElement) &&
-            !frameworkElementClassSymbol.Name.EndsWith(NameConstants.Attach, StringComparison.Ordinal) &&
-            !frameworkElementClassSymbol.Name.EndsWith(NameConstants.Behavior, StringComparison.Ordinal))
+        var allPartialDeclarations = context
+            .SemanticModel
+            .Compilation
+            .GetAllPartialClassDeclarations(frameworkElementClassSymbol);
+
+        if (!allPartialDeclarations.HasBaseClassFromFrameworkElementOrEndsOnAttachOrBehavior(context))
         {
             return null;
         }
 
-        var frameworkElementInspectorResult = FrameworkElementInspector.Inspect(frameworkElementClassSymbol);
+        var allAttachedProperties = new List<AttachedPropertyToGenerate>();
+        var allDependencyProperties = new List<DependencyPropertyToGenerate>();
+        var allRelayCommands = new List<RelayCommandToGenerate>();
+        var isStatic = false;
 
-        if (!frameworkElementInspectorResult.FoundAnythingToGenerate)
+        foreach (var partialClassSyntax in allPartialDeclarations)
+        {
+            if (context.SemanticModel.Compilation
+                    .GetSemanticModel(partialClassSyntax.SyntaxTree)
+                    .GetDeclaredSymbol(partialClassSyntax) is not { } partialClassSymbol)
+            {
+                continue;
+            }
+
+            var result = FrameworkElementInspector.Inspect(partialClassSymbol);
+
+            if (!result.FoundAnythingToGenerate)
+            {
+                continue;
+            }
+
+            result.ApplyCommandsAndProperties(
+                allAttachedProperties,
+                allDependencyProperties,
+                allRelayCommands);
+
+            if (!isStatic)
+            {
+                isStatic = result.IsStatic;
+            }
+        }
+
+        if (!allAttachedProperties.Any() &&
+            !allDependencyProperties.Any() &&
+            !allRelayCommands.Any())
         {
             return null;
         }
@@ -83,16 +140,21 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
             namespaceName: frameworkElementClassSymbol.ContainingNamespace.ToDisplayString(),
             className: frameworkElementClassSymbol.Name,
             accessModifier: frameworkElementClassSymbol.GetAccessModifier(),
-            isStatic: frameworkElementInspectorResult.IsStatic)
+            isStatic: isStatic)
         {
-            AttachedPropertiesToGenerate = frameworkElementInspectorResult.AttachedPropertiesToGenerate,
-            DependencyPropertiesToGenerate = frameworkElementInspectorResult.DependencyPropertiesToGenerate,
-            RelayCommandsToGenerate = frameworkElementInspectorResult.RelayCommandsToGenerate,
+            AttachedPropertiesToGenerate = allAttachedProperties,
+            DependencyPropertiesToGenerate = allDependencyProperties,
+            RelayCommandsToGenerate = allRelayCommands,
         };
 
         return frameworkElementToGenerate;
     }
 
+    /// <summary>
+    /// Executes the source generation process.
+    /// </summary>
+    /// <param name="context">The source production context.</param>
+    /// <param name="frameworkElementToGenerate">The framework element to generate.</param>
     private static void Execute(
         SourceProductionContext context,
         FrameworkElementToGenerate? frameworkElementToGenerate)

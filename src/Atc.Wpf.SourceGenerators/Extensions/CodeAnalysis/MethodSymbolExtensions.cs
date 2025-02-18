@@ -1,15 +1,10 @@
 namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
-public static class MethodSymbolExtensions
+internal static class MethodSymbolExtensions
 {
     public static string? ExtractRelayCommandCanExecute(
         this IMethodSymbol methodSymbol)
     {
-        if (methodSymbol is null)
-        {
-            throw new ArgumentNullException(nameof(methodSymbol));
-        }
-
         var attribute = methodSymbol
             .GetAttributes()
             .FirstOrDefault(attr => attr.AttributeClass?.Name

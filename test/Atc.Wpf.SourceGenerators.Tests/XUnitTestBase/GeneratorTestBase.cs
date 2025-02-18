@@ -16,10 +16,10 @@ public abstract class GeneratorTestBase
     }
 
     internal static (GeneratorRunResult GeneratorResult, ImmutableArray<Diagnostic> Diagnostics) RunGenerator<T>(
-        string inputCode)
+        params string[] inputCodes)
         where T : IIncrementalGenerator, new()
     {
-        var inputCompilation = CreateCompilation(inputCode);
+        var inputCompilation = CreateCompilation(inputCodes);
 
         T generator = new();
 
@@ -108,10 +108,16 @@ public abstract class GeneratorTestBase
     }
 
     private static Compilation CreateCompilation(
-        string source)
-        => CSharpCompilation.Create(
+        params string[] sources)
+    {
+        var syntaxTrees = sources
+            .Select(source => CSharpSyntaxTree.ParseText(source))
+            .ToArray();
+
+        return CSharpCompilation.Create(
             "compilation",
-            [CSharpSyntaxTree.ParseText(source)],
+            syntaxTrees,
             metadataReferences,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+    }
 }

@@ -1,15 +1,10 @@
 namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
-public static class ClassDeclarationSyntaxExtensions
+internal static class ClassDeclarationSyntaxExtensions
 {
     public static string GetNamespace(
         this ClassDeclarationSyntax classDeclaration)
     {
-        if (classDeclaration is null)
-        {
-            throw new ArgumentNullException(nameof(classDeclaration));
-        }
-
         // Check for file-scoped namespace declaration (C# 10+)
         var fileScopedNamespace = classDeclaration.SyntaxTree.GetRoot()
             .DescendantNodes()
@@ -29,23 +24,30 @@ public static class ClassDeclarationSyntaxExtensions
         return namespaceDeclaration?.Name.ToString() ?? string.Empty;
     }
 
-    public static bool HasBaseClassWithName(
-        this ClassDeclarationSyntax classDeclaration,
+    public static bool HasBaseClassFromList(
+        this IEnumerable<ClassDeclarationSyntax> partialDeclarations,
+        GeneratorSyntaxContext context,
         params string[] baseClassNames)
-    {
-        if (classDeclaration is null)
+        => partialDeclarations.Any(declaration =>
         {
-            throw new ArgumentNullException(nameof(classDeclaration));
-        }
+            var semanticModel = context.SemanticModel.Compilation.GetSemanticModel(declaration.SyntaxTree);
+            var symbol = semanticModel.GetDeclaredSymbol(declaration);
+            return symbol?.InheritsFrom(baseClassNames) == true;
+        });
 
-        if (classDeclaration.BaseList is null)
+    public static bool HasBaseClassFromFrameworkElementOrEndsOnAttachOrBehavior(
+        this IEnumerable<ClassDeclarationSyntax> declarations,
+        GeneratorSyntaxContext context)
+        => declarations.Any(declaration =>
         {
-            return false;
-        }
+            var semanticModel = context.SemanticModel.Compilation.GetSemanticModel(declaration.SyntaxTree);
+            var symbol = semanticModel.GetDeclaredSymbol(declaration);
 
-        return classDeclaration.BaseList.Types
-            .Select(baseType => baseType.Type)
-            .OfType<IdentifierNameSyntax>()
-            .Any(identifier => baseClassNames.Contains(identifier.Identifier.Text, StringComparer.Ordinal));
-    }
+            return symbol?.InheritsFrom(
+                       NameConstants.UserControl,
+                       NameConstants.DependencyObject,
+                       NameConstants.FrameworkElement) == true ||
+                   symbol?.Name.EndsWith(NameConstants.Attach, StringComparison.Ordinal) == true ||
+                   symbol?.Name.EndsWith(NameConstants.Behavior, StringComparison.Ordinal) == true;
+        });
 }
