@@ -1,9 +1,14 @@
 namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
-public partial class MyUserControl : UserControl
+/// <summary>
+/// Interaction logic for MyUserControl.
+/// </summary>
+public partial class MyUserControl
 {
     public MyUserControl()
     {
+        InitializeComponent();
+
         // Dummy: to see that the RelayCommand 'DoCommand' exist
         DoCommand.RaiseCanExecuteChanged();
     }
