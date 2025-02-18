@@ -15,6 +15,11 @@ internal static class FrameworkElementBuilderExtensions
             builder.AppendLine("using System.Windows.Data;");
         }
 
+        if (frameworkElementToGenerate.RelayCommandsToGenerate?.Count > 0)
+        {
+            builder.AppendLine("using Atc.Wpf.Command;");
+        }
+
         builder.AppendLine();
         builder.AppendLine($"namespace {frameworkElementToGenerate.NamespaceName};");
         builder.AppendLine();
@@ -23,21 +28,6 @@ internal static class FrameworkElementBuilderExtensions
             : $"{frameworkElementToGenerate.ClassAccessModifier} partial class {frameworkElementToGenerate.ClassName}");
         builder.AppendLine("{");
         builder.IncreaseIndent();
-    }
-
-    public static void GenerateDependencyProperties(
-        this FrameworkElementBuilder builder,
-        IEnumerable<DependencyPropertyToGenerate>? dependencyPropertiesToGenerate)
-    {
-        if (dependencyPropertiesToGenerate is null)
-        {
-            return;
-        }
-
-        foreach (var propertyToGenerate in dependencyPropertiesToGenerate)
-        {
-            GenerateDependencyProperty(builder, propertyToGenerate);
-        }
     }
 
     public static void GenerateAttachedProperties(
@@ -55,13 +45,19 @@ internal static class FrameworkElementBuilderExtensions
         }
     }
 
-    private static void GenerateDependencyProperty(
-        FrameworkElementBuilder builder,
-        DependencyPropertyToGenerate p)
+    public static void GenerateDependencyProperties(
+        this FrameworkElementBuilder builder,
+        IEnumerable<DependencyPropertyToGenerate>? dependencyPropertiesToGenerate)
     {
-        GenerateDependencyPropertyHeader(builder, p, isAttached: false);
-        GenerateDependencyPropertyBody(builder, p);
-        GenerateClrDependencyProperty(builder, p);
+        if (dependencyPropertiesToGenerate is null)
+        {
+            return;
+        }
+
+        foreach (var propertyToGenerate in dependencyPropertiesToGenerate)
+        {
+            GenerateDependencyProperty(builder, propertyToGenerate);
+        }
     }
 
     private static void GenerateAttachedProperty(
@@ -73,9 +69,18 @@ internal static class FrameworkElementBuilderExtensions
         GenerateClrAttachedMethods(builder, p);
     }
 
+    private static void GenerateDependencyProperty(
+        FrameworkElementBuilder builder,
+        DependencyPropertyToGenerate p)
+    {
+        GenerateDependencyPropertyHeader(builder, p, isAttached: false);
+        GenerateDependencyPropertyBody(builder, p);
+        GenerateClrDependencyProperty(builder, p);
+    }
+
     private static void GenerateDependencyPropertyHeader(
         FrameworkElementBuilder builder,
-        BasePropertyToGenerate p,
+        BaseFrameworkElementPropertyToGenerate p,
         bool isAttached)
     {
         var registerMethod = isAttached
@@ -93,7 +98,7 @@ internal static class FrameworkElementBuilderExtensions
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private static void GenerateDependencyPropertyBody(
         FrameworkElementBuilder builder,
-        BasePropertyToGenerate p)
+        BaseFrameworkElementPropertyToGenerate p)
     {
         if (p.HasAnyMetadata)
         {
@@ -167,7 +172,7 @@ internal static class FrameworkElementBuilderExtensions
 
     private static void GeneratePropertyMetadataExtended(
         FrameworkElementBuilder builder,
-        BasePropertyToGenerate p,
+        BaseFrameworkElementPropertyToGenerate p,
         bool endWithComma)
     {
         builder.AppendLine("new PropertyMetadata(");
@@ -200,7 +205,7 @@ internal static class FrameworkElementBuilderExtensions
 
     private static void GenerateFrameworkPropertyMetadata(
         FrameworkElementBuilder builder,
-        BasePropertyToGenerate p,
+        BaseFrameworkElementPropertyToGenerate p,
         bool endWithComma)
     {
         builder.AppendLine("new FrameworkPropertyMetadata(");

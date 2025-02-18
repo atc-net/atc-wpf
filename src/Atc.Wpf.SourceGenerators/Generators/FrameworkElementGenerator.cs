@@ -85,8 +85,9 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
             accessModifier: frameworkElementClassSymbol.GetAccessModifier(),
             isStatic: frameworkElementInspectorResult.IsStatic)
         {
-            DependencyPropertiesToGenerate = frameworkElementInspectorResult.DependencyPropertiesToGenerate,
             AttachedPropertiesToGenerate = frameworkElementInspectorResult.AttachedPropertiesToGenerate,
+            DependencyPropertiesToGenerate = frameworkElementInspectorResult.DependencyPropertiesToGenerate,
+            RelayCommandsToGenerate = frameworkElementInspectorResult.RelayCommandsToGenerate,
         };
 
         return frameworkElementToGenerate;
@@ -103,17 +104,21 @@ public sealed class FrameworkElementGenerator : IIncrementalGenerator
 
         var frameworkElementBuilder = new FrameworkElementBuilder();
 
+        frameworkElementBuilder.GenerateStart(frameworkElementToGenerate);
+
+        if (frameworkElementToGenerate.AttachedPropertiesToGenerate?.Count > 0)
+        {
+            frameworkElementBuilder.GenerateAttachedProperties(frameworkElementToGenerate.AttachedPropertiesToGenerate);
+        }
+
         if (frameworkElementToGenerate.DependencyPropertiesToGenerate?.Count > 0)
         {
-            frameworkElementBuilder.GenerateStart(frameworkElementToGenerate);
-
             frameworkElementBuilder.GenerateDependencyProperties(frameworkElementToGenerate.DependencyPropertiesToGenerate);
         }
-        else
-        {
-            frameworkElementBuilder.GenerateStart(frameworkElementToGenerate);
 
-            frameworkElementBuilder.GenerateAttachedProperties(frameworkElementToGenerate.AttachedPropertiesToGenerate);
+        if (frameworkElementToGenerate.RelayCommandsToGenerate?.Count > 0)
+        {
+            frameworkElementBuilder.GenerateRelayCommands(frameworkElementBuilder, frameworkElementToGenerate.RelayCommandsToGenerate);
         }
 
         frameworkElementBuilder.GenerateEnd();

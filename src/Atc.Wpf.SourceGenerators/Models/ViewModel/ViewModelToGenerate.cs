@@ -11,9 +11,9 @@ internal sealed class ViewModelToGenerate(
         accessModifier,
         isStatic: false)
 {
-    public IList<RelayCommandToGenerate>? RelayCommandsToGenerate { get; set; }
+    public IList<ObservablePropertyToGenerate>? PropertiesToGenerate { get; set; }
 
-    public IList<PropertyToGenerate>? PropertiesToGenerate { get; set; }
+    public IList<RelayCommandToGenerate>? RelayCommandsToGenerate { get; set; }
 
     public bool ContainsRelayCommandNameDuplicates
     {
@@ -30,5 +30,5 @@ internal sealed class ViewModelToGenerate(
     }
 
     public override string ToString()
-        => $"{base.ToString()}, {nameof(ClassName)}: {ClassName}, {nameof(ClassAccessModifier)}: {ClassAccessModifier}, {nameof(RelayCommandsToGenerate)}.Count: {RelayCommandsToGenerate?.Count}, {nameof(PropertiesToGenerate)}.Count: {PropertiesToGenerate?.Count}, {nameof(GeneratedFileName)}: {GeneratedFileName}";
+        => $"{base.ToString()}, {nameof(PropertiesToGenerate)}.Count: {PropertiesToGenerate?.Count}, {nameof(RelayCommandsToGenerate)}.Count: {RelayCommandsToGenerate?.Count}";
 }

@@ -1,7 +1,7 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.SourceGenerators.Models.ViewModel;
+namespace Atc.Wpf.SourceGenerators.Models.ToGenerate;
 
-internal sealed class PropertyToGenerate(
+internal sealed class ObservablePropertyToGenerate(
     string name,
     string type,
     string backingFieldName)

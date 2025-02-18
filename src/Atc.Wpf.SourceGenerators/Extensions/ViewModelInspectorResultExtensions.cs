@@ -5,7 +5,7 @@ internal static class ViewModelInspectorResultExtensions
     public static void ApplyCommandsAndProperties(
         this ViewModelInspectorResult result,
         List<RelayCommandToGenerate> allCommands,
-        List<PropertyToGenerate> allProperties)
+        List<ObservablePropertyToGenerate> allProperties)
     {
         if (allCommands.Count == 0)
         {

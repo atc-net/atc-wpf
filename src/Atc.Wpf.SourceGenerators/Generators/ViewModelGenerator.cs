@@ -77,7 +77,7 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             .Compilation
             .GetAllPartialClassDeclarations(viewModelClassSymbol);
 
-        var allProperties = new List<PropertyToGenerate>();
+        var allProperties = new List<ObservablePropertyToGenerate>();
         var allCommands = new List<RelayCommandToGenerate>();
 
         foreach (var partialClassSyntax in allPartialDeclarations)
@@ -106,8 +106,8 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             className: viewModelClassSymbol.Name,
             accessModifier: viewModelClassSymbol.GetAccessModifier())
         {
-            RelayCommandsToGenerate = allCommands,
             PropertiesToGenerate = allProperties,
+            RelayCommandsToGenerate = allCommands,
         };
 
         return viewModelToGenerate;
@@ -132,7 +132,7 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
         }
         else
         {
-            viewModelBuilder.GenerateRelayCommands(viewModelToGenerate.RelayCommandsToGenerate);
+            viewModelBuilder.GenerateRelayCommands(viewModelBuilder, viewModelToGenerate.RelayCommandsToGenerate);
         }
 
         viewModelBuilder.GenerateProperties(viewModelToGenerate.PropertiesToGenerate);

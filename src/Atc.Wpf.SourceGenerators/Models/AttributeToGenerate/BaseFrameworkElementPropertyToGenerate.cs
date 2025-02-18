@@ -1,6 +1,6 @@
-namespace Atc.Wpf.SourceGenerators.Models.FrameworkElement;
+namespace Atc.Wpf.SourceGenerators.Models.AttributeToGenerate;
 
-internal abstract class BasePropertyToGenerate(
+internal abstract class BaseFrameworkElementPropertyToGenerate(
     string ownerType,
     string name,
     string type,
