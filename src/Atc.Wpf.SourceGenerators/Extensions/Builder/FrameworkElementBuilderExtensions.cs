@@ -301,6 +301,8 @@ internal static class FrameworkElementBuilderExtensions
         builder.AppendLine($"=> element is not null && ({p.Type})element.GetValue({p.Name}Property);");
         builder.DecreaseIndent();
 
+        builder.AppendLine();
+
         if (!string.IsNullOrEmpty(p.Category))
         {
             builder.AppendLine($"[Category(\"{p.Category}\")]");
@@ -310,8 +312,6 @@ internal static class FrameworkElementBuilderExtensions
         {
             builder.AppendLine($"[Description(\"Set: {p.Description}\")]");
         }
-
-        builder.AppendLine();
 
         builder.AppendLine($"public static void Set{p.Name}(UIElement element, {p.Type} value)");
         builder.IncreaseIndent();
