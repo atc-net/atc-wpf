@@ -12,10 +12,12 @@ internal sealed class FrameworkElementToGenerate(
         accessModifier,
         isStatic)
 {
-    public IList<DependencyPropertyToGenerate>? DependencyPropertiesToGenerate { get; set; }
-
     public IList<AttachedPropertyToGenerate>? AttachedPropertiesToGenerate { get; set; }
 
+    public IList<DependencyPropertyToGenerate>? DependencyPropertiesToGenerate { get; set; }
+
+    public IList<RelayCommandToGenerate>? RelayCommandsToGenerate { get; set; }
+
     public override string ToString()
-        => $"{nameof(DependencyPropertiesToGenerate)}.Count: {DependencyPropertiesToGenerate?.Count}, {nameof(AttachedPropertiesToGenerate)}.Count: {AttachedPropertiesToGenerate?.Count}";
+        => $"{base.ToString()}, {nameof(AttachedPropertiesToGenerate)}.Count: {AttachedPropertiesToGenerate?.Count}, {nameof(DependencyPropertiesToGenerate)}.Count: {DependencyPropertiesToGenerate?.Count}, {nameof(RelayCommandsToGenerate)}.Count: {RelayCommandsToGenerate?.Count}";
 }

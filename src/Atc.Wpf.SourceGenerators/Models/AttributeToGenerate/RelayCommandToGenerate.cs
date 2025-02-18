@@ -1,5 +1,5 @@
 // ReSharper disable CheckNamespace
-namespace Atc.Wpf.SourceGenerators.Models.ViewModel;
+namespace Atc.Wpf.SourceGenerators.Models.ToGenerate;
 
 internal sealed class RelayCommandToGenerate(
     string commandName,

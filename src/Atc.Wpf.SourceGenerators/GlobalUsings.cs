@@ -8,7 +8,11 @@ global using Atc.Wpf.SourceGenerators.Extensions.Builder;
 global using Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 global using Atc.Wpf.SourceGenerators.Factories;
 global using Atc.Wpf.SourceGenerators.Inspectors;
+global using Atc.Wpf.SourceGenerators.Inspectors.Attributes;
+global using Atc.Wpf.SourceGenerators.Inspectors.Helpers;
+global using Atc.Wpf.SourceGenerators.Models.AttributeToGenerate;
 global using Atc.Wpf.SourceGenerators.Models.FrameworkElement;
+global using Atc.Wpf.SourceGenerators.Models.ToGenerate;
 global using Atc.Wpf.SourceGenerators.Models.ViewModel;
 
 global using Microsoft.CodeAnalysis;

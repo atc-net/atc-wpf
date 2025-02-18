@@ -1,4 +1,4 @@
-namespace Atc.Wpf.SourceGenerators.Models.FrameworkElement;
+namespace Atc.Wpf.SourceGenerators.Models.AttributeToGenerate;
 
 internal sealed class AttachedPropertyToGenerate(
     string ownerType,
@@ -13,7 +13,7 @@ internal sealed class AttachedPropertyToGenerate(
     bool? isAnimationProhibited,
     string? category,
     string? description)
-    : BasePropertyToGenerate(
+    : BaseFrameworkElementPropertyToGenerate(
         ownerType,
         name,
         type,
