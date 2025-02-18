@@ -1,8 +1,15 @@
 namespace Atc.Wpf.SourceGenerators.Generators;
 
+/// <summary>
+/// Source generator for generating view model properties and commands.
+/// </summary>
 [Generator]
 public sealed class ViewModelGenerator : IIncrementalGenerator
 {
+    /// <summary>
+    /// Initializes the source generator.
+    /// </summary>
+    /// <param name="context">The initialization context.</param>
     public void Initialize(
         IncrementalGeneratorInitializationContext context)
     {
@@ -15,7 +22,7 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
 
         var viewModelsToGenerate = context.SyntaxProvider
             .CreateSyntaxProvider(
-                predicate: static (syntaxNode, _) => IsSyntaxTargetViewModel(syntaxNode),
+                predicate: static (syntaxNode, _) => IsSyntaxTargetPartialClass(syntaxNode),
                 transform: static (context, _) => GetSemanticTargetViewModelToGenerate(context))
             .Where(target => target is not null)
             .Collect()
@@ -35,39 +42,47 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             });
     }
 
-    private static bool IsSyntaxTargetViewModel(
+    /// <summary>
+    /// Determines if a given syntax node is a valid target for processing as a partial class.
+    /// </summary>
+    /// <param name="syntaxNode">The syntax node to check.</param>
+    /// <returns>True if the node is a valid target; otherwise, false.</returns>
+    /// <remarks>
+    /// This method checks for partial class declarations to allow the generator to correctly
+    /// collect and process class definitions that are split across multiple files. Partial
+    /// classes are essential for scenarios where different aspects of a ViewModel or
+    /// FrameworkElement are defined separately but should be combined into a single generated output.
+    /// </remarks>
+    private static bool IsSyntaxTargetPartialClass(
         SyntaxNode syntaxNode)
-    {
-        if (!syntaxNode.HasPartialClassDeclaration())
-        {
-            return false;
-        }
+        => syntaxNode.HasPartialClassDeclaration();
 
-        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
-        {
-            return false;
-        }
-
-        if (!classDeclarationSyntax.HasBaseClassWithName(
-                NameConstants.ViewModelBase,
-                NameConstants.MainWindowViewModelBase,
-                NameConstants.ViewModelDialogBase,
-                NameConstants.ObservableObject))
-        {
-            return false;
-        }
-
-        return syntaxNode.HasClassDeclarationWithValidObservableFields() ||
-               syntaxNode.HasClassDeclarationWithValidRelayCommandMethods();
-    }
-
+    /// <summary>
+    /// Extracts the semantic target ViewModel to generate.
+    /// </summary>
+    /// <param name="context">The generator syntax context.</param>
+    /// <returns>A ViewModelToGenerate object if valid; otherwise, null.</returns>
+    /// <remarks>
+    /// This method uses <c>HasBaseClassFromList</c> to ensure the ViewModel inherits
+    /// from a valid base class. This check is necessary to correctly identify ViewModels
+    /// even if their base class is defined in another file.
+    ///
+    /// The valid base classes are:
+    /// <list type="bullet">
+    /// <item><description>ViewModelBase</description></item>
+    /// <item><description>MainWindowViewModelBase</description></item>
+    /// <item><description>ViewModelDialogBase</description></item>
+    /// <item><description>ObservableObject</description></item>
+    /// </list>
+    /// </remarks>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private static ViewModelToGenerate? GetSemanticTargetViewModelToGenerate(
         GeneratorSyntaxContext context)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-        var viewModelClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
+        var viewModelClassSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
 
-        if (!viewModelClassSymbol.IsInheritsFromIObservableObject())
+        if (viewModelClassSymbol is null)
         {
             return null;
         }
@@ -77,8 +92,18 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             .Compilation
             .GetAllPartialClassDeclarations(viewModelClassSymbol);
 
-        var allProperties = new List<ObservablePropertyToGenerate>();
-        var allCommands = new List<RelayCommandToGenerate>();
+        if (!allPartialDeclarations.HasBaseClassFromList(
+                context,
+                NameConstants.ViewModelBase,
+                NameConstants.MainWindowViewModelBase,
+                NameConstants.ViewModelDialogBase,
+                NameConstants.ObservableObject))
+        {
+            return null;
+        }
+
+        var allObservableProperties = new List<ObservablePropertyToGenerate>();
+        var allRelayCommands = new List<RelayCommandToGenerate>();
 
         foreach (var partialClassSyntax in allPartialDeclarations)
         {
@@ -91,12 +116,18 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
 
             var result = ViewModelInspector.Inspect(partialClassSymbol);
 
+            if (!result.FoundAnythingToGenerate)
+            {
+                continue;
+            }
+
             result.ApplyCommandsAndProperties(
-                allCommands,
-                allProperties);
+                allObservableProperties,
+                allRelayCommands);
         }
 
-        if (!allProperties.Any() && !allCommands.Any())
+        if (!allObservableProperties.Any() &&
+            !allRelayCommands.Any())
         {
             return null;
         }
@@ -106,13 +137,18 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             className: viewModelClassSymbol.Name,
             accessModifier: viewModelClassSymbol.GetAccessModifier())
         {
-            PropertiesToGenerate = allProperties,
-            RelayCommandsToGenerate = allCommands,
+            PropertiesToGenerate = allObservableProperties,
+            RelayCommandsToGenerate = allRelayCommands,
         };
 
         return viewModelToGenerate;
     }
 
+    /// <summary>
+    /// Executes the source generation process.
+    /// </summary>
+    /// <param name="context">The source production context.</param>
+    /// <param name="viewModelToGenerate">The ViewModel to generate.</param>
     private static void Execute(
         SourceProductionContext context,
         ViewModelToGenerate? viewModelToGenerate)

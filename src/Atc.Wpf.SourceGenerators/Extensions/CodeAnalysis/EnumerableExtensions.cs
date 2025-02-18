@@ -1,6 +1,6 @@
 namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
-public static class EnumerableExtensions
+internal static class EnumerableExtensions
 {
     public static string? ExtractParameterValueFromList(
         this IEnumerable<string>? parameters,

@@ -4,30 +4,32 @@ internal static class ViewModelInspectorResultExtensions
 {
     public static void ApplyCommandsAndProperties(
         this ViewModelInspectorResult result,
-        List<RelayCommandToGenerate> allCommands,
-        List<ObservablePropertyToGenerate> allProperties)
+        List<ObservablePropertyToGenerate> allObservableProperties,
+        List<RelayCommandToGenerate> allRelayCommands)
     {
-        if (allCommands.Count == 0)
+        if (allObservableProperties.Count == 0)
         {
-            allCommands.AddRange(result.RelayCommandsToGenerate);
+            allObservableProperties.AddRange(result.PropertiesToGenerate);
         }
         else
         {
-            foreach (var relayCommandToGenerate in result.RelayCommandsToGenerate.Where(rc => allCommands.Find(x => x.CommandName == rc.CommandName) is null))
+            foreach (var propertyToGenerate in result.PropertiesToGenerate
+                         .Where(p => allObservableProperties.Find(x => x.BackingFieldName == p.BackingFieldName) is null))
             {
-                allCommands.Add(relayCommandToGenerate);
+                allObservableProperties.Add(propertyToGenerate);
             }
         }
 
-        if (allProperties.Count == 0)
+        if (allRelayCommands.Count == 0)
         {
-            allProperties.AddRange(result.PropertiesToGenerate);
+            allRelayCommands.AddRange(result.RelayCommandsToGenerate);
         }
         else
         {
-            foreach (var propertyToGenerate in result.PropertiesToGenerate.Where(p => allProperties.Find(x => x.BackingFieldName == p.BackingFieldName) is null))
+            foreach (var relayCommandToGenerate in result.RelayCommandsToGenerate
+                         .Where(rc => allRelayCommands.Find(x => x.CommandName == rc.CommandName) is null))
             {
-                allProperties.Add(propertyToGenerate);
+                allRelayCommands.Add(relayCommandToGenerate);
             }
         }
     }

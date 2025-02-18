@@ -1,6 +1,6 @@
 namespace Atc.Wpf.SourceGenerators.Extensions.CodeAnalysis;
 
-public static class ImmutableArrayExtensions
+internal static class ImmutableArrayExtensions
 {
     public static bool HasPropertyName(
         this ImmutableArray<ISymbol> memberSymbols,
