@@ -56,6 +56,12 @@ internal static class ViewModelBuilderExtensions
         builder.DecreaseIndent();
         builder.AppendLine("}");
         builder.AppendLine();
+        if (p.BeforeChangedCallback is not null)
+        {
+            GenerateCallbackInlineCode(builder, p.BeforeChangedCallback);
+            builder.AppendLine();
+        }
+
         builder.AppendLine($"{p.BackingFieldName} = value;");
         builder.AppendLine($"RaisePropertyChanged(nameof({p.Name}));");
         if (p.PropertyNamesToInvalidate is not null)
@@ -66,9 +72,34 @@ internal static class ViewModelBuilderExtensions
             }
         }
 
+        if (p.AfterChangedCallback is not null)
+        {
+            builder.AppendLine();
+            GenerateCallbackInlineCode(builder, p.AfterChangedCallback);
+        }
+
         builder.DecreaseIndent();
         builder.AppendLine("}");
         builder.DecreaseIndent();
         builder.AppendLine("}");
+    }
+
+    private static void GenerateCallbackInlineCode(
+        ViewModelBuilder builder,
+        string value)
+    {
+        if (value.StartsWith("nameof(", StringComparison.Ordinal) &&
+            value.EndsWith(")", StringComparison.Ordinal))
+        {
+            builder.AppendLine(value.ExtractInnerContent() + "();");
+        }
+        else
+        {
+            var sa = value.Split([';'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var s in sa)
+            {
+                builder.AppendLine(s.Trim() + ";");
+            }
+        }
     }
 }

@@ -298,7 +298,7 @@ internal static class FrameworkElementBuilderExtensions
 
         builder.AppendLine($"public static {p.Type} Get{p.Name}(UIElement element)");
         builder.IncreaseIndent();
-        builder.AppendLine($"=> element is not null && ({p.Type})element.GetValue({p.Name}Property);");
+        builder.AppendLine($"=> ({p.Type})element.GetValue({p.Name}Property);");
         builder.DecreaseIndent();
 
         builder.AppendLine();

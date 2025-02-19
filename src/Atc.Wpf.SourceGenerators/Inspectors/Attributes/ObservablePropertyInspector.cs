@@ -47,6 +47,24 @@ internal static class ObservablePropertyInspector
         var backingFieldName = fieldSymbol.Name;
         var propertyType = fieldSymbol.Type.ToString();
         var propertyName = observablePropertyAttribute.ExtractPropertyName(backingFieldName);
+        string? beforeChangedCallback = null;
+        string? afterChangedCallback = null;
+
+        var argumentValues = observablePropertyAttribute.ExtractConstructorArgumentValues();
+        if (argumentValues is not null)
+        {
+            foreach (var argumentValue in argumentValues)
+            {
+                if (argumentValue.TryExtractCallbackContent(NameConstants.BeforeChangedCallback, out var beforeCallback))
+                {
+                    beforeChangedCallback = beforeCallback;
+                }
+                else if (argumentValue.TryExtractCallbackContent(NameConstants.AfterChangedCallback, out var afterCallback))
+                {
+                    afterChangedCallback = afterCallback;
+                }
+            }
+        }
 
         var propertyNamesToInvalidate = fieldSymbolAttributes
             .ExtractPropertyNamesToInvalidate()
@@ -59,6 +77,8 @@ internal static class ObservablePropertyInspector
                 backingFieldName)
             {
                 PropertyNamesToInvalidate = propertyNamesToInvalidate,
+                BeforeChangedCallback = beforeChangedCallback,
+                AfterChangedCallback = afterChangedCallback,
             });
     }
 }

@@ -32,17 +32,17 @@ internal static class ObjectExtensions
             case "decimal":
                 strDefaultValue = strDefaultValue.Length == 0
                     ? SimpleTypeFactory.CreateDefaultValueAsStrForType(type)
-                    : strDefaultValue + "m";
+                    : strDefaultValue.Replace(',', '.') + "m";
                 break;
             case "double":
                 strDefaultValue = strDefaultValue.Length == 0
                     ? SimpleTypeFactory.CreateDefaultValueAsStrForType(type)
-                    : strDefaultValue + "d";
+                    : strDefaultValue.Replace(',', '.') + "d";
                 break;
             case "float":
                 strDefaultValue = strDefaultValue.Length == 0
                     ? SimpleTypeFactory.CreateDefaultValueAsStrForType(type)
-                    : strDefaultValue + "f";
+                    : strDefaultValue.Replace(',', '.') + "f";
                 break;
             case "int" or "long":
                 if (strDefaultValue.Length == 0)

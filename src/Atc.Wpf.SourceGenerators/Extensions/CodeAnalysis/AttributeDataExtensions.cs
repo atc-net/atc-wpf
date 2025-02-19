@@ -206,7 +206,9 @@ internal static class AttributeDataExtensions
                 if (parameters.Length > 0)
                 {
                     result = [];
-                    result.AddRange(parameters.Select(x => x.ExtractAttributeParameters()[0]));
+                    result.AddRange(parameters.Select(parameter => parameter.StartsWith("nameof", StringComparison.Ordinal)
+                        ? parameter.ExtractInnerContent()
+                        : parameter));
                 }
             }
         }
@@ -275,8 +277,16 @@ internal static class AttributeDataExtensions
         var observablePropertyNamesToInvalidate = observablePropertyAttributes?.ExtractConstructorArgumentValues();
         if (observablePropertyNamesToInvalidate is not null)
         {
-            result = [];
-            result.AddRange(observablePropertyNamesToInvalidate);
+            var filteredObservablePropertyNamesToInvalidate = observablePropertyNamesToInvalidate
+                .Where(s => !s.StartsWith(NameConstants.BeforeChangedCallback, StringComparison.Ordinal) &&
+                            !s.StartsWith(NameConstants.AfterChangedCallback, StringComparison.Ordinal))
+                .ToList();
+
+            if (filteredObservablePropertyNamesToInvalidate.Count > 0)
+            {
+                result = [];
+                result.AddRange(observablePropertyNamesToInvalidate);
+            }
         }
 
         var notifyPropertyChangedForAttributes = attributeData

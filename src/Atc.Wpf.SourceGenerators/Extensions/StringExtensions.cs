@@ -54,7 +54,7 @@ public static class StringExtensions
         };
     }
 
-    public static string[] ExtractAttributeParameters(
+    public static string ExtractInnerContent(
         this string value)
     {
         if (value is null)
@@ -65,16 +65,25 @@ public static class StringExtensions
         var start = value.IndexOf('(');
         if (start == -1)
         {
-            return [value];
+            return value;
         }
 
         var end = value.LastIndexOf(')');
-        if (end == -1)
+        return end == -1
+            ? value
+            : value.Substring(start + 1, end - start - 1);
+    }
+
+    public static string[] ExtractAttributeParameters(
+        this string value)
+    {
+        if (value is null)
         {
-            return [value];
+            throw new ArgumentNullException(nameof(value));
         }
 
-        var parameterString = value.Substring(start + 1, end - start - 1);
+        var parameterString = value.ExtractInnerContent();
+
         var parameters = new List<string>();
 
         var currentParam = new StringBuilder();
@@ -106,9 +115,22 @@ public static class StringExtensions
             }
         }
 
-        var lastParam = currentParam.ToString().Replace("\"", string.Empty).Trim();
+        var lastParam = currentParam
+            .ToString()
+            .Replace("\"", string.Empty)
+            .Trim();
 
-        if (lastParam.Length > 0)
+        if (lastParam.Length <= 0)
+        {
+            return parameters.ToArray();
+        }
+
+        if (parameters.Count > 0 &&
+            parameters[parameters.Count - 1].EndsWith("(this", StringComparison.Ordinal))
+        {
+            parameters[parameters.Count - 1] = parameters[parameters.Count - 1] + ", " + lastParam;
+        }
+        else
         {
             parameters.Add(lastParam);
         }
@@ -213,4 +235,39 @@ public static class StringExtensions
             or "int"
             or "long"
             or "string";
+
+    public static bool TryExtractCallbackContent(
+        this string argumentValue,
+        string prefix,
+        out string? callback)
+    {
+        callback = null;
+        if (argumentValue is null ||
+            prefix is null ||
+            !argumentValue.StartsWith(prefix, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var extractedValue = argumentValue
+            .Substring(prefix.Length)
+            .Trim();
+
+        if (extractedValue.Length > 0)
+        {
+            extractedValue = extractedValue
+                .Substring(1)// Remove the first character '='
+                .Trim();
+        }
+
+        if ((!extractedValue.StartsWith("nameof(", StringComparison.Ordinal) ||
+             !extractedValue.EndsWith(")", StringComparison.Ordinal)) &&
+            !extractedValue.EndsWith(";", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        callback = extractedValue;
+        return true;
+    }
 }

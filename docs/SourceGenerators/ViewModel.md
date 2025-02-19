@@ -49,20 +49,31 @@ This setup allows the UI to dynamically update when the Name property changes.
 
 The `ObservableProperty` attribute automatically generates properties from private fields, including `INotifyPropertyChanged` support.
 
+**ObservableProperty options:**
+
+- `PropertyName` for customization.
+- `DependentProperties` for 1 to many other properties to be notified.
+- `BeforeChangedCallback` is executed before the property value changes.
+- `AfterChangedCallback` is executed after the property value changes.
+
 ### 🛠 Quick Start: Using `ObservableProperty`
 
 ```csharp
 // Generates a property named "Name"
-[ObservableProperty()] private string name;
+[ObservableProperty()]
+private string name;
 
 // Generates a property named "MyName"
-[ObservableProperty("MyName")] private string name;
+[ObservableProperty("MyName")]
+private string name;
 
 // Generates a property named "MyName" and notifies FullName and Age
-[ObservableProperty(nameof(MyName), nameof(FullName), nameof(Age))] private string name;
+[ObservableProperty(nameof(MyName), nameof(FullName), nameof(Age))]
+private string name;
 
 // Generates a property named "MyName" and notifies FullName and Age
-[ObservableProperty(nameof(MyName), DependentProperties = [nameof(FullName), nameof(Age)])] private string name;
+[ObservableProperty(nameof(MyName), DependentProperties = [nameof(FullName), nameof(Age)])]
+private string name;
 ```
 
 ### 🔔 Notifying Other Properties
@@ -80,60 +91,103 @@ The `ObservableProperty` attribute automatically generates properties from priva
 
 **Note:**
 
-- `ObservableProperty` creates a public property from a private field and implements change notification.
-
 - `NotifyPropertyChangedFor` ensures that when the annotated property changes, specified dependent properties also get notified.
+
+### 🔮 Callbacks
+
+```csharp
+// Calls DoStuff before the property changes
+[ObservableProperty(BeforeChangedCallback = nameof(DoStuff))]
+
+// Calls DoStuff after the property changes
+[ObservableProperty(AfterChangedCallback = nameof(DoStuff))]
+
+// Calls DoStuffA before and DoStuffB after the property changes
+[ObservableProperty(
+    BeforeChangedCallback = nameof(DoStuffA),
+    AfterChangedCallback = nameof(DoStuffB))]
+
+// Executes inline code before and after the property changes
+// - Executes DoStuffA before the change
+// - Executes event and DoStuffB after the change
+[ObservableProperty(
+    BeforeChangedCallback = "DoStuffA();",
+    AfterChangedCallback = "EntrySelected?.Invoke(this, selectedEntry); DoStuffB();")]
+```
 
 ## ⚡ Attributes for `RelayCommand` Source-Generation
 
 The `RelayCommand` attribute generates `IRelayCommand` properties, eliminating manual command setup.
 
+**RelayCommand options:**
+
+- `CommandName` for customization.
+- `CanExecute` a property or method that return `bool` to specified to control when the command is executable.
+- `ParameterValue` or `ParameterValues` for 1 or many parameter values.
+
 ### 🛠 Quick Start Tips for RelayCommands
 
 ```csharp
 // Generates a RelayCommand named "SaveCommand"
-[RelayCommand()] public void Save();
+[RelayCommand()]
+public void Save();
 
 // Generates a RelayCommand named "MySaveCommand"
-[RelayCommand("MySave")] public void Save();
+[RelayCommand("MySave")]
+public void Save();
 ```
 
 ### 🏷️ Commands with CanExecute Logic
 
 ```csharp
 // Generates a RelayCommand that takes a string parameter
-[RelayCommand()] public void Save(string text);
+[RelayCommand()]
+public void Save(string text);
 
 // Generates a RelayCommand with CanExecute function
-[RelayCommand(CanExecute = nameof(CanSave))] public void Save();
+[RelayCommand(CanExecute = nameof(CanSave))]
+public void Save();
 ```
+
+**Note:**
+
+- The `RelayCommand` attribute generates an `IRelayCommand` property linked to the annotated method.
+- `CanExecute` logic can be specified to control when the command is executable.
 
 ### 🔄 Asynchronous Commands
 
 ```csharp
 // Generates an asynchronous RelayCommand
-[RelayCommand()] public Task Save();
+[RelayCommand()]
+public Task Save();
 
 // Generates an asynchronous RelayCommand with async keyword
-[RelayCommand()] public async Task Save();
+[RelayCommand()]
+public async Task Save();
 
 // Generates an asynchronous RelayCommand named "MySaveCommand"
-[RelayCommand("MySave")] public Task Save();
+[RelayCommand("MySave")]
+public Task Save();
 
 // Generates an asynchronous RelayCommand named "MySaveCommand" with async keyword
-[RelayCommand("MySave")] public async Task Save();
+[RelayCommand("MySave")]
+public async Task Save();
 
 // Generates an asynchronous RelayCommand that takes a string parameter
-[RelayCommand()] public Task Save(string text);
+[RelayCommand()]
+public Task Save(string text);
 
 // Generates an asynchronous RelayCommand with async keyword and string parameter
-[RelayCommand()] public async Task Save(string text);
+[RelayCommand()]
+public async Task Save(string text);
 
 // Generates an asynchronous RelayCommand with CanExecute function
-[RelayCommand(CanExecute = nameof(CanSave))] public Task Save();
+[RelayCommand(CanExecute = nameof(CanSave))]
+public Task Save();
 
 // Generates an asynchronous RelayCommand with async keyword and CanExecute function
-[RelayCommand(CanExecute = nameof(CanSave))] public async Task Save();
+[RelayCommand(CanExecute = nameof(CanSave))]
+public async Task Save();
 ```
 
 ### 🔁 Multi-Parameter Commands
@@ -153,11 +207,6 @@ public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int ste
 [RelayCommand("MyTestBottom", CanExecute = nameof(CanTestDirection), ParameterValues = [LeftTopRightBottomType.Bottom, 1])]
 public Task TestDirection(LeftTopRightBottomType leftTopRightBottomType, int steps)
 ```
-
-**Note:**
-
-- The `RelayCommand` attribute generates an `IRelayCommand` pproperty linked to the annotated method.
-- `CanExecute` logic can be specified to control when the command is executable.
 
 ---
 
