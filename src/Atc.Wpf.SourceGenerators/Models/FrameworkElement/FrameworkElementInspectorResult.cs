@@ -1,6 +1,7 @@
 namespace Atc.Wpf.SourceGenerators.Models.FrameworkElement;
 
 internal sealed class FrameworkElementInspectorResult(
+    bool isStatic,
     List<AttachedPropertyToGenerate> attachedPropertiesToGenerate,
     List<DependencyPropertyToGenerate> dependencyPropertiesToGenerate,
     List<RelayCommandToGenerate> relayCommandsToGenerate)
@@ -16,7 +17,7 @@ internal sealed class FrameworkElementInspectorResult(
            DependencyPropertiesToGenerate.Count > 0 ||
            RelayCommandsToGenerate.Count > 0;
 
-    public bool IsStatic => AttachedPropertiesToGenerate.Count > 0;
+    public bool IsStatic { get; } = isStatic;
 
     public override string ToString()
         => $"{nameof(IsStatic)}: {IsStatic}, {nameof(AttachedPropertiesToGenerate)}.Count: {AttachedPropertiesToGenerate.Count}, {nameof(DependencyPropertiesToGenerate)}.Count: {DependencyPropertiesToGenerate.Count}, {nameof(DependencyPropertiesToGenerate)}.Count: {DependencyPropertiesToGenerate.Count}";

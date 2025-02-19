@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
 [AttachedProperty<bool>("IsDraggable", PropertyChangedCallback = nameof(OnIsDraggableChanged))]
-public partial class DragBehavior
+public static partial class DragBehavior
 {
     private static bool isDragging;
     private static Point startPoint;
