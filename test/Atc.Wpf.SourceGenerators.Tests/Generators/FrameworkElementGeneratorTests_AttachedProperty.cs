@@ -281,7 +281,7 @@ public sealed partial class FrameworkElementGeneratorTests
             [AttachedProperty<string>("Label")]
             [AttachedProperty<Style>("LabelStyle")]
             [AttachedProperty<bool>("EnableWatermark")]
-            public sealed partial class WatermarkTextBoxBehavior
+            public static partial class WatermarkTextBoxBehavior
             {
             }
             """;

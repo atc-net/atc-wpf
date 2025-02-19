@@ -12,6 +12,7 @@ internal static class FrameworkElementInspector
         var relayCommandsToGenerate = RelayCommandInspector.Inspect(classSymbol);
 
         return new FrameworkElementInspectorResult(
+            classSymbol.IsStatic,
             attachedPropertiesToGenerate,
             dependencyPropertiesToGenerate,
             relayCommandsToGenerate);
