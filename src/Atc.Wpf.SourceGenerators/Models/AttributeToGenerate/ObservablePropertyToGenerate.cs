@@ -14,6 +14,10 @@ internal sealed class ObservablePropertyToGenerate(
 
     public ICollection<string>? PropertyNamesToInvalidate { get; set; }
 
+    public string? BeforeChangedCallback { get; set; }
+
+    public string? AfterChangedCallback { get; set; }
+
     public override string ToString()
-        => $"{nameof(Name)}: {Name}, {nameof(Type)}: {Type}, {nameof(BackingFieldName)}: {BackingFieldName}, {nameof(PropertyNamesToInvalidate)}.Count: {PropertyNamesToInvalidate?.Count}";
+        => $"{nameof(Name)}: {Name}, {nameof(Type)}: {Type}, {nameof(BackingFieldName)}: {BackingFieldName}, {nameof(PropertyNamesToInvalidate)}.Count: {PropertyNamesToInvalidate?.Count}, {nameof(BeforeChangedCallback)}: {BeforeChangedCallback}, {nameof(AfterChangedCallback)}: {AfterChangedCallback}";
 }

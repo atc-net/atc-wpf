@@ -2,9 +2,11 @@ namespace Atc.Wpf.SourceGenerators;
 
 internal static class NameConstants
 {
+    public const string AfterChangedCallback = nameof(AfterChangedCallback);
     public const string Attach = nameof(Attach);
     public const string AttachedProperty = nameof(AttachedProperty);
     public const string AttachedPropertyAttribute = nameof(AttachedPropertyAttribute);
+    public const string BeforeChangedCallback = nameof(BeforeChangedCallback);
     public const string Behavior = nameof(Behavior);
     public const string CanExecute = nameof(CanExecute);
     public const string Category = nameof(Category);

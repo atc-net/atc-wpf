@@ -3,7 +3,8 @@ namespace Atc.Wpf;
 
 [SuppressMessage("Performance", "CA1813:Avoid unsealed attributes", Justification = "OK.")]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class DependencyPropertyAttribute<T>(string propertyName) : Attribute
+public class DependencyPropertyAttribute<T>(string propertyName)
+    : Attribute
 {
     public string? PropertyName { get; } = propertyName;
 

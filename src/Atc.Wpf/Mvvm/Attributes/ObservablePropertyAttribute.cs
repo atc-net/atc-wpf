@@ -48,4 +48,18 @@ public sealed class ObservablePropertyAttribute : Attribute
     /// Gets or sets the dependent property names.
     /// </summary>
     public string[]? DependentProperties { get; set; }
+
+    /// <summary>
+    /// Gets or sets the method(s) or expressions to execute before property changes.
+    /// Example A: 'DoStuffA();'.
+    /// Example B: nameof(DoStuffA).
+    /// </summary>
+    public string? BeforeChangedCallback { get; set; }
+
+    /// <summary>
+    /// Gets or sets the method(s) or expressions to execute after property changes.
+    /// Example A: 'EntrySelected?.Invoke(this, selectedEntry); DoStuffB();'.
+    /// Example b: nameof(DoStuffB).
+    /// </summary>
+    public string? AfterChangedCallback { get; set; }
 }
