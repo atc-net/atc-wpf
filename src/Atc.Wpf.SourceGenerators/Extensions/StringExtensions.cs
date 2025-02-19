@@ -270,4 +270,37 @@ public static class StringExtensions
         callback = extractedValue;
         return true;
     }
+
+    public static bool TryExtractArrayParameters(
+        this string argumentValue,
+        string prefix,
+        out string[]? parameters)
+    {
+        parameters = null;
+        if (argumentValue is null ||
+            prefix is null ||
+            !argumentValue.StartsWith(prefix, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var extractedValue = argumentValue
+            .Substring(prefix.Length)
+            .Trim();
+
+        if (extractedValue.Length > 0)
+        {
+            extractedValue = extractedValue
+                .Replace("nameof(", string.Empty)
+                .Replace(")", string.Empty)
+                .Replace(" ", string.Empty)
+                .Replace("=", string.Empty)
+                .Replace("[", string.Empty)
+                .Replace("]", string.Empty)
+                .Trim();
+        }
+
+        parameters = extractedValue.Split(',');
+        return true;
+    }
 }

@@ -285,7 +285,21 @@ internal static class AttributeDataExtensions
             if (filteredObservablePropertyNamesToInvalidate.Count > 0)
             {
                 result = [];
-                result.AddRange(observablePropertyNamesToInvalidate);
+
+                foreach (var item in filteredObservablePropertyNamesToInvalidate)
+                {
+                    if (item.StartsWith(NameConstants.DependentProperties, StringComparison.Ordinal))
+                    {
+                        if (item.TryExtractArrayParameters(NameConstants.DependentProperties, out var parameters))
+                        {
+                            result.AddRange(parameters!);
+                        }
+                    }
+                    else
+                    {
+                        result.Add(item);
+                    }
+                }
             }
         }
 
