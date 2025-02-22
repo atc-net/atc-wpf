@@ -1,8 +1,8 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
 # Version: 1.0.0
-# Updated: 25-09-2023
+# Updated: 03-06-2024
 # Location: src
-# Distribution: DotNet8
+# Distribution: DotNet9
 # Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 
 ##########################################
@@ -61,4 +61,3 @@ dotnet_diagnostic.S3011.severity = none
 dotnet_diagnostic.S4144.severity = none
 
 dotnet_diagnostic.MA0016.severity = none
-

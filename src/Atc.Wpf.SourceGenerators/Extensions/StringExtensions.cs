@@ -271,10 +271,18 @@ public static class StringExtensions
         string prefix,
         out string? callback)
     {
+        if (argumentValue is null)
+        {
+            throw new ArgumentNullException(nameof(argumentValue));
+        }
+
+        if (prefix is null)
+        {
+            throw new ArgumentNullException(nameof(prefix));
+        }
+
         callback = null;
-        if (argumentValue is null ||
-            prefix is null ||
-            !argumentValue.StartsWith(prefix, StringComparison.Ordinal))
+        if (!argumentValue.StartsWith(prefix, StringComparison.Ordinal))
         {
             return false;
         }
@@ -306,10 +314,18 @@ public static class StringExtensions
         string prefix,
         out string[]? parameters)
     {
+        if (argumentValue is null)
+        {
+            throw new ArgumentNullException(nameof(argumentValue));
+        }
+
+        if (prefix is null)
+        {
+            throw new ArgumentNullException(nameof(prefix));
+        }
+
         parameters = null;
-        if (argumentValue is null ||
-            prefix is null ||
-            !argumentValue.StartsWith(prefix, StringComparison.Ordinal))
+        if (!argumentValue.StartsWith(prefix, StringComparison.Ordinal))
         {
             return false;
         }
