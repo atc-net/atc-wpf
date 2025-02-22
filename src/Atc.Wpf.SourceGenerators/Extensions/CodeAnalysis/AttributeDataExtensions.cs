@@ -66,23 +66,12 @@ internal static class AttributeDataExtensions
         {
             // Syntax check
             var str = attributeData.ApplicationSyntaxReference?.GetSyntax().ToFullString();
-            if (str is not null && str.Contains('('))
+            if (str is not null)
             {
-                var parameters = str.ExtractAttributeParameters();
-                if (parameters.Length > 0)
+                var attributeConstructorParameters = str.ExtractAttributeConstructorParameters();
+                if (attributeConstructorParameters.TryGetValue(NameConstants.CanExecute, out var canExecute))
                 {
-                    foreach (var parameter in parameters)
-                    {
-                        if (parameter.StartsWith(NameConstants.CanExecute, StringComparison.Ordinal))
-                        {
-                            relayCommandCanExecuteName = parameter
-                                .ExtractAttributeParameters()[0]
-                                .Replace(NameConstants.CanExecute, string.Empty)
-                                .Replace("=", string.Empty)
-                                .Trim();
-                            break;
-                        }
-                    }
+                    relayCommandCanExecuteName = canExecute!.ExtractInnerContent();
                 }
             }
         }
@@ -111,29 +100,20 @@ internal static class AttributeDataExtensions
 
         // Syntax check
         var str = attributeData.ApplicationSyntaxReference?.GetSyntax().ToFullString();
-        if (str is not null && str.Contains('('))
+        if (str is not null)
         {
-            var parameters = str.ExtractAttributeParameters();
-            if (parameters.Length > 0)
+            var attributeConstructorParameters = str.ExtractAttributeConstructorParameters();
+            if (attributeConstructorParameters.TryGetValue(NameConstants.ParameterValue, out var parameterValue))
             {
-                foreach (var parameter in parameters)
-                {
-                    var parameterTrim = parameter.Replace(" ", string.Empty);
-                    if (parameterTrim.StartsWith(NameConstants.ParameterValues + "=", StringComparison.Ordinal))
-                    {
-                        result ??= [];
-                        result.AddRange(
-                            parameter
-                                .ExtractParameterValue()
-                                .Split(',')
-                                .Select(s => s.Trim()));
-                    }
-                    else if (parameterTrim.StartsWith(NameConstants.ParameterValue + "=", StringComparison.Ordinal))
-                    {
-                        result ??= [];
-                        result.Add(parameter.ExtractParameterValue());
-                    }
-                }
+                result = [parameterValue!];
+            }
+            else if (attributeConstructorParameters.TryGetValue(NameConstants.ParameterValues, out var parameterValues))
+            {
+                result = [];
+                result.AddRange(
+                    parameterValues!
+                        .Split(',')
+                        .Select(s => s.Trim()));
             }
         }
 
@@ -200,17 +180,21 @@ internal static class AttributeDataExtensions
         {
             // Syntax check
             var str = attributeData.ApplicationSyntaxReference?.GetSyntax().ToFullString();
-            if (str is not null && str.Contains('('))
+            if (str is not null)
             {
-                var parameters = str.ExtractAttributeParameters();
-                if (parameters.Length > 0)
-                {
-                    result = [];
-                    result.AddRange(parameters.Select(parameter => parameter.StartsWith("nameof", StringComparison.Ordinal)
-                        ? parameter.ExtractInnerContent()
-                        : parameter));
-                }
+                var attributeConstructorParameters = str.ExtractAttributeConstructorParameters();
             }
+            //if (str is not null && str.Contains('('))
+            //{
+            //    var parameters = str.ExtractAttributeParameters();
+            //    if (parameters.Length > 0)
+            //    {
+            //        result = [];
+            //        result.AddRange(parameters.Select(parameter => parameter.StartsWith("nameof", StringComparison.Ordinal)
+            //            ? parameter.ExtractInnerContent()
+            //            : parameter));
+            //    }
+            //}
         }
         else
         {
