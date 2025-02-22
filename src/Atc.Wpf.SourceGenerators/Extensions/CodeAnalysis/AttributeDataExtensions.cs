@@ -16,12 +16,12 @@ internal static class AttributeDataExtensions
         {
             // Syntax check
             var str = attributeData.ApplicationSyntaxReference?.GetSyntax().ToFullString();
-            if (str is not null && str.Contains('('))
+            if (str is not null)
             {
-                var parameters = str.ExtractAttributeParameters();
-                if (parameters.Length > 0 && !parameters[0].Contains('='))
+                var attributeConstructorParameters = str.ExtractAttributeConstructorParameters();
+                if (attributeConstructorParameters.TryGetValue(NameConstants.Name, out var name))
                 {
-                    relayCommandName = parameters[0];
+                    relayCommandName = name;
                 }
             }
         }

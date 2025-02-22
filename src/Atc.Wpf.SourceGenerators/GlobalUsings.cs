@@ -1,7 +1,8 @@
 global using System.Collections.Immutable;
 global using System.Diagnostics.CodeAnalysis;
+global using System.Globalization;
 global using System.Text;
-
+global using System.Text.RegularExpressions;
 global using Atc.Wpf.SourceGenerators.Builders;
 global using Atc.Wpf.SourceGenerators.Extensions;
 global using Atc.Wpf.SourceGenerators.Extensions.Builder;
