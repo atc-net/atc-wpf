@@ -83,7 +83,7 @@
                 </TabItem>
                 <TabItem Header="Wpf.SourceGenerators">
                     <sample:SamplesWpfSourceGeneratorsTreeView
-                        x:Name="StvSamplesWpfSourceGeneratorsTreeView"
+                        x:Name="StvSamplesWpfSourceGenerators"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />

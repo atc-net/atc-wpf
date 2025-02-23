@@ -59,7 +59,7 @@ public sealed partial class ViewModelGeneratorTests
 
             public partial class TestViewModel : ViewModelBase
             {
-                [ObservableProperty("MyName)]
+                [ObservableProperty("MyName")]
                 private string name;
             }
             """;

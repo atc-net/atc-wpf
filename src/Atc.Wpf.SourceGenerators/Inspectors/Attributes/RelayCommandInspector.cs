@@ -41,22 +41,56 @@ internal static class RelayCommandInspector
         return result;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private static void AppendRelayCommandToGenerate(
         IMethodSymbol methodSymbol,
         ImmutableArray<ISymbol> memberSymbols,
         AttributeData relayCommandAttribute,
         List<RelayCommandToGenerate> relayCommandsToGenerate)
     {
-        var commandName = relayCommandAttribute.ExtractRelayCommandName(methodSymbol.Name);
-        var canExecuteName = relayCommandAttribute.ExtractRelayCommandCanExecuteName();
+        var relayCommandArgumentValues = relayCommandAttribute.ExtractConstructorArgumentValues();
+
+        var commandName = relayCommandArgumentValues.TryGetValue(NameConstants.Name, out var nameValue)
+            ? nameValue!.EnsureFirstCharacterToUpper()
+            : methodSymbol.Name.EnsureFirstCharacterToUpper();
+
+        if (commandName.EndsWith(NameConstants.Handler, StringComparison.Ordinal))
+        {
+            commandName = commandName.Substring(0, commandName.Length - NameConstants.Handler.Length);
+        }
+
+        if (!commandName.EndsWith(NameConstants.Command, StringComparison.Ordinal))
+        {
+            commandName += NameConstants.Command;
+        }
+
+        if (commandName == methodSymbol.Name)
+        {
+            commandName += "X";
+        }
+
+        string? canExecuteName = null;
+        if (relayCommandArgumentValues.TryGetValue(NameConstants.CanExecute, out var canExecuteNameValue))
+        {
+            canExecuteName = canExecuteNameValue!.ExtractInnerContent();
+        }
+
         var usePropertyForCanExecute = false;
         if (canExecuteName is not null)
         {
             usePropertyForCanExecute = memberSymbols.HasPropertyName(canExecuteName) ||
-                                       memberSymbols.HasObservableFieldName(canExecuteName);
+                                       memberSymbols.HasObservablePropertyOrFieldName(canExecuteName);
         }
 
-        var parameterValues = relayCommandAttribute.ExtractRelayCommandParameterValues();
+        var parameterValues = new List<string>();
+        if (relayCommandArgumentValues.TryGetValue(NameConstants.ParameterValue, out var parameterValueValue))
+        {
+            parameterValues.Add(parameterValueValue!);
+        }
+        else if (relayCommandArgumentValues.TryGetValue(NameConstants.ParameterValues, out var parameterValuesValue))
+        {
+            parameterValues.AddRange(parameterValuesValue!.Split(',').Select(x => x.Trim()));
+        }
 
         List<string>? parameterTypes = null;
         if (methodSymbol.Parameters.Length > 0)
@@ -75,7 +109,7 @@ internal static class RelayCommandInspector
                 commandName,
                 methodSymbol.Name,
                 parameterTypes?.ToArray(),
-                parameterValues,
+                parameterValues.Count == 0 ? null : parameterValues.ToArray(),
                 canExecuteName,
                 usePropertyForCanExecute,
                 isAsync));
