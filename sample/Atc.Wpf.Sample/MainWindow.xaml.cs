@@ -25,7 +25,7 @@ public partial class MainWindow
         [
             StvSampleWpf,
             StvSampleWpfControls,
-            StvSamplesWpfSourceGeneratorsTreeView,
+            StvSamplesWpfSourceGenerators,
             StvSampleWpfFontIcons,
             StvSampleWpfTheming,
         ];

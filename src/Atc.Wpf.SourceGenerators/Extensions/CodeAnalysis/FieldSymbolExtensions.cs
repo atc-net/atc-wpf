@@ -24,9 +24,8 @@ internal static class FieldSymbolExtensions
 
         var parameterValues = attribute.ExtractConstructorArgumentValues();
 
-        return parameterValues is not null &&
-               parameterValues.Length > 0 &&
-               parameterValues[0] == name;
+        return parameterValues.TryGetValue(NameConstants.Name, out var nameValue) &&
+               name.Equals(nameValue!.EnsureFirstCharacterToUpper(), StringComparison.Ordinal);
     }
 
     public static bool HasObservableFieldName(
