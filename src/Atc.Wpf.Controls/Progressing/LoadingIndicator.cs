@@ -10,6 +10,20 @@ public sealed class LoadingIndicator : Control
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
     private Border? PART_Border;
 
+    public static readonly DependencyProperty CustomColorBrushProperty = DependencyProperty.Register(
+        nameof(CustomColorBrush),
+        typeof(Brush),
+        typeof(LoadingIndicator),
+        new PropertyMetadata(
+            defaultValue: null,
+            OnCustomColorBrushChanged));
+
+    public Brush CustomColorBrush
+    {
+        get => (Brush)GetValue(CustomColorBrushProperty);
+        set => SetValue(CustomColorBrushProperty, value);
+    }
+
     public static readonly DependencyProperty SpeedRatioProperty = DependencyProperty.Register(
         nameof(SpeedRatio),
         typeof(double),
@@ -61,6 +75,11 @@ public sealed class LoadingIndicator : Control
     {
         base.OnApplyTemplate();
 
+        if (CustomColorBrush is not null)
+        {
+            SetCurrentValue(ForegroundProperty, CustomColorBrush);
+        }
+
         PART_Border = GetTemplateChild(TemplateBorderName) as Border;
 
         if (PART_Border == null)
@@ -80,27 +99,42 @@ public sealed class LoadingIndicator : Control
             IsActive ? Visibility.Visible : Visibility.Collapsed);
     }
 
+    private static void OnCustomColorBrushChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var loadingIndicator = (LoadingIndicator)d;
+        if (e.NewValue is Brush newBrush)
+        {
+            loadingIndicator.SetCurrentValue(ForegroundProperty, newBrush);
+        }
+        else
+        {
+            loadingIndicator.ClearValue(ForegroundProperty);
+        }
+    }
+
     private static void OnSpeedRatioChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var li = (LoadingIndicator)d;
+        var loadingIndicator = (LoadingIndicator)d;
 
-        if (li.PART_Border == null || !li.IsActive)
+        if (loadingIndicator.PART_Border == null || !loadingIndicator.IsActive)
         {
             return;
         }
 
-        SetStoryBoardSpeedRatio(li.PART_Border, (double)e.NewValue);
+        SetStoryBoardSpeedRatio(loadingIndicator.PART_Border, (double)e.NewValue);
     }
 
     private static void OnIsActiveChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var li = (LoadingIndicator)d;
+        var loadingIndicator = (LoadingIndicator)d;
 
-        if (li.PART_Border == null)
+        if (loadingIndicator.PART_Border == null)
         {
             return;
         }
@@ -108,21 +142,21 @@ public sealed class LoadingIndicator : Control
         if (!(bool)e.NewValue)
         {
             VisualStateManager.GoToElementState(
-                li.PART_Border,
+                loadingIndicator.PART_Border,
                 IndicatorVisualStateNames.InactiveState.Name,
                 useTransitions: false);
-            li.PART_Border.SetCurrentValue(VisibilityProperty, Visibility.Collapsed);
+            loadingIndicator.PART_Border.SetCurrentValue(VisibilityProperty, Visibility.Collapsed);
         }
         else
         {
             VisualStateManager.GoToElementState(
-                li.PART_Border,
+                loadingIndicator.PART_Border,
                 IndicatorVisualStateNames.ActiveState.Name,
                 useTransitions: false);
 
-            li.PART_Border.SetCurrentValue(VisibilityProperty, Visibility.Visible);
+            loadingIndicator.PART_Border.SetCurrentValue(VisibilityProperty, Visibility.Visible);
 
-            SetStoryBoardSpeedRatio(li.PART_Border, li.SpeedRatio);
+            SetStoryBoardSpeedRatio(loadingIndicator.PART_Border, loadingIndicator.SpeedRatio);
         }
     }
 
