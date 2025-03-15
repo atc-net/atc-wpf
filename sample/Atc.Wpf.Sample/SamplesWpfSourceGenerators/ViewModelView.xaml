@@ -2,10 +2,10 @@
     x:Class="Atc.Wpf.Sample.SamplesWpfSourceGenerators.ViewModelView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SamplesWpfSourceGenerators="clr-namespace:Atc.Wpf.Sample.SamplesWpfSourceGenerators"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:SamplesWpfSourceGenerators="clr-namespace:Atc.Wpf.Sample.SamplesWpfSourceGenerators"
     d:DesignHeight="600"
     d:DesignWidth="600"
     mc:Ignorable="d">

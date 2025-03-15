@@ -2,7 +2,7 @@ namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
 public partial class PersonViewModel : ViewModelBase
 {
-    [ObservableProperty]
+    [ObservableProperty(BroadcastOnChange = true)]
     [NotifyPropertyChangedFor(nameof(FullName))]
     [Required]
     [MinLength(2)]

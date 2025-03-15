@@ -1,5 +1,7 @@
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable LocalizableElement
+// ReSharper disable UnusedMember.Global
 namespace Atc.Wpf.Mvvm;
 
 /// <summary>

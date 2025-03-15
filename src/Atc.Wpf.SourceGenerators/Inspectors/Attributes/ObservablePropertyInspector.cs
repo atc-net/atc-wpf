@@ -72,7 +72,8 @@ internal static class ObservablePropertyInspector
                 if (argumentValue.Key
                     is NameConstants.Name
                     or NameConstants.BeforeChangedCallback
-                    or NameConstants.AfterChangedCallback)
+                    or NameConstants.AfterChangedCallback
+                    or NameConstants.BroadcastOnChange)
                 {
                     continue;
                 }
@@ -93,6 +94,9 @@ internal static class ObservablePropertyInspector
         {
             afterChangedCallback = afterChangedCallbackValue;
         }
+
+        var broadcastOnChange = observableArgumentValues.TryGetValue(NameConstants.BroadcastOnChange, out var broadcastOnChangeValue) &&
+                                "true".Equals(broadcastOnChangeValue, StringComparison.OrdinalIgnoreCase);
 
         var notifyPropertyChangedForAttributes = fieldSymbolAttributes
             .Where(x => x.AttributeClass?.Name
@@ -124,6 +128,7 @@ internal static class ObservablePropertyInspector
                 PropertyNamesToInvalidate = propertyNamesToInvalidate,
                 BeforeChangedCallback = beforeChangedCallback,
                 AfterChangedCallback = afterChangedCallback,
+                BroadcastOnChange = broadcastOnChange,
             });
     }
 }
