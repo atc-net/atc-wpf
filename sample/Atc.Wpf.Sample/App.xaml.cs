@@ -8,6 +8,8 @@ public partial class App
 
     public App()
     {
+        EnsureAppSettingsInCommonDataDirectory();
+
         host = Host.CreateDefaultBuilder()
             .ConfigureLogging(logging =>
             {
@@ -18,8 +20,12 @@ public partial class App
             .ConfigureAppConfiguration((_, configurationBuilder) =>
             {
                 configuration = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(AtcFileNameConstants.AppSettings, optional: false, reloadOnChange: true)
-                    .AddJsonFile(AtcFileNameConstants.AppSettingsCustom, optional: true, reloadOnChange: true)
+                    .AddJsonFile(
+                        Path.Combine(
+                            AppConstants.DataDirectory.FullName,
+                            AtcFileNameConstants.AppSettings),
+                        optional: false,
+                        reloadOnChange: true)
                     .AddEnvironmentVariables()
                     .Build();
             })
@@ -143,5 +149,29 @@ public partial class App
             .ConfigureAwait(false);
 
         host.Dispose();
+    }
+
+    private static void EnsureAppSettingsInCommonDataDirectory()
+    {
+        var dataDirectoryFile = AppConstants.DataDirectory.CombineFileInfo(AtcFileNameConstants.AppSettings);
+        if (dataDirectoryFile.Exists)
+        {
+            return;
+        }
+
+        if (!Directory.Exists(AppConstants.DataDirectory.FullName))
+        {
+            Directory.CreateDirectory(AppConstants.DataDirectory.FullName);
+        }
+
+        var deployedFile = new FileInfo(
+            Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                AtcFileNameConstants.AppSettings));
+
+        File.Copy(
+            deployedFile.FullName,
+            dataDirectoryFile.FullName,
+            overwrite: true);
     }
 }

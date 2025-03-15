@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.XUnitTestTypes;
+namespace Atc.Wpf.Controls.Tests.XUnitTestTypes;
 
 public sealed class Address
 {

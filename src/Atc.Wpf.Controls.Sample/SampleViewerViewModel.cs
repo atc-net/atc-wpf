@@ -175,11 +175,33 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
     private void ClearSelectedViewData()
     {
+        TryDisposeAndClearSampleContent();
+
         Header = null;
-        SampleContent = null;
         XamlCode = null;
         CodeBehindCode = null;
         ViewModelCode = null;
+    }
+
+    private void TryDisposeAndClearSampleContent()
+    {
+        if (SampleContent is null)
+        {
+            return;
+        }
+
+        if (SampleContent.DataContext is IDisposable disposableDataContext)
+        {
+            disposableDataContext.Dispose();
+        }
+
+        if (SampleContent.GetType() != SampleContent.DataContext?.GetType() &&
+            SampleContent is IDisposable disposableControl)
+        {
+            disposableControl.Dispose();
+        }
+
+        SampleContent = null;
     }
 
     private void SetSelectedViewData(
@@ -216,6 +238,8 @@ public sealed class SampleViewerViewModel : ViewModelBase
             MessageBox.Show("Can't find sample by invalid location", Error, MessageBoxButton.OK);
             return;
         }
+
+        TryDisposeAndClearSampleContent();
 
         Header = sampleHeader;
         SampleContent = instance;
