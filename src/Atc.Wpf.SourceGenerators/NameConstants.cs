@@ -8,6 +8,7 @@ internal static class NameConstants
     public const string AttachedPropertyAttribute = nameof(AttachedPropertyAttribute);
     public const string BeforeChangedCallback = nameof(BeforeChangedCallback);
     public const string Behavior = nameof(Behavior);
+    public const string BroadcastOnChange = nameof(BroadcastOnChange);
     public const string CanExecute = nameof(CanExecute);
     public const string Category = nameof(Category);
     public const string Command = nameof(Command);

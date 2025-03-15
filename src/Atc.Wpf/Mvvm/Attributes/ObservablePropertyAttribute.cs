@@ -62,4 +62,48 @@ public sealed class ObservablePropertyAttribute : Attribute
     /// Example b: nameof(DoStuffB).
     /// </summary>
     public string? AfterChangedCallback { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the generated property should broadcast a property change message
+    /// via the Messenger instance when the property changes.
+    /// <para>
+    /// Example usage in a ViewModel:
+    /// <code language="csharp">
+    /// public partial class PersonViewModel : ViewModelBase
+    /// {
+    ///     // When the 'FirstName' property changes, it will automatically broadcast a message.
+    ///     [ObservableProperty(BroadcastOnChange = true)]
+    ///     private string firstName = string.Empty;
+    /// }
+    /// </code>
+    /// </para>
+    /// <para>
+    /// Example consumer registration to handle the broadcasted message:
+    /// <code language="csharp">
+    /// public partial class MyControl : UserControl
+    /// {
+    ///     public MyControl()
+    ///     {
+    ///         InitializeComponent();
+    ///
+    ///         // Register to receive notifications for changes to properties of type string.
+    ///         Messenger.Default.Register&lt;PropertyChangedMessage&lt;string&gt;&gt;(this, OnPropertyChangedMessage);
+    ///     }
+    ///
+    ///     private void OnPropertyChangedMessage(PropertyChangedMessage&lt;string&gt; message)
+    ///     {
+    ///         // Check if the message is for the "FirstName" property from the type PersonViewModel.
+    ///         if (message.Sender?.GetType() == typeof(PersonViewModel) &amp;&amp;
+    ///             message.PropertyName == nameof(PersonViewModel.FirstName))
+    ///         {
+    ///             var oldValue = message.OldValue;
+    ///             var newValue = message.NewValue;
+    ///             Debug.WriteLine($"PersonViewModel.FirstName: {oldValue} -> {newValue}");
+    ///         }
+    ///     }
+    /// }
+    /// </code>
+    /// </para>
+    /// </summary>
+    public bool BroadcastOnChange { get; set; }
 }

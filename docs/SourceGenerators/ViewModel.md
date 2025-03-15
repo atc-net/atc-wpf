@@ -74,24 +74,35 @@ private string name;
 // Generates a property named "MyName" and notifies FullName and Age
 [ObservableProperty(nameof(MyName), DependentProperties = [nameof(FullName), nameof(Age)])]
 private string name;
+
+// Generates a property named "Name" and broadcast message
+[ObservableProperty(BroadcastOnChange = true)]
+private string name;
 ```
 
 ### 🔔 Notifying Other Properties
 
 ```csharp
-// Generates a property named "Name" and notifies FullName and Age
+// Notifies multiple propertries as FullName and Age
 [ObservableProperty(DependentProperties = [nameof(FullName), nameof(Age)])]
 
 // Notifies the property "Email"
 [NotifyPropertyChangedFor(nameof(Email))]
 
-// Notifies multiple properties
+// Notifies multiple propertries as FullName and Age
 [NotifyPropertyChangedFor(nameof(FullName), nameof(Age))]
 ```
 
 **Note:**
 
 - `NotifyPropertyChangedFor` ensures that when the annotated property changes, specified dependent properties also get notified.
+
+### 🔔 Notifying Other ViewModels or Controls
+
+```csharp
+// Notifies by broadcast a message by type PropertyChangedMessage
+[ObservableProperty(BroadcastOnChange = true)]
+```
 
 ### 🔮 Callbacks
 

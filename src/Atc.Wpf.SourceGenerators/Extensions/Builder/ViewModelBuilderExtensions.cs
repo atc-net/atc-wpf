@@ -62,6 +62,11 @@ internal static class ViewModelBuilderExtensions
             builder.AppendLine();
         }
 
+        if (p.BroadcastOnChange)
+        {
+            builder.AppendLine($"var oldValue = {p.BackingFieldName};");
+        }
+
         builder.AppendLine($"{p.BackingFieldName} = value;");
         builder.AppendLine($"RaisePropertyChanged(nameof({p.Name}));");
         if (p.PropertyNamesToInvalidate is not null)
@@ -70,6 +75,11 @@ internal static class ViewModelBuilderExtensions
             {
                 builder.AppendLine($"RaisePropertyChanged(nameof({propertyNameToInvalidate}));");
             }
+        }
+
+        if (p.BroadcastOnChange)
+        {
+            builder.AppendLine($"Broadcast(nameof({p.Name}), oldValue, value);");
         }
 
         if (p.AfterChangedCallback is not null)

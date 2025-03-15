@@ -80,14 +80,14 @@ public class Messenger : IMessenger
             {
                 List<WeakActionAndToken> list;
 
-                if (!recipients.ContainsKey(messageType))
+                if (!recipients.TryGetValue(messageType, out var result))
                 {
-                    list = new List<WeakActionAndToken>();
+                    list = [];
                     recipients.Add(messageType, list);
                 }
                 else
                 {
-                    list = recipients[messageType];
+                    list = result;
                 }
 
                 var weakAction = new WeakAction<TMessage>(recipient, action, keepTargetAlive);
@@ -333,14 +333,14 @@ public class Messenger : IMessenger
         if (recipient is null
             || lists is null
             || lists.Count == 0
-            || !lists.ContainsKey(messageType))
+            || !lists.TryGetValue(messageType, out var list))
         {
             return;
         }
 
         lock (lists)
         {
-            foreach (var item in lists[messageType])
+            foreach (var item in list)
             {
                 if (item.Action is WeakAction<TMessage> weakActionCasted
                     && recipient == weakActionCasted.Target

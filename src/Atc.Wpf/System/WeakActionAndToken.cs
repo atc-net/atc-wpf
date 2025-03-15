@@ -6,7 +6,7 @@ namespace System;
 [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "OK.")]
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
 [SuppressMessage("Minor Code Smell", "S1104:Fields should not have public accessibility", Justification = "OK.")]
-public struct WeakActionAndToken
+public record struct WeakActionAndToken
 {
     /// <summary>
     /// The action.
