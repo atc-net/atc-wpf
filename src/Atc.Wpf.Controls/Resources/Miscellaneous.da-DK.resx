@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,53 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Language" xml:space="preserve">
-    <value>Sprog</value>
+  <data name="ApplicationSettings" xml:space="preserve">
+    <value>Applikationsindstillinger</value>
   </data>
-  <data name="Color" xml:space="preserve">
-    <value>Farve</value>
-  </data>
-  <data name="PleaseWait" xml:space="preserve">
-    <value>Vent venligst</value>
-  </data>
-  <data name="FieldIsRequired" xml:space="preserve">
-    <value>Feltet er påkrævet</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Fortryd</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Nej</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Land</value>
-  </data>
-  <data name="Hour" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
-  </data>
-  <data name="SelectFile" xml:space="preserve">
-    <value>Vælg en fil</value>
-  </data>
-  <data name="SelectDirectory" xml:space="preserve">
-    <value>Vælg en mappe</value>
-  </data>
-  <data name="Font" xml:space="preserve">
-    <value>Font</value>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
   </data>
   <data name="AvailableColors" xml:space="preserve">
     <value>Tilgængelige farver</value>
   </data>
-  <data name="StandardColors" xml:space="preserve">
-    <value>Standard farver</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Fortryd</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Slet alt</value>
+  </data>
+  <data name="CollapseAll" xml:space="preserve">
+    <value>Skjul alle</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farve</value>
   </data>
   <data name="ColorBeforeAndAfter" xml:space="preserve">
     <value>Farve før og efter</value>
@@ -171,19 +144,70 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Farvevælger</value>
   </data>
-  <data name="OpenRecentFileOnStartup" xml:space="preserve">
-    <value>Åbn den seneste fil ved opstart</value>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Kopier til udklipsholder</value>
   </data>
-  <data name="ApplicationSettings" xml:space="preserve">
-    <value>Applikationsindstillinger</value>
+  <data name="Country" xml:space="preserve">
+    <value>Land</value>
   </data>
-  <data name="CollapseAll" xml:space="preserve">
-    <value>Skjul alle</value>
+  <data name="Errors" xml:space="preserve">
+    <value>Fejl</value>
   </data>
   <data name="ExpandAll" xml:space="preserve">
     <value>Udvid alle</value>
   </data>
-  <data name="CopyToClipboard" xml:space="preserve">
-    <value>Kopier til udklipsholder</value>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>Feltet er påkrævet</value>
+  </data>
+  <data name="Font" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprog</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Besked</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nej</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OpenRecentFileOnStartup" xml:space="preserve">
+    <value>Åbn den seneste fil ved opstart</value>
+  </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Vent venligst</value>
+  </data>
+  <data name="PleaseWait3Dots" xml:space="preserve">
+    <value>Vent venligst...</value>
+  </data>
+  <data name="SelectDirectory" xml:space="preserve">
+    <value>Vælg en mappe</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Vælg en fil</value>
+  </data>
+  <data name="StandardColors" xml:space="preserve">
+    <value>Standard farver</value>
+  </data>
+  <data name="Timestamp" xml:space="preserve">
+    <value>Tidsstempel</value>
+  </data>
+  <data name="Warnings" xml:space="preserve">
+    <value>Advarsler</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
   </data>
 </root>

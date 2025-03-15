@@ -16,11 +16,24 @@
     <None Remove="Resources\Icons\color_palette.svg" />
     <None Remove="Resources\Icons\file.svg" />
     <None Remove="Resources\Icons\folder.svg" />
+    <None Remove="Resources\Images\eraser.png" />
+    <None Remove="Resources\Images\error.png" />
+    <None Remove="Resources\Images\information.png" />
+    <None Remove="Resources\Images\scrollrefresh.png" />
+    <None Remove="Resources\Images\warning.png" />
     <None Remove="Resources\information.svg" />
     <None Remove="Resources\LogCategoryIcons\error.svg" />
     <None Remove="Resources\LogCategoryIcons\warning.svg" />
     <None Remove="Resources\question-mark.svg" />
     <None Remove="Resources\question.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\eraser.png" />
+    <Resource Include="Resources\Images\error.png" />
+    <Resource Include="Resources\Images\information.png" />
+    <Resource Include="Resources\Images\scrollrefresh.png" />
+    <Resource Include="Resources\Images\warning.png" />
   </ItemGroup>
 
   <ItemGroup>

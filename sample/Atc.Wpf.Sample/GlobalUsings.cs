@@ -28,6 +28,7 @@ global using Atc.Wpf.Controls.LabelControls.Abstractions;
 global using Atc.Wpf.Controls.LabelControls.Extractors;
 global using Atc.Wpf.Controls.LabelControls.Writers;
 global using Atc.Wpf.Controls.Media;
+global using Atc.Wpf.Controls.Monitoring;
 global using Atc.Wpf.Controls.Notifications;
 global using Atc.Wpf.Controls.Options;
 global using Atc.Wpf.Controls.Sample;

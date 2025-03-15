@@ -215,6 +215,13 @@
             SamplePath="Layouts.DividerView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Monitoring">
+        <sample:SampleTreeViewItem
+            Header="ApplicationMonitor"
+            IsExpanded="True"
+            SamplePath="Monitoring.ApplicationMonitorView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Notifications">
         <sample:SampleTreeViewItem
             Header="ToastNotification"
