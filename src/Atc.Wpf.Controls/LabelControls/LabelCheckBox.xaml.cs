@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelCheckBox.
-/// </summary>
 public partial class LabelCheckBox : ILabelCheckBox
 {
     public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(

@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfFontIcons;
 
-/// <summary>
-/// Interaction logic for FontIconViewerView.
-/// </summary>
 public partial class FontIconViewerView : INotifyPropertyChanged
 {
     private const int FilterDebounceDelayMs = 500;

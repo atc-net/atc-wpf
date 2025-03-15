@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelPixelSizeBox.
-/// </summary>
 public partial class LabelPixelSizeBox : ILabelPixelSizeBox
 {
     public static readonly RoutedEvent ValueWidthChangedEvent = EventManager.RegisterRoutedEvent(

@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
-/// <summary>
-/// Interaction logic for BasicApplicationSettingsDialogBox.
-/// </summary>
 public partial class BasicApplicationSettingsDialogBox
 {
     public BasicApplicationSettingsDialogBox()

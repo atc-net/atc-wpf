@@ -1,9 +1,6 @@
 // ReSharper disable PreferConcreteValueOverDefault
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelDecimalXyBox.
-/// </summary>
 public partial class LabelDecimalXyBox : ILabelDecimalXyBox
 {
     public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(

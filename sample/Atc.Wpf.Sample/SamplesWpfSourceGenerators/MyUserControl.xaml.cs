@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
-/// <summary>
-/// Interaction logic for MyUserControl.
-/// </summary>
 [DependencyProperty<decimal>("MyDecimal", DefaultValue = 0.01)]
 [DependencyProperty<double>("MyDouble", DefaultValue = 0.01)]
 [DependencyProperty<float>("MyFloat", DefaultValue = 0.01)]

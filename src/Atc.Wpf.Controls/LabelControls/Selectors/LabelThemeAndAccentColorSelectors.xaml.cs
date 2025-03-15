@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelThemeAndAccentColorSelectors.
-/// </summary>
 public partial class LabelThemeAndAccentColorSelectors
 {
     public static readonly DependencyProperty LabelControlOrientationProperty = DependencyProperty.Register(

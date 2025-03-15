@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
-/// <summary>
-/// Interaction logic for ThemeSelector.
-/// </summary>
 public partial class ThemeSelector : INotifyPropertyChanged
 {
     private string selectedKey = string.Empty;

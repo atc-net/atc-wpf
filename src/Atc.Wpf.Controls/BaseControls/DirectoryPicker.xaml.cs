@@ -1,9 +1,6 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.BaseControls;
 
-/// <summary>
-/// Interaction logic for DirectoryPicker.
-/// </summary>
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class DirectoryPicker

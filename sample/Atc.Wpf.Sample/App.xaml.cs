@@ -1,9 +1,6 @@
 // ReSharper disable once UnusedParameter.Local
 namespace Atc.Wpf.Sample;
 
-/// <summary>
-/// Interaction logic for App.
-/// </summary>
 public partial class App
 {
     private readonly IHost host;

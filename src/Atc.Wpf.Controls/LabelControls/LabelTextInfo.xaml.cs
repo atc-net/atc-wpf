@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelTextInfo.
-/// </summary>
 public partial class LabelTextInfo : ILabelTextInfo
 {
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(

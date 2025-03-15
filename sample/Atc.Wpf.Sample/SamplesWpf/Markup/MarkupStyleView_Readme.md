@@ -115,9 +115,6 @@ ___
 #### Fenced Code Block - c#
 
 ```c#
-/// <summary>
-/// Interaction logic for MarkupStyleView.
-/// </summary>
 public partial class MarkupStyleView
 {
     public MarkupStyleView()

@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelToggleSwitch.
-/// </summary>
 public partial class LabelToggleSwitch : ILabelToggleSwitch
 {
     public static readonly DependencyProperty ContentDirectionProperty = DependencyProperty.Register(

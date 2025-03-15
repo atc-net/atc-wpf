@@ -6,9 +6,6 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.Selectors;
 
-/// <summary>
-/// Interaction logic for LanguageSelector.
-/// </summary>
 public partial class LanguageSelector
 {
     private readonly ObservableCollectionEx<LanguageItem> items = new();

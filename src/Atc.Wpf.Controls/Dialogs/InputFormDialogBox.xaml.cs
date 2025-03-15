@@ -1,9 +1,6 @@
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 namespace Atc.Wpf.Controls.Dialogs;
 
-/// <summary>
-/// Interaction logic for InputFormDialogBox.
-/// </summary>
 public partial class InputFormDialogBox
 {
     private const int ScrollBarSize = 20;

@@ -1,9 +1,6 @@
 // ReSharper disable PreferConcreteValueOverDefault
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelDecimalBox.
-/// </summary>
 public partial class LabelDecimalBox : ILabelDecimalBox
 {
     public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(

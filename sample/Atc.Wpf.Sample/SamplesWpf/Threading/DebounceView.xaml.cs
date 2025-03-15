@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Threading;
 
-/// <summary>
-/// Interaction logic for DebounceView.
-/// </summary>
 public partial class DebounceView
 {
     private readonly DebounceDispatcher debounceTimer = new();

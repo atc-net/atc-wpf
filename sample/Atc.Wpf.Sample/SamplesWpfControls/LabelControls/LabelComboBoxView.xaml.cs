@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelComboBoxView.
-/// </summary>
 public partial class LabelComboBoxView : INotifyPropertyChanged
 {
     private IDictionary<string, string> items = new Dictionary<string, string>(StringComparer.Ordinal);

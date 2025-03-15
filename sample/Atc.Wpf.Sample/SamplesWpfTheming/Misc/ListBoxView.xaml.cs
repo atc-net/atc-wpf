@@ -1,9 +1,6 @@
 // ReSharper disable StringLiteralTypo
 namespace Atc.Wpf.Sample.SamplesWpfTheming.Misc;
 
-/// <summary>
-/// Interaction logic for ListBoxView.
-/// </summary>
 public partial class ListBoxView
 {
     public ListBoxView()

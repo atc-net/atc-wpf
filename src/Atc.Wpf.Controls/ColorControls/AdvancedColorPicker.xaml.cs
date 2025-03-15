@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.ColorControls;
 
-/// <summary>
-/// Interaction logic for AdvancedColorPicker.
-/// </summary>
 public partial class AdvancedColorPicker : INotifyPropertyChanged
 {
     private double hue;

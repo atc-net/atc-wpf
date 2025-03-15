@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
-/// <summary>
-/// Interaction logic for InputDialogBox.
-/// </summary>
 public partial class InputDialogBox
 {
     public InputDialogBox(

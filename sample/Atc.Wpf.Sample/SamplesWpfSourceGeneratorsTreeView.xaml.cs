@@ -1,13 +1,9 @@
-namespace Atc.Wpf.Sample
+namespace Atc.Wpf.Sample;
+
+public partial class SamplesWpfSourceGeneratorsTreeView
 {
-    /// <summary>
-    /// Interaction logic for SamplesWpfSourceGeneratorsTreeView.
-    /// </summary>
-    public partial class SamplesWpfSourceGeneratorsTreeView
+    public SamplesWpfSourceGeneratorsTreeView()
     {
-        public SamplesWpfSourceGeneratorsTreeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

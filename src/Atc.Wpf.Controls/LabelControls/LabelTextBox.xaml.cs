@@ -3,9 +3,6 @@
 // ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelTextBox.
-/// </summary>
 public partial class LabelTextBox : ILabelTextBox
 {
     public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(

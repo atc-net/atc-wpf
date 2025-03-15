@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
-/// <summary>
-/// Interaction logic for ColorPickerDialogBox.
-/// </summary>
 public partial class ColorPickerDialogBox
 {
     public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(

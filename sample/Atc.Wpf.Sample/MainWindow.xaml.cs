@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample;
 
-/// <summary>
-/// Interaction logic for MainWindow.
-/// </summary>
 public partial class MainWindow
 {
     private IMainWindowViewModel GetViewModel() => (IMainWindowViewModel)DataContext!;

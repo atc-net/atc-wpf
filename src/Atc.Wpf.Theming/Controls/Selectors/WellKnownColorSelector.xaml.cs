@@ -4,9 +4,6 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
-/// <summary>
-/// Interaction logic for WellKnownColorSelector.
-/// </summary>
 public partial class WellKnownColorSelector
 {
     private string? lastName;

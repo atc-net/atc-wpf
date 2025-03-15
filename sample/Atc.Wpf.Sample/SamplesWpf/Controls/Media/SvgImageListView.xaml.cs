@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Controls.Media;
 
-/// <summary>
-/// Interaction logic for SvgImageListView.
-/// </summary>
 public partial class SvgImageListView
 {
     public SvgImageListView()

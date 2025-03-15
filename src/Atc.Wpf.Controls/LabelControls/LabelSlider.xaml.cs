@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelSlider.
-/// </summary>
 public partial class LabelSlider : ILabelSlider
 {
     public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(

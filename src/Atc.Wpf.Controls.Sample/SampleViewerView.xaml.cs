@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Sample;
 
-/// <summary>
-/// Interaction logic for SampleViewerView.
-/// </summary>
 public partial class SampleViewerView
 {
     public static readonly DependencyProperty HeaderForegroundProperty = DependencyProperty.Register(

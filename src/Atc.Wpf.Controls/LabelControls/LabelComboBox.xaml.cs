@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelComboBox.
-/// </summary>
 public partial class LabelComboBox : ILabelComboBox
 {
     public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
@@ -22,7 +19,7 @@ public partial class LabelComboBox : ILabelComboBox
         typeof(string),
         typeof(LabelComboBox),
         new FrameworkPropertyMetadata(
-            default(string),
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnSelectedKeyLostFocus,
             coerceValueCallback: null,

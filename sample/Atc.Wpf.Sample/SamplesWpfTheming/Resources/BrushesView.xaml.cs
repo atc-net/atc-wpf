@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfTheming.Resources;
 
-/// <summary>
-/// Interaction logic for BrushesView.
-/// </summary>
 [SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "OK.")]
 [SuppressMessage("Design", "MA0016:Prefer using collection abstraction instead of implementation", Justification = "OK.")]
 public partial class BrushesView : INotifyPropertyChanged

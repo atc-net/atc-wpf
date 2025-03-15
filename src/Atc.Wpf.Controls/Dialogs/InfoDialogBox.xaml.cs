@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
-/// <summary>
-/// Interaction logic for InfoDialogBox.
-/// </summary>
 public partial class InfoDialogBox
 {
     public InfoDialogBox(

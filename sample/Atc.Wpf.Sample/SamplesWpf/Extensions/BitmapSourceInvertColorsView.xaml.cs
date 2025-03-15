@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Extensions;
 
-/// <summary>
-/// Interaction logic for BitmapSourceInvertColorsView.
-/// </summary>
 public partial class BitmapSourceInvertColorsView
 {
     public BitmapSourceInvertColorsView()

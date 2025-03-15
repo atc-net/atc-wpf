@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.ColorControls;
 
-/// <summary>
-/// Interaction logic for WellKnownColorPicker.
-/// </summary>
 [SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "OK.")]
 public partial class WellKnownColorPicker
 {

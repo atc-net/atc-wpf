@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfTheming.InputBox;
 
-/// <summary>
-/// Interaction logic for ComboBoxView.
-/// </summary>
 public partial class ComboBoxView
 {
     public ComboBoxView()

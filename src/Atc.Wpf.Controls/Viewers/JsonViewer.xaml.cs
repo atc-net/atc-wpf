@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Viewers;
 
-/// <summary>
-/// Interaction logic for JsonViewer.
-/// </summary>
 public partial class JsonViewer
 {
     public JsonViewer()

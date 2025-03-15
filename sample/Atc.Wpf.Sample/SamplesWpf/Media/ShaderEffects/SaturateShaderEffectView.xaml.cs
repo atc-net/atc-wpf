@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Media.ShaderEffects;
 
-/// <summary>
-/// Interaction logic for SaturateShaderEffectView.
-/// </summary>
 public partial class SaturateShaderEffectView
 {
     public SaturateShaderEffectView()

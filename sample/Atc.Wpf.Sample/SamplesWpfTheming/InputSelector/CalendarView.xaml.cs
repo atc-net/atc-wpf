@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfTheming.InputSelector;
 
-/// <summary>
-/// Interaction logic for CalendarView.
-/// </summary>
 public partial class CalendarView
 {
     public CalendarView()

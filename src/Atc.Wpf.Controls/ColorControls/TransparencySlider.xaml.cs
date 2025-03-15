@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.ColorControls;
 
-/// <summary>
-/// Interaction logic for TransparencySlider.
-/// </summary>
 public partial class TransparencySlider
 {
     public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
