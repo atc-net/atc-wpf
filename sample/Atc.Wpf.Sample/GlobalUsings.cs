@@ -1,4 +1,6 @@
+global using System;
 global using System.Collections;
+global using System.Collections.Generic;
 global using System.Collections.ObjectModel;
 global using System.Collections.Specialized;
 global using System.ComponentModel;
@@ -7,6 +9,7 @@ global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
+global using System.Linq;
 global using System.Runtime.CompilerServices;
 global using System.Text;
 global using System.Text.Json;
@@ -45,7 +48,9 @@ global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
+
 global using ControlzEx.Theming;
+
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;

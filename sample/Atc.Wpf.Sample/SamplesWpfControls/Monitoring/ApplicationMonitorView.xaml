@@ -61,6 +61,13 @@
                         Content="Add many items" />
                 </atc:UniformSpacingPanel>
 
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                    <atc:LabelCheckBox
+                        HideAreas="All"
+                        IsChecked="{Binding Path=EnableTimer}"
+                        LabelText="Add by timer" />
+                </atc:UniformSpacingPanel>
+
             </atc:UniformSpacingPanel>
 
         </GroupBox>
