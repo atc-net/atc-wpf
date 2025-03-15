@@ -4,6 +4,7 @@
     xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:internal="clr-namespace:Atc.Wpf.Controls.Progressing.Internal"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing"
+    xmlns:resources="clr-namespace:Atc.Wpf.Controls.Resources"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <ResourceDictionary.MergedDictionaries>
@@ -14,7 +15,7 @@
 
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.BusyOverlay" TargetType="{x:Type progressing:BusyOverlay}">
-        <Setter Property="BusyContent" Value="Please wait..." />
+        <Setter Property="BusyContent" Value="{x:Static resources:Miscellaneous.PleaseWait3Dots}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="OverlayStyle">
