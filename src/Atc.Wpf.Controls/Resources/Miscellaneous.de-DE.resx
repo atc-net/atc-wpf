@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,53 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Color" xml:space="preserve">
-    <value>Farbe</value>
+  <data name="ApplicationSettings" xml:space="preserve">
+    <value>Anwendungseinstellungen</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Sprache</value>
-  </data>
-  <data name="PleaseWait" xml:space="preserve">
-    <value>Warten Sie mal</value>
-  </data>
-  <data name="FieldIsRequired" xml:space="preserve">
-    <value>Feld ist erforderlich</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Stornieren</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Keine</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Land</value>
-  </data>
-  <data name="Hour" xml:space="preserve">
-    <value>Stunde</value>
-  </data>
-  <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
-  </data>
-  <data name="SelectFile" xml:space="preserve">
-    <value>Wählen Sie eine Datei aus</value>
-  </data>
-  <data name="SelectDirectory" xml:space="preserve">
-    <value>Wählen Sie ein Verzeichnis aus</value>
-  </data>
-  <data name="Font" xml:space="preserve">
-    <value>Font</value>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
   </data>
   <data name="AvailableColors" xml:space="preserve">
     <value>Verfügbare Farben</value>
   </data>
-  <data name="StandardColors" xml:space="preserve">
-    <value>Standardfarben</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Stornieren</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Alles löschen</value>
+  </data>
+  <data name="CollapseAll" xml:space="preserve">
+    <value>Alles reduzieren</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
   </data>
   <data name="ColorBeforeAndAfter" xml:space="preserve">
     <value>Farbe vorher und nachher</value>
@@ -171,19 +144,70 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Farbwähler</value>
   </data>
-  <data name="OpenRecentFileOnStartup" xml:space="preserve">
-    <value>Öffnen Sie die zuletzt verwendete Datei beim Start</value>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>In die Zwischenablage kopieren</value>
   </data>
-  <data name="ApplicationSettings" xml:space="preserve">
-    <value>Anwendungseinstellungen</value>
+  <data name="Country" xml:space="preserve">
+    <value>Land</value>
   </data>
-  <data name="CollapseAll" xml:space="preserve">
-    <value>Alles reduzieren</value>
+  <data name="Errors" xml:space="preserve">
+    <value>Fehler</value>
   </data>
   <data name="ExpandAll" xml:space="preserve">
     <value>Alle erweitern</value>
   </data>
-  <data name="CopyToClipboard" xml:space="preserve">
-    <value>In die Zwischenablage kopieren</value>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>Feld ist erforderlich</value>
+  </data>
+  <data name="Font" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Stunde</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Nachricht</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OpenRecentFileOnStartup" xml:space="preserve">
+    <value>Öffnen Sie die zuletzt verwendete Datei beim Start</value>
+  </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Warten Sie mal</value>
+  </data>
+  <data name="PleaseWait3Dots" xml:space="preserve">
+    <value>Warten Sie mal...</value>
+  </data>
+  <data name="SelectDirectory" xml:space="preserve">
+    <value>Wählen Sie ein Verzeichnis aus</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Wählen Sie eine Datei aus</value>
+  </data>
+  <data name="StandardColors" xml:space="preserve">
+    <value>Standardfarben</value>
+  </data>
+  <data name="Timestamp" xml:space="preserve">
+    <value>Zeitstempel</value>
+  </data>
+  <data name="Warnings" xml:space="preserve">
+    <value>Warnungen</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
   </data>
 </root>

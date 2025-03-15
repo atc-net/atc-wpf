@@ -70,6 +70,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        public static string Auto {
+            get {
+                return ResourceManager.GetString("Auto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available Colors.
         /// </summary>
         public static string AvailableColors {
@@ -84,6 +93,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear All.
+        /// </summary>
+        public static string ClearAll {
+            get {
+                return ResourceManager.GetString("ClearAll", resourceCulture);
             }
         }
         
@@ -142,6 +160,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors.
+        /// </summary>
+        public static string Errors {
+            get {
+                return ResourceManager.GetString("Errors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand All.
         /// </summary>
         public static string ExpandAll {
@@ -178,11 +205,29 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string Information {
+            get {
+                return ResourceManager.GetString("Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
             }
         }
         
@@ -232,6 +277,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please wait....
+        /// </summary>
+        public static string PleaseWait3Dots {
+            get {
+                return ResourceManager.GetString("PleaseWait3Dots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a directory.
         /// </summary>
         public static string SelectDirectory {
@@ -255,6 +309,24 @@ namespace Atc.Wpf.Controls.Resources {
         public static string StandardColors {
             get {
                 return ResourceManager.GetString("StandardColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timestamp.
+        /// </summary>
+        public static string Timestamp {
+            get {
+                return ResourceManager.GetString("Timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warnings.
+        /// </summary>
+        public static string Warnings {
+            get {
+                return ResourceManager.GetString("Warnings", resourceCulture);
             }
         }
         
