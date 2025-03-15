@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelFontFamilySelector.
-/// </summary>
 public partial class LabelFontFamilySelector : ILabelFontFamilySelector
 {
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(

@@ -1,9 +1,6 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Theming.Controls.Selectors;
 
-/// <summary>
-/// Interaction logic for AccentColorSelector.
-/// </summary>
 public partial class AccentColorSelector : INotifyPropertyChanged
 {
     private string selectedKey = string.Empty;

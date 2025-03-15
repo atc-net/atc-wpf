@@ -2,9 +2,6 @@
 // ReSharper disable ConvertIfStatementToSwitchStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelDateTimePicker.
-/// </summary>
 public partial class LabelDateTimePicker : ILabelDateTimePicker
 {
     public static readonly DependencyProperty DisplayDateProperty = DependencyProperty.Register(

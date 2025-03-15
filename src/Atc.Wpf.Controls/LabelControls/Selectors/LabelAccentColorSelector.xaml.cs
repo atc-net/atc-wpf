@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelAccentColorSelector.
-/// </summary>
 public partial class LabelAccentColorSelector
 {
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(

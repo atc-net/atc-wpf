@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.ColorControls;
 
-/// <summary>
-/// Interaction logic for SaturationBrightnessPicker.
-/// </summary>
 public partial class SaturationBrightnessPicker
 {
     private readonly PointPickerAdorner adorner;

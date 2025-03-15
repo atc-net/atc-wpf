@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Generator.FontIconResources;
 
-/// <summary>
-/// Interaction logic for MainWindow.
-/// </summary>
 public partial class MainWindow
 {
     public MainWindow(IMainWindowViewModel viewModel)

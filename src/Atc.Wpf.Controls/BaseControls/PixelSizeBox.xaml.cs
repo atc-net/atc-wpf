@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-/// <summary>
-/// Interaction logic for PixelSizeBox.
-/// </summary>
 public partial class PixelSizeBox
 {
     public static readonly RoutedEvent ValueWidthChangedEvent = EventManager.RegisterRoutedEvent(

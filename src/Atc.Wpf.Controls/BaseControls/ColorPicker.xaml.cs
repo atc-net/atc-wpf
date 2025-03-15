@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-/// <summary>
-/// Interaction logic for ColorPicker.
-/// </summary>
 public partial class ColorPicker
 {
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(

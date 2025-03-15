@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Selectors;
 
-/// <summary>
-/// Interaction logic for FontFamilySelector.
-/// </summary>
 public partial class FontFamilySelector
 {
     private readonly ObservableCollectionEx<FontFamilyItem> items = new();

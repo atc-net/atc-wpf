@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelWellKnownColorSelector.
-/// </summary>
 public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 {
     private bool isFirstOnSelectedKeyLostFocus;

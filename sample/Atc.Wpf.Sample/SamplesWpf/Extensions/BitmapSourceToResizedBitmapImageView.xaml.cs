@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Extensions;
 
-/// <summary>
-/// Interaction logic for BitmapSourceToResizedBitmapImageView.
-/// </summary>
 public partial class BitmapSourceToResizedBitmapImageView
 {
     public BitmapSourceToResizedBitmapImageView()

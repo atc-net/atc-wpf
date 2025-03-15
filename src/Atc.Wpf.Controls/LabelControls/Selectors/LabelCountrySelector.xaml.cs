@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelCountrySelector.
-/// </summary>
 public partial class LabelCountrySelector : ILabelCountrySelector
 {
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(

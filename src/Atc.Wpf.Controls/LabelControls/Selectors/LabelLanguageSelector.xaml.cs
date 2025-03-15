@@ -2,9 +2,6 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelLanguageSelector.
-/// </summary>
 public partial class LabelLanguageSelector : ILabelLanguageSelector
 {
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(

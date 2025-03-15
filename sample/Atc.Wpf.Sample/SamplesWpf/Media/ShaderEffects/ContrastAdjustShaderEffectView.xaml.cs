@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Media.ShaderEffects;
 
-/// <summary>
-/// Interaction logic for ContrastAdjustShaderEffectView.
-/// </summary>
 public partial class ContrastAdjustShaderEffectView
 {
     public ContrastAdjustShaderEffectView()

@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelTimePicker.
-/// </summary>
 public partial class LabelTimePicker : ILabelTimePicker
 {
     public static readonly DependencyProperty SelectedTimeProperty = DependencyProperty.Register(
@@ -10,7 +7,7 @@ public partial class LabelTimePicker : ILabelTimePicker
         typeof(DateTime?),
         typeof(LabelTimePicker),
         new FrameworkPropertyMetadata(
-            default(DateTime?),
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnSelectedTimeChanged));
 

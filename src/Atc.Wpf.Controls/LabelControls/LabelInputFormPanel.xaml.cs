@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelInputFormPanel.
-/// </summary>
 public partial class LabelInputFormPanel
 {
     public LabelInputFormPanel()

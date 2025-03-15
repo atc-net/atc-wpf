@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelColorPicker.
-/// </summary>
 public partial class LabelColorPicker : ILabelColorPicker
 {
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(

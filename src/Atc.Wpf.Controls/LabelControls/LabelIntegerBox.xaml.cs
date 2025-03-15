@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelIntegerBox.
-/// </summary>
 public partial class LabelIntegerBox : ILabelIntegerBox
 {
     public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(

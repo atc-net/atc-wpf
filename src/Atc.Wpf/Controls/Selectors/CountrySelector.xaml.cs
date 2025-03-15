@@ -6,9 +6,6 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Controls.Selectors;
 
-/// <summary>
-/// Interaction logic for CountrySelector.
-/// </summary>
 public partial class CountrySelector
 {
     private readonly ObservableCollectionEx<CountryItem> items = new();

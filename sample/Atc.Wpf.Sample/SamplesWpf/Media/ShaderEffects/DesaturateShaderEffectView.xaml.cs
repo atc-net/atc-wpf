@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Media.ShaderEffects;
 
-/// <summary>
-/// Interaction logic for DesaturateShaderEffectView.
-/// </summary>
 public partial class DesaturateShaderEffectView
 {
     public DesaturateShaderEffectView()

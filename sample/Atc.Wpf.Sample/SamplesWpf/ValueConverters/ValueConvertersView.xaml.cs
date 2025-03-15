@@ -1,13 +1,9 @@
-namespace Atc.Wpf.Sample.SamplesWpf.ValueConverters
+namespace Atc.Wpf.Sample.SamplesWpf.ValueConverters;
+
+public partial class ValueConvertersView
 {
-    /// <summary>
-    /// Interaction logic for ValueConvertersView.
-    /// </summary>
-    public partial class ValueConvertersView
+    public ValueConvertersView()
     {
-        public ValueConvertersView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

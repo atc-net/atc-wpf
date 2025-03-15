@@ -1,9 +1,6 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelThemeSelector.
-/// </summary>
 public partial class LabelThemeSelector
 {
     public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(

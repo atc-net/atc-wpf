@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-/// <summary>
-/// Interaction logic for ClockPanelPicker.
-/// </summary>
 public partial class ClockPanelPicker : INotifyPropertyChanged
 {
     private IDictionary<string, string> hours = new Dictionary<string, string>(StringComparer.Ordinal);

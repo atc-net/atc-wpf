@@ -2,9 +2,6 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelDatePicker.
-/// </summary>
 public partial class LabelDatePicker : ILabelDatePicker
 {
     public static readonly DependencyProperty DisplayDateProperty = DependencyProperty.Register(

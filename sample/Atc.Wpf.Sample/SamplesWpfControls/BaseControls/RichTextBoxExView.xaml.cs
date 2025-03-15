@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.BaseControls;
 
-/// <summary>
-/// Interaction logic for RichTextBoxExView.
-/// </summary>
 public partial class RichTextBoxExView
 {
     public RichTextBoxExView()
@@ -49,9 +46,6 @@ public partial class RichTextBoxExView
         """
         namespace Atc.Wpf.Sample.SamplesWpf.Layouts
         {
-            /// <summary>
-            /// Interaction logic for GridExView.
-            /// </summary>
             public partial class GridExView
             {
                 public GridExView()

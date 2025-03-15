@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
-/// <summary>
-/// Interaction logic for AttachedPropertyView.
-/// </summary>
 public partial class AttachedPropertyView
 {
     public AttachedPropertyView()

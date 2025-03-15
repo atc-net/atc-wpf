@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-/// <summary>
-/// Interaction logic for IntegerXyBox.
-/// </summary>
 public partial class IntegerXyBox
 {
     public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(

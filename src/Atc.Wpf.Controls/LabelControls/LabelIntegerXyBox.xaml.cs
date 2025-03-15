@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-/// <summary>
-/// Interaction logic for LabelIntegerXyBox.
-/// </summary>
 public partial class LabelIntegerXyBox : ILabelIntegerXyBox
 {
     public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(

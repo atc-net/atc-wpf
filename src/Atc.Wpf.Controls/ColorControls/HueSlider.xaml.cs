@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.ColorControls;
 
-/// <summary>
-/// Interaction logic for HueSlider.
-/// </summary>
 public partial class HueSlider
 {
     public static readonly DependencyProperty HueProperty = DependencyProperty.Register(

@@ -1,8 +1,5 @@
 namespace Atc.Wpf.Controls.Dialogs;
 
-/// <summary>
-/// Interaction logic for QuestionDialogBox.
-/// </summary>
 public partial class QuestionDialogBox
 {
     public QuestionDialogBox(
