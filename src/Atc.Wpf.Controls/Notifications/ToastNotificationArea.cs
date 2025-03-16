@@ -49,15 +49,16 @@ public sealed class ToastNotificationArea : Control
 
     [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK - Need 'async void' and not 'async Task'")]
     [SuppressMessage("Major Bug", "S3168:\"async\" methods should not return \"void\"", Justification = "OK - Need 'async void' and not 'async Task'")]
+    [SuppressMessage("ReSharper", "AsyncVoidMethod", Justification = "OK - Need 'async void' and not 'async Task'")]
     public async void Show(
-        object content,
+        ContentControl contentControl,
         TimeSpan expirationTime,
         Action? onClick,
         Action? onClose)
     {
         var toastNotification = new ToastNotification
         {
-            Content = content,
+            Content = contentControl,
         };
 
         toastNotification.MouseLeftButtonDown += (sender, _) =>

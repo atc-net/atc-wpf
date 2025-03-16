@@ -4,7 +4,7 @@ public interface IToastNotificationManager
 {
     void Show(
         bool useDesktop,
-        object content,
+        UserControl content,
         string areaName = "",
         TimeSpan? expirationTime = null,
         Action? onClick = null,

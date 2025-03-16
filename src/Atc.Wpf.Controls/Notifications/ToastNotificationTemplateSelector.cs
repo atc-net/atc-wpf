@@ -12,9 +12,12 @@ public sealed class ToastNotificationTemplateSelector : DataTemplateSelector
         defaultToastNotificationTemplate = container?.FindResource("DefaultToastNotificationTemplate") as DataTemplate;
     }
 
-    public override DataTemplate? SelectTemplate(object item, DependencyObject container)
+    public override DataTemplate? SelectTemplate(
+        object? item,
+        DependencyObject container)
     {
-        if (defaultStringTemplate == null && defaultToastNotificationTemplate == null)
+        if (defaultStringTemplate is null &&
+            defaultToastNotificationTemplate is null)
         {
             GetTemplatesFromResources((FrameworkElement)container);
         }

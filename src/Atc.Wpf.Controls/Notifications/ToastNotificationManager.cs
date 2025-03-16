@@ -3,19 +3,50 @@ namespace Atc.Wpf.Controls.Notifications;
 public sealed class ToastNotificationManager : IToastNotificationManager
 {
     private readonly Dispatcher dispatcher;
-    private static readonly List<ToastNotificationArea> Areas = new();
+    private static readonly List<ToastNotificationArea> Areas = [];
     private static ToastNotificationsOverlayWindow? window;
 
-    public ToastNotificationManager(Dispatcher? dispatcher = null)
+    public ToastNotificationManager(
+        Dispatcher? dispatcher = null)
     {
         dispatcher ??= Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         this.dispatcher = dispatcher;
     }
 
+    public void Show(
+        bool useDesktop,
+        ToastNotificationMessage message,
+        string areaName = "",
+        TimeSpan? expirationTime = null,
+        Action? onClick = null,
+        Action? onClose = null)
+        => Show(
+            useDesktop,
+            message.ToToastNotificationContent(),
+            areaName,
+            expirationTime,
+            onClick,
+            onClose);
+
+    public void Show(
+        bool useDesktop,
+        ToastNotificationContent content,
+        string areaName = "",
+        TimeSpan? expirationTime = null,
+        Action? onClick = null,
+        Action? onClose = null)
+        => Show(
+            useDesktop,
+            (UserControl)content,
+            areaName,
+            expirationTime,
+            onClick,
+            onClose);
+
     [SuppressMessage("Critical Code Smell", "S2696:Instance members should not write to \"static\" fields", Justification = "OK.")]
     public void Show(
         bool useDesktop,
-        object content,
+        UserControl content,
         string areaName = "",
         TimeSpan? expirationTime = null,
         Action? onClick = null,
@@ -25,7 +56,14 @@ public sealed class ToastNotificationManager : IToastNotificationManager
 
         if (!dispatcher.CheckAccess())
         {
-            _ = dispatcher.BeginInvoke(new Action(() => Show(useDesktop, content, areaName, expirationTime, onClick, onClose)));
+            _ = dispatcher.BeginInvoke(
+                new Action(() => Show(
+                    useDesktop,
+                    content,
+                    areaName,
+                    expirationTime,
+                    onClick,
+                    onClose)));
             return;
         }
 
@@ -47,7 +85,10 @@ public sealed class ToastNotificationManager : IToastNotificationManager
             areaName = "DesktopArea";
         }
 
-        var toastNotificationAreas = Areas.Where(a => a.Name == areaName).ToArray();
+        var toastNotificationAreas = Areas
+            .Where(a => a.Name == areaName)
+            .ToArray();
+
         if (!toastNotificationAreas.Any())
         {
             toastNotificationAreas = Areas.Where(a => a.Name != "DesktopArea").ToArray();
@@ -55,11 +96,16 @@ public sealed class ToastNotificationManager : IToastNotificationManager
 
         foreach (var area in toastNotificationAreas)
         {
-            area.Show(content, (TimeSpan)expirationTime, onClick, onClose);
+            area.Show(
+                content,
+                (TimeSpan)expirationTime,
+                onClick,
+                onClose);
         }
     }
 
-    internal static void AddArea(ToastNotificationArea area)
+    internal static void AddArea(
+        ToastNotificationArea area)
     {
         Areas.Add(area);
     }
