@@ -13,7 +13,7 @@ public partial class ApplicationMonitorView
         nameof(ShowToolbar),
         typeof(bool),
         typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowToolbar
     {
@@ -25,7 +25,7 @@ public partial class ApplicationMonitorView
         nameof(ShowClearInToolbar),
         typeof(bool),
         typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowClearInToolbar
     {
@@ -37,7 +37,7 @@ public partial class ApplicationMonitorView
         nameof(ShowAutoScrollInToolbar),
         typeof(bool),
         typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowAutoScrollInToolbar
     {
@@ -49,7 +49,7 @@ public partial class ApplicationMonitorView
         nameof(ShowSearchInToolbar),
         typeof(bool),
         typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: false));
+        new PropertyMetadata(defaultValue: true));
 
     public bool ShowSearchInToolbar
     {

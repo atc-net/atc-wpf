@@ -8,6 +8,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
     private ApplicationFilterViewModel filter;
     private bool autoScroll;
     private ApplicationEventEntry? selectedEntry;
+    private bool showColumnArea;
     private ListSortDirection sortDirection;
     private bool listenOnToastNotificationMessage;
 
@@ -81,6 +82,21 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
     }
 
     public ObservableCollectionEx<ApplicationEventEntry> Entries { get; }
+
+    public bool ShowColumnArea
+    {
+        get => showColumnArea;
+        set
+        {
+            if (value == showColumnArea)
+            {
+                return;
+            }
+
+            showColumnArea = value;
+            RaisePropertyChanged();
+        }
+    }
 
     public ListSortDirection SortDirection
     {
@@ -224,6 +240,13 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
                     LogCategoryType.Critical)
             {
                 return false;
+            }
+
+            if (ShowColumnArea)
+            {
+                return string.IsNullOrEmpty(filter.MatchOnTextInData) ||
+                       entry.Area.Contains(filter.MatchOnTextInData, StringComparison.OrdinalIgnoreCase) ||
+                       entry.Message.Contains(filter.MatchOnTextInData, StringComparison.OrdinalIgnoreCase);
             }
 
             return string.IsNullOrEmpty(filter.MatchOnTextInData) ||
