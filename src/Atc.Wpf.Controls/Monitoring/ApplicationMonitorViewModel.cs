@@ -9,6 +9,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
     private bool autoScroll;
     private ApplicationEventEntry? selectedEntry;
     private ListSortDirection sortDirection;
+    private bool listenOnToastNotificationMessage;
 
     public ApplicationMonitorViewModel()
     {
@@ -117,6 +118,30 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
         }
     }
 
+    public bool ListenOnToastNotificationMessage
+    {
+        get => listenOnToastNotificationMessage;
+        set
+        {
+            if (value == listenOnToastNotificationMessage)
+            {
+                return;
+            }
+
+            listenOnToastNotificationMessage = value;
+            RaisePropertyChanged();
+
+            if (listenOnToastNotificationMessage)
+            {
+                MessengerInstance.Register<ToastNotificationMessage>(this, OnToastNotificationMessageHandler);
+            }
+            else
+            {
+                MessengerInstance.UnRegister<ToastNotificationMessage>(this, OnToastNotificationMessageHandler);
+            }
+        }
+    }
+
     public void AddEntry(
         ApplicationEventEntry entry)
     {
@@ -146,6 +171,17 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
     private void OnApplicationEventEntryHandler(
         ApplicationEventEntry entry)
         => AddEntry(entry);
+
+    private void OnToastNotificationMessageHandler(
+        ToastNotificationMessage message)
+    {
+        if (!ListenOnToastNotificationMessage)
+        {
+            return;
+        }
+
+        AddEntry(message.ToApplicationEventEntry());
+    }
 
     private void ClearCommandHandler()
     {
