@@ -2,6 +2,7 @@ namespace Atc.Wpf.SourceGenerators.Extensions;
 
 internal static class ObjectExtensions
 {
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static string? TransformDefaultValueIfNeeded(
         this object? defaultValue,
         string type)
@@ -11,7 +12,11 @@ internal static class ObjectExtensions
             return null;
         }
 
-        var strDefaultValue = defaultValue.ToString();
+        var strDefaultValue = defaultValue
+            .ToString()?
+            .EnsureNoNameof()?
+            .ToString() ?? string.Empty;
+
         if (!type.IsSimpleType())
         {
             return strDefaultValue;
@@ -63,5 +68,20 @@ internal static class ObjectExtensions
         }
 
         return strDefaultValue;
+    }
+
+    public static object? EnsureNoNameof(
+        this object? value)
+    {
+        if (value is null ||
+            !value.ToString().StartsWith("nameof", StringComparison.Ordinal))
+        {
+            return value;
+        }
+
+        return value
+            .ToString()
+            .Replace("nameof(", string.Empty)
+            .Replace(")", string.Empty);
     }
 }

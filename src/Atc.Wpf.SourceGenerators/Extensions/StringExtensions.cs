@@ -27,6 +27,30 @@ public static class StringExtensions
         { nameof(String), "string" },
     };
 
+    public static string EnsureNameofContent(
+        this string value)
+    {
+        if (value is null)
+        {
+            throw new ArgumentNullException(nameof(value));
+        }
+
+        if (!value.StartsWith("nameof(", StringComparison.Ordinal) ||
+            !value.EndsWith(")", StringComparison.Ordinal))
+        {
+            return $"nameof({value})";
+        }
+
+        if (value.StartsWith("nameof(nameof(", StringComparison.Ordinal))
+        {
+            value = value
+                .Replace("nameof(nameof(", "nameof(")
+                .Replace("))", ")");
+        }
+
+        return value;
+    }
+
     public static string EnsureFirstCharacterToUpper(
         this string value)
     {

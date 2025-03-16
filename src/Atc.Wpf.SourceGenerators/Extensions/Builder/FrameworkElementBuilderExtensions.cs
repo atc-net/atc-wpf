@@ -91,7 +91,7 @@ internal static class FrameworkElementBuilderExtensions
         builder.AppendLine($"public static readonly DependencyProperty {p.Name}Property = DependencyProperty.{registerMethod}(");
         builder.IncreaseIndent();
 
-        builder.AppendLine(isAttached ? $"\"{p.Name}\"," : $"nameof({p.Name}),");
+        builder.AppendLine(isAttached ? $"\"{p.Name}\"," : $"{p.Name.EnsureNameofContent()},");
         builder.AppendLine($"typeof({p.Type}),");
     }
 
