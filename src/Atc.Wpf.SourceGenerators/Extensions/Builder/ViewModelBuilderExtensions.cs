@@ -67,19 +67,23 @@ internal static class ViewModelBuilderExtensions
             builder.AppendLine($"var oldValue = {p.BackingFieldName};");
         }
 
+        var nameofName = p.Name.EnsureNameofContent();
+
         builder.AppendLine($"{p.BackingFieldName} = value;");
-        builder.AppendLine($"RaisePropertyChanged(nameof({p.Name}));");
+        builder.AppendLine($"RaisePropertyChanged({nameofName});");
         if (p.PropertyNamesToInvalidate is not null)
         {
             foreach (var propertyNameToInvalidate in p.PropertyNamesToInvalidate)
             {
-                builder.AppendLine($"RaisePropertyChanged(nameof({propertyNameToInvalidate}));");
+                var nameofPropertyNameToInvalidate = propertyNameToInvalidate.EnsureNameofContent();
+
+                builder.AppendLine($"RaisePropertyChanged({nameofPropertyNameToInvalidate});");
             }
         }
 
         if (p.BroadcastOnChange)
         {
-            builder.AppendLine($"Broadcast(nameof({p.Name}), oldValue, value);");
+            builder.AppendLine($"Broadcast({nameofName}, oldValue, value);");
         }
 
         if (p.AfterChangedCallback is not null)
@@ -101,7 +105,24 @@ internal static class ViewModelBuilderExtensions
         if (value.StartsWith("nameof(", StringComparison.Ordinal) &&
             value.EndsWith(")", StringComparison.Ordinal))
         {
-            builder.AppendLine(value.ExtractInnerContent() + "();");
+            var valueContent = value.ExtractInnerContent();
+            var sa = valueContent.Split([';'], StringSplitOptions.RemoveEmptyEntries);
+            foreach (var s in sa)
+            {
+                var line = s.Trim();
+                if (line.EndsWith("();", StringComparison.Ordinal))
+                {
+                    builder.AppendLine(line);
+                }
+                else if (line.EndsWith("()", StringComparison.Ordinal))
+                {
+                    builder.AppendLine(line + ";");
+                }
+                else
+                {
+                    builder.AppendLine(line + "();");
+                }
+            }
         }
         else
         {

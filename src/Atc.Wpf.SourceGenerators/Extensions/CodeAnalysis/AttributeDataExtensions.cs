@@ -94,14 +94,14 @@ internal static class AttributeDataExtensions
                     arrayIndex++;
                     result.Add(
                         arrayIndex.ToString(CultureInfo.InvariantCulture),
-                        typedConstant.Value.ToString());
+                        $"nameof({typedConstant.Value})");
                 }
             }
             else
             {
                 result.Add(
                     arg.Key,
-                    arg.Value.Value?.ToString());
+                    $"nameof({arg.Value.Value})");
             }
         }
 
