@@ -5,7 +5,6 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:monitoring="clr-namespace:Atc.Wpf.Controls.Monitoring;assembly=Atc.Wpf.Controls"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Monitoring"
     d:DataContext="{d:DesignInstance Type=sample:ApplicationMonitorView}"
     d:DesignHeight="600"
@@ -74,7 +73,7 @@
 
         <GroupBox Header="Usage">
 
-            <monitoring:ApplicationMonitorView
+            <atc:ApplicationMonitorView
                 DataContext="{Binding Path=ApplicationMonitorViewModel}"
                 ShowAutoScrollInToolbar="{Binding ElementName=ShowAutoScrollInToolbar, Path=IsChecked}"
                 ShowClearInToolbar="{Binding ElementName=ShowClearInToolbar, Path=IsChecked}"
