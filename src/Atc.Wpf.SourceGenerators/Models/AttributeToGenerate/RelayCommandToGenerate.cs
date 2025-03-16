@@ -7,6 +7,7 @@ internal sealed class RelayCommandToGenerate(
     string[]? parameterTypes,
     string[]? parameterValues,
     string? canExecuteName,
+    bool invertCanExecute,
     bool usePropertyForCanExecute,
     bool isAsync)
 {
@@ -20,10 +21,12 @@ internal sealed class RelayCommandToGenerate(
 
     public string? CanExecuteName { get; } = canExecuteName;
 
+    public bool InvertCanExecute { get; } = invertCanExecute;
+
     public bool UsePropertyForCanExecute { get; } = usePropertyForCanExecute;
 
     public bool IsAsync { get; } = isAsync;
 
     public override string ToString()
-        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterTypes)}.Count: {ParameterTypes?.Length}, {nameof(ParameterValues)}.Count: {ParameterValues?.Length}, {nameof(CanExecuteName)}: {CanExecuteName}, {nameof(UsePropertyForCanExecute)}: {UsePropertyForCanExecute}, {nameof(IsAsync)}: {IsAsync}";
+        => $"{nameof(CommandName)}: {CommandName}, {nameof(MethodName)}: {MethodName}, {nameof(ParameterTypes)}.Count: {ParameterTypes?.Length}, {nameof(ParameterValues)}.Count: {ParameterValues?.Length}, {nameof(CanExecuteName)}: {CanExecuteName}, {nameof(InvertCanExecute)}: {InvertCanExecute}, {nameof(UsePropertyForCanExecute)}: {UsePropertyForCanExecute}, {nameof(IsAsync)}: {IsAsync}";
 }

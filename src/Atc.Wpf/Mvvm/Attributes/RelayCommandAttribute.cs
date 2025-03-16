@@ -36,6 +36,22 @@ public sealed class RelayCommandAttribute : Attribute
     public string? CanExecute { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the canExecute value should be inverted.
+    /// <para>
+    /// For example, if CanExecute is specified as "IsConnected" property and InvertCanExecute is true,
+    /// the generated lambda will be:
+    /// <code language="csharp">
+    /// () => !IsConnected
+    /// </code>
+    /// instead of:
+    /// <code language="csharp">
+    /// () => IsConnected
+    /// </code>
+    /// </para>
+    /// </summary>
+    public bool InvertCanExecute { get; set; }
+
+    /// <summary>
     /// Gets or sets the parameter value.
     /// </summary>
     public object? ParameterValue { get; set; }

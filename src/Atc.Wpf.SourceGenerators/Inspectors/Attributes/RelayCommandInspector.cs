@@ -75,6 +75,9 @@ internal static class RelayCommandInspector
             canExecuteName = canExecuteNameValue!.ExtractInnerContent();
         }
 
+        var invertCanExecute = relayCommandArgumentValues.TryGetValue(NameConstants.InvertCanExecute, out var invertCanExecuteValue) &&
+                               "true".Equals(invertCanExecuteValue, StringComparison.OrdinalIgnoreCase);
+
         var usePropertyForCanExecute = false;
         if (canExecuteName is not null)
         {
@@ -111,6 +114,7 @@ internal static class RelayCommandInspector
                 parameterTypes?.ToArray(),
                 parameterValues.Count == 0 ? null : parameterValues.ToArray(),
                 canExecuteName,
+                invertCanExecute,
                 usePropertyForCanExecute,
                 isAsync));
     }

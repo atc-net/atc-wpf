@@ -49,6 +49,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                 rc.CommandName,
                 rc.MethodName,
                 rc.CanExecuteName,
+                rc.InvertCanExecute,
                 rc.UsePropertyForCanExecute);
             builder.AppendLine(cmd);
         }
@@ -64,6 +65,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                     rc.CommandName,
                     $"{rc.MethodName}(CancellationToken.None)",
                     rc.CanExecuteName,
+                    rc.InvertCanExecute,
                     isLambda: true);
                 builder.AppendLine(cmd);
             }
@@ -76,6 +78,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                     rc.CommandName,
                     rc.MethodName,
                     rc.CanExecuteName,
+                    rc.InvertCanExecute,
                     rc.UsePropertyForCanExecute);
                 builder.AppendLine(cmd);
             }
@@ -90,7 +93,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                     $"{implementationType}{tupleGeneric}",
                     rc.CommandName,
                     $"x => {rc.MethodName}({constructorParametersMulti})",
-                    rc.CanExecuteName is null ? null : $"x => {rc.CanExecuteName}");
+                    rc.CanExecuteName is null ? null : rc.InvertCanExecute ? $"x => !{rc.CanExecuteName}" : $"x => {rc.CanExecuteName}");
                 builder.AppendLine(cmd);
             }
             else
@@ -100,7 +103,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                     $"{implementationType}{tupleGeneric}",
                     rc.CommandName,
                     $"x => {rc.MethodName}({constructorParametersMulti})",
-                    rc.CanExecuteName is null ? null : $"x => {rc.CanExecuteName}({filteredConstructorParameters})");
+                    rc.CanExecuteName is null ? null : rc.InvertCanExecute ? $"x => !{rc.CanExecuteName}({filteredConstructorParameters})" : $"x => {rc.CanExecuteName}({filteredConstructorParameters})");
                 builder.AppendLine(cmd);
             }
         }
@@ -143,7 +146,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                         implementationType,
                         rc.CommandName,
                         $"() => {rc.MethodName}({constructorParameters})",
-                        $"{rc.CanExecuteName}");
+                        rc.InvertCanExecute ? $"!{rc.CanExecuteName}" : $"{rc.CanExecuteName}");
                     builder.AppendLine(cmd);
                 }
                 else
@@ -153,7 +156,7 @@ internal abstract class CommandBuilderBase : BuilderBase
                         implementationType,
                         rc.CommandName,
                         $"() => {rc.MethodName}({constructorParameters})",
-                        $"{rc.CanExecuteName}({constructorParameters})");
+                        rc.InvertCanExecute ? $"!{rc.CanExecuteName}({constructorParameters})" : $"{rc.CanExecuteName}({constructorParameters})");
                     builder.AppendLine(cmd);
                 }
             }
@@ -197,6 +200,7 @@ internal abstract class CommandBuilderBase : BuilderBase
         string commandName,
         string constructorParameters,
         string? canExecuteName = null,
+        bool invertCanExecute = false,
         bool usePropertyForCanExecute = false,
         bool isLambda = false)
     {
@@ -209,16 +213,22 @@ internal abstract class CommandBuilderBase : BuilderBase
             {
                 if (interfaceType.Contains('<'))
                 {
-                    commandInstance += $", _ => {canExecuteName}";
+                    commandInstance += invertCanExecute
+                        ? $", _ => !{canExecuteName}"
+                        : $", _ => {canExecuteName}";
                 }
                 else
                 {
-                    commandInstance += $", () => {canExecuteName}";
+                    commandInstance += invertCanExecute
+                        ? $", () => !{canExecuteName}"
+                        : $", () => {canExecuteName}";
                 }
             }
             else
             {
-                commandInstance += $", {canExecuteName}";
+                commandInstance += invertCanExecute
+                    ? $", !{canExecuteName}"
+                    : $", {canExecuteName}";
             }
         }
 

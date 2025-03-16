@@ -134,6 +134,7 @@ The `RelayCommand` attribute generates `IRelayCommand` properties, eliminating m
 
 - `CommandName` for customization.
 - `CanExecute` a property or method that return `bool` to specified to control when the command is executable.
+- `InvertCanExecute` if the property `CanExecute` is defined, this property will invert the outcome from the property or method `CanExecute` relays on.
 - `ParameterValue` or `ParameterValues` for 1 or many parameter values.
 
 ### 🛠 Quick Start Tips for RelayCommands
@@ -158,6 +159,10 @@ public void Save(string text);
 // Generates a RelayCommand with CanExecute function
 [RelayCommand(CanExecute = nameof(CanSave))]
 public void Save();
+
+// Generates a RelayCommand with CanExecute function
+[RelayCommand(CanExecute = nameof(IsConnected), InvertCanExecute = true)]
+public void Connect();
 ```
 
 **Note:**
@@ -199,6 +204,10 @@ public Task Save();
 // Generates an asynchronous RelayCommand with async keyword and CanExecute function
 [RelayCommand(CanExecute = nameof(CanSave))]
 public async Task Save();
+
+// Generates an asynchronous RelayCommand async keyword and CanExecute function
+[RelayCommand(CanExecute = nameof(IsConnected), InvertCanExecute = true)]
+public async Task Connect();
 ```
 
 ### 🔁 Multi-Parameter Commands
@@ -375,7 +384,7 @@ public partial class TestViewModel
 ```csharp
 public partial class PersonViewModel : ViewModelBase
 {
-    [ObservableProperty]
+    [ObservableProperty(BroadcastOnChange = true)]
     [NotifyPropertyChangedFor(nameof(FullName))]
     [Required]
     [MinLength(2)]
@@ -398,7 +407,11 @@ public partial class PersonViewModel : ViewModelBase
 
     public string FullName => $"{FirstName} {LastName}";
 
-    [RelayCommand]
+    public bool IsConnected { get; set; }
+
+    [RelayCommand(
+        CanExecute = nameof(IsConnected),
+        InvertCanExecute = true)]
     public void ShowData()
     {
         // TODO: Implement ShowData - it could be a dialog box
@@ -428,7 +441,7 @@ public partial class PersonViewModel : ViewModelBase
 ```csharp
 public partial class PersonViewModel
 {
-    public IRelayCommand ShowDataCommand => new RelayCommand(ShowData);
+    public IRelayCommand ShowDataCommand => new RelayCommand(ShowData, () => !IsConnected);
 
     public IRelayCommand SaveHandlerCommand => new RelayCommand(SaveHandler, CanSaveHandler);
 
@@ -442,9 +455,11 @@ public partial class PersonViewModel
                 return;
             }
 
+            var oldValue = firstName;
             firstName = value;
             RaisePropertyChanged(nameof(FirstName));
             RaisePropertyChanged(nameof(FullName));
+            Broadcast(nameof(FirstName), oldValue, value);
         }
     }
 
