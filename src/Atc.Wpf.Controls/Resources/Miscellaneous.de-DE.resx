@@ -120,6 +120,9 @@
   <data name="ApplicationSettings" xml:space="preserve">
     <value>Anwendungseinstellungen</value>
   </data>
+  <data name="Area" xml:space="preserve">
+    <value>Bereich</value>
+  </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto</value>
   </data>

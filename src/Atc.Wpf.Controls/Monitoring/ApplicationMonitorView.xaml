@@ -15,6 +15,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <atcValueConverters:BoolToWidthValueConverter x:Key="BoolToWidthValueConverter" />
         <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
     </UserControl.Resources>
 
@@ -114,6 +115,18 @@
                                             <ToolTip Content="{Binding Path=LogCategoryTypeToolTip}" />
                                         </Image.ToolTip>
                                     </Image>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn
+                            x:Name="GvcArea"
+                            Width="{Binding Path=ShowColumnArea, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter=150}"
+                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                         Key=Area}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate DataType="local:ApplicationEventEntry">
+                                    <TextBlock Text="{Binding Path=Area}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
