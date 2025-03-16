@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Atc.Wpf.Sample.Resource {
+namespace Atc.Wpf.Controls.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Atc.Wpf.Sample.Resource {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Atc.Wpf.Sample.Resource.Word", typeof(Word).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Atc.Wpf.Controls.Resources.Word", typeof(Word).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
