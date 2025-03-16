@@ -25,7 +25,11 @@ public partial class PersonViewModel : ViewModelBase
 
     public string FullName => $"{FirstName} {LastName}";
 
-    [RelayCommand]
+    public bool IsConnected { get; set; }
+
+    [RelayCommand(
+        CanExecute = nameof(IsConnected),
+        InvertCanExecute = true)]
     public void ShowData()
     {
         var dialogBox = new InfoDialogBox(
