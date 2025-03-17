@@ -60,7 +60,7 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         typeof(decimal),
         typeof(LabelDecimalBox),
         new FrameworkPropertyMetadata(
-            default(decimal),
+            defaultValue: 0m,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueLostFocus,
             coerceValueCallback: null,

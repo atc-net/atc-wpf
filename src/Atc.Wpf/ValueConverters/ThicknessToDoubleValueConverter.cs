@@ -12,7 +12,7 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
     {
         if (value is not Thickness thickness)
         {
-            return default(double);
+            return 0d;
         }
 
         var takeThicknessSide = TakeThicknessSide;
@@ -28,7 +28,7 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
             ThicknessSideType.Top => thickness.Top,
             ThicknessSideType.Right => thickness.Right,
             ThicknessSideType.Bottom => thickness.Bottom,
-            _ => default,
+            _ => 0d,
         };
     }
 
