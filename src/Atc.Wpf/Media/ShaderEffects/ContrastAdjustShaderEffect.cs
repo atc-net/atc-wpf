@@ -14,7 +14,7 @@ public sealed class ContrastAdjustShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(ContrastAdjustShaderEffect),
             new UIPropertyMetadata(
-                default(double),
+                defaultValue: 0d,
                 PixelShaderConstantCallback(0)));
 
     public static readonly DependencyProperty ContrastProperty =
@@ -23,7 +23,7 @@ public sealed class ContrastAdjustShaderEffect : ShaderEffectBase
             typeof(double),
             typeof(ContrastAdjustShaderEffect),
             new UIPropertyMetadata(
-                default(double),
+                defaultValue: 0d,
                 PixelShaderConstantCallback(1)));
 
     public override string Name => "ContrastAdjust";

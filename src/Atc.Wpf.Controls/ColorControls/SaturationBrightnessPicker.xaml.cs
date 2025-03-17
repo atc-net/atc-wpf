@@ -8,7 +8,7 @@ public partial class SaturationBrightnessPicker
         nameof(Hue),
         typeof(double),
         typeof(SaturationBrightnessPicker),
-        new PropertyMetadata(default(double)));
+        new PropertyMetadata(defaultValue: 0d));
 
     public double Hue
     {
@@ -21,7 +21,7 @@ public partial class SaturationBrightnessPicker
         typeof(double),
         typeof(SaturationBrightnessPicker),
         new PropertyMetadata(
-            default(double),
+            defaultValue: 0d,
             OnSaturationChanged));
 
     public double Saturation
@@ -35,7 +35,7 @@ public partial class SaturationBrightnessPicker
         typeof(double),
         typeof(SaturationBrightnessPicker),
         new PropertyMetadata(
-            default(double),
+            defaultValue: 0d,
             OnBrightnessChanged));
 
     public double Brightness

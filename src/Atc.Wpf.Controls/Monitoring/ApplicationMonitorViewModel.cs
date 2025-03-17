@@ -21,6 +21,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
         view.SortDescriptions.Clear();
         AutoScroll = true;
         SortDirection = ListSortDirection.Ascending;
+        ShowColumnArea = true;
 
         FilterChangeCommandHandler();
 

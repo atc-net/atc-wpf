@@ -114,7 +114,7 @@ public partial class DecimalXyBox
         typeof(decimal),
         typeof(DecimalXyBox),
         new FrameworkPropertyMetadata(
-            default(decimal),
+            defaultValue: 0m,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueXLostFocus,
             coerceValueCallback: null,
@@ -132,7 +132,7 @@ public partial class DecimalXyBox
         typeof(decimal),
         typeof(DecimalXyBox),
         new FrameworkPropertyMetadata(
-            default(decimal),
+            defaultValue: 0m,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
             OnValueYLostFocus,
             coerceValueCallback: null,
