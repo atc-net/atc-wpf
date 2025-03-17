@@ -110,11 +110,11 @@ internal static class ViewModelBuilderExtensions
             foreach (var s in sa)
             {
                 var line = s.Trim();
-                if (line.EndsWith("();", StringComparison.Ordinal))
+                if (line.EndsWith(");", StringComparison.Ordinal))
                 {
                     builder.AppendLine(line);
                 }
-                else if (line.EndsWith("()", StringComparison.Ordinal))
+                else if (line.EndsWith(")", StringComparison.Ordinal))
                 {
                     builder.AppendLine(line + ";");
                 }
