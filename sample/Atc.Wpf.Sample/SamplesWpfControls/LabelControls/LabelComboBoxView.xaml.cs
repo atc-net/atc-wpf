@@ -20,11 +20,27 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
                 { "Item3", "Item 3" },
             };
 
+        Items1000 = new Dictionary<string, string>(StringComparer.Ordinal);
+        for (var i = 0; i < 1000; i++)
+        {
+            Items1000.Add($"Item{i}", $"Item{i}");
+        }
+
         MyLabel3HorizontalSelectedKey = Items.First().Key;
         MyLabel3VerticalSelectedKey = Items.Last().Key;
     }
 
     public IDictionary<string, string> Items
+    {
+        get => items;
+        set
+        {
+            items = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IDictionary<string, string> Items1000
     {
         get => items;
         set

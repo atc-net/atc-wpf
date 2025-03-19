@@ -49,6 +49,12 @@
                             SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
                             SelectedValuePath="Key" />
 
+                        <ComboBox
+                            DisplayMemberPath="Value"
+                            ItemsSource="{Binding Path=Items1000}"
+                            SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+                            SelectedValuePath="Key" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="2"

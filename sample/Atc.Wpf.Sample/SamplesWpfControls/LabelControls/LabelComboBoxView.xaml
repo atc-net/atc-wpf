@@ -36,9 +36,9 @@
                             Orientation="Horizontal" />
 
                         <atc:LabelComboBox
-                            InformationText="This is a help text.."
+                            InformationText="This is a help text..."
                             IsMandatory="True"
-                            Items="{Binding ElementName=UcLabelComboBoxView, Path=Items}"
+                            Items="{Binding ElementName=UcLabelComboBoxView, Path=Items1000}"
                             LabelText="MyLabel3"
                             Orientation="Horizontal"
                             SelectedKey="{Binding ElementName=UcLabelComboBoxView, Path=MyLabel3HorizontalSelectedKey}"
@@ -53,14 +53,14 @@
                             Orientation="Vertical" />
 
                         <atc:LabelComboBox
-                            InformationText="This is a help text.."
+                            InformationText="This is a help text..."
                             IsMandatory="True"
                             Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
                             LabelText="MyLabel4"
                             Orientation="Vertical" />
 
                         <atc:LabelComboBox
-                            InformationText="This is a help text.."
+                            InformationText="This is a help text..."
                             IsMandatory="True"
                             Items="{Binding ElementName=UcLabelComboBoxView, Path=Items}"
                             LabelText="MyLabel3"
