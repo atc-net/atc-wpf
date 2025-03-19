@@ -91,12 +91,9 @@
                 SelectedItem="{Binding Path=SelectedEntry, Mode=TwoWay}"
                 SelectionMode="Single">
                 <ListView.View>
-                    <GridView x:Name="GvEntryView">
-                        <GridViewColumn
-                            x:Name="GvcTimestamp"
-                            Width="120px"
-                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
-                                                         Key=Timestamp}">
+                    <GridView>
+
+                        <GridViewColumn Width="120" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Timestamp}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Timestamp, StringFormat=yyyy-MM-dd HH:mm:ss}" />
@@ -104,7 +101,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn x:Name="GvcLogCategoryType" Width="28px">
+                        <GridViewColumn Width="28">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <Image
@@ -119,11 +116,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn
-                            x:Name="GvcArea"
-                            Width="{Binding Path=ShowColumnArea, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter=150}"
-                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
-                                                         Key=Area}">
+                        <GridViewColumn Width="{Binding Path=ShowColumnArea, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter=150}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Area}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Area}" />
@@ -131,17 +124,14 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn
-                            x:Name="GvcMessage"
-                            Width="400px"
-                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
-                                                         Key=Message}">
+                        <GridViewColumn Width="400" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Message}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Message}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+
                     </GridView>
                 </ListView.View>
             </ListView>

@@ -1,7 +1,7 @@
 // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
 namespace Atc.Wpf.Controls.Monitoring;
 
-public sealed class ApplicationMonitorViewModel : ViewModelBase
+public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 {
     private static readonly object SyncLock = new();
     private readonly ICollectionView view;
@@ -22,6 +22,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
         AutoScroll = true;
         SortDirection = ListSortDirection.Ascending;
         ShowColumnArea = true;
+        ListenOnToastNotificationMessage = true;
 
         FilterChangeCommandHandler();
 
@@ -183,6 +184,12 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase
                 }
             }
         }
+    }
+
+    public void Dispose()
+    {
+        MessengerInstance.UnRegister<ApplicationEventEntry>(this, OnApplicationEventEntryHandler);
+        MessengerInstance.UnRegister<ToastNotificationMessage>(this, OnToastNotificationMessageHandler);
     }
 
     private void OnApplicationEventEntryHandler(
