@@ -54,6 +54,7 @@
                 </atc:UniformSpacingPanel>
             </StackPanel>
             <TabControl
+                x:Name="SamplesTabControl"
                 Margin="0,0,5,10"
                 atc:TabControlHelper.UnderlineMargin="0"
                 atc:TabControlHelper.UnderlinePlacement="Left"
