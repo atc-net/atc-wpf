@@ -9,10 +9,7 @@ public partial class ApplicationMonitorView : IDisposable
         InitializeComponent();
 
         DataContext = this;
-        ApplicationMonitorViewModel = new ApplicationMonitorViewModel
-        {
-            ShowColumnArea = true,
-        };
+        ApplicationMonitorViewModel = new ApplicationMonitorViewModel();
 
         dispatcherTimer = new DispatcherTimer
         {
