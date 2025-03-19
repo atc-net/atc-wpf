@@ -10,9 +10,18 @@
     mc:Ignorable="d">
 
     <TreeViewItem Header="Font Icons">
-        <sample:SampleTreeViewItem Header="Static" SamplePath="FontIconStaticImageView" />
-        <sample:SampleTreeViewItem Header="Binding" SamplePath="FontIconView" />
-        <sample:SampleTreeViewItem Header="Viewer" SamplePath="FontIconViewerView" />
+        <sample:SampleTreeViewItem
+            Header="Static"
+            SamplePath="FontIconStaticImageView"
+            Tag="FontStatic" />
+        <sample:SampleTreeViewItem
+            Header="Binding"
+            SamplePath="FontIconView"
+            Tag="FontBinding" />
+        <sample:SampleTreeViewItem
+            Header="Viewer"
+            SamplePath="FontIconViewerView"
+            Tag="FontViewer" />
     </TreeViewItem>
 
 </TreeView>
