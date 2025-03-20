@@ -285,7 +285,10 @@
                             IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                             Placement="Bottom"
                             PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <Grid MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid
+                                MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                                Background="Transparent">
                                 <decorators:ClipBorder
                                     x:Name="PopupBorder"
                                     Height="Auto"
@@ -295,7 +298,13 @@
                                     BorderThickness="1"
                                     CornerRadius="3"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                    <ScrollViewer Padding="1" BorderThickness="0">
+                                    <ScrollViewer
+                                        Padding="1"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                                        HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                        VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </decorators:ClipBorder>
