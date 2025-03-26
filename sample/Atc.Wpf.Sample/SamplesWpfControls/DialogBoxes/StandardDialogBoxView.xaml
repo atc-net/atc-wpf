@@ -94,32 +94,32 @@
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Command="{Binding Path=ShowInputFormAddressWithDataDialogBoxCommands}"
+                                Command="{Binding Path=ShowInputFormAddressWithDataDialogBoxCommand}"
                                 Content="Input Form - Address model with data" />
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="2"
-                                Command="{Binding Path=ShowInputFormAddressWithoutDataDialogBoxCommands}"
+                                Command="{Binding Path=ShowInputFormAddressWithoutDataDialogBoxCommand}"
                                 Content="Input Form - Address model without data" />
                             <Button
                                 Grid.Row="2"
                                 Grid.Column="0"
-                                Command="{Binding Path=ShowInputFormPersonWithDataDialogBoxCommands}"
+                                Command="{Binding Path=ShowInputFormPersonWithDataDialogBoxCommand}"
                                 Content="Input Form - Person model with data" />
                             <Button
                                 Grid.Row="2"
                                 Grid.Column="2"
-                                Command="{Binding Path=ShowInputFormPersonWithoutDataDialogBoxCommands}"
+                                Command="{Binding Path=ShowInputFormPersonWithoutDataDialogBoxCommand}"
                                 Content="Input Form - Person model without data" />
                             <Button
                                 Grid.Row="4"
                                 Grid.Column="0"
-                                Command="{Binding Path=ShowInputFormAccountWithDataDialogBoxCommands}"
+                                Command="{Binding Path=ShowInputFormAccountWithDataDialogBoxCommand}"
                                 Content="Input Form - Account model with data" />
                             <Button
                                 Grid.Row="4"
                                 Grid.Column="2"
-                                Command="{Binding Path=ShowInputFormAccountWithoutDataDialogBoxCommands}"
+                                Command="{Binding Path=ShowInputFormAccountWithoutDataDialogBoxCommand}"
                                 Content="Input Form - Account model without data" />
                         </atc:GridEx>
                         <Button Command="{Binding Path=ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand}" Content="Input Form 1 columns by LabelControlsData" />

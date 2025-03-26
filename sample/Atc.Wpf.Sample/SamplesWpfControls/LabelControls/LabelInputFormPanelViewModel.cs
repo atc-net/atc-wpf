@@ -268,43 +268,23 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
     }
 
     private static List<ILabelControlBase> CreateLabelControlsColumn1()
-        => new()
-        {
-            new LabelTextBox
-            {
-                LabelText = "FirstName",
-                IsMandatory = true,
-                MinLength = 2,
-            },
-            new LabelTextBox
-            {
-                LabelText = "LastName",
-                IsMandatory = true,
-                MinLength = 2,
-            },
-        };
+        =>
+        [
+            new LabelTextBox { LabelText = "FirstName", IsMandatory = true, MinLength = 2 },
+            new LabelTextBox { LabelText = "LastName", IsMandatory = true, MinLength = 2 },
+        ];
 
     private static List<ILabelControlBase> CreateLabelControlsColumn2()
-        => new()
-        {
-            new LabelIntegerBox
-            {
-                LabelText = "Age",
-                Minimum = 0,
-            },
-            new LabelTextBox
-            {
-                LabelText = "Note",
-            },
-        };
+        =>
+        [
+            new LabelIntegerBox { LabelText = "Age", Minimum = 0 },
+            new LabelTextBox { LabelText = "Note" },
+        ];
 
     private static List<ILabelControlBase> CreateLabelControlsColumn3()
-        => new()
-        {
-            new LabelCheckBox
-            {
-                LabelText = "Use Foo",
-            },
+        =>
+        [
+            new LabelCheckBox { LabelText = "Use Foo" },
             new LabelComboBox
             {
                 LabelText = "Items",
@@ -317,18 +297,12 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
                     { "Item5", "Item 5" },
                 },
             },
-        };
+        ];
 
     private static List<ILabelControlBase> CreateLabelControlsColumn4()
-        => new()
-        {
-            new LabelFilePicker
-            {
-                LabelText = "My file",
-            },
-            new LabelDirectoryPicker
-            {
-                LabelText = "My directory",
-            },
-        };
+        =>
+        [
+            new LabelFilePicker { LabelText = "My file" },
+            new LabelDirectoryPicker { LabelText = "My directory" },
+        ];
 }

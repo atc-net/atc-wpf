@@ -37,7 +37,6 @@ global using Atc.Helpers;
 global using Atc.Serialization;
 global using Atc.Serialization.JsonConverters;
 global using Atc.Wpf.Collections;
-global using Atc.Wpf.Command;
 global using Atc.Wpf.Controls.Adorners;
 global using Atc.Wpf.Controls.BaseControls;
 global using Atc.Wpf.Controls.BaseControls.Internal;
@@ -65,14 +64,15 @@ global using Atc.Wpf.Controls.ViewModels;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Data.Models;
 global using Atc.Wpf.Helpers;
-global using Atc.Wpf.Messaging;
-global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Theming.Themes.Dialogs;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
+global using Atc.XamlToolkit.Command;
+global using Atc.XamlToolkit.Messaging;
+global using Atc.XamlToolkit.Mvvm;
 
 global using ControlzEx.Theming;
 

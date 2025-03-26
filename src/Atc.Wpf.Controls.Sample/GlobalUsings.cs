@@ -8,5 +8,5 @@ global using System.Windows.Markup;
 global using System.Windows.Media;
 
 global using Atc.Helpers;
-global using Atc.Wpf.Messaging;
-global using Atc.Wpf.Mvvm;
+global using Atc.XamlToolkit.Messaging;
+global using Atc.XamlToolkit.Mvvm;

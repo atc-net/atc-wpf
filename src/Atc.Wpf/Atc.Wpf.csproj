@@ -1011,11 +1011,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\Atc.Wpf.SourceGenerators\bin\$(Configuration)\netstandard2.0\Atc.Wpf.SourceGenerators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Remove="_._" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\ColorNames.Designer.cs">
       <DependentUpon>ColorNames.resx</DependentUpon>
       <DesignTime>True</DesignTime>

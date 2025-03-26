@@ -1,7 +1,7 @@
 // ReSharper disable UnusedVariable
 namespace Atc.Wpf.Sample.SamplesWpfControls.DialogBoxes;
 
-public sealed class StandardDialogBoxViewModel : ViewModelBase
+public sealed partial class StandardDialogBoxViewModel : ViewModelBase
 {
     private readonly JsonSerializerOptions? jsonOptions;
     private string jsonResult = string.Empty;
@@ -13,41 +13,6 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         jsonOptions.Converters.Add(new CultureInfoToNameJsonConverter());
         jsonOptions.Converters.Add(new ColorToNameJsonConverter());
     }
-
-    public IRelayCommand ShowInfoDialogBoxCommand => new RelayCommand(ShowInfoDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInfoWarningDialogBoxCommand => new RelayCommand(ShowInfoWarningDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInfoErrorDialogBoxCommand => new RelayCommand(ShowInfoErrorDialogBoxCommandHandler);
-
-    public IRelayCommand ShowQuestionDialogBoxCommand => new RelayCommand(ShowQuestionDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputDialogBoxCommand => new RelayCommand(ShowInputDialogBoxCommandHandler);
-
-    public IRelayCommand<int> ShowInputForm1ColumnXFieldVerticalDialogBoxCommand => new RelayCommand<int>(ShowInputForm1ColumnXFieldVerticalDialogBoxCommandHandler);
-
-    public IRelayCommand<int> ShowInputForm1ColumnXFieldHorizontalDialogBoxCommand => new RelayCommand<int>(ShowInputForm1ColumnXFieldHorizontalDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputForm1ColumnDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputForm2ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm2ColumnsDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputForm3ColumnsDialogBoxCommand => new RelayCommand(ShowInputForm3ColumnsDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputFormAddressWithDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithDataDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputFormAddressWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAddressWithoutDataDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputFormPersonWithDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithDataDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputFormPersonWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormPersonWithoutDataDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputFormAccountWithDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithDataDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputFormAccountWithoutDataDialogBoxCommands => new RelayCommand(ShowInputFormAccountWithoutDataDialogBoxCommandHandler);
-
-    public IRelayCommand ShowInputForm1ColumnByLabelControlsDataDialogBoxCommand => new RelayCommand(ShowInputForm1ColumnByLabelControlsDataDialogBoxCommandHandler);
-    public IRelayCommand ShowBasicApplicationSettingsDialogBoxCommand => new RelayCommand(ShowBasicApplicationSettingsDialogBoxCommandHandler);
 
     public bool ShowResultAsKeyValues
     {
@@ -69,6 +34,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInfoDialogBoxCommandHandler()
     {
         var dialogBox = new InfoDialogBox(
@@ -85,6 +51,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
             : CreateJson(dialogBox.Settings.NegativeButtonText);
     }
 
+    [RelayCommand]
     private void ShowInfoWarningDialogBoxCommandHandler()
     {
         var dialogBox = new InfoDialogBox(
@@ -101,6 +68,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
             : CreateJson(dialogBox.Settings.NegativeButtonText);
     }
 
+    [RelayCommand]
     private void ShowInfoErrorDialogBoxCommandHandler()
     {
         var dialogBox = new InfoDialogBox(
@@ -117,6 +85,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
             : CreateJson(dialogBox.Settings.NegativeButtonText);
     }
 
+    [RelayCommand]
     private void ShowQuestionDialogBoxCommandHandler()
     {
         var dialogBox = new QuestionDialogBox(
@@ -129,6 +98,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
             : CreateJson(dialogBox.Settings.NegativeButtonText);
     }
 
+    [RelayCommand]
     private void ShowInputDialogBoxCommandHandler()
     {
         var dialogBox = new InputDialogBox(
@@ -152,6 +122,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputForm1ColumnXFieldVerticalDialogBoxCommandHandler(
         int numberOfControls)
     {
@@ -188,6 +159,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputForm1ColumnXFieldHorizontalDialogBoxCommandHandler(
         int numberOfControls)
     {
@@ -224,6 +196,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputForm1ColumnDialogBoxCommandHandler()
     {
         var labelControls = new List<ILabelControlBase>
@@ -270,6 +243,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputForm2ColumnsDialogBoxCommandHandler()
     {
         var labelControlsForm = new LabelControlsForm();
@@ -292,6 +266,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputForm3ColumnsDialogBoxCommandHandler()
     {
         var labelControlsForm = new LabelControlsForm();
@@ -315,6 +290,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputFormAddressWithDataDialogBoxCommandHandler()
     {
         var address = new Address(
@@ -352,6 +328,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputFormAddressWithoutDataDialogBoxCommandHandler()
     {
         var address = new Address(
@@ -389,6 +366,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputFormPersonWithDataDialogBoxCommandHandler()
     {
         var person = new Person(
@@ -434,6 +412,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputFormPersonWithoutDataDialogBoxCommandHandler()
     {
         var person = new Person(
@@ -476,6 +455,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputFormAccountWithDataDialogBoxCommandHandler()
     {
         var account = new Account(
@@ -521,6 +501,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputFormAccountWithoutDataDialogBoxCommandHandler()
     {
         var account = new Account(
@@ -566,6 +547,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowInputForm1ColumnByLabelControlsDataDialogBoxCommandHandler()
     {
         var listOfLabelControlsData = new List<LabelControlData>()
@@ -615,6 +597,7 @@ public sealed class StandardDialogBoxViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void ShowBasicApplicationSettingsDialogBoxCommandHandler()
     {
         var dialogBox = new BasicApplicationSettingsDialogBox
