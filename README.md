@@ -10,9 +10,9 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 ## NuGet Packages Provided in this Repository
 
-| Nuget package           | Description                                         | Dependencies                   |
-|-------------------------|-----------------------------------------------------|--------------------------------|
-| 💟 Atc.Wpf                 | Base Controls, ValueConverters, Extensions etc.     | Atc & Atc.Wpf.SourceGenerators |
+| Nuget package              | Description                                         | Dependencies                   |
+|----------------------------|-----------------------------------------------------|--------------------------------|
+| 💟 Atc.Wpf                 | Base Controls, ValueConverters, Extensions etc.     | Atc                            |
 | 💟 Atc.Wpf.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming      |
 | 💟 Atc.Wpf.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming      |
 | 💟 Atc.Wpf.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                        |
@@ -137,22 +137,6 @@ Therefore run the `Atc.Wpf.Sample` application to explore all the controls and c
 ## 💟 Atc.Wpf.Theming
 
 - [ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)
-
-# ⚙️ Source Generators
-
-In for WPF, certain attributes help automate boilerplate code using source generators.
-
-Read more about here:
-
-- [SourceGenerators for AttachedProperties](docs/SourceGenerators/AttachedProperty.md)
-- [SourceGenerators for DependencyProperties](docs/SourceGenerators/DependencyProperty.md)
-- [SourceGenerators for ViewModel](docs/SourceGenerators/ViewModel.md)
-
-Example for ViewModel classes
-
-![MVVM Source Generation](docs/images/mvvm-source-generated.png)
-
-For more details, see the [MVVM](docs/Mvvm/@Readme.md) section.
 
 # How to contribute
 

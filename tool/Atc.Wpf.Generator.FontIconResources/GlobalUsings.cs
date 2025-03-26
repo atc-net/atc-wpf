@@ -10,10 +10,10 @@ global using System.Windows.Threading;
 
 global using Atc.Data.Models;
 global using Atc.Helpers;
-global using Atc.Wpf.Command;
-global using Atc.Wpf.Diagnostics;
-global using Atc.Wpf.Mvvm;
 global using Atc.Wpf.Translation;
+global using Atc.XamlToolkit.Command;
+global using Atc.XamlToolkit.Diagnostics;
+global using Atc.XamlToolkit.Mvvm;
 global using ControlzEx.Theming;
 
 global using CSSParser.ContentProcessors;

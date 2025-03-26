@@ -20,9 +20,9 @@
 
   <PropertyGroup Label="Compile settings">
     <Nullable>enable</Nullable>
-    <LangVersion>12.0</LangVersion>
+    <LangVersion>13.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1573,1591,1712,CA1014,SA1516,CA1812,MC3074,NU5104,CS0103,CS1061</NoWarn>
 
@@ -45,7 +45,7 @@
   <ItemGroup Label="Code Analyzers">
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
     <PackageReference Include="Asyncify" Version="0.9.7" PrivateAssets="All" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.188" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.189" PrivateAssets="All" />
     <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507" PrivateAssets="All" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="10.7.0.110445" PrivateAssets="All" />

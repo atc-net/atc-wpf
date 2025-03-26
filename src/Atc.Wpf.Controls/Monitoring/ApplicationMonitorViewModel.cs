@@ -28,7 +28,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 
         MessengerInstance.Register<ApplicationEventEntry>(this, OnApplicationEventEntryHandler);
 
-        if (IsInDesignMode)
+        if (XamlToolkit.Helpers.DesignModeHelper.IsInDesignMode)
         {
             Entries.AddRange(DesignModeHelper.CreateApplicationEventEntryList());
         }

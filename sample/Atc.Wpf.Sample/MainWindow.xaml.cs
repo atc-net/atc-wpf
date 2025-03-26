@@ -94,6 +94,7 @@ public partial class MainWindow
             var header = treeViewItem.Header?.ToString();
             var tag = treeViewItem.Tag?.ToString();
             var showByItem = false;
+
             if (header is not null &&
                 header.Length > 0 &&
                 header.Contains(filter, StringComparison.OrdinalIgnoreCase))
@@ -106,6 +107,7 @@ public partial class MainWindow
             {
                 showByItem = true;
             }
+
             treeViewItem.Visibility = showByItem || showBySubItems
                     ? Visibility.Visible
                     : Visibility.Collapsed;
