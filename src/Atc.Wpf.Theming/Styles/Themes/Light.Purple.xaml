@@ -735,7 +735,7 @@
     <SolidColorBrush
         x:Key="AtcApps.Brushes.Control.Validation"
         options:Freeze="True"
-        Color="#FFDB000C" />
+        Color="#FFFF4C4C" />
 
     <!--  Brushes: Button  -->
     <SolidColorBrush
