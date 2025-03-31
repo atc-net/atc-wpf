@@ -91,6 +91,18 @@ public class LabelControlBase : UserControl, ILabelControlBase
         set => SetValue(LabelTextProperty, value);
     }
 
+    public static readonly DependencyProperty ContentMinHeightProperty = DependencyProperty.Register(
+        nameof(ContentMinHeight),
+        typeof(double),
+        typeof(LabelControlBase),
+        new PropertyMetadata(26d));
+
+    public double ContentMinHeight
+    {
+        get => (double)GetValue(ContentMinHeightProperty);
+        set => SetValue(ContentMinHeightProperty, value);
+    }
+
     public static readonly DependencyProperty InformationTextProperty = DependencyProperty.Register(
         nameof(InformationText),
         typeof(string),
