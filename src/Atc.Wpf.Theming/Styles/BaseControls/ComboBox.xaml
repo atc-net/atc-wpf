@@ -3,12 +3,161 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators">
+    xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators"
+    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/ControlsStoryboard.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <Geometry x:Key="ComboBoxDownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
+
+    <Style
+        x:Key="AtcApps.Styles.TextBox.ComboBox.Editable"
+        BasedOn="{StaticResource AtcApps.Styles.TextBox}"
+        TargetType="{x:Type TextBox}">
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid x:Name="PART_InnerGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="TextColumn" Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition x:Name="ButtonRow" Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0"
+                                Padding="{TemplateBinding Padding}"
+                                VerticalAlignment="Stretch"
+                                Background="{x:Null}"
+                                BorderThickness="0"
+                                IsTabStop="False"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                Style="{DynamicResource AtcApps.Styles.ScrollViewer.TextControlContentHost}" />
+
+                            <TextBlock
+                                x:Name="PART_Message"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="4,0"
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Foreground="{TemplateBinding Foreground}"
+                                Style="{DynamicResource AtcApps.Styles.TextBlock.Watermark}"
+                                Text="{TemplateBinding atc:TextBoxHelper.Watermark}"
+                                TextAlignment="{TemplateBinding atc:TextBoxHelper.WatermarkAlignment}"
+                                TextTrimming="{TemplateBinding atc:TextBoxHelper.WatermarkTrimming}"
+                                Visibility="Collapsed" />
+
+                            <ContentControl
+                                x:Name="PART_FloatingMessageContainer"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="4,0"
+                                Style="{DynamicResource AtcApps.Styles.ContentControl.FloatingMessageContainer}">
+                                <ContentControl.Height>
+                                    <MultiBinding Converter="{atcValueConverters:MathMultiplyValueConverter}" FallbackValue="0">
+                                        <Binding
+                                            ElementName="PART_FloatingMessage"
+                                            Mode="OneWay"
+                                            Path="ActualHeight" />
+                                        <Binding
+                                            ElementName="PART_FloatingMessageContainer"
+                                            Mode="OneWay"
+                                            Path="Opacity" />
+                                    </MultiBinding>
+                                </ContentControl.Height>
+                                <TextBlock
+                                    x:Name="PART_FloatingMessage"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Style="{DynamicResource AtcApps.Styles.TextBlock.AutoCollapsing}"
+                                    Text="{TemplateBinding atc:TextBoxHelper.Watermark}"
+                                    TextAlignment="{TemplateBinding atc:TextBoxHelper.WatermarkAlignment}"
+                                    TextTrimming="{TemplateBinding atc:TextBoxHelper.WatermarkTrimming}">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform x:Name="FloatingMessageTransform">
+                                            <TranslateTransform.Y>
+                                                <MultiBinding Converter="{atcValueConverters:MathSubtractValueConverter}" FallbackValue="0">
+                                                    <Binding
+                                                        ElementName="PART_FloatingMessage"
+                                                        Mode="OneWay"
+                                                        Path="ActualHeight" />
+                                                    <Binding
+                                                        ElementName="PART_FloatingMessageContainer"
+                                                        Mode="OneWay"
+                                                        Path="ActualHeight" />
+                                                </MultiBinding>
+                                            </TranslateTransform.Y>
+                                        </TranslateTransform>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </ContentControl>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=(atc:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=(atc:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=(atc:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:StringNullOrEmptyToBoolValueConverter.Instance}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.ShowFloatingMessage}" />
+                            </MultiDataTrigger.EnterActions>
+                            <MultiDataTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.HideFloatingMessage}" />
+                            </MultiDataTrigger.ExitActions>
+                        </MultiDataTrigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="atc:TextBoxHelper.HasText" Value="False" />
+                                <Condition Property="IsFocused" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.EnterGotFocus}" />
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.ExitGotFocus}" />
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
+
+                        <Trigger Property="atc:TextBoxHelper.HasText" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.EnterHasText}" />
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.ExitHasText}" />
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!--  DropDownButton  -->
     <Style x:Key="AtcApps.Styles.ToggleButton.ComboBoxDropDown" TargetType="{x:Type ToggleButton}">
@@ -18,37 +167,76 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid
-                        x:Name="ToggleButtonRootGrid"
-                        Margin="0,0.5,0.5,1"
-                        Background="{TemplateBinding Background}">
+                    <Grid x:Name="ToggleButtonRootGrid" Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="TextColumn" Width="*" />
+                            <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
                             <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto" />
                         </Grid.ColumnDefinitions>
+
+                        <Button
+                            x:Name="PART_ClearTextButton"
+                            Grid.Column="1"
+                            Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
+                            Command="{TemplateBinding atc:TextBoxHelper.ButtonCommand}"
+                            CommandParameter="{TemplateBinding atc:TextBoxHelper.ButtonCommandParameter}"
+                            CommandTarget="{TemplateBinding atc:TextBoxHelper.ButtonCommandTarget}"
+                            Content="{TemplateBinding atc:TextBoxHelper.ButtonContent}"
+                            ContentTemplate="{TemplateBinding atc:TextBoxHelper.ButtonContentTemplate}"
+                            Focusable="False"
+                            FontFamily="{TemplateBinding atc:TextBoxHelper.ButtonFontFamily}"
+                            FontSize="{TemplateBinding atc:TextBoxHelper.ButtonFontSize}"
+                            IsTabStop="False"
+                            Style="{DynamicResource AtcApps.Styles.Button.Chromeless}"
+                            Template="{TemplateBinding atc:TextBoxHelper.ButtonTemplate}"
+                            Visibility="Visible" />
+
                         <Grid
                             x:Name="BtnArrowBackground"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
                             Background="Transparent">
                             <Path
-                                x:Name="ArrowIcon"
-                                Width="10"
-                                Height="10"
+                                x:Name="Arrow"
+                                Width="8"
+                                Height="4"
                                 HorizontalAlignment="Center"
-                                Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
-                                Fill="{DynamicResource AtcApps.Brushes.Gray6}"
-                                IsHitTestVisible="False"
+                                Data="{DynamicResource ComboBoxDownArrowGeometry}"
+                                Fill="{DynamicResource AtcApps.Brushes.Gray1}"
+                                IsHitTestVisible="false"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Stretch="Uniform" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True">
-                            <Setter TargetName="ArrowIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        <Trigger Property="atc:TextBoxHelper.ClearTextButton" Value="True">
+                            <Setter TargetName="PART_ClearTextButton" Property="Command" Value="{x:Static helpers:AtcAppsCommands.ClearControlCommand}" />
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="atc:TextBoxHelper.ClearTextButton" Value="False" />
+                                <Condition Property="atc:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ClearTextButton" Property="Visibility" Value="Collapsed" />
+                        </MultiTrigger>
+
+                        <Trigger SourceName="BtnArrowBackground" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsPressed}" Value="True">
+                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
+                            <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
                         </DataTrigger>
-                        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+
+                        <Trigger SourceName="PART_ClearTextButton" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_ClearTextButton" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </Trigger>
+
+                        <Trigger SourceName="PART_ClearTextButton" Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_ClearTextButton" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -56,16 +244,13 @@
     </Style>
 
     <!--  ItemBase  -->
-    <Style x:Key="AtcApps.Styles.ComboBoxItem" TargetType="{x:Type ComboBoxItem}">
+    <Style x:Key="AtcApps.Styles.ComboBoxItem" TargetType="ComboBoxItem">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="MinWidth" Value="62" />
-        <Setter Property="Padding" Value="4" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="Padding" Value="2" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -75,7 +260,6 @@
                         Background="Transparent"
                         RenderOptions.ClearTypeHint="{TemplateBinding RenderOptions.ClearTypeHint}"
                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-
                         <decorators:ClipBorder
                             x:Name="Background"
                             Background="{TemplateBinding Background}"
@@ -111,6 +295,7 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.ActiveSelectionBorderBrush), Mode=OneWay}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
                         </MultiTrigger>
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
@@ -129,6 +314,7 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.HoverBorderBrush), Mode=OneWay}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
                         </MultiTrigger>
+
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Background" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.DisabledBorderBrush), Mode=OneWay}" />
@@ -169,9 +355,8 @@
 
     <!--  Base  -->
     <Style x:Key="AtcApps.Styles.ComboBox" TargetType="{x:Type ComboBox}">
-        <Setter Property="IsTextSearchEnabled" Value="True" />
-        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Control.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
@@ -187,7 +372,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
-                    <Grid Margin="0">
+                    <Grid>
                         <Border
                             x:Name="Border"
                             Background="{TemplateBinding Background}"
@@ -196,7 +381,7 @@
                             CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
-                        <Grid Margin="0">
+                        <Grid Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition x:Name="TextColumn" Width="*" />
                                 <ColumnDefinition x:Name="ButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:TextBoxHelper.ButtonWidth), Mode=OneWay}" />
@@ -225,7 +410,6 @@
                                 atc:TextBoxHelper.ButtonWidth="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
                                 atc:TextBoxHelper.ClearTextButton="{TemplateBinding atc:TextBoxHelper.ClearTextButton}"
                                 Background="Transparent"
-                                BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.Border}"
                                 BorderThickness="0"
                                 Foreground="{TemplateBinding Foreground}"
                                 IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
@@ -237,7 +421,7 @@
                                 x:Name="ContentSite"
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="3,0">
+                                Margin="1,0">
                                 <ContentPresenter
                                     Margin="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -249,6 +433,40 @@
                                     IsHitTestVisible="False"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Grid>
+
+                            <TextBox
+                                x:Name="PART_EditableTextBox"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0"
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                atc:ControlsHelper.DisabledVisualElementVisibility="Collapsed"
+                                atc:TextBoxHelper.ButtonContent="{TemplateBinding atc:TextBoxHelper.ButtonContent}"
+                                atc:TextBoxHelper.ButtonContentTemplate="{TemplateBinding atc:TextBoxHelper.ButtonContentTemplate}"
+                                atc:TextBoxHelper.ButtonFontFamily="{TemplateBinding atc:TextBoxHelper.ButtonFontFamily}"
+                                atc:TextBoxHelper.ButtonFontSize="{TemplateBinding atc:TextBoxHelper.ButtonFontSize}"
+                                atc:TextBoxHelper.ButtonTemplate="{TemplateBinding atc:TextBoxHelper.ButtonTemplate}"
+                                atc:TextBoxHelper.ButtonWidth="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
+                                atc:TextBoxHelper.HasText="{TemplateBinding atc:TextBoxHelper.HasText}"
+                                atc:TextBoxHelper.UseFloatingWatermark="{TemplateBinding atc:TextBoxHelper.UseFloatingWatermark}"
+                                atc:TextBoxHelper.Watermark="{TemplateBinding atc:TextBoxHelper.Watermark}"
+                                atc:TextBoxHelper.WatermarkAlignment="{TemplateBinding atc:TextBoxHelper.WatermarkAlignment}"
+                                atc:TextBoxHelper.WatermarkTrimming="{TemplateBinding atc:TextBoxHelper.WatermarkTrimming}"
+                                Background="{x:Null}"
+                                BorderThickness="0"
+                                CharacterCasing="{TemplateBinding atc:ComboBoxHelper.CharacterCasing}"
+                                Focusable="True"
+                                FontFamily="{TemplateBinding FontFamily}"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding Foreground}"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"
+                                MaxLength="{TemplateBinding atc:ComboBoxHelper.MaxLength}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                Style="{StaticResource AtcApps.Styles.TextBox.ComboBox.Editable}"
+                                Visibility="Collapsed" />
 
                             <TextBlock
                                 x:Name="PART_Message"
@@ -264,6 +482,52 @@
                                 TextAlignment="{TemplateBinding atc:TextBoxHelper.WatermarkAlignment}"
                                 TextTrimming="{TemplateBinding atc:TextBoxHelper.WatermarkTrimming}"
                                 Visibility="Collapsed" />
+
+                            <ContentControl
+                                x:Name="PART_FloatingMessageContainer"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="4,0"
+                                Style="{DynamicResource AtcApps.Styles.ContentControl.FloatingMessageContainer}">
+                                <ContentControl.Height>
+                                    <MultiBinding Converter="{atcValueConverters:MathMultiplyValueConverter}" FallbackValue="0">
+                                        <Binding
+                                            ElementName="PART_FloatingMessage"
+                                            Mode="OneWay"
+                                            Path="ActualHeight" />
+                                        <Binding
+                                            ElementName="PART_FloatingMessageContainer"
+                                            Mode="OneWay"
+                                            Path="Opacity" />
+                                    </MultiBinding>
+                                </ContentControl.Height>
+                                <TextBlock
+                                    x:Name="PART_FloatingMessage"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Style="{DynamicResource AtcApps.Styles.TextBlock.AutoCollapsing}"
+                                    Text="{TemplateBinding atc:TextBoxHelper.Watermark}"
+                                    TextAlignment="{TemplateBinding atc:TextBoxHelper.WatermarkAlignment}"
+                                    TextTrimming="{TemplateBinding atc:TextBoxHelper.WatermarkTrimming}">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform x:Name="FloatingMessageTransform">
+                                            <TranslateTransform.Y>
+                                                <MultiBinding Converter="{atcValueConverters:MathSubtractValueConverter}" FallbackValue="0">
+                                                    <Binding
+                                                        ElementName="PART_FloatingMessage"
+                                                        Mode="OneWay"
+                                                        Path="ActualHeight" />
+                                                    <Binding
+                                                        ElementName="PART_FloatingMessageContainer"
+                                                        Mode="OneWay"
+                                                        Path="ActualHeight" />
+                                                </MultiBinding>
+                                            </TranslateTransform.Y>
+                                        </TranslateTransform>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </ContentControl>
                         </Grid>
 
                         <Border
@@ -285,10 +549,7 @@
                             IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                             Placement="Bottom"
                             PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <Grid
-                                MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"
-                                Background="Transparent">
+                            <Grid MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
                                 <decorators:ClipBorder
                                     x:Name="PopupBorder"
                                     Height="Auto"
@@ -298,13 +559,7 @@
                                     BorderThickness="1"
                                     CornerRadius="3"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                    <ScrollViewer
-                                        Padding="1"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
-                                        HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                        VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                    <ScrollViewer Padding="1" BorderThickness="0">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </decorators:ClipBorder>
@@ -332,7 +587,14 @@
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=ContextMenu, Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_EditableTextBox" Property="ContextMenu" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContextMenu}" />
+                        </MultiDataTrigger>
+
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False" />
@@ -340,6 +602,7 @@
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
                         </MultiDataTrigger>
+
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="True" />
@@ -353,6 +616,7 @@
                                 <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.ExitGotFocus}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
+
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="False" />
@@ -365,6 +629,7 @@
                                 <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.ExitHasText}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
+
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
@@ -380,33 +645,62 @@
                                 <BeginStoryboard Storyboard="{StaticResource AtcApps.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="atc:TextBoxHelper.ClearTextButton" Value="False" />
                                 <Condition Property="atc:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="ContentSite" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_EditableTextBox" Property="Grid.ColumnSpan" Value="2" />
                             <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
                         </MultiTrigger>
+
+                        <Trigger Property="IsEditable" Value="True">
+                            <Setter Property="IsTabStop" Value="false" />
+                            <Setter TargetName="ContentSite" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_DropDownToggle" Property="Background" Value="{x:Null}" />
+                            <Setter TargetName="PART_DropDownToggle" Property="Focusable" Value="False" />
+                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsEditable" Value="False" />
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground1}" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
                         </MultiTrigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.MouseOverBorderBrush)}" />
+                        </Trigger>
+
+                        <Trigger SourceName="PART_EditableTextBox" Property="IsFocused" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.FocusBorderBrush)}" />
+                        </Trigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource AtcApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                        </Trigger>
+
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.FocusBorderBrush)}" />
+                        </Trigger>
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="True" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False" />
+                                <Condition Property="IsGrouping" Value="true" />
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                         </MultiTrigger>
+
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
                         </Trigger>
-                        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -418,9 +712,35 @@
         <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}" />
         <Setter Property="atc:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
         <Setter Property="atc:TextBoxHelper.ButtonCommandTarget" Value="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}" />
-        <Setter Property="atc:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button}" />
+        <Setter Property="atc:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
         <Setter Property="atc:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="atc:TextBoxHelper.ButtonWidth" Value="22" />
+        <Style.Triggers>
+            <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel
+                                IsItemsHost="True"
+                                IsVirtualizing="True"
+                                IsVirtualizingWhenGrouping="True"
+                                VirtualizationMode="Recycling" />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.ComboBox.Virtualized"
+        BasedOn="{StaticResource AtcApps.Styles.ComboBox}"
+        TargetType="{x:Type ComboBox}">
+        <!--  ReSharper disable once Xaml.RedundantStyledValue  -->
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizingWhenGrouping" Value="True" />
+        <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
     </Style>
 
 </ResourceDictionary>
