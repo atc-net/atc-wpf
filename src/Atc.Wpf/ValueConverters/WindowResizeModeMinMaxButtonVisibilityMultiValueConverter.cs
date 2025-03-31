@@ -50,6 +50,6 @@ public sealed class WindowResizeModeMinMaxButtonVisibilityMultiValueConverter : 
 
     public object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
     {
-        return targetTypes.Select(t => DependencyProperty.UnsetValue).ToArray();
+        return targetTypes.Select(_ => DependencyProperty.UnsetValue).ToArray();
     }
 }

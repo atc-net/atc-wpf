@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(int), typeof(Visibility))]
 public sealed class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueConverter
 {
+    public static readonly IntegerGreaterThenZeroToVisibilityVisibleValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

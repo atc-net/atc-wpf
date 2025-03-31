@@ -8,6 +8,8 @@ namespace Atc.Wpf.ValueConverters;
 
 public sealed class NullCheckValueConverter : IValueConverter
 {
+    public static readonly NullCheckValueConverter Instance = new();
+
     /// <inheritdoc />
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

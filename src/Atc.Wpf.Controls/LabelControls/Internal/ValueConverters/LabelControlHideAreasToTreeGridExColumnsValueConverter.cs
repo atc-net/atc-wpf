@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 [ValueConversion(typeof(LabelControlHideAreasType), typeof(string))]
 internal sealed class LabelControlHideAreasToTreeGridExColumnsValueConverter : IValueConverter
 {
+    public static readonly LabelControlHideAreasToTreeGridExColumnsValueConverter Instance = new();
+
     [SuppressMessage("Design", "MA0076:Do not use implicit culture-sensitive ToString in interpolated strings", Justification = "OK.")]
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

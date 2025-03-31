@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 [ValueConversion(typeof(Orientation), typeof(Thickness))]
 internal sealed class LabelControlOrientationToAsteriskMarginValueConverter : IValueConverter
 {
+    public static readonly LabelControlOrientationToAsteriskMarginValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is null)

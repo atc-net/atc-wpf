@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(int), typeof(TimeSpan))]
 public sealed class IntegerToTimeSpanValueConverter : IValueConverter
 {
+    public static readonly IntegerToTimeSpanValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);

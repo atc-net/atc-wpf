@@ -7,6 +7,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(Color))]
 public sealed class ColorHexToColorValueConverter : IValueConverter
 {
+    public static readonly ColorHexToColorValueConverter Instance = new();
+
     public object Convert(
         object? value,
         Type targetType,

@@ -9,6 +9,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class HexBrushToBrushKeyValueConverter : IValueConverter
 {
+    public static readonly HexBrushToBrushKeyValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,

@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(Color))]
 public sealed class ColorNameToColorValueConverter : IValueConverter
 {
+    public static readonly ColorNameToColorValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

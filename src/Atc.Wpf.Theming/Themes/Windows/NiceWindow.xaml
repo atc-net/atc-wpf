@@ -15,16 +15,12 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Themes/Windows/Thumb.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <atcValueConverters:ThicknessBindingValueConverter x:Key="ThicknessBindingConverter" />
-    <atcValueConverters:ThicknessToDoubleValueConverter x:Key="ThicknessToDoubleConverter" />
-
     <ControlTemplate x:Key="AtcApps.Templates.NiceWindow" TargetType="{x:Type windows:NiceWindow}">
         <decorators:ClipBorder
             x:Name="PART_Border"
             Margin="{TemplateBinding Padding}"
             Background="{TemplateBinding Background}"
-            BorderBrush="{Binding Path=GlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.DefaultInstance}}"
+            BorderBrush="{Binding Path=GlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="{TemplateBinding helpers:ControlsHelper.CornerRadius}"
             UseLayoutRounding="True">
@@ -61,7 +57,7 @@
                             ContentTemplate="{TemplateBinding IconTemplate}"
                             Focusable="False"
                             Visibility="{TemplateBinding ShowIconOnTitleBar,
-                                                         Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                         Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 
                         <primitives:NiceThumb
                             x:Name="PART_WindowTitleThumb"
@@ -200,7 +196,7 @@
                 <Setter TargetName="PART_WindowTitleThumb" Property="Grid.RowSpan" Value="2" />
             </Trigger>
             <Trigger Property="IsActive" Value="False">
-                <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding Path=NonActiveGlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.DefaultInstance}}" />
+                <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding Path=NonActiveGlowColor, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}" />
                 <Setter TargetName="PART_WindowTitleBackground" Property="Fill" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
             </Trigger>
             <MultiTrigger>

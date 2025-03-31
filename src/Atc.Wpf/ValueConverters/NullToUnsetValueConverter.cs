@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(object))]
 public sealed class NullToUnsetValueConverter : MarkupValueConverterBase
 {
+    public static readonly NullToUnsetValueConverter Instance = new();
+
     protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value ?? DependencyProperty.UnsetValue;

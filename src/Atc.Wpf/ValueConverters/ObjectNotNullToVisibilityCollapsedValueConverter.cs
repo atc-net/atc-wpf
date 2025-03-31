@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(Visibility), ParameterType = typeof(Visibility))]
 public sealed class ObjectNotNullToVisibilityCollapsedValueConverter : IValueConverter
 {
+    public static readonly ObjectNotNullToVisibilityCollapsedValueConverter Instance = new();
+
     public Visibility NonVisibility { get; set; } = Visibility.Visible;
 
     /// <inheritdoc />

@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 public sealed class EnumDescriptionToStringValueConverter : IValueConverter
 {
+    public static readonly EnumDescriptionToStringValueConverter Instance = new();
+
     /// <summary>
     /// Converts a value.
     /// Supported case-formats:
