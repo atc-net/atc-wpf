@@ -1,3 +1,4 @@
+#pragma warning disable CA1507
 namespace Atc.Wpf.Sample.SamplesWpfSourceGenerators;
 
 public partial class PersonViewModel : ViewModelBase
@@ -20,7 +21,7 @@ public partial class PersonViewModel : ViewModelBase
     [ObservableProperty]
     private string? email;
 
-    [ObservableProperty(nameof(TheProperty), nameof(FullName), nameof(Age))]
+    [ObservableProperty("TheProperty", DependentProperties = [nameof(FullName), nameof(Age)])]
     private string? myTestProperty;
 
     public string FullName => $"{FirstName} {LastName}";
