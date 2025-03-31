@@ -50,7 +50,6 @@
 | Object[] -> Visibility    | MultiObjectNullToVisibilityCollapsedValueConverter       | All-NULL -> Collapsed                   | Not supported                           |
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
 
-
 ### ValueConverters - Markup to X
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |

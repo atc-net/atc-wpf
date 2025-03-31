@@ -1,14 +1,14 @@
-# MVVM in WPF
+# 🧱 MVVM in WPF
 
 Windows Presentation Foundation (WPF) fully supports the **Model-View-ViewModel (MVVM)** pattern, which promotes a clear separation of concerns between the UI and business logic.
 
 The **Atc.Wpf** library provides a robust foundation for implementing MVVM effectively, reducing boilerplate code and simplifying development.
 
-## Features
+## ⚙️ Features
 
 The `Atc.Wpf` library offers a variety of base classes and utilities to streamline MVVM implementation:
 
-| Component                 | Description                                                                      |
+| 🧩 Component             | 📋 Description                                                                 |
 |---------------------------|--------------------------------------------------------------------------------|
 | `ViewModelBase`           | A base class for ViewModels.                                                   |
 | `MainWindowViewModelBase` | A base class for the main window ViewModel.                                    |
@@ -19,11 +19,11 @@ The `Atc.Wpf` library offers a variety of base classes and utilities to streamli
 | `RelayCommandAsync`       | An asynchronous command supporting `CanExecute`.                               |
 | `RelayCommandAsync<T>`    | An asynchronous command with a generic parameter and `CanExecute`.             |
 
-For detailed information about commands, refer to the [RelayCommand documentation](../SourceGenerators/ViewModel.md).
+📖 For detailed information about commands, refer to the [RelayCommand documentation](../SourceGenerators/ViewModel.md).
 
 ---
 
-### Getting started using `ViewModelBase`
+### 🚀 Getting started using `ViewModelBase`
 
 Below is a simple example demonstrating how to create a ViewModel using `ViewModelBase`:
 

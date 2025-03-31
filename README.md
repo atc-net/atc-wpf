@@ -24,7 +24,7 @@ The demonstration application, `Atc.Wpf.Sample`, functions as a control explorer
 It provides quick visualization of a given control, along with options for
 copying and pasting the XAML markup and/or the C# code for how to use it.
 
-## Playground and Viewer for a Given Control or Functionality
+## 🎈 Playground and Viewer for a Given Control or Functionality
 
 The following example is taken from the ReplayCommandAsync which illustrates its usage:
 
@@ -39,7 +39,7 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 | Sample ![Img](docs/images/lm-wpf-replaycommandasync-sample.png)         | XAML ![Img](docs/images/lm-wpf-replaycommandasync-xaml.png)           |
 | CodeBehind ![Img](docs/images/lm-wpf-replaycommandasync-codebehind.png) | ViewModel ![Img](docs/images/lm-wpf-replaycommandasync-viewmodel.png) |
 
-### Initial glimpse at the demonstration application
+### 🔦 Initial glimpse at the demonstration application
 
 | Light-Mode                                                                   | Dark-Mode                                                                    |
 |------------------------------------------------------------------------------|------------------------------------------------------------------------------|
@@ -83,7 +83,7 @@ Then update `App.xaml` like this:
 
 Now it is possible to use controls with theming and default WPF controls like TextBox, Button etc. with theme style.
 
-## WPF with MVVM Easily Separate UI and Business Logic
+## 💝 WPF with MVVM Easily Separate UI and Business Logic
 
 With the `Atc.Wpf`, package, it is very easy to get startet with the nice `MVVM pattern`
 
