@@ -2,6 +2,9 @@ namespace Atc.Wpf.Theming.Helpers;
 
 public static class AtcAppsCommands
 {
+    private static RoutedUICommand? clearControlCommand;
+    private static RoutedUICommand? searchCommand;
+
     static AtcAppsCommands()
     {
         CommandManager.RegisterClassCommandBinding(
@@ -12,9 +15,15 @@ public static class AtcAppsCommands
                 (_, args) => CanClearControl(args)));
     }
 
-    public static ICommand ClearControlCommand { get; } = new RoutedUICommand("Clear", nameof(ClearControlCommand), typeof(AtcAppsCommands));
+    public static ICommand ClearControlCommand => clearControlCommand ??= new RoutedUICommand(
+        "Clear",
+        nameof(ClearControlCommand),
+        typeof(AtcAppsCommands));
 
-    public static ICommand SearchCommand { get; } = new RoutedUICommand("Search", nameof(SearchCommand), typeof(AtcAppsCommands));
+    public static ICommand SearchCommand => searchCommand ??= new RoutedUICommand(
+        "Search",
+        nameof(SearchCommand),
+        typeof(AtcAppsCommands));
 
     private static void CanClearControl(
         CanExecuteRoutedEventArgs args)
