@@ -8,6 +8,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class ToLowerValueConverter : MarkupValueConverterBase
 {
+    public static readonly ToLowerValueConverter Instance = new();
+
     /// <inheritdoc />
     protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

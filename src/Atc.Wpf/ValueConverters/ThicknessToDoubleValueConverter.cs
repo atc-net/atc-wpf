@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(ThicknessSideType))]
 public sealed class ThicknessToDoubleValueConverter : IValueConverter
 {
+    public static readonly ThicknessToDoubleValueConverter Instance = new();
+
     public ThicknessSideType TakeThicknessSide { get; set; } = ThicknessSideType.None;
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

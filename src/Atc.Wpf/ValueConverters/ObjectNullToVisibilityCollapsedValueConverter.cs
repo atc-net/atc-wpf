@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(Visibility))]
 public sealed class ObjectNullToVisibilityCollapsedValueConverter : IValueConverter
 {
+    public static readonly ObjectNullToVisibilityCollapsedValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

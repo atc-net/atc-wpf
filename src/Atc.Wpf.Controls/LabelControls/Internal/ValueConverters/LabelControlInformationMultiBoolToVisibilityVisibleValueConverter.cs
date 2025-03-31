@@ -2,6 +2,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 
 internal class LabelControlInformationMultiBoolToVisibilityVisibleValueConverter : IMultiValueConverter
 {
+    public static readonly LabelControlInformationMultiBoolToVisibilityVisibleValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(ThicknessSideType))]
 public sealed class ThicknessBindingValueConverter : IValueConverter
 {
+    public static readonly ThicknessBindingValueConverter Instance = new();
+
     public ThicknessSideType IgnoreThicknessSide { get; set; } = ThicknessSideType.None;
 
     /// <inheritdoc />

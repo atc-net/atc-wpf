@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 [ValueConversion(typeof(decimal), typeof(double))]
 internal sealed class DecimalToDoubleValueConverter : IValueConverter
 {
+    public static readonly DecimalToDoubleValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         => value switch
         {

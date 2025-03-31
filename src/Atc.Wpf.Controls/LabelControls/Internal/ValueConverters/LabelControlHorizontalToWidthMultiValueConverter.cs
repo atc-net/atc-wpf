@@ -7,6 +7,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 [ValueConversion(typeof(int), typeof(string))]
 internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConverter
 {
+    public static readonly LabelControlHorizontalToWidthMultiValueConverter Instance = new();
+
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(values);

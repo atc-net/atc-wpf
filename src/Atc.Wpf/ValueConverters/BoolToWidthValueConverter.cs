@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(bool), typeof(LengthConverter))]
 public sealed class BoolToWidthValueConverter : IValueConverter
 {
+    public static readonly BoolToWidthValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

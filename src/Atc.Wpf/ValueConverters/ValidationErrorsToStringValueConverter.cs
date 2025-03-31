@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(ICollection<ValidationError>), typeof(string))]
 public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IValueConverter
 {
+    public static readonly ValidationErrorsToStringValueConverter Instance = new();
+
     /// <summary>
     /// When implemented in a derived class, returns an object that is provided as the value of the target property for this markup extension.
     /// </summary>

@@ -3,6 +3,8 @@ namespace Atc.Wpf.ValueConverters;
 
 public sealed class RectangleCircularValueConverter : IMultiValueConverter
 {
+    public static readonly RectangleCircularValueConverter Instance = new();
+
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values is not null &&

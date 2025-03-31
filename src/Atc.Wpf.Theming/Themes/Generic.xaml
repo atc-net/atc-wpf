@@ -18,7 +18,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Themes/Windows/WindowCommands.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <theming:AtcAppsLibraryThemeProvider x:Key="{x:Static theming:AtcAppsLibraryThemeProvider.DefaultInstance}" />
+    <theming:AtcAppsLibraryThemeProvider x:Key="{x:Static theming:AtcAppsLibraryThemeProvider.Instance}" />
 
     <Style BasedOn="{StaticResource AtcApps.Styles.NiceDialogBox}" TargetType="{x:Type dialogs:NiceDialogBox}" />
 

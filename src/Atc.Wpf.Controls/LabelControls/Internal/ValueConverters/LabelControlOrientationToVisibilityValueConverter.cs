@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.ValueConverters;
 [ValueConversion(typeof(Orientation), typeof(Visibility))]
 internal sealed class LabelControlOrientationToVisibilityValueConverter : IValueConverter
 {
+    public static readonly LabelControlOrientationToVisibilityValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is null)

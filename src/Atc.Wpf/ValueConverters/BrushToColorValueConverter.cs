@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(SolidColorBrush), typeof(Color))]
 public sealed class BrushToColorValueConverter : IValueConverter
 {
+    public static readonly BrushToColorValueConverter Instance = new();
+
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

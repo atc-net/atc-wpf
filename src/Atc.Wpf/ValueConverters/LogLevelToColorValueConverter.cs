@@ -6,6 +6,8 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(LogLevel), typeof(Color))]
 public sealed class LogLevelToColorValueConverter : IValueConverter
 {
+    public static readonly LogLevelToColorValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is null)
