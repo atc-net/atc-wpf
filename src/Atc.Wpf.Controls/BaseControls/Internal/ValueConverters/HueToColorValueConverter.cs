@@ -5,6 +5,8 @@ namespace Atc.Wpf.Controls.BaseControls.Internal.ValueConverters;
 /// </summary>
 internal class HueToColorValueConverter : IValueConverter
 {
+    public static readonly HueToColorValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,

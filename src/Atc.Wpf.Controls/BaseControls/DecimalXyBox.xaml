@@ -9,31 +9,27 @@
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <valueConverters:IntegerToDoubleValueConverter x:Key="IntegerToDoubleValueConverter" />
-    </UserControl.Resources>
-
     <atc:GridEx Columns="*,10,*">
 
         <local:DecimalBox
             Grid.Column="0"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=HideUpDownButtons}"
-            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
-            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             PrefixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=PrefixTextX}"
             SuffixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=SuffixText}"
             ValueChanged="OnValueXChanged"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=ValueX, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=ValueX, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />
 
         <local:DecimalBox
             Grid.Column="2"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=HideUpDownButtons}"
-            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
-            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             PrefixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=PrefixTextY}"
             SuffixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=SuffixText}"
             ValueChanged="OnValueYChanged"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=ValueY, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=ValueY, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />
 
     </atc:GridEx>
 

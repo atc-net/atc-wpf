@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.BaseControls.Internal.ValueConverters;
 [ValueConversion(typeof(ImageLocation), typeof(Thickness))]
 internal sealed class ImageLocationToMarginValueConverter : IValueConverter
 {
+    public static readonly ImageLocationToMarginValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not ImageLocation imageLocation)

@@ -9,31 +9,27 @@
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <valueConverters:IntegerToDoubleValueConverter x:Key="IntegerToDoubleValueConverter" />
-    </UserControl.Resources>
-
     <atc:GridEx Columns="*,10,*">
 
         <local:IntegerBox
             Grid.Column="0"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=HideUpDownButtons}"
-            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             Minimum="0"
             PrefixText="W:"
             SuffixText="px"
             ValueChanged="OnValueWidthChanged"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueWidth, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueWidth, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />
 
         <local:IntegerBox
             Grid.Column="2"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=HideUpDownButtons}"
-            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             Minimum="0"
             PrefixText="H:"
             SuffixText="px"
             ValueChanged="OnValueHeightChanged"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueHeight, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueHeight, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />
 
     </atc:GridEx>
 
