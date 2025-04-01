@@ -10,10 +10,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
-    </UserControl.Resources>
-
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox
@@ -52,7 +48,7 @@
                     HorizontalStep="{Binding ElementName=LsHorizontalStep, Path=Value}"
                     LineBrush="{Binding ElementName=LcsLine, Path=SelectedKey}"
                     VerticalStep="{Binding ElementName=LsVerticalStep, Path=Value}"
-                    Visibility="{Binding ElementName=LcbShow, Path=IsChecked, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}" />
+                    Visibility="{Binding ElementName=LcbShow, Path=IsChecked, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 
             </ScrollViewer>
         </GroupBox>

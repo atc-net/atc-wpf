@@ -11,10 +11,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:ColorNameToBrushValueConverter x:Key="ColorNameToBrushValueConverter" />
-    </UserControl.Resources>
-
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox
@@ -57,7 +53,7 @@
                     Width="{Binding ElementName=TbControlPixelSize, Path=ValueWidth}"
                     Height="{Binding ElementName=TbControlPixelSize, Path=ValueHeight}"
                     Margin="20"
-                    Background="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToBrushValueConverter}}"
+                    Background="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={x:Static atcValueConverters:ColorNameToBrushValueConverter.Instance}}"
                     ControlSizeType="{Binding ElementName=CbControlSizeType, Path=SelectedKey}"
                     Source="/Atc.Wpf.Sample;component/Assets/eggeaster.svg" />
             </StackPanel>

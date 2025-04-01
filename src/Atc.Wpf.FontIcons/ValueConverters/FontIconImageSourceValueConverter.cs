@@ -2,6 +2,8 @@ namespace Atc.Wpf.FontIcons.ValueConverters;
 
 public sealed class FontIconImageSourceValueConverter : MarkupExtension, IValueConverter
 {
+    public static readonly FontIconImageSourceValueConverter Instance = new();
+
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         return this;

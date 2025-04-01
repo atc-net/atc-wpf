@@ -34,10 +34,10 @@
                             <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content}" />
                         </Trigger>
                         <Trigger Property="ContentCharacterCasing" Value="Upper">
-                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={atcValueConverters:ToUpperValueConverter}}" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={x:Static atcValueConverters:ToUpperValueConverter.Instance}}" />
                         </Trigger>
                         <Trigger Property="ContentCharacterCasing" Value="Lower">
-                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={atcValueConverters:ToLowerValueConverter}}" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={x:Static atcValueConverters:ToLowerValueConverter.Instance}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

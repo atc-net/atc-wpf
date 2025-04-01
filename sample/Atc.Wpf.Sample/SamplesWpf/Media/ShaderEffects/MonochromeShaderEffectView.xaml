@@ -11,10 +11,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:ColorNameToColorValueConverter x:Key="ColorNameToColorValueConverter" />
-    </UserControl.Resources>
-
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox
@@ -59,7 +55,7 @@
                     Width="640"
                     Source="../../../Assets/road.jpg">
                     <Image.Effect>
-                        <shaderEffects:MonochromeShaderEffect FilterColor="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorNameToColorValueConverter}}" />
+                        <shaderEffects:MonochromeShaderEffect FilterColor="{Binding ElementName=CbColor, Path=SelectedKey, UpdateSourceTrigger=PropertyChanged, Converter={x:Static atcValueConverters:ColorNameToColorValueConverter.Instance}}" />
                     </Image.Effect>
                 </Image>
             </atc:GridEx>

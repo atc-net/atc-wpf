@@ -20,11 +20,6 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
-    <dialogs:NiceDialogBox.Resources>
-        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
-        <atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter x:Key="ObjectNotNullToVisibilityVisibleValueConverter" />
-    </dialogs:NiceDialogBox.Resources>
-
     <DockPanel>
 
         <Border
@@ -34,7 +29,7 @@
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
             DockPanel.Dock="Top"
-            Visibility="{Binding Path=HeaderControl, Converter={StaticResource ObjectNotNullToVisibilityVisibleValueConverter}}">
+            Visibility="{Binding Path=HeaderControl, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}">
             <ContentControl Content="{Binding Path=HeaderControl}" />
         </Border>
 
@@ -49,7 +44,7 @@
                 HorizontalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="20"
-                Visibility="{Binding Path=Settings.ShowNegativeButton, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}">
+                Visibility="{Binding Path=Settings.ShowNegativeButton, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
                 <Button
                     Width="100"
                     Height="30"

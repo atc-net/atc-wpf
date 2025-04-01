@@ -14,10 +14,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:ObservableDictionaryToDictionaryOfStringsValueConverter x:Key="ObservableDictionaryToDictionaryOfStringsConverter" />
-    </UserControl.Resources>
-
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox
@@ -46,7 +42,7 @@
 
                         <atc:LabelComboBox
                             IsMandatory="True"
-                            Items="{Binding Path=FieldItems2, Converter={StaticResource ObservableDictionaryToDictionaryOfStringsConverter}}"
+                            Items="{Binding Path=FieldItems2, Converter={x:Static atcValueConverters:ObservableDictionaryToDictionaryOfStringsValueConverter.Instance}}"
                             LabelText="Field-Select-2"
                             Orientation="Horizontal"
                             SelectedKey="{Binding Path=FieldSelectedKey2}" />

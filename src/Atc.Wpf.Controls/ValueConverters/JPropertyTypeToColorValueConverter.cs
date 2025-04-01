@@ -3,6 +3,8 @@ namespace Atc.Wpf.Controls.ValueConverters;
 
 public sealed class JPropertyTypeToColorValueConverter : IValueConverter
 {
+    public static readonly JPropertyTypeToColorValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,

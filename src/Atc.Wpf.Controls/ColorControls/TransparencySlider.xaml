@@ -17,8 +17,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Internal/ColorControlResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <atcValueConverters:ColorToSolidColorValueConverter x:Key="ColorToSolidColorConverter" />
         </ResourceDictionary>
     </colorControls:SliderBase.Resources>
 
@@ -28,7 +26,7 @@
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                     <LinearGradientBrush.GradientStops>
                         <GradientStop Offset="0" Color="Transparent" />
-                        <GradientStop Offset="1" Color="{Binding Path=Color, Mode=OneWay, Converter={StaticResource ColorToSolidColorConverter}}" />
+                        <GradientStop Offset="1" Color="{Binding Path=Color, Mode=OneWay, Converter={x:Static atcValueConverters:ColorToSolidColorValueConverter.Instance}}" />
                     </LinearGradientBrush.GradientStops>
                 </LinearGradientBrush>
             </Rectangle.Fill>

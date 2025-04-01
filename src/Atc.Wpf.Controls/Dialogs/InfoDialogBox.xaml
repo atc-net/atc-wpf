@@ -14,11 +14,6 @@
     d:Width="350"
     mc:Ignorable="d">
 
-    <dialogs:NiceDialogBox.Resources>
-        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
-        <atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter x:Key="ObjectNotNullToVisibilityVisibleValueConverter" />
-    </dialogs:NiceDialogBox.Resources>
-
     <DockPanel>
 
         <Border
@@ -28,7 +23,7 @@
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
             DockPanel.Dock="Top"
-            Visibility="{Binding Path=HeaderControl, Converter={StaticResource ObjectNotNullToVisibilityVisibleValueConverter}}">
+            Visibility="{Binding Path=HeaderControl, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}">
             <ContentControl Content="{Binding Path=HeaderControl}" />
         </Border>
 
@@ -47,7 +42,7 @@
                 Content="{Binding Path=Settings.AffirmativeButtonText, FallbackValue=OK}"
                 Foreground="{Binding Path=Settings.AffirmativeButtonForeground}"
                 IsDefault="True"
-                Visibility="{Binding Path=Settings.ShowNegativeButton, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+                Visibility="{Binding Path=Settings.ShowNegativeButton, Converter={x:Static atcValueConverters:BoolToVisibilityCollapsedValueConverter.Instance}}" />
         </Border>
 
         <ScrollViewer

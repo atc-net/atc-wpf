@@ -13,7 +13,6 @@
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="OrangeRedBrush" Color="OrangeRed" />
-        <valueConverters:FontIconDrawingImageValueConverter x:Key="FontIconImageConverter" />
     </UserControl.Resources>
 
     <atc:AutoGrid Columns="*" Rows="Auto,*">
@@ -33,22 +32,22 @@
                 <Image
                     Width="100"
                     Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontAwesomeRegularType.Flag}, Converter={StaticResource FontIconImageConverter}, ConverterParameter={StaticResource OrangeRedBrush}}" />
+                    Source="{Binding Source={x:Static fontIcons:FontAwesomeRegularType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}, ConverterParameter={StaticResource OrangeRedBrush}}" />
 
                 <Image
                     Width="100"
                     Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontBootstrapType.Flag}, Converter={StaticResource FontIconImageConverter}}" />
+                    Source="{Binding Source={x:Static fontIcons:FontBootstrapType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
 
                 <Image
                     Width="100"
                     Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Flag}, Converter={StaticResource FontIconImageConverter}}" />
+                    Source="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
 
                 <Image
                     Width="100"
                     Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontWeatherType.Barometer}, Converter={StaticResource FontIconImageConverter}}" />
+                    Source="{Binding Source={x:Static fontIcons:FontWeatherType.Barometer}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
             </WrapPanel>
 
         </GroupBox>

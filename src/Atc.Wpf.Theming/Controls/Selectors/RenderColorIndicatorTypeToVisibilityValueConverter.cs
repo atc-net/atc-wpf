@@ -6,6 +6,8 @@ namespace Atc.Wpf.Theming.Controls.Selectors;
 [ValueConversion(typeof(RenderColorIndicatorType), typeof(Visibility))]
 public sealed class RenderColorIndicatorTypeToVisibilityValueConverter : IValueConverter
 {
+    public static readonly RenderColorIndicatorTypeToVisibilityValueConverter Instance = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
