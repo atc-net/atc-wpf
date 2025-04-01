@@ -21,15 +21,6 @@
 
     <UserControl.Resources>
 
-        <atcValueConverters:MathSubtractValueConverter x:Key="MathSubtractValueConverter" />
-        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
-        <valueConverters:MethodToValueConverter x:Key="MethodToValueConverter" />
-        <valueConverters:ComplexPropertyMethodToValueConverter x:Key="ComplexPropertyMethodToValueConverter" />
-        <valueConverters:JValueConverter x:Key="JValueConverter" />
-        <valueConverters:JPropertyTypeToColorValueConverter x:Key="JPropertyTypeToColorConverter" />
-        <valueConverters:JValueTypeToColorValueConverter x:Key="JValueTypeToColorConverter" />
-        <valueConverters:JArrayLengthValueConverter x:Key="JArrayLengthConverter" />
-
         <Style x:Key="TreeViewItemStackPanel" TargetType="{x:Type StackPanel}">
             <Setter Property="Margin" Value="0" />
             <Setter Property="Orientation" Value="Horizontal" />
@@ -41,7 +32,7 @@
             </Style.Triggers>
         </Style>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JArray}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+        <HierarchicalDataTemplate DataType="{x:Type jLinq:JArray}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
             <StackPanel Margin="1" Orientation="Horizontal">
                 <TextBlock
                     Margin="0,0,5,0"
@@ -50,14 +41,14 @@
                     Foreground="WhiteSmoke"
                     Opacity="0.4"
                     Text="array" />
-                <TextBlock Foreground="#a40000" Text="{Binding Converter={StaticResource JArrayLengthConverter}}" />
+                <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JArrayLengthValueConverter.Instance}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate
             x:Key="ArrayPropertyTemplate"
             DataType="{x:Type jLinq:JProperty}"
-            ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
+            ItemsSource="{Binding Converter={x:Static valueConverters:ComplexPropertyMethodToValueConverter.Instance}, ConverterParameter='Children'}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
@@ -70,14 +61,14 @@
                     Foreground="WhiteSmoke"
                     Opacity="0.4"
                     Text="array" />
-                <TextBlock Foreground="#a40000" Text="{Binding Converter={StaticResource JArrayLengthConverter}}" />
+                <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JArrayLengthValueConverter.Instance}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate
             x:Key="ObjectPropertyTemplate"
             DataType="{x:Type jLinq:JProperty}"
-            ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
+            ItemsSource="{Binding Converter={x:Static valueConverters:ComplexPropertyMethodToValueConverter.Instance}, ConverterParameter='Children'}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}" Text="{Binding Path=Name, Mode=OneWay}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
@@ -94,11 +85,11 @@
                     <Run Text=":   " />
                 </TextBlock>
                 <TextBlock
-                    Foreground="{Binding Converter={StaticResource JPropertyTypeToColorConverter}}"
-                    Text="{Binding Path=Value, Converter={StaticResource JValueConverter}}"
+                    Foreground="{Binding Converter={x:Static valueConverters:JPropertyTypeToColorValueConverter.Instance}}"
+                    Text="{Binding Path=Value, Converter={x:Static valueConverters:JValueConverter.Instance}}"
                     TextWrapping="Wrap">
                     <TextBlock.Width>
-                        <MultiBinding Converter="{StaticResource MathSubtractValueConverter}">
+                        <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}">
                             <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
                             <Binding Source="250" />
                         </MultiBinding>
@@ -107,18 +98,18 @@
             </StackPanel>
         </DataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JObject}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+        <HierarchicalDataTemplate DataType="{x:Type jLinq:JObject}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Text=" " />
                 <TextBlock Foreground="#729fcf" Text="{}{ }" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JConstructor}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+        <HierarchicalDataTemplate DataType="{x:Type jLinq:JConstructor}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
             <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="Constructor" />
         </HierarchicalDataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JRaw}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+        <HierarchicalDataTemplate DataType="{x:Type jLinq:JRaw}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
             <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="Raw" />
         </HierarchicalDataTemplate>
 
@@ -131,11 +122,11 @@
         <DataTemplate DataType="{x:Type jLinq:JValue}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock
-                    Foreground="{Binding Converter={StaticResource JValueTypeToColorConverter}}"
-                    Text="{Binding Converter={StaticResource JValueConverter}}"
+                    Foreground="{Binding Converter={x:Static valueConverters:JValueTypeToColorValueConverter.Instance}}"
+                    Text="{Binding Converter={x:Static valueConverters:JValueConverter.Instance}}"
                     TextWrapping="Wrap">
                     <TextBlock.Width>
-                        <MultiBinding Converter="{StaticResource MathSubtractValueConverter}">
+                        <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}">
                             <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
                             <Binding Source="250" />
                         </MultiBinding>
@@ -152,7 +143,7 @@
                 Margin="5"
                 Orientation="Horizontal"
                 Spacing="10"
-                Visibility="{Binding Path=ShowActionAndInformationBar, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}">
+                Visibility="{Binding Path=ShowActionAndInformationBar, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
                 <Button Click="ExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
                     <atc:SvgImage
                         Width="16"

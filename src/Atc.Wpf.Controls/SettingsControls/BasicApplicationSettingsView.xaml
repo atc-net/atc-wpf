@@ -14,18 +14,14 @@
     d:DesignWidth="600"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
-    </UserControl.Resources>
-
     <atc:UniformSpacingPanel Orientation="Vertical" Spacing="20">
 
         <labelControls:LabelThemeAndAccentColorSelectors
             HideAreas="InformationAndValidation"
             Orientation="Vertical"
-            Visibility="{Binding Path=ShowThemeAndAccent, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}" />
+            Visibility="{Binding Path=ShowThemeAndAccent, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 
-        <labelControls:LabelLanguageSelector HideAreas="InformationAndValidation" Visibility="{Binding Path=ShowLanguage, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}" />
+        <labelControls:LabelLanguageSelector HideAreas="InformationAndValidation" Visibility="{Binding Path=ShowLanguage, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 
         <labelControls:LabelCheckBox
             HideAreas="InformationAndValidation"
@@ -33,7 +29,7 @@
             LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
                                             Key=OpenRecentFileOnStartup}"
             LabelWidthNumber="210"
-            Visibility="{Binding Path=ShowOpenRecentFileOnStartup, Converter={StaticResource BoolToVisibilityVisibleValueConverter}}" />
+            Visibility="{Binding Path=ShowOpenRecentFileOnStartup, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 
     </atc:UniformSpacingPanel>
 

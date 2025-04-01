@@ -2,6 +2,8 @@ namespace Atc.Wpf.Controls.ValueConverters;
 
 public sealed class ComplexPropertyMethodToValueConverter : IValueConverter
 {
+    public static readonly ComplexPropertyMethodToValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,

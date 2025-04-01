@@ -11,10 +11,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:IntegerToTimeSpanValueConverter x:Key="TimeSpanConverter" />
-    </UserControl.Resources>
-
     <atc:AutoGrid Columns="*" Rows="Auto,*">
 
         <GroupBox
@@ -39,7 +35,7 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <atc:BusyOverlay DisplayAfter="{Binding ElementName=IbDelay, Path=Value, Converter={StaticResource TimeSpanConverter}}" IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}">
+            <atc:BusyOverlay DisplayAfter="{Binding ElementName=IbDelay, Path=Value, Converter={x:Static atcValueConverters:IntegerToTimeSpanValueConverter.Instance}}" IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}">
                 <StackPanel Margin="20">
                     <atc:LabelTextBox LabelText="First name" WatermarkText="Enter first name" />
                     <atc:LabelTextBox LabelText="Last name" WatermarkText="Enter last name" />

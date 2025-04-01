@@ -2,6 +2,8 @@ namespace Atc.Wpf.Controls.ValueConverters;
 
 public sealed class JValueTypeToColorValueConverter : IValueConverter
 {
+    public static readonly JValueTypeToColorValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,

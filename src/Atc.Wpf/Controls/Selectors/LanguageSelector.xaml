@@ -11,10 +11,6 @@
     d:DataContext="{d:DesignInstance Type=selectors:LanguageSelector}"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <valueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
-    </UserControl.Resources>
-
     <ComboBox
         x:Name="CbLanguages"
         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Items}"
@@ -42,7 +38,7 @@
                         </Image.Style>
                     </Image>
                     <TextBlock Text="{Binding Culture.LanguageDisplayName}" />
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=UseOnlySupportedLanguages, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=UseOnlySupportedLanguages, Converter={x:Static valueConverters:BoolToVisibilityCollapsedValueConverter.Instance}}">
                         <TextBlock Text=" - " />
                         <TextBlock Text="{Binding Path=Culture.CountryDisplayName}" />
                     </StackPanel>

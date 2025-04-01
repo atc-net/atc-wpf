@@ -14,16 +14,11 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <atcValueConverters:BoolToWidthValueConverter x:Key="BoolToWidthValueConverter" />
-        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
-    </UserControl.Resources>
-
     <atc:GridEx Columns="*" Rows="Auto,*">
         <DockPanel Grid.Row="0">
-            <ToolBarTray Visibility="{Binding Path=ShowToolbar, Converter={StaticResource BoolToVisibilityVisibleValueConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+            <ToolBarTray Visibility="{Binding Path=ShowToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                 <ToolBar ToolBarTray.IsLocked="True">
-                    <Button Command="{Binding Path=ClearCommand}" Visibility="{Binding Path=ShowClearInToolbar, Converter={StaticResource BoolToVisibilityVisibleValueConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+                    <Button Command="{Binding Path=ClearCommand}" Visibility="{Binding Path=ShowClearInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                         <Image
                             Width="16"
                             Height="16"
@@ -33,7 +28,7 @@
                                                           Key=ClearAll}" />
                     </Button>
 
-                    <ToggleButton IsChecked="{Binding Path=AutoScroll, Mode=TwoWay}" Visibility="{Binding Path=ShowAutoScrollInToolbar, Converter={StaticResource BoolToVisibilityVisibleValueConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+                    <ToggleButton IsChecked="{Binding Path=AutoScroll, Mode=TwoWay}" Visibility="{Binding Path=ShowAutoScrollInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                         <Image
                             Width="16"
                             Height="16"
@@ -80,7 +75,7 @@
                     <TextBox
                         Width="150"
                         Text="{Binding Path=MatchOnText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{Binding Path=ShowSearchInToolbar, Converter={StaticResource BoolToVisibilityVisibleValueConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" />
+                        Visibility="{Binding Path=ShowSearchInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" />
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
@@ -116,7 +111,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Width="{Binding Path=ShowColumnArea, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter=150}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Area}">
+                        <GridViewColumn Width="{Binding Path=ShowColumnArea, Converter={x:Static atcValueConverters:BoolToWidthValueConverter.Instance}, ConverterParameter=150}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Area}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Area}" />

@@ -21,10 +21,6 @@
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
 
-    <dialogs:NiceDialogBox.Resources>
-        <atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter x:Key="ObjectNotNullToVisibilityVisibleValueConverter" />
-    </dialogs:NiceDialogBox.Resources>
-
     <DockPanel>
 
         <Border
@@ -34,7 +30,7 @@
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
             DockPanel.Dock="Top"
-            Visibility="{Binding Path=HeaderControl, Converter={StaticResource ObjectNotNullToVisibilityVisibleValueConverter}}">
+            Visibility="{Binding Path=HeaderControl, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}">
             <ContentControl Content="{Binding Path=HeaderControl}" />
         </Border>
 

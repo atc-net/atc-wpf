@@ -5,6 +5,8 @@ namespace Atc.Wpf.Controls.ColorControls.Internal;
 /// </summary>
 internal class UnitToPercentValueConverter : IValueConverter
 {
+    public static readonly UnitToPercentValueConverter Instance = new();
+
     public object Convert(
         object? value,
         Type targetType,

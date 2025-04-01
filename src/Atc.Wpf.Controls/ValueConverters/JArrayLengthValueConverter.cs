@@ -5,6 +5,8 @@ namespace Atc.Wpf.Controls.ValueConverters;
 [SuppressMessage("Design", "S112:General exceptions should never be thrown", Justification = "OK.")]
 public sealed class JArrayLengthValueConverter : IValueConverter
 {
+    public static readonly JArrayLengthValueConverter Instance = new();
+
     public object Convert(
         object? value,
         Type targetType,

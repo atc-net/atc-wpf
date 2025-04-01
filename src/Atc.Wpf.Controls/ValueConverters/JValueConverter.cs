@@ -2,6 +2,8 @@ namespace Atc.Wpf.Controls.ValueConverters;
 
 public sealed class JValueConverter : IValueConverter
 {
+    public static readonly JValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,

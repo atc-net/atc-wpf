@@ -4,6 +4,8 @@ namespace Atc.Wpf.Theming.ValueConverters;
 [ValueConversion(typeof(CornerRadius), typeof(double), ParameterType = typeof(RadiusType))]
 public sealed class CornerRadiusFilterValueConverter : IValueConverter
 {
+    public static readonly CornerRadiusFilterValueConverter Instance = new();
+
     public RadiusType Filter { get; set; } = RadiusType.None;
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

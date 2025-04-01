@@ -8,9 +8,6 @@
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters"
     xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
 
-    <atcValueConverters:ThicknessBindingValueConverter x:Key="ThicknessBindingConverter" />
-    <valueConverters:CornerRadiusBindingValueConverter x:Key="CornerRadiusBindingConverter" />
-
     <Thickness x:Key="GroupBoxHeaderThemePadding">4</Thickness>
 
     <!--  Base  -->
@@ -35,7 +32,7 @@
                             Background="{TemplateBinding atc:HeaderedControlHelper.HeaderBackground}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static enums:RadiusType.Bottom}}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={x:Static valueConverters:CornerRadiusBindingValueConverter.Instance}, ConverterParameter={x:Static enums:RadiusType.Bottom}}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="True">
                             <controls:ContentControlEx
@@ -73,8 +70,8 @@
                             Grid.Row="1"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static enums:RadiusType.Top}}"
+                            BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={x:Static atcValueConverters:ThicknessBindingValueConverter.Instance}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}"
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={x:Static valueConverters:CornerRadiusBindingValueConverter.Instance}, ConverterParameter={x:Static enums:RadiusType.Top}}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="True">
                             <ContentPresenter

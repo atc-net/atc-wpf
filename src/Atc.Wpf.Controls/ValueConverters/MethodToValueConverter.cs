@@ -2,6 +2,8 @@ namespace Atc.Wpf.Controls.ValueConverters;
 
 public sealed class MethodToValueConverter : IValueConverter
 {
+    public static readonly MethodToValueConverter Instance = new();
+
     public object? Convert(
         object? value,
         Type targetType,
@@ -20,7 +22,7 @@ public sealed class MethodToValueConverter : IValueConverter
             return null;
         }
 
-        var returnValue = methodInfo.Invoke(value, Array.Empty<object>());
+        var returnValue = methodInfo.Invoke(value, []);
         return returnValue;
     }
 

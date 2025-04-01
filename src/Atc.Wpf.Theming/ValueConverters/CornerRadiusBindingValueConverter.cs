@@ -3,6 +3,8 @@ namespace Atc.Wpf.Theming.ValueConverters;
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
 public sealed class CornerRadiusBindingValueConverter : IValueConverter
 {
+    public static readonly CornerRadiusBindingValueConverter Instance = new();
+
     public RadiusType IgnoreRadius { get; set; } = RadiusType.None;
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
