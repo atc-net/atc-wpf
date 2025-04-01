@@ -10,10 +10,6 @@
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
     mc:Ignorable="d">
 
-    <labelControls:LabelDecimalNumberControl.Resources>
-        <valueConverters:IntegerToDoubleValueConverter x:Key="IntegerToDoubleValueConverter" />
-    </labelControls:LabelDecimalNumberControl.Resources>
-
     <labelControls:LabelContent
         HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
@@ -34,11 +30,11 @@
             atcTheming:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=WatermarkAlignment}"
             ButtonsAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=ButtonsAlignment}"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=HideUpDownButtons}"
-            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Maximum, Converter={StaticResource IntegerToDoubleValueConverter}}"
-            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Minimum, Converter={StaticResource IntegerToDoubleValueConverter}}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Minimum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             PrefixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=PrefixText}"
             SuffixText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=SuffixText}"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Value, Converter={StaticResource IntegerToDoubleValueConverter}, FallbackValue=42}" />
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalBox}}, Path=Value, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />
 
     </labelControls:LabelContent>
 

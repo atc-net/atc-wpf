@@ -12,11 +12,6 @@
     IsTabStop="False"
     mc:Ignorable="d">
 
-    <labelControls:LabelControl.Resources>
-        <valueConverters:LabelControlHideAreasToShowToolTipValueConverter x:Key="LabelControlHideAreasToShowToolTipValueConverter" />
-        <atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter x:Key="StringNullOrEmptyToInverseBoolValueConverter" />
-    </labelControls:LabelControl.Resources>
-
     <labelControls:LabelContent
         HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
         InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
@@ -39,8 +34,8 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 atc:TextBoxHelper.ClearTextButton="True"
-                atc:TextBoxHelper.HasValidationError="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}"
-                atc:TextBoxHelper.ShowToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=HideAreas, Converter={StaticResource LabelControlHideAreasToShowToolTipValueConverter}}"
+                atc:TextBoxHelper.HasValidationError="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}"
+                atc:TextBoxHelper.ShowToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=HideAreas, Converter={x:Static valueConverters:LabelControlHideAreasToShowToolTipValueConverter.Instance}}"
                 atc:TextBoxHelper.ToolTipText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText}"
                 atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkAlignment}"
@@ -107,7 +102,7 @@
                 Grid.Row="0"
                 Grid.Column="4"
                 atc:TextBoxHelper.ClearTextButton="True"
-                atc:TextBoxHelper.HasValidationError="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText, Converter={StaticResource StringNullOrEmptyToInverseBoolValueConverter}}"
+                atc:TextBoxHelper.HasValidationError="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}"
                 atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTimeText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkAlignment}"
                 atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTrimming}"
