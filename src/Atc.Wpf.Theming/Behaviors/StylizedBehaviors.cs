@@ -1,5 +1,7 @@
+// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.Wpf.Theming.Behaviors;
 
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class StylizedBehaviors
 {
     public static readonly DependencyProperty BehaviorsProperty
@@ -11,15 +13,20 @@ public static class StylizedBehaviors
                 defaultValue: null,
                 OnPropertyChanged));
 
-    public static StylizedBehaviorCollection? GetBehaviors(DependencyObject uie)
-        => (StylizedBehaviorCollection?)uie.GetValue(BehaviorsProperty);
+    public static StylizedBehaviorCollection? GetBehaviors(
+        DependencyObject d)
+        => (StylizedBehaviorCollection?)d.GetValue(BehaviorsProperty);
 
-    public static void SetBehaviors(DependencyObject uie, StylizedBehaviorCollection? value)
-        => uie.SetValue(BehaviorsProperty, value);
+    public static void SetBehaviors(
+        DependencyObject d,
+        StylizedBehaviorCollection? value)
+        => d.SetValue(BehaviorsProperty, value);
 
-    private static void OnPropertyChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
+    private static void OnPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        if (dpo is not FrameworkElement frameworkElement)
+        if (d is not FrameworkElement frameworkElement)
         {
             return;
         }
@@ -47,17 +54,19 @@ public static class StylizedBehaviors
             }
         }
 
-        if (newBehaviors != null)
+        if (newBehaviors is not null)
         {
             foreach (var behavior in newBehaviors)
             {
                 var index = GetIndexOf(itemBehaviors, behavior);
-                if (index < 0)
+                if (index >= 0)
                 {
-                    var clone = (Behavior)behavior.Clone();
-                    SetOriginalBehavior(clone, behavior);
-                    itemBehaviors.Add(clone);
+                    continue;
                 }
+
+                var clone = (Behavior)behavior.Clone();
+                SetOriginalBehavior(clone, behavior);
+                itemBehaviors.Add(clone);
             }
         }
 
@@ -67,7 +76,9 @@ public static class StylizedBehaviors
         }
     }
 
-    private static void FrameworkElementUnloaded(object sender, RoutedEventArgs e)
+    private static void FrameworkElementUnloaded(
+        object sender,
+        RoutedEventArgs e)
     {
         if (sender is not FrameworkElement frameworkElement)
         {
@@ -83,7 +94,9 @@ public static class StylizedBehaviors
         frameworkElement.Loaded += FrameworkElementLoaded;
     }
 
-    private static void FrameworkElementLoaded(object sender, RoutedEventArgs e)
+    private static void FrameworkElementLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         if (sender is not FrameworkElement frameworkElement)
         {
@@ -98,7 +111,9 @@ public static class StylizedBehaviors
         }
     }
 
-    private static int GetIndexOf(BehaviorCollection itemBehaviors, Behavior behavior)
+    private static int GetIndexOf(
+        BehaviorCollection itemBehaviors,
+        Behavior behavior)
     {
         var index = -1;
 
@@ -129,11 +144,14 @@ public static class StylizedBehaviors
             "OriginalBehavior",
             typeof(Behavior),
             typeof(StylizedBehaviors),
-            new UIPropertyMetadata(null));
+            new UIPropertyMetadata(propertyChangedCallback: null));
 
-    private static Behavior? GetOriginalBehavior(DependencyObject obj)
-        => (Behavior?)obj.GetValue(OriginalBehaviorProperty);
+    private static Behavior? GetOriginalBehavior(
+        DependencyObject d)
+        => (Behavior?)d.GetValue(OriginalBehaviorProperty);
 
-    private static void SetOriginalBehavior(DependencyObject obj, Behavior? value)
-        => obj.SetValue(OriginalBehaviorProperty, value);
+    private static void SetOriginalBehavior(
+        DependencyObject d,
+        Behavior? value)
+        => d.SetValue(OriginalBehaviorProperty, value);
 }
