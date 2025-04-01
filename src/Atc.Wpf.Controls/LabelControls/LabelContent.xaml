@@ -114,6 +114,7 @@
                                 Height="16"
                                 Margin="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation, Converter={x:Static valueConverters:LabelControlOrientationToInformationIconMarginValueConverter.Instance}}"
                                 VerticalAlignment="Top"
+                                IsTabStop="False"
                                 OverrideColor="{Binding ElementName=Lc, Path=InformationColor}"
                                 Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg">
                                 <atc:SvgImage.ToolTip>
