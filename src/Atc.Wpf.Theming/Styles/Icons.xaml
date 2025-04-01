@@ -12,10 +12,14 @@
 
     <Geometry x:Key="AtcApps.Geometry.Search">M17.545,15.467l-3.779-3.779c0.57-0.935,0.898-2.035,0.898-3.21c0-3.417-2.961-6.377-6.378-6.377  C4.869,2.1,2.1,4.87,2.1,8.287c0,3.416,2.961,6.377,6.377,6.377c1.137,0,2.2-0.309,3.115-0.844l3.799,3.801  c0.372,0.371,0.975,0.371,1.346,0l0.943-0.943C18.051,16.307,17.916,15.838,17.545,15.467z M4.004,8.287  c0-2.366,1.917-4.283,4.282-4.283c2.366,0,4.474,2.107,4.474,4.474c0,2.365-1.918,4.283-4.283,4.283  C6.111,12.76,4.004,10.652,4.004,8.287z</Geometry>
 
+    <Geometry x:Key="AtcApps.Geometry.Warning">M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z</Geometry>
+
+    <Geometry x:Key="AtcApps.Geometry.RevealEye">M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z</Geometry>
+
     <Path
         x:Key="AtcApps.Path.ClearIcon"
-        Width="10"
-        Height="10"
+        Width="12"
+        Height="12"
         HorizontalAlignment="Center"
         Data="{DynamicResource AtcApps.Geometry.Clear}"
         Fill="{DynamicResource AtcApps.Brushes.Text}"
@@ -23,9 +27,9 @@
         Stretch="Uniform" />
 
     <Path
-        x:Key="AtcApps.Path.ArrowDown"
-        Width="10"
-        Height="10"
+        x:Key="AtcApps.Path.ArrowDownIcon"
+        Width="12"
+        Height="12"
         HorizontalAlignment="Center"
         Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
         Fill="{DynamicResource AtcApps.Brushes.Gray1}"
@@ -38,6 +42,16 @@
         Height="12"
         HorizontalAlignment="Center"
         Data="{DynamicResource AtcApps.Geometry.Search}"
+        Fill="{DynamicResource AtcApps.Brushes.Text}"
+        IsHitTestVisible="False"
+        Stretch="Uniform" />
+
+    <Path
+        x:Key="AtcApps.Path.RevealEyeIcon"
+        Width="12"
+        Height="12"
+        HorizontalAlignment="Center"
+        Data="{DynamicResource AtcApps.Geometry.RevealEye}"
         Fill="{DynamicResource AtcApps.Brushes.Text}"
         IsHitTestVisible="False"
         Stretch="Uniform" />

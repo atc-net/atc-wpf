@@ -69,8 +69,8 @@ public static class AtcAppsCommands
         switch (control)
         {
             case RichTextBox richTextBox:
-                richTextBox.Document?.Blocks?.Clear();
-                richTextBox.Selection?.Select(richTextBox.CaretPosition, richTextBox.CaretPosition);
+                richTextBox.Document?.Blocks.Clear();
+                richTextBox.Selection.Select(richTextBox.CaretPosition, richTextBox.CaretPosition);
                 break;
             case DatePicker datePicker:
                 datePicker.SetCurrentValue(DatePicker.SelectedDateProperty, value: null);
@@ -80,6 +80,10 @@ public static class AtcAppsCommands
             case TextBox textBox:
                 textBox.Clear();
                 textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                break;
+            case PasswordBox passwordBox:
+                passwordBox.Clear();
+                passwordBox.GetBindingExpression(PasswordBoxBindingBehavior.PasswordProperty)?.UpdateSource();
                 break;
             case ComboBox comboBox:
             {

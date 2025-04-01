@@ -55,10 +55,10 @@
             Header="TextBox"
             IsExpanded="True"
             SamplePath="InputBox.TextBoxView" />
-        <TreeViewItem
+        <sample:SampleTreeViewItem
             Header="PasswordBox"
-            IsEnabled="False"
-            IsExpanded="True" />
+            IsExpanded="True"
+            SamplePath="InputBox.PasswordBoxView" />
     </TreeViewItem>
     <TreeViewItem Header="Input - Selector">
         <sample:SampleTreeViewItem
