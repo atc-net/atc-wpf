@@ -341,6 +341,34 @@ public static class TextBoxHelper
         TextWrapping value)
         => d.SetValue(WatermarkWrappingProperty, value);
 
+    public static readonly DependencyProperty SelectAllOnFocusProperty
+        = DependencyProperty.RegisterAttached(
+            "SelectAllOnFocus",
+            typeof(bool),
+            typeof(TextBoxHelper),
+            new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
+
+    public static bool GetSelectAllOnFocus(DependencyObject obj)
+        => (bool)obj.GetValue(SelectAllOnFocusProperty);
+
+    public static void SetSelectAllOnFocus(DependencyObject obj, bool value)
+        => obj.SetValue(SelectAllOnFocusProperty, BooleanBoxes.Box(value));
+
+    public static readonly DependencyProperty IsMonitoringProperty
+        = DependencyProperty.RegisterAttached(
+            "IsMonitoring",
+            typeof(bool),
+            typeof(TextBoxHelper),
+            new UIPropertyMetadata(
+                BooleanBoxes.FalseBox,
+                OnIsMonitoringChanged));
+
+    public static bool GetIsMonitoring(UIElement element)
+        => (bool)element.GetValue(IsMonitoringProperty);
+
+    public static void SetIsMonitoring(DependencyObject obj, bool value)
+        => obj.SetValue(IsMonitoringProperty, BooleanBoxes.Box(value));
+
     public static readonly DependencyPropertyKey TextLengthPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
         "TextLength",
         typeof(int),
@@ -464,6 +492,68 @@ public static class TextBoxHelper
         if (sender is ComboBox comboBox)
         {
             comboBox.SetCurrentValue(HasTextProperty, BooleanBoxes.Box(!string.IsNullOrWhiteSpace(comboBox.Text) || comboBox.SelectedItem != null));
+        }
+    }
+
+    private static void OnIsMonitoringChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not PasswordBox passBox)
+        {
+            return;
+        }
+
+        if ((bool)e.NewValue)
+        {
+            _ = passBox.BeginInvoke(() =>
+            {
+                PasswordChanged(passBox, new RoutedEventArgs(PasswordBox.PasswordChangedEvent, passBox));
+            });
+
+            passBox.PasswordChanged += PasswordChanged;
+            passBox.GotFocus += PasswordGotFocus;
+            passBox.PreviewMouseLeftButtonDown += UiElementPreviewMouseLeftButtonDown;
+        }
+        else
+        {
+            passBox.PasswordChanged -= PasswordChanged;
+            passBox.GotFocus -= PasswordGotFocus;
+            passBox.PreviewMouseLeftButtonDown -= UiElementPreviewMouseLeftButtonDown;
+        }
+    }
+
+    private static void UiElementPreviewMouseLeftButtonDown(
+        object? sender,
+        MouseButtonEventArgs e)
+    {
+        if (sender is not UIElement { IsKeyboardFocusWithin: false } uiElement || !GetSelectAllOnFocus(uiElement))
+        {
+            return;
+        }
+
+        uiElement.Focus();
+        e.Handled = true;
+    }
+
+    private static void PasswordGotFocus(
+        object sender,
+        RoutedEventArgs e)
+        => ControlGotFocus(sender as PasswordBox, passwordBox => passwordBox.SelectAll());
+
+    private static void ControlGotFocus<TDependencyObject>(
+        TDependencyObject? sender,
+        Action<TDependencyObject> action)
+        where TDependencyObject : DependencyObject
+    {
+        if (sender is null)
+        {
+            return;
+        }
+
+        if (GetSelectAllOnFocus(sender))
+        {
+            _ = sender.Dispatcher?.BeginInvoke(action, sender);
         }
     }
 }

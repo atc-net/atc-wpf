@@ -171,6 +171,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelIntegerXyBoxView" />
         <sample:SampleTreeViewItem
+            Header="LabelPasswordBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelPasswordBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelPixelSizeBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelPixelSizeBoxView" />
