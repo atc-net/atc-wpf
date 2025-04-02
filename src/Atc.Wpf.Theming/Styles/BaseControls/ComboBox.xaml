@@ -4,15 +4,15 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators"
-    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers">
+    xmlns:helpers="clr-namespace:Atc.Wpf.Theming.Helpers"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/ControlsStoryboard.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Geometry x:Key="ComboBoxDownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
-
+    <!--  Editable  -->
     <Style
         x:Key="AtcApps.Styles.TextBox.ComboBox.Editable"
         BasedOn="{StaticResource AtcApps.Styles.TextBox}"
@@ -66,7 +66,7 @@
                                 Margin="4,0"
                                 Style="{DynamicResource AtcApps.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
-                                    <MultiBinding Converter="{atcValueConverters:MathMultiplyValueConverter}" FallbackValue="0">
+                                    <MultiBinding Converter="{x:Static atcValueConverters:MathMultiplyValueConverter.Instance}" FallbackValue="0">
                                         <Binding
                                             ElementName="PART_FloatingMessage"
                                             Mode="OneWay"
@@ -89,7 +89,7 @@
                                     <TextBlock.RenderTransform>
                                         <TranslateTransform x:Name="FloatingMessageTransform">
                                             <TranslateTransform.Y>
-                                                <MultiBinding Converter="{atcValueConverters:MathSubtractValueConverter}" FallbackValue="0">
+                                                <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}" FallbackValue="0">
                                                     <Binding
                                                         ElementName="PART_FloatingMessage"
                                                         Mode="OneWay"
@@ -178,10 +178,11 @@
                             x:Name="PART_ClearTextButton"
                             Grid.Column="1"
                             Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
+                            MinHeight="22"
+                            Margin="0,-0.5,-0.5,0"
                             Command="{TemplateBinding atc:TextBoxHelper.ButtonCommand}"
                             CommandParameter="{TemplateBinding atc:TextBoxHelper.ButtonCommandParameter}"
                             CommandTarget="{TemplateBinding atc:TextBoxHelper.ButtonCommandTarget}"
-                            Content="{TemplateBinding atc:TextBoxHelper.ButtonContent}"
                             ContentTemplate="{TemplateBinding atc:TextBoxHelper.ButtonContentTemplate}"
                             Focusable="False"
                             FontFamily="{TemplateBinding atc:TextBoxHelper.ButtonFontFamily}"
@@ -189,24 +190,43 @@
                             IsTabStop="False"
                             Style="{DynamicResource AtcApps.Styles.Button.Chromeless}"
                             Template="{TemplateBinding atc:TextBoxHelper.ButtonTemplate}"
-                            Visibility="Visible" />
-
-                        <Grid
-                            x:Name="BtnArrowBackground"
-                            Grid.Column="2"
-                            Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
-                            Background="Transparent">
+                            Visibility="Visible">
                             <Path
-                                x:Name="Arrow"
+                                x:Name="PART_ClearTextButtonIcon"
                                 Width="8"
-                                Height="4"
+                                Height="8"
+                                Margin="0,1,0,0"
                                 HorizontalAlignment="Center"
-                                Data="{DynamicResource ComboBoxDownArrowGeometry}"
+                                Data="{DynamicResource AtcApps.Geometry.Clear}"
                                 Fill="{DynamicResource AtcApps.Brushes.Gray1}"
-                                IsHitTestVisible="false"
+                                IsHitTestVisible="False"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Stretch="Uniform" />
-                        </Grid>
+                        </Button>
+
+                        <Border
+                            x:Name="BtnArrowBackgroundBorder"
+                            Grid.Column="2"
+                            Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
+                            Margin="0,-1,0,0"
+                            Background="Transparent"
+                            CornerRadius="{Binding Path=(atc:ControlsHelper.CornerRadius), RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static valueConverters:LeftRightCornerRadiusValueConverter.Instance}}">
+                            <Grid
+                                x:Name="BtnArrowBackground"
+                                Width="{TemplateBinding atc:TextBoxHelper.ButtonWidth}"
+                                Background="Transparent">
+                                <Path
+                                    x:Name="ArrowIcon"
+                                    Width="10"
+                                    Height="10"
+                                    HorizontalAlignment="Center"
+                                    Data="{DynamicResource AtcApps.Geometry.ArrowDown}"
+                                    Fill="{DynamicResource AtcApps.Brushes.Gray1}"
+                                    IsHitTestVisible="False"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    Stretch="Uniform" />
+                            </Grid>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="atc:TextBoxHelper.ClearTextButton" Value="True">
@@ -221,12 +241,12 @@
                             <Setter TargetName="PART_ClearTextButton" Property="Visibility" Value="Collapsed" />
                         </MultiTrigger>
 
-                        <Trigger SourceName="BtnArrowBackground" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        <Trigger SourceName="BtnArrowBackgroundBorder" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BtnArrowBackgroundBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                         </Trigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsPressed}" Value="True">
-                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
+                            <Setter TargetName="BtnArrowBackgroundBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
                             <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
                         </DataTrigger>
 
@@ -490,7 +510,7 @@
                                 Margin="4,0"
                                 Style="{DynamicResource AtcApps.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
-                                    <MultiBinding Converter="{atcValueConverters:MathMultiplyValueConverter}" FallbackValue="0">
+                                    <MultiBinding Converter="{x:Static atcValueConverters:MathMultiplyValueConverter.Instance}" FallbackValue="0">
                                         <Binding
                                             ElementName="PART_FloatingMessage"
                                             Mode="OneWay"
@@ -513,7 +533,7 @@
                                     <TextBlock.RenderTransform>
                                         <TranslateTransform x:Name="FloatingMessageTransform">
                                             <TranslateTransform.Y>
-                                                <MultiBinding Converter="{atcValueConverters:MathSubtractValueConverter}" FallbackValue="0">
+                                                <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}" FallbackValue="0">
                                                     <Binding
                                                         ElementName="PART_FloatingMessage"
                                                         Mode="OneWay"
@@ -557,7 +577,7 @@
                                     Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                                     BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.PopupBorder}"
                                     BorderThickness="1"
-                                    CornerRadius="3"
+                                    CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ScrollViewer Padding="1" BorderThickness="0">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
