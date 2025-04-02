@@ -34,6 +34,7 @@
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <atc:UniformSpacingPanel
                         Grid.Column="0"
+                        Margin="10"
                         Orientation="Vertical"
                         Spacing="10">
 
@@ -44,6 +45,7 @@
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"
+                        Margin="10"
                         Orientation="Vertical"
                         Spacing="10">
 

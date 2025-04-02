@@ -21,6 +21,7 @@
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <atc:UniformSpacingPanel
                         Grid.Column="0"
+                        Margin="10"
                         Orientation="Vertical"
                         Spacing="10">
 

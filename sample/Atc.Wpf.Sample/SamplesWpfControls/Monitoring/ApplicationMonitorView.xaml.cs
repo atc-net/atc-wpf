@@ -91,6 +91,5 @@ public partial class ApplicationMonitorView : IDisposable
         }
 
         dispatcherTimer.Stop();
-        dispatcherTimer.Dispatcher?.InvokeShutdown();
     }
 }

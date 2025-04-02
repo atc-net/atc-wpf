@@ -194,9 +194,8 @@ public sealed class SampleViewerViewModel : ViewModelBase
         {
             disposableDataContext.Dispose();
         }
-
-        if (SampleContent.GetType() != SampleContent.DataContext?.GetType() &&
-            SampleContent is IDisposable disposableControl)
+        else if (SampleContent.GetType() != SampleContent.DataContext?.GetType() &&
+                 SampleContent is IDisposable disposableControl)
         {
             disposableControl.Dispose();
         }

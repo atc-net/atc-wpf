@@ -50,7 +50,14 @@
                             SelectedValuePath="Key" />
 
                         <ComboBox
-                            atc:TextBoxHelper.ButtonContent="CLEAR"
+                            atc:TextBoxHelper.ClearTextButton="True"
+                            DisplayMemberPath="Value"
+                            IsEditable="True"
+                            ItemsSource="{Binding Path=Items1000}"
+                            SelectedValue="{Binding Path=SelectedKey, Mode=TwoWay}"
+                            SelectedValuePath="Key" />
+
+                        <ComboBox
                             atc:TextBoxHelper.ButtonWidth="50"
                             atc:TextBoxHelper.ClearTextButton="True"
                             DisplayMemberPath="Value"
