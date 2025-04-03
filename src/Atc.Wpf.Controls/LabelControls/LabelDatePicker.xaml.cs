@@ -393,7 +393,6 @@ public partial class LabelDatePicker : ILabelDatePicker
         return null;
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnLostFocusFireValidEvent(
         LabelDatePicker control,
         DependencyPropertyChangedEventArgs e)
@@ -430,7 +429,6 @@ public partial class LabelDatePicker : ILabelDatePicker
                 newValue));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnLostFocusFireInvalidEvent(
         LabelDatePicker control,
         DependencyPropertyChangedEventArgs e)

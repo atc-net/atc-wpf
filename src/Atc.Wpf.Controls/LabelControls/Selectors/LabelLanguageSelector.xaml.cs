@@ -2,6 +2,7 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.LabelControls;
 
+[SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelLanguageSelector : ILabelLanguageSelector
 {
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
@@ -108,8 +109,6 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         return string.IsNullOrEmpty(ValidationText);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     private static void ValidateValue(
         DependencyPropertyChangedEventArgs e,
         LabelLanguageSelector control,
@@ -177,7 +176,6 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         ValidateValue(default, this, e.NewValue, raiseEvents: false);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectorLostFocusFireInvalidEvent(
         LabelLanguageSelector control,
         DependencyPropertyChangedEventArgs e)

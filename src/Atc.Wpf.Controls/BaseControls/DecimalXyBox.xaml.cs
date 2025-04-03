@@ -1,6 +1,5 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-[SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
 public partial class DecimalXyBox
 {
     public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(

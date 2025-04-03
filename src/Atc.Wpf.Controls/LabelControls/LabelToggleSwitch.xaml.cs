@@ -66,7 +66,6 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
         InitializeComponent();
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnIsOnChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)

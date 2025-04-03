@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
+[SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelCountrySelector : ILabelCountrySelector
 {
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
@@ -43,7 +44,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         nameof(DefaultCultureIdentifier),
         typeof(string),
         typeof(LabelCountrySelector),
-        new PropertyMetadata(default));
+        new PropertyMetadata(null));
 
     public string? DefaultCultureIdentifier
     {
@@ -95,8 +96,6 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         return string.IsNullOrEmpty(ValidationText);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     private static void ValidateValue(
         DependencyPropertyChangedEventArgs e,
         LabelCountrySelector control,
@@ -164,7 +163,6 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         ValidateValue(default, this, e.NewValue, raiseEvents: false);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectorLostFocusFireInvalidEvent(
         LabelCountrySelector control,
         DependencyPropertyChangedEventArgs e)
