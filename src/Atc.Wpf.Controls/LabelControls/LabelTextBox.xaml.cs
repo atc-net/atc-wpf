@@ -3,6 +3,8 @@
 // ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
+[SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+[SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelTextBox : ILabelTextBox
 {
     public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
@@ -125,6 +127,19 @@ public partial class LabelTextBox : ILabelTextBox
         set => SetValue(ShowClearTextButtonProperty, value);
     }
 
+    public static readonly DependencyProperty TriggerOnlyOnLostFocusProperty =
+        DependencyProperty.Register(
+            nameof(TriggerOnlyOnLostFocus),
+            typeof(bool),
+            typeof(LabelTextBox),
+            new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
+
+    public bool TriggerOnlyOnLostFocus
+    {
+        get => (bool)GetValue(TriggerOnlyOnLostFocusProperty);
+        set => SetValue(TriggerOnlyOnLostFocusProperty, value);
+    }
+
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
         nameof(Text),
         typeof(string),
@@ -132,10 +147,10 @@ public partial class LabelTextBox : ILabelTextBox
         new FrameworkPropertyMetadata(
             string.Empty,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextLostFocus,
+            OnTextChanged,
             CoerceText,
             isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
+            UpdateSourceTrigger.PropertyChanged));
 
     public string Text
     {
@@ -166,7 +181,12 @@ public partial class LabelTextBox : ILabelTextBox
 
     public override bool IsValid()
     {
-        ValidateText(default, this, raiseEvents: false);
+        ValidateText(
+            default,
+            this,
+            isCalledFromLostFocus: false,
+            isCalledFromIsValid: true);
+
         return string.IsNullOrEmpty(ValidationText);
     }
 
@@ -192,57 +212,107 @@ public partial class LabelTextBox : ILabelTextBox
     private static object CoerceText(
         DependencyObject d,
         object? value)
-        => value ?? string.Empty;
-
-    private void OnTextChanged(
-        object sender,
-        TextChangedEventArgs e)
     {
-        var control = (TextBox)sender;
+        if (value is not null &&
+            value.ToString()!.Length == 0)
+        {
+            var control = (LabelTextBox)d;
+            if (!string.IsNullOrEmpty(control.ValidationText) &&
+                string.IsNullOrEmpty(control.Text))
+            {
+                control.ValidationText = string.Empty;
+            }
+        }
 
-        RaiseEvent(new RoutedPropertyChangedEventArgs<string>(string.Empty, control.Text, TextChangedEvent));
+        return value ?? string.Empty;
     }
 
-    private static void OnTextLostFocus(
+    private static void OnTextChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelTextBox)d;
 
-        ValidateText(e, control, raiseEvents: true);
+        ValidateText(
+            e,
+            control,
+            isCalledFromLostFocus: false,
+            isCalledFromIsValid: false);
+
+        var oldValue = e.OldValue is null
+            ? string.Empty
+            : e.OldValue.ToString();
+
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<string>(
+                oldValue!,
+                control.Text,
+                TextChangedEvent));
     }
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
+    private void OnLostFocus(
+        object sender,
+        RoutedEventArgs e)
+    {
+        ValidateText(
+            default,
+            this,
+            isCalledFromLostFocus: true,
+            isCalledFromIsValid: false);
+    }
+
     private static void ValidateText(
         DependencyPropertyChangedEventArgs e,
         LabelTextBox control,
-        bool raiseEvents)
+        bool isCalledFromLostFocus,
+        bool isCalledFromIsValid)
     {
-        if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(control.Text))
+        if (!isCalledFromIsValid &&
+            !isCalledFromLostFocus &&
+            control.TriggerOnlyOnLostFocus &&
+            string.IsNullOrEmpty(control.ValidationText))
         {
-            control.ValidationText = Validations.FieldIsRequired;
-            if (raiseEvents)
-            {
-                OnTextLostFocusFireInvalidEvent(control, e);
-            }
-
             return;
+        }
+
+        switch (control.IsMandatory)
+        {
+            case true when
+                string.IsNullOrWhiteSpace(control.Text):
+                {
+                    if (ControlStackTraceHelper.IsCalledFromClearCommand())
+                    {
+                        control.ValidationText = string.Empty;
+                        return;
+                    }
+
+                    control.ValidationText = Validations.FieldIsRequired;
+                    FireTextLostFocusFireInvalidEventIfNeeded(e, control, isCalledFromLostFocus);
+                    return;
+                }
+
+            case false when
+                string.IsNullOrWhiteSpace(control.Text):
+                {
+                    control.ValidationText = string.Empty;
+                    return;
+                }
         }
 
         if (control.Text.Length < control.MinLength)
         {
+            if (ControlStackTraceHelper.IsCalledFromClearCommand())
+            {
+                control.ValidationText = string.Empty;
+                return;
+            }
+
             control.ValidationText = string.Format(
                 CultureInfo.CurrentUICulture,
                 Validations.MinValueFormat1,
                 control.MinLength);
 
-            if (raiseEvents)
-            {
-                OnTextLostFocusFireInvalidEvent(control, e);
-            }
-
+            FireTextLostFocusFireInvalidEventIfNeeded(e, control, isCalledFromLostFocus);
             return;
         }
 
@@ -253,11 +323,7 @@ public partial class LabelTextBox : ILabelTextBox
                 Validations.MaxValueFormat1,
                 control.MaxLength);
 
-            if (raiseEvents)
-            {
-                OnTextLostFocusFireInvalidEvent(control, e);
-            }
-
+            FireTextLostFocusFireInvalidEventIfNeeded(e, control, isCalledFromLostFocus);
             return;
         }
 
@@ -269,11 +335,7 @@ public partial class LabelTextBox : ILabelTextBox
                 Validations.NotAllowedFormat1,
                 GetOnlyUsedNotAllowedCharacters(control.CharactersNotAllowed, control.Text));
 
-            if (raiseEvents)
-            {
-                OnTextLostFocusFireInvalidEvent(control, e);
-            }
-
+            FireTextLostFocusFireInvalidEventIfNeeded(e, control, isCalledFromLostFocus);
             return;
         }
 
@@ -283,11 +345,7 @@ public partial class LabelTextBox : ILabelTextBox
             if (!regex.Match(control.Text).Success)
             {
                 control.ValidationText = Validations.RegexPatternDontMatch;
-                if (raiseEvents)
-                {
-                    OnTextLostFocusFireInvalidEvent(control, e);
-                }
-
+                FireTextLostFocusFireInvalidEventIfNeeded(e, control, isCalledFromLostFocus);
                 return;
             }
         }
@@ -299,7 +357,7 @@ public partial class LabelTextBox : ILabelTextBox
         if (isValid)
         {
             control.ValidationText = string.Empty;
-            if (raiseEvents)
+            if (isCalledFromLostFocus)
             {
                 OnTextLostFocusFireValidEvent(control, e);
             }
@@ -307,14 +365,23 @@ public partial class LabelTextBox : ILabelTextBox
         else
         {
             control.ValidationText = errorMessage;
-            if (raiseEvents)
-            {
-                OnTextLostFocusFireInvalidEvent(control, e);
-            }
+            FireTextLostFocusFireInvalidEventIfNeeded(e, control, isCalledFromLostFocus);
         }
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
+    private static void FireTextLostFocusFireInvalidEventIfNeeded(
+        DependencyPropertyChangedEventArgs e,
+        LabelTextBox control,
+        bool isCalledFromLostFocus)
+    {
+        if (!isCalledFromLostFocus)
+        {
+            return;
+        }
+
+        OnTextLostFocusFireInvalidEvent(control, e);
+    }
+
     private static void OnTextLostFocusFireValidEvent(
         LabelTextBox control,
         DependencyPropertyChangedEventArgs e)
@@ -331,7 +398,6 @@ public partial class LabelTextBox : ILabelTextBox
                 newValue));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnTextLostFocusFireInvalidEvent(
         LabelTextBox control,
         DependencyPropertyChangedEventArgs e)

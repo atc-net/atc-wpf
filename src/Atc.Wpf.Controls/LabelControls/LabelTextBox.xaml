@@ -35,10 +35,10 @@
             atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=WatermarkText}"
             atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=WatermarkAlignment}"
             atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=WatermarkTrimming}"
+            LostFocus="OnLostFocus"
             MaxLength="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=MaxLength}"
             MaxLines="1"
-            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=Text, FallbackValue=Text}"
-            TextChanged="OnTextChanged" />
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextBox}}, Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=Text}" />
 
     </labelControls:LabelContent>
 

@@ -14,16 +14,44 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+
+            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="20">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,10,0" Text="MyLabel1-Binding:" />
+                    <TextBlock Text="{Binding ElementName=LtbMyLabel1, Path=Text}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,10,0" Text="MyLabel2-Binding:" />
+                    <TextBlock Text="{Binding ElementName=LtbMyLabel2, Path=Text}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,10,0" Text="Email-Binding:" />
+                    <TextBlock Text="{Binding ElementName=LtbEmail, Path=Text}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,10,0" Text="Ftp-Binding:" />
+                    <TextBlock Text="{Binding ElementName=LtbFtp, Path=Text}" />
+                </StackPanel>
+            </atc:UniformSpacingPanel>
+
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">
 
-                        <atc:LabelTextBox LabelText="MyLabel1" Orientation="Horizontal" />
+                        <atc:LabelTextBox
+                            x:Name="LtbMyLabel1"
+                            LabelText="MyLabel1"
+                            Orientation="Horizontal" />
 
                         <atc:LabelTextBox
+                            x:Name="LtbMyLabel2"
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             LabelText="MyLabel2"
@@ -32,6 +60,7 @@
                             WatermarkText="Fill out with text.." />
 
                         <atc:LabelTextBox
+                            x:Name="LtbEmail"
                             IsMandatory="True"
                             LabelText="Email"
                             Orientation="Horizontal"
@@ -40,10 +69,12 @@
                             WatermarkText="Email address" />
 
                         <atc:LabelTextBox
+                            x:Name="LtbFtp"
                             IsMandatory="True"
                             LabelText="Ftp(s) url"
                             Orientation="Horizontal"
                             ShowClearTextButton="True"
+                            TriggerOnlyOnLostFocus="False"
                             ValidationFormat="FtpOrFtps"
                             WatermarkText="Ftp url" />
 
