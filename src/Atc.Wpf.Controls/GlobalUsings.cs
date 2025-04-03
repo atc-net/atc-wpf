@@ -44,6 +44,7 @@ global using Atc.Wpf.Controls.ColorControls.Internal;
 global using Atc.Wpf.Controls.Dialogs;
 global using Atc.Wpf.Controls.Documents.ColorSchemas;
 global using Atc.Wpf.Controls.Documents.TextFormatters;
+global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.LabelControls;
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
 global using Atc.Wpf.Controls.LabelControls.Enums;
