@@ -2,7 +2,6 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
-[SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK.")]
 public partial class LabelDirectoryPicker : ILabelDirectoryPicker
 {
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(

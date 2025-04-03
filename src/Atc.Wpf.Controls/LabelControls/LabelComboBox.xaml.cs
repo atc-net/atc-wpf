@@ -47,7 +47,6 @@ public partial class LabelComboBox : ILabelComboBox
         return string.IsNullOrEmpty(ValidationText);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void ValidateValue(
         DependencyPropertyChangedEventArgs e,
         LabelComboBox control,
@@ -105,7 +104,6 @@ public partial class LabelComboBox : ILabelComboBox
         ValidateValue(default, this, newValue, raiseEvents: false);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectorLostFocusFireInvalidEvent(
         LabelComboBox control,
         DependencyPropertyChangedEventArgs e)

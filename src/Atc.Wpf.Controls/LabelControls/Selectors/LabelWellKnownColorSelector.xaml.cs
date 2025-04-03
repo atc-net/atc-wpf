@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls.LabelControls;
 
+[SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
 {
     private bool isFirstOnSelectedKeyLostFocus;
@@ -113,8 +114,6 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         return string.IsNullOrEmpty(ValidationText);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     private static void ValidateValue(
         DependencyPropertyChangedEventArgs e,
         LabelWellKnownColorSelector control,
@@ -206,7 +205,6 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         ValidateValue(default, this, e.NewValue, raiseEvents: false);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnSelectorLostFocusFireInvalidEvent(
         LabelWellKnownColorSelector control,
         DependencyPropertyChangedEventArgs e)

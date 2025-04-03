@@ -90,7 +90,6 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
         RaiseEvent(new RoutedPropertyChangedEventArgs<int>(e.OldValue, e.NewValue, ValueHeightChangedEvent));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnValueWidthLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -116,7 +115,6 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
                 newValue));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnValueHeightLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)

@@ -107,7 +107,6 @@ public partial class LabelSlider : ILabelSlider
         ValidateValue(e, control, raiseEvents: true);
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void ValidateValue(
         DependencyPropertyChangedEventArgs e,
         LabelSlider control,

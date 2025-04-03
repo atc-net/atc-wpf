@@ -133,7 +133,6 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
         RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(e.OldValue, e.NewValue, ValueYChangedEvent));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnValueXLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -159,7 +158,6 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
                 newValue));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnValueYLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)

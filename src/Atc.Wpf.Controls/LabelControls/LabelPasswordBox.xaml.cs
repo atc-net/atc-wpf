@@ -200,7 +200,6 @@ public partial class LabelPasswordBox : ILabelPasswordBox
         }
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnTextLostFocusFireValidEvent(
         LabelPasswordBox control,
         DependencyPropertyChangedEventArgs e)
@@ -217,7 +216,6 @@ public partial class LabelPasswordBox : ILabelPasswordBox
                 newValue));
     }
 
-    [SuppressMessage("Usage", "MA0091:Sender should be 'this' for instance events", Justification = "OK - 'this' cant be used in a static method.")]
     private static void OnTextLostFocusFireInvalidEvent(
         LabelPasswordBox control,
         DependencyPropertyChangedEventArgs e)

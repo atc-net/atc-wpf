@@ -587,6 +587,7 @@ dotnet_diagnostic.CA1870.severity = none           # Use a cached 'XXX' instance
 
 dotnet_diagnostic.MA0011.severity = none           # Use an overload of 'ToString' that has a 'System.IFormatProvider' parameter
 dotnet_diagnostic.MA0041.severity = none           # Make property static (deprecated, use CA1822 instead)
+dotnet_diagnostic.MA0091.severity = none           # Sender should be 'this' for instance events
 dotnet_diagnostic.MA0131.severity = none           # ArgumentNullException.ThrowIfNull should not be used with non-nullable types
 
 dotnet_diagnostic.SA1010.severity = none           # Opening square brackets must be spaced correctly
