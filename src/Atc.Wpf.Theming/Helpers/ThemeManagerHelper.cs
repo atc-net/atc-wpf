@@ -24,6 +24,13 @@ public static class ThemeManagerHelper
             resourceKey = $"AtcApps.Colors.{resourceKey}";
         }
 
+        if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
+        {
+            resourceKey = resourceKey
+                .Replace(".Bootstrap", ".Bootstrap.", StringComparison.Ordinal)
+                .Replace("..", ".", StringComparison.Ordinal);
+        }
+
         var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
         var cacheKey = $"{currentTheme.BaseColorScheme}_{resourceKey}";
 
@@ -32,7 +39,20 @@ public static class ThemeManagerHelper
             return cacheColor;
         }
 
-        var color = (Color)currentTheme.Resources[resourceKey]!;
+        object? resource = null;
+        if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
+        {
+            resource = Application.Current.Resources[resourceKey];
+        }
+
+        resource ??= currentTheme.Resources[resourceKey] ?? Application.Current.Resources[resourceKey];
+
+        if (resource is null)
+        {
+            return Colors.DeepPink;
+        }
+
+        var color = (Color)resource;
         CacheColors.TryAdd(cacheKey, color);
         return color;
     }
@@ -51,6 +71,13 @@ public static class ThemeManagerHelper
             resourceKey = $"AtcApps.Brushes.{resourceKey}";
         }
 
+        if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
+        {
+            resourceKey = resourceKey
+                .Replace(".Bootstrap", ".Bootstrap.", StringComparison.Ordinal)
+                .Replace("..", ".", StringComparison.Ordinal);
+        }
+
         var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
         var cacheKey = $"{currentTheme.BaseColorScheme}_{resourceKey}";
 
@@ -59,7 +86,20 @@ public static class ThemeManagerHelper
             return cacheBrush;
         }
 
-        var brush = (SolidColorBrush)currentTheme.Resources[resourceKey]!;
+        object? resource = null;
+        if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
+        {
+            resource = Application.Current.Resources[resourceKey];
+        }
+
+        resource ??= currentTheme.Resources[resourceKey] ?? Application.Current.Resources[resourceKey];
+
+        if (resource is null)
+        {
+            return Brushes.DeepPink;
+        }
+
+        var brush = (SolidColorBrush)resource;
         if (brush.CanFreeze)
         {
             brush.Freeze();
