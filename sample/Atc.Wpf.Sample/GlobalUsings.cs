@@ -43,6 +43,7 @@ global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XamlToolkit.Command;
+global using Atc.XamlToolkit.Controls.Attributes;
 global using Atc.XamlToolkit.Diagnostics;
 global using Atc.XamlToolkit.Messaging;
 global using Atc.XamlToolkit.Mvvm;
