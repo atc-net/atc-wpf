@@ -65,7 +65,7 @@ public partial class FilePicker
         nameof(ShowClearTextButton),
         typeof(bool),
         typeof(FilePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool ShowClearTextButton
     {
@@ -113,7 +113,7 @@ public partial class FilePicker
         nameof(AllowOnlyExisting),
         typeof(bool),
         typeof(FilePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool AllowOnlyExisting
     {
@@ -125,7 +125,7 @@ public partial class FilePicker
         nameof(UsePreviewPane),
         typeof(bool),
         typeof(FilePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool UsePreviewPane
     {

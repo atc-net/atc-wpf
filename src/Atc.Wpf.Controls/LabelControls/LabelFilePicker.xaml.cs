@@ -20,7 +20,7 @@ public partial class LabelFilePicker : ILabelFilePicker
         nameof(ShowClearTextButton),
         typeof(bool),
         typeof(LabelFilePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool ShowClearTextButton
     {
@@ -32,7 +32,7 @@ public partial class LabelFilePicker : ILabelFilePicker
         nameof(AllowOnlyExisting),
         typeof(bool),
         typeof(LabelFilePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool AllowOnlyExisting
     {
@@ -56,7 +56,7 @@ public partial class LabelFilePicker : ILabelFilePicker
         nameof(UsePreviewPane),
         typeof(bool),
         typeof(LabelFilePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool UsePreviewPane
     {

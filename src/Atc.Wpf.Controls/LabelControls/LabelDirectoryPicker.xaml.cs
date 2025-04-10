@@ -20,7 +20,7 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
         nameof(ShowClearTextButton),
         typeof(bool),
         typeof(LabelDirectoryPicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool ShowClearTextButton
     {
@@ -32,7 +32,7 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
         nameof(AllowOnlyExisting),
         typeof(bool),
         typeof(LabelDirectoryPicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool AllowOnlyExisting
     {

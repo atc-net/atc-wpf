@@ -191,7 +191,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         nameof(OpenCalender),
         typeof(bool),
         typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool OpenCalender
     {
@@ -203,7 +203,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         nameof(OpenClock),
         typeof(bool),
         typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool OpenClock
     {

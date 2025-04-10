@@ -30,7 +30,7 @@ public partial class DecimalXyBox
         nameof(HideUpDownButtons),
         typeof(bool),
         typeof(DecimalXyBox),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool HideUpDownButtons
     {

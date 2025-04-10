@@ -30,7 +30,7 @@ public partial class PixelSizeBox
         nameof(HideUpDownButtons),
         typeof(bool),
         typeof(PixelSizeBox),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool HideUpDownButtons
     {

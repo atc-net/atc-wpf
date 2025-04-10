@@ -99,7 +99,7 @@ public partial class LabelTimePicker : ILabelTimePicker
         nameof(OpenClock),
         typeof(bool),
         typeof(LabelTimePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool OpenClock
     {
