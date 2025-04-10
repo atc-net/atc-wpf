@@ -30,7 +30,7 @@ public partial class IntegerXyBox
         nameof(HideUpDownButtons),
         typeof(bool),
         typeof(IntegerXyBox),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool HideUpDownButtons
     {

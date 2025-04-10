@@ -173,7 +173,7 @@ public partial class LabelDatePicker : ILabelDatePicker
         nameof(OpenCalender),
         typeof(bool),
         typeof(LabelDatePicker),
-        new PropertyMetadata(default(bool)));
+        new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool OpenCalender
     {
