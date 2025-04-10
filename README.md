@@ -1,5 +1,3 @@
-[![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/atc.wpf)
-
 # ATC.Net WPF
 
 This is a base libraries for building WPF application with the MVVM design pattern.
@@ -10,15 +8,15 @@ This is a base libraries for building WPF application with the MVVM design patte
 
 ## NuGet Packages Provided in this Repository
 
-| Nuget package              | Description                                         | Dependencies                                 |
-|----------------------------|-----------------------------------------------------|----------------------------------------------|
-| 💟 Atc.Wpf                 | Base Controls, ValueConverters, Extensions etc.     | Atc                                          |
-| 💟 Atc.Wpf.Controls        | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming                    |
-| 💟 Atc.Wpf.Controls.Sample | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming & Atc.Wpf.Controls |
-| 💟 Atc.Wpf.FontIcons       | Render Svg and Img resources based on fonts         | Atc.Wpf                                      |
-| 💟 Atc.Wpf.Theming         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                                      |
+| Nuget package                                                                                                                                                                                       | Description                                         | Dependencies                                 |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Base Controls, ValueConverters, Extensions etc.     | Atc                                          |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Miscellaneous UI Controls                           | Atc.Wpf & Atc.Wpf.Theming                    |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for creating WPF sample apps               | Atc.Wpf & Atc.Wpf.Theming & Atc.Wpf.Controls |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Render Svg and Img resources based on fonts         | Atc.Wpf                                      |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Theming for Light & Dark mode for WPF base controls | Atc.Wpf                                      |
 
-# 🔎 Demonstration Application
+## 🔎 Demonstration Application
 
 The demonstration application, `Atc.Wpf.Sample`, functions as a control explorer.
 It provides quick visualization of a given control, along with options for
