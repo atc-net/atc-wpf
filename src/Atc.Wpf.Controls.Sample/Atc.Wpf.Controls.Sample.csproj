@@ -8,11 +8,12 @@
     <PackageTags>wpf;controls;sample</PackageTags>
     <Description>A base library for building Sample WPF application.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.552" />

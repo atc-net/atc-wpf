@@ -8,11 +8,12 @@
     <PackageTags>wpf;mvvm,relaycommand</PackageTags>
     <Description>A base library for building WPF application with the MVVM design pattern.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Media\ShaderEffects\Shaders\ContrastAdjust.ps" />
