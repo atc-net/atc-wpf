@@ -60,5 +60,6 @@ global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 global using Atc.Wpf.WindowsNative.Structs;
 global using Atc.Wpf.WindowsNative.User32;
+global using Atc.XamlToolkit.Controls.Attributes;
 
 global using Microsoft.Extensions.Logging;

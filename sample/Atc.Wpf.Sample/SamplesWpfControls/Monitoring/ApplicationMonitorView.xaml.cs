@@ -24,19 +24,8 @@ public partial class ApplicationMonitorView : IDisposable
         }
     }
 
-    public static readonly DependencyProperty EnableTimerProperty = DependencyProperty.Register(
-        nameof(EnableTimer),
-        typeof(bool),
-        typeof(ApplicationMonitorView),
-        new PropertyMetadata(
-            defaultValue: false,
-            propertyChangedCallback: OnEnableTimerChanged));
-
-    public bool EnableTimer
-    {
-        get => (bool)GetValue(EnableTimerProperty);
-        set => SetValue(EnableTimerProperty, value);
-    }
+    [DependencyProperty(PropertyChangedCallback = nameof(OnEnableTimerChanged))]
+    private bool enableTimer;
 
     private static void OnEnableTimerChanged(
         DependencyObject d,

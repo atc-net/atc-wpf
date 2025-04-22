@@ -1,50 +1,29 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-public sealed class GridLines : ContentControl
+public sealed partial class GridLines : ContentControl
 {
     private readonly Canvas containerCanvas = new();
 
-    public static readonly DependencyProperty HorizontalStepProperty = DependencyProperty.Register(
-        nameof(HorizontalStep),
-        typeof(double),
-        typeof(GridLines),
-        new PropertyMetadata(
-            20d,
-            (sender, _) => ((GridLines)sender).ReDrawGridLines()));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "The horizontal step property",
+        DefaultValue = 20d,
+        PropertyChangedCallback = nameof(OnReDrawGridLines))]
+    private double horizontalStep;
 
-    public double HorizontalStep
-    {
-        get => (double)GetValue(HorizontalStepProperty);
-        set => SetValue(HorizontalStepProperty, value);
-    }
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "The vertical step property",
+        DefaultValue = 20d,
+        PropertyChangedCallback = nameof(OnReDrawGridLines))]
+    private double verticalStep;
 
-    public static readonly DependencyProperty VerticalStepProperty = DependencyProperty.Register(
-        nameof(VerticalStep),
-        typeof(double),
-        typeof(GridLines),
-        new PropertyMetadata(
-            20d,
-            (sender, _) => ((GridLines)sender).ReDrawGridLines()));
-
-    public double VerticalStep
-    {
-        get => (double)GetValue(VerticalStepProperty);
-        set => SetValue(VerticalStepProperty, value);
-    }
-
-    public static readonly DependencyProperty LineBrushProperty = DependencyProperty.Register(
-        nameof(LineBrush),
-        typeof(Brush),
-        typeof(GridLines),
-        new PropertyMetadata(
-            defaultValue: null,
-            (sender, _) => ((GridLines)sender).ReDrawGridLines()));
-
-    public Brush LineBrush
-    {
-        get => (Brush)GetValue(LineBrushProperty);
-        set => SetValue(LineBrushProperty, value);
-    }
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "The line brush property",
+        DefaultValue = "DeepPink",
+        PropertyChangedCallback = nameof(OnReDrawGridLines))]
+    private Brush lineBrush;
 
     public GridLines()
     {
@@ -55,6 +34,18 @@ public sealed class GridLines : ContentControl
 
         Loaded += OnLoaded;
         SizeChanged += OnGridLinesSizeChanged;
+    }
+
+    private static void OnReDrawGridLines(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not GridLines gridLines)
+        {
+            return;
+        }
+
+        gridLines.ReDrawGridLines();
     }
 
     private void OnLoaded(
@@ -76,7 +67,7 @@ public sealed class GridLines : ContentControl
         var currentMainWindow = Application.Current.MainWindow;
         if (currentMainWindow is not null)
         {
-            var matrix = PresentationSource.FromVisual(currentMainWindow)!.CompositionTarget.TransformToDevice;
+            var matrix = PresentationSource.FromVisual(currentMainWindow)!.CompositionTarget!.TransformToDevice;
             var dpiFactor = 1 / matrix.M11;
             thickness = 1 * dpiFactor;
         }

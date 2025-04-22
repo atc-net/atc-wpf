@@ -7,264 +7,93 @@ namespace Atc.Wpf.Controls.Layouts;
 ///
 /// Partially based on work at http://rachel53461.wordpress.com/2011/09/17/wpf-grids-rowcolumn-count-properties.
 /// </summary>
-public sealed class AutoGrid : Grid
+public sealed partial class AutoGrid : Grid
 {
-    /// <summary>
-    /// The child horizontal alignment property
-    /// </summary>
-    public static readonly DependencyProperty ChildHorizontalAlignmentProperty = DependencyProperty.Register(
-        nameof(ChildHorizontalAlignment),
-        typeof(HorizontalAlignment?),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            OnChildHorizontalAlignmentChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Presets the horizontal alignment of all child controls",
+        DefaultValue = null,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(OnChildHorizontalAlignmentChanged))]
+    private HorizontalAlignment? childHorizontalAlignment;
 
-    /// <summary>
-    /// The child margin property
-    /// </summary>
-    public static readonly DependencyProperty ChildMarginProperty = DependencyProperty.Register(
-        nameof(ChildMargin),
-        typeof(Thickness?),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            OnChildMarginChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Presets the margin of all child controls",
+        DefaultValue = null,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(OnChildMarginChanged))]
+    private Thickness? childMargin;
 
-    /// <summary>
-    /// The child vertical alignment property
-    /// </summary>
-    public static readonly DependencyProperty ChildVerticalAlignmentProperty = DependencyProperty.Register(
-        nameof(ChildVerticalAlignment),
-        typeof(VerticalAlignment?),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            OnChildVerticalAlignmentChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Presets the vertical alignment of all child controls",
+        DefaultValue = null,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(OnChildVerticalAlignmentChanged))]
+    private VerticalAlignment? childVerticalAlignment;
 
-    /// <summary>
-    /// The column count property
-    /// </summary>
-    public static readonly DependencyProperty ColumnCountProperty = DependencyProperty.RegisterAttached(
-        nameof(ColumnCount),
-        typeof(int),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            1,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            ColumnCountChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Defines a set number of columns",
+        DefaultValue = 1,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(ColumnCountChanged))]
+    private int columnCount;
 
-    /// <summary>
-    /// The columns property
-    /// </summary>
-    public static readonly DependencyProperty ColumnsProperty = DependencyProperty.RegisterAttached(
-        nameof(Columns),
-        typeof(string),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            ColumnsChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Defines all columns using comma separated grid length notation",
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(ColumnsChanged))]
+    private string columns;
 
-    /// <summary>
-    /// The column width property
-    /// </summary>
-    public static readonly DependencyProperty ColumnWidthProperty = DependencyProperty.RegisterAttached(
-        nameof(ColumnWidth),
-        typeof(GridLength),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            GridLength.Auto,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            FixedColumnWidthChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Presets the width of all columns set using the ColumnCount property",
+        DefaultValue = "GridLength.Auto",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(FixedColumnWidthChanged))]
+    private GridLength columnWidth;
 
-    /// <summary>
-    /// The is automatic indexing property
-    /// </summary>
-    public static readonly DependencyProperty IsAutoIndexingProperty = DependencyProperty.Register(
-        nameof(IsAutoIndexing),
-        typeof(bool),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            defaultValue: true,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Set to false to disable the auto layout functionality",
+        DefaultValue = true,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private bool isAutoIndexing;
 
-    /// <summary>
-    /// The orientation property
-    /// </summary>
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        nameof(Orientation),
-        typeof(Orientation),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            Orientation.Horizontal,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Defines the directionality of the auto-layout. Use vertical for a column first layout, horizontal for a row first layout.",
+        DefaultValue = "Orientation.Horizontal",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private Orientation orientation;
 
-    /// <summary>
-    /// The row count property
-    /// </summary>
-    public static readonly DependencyProperty RowCountProperty = DependencyProperty.RegisterAttached(
-        nameof(RowCount),
-        typeof(int),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsMeasure, RowCountChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Defines a set number of rows",
+        DefaultValue = 1,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(RowCountChanged))]
+    private int rowCount;
 
-    /// <summary>
-    /// The row height property
-    /// </summary>
-    public static readonly DependencyProperty RowHeightProperty = DependencyProperty.RegisterAttached(
-        nameof(RowHeight),
-        typeof(GridLength),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            GridLength.Auto,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            FixedRowHeightChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Presets the height of all rows set using the RowCount property",
+        DefaultValue = "GridLength.Auto",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(FixedRowHeightChanged))]
+    private GridLength rowHeight;
 
-    /// <summary>
-    /// The rows property
-    /// </summary>
-    public static readonly DependencyProperty RowsProperty = DependencyProperty.RegisterAttached(
-        nameof(Rows),
-        typeof(string),
-        typeof(AutoGrid),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            RowsChanged));
-
-    /// <summary>
-    /// Gets or sets the child horizontal alignment.
-    /// </summary>
-    /// <value>The child horizontal alignment.</value>
-    [Category("Layout")]
-    [Description("Presets the horizontal alignment of all child controls")]
-    public HorizontalAlignment? ChildHorizontalAlignment
-    {
-        get => (HorizontalAlignment?)GetValue(ChildHorizontalAlignmentProperty);
-        set => SetValue(ChildHorizontalAlignmentProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the child margin.
-    /// </summary>
-    /// <value>The child margin.</value>
-    [Category("Layout")]
-    [Description("Presets the margin of all child controls")]
-    public Thickness? ChildMargin
-    {
-        get => (Thickness?)GetValue(ChildMarginProperty);
-        set => SetValue(ChildMarginProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the child vertical alignment.
-    /// </summary>
-    /// <value>The child vertical alignment.</value>
-    [Category("Layout")]
-    [Description("Presets the vertical alignment of all child controls")]
-    public VerticalAlignment? ChildVerticalAlignment
-    {
-        get => (VerticalAlignment?)GetValue(ChildVerticalAlignmentProperty);
-        set => SetValue(ChildVerticalAlignmentProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the column count.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Defines a set number of columns")]
-    public int ColumnCount
-    {
-        get => (int)GetValue(ColumnCountProperty);
-        set => SetValue(ColumnCountProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the columns.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Defines all columns using comma separated grid length notation")]
-    public string Columns
-    {
-        get => (string)GetValue(ColumnsProperty);
-        set => SetValue(ColumnsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the fixed column width.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Presets the width of all columns set using the ColumnCount property")]
-    public GridLength ColumnWidth
-    {
-        get => (GridLength)GetValue(ColumnWidthProperty);
-        set => SetValue(ColumnWidthProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the children are automatically indexed.
-    /// <remarks>
-    /// The default is <see langword="true" />.
-    /// Note that if children are already indexed, setting this property to <see langword="false" /> will not remove their indices.
-    /// </remarks>
-    /// </summary>
-    [Category("Layout")]
-    [Description("Set to false to disable the auto layout functionality")]
-    public bool IsAutoIndexing
-    {
-        get => (bool)GetValue(IsAutoIndexingProperty);
-        set => SetValue(IsAutoIndexingProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the orientation.
-    /// <remarks>The default is Vertical.</remarks>
-    /// </summary>
-    /// <value>The orientation.</value>
-    [Category("Layout")]
-    [Description("Defines the directionality of the autolayout. Use vertical for a column first layout, horizontal for a row first layout.")]
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the number of rows.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Defines a set number of rows")]
-    public int RowCount
-    {
-        get => (int)GetValue(RowCountProperty);
-        set => SetValue(RowCountProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the fixed row height.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Presets the height of all rows set using the RowCount property")]
-    public GridLength RowHeight
-    {
-        get => (GridLength)GetValue(RowHeightProperty);
-        set => SetValue(RowHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the rows.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Defines all rows using comma separated grid length notation")]
-    public string Rows
-    {
-        get => (string)GetValue(RowsProperty);
-        set => SetValue(RowsProperty, value);
-    }
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "Defines all rows using comma separated grid length notation",
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(RowsChanged))]
+    private string rows;
 
     /// <summary>
     /// Handles the column count changed event.
@@ -616,16 +445,16 @@ public sealed class AutoGrid : Grid
     private void PerformLayout()
     {
         var fillRowFirst = Orientation == Orientation.Horizontal;
-        var rowCount = RowDefinitions.Count;
-        var colCount = ColumnDefinitions.Count;
+        var rowDefCount = RowDefinitions.Count;
+        var colDefCount = ColumnDefinitions.Count;
 
-        if (rowCount == 0 || colCount == 0)
+        if (rowDefCount == 0 || colDefCount == 0)
         {
             return;
         }
 
         var position = 0;
-        var skip = new bool[rowCount, colCount];
+        var skip = new bool[rowDefCount, colDefCount];
         foreach (UIElement child in Children)
         {
             var childIsCollapsed = child.Visibility == Visibility.Collapsed;
@@ -633,13 +462,13 @@ public sealed class AutoGrid : Grid
             {
                 if (fillRowFirst)
                 {
-                    var row = Clamp(position / colCount, rowCount - 1);
-                    var col = Clamp(position % colCount, colCount - 1);
+                    var row = Clamp(position / colDefCount, rowDefCount - 1);
+                    var col = Clamp(position % colDefCount, colDefCount - 1);
                     if (skip[row, col])
                     {
                         position++;
-                        row = position / colCount;
-                        col = position % colCount;
+                        row = position / colDefCount;
+                        col = position % colDefCount;
                     }
 
                     SetRow(child, row);
@@ -654,13 +483,13 @@ public sealed class AutoGrid : Grid
                 }
                 else
                 {
-                    var row = Clamp(position % rowCount, rowCount - 1);
-                    var col = Clamp(position / rowCount, colCount - 1);
+                    var row = Clamp(position % rowDefCount, rowDefCount - 1);
+                    var col = Clamp(position / rowDefCount, colDefCount - 1);
                     if (skip[row, col])
                     {
                         position++;
-                        row = position % rowCount;
-                        col = position / rowCount;
+                        row = position % rowDefCount;
+                        col = position / rowDefCount;
                     }
 
                     SetRow(child, row);

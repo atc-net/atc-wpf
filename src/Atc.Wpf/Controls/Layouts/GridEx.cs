@@ -23,53 +23,21 @@ namespace Atc.Wpf.Controls.Layouts;
 /// ]]>
 /// </example>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public sealed class GridEx : Grid
+public sealed partial class GridEx : Grid
 {
-    /// <summary>
-    /// The rows dependency property.
-    /// </summary>
-    private static readonly DependencyProperty RowsProperty = DependencyProperty.Register(
-        nameof(Rows),
-        typeof(string),
-        typeof(GridEx),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnRowsChanged));
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "The rows property",
+        DefaultValue = null,
+        PropertyChangedCallback = nameof(OnRowsChanged))]
+    private string rows;
 
-    /// <summary>
-    /// The columns dependency property.
-    /// </summary>
-    private static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
-        nameof(Columns),
-        typeof(string),
-        typeof(GridEx),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnColumnsChanged));
-
-    /// <summary>
-    /// Gets or sets the rows.
-    /// </summary>
-    /// <value>The rows.</value>
-    [Category("Layout")]
-    [Description("The rows property.")]
-    public string Rows
-    {
-        get => (string)GetValue(RowsProperty);
-        set => SetValue(RowsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the columns.
-    /// </summary>
-    /// <value>The columns.</value>
-    [Category("Layout")]
-    [Description("The columns property.")]
-    public string Columns
-    {
-        get => (string)GetValue(ColumnsProperty);
-        set => SetValue(ColumnsProperty, value);
-    }
+    [DependencyProperty(
+        Category = "Layout",
+        Description = "The columns property",
+        DefaultValue = null,
+        PropertyChangedCallback = nameof(OnColumnsChanged))]
+    private string columns;
 
     /// <summary>
     /// Called when the rows property is changed.
