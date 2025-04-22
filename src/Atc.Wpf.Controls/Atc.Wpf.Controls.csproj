@@ -7,6 +7,7 @@
     <PackageId>Atc.Wpf.Controls</PackageId>
     <PackageTags>wpf;controls</PackageTags>
     <Description>A base library for building WPF application.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,8 +43,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.552" />
-    <PackageReference Include="Atc.XamlToolkit" Version="1.5.12" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.12" />
+    <PackageReference Include="Atc.XamlToolkit" Version="1.5.22" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.22" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

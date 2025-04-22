@@ -7,6 +7,11 @@
     <PackageId>Atc.Wpf</PackageId>
     <PackageTags>wpf;mvvm,relaycommand</PackageTags>
     <Description>A base library for building WPF application with the MVVM design pattern.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -1008,6 +1013,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="2.0.552" />
+    <PackageReference Include="Atc.XamlToolkit" Version="1.5.22" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.22" />
   </ItemGroup>
 
   <ItemGroup>
