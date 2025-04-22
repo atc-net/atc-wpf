@@ -8,8 +8,12 @@
     <PackageTags>wpf;theming</PackageTags>
     <Description>A base library for building WPF application with theming.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <NoWarn>$(NoWarn);SYSLIB0051</NoWarn>
+    <NoWarn>$(NoWarn);SYSLIB0051;CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />
