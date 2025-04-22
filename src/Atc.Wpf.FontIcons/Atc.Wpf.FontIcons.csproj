@@ -7,6 +7,7 @@
     <PackageId>Atc.Wpf.FontIcons</PackageId>
     <PackageTags>wpf;controls.font,icons</PackageTags>
     <Description>A base library for building WPF application.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
