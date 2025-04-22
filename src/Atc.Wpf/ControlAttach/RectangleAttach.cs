@@ -1,24 +1,9 @@
 namespace Atc.Wpf.ControlAttach;
 
-[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class RectangleAttach
+public static partial class RectangleAttach
 {
-    public static readonly DependencyProperty CircularProperty = DependencyProperty.RegisterAttached(
-        "Circular",
-        typeof(bool),
-        typeof(RectangleAttach),
-        new PropertyMetadata(
-            defaultValue: BooleanBoxes.FalseBox,
-            propertyChangedCallback: OnCircularChanged));
-
-    public static void SetCircular(
-        DependencyObject element,
-        bool value)
-        => element.SetValue(CircularProperty, BooleanBoxes.Box(value));
-
-    public static bool GetCircular(
-        DependencyObject element)
-        => (bool)element.GetValue(CircularProperty);
+    [AttachedProperty(PropertyChangedCallback = nameof(OnCircularChanged))]
+    private static bool circular;
 
     private static void OnCircularChanged(
         DependencyObject d,
