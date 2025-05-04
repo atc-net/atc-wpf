@@ -8,16 +8,16 @@ public sealed class RenderColorIndicatorTypeToVisibilityValueConverter : IValueC
 {
     public static readonly RenderColorIndicatorTypeToVisibilityValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        if (value is not RenderColorIndicatorType actualRenderMode)
-        {
-            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof({nameof(RenderColorIndicatorType)})");
-        }
-
-        if (parameter is not RenderColorIndicatorType wantedRenderMode)
+        if (value is not RenderColorIndicatorType actualRenderMode ||
+            parameter is not RenderColorIndicatorType wantedRenderMode)
         {
             throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof({nameof(RenderColorIndicatorType)})");
         }
@@ -27,8 +27,10 @@ public sealed class RenderColorIndicatorTypeToVisibilityValueConverter : IValueC
             : Visibility.Collapsed;
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

@@ -1,17 +1,42 @@
 # ValueConverters in Atc.Wpf
 
-## ValueConverters - Bool to X
+## 🧹 Usage
+
+To use a converter in WPF by ResourceDictionary and and key:
+
+```xml
+<!-- Namespace mapping -->
+xmlns:atcToolkitValueConverters="clr-namespace:Atc.XamlToolkit.ValueConverters;assembly=Atc.XamlToolkit.Wpf"
+
+<!-- Resources -->
+<UserControl.Resources>
+    <ResourceDictionary>
+        <atcValueConverters:BoolToVisibilityVisibleValueConverter x:Key="BoolToVisibilityVisibleValueConverter" />
+    </ResourceDictionary>
+</UserControl.Resources>
+
+<!-- Usage -->
+<StackPanel Visibility="{Binding IsVisible<br/>Converter={StaticResource BoolToVisibilityVisibleValueConverter}}" />
+```
+
+Or by the ValueConverter's Instance:
+
+```xml
+<StackPanel Visibility="{Binding IsVisible<br/>Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+```
+
+## #️⃣ ValueConverters - Bool to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| Bool -> Bool              | BoolToInverseBoolValueConverter                          | True -> False and False -> True         | False -> True and False -> False        |
-| Bool -> Visibility        | BoolToVisibilityCollapsedValueConverter                  | True -> Collapsed and False -> Visible  | Collapsed -> True and Visible -> False  |
-| Bool -> Visibility        | BoolToVisibilityVisibleValueConverter                    | True -> Visible and False -> Collapsed  | Visible -> True and Collapsed -> False  |
-| Bool -> With              | BoolToWidthValueConverter                                | true, 10 -> 10 and true, "Auto" -> *    | Not supported                           |
+| Bool -> Bool              | BoolToInverseBoolValueConverter                          | True -> False<br/>False -> True         | False -> True<br/>False -> False        |
+| Bool -> Visibility        | BoolToVisibilityCollapsedValueConverter                  | True -> Collapsed<br/>False -> Visible  | Collapsed -> True<br/>Visible -> False  |
+| Bool -> Visibility        | BoolToVisibilityVisibleValueConverter                    | True -> Visible<br/>False -> Collapsed  | Visible -> True<br/>Collapsed -> False  |
+| Bool -> With              | BoolToWidthValueConverter                                | true<br/>10 -> 10<br/>true<br/>"Auto" -> * | Not supported                        |
 | Bool[] -> Bool            | MultiBoolToBoolValueConverter                            | All-True -> True                        | Not supported                           |
 | Bool[] -> Visibility      | MultiBoolToVisibilityVisibleValueConverter               | All-True -> Visible                     | Not supported                           |
 
-## ValueConverters - String to X
+## #️⃣ ValueConverters - String to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -25,7 +50,7 @@
 | String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 | String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 
-## ValueConverters - ICollection to X
+## #️⃣ ValueConverters - ICollection to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -34,23 +59,23 @@
 | ICollection -> Visibility | CollectionNullOrEmptyToVisibilityCollapsedValueConverter | NULL or empty -> Collapsed              | Not supported                           |
 | ICollection -> Visibility | CollectionNullOrEmptyToVisibilityVisibleValueConverter   | NULL or empty -> Visible                | Not supported                           |
 
-## ValueConverters - Object to X
+## #️⃣ ValueConverters - Object to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| Object -> Bool            | IsNotNullValueConverter                                  | <>Null -> True and Null -> False        | Not supported                           |
-| Object -> Bool            | IsNullValueConverter                                     | Null -> True and <>Null -> False        | Not supported                           |
+| Object -> Bool            | IsNotNullValueConverter                                  | ! Null -> True<br/>Null -> False        | Not supported                           |
+| Object -> Bool            | IsNullValueConverter                                     | Null -> True<br/>! Null -> False        | Not supported                           |
 | Null -> X                 | NullCheckValueConverter                                  | NULL -> Parameter if set                | Not supported                           |
 | Null -> UnsetValue        | NullToUnsetValueConverter                                | NULL -> DependencyProperty.UnsetValue   | Object -> DependencyProperty.UnsetValue |
 | Object -> Bool            | ObjectNotNullToBoolValueConverter                        | NotNULL -> True                         | Not supported                           |
-| Object -> Visibility      | ObjectNotNullToVisibilityCollapsedValueConverter         | NotNULL -> Collapsed                      | Not supported                           |
+| Object -> Visibility      | ObjectNotNullToVisibilityCollapsedValueConverter         | NotNULL -> Collapsed                    | Not supported                           |
 | Object -> Visibility      | ObjectNotNullToVisibilityVisibleValueConverter           | NotNULL -> Visible                      | Not supported                           |
 | Object -> Visibility      | ObjectNullToVisibilityCollapsedValueConverter            | NULL -> Collapsed                       | Not supported                           |
 | Object -> Visibility      | ObjectNullToVisibilityVisibleValueConverter              | NULL -> Visible                         | Not supported                           |
 | Object[] -> Visibility    | MultiObjectNullToVisibilityCollapsedValueConverter       | All-NULL -> Collapsed                   | Not supported                           |
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
 
-### ValueConverters - Markup to X
+## #️⃣ ValueConverters - Markup to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -58,7 +83,7 @@
 |                           | MarkupValueConverter                                     |                                         |                                         |
 |                           | MarkupValueConverterBase                                 |                                         |                                         |
 
-### ValueConverters - Others to X
+## #️⃣ ValueConverters - Others to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -70,7 +95,7 @@
 | Hex-Brush -> Brush-Key    | HexBrushToBrushKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Brushs.Green                 |
 | Hex-Color -> Color-Key    | HexColorToColorKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Color.Green                  |
 | Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
-| Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed and 1 -> Visible         | Not supported                           |
+| Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed<br/>1 -> Visible         | Not supported                           |
 | Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | Not supported                           |
 | LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> DodgerBlue               | Not supported                           |
 | LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> DodgerBlue               | Not supported                           |
@@ -83,7 +108,7 @@
 | Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |
 |                           | WindowResizeModeMinMaxButtonVisibilityMultiValueConverter|                                         |                                         |
 
-## ValueConverters - Math
+## #️⃣ ValueConverters - Math
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |

@@ -17,8 +17,10 @@ public sealed class NullCheckValueConverter : IValueConverter
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

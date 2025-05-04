@@ -8,7 +8,11 @@ internal sealed class LabelControlOrientationToAsteriskMarginValueConverter : IV
 {
     public static readonly LabelControlOrientationToAsteriskMarginValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is null)
         {
@@ -28,8 +32,10 @@ internal sealed class LabelControlOrientationToAsteriskMarginValueConverter : IV
         };
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

@@ -8,7 +8,11 @@ internal sealed class ImageLocationToMarginValueConverter : IValueConverter
 {
     public static readonly ImageLocationToMarginValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is not ImageLocation imageLocation)
         {
@@ -26,8 +30,10 @@ internal sealed class ImageLocationToMarginValueConverter : IValueConverter
         };
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

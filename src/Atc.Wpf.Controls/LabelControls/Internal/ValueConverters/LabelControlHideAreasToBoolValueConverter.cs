@@ -8,14 +8,14 @@ internal sealed class LabelControlHideAreasToBoolValueConverter : IValueConverte
 {
     public static readonly LabelControlHideAreasToBoolValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
-        if (value is not LabelControlHideAreasType currentHideAreasType)
-        {
-            throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
-        }
-
-        if (parameter is not LabelControlHideAreasType requiredHideAreasType)
+        if (value is not LabelControlHideAreasType currentHideAreasType ||
+            parameter is not LabelControlHideAreasType requiredHideAreasType)
         {
             throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
         }
@@ -28,8 +28,10 @@ internal sealed class LabelControlHideAreasToBoolValueConverter : IValueConverte
         return !currentHideAreasType.HasFlag(requiredHideAreasType);
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

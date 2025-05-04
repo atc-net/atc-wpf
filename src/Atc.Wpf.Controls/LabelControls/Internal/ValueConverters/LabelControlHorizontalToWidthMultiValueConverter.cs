@@ -9,7 +9,11 @@ internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiV
 {
     public static readonly LabelControlHorizontalToWidthMultiValueConverter Instance = new();
 
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(
+        object[] values,
+        Type targetType,
+        object parameter,
+        CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -54,8 +58,10 @@ internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiV
         }
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object[] ConvertBack(
+        object value,
+        Type[] targetTypes,
+        object parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

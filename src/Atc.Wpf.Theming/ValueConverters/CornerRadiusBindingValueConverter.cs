@@ -7,7 +7,11 @@ public sealed class CornerRadiusBindingValueConverter : IValueConverter
 
     public RadiusType IgnoreRadius { get; set; } = RadiusType.None;
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is not CornerRadius cornerRadius)
         {
@@ -34,8 +38,10 @@ public sealed class CornerRadiusBindingValueConverter : IValueConverter
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return DependencyProperty.UnsetValue;
-    }
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => DependencyProperty.UnsetValue;
 }

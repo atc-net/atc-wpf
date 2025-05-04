@@ -1,9 +1,12 @@
+// ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
 namespace Atc.Wpf.Theming.ValueConverters;
 
 [MarkupExtensionReturnType(typeof(ColorToNameValueConverter))]
 [ValueConversion(typeof(Color), typeof(string))]
 public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
 {
+    public static readonly ColorToNameValueConverter Instance = new();
+
     /// <summary>
     /// Converts a given <see cref="Color"/> to its Name
     /// </summary>
@@ -12,15 +15,14 @@ public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <param name="parameter">Optional: A <see cref="Dictionary{TKey, TValue}"/></param>
     /// <param name="culture">The culture.</param>
     /// <returns>The name of the color or the Hex-Code if no name is available</returns>
-    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (value is Color color)
-        {
-            return ColorHelper.GetColorNameFromColor(color);
-        }
-
-        return Colors.Pink;
-    }
+    public override object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is Color color
+            ? ColorHelper.GetColorNameFromColor(color)
+            : Colors.Pink;
 
     /// <summary>
     /// Converts a given <see cref="Color"/> to its Name
@@ -35,15 +37,14 @@ public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <param name="parameter">The parameter.</param>
     /// <param name="culture">The culture.</param>
     /// <returns>The name of the color or the Hex-Code if no name is available</returns>
-    public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (values?.FirstOrDefault(x => x?.GetType() == typeof(Color)) is Color color)
-        {
-            return ColorHelper.GetColorNameFromColor(color, CultureInfo.InvariantCulture);
-        }
-
-        return Colors.Pink;
-    }
+    public override object? Convert(
+        object[]? values,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => values?.FirstOrDefault(x => x?.GetType() == typeof(Color)) is Color color
+            ? ColorHelper.GetColorNameFromColor(color, CultureInfo.InvariantCulture)
+            : Colors.Pink;
 
     /// <summary>
     /// Converts a given <see cref="string"/> back to a <see cref="Color"/>
@@ -53,7 +54,11 @@ public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <param name="parameter">Optional: A <see cref="Dictionary{TKey, TValue}"/></param>
     /// <param name="culture">The culture.</param>
     /// <returns><see cref="Color"/></returns>
-    public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public override object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is string text)
         {
@@ -72,8 +77,10 @@ public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
     /// <param name="parameter">The parameter.</param>
     /// <param name="culture">The culture.</param>
     /// <throws><see cref="NotSupportedException"/></throws>
-    public override object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public override object[] ConvertBack(
+        object? value,
+        Type[] targetTypes,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

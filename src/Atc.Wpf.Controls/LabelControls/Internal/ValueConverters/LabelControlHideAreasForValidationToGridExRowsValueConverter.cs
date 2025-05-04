@@ -8,14 +8,14 @@ public sealed class LabelControlHideAreasForValidationToGridExRowsValueConverter
 {
     public static readonly LabelControlHideAreasForValidationToGridExRowsValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
-        if (value is not LabelControlHideAreasType currentHideAreasType)
-        {
-            throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
-        }
-
-        if (parameter is not Orientation orientation)
+        if (value is not LabelControlHideAreasType currentHideAreasType ||
+            parameter is not Orientation orientation)
         {
             throw new InvalidEnumArgumentException(nameof(value), 0, typeof(LabelControlHideAreasType));
         }
@@ -32,8 +32,10 @@ public sealed class LabelControlHideAreasForValidationToGridExRowsValueConverter
             : "Auto,Auto,Auto,10";
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }
