@@ -45,10 +45,10 @@
   <ItemGroup Label="Code Analyzers">
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
     <PackageReference Include="Asyncify" Version="0.9.7" PrivateAssets="All" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.197" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.201" PrivateAssets="All" />
     <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.8.0.113526" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.9.0.115408" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
