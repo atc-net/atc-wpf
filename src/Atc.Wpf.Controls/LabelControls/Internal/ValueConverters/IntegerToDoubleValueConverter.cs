@@ -9,7 +9,11 @@ internal sealed class IntegerToDoubleValueConverter : IValueConverter
 {
     public static readonly IntegerToDoubleValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
         => value switch
         {
             int i => i,
@@ -17,8 +21,12 @@ internal sealed class IntegerToDoubleValueConverter : IValueConverter
             _ => 0D,
         };
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value switch
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+    => value switch
         {
             double d => d,
             _ => 0,

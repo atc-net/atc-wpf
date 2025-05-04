@@ -9,7 +9,11 @@ public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValue
         return this;
     }
 
-    public object? Convert(object? value, Type? targetType, object? parameter, CultureInfo? culture)
+    public object? Convert(
+        object? value,
+        Type? targetType,
+        object? parameter,
+        CultureInfo? culture)
     {
         var brush = parameter as Brush ?? Brushes.Black;
         var emSize = parameter as double? ?? 100;
@@ -26,8 +30,10 @@ public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValue
         };
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

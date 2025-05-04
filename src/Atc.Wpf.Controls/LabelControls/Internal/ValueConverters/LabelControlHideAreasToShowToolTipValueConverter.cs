@@ -5,7 +5,11 @@ internal sealed class LabelControlHideAreasToShowToolTipValueConverter : IValueC
 {
     public static readonly LabelControlHideAreasToShowToolTipValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is not LabelControlHideAreasType currentHideAreasType)
         {
@@ -15,8 +19,10 @@ internal sealed class LabelControlHideAreasToShowToolTipValueConverter : IValueC
         return currentHideAreasType.HasFlag(LabelControlHideAreasType.Validation);
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException("This is a OneWay converter.");
-    }
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

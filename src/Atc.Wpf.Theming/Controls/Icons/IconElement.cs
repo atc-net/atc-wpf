@@ -45,7 +45,7 @@ public abstract class IconElement : Control
             = isForegroundPropertyDefaultOrInherited
               && Parent is not null
               && VisualParent is not null
-              && Parent != VisualParent;
+              && !Parent.Equals(VisualParent);
     }
 
     internal static readonly DependencyPropertyKey InheritsForegroundFromVisualParentPropertyKey = DependencyProperty.RegisterReadOnly(

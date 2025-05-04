@@ -129,7 +129,7 @@
                                     </ToolTip>
                                 </atc:SvgImage.ToolTip>
                                 <atc:SvgImage.Visibility>
-                                    <MultiBinding Converter="{x:Static valueConverters:LabelControlInformationMultiBoolToVisibilityVisibleValueConverter.Instance}">
+                                    <MultiBinding Converter="{x:Static valueConverters:LabelControlInformationMultiBoolToVisibilityVisibleMultiValueConverter.Instance}">
                                         <Binding
                                             Converter="{x:Static valueConverters:LabelControlHideAreasToBoolValueConverter.Instance}"
                                             ConverterParameter="{x:Static labelControls:LabelControlHideAreasType.Information}"

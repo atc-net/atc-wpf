@@ -2,7 +2,13 @@ namespace Atc.Wpf.Controls.Progressing.Internal;
 
 public sealed class ProgressBarWidthMultiValueConverter : IMultiValueConverter
 {
-    public object Convert(object[]? values, Type targetType, object parameter, CultureInfo culture)
+    public static readonly ProgressBarWidthMultiValueConverter Instance = new();
+
+    public object Convert(
+        object[]? values,
+        Type targetType,
+        object parameter,
+        CultureInfo culture)
     {
         if (values is null ||
             values.Length != 2 ||
@@ -18,8 +24,12 @@ public sealed class ProgressBarWidthMultiValueConverter : IMultiValueConverter
         return System.Math.Max(contentWidth, parentMinWidth);
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    public object[] ConvertBack(
+        object value,
+        Type[] targetTypes,
+        object parameter,
+        CultureInfo culture)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException("This is a OneWay converter.");
     }
 }
