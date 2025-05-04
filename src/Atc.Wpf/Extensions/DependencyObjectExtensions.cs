@@ -324,7 +324,7 @@ public static class DependencyObjectExtensions
 
         while (currentNode is not null)
         {
-            if (currentNode == reference)
+            if (currentNode.Equals(reference))
             {
                 return true;
             }
