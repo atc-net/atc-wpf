@@ -13,79 +13,23 @@ public partial class LanguageSelector
     private int? lastLcid;
     private bool processingUiCultureChanged;
 
-    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
-        nameof(DropDownFirstItemType),
-        typeof(DropDownFirstItemType),
-        typeof(LanguageSelector),
-        new PropertyMetadata(DropDownFirstItemType.None));
+    [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
+    private DropDownFirstItemType dropDownFirstItemType;
 
-    public DropDownFirstItemType DropDownFirstItemType
-    {
-        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
-        set => SetValue(DropDownFirstItemTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = RenderFlagIndicatorType.Flat16)]
+    private RenderFlagIndicatorType renderFlagIndicatorType;
 
-    public static readonly DependencyProperty RenderFlagIndicatorTypeTypeProperty = DependencyProperty.Register(
-        nameof(RenderFlagIndicatorType),
-        typeof(RenderFlagIndicatorType),
-        typeof(LanguageSelector),
-        new PropertyMetadata(RenderFlagIndicatorType.Flat16));
+    [DependencyProperty(DefaultValue = true)]
+    private bool useOnlySupportedLanguages;
 
-    public RenderFlagIndicatorType RenderFlagIndicatorType
-    {
-        get => (RenderFlagIndicatorType)GetValue(RenderFlagIndicatorTypeTypeProperty);
-        set => SetValue(RenderFlagIndicatorTypeTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string defaultCultureIdentifier;
 
-    public static readonly DependencyProperty UseOnlySupportedLanguagesProperty = DependencyProperty.Register(
-        nameof(UseOnlySupportedLanguages),
-        typeof(bool),
-        typeof(LanguageSelector),
-        new PropertyMetadata(defaultValue: true));
+    [DependencyProperty(DefaultValue = "", PropertyChangedCallback = nameof(OnSelectedKeyChanged))]
+    private string selectedKey;
 
-    public bool UseOnlySupportedLanguages
-    {
-        get => (bool)GetValue(UseOnlySupportedLanguagesProperty);
-        set => SetValue(UseOnlySupportedLanguagesProperty, value);
-    }
-
-    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
-        nameof(DefaultCultureIdentifier),
-        typeof(string),
-        typeof(LanguageSelector),
-        new PropertyMetadata(default));
-
-    public string? DefaultCultureIdentifier
-    {
-        get => (string?)GetValue(DefaultCultureIdentifierProperty);
-        set => SetValue(DefaultCultureIdentifierProperty, value);
-    }
-
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(LanguageSelector),
-        new PropertyMetadata(
-            string.Empty,
-            OnSelectedKeyChanged));
-
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
-
-    public static readonly DependencyProperty UpdateUiCultureOnChangeEventProperty = DependencyProperty.Register(
-        nameof(UpdateUiCultureOnChangeEvent),
-        typeof(bool),
-        typeof(LanguageSelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool UpdateUiCultureOnChangeEvent
-    {
-        get => (bool)GetValue(UpdateUiCultureOnChangeEventProperty);
-        set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool updateUiCultureOnChangeEvent;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
@@ -180,19 +124,19 @@ public partial class LanguageSelector
             }
             else
             {
-                var dropDownFirstItemType = (DropDownFirstItemType)item.Culture.Lcid;
-                switch (dropDownFirstItemType)
+                var ddfItemType = (DropDownFirstItemType)item.Culture.Lcid;
+                switch (ddfItemType)
                 {
                     case DropDownFirstItemType.None:
                     case DropDownFirstItemType.Blank:
                         break;
                     case DropDownFirstItemType.PleaseSelect:
                     case DropDownFirstItemType.IncludeAll:
-                        item.Culture.LanguageEnglishName = dropDownFirstItemType.GetDescription(useLocalizedIfPossible: false);
-                        item.Culture.LanguageDisplayName = dropDownFirstItemType.GetDescription();
+                        item.Culture.LanguageEnglishName = ddfItemType.GetDescription(useLocalizedIfPossible: false);
+                        item.Culture.LanguageDisplayName = ddfItemType.GetDescription();
                         break;
                     default:
-                        throw new SwitchCaseDefaultException(dropDownFirstItemType);
+                        throw new SwitchCaseDefaultException(ddfItemType);
                 }
             }
         }

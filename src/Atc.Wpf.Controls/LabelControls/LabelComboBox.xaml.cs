@@ -2,18 +2,21 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelComboBox : ILabelComboBox
 {
+    // Note: DependencyProperty-SourceGenerator don't support "Dictionary<string, string>" for now
     public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
         nameof(Items),
         typeof(Dictionary<string, string>),
         typeof(LabelComboBox),
         new PropertyMetadata(default(Dictionary<string, string>)));
 
+    // Note: DependencyProperty-SourceGenerator don't support "Dictionary<string, string>" for now
     public Dictionary<string, string> Items
     {
         get => (Dictionary<string, string>)GetValue(ItemsProperty);
         set => SetValue(ItemsProperty, value);
     }
 
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -26,6 +29,7 @@ public partial class LabelComboBox : ILabelComboBox
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
 
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);

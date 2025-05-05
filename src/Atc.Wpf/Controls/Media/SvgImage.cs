@@ -11,7 +11,7 @@ namespace Atc.Wpf.Controls.Media;
 /// multiple controls to share the same drawing instance.
 /// </summary>
 [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "OK.")]
-public sealed class SvgImage : Control
+public sealed partial class SvgImage : Control
 {
     private readonly TranslateTransform translateTransform = new();
     private readonly ScaleTransform scaleTransform = new();
@@ -19,89 +19,79 @@ public sealed class SvgImage : Control
     private SvgRender? svgRender;
     private Action<SvgRender>? loadImage;
 
+    // Note: DependencyProperty-SourceGenerator don't support "new Brush? Background" for now
     private static new readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
         nameof(Background),
         typeof(Brush),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(
-            null,
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
             OnBackgroundChanged));
 
-    private static readonly DependencyProperty ControlSizeTypeProperty = DependencyProperty.Register(
-        nameof(ControlSizeType),
-        typeof(ControlSizeType),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(
-            ControlSizeType.ContentToSizeNoStretch,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            OnControlSizeTypeChanged));
+    // Note: DependencyProperty-SourceGenerator don't support "new Brush? Background" for now
+    public new Brush? Background
+    {
+        get => (Brush)GetValue(BackgroundProperty);
+        set => SetValue(BackgroundProperty, value);
+    }
 
-    private static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        nameof(Source),
-        typeof(string),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            OnSourceChanged));
+    [DependencyProperty(
+        DefaultValue = ControlSizeType.ContentToSizeNoStretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnControlSizeTypeChanged))]
+    private ControlSizeType controlSizeType;
 
-    private static readonly DependencyProperty FileSourceProperty = DependencyProperty.Register(
-        nameof(FileSource),
-        typeof(string),
-        typeof(SvgImage),
-        new PropertyMetadata(OnFileSourceChanged));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnSourceChanged))]
+    private string source;
 
-    private static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
-        nameof(ImageSource),
-        typeof(Drawing),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            OnImageSourceChanged));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnFileSourceChanged))]
+    private string fileSource;
 
-    private static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
-        nameof(UseAnimations),
-        typeof(bool),
-        typeof(SvgImage),
-        new PropertyMetadata(defaultValue: true));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnImageSourceChanged))]
+    private Drawing imageSource;
 
-    private static readonly DependencyProperty OverrideColorProperty = DependencyProperty.Register(
-        nameof(OverrideColor),
-        typeof(Color?),
-        typeof(SvgImage),
-        new PropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty(
+        DefaultValue = true)]
+    private bool useAnimations;
 
-    private static readonly DependencyProperty OverrideStrokeColorProperty = DependencyProperty.Register(
-        nameof(OverrideStrokeColor),
-        typeof(Color?),
-        typeof(SvgImage),
-        new PropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty]
+    private Color? overrideColor;
 
-    private static readonly DependencyProperty OverrideStrokeWidthProperty = DependencyProperty.Register(
-        nameof(OverrideStrokeWidth),
-        typeof(double?),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(
-            null,
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OverrideStrokeWidthPropertyChanged));
+    [DependencyProperty]
+    private Color? overrideStrokeColor;
 
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OverrideStrokeWidthPropertyChanged))]
+    private double? overrideStrokeWidth;
+
+    // Note: DependencyProperty-SourceGenerator don't support "Dictionary<string, Brush>" for now
     public static readonly DependencyProperty CustomBrushesProperty = DependencyProperty.Register(
         nameof(CustomBrushes),
         typeof(Dictionary<string, Brush>),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(
-            null,
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender,
             CustomBrushesPropertyChanged));
 
-    public static readonly DependencyProperty ExternalFileLoaderProperty = DependencyProperty.Register(
-        nameof(ExternalFileLoader),
-        typeof(IExternalFileLoader),
-        typeof(SvgImage),
-        new PropertyMetadata(FileSystemLoader.Instance));
+    // Note: DependencyProperty-SourceGenerator don't support "Dictionary<string, Brush>" for now
+    public Dictionary<string, Brush> CustomBrushes
+    {
+        get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);
+        set => SetValue(CustomBrushesProperty, value);
+    }
+
+    [DependencyProperty(
+        DefaultValue = "FileSystemLoader.Instance")]
+    private IExternalFileLoader externalFileLoader;
 
     static SvgImage()
     {
@@ -120,72 +110,6 @@ public sealed class SvgImage : Control
     {
         ClipToBounds = true;
         SnapsToDevicePixels = true;
-    }
-
-    public new Brush? Background
-    {
-        get => (Brush)GetValue(BackgroundProperty);
-        set => SetValue(BackgroundProperty, value);
-    }
-
-    public ControlSizeType ControlSizeType
-    {
-        get => (ControlSizeType)GetValue(ControlSizeTypeProperty);
-        set => SetValue(ControlSizeTypeProperty, value);
-    }
-
-    public string Source
-    {
-        get => (string)GetValue(SourceProperty);
-        set => SetValue(SourceProperty, value);
-    }
-
-    public string FileSource
-    {
-        get => (string)GetValue(FileSourceProperty);
-        set => SetValue(FileSourceProperty, value);
-    }
-
-    public Drawing ImageSource
-    {
-        get => (Drawing)GetValue(ImageSourceProperty);
-        set => SetValue(ImageSourceProperty, value);
-    }
-
-    public bool UseAnimations
-    {
-        get => (bool)GetValue(UseAnimationsProperty);
-        set => SetValue(UseAnimationsProperty, value);
-    }
-
-    public Color? OverrideColor
-    {
-        get => (Color?)GetValue(OverrideColorProperty);
-        set => SetValue(OverrideColorProperty, value);
-    }
-
-    public Color? OverrideStrokeColor
-    {
-        get => (Color?)GetValue(OverrideStrokeColorProperty);
-        set => SetValue(OverrideStrokeColorProperty, value);
-    }
-
-    public double? OverrideStrokeWidth
-    {
-        get => (double?)GetValue(OverrideStrokeWidthProperty);
-        set => SetValue(OverrideStrokeWidthProperty, value);
-    }
-
-    public Dictionary<string, Brush> CustomBrushes
-    {
-        get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);
-        set => SetValue(CustomBrushesProperty, value);
-    }
-
-    public IExternalFileLoader ExternalFileLoader
-    {
-        get => (IExternalFileLoader)GetValue(ExternalFileLoaderProperty);
-        set => SetValue(ExternalFileLoaderProperty, value);
     }
 
     internal Svg? Svg => svgRender?.Svg;

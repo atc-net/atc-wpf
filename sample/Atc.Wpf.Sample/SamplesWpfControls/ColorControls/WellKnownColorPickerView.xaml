@@ -16,22 +16,38 @@
             Margin="0,0,0,10"
             Padding="10"
             Header="Features">
-            <atc:UniformSpacingPanel
-                Width="250"
-                Orientation="Vertical"
-                Spacing="10">
-                <atc:LabelIntegerBox
-                    HideAreas="All"
-                    LabelText="Basic Width"
-                    Maximum="1000"
-                    Minimum="0"
-                    Value="{Binding ElementName=UcBasicColors, Path=Width}" />
-                <atc:LabelIntegerBox
-                    HideAreas="All"
-                    LabelText="Available Width"
-                    Maximum="1000"
-                    Minimum="0"
-                    Value="{Binding ElementName=UcAvailableColors, Path=Width}" />
+            <atc:UniformSpacingPanel Orientation="Horizontal">
+                <atc:UniformSpacingPanel
+                    Width="250"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <Rectangle
+                        Width="100"
+                        Height="20"
+                        Fill="{Binding ElementName=UcBasicColors, Path=ColorBrush, Mode=OneWay}" />
+                    <Rectangle
+                        Width="100"
+                        Height="20"
+                        Fill="{Binding ElementName=UcAvailableColors, Path=ColorBrush, Mode=OneWay}" />
+                </atc:UniformSpacingPanel>
+                <atc:UniformSpacingPanel
+                    Width="250"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="Basic Width"
+                        Maximum="1000"
+                        Minimum="0"
+                        Value="{Binding ElementName=UcBasicColors, Path=Width}" />
+                    <atc:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="Available Width"
+                        Maximum="1000"
+                        Minimum="0"
+                        Value="{Binding ElementName=UcAvailableColors, Path=Width}" />
+                </atc:UniformSpacingPanel>
             </atc:UniformSpacingPanel>
         </GroupBox>
 

@@ -64,12 +64,11 @@ public static class CheckBoxHelper
         object? value)
         => d.SetValue(CheckGlyphUncheckedProperty, value);
 
-    public static readonly DependencyProperty CheckGlyphUncheckedTemplateProperty
-        = DependencyProperty.RegisterAttached(
-            "CheckGlyphUncheckedTemplate",
-            typeof(DataTemplate),
-            typeof(CheckBoxHelper),
-            new FrameworkPropertyMetadata(default(DataTemplate)));
+    public static readonly DependencyProperty CheckGlyphUncheckedTemplateProperty = DependencyProperty.RegisterAttached(
+        "CheckGlyphUncheckedTemplate",
+        typeof(DataTemplate),
+        typeof(CheckBoxHelper),
+        new FrameworkPropertyMetadata(default(DataTemplate)));
 
     public static DataTemplate? GetCheckGlyphUncheckedTemplate(
         DependencyObject d)
@@ -125,12 +124,11 @@ public static class CheckBoxHelper
         Brush? value)
         => d.SetValue(BorderBrushUncheckedProperty, value);
 
-    public static readonly DependencyProperty CheckBackgroundFillUncheckedProperty
-        = DependencyProperty.RegisterAttached(
-            "CheckBackgroundFillUnchecked",
-            typeof(Brush),
-            typeof(CheckBoxHelper),
-            new FrameworkPropertyMetadata(default(Brush)));
+    public static readonly DependencyProperty CheckBackgroundFillUncheckedProperty = DependencyProperty.RegisterAttached(
+        "CheckBackgroundFillUnchecked",
+        typeof(Brush),
+        typeof(CheckBoxHelper),
+        new FrameworkPropertyMetadata(default(Brush)));
 
     public static Brush? GetCheckBackgroundFillUnchecked(
         DependencyObject d)
@@ -171,12 +169,11 @@ public static class CheckBoxHelper
         Brush? value)
         => d.SetValue(CheckGlyphForegroundUncheckedProperty, value);
 
-    public static readonly DependencyProperty ForegroundUncheckedMouseOverProperty
-        = DependencyProperty.RegisterAttached(
-            "ForegroundUncheckedMouseOver",
-            typeof(Brush),
-            typeof(CheckBoxHelper),
-            new FrameworkPropertyMetadata(default(Brush)));
+    public static readonly DependencyProperty ForegroundUncheckedMouseOverProperty = DependencyProperty.RegisterAttached(
+        "ForegroundUncheckedMouseOver",
+        typeof(Brush),
+        typeof(CheckBoxHelper),
+        new FrameworkPropertyMetadata(default(Brush)));
 
     public static Brush? GetForegroundUncheckedMouseOver(
         DependencyObject d)

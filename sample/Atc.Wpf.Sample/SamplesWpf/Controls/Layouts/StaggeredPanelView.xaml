@@ -28,64 +28,62 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <ScrollViewer>
 
-                <atc:StaggeredPanel
-                    Padding="50"
-                    DesiredItemWidth="{Binding ElementName=LsDesiredItemWidth, Path=Value}"
-                    HorizontalSpacing="{Binding ElementName=LsHorizontalSpacing, Path=Value}"
-                    VerticalSpacing="{Binding ElementName=LsVerticalSpacing, Path=Value}">
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Blue" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Red" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Green" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Yellow" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Blue" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Red" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Green" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Yellow" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Blue" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Red" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Green" />
-                    <Rectangle
-                        Width="50"
-                        Height="50"
-                        Fill="Yellow" />
-                </atc:StaggeredPanel>
+            <atc:StaggeredPanel
+                Padding="50"
+                DesiredItemWidth="{Binding ElementName=LsDesiredItemWidth, Path=Value}"
+                HorizontalSpacing="{Binding ElementName=LsHorizontalSpacing, Path=Value}"
+                VerticalSpacing="{Binding ElementName=LsVerticalSpacing, Path=Value}">
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Blue" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Red" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Green" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Yellow" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Blue" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Red" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Green" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Yellow" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Blue" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Red" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Green" />
+                <Rectangle
+                    Width="50"
+                    Height="50"
+                    Fill="Yellow" />
+            </atc:StaggeredPanel>
 
-            </ScrollViewer>
         </GroupBox>
     </atc:AutoGrid>
 

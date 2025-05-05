@@ -1,5 +1,5 @@
 // ReSharper disable SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
-// // ReSharper disable CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>

@@ -30,8 +30,12 @@ public sealed class MultiBoolToVisibilityVisibleValueConverter : IMultiValueConv
 
         return operatorType switch
         {
-            BooleanOperatorType.AND => boolValues.All(b => b),
-            BooleanOperatorType.OR => boolValues.Any(b => b),
+            BooleanOperatorType.AND => boolValues.All(b => b)
+                ? Visibility.Visible
+                : Visibility.Collapsed,
+            BooleanOperatorType.OR => boolValues.Any(b => b)
+                ? Visibility.Visible
+                : Visibility.Collapsed,
             _ => throw new SwitchCaseDefaultException(nameof(operatorType)),
         };
     }

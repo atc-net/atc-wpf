@@ -5,31 +5,11 @@ public partial class FontFamilySelector
     private readonly ObservableCollectionEx<FontFamilyItem> items = new();
     private string? lastKey;
 
-    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
-        nameof(DropDownFirstItemType),
-        typeof(DropDownFirstItemType),
-        typeof(FontFamilySelector),
-        new PropertyMetadata(DropDownFirstItemType.None));
+    [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
+    private DropDownFirstItemType dropDownFirstItemType;
 
-    public DropDownFirstItemType DropDownFirstItemType
-    {
-        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
-        set => SetValue(DropDownFirstItemTypeProperty, value);
-    }
-
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(FontFamilySelector),
-        new PropertyMetadata(
-            string.Empty,
-            OnSelectedKeyChanged));
-
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "", PropertyChangedCallback = nameof(OnSelectedKeyChanged))]
+    private string selectedKey;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
