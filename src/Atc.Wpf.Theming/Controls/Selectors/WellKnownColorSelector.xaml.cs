@@ -9,66 +9,22 @@ public partial class WellKnownColorSelector
     private string? lastName;
     private bool processingUiCultureChanged;
 
-    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
-        nameof(DropDownFirstItemType),
-        typeof(DropDownFirstItemType),
-        typeof(WellKnownColorSelector),
-        new PropertyMetadata(DropDownFirstItemType.None));
+    [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
+    private DropDownFirstItemType dropDownFirstItemType;
 
-    public DropDownFirstItemType DropDownFirstItemType
-    {
-        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
-        set => SetValue(DropDownFirstItemTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
+    private RenderColorIndicatorType renderColorIndicatorType;
 
-    public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
-        nameof(RenderColorIndicatorType),
-        typeof(RenderColorIndicatorType),
-        typeof(WellKnownColorSelector),
-        new PropertyMetadata(RenderColorIndicatorType.Square));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showHexCode;
 
-    public RenderColorIndicatorType RenderColorIndicatorType
-    {
-        get => (RenderColorIndicatorType)GetValue(RenderColorIndicatorTypeProperty);
-        set => SetValue(RenderColorIndicatorTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = false)]
+    private bool useOnlyBasicColors;
 
-    public static readonly DependencyProperty ShowHexCodeProperty = DependencyProperty.Register(
-        nameof(ShowHexCode),
-        typeof(bool),
-        typeof(WellKnownColorSelector),
-        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = "")]
+    private string defaultColorName;
 
-    public bool ShowHexCode
-    {
-        get => (bool)GetValue(ShowHexCodeProperty);
-        set => SetValue(ShowHexCodeProperty, value);
-    }
-
-    public static readonly DependencyProperty UseOnlyBasicColorsProperty = DependencyProperty.Register(
-        nameof(UseOnlyBasicColors),
-        typeof(bool),
-        typeof(WellKnownColorSelector),
-        new PropertyMetadata(defaultValue: false));
-
-    public bool UseOnlyBasicColors
-    {
-        get => (bool)GetValue(UseOnlyBasicColorsProperty);
-        set => SetValue(UseOnlyBasicColorsProperty, value);
-    }
-
-    public static readonly DependencyProperty DefaultColorNameProperty = DependencyProperty.Register(
-        nameof(DefaultColorName),
-        typeof(string),
-        typeof(WellKnownColorSelector),
-        new PropertyMetadata(default));
-
-    public string? DefaultColorName
-    {
-        get => (string?)GetValue(DefaultColorNameProperty);
-        set => SetValue(DefaultColorNameProperty, value);
-    }
-
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -77,6 +33,7 @@ public partial class WellKnownColorSelector
             string.Empty,
             OnSelectedKeyChanged));
 
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);

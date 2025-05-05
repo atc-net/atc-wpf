@@ -2,18 +2,10 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelColorPicker : ILabelColorPicker
 {
-    public static readonly DependencyProperty RenderColorIndicatorTypeProperty = DependencyProperty.Register(
-        nameof(RenderColorIndicatorType),
-        typeof(RenderColorIndicatorType),
-        typeof(LabelColorPicker),
-        new PropertyMetadata(RenderColorIndicatorType.Square));
+    [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
+    private RenderColorIndicatorType renderColorIndicatorType;
 
-    public RenderColorIndicatorType RenderColorIndicatorType
-    {
-        get => (RenderColorIndicatorType)GetValue(RenderColorIndicatorTypeProperty);
-        set => SetValue(RenderColorIndicatorTypeProperty, value);
-    }
-
+    // Note: DependencyProperty-SourceGenerator don't support "typeof(Color) as null" for now
     public static readonly DependencyProperty ColorValueProperty = DependencyProperty.Register(
         nameof(ColorValue),
         typeof(Color),
@@ -22,12 +14,14 @@ public partial class LabelColorPicker : ILabelColorPicker
             Colors.Black,
             OnColorValueChanged));
 
+    // Note: DependencyProperty-SourceGenerator don't support "typeof(Color) as null" for now
     public Color? ColorValue
     {
         get => (Color?)GetValue(ColorValueProperty);
         set => SetValue(ColorValueProperty, value);
     }
 
+    // Note: DependencyProperty-SourceGenerator don't support "typeof(SolidColorBrush) as null" for now
     public static readonly DependencyProperty BrushValueProperty = DependencyProperty.Register(
         nameof(BrushValue),
         typeof(SolidColorBrush),
@@ -36,6 +30,7 @@ public partial class LabelColorPicker : ILabelColorPicker
             Brushes.Black,
             OnBrushValueChanged));
 
+    // Note: DependencyProperty-SourceGenerator don't support "typeof(SolidColorBrush) as null" for now
     public SolidColorBrush? BrushValue
     {
         get => (SolidColorBrush?)GetValue(BrushValueProperty);

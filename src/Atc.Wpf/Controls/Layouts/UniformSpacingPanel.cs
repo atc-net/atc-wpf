@@ -1,16 +1,59 @@
+// ReSharper disable LocalVariableHidesMember
 namespace Atc.Wpf.Controls.Layouts;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-public sealed class UniformSpacingPanel : Panel
+public sealed partial class UniformSpacingPanel : Panel
 {
-    private Orientation orientation = Orientation.Horizontal;
+    [DependencyProperty(
+        DefaultValue = Orientation.Horizontal,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(OnOrientationChanged))]
+    private Orientation orientation;
 
-    public static readonly DependencyProperty OrientationProperty = StackPanel.OrientationProperty.AddOwner(
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            Orientation.Horizontal,
-            FrameworkPropertyMetadataOptions.AffectsMeasure,
-            OnOrientationChanged));
+    [DependencyProperty(
+        DefaultValue = default(VisualWrappingType),
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private VisualWrappingType childWrapping;
+
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsSpacingValid))]
+    private double spacing;
+
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsSpacingValid))]
+    private double horizontalSpacing;
+
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsSpacingValid))]
+    private double verticalSpacing;
+
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsWidthHeightValid))]
+    private double itemWidth;
+
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsWidthHeightValid))]
+    private double itemHeight;
+
+    [DependencyProperty(
+        DefaultValue = HorizontalAlignment.Stretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private HorizontalAlignment? itemHorizontalAlignment;
+
+    [DependencyProperty(
+        DefaultValue = VerticalAlignment.Stretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private VerticalAlignment? itemVerticalAlignment;
 
     private static void OnOrientationChanged(
         DependencyObject d,
@@ -18,131 +61,6 @@ public sealed class UniformSpacingPanel : Panel
     {
         var p = (UniformSpacingPanel)d;
         p.orientation = (Orientation)e.NewValue;
-    }
-
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
-
-    public static readonly DependencyProperty ChildWrappingProperty = DependencyProperty.Register(
-        nameof(ChildWrapping),
-        typeof(VisualWrappingType),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            default(VisualWrappingType),
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public VisualWrappingType ChildWrapping
-    {
-        get => (VisualWrappingType)GetValue(ChildWrappingProperty);
-        set => SetValue(ChildWrappingProperty, value);
-    }
-
-    public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
-        nameof(Spacing),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsSpacingValid);
-
-    public double Spacing
-    {
-        get => (double)GetValue(SpacingProperty);
-        set => SetValue(SpacingProperty, value);
-    }
-
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
-        nameof(HorizontalSpacing),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsSpacingValid);
-
-    public double HorizontalSpacing
-    {
-        get => (double)GetValue(HorizontalSpacingProperty);
-        set => SetValue(HorizontalSpacingProperty, value);
-    }
-
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
-        nameof(VerticalSpacing),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsSpacingValid);
-
-    public double VerticalSpacing
-    {
-        get => (double)GetValue(VerticalSpacingProperty);
-        set => SetValue(VerticalSpacingProperty, value);
-    }
-
-    public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register(
-        nameof(ItemWidth),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsWidthHeightValid);
-
-    [TypeConverter(typeof(LengthConverter))]
-    public double ItemWidth
-    {
-        get => (double)GetValue(ItemWidthProperty);
-        set => SetValue(ItemWidthProperty, value);
-    }
-
-    public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register(
-        nameof(ItemHeight),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsWidthHeightValid);
-
-    [TypeConverter(typeof(LengthConverter))]
-    public double ItemHeight
-    {
-        get => (double)GetValue(ItemHeightProperty);
-        set => SetValue(ItemHeightProperty, value);
-    }
-
-    public static readonly DependencyProperty ItemHorizontalAlignmentProperty = DependencyProperty.Register(
-        nameof(ItemHorizontalAlignment),
-        typeof(HorizontalAlignment?),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            HorizontalAlignment.Stretch,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public HorizontalAlignment? ItemHorizontalAlignment
-    {
-        get => (HorizontalAlignment?)GetValue(ItemHorizontalAlignmentProperty);
-        set => SetValue(ItemHorizontalAlignmentProperty, value);
-    }
-
-    public static readonly DependencyProperty ItemVerticalAlignmentProperty = DependencyProperty.Register(
-        nameof(ItemVerticalAlignment),
-        typeof(VerticalAlignment?),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(
-            VerticalAlignment.Stretch,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    public VerticalAlignment? ItemVerticalAlignment
-    {
-        get => (VerticalAlignment?)GetValue(ItemVerticalAlignmentProperty);
-        set => SetValue(ItemVerticalAlignmentProperty, value);
     }
 
     private static bool IsWidthHeightValid(
@@ -163,7 +81,7 @@ public sealed class UniformSpacingPanel : Panel
         int end,
         bool useItemU,
         double itemU,
-        double spacing)
+        double space)
     {
         double u = 0;
         var isHorizontal = orientation == Orientation.Horizontal;
@@ -188,7 +106,7 @@ public sealed class UniformSpacingPanel : Panel
 
             if (layoutSlotU > 0)
             {
-                u += layoutSlotU + spacing;
+                u += layoutSlotU + space;
             }
         }
     }
@@ -197,7 +115,7 @@ public sealed class UniformSpacingPanel : Panel
         double lineV,
         bool useItemU,
         double itemU,
-        double spacing)
+        double space)
     {
         double u = 0;
         var isHorizontal = orientation == Orientation.Horizontal;
@@ -222,36 +140,35 @@ public sealed class UniformSpacingPanel : Panel
 
             if (layoutSlotU > 0)
             {
-                u += layoutSlotU + spacing;
+                u += layoutSlotU + space;
             }
         }
     }
 
+    [SuppressMessage("", "MA0084:Local variable should not hide field", Justification = "OK.")]
+    [SuppressMessage("", "S1117:Local variable should not hide field", Justification = "OK.")]
     protected override Size MeasureOverride(
         Size availableSize)
     {
         var curLineSize = new PanelUvSize(orientation);
         var panelSize = new PanelUvSize(orientation);
         var uvConstraint = new PanelUvSize(orientation, availableSize);
-        var itemWidth = ItemWidth;
-        var itemHeight = ItemHeight;
-        var itemWidthSet = !double.IsNaN(itemWidth);
-        var itemHeightSet = !double.IsNaN(itemHeight);
-        var childWrapping = ChildWrapping;
+        var itemWidthSet = !double.IsNaN(ItemWidth);
+        var itemHeightSet = !double.IsNaN(ItemHeight);
         var itemHorizontalAlignment = ItemHorizontalAlignment;
         var itemVerticalAlignment = ItemVerticalAlignment;
-        var itemHorizontalAlignmentSet = itemHorizontalAlignment != null;
-        var itemVerticalAlignmentSet = ItemVerticalAlignment != null;
+        var itemHorizontalAlignmentSet = itemHorizontalAlignment is not null;
+        var itemVerticalAlignmentSet = itemVerticalAlignment is not null;
         var spacingSize = GetSpacingSize();
 
         var childConstraint = new Size(
-            itemWidthSet ? itemWidth : availableSize.Width,
-            itemHeightSet ? itemHeight : availableSize.Height);
+            itemWidthSet ? ItemWidth : availableSize.Width,
+            itemHeightSet ? ItemHeight : availableSize.Height);
 
         var children = InternalChildren;
         var isFirst = true;
 
-        if (childWrapping == VisualWrappingType.Wrap)
+        if (ChildWrapping == VisualWrappingType.Wrap)
         {
             for (int i = 0, count = children.Count; i < count; i++)
             {
@@ -263,20 +180,20 @@ public sealed class UniformSpacingPanel : Panel
 
                 if (itemHorizontalAlignmentSet)
                 {
-                    child.SetCurrentValue(HorizontalAlignmentProperty, itemHorizontalAlignment);
+                    child.SetCurrentValue(HorizontalAlignmentProperty, ItemHorizontalAlignment);
                 }
 
                 if (itemVerticalAlignmentSet)
                 {
-                    child.SetCurrentValue(VerticalAlignmentProperty, itemVerticalAlignment);
+                    child.SetCurrentValue(VerticalAlignmentProperty, ItemVerticalAlignment);
                 }
 
                 child.Measure(childConstraint);
 
                 var sz = new PanelUvSize(
                     orientation,
-                    itemWidthSet ? itemWidth : child.DesiredSize.Width,
-                    itemHeightSet ? itemHeight : child.DesiredSize.Height);
+                    itemWidthSet ? ItemWidth : child.DesiredSize.Width,
+                    itemHeightSet ? ItemHeight : child.DesiredSize.Height);
 
                 if (GreaterThan(curLineSize.U + sz.U + spacingSize.U, uvConstraint.U))
                 {
@@ -355,22 +272,23 @@ public sealed class UniformSpacingPanel : Panel
         Size finalSize)
     {
         var firstInLine = 0;
-        var itemWidth = ItemWidth;
-        var itemHeight = ItemHeight;
         double accumulatedV = 0;
-        var itemU = orientation == Orientation.Horizontal ? itemWidth : itemHeight;
+        var itemU = orientation == Orientation.Horizontal
+            ? ItemWidth
+            : ItemHeight;
         var curLineSize = new PanelUvSize(orientation);
         var uvFinalSize = new PanelUvSize(orientation, finalSize);
-        var itemWidthSet = !double.IsNaN(itemWidth);
-        var itemHeightSet = !double.IsNaN(itemHeight);
-        var useItemU = orientation == Orientation.Horizontal ? itemWidthSet : itemHeightSet;
-        var childWrapping = ChildWrapping;
+        var itemWidthSet = !double.IsNaN(ItemWidth);
+        var itemHeightSet = !double.IsNaN(ItemHeight);
+        var useItemU = orientation == Orientation.Horizontal
+            ? itemWidthSet
+            : itemHeightSet;
         var spacingSize = GetSpacingSize();
 
         var children = InternalChildren;
         var isFirst = true;
 
-        if (childWrapping == VisualWrappingType.Wrap)
+        if (ChildWrapping == VisualWrappingType.Wrap)
         {
             for (int i = 0, count = children.Count; i < count; i++)
             {
@@ -382,8 +300,8 @@ public sealed class UniformSpacingPanel : Panel
 
                 var sz = new PanelUvSize(
                     orientation,
-                    itemWidthSet ? itemWidth : child.DesiredSize.Width,
-                    itemHeightSet ? itemHeight : child.DesiredSize.Height);
+                    itemWidthSet ? ItemWidth : child.DesiredSize.Width,
+                    itemHeightSet ? ItemHeight : child.DesiredSize.Height);
 
                 if (GreaterThan(curLineSize.U + (isFirst ? sz.U : sz.U + spacingSize.U), uvFinalSize.U))
                 {
@@ -420,26 +338,22 @@ public sealed class UniformSpacingPanel : Panel
 
     private PanelUvSize GetSpacingSize()
     {
-        var spacing = Spacing;
-
-        if (!double.IsNaN(spacing))
+        if (!double.IsNaN(Spacing))
         {
-            return new PanelUvSize(orientation, spacing, spacing);
+            return new PanelUvSize(orientation, Spacing, Spacing);
         }
 
-        var horizontalSpacing = HorizontalSpacing;
-        if (double.IsNaN(horizontalSpacing))
+        if (double.IsNaN(HorizontalSpacing))
         {
-            horizontalSpacing = 0;
+            HorizontalSpacing = 0;
         }
 
-        var verticalSpacing = VerticalSpacing;
-        if (double.IsNaN(verticalSpacing))
+        if (double.IsNaN(VerticalSpacing))
         {
-            verticalSpacing = 0;
+            VerticalSpacing = 0;
         }
 
-        return new PanelUvSize(orientation, horizontalSpacing, verticalSpacing);
+        return new PanelUvSize(orientation, HorizontalSpacing, VerticalSpacing);
     }
 
     private static bool GreaterThan(

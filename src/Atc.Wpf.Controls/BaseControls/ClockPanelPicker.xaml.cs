@@ -21,17 +21,8 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
         remove => RemoveHandler(SelectedClockChangedEvent, value);
     }
 
-    public static readonly DependencyProperty SelectedDateTimeProperty = DependencyProperty.Register(
-        nameof(SelectedDateTime),
-        typeof(DateTime?),
-        typeof(ClockPanelPicker),
-        new PropertyMetadata(default(DateTime?)));
-
-    public DateTime? SelectedDateTime
-    {
-        get => (DateTime?)GetValue(SelectedDateTimeProperty);
-        set => SetValue(SelectedDateTimeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "default(DateTime?)")]
+    private DateTime? selectedDateTime;
 
     public ClockPanelPicker()
     {

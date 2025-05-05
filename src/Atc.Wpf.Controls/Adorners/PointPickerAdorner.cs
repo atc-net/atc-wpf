@@ -1,23 +1,14 @@
 namespace Atc.Wpf.Controls.Adorners;
 
-public sealed class PointPickerAdorner : Adorner
+public sealed partial class PointPickerAdorner : Adorner
 {
     private static readonly Brush FillBrush = Brushes.Transparent;
     private readonly Pen selectorPen;
 
-    private static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-        nameof(Position),
-        typeof(Point),
-        typeof(PointPickerAdorner),
-        new FrameworkPropertyMetadata(
-            default(Point),
-            FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public Point Position
-    {
-        get => (Point)GetValue(PositionProperty);
-        set => SetValue(PositionProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "default(Point)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private Point position;
 
     public PointPickerAdorner(
         UIElement adornedElement)

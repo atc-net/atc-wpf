@@ -5,54 +5,19 @@ namespace Atc.Wpf.Controls.LabelControls;
 [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelLanguageSelector : ILabelLanguageSelector
 {
-    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
-        nameof(DropDownFirstItemType),
-        typeof(DropDownFirstItemType),
-        typeof(LabelLanguageSelector),
-        new PropertyMetadata(DropDownFirstItemType.None));
+    [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
+    private DropDownFirstItemType dropDownFirstItemType;
 
-    public DropDownFirstItemType DropDownFirstItemType
-    {
-        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
-        set => SetValue(DropDownFirstItemTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = RenderFlagIndicatorType.Flat16)]
+    private RenderFlagIndicatorType renderFlagIndicatorType;
 
-    public static readonly DependencyProperty RenderFlagIndicatorTypeTypeProperty = DependencyProperty.Register(
-        nameof(RenderFlagIndicatorType),
-        typeof(RenderFlagIndicatorType),
-        typeof(LabelLanguageSelector),
-        new PropertyMetadata(RenderFlagIndicatorType.Flat16));
+    [DependencyProperty(DefaultValue = true)]
+    private bool useOnlySupportedLanguages;
 
-    public RenderFlagIndicatorType RenderFlagIndicatorType
-    {
-        get => (RenderFlagIndicatorType)GetValue(RenderFlagIndicatorTypeTypeProperty);
-        set => SetValue(RenderFlagIndicatorTypeTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string defaultCultureIdentifier;
 
-    public static readonly DependencyProperty UseOnlySupportedLanguagesProperty = DependencyProperty.Register(
-        nameof(UseOnlySupportedLanguages),
-        typeof(bool),
-        typeof(LabelLanguageSelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool UseOnlySupportedLanguages
-    {
-        get => (bool)GetValue(UseOnlySupportedLanguagesProperty);
-        set => SetValue(UseOnlySupportedLanguagesProperty, value);
-    }
-
-    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
-        nameof(DefaultCultureIdentifier),
-        typeof(string),
-        typeof(LabelLanguageSelector),
-        new PropertyMetadata(default));
-
-    public string? DefaultCultureIdentifier
-    {
-        get => (string?)GetValue(DefaultCultureIdentifierProperty);
-        set => SetValue(DefaultCultureIdentifierProperty, value);
-    }
-
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -63,25 +28,17 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
             OnSelectorLostFocus,
             coerceValueCallback: null,
             isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
+            defaultUpdateSourceTrigger: UpdateSourceTrigger.LostFocus));
 
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    public static readonly DependencyProperty UpdateUiCultureOnChangeEventProperty = DependencyProperty.Register(
-        nameof(UpdateUiCultureOnChangeEvent),
-        typeof(bool),
-        typeof(LabelLanguageSelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool UpdateUiCultureOnChangeEvent
-    {
-        get => (bool)GetValue(UpdateUiCultureOnChangeEventProperty);
-        set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool updateUiCultureOnChangeEvent;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 

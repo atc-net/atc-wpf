@@ -4,18 +4,10 @@ namespace Atc.Wpf.Controls.LabelControls;
 [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelFontFamilySelector : ILabelFontFamilySelector
 {
-    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
-        nameof(DropDownFirstItemType),
-        typeof(DropDownFirstItemType),
-        typeof(LabelFontFamilySelector),
-        new PropertyMetadata(DropDownFirstItemType.None));
+    [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
+    private DropDownFirstItemType dropDownFirstItemType;
 
-    public DropDownFirstItemType DropDownFirstItemType
-    {
-        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
-        set => SetValue(DropDownFirstItemTypeProperty, value);
-    }
-
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -28,6 +20,7 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
 
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);

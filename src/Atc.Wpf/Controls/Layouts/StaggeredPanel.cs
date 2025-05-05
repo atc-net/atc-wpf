@@ -2,65 +2,37 @@
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 namespace Atc.Wpf.Controls.Layouts;
 
-public sealed class StaggeredPanel : Panel
+public sealed partial class StaggeredPanel : Panel
 {
     private const int ArrayMaxItems = 10_000;
     private double itemWidth;
 
-    public static readonly DependencyProperty DesiredItemWidthProperty = DependencyProperty.Register(
-        nameof(DesiredItemWidth),
-        typeof(double),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(
-            250d,
-            (sender, _) => ((StaggeredPanel)sender).InvalidateMeasure()));
+    [DependencyProperty(
+        DefaultValue = 250d,
+        PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private double desiredItemWidth;
 
-    public double DesiredItemWidth
+    [DependencyProperty(
+        DefaultValue = "default(Thickness)",
+        PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private Thickness padding;
+
+    [DependencyProperty(
+        DefaultValue = 0d,
+        PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private double horizontalSpacing;
+
+    [DependencyProperty(
+        DefaultValue = 0d,
+        PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private double verticalSpacing;
+
+    private static void OnInvalidateMeasure(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
-        get => (double)GetValue(DesiredItemWidthProperty);
-        set => SetValue(DesiredItemWidthProperty, value);
-    }
-
-    public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
-        nameof(Padding),
-        typeof(Thickness),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(
-            default(Thickness),
-            (sender, _) => ((StaggeredPanel)sender).InvalidateMeasure()));
-
-    public Thickness Padding
-    {
-        get => (Thickness)GetValue(PaddingProperty);
-        set => SetValue(PaddingProperty, value);
-    }
-
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
-        nameof(HorizontalSpacing),
-        typeof(double),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(
-            0d,
-            (sender, _) => ((StaggeredPanel)sender).InvalidateMeasure()));
-
-    public double HorizontalSpacing
-    {
-        get => (double)GetValue(HorizontalSpacingProperty);
-        set => SetValue(HorizontalSpacingProperty, value);
-    }
-
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
-        nameof(VerticalSpacing),
-        typeof(double),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(
-            0d,
-            (sender, _) => ((StaggeredPanel)sender).InvalidateMeasure()));
-
-    public double VerticalSpacing
-    {
-        get => (double)GetValue(VerticalSpacingProperty);
-        set => SetValue(VerticalSpacingProperty, value);
+        var staggeredPanel = (StaggeredPanel)d;
+        staggeredPanel.InvalidateMeasure();
     }
 
     static StaggeredPanel()

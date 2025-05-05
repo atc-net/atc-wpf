@@ -782,7 +782,7 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            DefaultColorName = defaultColorName,
+            DefaultColorName = defaultColorName ?? string.Empty,
         };
 
         return control;
@@ -821,7 +821,7 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            DefaultCultureIdentifier = defaultCultureIdentifier,
+            DefaultCultureIdentifier = defaultCultureIdentifier ?? string.Empty,
             UseOnlySupportedCountries = false,
         };
 
@@ -861,7 +861,7 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             InputDataType = inputDataType,
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
-            DefaultCultureIdentifier = defaultCultureIdentifier,
+            DefaultCultureIdentifier = defaultCultureIdentifier ?? string.Empty,
             UseOnlySupportedLanguages = false,
             UpdateUiCultureOnChangeEvent = false,
         };

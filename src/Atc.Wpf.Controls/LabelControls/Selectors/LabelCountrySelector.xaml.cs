@@ -4,54 +4,19 @@ namespace Atc.Wpf.Controls.LabelControls;
 [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelCountrySelector : ILabelCountrySelector
 {
-    public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
-        nameof(DropDownFirstItemType),
-        typeof(DropDownFirstItemType),
-        typeof(LabelCountrySelector),
-        new PropertyMetadata(DropDownFirstItemType.None));
+    [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
+    private DropDownFirstItemType dropDownFirstItemType;
 
-    public DropDownFirstItemType DropDownFirstItemType
-    {
-        get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
-        set => SetValue(DropDownFirstItemTypeProperty, value);
-    }
+    [DependencyProperty(DefaultValue = RenderFlagIndicatorType.Flat16)]
+    private RenderFlagIndicatorType renderFlagIndicatorType;
 
-    public static readonly DependencyProperty RenderFlagIndicatorTypeTypeProperty = DependencyProperty.Register(
-        nameof(RenderFlagIndicatorType),
-        typeof(RenderFlagIndicatorType),
-        typeof(LabelCountrySelector),
-        new PropertyMetadata(RenderFlagIndicatorType.Flat16));
+    [DependencyProperty(DefaultValue = true)]
+    private bool useOnlySupportedCountries;
 
-    public RenderFlagIndicatorType RenderFlagIndicatorType
-    {
-        get => (RenderFlagIndicatorType)GetValue(RenderFlagIndicatorTypeTypeProperty);
-        set => SetValue(RenderFlagIndicatorTypeTypeProperty, value);
-    }
+    [DependencyProperty]
+    private string defaultCultureIdentifier;
 
-    public static readonly DependencyProperty UseOnlySupportedCountriesProperty = DependencyProperty.Register(
-        nameof(UseOnlySupportedCountries),
-        typeof(bool),
-        typeof(LabelCountrySelector),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool UseOnlySupportedCountries
-    {
-        get => (bool)GetValue(UseOnlySupportedCountriesProperty);
-        set => SetValue(UseOnlySupportedCountriesProperty, value);
-    }
-
-    public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
-        nameof(DefaultCultureIdentifier),
-        typeof(string),
-        typeof(LabelCountrySelector),
-        new PropertyMetadata(null));
-
-    public string? DefaultCultureIdentifier
-    {
-        get => (string?)GetValue(DefaultCultureIdentifierProperty);
-        set => SetValue(DefaultCultureIdentifierProperty, value);
-    }
-
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -64,6 +29,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
             isAnimationProhibited: true,
             UpdateSourceTrigger.LostFocus));
 
+    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);
