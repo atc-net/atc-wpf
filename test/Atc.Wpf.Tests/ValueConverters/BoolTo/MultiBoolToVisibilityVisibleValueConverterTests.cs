@@ -11,10 +11,10 @@ public sealed class MultiBoolToVisibilityVisibleValueConverterTests
     private static readonly object[] Empty = [];
 
     [Theory]
-    [InlineData(true, nameof(AllTrue))]
-    [InlineData(false, nameof(OneFalse))]
-    [InlineData(true, nameof(Empty))]
-    public void Convert_AND_DefaultOperator(bool expected, string inputSetName)
+    [InlineData(Visibility.Visible, nameof(AllTrue))]
+    [InlineData(Visibility.Collapsed, nameof(OneFalse))]
+    [InlineData(Visibility.Visible, nameof(Empty))]
+    public void Convert_AND_DefaultOperator(Visibility expected, string inputSetName)
     {
         // Arrange
         var input = GetInput(inputSetName);
@@ -27,11 +27,11 @@ public sealed class MultiBoolToVisibilityVisibleValueConverterTests
     }
 
     [Theory]
-    [InlineData(true, nameof(AllTrue))]
-    [InlineData(true, nameof(OneFalse))]
-    [InlineData(false, nameof(AllFalse))]
-    [InlineData(false, nameof(Empty))]
-    public void Convert_OR_WithEnumParameter(bool expected, string inputSetName)
+    [InlineData(Visibility.Visible, nameof(AllTrue))]
+    [InlineData(Visibility.Visible, nameof(OneFalse))]
+    [InlineData(Visibility.Collapsed, nameof(AllFalse))]
+    [InlineData(Visibility.Collapsed, nameof(Empty))]
+    public void Convert_OR_WithEnumParameter(Visibility expected, string inputSetName)
     {
         // Arrange
         var input = GetInput(inputSetName);
@@ -58,7 +58,7 @@ public sealed class MultiBoolToVisibilityVisibleValueConverterTests
             culture: CultureInfo.InvariantCulture);
 
         // Assert
-        Assert.True((bool)actual!);
+        Assert.Equal(Visibility.Visible, actual!);
     }
 
     private static object[] GetInput(string name) => name switch
