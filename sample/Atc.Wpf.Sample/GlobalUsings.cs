@@ -23,6 +23,8 @@ global using Atc.Data.Models;
 global using Atc.Helpers;
 global using Atc.Serialization.JsonConverters;
 global using Atc.Wpf.Collections;
+global using Atc.Wpf.Controls;
+global using Atc.Wpf.Controls.Data.Models;
 global using Atc.Wpf.Controls.Dialogs;
 global using Atc.Wpf.Controls.LabelControls;
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
