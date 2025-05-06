@@ -54,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
     <ProjectReference Include="..\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
     <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
   </ItemGroup>

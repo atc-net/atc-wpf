@@ -249,6 +249,10 @@
             Header="JsonViewer"
             IsExpanded="True"
             SamplePath="Viewers.JsonViewerView" />
+        <sample:SampleTreeViewItem
+            Header="TerminalViewer"
+            IsExpanded="True"
+            SamplePath="Viewers.TerminalViewerView" />
     </TreeViewItem>
 
 </TreeView>
