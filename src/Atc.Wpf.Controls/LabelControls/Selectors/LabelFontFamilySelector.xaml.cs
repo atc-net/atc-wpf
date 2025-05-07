@@ -7,25 +7,13 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
     [DependencyProperty(DefaultValue = DropDownFirstItemType.None)]
     private DropDownFirstItemType dropDownFirstItemType;
 
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(LabelFontFamilySelector),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectorLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectorLostFocus),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string selectedKey;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 

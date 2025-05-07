@@ -16,25 +16,13 @@ public partial class LabelCountrySelector : ILabelCountrySelector
     [DependencyProperty]
     private string defaultCultureIdentifier;
 
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(LabelCountrySelector),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectorLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectedLostFocus),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string selectedKey;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
@@ -112,7 +100,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
                 selectedKey));
     }
 
-    private static void OnSelectorLostFocus(
+    private static void OnSelectedLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
