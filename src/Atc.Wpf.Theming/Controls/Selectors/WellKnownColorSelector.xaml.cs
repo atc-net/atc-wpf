@@ -24,21 +24,13 @@ public partial class WellKnownColorSelector
     [DependencyProperty(DefaultValue = "")]
     private string defaultColorName;
 
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(WellKnownColorSelector),
-        new PropertyMetadata(
-            string.Empty,
-            OnSelectedKeyChanged));
-
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectedKeyChanged),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string selectedKey;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 

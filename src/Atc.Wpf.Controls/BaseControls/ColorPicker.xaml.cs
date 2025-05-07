@@ -5,37 +5,15 @@ public partial class ColorPicker
     [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
     private RenderColorIndicatorType renderColorIndicatorType;
 
-    // Note: DependencyProperty-SourceGenerator don't support "typeof(Color) as null" for now
-    public static readonly DependencyProperty ColorValueProperty = DependencyProperty.Register(
-        nameof(ColorValue),
-        typeof(Color),
-        typeof(LabelColorPicker),
-        new PropertyMetadata(
-            Colors.Black,
-            OnColorValueChanged));
+    [DependencyProperty(
+        DefaultValue = "Black",
+        PropertyChangedCallback = nameof(OnColorValueChanged))]
+    private Color? colorValue;
 
-    // Note: DependencyProperty-SourceGenerator don't support "typeof(Color) as null" for now
-    public Color? ColorValue
-    {
-        get => (Color?)GetValue(ColorValueProperty);
-        set => SetValue(ColorValueProperty, value);
-    }
-
-    // Note: DependencyProperty-SourceGenerator don't support "typeof(SolidColorBrush) as null" for now
-    public static readonly DependencyProperty BrushValueProperty = DependencyProperty.Register(
-        nameof(BrushValue),
-        typeof(SolidColorBrush),
-        typeof(ColorPicker),
-        new PropertyMetadata(
-            Brushes.Black,
-            OnBrushValueChanged));
-
-    // Note: DependencyProperty-SourceGenerator don't support "typeof(SolidColorBrush) as null" for now
-    public SolidColorBrush? BrushValue
-    {
-        get => (SolidColorBrush?)GetValue(BrushValueProperty);
-        set => SetValue(BrushValueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "Black",
+        PropertyChangedCallback = nameof(OnBrushValueChanged))]
+    private SolidColorBrush? brushValue;
 
     public static readonly DependencyProperty DisplayHexCodeProperty = DependencyProperty.Register(
         nameof(DisplayHexCode),

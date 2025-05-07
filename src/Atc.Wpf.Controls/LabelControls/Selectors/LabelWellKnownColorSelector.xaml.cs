@@ -22,25 +22,13 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
     [DependencyProperty(DefaultValue = "")]
     private string defaultColorName;
 
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(LabelWellKnownColorSelector),
-        new FrameworkPropertyMetadata(
-            defaultValue: string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectedKeyLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectedKeyLostFocus),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string selectedKey;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 

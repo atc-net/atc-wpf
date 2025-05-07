@@ -17,25 +17,13 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
     [DependencyProperty(DefaultValue = "")]
     private string defaultCultureIdentifier;
 
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
-        nameof(SelectedKey),
-        typeof(string),
-        typeof(LabelLanguageSelector),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectorLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            defaultUpdateSourceTrigger: UpdateSourceTrigger.LostFocus));
-
-    // Note: DependencyProperty-SourceGenerator don't support "coerceValueCallback / isAnimationProhibited" correctly for now
-    public string SelectedKey
-    {
-        get => (string)GetValue(SelectedKeyProperty);
-        set => SetValue(SelectedKeyProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectorLostFocus),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string selectedKey;
 
     [DependencyProperty(DefaultValue = true)]
     private bool updateUiCultureOnChangeEvent;

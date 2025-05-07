@@ -6,19 +6,8 @@ public partial class WellKnownColorPicker
     [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnShowOnlyStandardChanged))]
     private bool showOnlyBasicColors;
 
-    // Note: DependencyProperty-SourceGenerator don't support "List<ColorItem>" for now
-    public static readonly DependencyProperty PaletteProperty = DependencyProperty.Register(
-        nameof(Palette),
-        typeof(List<ColorItem>),
-        typeof(WellKnownColorPicker),
-        new PropertyMetadata(default(List<ColorItem>)));
-
-    // Note: DependencyProperty-SourceGenerator don't support "List<ColorItem>" for now
-    public List<ColorItem> Palette
-    {
-        get => (List<ColorItem>)GetValue(PaletteProperty);
-        set => SetValue(PaletteProperty, value);
-    }
+    [DependencyProperty]
+    private List<ColorItem> palette;
 
     [DependencyProperty(DefaultValue = "Transparent")]
     private Brush colorBrush;

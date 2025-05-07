@@ -72,22 +72,10 @@ public sealed partial class SvgImage : Control
         PropertyChangedCallback = nameof(OverrideStrokeWidthPropertyChanged))]
     private double? overrideStrokeWidth;
 
-    // Note: DependencyProperty-SourceGenerator don't support "Dictionary<string, Brush>" for now
-    public static readonly DependencyProperty CustomBrushesProperty = DependencyProperty.Register(
-        nameof(CustomBrushes),
-        typeof(Dictionary<string, Brush>),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            CustomBrushesPropertyChanged));
-
-    // Note: DependencyProperty-SourceGenerator don't support "Dictionary<string, Brush>" for now
-    public Dictionary<string, Brush> CustomBrushes
-    {
-        get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);
-        set => SetValue(CustomBrushesProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(CustomBrushesPropertyChanged))]
+    private Dictionary<string, Brush> customBrushes;
 
     [DependencyProperty(
         DefaultValue = "FileSystemLoader.Instance")]
