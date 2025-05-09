@@ -1,3 +1,4 @@
+// ReSharper disable once CheckNamespace
 namespace Atc.Wpf.Tests.ValueConverters;
 
 public sealed class ColorNameToBrushValueConverterTests

@@ -1,3 +1,4 @@
+// ReSharper disable CheckNamespace
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>

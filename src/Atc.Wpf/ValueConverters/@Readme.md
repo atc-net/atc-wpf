@@ -47,6 +47,7 @@ Or by the ValueConverter's Instance:
 | String -> Bool            | StringNullOrEmptyToInverseBoolValueConverter             | NULL or empty -> False                  | Not supported                           |
 | String -> Visibility      | StringNullOrEmptyToVisibilityCollapsedValueConverter     | NULL or empty -> Collapsed              | Not supported                           |
 | String -> Visibility      | StringNullOrEmptyToVisibilityVisibleValueConverter       | NULL or empty -> Visible                | Not supported                           |
+| String -> List<String>    | StringToSplitStringListValueConverter                    | String -> List<String>                  | Not supported                           |
 | String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 | String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 
