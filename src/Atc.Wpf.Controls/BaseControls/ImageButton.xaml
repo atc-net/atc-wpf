@@ -9,6 +9,9 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/LoadingIndicator.xaml" />
+        <ResourceDictionary>
+            <valueConverters:ImageLocationToMarginMultiValueConverter x:Key="ImageLocationToMarginMultiValueConverter" />
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
     <!--  Base  -->
@@ -35,34 +38,56 @@
                                 x:Name="PART_LoadingIndicator"
                                 Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={x:Static valueConverters:ImageLocationToMarginValueConverter.Instance}}"
                                 Padding="2"
                                 IsActive="False"
                                 Mode="{Binding Path=LoadingIndicatorMode, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="Collapsed" />
+                                Visibility="Collapsed">
+                                <progressing:LoadingIndicator.Margin>
+                                    <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
+                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                    </MultiBinding>
+                                </progressing:LoadingIndicator.Margin>
+                            </progressing:LoadingIndicator>
 
                             <atc:AutoGreyableImage
                                 x:Name="PART_Image"
                                 Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={x:Static valueConverters:ImageLocationToMarginValueConverter.Instance}}"
                                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Source="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="Collapsed" />
+                                Visibility="Collapsed">
+                                <atc:AutoGreyableImage.Margin>
+                                    <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
+                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                    </MultiBinding>
+                                </atc:AutoGreyableImage.Margin>
+                            </atc:AutoGreyableImage>
 
                             <atc:SvgImage
                                 x:Name="PART_SvgImage"
                                 Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Margin="{Binding Path=ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={x:Static valueConverters:ImageLocationToMarginValueConverter.Instance}}"
                                 ControlSizeType="ContentToSizeNoStretch"
                                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 OverrideColor="{Binding Path=SvgImageOverrideColor, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                                 Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Visibility="Collapsed" />
+                                Visibility="Collapsed">
+                                <atc:SvgImage.Margin>
+                                    <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
+                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                    </MultiBinding>
+                                </atc:SvgImage.Margin>
+                            </atc:SvgImage>
                         </Grid>
 
                         <ContentPresenter
+                            x:Name="PART_ContentPresenter"
                             Grid.Row="1"
                             Grid.Column="1"
                             HorizontalAlignment="Center"
@@ -79,6 +104,7 @@
                             <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="True" />
                             <Setter TargetName="PART_Image" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -89,6 +115,7 @@
                             <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
                             <Setter TargetName="PART_Image" Property="Visibility" Value="Visible" />
                             <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1.0" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -99,11 +126,17 @@
                             <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
                             <Setter TargetName="PART_Image" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_SvgImage" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1.0" />
                         </MultiDataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsBusy" Value="True">
+                <Setter Property="IsHitTestVisible" Value="False" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style
@@ -150,9 +183,16 @@
                 <atc:AutoGreyableImage
                     Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
                     Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                    Margin="{Binding ImageLocation, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={x:Static valueConverters:ImageLocationToMarginValueConverter.Instance}}"
                     IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                    Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" />
+                    Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}">
+                    <atc:AutoGreyableImage.Margin>
+                        <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
+                            <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                            <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                            <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                        </MultiBinding>
+                    </atc:AutoGreyableImage.Margin>
+                </atc:AutoGreyableImage>
             </Grid>
             <ContentPresenter
                 x:Name="PART_ContentPresenter"

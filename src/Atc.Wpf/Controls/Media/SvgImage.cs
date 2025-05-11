@@ -19,22 +19,10 @@ public sealed partial class SvgImage : Control
     private SvgRender? svgRender;
     private Action<SvgRender>? loadImage;
 
-    // Note: DependencyProperty-SourceGenerator don't support "new Brush? Background" for now
-    private static new readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-        nameof(Background),
-        typeof(Brush),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            OnBackgroundChanged));
-
-    // Note: DependencyProperty-SourceGenerator don't support "new Brush? Background" for now
-    public new Brush? Background
-    {
-        get => (Brush)GetValue(BackgroundProperty);
-        set => SetValue(BackgroundProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnBackgroundChanged))]
+    private Brush? background;
 
     [DependencyProperty(
         DefaultValue = ControlSizeType.ContentToSizeNoStretch,
@@ -325,7 +313,7 @@ public sealed partial class SvgImage : Control
             return;
         }
 
-        var uri = e.NewValue.ToString();
+        var uri = e.NewValue?.ToString();
         if (string.IsNullOrEmpty(uri))
         {
             return;
@@ -347,7 +335,7 @@ public sealed partial class SvgImage : Control
             return;
         }
 
-        var uri = e.NewValue.ToString();
+        var uri = e.NewValue?.ToString();
         if (string.IsNullOrEmpty(uri))
         {
             return;

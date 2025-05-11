@@ -9,7 +9,7 @@ namespace Atc.Wpf.Controls.BaseControls;
 [TemplatePart(Name = PART_NumericDown, Type = typeof(RepeatButton))]
 [TemplatePart(Name = PART_TextBox, Type = typeof(TextBox))]
 [StyleTypedProperty(Property = nameof(SpinButtonStyle), StyleTargetType = typeof(ButtonBase))]
-public class NumericBox : Control
+public partial class NumericBox : Control
 {
     private const string PART_NumericDown = "PART_NumericDownButton";
     private const string PART_NumericUp = "PART_NumericUpButton";
@@ -34,92 +34,29 @@ public class NumericBox : Control
     private TextBox? valueTextBox;
     private ScrollViewer? scrollViewer;
 
-    public static readonly RoutedEvent ValueIncrementedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueIncremented),
-        RoutingStrategy.Bubble,
-        typeof(NumericBoxChangedRoutedEventHandler),
-        typeof(NumericBox));
+    [RoutedEvent(HandlerType = typeof(NumericBoxChangedRoutedEventHandler))]
+    private static readonly RoutedEvent valueIncremented;
 
-    public event NumericBoxChangedRoutedEventHandler ValueIncremented
-    {
-        add => AddHandler(ValueIncrementedEvent, value);
-        remove => RemoveHandler(ValueIncrementedEvent, value);
-    }
+    [RoutedEvent(HandlerType = typeof(NumericBoxChangedRoutedEventHandler))]
+    private static readonly RoutedEvent valueDecremented;
 
-    public static readonly RoutedEvent ValueDecrementedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueDecremented),
-        RoutingStrategy.Bubble,
-        typeof(NumericBoxChangedRoutedEventHandler),
-        typeof(NumericBox));
+    [RoutedEvent]
+    private static readonly RoutedEvent delayChanged;
 
-    public event NumericBoxChangedRoutedEventHandler ValueDecremented
-    {
-        add => AddHandler(ValueDecrementedEvent, value);
-        remove => RemoveHandler(ValueDecrementedEvent, value);
-    }
+    [RoutedEvent]
+    private static readonly RoutedEvent maximumReached;
 
-    public static readonly RoutedEvent DelayChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(DelayChanged),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(NumericBox));
+    [RoutedEvent]
+    private static readonly RoutedEvent minimumReached;
 
-    public event RoutedEventHandler DelayChanged
-    {
-        add => AddHandler(DelayChangedEvent, value);
-        remove => RemoveHandler(DelayChangedEvent, value);
-    }
+    [RoutedEvent(HandlerType = typeof(RoutedPropertyChangedEventHandler<double?>))]
+    private static readonly RoutedEvent valueChanged;
 
-    public static readonly RoutedEvent MaximumReachedEvent = EventManager.RegisterRoutedEvent(
-        nameof(MaximumReached),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(NumericBox));
-
-    public event RoutedEventHandler MaximumReached
-    {
-        add => AddHandler(MaximumReachedEvent, value);
-        remove => RemoveHandler(MaximumReachedEvent, value);
-    }
-
-    public static readonly RoutedEvent MinimumReachedEvent = EventManager.RegisterRoutedEvent(
-        nameof(MinimumReached),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(NumericBox));
-
-    public event RoutedEventHandler MinimumReached
-    {
-        add => AddHandler(MinimumReachedEvent, value);
-        remove => RemoveHandler(MinimumReachedEvent, value);
-    }
-
-    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueChanged),
-        RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<double?>),
-        typeof(NumericBox));
-
-    public event RoutedPropertyChangedEventHandler<double?> ValueChanged
-    {
-        add => AddHandler(ValueChangedEvent, value);
-        remove => RemoveHandler(ValueChangedEvent, value);
-    }
-
-    public static readonly DependencyProperty DelayProperty = DependencyProperty.Register(
-        nameof(Delay),
-        typeof(int),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            DefaultDelay,
-            OnDelayPropertyChanged),
-        value => Convert.ToInt32(value, GlobalizationConstants.EnglishCultureInfo) >= 0);
-
-    public int Delay
-    {
-        get => (int)GetValue(DelayProperty);
-        set => SetValue(DelayProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = DefaultDelay,
+        PropertyChangedCallback = nameof(OnDelayPropertyChanged),
+        ValidateValueCallback = nameof(ValidateDefaultDelay))]
+    private int delay;
 
     public static readonly DependencyProperty TextAlignmentProperty = TextBox.TextAlignmentProperty.AddOwner(typeof(NumericBox));
 
@@ -129,19 +66,10 @@ public class NumericBox : Control
         set => SetValue(TextAlignmentProperty, value);
     }
 
-    public static readonly DependencyProperty SpeedupProperty = DependencyProperty.Register(
-        nameof(Speedup),
-        typeof(bool),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            BooleanBoxes.TrueBox,
-            OnSpeedupPropertyChanged));
-
-    public bool Speedup
-    {
-        get => (bool)GetValue(SpeedupProperty);
-        set => SetValue(SpeedupProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(
+        DefaultValue = true,
+        PropertyChangedCallback = nameof(OnSpeedupPropertyChanged))]
+    private bool speedup;
 
     public static readonly DependencyProperty IsReadOnlyProperty = TextBoxBase.IsReadOnlyProperty.AddOwner(
         typeof(NumericBox),
@@ -156,394 +84,122 @@ public class NumericBox : Control
         set => SetValue(IsReadOnlyProperty, BooleanBoxes.Box(value));
     }
 
-    public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
-        nameof(StringFormat),
-        typeof(string),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            OnStringFormatPropertyChanged,
-            CoerceStringFormat));
+    [DependencyProperty(
+        DefaultValue = "",
+        PropertyChangedCallback = nameof(OnStringFormatPropertyChanged),
+        CoerceValueCallback = nameof(CoerceStringFormat))]
+    private string stringFormat;
 
-    public string StringFormat
-    {
-        get => (string)GetValue(StringFormatProperty);
-        set => SetValue(StringFormatProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool interceptArrowKeys;
 
-    public static readonly DependencyProperty InterceptArrowKeysProperty = DependencyProperty.Register(
-        nameof(InterceptArrowKeys),
-        typeof(bool),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool interceptMouseWheel;
 
-    public bool InterceptArrowKeys
-    {
-        get => (bool)GetValue(InterceptArrowKeysProperty);
-        set => SetValue(InterceptArrowKeysProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(
+        DefaultValue = true,
+        PropertyChangedCallback = nameof(OnInterceptManualEnterPropertyChanged))]
+    private bool interceptManualEnter;
 
-    public static readonly DependencyProperty InterceptMouseWheelProperty = DependencyProperty.Register(
-        nameof(InterceptMouseWheel),
-        typeof(bool),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnValuePropertyChanged),
+        CoerceValueCallback = nameof(CoerceValueItem1))]
+    private double? value;
 
-    public bool InterceptMouseWheel
-    {
-        get => (bool)GetValue(InterceptMouseWheelProperty);
-        set => SetValue(InterceptMouseWheelProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnDefaultValuePropertyChanged),
+        CoerceValueCallback = nameof(CoerceDefaultValue))]
+    private double? defaultValue;
 
-    public static readonly DependencyProperty InterceptManualEnterProperty = DependencyProperty.Register(
-        nameof(InterceptManualEnter),
-        typeof(bool),
-        typeof(NumericBox),
-        new PropertyMetadata(
-            BooleanBoxes.TrueBox,
-            OnInterceptManualEnterPropertyChanged));
+    [DependencyProperty(
+        DefaultValue = double.MinValue,
+        PropertyChangedCallback = nameof(OnMinimumPropertyChanged))]
+    private double minimum;
 
-    public bool InterceptManualEnter
-    {
-        get => (bool)GetValue(InterceptManualEnterProperty);
-        set => SetValue(InterceptManualEnterProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(
+        DefaultValue = double.MaxValue,
+        PropertyChangedCallback = nameof(OnMaximumPropertyChanged),
+        CoerceValueCallback = nameof(CoerceMaximum))]
+    private double maximum;
 
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(double?),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            default(double?),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnValuePropertyChanged,
-            (o, value) => CoerceValue(o, value).Item1));
+    [DependencyProperty(
+        DefaultValue = DefaultInterval,
+        PropertyChangedCallback = nameof(OnIntervalPropertyChanged))]
+    private double interval;
 
-    [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
-    public double? Value
-    {
-        get => (double?)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool trackMouseWheelWhenMouseOver;
 
-    public static readonly DependencyProperty DefaultValueProperty = DependencyProperty.Register(
-        nameof(DefaultValue),
-        typeof(double?),
-        typeof(NumericBox),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnDefaultValuePropertyChanged,
-            CoerceDefaultValue));
+    [DependencyProperty]
+    private Style? spinButtonStyle;
 
-    public double? DefaultValue
-    {
-        get => (double?)GetValue(DefaultValueProperty);
-        set => SetValue(DefaultValueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = ButtonsAlignment.Right,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private ButtonsAlignment buttonsAlignment;
 
-    public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-        nameof(Minimum),
-        typeof(double),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            double.MinValue,
-            OnMinimumPropertyChanged));
+    [DependencyProperty(DefaultValue = false)]
+    private bool hideUpDownButtons;
 
-    public double Minimum
-    {
-        get => (double)GetValue(MinimumProperty);
-        set => SetValue(MinimumProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "new Thickness(0, -0.5, -0.5, 0)")]
+    private Thickness upDownButtonsMargin;
 
-    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-        nameof(Maximum),
-        typeof(double),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            double.MaxValue,
-            OnMaximumPropertyChanged,
-            CoerceMaximum));
+    [DependencyProperty(DefaultValue = 20d)]
+    private double upDownButtonsWidth;
 
-    public double Maximum
-    {
-        get => (double)GetValue(MaximumProperty);
-        set => SetValue(MaximumProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool upDownButtonsFocusable;
 
-    public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register(
-        nameof(Interval),
-        typeof(double),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            DefaultInterval,
-            OnIntervalPropertyChanged));
+    [DependencyProperty(DefaultValue = false)]
+    private bool switchUpDownButtons;
 
-    public double Interval
-    {
-        get => (double)GetValue(IntervalProperty);
-        set => SetValue(IntervalProperty, value);
-    }
+    [DependencyProperty]
+    private object? buttonUpContent;
 
-    public static readonly DependencyProperty TrackMouseWheelWhenMouseOverProperty = DependencyProperty.Register(
-        nameof(TrackMouseWheelWhenMouseOver),
-        typeof(bool),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty]
+    private DataTemplate? buttonUpContentTemplate;
 
-    public bool TrackMouseWheelWhenMouseOver
-    {
-        get => (bool)GetValue(TrackMouseWheelWhenMouseOverProperty);
-        set => SetValue(TrackMouseWheelWhenMouseOverProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty]
+    private string? buttonUpContentStringFormat;
 
-    public static readonly DependencyProperty SpinButtonStyleProperty = DependencyProperty.Register(
-        nameof(SpinButtonStyle),
-        typeof(Style),
-        typeof(NumericBox),
-        new PropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty]
+    private object? buttonDownContent;
 
-    public Style? SpinButtonStyle
-    {
-        get => (Style?)GetValue(SpinButtonStyleProperty);
-        set => SetValue(SpinButtonStyleProperty, value);
-    }
+    [DependencyProperty]
+    private DataTemplate? buttonDownContentTemplate;
 
-    public static readonly DependencyProperty ButtonsAlignmentProperty = DependencyProperty.Register(
-        nameof(ButtonsAlignment),
-        typeof(ButtonsAlignment),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            ButtonsAlignment.Right,
-            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
+    [DependencyProperty]
+    private string? buttonDownContentStringFormat;
 
-    public ButtonsAlignment ButtonsAlignment
-    {
-        get => (ButtonsAlignment)GetValue(ButtonsAlignmentProperty);
-        set => SetValue(ButtonsAlignmentProperty, value);
-    }
+    [DependencyProperty(PropertyChangedCallback = nameof(OnCulturePropertyChanged))]
+    private CultureInfo? culture;
 
-    public static readonly DependencyProperty HideUpDownButtonsProperty = DependencyProperty.Register(
-        nameof(HideUpDownButtons),
-        typeof(bool),
-        typeof(NumericBox),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(
+        DefaultValue = NumericInput.All,
+        PropertyChangedCallback = nameof(OnNumericInputModePropertyChanged))]
+    private NumericInput numericInputMode;
 
-    public bool HideUpDownButtons
-    {
-        get => (bool)GetValue(HideUpDownButtonsProperty);
-        set => SetValue(HideUpDownButtonsProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(DefaultValue = DecimalPointCorrectionMode.Inherits)]
+    private DecimalPointCorrectionMode decimalPointCorrection;
 
-    public static readonly DependencyProperty UpDownButtonsMarginProperty = DependencyProperty.Register(
-        nameof(UpDownButtonsMargin),
-        typeof(Thickness),
-        typeof(NumericBox),
-        new PropertyMetadata(new Thickness(0, -0.5, -0.5, 0)));
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnSnapToMultipleOfIntervalPropertyChanged))]
+    private bool snapToMultipleOfInterval;
 
-    public Thickness UpDownButtonsMargin
-    {
-        get => (Thickness)GetValue(UpDownButtonsMarginProperty);
-        set => SetValue(UpDownButtonsMarginProperty, value);
-    }
+    [DependencyProperty(DefaultValue = NumberStyles.Any)]
+    private NumberStyles parsingNumberStyle;
 
-    public static readonly DependencyProperty UpDownButtonsWidthProperty = DependencyProperty.Register(
-        nameof(UpDownButtonsWidth),
-        typeof(double),
-        typeof(NumericBox),
-        new PropertyMetadata(20d));
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private string prefixText;
 
-    public double UpDownButtonsWidth
-    {
-        get => (double)GetValue(UpDownButtonsWidthProperty);
-        set => SetValue(UpDownButtonsWidthProperty, value);
-    }
-
-    public static readonly DependencyProperty UpDownButtonsFocusableProperty = DependencyProperty.Register(
-        nameof(UpDownButtonsFocusable),
-        typeof(bool),
-        typeof(NumericBox),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool UpDownButtonsFocusable
-    {
-        get => (bool)GetValue(UpDownButtonsFocusableProperty);
-        set => SetValue(UpDownButtonsFocusableProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty SwitchUpDownButtonsProperty = DependencyProperty.Register(
-        nameof(SwitchUpDownButtons),
-        typeof(bool),
-        typeof(NumericBox),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool SwitchUpDownButtons
-    {
-        get => (bool)GetValue(SwitchUpDownButtonsProperty);
-        set => SetValue(SwitchUpDownButtonsProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty ButtonUpContentProperty = DependencyProperty.Register(
-        nameof(ButtonUpContent),
-        typeof(object),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
-    public object? ButtonUpContent
-    {
-        get => GetValue(ButtonUpContentProperty);
-        set => SetValue(ButtonUpContentProperty, value);
-    }
-
-    public static readonly DependencyProperty ButtonUpContentTemplateProperty = DependencyProperty.Register(
-        nameof(ButtonUpContentTemplate),
-        typeof(DataTemplate),
-        typeof(NumericBox));
-
-    public DataTemplate? ButtonUpContentTemplate
-    {
-        get => (DataTemplate?)GetValue(ButtonUpContentTemplateProperty);
-        set => SetValue(ButtonUpContentTemplateProperty, value);
-    }
-
-    public static readonly DependencyProperty ButtonUpContentStringFormatProperty = DependencyProperty.Register(
-        nameof(ButtonUpContentStringFormat),
-        typeof(string),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
-    public string? ButtonUpContentStringFormat
-    {
-        get => (string?)GetValue(ButtonUpContentStringFormatProperty);
-        set => SetValue(ButtonUpContentStringFormatProperty, value);
-    }
-
-    public static readonly DependencyProperty ButtonDownContentProperty = DependencyProperty.Register(
-        nameof(ButtonDownContent),
-        typeof(object),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
-    public object? ButtonDownContent
-    {
-        get => GetValue(ButtonDownContentProperty);
-        set => SetValue(ButtonDownContentProperty, value);
-    }
-
-    public static readonly DependencyProperty ButtonDownContentTemplateProperty = DependencyProperty.Register(
-        nameof(ButtonDownContentTemplate),
-        typeof(DataTemplate),
-        typeof(NumericBox));
-
-    public DataTemplate? ButtonDownContentTemplate
-    {
-        get => (DataTemplate?)GetValue(ButtonDownContentTemplateProperty);
-        set => SetValue(ButtonDownContentTemplateProperty, value);
-    }
-
-    public static readonly DependencyProperty ButtonDownContentStringFormatProperty = DependencyProperty.Register(
-        nameof(ButtonDownContentStringFormat),
-        typeof(string),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
-    public string? ButtonDownContentStringFormat
-    {
-        get => (string?)GetValue(ButtonDownContentStringFormatProperty);
-        set => SetValue(ButtonDownContentStringFormatProperty, value);
-    }
-
-    public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
-        nameof(Culture),
-        typeof(CultureInfo),
-        typeof(NumericBox),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnCulturePropertyChanged));
-
-    public CultureInfo? Culture
-    {
-        get => (CultureInfo?)GetValue(CultureProperty);
-        set => SetValue(CultureProperty, value);
-    }
-
-    public static readonly DependencyProperty NumericInputModeProperty = DependencyProperty.Register(
-        nameof(NumericInputMode),
-        typeof(NumericInput),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            NumericInput.All, OnNumericInputModePropertyChanged));
-
-    public NumericInput NumericInputMode
-    {
-        get => (NumericInput)GetValue(NumericInputModeProperty);
-        set => SetValue(NumericInputModeProperty, value);
-    }
-
-    public static readonly DependencyProperty DecimalPointCorrectionProperty = DependencyProperty.Register(
-        nameof(DecimalPointCorrection),
-        typeof(DecimalPointCorrectionMode),
-        typeof(NumericBox),
-        new PropertyMetadata(default(DecimalPointCorrectionMode)));
-
-    public DecimalPointCorrectionMode DecimalPointCorrection
-    {
-        get => (DecimalPointCorrectionMode)GetValue(DecimalPointCorrectionProperty);
-        set => SetValue(DecimalPointCorrectionProperty, value);
-    }
-
-    public static readonly DependencyProperty SnapToMultipleOfIntervalProperty = DependencyProperty.Register(
-        nameof(SnapToMultipleOfInterval),
-        typeof(bool),
-        typeof(NumericBox),
-        new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            OnSnapToMultipleOfIntervalPropertyChanged));
-
-    public bool SnapToMultipleOfInterval
-    {
-        get => (bool)GetValue(SnapToMultipleOfIntervalProperty);
-        set => SetValue(SnapToMultipleOfIntervalProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty ParsingNumberStyleProperty = DependencyProperty.Register(
-        nameof(ParsingNumberStyle),
-        typeof(NumberStyles),
-        typeof(NumericBox),
-        new PropertyMetadata(NumberStyles.Any));
-
-    public NumberStyles ParsingNumberStyle
-    {
-        get => (NumberStyles)GetValue(ParsingNumberStyleProperty);
-        set => SetValue(ParsingNumberStyleProperty, value);
-    }
-
-    public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
-        nameof(PrefixText),
-        typeof(string),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public string PrefixText
-    {
-        get => (string)GetValue(PrefixTextProperty);
-        set => SetValue(PrefixTextProperty, value);
-    }
-
-    public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.Register(
-        nameof(SuffixText),
-        typeof(string),
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public string SuffixText
-    {
-        get => (string)GetValue(SuffixTextProperty);
-        set => SetValue(SuffixTextProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private string suffixText;
 
     private CultureInfo SpecificCultureInfo => Culture ?? Language.GetSpecificCulture();
 
@@ -686,24 +342,31 @@ public class NumericBox : Control
             return new Tuple<double?, bool>(numericBox.DefaultValue, item2: false);
         }
 
-        var value = ((double?)baseValue).Value;
+        var val = ((double?)baseValue).Value;
 
         if (!numericBox.NumericInputMode.HasFlag(NumericInput.Decimal))
         {
-            value = System.Math.Truncate(value);
+            val = System.Math.Truncate(val);
         }
 
-        if (value < numericBox.Minimum)
+        if (val < numericBox.Minimum)
         {
             return new Tuple<double?, bool>(numericBox.Minimum, item2: true);
         }
 
-        if (value > numericBox.Maximum)
+        if (val > numericBox.Maximum)
         {
             return new Tuple<double?, bool>(numericBox.Maximum, item2: true);
         }
 
-        return new Tuple<double?, bool>(value, item2: false);
+        return new Tuple<double?, bool>(val, item2: false);
+    }
+
+    private static object? CoerceValueItem1(
+        DependencyObject d,
+        object? baseValue)
+    {
+        return CoerceValue(d, baseValue).Item1;
     }
 
     private static void OnDefaultValuePropertyChanged(
@@ -727,17 +390,17 @@ public class NumericBox : Control
             return baseValue;
         }
 
-        var minimum = ((NumericBox)d).Minimum;
-        var maximum = ((NumericBox)d).Maximum;
+        var minimumValue = ((NumericBox)d).Minimum;
+        var maximumValue = ((NumericBox)d).Maximum;
 
-        if (val < minimum)
+        if (val < minimumValue)
         {
-            return minimum;
+            return minimumValue;
         }
 
-        if (val > maximum)
+        if (val > maximumValue)
         {
-            return maximum;
+            return maximumValue;
         }
 
         return baseValue;
@@ -772,10 +435,10 @@ public class NumericBox : Control
         DependencyObject d,
         object value)
     {
-        var minimum = ((NumericBox)d).Minimum;
+        var minimumValue = ((NumericBox)d).Minimum;
         var val = (double)value;
-        return val < minimum
-            ? minimum
+        return val < minimumValue
+            ? minimumValue
             : val;
     }
 
@@ -837,8 +500,8 @@ public class NumericBox : Control
             return;
         }
 
-        var value = numericBox.Value.GetValueOrDefault();
-        numericBox.Value = System.Math.Round(value / numericBox.Interval) * numericBox.Interval;
+        var val = numericBox.Value.GetValueOrDefault();
+        numericBox.Value = System.Math.Round(val / numericBox.Interval) * numericBox.Interval;
     }
 
     private static void OnGotFocus(
@@ -1142,6 +805,11 @@ public class NumericBox : Control
         }
     }
 
+    private static bool ValidateDefaultDelay(
+        object value)
+        => value is int intValue &&
+           Convert.ToInt32(intValue, GlobalizationConstants.EnglishCultureInfo) >= 0;
+
     private void InternalSetText(
         double? newValue)
     {
@@ -1293,7 +961,7 @@ public class NumericBox : Control
     }
 
     private void ChangeValueInternal(
-        double interval)
+        double interVal)
     {
         if (IsReadOnly)
         {
@@ -1302,7 +970,9 @@ public class NumericBox : Control
 
         manualChange = false;
 
-        var routedEvent = interval > 0 ? new NumericBoxChangedRoutedEventArgs(ValueIncrementedEvent, interval) : new NumericBoxChangedRoutedEventArgs(ValueDecrementedEvent, interval);
+        var routedEvent = interVal > 0
+            ? new NumericBoxChangedRoutedEventArgs(ValueIncrementedEvent, interVal)
+            : new NumericBoxChangedRoutedEventArgs(ValueDecrementedEvent, interVal);
 
         RaiseEvent(routedEvent);
 
@@ -1331,23 +1001,23 @@ public class NumericBox : Control
     private void SetValueTo(
         double newValue)
     {
-        var value = newValue;
+        var val = newValue;
 
         if (SnapToMultipleOfInterval && System.Math.Abs(Interval) > 0)
         {
-            value = System.Math.Round(newValue / Interval) * Interval;
+            val = System.Math.Round(newValue / Interval) * Interval;
         }
 
-        if (value > Maximum)
+        if (val > Maximum)
         {
-            value = Maximum;
+            val = Maximum;
         }
-        else if (value < Minimum)
+        else if (val < Minimum)
         {
-            value = Minimum;
+            val = Minimum;
         }
 
-        SetCurrentValue(ValueProperty, CoerceValue(this, value).Item1);
+        SetCurrentValue(ValueProperty, CoerceValue(this, val).Item1);
     }
 
     private void EnableDisableDown()
@@ -1400,10 +1070,10 @@ public class NumericBox : Control
         var correctionMode = DecimalPointCorrection;
 
         // And the culture of the NUD
-        var culture = SpecificCultureInfo;
+        var cultureInfo = SpecificCultureInfo;
 
         // Surrogate the blocked key pressed
-        SimulateDecimalPointKeyPress(textBox, correctionMode, culture);
+        SimulateDecimalPointKeyPress(textBox, correctionMode, cultureInfo);
     }
 
     private static void SimulateDecimalPointKeyPress(

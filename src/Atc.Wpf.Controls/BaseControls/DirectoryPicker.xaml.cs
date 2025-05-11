@@ -1,4 +1,5 @@
 // ReSharper disable UnusedParameter.Local
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.BaseControls;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
@@ -22,7 +23,7 @@ public partial class DirectoryPicker
         typeof(DirectoryInfo),
         typeof(DirectoryPicker),
         new FrameworkPropertyMetadata(
-            default(DirectoryInfo?),
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnValuePropertyChanged,
             (o, value) => CoerceValue(o, value).Item1));
@@ -38,7 +39,7 @@ public partial class DirectoryPicker
         typeof(string),
         typeof(DirectoryPicker),
         new FrameworkPropertyMetadata(
-            default(string?),
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnDisplayValuePropertyChanged,
             (o, value) => CoerceDisplayValue(o, value).Item1));
@@ -49,101 +50,29 @@ public partial class DirectoryPicker
         set => SetValue(FullNameProperty, value);
     }
 
-    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-        nameof(Title),
-        typeof(string),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(default(string)));
+    [DependencyProperty]
+    private string title;
 
-    public string Title
-    {
-        get => (string)GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
-    }
+    [DependencyProperty]
+    private bool showClearTextButton;
 
-    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
-        nameof(ShowClearTextButton),
-        typeof(bool),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(default(bool)));
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public bool ShowClearTextButton
-    {
-        get => (bool)GetValue(ShowClearTextButtonProperty);
-        set => SetValue(ShowClearTextButtonProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(defaultValue: string.Empty));
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
 
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string defaultDirectory;
 
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(default(TextAlignment)));
+    [DependencyProperty(DefaultValue = "")]
+    private string initialDirectory;
 
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(default(TextTrimming)));
-
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
-
-    public static readonly DependencyProperty DefaultDirectoryProperty = DependencyProperty.Register(
-        nameof(DefaultDirectory),
-        typeof(string),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(string.Empty));
-
-    public string DefaultDirectory
-    {
-        get => (string)GetValue(DefaultDirectoryProperty);
-        set => SetValue(DefaultDirectoryProperty, value);
-    }
-
-    public static readonly DependencyProperty InitialDirectoryProperty = DependencyProperty.Register(
-        nameof(InitialDirectory),
-        typeof(string),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(string.Empty));
-
-    public string InitialDirectory
-    {
-        get => (string)GetValue(InitialDirectoryProperty);
-        set => SetValue(InitialDirectoryProperty, value);
-    }
-
-    public static readonly DependencyProperty RootDirectoryProperty = DependencyProperty.Register(
-        nameof(RootDirectory),
-        typeof(string),
-        typeof(DirectoryPicker),
-        new PropertyMetadata(string.Empty));
-
-    public string RootDirectory
-    {
-        get => (string)GetValue(RootDirectoryProperty);
-        set => SetValue(RootDirectoryProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string rootDirectory;
 
     public DirectoryPicker()
     {

@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.BaseControls;
 
 public partial class ClockPanelPicker : INotifyPropertyChanged
@@ -9,19 +10,12 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public static readonly RoutedEvent SelectedClockChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(SelectedClockChanged),
+    [RoutedEvent(
         RoutingStrategy.Direct,
-        typeof(EventHandler<RoutedEventArgs>),
-        typeof(ClockPanelPicker));
+        HandlerType = typeof(EventHandler<RoutedEventArgs>))]
+    private static readonly RoutedEvent selectedClockChanged;
 
-    public event EventHandler<RoutedEventArgs> SelectedClockChanged
-    {
-        add => AddHandler(SelectedClockChangedEvent, value);
-        remove => RemoveHandler(SelectedClockChangedEvent, value);
-    }
-
-    [DependencyProperty(DefaultValue = "default(DateTime?)")]
+    [DependencyProperty]
     private DateTime? selectedDateTime;
 
     public ClockPanelPicker()
@@ -43,7 +37,8 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
         SelectedKeyMinute = "0";
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected virtual void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

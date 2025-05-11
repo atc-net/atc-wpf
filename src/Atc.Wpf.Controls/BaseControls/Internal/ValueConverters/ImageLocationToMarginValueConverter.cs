@@ -8,6 +8,8 @@ internal sealed class ImageLocationToMarginValueConverter : IValueConverter
 {
     public static readonly ImageLocationToMarginValueConverter Instance = new();
 
+    public double Spacing { get; set; } = 5.0;
+
     public object Convert(
         object? value,
         Type targetType,
@@ -19,12 +21,20 @@ internal sealed class ImageLocationToMarginValueConverter : IValueConverter
             throw new InvalidEnumArgumentException(nameof(value), 0, typeof(ImageLocation));
         }
 
+        var spacing = parameter switch
+        {
+            double d => d,
+            string s when double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed) =>
+                parsed,
+            _ => Spacing,
+        };
+
         return imageLocation switch
         {
-            ImageLocation.Left => new Thickness(0, 0, 5, 0),
-            ImageLocation.Top => new Thickness(0, 0, 0, 5),
-            ImageLocation.Right => new Thickness(5, 0, 0, 0),
-            ImageLocation.Bottom => new Thickness(0, 5, 0, 0),
+            ImageLocation.Left => new Thickness(0, 0, spacing, 0),
+            ImageLocation.Top => new Thickness(0, 0, 0, spacing),
+            ImageLocation.Right => new Thickness(spacing, 0, 0, 0),
+            ImageLocation.Bottom => new Thickness(0, spacing, 0, 0),
             ImageLocation.Center => new Thickness(0, 0, 0, 0),
             _ => throw new SwitchCaseDefaultException(imageLocation),
         };
