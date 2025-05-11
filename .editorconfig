@@ -591,6 +591,8 @@ dotnet_diagnostic.MA0091.severity = none           # Sender should be 'this' for
 dotnet_diagnostic.MA0131.severity = none           # ArgumentNullException.ThrowIfNull should not be used with non-nullable types
 
 dotnet_diagnostic.SA1010.severity = none           # Opening square brackets must be spaced correctly
+dotnet_diagnostic.SA1311.severity = none           # Static readonly fields must begin with upper case letter
+dotnet_diagnostic.IDE1006.severity = none          # Static readonly fields must begin with upper case letter
 
 dotnet_diagnostic.S107.severity = none             # Methods should not have too many parameters
 dotnet_diagnostic.S1144.severity = none            # Remove the unused internal class

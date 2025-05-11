@@ -1,14 +1,9 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-public sealed class NumericBoxChangedRoutedEventArgs : RoutedEventArgs
+public sealed class NumericBoxChangedRoutedEventArgs(
+    RoutedEvent routedEvent,
+    double interval)
+    : RoutedEventArgs(routedEvent)
 {
-    public double Interval { get; set; }
-
-    public NumericBoxChangedRoutedEventArgs(
-        RoutedEvent routedEvent,
-        double interval)
-        : base(routedEvent)
-    {
-        Interval = interval;
-    }
+    public double Interval { get; set; } = interval;
 }

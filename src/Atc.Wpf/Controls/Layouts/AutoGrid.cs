@@ -220,7 +220,7 @@ public sealed partial class AutoGrid : Grid
     }
 
     /// <summary>
-    /// Parse an array of grid lengths from comma delimited text.
+    /// Parse an array of grid lengths from comma-delimited text.
     /// </summary>
     /// <param name="text">The text.</param>
     /// <returns>Return the GridLength array.</returns>

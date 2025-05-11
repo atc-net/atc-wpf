@@ -4,16 +4,10 @@ namespace Atc.Wpf.DependencyObjects;
 /// Message listener, singleton pattern.
 /// Inherit from DependencyObject to implement DataBinding.
 /// </summary>
-public sealed class PercentListener : DependencyObject
+public sealed partial class PercentListener : DependencyObject
 {
-    /// <summary>
-    /// Percent Property.
-    /// </summary>
-    public static readonly DependencyProperty PercentProperty = DependencyProperty.Register(
-        nameof(Percent),
-        typeof(int),
-        typeof(PercentListener),
-        new UIPropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty]
+    private double percent;
 
     private static PercentListener? percentListener;
 
@@ -30,26 +24,17 @@ public sealed class PercentListener : DependencyObject
     public static PercentListener Instance => percentListener ??= new PercentListener();
 
     /// <summary>
-    /// Gets or sets received percent.
-    /// </summary>
-    public int Percent
-    {
-        get => (int)GetValue(PercentProperty);
-        set => SetValue(PercentProperty, value);
-    }
-
-    /// <summary>
     /// Receives the percent.
     /// </summary>
-    /// <param name="percent">The percent.</param>
-    public void ReceivePercent(int percent)
+    /// <param name="percentValue">The percent value.</param>
+    public void ReceivePercent(double percentValue)
     {
-        if (percent < 0 || percent > 100)
+        if (percent is < 0 or > 100)
         {
-            throw new ArgumentException("Percent have to be between 0 and 100", nameof(percent));
+            throw new ArgumentException("Percent have to be between 0 and 100", nameof(percentValue));
         }
 
-        SetCurrentValue(PercentProperty, percent);
+        SetCurrentValue(PercentProperty, percentValue);
         DispatcherHelper.DoEvents();
     }
 }

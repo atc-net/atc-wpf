@@ -2,20 +2,11 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelCheckBox : ILabelCheckBox
 {
-    public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
-        nameof(IsChecked),
-        typeof(bool),
-        typeof(LabelCheckBox),
-        new FrameworkPropertyMetadata(
-            defaultValue: false,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnIsCheckedChanged));
-
-    public bool IsChecked
-    {
-        get => (bool)GetValue(IsCheckedProperty);
-        set => SetValue(IsCheckedProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = false,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnIsCheckedChanged))]
+    private bool isChecked;
 
     public event EventHandler<ValueChangedEventArgs<bool>>? IsCheckedChanged;
 

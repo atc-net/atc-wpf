@@ -6,12 +6,12 @@ public partial class ColorPicker
     private RenderColorIndicatorType renderColorIndicatorType;
 
     [DependencyProperty(
-        DefaultValue = "Black",
+        DefaultValue = nameof(Brushes.Black),
         PropertyChangedCallback = nameof(OnColorValueChanged))]
     private Color? colorValue;
 
     [DependencyProperty(
-        DefaultValue = "Black",
+        DefaultValue = nameof(Brushes.Black),
         PropertyChangedCallback = nameof(OnBrushValueChanged))]
     private SolidColorBrush? brushValue;
 

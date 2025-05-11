@@ -39,7 +39,10 @@
                             Orientation="Horizontal"
                             Spacing="10">
                             <atc:ImageButton
+                                HorizontalContentAlignment="Left"
                                 Content="Hello"
+                                ImageBorderSpacing="5"
+                                ImageContentSpacing="10"
                                 ImageSource="/Assets/ok.png"
                                 IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}" />
                             <atc:ImageButton

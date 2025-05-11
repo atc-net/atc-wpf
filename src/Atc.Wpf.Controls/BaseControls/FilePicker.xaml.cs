@@ -22,7 +22,7 @@ public partial class FilePicker
         typeof(FileInfo),
         typeof(FilePicker),
         new FrameworkPropertyMetadata(
-            default(FileInfo?),
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnValuePropertyChanged,
             (o, value) => CoerceValue(o, value).Item1));
@@ -38,7 +38,7 @@ public partial class FilePicker
         typeof(string),
         typeof(FilePicker),
         new FrameworkPropertyMetadata(
-            default(string?),
+            defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnDisplayValuePropertyChanged,
             (o, value) => CoerceDisplayValue(o, value).Item1));
@@ -49,138 +49,38 @@ public partial class FilePicker
         set => SetValue(FullNameProperty, value);
     }
 
-    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-        nameof(Title),
-        typeof(string),
-        typeof(FilePicker),
-        new PropertyMetadata(default(string)));
+    [DependencyProperty]
+    private string title;
 
-    public string Title
-    {
-        get => (string)GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
-    }
+    [DependencyProperty]
+    private bool showClearTextButton;
 
-    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
-        nameof(ShowClearTextButton),
-        typeof(bool),
-        typeof(FilePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public bool ShowClearTextButton
-    {
-        get => (bool)GetValue(ShowClearTextButtonProperty);
-        set => SetValue(ShowClearTextButtonProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(FilePicker),
-        new PropertyMetadata(defaultValue: string.Empty));
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
 
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
+    [DependencyProperty]
+    private bool allowOnlyExisting;
 
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(FilePicker),
-        new PropertyMetadata(default(TextAlignment)));
+    [DependencyProperty]
+    private bool usePreviewPane;
 
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string filter;
 
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(FilePicker),
-        new PropertyMetadata(default(TextTrimming)));
+    [DependencyProperty(DefaultValue = "")]
+    private string defaultDirectory;
 
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string initialDirectory;
 
-    public static readonly DependencyProperty AllowOnlyExistingProperty = DependencyProperty.Register(
-        nameof(AllowOnlyExisting),
-        typeof(bool),
-        typeof(FilePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool AllowOnlyExisting
-    {
-        get => (bool)GetValue(AllowOnlyExistingProperty);
-        set => SetValue(AllowOnlyExistingProperty, value);
-    }
-
-    public static readonly DependencyProperty UsePreviewPaneProperty = DependencyProperty.Register(
-        nameof(UsePreviewPane),
-        typeof(bool),
-        typeof(FilePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool UsePreviewPane
-    {
-        get => (bool)GetValue(UsePreviewPaneProperty);
-        set => SetValue(UsePreviewPaneProperty, value);
-    }
-
-    public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
-        nameof(Filter),
-        typeof(string),
-        typeof(FilePicker),
-        new PropertyMetadata(string.Empty));
-
-    public string Filter
-    {
-        get => (string)GetValue(FilterProperty);
-        set => SetValue(FilterProperty, value);
-    }
-
-    public static readonly DependencyProperty DefaultDirectoryProperty = DependencyProperty.Register(
-        nameof(DefaultDirectory),
-        typeof(string),
-        typeof(FilePicker),
-        new PropertyMetadata(string.Empty));
-
-    public string DefaultDirectory
-    {
-        get => (string)GetValue(DefaultDirectoryProperty);
-        set => SetValue(DefaultDirectoryProperty, value);
-    }
-
-    public static readonly DependencyProperty InitialDirectoryProperty = DependencyProperty.Register(
-        nameof(InitialDirectory),
-        typeof(string),
-        typeof(FilePicker),
-        new PropertyMetadata(string.Empty));
-
-    public string InitialDirectory
-    {
-        get => (string)GetValue(InitialDirectoryProperty);
-        set => SetValue(InitialDirectoryProperty, value);
-    }
-
-    public static readonly DependencyProperty RootDirectoryProperty = DependencyProperty.Register(
-        nameof(RootDirectory),
-        typeof(string),
-        typeof(FilePicker),
-        new PropertyMetadata(string.Empty));
-
-    public string RootDirectory
-    {
-        get => (string)GetValue(RootDirectoryProperty);
-        set => SetValue(RootDirectoryProperty, value);
-    }
-
+    [DependencyProperty(DefaultValue = "")]
+    private string rootDirectory;
     public FilePicker()
     {
         InitializeComponent();
