@@ -314,7 +314,7 @@ public sealed partial class SvgImage : Control
         }
 
         var uri = e.NewValue?.ToString();
-        if (string.IsNullOrEmpty(uri))
+        if (string.IsNullOrEmpty(uri) || uri.StartsWith("System.", StringComparison.Ordinal))
         {
             return;
         }

@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.BaseControls;
 
-public sealed partial class ImageButton : Button
+public partial class ImageButton : Button
 {
     [DependencyProperty(
         DefaultValue = null,
@@ -20,7 +20,7 @@ public sealed partial class ImageButton : Button
     private double imageBorderSpacing;
 
     [DependencyProperty]
-    private ImageSource imageSource;
+    private ImageSource? imageSource;
 
     [DependencyProperty(DefaultValue = "")]
     private string svgImageSource;
