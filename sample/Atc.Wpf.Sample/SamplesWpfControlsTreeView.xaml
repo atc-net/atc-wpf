@@ -15,6 +15,7 @@
             IsExpanded="True"
             SamplePath="DialogBoxes.StandardDialogBoxView" />
     </TreeViewItem>
+
     <TreeViewItem Header="Base Controls">
         <sample:SampleTreeViewItem
             Header="DecimalBox"
@@ -24,10 +25,6 @@
             Header="DecimalXyBox"
             IsExpanded="True"
             SamplePath="BaseControls.DecimalXyBoxView" />
-        <sample:SampleTreeViewItem
-            Header="ImageButton"
-            IsExpanded="True"
-            SamplePath="BaseControls.ImageButtonView" />
         <sample:SampleTreeViewItem
             Header="IntegerBox"
             IsExpanded="True"
@@ -64,6 +61,25 @@
             Header="RichTextBoxEx"
             IsExpanded="True"
             SamplePath="BaseControls.RichTextBoxExView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Button Controls">
+        <sample:SampleTreeViewItem
+            Header="AuthenticationButton"
+            IsExpanded="True"
+            SamplePath="ButtonControls.AuthenticationButtonView" />
+        <sample:SampleTreeViewItem
+            Header="ConnectivityButton"
+            IsExpanded="True"
+            SamplePath="ButtonControls.ConnectivityButtonView" />
+        <sample:SampleTreeViewItem
+            Header="ImageButton"
+            IsExpanded="True"
+            SamplePath="ButtonControls.ImageButtonView" />
+        <sample:SampleTreeViewItem
+            Header="ImageToggledButton"
+            IsExpanded="True"
+            SamplePath="ButtonControls.ImageToggledButtonView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Color Controls">

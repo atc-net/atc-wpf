@@ -1,8 +1,8 @@
-namespace Atc.Wpf.Sample.SamplesWpfTheming.InputButton;
+namespace Atc.Wpf.Sample.SamplesWpfControls.ButtonControls;
 
-public partial class ImageToggledButton
+public partial class AuthenticationButtonView
 {
-    public ImageToggledButton()
+    public AuthenticationButtonView()
     {
         InitializeComponent();
 
@@ -13,10 +13,10 @@ public partial class ImageToggledButton
     private bool isBusy;
 
     [DependencyProperty]
-    private bool isConnected;
+    private bool isAuthenticated;
 
     [RelayCommand]
-    private async Task Connect()
+    private async Task Login()
     {
         IsBusy = true;
 
@@ -27,14 +27,14 @@ public partial class ImageToggledButton
         await Application.Current.Dispatcher
             .InvokeAsyncIfRequired(() =>
             {
-                IsConnected = true;
+                IsAuthenticated = true;
                 IsBusy = false;
             })
             .ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private async Task Disconnect()
+    private async Task Logout()
     {
         IsBusy = true;
 
@@ -45,7 +45,7 @@ public partial class ImageToggledButton
         await Application.Current.Dispatcher
             .InvokeAsyncIfRequired(() =>
             {
-                IsConnected = false;
+                IsAuthenticated = false;
                 IsBusy = false;
             })
             .ConfigureAwait(false);

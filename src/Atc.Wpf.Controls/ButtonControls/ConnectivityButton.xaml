@@ -1,0 +1,34 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.ButtonControls.ConnectivityButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.ButtonControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="100"
+    d:DesignWidth="200"
+    mc:Ignorable="d">
+
+    <buttonControls:ImageToggledButton
+        Width="{Binding Path=Width, ElementName=Root}"
+        Height="{Binding Path=Height, ElementName=Root}"
+        ImageBorderSpacing="{Binding Path=ImageBorderSpacing, ElementName=Root}"
+        ImageContentSpacing="{Binding Path=ImageContentSpacing, ElementName=Root}"
+        ImageHeight="{Binding Path=ImageHeight, ElementName=Root}"
+        ImageLocation="{Binding Path=ImageLocation, ElementName=Root}"
+        ImageWidth="{Binding Path=ImageWidth, ElementName=Root}"
+        IsBusy="{Binding Path=IsBusy, ElementName=Root}"
+        IsToggled="{Binding Path=IsConnected, ElementName=Root, Mode=TwoWay}"
+        OffCommand="{Binding Path=ConnectCommand, ElementName=Root}"
+        OffContent="{Binding Path=ConnectContent, ElementName=Root}"
+        OffImageSource="{Binding Path=ConnectImageSource, ElementName=Root}"
+        OffSvgImageOverrideColor="{Binding Path=ConnectSvgImageOverrideColor, ElementName=Root}"
+        OffSvgImageSource="{Binding Path=ConnectSvgImageSource, ElementName=Root}"
+        OnCommand="{Binding Path=DisconnectCommand, ElementName=Root}"
+        OnContent="{Binding Path=DisconnectContent, ElementName=Root}"
+        OnImageSource="{Binding Path=DisconnectImageSource, ElementName=Root}"
+        OnSvgImageOverrideColor="{Binding Path=DisconnectSvgImageOverrideColor, ElementName=Root}"
+        OnSvgImageSource="{Binding Path=DisconnectSvgImageSource, ElementName=Root}" />
+
+</UserControl>

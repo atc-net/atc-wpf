@@ -67,6 +67,8 @@ global using Atc.Wpf.Controls.SettingsControls;
 global using Atc.Wpf.Controls.ViewModels;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Data.Models;
+global using Atc.Wpf.FontIcons;
+global using Atc.Wpf.FontIcons.ValueConverters;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Controls.Selectors;

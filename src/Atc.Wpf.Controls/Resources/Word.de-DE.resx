@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -243,51 +243,6 @@
   <data name="Preferences" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
-  <data name="Message" xml:space="preserve">
-    <value>Nachricht</value>
-  </data>
-  <data name="Count" xml:space="preserve">
-    <value>Zählen</value>
-  </data>
-  <data name="Lock" xml:space="preserve">
-    <value>Sperren</value>
-  </data>
-  <data name="Locked" xml:space="preserve">
-    <value>Verschlossen</value>
-  </data>
-  <data name="Mode" xml:space="preserve">
-    <value>Modu</value>
-  </data>
-  <data name="New" xml:space="preserve">
-    <value>Neu</value>
-  </data>
-  <data name="Clear" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
-  <data name="Clipboard" xml:space="preserve">
-    <value>Clipboard</value>
-  </data>
-  <data name="Depth" xml:space="preserve">
-    <value>Höhe</value>
-  </data>
-  <data name="Height" xml:space="preserve">
-    <value>Höhe</value>
-  </data>
-  <data name="Messages" xml:space="preserve">
-    <value>Nachrichten</value>
-  </data>
-  <data name="Freetext" xml:space="preserve">
-    <value>Freitext</value>
-  </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>Berechnen</value>
-  </data>
-  <data name="Help" xml:space="preserve">
-    <value>Hilfe</value>
-  </data>
-  <data name="Length" xml:space="preserve">
-    <value>Länge</value>
-  </data>
   <data name="Redo" xml:space="preserve">
     <value>Redo</value>
   </data>
@@ -345,8 +300,26 @@
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="Message" xml:space="preserve">
+    <value>Nachricht</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Zählen</value>
+  </data>
+  <data name="Lock" xml:space="preserve">
+    <value>Sperren</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Verschlossen</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Modu</value>
+  </data>
   <data name="UnLocked" xml:space="preserve">
     <value>Freigesetzter</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Neu</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Erfrischen</value>
@@ -359,6 +332,18 @@
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Umbenennen</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Clipboard</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Höhe</value>
   </data>
   <data name="Show" xml:space="preserve">
     <value>Zeigen</value>
@@ -380,6 +365,21 @@
   </data>
   <data name="Size" xml:space="preserve">
     <value>Größe</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Nachrichten</value>
+  </data>
+  <data name="Freetext" xml:space="preserve">
+    <value>Freitext</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>Berechnen</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>Länge</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Erzeugnis</value>
@@ -423,23 +423,23 @@
   <data name="Test" xml:space="preserve">
     <value>Prüfung</value>
   </data>
-  <data name="Updating" xml:space="preserve">
-    <value>Aktualisierung</value>
-  </data>
-  <data name="Creating" xml:space="preserve">
-    <value>Erstellen</value>
-  </data>
-  <data name="Updated" xml:space="preserve">
-    <value>Aktualisiert</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Aktualisieren</value>
-  </data>
   <data name="Create" xml:space="preserve">
     <value>Erstellen</value>
   </data>
   <data name="Created" xml:space="preserve">
     <value>Erstellt</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Aktualisiert</value>
+  </data>
+  <data name="Creating" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Aktualisierung</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Suche</value>
@@ -456,16 +456,16 @@
   <data name="Severity" xml:space="preserve">
     <value>Schwere</value>
   </data>
-  <data name="SubArea" xml:space="preserve">
-    <value>Teilbereich</value>
-  </data>
   <data name="Area" xml:space="preserve">
     <value>Bereich</value>
   </data>
-  <data name="Printing" xml:space="preserve">
-    <value>Drucken</value>
+  <data name="SubArea" xml:space="preserve">
+    <value>Teilbereich</value>
   </data>
   <data name="Print" xml:space="preserve">
+    <value>Drucken</value>
+  </data>
+  <data name="Printing" xml:space="preserve">
     <value>Drucken</value>
   </data>
   <data name="Appearance" xml:space="preserve">
@@ -474,14 +474,14 @@
   <data name="Colors" xml:space="preserve">
     <value>Farben</value>
   </data>
-  <data name="Miscellaneous" xml:space="preserve">
-    <value>Sonstig</value>
-  </data>
   <data name="Identifier" xml:space="preserve">
     <value>Kennung</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Maschine</value>
+  </data>
+  <data name="Miscellaneous" xml:space="preserve">
+    <value>Sonstig</value>
   </data>
   <data name="Network" xml:space="preserve">
     <value>Netzwerk</value>
@@ -495,11 +495,11 @@
   <data name="Information" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="Receiver" xml:space="preserve">
-    <value>Empfänger</value>
-  </data>
   <data name="Sender" xml:space="preserve">
     <value>Absender</value>
+  </data>
+  <data name="Receiver" xml:space="preserve">
+    <value>Empfänger</value>
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Zeitstempel</value>
@@ -521,5 +521,17 @@
   </data>
   <data name="Group" xml:space="preserve">
     <value>Gruppe</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Ausloggen</value>
   </data>
 </root>

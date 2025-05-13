@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -423,23 +423,23 @@
   <data name="Test" xml:space="preserve">
     <value>Test</value>
   </data>
-  <data name="Updating" xml:space="preserve">
-    <value>Opdatering</value>
-  </data>
-  <data name="Creating" xml:space="preserve">
-    <value>Oprettelse</value>
-  </data>
-  <data name="Updated" xml:space="preserve">
-    <value>Opdateret</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Opdatering</value>
-  </data>
   <data name="Create" xml:space="preserve">
     <value>Opret</value>
   </data>
   <data name="Created" xml:space="preserve">
     <value>Oprettet</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Opdatering</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Opdateret</value>
+  </data>
+  <data name="Creating" xml:space="preserve">
+    <value>Oprettelse</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Opdatering</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Søg</value>
@@ -456,11 +456,11 @@
   <data name="Severity" xml:space="preserve">
     <value>Alvorlighed</value>
   </data>
-  <data name="SubArea" xml:space="preserve">
-    <value>Underområde</value>
-  </data>
   <data name="Area" xml:space="preserve">
     <value>Område</value>
+  </data>
+  <data name="SubArea" xml:space="preserve">
+    <value>Underområde</value>
   </data>
   <data name="Print" xml:space="preserve">
     <value>Udskriv</value>
@@ -474,14 +474,14 @@
   <data name="Colors" xml:space="preserve">
     <value>Farver</value>
   </data>
-  <data name="Miscellaneous" xml:space="preserve">
-    <value>Diverse</value>
-  </data>
   <data name="Identifier" xml:space="preserve">
     <value>Identifikator</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Maskine</value>
+  </data>
+  <data name="Miscellaneous" xml:space="preserve">
+    <value>Diverse</value>
   </data>
   <data name="Network" xml:space="preserve">
     <value>Netværk</value>
@@ -495,11 +495,11 @@
   <data name="Information" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="Receiver" xml:space="preserve">
-    <value>Modtager</value>
-  </data>
   <data name="Sender" xml:space="preserve">
     <value>Afsender</value>
+  </data>
+  <data name="Receiver" xml:space="preserve">
+    <value>Modtager</value>
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Tidsstempel</value>
@@ -521,5 +521,17 @@
   </data>
   <data name="Group" xml:space="preserve">
     <value>Gruppe</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Forbinde</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Afbryde</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log ind</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log ud</value>
   </data>
 </root>

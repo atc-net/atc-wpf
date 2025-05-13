@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.ButtonControls"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.BaseControls.Internal.ValueConverters">
 
@@ -18,7 +18,7 @@
     <Style
         x:Key="AtcApps.Styles.ImageButton"
         BasedOn="{StaticResource {x:Type Button}}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="ImageHeight" Value="16" />
@@ -29,58 +29,58 @@
                 <DataTemplate>
                     <atc:GridEx Columns="Auto,*,Auto" Rows="Auto,*,Auto">
                         <Grid
-                            Grid.Row="{Binding Path=RowIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                            Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                            Grid.Row="{Binding Path=RowIndex, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                            Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
 
                             <progressing:LoadingIndicator
                                 x:Name="PART_LoadingIndicator"
-                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 Padding="2"
                                 IsActive="False"
-                                Mode="{Binding Path=LoadingIndicatorMode, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Mode="{Binding Path=LoadingIndicatorMode, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 Visibility="Collapsed">
                                 <progressing:LoadingIndicator.Margin>
                                     <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
-                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
                                     </MultiBinding>
                                 </progressing:LoadingIndicator.Margin>
                             </progressing:LoadingIndicator>
 
                             <atc:AutoGreyableImage
                                 x:Name="PART_Image"
-                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Source="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                Source="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 Visibility="Collapsed">
                                 <atc:AutoGreyableImage.Margin>
                                     <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
-                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
                                     </MultiBinding>
                                 </atc:AutoGreyableImage.Margin>
                             </atc:AutoGreyableImage>
 
                             <atc:SvgImage
                                 x:Name="PART_SvgImage"
-                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 ControlSizeType="ContentToSizeNoStretch"
-                                IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                OverrideColor="{Binding Path=SvgImageOverrideColor, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                                Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                                IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                OverrideColor="{Binding Path=SvgImageOverrideColor, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 Visibility="Collapsed">
                                 <atc:SvgImage.Margin>
                                     <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
-                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                                        <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                                        <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                                        <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
                                     </MultiBinding>
                                 </atc:SvgImage.Margin>
                             </atc:SvgImage>
@@ -98,7 +98,7 @@
                     <DataTemplate.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="True" />
+                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Visible" />
                             <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="True" />
@@ -108,8 +108,8 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="False" />
-                                <Condition Binding="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}" Value="True" />
+                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}" Value="False" />
+                                <Condition Binding="{Binding Path=ImageSource, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
@@ -119,8 +119,8 @@
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}" Value="False" />
-                                <Condition Binding="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}" Value="True" />
+                                <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}" Value="False" />
+                                <Condition Binding="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="PART_LoadingIndicator" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_LoadingIndicator" Property="IsActive" Value="False" />
@@ -142,7 +142,7 @@
     <Style
         x:Key="AtcApps.Styles.ImageButton.Small"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -150,7 +150,7 @@
     <Style
         x:Key="AtcApps.Styles.ImageButton.Large"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -161,12 +161,12 @@
     <Style
         x:Key="ImageButton.Small"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton.Small}"
-        TargetType="{x:Type baseControls:ImageButton}" />
+        TargetType="{x:Type buttonControls:ImageButton}" />
 
     <Style
         x:Key="ImageButton.Large"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton.Large}"
-        TargetType="{x:Type baseControls:ImageButton}" />
+        TargetType="{x:Type buttonControls:ImageButton}" />
 
     <!--  Chromeless - ControlTemplate  -->
     <ControlTemplate x:Key="AtcApps.Templates.ImageButton.Chromeless" TargetType="{x:Type ButtonBase}">
@@ -176,20 +176,20 @@
             Columns="Auto,*,Auto"
             Rows="Auto,*,Auto">
             <Grid
-                Grid.Row="{Binding RowIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
+                Grid.Row="{Binding RowIndex, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                Grid.Column="{Binding ColumnIndex, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <atc:AutoGreyableImage
-                    Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                    Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                    IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}"
-                    Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=baseControls:ImageButton}}">
+                    Width="{Binding ImageWidth, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                    Height="{Binding ImageHeight, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                    IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                    Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}">
                     <atc:AutoGreyableImage.Margin>
                         <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
-                            <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                            <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
-                            <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=baseControls:ImageButton}" />
+                            <Binding Path="ImageLocation" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                            <Binding Path="ImageContentSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
+                            <Binding Path="ImageBorderSpacing" RelativeSource="{RelativeSource AncestorType=buttonControls:ImageButton}" />
                         </MultiBinding>
                     </atc:AutoGreyableImage.Margin>
                 </atc:AutoGreyableImage>
@@ -216,7 +216,7 @@
     </ControlTemplate>
 
     <!--  Chromeless  -->
-    <Style x:Key="AtcApps.Styles.ImageButton.Chromeless" TargetType="{x:Type baseControls:ImageButton}">
+    <Style x:Key="AtcApps.Styles.ImageButton.Chromeless" TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Transparent}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="ImageHeight" Value="16" />
@@ -231,7 +231,7 @@
     <Style
         x:Key="AtcApps.Styles.ImageButton.Chromeless.Small"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton.Chromeless}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -239,25 +239,25 @@
     <Style
         x:Key="ImageButtonChromeless"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton.Chromeless}"
-        TargetType="{x:Type baseControls:ImageButton}" />
+        TargetType="{x:Type buttonControls:ImageButton}" />
 
     <Style
         x:Key="ImageButtonChromeless.Small"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton.Chromeless.Small}"
-        TargetType="{x:Type baseControls:ImageButton}" />
+        TargetType="{x:Type buttonControls:ImageButton}" />
 
     <!--  Bootstrap  -->
     <Style
         x:Key="ImageButtonDefault"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
     </Style>
 
     <Style
         x:Key="ImageButtonDefault.Small"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -265,7 +265,7 @@
     <Style
         x:Key="ImageButtonDefault.Large"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -276,14 +276,14 @@
     <Style
         x:Key="ImageButtonDefault.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
     </Style>
 
     <Style
         x:Key="ImageButtonDefault.Outline.Small"
         BasedOn="{StaticResource ImageButtonDefault.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -291,7 +291,7 @@
     <Style
         x:Key="ImageButtonDefault.Outline.Large"
         BasedOn="{StaticResource ImageButtonDefault.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -302,7 +302,7 @@
     <Style
         x:Key="ImageButtonPrimary"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
@@ -317,7 +317,7 @@
     <Style
         x:Key="ImageButtonPrimary.Small"
         BasedOn="{StaticResource ImageButtonPrimary}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -325,7 +325,7 @@
     <Style
         x:Key="ImageButtonPrimary.Large"
         BasedOn="{StaticResource ImageButtonPrimary}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -336,7 +336,7 @@
     <Style
         x:Key="ImageButtonPrimary.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
@@ -351,7 +351,7 @@
     <Style
         x:Key="ImageButtonPrimary.Outline.Small"
         BasedOn="{StaticResource ImageButtonPrimary.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -359,7 +359,7 @@
     <Style
         x:Key="ImageButtonPrimary.Outline.Large"
         BasedOn="{StaticResource ImageButtonPrimary.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -370,7 +370,7 @@
     <Style
         x:Key="ImageButtonSecondary"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
@@ -385,7 +385,7 @@
     <Style
         x:Key="ImageButtonSecondary.Small"
         BasedOn="{StaticResource ImageButtonSecondary}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -393,7 +393,7 @@
     <Style
         x:Key="ImageButtonSecondary.Large"
         BasedOn="{StaticResource ImageButtonSecondary}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -404,7 +404,7 @@
     <Style
         x:Key="ImageButtonSecondary.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
@@ -419,7 +419,7 @@
     <Style
         x:Key="ImageButtonSecondary.Outline.Small"
         BasedOn="{StaticResource ImageButtonSecondary.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -427,7 +427,7 @@
     <Style
         x:Key="ImageButtonSecondary.Outline.Large"
         BasedOn="{StaticResource ImageButtonSecondary.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -438,7 +438,7 @@
     <Style
         x:Key="ImageButtonSuccess"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
@@ -453,7 +453,7 @@
     <Style
         x:Key="ImageButtonSuccess.Small"
         BasedOn="{StaticResource ImageButtonSuccess}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -461,7 +461,7 @@
     <Style
         x:Key="ImageButtonSuccess.Large"
         BasedOn="{StaticResource ImageButtonSuccess}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -472,7 +472,7 @@
     <Style
         x:Key="ImageButtonSuccess.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
@@ -487,7 +487,7 @@
     <Style
         x:Key="ImageButtonSuccess.Outline.Small"
         BasedOn="{StaticResource ImageButtonSuccess.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -495,7 +495,7 @@
     <Style
         x:Key="ImageButtonSuccess.Outline.Large"
         BasedOn="{StaticResource ImageButtonSuccess.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -506,7 +506,7 @@
     <Style
         x:Key="ImageButtonDanger"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
@@ -521,7 +521,7 @@
     <Style
         x:Key="ImageButtonDanger.Small"
         BasedOn="{StaticResource ImageButtonDanger}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -529,7 +529,7 @@
     <Style
         x:Key="ImageButtonDanger.Large"
         BasedOn="{StaticResource ImageButtonDanger}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -540,7 +540,7 @@
     <Style
         x:Key="ImageButtonDanger.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
@@ -555,7 +555,7 @@
     <Style
         x:Key="ImageButtonDanger.Outline.Small"
         BasedOn="{StaticResource ImageButtonDanger.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -563,7 +563,7 @@
     <Style
         x:Key="ImageButtonDanger.Outline.Large"
         BasedOn="{StaticResource ImageButtonDanger.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -574,7 +574,7 @@
     <Style
         x:Key="ImageButtonWarning"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
@@ -589,7 +589,7 @@
     <Style
         x:Key="ImageButtonWarning.Small"
         BasedOn="{StaticResource ImageButtonWarning}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -597,7 +597,7 @@
     <Style
         x:Key="ImageButtonWarning.Large"
         BasedOn="{StaticResource ImageButtonWarning}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -608,7 +608,7 @@
     <Style
         x:Key="ImageButtonWarning.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
@@ -623,7 +623,7 @@
     <Style
         x:Key="ImageButtonWarning.Outline.Small"
         BasedOn="{StaticResource ImageButtonWarning.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -631,7 +631,7 @@
     <Style
         x:Key="ImageButtonWarning.Outline.Large"
         BasedOn="{StaticResource ImageButtonWarning.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -642,7 +642,7 @@
     <Style
         x:Key="ImageButtonInfo"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
@@ -657,7 +657,7 @@
     <Style
         x:Key="ImageButtonInfo.Small"
         BasedOn="{StaticResource ImageButtonInfo}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -665,7 +665,7 @@
     <Style
         x:Key="ImageButtonInfo.Large"
         BasedOn="{StaticResource ImageButtonInfo}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
@@ -676,7 +676,7 @@
     <Style
         x:Key="ImageButtonInfo.Outline"
         BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
@@ -691,7 +691,7 @@
     <Style
         x:Key="ImageButtonInfo.Outline.Small"
         BasedOn="{StaticResource ImageButtonInfo.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="MinHeight" Value="18" />
         <Setter Property="Padding" Value="2,0" />
     </Style>
@@ -699,7 +699,7 @@
     <Style
         x:Key="ImageButtonInfo.Outline.Large"
         BasedOn="{StaticResource ImageButtonInfo.Outline}"
-        TargetType="{x:Type baseControls:ImageButton}">
+        TargetType="{x:Type buttonControls:ImageButton}">
         <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="ImageHeight" Value="32" />
