@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfControls.BaseControls;
+namespace Atc.Wpf.Sample.SamplesWpfControls.ButtonControls;
 
 public partial class ImageButtonView
 {

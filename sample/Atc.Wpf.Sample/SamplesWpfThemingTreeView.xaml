@@ -29,10 +29,6 @@
             Header="ImageButton"
             IsExpanded="True"
             SamplePath="InputButton.ImageButtonView" />
-        <sample:SampleTreeViewItem
-            Header="ImageToggledButton"
-            IsExpanded="True"
-            SamplePath="InputButton.ImageToggledButton" />
         <TreeViewItem
             Header="ToggleButton"
             IsEnabled="False"

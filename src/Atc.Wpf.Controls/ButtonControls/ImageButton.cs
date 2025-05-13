@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.BaseControls;
+namespace Atc.Wpf.Controls.ButtonControls;
 
 public partial class ImageButton : Button
 {
