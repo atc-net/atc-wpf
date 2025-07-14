@@ -30,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.552" />
-    <PackageReference Include="ControlzEx" version="7.0.0" />
+    <PackageReference Include="Atc" Version="2.0.555" />
+    <PackageReference Include="ControlzEx" version="7.0.1" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
     <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha0167" PrivateAssets="all" IncludeAssets="build" />-->
