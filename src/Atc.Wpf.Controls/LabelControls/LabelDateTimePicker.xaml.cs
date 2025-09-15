@@ -4,212 +4,67 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelDateTimePicker : ILabelDateTimePicker
 {
-    public static readonly DependencyProperty DisplayDateProperty = DependencyProperty.Register(
-        nameof(DisplayDate),
-        typeof(DateTime),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: DateTime.Now));
+    [DependencyProperty(DefaultValue = "DateTime.Now")]
+    private DateTime displayDate;
 
-    public DateTime DisplayDate
-    {
-        get => (DateTime)GetValue(DisplayDateProperty);
-        set => SetValue(DisplayDateProperty, value);
-    }
+    [DependencyProperty]
+    private DateTime? displayDateStart;
 
-    public static readonly DependencyProperty DisplayDateStartProperty = DependencyProperty.Register(
-        nameof(DisplayDateStart),
-        typeof(DateTime?),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(DateTime?)));
+    [DependencyProperty]
+    private DateTime? displayDateEnd;
 
-    public DateTime? DisplayDateStart
-    {
-        get => (DateTime?)GetValue(DisplayDateStartProperty);
-        set => SetValue(DisplayDateStartProperty, value);
-    }
+    [DependencyProperty(DefaultValue = DayOfWeek.Monday)]
+    private DayOfWeek firstDayOfWeek;
 
-    public static readonly DependencyProperty DisplayDateEndProperty = DependencyProperty.Register(
-        nameof(DisplayDateEnd),
-        typeof(DateTime?),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(DateTime?)));
+    [DependencyProperty(DefaultValue = true)]
+    private bool isTodayHighlighted;
 
-    public DateTime? DisplayDateEnd
-    {
-        get => (DateTime?)GetValue(DisplayDateEndProperty);
-        set => SetValue(DisplayDateEndProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectedDateChanged))]
+    private DateTime? selectedDate;
 
-    public static readonly DependencyProperty FirstDayOfWeekProperty = DependencyProperty.Register(
-        nameof(FirstDayOfWeek),
-        typeof(DayOfWeek),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: DayOfWeek.Monday));
+    [DependencyProperty(DefaultValue = DatePickerFormat.Short)]
+    private DatePickerFormat selectedDateFormat;
 
-    public DayOfWeek FirstDayOfWeek
-    {
-        get => (DayOfWeek)GetValue(FirstDayOfWeekProperty);
-        set => SetValue(FirstDayOfWeekProperty, value);
-    }
+    [DependencyProperty]
+    private CultureInfo? customCulture;
 
-    public static readonly DependencyProperty IsTodayHighlightedProperty = DependencyProperty.Register(
-        nameof(IsTodayHighlighted),
-        typeof(bool),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: true));
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnTextLostFocus),
+        CoerceValueCallback = nameof(CoerceText),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string textDate;
 
-    public bool IsTodayHighlighted
-    {
-        get => (bool)GetValue(IsTodayHighlightedProperty);
-        set => SetValue(IsTodayHighlightedProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnTextLostFocus),
+        CoerceValueCallback = nameof(CoerceText),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string textTime;
 
-    public static readonly DependencyProperty SelectedDateProperty = DependencyProperty.Register(
-        nameof(SelectedDate),
-        typeof(DateTime?),
-        typeof(LabelDateTimePicker),
-        new FrameworkPropertyMetadata(
-            default(DateTime?),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectedDateChanged));
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkDateText;
 
-    public DateTime? SelectedDate
-    {
-        get => (DateTime?)GetValue(SelectedDateProperty);
-        set => SetValue(SelectedDateProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkTimeText;
 
-    public static readonly DependencyProperty SelectedDateFormatProperty = DependencyProperty.Register(
-        nameof(SelectedDateFormat),
-        typeof(DatePickerFormat),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: DatePickerFormat.Short));
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public DatePickerFormat SelectedDateFormat
-    {
-        get => (DatePickerFormat)GetValue(SelectedDateFormatProperty);
-        set => SetValue(SelectedDateFormatProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
 
-    public static readonly DependencyProperty CustomCultureProperty = DependencyProperty.Register(
-        nameof(CustomCulture),
-        typeof(CultureInfo),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(CultureInfo?)));
+    [DependencyProperty(DefaultValue = false)]
+    private bool openCalender;
 
-    public CultureInfo? CustomCulture
-    {
-        get => (CultureInfo?)GetValue(CustomCultureProperty);
-        set => SetValue(CustomCultureProperty, value);
-    }
-
-    public static readonly DependencyProperty TextDateProperty = DependencyProperty.Register(
-        nameof(TextDate),
-        typeof(string),
-        typeof(LabelDateTimePicker),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextLostFocus,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public string TextDate
-    {
-        get => (string)GetValue(TextDateProperty);
-        set => SetValue(TextDateProperty, value);
-    }
-
-    public static readonly DependencyProperty TextTimeProperty = DependencyProperty.Register(
-        nameof(TextTime),
-        typeof(string),
-        typeof(LabelDateTimePicker),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextLostFocus,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public string TextTime
-    {
-        get => (string)GetValue(TextTimeProperty);
-        set => SetValue(TextTimeProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTimeTextProperty = DependencyProperty.Register(
-        nameof(WatermarkTimeText),
-        typeof(string),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string WatermarkTimeText
-    {
-        get => (string)GetValue(WatermarkTimeTextProperty);
-        set => SetValue(WatermarkTimeTextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(TextAlignment)));
-
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(default(TextTrimming)));
-
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
-
-    public static readonly DependencyProperty OpenCalenderProperty = DependencyProperty.Register(
-        nameof(OpenCalender),
-        typeof(bool),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool OpenCalender
-    {
-        get => (bool)GetValue(OpenCalenderProperty);
-        set => SetValue(OpenCalenderProperty, value);
-    }
-
-    public static readonly DependencyProperty OpenClockProperty = DependencyProperty.Register(
-        nameof(OpenClock),
-        typeof(bool),
-        typeof(LabelDateTimePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool OpenClock
-    {
-        get => (bool)GetValue(OpenClockProperty);
-        set => SetValue(OpenClockProperty, value);
-    }
+    [DependencyProperty(DefaultValue = false)]
+    private bool openClock;
 
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 
@@ -565,12 +420,12 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     private void SetDefaultWatermarkIfNeeded(
         CultureInfo cultureInfo)
     {
-        if (string.IsNullOrEmpty(WatermarkText) ||
-            WatermarkText.Contains('/', StringComparison.Ordinal) ||
-            WatermarkText.Contains('.', StringComparison.Ordinal) ||
-            WatermarkText.Contains(',', StringComparison.Ordinal))
+        if (string.IsNullOrEmpty(WatermarkDateText) ||
+            WatermarkDateText.Contains('/', StringComparison.Ordinal) ||
+            WatermarkDateText.Contains('.', StringComparison.Ordinal) ||
+            WatermarkDateText.Contains(',', StringComparison.Ordinal))
         {
-            WatermarkText = SelectedDateFormat == DatePickerFormat.Short
+            WatermarkDateText = SelectedDateFormat == DatePickerFormat.Short
                 ? cultureInfo.DateTimeFormat.ShortDatePattern
                 : cultureInfo.DateTimeFormat.LongDatePattern;
         }

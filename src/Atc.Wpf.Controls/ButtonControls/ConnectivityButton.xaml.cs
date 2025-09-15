@@ -5,7 +5,7 @@ public partial class ConnectivityButton
 {
     public event RoutedEventHandler? IsConnectedChanged;
 
-    [DependencyProperty(DefaultValue = null)]
+    [DependencyProperty]
     private ImageLocation? imageLocation;
 
     [DependencyProperty(DefaultValue = 16)]

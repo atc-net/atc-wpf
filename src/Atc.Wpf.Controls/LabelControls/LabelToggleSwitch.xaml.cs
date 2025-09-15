@@ -2,62 +2,24 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelToggleSwitch : ILabelToggleSwitch
 {
-    public static readonly DependencyProperty ContentDirectionProperty = DependencyProperty.Register(
-        nameof(ContentDirection),
-        typeof(FlowDirection),
-        typeof(LabelToggleSwitch),
-        new PropertyMetadata(FlowDirection.RightToLeft));
+    [DependencyProperty(DefaultValue = FlowDirection.RightToLeft)]
+    private FlowDirection contentDirection;
 
-    public FlowDirection ContentDirection
-    {
-        get => (FlowDirection)GetValue(ContentDirectionProperty);
-        set => SetValue(ContentDirectionProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "Off",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private string offText;
 
-    public static readonly DependencyProperty OffTextProperty = DependencyProperty.Register(
-        nameof(OffText),
-        typeof(string),
-        typeof(LabelToggleSwitch),
-        new FrameworkPropertyMetadata(
-            "Off",
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null));
+    [DependencyProperty(
+        DefaultValue = "On",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private string onText;
 
-    public string OffText
-    {
-        get => (string)GetValue(OffTextProperty);
-        set => SetValue(OffTextProperty, value);
-    }
-
-    public static readonly DependencyProperty OnTextProperty = DependencyProperty.Register(
-        nameof(OnText),
-        typeof(string),
-        typeof(LabelToggleSwitch),
-        new FrameworkPropertyMetadata(
-            "On",
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            propertyChangedCallback: null));
-
-    public string OnText
-    {
-        get => (string)GetValue(OnTextProperty);
-        set => SetValue(OnTextProperty, value);
-    }
-
-    public static readonly DependencyProperty IsOnProperty = DependencyProperty.Register(
-        nameof(IsOn),
-        typeof(bool),
-        typeof(LabelToggleSwitch),
-        new FrameworkPropertyMetadata(
-            defaultValue: false,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnIsOnChanged));
-
-    public bool IsOn
-    {
-        get => (bool)GetValue(IsOnProperty);
-        set => SetValue(IsOnProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = false,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnIsOnChanged))]
+    private bool isOn;
 
     public event EventHandler<ValueChangedEventArgs<bool>>? IsOnChanged;
 

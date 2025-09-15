@@ -1,185 +1,61 @@
 // ReSharper disable ConvertIfStatementToSwitchStatement
 // ReSharper disable InvertIf
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelDatePicker : ILabelDatePicker
 {
-    public static readonly DependencyProperty DisplayDateProperty = DependencyProperty.Register(
-        nameof(DisplayDate),
-        typeof(DateTime),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(defaultValue: DateTime.Now));
-
-    public DateTime DisplayDate
-    {
-        get => (DateTime)GetValue(DisplayDateProperty);
-        set => SetValue(DisplayDateProperty, value);
-    }
-
-    public static readonly DependencyProperty DisplayDateStartProperty = DependencyProperty.Register(
-        nameof(DisplayDateStart),
-        typeof(DateTime?),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(default(DateTime?)));
-
-    public DateTime? DisplayDateStart
-    {
-        get => (DateTime?)GetValue(DisplayDateStartProperty);
-        set => SetValue(DisplayDateStartProperty, value);
-    }
-
-    public static readonly DependencyProperty DisplayDateEndProperty = DependencyProperty.Register(
-        nameof(DisplayDateEnd),
-        typeof(DateTime?),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(default(DateTime?)));
-
-    public DateTime? DisplayDateEnd
-    {
-        get => (DateTime?)GetValue(DisplayDateEndProperty);
-        set => SetValue(DisplayDateEndProperty, value);
-    }
-
-    public static readonly DependencyProperty FirstDayOfWeekProperty = DependencyProperty.Register(
-        nameof(FirstDayOfWeek),
-        typeof(DayOfWeek),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(defaultValue: DayOfWeek.Monday));
-
-    public DayOfWeek FirstDayOfWeek
-    {
-        get => (DayOfWeek)GetValue(FirstDayOfWeekProperty);
-        set => SetValue(FirstDayOfWeekProperty, value);
-    }
-
-    public static readonly DependencyProperty IsTodayHighlightedProperty = DependencyProperty.Register(
-        nameof(IsTodayHighlighted),
-        typeof(bool),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool IsTodayHighlighted
-    {
-        get => (bool)GetValue(IsTodayHighlightedProperty);
-        set => SetValue(IsTodayHighlightedProperty, value);
-    }
-
-    public static readonly DependencyProperty SelectedDateProperty = DependencyProperty.Register(
-        nameof(SelectedDate),
-        typeof(DateTime?),
-        typeof(LabelDatePicker),
-        new FrameworkPropertyMetadata(
-            default(DateTime?),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectedDateChanged));
-
-    public DateTime? SelectedDate
-    {
-        get => (DateTime?)GetValue(SelectedDateProperty);
-        set => SetValue(SelectedDateProperty, value);
-    }
-
-    public static readonly DependencyProperty SelectedDateFormatProperty = DependencyProperty.Register(
-        nameof(SelectedDateFormat),
-        typeof(DatePickerFormat),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(defaultValue: DatePickerFormat.Short));
-
-    public DatePickerFormat SelectedDateFormat
-    {
-        get => (DatePickerFormat)GetValue(SelectedDateFormatProperty);
-        set => SetValue(SelectedDateFormatProperty, value);
-    }
-
-    public static readonly DependencyProperty CustomCultureProperty = DependencyProperty.Register(
-        nameof(CustomCulture),
-        typeof(CultureInfo),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(default(CultureInfo?)));
-
-    public CultureInfo? CustomCulture
-    {
-        get => (CultureInfo?)GetValue(CustomCultureProperty);
-        set => SetValue(CustomCultureProperty, value);
-    }
-
-    public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(TextChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<string>),
-        typeof(LabelDatePicker));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
+    private static readonly RoutedEvent textChanged;
 
-    public event RoutedPropertyChangedEventHandler<string> TextChanged
-    {
-        add => AddHandler(TextChangedEvent, value);
-        remove => RemoveHandler(TextChangedEvent, value);
-    }
+    [DependencyProperty(DefaultValue = "DateTime.Now")]
+    private DateTime displayDate;
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text),
-        typeof(string),
-        typeof(LabelDatePicker),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextLostFocus,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
+    [DependencyProperty]
+    private DateTime? displayDateStart;
 
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
+    [DependencyProperty]
+    private DateTime? displayDateEnd;
 
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(defaultValue: string.Empty));
+    [DependencyProperty(DefaultValue = DayOfWeek.Monday)]
+    private DayOfWeek firstDayOfWeek;
 
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool isTodayHighlighted;
 
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(default(TextAlignment)));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectedDateChanged))]
+    private DateTime? selectedDate;
 
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
+    [DependencyProperty(DefaultValue = DatePickerFormat.Short)]
+    private DatePickerFormat selectedDateFormat;
 
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(default(TextTrimming)));
+    [DependencyProperty]
+    private CultureInfo? customCulture;
 
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnTextLostFocus),
+        CoerceValueCallback = nameof(CoerceText),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string text;
 
-    public static readonly DependencyProperty OpenCalenderProperty = DependencyProperty.Register(
-        nameof(OpenCalender),
-        typeof(bool),
-        typeof(LabelDatePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public bool OpenCalender
-    {
-        get => (bool)GetValue(OpenCalenderProperty);
-        set => SetValue(OpenCalenderProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
+
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
+
+    [DependencyProperty(DefaultValue = false)]
+    private bool openCalender;
 
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 

@@ -37,7 +37,7 @@
                 atc:TextBoxHelper.HasValidationError="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText, Converter={x:Static atcValueConverters:StringNullOrEmptyToInverseBoolValueConverter.Instance}}"
                 atc:TextBoxHelper.ShowToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=HideAreas, Converter={x:Static valueConverters:LabelControlHideAreasToShowToolTipValueConverter.Instance}}"
                 atc:TextBoxHelper.ToolTipText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=ValidationText}"
-                atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkText}"
+                atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkDateText}"
                 atc:TextBoxHelper.WatermarkAlignment="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkAlignment}"
                 atc:TextBoxHelper.WatermarkTrimming="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDateTimePicker}}, Path=WatermarkTrimming}"
                 KeyDown="OnDateTextKeyDown"

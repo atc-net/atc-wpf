@@ -7,99 +7,38 @@ namespace Atc.Wpf.Controls.Progressing;
 [TemplateVisualState(Name = Internal.VisualStates.StateHidden, GroupName = Internal.VisualStates.GroupVisibility)]
 [StyleTypedProperty(Property = "OverlayStyle", StyleTargetType = typeof(Rectangle))]
 [StyleTypedProperty(Property = "ProgressBarStyle", StyleTargetType = typeof(ProgressBar))]
-public class BusyOverlay : ContentControl
+public partial class BusyOverlay : ContentControl
 {
     private readonly DispatcherTimer displayAfterTimer = new();
 
-    public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
-        nameof(IsBusy),
-        typeof(bool),
-        typeof(BusyOverlay),
-        new PropertyMetadata(
-            defaultValue: BooleanBoxes.FalseBox,
-            OnIsBusyChanged));
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsBusyChanged))]
+    private bool isBusy;
 
-    public bool IsBusy
-    {
-        get => (bool)GetValue(IsBusyProperty);
-        set => SetValue(IsBusyProperty, value);
-    }
+    [DependencyProperty]
+    private object? busyContent;
 
-    public static readonly DependencyProperty BusyContentProperty = DependencyProperty.Register(
-        nameof(BusyContent),
-        typeof(object),
-        typeof(BusyOverlay),
-        new PropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty]
+    private DataTemplate? busyContentTemplate;
 
-    public object BusyContent
-    {
-        get => GetValue(BusyContentProperty);
-        set => SetValue(BusyContentProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "TimeSpan.FromSeconds(0.1)")]
+    private TimeSpan displayAfter;
 
-    public static readonly DependencyProperty BusyContentTemplateProperty = DependencyProperty.Register(
-        nameof(BusyContentTemplate),
-        typeof(DataTemplate),
-        typeof(BusyOverlay),
-        new PropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty]
+    private Control? focusAfterBusy;
 
-    public DataTemplate BusyContentTemplate
-    {
-        get => (DataTemplate)GetValue(BusyContentTemplateProperty);
-        set => SetValue(BusyContentTemplateProperty, value);
-    }
+    [DependencyProperty]
+    private Style? overlayStyle;
 
-    public static readonly DependencyProperty DisplayAfterProperty = DependencyProperty.Register(
-        nameof(DisplayAfter),
-        typeof(TimeSpan),
-        typeof(BusyOverlay),
-        new PropertyMetadata(TimeSpan.FromSeconds(0.1)));
-
-    public TimeSpan DisplayAfter
-    {
-        get => (TimeSpan)GetValue(DisplayAfterProperty);
-        set => SetValue(DisplayAfterProperty, value);
-    }
-
-    public static readonly DependencyProperty FocusAfterBusyProperty = DependencyProperty.Register(
-        nameof(FocusAfterBusy),
-        typeof(Control),
-        typeof(BusyOverlay),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    public Control FocusAfterBusy
-    {
-        get => (Control)GetValue(FocusAfterBusyProperty);
-        set => SetValue(FocusAfterBusyProperty, value);
-    }
-
-    public static readonly DependencyProperty OverlayStyleProperty = DependencyProperty.Register(
-        nameof(OverlayStyle),
-        typeof(Style),
-        typeof(BusyOverlay),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    public Style OverlayStyle
-    {
-        get => (Style)GetValue(OverlayStyleProperty);
-        set => SetValue(OverlayStyleProperty, value);
-    }
-
-    public static readonly DependencyProperty ProgressBarStyleProperty = DependencyProperty.Register(
-        nameof(ProgressBarStyle),
-        typeof(Style),
-        typeof(BusyOverlay),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    public Style ProgressBarStyle
-    {
-        get => (Style)GetValue(ProgressBarStyleProperty);
-        set => SetValue(ProgressBarStyleProperty, value);
-    }
+    [DependencyProperty]
+    private Style? progressBarStyle;
 
     static BusyOverlay()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(BusyOverlay), new FrameworkPropertyMetadata(typeof(BusyOverlay)));
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(BusyOverlay),
+            new FrameworkPropertyMetadata(typeof(BusyOverlay)));
     }
 
     public BusyOverlay()

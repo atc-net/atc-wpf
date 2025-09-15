@@ -1,32 +1,14 @@
 namespace Atc.Wpf.Controls.LabelControls;
 
-public class LabelIntegerNumberControl : LabelNumberControl, ILabelIntegerNumberControl
+public partial class LabelIntegerNumberControl : LabelNumberControl, ILabelIntegerNumberControl
 {
-    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-        nameof(Maximum),
-        typeof(int),
-        typeof(LabelIntegerNumberControl),
-        new FrameworkPropertyMetadata(
-            defaultValue: int.MaxValue,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+    [DependencyProperty(
+        DefaultValue = PropertyDefaultValueConstants.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private int maximum;
 
-    public int Maximum
-    {
-        get => (int)GetValue(MaximumProperty);
-        set => SetValue(MaximumProperty, value);
-    }
-
-    public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-        nameof(Minimum),
-        typeof(int),
-        typeof(LabelIntegerNumberControl),
-        new FrameworkPropertyMetadata(
-            defaultValue: int.MinValue,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public int Minimum
-    {
-        get => (int)GetValue(MinimumProperty);
-        set => SetValue(MinimumProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = PropertyDefaultValueConstants.MinValue,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private int minimum;
 }
