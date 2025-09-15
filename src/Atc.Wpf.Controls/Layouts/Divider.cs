@@ -1,101 +1,31 @@
+// ReSharper disable UseCollectionExpression
+// ReSharper disable UnusedMember.Local
 namespace Atc.Wpf.Controls.Layouts;
 
 [ContentProperty(nameof(Content))]
-public sealed class Divider : Control
+public sealed partial class Divider : Control
 {
-    public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(
-        nameof(Content),
-        typeof(object),
-        typeof(Divider),
-        new PropertyMetadata(default(object)));
+    [DependencyProperty]
+    private object? content;
 
-    public object Content
-    {
-        get => GetValue(ContentProperty);
-        set => SetValue(ContentProperty, value);
-    }
+    [DependencyProperty(DefaultValue = default(Orientation))]
+    private Orientation orientation;
 
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        nameof(Orientation),
-        typeof(Orientation),
-        typeof(Divider),
-        new PropertyMetadata(default(Orientation)));
+    [DependencyProperty]
+    private DataTemplate? contentTemplate;
 
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
+    [DependencyProperty]
+    private string? contentStringFormat;
 
-    public static readonly DependencyProperty ContentTemplateProperty = DependencyProperty.Register(
-        nameof(ContentTemplate),
-        typeof(DataTemplate),
-        typeof(Divider),
-        new PropertyMetadata(default(DataTemplate)));
+    [DependencyProperty]
+    private DataTemplateSelector? contentTemplateSelector;
 
-    public DataTemplate ContentTemplate
-    {
-        get => (DataTemplate)GetValue(ContentTemplateProperty);
-        set => SetValue(ContentTemplateProperty, value);
-    }
+    [DependencyProperty]
+    private Brush? lineStroke;
 
-    public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register(
-        nameof(ContentStringFormat),
-        typeof(string),
-        typeof(Divider),
-        new PropertyMetadata(default(string)));
+    [DependencyProperty(DefaultValue = 1.0)]
+    private double lineStrokeThickness;
 
-    public string ContentStringFormat
-    {
-        get => (string)GetValue(ContentStringFormatProperty);
-        set => SetValue(ContentStringFormatProperty, value);
-    }
-
-    public static readonly DependencyProperty ContentTemplateSelectorProperty = DependencyProperty.Register(
-        nameof(ContentTemplateSelector),
-        typeof(DataTemplateSelector),
-        typeof(Divider),
-        new PropertyMetadata(default(DataTemplateSelector)));
-
-    public DataTemplateSelector ContentTemplateSelector
-    {
-        get => (DataTemplateSelector)GetValue(ContentTemplateSelectorProperty);
-        set => SetValue(ContentTemplateSelectorProperty, value);
-    }
-
-    public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
-        nameof(LineStroke),
-        typeof(Brush),
-        typeof(Divider),
-        new PropertyMetadata(default(Brush)));
-
-    public Brush LineStroke
-    {
-        get => (Brush)GetValue(LineStrokeProperty);
-        set => SetValue(LineStrokeProperty, value);
-    }
-
-    public static readonly DependencyProperty LineStrokeThicknessProperty = DependencyProperty.Register(
-        nameof(LineStrokeThickness),
-        typeof(double),
-        typeof(Divider),
-        new PropertyMetadata(1.0));
-
-    public double LineStrokeThickness
-    {
-        get => (double)GetValue(LineStrokeThicknessProperty);
-        set => SetValue(LineStrokeThicknessProperty, value);
-    }
-
-    public static readonly DependencyProperty LineStrokeDashArrayProperty = DependencyProperty.Register(
-        nameof(LineStrokeDashArray),
-        typeof(DoubleCollection),
-        typeof(Divider),
-        new PropertyMetadata(new DoubleCollection()));
-
-    public DoubleCollection LineStrokeDashArray
-    {
-        get => (DoubleCollection)GetValue(LineStrokeDashArrayProperty);
-        set => SetValue(LineStrokeDashArrayProperty, value);
-    }
+    [DependencyProperty(DefaultValue = $"new {nameof(DoubleCollection)}()")]
+    private DoubleCollection lineStrokeDashArray = new();
 }
