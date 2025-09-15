@@ -15,5 +15,5 @@ public static class ApplicationEventEntryFactory
     public static ApplicationEventEntry CreateError(
         string area,
         string message)
-        => new(LogCategoryType.Warning, area, message);
+        => new(LogCategoryType.Error, area, message);
 }
