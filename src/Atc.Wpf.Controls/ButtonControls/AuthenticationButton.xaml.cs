@@ -5,7 +5,7 @@ public partial class AuthenticationButton
 {
     public event RoutedEventHandler? IsAuthenticatedChanged;
 
-    [DependencyProperty(DefaultValue = null)]
+    [DependencyProperty]
     private ImageLocation? imageLocation;
 
     [DependencyProperty(DefaultValue = 16)]

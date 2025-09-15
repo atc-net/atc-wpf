@@ -2,88 +2,36 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelSlider : ILabelSlider
 {
-    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-        nameof(Maximum),
-        typeof(int),
-        typeof(LabelSlider),
-        new FrameworkPropertyMetadata(
-            defaultValue: 100,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+    [DependencyProperty(
+        DefaultValue = 100,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private int maximum;
 
-    public int Maximum
-    {
-        get => (int)GetValue(MaximumProperty);
-        set => SetValue(MaximumProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private int minimum;
 
-    public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-        nameof(Minimum),
-        typeof(int),
-        typeof(LabelSlider),
-        new FrameworkPropertyMetadata(
-            defaultValue: 0,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
+    [DependencyProperty(
+        DefaultValue = AutoToolTipPlacement.TopLeft,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private AutoToolTipPlacement autoToolTipPlacement;
 
-    public int Minimum
-    {
-        get => (int)GetValue(MinimumProperty);
-        set => SetValue(MinimumProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 5)]
+    private int tickFrequency;
 
-    public static readonly DependencyProperty AutoToolTipPlacementProperty = DependencyProperty.Register(
-        nameof(AutoToolTipPlacement),
-        typeof(AutoToolTipPlacement),
-        typeof(LabelSlider),
-        new PropertyMetadata(defaultValue: AutoToolTipPlacement.TopLeft));
+    [DependencyProperty(
+        DefaultValue = TickPlacement.BottomRight,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private TickPlacement tickPlacement;
 
-    public AutoToolTipPlacement AutoToolTipPlacement
-    {
-        get => (AutoToolTipPlacement)GetValue(AutoToolTipPlacementProperty);
-        set => SetValue(AutoToolTipPlacementProperty, value);
-    }
-
-    public static readonly DependencyProperty TickFrequencyProperty = DependencyProperty.Register(
-        nameof(TickFrequency),
-        typeof(int),
-        typeof(LabelSlider),
-        new PropertyMetadata(defaultValue: 5));
-
-    public int TickFrequency
-    {
-        get => (int)GetValue(TickFrequencyProperty);
-        set => SetValue(TickFrequencyProperty, value);
-    }
-
-    public static readonly DependencyProperty TickPlacementProperty = DependencyProperty.Register(
-        nameof(TickPlacement),
-        typeof(TickPlacement),
-        typeof(LabelSlider),
-        new PropertyMetadata(defaultValue: TickPlacement.BottomRight));
-
-    public TickPlacement TickPlacement
-    {
-        get => (TickPlacement)GetValue(TickPlacementProperty);
-        set => SetValue(TickPlacementProperty, value);
-    }
-
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(int),
-        typeof(LabelSlider),
-        new FrameworkPropertyMetadata(
-            default(int),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnValueChanged,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.PropertyChanged));
-
-    [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
-    public int Value
-    {
-        get => (int)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValueChanged),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged)]
+    private int value;
 
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueChanged;
 

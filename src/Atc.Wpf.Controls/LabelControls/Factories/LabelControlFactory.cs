@@ -525,7 +525,8 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             InputDataType = inputDataType,
             SelectedDate = value,
-            WatermarkText = watermarkText.NormalizePascalCase(),
+            WatermarkDateText = watermarkText.NormalizePascalCase(),
+            WatermarkTimeText = string.Empty,
         };
 
         if (minDateTime.HasValue)

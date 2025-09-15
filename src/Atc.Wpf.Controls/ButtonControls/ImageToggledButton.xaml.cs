@@ -4,7 +4,7 @@ public partial class ImageToggledButton
 {
     public event RoutedEventHandler? IsToggledChanged;
 
-    [DependencyProperty(DefaultValue = null)]
+    [DependencyProperty]
     private ImageLocation? imageLocation;
 
     [DependencyProperty(DefaultValue = 16)]

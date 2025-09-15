@@ -4,113 +4,32 @@ namespace Atc.Wpf.Controls.LabelControls;
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 public partial class LabelDirectoryPicker : ILabelDirectoryPicker
 {
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(DirectoryInfo),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(default(DirectoryInfo?)));
+    [DependencyProperty]
+    private DirectoryInfo? value;
 
-    public DirectoryInfo? Value
-    {
-        get => (DirectoryInfo?)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(DefaultValue = false)]
+    private bool showClearTextButton;
 
-    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
-        nameof(ShowClearTextButton),
-        typeof(bool),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = false)]
+    private bool allowOnlyExisting;
 
-    public bool ShowClearTextButton
-    {
-        get => (bool)GetValue(ShowClearTextButtonProperty);
-        set => SetValue(ShowClearTextButtonProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string defaultDirectory;
 
-    public static readonly DependencyProperty AllowOnlyExistingProperty = DependencyProperty.Register(
-        nameof(AllowOnlyExisting),
-        typeof(bool),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = "")]
+    private string initialDirectory;
 
-    public bool AllowOnlyExisting
-    {
-        get => (bool)GetValue(AllowOnlyExistingProperty);
-        set => SetValue(AllowOnlyExistingProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string rootDirectory;
 
-    public static readonly DependencyProperty DefaultDirectoryProperty = DependencyProperty.Register(
-        nameof(DefaultDirectory),
-        typeof(string),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(string.Empty));
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public string DefaultDirectory
-    {
-        get => (string)GetValue(DefaultDirectoryProperty);
-        set => SetValue(DefaultDirectoryProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public static readonly DependencyProperty InitialDirectoryProperty = DependencyProperty.Register(
-        nameof(InitialDirectory),
-        typeof(string),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(string.Empty));
-
-    public string InitialDirectory
-    {
-        get => (string)GetValue(InitialDirectoryProperty);
-        set => SetValue(InitialDirectoryProperty, value);
-    }
-
-    public static readonly DependencyProperty RootDirectoryProperty = DependencyProperty.Register(
-        nameof(RootDirectory),
-        typeof(string),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(string.Empty));
-
-    public string RootDirectory
-    {
-        get => (string)GetValue(RootDirectoryProperty);
-        set => SetValue(RootDirectoryProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(default(TextAlignment)));
-
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(LabelDirectoryPicker),
-        new PropertyMetadata(default(TextTrimming)));
-
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
 
     public event EventHandler<ValueChangedEventArgs<DirectoryInfo?>>? LostFocusValid;
 
@@ -123,7 +42,11 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
 
     public override bool IsValid()
     {
-        Validate(this, default!, raiseEvents: false);
+        Validate(
+            this,
+            new RoutedPropertyChangedEventArgs<DirectoryInfo?>(oldValue: null, newValue: Value),
+            raiseEvents: false);
+
         return string.IsNullOrEmpty(ValidationText);
     }
 

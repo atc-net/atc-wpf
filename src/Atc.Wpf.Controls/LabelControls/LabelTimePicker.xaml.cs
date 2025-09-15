@@ -1,111 +1,41 @@
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelTimePicker : ILabelTimePicker
 {
-    public static readonly DependencyProperty SelectedTimeProperty = DependencyProperty.Register(
-        nameof(SelectedTime),
-        typeof(DateTime?),
-        typeof(LabelTimePicker),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnSelectedTimeChanged));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnSelectedTimeChanged))]
+    private DateTime? selectedTime;
 
-    public DateTime? SelectedTime
-    {
-        get => (DateTime?)GetValue(SelectedTimeProperty);
-        set => SetValue(SelectedTimeProperty, value);
-    }
+    [DependencyProperty]
+    private CultureInfo? customCulture;
 
-    public static readonly DependencyProperty CustomCultureProperty = DependencyProperty.Register(
-        nameof(CustomCulture),
-        typeof(CultureInfo),
-        typeof(LabelTimePicker),
-        new PropertyMetadata(default(CultureInfo?)));
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnTextLostFocus),
+        CoerceValueCallback = nameof(CoerceText),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string text;
 
-    public CultureInfo? CustomCulture
-    {
-        get => (CultureInfo?)GetValue(CustomCultureProperty);
-        set => SetValue(CustomCultureProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(TextChanged),
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
+
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
+
+    [DependencyProperty]
+    private bool openClock;
+
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<string>),
-        typeof(LabelTimePicker));
-
-    public event RoutedPropertyChangedEventHandler<string> TextChanged
-    {
-        add => AddHandler(TextChangedEvent, value);
-        remove => RemoveHandler(TextChangedEvent, value);
-    }
-
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text),
-        typeof(string),
-        typeof(LabelTimePicker),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextLostFocus,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelTimePicker),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelTimePicker),
-        new PropertyMetadata(default(TextAlignment)));
-
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
-
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(LabelTimePicker),
-        new PropertyMetadata(default(TextTrimming)));
-
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
-
-    public static readonly DependencyProperty OpenClockProperty = DependencyProperty.Register(
-        nameof(OpenClock),
-        typeof(bool),
-        typeof(LabelTimePicker),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool OpenClock
-    {
-        get => (bool)GetValue(OpenClockProperty);
-        set => SetValue(OpenClockProperty, value);
-    }
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
+    private static readonly RoutedEvent textChanged;
 
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 

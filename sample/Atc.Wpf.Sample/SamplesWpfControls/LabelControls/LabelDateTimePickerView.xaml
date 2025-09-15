@@ -62,7 +62,7 @@
                             Orientation="Horizontal"
                             TextDate="8/25/2023"
                             TextTime="14:47"
-                            WatermarkText="Select a date" />
+                            WatermarkDateText="Select a date" />
 
                         <atc:LabelDateTimePicker
                             IsMandatory="True"
@@ -70,7 +70,7 @@
                             Orientation="Horizontal"
                             TextDate="8/25/2023"
                             TextTime="14:47"
-                            WatermarkText="Select a date" />
+                            WatermarkDateText="Select a date" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
@@ -87,7 +87,7 @@
                             SelectedDateFormat="Long"
                             TextDate="Friday, August 25, 2023"
                             TextTime="14:47"
-                            WatermarkText="Select a date" />
+                            WatermarkDateText="Select a date" />
 
                     </StackPanel>
                 </atc:GridEx>

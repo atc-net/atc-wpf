@@ -205,10 +205,17 @@ public partial class NumericBox : Control
 
     static NumericBox()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericBox), new FrameworkPropertyMetadata(typeof(NumericBox)));
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(NumericBox),
+            new FrameworkPropertyMetadata(typeof(NumericBox)));
 
-        VerticalContentAlignmentProperty.OverrideMetadata(typeof(NumericBox), new FrameworkPropertyMetadata(VerticalAlignment.Center));
-        HorizontalContentAlignmentProperty.OverrideMetadata(typeof(NumericBox), new FrameworkPropertyMetadata(HorizontalAlignment.Right));
+        VerticalContentAlignmentProperty.OverrideMetadata(
+            typeof(NumericBox),
+            new FrameworkPropertyMetadata(VerticalAlignment.Center));
+
+        HorizontalContentAlignmentProperty.OverrideMetadata(
+            typeof(NumericBox),
+            new FrameworkPropertyMetadata(HorizontalAlignment.Right));
 
         EventManager.RegisterClassHandler(typeof(NumericBox), GotFocusEvent, new RoutedEventHandler(OnGotFocus));
     }
