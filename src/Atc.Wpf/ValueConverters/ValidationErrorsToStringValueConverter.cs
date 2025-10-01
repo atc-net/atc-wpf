@@ -16,17 +16,17 @@ public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IV
     /// The object value to set on the property where the extension is applied.
     /// </returns>
     public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return new ValidationErrorsToStringValueConverter();
-    }
+        => new ValidationErrorsToStringValueConverter();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is ICollection<ValidationError> errors
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is ICollection<ValidationError> errors
             ? string.Join('\n', (from e in errors select e.ErrorContent as string).ToArray())
             : string.Empty;
-    }
 
     /// <inheritdoc />
     public object ConvertBack(

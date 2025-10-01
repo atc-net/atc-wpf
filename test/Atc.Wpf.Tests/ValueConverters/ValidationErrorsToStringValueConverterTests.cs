@@ -26,7 +26,7 @@ public sealed class ValidationErrorsToStringValueConverterTests
         {
             1 => inputSet1,
             2 => inputSet2,
-            _ => Array.Empty<KeyValuePair<string, string>>(),
+            _ => [],
         };
 
         foreach (var (key, value) in testData)

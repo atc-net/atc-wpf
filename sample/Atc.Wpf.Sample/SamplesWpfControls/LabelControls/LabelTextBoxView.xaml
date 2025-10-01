@@ -69,6 +69,15 @@
                             WatermarkText="Email address" />
 
                         <atc:LabelTextBox
+                            HideAreas="AsteriskAndInformation"
+                            IsMandatory="True"
+                            LabelText="Email"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            ValidationFormat="Email"
+                            WatermarkText="Email address" />
+
+                        <atc:LabelTextBox
                             x:Name="LtbFtp"
                             IsMandatory="True"
                             LabelText="Ftp(s) url"
@@ -103,13 +112,11 @@
                             WatermarkText="OpcTcp url" />
 
                         <atc:LabelTextBox
-                            HideAreas="All"
                             IsMandatory="True"
-                            LabelText="Email"
+                            LabelText="Regex [a-z0-9]"
                             Orientation="Horizontal"
-                            ShowClearTextButton="True"
-                            ValidationFormat="Email"
-                            WatermarkText="Email address" />
+                            RegexPattern="^[a-z0-9]+$"
+                            ShowClearTextButton="True" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">

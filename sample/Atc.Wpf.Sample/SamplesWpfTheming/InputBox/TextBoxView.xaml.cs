@@ -9,5 +9,5 @@ public partial class TextBoxView
         DataContext = this;
     }
 
-    public ICommand? ControlButtonCommand { get; }
+    public string MyPropertyString1 { get; set; } = string.Empty;
 }
