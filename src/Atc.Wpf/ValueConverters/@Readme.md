@@ -107,6 +107,7 @@ Or by the ValueConverter's Instance:
 |                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |
 |                           | ThicknessToDoubleValueConverter                          |                                         | DependencyProperty.UnsetValue           |
 | DateTimeOffset -> DateTime| UtcToLocalDateTimeValueConverter                         |                                         | Not supported                           |
+| Errors -> String          | ValidationErrorsToFirstValidationErrorContentValueConverter |                                      | Not supported                           |
 | Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |
 |                           | WindowResizeModeMinMaxButtonVisibilityMultiValueConverter|                                         |                                         |
 
