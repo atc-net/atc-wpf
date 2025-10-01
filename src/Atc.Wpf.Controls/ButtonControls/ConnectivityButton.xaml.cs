@@ -14,10 +14,10 @@ public partial class ConnectivityButton
     [DependencyProperty(DefaultValue = 16)]
     private int imageHeight;
 
-    [DependencyProperty(DefaultValue = 10d)]
+    [DependencyProperty(DefaultValue = 10)]
     private double imageContentSpacing;
 
-    [DependencyProperty(DefaultValue = 0d)]
+    [DependencyProperty(DefaultValue = 0)]
     private double imageBorderSpacing;
 
     [DependencyProperty(DefaultValue = false)]

@@ -2,7 +2,7 @@
 namespace Atc.Wpf.Controls.Progressing;
 
 [TemplatePart(Name = TemplateBorderName, Type = typeof(Border))]
-public sealed class LoadingIndicator : Control
+public sealed partial class LoadingIndicator : Control
 {
     internal const string TemplateBorderName = "PART_Border";
 
@@ -10,59 +10,23 @@ public sealed class LoadingIndicator : Control
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
     private Border? PART_Border;
 
-    public static readonly DependencyProperty CustomColorBrushProperty = DependencyProperty.Register(
-        nameof(CustomColorBrush),
-        typeof(Brush),
-        typeof(LoadingIndicator),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnCustomColorBrushChanged));
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnCustomColorBrushChanged))]
+    private Brush? customColorBrush;
 
-    public Brush CustomColorBrush
-    {
-        get => (Brush)GetValue(CustomColorBrushProperty);
-        set => SetValue(CustomColorBrushProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 1,
+        PropertyChangedCallback = nameof(OnSpeedRatioChanged))]
+    private double speedRatio;
 
-    public static readonly DependencyProperty SpeedRatioProperty = DependencyProperty.Register(
-        nameof(SpeedRatio),
-        typeof(double),
-        typeof(LoadingIndicator),
-        new PropertyMetadata(
-            defaultValue: 1d,
-            OnSpeedRatioChanged));
+    [DependencyProperty(
+        DefaultValue = true,
+        PropertyChangedCallback = nameof(OnIsActiveChanged))]
+    private bool isActive;
 
-    public double SpeedRatio
-    {
-        get => (double)GetValue(SpeedRatioProperty);
-        set => SetValue(SpeedRatioProperty, value);
-    }
-
-    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-        nameof(IsActive),
-        typeof(bool),
-        typeof(LoadingIndicator),
-        new PropertyMetadata(
-            defaultValue: true,
-            OnIsActiveChanged));
-
-    public bool IsActive
-    {
-        get => (bool)GetValue(IsActiveProperty);
-        set => SetValue(IsActiveProperty, value);
-    }
-
-    public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
-        nameof(Mode),
-        typeof(LoadingIndicatorType),
-        typeof(LoadingIndicator),
-        new PropertyMetadata(LoadingIndicatorType.ArcsRing));
-
-    public LoadingIndicatorType Mode
-    {
-        get => (LoadingIndicatorType)GetValue(ModeProperty);
-        set => SetValue(ModeProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = LoadingIndicatorType.ArcsRing)]
+    private LoadingIndicatorType mode;
 
     static LoadingIndicator()
     {

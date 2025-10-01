@@ -1,44 +1,28 @@
+// ReSharper disable AsyncVoidMethod
 namespace Atc.Wpf.Controls.Notifications;
 
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
-public sealed class ToastNotification : ContentControl
+public sealed partial class ToastNotification : ContentControl
 {
     private TimeSpan closingAnimationTime = TimeSpan.Zero;
 
-    public static readonly RoutedEvent NotificationCloseInvokedEvent = EventManager.RegisterRoutedEvent(
-        "NotificationCloseInvoked",
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(ToastNotification));
+        HandlerType = typeof(RoutedEventHandler))]
+    private static readonly RoutedEvent notificationCloseInvoked;
 
-    public static readonly RoutedEvent NotificationClosedEvent = EventManager.RegisterRoutedEvent(
-        "NotificationClosed",
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(ToastNotification));
+        HandlerType = typeof(RoutedEventHandler))]
+    private static readonly RoutedEvent notificationClosed;
 
-    public static readonly DependencyProperty CloseOnClickProperty = DependencyProperty.RegisterAttached(
-        "CloseOnClick",
-        typeof(bool),
-        typeof(ToastNotification),
-        new FrameworkPropertyMetadata(
-            defaultValue: false,
-            CloseOnClickChanged));
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(CloseOnClickChanged))]
+    private bool closeOnClick;
 
     public bool IsClosing { get; set; }
-
-    public event RoutedEventHandler NotificationCloseInvoked
-    {
-        add => AddHandler(NotificationCloseInvokedEvent, value);
-        remove => RemoveHandler(NotificationCloseInvokedEvent, value);
-    }
-
-    public event RoutedEventHandler NotificationClosed
-    {
-        add => AddHandler(NotificationClosedEvent, value);
-        remove => RemoveHandler(NotificationClosedEvent, value);
-    }
 
     static ToastNotification()
     {
@@ -46,15 +30,6 @@ public sealed class ToastNotification : ContentControl
             typeof(ToastNotification),
             new FrameworkPropertyMetadata(typeof(ToastNotification)));
     }
-
-    public static bool GetCloseOnClick(
-        DependencyObject obj)
-        => (bool)obj.GetValue(CloseOnClickProperty);
-
-    public static void SetCloseOnClick(
-        DependencyObject obj,
-        bool value)
-        => obj.SetValue(CloseOnClickProperty, value);
 
     public override void OnApplyTemplate()
     {

@@ -1,30 +1,17 @@
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.BaseControls;
 
 public partial class DecimalXyBox
 {
-    public static readonly RoutedEvent ValueXChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueXChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<decimal>),
-        typeof(DecimalXyBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<decimal>))]
+    private static readonly RoutedEvent valueXChanged;
 
-    public event RoutedPropertyChangedEventHandler<decimal> ValueXChanged
-    {
-        add => AddHandler(ValueXChangedEvent, value);
-        remove => RemoveHandler(ValueXChangedEvent, value);
-    }
-
-    public static readonly RoutedEvent ValueYChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueYChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<decimal>),
-        typeof(DecimalXyBox));
-
-    public event RoutedPropertyChangedEventHandler<decimal> ValueYChanged
-    {
-        add => AddHandler(ValueYChangedEvent, value);
-        remove => RemoveHandler(ValueYChangedEvent, value);
-    }
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<decimal>))]
+    private static readonly RoutedEvent valueYChanged;
 
     [DependencyProperty(DefaultValue = false)]
     private bool hideUpDownButtons;

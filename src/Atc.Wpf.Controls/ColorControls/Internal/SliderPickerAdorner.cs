@@ -1,48 +1,26 @@
 // ReSharper disable PossibleLossOfFraction
 namespace Atc.Wpf.Controls.ColorControls.Internal;
 
-internal class SliderPickerAdorner : Adorner
+internal partial class SliderPickerAdorner : Adorner
 {
-    private static readonly Pen Pen = new(Brushes.Black, 1);
-    private Brush brush = Brushes.Red;
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private double verticalPercent;
 
-    private static readonly DependencyProperty VerticalPercentProperty = DependencyProperty.Register(
-        nameof(VerticalPercent),
-        typeof(double),
-        typeof(SliderPickerAdorner),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender));
+    [DependencyProperty(
+        DefaultValue = nameof(Colors.Black),
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private Color color;
 
-    private static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-        nameof(Color),
-        typeof(Color),
-        typeof(SliderPickerAdorner),
-        new FrameworkPropertyMetadata(
-            Colors.Red,
-            FrameworkPropertyMetadataOptions.AffectsRender));
+    [DependencyProperty(
+        DefaultValue = nameof(Brushes.Red),
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private Brush brush;
 
     public SliderPickerAdorner(UIElement adornedElement)
         : base(adornedElement)
-    {
-        IsHitTestVisible = false;
-    }
-
-    public double VerticalPercent
-    {
-        get => (double)GetValue(VerticalPercentProperty);
-        set => SetValue(VerticalPercentProperty, value);
-    }
-
-    public Color Color
-    {
-        get => (Color)GetValue(ColorProperty);
-        set
-        {
-            SetValue(ColorProperty, value);
-            brush = new SolidColorBrush(value);
-        }
-    }
+        => IsHitTestVisible = false;
 
     public Rect ElementSize { get; set; }
 
@@ -80,7 +58,11 @@ internal class SliderPickerAdorner : Adorner
         transformGroup.Children.Add(new TranslateTransform(ElementSize.Width, 0));
         rightTri.Transform = transformGroup;
 
-        drawingContext.DrawGeometry(brush, Pen, triangleGeometry);
-        drawingContext.DrawGeometry(brush, Pen, rightTri);
+        var pen = new Pen(
+            new SolidColorBrush(Color),
+            1);
+
+        drawingContext.DrawGeometry(Brush, pen, triangleGeometry);
+        drawingContext.DrawGeometry(Brush, pen, rightTri);
     }
 }

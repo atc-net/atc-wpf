@@ -2,6 +2,24 @@ namespace Atc.Wpf.Controls.Viewers;
 
 public partial class JsonViewer
 {
+    [DependencyProperty(DefaultValue = true)]
+    private bool showActionAndInformationBar;
+
+    [DependencyProperty(DefaultValue = false)]
+    private bool suppressErrorMessages;
+
+    [DependencyProperty(DefaultValue = true)]
+    private bool startExpanded;
+
+    [DependencyProperty(PropertyChangedCallback = nameof(OnDataChanged))]
+    private string data;
+
+    [DependencyProperty(
+        DefaultValue = ThemeMode.Light,
+        PropertyChangedCallback = nameof(OnThemeModeChanged),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private ThemeMode themeMode;
+
     public JsonViewer()
     {
         InitializeComponent();
@@ -14,69 +32,6 @@ public partial class JsonViewer
         }
 
         ThemeManager.Current.ThemeChanged += OnThemeChanged;
-    }
-
-    public static readonly DependencyProperty ShowActionAndInformationBarProperty = DependencyProperty.Register(
-        nameof(ShowActionAndInformationBar),
-        typeof(bool),
-        typeof(JsonViewer),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool ShowActionAndInformationBar
-    {
-        get => (bool)GetValue(ShowActionAndInformationBarProperty);
-        set => SetValue(ShowActionAndInformationBarProperty, value);
-    }
-
-    public static readonly DependencyProperty SuppressErrorMessagesProperty = DependencyProperty.Register(
-        nameof(SuppressErrorMessages),
-        typeof(bool),
-        typeof(JsonViewer),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    public bool SuppressErrorMessages
-    {
-        get => (bool)GetValue(SuppressErrorMessagesProperty);
-        set => SetValue(SuppressErrorMessagesProperty, value);
-    }
-
-    public static readonly DependencyProperty StartExpandedProperty = DependencyProperty.Register(
-        nameof(StartExpanded),
-        typeof(bool),
-        typeof(JsonViewer),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool StartExpanded
-    {
-        get => (bool)GetValue(StartExpandedProperty);
-        set => SetValue(StartExpandedProperty, value);
-    }
-
-    public static readonly DependencyProperty DataProperty = DependencyProperty.Register(
-        nameof(Data),
-        typeof(string),
-        typeof(JsonViewer),
-        new PropertyMetadata(OnDataChanged));
-
-    public string Data
-    {
-        get => (string)GetValue(DataProperty);
-        set => SetValue(DataProperty, value);
-    }
-
-    public static readonly DependencyProperty ThemeModeProperty = DependencyProperty.Register(
-        nameof(ThemeMode),
-        typeof(ThemeMode),
-        typeof(JsonViewer),
-        new FrameworkPropertyMetadata(
-            ThemeMode.Light,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnThemeModeChanged));
-
-    public ThemeMode ThemeMode
-    {
-        get => (ThemeMode)GetValue(ThemeModeProperty);
-        set => SetValue(ThemeModeProperty, value);
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]

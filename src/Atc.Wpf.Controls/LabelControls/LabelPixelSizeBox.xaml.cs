@@ -2,65 +2,31 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelPixelSizeBox : ILabelPixelSizeBox
 {
-    public static readonly RoutedEvent ValueWidthChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueWidthChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<int>),
-        typeof(LabelPixelSizeBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
+    private static readonly RoutedEvent valueWidthChanged;
 
-    public event RoutedPropertyChangedEventHandler<int> ValueWidthChanged
-    {
-        add => AddHandler(ValueWidthChangedEvent, value);
-        remove => RemoveHandler(ValueWidthChangedEvent, value);
-    }
-
-    public static readonly RoutedEvent ValueHeightChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueHeightChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<int>),
-        typeof(LabelPixelSizeBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
+    private static readonly RoutedEvent valueHeightChanged;
 
-    public event RoutedPropertyChangedEventHandler<int> ValueHeightChanged
-    {
-        add => AddHandler(ValueHeightChangedEvent, value);
-        remove => RemoveHandler(ValueHeightChangedEvent, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        PropertyChangedCallback = nameof(OnValueWidthLostFocus),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private int valueWidth;
 
-    public static readonly DependencyProperty ValueWidthProperty = DependencyProperty.Register(
-        nameof(ValueWidth),
-        typeof(int),
-        typeof(LabelPixelSizeBox),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnValueWidthLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public int ValueWidth
-    {
-        get => (int)GetValue(ValueWidthProperty);
-        set => SetValue(ValueWidthProperty, value);
-    }
-
-    public static readonly DependencyProperty ValueHeightProperty = DependencyProperty.Register(
-        nameof(ValueHeight),
-        typeof(int),
-        typeof(LabelPixelSizeBox),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnValueHeightLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public int ValueHeight
-    {
-        get => (int)GetValue(ValueHeightProperty);
-        set => SetValue(ValueHeightProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        PropertyChangedCallback = nameof(OnValueHeightLostFocus),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private int valueHeight;
 
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 

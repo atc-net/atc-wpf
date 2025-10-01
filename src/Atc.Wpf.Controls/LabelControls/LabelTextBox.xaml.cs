@@ -1,174 +1,59 @@
+// ReSharper disable ConvertIfStatementToReturnStatement
+// ReSharper disable InconsistentNaming
 // ReSharper disable InvertIf
 // ReSharper disable RedundantJumpStatement
-// ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Controls.LabelControls;
 
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
 [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelTextBox : ILabelTextBox
 {
-    public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(TextChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<string>),
-        typeof(LabelTextBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
+    private static readonly RoutedEvent textChanged;
 
-    public event RoutedPropertyChangedEventHandler<string> TextChanged
-    {
-        add => AddHandler(TextChangedEvent, value);
-        remove => RemoveHandler(TextChangedEvent, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: string.Empty));
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
 
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(TextAlignment)));
+    [DependencyProperty(DefaultValue = 100)]
+    private uint maxLength;
 
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 0)]
+    private uint minLength;
 
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(LabelTextBox),
-        new PropertyMetadata(default(TextTrimming)));
+    [DependencyProperty(DefaultValue = true)]
+    private bool useDefaultNotAllowedCharacters;
 
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string charactersNotAllowed;
 
-    public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(
-        nameof(MaxLength),
-        typeof(uint),
-        typeof(LabelTextBox),
-        new PropertyMetadata(100U));
+    [DependencyProperty]
+    private string? regexPattern;
 
-    public uint MaxLength
-    {
-        get => (uint)GetValue(MaxLengthProperty);
-        set => SetValue(MaxLengthProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool showClearTextButton;
 
-    public static readonly DependencyProperty MinLengthProperty = DependencyProperty.Register(
-        nameof(MinLength),
-        typeof(uint),
-        typeof(LabelTextBox),
-        new PropertyMetadata(0U));
+    [DependencyProperty(DefaultValue = true)]
+    private bool triggerOnlyOnLostFocus;
 
-    public uint MinLength
-    {
-        get => (uint)GetValue(MinLengthProperty);
-        set => SetValue(MinLengthProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextBoxValidationRuleType.None)]
+    private TextBoxValidationRuleType validationFormat;
 
-    public static readonly DependencyProperty UseDefaultNotAllowedCharactersProperty = DependencyProperty.Register(
-        nameof(UseDefaultNotAllowedCharacters),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
-
-    public bool UseDefaultNotAllowedCharacters
-    {
-        get => (bool)GetValue(UseDefaultNotAllowedCharactersProperty);
-        set => SetValue(UseDefaultNotAllowedCharactersProperty, value);
-    }
-
-    public static readonly DependencyProperty CharactersNotAllowedProperty = DependencyProperty.Register(
-        nameof(CharactersNotAllowed),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: string.Empty));
-
-    public string CharactersNotAllowed
-    {
-        get => (string)GetValue(CharactersNotAllowedProperty);
-        set => SetValue(CharactersNotAllowedProperty, value);
-    }
-
-    public static readonly DependencyProperty RegexPatternProperty = DependencyProperty.Register(
-        nameof(RegexPattern),
-        typeof(string),
-        typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: null));
-
-    public string? RegexPattern
-    {
-        get => (string?)GetValue(RegexPatternProperty);
-        set => SetValue(RegexPatternProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
-        nameof(ShowClearTextButton),
-        typeof(bool),
-        typeof(LabelTextBox),
-        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
-
-    public bool ShowClearTextButton
-    {
-        get => (bool)GetValue(ShowClearTextButtonProperty);
-        set => SetValue(ShowClearTextButtonProperty, value);
-    }
-
-    public static readonly DependencyProperty TriggerOnlyOnLostFocusProperty =
-        DependencyProperty.Register(
-            nameof(TriggerOnlyOnLostFocus),
-            typeof(bool),
-            typeof(LabelTextBox),
-            new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
-
-    public bool TriggerOnlyOnLostFocus
-    {
-        get => (bool)GetValue(TriggerOnlyOnLostFocusProperty);
-        set => SetValue(TriggerOnlyOnLostFocusProperty, value);
-    }
-
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text),
-        typeof(string),
-        typeof(LabelTextBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextChanged,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.PropertyChanged));
-
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
-
-    public static readonly DependencyProperty ValidationFormatProperty = DependencyProperty.Register(
-        nameof(ValidationFormat),
-        typeof(TextBoxValidationRuleType),
-        typeof(LabelTextBox),
-        new PropertyMetadata(TextBoxValidationRuleType.None));
-
-    public TextBoxValidationRuleType ValidationFormat
-    {
-        get => (TextBoxValidationRuleType)GetValue(ValidationFormatProperty);
-        set => SetValue(ValidationFormatProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        PropertyChangedCallback = nameof(OnTextChanged),
+        CoerceValueCallback = nameof(CoerceText),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged)]
+    private string text;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusValid;
 

@@ -8,7 +8,7 @@ public sealed partial class StaggeredPanel : Panel
     private double itemWidth;
 
     [DependencyProperty(
-        DefaultValue = 250d,
+        DefaultValue = 250,
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
     private double desiredItemWidth;
 
@@ -18,12 +18,12 @@ public sealed partial class StaggeredPanel : Panel
     private Thickness padding;
 
     [DependencyProperty(
-        DefaultValue = 0d,
+        DefaultValue = 0,
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
     private double horizontalSpacing;
 
     [DependencyProperty(
-        DefaultValue = 0d,
+        DefaultValue = 0,
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
     private double verticalSpacing;
 

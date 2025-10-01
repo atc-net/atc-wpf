@@ -2,59 +2,23 @@ namespace Atc.Wpf.Controls.Monitoring;
 
 public partial class ApplicationMonitorView
 {
+    [DependencyProperty(DefaultValue = true)]
+    private bool showToolbar;
+
+    [DependencyProperty(DefaultValue = true)]
+    private bool showClearInToolbar;
+
+    [DependencyProperty(DefaultValue = true)]
+    private bool showAutoScrollInToolbar;
+
+    [DependencyProperty(DefaultValue = true)]
+    private bool showSearchInToolbar;
+
     public ApplicationMonitorView()
     {
         InitializeComponent();
 
         Messenger.Default.Register<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
-    }
-
-    public static readonly DependencyProperty ShowToolbarProperty = DependencyProperty.Register(
-        nameof(ShowToolbar),
-        typeof(bool),
-        typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowToolbar
-    {
-        get => (bool)GetValue(ShowToolbarProperty);
-        set => SetValue(ShowToolbarProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowClearInToolbarProperty = DependencyProperty.Register(
-        nameof(ShowClearInToolbar),
-        typeof(bool),
-        typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowClearInToolbar
-    {
-        get => (bool)GetValue(ShowClearInToolbarProperty);
-        set => SetValue(ShowClearInToolbarProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowAutoScrollInToolbarProperty = DependencyProperty.Register(
-        nameof(ShowAutoScrollInToolbar),
-        typeof(bool),
-        typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowAutoScrollInToolbar
-    {
-        get => (bool)GetValue(ShowAutoScrollInToolbarProperty);
-        set => SetValue(ShowAutoScrollInToolbarProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowSearchInToolbarProperty = DependencyProperty.Register(
-        nameof(ShowSearchInToolbar),
-        typeof(bool),
-        typeof(ApplicationMonitorView),
-        new PropertyMetadata(defaultValue: true));
-
-    public bool ShowSearchInToolbar
-    {
-        get => (bool)GetValue(ShowSearchInToolbarProperty);
-        set => SetValue(ShowSearchInToolbarProperty, value);
     }
 
     private void OnApplicationMonitorScrollEvent(

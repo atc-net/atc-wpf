@@ -3,76 +3,29 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelDecimalBox : ILabelDecimalBox
 {
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelDecimalBox),
-        new PropertyMetadata(defaultValue: string.Empty));
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelDecimalBox),
-        new PropertyMetadata(default(TextAlignment)));
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private string prefixText;
 
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private string suffixText;
 
-    public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.Register(
-        nameof(PrefixText),
-        typeof(string),
-        typeof(LabelDecimalBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public string PrefixText
-    {
-        get => (string)GetValue(PrefixTextProperty);
-        set => SetValue(PrefixTextProperty, value);
-    }
-
-    public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.Register(
-        nameof(SuffixText),
-        typeof(string),
-        typeof(LabelDecimalBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public string SuffixText
-    {
-        get => (string)GetValue(SuffixTextProperty);
-        set => SetValue(SuffixTextProperty, value);
-    }
-
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(decimal),
-        typeof(LabelDecimalBox),
-        new FrameworkPropertyMetadata(
-            defaultValue: 0m,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnValueLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
-    public decimal Value
-    {
-        get => (decimal)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValueLostFocus),
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private decimal value;
 
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueChanged;
 

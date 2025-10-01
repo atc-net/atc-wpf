@@ -2,91 +2,35 @@ namespace Atc.Wpf.Controls.BaseControls;
 
 public partial class PixelSizeBox
 {
-    public static readonly RoutedEvent ValueWidthChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueWidthChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<int>),
-        typeof(PixelSizeBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
+    private static readonly RoutedEvent valueWidthChanged;
 
-    public event RoutedPropertyChangedEventHandler<int> ValueWidthChanged
-    {
-        add => AddHandler(ValueWidthChangedEvent, value);
-        remove => RemoveHandler(ValueWidthChangedEvent, value);
-    }
-
-    public static readonly RoutedEvent ValueHeightChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueHeightChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<int>),
-        typeof(PixelSizeBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
+    private static readonly RoutedEvent valueHeightChanged;
 
-    public event RoutedPropertyChangedEventHandler<int> ValueHeightChanged
-    {
-        add => AddHandler(ValueHeightChangedEvent, value);
-        remove => RemoveHandler(ValueHeightChangedEvent, value);
-    }
+    [DependencyProperty]
+    private bool hideUpDownButtons;
 
-    public static readonly DependencyProperty HideUpDownButtonsProperty = DependencyProperty.Register(
-        nameof(HideUpDownButtons),
-        typeof(bool),
-        typeof(PixelSizeBox),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(
+        DefaultValue = PropertyDefaultValueConstants.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private int maximum;
 
-    public bool HideUpDownButtons
-    {
-        get => (bool)GetValue(HideUpDownButtonsProperty);
-        set => SetValue(HideUpDownButtonsProperty, value);
-    }
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnValueWidthLostFocus),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        IsAnimationProhibited = true)]
+    private int valueWidth;
 
-    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-        nameof(Maximum),
-        typeof(int),
-        typeof(PixelSizeBox),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal));
-
-    public int Maximum
-    {
-        get => (int)GetValue(MaximumProperty);
-        set => SetValue(MaximumProperty, value);
-    }
-
-    public static readonly DependencyProperty ValueWidthProperty = DependencyProperty.Register(
-        nameof(ValueWidth),
-        typeof(int),
-        typeof(PixelSizeBox),
-        new FrameworkPropertyMetadata(
-            default(int),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnValueWidthLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public int ValueWidth
-    {
-        get => (int)GetValue(ValueWidthProperty);
-        set => SetValue(ValueWidthProperty, value);
-    }
-
-    public static readonly DependencyProperty ValueHeightProperty = DependencyProperty.Register(
-        nameof(ValueHeight),
-        typeof(int),
-        typeof(PixelSizeBox),
-        new FrameworkPropertyMetadata(
-            default(int),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnValueHeightLostFocus,
-            coerceValueCallback: null,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public int ValueHeight
-    {
-        get => (int)GetValue(ValueHeightProperty);
-        set => SetValue(ValueHeightProperty, value);
-    }
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnValueHeightLostFocus),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        IsAnimationProhibited = true)]
+    private int valueHeight;
 
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 

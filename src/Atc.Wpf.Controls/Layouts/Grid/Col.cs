@@ -1,61 +1,26 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
-public sealed class Col : ContentControl
+public sealed partial class Col : ContentControl
 {
-    public static readonly DependencyProperty LayoutProperty = DependencyProperty.Register(
-        nameof(Layout),
-        typeof(ColLayout),
-        typeof(Col),
-        new PropertyMetadata(default(ColLayout)));
+    [DependencyProperty]
+    private ColLayout layout;
 
-    public ColLayout Layout
-    {
-        get => (ColLayout)GetValue(LayoutProperty);
-        set => SetValue(LayoutProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 0)]
+    private int offset;
 
-    public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-        nameof(Offset),
-        typeof(int),
-        typeof(Col),
-        new PropertyMetadata(0));
+    [DependencyProperty(
+        DefaultValue = 24,
+        ValidateValueCallback = nameof(OnSpanValidate))]
+    private int span;
 
-    public int Offset
-    {
-        get => (int)GetValue(OffsetProperty);
-        set => SetValue(OffsetProperty, value);
-    }
-
-    public static readonly DependencyProperty SpanProperty = DependencyProperty.Register(
-        nameof(Span),
-        typeof(int),
-        typeof(Col),
-        new PropertyMetadata(24),
-        OnSpanValidate);
+    [DependencyProperty(DefaultValue = false)]
+    private bool isFixed;
 
     private static bool OnSpanValidate(object value)
     {
         var v = (int)value;
         return v is >= 1 and <= 24;
-    }
-
-    public int Span
-    {
-        get => (int)GetValue(SpanProperty);
-        set => SetValue(SpanProperty, value);
-    }
-
-    public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register(
-        nameof(IsFixed),
-        typeof(bool),
-        typeof(Col),
-        new PropertyMetadata(defaultValue: BooleanBoxes.FalseBox));
-
-    public bool IsFixed
-    {
-        get => (bool)GetValue(IsFixedProperty);
-        set => SetValue(IsFixedProperty, value);
     }
 
     internal int GetLayoutCellCount(ColLayoutType status)

@@ -5,17 +5,10 @@ namespace Atc.Wpf.Controls.BaseControls;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class FilePicker
 {
-    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ValueChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<FileInfo?>),
-        typeof(FilePicker));
-
-    public event RoutedPropertyChangedEventHandler<FileInfo?> ValueChanged
-    {
-        add => AddHandler(ValueChangedEvent, value);
-        remove => RemoveHandler(ValueChangedEvent, value);
-    }
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<FileInfo?>))]
+    private static readonly RoutedEvent valueChanged;
 
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),

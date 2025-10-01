@@ -13,10 +13,10 @@ public partial class ImageButton : Button
     [DependencyProperty(DefaultValue = 16)]
     private int imageHeight;
 
-    [DependencyProperty(DefaultValue = 5d)]
+    [DependencyProperty(DefaultValue = 5)]
     private double imageContentSpacing;
 
-    [DependencyProperty(DefaultValue = 0d)]
+    [DependencyProperty(DefaultValue = 0)]
     private double imageBorderSpacing;
 
     [DependencyProperty]

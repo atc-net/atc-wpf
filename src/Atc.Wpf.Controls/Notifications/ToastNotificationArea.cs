@@ -1,32 +1,14 @@
 namespace Atc.Wpf.Controls.Notifications;
 
-public sealed class ToastNotificationArea : Control
+public sealed partial class ToastNotificationArea : Control
 {
     private IList? items;
 
-    public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-        nameof(Position),
-        typeof(ToastNotificationPosition),
-        typeof(ToastNotificationArea),
-        new PropertyMetadata(ToastNotificationPosition.BottomRight));
+    [DependencyProperty(DefaultValue = ToastNotificationPosition.BottomRight)]
+    private ToastNotificationPosition position;
 
-    public ToastNotificationPosition Position
-    {
-        get => (ToastNotificationPosition)GetValue(PositionProperty);
-        set => SetValue(PositionProperty, value);
-    }
-
-    public static readonly DependencyProperty MaxItemsProperty = DependencyProperty.Register(
-        nameof(MaxItems),
-        typeof(int),
-        typeof(ToastNotificationArea),
-        new PropertyMetadata(int.MaxValue));
-
-    public int MaxItems
-    {
-        get => (int)GetValue(MaxItemsProperty);
-        set => SetValue(MaxItemsProperty, value);
-    }
+    [DependencyProperty(DefaultValue = int.MaxValue)]
+    private int maxItems;
 
     public ToastNotificationArea()
     {

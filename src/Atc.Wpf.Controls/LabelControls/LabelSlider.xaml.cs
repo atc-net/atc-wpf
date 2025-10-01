@@ -3,14 +3,14 @@ namespace Atc.Wpf.Controls.LabelControls;
 public partial class LabelSlider : ILabelSlider
 {
     [DependencyProperty(
-        DefaultValue = 100,
-        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
-    private int maximum;
-
-    [DependencyProperty(
         DefaultValue = 0,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private int minimum;
+
+    [DependencyProperty(
+        DefaultValue = 100,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private int maximum;
 
     [DependencyProperty(
         DefaultValue = AutoToolTipPlacement.TopLeft,
