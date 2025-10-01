@@ -2,7 +2,8 @@ namespace Atc.Wpf.Controls.BaseControls;
 
 public partial class ColorPicker
 {
-    [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
+    [DependencyProperty(
+        DefaultValue = RenderColorIndicatorType.Square)]
     private RenderColorIndicatorType renderColorIndicatorType;
 
     [DependencyProperty(

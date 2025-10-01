@@ -4,48 +4,40 @@ namespace Atc.Wpf.Controls.BaseControls;
 /// RichTextBoxEx is an extension of the <see cref="RichTextBox" />.
 /// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public class RichTextBoxEx : RichTextBox
+public partial class RichTextBoxEx : RichTextBox
 {
+    private bool preventDocumentUpdate;
+    private bool preventTextUpdate;
+
     /// <summary>
     /// The ThemeMode property.
     /// </summary>
-    public static readonly DependencyProperty ThemeModeProperty = DependencyProperty.Register(
-        nameof(ThemeMode),
-        typeof(ThemeMode),
-        typeof(RichTextBoxEx),
-        new FrameworkPropertyMetadata(
-            ThemeMode.Light,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnThemeModeChanged));
+    [DependencyProperty(
+        DefaultValue = ThemeMode.Light,
+        PropertyChangedCallback = nameof(OnThemeModeChanged),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private ThemeMode themeMode;
 
     /// <summary>
     /// The text property.
     /// </summary>
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text),
-        typeof(string),
-        typeof(RichTextBoxEx),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnTextChanged,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
+    [DependencyProperty(
+        DefaultValue = "",
+        PropertyChangedCallback = nameof(OnTextChanged),
+        CoerceValueCallback = nameof(CoerceText),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string text;
 
     /// <summary>
     /// The text formatter property.
     /// </summary>
-    public static readonly DependencyProperty TextFormatterProperty = DependencyProperty.Register(
-        nameof(TextFormatter),
-        typeof(ITextFormatter),
-        typeof(RichTextBox),
-        new FrameworkPropertyMetadata(
-            new RtfFormatter(),
-            OnTextFormatterChanged));
-
-    private bool preventDocumentUpdate;
-    private bool preventTextUpdate;
+    [DependencyProperty(
+        DefaultValue = "new RtfFormatter()",
+        PropertyChangedCallback = nameof(OnTextFormatterChanged),
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private ITextFormatter textFormatter;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RichTextBoxEx" /> class.
@@ -77,42 +69,6 @@ public class RichTextBoxEx : RichTextBox
     public RichTextBoxEx(FlowDocument document)
         : base(document)
     {
-    }
-
-    /// <summary>
-    /// Gets or sets the ThemeMode.
-    /// </summary>
-    /// <value>
-    /// The text.
-    /// </value>
-    public ThemeMode ThemeMode
-    {
-        get => (ThemeMode)GetValue(ThemeModeProperty);
-        set => SetValue(ThemeModeProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the text.
-    /// </summary>
-    /// <value>
-    /// The text.
-    /// </value>
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the text formatter.
-    /// </summary>
-    /// <value>
-    /// The text formatter.
-    /// </value>
-    public ITextFormatter TextFormatter
-    {
-        get => (ITextFormatter)GetValue(TextFormatterProperty);
-        set => SetValue(TextFormatterProperty, value);
     }
 
     /// <summary>

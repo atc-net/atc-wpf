@@ -4,69 +4,26 @@ public partial class SaturationBrightnessPicker
 {
     private readonly PointPickerAdorner adorner;
 
-    public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-        nameof(Hue),
-        typeof(double),
-        typeof(SaturationBrightnessPicker),
-        new PropertyMetadata(defaultValue: 0d));
+    [DependencyProperty(DefaultValue = 0)]
+    private double hue;
 
-    public double Hue
-    {
-        get => (double)GetValue(HueProperty);
-        set => SetValue(HueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        PropertyChangedCallback = nameof(OnSaturationChanged))]
+    private double saturation;
 
-    public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-        nameof(Saturation),
-        typeof(double),
-        typeof(SaturationBrightnessPicker),
-        new PropertyMetadata(
-            defaultValue: 0d,
-            OnSaturationChanged));
+    [DependencyProperty(
+        DefaultValue = 0,
+        PropertyChangedCallback = nameof(OnBrightnessChanged))]
+    private double brightness;
 
-    public double Saturation
-    {
-        get => (double)GetValue(SaturationProperty);
-        set => SetValue(SaturationProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = nameof(Colors.Black))]
+    private Color colorValue;
 
-    public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
-        nameof(Brightness),
-        typeof(double),
-        typeof(SaturationBrightnessPicker),
-        new PropertyMetadata(
-            defaultValue: 0d,
-            OnBrightnessChanged));
-
-    public double Brightness
-    {
-        get => (double)GetValue(BrightnessProperty);
-        set => SetValue(BrightnessProperty, value);
-    }
-
-    public static readonly DependencyProperty ColorValueProperty = DependencyProperty.Register(
-        nameof(ColorValue),
-        typeof(Color),
-        typeof(SaturationBrightnessPicker),
-        new PropertyMetadata(Colors.Black));
-
-    public Color? ColorValue
-    {
-        get => (Color?)GetValue(ColorValueProperty);
-        set => SetValue(ColorValueProperty, value);
-    }
-
-    public static readonly DependencyProperty BrushValueProperty = DependencyProperty.Register(
-        nameof(BrushValue),
-        typeof(Brush),
-        typeof(SaturationBrightnessPicker),
-        new PropertyMetadata(Brushes.Black));
-
-    public Brush BrushValue
-    {
-        get => (Brush)GetValue(BrushValueProperty);
-        set => SetValue(BrushValueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = nameof(Colors.Black))]
+    private Brush brushValue;
 
     public SaturationBrightnessPicker()
     {
@@ -146,12 +103,12 @@ public partial class SaturationBrightnessPicker
     {
         var control = (SaturationBrightnessPicker)d;
 
-        var saturation = (double)e.NewValue;
+        var newSaturation = (double)e.NewValue;
         var pos = control.adorner.Position;
 
         control.adorner.Position = pos with
         {
-            X = saturation * control.ActualWidth,
+            X = newSaturation * control.ActualWidth,
         };
     }
 
@@ -161,12 +118,12 @@ public partial class SaturationBrightnessPicker
     {
         var control = (SaturationBrightnessPicker)d;
 
-        var brightness = (double)e.NewValue;
+        var newBrightness = (double)e.NewValue;
         var pos = control.adorner.Position;
 
         control.adorner.Position = pos with
         {
-            Y = (1 - brightness) * control.ActualHeight,
+            Y = (1 - newBrightness) * control.ActualHeight,
         };
     }
 

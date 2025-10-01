@@ -12,141 +12,42 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
     private bool updateFromColor;
     private bool updateFromComponents;
 
-    public static readonly DependencyProperty ShowSaturationBrightnessPickerProperty = DependencyProperty.Register(
-        nameof(ShowSaturationBrightnessPicker),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showSaturationBrightnessPicker;
 
-    public bool ShowSaturationBrightnessPicker
-    {
-        get => (bool)GetValue(ShowSaturationBrightnessPickerProperty);
-        set => SetValue(ShowSaturationBrightnessPickerProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool showAvailableColors;
 
-    public static readonly DependencyProperty ShowAvailableColorsProperty = DependencyProperty.Register(
-        nameof(ShowAvailableColors),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showStandardColors;
 
-    public bool ShowAvailableColors
-    {
-        get => (bool)GetValue(ShowAvailableColorsProperty);
-        set => SetValue(ShowAvailableColorsProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool showHueSlider;
 
-    public static readonly DependencyProperty ShowStandardColorsProperty = DependencyProperty.Register(
-        nameof(ShowStandardColors),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showTransparencySlider;
 
-    public bool ShowStandardColors
-    {
-        get => (bool)GetValue(ShowStandardColorsProperty);
-        set => SetValue(ShowStandardColorsProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool showBeforeAfterColorResult;
 
-    public static readonly DependencyProperty ShowHueSliderProperty = DependencyProperty.Register(
-        nameof(ShowHueSlider),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showHsv;
 
-    public bool ShowHueSlider
-    {
-        get => (bool)GetValue(ShowHueSliderProperty);
-        set => SetValue(ShowHueSliderProperty, value);
-    }
+    [DependencyProperty(DefaultValue = true)]
+    private bool showRgba;
 
-    public static readonly DependencyProperty ShowTransparencySliderProperty = DependencyProperty.Register(
-        nameof(ShowTransparencySlider),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showArgb;
 
-    public bool ShowTransparencySlider
-    {
-        get => (bool)GetValue(ShowTransparencySliderProperty);
-        set => SetValue(ShowTransparencySliderProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = nameof(Colors.Red),
+        PropertyChangedCallback = nameof(OnOldColorChanged))]
+    private Color originalColor;
 
-    public static readonly DependencyProperty ShowBeforeAfterColorResultProperty = DependencyProperty.Register(
-        nameof(ShowBeforeAfterColorResult),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool ShowBeforeAfterColorResult
-    {
-        get => (bool)GetValue(ShowBeforeAfterColorResultProperty);
-        set => SetValue(ShowBeforeAfterColorResultProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowHsvProperty = DependencyProperty.Register(
-        nameof(ShowHsv),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool ShowHsv
-    {
-        get => (bool)GetValue(ShowHsvProperty);
-        set => SetValue(ShowHsvProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowRgbaProperty = DependencyProperty.Register(
-        nameof(ShowRgba),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool ShowRgba
-    {
-        get => (bool)GetValue(ShowRgbaProperty);
-        set => SetValue(ShowRgbaProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowArgbProperty = DependencyProperty.Register(
-        nameof(ShowArgb),
-        typeof(bool),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
-
-    public bool ShowArgb
-    {
-        get => (bool)GetValue(ShowArgbProperty);
-        set => SetValue(ShowArgbProperty, value);
-    }
-
-    public static readonly DependencyProperty OriginalColorProperty = DependencyProperty.Register(
-        nameof(OriginalColor),
-        typeof(Color),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(
-            Colors.Red,
-            OnOldColorChanged));
-
-    public Color OriginalColor
-    {
-        get => (Color)GetValue(OriginalColorProperty);
-        set => SetValue(OriginalColorProperty, value);
-    }
-
-    public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-        nameof(Color),
-        typeof(Color),
-        typeof(AdvancedColorPicker),
-        new PropertyMetadata(
-            Colors.Red,
-            OnColorChanged));
-
-    public Color Color
-    {
-        get => (Color)GetValue(ColorProperty);
-        set => SetValue(ColorProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = nameof(Colors.Red),
+        PropertyChangedCallback = nameof(OnColorChanged))]
+    private Color color;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

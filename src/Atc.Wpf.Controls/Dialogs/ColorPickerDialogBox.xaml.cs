@@ -2,17 +2,9 @@ namespace Atc.Wpf.Controls.Dialogs;
 
 public partial class ColorPickerDialogBox
 {
-    public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-        nameof(Color),
-        typeof(Color),
-        typeof(ColorPickerDialogBox),
-        new PropertyMetadata(Colors.Black));
-
-    public Color Color
-    {
-        get => (Color)GetValue(ColorProperty);
-        set => SetValue(ColorProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = nameof(Brushes.Black))]
+    private Color color;
 
     public ColorPickerDialogBox(
         Window owningWindow,

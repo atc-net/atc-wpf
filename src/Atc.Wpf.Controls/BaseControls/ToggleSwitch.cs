@@ -18,7 +18,7 @@ namespace Atc.Wpf.Controls.BaseControls;
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = DraggingState)]
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = OffState)]
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = OnState)]
-public class ToggleSwitch : HeaderedContentControl, ICommandSource
+public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
 {
     private const string ContentStatesGroup = "ContentStates";
     private const string OffContentState = "OffContent";
@@ -49,224 +49,76 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
 
     private Thumb? SwitchThumb { get; set; }
 
-    public static readonly DependencyProperty ContentDirectionProperty = DependencyProperty.Register(
-        nameof(ContentDirection),
-        typeof(FlowDirection),
-        typeof(ToggleSwitch),
-        new PropertyMetadata(FlowDirection.LeftToRight));
+    [DependencyProperty(DefaultValue = FlowDirection.LeftToRight)]
+    private FlowDirection contentDirection;
 
-    public FlowDirection ContentDirection
-    {
-        get => (FlowDirection)GetValue(ContentDirectionProperty);
-        set => SetValue(ContentDirectionProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "new Thickness(0)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure)]
+    private Thickness contentPadding;
 
-    public static readonly DependencyProperty ContentPaddingProperty = DependencyProperty.Register(
-        nameof(ContentPadding),
-        typeof(Thickness),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(
-            new Thickness(0),
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure));
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsOnChanged),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
+    private bool isOn;
 
-    public Thickness ContentPadding
-    {
-        get => (Thickness)GetValue(ContentPaddingProperty);
-        set => SetValue(ContentPaddingProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "\"On\"",
+        PropertyChangedCallback = nameof(OnOnContentChanged),
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private object onContent;
 
-    public static readonly DependencyProperty IsOnProperty = DependencyProperty.Register(
-        nameof(IsOn),
-        typeof(bool),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(
-            BooleanBoxes.FalseBox,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnIsOnChanged));
+    [DependencyProperty]
+    private DataTemplate? onContentTemplate;
 
-    public bool IsOn
-    {
-        get => (bool)GetValue(IsOnProperty);
-        set => SetValue(IsOnProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private DataTemplateSelector? onContentTemplateSelector;
 
-    public static readonly DependencyProperty OnContentProperty = DependencyProperty.Register(
-        nameof(OnContent),
-        typeof(object),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(
-            "On",
-            OnOnContentChanged));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private string? onContentStringFormat;
 
-    public object OnContent
-    {
-        get => GetValue(OnContentProperty);
-        set => SetValue(OnContentProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "\"Off\"",
+        PropertyChangedCallback = nameof(OnOffContentChanged),
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private object offContent;
 
-    public static readonly DependencyProperty OnContentTemplateProperty = DependencyProperty.Register(
-        nameof(OnContentTemplate),
-        typeof(DataTemplate),
-        typeof(ToggleSwitch));
+    [DependencyProperty]
+    private DataTemplate? offContentTemplate;
 
-    public DataTemplate? OnContentTemplate
-    {
-        get => (DataTemplate?)GetValue(OnContentTemplateProperty);
-        set => SetValue(OnContentTemplateProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private DataTemplateSelector? offContentTemplateSelector;
 
-    public static readonly DependencyProperty OnContentTemplateSelectorProperty = DependencyProperty.Register(
-        nameof(OnContentTemplateSelector),
-        typeof(DataTemplateSelector),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private string? offContentStringFormat;
 
-    public DataTemplateSelector? OnContentTemplateSelector
-    {
-        get => (DataTemplateSelector?)GetValue(OnContentTemplateSelectorProperty);
-        set => SetValue(OnContentTemplateSelectorProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = false,
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private bool isPressed;
 
-    public static readonly DependencyProperty OnContentStringFormatProperty = DependencyProperty.Register(
-        nameof(OnContentStringFormat),
-        typeof(string),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnCommandChanged))]
+    private ICommand? command;
 
-    public string? OnContentStringFormat
-    {
-        get => (string?)GetValue(OnContentStringFormatProperty);
-        set => SetValue(OnContentStringFormatProperty, value);
-    }
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnCommandChanged))]
+    private ICommand? onCommand;
 
-    public static readonly DependencyProperty OffContentProperty = DependencyProperty.Register(
-        nameof(OffContent),
-        typeof(object),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(
-            "Off",
-            OnOffContentChanged));
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnCommandChanged))]
+    private ICommand? offCommand;
 
-    public object OffContent
-    {
-        get => GetValue(OffContentProperty);
-        set => SetValue(OffContentProperty, value);
-    }
+    [DependencyProperty]
+    private object? commandParameter;
 
-    public static readonly DependencyProperty OffContentTemplateProperty = DependencyProperty.Register(
-        nameof(OffContentTemplate),
-        typeof(DataTemplate),
-        typeof(ToggleSwitch));
-
-    public DataTemplate? OffContentTemplate
-    {
-        get => (DataTemplate?)GetValue(OffContentTemplateProperty);
-        set => SetValue(OffContentTemplateProperty, value);
-    }
-
-    public static readonly DependencyProperty OffContentTemplateSelectorProperty = DependencyProperty.Register(
-        nameof(OffContentTemplateSelector),
-        typeof(DataTemplateSelector),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
-    public DataTemplateSelector? OffContentTemplateSelector
-    {
-        get => (DataTemplateSelector?)GetValue(OffContentTemplateSelectorProperty);
-        set => SetValue(OffContentTemplateSelectorProperty, value);
-    }
-
-    public static readonly DependencyProperty OffContentStringFormatProperty = DependencyProperty.Register(
-        nameof(OffContentStringFormat),
-        typeof(string),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
-    public string? OffContentStringFormat
-    {
-        get => (string?)GetValue(OffContentStringFormatProperty);
-        set => SetValue(OffContentStringFormatProperty, value);
-    }
-
-    private static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsPressed),
-        typeof(bool),
-        typeof(ToggleSwitch),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
-    public static readonly DependencyProperty IsPressedProperty = IsPressedPropertyKey.DependencyProperty;
-
-    public bool IsPressed
-    {
-        get => (bool)GetValue(IsPressedProperty);
-        protected set => SetValue(IsPressedPropertyKey, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-        nameof(Command),
-        typeof(ICommand),
-        typeof(ToggleSwitch),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnCommandChanged));
-
-    public ICommand? Command
-    {
-        get => (ICommand?)GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
-    }
-
-    public static readonly DependencyProperty OnCommandProperty = DependencyProperty.Register(
-        nameof(OnCommand),
-        typeof(ICommand),
-        typeof(ToggleSwitch),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnCommandChanged));
-
-    public ICommand? OnCommand
-    {
-        get => (ICommand?)GetValue(OnCommandProperty);
-        set => SetValue(OnCommandProperty, value);
-    }
-
-    public static readonly DependencyProperty OffCommandProperty = DependencyProperty.Register(
-        nameof(OffCommand),
-        typeof(ICommand),
-        typeof(ToggleSwitch),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnCommandChanged));
-
-    public ICommand? OffCommand
-    {
-        get => (ICommand?)GetValue(OffCommandProperty);
-        set => SetValue(OffCommandProperty, value);
-    }
-
-    public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
-        nameof(CommandParameter),
-        typeof(object),
-        typeof(ToggleSwitch),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    public object? CommandParameter
-    {
-        get => GetValue(CommandParameterProperty);
-        set => SetValue(CommandParameterProperty, value);
-    }
-
-    public static readonly DependencyProperty CommandTargetProperty = DependencyProperty.Register(
-        nameof(CommandTarget),
-        typeof(IInputElement),
-        typeof(ToggleSwitch),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    public IInputElement? CommandTarget
-    {
-        get => (IInputElement?)GetValue(CommandTargetProperty);
-        set => SetValue(CommandTargetProperty, value);
-    }
+    [DependencyProperty]
+    private IInputElement? commandTarget;
 
     public event RoutedEventHandler? Toggled;
 
@@ -547,7 +399,7 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
 
         VisualStateManager.GoToState(this, stateName, useTransitions);
 
-        if (SwitchThumb != null && SwitchThumb.IsDragging)
+        if (SwitchThumb is { IsDragging: true })
         {
             stateName = DraggingState;
         }
@@ -591,16 +443,16 @@ public class ToggleSwitch : HeaderedContentControl, ICommandSource
     }
 
     private void UnhookCommand(
-        ICommand command)
+        ICommand cmd)
     {
-        CanExecuteChangedEventManager.RemoveHandler(command, OnCanExecuteChanged);
+        CanExecuteChangedEventManager.RemoveHandler(cmd, OnCanExecuteChanged);
         UpdateCanExecute();
     }
 
     private void HookCommand(
-        ICommand command)
+        ICommand cmd)
     {
-        CanExecuteChangedEventManager.AddHandler(command, OnCanExecuteChanged);
+        CanExecuteChangedEventManager.AddHandler(cmd, OnCanExecuteChanged);
         UpdateCanExecute();
     }
 

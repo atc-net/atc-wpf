@@ -2,17 +2,10 @@ namespace Atc.Wpf.Controls.ColorControls;
 
 public partial class HueSlider
 {
-    public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-        nameof(Hue),
-        typeof(double),
-        typeof(HueSlider),
-        new PropertyMetadata(0.0, OnHueChanged));
-
-    public double Hue
-    {
-        get => (double)GetValue(HueProperty);
-        set => SetValue(HueProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        PropertyChangedCallback = nameof(OnHueChanged))]
+    private double hue;
 
     public HueSlider()
     {

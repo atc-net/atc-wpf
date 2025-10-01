@@ -2,29 +2,15 @@ namespace Atc.Wpf.Controls.ColorControls;
 
 public partial class TransparencySlider
 {
-    public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-        nameof(Color),
-        typeof(Color),
-        typeof(TransparencySlider),
-        new FrameworkPropertyMetadata(Colors.Red));
+    [DependencyProperty(
+        DefaultValue = nameof(Colors.Red),
+        Flags = FrameworkPropertyMetadataOptions.None)]
+    private Color color;
 
-    public Color Color
-    {
-        get => (Color)GetValue(ColorProperty);
-        set => SetValue(ColorProperty, value);
-    }
-
-    public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
-        nameof(Alpha),
-        typeof(byte),
-        typeof(TransparencySlider),
-        new PropertyMetadata((byte)0, OnAlphaChanged));
-
-    public byte Alpha
-    {
-        get => (byte)GetValue(AlphaProperty);
-        set => SetValue(AlphaProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0,
+        PropertyChangedCallback = nameof(OnAlphaChanged))]
+    private byte alpha;
 
     public TransparencySlider()
     {

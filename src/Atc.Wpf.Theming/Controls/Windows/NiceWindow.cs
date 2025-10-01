@@ -148,7 +148,7 @@ public partial class NiceWindow : WindowChromeWindow
     [DependencyProperty]
     private Brush? overlayBrush;
 
-    [DependencyProperty(DefaultValue = 0.7d)]
+    [DependencyProperty(DefaultValue = 0.7)]
     private double overlayOpacity;
 
     [DependencyProperty]
@@ -486,7 +486,7 @@ public partial class NiceWindow : WindowChromeWindow
     }
 
     /// <summary>
-    /// Creates AutomationPeer (<see cref="UIElement.OnCreateAutomationPeer"/>)
+    /// Creates AutomationPeer.
     /// </summary>
     protected override AutomationPeer OnCreateAutomationPeer()
         => new NiceWindowAutomationPeer(this);

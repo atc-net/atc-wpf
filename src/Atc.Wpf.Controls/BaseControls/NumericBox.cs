@@ -113,12 +113,12 @@ public partial class NumericBox : Control
     private double? defaultValue;
 
     [DependencyProperty(
-        DefaultValue = double.MinValue,
+        DefaultValue = PropertyDefaultValueConstants.MinValue,
         PropertyChangedCallback = nameof(OnMinimumPropertyChanged))]
     private double minimum;
 
     [DependencyProperty(
-        DefaultValue = double.MaxValue,
+        DefaultValue = PropertyDefaultValueConstants.MaxValue,
         PropertyChangedCallback = nameof(OnMaximumPropertyChanged),
         CoerceValueCallback = nameof(CoerceMaximum))]
     private double maximum;
@@ -145,7 +145,7 @@ public partial class NumericBox : Control
     [DependencyProperty(DefaultValue = "new Thickness(0, -0.5, -0.5, 0)")]
     private Thickness upDownButtonsMargin;
 
-    [DependencyProperty(DefaultValue = 20d)]
+    [DependencyProperty(DefaultValue = 20)]
     private double upDownButtonsWidth;
 
     [DependencyProperty(DefaultValue = true)]

@@ -2,107 +2,37 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelPasswordBox : ILabelPasswordBox
 {
-    public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(TextChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<string>),
-        typeof(LabelPasswordBox));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
+    private static readonly RoutedEvent textChanged;
 
-    public event RoutedPropertyChangedEventHandler<string> TextChanged
-    {
-        add => AddHandler(TextChangedEvent, value);
-        remove => RemoveHandler(TextChangedEvent, value);
-    }
+    [DependencyProperty(DefaultValue = "")]
+    private string watermarkText;
 
-    public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
-        nameof(WatermarkText),
-        typeof(string),
-        typeof(LabelPasswordBox),
-        new PropertyMetadata(defaultValue: string.Empty));
+    [DependencyProperty(DefaultValue = TextAlignment.Left)]
+    private TextAlignment watermarkAlignment;
 
-    public string WatermarkText
-    {
-        get => (string)GetValue(WatermarkTextProperty);
-        set => SetValue(WatermarkTextProperty, value);
-    }
+    [DependencyProperty(DefaultValue = TextTrimming.None)]
+    private TextTrimming watermarkTrimming;
 
-    public static readonly DependencyProperty WatermarkAlignmentProperty = DependencyProperty.Register(
-        nameof(WatermarkAlignment),
-        typeof(TextAlignment),
-        typeof(LabelPasswordBox),
-        new PropertyMetadata(default(TextAlignment)));
+    [DependencyProperty(DefaultValue = 100)]
+    private uint maxLength;
 
-    public TextAlignment WatermarkAlignment
-    {
-        get => (TextAlignment)GetValue(WatermarkAlignmentProperty);
-        set => SetValue(WatermarkAlignmentProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 0)]
+    private uint minLength;
 
-    public static readonly DependencyProperty WatermarkTrimmingProperty = DependencyProperty.Register(
-        nameof(WatermarkTrimming),
-        typeof(TextTrimming),
-        typeof(LabelPasswordBox),
-        new PropertyMetadata(default(TextTrimming)));
+    [DependencyProperty(DefaultValue = true)]
+    private bool showClearTextButton;
 
-    public TextTrimming WatermarkTrimming
-    {
-        get => (TextTrimming)GetValue(WatermarkTrimmingProperty);
-        set => SetValue(WatermarkTrimmingProperty, value);
-    }
-
-    public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(
-        nameof(MaxLength),
-        typeof(uint),
-        typeof(LabelPasswordBox),
-        new PropertyMetadata(100U));
-
-    public uint MaxLength
-    {
-        get => (uint)GetValue(MaxLengthProperty);
-        set => SetValue(MaxLengthProperty, value);
-    }
-
-    public static readonly DependencyProperty MinLengthProperty = DependencyProperty.Register(
-        nameof(MinLength),
-        typeof(uint),
-        typeof(LabelPasswordBox),
-        new PropertyMetadata(0U));
-
-    public uint MinLength
-    {
-        get => (uint)GetValue(MinLengthProperty);
-        set => SetValue(MinLengthProperty, value);
-    }
-
-    public static readonly DependencyProperty ShowClearTextButtonProperty = DependencyProperty.Register(
-        nameof(ShowClearTextButton),
-        typeof(bool),
-        typeof(LabelPasswordBox),
-        new PropertyMetadata(defaultValue: BooleanBoxes.TrueBox));
-
-    public bool ShowClearTextButton
-    {
-        get => (bool)GetValue(ShowClearTextButtonProperty);
-        set => SetValue(ShowClearTextButtonProperty, value);
-    }
-
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text),
-        typeof(string),
-        typeof(LabelPasswordBox),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-            OnTextLostFocus,
-            CoerceText,
-            isAnimationProhibited: true,
-            UpdateSourceTrigger.LostFocus));
-
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        PropertyChangedCallback = nameof(OnTextLostFocus),
+        CoerceValueCallback = nameof(CoerceText),
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        IsAnimationProhibited = true,
+        DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
+    private string text;
 
     public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusValid;
 

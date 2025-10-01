@@ -1,6 +1,6 @@
 // ReSharper disable ConvertIfStatementToSwitchStatement
-// ReSharper disable InvertIf
 // ReSharper disable InconsistentNaming
+// ReSharper disable InvertIf
 namespace Atc.Wpf.Controls.LabelControls;
 
 public partial class LabelDatePicker : ILabelDatePicker

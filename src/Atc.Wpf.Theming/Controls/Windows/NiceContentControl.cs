@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Theming.Controls.Windows;
 
 /// <summary>
@@ -6,103 +7,33 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [SuppressMessage("WpfAnalyzers.TemplatePart", "WPF0132:Use PART prefix", Justification = "OK.")]
 [TemplatePart(Name = "AfterLoadedStoryboard", Type = typeof(Storyboard))]
 [TemplatePart(Name = "AfterLoadedReverseStoryboard", Type = typeof(Storyboard))]
-public sealed class NiceContentControl : ContentControl
+public sealed partial class NiceContentControl : ContentControl
 {
     private Storyboard? afterLoadedStoryboard;
     private Storyboard? afterLoadedReverseStoryboard;
     private bool transitionLoaded;
 
-    public static readonly DependencyProperty ReverseTransitionProperty = DependencyProperty.Register(
-        nameof(ReverseTransition),
-        typeof(bool),
-        typeof(NiceContentControl),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>
-    /// Gets or sets whether the reverse version of the transition should be used.
-    /// </summary>
-    public bool ReverseTransition
-    {
-        get => (bool)GetValue(ReverseTransitionProperty);
-        set => SetValue(ReverseTransitionProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty TransitionsEnabledProperty = DependencyProperty.Register(
-        nameof(TransitionsEnabled),
-        typeof(bool),
-        typeof(NiceContentControl),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
-
-    /// <summary>
-    /// Gets or sets the value if a transition should be used or not.
-    /// </summary>
-    public bool TransitionsEnabled
-    {
-        get => (bool)GetValue(TransitionsEnabledProperty);
-        set => SetValue(TransitionsEnabledProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly DependencyProperty OnlyLoadTransitionProperty = DependencyProperty.Register(
-        nameof(OnlyLoadTransition),
-        typeof(bool),
-        typeof(NiceContentControl),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>
-    /// Gets or sets whether the transition should be used only at the loaded event of the control.
-    /// </summary>
-    public bool OnlyLoadTransition
-    {
-        get => (bool)GetValue(OnlyLoadTransitionProperty);
-        set => SetValue(OnlyLoadTransitionProperty, BooleanBoxes.Box(value));
-    }
-
-    public static readonly RoutedEvent TransitionStartedEvent = EventManager.RegisterRoutedEvent(
-        nameof(TransitionStarted),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(NiceContentControl));
+        HandlerType = typeof(RoutedEventHandler))]
+    private static readonly RoutedEvent transitionStarted;
 
-    /// <summary>
-    /// The event which will be fired when the transition starts.
-    /// </summary>
-    public event RoutedEventHandler TransitionStarted
-    {
-        add => AddHandler(TransitionStartedEvent, value);
-        remove => RemoveHandler(TransitionStartedEvent, value);
-    }
-
-    public static readonly RoutedEvent TransitionCompletedEvent = EventManager.RegisterRoutedEvent(
-        nameof(TransitionCompleted),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(NiceContentControl));
+        HandlerType = typeof(RoutedEventHandler))]
+    private static readonly RoutedEvent transitionCompleted;
 
-    /// <summary>
-    /// The event which will be fired when the transition ends.
-    /// </summary>
-    public event RoutedEventHandler TransitionCompleted
-    {
-        add => AddHandler(TransitionCompletedEvent, value);
-        remove => RemoveHandler(TransitionCompletedEvent, value);
-    }
+    [DependencyProperty]
+    private bool reverseTransition;
 
-    private static readonly DependencyPropertyKey IsTransitioningPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsTransitioning),
-        typeof(bool),
-        typeof(NiceContentControl),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = true)]
+    private bool transitionsEnabled;
 
-    public static readonly DependencyProperty IsTransitioningProperty = IsTransitioningPropertyKey.DependencyProperty;
+    [DependencyProperty]
+    private bool onlyLoadTransition;
 
-    /// <summary>
-    /// Gets whether if the content is transitioning.
-    /// </summary>
-    public bool IsTransitioning
-    {
-        get => (bool)GetValue(IsTransitioningProperty);
-        set => SetValue(IsTransitioningPropertyKey, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty]
+    private bool isTransitioning;
 
     public NiceContentControl()
     {
@@ -225,7 +156,7 @@ public sealed class NiceContentControl : ContentControl
             return;
         }
 
-        SetValue(IsTransitioningPropertyKey, BooleanBoxes.TrueBox);
+        SetValue(IsTransitioningProperty, BooleanBoxes.TrueBox);
         RaiseEvent(new RoutedEventArgs(TransitionStartedEvent));
     }
 
@@ -239,7 +170,7 @@ public sealed class NiceContentControl : ContentControl
         }
 
         InvalidateVisual();
-        SetValue(IsTransitioningPropertyKey, BooleanBoxes.FalseBox);
+        SetValue(IsTransitioningProperty, BooleanBoxes.FalseBox);
         RaiseEvent(new RoutedEventArgs(TransitionCompletedEvent));
     }
 

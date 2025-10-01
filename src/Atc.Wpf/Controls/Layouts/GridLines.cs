@@ -7,14 +7,14 @@ public sealed partial class GridLines : ContentControl
     [DependencyProperty(
         Category = "Layout",
         Description = "The horizontal step property",
-        DefaultValue = 20d,
+        DefaultValue = 20,
         PropertyChangedCallback = nameof(OnReDrawGridLines))]
     private double horizontalStep;
 
     [DependencyProperty(
         Category = "Layout",
         Description = "The vertical step property",
-        DefaultValue = 20d,
+        DefaultValue = 20,
         PropertyChangedCallback = nameof(OnReDrawGridLines))]
     private double verticalStep;
 
