@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Atc.Test" Version="2.0.16" />
+  </ItemGroup>
+
 </Project>
