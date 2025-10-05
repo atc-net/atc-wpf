@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/sample/">
+    <Project Path="sample/Atc.Wpf.Sample/Atc.Wpf.Sample.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Atc.Wpf.Controls.Sample/Atc.Wpf.Controls.Sample.csproj" />
+    <Project Path="src/Atc.Wpf.Controls/Atc.Wpf.Controls.csproj" />
+    <Project Path="src/Atc.Wpf.FontIcons/Atc.Wpf.FontIcons.csproj" />
+    <Project Path="src/Atc.Wpf.Theming/Atc.Wpf.Theming.csproj" />
+    <Project Path="src/Atc.Wpf/Atc.Wpf.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Atc.Wpf.Controls.Tests/Atc.Wpf.Controls.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.Tests/Atc.Wpf.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.Theming.Tests/Atc.Wpf.Theming.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tool/">
+    <Project Path="tool/Atc.Wpf.Generator.FontIconResources/Atc.Wpf.Generator.FontIconResources.csproj" />
+  </Folder>
+</Solution>
