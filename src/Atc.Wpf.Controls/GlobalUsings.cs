@@ -49,7 +49,6 @@ global using Atc.Wpf.Controls.Documents.TextFormatters;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.LabelControls;
 global using Atc.Wpf.Controls.LabelControls.Abstractions;
-global using Atc.Wpf.Controls.LabelControls.Enums;
 global using Atc.Wpf.Controls.LabelControls.Factories;
 global using Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 global using Atc.Wpf.Controls.LabelControls.Writers;
