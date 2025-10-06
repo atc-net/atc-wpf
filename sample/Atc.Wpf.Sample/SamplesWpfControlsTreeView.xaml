@@ -46,6 +46,10 @@
             IsExpanded="True"
             SamplePath="BaseControls.ToggleSwitchView" />
         <sample:SampleTreeViewItem
+            Header="EndpointBox"
+            IsExpanded="True"
+            SamplePath="BaseControls.EndpointBoxView" />
+        <sample:SampleTreeViewItem
             Header="DirectoryPicker"
             IsExpanded="True"
             SamplePath="BaseControls.DirectoryPickerView" />
@@ -178,6 +182,10 @@
             Header="LabelDecimalXyBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelDecimalXyBoxView" />
+        <sample:SampleTreeViewItem
+            Header="LabelEndpointBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelEndpointBoxView" />
         <sample:SampleTreeViewItem
             Header="LabelIntegerBox"
             IsExpanded="True"

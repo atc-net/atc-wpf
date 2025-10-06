@@ -63,6 +63,7 @@
 
                         <atc:LabelWellKnownColorSelector
                             InformationText="This is a help text.."
+                            LabelText="MyColorSelector"
                             Orientation="Horizontal"
                             SelectedKey="Blue" />
 
@@ -91,6 +92,16 @@
                             Value="3" />
 
                         <atc:LabelSlider LabelText="MySlider" Orientation="Horizontal" />
+
+
+                        <atc:LabelEndpointBox
+                            IsMandatory="True"
+                            LabelText="MyEndpointBox"
+                            NetworkProtocol="OpcTcp"
+                            NetworkValidation="IPv4Address"
+                            Orientation="Horizontal"
+                            ShowClearTextButton="True"
+                            WatermarkText="192.168.1.1" />
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
@@ -157,6 +168,15 @@
                             Orientation="Vertical" />
 
                         <atc:LabelSlider LabelText="MySlider" Orientation="Vertical" />
+
+                        <atc:LabelEndpointBox
+                            IsMandatory="True"
+                            LabelText="MyEndpointBox"
+                            NetworkProtocol="OpcTcp"
+                            NetworkValidation="IPv4Address"
+                            Orientation="Vertical"
+                            ShowClearTextButton="True"
+                            WatermarkText="192.168.1.1" />
 
                     </StackPanel>
                 </atc:GridEx>
