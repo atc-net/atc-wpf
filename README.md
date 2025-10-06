@@ -1,10 +1,23 @@
 # ATC.Net WPF
 
-This is a base libraries for building WPF application with the MVVM design pattern.
+A comprehensive set of modern, enterprise-ready WPF libraries for building professional desktop applications with the MVVM design pattern.
+This framework provides a rich collection of reusable controls, theming support, font icons, and MVVM infrastructure to accelerate WPF application development.
+
+## ✨ Key Features
+
+- 🎨 **Rich Control Library** - 25+ labeled controls, color pickers, selectors, and specialized input controls
+- 🌓 **Light/Dark Theming** - Built-in theme support for all controls with easy customization
+- 🎯 **MVVM Ready** - Complete MVVM infrastructure with observable properties and relay commands
+- 🔤 **Font Icon Support** - Render SVG and image resources based on fonts
+- ✅ **Smart Validation** - Deferred validation pattern for better user experience
+- 📐 **Advanced Layouts** - GridEx, StaggeredPanel, UniformSpacingPanel and more
+- 🌍 **Localization** - Built-in translation and localization support
+- 🎭 **Value Converters** - Extensive collection of XAML value converters
 
 ## Requirements
 
-[.NET 9 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [.NET 9 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- Windows 10 or later
 
 ## NuGet Packages Provided in this Repository
 
@@ -46,98 +59,278 @@ The following example is taken from the ReplayCommandAsync which illustrates its
 | Wpf.Theming - ImageButton ![Img](docs/images/lm-wpf-theming-imagebutton.png) | Wpf.Theming - ImageButton ![Img](docs/images/dm-wpf-theming-imagebutton.png) |
 | Wpf.FontIcons - Viewer ![Img](docs/images/lm-wpf-fonicons-viewer.png)        | Wpf.FontIcons - Viewer ![Img](docs/images/dm-wpf-fonicons-viewer.png)        |
 
-# 🚀 How to get started with Atc's WPF
+# 🚀 Quick Start Guide
 
-First of all, include Nuget packages in the `.csproj` file like this:
+## Installation
+
+Add the NuGet packages to your `.csproj` file:
 
 ```xml
-  <ItemGroup>
-    <PackageReference Include="Atc.Wpf" Version="latest" />
-    <PackageReference Include="Atc.Wpf.Controls" Version="latest" />
-    <PackageReference Include="Atc.Wpf.FontIcons" Version="latest" />
-    <PackageReference Include="Atc.Wpf.Theming" Version="latest" />
-  </ItemGroup>
+<ItemGroup>
+  <PackageReference Include="Atc.Wpf" Version="2.*" />
+  <PackageReference Include="Atc.Wpf.Controls" Version="2.*" />
+  <PackageReference Include="Atc.Wpf.FontIcons" Version="2.*" />
+  <PackageReference Include="Atc.Wpf.Theming" Version="2.*" />
+</ItemGroup>
 ```
 
-Then update `App.xaml` like this:
+## Configuration
+
+### 1. Update App.xaml
+
+Add the required resource dictionaries to enable theming and control styles:
 
 ```xml
 <Application
-    x:Class="Atc.Wpf.Sample.App"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-    [other namespaces]>
+    x:Class="YourApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas">
     <Application.Resources>
         <ResourceDictionary>
-
             <ResourceDictionary.MergedDictionaries>
+                <!-- Base theming styles for Light/Dark mode -->
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
+
+                <!-- Control library styles -->
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>
 ```
 
-Now it is possible to use controls with theming and default WPF controls like TextBox, Button etc. with theme style.
+### 2. Use Controls in XAML
 
-## 💝 WPF with MVVM Easily Separate UI and Business Logic
+Now you can use all controls with full theming support:
 
-With the `Atc.Wpf`, package, it is very easy to get startet with the nice `MVVM pattern`
+```xml
+<Window
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    ...>
 
-Please read more here:
+    <!-- Labeled controls with validation -->
+    <atc:LabelTextBox
+        LabelText="User Name"
+        Text="{Binding UserName}"
+        IsMandatory="True" />
 
-- [MVVM framework](docs/Mvvm/@Readme.md)
-  - [Observerble properties](docs/Mvvm/@Readme.md)
-  - [RelayCommands](docs/Mvvm/@Readme.md)
+    <!-- Network endpoint input -->
+    <atc:LabelEndpointBox
+        LabelText="API Endpoint"
+        NetworkProtocol="Https"
+        Value="{Binding EndpointUri}" />
 
-# 📝 Readme's for each NuGet Package area
+    <!-- Standard WPF controls automatically themed -->
+    <Button Content="Save" Command="{Binding SaveCommand}" />
+    <TextBox Text="{Binding Notes}" />
+</Window>
+```
 
-***Note: Right now, it is a limit amount of controls and components there is documented with a `Readme.md` file.
-Therefore run the `Atc.Wpf.Sample` application to explore all the controls and components.*** 😊
+All standard WPF controls (Button, TextBox, ComboBox, etc.) are automatically styled with Light/Dark theme support.
 
-## 💟 Atc.Wpf
+## 🎯 Label Controls vs Base Controls
 
-### Controls
+Understanding when to use each type of control:
 
-- Layouts
-  - [GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)
-  - [StaggeredPanel](src/Atc.Wpf/Controls/Layouts/StaggeredPanel_Readme.md)
-  - [UniformSpacingPanel](src/Atc.Wpf/Controls/Layouts/UniformSpacingPanel_Readme.md)
-- Media
-  - [SvgImage](src/Atc.Wpf/Controls/Media/SvgImage_Readme.md)
-- Helpers
-  - [PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)
+| Aspect | Label Controls | Base Controls |
+|--------|----------------|---------------|
+| **Label** | Integrated label with text | No label (you provide your own) |
+| **Validation** | Built-in validation message display | Validation logic only |
+| **Mandatory** | Asterisk indicator support | Not applicable |
+| **Use Case** | Standard forms and dialogs | Custom layouts and composite controls |
+| **Example** | `<atc:LabelTextBox LabelText="Name" Text="{Binding Name}" />` | `<atc:IntegerBox Value="{Binding Count}" />` |
 
-### Misc
+**Quick Guideline:**
 
-- [ShaderEffects](src/Atc.Wpf/Media/ShaderEffects/@Readme.md)
-  - [How to use HLSL Shader Compiler](src/Atc.Wpf/Media/ShaderEffects/Shaders/@Readme.md)
-- [Tranlation & localizaion](src/Atc.Wpf/Translation/@Readme.md)
-- [ValueConverters](src/Atc.Wpf/ValueConverters/@Readme.md)
+- Use **Label Controls** for standard forms where you want consistency and less markup
+- Use **Base Controls** when you need custom layouts or are building your own controls
 
-## 💟 Atc.Wpf.Controls
+## 💝 MVVM Made Easy
 
-### Controls
+The `Atc.Wpf` package provides a complete MVVM infrastructure that makes it easy to separate UI and business logic using the MVVM pattern.
 
-- [WellKnownColorPicker](src/Atc.Wpf.Controls/ColorControls/WellKnownColorPicker_Readme.md)
+### Key MVVM Features
 
-### Misc
+- **Observable Properties** - Automatic `INotifyPropertyChanged` implementation
+- **Relay Commands** - Simple command implementation with `CanExecute` support
+- **Async Commands** - Built-in support for async/await patterns
+- **Source Generators** - Automatic code generation for ViewModels and properties
 
-- [ValueConverters](src/Atc.Wpf.Controls/ValueConverters/@Readme.md)
+### Learn More
 
-## 💟 Atc.Wpf.FontIcons
+- [MVVM Framework Documentation](docs/Mvvm/@Readme.md)
+  - [Observable Properties](docs/Mvvm/@Readme.md#observable-properties)
+  - [RelayCommands](docs/Mvvm/@Readme.md#relay-commands)
+  - [Source Generators](docs/SourceGenerators/ViewModel.md)
 
-### Misc
+### Quick MVVM Example
 
-- [ValueConverters](src/Atc.Wpf.FontIcons/ValueConverters/@Readme.md)
+```csharp
+public partial class MainViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    private string userName = string.Empty;
 
-## 💟 Atc.Wpf.Theming
+    [ObservableProperty]
+    private bool isEnabled = true;
 
-- [ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)
+    [RelayCommand(CanExecute = nameof(CanSave))]
+    private async Task SaveAsync()
+    {
+        await SaveUserDataAsync(UserName);
+    }
 
-# How to contribute
+    private bool CanSave() => !string.IsNullOrEmpty(UserName);
+}
+```
 
-[Contribution Guidelines](https://atc-net.github.io/introduction/about-atc#how-to-contribute)
+---
 
-[Coding Guidelines](https://atc-net.github.io/introduction/about-atc#coding-guidelines)
+# 📚 Comprehensive Documentation
+
+> **Note:** While this README provides an overview, the best way to explore all controls and components is to run the **`Atc.Wpf.Sample`** application,
+> which includes interactive examples with XAML and code-behind for every control! �
+
+## 💟 Atc.Wpf - Core WPF Library
+
+The foundation library providing essential WPF controls, layouts, and utilities.
+
+### Layout Controls
+
+Modern layout panels for advanced UI composition:
+
+- **[GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)** - Enhanced Grid with auto-row/column generation
+- **[StaggeredPanel](src/Atc.Wpf/Controls/Layouts/StaggeredPanel_Readme.md)** - Masonry-style layout panel
+- **[UniformSpacingPanel](src/Atc.Wpf/Controls/Layouts/UniformSpacingPanel_Readme.md)** - Panel with consistent item spacing
+
+### Media Controls
+
+- **[SvgImage](src/Atc.Wpf/Controls/Media/SvgImage_Readme.md)** - SVG image rendering control
+
+### Helpers & Utilities
+
+- **[PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)** - Helper methods for panel layout calculations
+
+### Additional Features
+
+- **[ShaderEffects](src/Atc.Wpf/Media/ShaderEffects/@Readme.md)** - HLSL-based visual effects
+  - [HLSL Shader Compiler Guide](src/Atc.Wpf/Media/ShaderEffects/Shaders/@Readme.md)
+- **[Translation & Localization](src/Atc.Wpf/Translation/@Readme.md)** - Multi-language support
+- **[ValueConverters](src/Atc.Wpf/ValueConverters/@Readme.md)** - Collection of XAML value converters
+
+## 💟 Atc.Wpf.Controls - Rich Control Library
+
+A comprehensive collection of specialized WPF controls for enterprise applications.
+
+### ⭐ Label Controls (25+ Controls)
+
+**[📖 Complete Label Controls Documentation](src/Atc.Wpf.Controls/LabelControls/Readme.md)**
+
+Labeled input controls with built-in validation, mandatory indicators, and consistent styling:
+
+- **Text Input**: LabelTextBox, LabelPasswordBox
+- **Number Input**: LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox
+- **Date/Time**: LabelDatePicker, LabelTimePicker, LabelDateTimePicker
+- **Selection**: LabelCheckBox, LabelComboBox, LabelToggleSwitch
+- **Selectors**: LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelWellKnownColorSelector
+- **Pickers**: LabelColorPicker, LabelDirectoryPicker, LabelFilePicker
+- **Network**: LabelEndpointBox (protocol + host + port with validation)
+- **Display**: LabelContent, LabelTextInfo
+
+All label controls support:
+
+- ✅ Deferred validation (shows errors only after user interaction)
+- ✅ Mandatory field indicators
+- ✅ Consistent styling and theming
+- ✅ MVVM-friendly data binding
+
+### ⭐ Base Controls (14 Controls)
+
+**[📖 Complete Base Controls Documentation](src/Atc.Wpf.Controls/BaseControls/Readme.md)**
+
+Unlabeled input controls that provide core functionality without the label wrapper:
+
+- **Text Input**: RichTextBoxEx
+- **Number Input**: IntegerBox, DecimalBox, IntegerXyBox, DecimalXyBox, PixelSizeBox
+- **Time Selection**: ClockPanelPicker
+- **Toggle**: ToggleSwitch
+- **Pickers**: ColorPicker, DirectoryPicker, FilePicker
+- **Network**: EndpointBox (protocol + host + port with validation)
+
+Base controls are perfect for:
+
+- 🎯 Custom layouts where you position labels yourself
+- 🧩 Building composite controls
+- 📐 Situations where labels are not needed
+- 🔨 Creating your own labeled control wrappers
+
+### Color Controls
+
+- **[WellKnownColorPicker](src/Atc.Wpf.Controls/ColorControls/WellKnownColorPicker_Readme.md)** - Predefined color palette picker
+
+### Additional Resources
+
+- **[ValueConverters](src/Atc.Wpf.Controls/ValueConverters/@Readme.md)** - Control-specific value converters
+
+## 💟 Atc.Wpf.FontIcons - Font-Based Icons
+
+Render SVG and image resources using font-based icon systems for crisp, scalable icons.
+
+### Features
+
+- 🎨 Scalable vector icons
+- 🎯 Font-based rendering
+- 📦 Multiple icon font support
+- 🌈 Color and size customization
+
+### Resources
+
+- **[ValueConverters](src/Atc.Wpf.FontIcons/ValueConverters/@Readme.md)** - Icon-related value converters
+
+## 💟 Atc.Wpf.Theming - Light & Dark Mode
+
+Complete theming infrastructure with Light and Dark mode support for all WPF controls.
+
+### Features
+
+- 🌓 Light/Dark theme switching
+- 🎨 Accent color customization
+- 🎯 Automatic control styling
+- 🔄 Runtime theme changes
+- 📱 Consistent visual design
+
+### Resources
+
+- **[ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)** - Theme-aware value converters
+
+---
+
+## 🎯 Source Generators
+
+Atc.Wpf includes powerful source generators to reduce boilerplate code:
+
+- **[ViewModel Generator](docs/SourceGenerators/ViewModel.md)** - Auto-generate ViewModels with observable properties
+- **[DependencyProperty Generator](docs/SourceGenerators/DependencyProperty.md)** - Auto-generate dependency properties
+- **[AttachedProperty Generator](docs/SourceGenerators/AttachedProperty.md)** - Auto-generate attached properties
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please read our guidelines:
+
+- **[Contribution Guidelines](https://atc-net.github.io/introduction/about-atc#how-to-contribute)** - How to contribute to ATC projects
+- **[Coding Guidelines](https://atc-net.github.io/introduction/about-atc#coding-guidelines)** - Code style and best practices
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+Built with ❤️ by the ATC.Net team and contributors.
+
+- Visit [atc-net.github.io](https://atc-net.github.io) for more ATC projects
+- Report issues on [GitHub Issues](https://github.com/atc-net/atc-wpf/issues)
+- Contribute on [GitHub](https://github.com/atc-net/atc-wpf)
