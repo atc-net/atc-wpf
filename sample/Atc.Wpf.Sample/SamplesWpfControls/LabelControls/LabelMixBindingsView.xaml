@@ -64,7 +64,19 @@
                             <TextBox Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=labelControls:LabelMixBindingsView}, Path=DataContext.FieldText3}" />
                         </atc:LabelContent>
 
-                        <atc:LabelWellKnownColorSelector IsMandatory="True" SelectedKey="{Binding Path=FieldSelectedKey3}" />
+                        <atc:LabelWellKnownColorSelector
+                            IsMandatory="True"
+                            LabelText="Color"
+                            SelectedKey="{Binding Path=FieldSelectedKey3}" />
+
+                        <atc:LabelEndpointBox
+                            x:Name="EndpointBox4"
+                            LabelText="Endpoint 4"
+                            NetworkProtocol="OpcTcp"
+                            NetworkValidation="IPv4Address"
+                            ShowClearTextButton="True"
+                            WatermarkText="192.168.1.1"
+                            Value="{Binding Path=FieldUri1}" />
 
                         <Button Command="{Binding Path=GoCommand}" Content="Go" />
 

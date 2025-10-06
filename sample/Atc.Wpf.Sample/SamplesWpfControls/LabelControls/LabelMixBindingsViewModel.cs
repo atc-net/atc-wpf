@@ -9,6 +9,7 @@ public sealed class LabelMixBindingsViewModel : ViewModelBase
     private string fieldText2 = string.Empty;
     private string fieldText3 = string.Empty;
     private string fieldSelectedKey3 = string.Empty;
+    private Uri? fieldUri1;
 
     public LabelMixBindingsViewModel()
     {
@@ -92,6 +93,16 @@ public sealed class LabelMixBindingsViewModel : ViewModelBase
         set
         {
             fieldSelectedKey3 = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Uri? FieldUri1
+    {
+        get => fieldUri1;
+        set
+        {
+            fieldUri1 = value;
             RaisePropertyChanged();
         }
     }

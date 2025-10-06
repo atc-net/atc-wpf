@@ -1,0 +1,41 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.BaseControls.EndpointBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Controls.BaseControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.LabelControls.Internal.ValueConverters"
+    mc:Ignorable="d">
+
+    <atc:GridEx Columns="Auto,1,*,10,Auto">
+
+        <TextBlock
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=NetworkProtocol, Converter={x:Static valueConverters:NetworkProtocolToStringValueConverter.Instance}, StringFormat='{}{0}://', FallbackValue='opc.tcp://'}" />
+
+        <TextBox
+            Grid.Column="2"
+            atc:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=ShowClearTextButton}"
+            atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=WatermarkText}"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock
+            Grid.Column="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text=":" />
+
+        <local:IntegerBox
+            Grid.Column="4"
+            MinWidth="60"
+            HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=HideUpDownButtons}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=MaximumPort, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=MinimumPort, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=Port, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}" />
+
+    </atc:GridEx>
+
+</UserControl>
