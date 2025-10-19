@@ -21,7 +21,7 @@ public partial class PersonViewModel : ViewModelBase
     [ObservableProperty]
     private string? email;
 
-    [ObservableProperty("TheProperty", DependentProperties = [nameof(FullName), nameof(Age)])]
+    [ObservableProperty("TheProperty", DependentPropertyNames = [nameof(FullName), nameof(Age)])]
     private string? myTestProperty;
 
     public string FullName => $"{FirstName} {LastName}";
