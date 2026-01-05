@@ -1,8 +1,11 @@
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>
-/// ValueConverter: Color To Solid-Color.
+/// ValueConverter: Color To Solid Color (sets Alpha to 255).
 /// </summary>
+/// <remarks>
+/// <para>One-way binding only. ConvertBack is not supported because the conversion is lossy (alpha channel is discarded).</para>
+/// </remarks>
 [ValueConversion(typeof(Color), typeof(Color))]
 public sealed class ColorToSolidColorValueConverter : IValueConverter
 {

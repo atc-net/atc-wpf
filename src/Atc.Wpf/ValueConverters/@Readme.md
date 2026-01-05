@@ -97,7 +97,7 @@ Or by the ValueConverter's Instance:
 | Hex-Color -> Color-Key    | HexColorToColorKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Color.Green                  |
 | Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
 | Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed<br/>1 -> Visible         | Not supported                           |
-| Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | Not supported                           |
+| Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | TimeSpan -> int (milliseconds) ✅       |
 | LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> DodgerBlue               | Not supported                           |
 | LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> DodgerBlue               | Not supported                           |
 | LogLevel -> Brush         | LogLevelToBrushValueConverter                            | Information -> DodgerBlue               | Not supported                           |
@@ -105,8 +105,8 @@ Or by the ValueConverter's Instance:
 |                           | ObservableDictionaryToDictionaryOfStringsValueConverter  |                                         |                                         |
 |                           | ThicknessBindingValueConverter                           |                                         | DependencyProperty.UnsetValue           |
 |                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |
-|                           | ThicknessToDoubleValueConverter                          |                                         | DependencyProperty.UnsetValue           |
-| DateTimeOffset -> DateTime| UtcToLocalDateTimeValueConverter                         |                                         | Not supported                           |
+| Thickness -> Double       | ThicknessToDoubleValueConverter                          | Thickness.Left -> double                | double -> Thickness (single side) ✅    |
+| DateTime (UTC) -> DateTime (Local) | UtcToLocalDateTimeValueConverter                  | UTC -> Local                            | Local -> UTC ✅                         |
 | Errors -> String          | ValidationErrorsToFirstValidationErrorContentValueConverter |                                      | Not supported                           |
 | Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |
 |                           | WindowResizeModeMinMaxButtonVisibilityMultiValueConverter|                                         |                                         |

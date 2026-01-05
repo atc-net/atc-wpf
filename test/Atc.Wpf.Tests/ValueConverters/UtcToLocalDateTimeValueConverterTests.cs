@@ -88,13 +88,82 @@ public sealed class UtcToLocalDateTimeValueConverterTests
     }
 
     [Fact]
-    public void ConvertBack_ShouldThrow()
+    public void ConvertBack_WithLocalDateTime_ShouldReturnUtcTime()
     {
+        // Arrange
+        var localDateTime = new DateTime(2024, 7, 15, 14, 30, 45, DateTimeKind.Local);
+
         // Act
-        var act = () => sut.ConvertBack(DateTime.Now, typeof(DateTime), null, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack(localDateTime, typeof(DateTime), null, CultureInfo.InvariantCulture);
 
         // Assert
-        act.Should().Throw<NotSupportedException>()
-           .WithMessage("This is a OneWay converter.");
+        var expectedUtc = localDateTime.ToUniversalTime();
+        result.Should().BeOfType<DateTime>()
+              .And.Match<DateTime>(d => d.Kind == DateTimeKind.Utc)
+              .And.Be(expectedUtc);
+    }
+
+    [Fact]
+    public void ConvertBack_WithUtcDateTime_ShouldReturnSameValue()
+    {
+        // Arrange
+        var utcDateTime = new DateTime(2024, 7, 15, 12, 30, 45, DateTimeKind.Utc);
+
+        // Act
+        var result = sut.ConvertBack(utcDateTime, typeof(DateTime), null, CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Should().BeOfType<DateTime>()
+              .And.Be(utcDateTime);
+    }
+
+    [Fact]
+    public void ConvertBack_WithUnspecifiedDateTime_ShouldAssumeLocalAndConvert()
+    {
+        // Arrange
+        var unspecified = new DateTime(2024, 7, 15, 14, 30, 45, DateTimeKind.Unspecified);
+
+        // Act
+        var result = sut.ConvertBack(unspecified, typeof(DateTime), null, CultureInfo.InvariantCulture);
+
+        // Assert
+        var expected = DateTime.SpecifyKind(unspecified, DateTimeKind.Local).ToUniversalTime();
+        result.Should().BeOfType<DateTime>()
+              .And.Be(expected);
+    }
+
+    [Fact]
+    public void ConvertBack_WithNull_ShouldReturnNull()
+    {
+        // Act
+        var result = sut.ConvertBack(null, typeof(DateTime), null, CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void ConvertBack_WithInvalidType_ShouldReturnNull()
+    {
+        // Act
+        var result = sut.ConvertBack("not a date", typeof(DateTime), null, CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void RoundTrip_ShouldPreserveValue()
+    {
+        // Arrange
+        var utcDateTime = new DateTime(2024, 7, 15, 12, 30, 45, DateTimeKind.Utc);
+
+        // Act
+        var localResult = sut.Convert(utcDateTime, typeof(DateTime), null, CultureInfo.InvariantCulture);
+        var utcResult = sut.ConvertBack(localResult, typeof(DateTime), null, CultureInfo.InvariantCulture);
+
+        // Assert
+        utcResult.Should().BeOfType<DateTime>()
+                 .And.Be(utcDateTime);
     }
 }
