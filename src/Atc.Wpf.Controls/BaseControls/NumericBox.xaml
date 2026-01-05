@@ -63,7 +63,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="ContextMenu" Value="{DynamicResource AtcApps.TextBox.ContextMenu}" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
