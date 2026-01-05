@@ -1,8 +1,11 @@
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>
-/// ValueConverter: Object To Bool.
+/// ValueConverter: Object To Bool (true if null).
 /// </summary>
+/// <remarks>
+/// <para>One-way binding only. ConvertBack is not supported because the original object cannot be reconstructed from a boolean.</para>
+/// </remarks>
 [ValueConversion(typeof(object), typeof(bool))]
 public sealed class IsNullValueConverter : IValueConverter
 {

@@ -1,8 +1,13 @@
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>
-/// ValueConverter: (SolidColor)Brush To Color.
+/// ValueConverter: SolidColorBrush To Color.
 /// </summary>
+/// <remarks>
+/// <para>Supports two-way binding.</para>
+/// <para>Convert: SolidColorBrush → Color</para>
+/// <para>ConvertBack: Color → SolidColorBrush</para>
+/// </remarks>
 [ValueConversion(typeof(SolidColorBrush), typeof(Color))]
 public sealed class BrushToColorValueConverter : IValueConverter
 {
