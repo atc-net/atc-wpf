@@ -6,10 +6,29 @@ namespace Atc.Wpf.Helpers;
 /// <summary>
 /// A Helper class for the Color-Struct.
 /// </summary>
+/// <remarks>
+/// <para>
+/// This class uses internal caches that are bounded by design:
+/// </para>
+/// <list type="bullet">
+/// <item><description><c>BaseColors</c> - populated once from WPF's <see cref="Colors"/> class (~140 colors)</description></item>
+/// <item><description><c>ColorNames</c> - populated per-culture from resource files</description></item>
+/// </list>
+/// <para>
+/// Hex color lookups are NOT cached - they use <see cref="ColorConverter"/> directly.
+/// </para>
+/// </remarks>
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 public static class ColorHelper
 {
+    /// <summary>
+    /// Cache of color keys to Color values. Bounded by WPF's Colors class (~140 colors).
+    /// </summary>
     private static readonly ConcurrentDictionary<string, Color> BaseColors = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Cache of culture LCID to color name dictionaries. Bounded by cultures used.
+    /// </summary>
     private static readonly ConcurrentDictionary<int, Dictionary<Color, string>> ColorNames = new();
 
     public static void InitializeWithSupportedLanguages()
