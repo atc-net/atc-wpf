@@ -73,7 +73,10 @@ internal static class TextRender
         ref double x,
         ref double y)
     {
-        ArgumentNullException.ThrowIfNull(tSpan.Children);
+        if (tSpan.Children is null)
+        {
+            return;
+        }
 
         foreach (var child in tSpan.Children)
         {

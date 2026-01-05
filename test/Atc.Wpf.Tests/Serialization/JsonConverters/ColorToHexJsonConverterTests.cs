@@ -1,3 +1,5 @@
+#pragma warning disable CA1305 // WPF Color.ToString() is culture-invariant (returns hex format)
+
 namespace Atc.Wpf.Tests.Serialization.JsonConverters;
 
 [Collection("Sequential")]

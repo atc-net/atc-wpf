@@ -16,10 +16,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ⚙️ Setup dotnet 9.0.x
+      - name: ⚙️ Setup dotnet 10.0.x
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
+          dotnet-version: "10.0.x"
 
       - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
@@ -41,10 +41,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ⚙️ Setup dotnet 9.0.x
+      - name: ⚙️ Setup dotnet 10.0.x
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
+          dotnet-version: "10.0.x"
 
       - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config

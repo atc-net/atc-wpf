@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.Controls</Title>
     <PackageId>Atc.Wpf.Controls</PackageId>
@@ -47,9 +47,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.562" />
-    <PackageReference Include="Atc.XamlToolkit" Version="1.5.62" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.62" />
+    <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.XamlToolkit" Version="1.5.81" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.81" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 

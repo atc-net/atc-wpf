@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.Theming</Title>
     <PackageId>Atc.Wpf.Theming</PackageId>
@@ -30,13 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.562" />
+    <PackageReference Include="Atc" Version="3.0.16" />
     <PackageReference Include="ControlzEx" version="7.0.2" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
     <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha0167" PrivateAssets="all" IncludeAssets="build" />-->
 
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.217">
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.264">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
