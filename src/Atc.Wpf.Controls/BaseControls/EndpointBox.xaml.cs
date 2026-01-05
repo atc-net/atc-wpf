@@ -86,6 +86,9 @@ public partial class EndpointBox
         Loaded += OnLoaded;
     }
 
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new EndpointBoxAutomationPeer(this);
+
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
