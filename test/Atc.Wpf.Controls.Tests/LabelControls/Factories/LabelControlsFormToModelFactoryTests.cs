@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Controls.Tests.LabelControls.Factories;
 
-[Collection(nameof(TestCollection))]
+[Collection("TestCollection")]
 [Trait(Traits.Category, Traits.Categories.Integration)]
 [Trait(Traits.Category, Traits.Categories.SkipWhenLiveUnitTesting)]
 public sealed class LabelControlsFormToModelFactoryTests

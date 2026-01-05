@@ -94,7 +94,7 @@ namespace Atc.Wpf.Theming.Controls
                 ? null
                 : VisualStateManager.GetVisualStateGroups(root)?
                     .OfType<VisualStateGroup>()
-                    .FirstOrDefault(group => string.CompareOrdinal(groupName, group.Name) == 0);
+                    .FirstOrDefault(group => string.Equals(groupName, group.Name, StringComparison.Ordinal));
         }
     }
 }

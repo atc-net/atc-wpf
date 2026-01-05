@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -50,14 +50,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="2.0.562" />
-    <PackageReference Include="Atc.XamlToolkit" Version="1.5.62" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.62" />
+    <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.XamlToolkit" Version="1.5.81" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.81" />
     <PackageReference Include="ControlzEx" Version="7.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup>

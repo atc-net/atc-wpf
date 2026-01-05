@@ -30,16 +30,10 @@ jobs:
         with:
           setAllVars: true
 
-      - name: ⚙️ Setup dotnet 9.0.x
+      - name: ⚙️ Setup dotnet 10.0.x
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
-
-      - name: ⚙️ Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: "zulu"
+          dotnet-version: "10.0.x"
 
       - name: 📐 Ensure nuget.org added as package source on Windows
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
@@ -53,20 +47,6 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: dotnet test -c Release --no-build
-
-      ### SonarQube is disabled due to: SonarQube analysis could not be completed because the analysis configuration file could not be found
-      # - name: 🌩️ SonarCloud install scanner
-      #   run: dotnet tool install --global dotnet-sonarscanner
-
-      # - name: 🌩️ SonarCloud analyze
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #   shell: pwsh
-      #   run: |
-      #     dotnet sonarscanner begin /k:"atc-wpf" /o:"atc-net" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-      #     dotnet build -c Release /p:UseSourceLink=true --no-restore
-      #     dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: ⏩ Merge to stable-branch
         run: |
