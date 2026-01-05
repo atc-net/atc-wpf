@@ -74,6 +74,9 @@ public partial class DirectoryPicker
         DataContext = this;
     }
 
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new DirectoryPickerAutomationPeer(this);
+
     private static Tuple<DirectoryInfo?, bool> CoerceValue(
         DependencyObject d,
         object? baseValue)

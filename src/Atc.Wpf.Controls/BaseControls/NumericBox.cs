@@ -225,6 +225,9 @@ public partial class NumericBox : Control
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new NumericBoxAutomationPeer(this);
+
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)

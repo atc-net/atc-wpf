@@ -39,6 +39,9 @@ public partial class ColorPicker
         DataContext = this;
     }
 
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new ColorPickerAutomationPeer(this);
+
     private static void OnColorValueChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)

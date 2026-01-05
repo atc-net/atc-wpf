@@ -81,6 +81,9 @@ public partial class FilePicker
         DataContext = this;
     }
 
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new FilePickerAutomationPeer(this);
+
     private static Tuple<FileInfo?, bool> CoerceValue(
         DependencyObject d,
         object? baseValue)
