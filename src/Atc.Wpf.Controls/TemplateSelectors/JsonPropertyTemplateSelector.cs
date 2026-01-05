@@ -1,6 +1,9 @@
 namespace Atc.Wpf.Controls.TemplateSelectors;
 
-public sealed class JPropertyDataTemplateSelector : DataTemplateSelector
+/// <summary>
+/// Selects the appropriate data template for JSON property nodes based on their value type.
+/// </summary>
+public sealed class JsonPropertyTemplateSelector : DataTemplateSelector
 {
     public DataTemplate? ObjectPropertyTemplate { get; set; }
 
@@ -12,7 +15,7 @@ public sealed class JPropertyDataTemplateSelector : DataTemplateSelector
         object? item,
         DependencyObject container)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -22,19 +25,17 @@ public sealed class JPropertyDataTemplateSelector : DataTemplateSelector
             return null;
         }
 
-        var type = item.GetType();
-        if (type == typeof(JProperty))
+        if (item is JsonPropertyNode propertyNode)
         {
-            var jProperty = item as JProperty;
-            return jProperty?.Value.Type switch
+            return propertyNode.ValueType switch
             {
-                JTokenType.Object => frameworkElement.FindResource("ObjectPropertyTemplate") as DataTemplate,
-                JTokenType.Array => frameworkElement.FindResource("ArrayPropertyTemplate") as DataTemplate,
+                JsonNodeType.Object => frameworkElement.FindResource("ObjectPropertyTemplate") as DataTemplate,
+                JsonNodeType.Array => frameworkElement.FindResource("ArrayPropertyTemplate") as DataTemplate,
                 _ => frameworkElement.FindResource("PrimitivePropertyTemplate") as DataTemplate,
             };
         }
 
-        var key = new DataTemplateKey(type);
+        var key = new DataTemplateKey(item.GetType());
         return frameworkElement.FindResource(key) as DataTemplate;
     }
 }

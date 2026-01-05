@@ -63,6 +63,7 @@ global using Atc.Wpf.Controls.Progressing.Internal;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Controls.SettingsControls;
+global using Atc.Wpf.Controls.Viewers.JsonTree;
 global using Atc.Wpf.Controls.ViewModels;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Data.Models;
@@ -85,5 +86,3 @@ global using ControlzEx.Theming;
 
 global using Microsoft.Win32;
 global using Microsoft.Xaml.Behaviors;
-
-global using Newtonsoft.Json.Linq;

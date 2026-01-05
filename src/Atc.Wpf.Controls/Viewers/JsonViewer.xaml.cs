@@ -56,16 +56,12 @@ public partial class JsonViewer
             return;
         }
 
-        var children = new List<JToken>();
+        var children = new List<JsonNode>();
 
         try
         {
-            var token = JToken.Parse(json);
-
-            if (token != null)
-            {
-                children.Add(token);
-            }
+            var node = JsonNode.Parse(json);
+            children.Add(node);
 
             JsonTreeView.ItemsSource = children;
         }

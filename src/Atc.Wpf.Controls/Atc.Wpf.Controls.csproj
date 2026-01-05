@@ -50,7 +50,6 @@
     <PackageReference Include="Atc" Version="3.0.16" />
     <PackageReference Include="Atc.XamlToolkit" Version="1.5.81" />
     <PackageReference Include="Atc.XamlToolkit.Wpf" Version="1.5.81" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
