@@ -21,6 +21,7 @@
         <sample:SampleTreeViewItem Header="PanelHelper" SamplePath="Controls.Layouts.PanelHelperView" />
         <sample:SampleTreeViewItem Header="ReversibleStackPanel" SamplePath="Controls.Layouts.ReversibleStackPanelView" />
         <sample:SampleTreeViewItem Header="StaggeredPanel" SamplePath="Controls.Layouts.StaggeredPanelView" />
+        <sample:SampleTreeViewItem Header="VirtualizingStaggeredPanel" SamplePath="Controls.Layouts.VirtualizingStaggeredPanelView" />
         <sample:SampleTreeViewItem Header="UniformSpacingPanel" SamplePath="Controls.Layouts.UniformSpacingPanelView" />
     </TreeViewItem>
 

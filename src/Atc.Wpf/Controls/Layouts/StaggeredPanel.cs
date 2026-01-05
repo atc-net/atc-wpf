@@ -2,26 +2,68 @@
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 namespace Atc.Wpf.Controls.Layouts;
 
+/// <summary>
+/// A panel that arranges items in a staggered/masonry layout.
+/// Items are placed in the column with the least height, creating a waterfall effect.
+/// </summary>
+/// <remarks>
+/// <para>
+/// This panel measures and arranges all children, which is suitable for small to medium collections.
+/// For large collections (hundreds or thousands of items), consider using
+/// <see cref="VirtualizingStaggeredPanel"/> which implements virtualization.
+/// </para>
+/// <para>
+/// The number of columns is automatically calculated based on <see cref="DesiredItemWidth"/>
+/// and the available width. When <see cref="FrameworkElement.HorizontalAlignment"/> is set to
+/// <see cref="HorizontalAlignment.Stretch"/>, columns will expand to fill available space.
+/// </para>
+/// </remarks>
+/// <example>
+/// <code>
+/// &lt;atc:StaggeredPanel DesiredItemWidth="200" HorizontalSpacing="10" VerticalSpacing="10"&gt;
+///     &lt;Border Height="100" Background="Red"/&gt;
+///     &lt;Border Height="150" Background="Green"/&gt;
+///     &lt;Border Height="120" Background="Blue"/&gt;
+/// &lt;/atc:StaggeredPanel&gt;
+/// </code>
+/// </example>
 public sealed partial class StaggeredPanel : Panel
 {
-    private const int ArrayMaxItems = 10_000;
     private double itemWidth;
 
+    /// <summary>
+    /// Gets or sets the desired width for each column.
+    /// The actual width may be larger if <see cref="FrameworkElement.HorizontalAlignment"/>
+    /// is set to <see cref="HorizontalAlignment.Stretch"/>.
+    /// </summary>
+    /// <value>The desired column width in device-independent units. Default is 250.</value>
     [DependencyProperty(
         DefaultValue = 250,
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
     private double desiredItemWidth;
 
+    /// <summary>
+    /// Gets or sets the padding inside the panel.
+    /// </summary>
+    /// <value>The padding as a <see cref="Thickness"/>. Default is 0 on all sides.</value>
     [DependencyProperty(
         DefaultValue = "default(Thickness)",
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
     private Thickness padding;
 
+    /// <summary>
+    /// Gets or sets the horizontal spacing between columns.
+    /// </summary>
+    /// <value>The horizontal spacing in device-independent units. Default is 0.</value>
     [DependencyProperty(
         DefaultValue = 0,
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
     private double horizontalSpacing;
 
+    /// <summary>
+    /// Gets or sets the vertical spacing between items in a column.
+    /// </summary>
+    /// <value>The vertical spacing in device-independent units. Default is 0.</value>
     [DependencyProperty(
         DefaultValue = 0,
         PropertyChangedCallback = nameof(OnInvalidateMeasure))]
@@ -42,6 +84,7 @@ public sealed partial class StaggeredPanel : Panel
             new FrameworkPropertyMetadata(OnHorizontalAlignmentChanged));
     }
 
+    /// <inheritdoc />
     protected override Size MeasureOverride(
         Size availableSize)
     {
@@ -54,12 +97,12 @@ public sealed partial class StaggeredPanel : Panel
         var availableHeight = availableSize.Height - Padding.Top - Padding.Bottom;
 
         itemWidth = System.Math.Min(DesiredItemWidth, availableWidth);
-        var numItems = System.Math.Max(1, (int)System.Math.Floor(availableWidth / (itemWidth + HorizontalSpacing)));
+        var numColumns = System.Math.Max(1, (int)System.Math.Floor(availableWidth / (itemWidth + HorizontalSpacing)));
 
-        var totalWidth = itemWidth + ((numItems - 1) * (itemWidth + HorizontalSpacing));
+        var totalWidth = itemWidth + ((numColumns - 1) * (itemWidth + HorizontalSpacing));
         if (totalWidth > availableWidth)
         {
-            numItems--;
+            numColumns--;
         }
         else if (double.IsInfinity(availableWidth))
         {
@@ -68,39 +111,44 @@ public sealed partial class StaggeredPanel : Panel
 
         if (HorizontalAlignment == HorizontalAlignment.Stretch)
         {
-            var occupiedSpacing = (numItems - 1) * HorizontalSpacing;
+            var occupiedSpacing = (numColumns - 1) * HorizontalSpacing;
             if (availableWidth < occupiedSpacing)
             {
                 occupiedSpacing = availableWidth;
             }
 
             availableWidth -= occupiedSpacing;
-            itemWidth = availableWidth / numItems;
+            itemWidth = availableWidth / numColumns;
         }
 
-        numItems = System.Math.Min(numItems, ArrayMaxItems);
-        var itemHeights = new double[numItems];
-        var itemsPerColumn = new double[numItems];
+        var columnHeights = new double[numColumns];
+        var itemsPerColumn = new int[numColumns];
 
         for (var i = 0; i < Children.Count; i++)
         {
-            var itemIndex = GetItemIndex(itemHeights);
+            var columnIndex = GetShortestColumnIndex(columnHeights);
 
             var child = Children[i];
             child.Measure(new Size(itemWidth, availableHeight));
             var elementSize = child.DesiredSize;
-            itemHeights[itemIndex] += elementSize.Height + (itemsPerColumn[itemIndex] > 0 ? VerticalSpacing : 0);
-            itemsPerColumn[itemIndex]++;
+            columnHeights[columnIndex] += elementSize.Height + (itemsPerColumn[columnIndex] > 0 ? VerticalSpacing : 0);
+            itemsPerColumn[columnIndex]++;
         }
 
-        var desiredHeight = itemHeights.Max();
+        var desiredHeight = columnHeights.Length > 0 ? columnHeights.Max() : 0;
 
         return new Size(availableWidth, desiredHeight);
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(
         Size finalSize)
     {
+        if (Children.Count == 0)
+        {
+            return finalSize;
+        }
+
         var horizontalOffset = Padding.Left;
         var verticalOffset = Padding.Top;
         var numColumns = System.Math.Max(1, (int)System.Math.Floor((finalSize.Width + HorizontalSpacing) / (itemWidth + HorizontalSpacing)));
@@ -122,17 +170,15 @@ public sealed partial class StaggeredPanel : Panel
                 break;
         }
 
-        numColumns = System.Math.Min(numColumns, ArrayMaxItems);
         var columnHeights = new double[numColumns];
-        var itemsPerColumn = new double[numColumns];
+        var itemsPerColumn = new int[numColumns];
 
         for (var i = 0; i < Children.Count; i++)
         {
-            var columnIndex = GetItemIndex(columnHeights);
+            var columnIndex = GetShortestColumnIndex(columnHeights);
 
             var child = Children[i];
             var elementSize = child.DesiredSize;
-
             var elementHeight = elementSize.Height;
 
             var itemHorizontalOffset = horizontalOffset + (itemWidth * columnIndex) + (HorizontalSpacing * columnIndex);
@@ -160,18 +206,18 @@ public sealed partial class StaggeredPanel : Panel
         panel.InvalidateMeasure();
     }
 
-    private static int GetItemIndex(
-        IReadOnlyList<double> itemHeights)
+    private static int GetShortestColumnIndex(
+        IReadOnlyList<double> columnHeights)
     {
         var columnIndex = 0;
-        var height = itemHeights[0];
+        var height = columnHeights[0];
 
-        for (var j = 1; j < itemHeights.Count; j++)
+        for (var j = 1; j < columnHeights.Count; j++)
         {
-            if (itemHeights[j] < height)
+            if (columnHeights[j] < height)
             {
                 columnIndex = j;
-                height = itemHeights[j];
+                height = columnHeights[j];
             }
         }
 
