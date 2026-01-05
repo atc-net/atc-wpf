@@ -2,6 +2,7 @@ namespace Atc.Wpf.Controls.Notifications;
 
 public sealed partial class ToastNotificationArea : Control
 {
+    private readonly Lock itemsLock = new();
     private IList? items;
 
     [DependencyProperty(DefaultValue = ToastNotificationPosition.BottomRight)]
@@ -75,15 +76,16 @@ public sealed partial class ToastNotificationArea : Control
         }
 
         ToastNotification? toastNotificationToClose = null;
-        items ??= new List<ToastNotification>();
 
-        lock (items)
+        lock (itemsLock)
         {
+            items ??= new List<ToastNotification>();
             items.Add(toastNotification);
 
-            if (items.OfType<ToastNotification>().Where(i => !i.IsClosing).Skip(MaxItems).Any())
+            var notifications = items.OfType<ToastNotification>().Where(i => !i.IsClosing).Skip(MaxItems).ToList();
+            if (notifications.Count > 0)
             {
-                toastNotificationToClose = items.OfType<ToastNotification>().First(i => !i.IsClosing);
+                toastNotificationToClose = notifications[0];
             }
         }
 
@@ -103,6 +105,9 @@ public sealed partial class ToastNotificationArea : Control
         RoutedEventArgs routedEventArgs)
     {
         var notification = sender as ToastNotification;
-        items?.Remove(notification);
+        lock (itemsLock)
+        {
+            items?.Remove(notification);
+        }
     }
 }
