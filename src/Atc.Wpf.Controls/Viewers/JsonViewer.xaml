@@ -7,7 +7,7 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:colorSchemas="clr-namespace:Atc.Wpf.Controls.Documents.ColorSchemas;assembly=Atc.Wpf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:jLinq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
+    xmlns:jsonTree="clr-namespace:Atc.Wpf.Controls.Viewers.JsonTree"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templateSelectors="clr-namespace:Atc.Wpf.Controls.TemplateSelectors"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.ValueConverters"
@@ -32,7 +32,7 @@
             </Style.Triggers>
         </Style>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JArray}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
+        <HierarchicalDataTemplate DataType="{x:Type jsonTree:JsonArrayNode}" ItemsSource="{Binding Converter={x:Static valueConverters:JsonNodeChildrenConverter.Instance}}">
             <StackPanel Margin="1" Orientation="Horizontal">
                 <TextBlock
                     Margin="0,0,5,0"
@@ -41,14 +41,14 @@
                     Foreground="WhiteSmoke"
                     Opacity="0.4"
                     Text="array" />
-                <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JArrayLengthValueConverter.Instance}}" />
+                <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JsonArrayLengthConverter.Instance}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate
             x:Key="ArrayPropertyTemplate"
-            DataType="{x:Type jLinq:JProperty}"
-            ItemsSource="{Binding Converter={x:Static valueConverters:ComplexPropertyMethodToValueConverter.Instance}, ConverterParameter='Children'}">
+            DataType="{x:Type jsonTree:JsonPropertyNode}"
+            ItemsSource="{Binding Converter={x:Static valueConverters:JsonNodeChildrenConverter.Instance}}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
@@ -61,14 +61,14 @@
                     Foreground="WhiteSmoke"
                     Opacity="0.4"
                     Text="array" />
-                <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JArrayLengthValueConverter.Instance}}" />
+                <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JsonArrayLengthConverter.Instance}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate
             x:Key="ObjectPropertyTemplate"
-            DataType="{x:Type jLinq:JProperty}"
-            ItemsSource="{Binding Converter={x:Static valueConverters:ComplexPropertyMethodToValueConverter.Instance}, ConverterParameter='Children'}">
+            DataType="{x:Type jsonTree:JsonPropertyNode}"
+            ItemsSource="{Binding Converter={x:Static valueConverters:JsonNodeChildrenConverter.Instance}}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}" Text="{Binding Path=Name, Mode=OneWay}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
@@ -78,15 +78,15 @@
             </StackPanel>
         </HierarchicalDataTemplate>
 
-        <DataTemplate x:Key="PrimitivePropertyTemplate" DataType="{x:Type jLinq:JProperty}">
+        <DataTemplate x:Key="PrimitivePropertyTemplate" DataType="{x:Type jsonTree:JsonPropertyNode}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
                     <Run Text=":   " />
                 </TextBlock>
                 <TextBlock
-                    Foreground="{Binding Converter={x:Static valueConverters:JPropertyTypeToColorValueConverter.Instance}}"
-                    Text="{Binding Path=Value, Converter={x:Static valueConverters:JValueConverter.Instance}}"
+                    Foreground="{Binding Converter={x:Static valueConverters:JsonPropertyTypeToColorConverter.Instance}}"
+                    Text="{Binding Path=Value, Converter={x:Static valueConverters:JsonValueDisplayConverter.Instance}}"
                     TextWrapping="Wrap">
                     <TextBlock.Width>
                         <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}">
@@ -98,32 +98,24 @@
             </StackPanel>
         </DataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JObject}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
+        <HierarchicalDataTemplate DataType="{x:Type jsonTree:JsonObjectNode}" ItemsSource="{Binding Converter={x:Static valueConverters:JsonNodeChildrenConverter.Instance}}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock Text=" " />
                 <TextBlock Foreground="#729fcf" Text="{}{ }" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JConstructor}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
-            <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="Constructor" />
-        </HierarchicalDataTemplate>
-
-        <HierarchicalDataTemplate DataType="{x:Type jLinq:JRaw}" ItemsSource="{Binding Converter={x:Static valueConverters:MethodToValueConverter.Instance}, ConverterParameter='Children'}">
-            <TextBlock Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="Raw" />
-        </HierarchicalDataTemplate>
-
-        <templateSelectors:JPropertyDataTemplateSelector
-            x:Key="JPropertyDataTemplateSelector"
+        <templateSelectors:JsonPropertyTemplateSelector
+            x:Key="JsonPropertyTemplateSelector"
             ArrayPropertyTemplate="{StaticResource ArrayPropertyTemplate}"
             ObjectPropertyTemplate="{StaticResource ObjectPropertyTemplate}"
             PrimitivePropertyTemplate="{StaticResource PrimitivePropertyTemplate}" />
 
-        <DataTemplate DataType="{x:Type jLinq:JValue}">
+        <DataTemplate DataType="{x:Type jsonTree:JsonValueNode}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
                 <TextBlock
-                    Foreground="{Binding Converter={x:Static valueConverters:JValueTypeToColorValueConverter.Instance}}"
-                    Text="{Binding Converter={x:Static valueConverters:JValueConverter.Instance}}"
+                    Foreground="{Binding Converter={x:Static valueConverters:JsonValueTypeToColorConverter.Instance}}"
+                    Text="{Binding Converter={x:Static valueConverters:JsonValueDisplayConverter.Instance}}"
                     TextWrapping="Wrap">
                     <TextBlock.Width>
                         <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}">
@@ -245,7 +237,7 @@
             BorderThickness="1"
             DockPanel.Dock="Bottom"
             IsTextSearchEnabled="True"
-            ItemTemplateSelector="{StaticResource JPropertyDataTemplateSelector}">
+            ItemTemplateSelector="{StaticResource JsonPropertyTemplateSelector}">
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Click="ExpandAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">

@@ -1,8 +1,11 @@
 namespace Atc.Wpf.Controls.ValueConverters;
 
-public sealed class JValueConverter : IValueConverter
+/// <summary>
+/// Converts a JsonNode to its children for hierarchical data binding.
+/// </summary>
+public sealed class JsonNodeChildrenConverter : IValueConverter
 {
-    public static readonly JValueConverter Instance = new();
+    public static readonly JsonNodeChildrenConverter Instance = new();
 
     public object? Convert(
         object? value,
@@ -10,17 +13,12 @@ public sealed class JValueConverter : IValueConverter
         object? parameter,
         CultureInfo culture)
     {
-        if (value is not JValue jValue)
+        if (value is not JsonNode node)
         {
-            return value;
+            return null;
         }
 
-        return jValue.Type switch
-        {
-            JTokenType.String => "\"" + jValue.Value + "\"",
-            JTokenType.Null => "null",
-            _ => value,
-        };
+        return node.Children();
     }
 
     public object ConvertBack(
