@@ -7,7 +7,6 @@ public static class WindowPlacementHelper
     private static readonly Encoding Encoding = new UTF8Encoding();
     private static readonly XmlSerializer Serializer = new(typeof(WINDOWPLACEMENT));
 
-    [SuppressMessage("Security", "CA5369:Use XmlReader for 'XmlSerializer.Deserialize()'", Justification = "OK.")]
     public static void SetPlacement(IntPtr windowHandle, string placementXml)
     {
         if (string.IsNullOrEmpty(placementXml))
@@ -20,7 +19,13 @@ public static class WindowPlacementHelper
         try
         {
             using var memoryStream = new MemoryStream(xmlBytes);
-            var placement = (WINDOWPLACEMENT)Serializer.Deserialize(memoryStream)!;
+            var settings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Prohibit,
+                XmlResolver = null,
+            };
+            using var reader = XmlReader.Create(memoryStream, settings);
+            var placement = (WINDOWPLACEMENT)Serializer.Deserialize(reader)!;
 
             placement.length = Marshal.SizeOf<WINDOWPLACEMENT>();
             placement.flags = 0;

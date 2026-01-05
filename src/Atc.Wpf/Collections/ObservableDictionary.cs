@@ -52,7 +52,7 @@ public sealed class ObservableDictionary<TKey, TValue>
     {
         value = default!;
         var r = GetKvpByTheKey(key);
-        if (!Equals(r, default))
+        if (Equals(r, default))
         {
             return false;
         }
