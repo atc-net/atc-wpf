@@ -46,7 +46,6 @@ global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 
 global using ControlzEx;
-global using ControlzEx.Native;
 global using ControlzEx.Theming;
 
 global using Microsoft.Xaml.Behaviors;

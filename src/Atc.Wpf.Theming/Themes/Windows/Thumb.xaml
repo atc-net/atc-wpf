@@ -4,7 +4,7 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
+                <ControlTemplate TargetType="{x:Type Thumb}">
                     <Grid Background="{TemplateBinding Background}" />
                 </ControlTemplate>
             </Setter.Value>

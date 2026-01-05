@@ -540,8 +540,6 @@ public partial class NiceWindow : WindowChromeWindow
             return;
         }
 
-        PInvoke.ReleaseCapture();
-
         if (windowIsMaximized)
         {
             // ReSharper disable once ConvertToLocalFunction
@@ -560,15 +558,19 @@ public partial class NiceWindow : WindowChromeWindow
             window.StateChanged += onWindowStateChanged;
         }
 
-        var wpfPoint = window.PointToScreen(Mouse.GetPosition(window));
-        var x = (int)wpfPoint.X;
-        var y = (int)wpfPoint.Y;
-
-        PInvoke.SendMessage(
-            new HWND(window.CriticalHandle),
-            PInvoke.WM_NCLBUTTONDOWN,
-            new WPARAM((nuint)HT.CAPTION),
-            new IntPtr(x | y << 16));
+        // Use WPF's DragMove instead of PInvoke for better compatibility
+        if (Mouse.LeftButton == MouseButtonState.Pressed)
+        {
+            PInvoke.ReleaseCapture();
+            try
+            {
+                window.DragMove();
+            }
+            catch (InvalidOperationException)
+            {
+                // DragMove can throw if the mouse button is not pressed
+            }
+        }
     }
 
     internal static void DoWindowTitleThumbChangeWindowStateOnMouseDoubleClick(

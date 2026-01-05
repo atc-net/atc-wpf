@@ -64,6 +64,8 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="3"
+                            Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                            controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
                             Style="{StaticResource AtcApps.Styles.Thumb.WindowTitle}"
                             UseLayoutRounding="True" />
 
@@ -92,6 +94,7 @@
                                 HorizontalAlignment="{TemplateBinding TitleAlignment}"
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
+                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
                                 Content="{TemplateBinding Title}"
                                 ContentCharacterCasing="{TemplateBinding TitleCharacterCasing}"
                                 ContentTemplate="{TemplateBinding TitleTemplate}"
