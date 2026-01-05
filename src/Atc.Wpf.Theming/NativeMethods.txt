@@ -1,4 +1,3 @@
-GetKeyNameText
 GetMonitorInfo
 GetWindowPlacement
 GetWindowRect
@@ -6,17 +5,6 @@ GetWindowText
 GetWindowTextLength
 LoadLibrary
 LoadString
-MapVirtualKey
 MonitorFromWindow
 ReleaseCapture
-SendMessage
 SetWindowPlacement
-SetWindowPos
-
-HWND_BOTTOM
-HWND_TOP
-HWND_NOTOPMOST
-HWND_TOPMOST
-
-WM_HOTKEY
-WM_NCLBUTTONDOWN

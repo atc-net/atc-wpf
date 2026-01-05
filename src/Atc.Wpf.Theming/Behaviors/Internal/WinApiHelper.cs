@@ -51,7 +51,11 @@ internal static class WinApiHelper
             cbSize = (uint)Marshal.SizeOf<MONITORINFO>(),
         };
 
-        PInvoke.GetMonitorInfo(monitor, &monitorInfo);
+        if (!PInvoke.GetMonitorInfo(monitor, &monitorInfo))
+        {
+            return default;
+        }
+
         return new Size(monitorInfo.rcWork.right - monitorInfo.rcWork.left, monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
     }
 

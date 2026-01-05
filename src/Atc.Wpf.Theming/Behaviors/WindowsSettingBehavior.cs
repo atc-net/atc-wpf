@@ -193,8 +193,10 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
                                 cbSize = (uint)Marshal.SizeOf<MONITORINFO>(),
                             };
 
-                            PInvoke.GetMonitorInfo(monitor, &monitorInfo);
-                            rect.Offset(monitorInfo.rcMonitor.left - monitorInfo.rcWork.left, monitorInfo.rcMonitor.top - monitorInfo.rcWork.top);
+                            if (PInvoke.GetMonitorInfo(monitor, &monitorInfo))
+                            {
+                                rect.Offset(monitorInfo.rcMonitor.left - monitorInfo.rcWork.left, monitorInfo.rcMonitor.top - monitorInfo.rcWork.top);
+                            }
                         }
 
                         wp.rcNormalPosition = rect;
