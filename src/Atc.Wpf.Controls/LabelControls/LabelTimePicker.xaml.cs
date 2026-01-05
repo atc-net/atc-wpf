@@ -248,75 +248,27 @@ public partial class LabelTimePicker : ILabelTimePicker
     private static void OnLostFocusFireValidEvent(
         LabelTimePicker control,
         DependencyPropertyChangedEventArgs e)
-    {
-        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-
-        DateTime? oldValue = null;
-        if (e.OldValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
-                e.OldValue.ToString()!,
-                cultureInfo,
-                out var resultOld))
-        {
-            oldValue = resultOld;
-        }
-
-        DateTime? newValue = null;
-        if (e.NewValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
-                e.NewValue.ToString()!,
-                cultureInfo,
-                out var resultNew))
-        {
-            newValue = resultNew;
-        }
-
-        control.LostFocusValid?.Invoke(
+        => DateTimePickerEventHelper.FireLostFocusValidEvent(
             control,
-            new ValueChangedEventArgs<DateTime?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
-    }
+            e,
+            control.CustomCulture,
+            DateTimeHelper.TryParseShortTimeUsingSpecificCulture,
+            control.LostFocusValid);
 
     private static void OnLostFocusFireInvalidEvent(
         LabelTimePicker control,
         DependencyPropertyChangedEventArgs e)
-    {
-        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-
-        DateTime? oldValue = null;
-        if (e.OldValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
-                e.OldValue.ToString()!,
-                cultureInfo,
-                out var resultOld))
-        {
-            oldValue = resultOld;
-        }
-
-        DateTime? newValue = null;
-        if (e.NewValue is not null &&
-            DateTimeHelper.TryParseShortTimeUsingSpecificCulture(
-                e.NewValue.ToString()!,
-                cultureInfo,
-                out var resultNew))
-        {
-            newValue = resultNew;
-        }
-
-        control.LostFocusInvalid?.Invoke(
+        => DateTimePickerEventHelper.FireLostFocusInvalidEvent(
             control,
-            new ValueChangedEventArgs<DateTime?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
-    }
+            e,
+            control.CustomCulture,
+            DateTimeHelper.TryParseShortTimeUsingSpecificCulture,
+            control.LostFocusInvalid);
 
     private static object CoerceText(
         DependencyObject d,
         object? value)
-        => value ?? string.Empty;
+        => DateTimePickerEventHelper.CoerceText(value);
 
     private void SetDefaultWatermarkIfNeeded(
         CultureInfo cultureInfo)

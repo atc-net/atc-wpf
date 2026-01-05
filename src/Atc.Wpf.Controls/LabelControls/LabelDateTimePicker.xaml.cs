@@ -343,79 +343,29 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     private static void OnLostFocusFireValidEvent(
         LabelDateTimePicker control,
         DependencyPropertyChangedEventArgs e)
-    {
-        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-
-        DateTime? oldValue = null;
-        if (e.OldValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
-                control.SelectedDateFormat,
-                e.OldValue.ToString()!,
-                cultureInfo,
-                out var resultOld))
-        {
-            oldValue = resultOld;
-        }
-
-        DateTime? newValue = null;
-        if (e.NewValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
-                control.SelectedDateFormat,
-                e.NewValue.ToString()!,
-                cultureInfo,
-                out var resultNew))
-        {
-            newValue = resultNew;
-        }
-
-        control.LostFocusValid?.Invoke(
+        => DateTimePickerEventHelper.FireLostFocusValidEvent(
             control,
-            new ValueChangedEventArgs<DateTime?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
-    }
+            e,
+            control.CustomCulture,
+            (string value, CultureInfo culture, out DateTime result) =>
+                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(control.SelectedDateFormat, value, culture, out result),
+            control.LostFocusValid);
 
     private static void OnLostFocusFireInvalidEvent(
         LabelDateTimePicker control,
         DependencyPropertyChangedEventArgs e)
-    {
-        var cultureInfo = control.CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-
-        DateTime? oldValue = null;
-        if (e.OldValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
-                control.SelectedDateFormat,
-                e.OldValue.ToString()!,
-                cultureInfo,
-                out var resultOld))
-        {
-            oldValue = resultOld;
-        }
-
-        DateTime? newValue = null;
-        if (e.NewValue is not null &&
-            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
-                control.SelectedDateFormat,
-                e.NewValue.ToString()!,
-                cultureInfo,
-                out var resultNew))
-        {
-            newValue = resultNew;
-        }
-
-        control.LostFocusInvalid?.Invoke(
+        => DateTimePickerEventHelper.FireLostFocusInvalidEvent(
             control,
-            new ValueChangedEventArgs<DateTime?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
-    }
+            e,
+            control.CustomCulture,
+            (string value, CultureInfo culture, out DateTime result) =>
+                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(control.SelectedDateFormat, value, culture, out result),
+            control.LostFocusInvalid);
 
     private static object CoerceText(
         DependencyObject d,
         object? value)
-        => value ?? string.Empty;
+        => DateTimePickerEventHelper.CoerceText(value);
 
     private void SetDefaultWatermarkIfNeeded(
         CultureInfo cultureInfo)
