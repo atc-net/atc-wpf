@@ -1,4 +1,3 @@
-// ReSharper disable AsyncVoidMethod
 namespace Atc.Wpf.Controls.Notifications;
 
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
@@ -53,9 +52,17 @@ public sealed partial class ToastNotification : ContentControl
                     x.Children.Select(ch => ch.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero)).Max().Ticks)) ?? 0);
     }
 
-    [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK - Need 'async void' and not 'async Task'")]
-    [SuppressMessage("Major Bug", "S3168:\"async\" methods should not return \"void\"", Justification = "OK - Need 'async void' and not 'async Task'")]
-    public async void Close()
+    /// <summary>
+    /// Closes the notification with animation. Fire-and-forget wrapper for <see cref="CloseAsync"/>.
+    /// </summary>
+    public void Close()
+        => _ = CloseAsync();
+
+    /// <summary>
+    /// Closes the notification with animation asynchronously.
+    /// </summary>
+    /// <returns>A task that completes when the notification is fully closed.</returns>
+    public async Task CloseAsync()
     {
         if (IsClosing)
         {

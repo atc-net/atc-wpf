@@ -30,10 +30,29 @@ public sealed partial class ToastNotificationArea : Control
         items = itemsControl?.Children;
     }
 
-    [SuppressMessage("AsyncUsage", "AsyncFixer03:Fire-and-forget async-void methods or delegates", Justification = "OK - Need 'async void' and not 'async Task'")]
-    [SuppressMessage("Major Bug", "S3168:\"async\" methods should not return \"void\"", Justification = "OK - Need 'async void' and not 'async Task'")]
-    [SuppressMessage("ReSharper", "AsyncVoidMethod", Justification = "OK - Need 'async void' and not 'async Task'")]
-    public async void Show(
+    /// <summary>
+    /// Shows a toast notification. Fire-and-forget wrapper for <see cref="ShowAsync"/>.
+    /// </summary>
+    /// <param name="contentControl">The content to display.</param>
+    /// <param name="expirationTime">Time before auto-close. Use TimeSpan.MaxValue for no auto-close.</param>
+    /// <param name="onClick">Action to invoke when clicked.</param>
+    /// <param name="onClose">Action to invoke when closed.</param>
+    public void Show(
+        ContentControl contentControl,
+        TimeSpan expirationTime,
+        Action? onClick,
+        Action? onClose)
+        => _ = ShowAsync(contentControl, expirationTime, onClick, onClose);
+
+    /// <summary>
+    /// Shows a toast notification asynchronously.
+    /// </summary>
+    /// <param name="contentControl">The content to display.</param>
+    /// <param name="expirationTime">Time before auto-close. Use TimeSpan.MaxValue for no auto-close.</param>
+    /// <param name="onClick">Action to invoke when clicked.</param>
+    /// <param name="onClose">Action to invoke when closed.</param>
+    /// <returns>A task that completes when the notification expires or is closed.</returns>
+    public async Task ShowAsync(
         ContentControl contentControl,
         TimeSpan expirationTime,
         Action? onClick,
@@ -89,7 +108,10 @@ public sealed partial class ToastNotificationArea : Control
             }
         }
 
-        toastNotificationToClose?.Close();
+        if (toastNotificationToClose is not null)
+        {
+            await toastNotificationToClose.CloseAsync().ConfigureAwait(true);
+        }
 
         if (expirationTime == TimeSpan.MaxValue)
         {
@@ -97,7 +119,7 @@ public sealed partial class ToastNotificationArea : Control
         }
 
         await Task.Delay(expirationTime).ConfigureAwait(true);
-        toastNotification.Close();
+        await toastNotification.CloseAsync().ConfigureAwait(true);
     }
 
     private void OnNotificationClosed(
