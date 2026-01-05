@@ -3,6 +3,7 @@ namespace Atc.Wpf.Controls.Viewers.JsonTree;
 /// <summary>
 /// Specifies the type of a JSON node.
 /// </summary>
+[SuppressMessage("", "CA1720:Identifier", Justification = "OK")]
 public enum JsonNodeType
 {
     /// <summary>
