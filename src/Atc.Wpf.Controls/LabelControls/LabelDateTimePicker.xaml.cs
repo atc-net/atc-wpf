@@ -82,11 +82,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-
-        SetDefaultWatermarkIfNeeded(cultureInfo);
-    }
+        => SetDefaultWatermarkIfNeeded(CustomCulture ?? Thread.CurrentThread.CurrentUICulture);
 
     private void OnUiCultureChanged(
         object? sender,
@@ -109,7 +105,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             {
                 SetCurrentValue(
                     TextTimeProperty,
-                    SelectedDate.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo));
+                    SelectedDate
+                        .Value
+                        .ToShortTimeStringUsingSpecificCulture(cultureInfo));
             }
         }
     }
@@ -129,22 +127,22 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     private void OnDateTextKeyDown(
         object sender,
         KeyEventArgs e)
-    {
-        CommonKeyDownHandler(sender, e, (control, textBox) =>
-        {
-            control.SetCurrentValue(TextDateProperty, textBox.Text);
-        });
-    }
+        => CommonKeyDownHandler(
+            sender,
+            e,
+            (control, textBox) => control.SetCurrentValue(
+                TextDateProperty,
+                textBox.Text));
 
     private void OnTimeTextKeyDown(
         object sender,
         KeyEventArgs e)
-    {
-        CommonKeyDownHandler(sender, e, (control, textBox) =>
-        {
-            control.SetCurrentValue(TextTimeProperty, textBox.Text);
-        });
-    }
+        => CommonKeyDownHandler(
+            sender,
+            e,
+            (control, textBox) => control.SetCurrentValue(
+                TextTimeProperty,
+                textBox.Text));
 
     private static void OnTextLostFocus(
         DependencyObject d,
@@ -163,9 +161,14 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             control.TextTime = string.Empty;
         }
 
-        var dateTime = ValidateText(e, control, raiseEvents: true);
+        var dateTime = ValidateText(
+            e,
+            control,
+            raiseEvents: true);
 
-        UpdateSelectedDate(control, dateTime);
+        UpdateSelectedDate(
+            control,
+            dateTime);
     }
 
     private void OnClockPanelPickerSelectedClockChanged(
@@ -180,14 +183,21 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         }
 
         var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
-        var shortTime = clockPanelPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
+        var shortTime = clockPanelPicker
+            .SelectedDateTime
+            .Value
+            .ToShortTimeStringUsingSpecificCulture(cultureInfo);
 
-        if (shortTime.Equals(TextTime, StringComparison.Ordinal))
+        if (shortTime.Equals(
+                TextTime,
+                StringComparison.Ordinal))
         {
             return;
         }
 
-        SetCurrentValue(TextTimeProperty, shortTime);
+        SetCurrentValue(
+            TextTimeProperty,
+            shortTime);
     }
 
     private static void OnSelectedDateChanged(
@@ -198,8 +208,12 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
         if (control.SelectedDate is null)
         {
-            control.SetCurrentValue(TextDateProperty, string.Empty);
-            control.SetCurrentValue(TextTimeProperty, string.Empty);
+            control.SetCurrentValue(
+                TextDateProperty,
+                string.Empty);
+            control.SetCurrentValue(
+                TextTimeProperty,
+                string.Empty);
         }
         else
         {
@@ -214,7 +228,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
             control.SetCurrentValue(
                 TextTimeProperty,
-                control.SelectedDate.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo));
+                control.SelectedDate
+                    .Value
+                    .ToShortTimeStringUsingSpecificCulture(cultureInfo));
         }
     }
 
@@ -240,11 +256,15 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             return;
         }
 
-        updatePropertyAction(control, textBox);
+        updatePropertyAction(
+            control,
+            textBox);
 
         var dateTime = ValidateText(control);
 
-        UpdateSelectedDate(control, dateTime);
+        UpdateSelectedDate(
+            control,
+            dateTime);
     }
 
     private static void UpdateSelectedDate(
@@ -278,11 +298,15 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         {
             if (string.IsNullOrEmpty(control.ValidationText))
             {
-                OnLostFocusFireValidEvent(control, e);
+                OnLostFocusFireValidEvent(
+                    control,
+                    e);
             }
             else
             {
-                OnLostFocusFireInvalidEvent(control, e);
+                OnLostFocusFireInvalidEvent(
+                    control,
+                    e);
             }
         }
 
@@ -290,8 +314,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     }
 
     [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private static DateTime? ValidateText(
-        LabelDateTimePicker control)
+    private static DateTime? ValidateText(LabelDateTimePicker control)
     {
         var isDateEmpty = string.IsNullOrWhiteSpace(control.TextDate);
         var isTimeEmpty = string.IsNullOrWhiteSpace(control.TextTime);
@@ -348,7 +371,11 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             e,
             control.CustomCulture,
             (string value, CultureInfo culture, out DateTime result) =>
-                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(control.SelectedDateFormat, value, culture, out result),
+                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
+                    control.SelectedDateFormat,
+                    value,
+                    culture,
+                    out result),
             control.LostFocusValid);
 
     private static void OnLostFocusFireInvalidEvent(
@@ -359,7 +386,11 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             e,
             control.CustomCulture,
             (string value, CultureInfo culture, out DateTime result) =>
-                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(control.SelectedDateFormat, value, culture, out result),
+                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
+                    control.SelectedDateFormat,
+                    value,
+                    culture,
+                    out result),
             control.LostFocusInvalid);
 
     private static object CoerceText(
@@ -367,13 +398,18 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         object? value)
         => DateTimePickerEventHelper.CoerceText(value);
 
-    private void SetDefaultWatermarkIfNeeded(
-        CultureInfo cultureInfo)
+    private void SetDefaultWatermarkIfNeeded(CultureInfo cultureInfo)
     {
         if (string.IsNullOrEmpty(WatermarkDateText) ||
-            WatermarkDateText.Contains('/', StringComparison.Ordinal) ||
-            WatermarkDateText.Contains('.', StringComparison.Ordinal) ||
-            WatermarkDateText.Contains(',', StringComparison.Ordinal))
+            WatermarkDateText.Contains(
+                '/',
+                StringComparison.Ordinal) ||
+            WatermarkDateText.Contains(
+                '.',
+                StringComparison.Ordinal) ||
+            WatermarkDateText.Contains(
+                ',',
+                StringComparison.Ordinal))
         {
             WatermarkDateText = SelectedDateFormat == DatePickerFormat.Short
                 ? cultureInfo.DateTimeFormat.ShortDatePattern
@@ -381,8 +417,12 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         }
 
         if (string.IsNullOrEmpty(WatermarkTimeText) ||
-            WatermarkTimeText.Contains(':', StringComparison.Ordinal) ||
-            WatermarkTimeText.Contains('.', StringComparison.Ordinal))
+            WatermarkTimeText.Contains(
+                ':',
+                StringComparison.Ordinal) ||
+            WatermarkTimeText.Contains(
+                '.',
+                StringComparison.Ordinal))
         {
             WatermarkTimeText = cultureInfo.DateTimeFormat.ShortTimePattern;
         }

@@ -26,7 +26,6 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
     private Size extent;
     private Size viewport;
     private Point offset;
-    private ScrollViewer? scrollOwner;
 
     [DependencyProperty(
         DefaultValue = 250d,
@@ -57,8 +56,6 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
         panel.InvalidateMeasure();
     }
 
-    #region IScrollInfo Implementation
-
     /// <inheritdoc />
     public bool CanHorizontallyScroll { get; set; }
 
@@ -84,76 +81,92 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
     public double ViewportWidth => viewport.Width;
 
     /// <inheritdoc />
-    public ScrollViewer? ScrollOwner
+    public ScrollViewer? ScrollOwner { get; set; }
+
+    /// <inheritdoc />
+    public void LineUp()
+        => SetVerticalOffset(offset.Y - ScrollLineSize);
+
+    /// <inheritdoc />
+    public void LineDown()
+        => SetVerticalOffset(offset.Y + ScrollLineSize);
+
+    /// <inheritdoc />
+    public void LineLeft()
+        => SetHorizontalOffset(offset.X - ScrollLineSize);
+
+    /// <inheritdoc />
+    public void LineRight()
+        => SetHorizontalOffset(offset.X + ScrollLineSize);
+
+    /// <inheritdoc />
+    public void PageUp()
+        => SetVerticalOffset(offset.Y - viewport.Height);
+
+    /// <inheritdoc />
+    public void PageDown()
+        => SetVerticalOffset(offset.Y + viewport.Height);
+
+    /// <inheritdoc />
+    public void PageLeft()
+        => SetHorizontalOffset(offset.X - viewport.Width);
+
+    /// <inheritdoc />
+    public void PageRight()
+        => SetHorizontalOffset(offset.X + viewport.Width);
+
+    /// <inheritdoc />
+    public void MouseWheelUp()
+        => SetVerticalOffset(offset.Y - ScrollWheelSize);
+
+    /// <inheritdoc />
+    public void MouseWheelDown()
+        => SetVerticalOffset(offset.Y + ScrollWheelSize);
+
+    /// <inheritdoc />
+    public void MouseWheelLeft()
+        => SetHorizontalOffset(offset.X - ScrollWheelSize);
+
+    /// <inheritdoc />
+    public void MouseWheelRight()
+        => SetHorizontalOffset(offset.X + ScrollWheelSize);
+
+    /// <inheritdoc />
+    public void SetHorizontalOffset(double offset)
     {
-        get => scrollOwner;
-        set => scrollOwner = value;
-    }
-
-    /// <inheritdoc />
-    public void LineUp() => SetVerticalOffset(offset.Y - ScrollLineSize);
-
-    /// <inheritdoc />
-    public void LineDown() => SetVerticalOffset(offset.Y + ScrollLineSize);
-
-    /// <inheritdoc />
-    public void LineLeft() => SetHorizontalOffset(offset.X - ScrollLineSize);
-
-    /// <inheritdoc />
-    public void LineRight() => SetHorizontalOffset(offset.X + ScrollLineSize);
-
-    /// <inheritdoc />
-    public void PageUp() => SetVerticalOffset(offset.Y - viewport.Height);
-
-    /// <inheritdoc />
-    public void PageDown() => SetVerticalOffset(offset.Y + viewport.Height);
-
-    /// <inheritdoc />
-    public void PageLeft() => SetHorizontalOffset(offset.X - viewport.Width);
-
-    /// <inheritdoc />
-    public void PageRight() => SetHorizontalOffset(offset.X + viewport.Width);
-
-    /// <inheritdoc />
-    public void MouseWheelUp() => SetVerticalOffset(offset.Y - ScrollWheelSize);
-
-    /// <inheritdoc />
-    public void MouseWheelDown() => SetVerticalOffset(offset.Y + ScrollWheelSize);
-
-    /// <inheritdoc />
-    public void MouseWheelLeft() => SetHorizontalOffset(offset.X - ScrollWheelSize);
-
-    /// <inheritdoc />
-    public void MouseWheelRight() => SetHorizontalOffset(offset.X + ScrollWheelSize);
-
-    /// <inheritdoc />
-    public void SetHorizontalOffset(double newOffset)
-    {
-        newOffset = Math.Max(0, Math.Min(newOffset, extent.Width - viewport.Width));
-        if (Math.Abs(offset.X - newOffset) > 0.001)
+        var clampedOffset = Math.Max(
+            0,
+            Math.Min(offset, extent.Width - viewport.Width));
+        if (Math.Abs(this.offset.X - clampedOffset) > 0.001)
         {
-            offset.X = newOffset;
+            this.offset.X = clampedOffset;
             InvalidateMeasure();
-            scrollOwner?.InvalidateScrollInfo();
+            ScrollOwner?.InvalidateScrollInfo();
         }
     }
 
     /// <inheritdoc />
-    public void SetVerticalOffset(double newOffset)
+    public void SetVerticalOffset(double offset)
     {
-        newOffset = Math.Max(0, Math.Min(newOffset, extent.Height - viewport.Height));
-        if (Math.Abs(offset.Y - newOffset) > 0.001)
+        var clampedOffset = Math.Max(
+            0,
+            Math.Min(offset, extent.Height - viewport.Height));
+        if (Math.Abs(this.offset.Y - clampedOffset) > 0.001)
         {
-            offset.Y = newOffset;
+            this.offset.Y = clampedOffset;
             InvalidateMeasure();
-            scrollOwner?.InvalidateScrollInfo();
+            ScrollOwner?.InvalidateScrollInfo();
         }
     }
 
     /// <inheritdoc />
-    public Rect MakeVisible(Visual visual, Rect rectangle)
+    public Rect MakeVisible(
+        Visual visual,
+        Rect rectangle)
     {
-        if (visual is not UIElement element)
+        ArgumentNullException.ThrowIfNull(visual);
+
+        if (visual is not UIElement)
         {
             return Rect.Empty;
         }
@@ -173,8 +186,6 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
         return rectangle;
     }
 
-    #endregion
-
     /// <inheritdoc />
     protected override Size MeasureOverride(Size availableSize)
     {
@@ -187,7 +198,9 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
         var itemCount = itemsControl.Items.Count;
         if (itemCount == 0)
         {
-            UpdateScrollInfo(availableSize, new Size(0, 0));
+            UpdateScrollInfo(
+                availableSize,
+                new Size(0, 0));
             return new Size(0, 0);
         }
 
@@ -198,16 +211,46 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
         }
 
         CalculateLayout(availableSize);
+        ResetColumnHeights();
 
+        var positions = CalculateVisibleItemPositions(
+            itemCount,
+            availableSize.Height);
+        UpdateTotalHeight();
+        GenerateAndMeasureItems(
+            generator,
+            positions,
+            availableSize);
+        CleanupUnusedContainers(positions
+            .Select(p => p.Index)
+            .ToHashSet());
+
+        var extentSize = new Size(
+            availableSize.Width,
+            totalHeight + Padding.Top + Padding.Bottom);
+
+        UpdateScrollInfo(
+            availableSize,
+            extentSize);
+
+        return availableSize;
+    }
+
+    private void ResetColumnHeights()
+    {
         columnHeights.Clear();
         for (var i = 0; i < columnCount; i++)
         {
             columnHeights.Add(0);
         }
+    }
 
+    private List<(int Index, int Column, double Top)> CalculateVisibleItemPositions(
+        int itemCount,
+        double viewportHeight)
+    {
         var visibleStart = offset.Y;
-        var visibleEnd = offset.Y + availableSize.Height;
-
+        var visibleEnd = offset.Y + viewportHeight;
         var positions = new List<(int Index, int Column, double Top)>();
 
         for (var i = 0; i < itemCount; i++)
@@ -215,37 +258,55 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
             var columnIndex = GetShortestColumnIndex();
             var top = columnHeights[columnIndex];
 
-            if (!itemHeightCache.TryGetValue(i, out var itemHeight))
+            if (!itemHeightCache.TryGetValue(
+                    i,
+                    out var itemHeight))
             {
                 itemHeight = 100;
             }
 
             var bottom = top + itemHeight;
-
             var isVisible = bottom >= visibleStart && top <= visibleEnd;
 
             if (isVisible || !itemHeightCache.ContainsKey(i))
             {
-                positions.Add((i, columnIndex, top));
+                positions.Add((
+                    i,
+                    columnIndex,
+                    top));
             }
 
             columnHeights[columnIndex] = bottom + VerticalSpacing;
         }
 
+        return positions;
+    }
+
+    private void UpdateTotalHeight()
+    {
         totalHeight = columnHeights.Count > 0 ? columnHeights.Max() : 0;
         if (totalHeight > VerticalSpacing)
         {
             totalHeight -= VerticalSpacing;
         }
+    }
 
+    private void GenerateAndMeasureItems(
+        IItemContainerGenerator generator,
+        List<(int Index, int Column, double Top)> positions,
+        Size availableSize)
+    {
         var children = InternalChildren;
         var startPos = generator.GeneratorPositionFromIndex(positions.Count > 0 ? positions[0].Index : 0);
 
-        using (generator.StartAt(startPos, GeneratorDirection.Forward, allowStartAtRealizedItem: true))
+        using (generator.StartAt(
+            startPos,
+            GeneratorDirection.Forward,
+            allowStartAtRealizedItem: true))
         {
             var childIndex = startPos.Offset == 0 ? startPos.Index : startPos.Index + 1;
 
-            foreach (var (itemIndex, columnIndex, top) in positions)
+            foreach (var (itemIndex, _, _) in positions)
             {
                 var child = (UIElement)generator.GenerateNext(out var isNewlyRealized);
 
@@ -257,13 +318,17 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
                     }
                     else
                     {
-                        InsertInternalChild(childIndex, child);
+                        InsertInternalChild(
+                            childIndex,
+                            child);
                     }
 
                     generator.PrepareItemContainer(child);
                 }
 
-                child.Measure(new Size(itemWidth, availableSize.Height));
+                child.Measure(new Size(
+                    itemWidth,
+                    availableSize.Height));
 
                 if (!itemHeightCache.ContainsKey(itemIndex) ||
                     Math.Abs(itemHeightCache[itemIndex] - child.DesiredSize.Height) > 0.001)
@@ -274,16 +339,6 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
                 childIndex++;
             }
         }
-
-        CleanupUnusedContainers(positions.Select(p => p.Index).ToHashSet());
-
-        var extentSize = new Size(
-            availableSize.Width,
-            totalHeight + Padding.Top + Padding.Bottom);
-
-        UpdateScrollInfo(availableSize, extentSize);
-
-        return availableSize;
     }
 
     /// <inheritdoc />
@@ -302,26 +357,46 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
         }
 
         CalculateLayout(finalSize);
+        ResetColumnHeights();
 
-        columnHeights.Clear();
-        for (var i = 0; i < columnCount; i++)
+        var horizontalOffset = CalculateHorizontalOffset(finalSize.Width);
+        var itemPositions = CalculateAllItemPositions(itemCount);
+
+        var generator = ItemContainerGenerator;
+        if (generator is null)
         {
-            columnHeights.Add(0);
+            return ArrangeNonVirtualized(finalSize);
         }
 
+        ArrangeChildren(
+            generator,
+            itemPositions,
+            horizontalOffset);
+
+        return finalSize;
+    }
+
+    private double CalculateHorizontalOffset(double finalWidth)
+    {
         var horizontalOffset = Padding.Left;
         var totalContentWidth = (itemWidth * columnCount) + (HorizontalSpacing * (columnCount - 1));
 
         switch (HorizontalAlignment)
         {
             case HorizontalAlignment.Right:
-                horizontalOffset += finalSize.Width - totalContentWidth - Padding.Right;
+                horizontalOffset += finalWidth - totalContentWidth - Padding.Right;
                 break;
             case HorizontalAlignment.Center:
-                horizontalOffset += (finalSize.Width - totalContentWidth) / 2;
+                horizontalOffset += (finalWidth - totalContentWidth) / 2;
                 break;
         }
 
+        return horizontalOffset;
+    }
+
+    private Dictionary<int, (int Column, double Top)> CalculateAllItemPositions(
+        int itemCount)
+    {
         var itemPositions = new Dictionary<int, (int Column, double Top)>();
 
         for (var i = 0; i < itemCount; i++)
@@ -329,9 +404,13 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
             var columnIndex = GetShortestColumnIndex();
             var top = columnHeights[columnIndex];
 
-            itemPositions[i] = (columnIndex, top);
+            itemPositions[i] = (
+                columnIndex,
+                top);
 
-            if (itemHeightCache.TryGetValue(i, out var cachedHeight))
+            if (itemHeightCache.TryGetValue(
+                    i,
+                    out var cachedHeight))
             {
                 columnHeights[columnIndex] = top + cachedHeight + VerticalSpacing;
             }
@@ -341,20 +420,26 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
             }
         }
 
-        var generator = ItemContainerGenerator;
-        if (generator is null)
-        {
-            return ArrangeNonVirtualized(finalSize);
-        }
+        return itemPositions;
+    }
 
+    private void ArrangeChildren(
+        IItemContainerGenerator generator,
+        Dictionary<int, (int Column, double Top)> itemPositions,
+        double horizontalOffset)
+    {
         var children = InternalChildren;
 
         for (var childIndex = 0; childIndex < children.Count; childIndex++)
         {
             var child = children[childIndex];
-            var itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(childIndex, 0));
+            var itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(
+                childIndex,
+                0));
 
-            if (itemIndex < 0 || !itemPositions.TryGetValue(itemIndex, out var position))
+            if (itemIndex < 0 || !itemPositions.TryGetValue(
+                    itemIndex,
+                    out var position))
             {
                 continue;
             }
@@ -363,18 +448,24 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
             var left = horizontalOffset + (columnIndex * (itemWidth + HorizontalSpacing));
             var adjustedTop = Padding.Top + top - offset.Y;
 
-            child.Arrange(new Rect(left, adjustedTop, itemWidth, child.DesiredSize.Height));
+            child.Arrange(new Rect(
+                left,
+                adjustedTop,
+                itemWidth,
+                child.DesiredSize.Height));
         }
-
-        return finalSize;
     }
 
     private void CalculateLayout(Size availableSize)
     {
         var availableWidth = availableSize.Width - Padding.Left - Padding.Right;
 
-        itemWidth = Math.Min(DesiredItemWidth, availableWidth);
-        columnCount = Math.Max(1, (int)Math.Floor((availableWidth + HorizontalSpacing) / (itemWidth + HorizontalSpacing)));
+        itemWidth = Math.Min(
+            DesiredItemWidth,
+            availableWidth);
+        columnCount = Math.Max(
+            1,
+            (int)Math.Floor((availableWidth + HorizontalSpacing) / (itemWidth + HorizontalSpacing)));
 
         var totalWidth = (itemWidth * columnCount) + (HorizontalSpacing * (columnCount - 1));
         if (totalWidth > availableWidth && columnCount > 1)
@@ -418,18 +509,26 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
 
         for (var i = children.Count - 1; i >= 0; i--)
         {
-            var position = new GeneratorPosition(i, 0);
+            var position = new GeneratorPosition(
+                i,
+                0);
             var itemIndex = generator.IndexFromGeneratorPosition(position);
 
             if (!visibleIndices.Contains(itemIndex))
             {
-                generator.Remove(position, 1);
-                RemoveInternalChildRange(i, 1);
+                generator.Remove(
+                    position,
+                    1);
+                RemoveInternalChildRange(
+                    i,
+                    1);
             }
         }
     }
 
-    private void UpdateScrollInfo(Size viewportSize, Size extentSize)
+    private void UpdateScrollInfo(
+        Size viewportSize,
+        Size extentSize)
     {
         var changed = false;
 
@@ -449,13 +548,15 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
 
         if (offset.Y > extent.Height - viewport.Height)
         {
-            offset.Y = Math.Max(0, extent.Height - viewport.Height);
+            offset.Y = Math.Max(
+                0,
+                extent.Height - viewport.Height);
             changed = true;
         }
 
         if (changed)
         {
-            scrollOwner?.InvalidateScrollInfo();
+            ScrollOwner?.InvalidateScrollInfo();
         }
     }
 
@@ -477,7 +578,9 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
         foreach (UIElement child in InternalChildren)
         {
             var columnIndex = GetShortestColumnIndex();
-            child.Measure(new Size(itemWidth, availableSize.Height));
+            child.Measure(new Size(
+                itemWidth,
+                availableSize.Height));
             columnHeights[columnIndex] += child.DesiredSize.Height + VerticalSpacing;
         }
 
@@ -487,7 +590,9 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
             maxHeight -= VerticalSpacing;
         }
 
-        return new Size(availableSize.Width, maxHeight + Padding.Top + Padding.Bottom);
+        return new Size(
+            availableSize.Width,
+            maxHeight + Padding.Top + Padding.Bottom);
     }
 
     private Size ArrangeNonVirtualized(Size finalSize)
@@ -519,7 +624,11 @@ public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScr
             var left = horizontalOffset + (columnIndex * (itemWidth + HorizontalSpacing));
             var top = Padding.Top + columnHeights[columnIndex];
 
-            child.Arrange(new Rect(left, top, itemWidth, child.DesiredSize.Height));
+            child.Arrange(new Rect(
+                left,
+                top,
+                itemWidth,
+                child.DesiredSize.Height));
 
             columnHeights[columnIndex] += child.DesiredSize.Height + VerticalSpacing;
         }

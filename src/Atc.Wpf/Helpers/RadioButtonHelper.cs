@@ -9,8 +9,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new FrameworkPropertyMetadata(18.0));
 
-    public static double GetRadioSize(
-        UIElement element)
+    public static double GetRadioSize(UIElement element)
         => (double)element.GetValue(RadioSizeProperty);
 
     public static void SetRadioSize(
@@ -24,8 +23,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new FrameworkPropertyMetadata(10.0));
 
-    public static double GetRadioCheckSize(
-        UIElement element)
+    public static double GetRadioCheckSize(UIElement element)
         => (double)element.GetValue(RadioCheckSizeProperty);
 
     public static void SetRadioCheckSize(
@@ -39,8 +37,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new FrameworkPropertyMetadata(1.0));
 
-    public static double GetRadioStrokeThickness(
-        UIElement element)
+    public static double GetRadioStrokeThickness(UIElement element)
         => (double)element.GetValue(RadioStrokeThicknessProperty);
 
     public static void SetRadioStrokeThickness(
@@ -54,8 +51,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundPointerOver(
-        UIElement element)
+    public static Brush? GetForegroundPointerOver(UIElement element)
         => (Brush?)element.GetValue(ForegroundPointerOverProperty);
 
     public static void SetForegroundPointerOver(
@@ -69,8 +65,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundPressed(
-        UIElement element)
+    public static Brush? GetForegroundPressed(UIElement element)
         => (Brush?)element.GetValue(ForegroundPressedProperty);
 
     public static void SetForegroundPressed(
@@ -84,8 +79,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundDisabled(
-        UIElement element)
+    public static Brush? GetForegroundDisabled(UIElement element)
         => (Brush?)element.GetValue(ForegroundDisabledProperty);
 
     public static void SetForegroundDisabled(
@@ -99,8 +93,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundPointerOver(
-        UIElement element)
+    public static Brush? GetBackgroundPointerOver(UIElement element)
         => (Brush?)element.GetValue(BackgroundPointerOverProperty);
 
     public static void SetBackgroundPointerOver(
@@ -114,8 +107,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundPressed(
-        UIElement element)
+    public static Brush? GetBackgroundPressed(UIElement element)
         => (Brush?)element.GetValue(BackgroundPressedProperty);
 
     public static void SetBackgroundPressed(
@@ -129,8 +121,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundDisabled(
-        UIElement element)
+    public static Brush? GetBackgroundDisabled(UIElement element)
         => (Brush?)element.GetValue(BackgroundDisabledProperty);
 
     public static void SetBackgroundDisabled(
@@ -144,8 +135,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushPointerOver(
-        UIElement element)
+    public static Brush? GetBorderBrushPointerOver(UIElement element)
         => (Brush?)element.GetValue(BorderBrushPointerOverProperty);
 
     public static void SetBorderBrushPointerOver(
@@ -159,8 +149,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushPressed(
-        UIElement element)
+    public static Brush? GetBorderBrushPressed(UIElement element)
         => (Brush?)element.GetValue(BorderBrushPressedProperty);
 
     public static void SetBorderBrushPressed(
@@ -174,8 +163,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushDisabled(
-        UIElement element)
+    public static Brush? GetBorderBrushDisabled(UIElement element)
         => (Brush?)element.GetValue(BorderBrushDisabledProperty);
 
     public static void SetBorderBrushDisabled(
@@ -189,8 +177,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseFill(
-        UIElement element)
+    public static Brush? GetOuterEllipseFill(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseFillProperty);
 
     public static void SetOuterEllipseFill(
@@ -204,8 +191,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseFillPointerOver(
-        UIElement element)
+    public static Brush? GetOuterEllipseFillPointerOver(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseFillPointerOverProperty);
 
     public static void SetOuterEllipseFillPointerOver(
@@ -219,8 +205,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseFillPressed(
-        UIElement element)
+    public static Brush? GetOuterEllipseFillPressed(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseFillPressedProperty);
 
     public static void SetOuterEllipseFillPressed(
@@ -234,8 +219,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseFillDisabled(
-        UIElement element)
+    public static Brush? GetOuterEllipseFillDisabled(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseFillDisabledProperty);
 
     public static void SetOuterEllipseFillDisabled(
@@ -249,8 +233,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseStroke(
-        UIElement element)
+    public static Brush? GetOuterEllipseStroke(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseStrokeProperty);
 
     public static void SetOuterEllipseStroke(
@@ -264,8 +247,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseStrokePointerOver(
-        UIElement element)
+    public static Brush? GetOuterEllipseStrokePointerOver(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseStrokePointerOverProperty);
 
     public static void SetOuterEllipseStrokePointerOver(
@@ -279,8 +261,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseStrokePressed(
-        UIElement element)
+    public static Brush? GetOuterEllipseStrokePressed(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseStrokePressedProperty);
 
     public static void SetOuterEllipseStrokePressed(
@@ -294,8 +275,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseStrokeDisabled(
-        UIElement element)
+    public static Brush? GetOuterEllipseStrokeDisabled(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseStrokeDisabledProperty);
 
     public static void SetOuterEllipseStrokeDisabled(
@@ -309,8 +289,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseCheckedFill(
-        UIElement element)
+    public static Brush? GetOuterEllipseCheckedFill(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseCheckedFillProperty);
 
     public static void SetOuterEllipseCheckedFill(
@@ -339,8 +318,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseCheckedFillPressed(
-        UIElement element)
+    public static Brush? GetOuterEllipseCheckedFillPressed(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseCheckedFillPressedProperty);
 
     public static void SetOuterEllipseCheckedFillPressed(
@@ -354,8 +332,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseCheckedFillDisabled(
-        UIElement element)
+    public static Brush? GetOuterEllipseCheckedFillDisabled(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseCheckedFillDisabledProperty);
 
     public static void SetOuterEllipseCheckedFillDisabled(
@@ -369,8 +346,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseCheckedStroke(
-        UIElement element)
+    public static Brush? GetOuterEllipseCheckedStroke(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseCheckedStrokeProperty);
 
     public static void SetOuterEllipseCheckedStroke(
@@ -386,12 +362,14 @@ public static class RadioButtonHelper
 
     public static Brush? GetOuterEllipseCheckedStrokePointerOver(
         UIElement element)
-        => (Brush?)element.GetValue(OuterEllipseCheckedStrokePointerOverProperty);
+        => (Brush?)element
+            .GetValue(OuterEllipseCheckedStrokePointerOverProperty);
 
     public static void SetOuterEllipseCheckedStrokePointerOver(
         UIElement element,
         Brush? value)
-        => element.SetValue(OuterEllipseCheckedStrokePointerOverProperty, value);
+        => element
+            .SetValue(OuterEllipseCheckedStrokePointerOverProperty, value);
 
     public static readonly DependencyProperty OuterEllipseCheckedStrokePressedProperty = DependencyProperty.RegisterAttached(
         "OuterEllipseCheckedStrokePressed",
@@ -399,8 +377,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseCheckedStrokePressed(
-        UIElement element)
+    public static Brush? GetOuterEllipseCheckedStrokePressed(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseCheckedStrokePressedProperty);
 
     public static void SetOuterEllipseCheckedStrokePressed(
@@ -414,8 +391,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetOuterEllipseCheckedStrokeDisabled(
-        UIElement element)
+    public static Brush? GetOuterEllipseCheckedStrokeDisabled(UIElement element)
         => (Brush?)element.GetValue(OuterEllipseCheckedStrokeDisabledProperty);
 
     public static void SetOuterEllipseCheckedStrokeDisabled(
@@ -429,8 +405,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphFill(
-        UIElement element)
+    public static Brush? GetCheckGlyphFill(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphFillProperty);
 
     public static void SetCheckGlyphFill(
@@ -444,8 +419,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphFillPointerOver(
-        UIElement element)
+    public static Brush? GetCheckGlyphFillPointerOver(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphFillPointerOverProperty);
 
     public static void SetCheckGlyphFillPointerOver(
@@ -459,8 +433,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphFillPressed(
-        UIElement element)
+    public static Brush? GetCheckGlyphFillPressed(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphFillPressedProperty);
 
     public static void SetCheckGlyphFillPressed(
@@ -474,8 +447,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphFillDisabled(
-        UIElement element)
+    public static Brush? GetCheckGlyphFillDisabled(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphFillDisabledProperty);
 
     public static void SetCheckGlyphFillDisabled(
@@ -489,8 +461,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphStroke(
-        UIElement element)
+    public static Brush? GetCheckGlyphStroke(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphStrokeProperty);
 
     public static void SetCheckGlyphStroke(
@@ -504,8 +475,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphStrokePointerOver(
-        UIElement element)
+    public static Brush? GetCheckGlyphStrokePointerOver(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphStrokePointerOverProperty);
 
     public static void SetCheckGlyphStrokePointerOver(
@@ -519,8 +489,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphStrokePressed(
-        UIElement element)
+    public static Brush? GetCheckGlyphStrokePressed(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphStrokePressedProperty);
 
     public static void SetCheckGlyphStrokePressed(
@@ -534,8 +503,7 @@ public static class RadioButtonHelper
         typeof(RadioButtonHelper),
         new PropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphStrokeDisabled(
-        UIElement element)
+    public static Brush? GetCheckGlyphStrokeDisabled(UIElement element)
         => (Brush?)element.GetValue(CheckGlyphStrokeDisabledProperty);
 
     public static void SetCheckGlyphStrokeDisabled(

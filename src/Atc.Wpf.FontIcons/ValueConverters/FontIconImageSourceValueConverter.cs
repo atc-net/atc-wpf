@@ -5,9 +5,7 @@ public sealed class FontIconImageSourceValueConverter : MarkupExtension, IValueC
     public static readonly FontIconImageSourceValueConverter Instance = new();
 
     public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return this;
-    }
+        => this;
 
     public object? Convert(
         object? value,
@@ -19,13 +17,34 @@ public sealed class FontIconImageSourceValueConverter : MarkupExtension, IValueC
         var emSize = parameter as double? ?? 100;
         return value switch
         {
-            FontAwesomeRegularType type => ImageAwesomeRegular.CreateImageSource(type, brush, emSize),
-            FontAwesomeSolidType type => ImageAwesomeSolid.CreateImageSource(type, brush, emSize),
-            FontAwesomeBrandType type => ImageAwesomeBrand.CreateImageSource(type, brush, emSize),
-            FontBootstrapType bootstrapType => ImageBootstrap.CreateImageSource(bootstrapType, brush, emSize),
-            IcoFontType icoFontType => ImageIcoFont.CreateImageSource(icoFontType, brush, emSize),
-            FontMaterialDesignType materialDesignType => ImageMaterialDesign.CreateImageSource(materialDesignType, brush, emSize),
-            FontWeatherType weatherType => ImageWeather.CreateImageSource(weatherType, brush, emSize),
+            FontAwesomeRegularType type => ImageAwesomeRegular.CreateImageSource(
+                type,
+                brush,
+                emSize),
+            FontAwesomeSolidType type => ImageAwesomeSolid.CreateImageSource(
+                type,
+                brush,
+                emSize),
+            FontAwesomeBrandType type => ImageAwesomeBrand.CreateImageSource(
+                type,
+                brush,
+                emSize),
+            FontBootstrapType bootstrapType => ImageBootstrap.CreateImageSource(
+                bootstrapType,
+                brush,
+                emSize),
+            IcoFontType icoFontType => ImageIcoFont.CreateImageSource(
+                icoFontType,
+                brush,
+                emSize),
+            FontMaterialDesignType materialDesignType => ImageMaterialDesign.CreateImageSource(
+                materialDesignType,
+                brush,
+                emSize),
+            FontWeatherType weatherType => ImageWeather.CreateImageSource(
+                weatherType,
+                brush,
+                emSize),
             _ => null,
         };
     }

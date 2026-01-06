@@ -19,9 +19,20 @@ public partial class NumericBox : Control
     private const int DefaultDelay = 500;
     private const string RawRegexNumberString = @"[-+]?(?<![0-9][<DecimalSeparator><GroupSeparator>])[<DecimalSeparator><GroupSeparator>]?[0-9]+(?:[<DecimalSeparator><GroupSeparator>\s][0-9]+)*[<DecimalSeparator><GroupSeparator>]?[0-9]?(?:[eE][-+]?[0-9]+)?(?!\.[0-9])";
 
-    private static readonly Regex RegexStringFormatHexadecimal = new(@"^(?<complexHEX>.*{\d\s*:[Xx]\d*}.*)?(?<simpleHEX>[Xx]\d*)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
-    private static readonly Regex RegexHexadecimal = new(@"^([a-fA-F0-9]{1,2}\s?)+$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
-    private static readonly Regex RegexStringFormat = new(@"\{0\s*(:(?<format>.*))?\}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    private static readonly Regex RegexStringFormatHexadecimal = new(
+        @"^(?<complexHEX>.*{\d\s*:[Xx]\d*}.*)?(?<simpleHEX>[Xx]\d*)?$",
+        RegexOptions.Compiled,
+        TimeSpan.FromSeconds(1));
+
+    private static readonly Regex RegexHexadecimal = new(
+        @"^([a-fA-F0-9]{1,2}\s?)+$",
+        RegexOptions.Compiled,
+        TimeSpan.FromSeconds(1));
+
+    private static readonly Regex RegexStringFormat = new(
+        @"\{0\s*(:(?<format>.*))?\}",
+        RegexOptions.Compiled,
+        TimeSpan.FromSeconds(1));
 
     private Regex? regexNumber;
     private Lazy<PropertyInfo?> handlesMouseWheelScrolling = new();
@@ -63,7 +74,9 @@ public partial class NumericBox : Control
     public TextAlignment TextAlignment
     {
         get => (TextAlignment)GetValue(TextAlignmentProperty);
-        set => SetValue(TextAlignmentProperty, value);
+        set => SetValue(
+            TextAlignmentProperty,
+            value);
     }
 
     [DependencyProperty(
@@ -81,7 +94,9 @@ public partial class NumericBox : Control
     public bool IsReadOnly
     {
         get => (bool)GetValue(IsReadOnlyProperty);
-        set => SetValue(IsReadOnlyProperty, BooleanBoxes.Box(value));
+        set => SetValue(
+            IsReadOnlyProperty,
+            BooleanBoxes.Box(value));
     }
 
     [DependencyProperty(
@@ -201,7 +216,8 @@ public partial class NumericBox : Control
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private string suffixText;
 
-    private CultureInfo SpecificCultureInfo => Culture ?? Language.GetSpecificCulture();
+    private CultureInfo SpecificCultureInfo
+        => Culture ?? Language.GetSpecificCulture();
 
     static NumericBox()
     {
@@ -217,7 +233,10 @@ public partial class NumericBox : Control
             typeof(NumericBox),
             new FrameworkPropertyMetadata(HorizontalAlignment.Right));
 
-        EventManager.RegisterClassHandler(typeof(NumericBox), GotFocusEvent, new RoutedEventHandler(OnGotFocus));
+        EventManager.RegisterClassHandler(
+            typeof(NumericBox),
+            GotFocusEvent,
+            new RoutedEventHandler(OnGotFocus));
     }
 
     public NumericBox()
@@ -231,9 +250,7 @@ public partial class NumericBox : Control
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
-    {
-        Culture = Thread.CurrentThread.CurrentUICulture;
-    }
+        => Culture = Thread.CurrentThread.CurrentUICulture;
 
     private static void OnDelayPropertyChanged(
         DependencyObject d,
@@ -248,7 +265,9 @@ public partial class NumericBox : Control
         }
 
         numericBox.RaiseChangeDelay();
-        numericBox.OnDelayChanged(oldDelay, newDelay);
+        numericBox.OnDelayChanged(
+            oldDelay,
+            newDelay);
     }
 
     private static void OnSpeedupPropertyChanged(
@@ -260,7 +279,9 @@ public partial class NumericBox : Control
             return;
         }
 
-        (d as NumericBox)?.OnSpeedupChanged((bool)e.OldValue, (bool)e.NewValue);
+        (d as NumericBox)?.OnSpeedupChanged(
+            (bool)e.OldValue,
+            (bool)e.NewValue);
     }
 
     private static void OnIsReadOnlyPropertyChanged(
@@ -304,8 +325,12 @@ public partial class NumericBox : Control
             return;
         }
 
-        numericBox.SetCurrentValue(ParsingNumberStyleProperty, NumberStyles.HexNumber);
-        numericBox.SetCurrentValue(NumericInputModeProperty, numericBox.NumericInputMode | NumericInput.Decimal);
+        numericBox.SetCurrentValue(
+            ParsingNumberStyleProperty,
+            NumberStyles.HexNumber);
+        numericBox.SetCurrentValue(
+            NumericInputModeProperty,
+            numericBox.NumericInputMode | NumericInput.Decimal);
     }
 
     private static object CoerceStringFormat(
@@ -339,7 +364,9 @@ public partial class NumericBox : Control
             return;
         }
 
-        (d as NumericBox)?.OnValueChanged((double?)e.OldValue, (double?)e.NewValue);
+        (d as NumericBox)?.OnValueChanged(
+            (double?)e.OldValue,
+            (double?)e.NewValue);
     }
 
     private static Tuple<double?, bool> CoerceValue(
@@ -349,7 +376,9 @@ public partial class NumericBox : Control
         var numericBox = (NumericBox)d;
         if (baseValue is null)
         {
-            return new Tuple<double?, bool>(numericBox.DefaultValue, item2: false);
+            return new Tuple<double?, bool>(
+                numericBox.DefaultValue,
+                item2: false);
         }
 
         var val = ((double?)baseValue).Value;
@@ -361,23 +390,29 @@ public partial class NumericBox : Control
 
         if (val < numericBox.Minimum)
         {
-            return new Tuple<double?, bool>(numericBox.Minimum, item2: true);
+            return new Tuple<double?, bool>(
+                numericBox.Minimum,
+                item2: true);
         }
 
         if (val > numericBox.Maximum)
         {
-            return new Tuple<double?, bool>(numericBox.Maximum, item2: true);
+            return new Tuple<double?, bool>(
+                numericBox.Maximum,
+                item2: true);
         }
 
-        return new Tuple<double?, bool>(val, item2: false);
+        return new Tuple<double?, bool>(
+            val,
+            item2: false);
     }
 
     private static object? CoerceValueItem1(
         DependencyObject d,
         object? baseValue)
-    {
-        return CoerceValue(d, baseValue).Item1;
-    }
+        => CoerceValue(
+            d,
+            baseValue).Item1;
 
     private static void OnDefaultValuePropertyChanged(
         DependencyObject d,
@@ -425,7 +460,9 @@ public partial class NumericBox : Control
         numericBox.CoerceValue(MaximumProperty);
         numericBox.CoerceValue(ValueProperty);
         numericBox.CoerceValue(DefaultValueProperty);
-        numericBox.OnMinimumChanged((double)e.OldValue, (double)e.NewValue);
+        numericBox.OnMinimumChanged(
+            (double)e.OldValue,
+            (double)e.NewValue);
         numericBox.EnableDisableUpDown();
     }
 
@@ -437,7 +474,9 @@ public partial class NumericBox : Control
 
         numericBox.CoerceValue(ValueProperty);
         numericBox.CoerceValue(DefaultValueProperty);
-        numericBox.OnMaximumChanged((double)e.OldValue, (double)e.NewValue);
+        numericBox.OnMaximumChanged(
+            (double)e.OldValue,
+            (double)e.NewValue);
         numericBox.EnableDisableUpDown();
     }
 
@@ -468,7 +507,9 @@ public partial class NumericBox : Control
         }
 
         numericBox.regexNumber = null;
-        numericBox.OnValueChanged(numericBox.Value, numericBox.Value);
+        numericBox.OnValueChanged(
+            numericBox.Value,
+            numericBox.Value);
     }
 
     private static void OnNumericInputModePropertyChanged(
@@ -526,12 +567,17 @@ public partial class NumericBox : Control
         var numericBox = (NumericBox)sender;
         if (numericBox is { InterceptManualEnter: false, IsReadOnly: false } ||
             !numericBox.Focusable ||
-            !Equals(e.OriginalSource, numericBox))
+            !Equals(
+                e.OriginalSource,
+                numericBox))
         {
             return;
         }
 
-        var request = new TraversalRequest((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift ? FocusNavigationDirection.Previous : FocusNavigationDirection.Next);
+        var request = new TraversalRequest(
+            (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift
+                ? FocusNavigationDirection.Previous
+                : FocusNavigationDirection.Next);
 
         if (Keyboard.FocusedElement is UIElement elementWithFocus)
         {
@@ -566,13 +612,14 @@ public partial class NumericBox : Control
         repeatUp.PreviewMouseUp += (_, _) => ResetInternal();
         repeatDown.PreviewMouseUp += (_, _) => ResetInternal();
 
-        OnValueChanged(Value, Value);
+        OnValueChanged(
+            Value,
+            Value);
 
         scrollViewer = null;
     }
 
-    private void ToggleReadOnlyMode(
-        bool isReadOnly)
+    private void ToggleReadOnlyMode(bool isReadOnly)
     {
         if (repeatUp is null || repeatDown is null || valueTextBox is null)
         {
@@ -585,7 +632,9 @@ public partial class NumericBox : Control
             valueTextBox.PreviewTextInput -= OnPreviewTextInput;
             valueTextBox.PreviewKeyDown -= OnTextBoxKeyDown;
             valueTextBox.TextChanged -= OnTextChanged;
-            DataObject.RemovePastingHandler(valueTextBox, OnValueTextBoxPaste);
+            DataObject.RemovePastingHandler(
+                valueTextBox,
+                OnValueTextBoxPaste);
         }
         else
         {
@@ -593,19 +642,17 @@ public partial class NumericBox : Control
             valueTextBox.PreviewTextInput += OnPreviewTextInput;
             valueTextBox.PreviewKeyDown += OnTextBoxKeyDown;
             valueTextBox.TextChanged += OnTextChanged;
-            DataObject.AddPastingHandler(valueTextBox, OnValueTextBoxPaste);
+            DataObject.AddPastingHandler(
+                valueTextBox,
+                OnValueTextBoxPaste);
         }
     }
 
     public void SelectAll()
-    {
-        valueTextBox?.SelectAll();
-    }
+        => valueTextBox?.SelectAll();
 
     private void RaiseChangeDelay()
-    {
-        RaiseEvent(new RoutedEventArgs(DelayChangedEvent));
-    }
+        => RaiseEvent(new RoutedEventArgs(DelayChangedEvent));
 
     protected virtual void OnDelayChanged(
         int oldDelay,
@@ -635,8 +682,7 @@ public partial class NumericBox : Control
         // Skip
     }
 
-    protected override void OnPreviewKeyDown(
-        KeyEventArgs e)
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -660,8 +706,7 @@ public partial class NumericBox : Control
         }
     }
 
-    protected override void OnPreviewKeyUp(
-        KeyEventArgs e)
+    protected override void OnPreviewKeyUp(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -673,8 +718,7 @@ public partial class NumericBox : Control
         }
     }
 
-    protected override void OnPreviewMouseWheel(
-        MouseWheelEventArgs e)
+    protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -692,15 +736,24 @@ public partial class NumericBox : Control
         {
             if (TrackMouseWheelWhenMouseOver)
             {
-                handlesMouseWheelScrolling.Value.SetValue(sv, value: true, index: null);
+                handlesMouseWheelScrolling.Value.SetValue(
+                    sv,
+                    value: true,
+                    index: null);
             }
             else if (InterceptMouseWheel)
             {
-                handlesMouseWheelScrolling.Value.SetValue(sv, valueTextBox?.IsFocused == true, index: null);
+                handlesMouseWheelScrolling.Value.SetValue(
+                    sv,
+                    valueTextBox?.IsFocused == true,
+                    index: null);
             }
             else
             {
-                handlesMouseWheelScrolling.Value.SetValue(sv, value: true, index: null);
+                handlesMouseWheelScrolling.Value.SetValue(
+                    sv,
+                    value: true,
+                    index: null);
             }
         }
     }
@@ -715,10 +768,16 @@ public partial class NumericBox : Control
 
         var textBox = (TextBox)sender;
         var fullText = textBox.Text
-            .Remove(textBox.SelectionStart, textBox.SelectionLength)
-            .Insert(textBox.CaretIndex, e.Text);
+            .Remove(
+                textBox.SelectionStart,
+                textBox.SelectionLength)
+            .Insert(
+                textBox.CaretIndex,
+                e.Text);
 
-        var isInvalid = !ValidateText(fullText, out var convertedValue);
+        var isInvalid = !ValidateText(
+            fullText,
+            out var convertedValue);
 
         if (isInvalid)
         {
@@ -727,7 +786,9 @@ public partial class NumericBox : Control
             return;
         }
 
-        var isValueInvalid = CoerceValue(this, convertedValue as double?).Item2;
+        var isValueInvalid = CoerceValue(
+            this,
+            convertedValue as double?).Item2;
         if (isValueInvalid &&
             convertedValue >= Minimum &&
             convertedValue <= Maximum)
@@ -756,9 +817,15 @@ public partial class NumericBox : Control
                     valueTextBox.Text = string.Empty;
                 }
 
-                if (!Equals(oldValue, newValue))
+                if (!Equals(
+                    oldValue,
+                    newValue))
                 {
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
+                    RaiseEvent(
+                        new RoutedPropertyChangedEventArgs<double?>(
+                            oldValue,
+                            newValue,
+                            ValueChangedEvent));
                 }
 
                 return;
@@ -809,19 +876,25 @@ public partial class NumericBox : Control
             }
         }
 
-        if (!Equals(oldValue, newValue))
+        if (!Equals(
+            oldValue,
+            newValue))
         {
-            RaiseEvent(new RoutedPropertyChangedEventArgs<double?>(oldValue, newValue, ValueChangedEvent));
+            RaiseEvent(
+                new RoutedPropertyChangedEventArgs<double?>(
+                    oldValue,
+                    newValue,
+                    ValueChangedEvent));
         }
     }
 
-    private static bool ValidateDefaultDelay(
-        object value)
-        => value is int intValue &&
-           Convert.ToInt32(intValue, GlobalizationConstants.EnglishCultureInfo) >= 0;
+    private static bool ValidateDefaultDelay(object value)
+        => value is int intValue
+           && Convert.ToInt32(
+               intValue,
+               GlobalizationConstants.EnglishCultureInfo) >= 0;
 
-    private void InternalSetText(
-        double? newValue)
+    private void InternalSetText(double? newValue)
     {
         if (!newValue.HasValue)
         {
@@ -835,7 +908,10 @@ public partial class NumericBox : Control
 
         if (valueTextBox is not null)
         {
-            valueTextBox.Text = FormattedValueString(newValue.Value, StringFormat, SpecificCultureInfo);
+            valueTextBox.Text = FormattedValueString(
+                newValue.Value,
+                StringFormat,
+                SpecificCultureInfo);
         }
     }
 
@@ -844,21 +920,33 @@ public partial class NumericBox : Control
         string format,
         CultureInfo culture)
     {
-        format = format.Replace("{}", string.Empty, StringComparison.Ordinal);
+        format = format.Replace(
+            "{}",
+            string.Empty,
+            StringComparison.Ordinal);
         if (string.IsNullOrWhiteSpace(format))
         {
             return newValue.ToString(culture);
         }
 
-        if (TryFormatHexadecimal(newValue, format, culture, out var hexValue))
+        if (TryFormatHexadecimal(
+            newValue,
+            format,
+            culture,
+            out var hexValue))
         {
             return hexValue;
         }
 
         var match = RegexStringFormat.Match(format);
         return match.Success
-            ? string.Format(culture, format, newValue)
-            : newValue.ToString(format, culture);
+            ? string.Format(
+                culture,
+                format,
+                newValue)
+            : newValue.ToString(
+                format,
+                culture);
     }
 
     private static double FormattedValue(
@@ -866,31 +954,46 @@ public partial class NumericBox : Control
         string format,
         CultureInfo culture)
     {
-        format = format.Replace("{}", string.Empty, StringComparison.Ordinal);
+        format = format.Replace(
+            "{}",
+            string.Empty,
+            StringComparison.Ordinal);
         if (string.IsNullOrWhiteSpace(format))
         {
             return newValue;
         }
 
-        if (TryFormatHexadecimal(newValue, format, culture, out _))
+        if (TryFormatHexadecimal(
+            newValue,
+            format,
+            culture,
+            out _))
         {
             return newValue;
         }
 
         var match = RegexStringFormat.Match(format);
-        return ConvertStringFormatValue(newValue, match.Success ? match.Groups["format"].Value : format);
+        return ConvertStringFormatValue(
+            newValue,
+            match.Success ? match.Groups["format"].Value : format);
     }
 
     private static double ConvertStringFormatValue(
         double value,
         string format)
     {
-        if (format.Contains('P', StringComparison.Ordinal) ||
-            format.Contains('%', StringComparison.Ordinal))
+        if (format.Contains(
+            'P',
+            StringComparison.Ordinal) ||
+            format.Contains(
+                '%',
+                StringComparison.Ordinal))
         {
             value /= 100d;
         }
-        else if (format.Contains('‰', StringComparison.Ordinal))
+        else if (format.Contains(
+            '‰',
+            StringComparison.Ordinal))
         {
             value /= 1000d;
         }
@@ -910,13 +1013,18 @@ public partial class NumericBox : Control
             if (match.Groups["simpleHEX"].Success)
             {
                 // HEX DOES SUPPORT INT ONLY.
-                output = ((int)newValue).ToString(match.Groups["simpleHEX"].Value, culture);
+                output = ((int)newValue).ToString(
+                    match.Groups["simpleHEX"].Value,
+                    culture);
                 return true;
             }
 
             if (match.Groups["complexHEX"].Success)
             {
-                output = string.Format(culture, match.Groups["complexHEX"].Value, (int)newValue);
+                output = string.Format(
+                    culture,
+                    match.Groups["complexHEX"].Value,
+                    (int)newValue);
                 return true;
             }
         }
@@ -934,17 +1042,22 @@ public partial class NumericBox : Control
 
         valueTextBox?.ApplyTemplate();
 
-        scrollViewer = valueTextBox?.Template.FindName(PART_ContentHost, valueTextBox) as ScrollViewer;
+        scrollViewer = valueTextBox?.Template.FindName(
+            PART_ContentHost,
+            valueTextBox) as ScrollViewer;
         if (scrollViewer is not null)
         {
-            handlesMouseWheelScrolling = new Lazy<PropertyInfo?>(() => scrollViewer.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).SingleOrDefault(i => i.Name == "HandlesMouseWheelScrolling"));
+            handlesMouseWheelScrolling = new Lazy<PropertyInfo?>(
+                () => scrollViewer
+                    .GetType()
+                    .GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
+                    .SingleOrDefault(i => i.Name == "HandlesMouseWheelScrolling"));
         }
 
         return scrollViewer;
     }
 
-    private void ChangeValueWithSpeedUp(
-        bool toPositive)
+    private void ChangeValueWithSpeedUp(bool toPositive)
     {
         if (IsReadOnly)
         {
@@ -970,8 +1083,7 @@ public partial class NumericBox : Control
         }
     }
 
-    private void ChangeValueInternal(
-        double interVal)
+    private void ChangeValueInternal(double interVal)
     {
         if (IsReadOnly)
         {
@@ -981,8 +1093,12 @@ public partial class NumericBox : Control
         manualChange = false;
 
         var routedEvent = interVal > 0
-            ? new NumericBoxChangedRoutedEventArgs(ValueIncrementedEvent, interVal)
-            : new NumericBoxChangedRoutedEventArgs(ValueDecrementedEvent, interVal);
+            ? new NumericBoxChangedRoutedEventArgs(
+                ValueIncrementedEvent,
+                interVal)
+            : new NumericBoxChangedRoutedEventArgs(
+                ValueDecrementedEvent,
+                interVal);
 
         RaiseEvent(routedEvent);
 
@@ -1001,15 +1117,10 @@ public partial class NumericBox : Control
         }
     }
 
-    private void ChangeValueBy(
-        double difference)
-    {
-        var newValue = Value.GetValueOrDefault() + difference;
-        SetValueTo(newValue);
-    }
+    private void ChangeValueBy(double difference)
+        => SetValueTo(Value.GetValueOrDefault() + difference);
 
-    private void SetValueTo(
-        double newValue)
+    private void SetValueTo(double newValue)
     {
         var val = newValue;
 
@@ -1027,7 +1138,9 @@ public partial class NumericBox : Control
             val = Minimum;
         }
 
-        SetCurrentValue(ValueProperty, CoerceValue(this, val).Item1);
+        SetCurrentValue(
+            ValueProperty,
+            CoerceValue(this, val).Item1);
     }
 
     private void EnableDisableDown()
@@ -1083,7 +1196,10 @@ public partial class NumericBox : Control
         var cultureInfo = SpecificCultureInfo;
 
         // Surrogate the blocked key pressed
-        SimulateDecimalPointKeyPress(textBox, correctionMode, cultureInfo);
+        SimulateDecimalPointKeyPress(
+            textBox,
+            correctionMode,
+            cultureInfo);
     }
 
     private static void SimulateDecimalPointKeyPress(
@@ -1104,7 +1220,10 @@ public partial class NumericBox : Control
             return;
         }
 
-        var tc = new TextComposition(InputManager.Current, textBox, replace);
+        var tc = new TextComposition(
+            InputManager.Current,
+            textBox,
+            replace);
 
         TextCompositionManager.StartComposition(tc);
     }
@@ -1127,13 +1246,9 @@ public partial class NumericBox : Control
     private void OnTextChanged(
         object sender,
         TextChangedEventArgs e)
-    {
-        var text = ((TextBox)sender).Text;
-        ChangeValueFromTextInput(text);
-    }
+        => ChangeValueFromTextInput(((TextBox)sender).Text);
 
-    private void ChangeValueFromTextInput(
-        string text)
+    private void ChangeValueFromTextInput(string text)
     {
         if (!InterceptManualEnter)
         {
@@ -1152,14 +1267,21 @@ public partial class NumericBox : Control
             }
             else
             {
-                SetCurrentValue(ValueProperty, value: null);
+                SetCurrentValue(
+                    ValueProperty,
+                    value: null);
             }
         }
         else if (manualChange)
         {
-            if (ValidateText(text, out var convertedValue))
+            if (ValidateText(
+                text,
+                out var convertedValue))
             {
-                convertedValue = FormattedValue(convertedValue, StringFormat, SpecificCultureInfo);
+                convertedValue = FormattedValue(
+                    convertedValue,
+                    StringFormat,
+                    SpecificCultureInfo);
                 SetValueTo(convertedValue);
             }
             else if (DefaultValue.HasValue)
@@ -1169,11 +1291,15 @@ public partial class NumericBox : Control
             }
             else
             {
-                SetCurrentValue(ValueProperty, value: null);
+                SetCurrentValue(
+                    ValueProperty,
+                    value: null);
             }
         }
 
-        OnValueChanged(Value, Value);
+        OnValueChanged(
+            Value,
+            Value);
 
         manualChange = false;
     }
@@ -1185,7 +1311,9 @@ public partial class NumericBox : Control
         var textBox = (TextBox)sender;
         var textPresent = textBox.Text;
 
-        var isText = e.SourceDataObject.GetDataPresent(DataFormats.Text, autoConvert: true);
+        var isText = e.SourceDataObject.GetDataPresent(
+            DataFormats.Text,
+            autoConvert: true);
         if (!isText)
         {
             e.CancelCommand();
@@ -1194,8 +1322,15 @@ public partial class NumericBox : Control
 
         var text = e.SourceDataObject.GetData(DataFormats.Text) as string;
 
-        var newText = string.Concat(textPresent.Substring(0, textBox.SelectionStart), text, textPresent.Substring(textBox.SelectionStart + textBox.SelectionLength));
-        if (!ValidateText(newText, out _))
+        var newText = string.Concat(
+            textPresent.Substring(
+                0,
+                textBox.SelectionStart),
+            text,
+            textPresent.Substring(textBox.SelectionStart + textBox.SelectionLength));
+        if (!ValidateText(
+            newText,
+            out _))
         {
             e.CancelCommand();
         }
@@ -1217,6 +1352,7 @@ public partial class NumericBox : Control
         intervalValueSinceReset = 0;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private bool ValidateText(
         string text,
         out double convertedValue)
@@ -1229,8 +1365,17 @@ public partial class NumericBox : Control
             return true;
         }
 
-        if (text.Where(c => c == SpecificCultureInfo.NumberFormat.PositiveSign[0]).Skip(2).Any() ||
-            text.Where(c => c == SpecificCultureInfo.NumberFormat.NegativeSign[0]).Skip(2).Any())
+        var positiveSignCount = text
+            .Where(c => c == SpecificCultureInfo.NumberFormat.PositiveSign[0])
+            .Skip(2)
+            .Any();
+
+        var negativeSignCount = text
+            .Where(c => c == SpecificCultureInfo.NumberFormat.NegativeSign[0])
+            .Skip(2)
+            .Any();
+
+        if (positiveSignCount || negativeSignCount)
         {
             return false;
         }
@@ -1248,11 +1393,15 @@ public partial class NumericBox : Control
                     ParsingNumberStyle.HasFlag(NumberStyles.AllowHexSpecifier) ||
                     ParsingNumberStyle == NumberStyles.HexNumber;
 
-        var number = TryGetNumberFromText(text, isHex);
+        var number = TryGetNumberFromText(
+            text,
+            isHex);
 
         if (isNumeric)
         {
-            return ConvertNumber(number, out convertedValue);
+            return ConvertNumber(
+                number,
+                out convertedValue);
         }
 
         if (number == SpecificCultureInfo.NumberFormat.NumberDecimalSeparator ||
@@ -1264,7 +1413,11 @@ public partial class NumericBox : Control
             return true;
         }
 
-        return double.TryParse(number, ParsingNumberStyle, SpecificCultureInfo, out convertedValue);
+        return double.TryParse(
+            number,
+            ParsingNumberStyle,
+            SpecificCultureInfo,
+            out convertedValue);
     }
 
     private bool ConvertNumber(
@@ -1279,7 +1432,11 @@ public partial class NumericBox : Control
             return false;
         }
 
-        if (!long.TryParse(text, ParsingNumberStyle, SpecificCultureInfo, out var convertedInt))
+        if (!long.TryParse(
+            text,
+            ParsingNumberStyle,
+            SpecificCultureInfo,
+            out var convertedInt))
         {
             convertedValue = convertedInt;
             return false;
@@ -1301,8 +1458,14 @@ public partial class NumericBox : Control
 
         regexNumber ??= new Regex(
             RawRegexNumberString
-                .Replace("<DecimalSeparator>", SpecificCultureInfo.NumberFormat.NumberDecimalSeparator, StringComparison.Ordinal)
-                .Replace("<GroupSeparator>", SpecificCultureInfo.NumberFormat.NumberGroupSeparator, StringComparison.Ordinal),
+                .Replace(
+                    "<DecimalSeparator>",
+                    SpecificCultureInfo.NumberFormat.NumberDecimalSeparator,
+                    StringComparison.Ordinal)
+                .Replace(
+                    "<GroupSeparator>",
+                    SpecificCultureInfo.NumberFormat.NumberGroupSeparator,
+                    StringComparison.Ordinal),
             RegexOptions.Compiled,
             TimeSpan.FromSeconds(1));
 

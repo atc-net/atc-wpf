@@ -3,7 +3,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Animation;
 
 internal sealed class Animate : AnimationBase
 {
-    public Animate(Svg svg, XmlNode node, Shape parent)
+    public Animate(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
         From = SvgXmlUtil.AttrValue(node, "from", defaultValue: null);
@@ -30,5 +33,6 @@ internal sealed class Animate : AnimationBase
 
     public string? Href { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(AttributeName)}: {AttributeName}, {nameof(From)}: {From}, {nameof(To)}: {To}, {nameof(RepeatType)}: {RepeatType}, {nameof(Values)}: {Values}, {nameof(Href)}: {Href}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(AttributeName)}: {AttributeName}, {nameof(From)}: {From}, {nameof(To)}: {To}, {nameof(RepeatType)}: {RepeatType}, {nameof(Values)}: {Values}, {nameof(Href)}: {Href}";
 }

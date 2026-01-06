@@ -12,14 +12,12 @@ public sealed class JsonArrayLengthConverter : IValueConverter
         Type targetType,
         object? parameter,
         CultureInfo culture)
-    {
-        return value switch
+        => value switch
         {
             JsonArrayNode arrayNode => $"[{arrayNode.Length.ToString(GlobalizationConstants.EnglishCultureInfo)}]",
             JsonPropertyNode { Value: JsonArrayNode propArray } => $"[ {propArray.Length.ToString(GlobalizationConstants.EnglishCultureInfo)} ]",
             _ => string.Empty,
         };
-    }
 
     public object ConvertBack(
         object? value,

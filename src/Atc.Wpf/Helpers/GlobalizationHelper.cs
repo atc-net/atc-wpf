@@ -39,8 +39,12 @@ public static class GlobalizationHelper
             var assembly = AssemblyHelper.FindResourceAssembly(resxName);
             if (assembly is not null)
             {
-                resourceManager = new ResourceManager(resxName, assembly);
-                ResourceManagers.Add(resxName, new WeakReference(resourceManager));
+                resourceManager = new ResourceManager(
+                    resxName,
+                    assembly);
+                ResourceManagers.Add(
+                    resxName,
+                    new WeakReference(resourceManager));
             }
         }
 
@@ -58,28 +62,37 @@ public static class GlobalizationHelper
     /// </summary>
     /// <param name="resxName">Name of the RESX.</param>
     /// <param name="key">The key.</param>
-    public static object? GetObjectFromResource(string resxName, string key)
-    {
-        return GetResourceManager(resxName).GetObject(key, CultureInfo.CurrentUICulture);
-    }
+    public static object? GetObjectFromResource(
+        string resxName,
+        string key)
+        => GetResourceManager(resxName)
+            .GetObject(
+                key,
+                CultureInfo.CurrentUICulture);
 
     /// <summary>
     /// Gets the stream from resource.
     /// </summary>
     /// <param name="resxName">Name of the RESX.</param>
     /// <param name="key">The key.</param>
-    public static Stream? GetStreamFromResource(string resxName, string key)
-    {
-        return GetResourceManager(resxName).GetStream(key, CultureInfo.CurrentUICulture);
-    }
+    public static Stream? GetStreamFromResource(
+        string resxName,
+        string key)
+        => GetResourceManager(resxName)
+            .GetStream(
+                key,
+                CultureInfo.CurrentUICulture);
 
     /// <summary>
     /// Gets the string from resource.
     /// </summary>
     /// <param name="resxName">Name of the RESX.</param>
     /// <param name="key">The key.</param>
-    public static string? GetStringFromResource(string resxName, string key)
-    {
-        return GetResourceManager(resxName).GetString(key, CultureInfo.CurrentUICulture);
-    }
+    public static string? GetStringFromResource(
+        string resxName,
+        string key)
+        => GetResourceManager(resxName)
+            .GetString(
+                key,
+                CultureInfo.CurrentUICulture);
 }

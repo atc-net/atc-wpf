@@ -9,9 +9,16 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
 
     static NiceThumbContentControl()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(NiceThumbContentControl), new FrameworkPropertyMetadata(typeof(NiceThumbContentControl)));
-        FocusableProperty.OverrideMetadata(typeof(NiceThumbContentControl), new FrameworkPropertyMetadata(default(bool)));
-        EventManager.RegisterClassHandler(typeof(NiceThumbContentControl), Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCapture));
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(NiceThumbContentControl),
+            new FrameworkPropertyMetadata(typeof(NiceThumbContentControl)));
+        FocusableProperty.OverrideMetadata(
+            typeof(NiceThumbContentControl),
+            new FrameworkPropertyMetadata(default(bool)));
+        EventManager.RegisterClassHandler(
+            typeof(NiceThumbContentControl),
+            Mouse.LostMouseCaptureEvent,
+            new MouseEventHandler(OnLostMouseCapture));
     }
 
     public static readonly RoutedEvent DragStartedEvent = EventManager.RegisterRoutedEvent(
@@ -92,8 +99,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    protected override void OnMouseLeftButtonDown(
-        MouseButtonEventArgs e)
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -119,8 +125,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         base.OnMouseLeftButtonDown(e);
     }
 
-    protected override void OnMouseLeftButtonUp(
-        MouseButtonEventArgs e)
+    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -150,8 +155,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         }
     }
 
-    protected override void OnMouseMove(
-        MouseEventArgs e)
+    protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -190,8 +194,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         }
     }
 
-    protected override void OnPreviewTouchDown(
-        TouchEventArgs e)
+    protected override void OnPreviewTouchDown(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -199,12 +202,10 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         CaptureCurrentDevice(e);
     }
 
-    protected override void OnPreviewTouchUp(
-        TouchEventArgs e)
+    protected override void OnPreviewTouchUp(TouchEventArgs e)
         => ReleaseCurrentDevice();
 
-    protected override void OnLostTouchCapture(
-        TouchEventArgs e)
+    protected override void OnLostTouchCapture(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -228,8 +229,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         ReleaseTouchCapture(temp);
     }
 
-    private void CaptureCurrentDevice(
-        TouchEventArgs e)
+    private void CaptureCurrentDevice(TouchEventArgs e)
     {
         var gotTouch = CaptureTouch(e.TouchDevice);
         if (gotTouch)

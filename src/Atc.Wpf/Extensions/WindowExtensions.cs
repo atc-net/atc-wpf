@@ -10,8 +10,6 @@ public static class WindowExtensions
             new WindowInteropHelper(window).Handle,
             placementXml);
 
-    public static string GetPlacement(
-        this Window window)
-        => WindowPlacementHelper.GetPlacement(
-            new WindowInteropHelper(window).Handle);
+    public static string GetPlacement(this Window window)
+        => WindowPlacementHelper.GetPlacement(new WindowInteropHelper(window).Handle);
 }

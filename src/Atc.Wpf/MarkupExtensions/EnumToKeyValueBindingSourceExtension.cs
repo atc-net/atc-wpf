@@ -23,8 +23,7 @@ public sealed class EnumToKeyValueBindingSourceExtension : MarkupExtension
     /// Initializes a new instance of the <see cref="EnumToKeyValueBindingSourceExtension"/> class.
     /// </summary>
     /// <param name="enumType">Type of the enum.</param>
-    public EnumToKeyValueBindingSourceExtension(
-        Type enumType)
+    public EnumToKeyValueBindingSourceExtension(Type enumType)
         : this(
             enumType,
             DropDownFirstItemType.None,
@@ -170,8 +169,7 @@ public sealed class EnumToKeyValueBindingSourceExtension : MarkupExtension
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     /// <exception cref="InvalidOperationException">The EnumType must be specified.</exception>
-    public override object ProvideValue(
-        IServiceProvider serviceProvider)
+    public override object ProvideValue(IServiceProvider serviceProvider)
         => GetEnumValues();
 
     private object GetEnumValues()

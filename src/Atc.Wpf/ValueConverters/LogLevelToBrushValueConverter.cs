@@ -8,7 +8,11 @@ public sealed class LogLevelToBrushValueConverter : IValueConverter
 {
     public static readonly LogLevelToBrushValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is null)
         {

@@ -27,13 +27,16 @@ public abstract class IconElement : Control
     protected void OnForegroundPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
-        var baseValueSource = DependencyPropertyHelper.GetValueSource(this, e.Property).BaseValueSource;
+        var baseValueSource = DependencyPropertyHelper
+            .GetValueSource(
+                this,
+                e.Property)
+            .BaseValueSource;
         isForegroundPropertyDefaultOrInherited = baseValueSource <= BaseValueSource.Inherited;
         UpdateInheritsForegroundFromVisualParent();
     }
 
-    protected override void OnVisualParentChanged(
-        DependencyObject oldParent)
+    protected override void OnVisualParentChanged(DependencyObject oldParent)
     {
         base.OnVisualParentChanged(oldParent);
         UpdateInheritsForegroundFromVisualParent();
@@ -48,13 +51,14 @@ public abstract class IconElement : Control
               && !Parent.Equals(VisualParent);
     }
 
-    internal static readonly DependencyPropertyKey InheritsForegroundFromVisualParentPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(InheritsForegroundFromVisualParent),
-        typeof(bool),
-        typeof(IconElement),
-        new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            (sender, e) => ((IconElement)sender).OnInheritsForegroundFromVisualParentPropertyChanged(e)));
+    internal static readonly DependencyPropertyKey InheritsForegroundFromVisualParentPropertyKey =
+        DependencyProperty.RegisterReadOnly(
+            nameof(InheritsForegroundFromVisualParent),
+            typeof(bool),
+            typeof(IconElement),
+            new PropertyMetadata(
+                BooleanBoxes.FalseBox,
+                (sender, e) => ((IconElement)sender).OnInheritsForegroundFromVisualParentPropertyChanged(e)));
 
     /// <summary>Identifies the <see cref="InheritsForegroundFromVisualParent"/> dependency property.</summary>
     public static readonly DependencyProperty InheritsForegroundFromVisualParentProperty = InheritsForegroundFromVisualParentPropertyKey.DependencyProperty;
@@ -65,7 +69,9 @@ public abstract class IconElement : Control
     public bool InheritsForegroundFromVisualParent
     {
         get => (bool)GetValue(InheritsForegroundFromVisualParentProperty);
-        protected set => SetValue(InheritsForegroundFromVisualParentPropertyKey, BooleanBoxes.Box(value));
+        protected set => SetValue(
+            InheritsForegroundFromVisualParentPropertyKey,
+            BooleanBoxes.Box(value));
     }
 
     [SuppressMessage("Minor", "S1125:Boolean literals should not be redundant", Justification = "OK.")]
@@ -93,13 +99,14 @@ public abstract class IconElement : Control
         }
     }
 
-    private static readonly DependencyProperty VisualParentForegroundProperty = DependencyProperty.Register(
-        nameof(VisualParentForeground),
-        typeof(Brush),
-        typeof(IconElement),
-        new PropertyMetadata(
-            default(Brush),
-            (sender, e) => ((IconElement)sender).OnVisualParentForegroundPropertyChanged(e)));
+    private static readonly DependencyProperty VisualParentForegroundProperty =
+        DependencyProperty.Register(
+            nameof(VisualParentForeground),
+            typeof(Brush),
+            typeof(IconElement),
+            new PropertyMetadata(
+                default(Brush),
+                (sender, e) => ((IconElement)sender).OnVisualParentForegroundPropertyChanged(e)));
 
     protected Brush? VisualParentForeground
     {
@@ -112,18 +119,20 @@ public abstract class IconElement : Control
     {
     }
 
-    public static readonly DependencyProperty GeometryProperty = DependencyProperty.RegisterAttached(
-        "Geometry",
-        typeof(Geometry),
-        typeof(IconElement),
-        new PropertyMetadata(default(Geometry)));
+    public static readonly DependencyProperty GeometryProperty =
+        DependencyProperty.RegisterAttached(
+            "Geometry",
+            typeof(Geometry),
+            typeof(IconElement),
+            new PropertyMetadata(default(Geometry)));
 
     public static void SetGeometry(
         DependencyObject element,
         Geometry value)
-        => element.SetValue(GeometryProperty, value);
+        => element.SetValue(
+            GeometryProperty,
+            value);
 
-    public static Geometry GetGeometry(
-        DependencyObject element)
+    public static Geometry GetGeometry(DependencyObject element)
         => (Geometry)element.GetValue(GeometryProperty);
 }

@@ -4,23 +4,19 @@ public sealed class NiceThumb : Thumb, INiceThumb
 {
     private TouchDevice? currentDevice;
 
-    protected override void OnPreviewTouchDown(
-        TouchEventArgs e)
+    protected override void OnPreviewTouchDown(TouchEventArgs e)
     {
-        ArgumentNullException.ThrowIfNull(e);
         ArgumentNullException.ThrowIfNull(e);
         ReleaseCurrentDevice();
         CaptureCurrentDevice(e);
     }
 
-    protected override void OnPreviewTouchUp(
-        TouchEventArgs e)
+    protected override void OnPreviewTouchUp(TouchEventArgs e)
     {
         ReleaseCurrentDevice();
     }
 
-    protected override void OnLostTouchCapture(
-        TouchEventArgs e)
+    protected override void OnLostTouchCapture(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -44,8 +40,7 @@ public sealed class NiceThumb : Thumb, INiceThumb
         ReleaseTouchCapture(temp);
     }
 
-    private void CaptureCurrentDevice(
-        TouchEventArgs e)
+    private void CaptureCurrentDevice(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 

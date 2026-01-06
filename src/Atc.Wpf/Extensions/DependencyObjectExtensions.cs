@@ -160,8 +160,7 @@ public static class DependencyObjectExtensions
     /// <para>If element is not of <see cref="Visual"/> or <see cref="Visual3D"/> the logical ancestry is used.</para>
     /// </summary>
     /// <param name="leaf">The starting object.</param>
-    public static T? GetVisualAncestor<T>(
-        this DependencyObject? leaf)
+    public static T? GetVisualAncestor<T>(this DependencyObject? leaf)
         where T : DependencyObject
     {
         while (leaf is not null)
@@ -291,8 +290,7 @@ public static class DependencyObjectExtensions
     /// <returns>The first parent item that matches the submitted
     /// type parameter. If not matching item can be found, a null
     /// reference is being returned.</returns>
-    public static T? TryFindParent<T>(
-        this DependencyObject child)
+    public static T? TryFindParent<T>(this DependencyObject child)
         where T : DependencyObject
     {
         while (true)

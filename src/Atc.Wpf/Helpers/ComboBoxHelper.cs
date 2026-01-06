@@ -10,8 +10,7 @@ public static class ComboBoxHelper
         new FrameworkPropertyMetadata(CharacterCasing.Normal),
         value => (CharacterCasing)value >= CharacterCasing.Normal && (CharacterCasing)value <= CharacterCasing.Upper);
 
-    public static CharacterCasing GetCharacterCasing(
-        UIElement element)
+    public static CharacterCasing GetCharacterCasing(UIElement element)
         => (CharacterCasing)element.GetValue(CharacterCasingProperty);
 
     public static void SetCharacterCasing(
@@ -26,8 +25,7 @@ public static class ComboBoxHelper
         new FrameworkPropertyMetadata(0),
         value => (int)value >= 0);
 
-    public static int GetMaxLength(
-        UIElement element)
+    public static int GetMaxLength(UIElement element)
         => (int)element.GetValue(MaxLengthProperty);
 
     public static void SetMaxLength(

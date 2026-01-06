@@ -188,21 +188,18 @@ public sealed class WindowCommands : ToolBar
     }
 
     protected override DependencyObject GetContainerForItemOverride()
-    {
-        return new WindowCommandsItem();
-    }
+        => new WindowCommandsItem();
 
-    protected override bool IsItemItsOwnContainerOverride(
-        object item)
-    {
-        return item is WindowCommandsItem;
-    }
+    protected override bool IsItemItsOwnContainerOverride(object item)
+        => item is WindowCommandsItem;
 
     protected override void PrepareContainerForItemOverride(
         DependencyObject element,
         object item)
     {
-        base.PrepareContainerForItemOverride(element, item);
+        base.PrepareContainerForItemOverride(
+            element,
+            item);
 
         if (element is not WindowCommandsItem windowCommandsItem)
         {
@@ -215,7 +212,9 @@ public sealed class WindowCommands : ToolBar
             _ = windowCommandsItem.ContentTemplate?.LoadContent() as FrameworkElement;
         }
 
-        AttachVisibilityHandler(windowCommandsItem, item as UIElement);
+        AttachVisibilityHandler(
+            windowCommandsItem,
+            item as UIElement);
         ResetSeparators();
     }
 
@@ -223,7 +222,9 @@ public sealed class WindowCommands : ToolBar
         DependencyObject element,
         object item)
     {
-        base.ClearContainerForItemOverride(element, item);
+        base.ClearContainerForItemOverride(
+            element,
+            item);
 
         DetachVisibilityHandler(element as WindowCommandsItem);
         ResetSeparators(false);
@@ -250,13 +251,14 @@ public sealed class WindowCommands : ToolBar
         }
 
         container.Visibility = item.Visibility;
-        var isVisibilityNotifier = new PropertyChangeNotifier(item, VisibilityProperty);
+        var isVisibilityNotifier = new PropertyChangeNotifier(
+            item,
+            VisibilityProperty);
         isVisibilityNotifier.ValueChanged += VisibilityPropertyChanged;
         container.VisibilityPropertyChangeNotifier = isVisibilityNotifier;
     }
 
-    private static void DetachVisibilityHandler(
-        WindowCommandsItem? container)
+    private static void DetachVisibilityHandler(WindowCommandsItem? container)
     {
         if (container is not null)
         {
@@ -279,23 +281,22 @@ public sealed class WindowCommands : ToolBar
         }
     }
 
-    protected override void OnItemsChanged(
-        NotifyCollectionChangedEventArgs e)
+    protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
     {
         base.OnItemsChanged(e);
 
         ResetSeparators();
     }
 
-    private void ResetSeparators(
-        bool reset = true)
+    private void ResetSeparators(bool reset = true)
     {
         if (Items.Count == 0)
         {
             return;
         }
 
-        var windowCommandsItems = GetWindowCommandsItems().ToList();
+        var windowCommandsItems = GetWindowCommandsItems()
+            .ToList();
 
         if (reset)
         {
@@ -312,8 +313,7 @@ public sealed class WindowCommands : ToolBar
         }
     }
 
-    private WindowCommandsItem? GetWindowCommandsItem(
-        object? item)
+    private WindowCommandsItem? GetWindowCommandsItem(object? item)
     {
         if (item is WindowCommandsItem windowCommandsItem)
         {

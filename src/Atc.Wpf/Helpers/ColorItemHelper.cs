@@ -8,7 +8,9 @@ public static class ColorItemHelper
 
     public static ColorItem[] GetColorItems()
     {
-        if (CacheColorItems.TryGetValue(CultureInfo.CurrentUICulture.LCID, out var cacheItems))
+        if (CacheColorItems.TryGetValue(
+                CultureInfo.CurrentUICulture.LCID,
+                out var cacheItems))
         {
             return cacheItems;
         }
@@ -16,14 +18,18 @@ public static class ColorItemHelper
         var coloKeys = ColorHelper.GetColorKeys();
         var items = GetColorItemsByKeys(coloKeys);
 
-        CacheColorItems.TryAdd(CultureInfo.CurrentUICulture.LCID, items);
+        CacheColorItems.TryAdd(
+            CultureInfo.CurrentUICulture.LCID,
+            items);
 
         return items;
     }
 
     public static ColorItem[] GetBasicColorItems()
     {
-        if (CacheBasicColorItems.TryGetValue(CultureInfo.CurrentUICulture.LCID, out var cacheItems))
+        if (CacheBasicColorItems.TryGetValue(
+                CultureInfo.CurrentUICulture.LCID,
+                out var cacheItems))
         {
             return cacheItems;
         }
@@ -31,26 +37,33 @@ public static class ColorItemHelper
         var coloKeys = ColorHelper.GetBasicColorKeys();
         var items = GetColorItemsByKeys(coloKeys);
 
-        CacheBasicColorItems.TryAdd(CultureInfo.CurrentUICulture.LCID, items);
+        CacheBasicColorItems.TryAdd(
+            CultureInfo.CurrentUICulture.LCID,
+            items);
 
         return items;
     }
 
-    private static ColorItem[] GetColorItemsByKeys(
-        IEnumerable<string> coloKeys)
+    private static ColorItem[] GetColorItemsByKeys(IEnumerable<string> coloKeys)
     {
         var list = new List<ColorItem>();
         foreach (var itemKey in coloKeys)
         {
-            var translatedName = ColorHelper.GetColorNameFromKey(itemKey, CultureInfo.CurrentUICulture);
+            var translatedName = ColorHelper.GetColorNameFromKey(
+                itemKey,
+                CultureInfo.CurrentUICulture);
 
-            var color = ColorHelper.GetColorFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
+            var color = ColorHelper.GetColorFromName(
+                itemKey,
+                GlobalizationConstants.EnglishCultureInfo);
             if (color is null)
             {
                 continue;
             }
 
-            var showcaseBrush = SolidColorBrushHelper.GetBrushFromName(itemKey, GlobalizationConstants.EnglishCultureInfo);
+            var showcaseBrush = SolidColorBrushHelper.GetBrushFromName(
+                itemKey,
+                GlobalizationConstants.EnglishCultureInfo);
             if (showcaseBrush is null)
             {
                 continue;
@@ -60,11 +73,14 @@ public static class ColorItemHelper
                 new ColorItem(
                     Key: itemKey,
                     DisplayName: translatedName ?? "#" + itemKey,
-                    DisplayHexCode: color.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
+                    DisplayHexCode: color.Value
+                        .ToString(GlobalizationConstants.EnglishCultureInfo),
                     BorderColorBrush: showcaseBrush,
                     ColorBrush: showcaseBrush));
         }
 
-        return [.. list.OrderBy(x => x.DisplayName, StringComparer.Ordinal)];
+        return [.. list.OrderBy(
+            x => x.DisplayName,
+            StringComparer.Ordinal)];
     }
 }

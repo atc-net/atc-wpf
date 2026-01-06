@@ -13,8 +13,7 @@ public static class StylizedBehaviors
                 defaultValue: null,
                 OnPropertyChanged));
 
-    public static StylizedBehaviorCollection? GetBehaviors(
-        DependencyObject d)
+    public static StylizedBehaviorCollection? GetBehaviors(DependencyObject d)
         => (StylizedBehaviorCollection?)d.GetValue(BehaviorsProperty);
 
     public static void SetBehaviors(
@@ -146,8 +145,7 @@ public static class StylizedBehaviors
             typeof(StylizedBehaviors),
             new UIPropertyMetadata(propertyChangedCallback: null));
 
-    private static Behavior? GetOriginalBehavior(
-        DependencyObject d)
+    private static Behavior? GetOriginalBehavior(DependencyObject d)
         => (Behavior?)d.GetValue(OriginalBehaviorProperty);
 
     private static void SetOriginalBehavior(

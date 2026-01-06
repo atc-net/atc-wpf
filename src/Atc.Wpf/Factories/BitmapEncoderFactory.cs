@@ -3,8 +3,7 @@ namespace Atc.Wpf.Factories;
 
 public static class BitmapEncoderFactory
 {
-    public static BitmapEncoder Create(
-        ImageFormatType imageFormatType)
+    public static BitmapEncoder Create(ImageFormatType imageFormatType)
         => imageFormatType switch
         {
             ImageFormatType.Bmp => new BmpBitmapEncoder(),

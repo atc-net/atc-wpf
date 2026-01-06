@@ -3,23 +3,18 @@ namespace Atc.Wpf.Theming.Automation.Peers;
 
 public sealed class WindowCommandsAutomationPeer : FrameworkElementAutomationPeer
 {
-    public WindowCommandsAutomationPeer(
-        WindowCommands owner)
+    public WindowCommandsAutomationPeer(WindowCommands owner)
         : base(owner)
     {
     }
 
     /// <inheritdoc />
     protected override string GetClassNameCore()
-    {
-        return "WindowCommands";
-    }
+        => "WindowCommands";
 
     /// <inheritdoc />
     protected override AutomationControlType GetAutomationControlTypeCore()
-    {
-        return AutomationControlType.ToolBar;
-    }
+        => AutomationControlType.ToolBar;
 
     /// <inheritdoc />
     protected override string GetNameCore()
@@ -41,9 +36,7 @@ public sealed class WindowCommandsAutomationPeer : FrameworkElementAutomationPee
 
     /// <inheritdoc />
     protected override bool IsOffscreenCore()
-    {
-        return !((WindowCommands)Owner).HasItems || base.IsOffscreenCore();
-    }
+        => !((WindowCommands)Owner).HasItems || base.IsOffscreenCore();
 
     protected override Point GetClickablePointCore()
     {

@@ -12,7 +12,11 @@ public struct RECT
     public int Right;
     public int Bottom;
 
-    public RECT(int left, int top, int right, int bottom)
+    public RECT(
+        int left,
+        int top,
+        int right,
+        int bottom)
     {
         Left = left;
         Top = top;
@@ -24,7 +28,9 @@ public struct RECT
 
     public int Height => Bottom - Top;
 
-    public void Offset(int dx, int dy)
+    public void Offset(
+        int dx,
+        int dy)
     {
         Left += dx;
         Top += dy;

@@ -25,8 +25,7 @@ public sealed class BoolToInverseBoolValueConverter : IValueConverter
         CultureInfo culture)
         => Convert(value);
 
-    private static bool Convert(
-        object? value)
+    private static bool Convert(object? value)
     {
         ArgumentNullException.ThrowIfNull(value);
 

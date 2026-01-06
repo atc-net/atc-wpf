@@ -9,10 +9,14 @@ public partial class AttachedPropertyView
         DataContext = this;
     }
 
-    private void OnToggleDraggingClick(object sender, RoutedEventArgs e)
+    private void OnToggleDraggingClick(
+        object sender,
+        RoutedEventArgs e)
     {
         var isCurrentlyDraggable = DragBehavior.GetIsDraggable(MyTextBlock);
-        DragBehavior.SetIsDraggable(MyTextBlock, !isCurrentlyDraggable);
+        DragBehavior.SetIsDraggable(
+            MyTextBlock,
+            !isCurrentlyDraggable);
     }
 
     public string CSharpCodeForDragBehavior

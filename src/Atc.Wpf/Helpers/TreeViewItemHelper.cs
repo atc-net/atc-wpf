@@ -11,8 +11,7 @@ public static class TreeViewItemHelper
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public static Style? GetToggleButtonStyle(
-        UIElement element)
+    public static Style? GetToggleButtonStyle(UIElement element)
         => (Style?)element.GetValue(ToggleButtonStyleProperty);
 
     public static void SetToggleButtonStyle(

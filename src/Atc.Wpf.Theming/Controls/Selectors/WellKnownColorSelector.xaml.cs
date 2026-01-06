@@ -75,8 +75,7 @@ public partial class WellKnownColorSelector
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    private void PopulateData(
-        bool setSelected)
+    private void PopulateData(bool setSelected)
     {
         switch (DropDownFirstItemType)
         {
@@ -135,7 +134,9 @@ public partial class WellKnownColorSelector
                     CbColors.SelectedIndex = i;
                     if (!processingUiCultureChanged)
                     {
-                        OnSelectionChanged(this, item);
+                        OnSelectionChanged(
+                            this,
+                            item);
                     }
                 }
 
@@ -222,7 +223,9 @@ public partial class WellKnownColorSelector
         if (!processingUiCultureChanged &&
             e.AddedItems.Count == 1)
         {
-            OnSelectionChanged(sender, (ColorItem)e.AddedItems[0]!);
+            OnSelectionChanged(
+                sender,
+                (ColorItem)e.AddedItems[0]!);
         }
     }
 

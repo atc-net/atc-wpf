@@ -18,9 +18,18 @@ internal static class WinApiHelper
 
         Span<char> buffer = new char[256];
 
-        var result = PInvoke.LoadString(user32, id, buffer, buffer.Length);
-        return result == 0 ? $"String with id '{id}' could not be found." :
-            new string(buffer[..result]).Replace("&", string.Empty, StringComparison.Ordinal);
+        var result = PInvoke.LoadString(
+            user32,
+            id,
+            buffer,
+            buffer.Length);
+        return result == 0
+            ? $"String with id '{id}' could not be found."
+            : new string(buffer[..result])
+                .Replace(
+                    "&",
+                    string.Empty,
+                    StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -40,7 +49,9 @@ internal static class WinApiHelper
         }
 
         // Try to get the monitor from where the owner stays and use the working area for window size properties
-        var monitor = PInvoke.MonitorFromWindow(new HWND(source.Handle), MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+        var monitor = PInvoke.MonitorFromWindow(
+            new HWND(source.Handle),
+            MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
         if (monitor == IntPtr.Zero)
         {
             return default;
@@ -56,7 +67,9 @@ internal static class WinApiHelper
             return default;
         }
 
-        return new Size(monitorInfo.rcWork.right - monitorInfo.rcWork.left, monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
+        return new Size(
+            monitorInfo.rcWork.right - monitorInfo.rcWork.left,
+            monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
     }
 
     /// <summary>
@@ -64,17 +77,27 @@ internal static class WinApiHelper
     /// </summary>
     /// <param name="window">The window which should get the window placement.</param>
     /// <param name="wp">The window placement for the window.</param>
-    public static unsafe void SetWindowPlacement(Window? window, WINDOWPLACEMENT? wp)
+    public static unsafe void SetWindowPlacement(
+        Window? window,
+        WINDOWPLACEMENT? wp)
     {
         if (window is null)
         {
             return;
         }
 
-        var x = CalcIntValue(wp?.rcNormalPosition.left, window.Left);
-        var y = CalcIntValue(wp?.rcNormalPosition.top, window.Top);
-        var width = CalcIntValue(wp?.rcNormalPosition.GetWidth(), window.ActualWidth);
-        var height = CalcIntValue(wp?.rcNormalPosition.GetHeight(), window.ActualHeight);
+        var x = CalcIntValue(
+            wp?.rcNormalPosition.left,
+            window.Left);
+        var y = CalcIntValue(
+            wp?.rcNormalPosition.top,
+            window.Top);
+        var width = CalcIntValue(
+            wp?.rcNormalPosition.GetWidth(),
+            window.ActualWidth);
+        var height = CalcIntValue(
+            wp?.rcNormalPosition.GetHeight(),
+            window.ActualHeight);
 
         var placement = new WINDOWPLACEMENT
         {
@@ -89,13 +112,17 @@ internal static class WinApiHelper
         };
 
         var hWnd = new WindowInteropHelper(window).EnsureHandle();
-        if (!PInvoke.SetWindowPlacement(new HWND(hWnd), &placement))
+        if (!PInvoke.SetWindowPlacement(
+                new HWND(hWnd),
+                &placement))
         {
             Trace.TraceWarning($"{window}: The window placement {wp} could not be (SetWindowPlacement)!");
         }
     }
 
-    private static int CalcIntValue(double? value, double fallback)
+    private static int CalcIntValue(
+        double? value,
+        double fallback)
     {
         if (value is null)
         {
@@ -130,7 +157,10 @@ internal static class WinApiHelper
         {
             fixed (char* windowNameChars = new char[bufferSize])
             {
-                return PInvoke.GetWindowText(new HWND(source.Handle), windowNameChars, bufferSize) > 0
+                return PInvoke.GetWindowText(
+                           new HWND(source.Handle),
+                           windowNameChars,
+                           bufferSize) > 0
                     ? new string(windowNameChars)
                     : null;
             }
@@ -143,7 +173,11 @@ internal static class WinApiHelper
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     internal static Rect GetWindowBoundingRectangle(this Window? window)
     {
-        var bounds = new Rect(0, 0, 0, 0);
+        var bounds = new Rect(
+            0,
+            0,
+            0,
+            0);
 
         if (window is null
             || PresentationSource.FromVisual(window) is not HwndSource source
@@ -174,8 +208,10 @@ internal static class WinApiHelper
             // Skip
         }
 
-        bounds = new Rect(rc.left, rc.top, rc.GetWidth(), rc.GetHeight());
-
-        return bounds;
+        return new Rect(
+            rc.left,
+            rc.top,
+            rc.GetWidth(),
+            rc.GetHeight());
     }
 }

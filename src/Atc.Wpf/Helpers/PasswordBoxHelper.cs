@@ -11,14 +11,15 @@ public static class PasswordBoxHelper
             string.Empty,
             OnBoundPasswordChanged));
 
-    public static string GetBoundPassword(
-        DependencyObject obj)
+    public static string GetBoundPassword(DependencyObject obj)
         => (string)obj.GetValue(BoundPasswordProperty);
 
     public static void SetBoundPassword(
         DependencyObject obj,
         string value)
-        => obj.SetValue(BoundPasswordProperty, value);
+        => obj.SetValue(
+            BoundPasswordProperty,
+            value);
 
     public static readonly DependencyProperty CapsLockIconProperty = DependencyProperty.RegisterAttached(
         "CapsLockIcon",
@@ -28,14 +29,15 @@ public static class PasswordBoxHelper
             "!",
             OnCapsLockIconPropertyChanged));
 
-    public static object GetCapsLockIcon(
-        PasswordBox element)
+    public static object GetCapsLockIcon(PasswordBox element)
         => element.GetValue(CapsLockIconProperty);
 
     public static void SetCapsLockIcon(
         PasswordBox element,
         object value)
-        => element.SetValue(CapsLockIconProperty, value);
+        => element.SetValue(
+            CapsLockIconProperty,
+            value);
 
     public static readonly DependencyProperty CapsLockWarningToolTipProperty = DependencyProperty.RegisterAttached(
         "CapsLockWarningToolTip",
@@ -43,14 +45,15 @@ public static class PasswordBoxHelper
         typeof(PasswordBoxHelper),
         new PropertyMetadata("Caps lock is on"));
 
-    public static object GetCapsLockWarningToolTip(
-        PasswordBox element)
+    public static object GetCapsLockWarningToolTip(PasswordBox element)
         => element.GetValue(CapsLockWarningToolTipProperty);
 
     public static void SetCapsLockWarningToolTip(
         PasswordBox element,
         object value)
-        => element.SetValue(CapsLockWarningToolTipProperty, value);
+        => element.SetValue(
+            CapsLockWarningToolTipProperty,
+            value);
 
     public static readonly DependencyProperty RevealTextButtonContentProperty = DependencyProperty.RegisterAttached(
         "RevealTextButtonContent",
@@ -58,14 +61,15 @@ public static class PasswordBoxHelper
         typeof(PasswordBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static object? GetRevealTextButtonContent(
-        DependencyObject d)
+    public static object? GetRevealTextButtonContent(DependencyObject d)
         => (object?)d.GetValue(RevealTextButtonContentProperty);
 
     public static void SetRevealTextButtonContent(
         DependencyObject obj,
         object? value)
-        => obj.SetValue(RevealTextButtonContentProperty, value);
+        => obj.SetValue(
+            RevealTextButtonContentProperty,
+            value);
 
     public static readonly DependencyProperty RevealTextButtonContentTemplateProperty = DependencyProperty.RegisterAttached(
             "RevealTextButtonContentTemplate",
@@ -80,7 +84,9 @@ public static class PasswordBoxHelper
     public static void SetRevealTextButtonContentTemplate(
         DependencyObject obj,
         DataTemplate? value)
-        => obj.SetValue(RevealTextButtonContentTemplateProperty, value);
+        => obj.SetValue(
+            RevealTextButtonContentTemplateProperty,
+            value);
 
     private static void OnBoundPasswordChanged(
         DependencyObject d,
@@ -106,7 +112,9 @@ public static class PasswordBoxHelper
     {
         if (sender is PasswordBox pb)
         {
-            SetBoundPassword(pb, pb.Password);
+            SetBoundPassword(
+                pb,
+                pb.Password);
         }
     }
 
@@ -159,9 +167,10 @@ public static class PasswordBoxHelper
         }
     }
 
-    private static FrameworkElement? FindCapsLockIndicator(
-        Control? pb)
-    {
-        return pb?.Template?.FindName("PART_CapsLockIndicator", pb) as FrameworkElement;
-    }
+    private static FrameworkElement? FindCapsLockIndicator(Control? pb)
+        => pb?
+            .Template?
+            .FindName(
+                "PART_CapsLockIndicator",
+                pb) as FrameworkElement;
 }

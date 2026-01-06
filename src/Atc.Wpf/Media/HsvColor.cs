@@ -29,7 +29,10 @@ public struct HsvColor
     /// <param name="h">The h.</param>
     /// <param name="s">The s.</param>
     /// <param name="v">The v.</param>
-    public HsvColor(double h, double s, double v)
+    public HsvColor(
+        double h,
+        double s,
+        double v)
     {
         H = h;
         S = s;

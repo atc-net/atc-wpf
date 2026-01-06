@@ -9,7 +9,9 @@ public sealed class Account
     public string AccountNumber { get; set; } = string.Empty;
 
     [Required]
-    public DateTime CreatedDate { get; init; } = DateTime.Now.AddYears(-2).AddDays(3);
+    public DateTime CreatedDate { get; init; } = DateTime.Now
+        .AddYears(-2)
+        .AddDays(3);
 
     public Person? PrimaryContactPerson { get; set; }
 

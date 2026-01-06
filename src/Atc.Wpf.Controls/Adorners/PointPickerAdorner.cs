@@ -10,19 +10,17 @@ public sealed partial class PointPickerAdorner : Adorner
         Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
     private Point position;
 
-    public PointPickerAdorner(
-        UIElement adornedElement)
+    public PointPickerAdorner(UIElement adornedElement)
         : base(adornedElement)
     {
-        selectorPen = new(
+        selectorPen = new Pen(
             ThemeManagerHelper.GetPrimaryAccentBrush(),
             1);
 
         IsHitTestVisible = false;
     }
 
-    protected override void OnRender(
-        DrawingContext drawingContext)
+    protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);
 

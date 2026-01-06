@@ -460,7 +460,9 @@ public sealed partial class StandardDialogBoxViewModel : ViewModelBase
     {
         var account = new Account(
             accountNumber: "6545643218",
-            createdDate: DateTime.Now.AddYears(-2).AddDays(3),
+            createdDate: DateTime.Now
+                .AddYears(-2)
+                .AddDays(3),
             primaryContactPerson: new Person(
                 firstName: "John",
                 lastName: "Doe",
@@ -506,7 +508,9 @@ public sealed partial class StandardDialogBoxViewModel : ViewModelBase
     {
         var account = new Account(
             accountNumber: string.Empty,
-            createdDate: DateTime.Now.AddYears(-2).AddDays(3),
+            createdDate: DateTime.Now
+                .AddYears(-2)
+                .AddDays(3),
             primaryContactPerson: new Person(
                 firstName: string.Empty,
                 lastName: string.Empty,
@@ -676,7 +680,6 @@ public sealed partial class StandardDialogBoxViewModel : ViewModelBase
             },
         ];
 
-    private string CreateJson(
-        string value)
+    private string CreateJson(string value)
         => JsonResult = $"{{ \"Value\": \"{value}\" }}";
 }

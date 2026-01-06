@@ -125,7 +125,11 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
         double emSize = 100)
     {
         var iconChar = char.ConvertFromUtf32((int)fontIconType);
-        return FontIconHelper.CreateImageSource(FontAwesomeRegularTypeface, iconChar, foregroundBrush, emSize);
+        return FontIconHelper.CreateImageSource(
+            FontAwesomeRegularTypeface,
+            iconChar,
+            foregroundBrush,
+            emSize);
     }
 
     public static DrawingImage CreateDrawingImage(
@@ -134,7 +138,11 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
         double emSize = 100)
     {
         var iconChar = char.ConvertFromUtf32((int)fontIconType);
-        return FontIconHelper.CreateDrawingImage(FontAwesomeRegularTypeface, iconChar, foregroundBrush, emSize);
+        return FontIconHelper.CreateDrawingImage(
+            FontAwesomeRegularTypeface,
+            iconChar,
+            foregroundBrush,
+            emSize);
     }
 
     private static void OnIconPropertyChanged(
@@ -146,7 +154,11 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageAwesome.Icon, imageAwesome.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            CreateImageSource(
+                imageAwesome.Icon,
+                imageAwesome.Foreground));
     }
 
     private static void OnSpinDurationChanged(
@@ -200,7 +212,8 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
     }
 
     private static void OnFlipOrientationChanged(
-        DependencyObject d, DependencyPropertyChangedEventArgs e)
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
     {
         if (d is not ImageAwesomeRegular imageAwesome ||
             e.NewValue is not FlipOrientationType ||

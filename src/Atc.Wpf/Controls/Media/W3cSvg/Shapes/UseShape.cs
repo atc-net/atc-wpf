@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class UseShape : Shape
 {
-    public UseShape(Svg svg, XmlNode node)
+    public UseShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
     }
@@ -13,7 +15,10 @@ internal sealed class UseShape : Shape
 
     public string? Href { get; set; }
 
-    protected override void Parse(Svg svg, string name, string value)
+    protected override void Parse(
+        Svg svg,
+        string name,
+        string value)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(name);
@@ -48,5 +53,6 @@ internal sealed class UseShape : Shape
         }
     }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Href)}: {Href}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Href)}: {Href}";
 }

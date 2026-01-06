@@ -77,8 +77,7 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         }
     }
 
-    private void CleanUp(
-        string fromWhere)
+    private void CleanUp(string fromWhere)
     {
         var window = AssociatedObject;
         if (window is null)
@@ -133,7 +132,9 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         try
         {
             var wp = settings.Placement.ToWindowPlacement();
-            WinApiHelper.SetWindowPlacement(window, wp);
+            WinApiHelper.SetWindowPlacement(
+                window,
+                wp);
         }
         catch (Exception ex)
         {
@@ -164,7 +165,9 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         };
         unsafe
         {
-            PInvoke.GetWindowPlacement((HWND)windowHandle, &wp);
+            PInvoke.GetWindowPlacement(
+                (HWND)windowHandle,
+                &wp);
         }
 
         // check for saveable values
@@ -182,10 +185,14 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
                         bottom = 0,
                     };
 
-                    PInvoke.GetWindowRect(new HWND(windowHandle), &rect);
+                    PInvoke.GetWindowRect(
+                        new HWND(windowHandle),
+                        &rect);
                     if (rect.left != 0 || rect.top != 0 || rect.right != 0 || rect.bottom != 0)
                     {
-                        var monitor = PInvoke.MonitorFromWindow(new HWND(windowHandle), MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+                        var monitor = PInvoke.MonitorFromWindow(
+                            new HWND(windowHandle),
+                            MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
                         if (monitor != IntPtr.Zero)
                         {
                             var monitorInfo = new MONITORINFO
@@ -193,9 +200,13 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
                                 cbSize = (uint)Marshal.SizeOf<MONITORINFO>(),
                             };
 
-                            if (PInvoke.GetMonitorInfo(monitor, &monitorInfo))
+                            if (PInvoke.GetMonitorInfo(
+                                    monitor,
+                                    &monitorInfo))
                             {
-                                rect.Offset(monitorInfo.rcMonitor.left - monitorInfo.rcWork.left, monitorInfo.rcMonitor.top - monitorInfo.rcWork.top);
+                                rect.Offset(
+                                    monitorInfo.rcMonitor.left - monitorInfo.rcWork.left,
+                                    monitorInfo.rcMonitor.top - monitorInfo.rcWork.top);
                             }
                         }
 

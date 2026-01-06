@@ -35,8 +35,7 @@ public partial class JsonViewer
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    public void Load(
-        string json)
+    public void Load(string json)
     {
         if (string.IsNullOrEmpty(json))
         {
@@ -134,8 +133,7 @@ public partial class JsonViewer
         RoutedEventArgs e)
         => ToggleItems(isExpanded: false);
 
-    private void ToggleItems(
-        bool isExpanded)
+    private void ToggleItems(bool isExpanded)
     {
         if (JsonTreeView.Items.IsEmpty)
         {

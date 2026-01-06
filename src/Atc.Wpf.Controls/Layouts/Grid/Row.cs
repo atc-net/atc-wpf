@@ -29,8 +29,7 @@ public sealed class Row : Panel
         set => SetValue(GutterProperty, value);
     }
 
-    protected override Size MeasureOverride(
-        Size availableSize)
+    protected override Size MeasureOverride(Size availableSize)
     {
         var totalCellCount = 0;
         var totalRowCount = 1;
@@ -66,8 +65,7 @@ public sealed class Row : Panel
         return new Size(0, (maxChildDesiredHeight * totalRowCount) - Gutter);
     }
 
-    protected override Size ArrangeOverride(
-        Size finalSize)
+    protected override Size ArrangeOverride(Size finalSize)
     {
         var totalCellCount = 0;
         var gutterHalf = Gutter / 2;
@@ -100,8 +98,7 @@ public sealed class Row : Panel
         return finalSize;
     }
 
-    private static bool IsInRangeOfPosDoubleIncludeZero(
-        object value)
+    private static bool IsInRangeOfPosDoubleIncludeZero(object value)
     {
         var v = (double)value;
         return !(double.IsNaN(v) || double.IsInfinity(v)) && v >= 0;

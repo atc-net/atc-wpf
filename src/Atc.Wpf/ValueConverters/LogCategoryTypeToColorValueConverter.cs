@@ -8,7 +8,11 @@ public sealed class LogCategoryTypeToColorValueConverter : IValueConverter
 {
     public static readonly LogCategoryTypeToColorValueConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is null)
         {

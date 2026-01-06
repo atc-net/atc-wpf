@@ -14,13 +14,19 @@ public sealed class MultiBoolToBoolValueConverterTests
     [InlineData(true, nameof(AllTrue))]
     [InlineData(false, nameof(OneFalse))]
     [InlineData(true, nameof(Empty))]
-    public void Convert_AND_DefaultOperator(bool expected, string inputSetName)
+    public void Convert_AND_DefaultOperator(
+        bool expected,
+        string inputSetName)
     {
         // Arrange
         var input = GetInput(inputSetName);
 
         // Act
-        var actual = converter.Convert(input, targetType: null!, parameter: null, culture: CultureInfo.InvariantCulture);
+        var actual = converter.Convert(
+            input,
+            targetType: null!,
+            parameter: null,
+            culture: CultureInfo.InvariantCulture);
 
         // Assert
         Assert.Equal(expected, actual);
@@ -31,7 +37,9 @@ public sealed class MultiBoolToBoolValueConverterTests
     [InlineData(true, nameof(OneFalse))]
     [InlineData(false, nameof(AllFalse))]
     [InlineData(false, nameof(Empty))]
-    public void Convert_OR_WithEnumParameter(bool expected, string inputSetName)
+    public void Convert_OR_WithEnumParameter(
+        bool expected,
+        string inputSetName)
     {
         // Arrange
         var input = GetInput(inputSetName);

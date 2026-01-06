@@ -9,8 +9,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
     private const int LabelControlsHeightForVertical = 98;
     private const int LabelControlsHeightForHorizontal = 72;
 
-    public LabelControlsFormColumn(
-        IList<ILabelControlBase> labelControls)
+    public LabelControlsFormColumn(IList<ILabelControlBase> labelControls)
     {
         ArgumentNullException.ThrowIfNull(labelControls);
 
@@ -114,9 +113,11 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     if (labelDecimalXyBox.InputDataType == typeof(Point2D) ||
                         labelDecimalXyBox.InputDataType == typeof(Point2D?))
                     {
-                        result.Add(control.GetFullIdentifier(), new Point2D(
-                            (double)labelDecimalXyBox.ValueX,
-                            (double)labelDecimalXyBox.ValueY));
+                        result.Add(
+                            control.GetFullIdentifier(),
+                            new Point2D(
+                                (double)labelDecimalXyBox.ValueX,
+                                (double)labelDecimalXyBox.ValueY));
                     }
 
                     break;
@@ -124,7 +125,11 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelIntegerBox.Value);
                     break;
                 case LabelPixelSizeBox labelPixelSizeBox:
-                    result.Add(control.GetFullIdentifier(), new Size(labelPixelSizeBox.ValueWidth, labelPixelSizeBox.ValueHeight));
+                    result.Add(
+                        control.GetFullIdentifier(),
+                        new Size(
+                            labelPixelSizeBox.ValueWidth,
+                            labelPixelSizeBox.ValueHeight));
                     break;
                 case LabelSlider labelSlider:
                     result.Add(control.GetFullIdentifier(), labelSlider.Value);
@@ -170,7 +175,9 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 
                     break;
                 case LabelWellKnownColorSelector labelWellKnownColorSelector:
-                    var color = ColorHelper.GetColorFromName(labelWellKnownColorSelector.SelectedKey, GlobalizationConstants.EnglishCultureInfo);
+                    var color = ColorHelper.GetColorFromName(
+                        labelWellKnownColorSelector.SelectedKey,
+                        GlobalizationConstants.EnglishCultureInfo);
                     if (color is not null)
                     {
                         result.Add(control.GetFullIdentifier(), (Color)color);
@@ -270,7 +277,11 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
             var groupBox = new GroupBox
             {
                 Header = groupIdentifier,
-                Margin = new Thickness(5, 5, 5, 5),
+                Margin = new Thickness(
+                    5,
+                    5,
+                    5,
+                    5),
             };
 
             var labelControls = LabelControls

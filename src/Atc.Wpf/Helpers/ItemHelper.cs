@@ -11,8 +11,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetAlternatingRowBackgroundBrush(
-        UIElement element)
+    public static Brush? GetAlternatingRowBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(AlternatingRowBackgroundBrushProperty);
 
     public static void SetAlternatingRowBackgroundBrush(
@@ -28,8 +27,7 @@ public static class ItemHelper
             defaultValue: BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static bool GetDisableAlternatingRowColoring(
-        UIElement element)
+    public static bool GetDisableAlternatingRowColoring(UIElement element)
         => (bool)element.GetValue(DisableAlternatingRowColoringProperty);
 
     public static void SetDisableAlternatingRowColoring(
@@ -45,8 +43,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetActiveSelectionBackgroundBrush(
-        UIElement element)
+    public static Brush? GetActiveSelectionBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(ActiveSelectionBackgroundBrushProperty);
 
     public static void SetActiveSelectionBackgroundBrush(
@@ -62,8 +59,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetActiveSelectionBorderBrush(
-        UIElement element)
+    public static Brush? GetActiveSelectionBorderBrush(UIElement element)
         => (Brush?)element.GetValue(ActiveSelectionBorderBrushProperty);
 
     public static void SetActiveSelectionBorderBrush(
@@ -79,8 +75,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetActiveSelectionForegroundBrush(
-        UIElement element)
+    public static Brush? GetActiveSelectionForegroundBrush(UIElement element)
         => (Brush?)element.GetValue(ActiveSelectionForegroundBrushProperty);
 
     public static void SetActiveSelectionForegroundBrush(
@@ -96,14 +91,13 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetSelectedBackgroundBrush(
-        UIElement element)
+    public static Brush? GetSelectedBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(SelectedBackgroundBrushProperty);
 
     public static void SetSelectedBackgroundBrush(
         UIElement element,
-        Brush? value) =>
-        element.SetValue(SelectedBackgroundBrushProperty, value);
+        Brush? value)
+        => element.SetValue(SelectedBackgroundBrushProperty, value);
 
     public static readonly DependencyProperty SelectedBorderBrushProperty = DependencyProperty.RegisterAttached(
         "SelectedBorderBrush",
@@ -113,8 +107,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetSelectedBorderBrush(
-        UIElement element)
+    public static Brush? GetSelectedBorderBrush(UIElement element)
         => (Brush?)element.GetValue(SelectedBorderBrushProperty);
 
     public static void SetSelectedBorderBrush(
@@ -130,8 +123,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetSelectedForegroundBrush(
-        UIElement element)
+    public static Brush? GetSelectedForegroundBrush(UIElement element)
         => (Brush?)element.GetValue(SelectedForegroundBrushProperty);
 
     public static void SetSelectedForegroundBrush(
@@ -147,8 +139,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetHoverBackgroundBrush(
-        UIElement element)
+    public static Brush? GetHoverBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(HoverBackgroundBrushProperty);
 
     public static void SetHoverBackgroundBrush(
@@ -164,8 +155,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetHoverBorderBrush(
-        UIElement element)
+    public static Brush? GetHoverBorderBrush(UIElement element)
         => (Brush?)element.GetValue(HoverBorderBrushProperty);
 
     public static void SetHoverBorderBrush(
@@ -181,8 +171,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetHoverForegroundBrush(
-        UIElement element)
+    public static Brush? GetHoverForegroundBrush(UIElement element)
         => (Brush?)element.GetValue(HoverForegroundBrushProperty);
 
     public static void SetHoverForegroundBrush(
@@ -198,8 +187,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetHoverSelectedBackgroundBrush(
-        UIElement element)
+    public static Brush? GetHoverSelectedBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(HoverSelectedBackgroundBrushProperty);
 
     public static void SetHoverSelectedBackgroundBrush(
@@ -215,8 +203,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetHoverSelectedBorderBrush(
-        UIElement element)
+    public static Brush? GetHoverSelectedBorderBrush(UIElement element)
         => (Brush?)element.GetValue(HoverSelectedBorderBrushProperty);
 
     public static void SetHoverSelectedBorderBrush(
@@ -232,8 +219,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetHoverSelectedForegroundBrush(
-        UIElement element)
+    public static Brush? GetHoverSelectedForegroundBrush(UIElement element)
         => (Brush?)element.GetValue(HoverSelectedForegroundBrushProperty);
 
     public static void SetHoverSelectedForegroundBrush(
@@ -249,8 +235,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetDisabledSelectedBackgroundBrush(
-        UIElement element)
+    public static Brush? GetDisabledSelectedBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(DisabledSelectedBackgroundBrushProperty);
 
     public static void SetDisabledSelectedBackgroundBrush(
@@ -266,8 +251,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetDisabledSelectedBorderBrush(
-        UIElement element)
+    public static Brush? GetDisabledSelectedBorderBrush(UIElement element)
         => (Brush?)element.GetValue(DisabledSelectedBorderBrushProperty);
 
     public static void SetDisabledSelectedBorderBrush(
@@ -282,8 +266,7 @@ public static class ItemHelper
             typeof(ItemHelper),
             new FrameworkPropertyMetadata(default(Brush), FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetDisabledSelectedForegroundBrush(
-        UIElement element)
+    public static Brush? GetDisabledSelectedForegroundBrush(UIElement element)
         => (Brush?)element.GetValue(DisabledSelectedForegroundBrushProperty);
 
     public static void SetDisabledSelectedForegroundBrush(
@@ -299,8 +282,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetDisabledBackgroundBrush(
-        UIElement element)
+    public static Brush? GetDisabledBackgroundBrush(UIElement element)
         => (Brush?)element.GetValue(DisabledBackgroundBrushProperty);
 
     public static void SetDisabledBackgroundBrush(
@@ -316,8 +298,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetDisabledBorderBrush(
-        UIElement element)
+    public static Brush? GetDisabledBorderBrush(UIElement element)
         => (Brush?)element.GetValue(DisabledBorderBrushProperty);
 
     public static void SetDisabledBorderBrush(
@@ -333,8 +314,7 @@ public static class ItemHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetDisabledForegroundBrush(
-        UIElement element)
+    public static Brush? GetDisabledForegroundBrush(UIElement element)
         => (Brush?)element.GetValue(DisabledForegroundBrushProperty);
 
     public static void SetDisabledForegroundBrush(
@@ -350,8 +330,7 @@ public static class ItemHelper
 
     public static readonly DependencyProperty IsMouseLeftButtonPressedProperty = IsMouseLeftButtonPressedPropertyKey.DependencyProperty;
 
-    public static bool GetIsMouseLeftButtonPressed(
-        UIElement element)
+    public static bool GetIsMouseLeftButtonPressed(UIElement element)
         => (bool)element.GetValue(IsMouseLeftButtonPressedProperty);
 
     public static readonly DependencyProperty MouseLeftButtonPressedBackgroundBrushProperty = DependencyProperty.RegisterAttached(
@@ -368,7 +347,8 @@ public static class ItemHelper
         => (Brush?)element.GetValue(MouseLeftButtonPressedBackgroundBrushProperty);
 
     public static void SetMouseLeftButtonPressedBackgroundBrush(
-        UIElement element, Brush? value)
+        UIElement element,
+        Brush? value)
         => element.SetValue(MouseLeftButtonPressedBackgroundBrushProperty, value);
 
     public static readonly DependencyProperty MouseLeftButtonPressedBorderBrushProperty = DependencyProperty.RegisterAttached(
@@ -380,8 +360,7 @@ public static class ItemHelper
             FrameworkPropertyMetadataOptions.AffectsRender,
             OnMouseLeftButtonPressedBorderPropertyChanged));
 
-    public static Brush? GetMouseLeftButtonPressedBorderBrush(
-        UIElement element)
+    public static Brush? GetMouseLeftButtonPressedBorderBrush(UIElement element)
         => (Brush?)element.GetValue(MouseLeftButtonPressedBorderBrushProperty);
 
     public static void SetMouseLeftButtonPressedBorderBrush(
@@ -405,9 +384,7 @@ public static class ItemHelper
     public static void SetMouseLeftButtonPressedForegroundBrush(
         UIElement element,
         Brush? value)
-    {
-        element.SetValue(MouseLeftButtonPressedForegroundBrushProperty, value);
-    }
+        => element.SetValue(MouseLeftButtonPressedForegroundBrushProperty, value);
 
     private static readonly DependencyPropertyKey IsMouseRightButtonPressedPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
         "IsMouseRightButtonPressed",
@@ -417,8 +394,7 @@ public static class ItemHelper
 
     public static readonly DependencyProperty IsMouseRightButtonPressedProperty = IsMouseRightButtonPressedPropertyKey.DependencyProperty;
 
-    public static bool GetIsMouseRightButtonPressed(
-        UIElement element)
+    public static bool GetIsMouseRightButtonPressed(UIElement element)
         => (bool)element.GetValue(IsMouseRightButtonPressedProperty);
 
     public static readonly DependencyProperty MouseRightButtonPressedBackgroundBrushProperty = DependencyProperty.RegisterAttached(
@@ -481,8 +457,7 @@ public static class ItemHelper
         typeof(ItemHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static Brush? GetGridViewHeaderIndicatorBrush(
-        UIElement element)
+    public static Brush? GetGridViewHeaderIndicatorBrush(UIElement element)
         => (Brush?)element.GetValue(GridViewHeaderIndicatorBrushProperty);
 
     public static void SetGridViewHeaderIndicatorBrush(

@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Sample;
 
 public sealed class SampleItemMessage : MessageBase
 {
-    public SampleItemMessage(string? header, string? sampleItemPath)
+    public SampleItemMessage(
+        string? header,
+        string? sampleItemPath)
     {
         Header = header;
         SampleItemPath = sampleItemPath;
@@ -13,7 +15,5 @@ public sealed class SampleItemMessage : MessageBase
     public string? SampleItemPath { get; }
 
     public override string ToString()
-    {
-        return $"{nameof(Header)}: {Header}, {nameof(SampleItemPath)}: {SampleItemPath}";
-    }
+        => $"{nameof(Header)}: {Header}, {nameof(SampleItemPath)}: {SampleItemPath}";
 }

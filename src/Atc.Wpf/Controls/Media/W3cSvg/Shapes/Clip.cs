@@ -2,7 +2,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class Clip : Group
 {
-    public Clip(Svg svg, XmlNode node, Shape parent)
+    public Clip(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
     }

@@ -21,13 +21,16 @@ public sealed class SolidColorBrushToNameJsonConverterTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(
-            SolidColorBrushHelper.GetBrushFromName(brushName, CultureInfo.InvariantCulture)!.ToString(GlobalizationConstants.EnglishCultureInfo),
+            SolidColorBrushHelper
+                .GetBrushFromName(brushName, CultureInfo.InvariantCulture)!
+                .ToString(GlobalizationConstants.EnglishCultureInfo),
             result.ToString(GlobalizationConstants.EnglishCultureInfo));
     }
 
     [StaTheory]
     [InlineData("Red")]
-    public void Write_ShouldWriteSolidColorBrushNameToUtf8JsonWriter(string colorName)
+    public void Write_ShouldWriteSolidColorBrushNameToUtf8JsonWriter(
+        string colorName)
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
@@ -44,8 +47,6 @@ public sealed class SolidColorBrushToNameJsonConverterTests
         var result = Encoding.UTF8.GetString(memoryStream.ToArray());
 
         Assert.NotNull(result);
-        Assert.Equal(
-            $"\"{SolidColorBrushHelper.GetBrushNameFromBrush(solidColorBrush)}\"",
-            result);
+        Assert.Equal($"\"{SolidColorBrushHelper.GetBrushNameFromBrush(solidColorBrush)}\"", result);
     }
 }

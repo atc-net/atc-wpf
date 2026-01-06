@@ -54,22 +54,26 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
     }
 
     public override bool IsValid()
-    {
-        return string.IsNullOrEmpty(ValidationText);
-    }
+        => string.IsNullOrEmpty(ValidationText);
 
     private void OnValueXChanged(
         object sender,
         RoutedPropertyChangedEventArgs<decimal> e)
     {
-        RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(e.OldValue, e.NewValue, ValueXChangedEvent));
+        RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(
+            e.OldValue,
+            e.NewValue,
+            ValueXChangedEvent));
     }
 
     private void OnValueYChanged(
         object sender,
         RoutedPropertyChangedEventArgs<decimal> e)
     {
-        RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(e.OldValue, e.NewValue, ValueYChangedEvent));
+        RaiseEvent(new RoutedPropertyChangedEventArgs<decimal>(
+            e.OldValue,
+            e.NewValue,
+            ValueYChangedEvent));
     }
 
     private static void OnValueXLostFocus(

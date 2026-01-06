@@ -19,8 +19,13 @@ public class ApplicationEventEntry
         Message = message;
     }
 
-    public ApplicationEventEntry(LogCategoryType logCategoryType, string area, string message)
-        : this(area, message)
+    public ApplicationEventEntry(
+        LogCategoryType logCategoryType,
+        string area,
+        string message)
+        : this(
+            area,
+            message)
     {
         LogCategoryType = logCategoryType;
     }
@@ -70,15 +75,17 @@ public class ApplicationEventEntry
         return ImageCache.GetOrAdd(
             imagePath,
             path =>
-        {
-            var uri = new Uri(path, UriKind.Absolute);
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = uri;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
-            return bitmap;
-        });
+            {
+                var uri = new Uri(
+                    path,
+                    UriKind.Absolute);
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = uri;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
+            });
     }
 }

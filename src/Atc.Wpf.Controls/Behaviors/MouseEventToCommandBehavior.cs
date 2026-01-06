@@ -24,8 +24,7 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
         object value)
         => element.SetValue(CommandParameterProperty, value);
 
-    public static object GetCommandParameter(
-        DependencyObject element)
+    public static object GetCommandParameter(DependencyObject element)
         => element.GetValue(CommandParameterProperty);
 
     public static readonly DependencyProperty LeftClickCommandProperty =
@@ -42,8 +41,7 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
         ICommand value)
         => element.SetValue(LeftClickCommandProperty, value);
 
-    public static ICommand GetLeftClickCommand(
-        DependencyObject element)
+    public static ICommand GetLeftClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(LeftClickCommandProperty);
 
     public static readonly DependencyProperty LeftDoubleClickCommandProperty =
@@ -60,8 +58,7 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
         ICommand value)
         => element.SetValue(LeftDoubleClickCommandProperty, value);
 
-    public static ICommand GetLeftDoubleClickCommand(
-        DependencyObject element)
+    public static ICommand GetLeftDoubleClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(LeftDoubleClickCommandProperty);
 
     public static readonly DependencyProperty RightClickCommandProperty =
@@ -78,8 +75,7 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
         ICommand value)
         => element.SetValue(RightClickCommandProperty, value);
 
-    public static ICommand GetRightClickCommand(
-        DependencyObject element)
+    public static ICommand GetRightClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(RightClickCommandProperty);
 
     public static readonly DependencyProperty RightDoubleClickCommandProperty =
@@ -96,8 +92,7 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
         ICommand value)
         => element.SetValue(RightDoubleClickCommandProperty, value);
 
-    public static ICommand GetRightDoubleClickCommand(
-        DependencyObject element)
+    public static ICommand GetRightDoubleClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(RightDoubleClickCommandProperty);
 
     private static void OnLeftClickCommandChanged(

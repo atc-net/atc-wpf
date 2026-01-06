@@ -11,7 +11,9 @@ internal sealed class Svg
 
     public Svg()
     {
-        Size = new Size(300, 150);
+        Size = new Size(
+            width: 300,
+            height: 150);
         Filename = string.Empty;
         Shapes = new Dictionary<string, Shape>(StringComparer.Ordinal);
         StyleItems = new Dictionary<string, List<KeyValueItem>>(StringComparer.Ordinal);
@@ -25,11 +27,15 @@ internal sealed class Svg
     }
 
     public Svg(string fileName)
-        : this(fileName, FileSystemLoader.Instance)
+        : this(
+            fileName,
+            FileSystemLoader.Instance)
     {
     }
 
-    public Svg(string fileName, IExternalFileLoader externalFileLoader)
+    public Svg(
+        string fileName,
+        IExternalFileLoader externalFileLoader)
         : this()
     {
         ExternalFileLoader = externalFileLoader;
@@ -37,18 +43,24 @@ internal sealed class Svg
     }
 
     public Svg(Stream stream)
-        : this(stream, FileSystemLoader.Instance)
+        : this(
+            stream,
+            FileSystemLoader.Instance)
     {
     }
 
-    public Svg(Stream stream, IExternalFileLoader externalFileLoader)
+    public Svg(
+        Stream stream,
+        IExternalFileLoader externalFileLoader)
         : this()
     {
         ExternalFileLoader = externalFileLoader;
         Load(stream);
     }
 
-    public Svg(XmlNode svgTag, IExternalFileLoader externalFileLoader)
+    public Svg(
+        XmlNode svgTag,
+        IExternalFileLoader externalFileLoader)
         : this()
     {
         ExternalFileLoader = externalFileLoader;
@@ -84,14 +96,18 @@ internal sealed class Svg
 
             foreach (var (key, brush) in customBrushes)
             {
-                PaintServers.CreateServerFromBrush(key, brush);
+                PaintServers.CreateServerFromBrush(
+                    key,
+                    brush);
             }
         }
     }
 
     internal IDictionary<string, List<KeyValueItem>> Styles => StyleItems;
 
-    public void AddShape(string id, Shape shape)
+    public void AddShape(
+        string id,
+        Shape shape)
     {
         Shapes[id] = shape;
     }
@@ -103,7 +119,9 @@ internal sealed class Svg
             return null;
         }
 
-        Shapes.TryGetValue(id, out var shape);
+        Shapes.TryGetValue(
+            id,
+            out var shape);
         return shape;
     }
 
@@ -147,13 +165,21 @@ internal sealed class Svg
         Filename = filePath;
 
         var fileUri = new UriBuilder(filePath);
-        if (string.Equals(fileUri.Scheme, "file", StringComparison.Ordinal))
+        if (string.Equals(
+                fileUri.Scheme,
+                "file",
+                StringComparison.Ordinal))
         {
             var fileExt = Path.GetExtension(filePath);
-            if (string.Equals(fileExt, ".svgz", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(
+                    fileExt,
+                    ".svgz",
+                    StringComparison.OrdinalIgnoreCase))
             {
                 using var fileStream = File.OpenRead(fileUri.Uri.LocalPath);
-                using var zipStream = new GZipStream(fileStream, CompressionMode.Decompress);
+                using var zipStream = new GZipStream(
+                    fileStream,
+                    CompressionMode.Decompress);
                 Load(zipStream);
                 return;
             }
@@ -269,17 +295,27 @@ internal sealed class Svg
 
         foreach (var node in cssUrlNodes)
         {
-            var url = Regex.Match(node.Data, "href=\"(?<url>.*?)\"", RegexOptions.None, TimeSpan.FromSeconds(5)).Groups["url"].Value;
-            var stream = ExternalFileLoader.LoadFile(url, Filename);
+            var url = Regex.Match(
+                node.Data,
+                "href=\"(?<url>.*?)\"",
+                RegexOptions.None,
+                TimeSpan.FromSeconds(5)).Groups["url"].Value;
+            var stream = ExternalFileLoader.LoadFile(
+                url,
+                Filename);
             if (stream is null)
             {
                 continue;
             }
 
             using var streamTmp = stream;
-            using var reader = new StreamReader(stream, Encoding.UTF8);
+            using var reader = new StreamReader(
+                stream,
+                Encoding.UTF8);
             var style = reader.ReadToEnd();
-            CssStyleParser.ParseStyle(this, style);
+            CssStyleParser.ParseStyle(
+                this,
+                style);
         }
     }
 
@@ -293,26 +329,30 @@ internal sealed class Svg
             var cord = vb.Value.Split(' ');
             var cult = CultureInfo.InvariantCulture;
             ViewBox = new Rect(
-                double.Parse(cord[0], cult),
-                double.Parse(cord[1], cult),
-                double.Parse(cord[2], cult),
-                double.Parse(cord[3], cult));
+                x: double.Parse(cord[0], cult),
+                y: double.Parse(cord[1], cult),
+                width: double.Parse(cord[2], cult),
+                height: double.Parse(cord[3], cult));
         }
 
         Size = new Size(
-            SvgXmlUtil.AttrValue(node, "width", 300),
-            SvgXmlUtil.AttrValue(node, "height", 150));
+            width: SvgXmlUtil.AttrValue(node, "width", 300),
+            height: SvgXmlUtil.AttrValue(node, "height", 150));
 
         var fill = node.Attributes?.GetNamedItem("fill");
         if (fill?.Value is not null)
         {
-            Fill = SolidColorBrushHelper.GetBrushFromString(fill.Value, GlobalizationConstants.EnglishCultureInfo);
+            Fill = SolidColorBrushHelper.GetBrushFromString(
+                fill.Value,
+                GlobalizationConstants.EnglishCultureInfo);
         }
 
         var stroke = node.Attributes?.GetNamedItem("stroke");
         if (stroke?.Value is not null)
         {
-            Stroke = SolidColorBrushHelper.GetBrushFromString(stroke.Value, GlobalizationConstants.EnglishCultureInfo);
+            Stroke = SolidColorBrushHelper.GetBrushFromString(
+                stroke.Value,
+                GlobalizationConstants.EnglishCultureInfo);
         }
 
         var lstElements = new List<Shape>();
@@ -323,7 +363,11 @@ internal sealed class Svg
 
         foreach (XmlNode childNode in node.ChildNodes)
         {
-            W3cSvg.Shapes.Group.AddToList(this, lstElements, childNode, parent: null);
+            W3cSvg.Shapes.Group.AddToList(
+                this,
+                lstElements,
+                childNode,
+                parent: null);
         }
 
         return lstElements;

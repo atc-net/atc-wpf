@@ -4,21 +4,53 @@ public class ToastNotificationViewModel : ViewModelBase
 {
     private readonly ToastNotificationManager notificationManager = new();
 
-    public ICommand WindowInformationCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: false, toastNotificationType: ToastNotificationType.Information));
+    public ICommand WindowInformationCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: false,
+                toastNotificationType: ToastNotificationType.Information));
 
-    public ICommand WindowSuccessCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: false, toastNotificationType: ToastNotificationType.Success));
+    public ICommand WindowSuccessCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: false,
+                toastNotificationType: ToastNotificationType.Success));
 
-    public ICommand WindowWarningCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: false, toastNotificationType: ToastNotificationType.Warning));
+    public ICommand WindowWarningCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: false,
+                toastNotificationType: ToastNotificationType.Warning));
 
-    public ICommand WindowErrorCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: false, toastNotificationType: ToastNotificationType.Error));
+    public ICommand WindowErrorCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: false,
+                toastNotificationType: ToastNotificationType.Error));
 
-    public ICommand DesktopInformationCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: true, toastNotificationType: ToastNotificationType.Information));
+    public ICommand DesktopInformationCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: true,
+                toastNotificationType: ToastNotificationType.Information));
 
-    public ICommand DesktopSuccessCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: true, toastNotificationType: ToastNotificationType.Success));
+    public ICommand DesktopSuccessCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: true,
+                toastNotificationType: ToastNotificationType.Success));
 
-    public ICommand DesktopWarningCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: true, toastNotificationType: ToastNotificationType.Warning));
+    public ICommand DesktopWarningCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: true,
+                toastNotificationType: ToastNotificationType.Warning));
 
-    public ICommand DesktopErrorCommand => new RelayCommand(execute: () => ToastNotificationHandler(useDesktop: true, toastNotificationType: ToastNotificationType.Error));
+    public ICommand DesktopErrorCommand
+        => new RelayCommand(
+            execute: () => ToastNotificationHandler(
+                useDesktop: true,
+                toastNotificationType: ToastNotificationType.Error));
 
     private void ToastNotificationHandler(
         bool useDesktop,
@@ -54,7 +86,9 @@ public class ToastNotificationViewModel : ViewModelBase
                 useDesktop,
                 content,
                 "WindowArea",
-                onClick: () => notificationManager.Show(useDesktop, clickContent));
+                onClick: () => notificationManager.Show(
+                    useDesktop,
+                    clickContent));
         }
     }
 }

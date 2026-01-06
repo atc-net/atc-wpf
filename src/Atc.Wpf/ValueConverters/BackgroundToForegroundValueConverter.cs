@@ -27,7 +27,11 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         return foregroundColor;
     }
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is not SolidColorBrush backgroundBrush)
         {
@@ -41,12 +45,18 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         return foregroundBrush;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return DependencyProperty.UnsetValue;
-    }
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => DependencyProperty.UnsetValue;
 
-    public object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object[]? values,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         Brush? titleBrush = null;
         if (values is not null)
@@ -72,8 +82,12 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         return Convert(backgroundBrush, targetType, parameter, culture);
     }
 
-    public object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-        return targetTypes.Select(t => DependencyProperty.UnsetValue).ToArray();
-    }
+    public object[]? ConvertBack(
+        object? value,
+        Type[] targetTypes,
+        object? parameter,
+        CultureInfo culture)
+        => targetTypes
+            .Select(t => DependencyProperty.UnsetValue)
+            .ToArray();
 }

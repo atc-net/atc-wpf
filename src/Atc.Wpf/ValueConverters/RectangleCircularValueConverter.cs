@@ -5,7 +5,11 @@ public sealed class RectangleCircularValueConverter : IMultiValueConverter
 {
     public static readonly RectangleCircularValueConverter Instance = new();
 
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(
+        object[] values,
+        Type targetType,
+        object parameter,
+        CultureInfo culture)
     {
         if (values is not null &&
             values.Length == 2 &&
@@ -24,8 +28,10 @@ public sealed class RectangleCircularValueConverter : IMultiValueConverter
         return DependencyProperty.UnsetValue;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException();
-    }
+    public object[] ConvertBack(
+        object value,
+        Type[] targetTypes,
+        object parameter,
+        CultureInfo culture)
+        => throw new NotSupportedException();
 }

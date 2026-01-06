@@ -19,7 +19,10 @@ internal sealed class TokenizerHelper
         ArgumentNullException.ThrowIfNull(value);
 
         var numberSeparator = GetNumericListSeparator(formatProvider);
-        Initialize(value, '\'', numberSeparator);
+        Initialize(
+            value,
+            '\'',
+            numberSeparator);
     }
 
     private void Initialize(
@@ -54,8 +57,7 @@ internal sealed class TokenizerHelper
     internal bool NextToken()
         => NextToken(allowQuotedToken: false);
 
-    public bool NextToken(
-        bool allowQuotedToken)
+    public bool NextToken(bool allowQuotedToken)
         => NextToken(allowQuotedToken, argSeparator);
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
@@ -132,8 +134,7 @@ internal sealed class TokenizerHelper
         return true;
     }
 
-    private void ScanToNextToken(
-        char separator)
+    private void ScanToNextToken(char separator)
     {
         if (charIndex >= strLen)
         {
@@ -179,13 +180,13 @@ internal sealed class TokenizerHelper
         }
     }
 
-    internal static char GetNumericListSeparator(
-        IFormatProvider provider)
+    internal static char GetNumericListSeparator(IFormatProvider provider)
     {
         var numericSeparator = ',';
         var numberFormat = NumberFormatInfo.GetInstance(provider);
 
-        if (numberFormat.NumberDecimalSeparator.Length > 0 && numericSeparator == numberFormat.NumberDecimalSeparator[0])
+        if (numberFormat.NumberDecimalSeparator.Length > 0 &&
+            numericSeparator == numberFormat.NumberDecimalSeparator[0])
         {
             numericSeparator = ';';
         }

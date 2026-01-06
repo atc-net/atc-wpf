@@ -2,8 +2,7 @@ namespace Atc.Wpf.Controls.LabelControls.Factories;
 
 public static class LabelControlsFormToModelFactory
 {
-    public static T Create<T>(
-        ILabelControlsForm labelControlsForm)
+    public static T Create<T>(ILabelControlsForm labelControlsForm)
         where T : new()
     {
         ArgumentNullException.ThrowIfNull(labelControlsForm);
@@ -15,8 +14,7 @@ public static class LabelControlsFormToModelFactory
             labelControlsForm.GetKeyValues());
     }
 
-    public static T Create<T>(
-        Dictionary<string, object> keyValues)
+    public static T Create<T>(Dictionary<string, object> keyValues)
         where T : new()
     {
         ArgumentNullException.ThrowIfNull(keyValues);

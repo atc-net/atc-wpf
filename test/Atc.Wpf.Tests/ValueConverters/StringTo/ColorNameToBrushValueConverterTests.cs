@@ -10,10 +10,16 @@ public sealed class ColorNameToBrushValueConverterTests
     [InlineData("#FFFF0000", "Red")]
     [InlineData("#FF008000", "Green")]
     [InlineData("#FF0000FF", "Blue")]
-    public void Convert(string expectedHex, string? input)
+    public void Convert(
+        string expectedHex,
+        string? input)
     {
         // Act
-        var actual = converter.Convert(input, targetType: null, parameter: null, culture: null);
+        var actual = converter.Convert(
+            input,
+            targetType: null,
+            parameter: null,
+            culture: null);
 
         // Assert
         Assert.NotNull(actual);
@@ -27,7 +33,9 @@ public sealed class ColorNameToBrushValueConverterTests
     [InlineData("Green", "#FF008000")]
     [InlineData("Blue", "#FF0000FF")]
     [InlineData("#FF0000F0", "#FF0000F0")]
-    public void ConvertBack(string expectedHex, string? inputName)
+    public void ConvertBack(
+        string expectedHex,
+        string? inputName)
     {
         // Arrange
         SolidColorBrush? input = null;
@@ -37,7 +45,11 @@ public sealed class ColorNameToBrushValueConverterTests
         }
 
         // Act
-        var actual = converter.ConvertBack(input, targetType: null, parameter: null, culture: null);
+        var actual = converter.ConvertBack(
+            input,
+            targetType: null,
+            parameter: null,
+            culture: null);
 
         // Assert
         Assert.NotNull(actual);

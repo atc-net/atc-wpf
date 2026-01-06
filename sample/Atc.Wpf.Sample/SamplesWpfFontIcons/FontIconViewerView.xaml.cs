@@ -21,13 +21,27 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         DataContext = this;
 
         fontConverter = new FontIconDrawingImageValueConverter();
-        fontAwesomeBrandList = Enum<FontAwesomeBrandType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
-        fontAwesomeRegularList = Enum<FontAwesomeRegularType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
-        fontAwesomeSolidList = Enum<FontAwesomeSolidType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
-        fontBootstrapList = Enum<FontBootstrapType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
-        fontIcoFontList = Enum<IcoFontType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
-        fontMaterialDesignList = Enum<FontMaterialDesignType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
-        fontWeatherList = Enum<FontWeatherType>.ToDictionaryWithStringKey(useDescriptionAttribute: true, includeDefault: false);
+        fontAwesomeBrandList = Enum<FontAwesomeBrandType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontAwesomeRegularList = Enum<FontAwesomeRegularType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontAwesomeSolidList = Enum<FontAwesomeSolidType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontBootstrapList = Enum<FontBootstrapType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontIcoFontList = Enum<IcoFontType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontMaterialDesignList = Enum<FontMaterialDesignType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontWeatherList = Enum<FontWeatherType>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
 
         FilterFontAwesomeBrand.LabelText += $" ({fontAwesomeBrandList.Count})";
         FilterFontAwesomeRegular.LabelText += $" ({fontAwesomeRegularList.Count})";
@@ -93,10 +107,12 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             return;
         }
 
-        debounceDispatcher.Debounce(FilterDebounceDelayMs, _ =>
-        {
-            FilterListOfIcons(FilterText.Text);
-        });
+        debounceDispatcher.Debounce(
+            FilterDebounceDelayMs,
+            _ =>
+            {
+                FilterListOfIcons(FilterText.Text);
+            });
     }
 
     private void FilterOnTextChanged(
@@ -109,10 +125,12 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             return;
         }
 
-        debounceDispatcher.Debounce(FilterDebounceDelayMs, _ =>
-        {
-            FilterListOfIcons(e.NewValue);
-        });
+        debounceDispatcher.Debounce(
+            FilterDebounceDelayMs,
+            _ =>
+            {
+                FilterListOfIcons(e.NewValue);
+            });
     }
 
     private void PopulateListOfIcons()
@@ -129,64 +147,107 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             DispatcherPriority.Background);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void UiPopulateListOfIcons()
     {
-        var brushColor = (SolidColorBrush)new BrushConverter().ConvertFromString(IconColorPicker.SelectedKey)!;
+        var brushColor = (SolidColorBrush)new BrushConverter()
+            .ConvertFromString(IconColorPicker.SelectedKey)!;
 
         foreach (var pair in fontAwesomeBrandList)
         {
             var key = $"{nameof(FontAwesomeBrandType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<FontAwesomeBrandType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontAwesomeBrandType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         foreach (var pair in fontAwesomeRegularList)
         {
             var key = $"{nameof(FontAwesomeRegularType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<FontAwesomeRegularType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontAwesomeRegularType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         foreach (var pair in fontAwesomeSolidList)
         {
             var key = $"{nameof(FontAwesomeSolidType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<FontAwesomeSolidType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontAwesomeSolidType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         foreach (var pair in fontBootstrapList)
         {
             var key = $"{nameof(FontBootstrapType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<FontBootstrapType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontBootstrapType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         foreach (var pair in fontIcoFontList)
         {
             var key = $"{nameof(IcoFontType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<IcoFontType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<IcoFontType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         foreach (var pair in fontMaterialDesignList)
         {
             var key = $"{nameof(FontMaterialDesignType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<FontMaterialDesignType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontMaterialDesignType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         foreach (var pair in fontWeatherList)
         {
             var key = $"{nameof(FontWeatherType)}_{pair.Key}";
-            var drawingImage = (fontConverter.Convert(Enum<FontWeatherType>.Parse(pair.Key), targetType: null, brushColor, culture: null) as DrawingImage)!;
-            AddToListOfIcon(key, new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontWeatherType>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
         UpdateCountListOfIcons();
     }
 
-    private void FilterListOfIcons(
-        string filterText)
+    private void FilterListOfIcons(string filterText)
     {
         if (IsBusy || ListOfIcons.Children.Count == 0)
         {
@@ -205,28 +266,60 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             DispatcherPriority.Background);
     }
 
-    private void UiFilterListOfIcons(
-        string filterText)
+    private void UiFilterListOfIcons(string filterText)
     {
         filterText = filterText
             .Trim()
-            .Replace(" ", string.Empty, StringComparison.Ordinal)
+            .Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal)
             .ToLower(GlobalizationConstants.EnglishCultureInfo);
 
-        FilterIcons(nameof(FontAwesomeBrandType), fontAwesomeBrandList, FilterFontAwesomeBrand.IsChecked, filterText);
-        FilterIcons(nameof(FontAwesomeRegularType), fontAwesomeRegularList, FilterFontAwesomeRegular.IsChecked, filterText);
-        FilterIcons(nameof(FontAwesomeSolidType), fontAwesomeSolidList, FilterFontAwesomeSolid.IsChecked, filterText);
-        FilterIcons(nameof(FontBootstrapType), fontBootstrapList, FilterBootstrap.IsChecked, filterText);
-        FilterIcons(nameof(IcoFontType), fontIcoFontList, FilterIcoFont.IsChecked, filterText);
-        FilterIcons(nameof(FontMaterialDesignType), fontMaterialDesignList, FilterMaterialDesign.IsChecked, filterText);
-        FilterIcons(nameof(FontWeatherType), fontWeatherList, FilterWeather.IsChecked, filterText);
+        FilterIcons(
+            nameof(FontAwesomeBrandType),
+            fontAwesomeBrandList,
+            FilterFontAwesomeBrand.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontAwesomeRegularType),
+            fontAwesomeRegularList,
+            FilterFontAwesomeRegular.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontAwesomeSolidType),
+            fontAwesomeSolidList,
+            FilterFontAwesomeSolid.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontBootstrapType),
+            fontBootstrapList,
+            FilterBootstrap.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(IcoFontType),
+            fontIcoFontList,
+            FilterIcoFont.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontMaterialDesignType),
+            fontMaterialDesignList,
+            FilterMaterialDesign.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontWeatherType),
+            fontWeatherList,
+            FilterWeather.IsChecked,
+            filterText);
 
         UpdateCountListOfIcons();
     }
 
     private void UpdateCountListOfIcons()
     {
-        var displayCount = ListOfIcons.Children.Cast<FrameworkElement>().Count(x => x.Visibility == Visibility.Visible);
+        var displayCount = ListOfIcons.Children
+            .Cast<FrameworkElement>()
+            .Count(x => x.Visibility == Visibility.Visible);
         CountListOfIcons.Text = $"Show {displayCount} of {ListOfIcons.Children.Count} icons";
     }
 
@@ -240,7 +333,9 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         var frameworkElementsForKeyPrefix = ListOfIcons.Children
             .Cast<FrameworkElement>()
             .Where(x => x.Tag is not null &&
-                        x.Tag.ToString()!.StartsWith(keyPrefix, StringComparison.Ordinal))
+                        x.Tag.ToString()!.StartsWith(
+                            keyPrefix,
+                            StringComparison.Ordinal))
             .ToList();
 
         foreach (var pair in list)
@@ -248,7 +343,9 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             var tagKey = $"{keyPrefix}_{pair.Key}";
             foreach (var item in frameworkElementsForKeyPrefix)
             {
-                if (!tagKey.Equals(item.Tag.ToString(), StringComparison.Ordinal))
+                if (!tagKey.Equals(
+                        item.Tag.ToString(),
+                        StringComparison.Ordinal))
                 {
                     continue;
                 }
@@ -259,7 +356,9 @@ public partial class FontIconViewerView : INotifyPropertyChanged
                     {
                         item.Visibility = Visibility.Visible;
                     }
-                    else if (pair.Key.Contains(filterText, StringComparison.OrdinalIgnoreCase))
+                    else if (pair.Key.Contains(
+                                 filterText,
+                                 StringComparison.OrdinalIgnoreCase))
                     {
                         item.Visibility = Visibility.Visible;
                     }
@@ -313,7 +412,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+        => PropertyChanged?.Invoke(
+            this,
+            new PropertyChangedEventArgs(propertyName));
 }

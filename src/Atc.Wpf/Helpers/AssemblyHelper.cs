@@ -9,7 +9,9 @@ public static class AssemblyHelper
         var assembly = Assembly.GetEntryAssembly();
 
         // Check the entry assembly first - this will short circuit a lot of searching
-        if (assembly is not null && HasEmbeddedResx(assembly, resxName))
+        if (assembly is not null && HasEmbeddedResx(
+                assembly,
+                resxName))
         {
             return assembly;
         }
@@ -40,7 +42,9 @@ public static class AssemblyHelper
             .ToArray();
 
         // ReSharper restore StringLiteralTypo
-        return searchAssemblies.FirstOrDefault(x => HasEmbeddedResx(x, resxName));
+        return searchAssemblies.FirstOrDefault(x => HasEmbeddedResx(
+            x,
+            resxName));
     }
 
     /// <summary>
@@ -50,13 +54,17 @@ public static class AssemblyHelper
     /// <param name="resxName">The name of the resource we are looking for.</param>
     /// <returns>True if the assembly contains the resource.</returns>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    private static bool HasEmbeddedResx(Assembly assembly, string resxName)
+    private static bool HasEmbeddedResx(
+        Assembly assembly,
+        string resxName)
     {
         try
         {
             var resources = assembly.GetManifestResourceNames();
             var searchName = resxName + ".resources";
-            return resources.Any(resource => searchName.Equals(resource, StringComparison.OrdinalIgnoreCase));
+            return resources.Any(resource => searchName.Equals(
+                resource,
+                StringComparison.OrdinalIgnoreCase));
         }
         catch
         {

@@ -351,8 +351,7 @@ public partial class NiceWindow : WindowChromeWindow
     /// Stores the given element, or the last focused element via FocusManager, for restoring the focus after closing a dialog.
     /// </summary>
     /// <param name="thisElement">The element which will be focused again.</param>
-    public void StoreFocus(
-        IInputElement? thisElement = null)
+    public void StoreFocus(IInputElement? thisElement = null)
     {
         this.Invoke(() =>
         {
@@ -414,8 +413,7 @@ public partial class NiceWindow : WindowChromeWindow
         ContentRendered += OnContentRendered;
     }
 
-    protected override void OnClosing(
-        CancelEventArgs e)
+    protected override void OnClosing(CancelEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -589,7 +587,6 @@ public partial class NiceWindow : WindowChromeWindow
         {
             return;
         }
-
 #pragma warning disable 618
         if (window.WindowState == WindowState.Normal)
         {
@@ -643,19 +640,16 @@ public partial class NiceWindow : WindowChromeWindow
         }
     }
 
+    // if UseNoneWindowStyle = true no title bar should be shown
     [SuppressMessage("Minor Code Smell", "S1125:Boolean literals should not be redundant", Justification = "OK.")]
     private static object? OnShowTitleBarCoerceValue(
         DependencyObject d,
         object? value)
-    {
-        // if UseNoneWindowStyle = true no title bar should be shown
-        return ((NiceWindow)d).UseNoneWindowStyle
+        => ((NiceWindow)d).UseNoneWindowStyle
             ? false
             : value;
-    }
 
-    private static bool ValidateTitleCharacterCasing(
-        object value)
+    private static bool ValidateTitleCharacterCasing(object value)
         => value is >= CharacterCasing.Normal and <= CharacterCasing.Upper;
 
     private static void TitleBarHeightPropertyChanged(
@@ -799,7 +793,9 @@ public partial class NiceWindow : WindowChromeWindow
 
         sb.Dispatcher.VerifyAccess();
 
-        animation = sb.Children.OfType<DoubleAnimation>().FirstOrDefault();
+        animation = sb.Children
+            .OfType<DoubleAnimation>()
+            .FirstOrDefault();
 
         if (animation is null)
         {

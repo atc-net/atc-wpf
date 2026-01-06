@@ -145,8 +145,7 @@ public static class CultureManager
     /// Set the UI culture to the given culture.
     /// </summary>
     /// <param name="uiCultureInfo">The UI culture to set.</param>
-    public static void SetUiCulture(
-        CultureInfo uiCultureInfo)
+    public static void SetUiCulture(CultureInfo uiCultureInfo)
     {
         ArgumentNullException.ThrowIfNull(uiCultureInfo);
 
@@ -158,8 +157,7 @@ public static class CultureManager
     /// </summary>
     /// <param name="backendCultureInfo">The backend culture to set.</param>
     /// <remarks>If the culture is neutral then creates a specific culture.</remarks>
-    public static void SetBackendCulture(
-        CultureInfo backendCultureInfo)
+    public static void SetBackendCulture(CultureInfo backendCultureInfo)
     {
         ArgumentNullException.ThrowIfNull(backendCultureInfo);
 

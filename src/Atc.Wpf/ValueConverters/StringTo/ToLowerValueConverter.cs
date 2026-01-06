@@ -12,16 +12,20 @@ public sealed class ToLowerValueConverter : MarkupValueConverterBase
     public static readonly ToLowerValueConverter Instance = new();
 
     /// <inheritdoc />
-    protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is string s
+    protected override object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is string s
             ? s.ToLower(culture)
             : value;
-    }
 
     /// <inheritdoc />
-    protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return Binding.DoNothing;
-    }
+    protected override object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => Binding.DoNothing;
 }

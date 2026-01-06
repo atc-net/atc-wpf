@@ -5,9 +5,13 @@ internal static class NativeMethods
 {
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
-    internal static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl);
+    internal static extern bool SetWindowPlacement(
+        IntPtr hWnd,
+        [In] ref WINDOWPLACEMENT lpwndpl);
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
-    internal static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
+    internal static extern bool GetWindowPlacement(
+        IntPtr hWnd,
+        out WINDOWPLACEMENT lpwndpl);
 }

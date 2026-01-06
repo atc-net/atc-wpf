@@ -9,8 +9,7 @@ public static class ValidationHelper
         typeof(ValidationHelper),
         new PropertyMetadata(BooleanBoxes.TrueBox));
 
-    public static bool GetShowValidationErrorOnKeyboardFocus(
-        UIElement element)
+    public static bool GetShowValidationErrorOnKeyboardFocus(UIElement element)
         => (bool)element.GetValue(ShowValidationErrorOnKeyboardFocusProperty);
 
     public static void SetShowValidationErrorOnKeyboardFocus(
@@ -24,8 +23,7 @@ public static class ValidationHelper
         typeof(ValidationHelper),
         new PropertyMetadata(BooleanBoxes.FalseBox));
 
-    public static bool GetShowValidationErrorOnMouseOver(
-        UIElement element)
+    public static bool GetShowValidationErrorOnMouseOver(UIElement element)
         => (bool)element.GetValue(ShowValidationErrorOnMouseOverProperty);
 
     public static void SetShowValidationErrorOnMouseOver(

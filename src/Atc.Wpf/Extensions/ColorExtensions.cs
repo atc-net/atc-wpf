@@ -3,12 +3,10 @@ namespace System.Windows.Media;
 
 public static class ColorExtensions
 {
-    public static string? GetBrushKey(
-        this Color color)
+    public static string? GetBrushKey(this Color color)
         => ColorHelper.GetColorKeyFromColor(color);
 
-    public static string? GetColorName(
-        this Color color)
+    public static string? GetColorName(this Color color)
         => ColorHelper.GetColorNameFromColor(color);
 
     public static string? GetColorName(
@@ -27,8 +25,7 @@ public static class ColorExtensions
     /// </summary>
     /// <param name="color">The color.</param>
     /// <returns>The hue of the color from [0, 360]</returns>
-    public static double GetHue(
-        this Color color)
+    public static double GetHue(this Color color)
         => System.Drawing.Color
             .FromArgb(
                 color.A,
@@ -42,8 +39,7 @@ public static class ColorExtensions
     /// </summary>
     /// <param name="color">The color.</param>
     /// <returns>The brightness of the color from [0, 1]</returns>
-    public static double GetBrightness(
-        this Color color)
+    public static double GetBrightness(this Color color)
     {
         // HSL to HSB conversion
         var c = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);

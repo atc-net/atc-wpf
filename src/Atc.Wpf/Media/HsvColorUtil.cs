@@ -20,13 +20,20 @@ public static class HsvColorUtil
     /// <returns>
     /// The <see cref="HsvColor" />.
     /// </returns>
-    public static HsvColor ConvertRgbToHsv(int r, int b, int g)
+    public static HsvColor ConvertRgbToHsv(
+        int r,
+        int b,
+        int g)
     {
         double h = 0;
         double s;
 
-        double min = System.Math.Min(System.Math.Min(r, g), b);
-        double v = System.Math.Max(System.Math.Max(r, g), b);
+        double min = System.Math.Min(
+            System.Math.Min(r, g),
+            b);
+        double v = System.Math.Max(
+            System.Math.Max(r, g),
+            b);
         var delta = v - min;
 
         if (v.IsEqual(0))
@@ -89,7 +96,10 @@ public static class HsvColorUtil
     /// The <see cref="Color" />.
     /// </returns>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    public static Color ConvertHsvToRgb(double h, double s, double v)
+    public static Color ConvertHsvToRgb(
+        double h,
+        double s,
+        double v)
     {
         double r;
         double g;
@@ -170,7 +180,11 @@ public static class HsvColorUtil
             }
         }
 
-        return Color.FromArgb(255, (byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+        return Color.FromArgb(
+            255,
+            (byte)(r * 255),
+            (byte)(g * 255),
+            (byte)(b * 255));
     }
 
     /// <summary>
@@ -185,10 +199,18 @@ public static class HsvColorUtil
 
         for (var i = 0; i < 29; i++)
         {
-            colorsList.Add(ConvertHsvToRgb(i * 12, 1, 1));
+            colorsList.Add(
+                ConvertHsvToRgb(
+                    i * 12,
+                    1,
+                    1));
         }
 
-        colorsList.Add(ConvertHsvToRgb(0, 1, 1));
+        colorsList.Add(
+            ConvertHsvToRgb(
+                0,
+                1,
+                1));
 
         return colorsList;
     }

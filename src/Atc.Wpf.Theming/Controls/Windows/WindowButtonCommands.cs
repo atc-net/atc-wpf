@@ -1,21 +1,41 @@
 namespace Atc.Wpf.Theming.Controls.Windows;
 
-[TemplatePart(Name = "PART_Min", Type = typeof(Button))]
-[TemplatePart(Name = "PART_Max", Type = typeof(Button))]
-[TemplatePart(Name = "PART_Close", Type = typeof(Button))]
-[StyleTypedProperty(Property = nameof(LightMinButtonStyle), StyleTargetType = typeof(Button))]
-[StyleTypedProperty(Property = nameof(LightMaxButtonStyle), StyleTargetType = typeof(Button))]
-[StyleTypedProperty(Property = nameof(LightCloseButtonStyle), StyleTargetType = typeof(Button))]
-[StyleTypedProperty(Property = nameof(DarkMinButtonStyle), StyleTargetType = typeof(Button))]
-[StyleTypedProperty(Property = nameof(DarkMaxButtonStyle), StyleTargetType = typeof(Button))]
-[StyleTypedProperty(Property = nameof(DarkCloseButtonStyle), StyleTargetType = typeof(Button))]
+[TemplatePart(
+    Name = "PART_Min",
+    Type = typeof(Button))]
+[TemplatePart(
+    Name = "PART_Max",
+    Type = typeof(Button))]
+[TemplatePart(
+    Name = "PART_Close",
+    Type = typeof(Button))]
+[StyleTypedProperty(
+    Property = nameof(LightMinButtonStyle),
+    StyleTargetType = typeof(Button))]
+[StyleTypedProperty(
+    Property = nameof(LightMaxButtonStyle),
+    StyleTargetType = typeof(Button))]
+[StyleTypedProperty(
+    Property = nameof(LightCloseButtonStyle),
+    StyleTargetType = typeof(Button))]
+[StyleTypedProperty(
+    Property = nameof(DarkMinButtonStyle),
+    StyleTargetType = typeof(Button))]
+[StyleTypedProperty(
+    Property = nameof(DarkMaxButtonStyle),
+    StyleTargetType = typeof(Button))]
+[StyleTypedProperty(
+    Property = nameof(DarkCloseButtonStyle),
+    StyleTargetType = typeof(Button))]
 public sealed class WindowButtonCommands : ContentControl
 {
     public event ClosingWindowEventHandler? ClosingWindow;
 
     [SuppressMessage("Design", "CA1003:Use generic event handler instances", Justification = "OK.")]
     [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-    public delegate void ClosingWindowEventHandler(object sender, ClosingWindowEventArgs e);
+    public delegate void ClosingWindowEventHandler(
+        object sender,
+        ClosingWindowEventArgs e);
 
     public static readonly DependencyProperty LightMinButtonStyleProperty = DependencyProperty.Register(
         nameof(LightMinButtonStyle),
@@ -202,15 +222,28 @@ public sealed class WindowButtonCommands : ContentControl
 
     static WindowButtonCommands()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowButtonCommands), new FrameworkPropertyMetadata(typeof(WindowButtonCommands)));
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(WindowButtonCommands),
+            new FrameworkPropertyMetadata(typeof(WindowButtonCommands)));
     }
 
     public WindowButtonCommands()
     {
-        CommandBindings.Add(new CommandBinding(System.Windows.SystemCommands.MinimizeWindowCommand, MinimizeWindow));
-        CommandBindings.Add(new CommandBinding(System.Windows.SystemCommands.MaximizeWindowCommand, MaximizeWindow));
-        CommandBindings.Add(new CommandBinding(System.Windows.SystemCommands.RestoreWindowCommand, RestoreWindow));
-        CommandBindings.Add(new CommandBinding(System.Windows.SystemCommands.CloseWindowCommand, CloseWindow));
+        CommandBindings.Add(new CommandBinding(
+            System.Windows.SystemCommands.MinimizeWindowCommand,
+            MinimizeWindow));
+
+        CommandBindings.Add(new CommandBinding(
+            System.Windows.SystemCommands.MaximizeWindowCommand,
+            MaximizeWindow));
+
+        CommandBindings.Add(new CommandBinding(
+            System.Windows.SystemCommands.RestoreWindowCommand,
+            RestoreWindow));
+
+        CommandBindings.Add(new CommandBinding(
+            System.Windows.SystemCommands.CloseWindowCommand,
+            CloseWindow));
 
         this.Invoke(
             () =>
@@ -244,7 +277,9 @@ public sealed class WindowButtonCommands : ContentControl
             DispatcherPriority.Loaded);
     }
 
-    private void MinimizeWindow(object sender, ExecutedRoutedEventArgs e)
+    private void MinimizeWindow(
+        object sender,
+        ExecutedRoutedEventArgs e)
     {
         if (ParentWindow is null)
         {
@@ -254,7 +289,9 @@ public sealed class WindowButtonCommands : ContentControl
         System.Windows.SystemCommands.MinimizeWindow(ParentWindow);
     }
 
-    private void MaximizeWindow(object sender, ExecutedRoutedEventArgs e)
+    private void MaximizeWindow(
+        object sender,
+        ExecutedRoutedEventArgs e)
     {
         if (ParentWindow is null)
         {
@@ -264,7 +301,9 @@ public sealed class WindowButtonCommands : ContentControl
         System.Windows.SystemCommands.MaximizeWindow(ParentWindow);
     }
 
-    private void RestoreWindow(object sender, ExecutedRoutedEventArgs e)
+    private void RestoreWindow(
+        object sender,
+        ExecutedRoutedEventArgs e)
     {
         if (ParentWindow is null)
         {
@@ -274,7 +313,9 @@ public sealed class WindowButtonCommands : ContentControl
         System.Windows.SystemCommands.RestoreWindow(ParentWindow);
     }
 
-    private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+    private void CloseWindow(
+        object sender,
+        ExecutedRoutedEventArgs e)
     {
         if (ParentWindow is null)
         {

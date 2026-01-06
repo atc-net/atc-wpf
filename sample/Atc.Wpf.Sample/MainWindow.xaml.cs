@@ -4,12 +4,12 @@ namespace Atc.Wpf.Sample;
 [SuppressMessage("", "S1871:Conditional structure should not have exactly the same implementation", Justification = "OK.")]
 public partial class MainWindow
 {
-    private IMainWindowViewModel GetViewModel() => (IMainWindowViewModel)DataContext!;
+    private IMainWindowViewModel GetViewModel()
+        => (IMainWindowViewModel)DataContext!;
 
     private readonly TreeView[] sampleTreeViews;
 
-    public MainWindow(
-        IMainWindowViewModel viewModel)
+    public MainWindow(IMainWindowViewModel viewModel)
     {
         InitializeComponent();
 
@@ -122,8 +122,7 @@ public partial class MainWindow
         return showRoot;
     }
 
-    private void TrySelectUniqueMatchingTab(
-        string filter)
+    private void TrySelectUniqueMatchingTab(string filter)
     {
         if (filter is not null &&
             filter.Length > 2)
@@ -187,8 +186,7 @@ public partial class MainWindow
         return count;
     }
 
-    private void SelectTabItem(
-        TreeView treeView)
+    private void SelectTabItem(TreeView treeView)
     {
         foreach (var item in SamplesTabControl.Items)
         {
@@ -217,8 +215,7 @@ public partial class MainWindow
         RoutedEventArgs e)
         => ProcessTreeViewItems(expand: false);
 
-    private void ProcessTreeViewItems(
-        bool expand)
+    private void ProcessTreeViewItems(bool expand)
     {
         foreach (var treeView in sampleTreeViews)
         {

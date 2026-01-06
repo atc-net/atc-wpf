@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class LineShape : Shape
 {
-    public LineShape(Svg svg, XmlNode node)
+    public LineShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
         ArgumentNullException.ThrowIfNull(svg);
@@ -19,5 +21,6 @@ internal sealed class LineShape : Shape
 
     public Point P2 { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(P1)}: ({P1}), {nameof(P2)}: ({P2})";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(P1)}: ({P1}), {nameof(P2)}: ({P2})";
 }

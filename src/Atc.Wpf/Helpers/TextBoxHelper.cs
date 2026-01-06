@@ -11,8 +11,7 @@ public static class TextBoxHelper
             22d,
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static double GetButtonHeight(
-        DependencyObject d)
+    public static double GetButtonHeight(DependencyObject d)
         => (double)d.GetValue(ButtonHeightProperty);
 
     public static void SetButtonHeight(
@@ -28,8 +27,7 @@ public static class TextBoxHelper
             22d,
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static double GetButtonWidth(
-        DependencyObject d)
+    public static double GetButtonWidth(DependencyObject d)
         => (double)d.GetValue(ButtonWidthProperty);
 
     public static void SetButtonWidth(
@@ -45,8 +43,7 @@ public static class TextBoxHelper
             ButtonsAlignmentType.Right,
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-    public static ButtonsAlignmentType GetButtonsAlignment(
-        DependencyObject d)
+    public static ButtonsAlignmentType GetButtonsAlignment(DependencyObject d)
         => (ButtonsAlignmentType)d.GetValue(ButtonsAlignmentProperty);
 
     public static void SetButtonsAlignment(
@@ -62,8 +59,7 @@ public static class TextBoxHelper
             defaultValue: null,
             ButtonCommandOrClearTextChanged));
 
-    public static ICommand? GetButtonCommand(
-        DependencyObject d)
+    public static ICommand? GetButtonCommand(DependencyObject d)
         => (ICommand?)d.GetValue(ButtonCommandProperty);
 
     public static void SetButtonCommand(
@@ -91,8 +87,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static IInputElement? GetButtonCommandTarget(
-        DependencyObject d)
+    public static IInputElement? GetButtonCommandTarget(DependencyObject d)
         => (IInputElement?)d.GetValue(ButtonCommandTargetProperty);
 
     public static void SetButtonCommandTarget(
@@ -106,8 +101,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new FrameworkPropertyMetadata("#"));
 
-    public static object GetButtonContent(
-        DependencyObject d)
+    public static object GetButtonContent(DependencyObject d)
         => d.GetValue(ButtonContentProperty);
 
     public static void SetButtonContent(
@@ -121,8 +115,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static DataTemplate? GetButtonContentTemplate(
-        DependencyObject d)
+    public static DataTemplate? GetButtonContentTemplate(DependencyObject d)
         => (DataTemplate?)d.GetValue(ButtonContentTemplateProperty);
 
     public static void SetButtonContentTemplate(
@@ -136,8 +129,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static ControlTemplate? GetButtonTemplate(
-        DependencyObject d)
+    public static ControlTemplate? GetButtonTemplate(DependencyObject d)
         => (ControlTemplate?)d.GetValue(ButtonTemplateProperty);
 
     public static void SetButtonTemplate(
@@ -151,8 +143,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new FrameworkPropertyMetadata(new FontFamilyConverter().ConvertFromString("Segoe UI")));
 
-    public static FontFamily GetButtonFontFamily(
-        DependencyObject d)
+    public static FontFamily GetButtonFontFamily(DependencyObject d)
         => (FontFamily)d.GetValue(ButtonFontFamilyProperty);
 
     public static void SetButtonFontFamily(
@@ -166,8 +157,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new FrameworkPropertyMetadata(SystemFonts.MessageFontSize));
 
-    public static double GetButtonFontSize(
-        DependencyObject d)
+    public static double GetButtonFontSize(DependencyObject d)
         => (double)d.GetValue(ButtonFontSizeProperty);
 
     public static void SetButtonFontSize(
@@ -183,8 +173,7 @@ public static class TextBoxHelper
             BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static bool GetHasText(
-        DependencyObject d)
+    public static bool GetHasText(DependencyObject d)
         => (bool)d.GetValue(HasTextProperty);
 
     public static void SetHasText(
@@ -200,8 +189,7 @@ public static class TextBoxHelper
             BooleanBoxes.FalseBox,
             ButtonCommandOrClearTextChanged));
 
-    public static bool GetClearTextButton(
-        DependencyObject d)
+    public static bool GetClearTextButton(DependencyObject d)
         => (bool)d.GetValue(ClearTextButtonProperty);
 
     public static void SetClearTextButton(
@@ -217,8 +205,7 @@ public static class TextBoxHelper
             BooleanBoxes.FalseBox,
             ButtonCommandOrClearTextChanged));
 
-    public static bool GetUseFloatingWatermark(
-        DependencyObject d)
+    public static bool GetUseFloatingWatermark(DependencyObject d)
         => (bool)d.GetValue(UseFloatingWatermarkProperty);
 
     public static void SetUseFloatingWatermark(
@@ -234,8 +221,7 @@ public static class TextBoxHelper
             BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static bool GetHasValidationError(
-        DependencyObject d)
+    public static bool GetHasValidationError(DependencyObject d)
         => (bool)d.GetValue(HasValidationErrorProperty);
 
     public static void SetHasValidationError(
@@ -251,8 +237,7 @@ public static class TextBoxHelper
             BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static bool GetShowToolTip(
-        DependencyObject d)
+    public static bool GetShowToolTip(DependencyObject d)
         => (bool)d.GetValue(ShowToolTipProperty);
 
     public static void SetShowToolTip(
@@ -266,8 +251,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new UIPropertyMetadata(string.Empty));
 
-    public static string GetToolTipText(
-        DependencyObject d)
+    public static string GetToolTipText(DependencyObject d)
         => (string)d.GetValue(ToolTipTextProperty);
 
     public static void SetToolTipText(
@@ -281,8 +265,7 @@ public static class TextBoxHelper
         typeof(TextBoxHelper),
         new UIPropertyMetadata(string.Empty));
 
-    public static string GetWatermark(
-        DependencyObject d)
+    public static string GetWatermark(DependencyObject d)
         => (string)d.GetValue(WatermarkProperty);
 
     public static void SetWatermark(
@@ -298,8 +281,7 @@ public static class TextBoxHelper
             TextAlignment.Left,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static TextAlignment GetWatermarkAlignment(
-        DependencyObject d)
+    public static TextAlignment GetWatermarkAlignment(DependencyObject d)
         => (TextAlignment)d.GetValue(WatermarkAlignmentProperty);
 
     public static void SetWatermarkAlignment(
@@ -315,8 +297,7 @@ public static class TextBoxHelper
             TextTrimming.None,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static TextTrimming GetWatermarkTrimming(
-        DependencyObject d)
+    public static TextTrimming GetWatermarkTrimming(DependencyObject d)
         => (TextTrimming)d.GetValue(WatermarkTrimmingProperty);
 
     public static void SetWatermarkTrimming(
@@ -332,8 +313,7 @@ public static class TextBoxHelper
             TextWrapping.NoWrap,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static TextWrapping GetWatermarkWrapping(
-        DependencyObject d)
+    public static TextWrapping GetWatermarkWrapping(DependencyObject d)
         => (TextWrapping)d.GetValue(WatermarkWrappingProperty);
 
     public static void SetWatermarkWrapping(
@@ -351,7 +331,9 @@ public static class TextBoxHelper
     public static bool GetSelectAllOnFocus(DependencyObject obj)
         => (bool)obj.GetValue(SelectAllOnFocusProperty);
 
-    public static void SetSelectAllOnFocus(DependencyObject obj, bool value)
+    public static void SetSelectAllOnFocus(
+        DependencyObject obj,
+        bool value)
         => obj.SetValue(SelectAllOnFocusProperty, BooleanBoxes.Box(value));
 
     public static readonly DependencyProperty IsMonitoringProperty
@@ -366,7 +348,9 @@ public static class TextBoxHelper
     public static bool GetIsMonitoring(UIElement element)
         => (bool)element.GetValue(IsMonitoringProperty);
 
-    public static void SetIsMonitoring(DependencyObject obj, bool value)
+    public static void SetIsMonitoring(
+        DependencyObject obj,
+        bool value)
         => obj.SetValue(IsMonitoringProperty, BooleanBoxes.Box(value));
 
     public static readonly DependencyPropertyKey TextLengthPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
@@ -385,7 +369,9 @@ public static class TextBoxHelper
     private static void PasswordChanged(
         object sender,
         RoutedEventArgs e)
-        => SetTextLength(sender as PasswordBox, passwordBox => passwordBox.Password.Length);
+        => SetTextLength(
+            sender as PasswordBox,
+            passwordBox => passwordBox.Password.Length);
 
     private static void ButtonCommandOrClearTextChanged(
         DependencyObject d,
@@ -458,8 +444,7 @@ public static class TextBoxHelper
         sender.SetCurrentValue(HasTextProperty, BooleanBoxes.Box(value > 0));
     }
 
-    private static void SetRichTextBoxTextLength(
-        RichTextBox richTextBox)
+    private static void SetRichTextBoxTextLength(RichTextBox richTextBox)
     {
         SetTextLength(richTextBox, rtb =>
         {
@@ -539,7 +524,9 @@ public static class TextBoxHelper
     private static void PasswordGotFocus(
         object sender,
         RoutedEventArgs e)
-        => ControlGotFocus(sender as PasswordBox, passwordBox => passwordBox.SelectAll());
+        => ControlGotFocus(
+            sender as PasswordBox,
+            passwordBox => passwordBox.SelectAll());
 
     private static void ControlGotFocus<TDependencyObject>(
         TDependencyObject? sender,

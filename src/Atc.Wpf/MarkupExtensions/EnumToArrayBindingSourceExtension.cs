@@ -24,8 +24,7 @@ public sealed class EnumToArrayBindingSourceExtension : MarkupExtension
     /// Initializes a new instance of the <see cref="EnumToArrayBindingSourceExtension"/> class.
     /// </summary>
     /// <param name="enumType">Type of the enum.</param>
-    public EnumToArrayBindingSourceExtension(
-        Type enumType)
+    public EnumToArrayBindingSourceExtension(Type enumType)
         : this(
             enumType,
             DropDownFirstItemType.None,
@@ -163,8 +162,7 @@ public sealed class EnumToArrayBindingSourceExtension : MarkupExtension
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     /// <exception cref="InvalidOperationException">The EnumType must be specified.</exception>
-    public override object ProvideValue(
-        IServiceProvider serviceProvider)
+    public override object ProvideValue(IServiceProvider serviceProvider)
         => GetEnumValues();
 
     private Array GetEnumValues()
@@ -187,8 +185,12 @@ public sealed class EnumToArrayBindingSourceExtension : MarkupExtension
             return enumValues;
         }
 
-        var tempArray = Array.CreateInstance(actualEnumType, enumValues.Length + 1);
-        enumValues.CopyTo(tempArray, 1);
+        var tempArray = Array.CreateInstance(
+            actualEnumType,
+            enumValues.Length + 1);
+        enumValues.CopyTo(
+            tempArray,
+            1);
         return tempArray;
     }
 }

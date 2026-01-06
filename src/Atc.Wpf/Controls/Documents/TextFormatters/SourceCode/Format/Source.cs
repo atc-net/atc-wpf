@@ -67,7 +67,10 @@ public abstract class Source
     /// <summary>
     /// The regular expression used to capture language tokens.
     /// </summary>
-    protected Regex CodeRegex { get; set; } = new("^", RegexOptions.None, TimeSpan.FromSeconds(5));
+    protected Regex CodeRegex { get; set; } = new(
+        "^",
+        RegexOptions.None,
+        TimeSpan.FromSeconds(5));
 
     /// <summary>
     /// This is a List of Run's that can be added later to the string of code.
@@ -83,10 +86,12 @@ public abstract class Source
     /// <returns>
     /// A string containing the HTML formatted code.
     /// </returns>
-    public Paragraph FormatCode(string source, ThemeMode themeMode)
-    {
-        return FormatCodeHelper(source, themeMode);
-    }
+    public Paragraph FormatCode(
+        string source,
+        ThemeMode themeMode)
+        => FormatCodeHelper(
+            source,
+            themeMode);
 
     /// <summary>
     /// Called to evaluate the HTML fragment corresponding to each
@@ -96,16 +101,26 @@ public abstract class Source
     /// single regular expression match.</param>
     /// <param name="themeMode">The ThemeMode.</param>
     /// <returns>A string containing the HTML code fragment.</returns>
-    protected abstract string MatchEval(Match match, ThemeMode themeMode);
+    protected abstract string MatchEval(
+        Match match,
+        ThemeMode themeMode);
 
-    private Paragraph FormatCodeHelper(string source, ThemeMode themeMode)
+    private Paragraph FormatCodeHelper(
+        string source,
+        ThemeMode themeMode)
     {
         var codeParagraph = new Paragraph();
         var sb = new StringBuilder(source);
-        source = CodeRegex.Replace(sb.ToString(), match => MatchEval(match, themeMode));
+        source = CodeRegex.Replace(
+            sb.ToString(),
+            match => MatchEval(
+                match,
+                themeMode));
         string[] characters = [FormattingMarker];
 
-        var split = source.Split(characters, StringSplitOptions.None);
+        var split = source.Split(
+            characters,
+            StringSplitOptions.None);
         var currentChunk = 0;
         foreach (var code in split)
         {

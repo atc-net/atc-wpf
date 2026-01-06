@@ -3,8 +3,7 @@ namespace Atc.Wpf.Controls.Layouts;
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public sealed class PanelEx : Panel
 {
-    protected override Size MeasureOverride(
-        Size availableSize)
+    protected override Size MeasureOverride(Size availableSize)
     {
         var maxSize = default(Size);
 
@@ -23,8 +22,7 @@ public sealed class PanelEx : Panel
         return maxSize;
     }
 
-    protected override Size ArrangeOverride(
-        Size finalSize)
+    protected override Size ArrangeOverride(Size finalSize)
     {
         foreach (UIElement child in InternalChildren)
         {

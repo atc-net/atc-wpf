@@ -3,8 +3,7 @@ namespace System.Windows.Media.Imaging;
 
 public static class BitmapSourceExtensions
 {
-    public static int GetBytesPerPixel(
-        this BitmapSource bitmapSource)
+    public static int GetBytesPerPixel(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -13,8 +12,7 @@ public static class BitmapSourceExtensions
         return (bitmapSource.Format.BitsPerPixel + 7) / 8;
     }
 
-    public static int GetStride(
-        this BitmapSource bitmapSource)
+    public static int GetStride(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -24,8 +22,7 @@ public static class BitmapSourceExtensions
         return 4 * ((bytesForPixelWidth + 3) / 4);
     }
 
-    public static byte[] GetBytes(
-        this BitmapSource bitmapSource)
+    public static byte[] GetBytes(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 
@@ -64,8 +61,7 @@ public static class BitmapSourceExtensions
     }
 
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
-    public static PixelColor[,] GetPixelColors(
-        this BitmapSource source)
+    public static PixelColor[,] GetPixelColors(this BitmapSource source)
     {
         ArgumentNullException.ThrowIfNull(source);
 
@@ -119,8 +115,7 @@ public static class BitmapSourceExtensions
         return BitmapImageFactory.Create(path, UriKind.Relative);
     }
 
-    public static BitmapSource InvertColors(
-        this BitmapSource bitmapSource)
+    public static BitmapSource InvertColors(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
 

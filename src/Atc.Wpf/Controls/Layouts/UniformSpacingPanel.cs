@@ -63,15 +63,13 @@ public sealed partial class UniformSpacingPanel : Panel
         p.orientation = (Orientation)e.NewValue;
     }
 
-    private static bool IsWidthHeightValid(
-        object value)
+    private static bool IsWidthHeightValid(object value)
     {
         var v = (double)value;
         return double.IsNaN(v) || (v >= 0.0d && !double.IsPositiveInfinity(v));
     }
 
-    private static bool IsSpacingValid(
-        object value)
+    private static bool IsSpacingValid(object value)
         => value is double spacing && (double.IsNaN(spacing) || spacing >= 0);
 
     private void ArrangeWrapLine(
@@ -147,8 +145,7 @@ public sealed partial class UniformSpacingPanel : Panel
 
     [SuppressMessage("", "MA0084:Local variable should not hide field", Justification = "OK.")]
     [SuppressMessage("", "S1117:Local variable should not hide field", Justification = "OK.")]
-    protected override Size MeasureOverride(
-        Size availableSize)
+    protected override Size MeasureOverride(Size availableSize)
     {
         var curLineSize = new PanelUvSize(orientation);
         var panelSize = new PanelUvSize(orientation);
@@ -268,8 +265,7 @@ public sealed partial class UniformSpacingPanel : Panel
         return new Size(panelSize.Width, panelSize.Height);
     }
 
-    protected override Size ArrangeOverride(
-        Size finalSize)
+    protected override Size ArrangeOverride(Size finalSize)
     {
         var firstInLine = 0;
         double accumulatedV = 0;

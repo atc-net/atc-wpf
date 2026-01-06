@@ -20,13 +20,23 @@ public sealed class SolidColorBrushHelperTests
     [InlineData("#FF2F4F4F", 47, 79, 79, GlobalizationLcidConstants.UnitedStates)]
     [InlineData("Red", 255, 0, 0, GlobalizationLcidConstants.UnitedStates)]
     [InlineData("Rød", 255, 0, 0, GlobalizationLcidConstants.Denmark)]
-    public void GetBrushFromString(string input, byte r, byte g, byte b, int lcid)
+    public void GetBrushFromString(
+        string input,
+        byte r,
+        byte g,
+        byte b,
+        int lcid)
     {
         // Arrange
-        var expectedColor = Color.FromRgb(r, g, b);
+        var expectedColor = Color.FromRgb(
+            r,
+            g,
+            b);
 
         // Act
-        var brush = SolidColorBrushHelper.GetBrushFromString(input, new CultureInfo(lcid));
+        var brush = SolidColorBrushHelper.GetBrushFromString(
+            input,
+            new CultureInfo(lcid));
 
         // Assert
         Assert.NotNull(brush);
@@ -42,10 +52,17 @@ public sealed class SolidColorBrushHelperTests
     [InlineData("#FFFF0000", 255, 0, 0)]
     [InlineData("#FF0000", 255, 0, 0)]
     [InlineData("#F00", 255, 0, 0)]
-    public void GetBrushFromHex(string hex, byte r, byte g, byte b)
+    public void GetBrushFromHex(
+        string hex,
+        byte r,
+        byte g,
+        byte b)
     {
         // Arrange
-        var expectedColor = Color.FromRgb(r, g, b);
+        var expectedColor = Color.FromRgb(
+            r,
+            g,
+            b);
 
         // Act
         var brush = SolidColorBrushHelper.GetBrushFromHex(hex);
@@ -62,13 +79,23 @@ public sealed class SolidColorBrushHelperTests
     [InlineData("Rød", 255, 0, 0, GlobalizationLcidConstants.Denmark)]
     [InlineData("Grøn", 0, 128, 0, GlobalizationLcidConstants.Denmark)]
     [InlineData("Blå", 0, 0, 255, GlobalizationLcidConstants.Denmark)]
-    public void GetBrushFromName(string name, byte r, byte g, byte b, int lcid)
+    public void GetBrushFromName(
+        string name,
+        byte r,
+        byte g,
+        byte b,
+        int lcid)
     {
         // Arrange
-        var expectedColor = Color.FromRgb(r, g, b);
+        var expectedColor = Color.FromRgb(
+            r,
+            g,
+            b);
 
         // Act
-        var brush = SolidColorBrushHelper.GetBrushFromName(name, new CultureInfo(lcid));
+        var brush = SolidColorBrushHelper.GetBrushFromName(
+            name,
+            new CultureInfo(lcid));
 
         // Assert
         Assert.NotNull(brush);
@@ -214,7 +241,9 @@ public sealed class SolidColorBrushHelperTests
     [InlineData("WhiteSmoke", "0xFFF5F5F5")]
     [InlineData("Yellow", "0xFFFFFF00")]
     [InlineData("YellowGreen", "0xFF9ACD32")]
-    public void GetBrushKeyFromHex(string expectedColorKey, string hexValue)
+    public void GetBrushKeyFromHex(
+        string expectedColorKey,
+        string hexValue)
     {
         // Act
         var brushKey = SolidColorBrushHelper.GetBrushKeyFromHex(hexValue);

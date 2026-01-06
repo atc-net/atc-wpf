@@ -10,10 +10,12 @@ public sealed class ObjectNullToBoolValueConverter : IValueConverter
     public static readonly ObjectNullToBoolValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is null;
-    }
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is null;
 
     /// <inheritdoc />
     public object ConvertBack(

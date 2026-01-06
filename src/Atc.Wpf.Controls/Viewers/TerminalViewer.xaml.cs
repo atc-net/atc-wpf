@@ -20,8 +20,12 @@ public sealed partial class TerminalViewer : IDisposable
 
         DataContext = this;
 
-        Messenger.Default.Register<TerminalReceivedDataEventArgs>(this, TerminalReceivedDataHandle);
-        Messenger.Default.Register<TerminalClearEventArgs>(this, TerminalClearEventArgsHandle);
+        Messenger.Default.Register<TerminalReceivedDataEventArgs>(
+            this,
+            TerminalReceivedDataHandle);
+        Messenger.Default.Register<TerminalClearEventArgs>(
+            this,
+            TerminalClearEventArgsHandle);
 
         queueProcessingTask = Task.Run(
             () => ProcessQueueContinuously(cts.Token),
@@ -96,12 +100,10 @@ public sealed partial class TerminalViewer : IDisposable
     private void ClearScreen()
         => ListViewTerminal.Items.Clear();
 
-    private void TerminalReceivedDataHandle(
-        TerminalReceivedDataEventArgs obj)
+    private void TerminalReceivedDataHandle(TerminalReceivedDataEventArgs obj)
         => receivedDataChannel.Writer.TryWrite(obj);
 
-    private void TerminalClearEventArgsHandle(
-        TerminalClearEventArgs obj)
+    private void TerminalClearEventArgsHandle(TerminalClearEventArgs obj)
     {
         while (receivedDataChannel.Reader.TryRead(out _))
         {
@@ -114,8 +116,7 @@ public sealed partial class TerminalViewer : IDisposable
             CancellationToken.None);
     }
 
-    private async Task ProcessQueueContinuously(
-        CancellationToken token)
+    private async Task ProcessQueueContinuously(CancellationToken token)
     {
         var reader = receivedDataChannel.Reader;
 
@@ -168,8 +169,7 @@ public sealed partial class TerminalViewer : IDisposable
         }
     }
 
-    private Brush GetColorForLine(
-        string line)
+    private Brush GetColorForLine(string line)
     {
         var lineSpan = line.AsSpan();
 
@@ -178,11 +178,21 @@ public sealed partial class TerminalViewer : IDisposable
             Brush Colour,
             StringComparison Comparison)[]
             {
-                (TermsError,      ErrorTextColor,      StringComparison.OrdinalIgnoreCase),
-                (TermsSuccessful, SuccessfulTextColor, StringComparison.OrdinalIgnoreCase),
-                (Terms1,          Terms1TextColor,     StringComparison.OrdinalIgnoreCase),
-                (Terms2,          Terms2TextColor,     StringComparison.OrdinalIgnoreCase),
-                (Terms3,          Terms3TextColor,     StringComparison.OrdinalIgnoreCase),
+                (TermsError,
+                    ErrorTextColor,
+                    StringComparison.OrdinalIgnoreCase),
+                (TermsSuccessful,
+                    SuccessfulTextColor,
+                    StringComparison.OrdinalIgnoreCase),
+                (Terms1,
+                    Terms1TextColor,
+                    StringComparison.OrdinalIgnoreCase),
+                (Terms2,
+                    Terms2TextColor,
+                    StringComparison.OrdinalIgnoreCase),
+                (Terms3,
+                    Terms3TextColor,
+                    StringComparison.OrdinalIgnoreCase),
             };
 
         foreach (var (terms, colour, cmp) in checks)
@@ -194,7 +204,10 @@ public sealed partial class TerminalViewer : IDisposable
 
             foreach (var term in terms)
             {
-                if (ContainsTermAsWord(lineSpan, term.AsSpan(), cmp))
+                if (ContainsTermAsWord(
+                        lineSpan,
+                        term.AsSpan(),
+                        cmp))
                 {
                     return colour;
                 }
@@ -210,7 +223,9 @@ public sealed partial class TerminalViewer : IDisposable
         StringComparison comparison)
     {
         int index;
-        while ((index = line.IndexOf(term, comparison)) >= 0)
+        while ((index = line.IndexOf(
+                   term,
+                   comparison)) >= 0)
         {
             var atStart = index == 0 || char.IsWhiteSpace(line[index - 1]);
             var end = index + term.Length;

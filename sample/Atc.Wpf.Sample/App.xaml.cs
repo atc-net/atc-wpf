@@ -10,7 +10,8 @@ public partial class App
     {
         EnsureAppSettingsInCommonDataDirectory();
 
-        host = Host.CreateDefaultBuilder()
+        host = Host
+            .CreateDefaultBuilder()
             .ConfigureLogging(logging =>
             {
                 logging
@@ -19,7 +20,8 @@ public partial class App
             })
             .ConfigureAppConfiguration((_, configurationBuilder) =>
             {
-                configuration = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
+                configuration = configurationBuilder
+                    .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile(
                         Path.Combine(
                             AppConstants.DataDirectory.FullName,
@@ -47,8 +49,7 @@ public partial class App
     /// Raises the Startup event.
     /// </summary>
     /// <param name="e">The <see cref="StartupEventArgs"/> instance containing the event data.</param>
-    protected override void OnStartup(
-        StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -128,7 +129,9 @@ public partial class App
 
         CultureManager.SetCultures(applicationOptions.Language);
 
-        ThemeManagerHelper.SetThemeAndAccent(Current, applicationOptions.Theme);
+        ThemeManagerHelper.SetThemeAndAccent(
+            Current,
+            applicationOptions.Theme);
 
         ColorHelper.InitializeWithSupportedLanguages();
         SolidColorBrushHelper.InitializeWithSupportedLanguages();
@@ -153,7 +156,9 @@ public partial class App
 
     private static void EnsureAppSettingsInCommonDataDirectory()
     {
-        var dataDirectoryFile = AppConstants.DataDirectory.CombineFileInfo(AtcFileNameConstants.AppSettings);
+        var dataDirectoryFile = AppConstants
+            .DataDirectory
+            .CombineFileInfo(AtcFileNameConstants.AppSettings);
         if (dataDirectoryFile.Exists)
         {
             return;

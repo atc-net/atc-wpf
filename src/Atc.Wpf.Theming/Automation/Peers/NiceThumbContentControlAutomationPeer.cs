@@ -8,12 +8,8 @@ public sealed class NiceThumbContentControlAutomationPeer : FrameworkElementAuto
     }
 
     protected override AutomationControlType GetAutomationControlTypeCore()
-    {
-        return AutomationControlType.Custom;
-    }
+        => AutomationControlType.Custom;
 
     protected override string GetClassNameCore()
-    {
-        return "NiceThumbContentControl";
-    }
+        => "NiceThumbContentControl";
 }

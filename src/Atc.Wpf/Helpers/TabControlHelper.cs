@@ -9,8 +9,7 @@ public static class TabControlHelper
         typeof(TabControlHelper),
         new PropertyMetadata(UnderlinedType.None));
 
-    public static UnderlinedType GetUnderlined(
-        UIElement element)
+    public static UnderlinedType GetUnderlined(UIElement element)
         => (UnderlinedType)element.GetValue(UnderlinedProperty);
 
     public static void SetUnderlined(
@@ -26,8 +25,7 @@ public static class TabControlHelper
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetUnderlineBrush(
-        UIElement element)
+    public static Brush? GetUnderlineBrush(UIElement element)
         => (Brush?)element.GetValue(UnderlineBrushProperty);
 
     public static void SetUnderlineBrush(
@@ -43,8 +41,7 @@ public static class TabControlHelper
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetUnderlineSelectedBrush(
-        UIElement element)
+    public static Brush? GetUnderlineSelectedBrush(UIElement element)
         => (Brush?)element.GetValue(UnderlineSelectedBrushProperty);
 
     public static void SetUnderlineSelectedBrush(
@@ -60,8 +57,7 @@ public static class TabControlHelper
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetUnderlineMouseOverBrush(
-        UIElement element)
+    public static Brush? GetUnderlineMouseOverBrush(UIElement element)
         => (Brush?)element.GetValue(UnderlineMouseOverBrushProperty);
 
     public static void SetUnderlineMouseOverBrush(
@@ -77,8 +73,7 @@ public static class TabControlHelper
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetUnderlineMouseOverSelectedBrush(
-        UIElement element)
+    public static Brush? GetUnderlineMouseOverSelectedBrush(UIElement element)
         => (Brush?)element.GetValue(UnderlineMouseOverSelectedBrushProperty);
 
     public static void SetUnderlineMouseOverSelectedBrush(
@@ -92,8 +87,7 @@ public static class TabControlHelper
         typeof(TabControlHelper),
         new UIPropertyMetadata(new Thickness(0)));
 
-    public static Thickness GetUnderlineMargin(
-        UIElement element)
+    public static Thickness GetUnderlineMargin(UIElement element)
         => (Thickness)element.GetValue(UnderlineMarginProperty);
 
     public static void SetUnderlineMargin(
@@ -107,8 +101,7 @@ public static class TabControlHelper
         typeof(TabControlHelper),
         new PropertyMetadata(propertyChangedCallback: null));
 
-    public static Dock? GetUnderlinePlacement(
-        UIElement element)
+    public static Dock? GetUnderlinePlacement(UIElement element)
         => (Dock?)element.GetValue(UnderlinePlacementProperty);
 
     public static void SetUnderlinePlacement(

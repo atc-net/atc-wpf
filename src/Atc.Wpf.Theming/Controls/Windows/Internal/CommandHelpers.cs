@@ -2,8 +2,7 @@ namespace Atc.Wpf.Theming.Controls.Windows.Internal;
 
 internal static class CommandHelpers
 {
-    public static bool CanExecuteCommandSource(
-        ICommandSource commandSource)
+    public static bool CanExecuteCommandSource(ICommandSource commandSource)
     {
         var command = commandSource.Command;
         if (command is null)
@@ -18,7 +17,9 @@ internal static class CommandHelpers
         }
 
         var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-        return routedCommand.CanExecute(commandParameter, target);
+        return routedCommand.CanExecute(
+            commandParameter,
+            target);
     }
 
     public static bool CanExecuteCommandSource(
@@ -35,7 +36,9 @@ internal static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            return routedCommand.CanExecute(commandParameter, target);
+            return routedCommand.CanExecute(
+                commandParameter,
+                target);
         }
 
         return command.CanExecute(commandParameter);
@@ -43,8 +46,7 @@ internal static class CommandHelpers
 
     [SecurityCritical]
     [SecuritySafeCritical]
-    public static void ExecuteCommandSource(
-        ICommandSource commandSource)
+    public static void ExecuteCommandSource(ICommandSource commandSource)
     {
         CriticalExecuteCommandSource(commandSource);
     }
@@ -55,7 +57,9 @@ internal static class CommandHelpers
         ICommandSource commandSource,
         ICommand? theCommand)
     {
-        CriticalExecuteCommandSource(commandSource, theCommand);
+        CriticalExecuteCommandSource(
+            commandSource,
+            theCommand);
     }
 
     [SecurityCritical]
@@ -72,9 +76,13 @@ internal static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            if (routedCommand.CanExecute(commandParameter, target))
+            if (routedCommand.CanExecute(
+                commandParameter,
+                target))
             {
-                routedCommand.Execute(commandParameter, target);
+                routedCommand.Execute(
+                    commandParameter,
+                    target);
             }
         }
         else
@@ -101,9 +109,13 @@ internal static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            if (routedCommand.CanExecute(commandParameter, target))
+            if (routedCommand.CanExecute(
+                commandParameter,
+                target))
             {
-                routedCommand.Execute(commandParameter, target);
+                routedCommand.Execute(
+                    commandParameter,
+                    target);
             }
         }
         else

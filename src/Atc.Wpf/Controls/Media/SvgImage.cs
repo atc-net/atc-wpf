@@ -101,8 +101,7 @@ public sealed partial class SvgImage : Control
         }
     }
 
-    public void SetImage(
-        string svgFileName)
+    public void SetImage(string svgFileName)
     {
         loadImage = render =>
         {
@@ -125,8 +124,7 @@ public sealed partial class SvgImage : Control
         loadImage = null;
     }
 
-    public void SetImage(
-        Stream svgStream)
+    public void SetImage(Stream svgStream)
     {
         loadImage = render =>
         {
@@ -149,8 +147,7 @@ public sealed partial class SvgImage : Control
         loadImage = null;
     }
 
-    public void SetImage(
-        Drawing svgDrawing)
+    public void SetImage(Drawing svgDrawing)
     {
         drawing = svgDrawing;
         InvalidateVisual();
@@ -162,8 +159,7 @@ public sealed partial class SvgImage : Control
         ReCalculateImageSize();
     }
 
-    protected override void OnInitialized(
-        EventArgs e)
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
         if (loadImage is null)
@@ -196,16 +192,14 @@ public sealed partial class SvgImage : Control
         CustomBrushes = brushesFromSvg;
     }
 
-    protected override void OnRenderSizeChanged(
-        SizeChangedInfo sizeInfo)
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
         ReCalculateImageSize();
         InvalidateVisual();
     }
 
-    protected override void OnRender(
-        DrawingContext drawingContext)
+    protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);
 
@@ -232,8 +226,7 @@ public sealed partial class SvgImage : Control
         drawingContext.Pop();
     }
 
-    protected override Size MeasureOverride(
-        Size constraint)
+    protected override Size MeasureOverride(Size constraint)
     {
         var size = base.MeasureOverride(constraint);
         if (ControlSizeType == ControlSizeType.SizeToContent &&
@@ -256,8 +249,7 @@ public sealed partial class SvgImage : Control
         return size;
     }
 
-    protected override Size ArrangeOverride(
-        Size arrangeBounds)
+    protected override Size ArrangeOverride(Size arrangeBounds)
     {
         var size = base.ArrangeOverride(arrangeBounds);
         if (ControlSizeType == ControlSizeType.SizeToContent &&

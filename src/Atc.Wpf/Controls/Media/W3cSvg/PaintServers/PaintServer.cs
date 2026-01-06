@@ -7,7 +7,9 @@ internal class PaintServer
         Owner = owner;
     }
 
-    public PaintServer(PaintServerManager owner, Brush brush)
+    public PaintServer(
+        PaintServerManager owner,
+        Brush brush)
     {
         Owner = owner;
         Brush = brush;
@@ -17,13 +19,13 @@ internal class PaintServer
 
     protected Brush? Brush { get; set; }
 
-    public virtual Brush? GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
-    {
-        return Brush;
-    }
+    public virtual Brush? GetBrush(
+        double opacity,
+        Svg svg,
+        SvgRender svgRender,
+        Rect bounds)
+        => Brush;
 
     public Brush? GetBrush()
-    {
-        return Brush;
-    }
+        => Brush;
 }

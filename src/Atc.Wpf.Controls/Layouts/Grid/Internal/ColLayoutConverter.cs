@@ -103,23 +103,25 @@ internal sealed class ColLayoutConverter : TypeConverter
         throw new ArgumentException("CannotConvertType");
     }
 
-    private static string ToString(ColLayout th, CultureInfo cultureInfo)
+    private static string ToString(
+        ColLayout th,
+        CultureInfo cultureInfo)
     {
         var listSeparator = TokenizerHelper.GetNumericListSeparator(cultureInfo);
 
-        var sb = new StringBuilder();
-        sb.Append(th.Xs.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(th.Sm.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(th.Md.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(th.Lg.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(th.Xl.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(th.Xxl.ToString(cultureInfo));
-        return sb.ToString();
+        return new StringBuilder()
+            .Append(th.Xs.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(th.Sm.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(th.Md.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(th.Lg.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(th.Xl.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(th.Xxl.ToString(cultureInfo))
+            .ToString();
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]
@@ -128,7 +130,9 @@ internal sealed class ColLayoutConverter : TypeConverter
         string value,
         IFormatProvider cultureInfo)
     {
-        var th = new TokenizerHelper(value, cultureInfo);
+        var th = new TokenizerHelper(
+            value,
+            cultureInfo);
         var lengths = new int[6];
         var i = 0;
 
@@ -149,7 +153,9 @@ internal sealed class ColLayoutConverter : TypeConverter
             {
                 try
                 {
-                    lengths[i] = (int)TypeDescriptor.GetConverter(typeof(int)).ConvertFromString(currentToken)!;
+                    lengths[i] = (int)TypeDescriptor
+                        .GetConverter(typeof(int))
+                        .ConvertFromString(currentToken)!;
                 }
                 catch
                 {

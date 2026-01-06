@@ -111,13 +111,18 @@ public abstract class SvgIconBase : MarkupExtension
             case "file":
             case "https":
             case "http":
-                using (var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor))
+                using (var reader = new SvgFileReader(
+                    OverrideColor,
+                    OverrideStrokeColor))
                 {
                     return reader.Read(svgSource);
                 }
 
             case "pack":
-                var svgStreamInfo = svgSource.ToString().Contains("siteoforigin", StringComparison.OrdinalIgnoreCase)
+                var svgSourceString = svgSource.ToString();
+                var svgStreamInfo = svgSourceString.Contains(
+                        "siteoforigin",
+                        StringComparison.OrdinalIgnoreCase)
                     ? Application.GetRemoteStream(svgSource)
                     : Application.GetResourceStream(svgSource);
 
@@ -126,13 +131,20 @@ public abstract class SvgIconBase : MarkupExtension
                 {
                     var fileExt = Path.GetExtension(svgSource.ToString());
                     var isCompressed = !string.IsNullOrWhiteSpace(fileExt) &&
-                                       string.Equals(fileExt, ".svgz", StringComparison.OrdinalIgnoreCase);
+                                       string.Equals(
+                                           fileExt,
+                                           ".svgz",
+                                           StringComparison.OrdinalIgnoreCase);
 
                     if (isCompressed)
                     {
                         using var stream = svgStream;
-                        using var zipStream = new GZipStream(svgStream, CompressionMode.Decompress);
-                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
+                        using var zipStream = new GZipStream(
+                            svgStream,
+                            CompressionMode.Decompress);
+                        using var reader = new SvgFileReader(
+                            OverrideColor,
+                            OverrideStrokeColor);
                         var drawGroup = reader.Read(zipStream);
                         if (drawGroup is not null)
                         {
@@ -142,7 +154,9 @@ public abstract class SvgIconBase : MarkupExtension
                     else
                     {
                         using var stream = svgStream;
-                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
+                        using var reader = new SvgFileReader(
+                            OverrideColor,
+                            OverrideStrokeColor);
                         var drawGroup = reader.Read(svgStream);
                         if (drawGroup is not null)
                         {
@@ -153,23 +167,51 @@ public abstract class SvgIconBase : MarkupExtension
 
                 break;
             case "data":
-                var sourceData = svgSource.OriginalString.Replace(" ", string.Empty, StringComparison.Ordinal);
-                var nColon = sourceData.IndexOf(':', StringComparison.OrdinalIgnoreCase);
-                var nSemiColon = sourceData.IndexOf(';', StringComparison.OrdinalIgnoreCase);
-                var nComma = sourceData.IndexOf(',', StringComparison.OrdinalIgnoreCase);
-                var sMimeType = sourceData.Substring(nColon + 1, nSemiColon - nColon - 1);
-                var sEncoding = sourceData.Substring(nSemiColon + 1, nComma - nSemiColon - 1);
-                if (string.Equals(sMimeType.Trim(), "image/svg+xml", StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(sEncoding.Trim(), "base64", StringComparison.OrdinalIgnoreCase))
+                var sourceData = svgSource.OriginalString.Replace(
+                    " ",
+                    string.Empty,
+                    StringComparison.Ordinal);
+                var nColon = sourceData.IndexOf(
+                    ':',
+                    StringComparison.OrdinalIgnoreCase);
+                var nSemiColon = sourceData.IndexOf(
+                    ';',
+                    StringComparison.OrdinalIgnoreCase);
+                var nComma = sourceData.IndexOf(
+                    ',',
+                    StringComparison.OrdinalIgnoreCase);
+                var sMimeType = sourceData.Substring(
+                    nColon + 1,
+                    nSemiColon - nColon - 1);
+                var sEncoding = sourceData.Substring(
+                    nSemiColon + 1,
+                    nComma - nSemiColon - 1);
+                if (string.Equals(
+                        sMimeType.Trim(),
+                        "image/svg+xml",
+                        StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(
+                        sEncoding.Trim(),
+                        "base64",
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     var sContent = SvgFileReader.RemoveWhitespace(sourceData.Substring(nComma + 1));
-                    var imageBytes = Convert.FromBase64CharArray(sContent.ToCharArray(), 0, sContent.Length);
-                    var isGZipped = sContent.StartsWith(SvgFileReader.GZipSignature, StringComparison.Ordinal);
+                    var imageBytes = Convert.FromBase64CharArray(
+                        sContent.ToCharArray(),
+                        0,
+                        sContent.Length);
+                    var isGZipped = sContent.StartsWith(
+                        SvgFileReader.GZipSignature,
+                        StringComparison.Ordinal);
                     if (isGZipped)
                     {
                         using var stream = new MemoryStream(imageBytes);
-                        using var zipStream = new GZipStream(stream, CompressionMode.Decompress);
-                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
+                        using var zipStream = new GZipStream(
+                            stream,
+                            CompressionMode.Decompress);
+                        using var reader = new SvgFileReader(
+                            OverrideColor,
+                            OverrideStrokeColor);
                         var drawGroup = reader.Read(zipStream);
                         if (drawGroup is not null)
                         {
@@ -179,7 +221,9 @@ public abstract class SvgIconBase : MarkupExtension
                     else
                     {
                         using var stream = new MemoryStream(imageBytes);
-                        using var reader = new SvgFileReader(OverrideColor, OverrideStrokeColor);
+                        using var reader = new SvgFileReader(
+                            OverrideColor,
+                            OverrideStrokeColor);
                         var drawGroup = reader.Read(stream);
                         if (drawGroup is not null)
                         {
@@ -229,6 +273,7 @@ public abstract class SvgIconBase : MarkupExtension
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected static Assembly? GetEntryAssembly()
     {
         var xDesProc = "XDesProc"; // WPF designer process
@@ -239,7 +284,10 @@ public abstract class SvgIconBase : MarkupExtension
             if (asm is not null)
             {
                 var assemblyName = asm.GetName().Name;
-                if (string.Equals(assemblyName, xDesProc, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(
+                        assemblyName,
+                        xDesProc,
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     asm = null;
                 }
@@ -251,8 +299,13 @@ public abstract class SvgIconBase : MarkupExtension
                         from assembly in AppDomain.CurrentDomain.GetAssemblies()
                         where !assembly.IsDynamic
                         let assemblyName = Path.GetFileName(assembly.Location).Trim()
-                        where assemblyName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)
-                              && !string.Equals(assemblyName, "XDesProc.exe", StringComparison.OrdinalIgnoreCase)
+                        where assemblyName.EndsWith(
+                                  ".exe",
+                                  StringComparison.OrdinalIgnoreCase)
+                              && !string.Equals(
+                                  assemblyName,
+                                  "XDesProc.exe",
+                                  StringComparison.OrdinalIgnoreCase)
                         select assembly
                     )
                     .FirstOrDefault();
@@ -263,7 +316,10 @@ public abstract class SvgIconBase : MarkupExtension
                     if (asm is not null)
                     {
                         var assemblyName = asm.GetName().Name;
-                        if (string.Equals(assemblyName, xDesProc, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(
+                                assemblyName,
+                                xDesProc,
+                                StringComparison.OrdinalIgnoreCase))
                         {
                             asm = null;
                         }
@@ -276,8 +332,13 @@ public abstract class SvgIconBase : MarkupExtension
             asm ??= (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                     where !assembly.IsDynamic
                     let assemblyName = Path.GetFileName(assembly.Location).Trim()
-                    where assemblyName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)
-                          && !string.Equals(assemblyName, "XDesProc.exe", StringComparison.OrdinalIgnoreCase)
+                    where assemblyName.EndsWith(
+                              ".exe",
+                              StringComparison.OrdinalIgnoreCase)
+                          && !string.Equals(
+                              assemblyName,
+                              "XDesProc.exe",
+                              StringComparison.OrdinalIgnoreCase)
                     select assembly
                 ).FirstOrDefault();
 
@@ -290,16 +351,13 @@ public abstract class SvgIconBase : MarkupExtension
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     protected static Assembly? GetExecutingAssembly()
     {
-        Assembly? asm;
         try
         {
-            asm = Assembly.GetExecutingAssembly();
+            return Assembly.GetExecutingAssembly();
         }
         catch
         {
-            asm = Assembly.GetEntryAssembly();
+            return Assembly.GetEntryAssembly();
         }
-
-        return asm;
     }
 }

@@ -10,22 +10,42 @@ public abstract class MarkupValueConverterBase : MarkupExtension, IValueConverte
 {
     /// <inheritdoc />
     public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return this;
-    }
+        => this;
 
     /// <summary>
     /// Converts a value. Override this method to implement conversion logic.
     /// </summary>
-    protected abstract object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture);
+    /// <param name="value">The value to convert.</param>
+    /// <param name="targetType">The type of the binding target property.</param>
+    /// <param name="parameter">The converter parameter to use.</param>
+    /// <param name="culture">The culture to use in the converter.</param>
+    /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+    protected abstract object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture);
 
     /// <summary>
     /// Converts a value back. Override this method to implement reverse conversion logic.
     /// </summary>
-    protected abstract object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture);
+    /// <param name="value">The value to convert back.</param>
+    /// <param name="targetType">The type to convert to.</param>
+    /// <param name="parameter">The converter parameter to use.</param>
+    /// <param name="culture">The culture to use in the converter.</param>
+    /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+    protected abstract object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture);
 
     /// <inheritdoc />
-    object? IValueConverter.Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    object? IValueConverter.Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         try
         {
@@ -39,7 +59,11 @@ public abstract class MarkupValueConverterBase : MarkupExtension, IValueConverte
     }
 
     /// <inheritdoc />
-    object? IValueConverter.ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    object? IValueConverter.ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         try
         {

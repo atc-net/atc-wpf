@@ -15,8 +15,7 @@ public sealed class ColLayout : MarkupExtension
     {
     }
 
-    public ColLayout(
-        int uniformWidth)
+    public ColLayout(int uniformWidth)
     {
         Xs = uniformWidth;
         Sm = uniformWidth;
@@ -54,10 +53,8 @@ public sealed class ColLayout : MarkupExtension
 
     public int Xxl { get; set; } = 2;
 
-    public override object ProvideValue(
-        IServiceProvider serviceProvider)
-    {
-        return new ColLayout
+    public override object ProvideValue(IServiceProvider serviceProvider)
+        => new ColLayout
         {
             Xs = Xs,
             Sm = Sm,
@@ -66,10 +63,8 @@ public sealed class ColLayout : MarkupExtension
             Xl = Xl,
             Xxl = Xxl,
         };
-    }
 
-    public static ColLayoutType GetLayoutStatus(
-        double width)
+    public static ColLayoutType GetLayoutStatus(double width)
     {
         if (width < MdMaxWidth)
         {
@@ -98,18 +93,18 @@ public sealed class ColLayout : MarkupExtension
         var cultureInfo = CultureInfo.CurrentCulture;
         var listSeparator = TokenizerHelper.GetNumericListSeparator(cultureInfo);
 
-        var sb = new StringBuilder();
-        sb.Append(Xs.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(Sm.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(Md.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(Lg.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(Xl.ToString(cultureInfo));
-        sb.Append(listSeparator);
-        sb.Append(Xxl.ToString(cultureInfo));
-        return sb.ToString();
+        return new StringBuilder()
+            .Append(Xs.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(Sm.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(Md.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(Lg.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(Xl.ToString(cultureInfo))
+            .Append(listSeparator)
+            .Append(Xxl.ToString(cultureInfo))
+            .ToString();
     }
 }

@@ -47,9 +47,11 @@ public partial class ApplicationMonitorView : IDisposable
 
     public ApplicationMonitorViewModel ApplicationMonitorViewModel { get; set; }
 
-    public IRelayCommand AddOneCommand => new RelayCommand(AddOneCommandHandler);
+    public IRelayCommand AddOneCommand
+        => new RelayCommand(AddOneCommandHandler);
 
-    public IRelayCommand AddManyCommand => new RelayCommand(AddManyCommandHandler);
+    public IRelayCommand AddManyCommand
+        => new RelayCommand(AddManyCommandHandler);
 
     private static void AddOneCommandHandler()
         => LogSimulator.SendRandomLogMessage();
@@ -62,7 +64,9 @@ public partial class ApplicationMonitorView : IDisposable
         }
     }
 
-    private static void TimerTick(object? sender, EventArgs e)
+    private static void TimerTick(
+        object? sender,
+        EventArgs e)
         => LogSimulator.SendRandomLogMessage();
 
     public void Dispose()
@@ -71,8 +75,7 @@ public partial class ApplicationMonitorView : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(
-        bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (!disposing)
         {

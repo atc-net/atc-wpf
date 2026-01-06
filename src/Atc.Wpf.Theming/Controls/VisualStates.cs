@@ -63,30 +63,45 @@ namespace Atc.Wpf.Theming.Controls
 
         [SuppressMessage("Minor Code Smell", "S3236:Remove this argument from the method call; it hides the caller information", Justification = "OK.")]
         [SuppressMessage("Minor Code Smell", "S3267:Loops should be simplified with \"LINQ\" expressions", Justification = "OK.")]
-        public static void GoToState(Control control, bool useTransitions, params string[] stateNames)
+        public static void GoToState(
+            Control control,
+            bool useTransitions,
+            params string[] stateNames)
         {
-            Debug.Assert(control is not null, "control should not be null!");
-            Debug.Assert(stateNames.Length > 0, "stateNames should not be empty!");
+            Debug.Assert(
+                control is not null,
+                "control should not be null!");
+            Debug.Assert(
+                stateNames.Length > 0,
+                "stateNames should not be empty!");
 
             foreach (var name in stateNames)
             {
-                if (VisualStateManager.GoToState(control, name, useTransitions))
+                if (VisualStateManager.GoToState(
+                        control,
+                        name,
+                        useTransitions))
                 {
                     break;
                 }
             }
         }
 
-        public static FrameworkElement? GetImplementationRoot(DependencyObject? dependencyObject)
+        public static FrameworkElement? GetImplementationRoot(
+            DependencyObject? dependencyObject)
         {
             ArgumentNullException.ThrowIfNull(dependencyObject);
 
             return VisualTreeHelper.GetChildrenCount(dependencyObject) == 1
-                ? VisualTreeHelper.GetChild(dependencyObject, 0) as FrameworkElement
+                ? VisualTreeHelper.GetChild(
+                      dependencyObject,
+                      0) as FrameworkElement
                 : null;
         }
 
-        public static VisualStateGroup? TryGetVisualStateGroup(DependencyObject? dependencyObject, string groupName)
+        public static VisualStateGroup? TryGetVisualStateGroup(
+            DependencyObject? dependencyObject,
+            string groupName)
         {
             var root = GetImplementationRoot(dependencyObject);
 
@@ -94,7 +109,10 @@ namespace Atc.Wpf.Theming.Controls
                 ? null
                 : VisualStateManager.GetVisualStateGroups(root)?
                     .OfType<VisualStateGroup>()
-                    .FirstOrDefault(group => string.Equals(groupName, group.Name, StringComparison.Ordinal));
+                    .FirstOrDefault(group => string.Equals(
+                        groupName,
+                        group.Name,
+                        StringComparison.Ordinal));
         }
     }
 }

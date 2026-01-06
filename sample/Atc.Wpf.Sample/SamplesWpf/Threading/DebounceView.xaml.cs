@@ -24,7 +24,9 @@ public partial class DebounceView
         var delayMs = NumberHelper.ParseToInt(s);
 
         // Fire after [delayMs]ms after last keypress
-        debounceTimer.Debounce(delayMs, _ => ExecuteSearch());
+        debounceTimer.Debounce(
+            delayMs,
+            _ => ExecuteSearch());
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK")]
@@ -42,7 +44,9 @@ public partial class DebounceView
             {
                 try
                 {
-                    await vm.Search(searchBox.Text).ConfigureAwait(false);
+                    await vm
+                        .Search(searchBox.Text)
+                        .ConfigureAwait(false);
                 }
                 catch
                 {

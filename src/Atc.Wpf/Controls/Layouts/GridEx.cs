@@ -102,7 +102,8 @@ public sealed partial class GridEx : Grid
     /// </summary>
     /// <param name="lengths">The string of lengths, separated by commas.</param>
     /// <returns>A list of GridLengths.</returns>
-    private static IEnumerable<GridLength> StringLengthsToGridLengths(string lengths)
+    private static IEnumerable<GridLength> StringLengthsToGridLengths(
+        string lengths)
     {
         // Create the list of GridLengths.
         var gridLengths = new List<GridLength>();

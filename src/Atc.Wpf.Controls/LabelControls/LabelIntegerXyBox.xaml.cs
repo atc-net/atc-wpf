@@ -53,22 +53,26 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
     }
 
     public override bool IsValid()
-    {
-        return string.IsNullOrEmpty(ValidationText);
-    }
+        => string.IsNullOrEmpty(ValidationText);
 
     private void OnValueXChanged(
         object sender,
         RoutedPropertyChangedEventArgs<int> e)
     {
-        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(e.OldValue, e.NewValue, ValueXChangedEvent));
+        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(
+            e.OldValue,
+            e.NewValue,
+            ValueXChangedEvent));
     }
 
     private void OnValueYChanged(
         object sender,
         RoutedPropertyChangedEventArgs<int> e)
     {
-        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(e.OldValue, e.NewValue, ValueYChangedEvent));
+        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(
+            e.OldValue,
+            e.NewValue,
+            ValueYChangedEvent));
     }
 
     private static void OnValueXLostFocus(

@@ -9,25 +9,35 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
 
     private LabelInputFormPanel formPanel = new();
 
-    public IRelayCommand ShowInputForm1ColumnCommand => new RelayCommand(ShowInputForm1ColumnCommandHandler);
+    public IRelayCommand ShowInputForm1ColumnCommand
+        => new RelayCommand(ShowInputForm1ColumnCommandHandler);
 
-    public IRelayCommand ShowInputForm2ColumnsCommand => new RelayCommand(ShowInputForm2ColumnsCommandHandler);
+    public IRelayCommand ShowInputForm2ColumnsCommand
+        => new RelayCommand(ShowInputForm2ColumnsCommandHandler);
 
-    public IRelayCommand ShowInputForm3ColumnsCommand => new RelayCommand(ShowInputForm3ColumnsCommandHandler);
+    public IRelayCommand ShowInputForm3ColumnsCommand
+        => new RelayCommand(ShowInputForm3ColumnsCommandHandler);
 
-    public IRelayCommand ShowInputForm4ColumnsCommand => new RelayCommand(ShowInputForm4ColumnsCommandHandler);
+    public IRelayCommand ShowInputForm4ColumnsCommand
+        => new RelayCommand(ShowInputForm4ColumnsCommandHandler);
 
-    public IRelayCommand ShowInputFormAddressWithDataCommands => new RelayCommand(ShowInputFormAddressWithDataCommandHandler);
+    public IRelayCommand ShowInputFormAddressWithDataCommands
+        => new RelayCommand(ShowInputFormAddressWithDataCommandHandler);
 
-    public IRelayCommand ShowInputFormAddressWithoutDataCommands => new RelayCommand(ShowInputFormAddressWithoutDataCommandHandler);
+    public IRelayCommand ShowInputFormAddressWithoutDataCommands
+        => new RelayCommand(ShowInputFormAddressWithoutDataCommandHandler);
 
-    public IRelayCommand ShowInputFormPersonWithDataCommands => new RelayCommand(ShowInputFormPersonWithDataCommandHandler);
+    public IRelayCommand ShowInputFormPersonWithDataCommands
+        => new RelayCommand(ShowInputFormPersonWithDataCommandHandler);
 
-    public IRelayCommand ShowInputFormPersonWithoutDataCommands => new RelayCommand(ShowInputFormPersonWithoutDataCommandHandler);
+    public IRelayCommand ShowInputFormPersonWithoutDataCommands
+        => new RelayCommand(ShowInputFormPersonWithoutDataCommandHandler);
 
-    public IRelayCommand ShowInputFormAccountWithDataCommands => new RelayCommand(ShowInputFormAccountWithDataCommandHandler);
+    public IRelayCommand ShowInputFormAccountWithDataCommands
+        => new RelayCommand(ShowInputFormAccountWithDataCommandHandler);
 
-    public IRelayCommand ShowInputFormAccountWithoutDataCommands => new RelayCommand(ShowInputFormAccountWithoutDataCommandHandler);
+    public IRelayCommand ShowInputFormAccountWithoutDataCommands
+        => new RelayCommand(ShowInputFormAccountWithoutDataCommandHandler);
 
     public LabelInputFormPanel FormPanel
     {
@@ -213,9 +223,14 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
 
     private void ShowInputFormAccountWithDataCommandHandler()
     {
+        var createdDate = DateTime
+            .Now
+            .AddYears(-2)
+            .AddDays(3);
+
         var account = new Account(
             accountNumber: "6545643218",
-            createdDate: DateTime.Now.AddYears(-2).AddDays(3),
+            createdDate: createdDate,
             primaryContactPerson: new Person(
                 firstName: "John",
                 lastName: "Doe",
@@ -241,9 +256,14 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
 
     private void ShowInputFormAccountWithoutDataCommandHandler()
     {
+        var createdDate = DateTime
+            .Now
+            .AddYears(-2)
+            .AddDays(3);
+
         var account = new Account(
             accountNumber: string.Empty,
-            createdDate: DateTime.Now.AddYears(-2).AddDays(3),
+            createdDate: createdDate,
             primaryContactPerson: new Person(
                 firstName: string.Empty,
                 lastName: string.Empty,
@@ -267,24 +287,41 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
         FormPanel = labelInputFormPanel;
     }
 
-    private static List<ILabelControlBase> CreateLabelControlsColumn1()
-        =>
+    private static List<ILabelControlBase> CreateLabelControlsColumn1() =>
         [
-            new LabelTextBox { LabelText = "FirstName", IsMandatory = true, MinLength = 2 },
-            new LabelTextBox { LabelText = "LastName", IsMandatory = true, MinLength = 2 },
+            new LabelTextBox
+            {
+                LabelText = "FirstName",
+                IsMandatory = true,
+                MinLength = 2,
+            },
+            new LabelTextBox
+            {
+                LabelText = "LastName",
+                IsMandatory = true,
+                MinLength = 2,
+            },
         ];
 
-    private static List<ILabelControlBase> CreateLabelControlsColumn2()
-        =>
+    private static List<ILabelControlBase> CreateLabelControlsColumn2() =>
         [
-            new LabelIntegerBox { LabelText = "Age", Minimum = 0 },
-            new LabelTextBox { LabelText = "Note" },
+            new LabelIntegerBox
+            {
+                LabelText = "Age",
+                Minimum = 0,
+            },
+            new LabelTextBox
+            {
+                LabelText = "Note",
+            },
         ];
 
-    private static List<ILabelControlBase> CreateLabelControlsColumn3()
-        =>
+    private static List<ILabelControlBase> CreateLabelControlsColumn3() =>
         [
-            new LabelCheckBox { LabelText = "Use Foo" },
+            new LabelCheckBox
+            {
+                LabelText = "Use Foo",
+            },
             new LabelComboBox
             {
                 LabelText = "Items",
@@ -299,10 +336,15 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
             },
         ];
 
-    private static List<ILabelControlBase> CreateLabelControlsColumn4()
-        =>
+    private static List<ILabelControlBase> CreateLabelControlsColumn4() =>
         [
-            new LabelFilePicker { LabelText = "My file" },
-            new LabelDirectoryPicker { LabelText = "My directory" },
+            new LabelFilePicker
+            {
+                LabelText = "My file",
+            },
+            new LabelDirectoryPicker
+            {
+                LabelText = "My directory",
+            },
         ];
 }

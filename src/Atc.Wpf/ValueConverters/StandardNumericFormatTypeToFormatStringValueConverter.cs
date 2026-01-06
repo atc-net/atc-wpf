@@ -9,7 +9,11 @@ public sealed class StandardNumericFormatTypeToFormatStringValueConverter : IVal
     public static readonly StandardNumericFormatTypeToFormatStringValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(value);
 

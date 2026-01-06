@@ -5,8 +5,7 @@ public sealed class ToastNotificationTemplateSelector : DataTemplateSelector
     private DataTemplate? defaultStringTemplate;
     private DataTemplate? defaultToastNotificationTemplate;
 
-    private void GetTemplatesFromResources(
-        FrameworkElement? container)
+    private void GetTemplatesFromResources(FrameworkElement? container)
     {
         defaultStringTemplate = container?.FindResource("DefaultStringTemplate") as DataTemplate;
         defaultToastNotificationTemplate = container?.FindResource("DefaultToastNotificationTemplate") as DataTemplate;
@@ -26,7 +25,9 @@ public sealed class ToastNotificationTemplateSelector : DataTemplateSelector
         {
             string => defaultStringTemplate,
             ToastNotificationContent => defaultToastNotificationTemplate,
-            _ => base.SelectTemplate(item, container),
+            _ => base.SelectTemplate(
+                item,
+                container),
         };
     }
 }

@@ -24,7 +24,9 @@ internal sealed class XmlTokenizer
         return tokenizer.Tokenize(input, ref tokenizerMode);
     }
 
-    public List<XmlToken> Tokenize(string inputValue, ref XmlTokenizerMode tokenizerMode)
+    public List<XmlToken> Tokenize(
+        string inputValue,
+        ref XmlTokenizerMode tokenizerMode)
     {
         input = inputValue;
         mode = tokenizerMode;
@@ -85,7 +87,9 @@ internal sealed class XmlTokenizer
         return token;
     }
 
-    private XmlToken TokenizeName(XmlTokenKind kind, XmlTokenizerMode nextMode)
+    private XmlToken TokenizeName(
+        XmlTokenKind kind,
+        XmlTokenizerMode nextMode)
     {
         int i;
         for (i = position; i < input.Length; i++)
@@ -176,7 +180,10 @@ internal sealed class XmlTokenizer
         };
     }
 
-    private XmlToken TokenizeSimple(string text, XmlTokenKind kind, XmlTokenizerMode nextMode)
+    private XmlToken TokenizeSimple(
+        string text,
+        XmlTokenKind kind,
+        XmlTokenizerMode nextMode)
     {
         var token = new XmlToken(kind, text.Length);
         position += text.Length;

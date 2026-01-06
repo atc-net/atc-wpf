@@ -22,8 +22,7 @@ public abstract class SliderBase : UserControl
         set => adorner.VerticalPercent = value;
     }
 
-    protected override void OnMouseMove(
-        MouseEventArgs e)
+    protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -36,13 +35,13 @@ public abstract class SliderBase : UserControl
 
         Mouse.Capture(this);
 
-        UpdateAdorner(
-            e.GetPosition(this)
-                .Clamp(this));
+        var mousePosition = e
+            .GetPosition(this)
+            .Clamp(this);
+        UpdateAdorner(mousePosition);
     }
 
-    protected override void OnMouseUp(
-        MouseButtonEventArgs e)
+    protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -50,18 +49,17 @@ public abstract class SliderBase : UserControl
 
         Mouse.Capture(element: null);
 
-        UpdateAdorner(
-            e.GetPosition(this)
-                .Clamp(this));
+        var mousePosition = e
+            .GetPosition(this)
+            .Clamp(this);
+        UpdateAdorner(mousePosition);
     }
 
-    protected virtual void OnAdornerPositionChanged(
-        double verticalPercent)
+    protected virtual void OnAdornerPositionChanged(double verticalPercent)
     {
     }
 
-    private void UpdateAdorner(
-        Point mousePosition)
+    private void UpdateAdorner(Point mousePosition)
     {
         var verticalPercent = mousePosition.Y / ActualHeight;
         adorner.VerticalPercent = verticalPercent;

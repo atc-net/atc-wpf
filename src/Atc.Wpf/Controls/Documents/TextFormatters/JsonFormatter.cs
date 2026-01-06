@@ -22,8 +22,7 @@ public sealed class JsonFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    public string GetText(
-        FlowDocument document)
+    public string GetText(FlowDocument document)
     {
         ArgumentNullException.ThrowIfNull(document);
 
@@ -100,8 +99,7 @@ public sealed class JsonFormatter : ITextFormatter
         return document;
     }
 
-    private static void TrimTrailingComma(
-        InlineCollection inlines)
+    private static void TrimTrailingComma(InlineCollection inlines)
     {
         if (inlines.LastInline is Run run &&
             run.Text.EndsWith(",\n", StringComparison.Ordinal))

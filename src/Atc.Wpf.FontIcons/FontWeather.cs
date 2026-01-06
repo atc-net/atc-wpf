@@ -181,7 +181,8 @@ public sealed class FontWeather : TextBlock, ISpinable, IRotatable, IFlippable
 
     [SuppressMessage("Major Code Smell", "S3358:Ternary operators should not be nested", Justification = "OK.")]
     private static object CoerceRotation(
-        DependencyObject d, object value)
+        DependencyObject d,
+        object value)
     {
         var val = (double)value;
         return val < 0

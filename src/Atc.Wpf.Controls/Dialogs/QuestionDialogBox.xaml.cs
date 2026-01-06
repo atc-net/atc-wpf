@@ -67,8 +67,7 @@ public partial class QuestionDialogBox
 
     public ContentControl ContentControl { get; set; } = new();
 
-    private void InitializeDialogBox(
-        string contentText)
+    private void InitializeDialogBox(string contentText)
     {
         InitializeComponent();
 
@@ -77,8 +76,7 @@ public partial class QuestionDialogBox
         PopulateContentControl(contentText);
     }
 
-    private void PopulateContentControl(
-        string contentText)
+    private void PopulateContentControl(string contentText)
     {
         var stackPanel = new StackPanel
         {

@@ -13,17 +13,27 @@ public sealed class LabelMixBindingsViewModel : ViewModelBase
 
     public LabelMixBindingsViewModel()
     {
-        FieldItems2.Add("Key1", "Value 1");
-        FieldItems2.Add("Key2", "Value 2");
-        FieldItems2.Add("Key3", "Value 3");
-        FieldItems2.Add("Key4", "Value 4");
+        FieldItems2.Add(
+            "Key1",
+            "Value 1");
+        FieldItems2.Add(
+            "Key2",
+            "Value 2");
+        FieldItems2.Add(
+            "Key3",
+            "Value 3");
+        FieldItems2.Add(
+            "Key4",
+            "Value 4");
 
         FieldItems2.CollectionChanged += FieldItems2OnCollectionChanged;
     }
 
     public IRelayCommand AddCommand => new RelayCommand(AddCommandHandler);
 
-    public IRelayCommand GoCommand => new RelayCommand(GoCommandHandler, () => CanExecuteGo);
+    public IRelayCommand GoCommand => new RelayCommand(
+        GoCommandHandler,
+        () => CanExecuteGo);
 
     public bool FieldBool1
     {
@@ -123,11 +133,16 @@ public sealed class LabelMixBindingsViewModel : ViewModelBase
     private void AddCommandHandler()
     {
         var dateTimeNow = DateTime.Now;
-        FieldItems2.Add($"Key{dateTimeNow.Ticks}", $"Value {dateTimeNow.Ticks}");
+        FieldItems2.Add(
+            $"Key{dateTimeNow.Ticks}",
+            $"Value {dateTimeNow.Ticks}");
     }
 
     private void GoCommandHandler()
     {
-        MessageBox.Show("Go", "Hello", MessageBoxButton.OK);
+        MessageBox.Show(
+            "Go",
+            "Hello",
+            MessageBoxButton.OK);
     }
 }

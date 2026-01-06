@@ -5,8 +5,12 @@ internal sealed class RectangleShape : Shape
     private static Fill? defaultFill;
 
     [SuppressMessage("Major Code Smell", "S3010:Static fields should not be updated in constructors", Justification = "OK.")]
-    public RectangleShape(Svg svg, XmlNode node)
-        : base(svg, node)
+    public RectangleShape(
+        Svg svg,
+        XmlNode node)
+        : base(
+            svg,
+            node)
     {
         ArgumentNullException.ThrowIfNull(svg);
 
@@ -30,7 +34,10 @@ internal sealed class RectangleShape : Shape
 
     public override Fill? Fill => base.Fill ?? defaultFill;
 
-    protected override void Parse(Svg svg, string name, string value)
+    protected override void Parse(
+        Svg svg,
+        string name,
+        string value)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(name);
@@ -61,10 +68,14 @@ internal sealed class RectangleShape : Shape
                 Ry = SvgXmlUtil.GetDoubleValue(value, svg.Size.Height);
                 return;
             default:
-                base.Parse(svg, name, value);
+                base.Parse(
+                    svg,
+                    name,
+                    value);
                 break;
         }
     }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}";
 }

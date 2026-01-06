@@ -15,8 +15,7 @@ public sealed class CSharpFormatter : ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    public string GetText(
-        FlowDocument document)
+    public string GetText(FlowDocument document)
     {
         ArgumentNullException.ThrowIfNull(document);
 

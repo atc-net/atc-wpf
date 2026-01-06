@@ -5,7 +5,9 @@ internal sealed class SvgFileReader : IDisposable
 {
     public const string GZipSignature = "H4sI"; // (the Base64 encoded version "1F 8B 08")
 
-    public SvgFileReader(Color? overrideColor, Color? overrideStrokeColor)
+    public SvgFileReader(
+        Color? overrideColor,
+        Color? overrideStrokeColor)
     {
         OverrideColor = overrideColor;
         OverrideStrokeColor = overrideStrokeColor;

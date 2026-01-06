@@ -26,8 +26,12 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
             Items1000.Add($"Item{i}", $"Item{i}");
         }
 
-        MyLabel3HorizontalSelectedKey = Items.First().Key;
-        MyLabel3VerticalSelectedKey = Items.Last().Key;
+        MyLabel3HorizontalSelectedKey = Items
+            .First()
+            .Key;
+        MyLabel3VerticalSelectedKey = Items
+            .Last()
+            .Key;
     }
 
     public IDictionary<string, string> Items
@@ -70,9 +74,12 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected virtual void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(
+            this,
+            new PropertyChangedEventArgs(propertyName));
     }
 
     private void MyLabel3HorizontalOnSelectorChanged(
@@ -84,7 +91,7 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
             return;
         }
 
-        MessageBox.Show(
+        _ = MessageBox.Show(
             $"{e.Identifier}-Horizontal # From: {e.OldValue}, To: {e.NewValue}",
             "Event: MyLabel3HorizontalOnSelectorChanged");
     }
@@ -98,7 +105,7 @@ public partial class LabelComboBoxView : INotifyPropertyChanged
             return;
         }
 
-        MessageBox.Show(
+        _ = MessageBox.Show(
             $"{e.Identifier}-Vertical # From: {e.OldValue}, To: {e.NewValue}",
             "Event: MyLabel3VerticalOnSelectorChanged");
     }

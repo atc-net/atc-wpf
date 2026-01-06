@@ -67,8 +67,7 @@ public partial class ConnectivityButton
         ThemeManager.Current.ThemeChanged += OnThemeChanged;
     }
 
-    protected override void OnInitialized(
-        EventArgs e)
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
 

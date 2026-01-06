@@ -8,16 +8,17 @@ namespace Atc.Wpf.ValueConverters;
 /// <para>One-way binding only. ConvertBack is not supported because the original null state cannot be reconstructed.</para>
 /// </remarks>
 [ValueConversion(typeof(object), typeof(object))]
-
 public sealed class NullCheckValueConverter : IValueConverter
 {
     public static readonly NullCheckValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value ?? parameter;
-    }
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value ?? parameter;
 
     /// <inheritdoc />
     public object ConvertBack(

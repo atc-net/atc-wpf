@@ -97,8 +97,7 @@ public sealed class ResxExtension : ManagedMarkupExtension
     /// Update the ResxExtension target with the given key.
     /// </summary>
     /// <param name="key">The key.</param>
-    public static void UpdateTarget(
-        string key)
+    public static void UpdateTarget(string key)
     {
         foreach (var target in MarkupManager.ActiveExtensions
                      .Cast<ResxExtension>()
@@ -159,8 +158,7 @@ public sealed class ResxExtension : ManagedMarkupExtension
     /// <summary>
     /// Return the default value for the property.
     /// </summary>
-    private object GetDefaultValue(
-        string key)
+    private object GetDefaultValue(string key)
     {
         object? result = DefaultValue;
         var targetType = TargetPropertyType;

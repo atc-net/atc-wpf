@@ -14,12 +14,26 @@ public abstract class Code : Source
     protected Code()
     {
         // generate the keyword and preprocessor regexes from the keyword lists
-        var r = new Regex(@"\w+|-\w+|#\w+|@@\w+|#(?:\\(?:s|w)(?:\*|\+)?\w+)+|@\\w\*+", RegexOptions.None, TimeSpan.FromSeconds(5));
-        var regKeyword = r.Replace(Keywords, @"(?<=^|\W)$0(?=\W)");
-        var regPreproc = r.Replace(Preprocessors, @"(?<=^|\s)$0(?=\s|$)");
-        r = new Regex(@" +", RegexOptions.None, TimeSpan.FromSeconds(5));
-        regKeyword = r.Replace(regKeyword, @"|");
-        regPreproc = r.Replace(regPreproc, @"|");
+        var r = new Regex(
+            @"\w+|-\w+|#\w+|@@\w+|#(?:\\(?:s|w)(?:\*|\+)?\w+)+|@\\w\*+",
+            RegexOptions.None,
+            TimeSpan.FromSeconds(5));
+        var regKeyword = r.Replace(
+            Keywords,
+            @"(?<=^|\W)$0(?=\W)");
+        var regPreproc = r.Replace(
+            Preprocessors,
+            @"(?<=^|\s)$0(?=\s|$)");
+        r = new Regex(
+            @" +",
+            RegexOptions.None,
+            TimeSpan.FromSeconds(5));
+        regKeyword = r.Replace(
+            regKeyword,
+            @"|");
+        regPreproc = r.Replace(
+            regPreproc,
+            @"|");
 
         if (regPreproc.Length == 0)
         {
@@ -47,7 +61,10 @@ public abstract class Code : Source
         var caseInsensitive = CaseSensitive
             ? RegexOptions.None
             : RegexOptions.IgnoreCase;
-        CodeRegex = new Regex(regAll.ToString(), RegexOptions.Singleline | caseInsensitive, TimeSpan.FromSeconds(5));
+        CodeRegex = new Regex(
+            regAll.ToString(),
+            RegexOptions.Singleline | caseInsensitive,
+            TimeSpan.FromSeconds(5));
         CodeParagraphGlobal = new List<Run>();
     }
 
@@ -101,7 +118,9 @@ public abstract class Code : Source
     /// <param name="themeMode">The ThemeMode.</param>
     /// <returns>A string containing the HTML code fragment.</returns>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    protected override string MatchEval(Match match, ThemeMode themeMode)
+    protected override string MatchEval(
+        Match match,
+        ThemeMode themeMode)
     {
         ArgumentNullException.ThrowIfNull(match);
 
@@ -127,8 +146,14 @@ public abstract class Code : Source
                 {
                     Foreground = new SolidColorBrush(
                         themeMode == ThemeMode.Light
-                            ? Color.FromRgb(0, 128, 0)
-                            : Color.FromRgb(87, 166, 74)),
+                            ? Color.FromRgb(
+                                0,
+                                128,
+                                0)
+                            : Color.FromRgb(
+                                87,
+                                166,
+                                74)),
                 };
 
                 CodeParagraphGlobal.Add(run);
@@ -144,8 +169,14 @@ public abstract class Code : Source
             {
                 Foreground = new SolidColorBrush(
                     themeMode == ThemeMode.Light
-                        ? Color.FromRgb(179, 90, 45)
-                        : Color.FromRgb(214, 157, 133)),
+                        ? Color.FromRgb(
+                            179,
+                            90,
+                            45)
+                        : Color.FromRgb(
+                            214,
+                            157,
+                            133)),
             };
 
             CodeParagraphGlobal.Add(run);
@@ -157,7 +188,11 @@ public abstract class Code : Source
         {
             var run = new Run(match.ToString())
             {
-                Foreground = new SolidColorBrush(Color.FromRgb(155, 155, 143)),
+                Foreground = new SolidColorBrush(
+                    Color.FromRgb(
+                        155,
+                        155,
+                        143)),
             };
 
             CodeParagraphGlobal.Add(run);
@@ -171,8 +206,14 @@ public abstract class Code : Source
             {
                 Foreground = new SolidColorBrush(
                     themeMode == ThemeMode.Light
-                        ? Color.FromRgb(0, 0, 255)
-                        : Color.FromRgb(86, 156, 214)),
+                        ? Color.FromRgb(
+                            0,
+                            0,
+                            255)
+                        : Color.FromRgb(
+                            86,
+                            156,
+                            214)),
             };
 
             CodeParagraphGlobal.Add(run);

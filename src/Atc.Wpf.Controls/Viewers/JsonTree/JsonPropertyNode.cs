@@ -7,7 +7,9 @@ public sealed class JsonPropertyNode : JsonNode
 {
     private readonly JsonNode valueNode;
 
-    internal JsonPropertyNode(string name, JsonNode valueNode)
+    internal JsonPropertyNode(
+        string name,
+        JsonNode valueNode)
     {
         this.Name = name;
         this.valueNode = valueNode;

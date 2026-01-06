@@ -28,15 +28,14 @@ public sealed class UiCultureExtension : ManagedMarkupExtension
     /// <summary>
     /// Gets the MarkupManager for this extension.
     /// </summary>
-    public static MarkupExtensionManager MarkupManager => MarkupExtensionManager;
+    public static MarkupExtensionManager MarkupManager
+        => MarkupExtensionManager;
 
     /// <summary>
     /// Use the Markup Manager to update all targets.
     /// </summary>
     public static void UpdateAllTargets()
-    {
-        MarkupExtensionManager.UpdateAllTargets();
-    }
+        => MarkupExtensionManager.UpdateAllTargets();
 
     /// <summary>
     /// Return the <see cref="XmlLanguage" /> to use for the associated Markup element.
@@ -46,7 +45,5 @@ public sealed class UiCultureExtension : ManagedMarkupExtension
     /// <see cref="CultureManager.UiCulture" /> property value.
     /// </returns>
     protected override object GetValue()
-    {
-        return XmlLanguage.GetLanguage(CultureManager.UiCulture.IetfLanguageTag);
-    }
+        => XmlLanguage.GetLanguage(CultureManager.UiCulture.IetfLanguageTag);
 }

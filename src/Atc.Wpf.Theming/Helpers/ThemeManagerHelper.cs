@@ -10,12 +10,10 @@ public static class ThemeManagerHelper
         ThemeManager.Current.ThemeChanged += OnThemeChanged;
     }
 
-    public static Color GetColorByResourceKey(
-        AtcAppsColorKeyType colorKey)
+    public static Color GetColorByResourceKey(AtcAppsColorKeyType colorKey)
         => GetColorByResourceKey(colorKey.ToString());
 
-    public static Color GetColorByResourceKey(
-        string resourceKey)
+    public static Color GetColorByResourceKey(string resourceKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(resourceKey);
 
@@ -27,14 +25,22 @@ public static class ThemeManagerHelper
         if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
         {
             resourceKey = resourceKey
-                .Replace(".Bootstrap", ".Bootstrap.", StringComparison.Ordinal)
-                .Replace("..", ".", StringComparison.Ordinal);
+                .Replace(
+                    ".Bootstrap",
+                    ".Bootstrap.",
+                    StringComparison.Ordinal)
+                .Replace(
+                    "..",
+                    ".",
+                    StringComparison.Ordinal);
         }
 
         var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
         var cacheKey = $"{currentTheme.BaseColorScheme}_{resourceKey}";
 
-        if (CacheColors.TryGetValue(cacheKey, out var cacheColor))
+        if (CacheColors.TryGetValue(
+            cacheKey,
+            out var cacheColor))
         {
             return cacheColor;
         }
@@ -53,7 +59,9 @@ public static class ThemeManagerHelper
         }
 
         var color = (Color)resource;
-        CacheColors.TryAdd(cacheKey, color);
+        CacheColors.TryAdd(
+            cacheKey,
+            color);
         return color;
     }
 
@@ -61,8 +69,7 @@ public static class ThemeManagerHelper
         AtcAppsBrushKeyType brushKey)
         => GetBrushByResourceKey(brushKey.ToString());
 
-    public static SolidColorBrush GetBrushByResourceKey(
-        string resourceKey)
+    public static SolidColorBrush GetBrushByResourceKey(string resourceKey)
     {
         ArgumentException.ThrowIfNullOrEmpty(resourceKey);
 
@@ -74,14 +81,22 @@ public static class ThemeManagerHelper
         if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
         {
             resourceKey = resourceKey
-                .Replace(".Bootstrap", ".Bootstrap.", StringComparison.Ordinal)
-                .Replace("..", ".", StringComparison.Ordinal);
+                .Replace(
+                    ".Bootstrap",
+                    ".Bootstrap.",
+                    StringComparison.Ordinal)
+                .Replace(
+                    "..",
+                    ".",
+                    StringComparison.Ordinal);
         }
 
         var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
         var cacheKey = $"{currentTheme.BaseColorScheme}_{resourceKey}";
 
-        if (CacheBrushes.TryGetValue(cacheKey, out var cacheBrush))
+        if (CacheBrushes.TryGetValue(
+            cacheKey,
+            out var cacheBrush))
         {
             return cacheBrush;
         }
@@ -105,15 +120,14 @@ public static class ThemeManagerHelper
             brush.Freeze();
         }
 
-        CacheBrushes.TryAdd(cacheKey, brush);
+        CacheBrushes.TryAdd(
+            cacheKey,
+            brush);
         return brush;
     }
 
     public static Color GetPrimaryAccentColor()
-    {
-        var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
-        return currentTheme.PrimaryAccentColor;
-    }
+        => ThemeManager.Current.DetectTheme(Application.Current)!.PrimaryAccentColor;
 
     public static SolidColorBrush GetPrimaryAccentBrush()
     {
@@ -131,7 +145,9 @@ public static class ThemeManagerHelper
             ? "Light.Blue"
             : themeAndAccent;
 
-        ThemeManager.Current.ChangeTheme(current, theme);
+        ThemeManager.Current.ChangeTheme(
+            current,
+            theme);
     }
 
     private static void OnThemeChanged(

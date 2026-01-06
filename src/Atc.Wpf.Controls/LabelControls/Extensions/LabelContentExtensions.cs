@@ -3,8 +3,7 @@ namespace Atc.Wpf.Controls.LabelControls;
 
 public static class LabelContentExtensions
 {
-    public static T? GetViewModel<T>(
-        this LabelContent labelContent)
+    public static T? GetViewModel<T>(this LabelContent labelContent)
         where T : ViewModelBase
     {
         ArgumentNullException.ThrowIfNull(labelContent);

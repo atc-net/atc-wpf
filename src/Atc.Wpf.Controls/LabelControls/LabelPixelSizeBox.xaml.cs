@@ -38,22 +38,26 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
     }
 
     public override bool IsValid()
-    {
-        return string.IsNullOrEmpty(ValidationText);
-    }
+        => string.IsNullOrEmpty(ValidationText);
 
     private void OnValueWidthChanged(
         object sender,
         RoutedPropertyChangedEventArgs<int> e)
     {
-        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(e.OldValue, e.NewValue, ValueWidthChangedEvent));
+        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(
+            e.OldValue,
+            e.NewValue,
+            ValueWidthChangedEvent));
     }
 
     private void OnValueHeightChanged(
         object sender,
         RoutedPropertyChangedEventArgs<int> e)
     {
-        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(e.OldValue, e.NewValue, ValueHeightChangedEvent));
+        RaiseEvent(new RoutedPropertyChangedEventArgs<int>(
+            e.OldValue,
+            e.NewValue,
+            ValueHeightChangedEvent));
     }
 
     private static void OnValueWidthLostFocus(

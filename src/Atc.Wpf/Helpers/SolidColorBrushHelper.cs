@@ -36,7 +36,9 @@ public static class SolidColorBrushHelper
         var brushes = new List<SolidColorBrush>();
         foreach (var key in GetBasicBrushKeys())
         {
-            var brushFromKey = GetBrushFromName(key, GlobalizationConstants.EnglishCultureInfo);
+            var brushFromKey = GetBrushFromName(
+                key,
+                GlobalizationConstants.EnglishCultureInfo);
             if (brushFromKey is not null)
             {
                 brushes.Add(brushFromKey);
@@ -46,8 +48,7 @@ public static class SolidColorBrushHelper
         return [.. brushes];
     }
 
-    public static SolidColorBrush? GetBrushFromString(
-        string value)
+    public static SolidColorBrush? GetBrushFromString(string value)
         => GetBrushFromString(value, CultureInfo.CurrentUICulture);
 
     public static SolidColorBrush? GetBrushFromString(
@@ -74,11 +75,15 @@ public static class SolidColorBrushHelper
             }
         }
 
-        if (!value.Contains(' ', StringComparison.Ordinal))
+        if (!value.Contains(
+                ' ',
+                StringComparison.Ordinal))
         {
             EnsureBaseBrushes();
 
-            if (BaseBrushes.TryGetValue(value, out var baseBrush))
+            if (BaseBrushes.TryGetValue(
+                    value,
+                    out var baseBrush))
             {
                 return baseBrush;
             }
@@ -87,12 +92,14 @@ public static class SolidColorBrushHelper
         EnsureBrushNamesForCulture(culture);
 
         return BrushNames[GetBrushKeyFromCulture(culture)]
-            .FirstOrDefault(x => string.Equals(x.Value, value, StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault(x => string.Equals(
+                x.Value,
+                value,
+                StringComparison.OrdinalIgnoreCase))
             .Key;
     }
 
-    public static SolidColorBrush? GetBrushFromName(
-        string brushName)
+    public static SolidColorBrush? GetBrushFromName(string brushName)
         => GetBrushFromString(brushName, CultureInfo.CurrentUICulture);
 
     public static SolidColorBrush? GetBrushFromName(
@@ -104,35 +111,43 @@ public static class SolidColorBrushHelper
 
         if (brushName.StartsWith('#'))
         {
-            throw new ArgumentException("It is a hex value", nameof(brushName));
+            throw new ArgumentException(
+                "It is a hex value",
+                nameof(brushName));
         }
 
-        return GetBrushFromString(brushName, culture);
+        return GetBrushFromString(
+            brushName,
+            culture);
     }
 
-    public static SolidColorBrush? GetBrushFromHex(
-        string hexValue)
+    public static SolidColorBrush? GetBrushFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
 
         if (!hexValue.StartsWith('#'))
         {
-            throw new ArgumentException("It is not a hex value", nameof(hexValue));
+            throw new ArgumentException(
+                "It is not a hex value",
+                nameof(hexValue));
         }
 
         if (hexValue.Length is not (9 or 7 or 4))
         {
-            throw new ArgumentException("Invalid format", nameof(hexValue));
+            throw new ArgumentException(
+                "Invalid format",
+                nameof(hexValue));
         }
 
-        return GetBrushFromString(hexValue, CultureInfo.InvariantCulture);
+        return GetBrushFromString(
+            hexValue,
+            CultureInfo.InvariantCulture);
     }
 
     public static IList<string> GetAllBrushNames()
         => GetAllBrushNames(CultureInfo.CurrentUICulture);
 
-    public static IList<string> GetAllBrushNames(
-        CultureInfo culture)
+    public static IList<string> GetAllBrushNames(CultureInfo culture)
         => ColorHelper.GetAllColorNames(culture);
 
     public static IList<string> GetBrushKeys()
@@ -147,18 +162,19 @@ public static class SolidColorBrushHelper
     public static IList<string> GetBasicBrushKeys()
         => ColorHelper.GetBasicColorKeys();
 
-    public static string? GetBrushKeyFromBrush(
-        SolidColorBrush brush)
+    public static string? GetBrushKeyFromBrush(SolidColorBrush brush)
     {
         EnsureBaseBrushes();
 
         return BaseBrushes
-            .FirstOrDefault(x => string.Equals(x.Value.Color.ToString(GlobalizationConstants.EnglishCultureInfo), brush.Color.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.Ordinal))
+            .FirstOrDefault(x => string.Equals(
+                x.Value.Color.ToString(GlobalizationConstants.EnglishCultureInfo),
+                brush.Color.ToString(GlobalizationConstants.EnglishCultureInfo),
+                StringComparison.Ordinal))
             .Key;
     }
 
-    public static string? GetBrushNameFromBrush(
-        SolidColorBrush brush)
+    public static string? GetBrushNameFromBrush(SolidColorBrush brush)
         => GetBrushNameFromBrush(brush, CultureInfo.CurrentUICulture);
 
     public static string? GetBrushNameFromBrush(
@@ -173,7 +189,10 @@ public static class SolidColorBrushHelper
         EnsureBrushNamesForCulture(culture);
 
         var brushName = BrushNames[GetBrushKeyFromCulture(culture)]
-            .FirstOrDefault(x => string.Equals(x.Key.Color.ToString(GlobalizationConstants.EnglishCultureInfo), brush.Color.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault(x => string.Equals(
+                x.Key.Color.ToString(GlobalizationConstants.EnglishCultureInfo),
+                brush.Color.ToString(GlobalizationConstants.EnglishCultureInfo),
+                StringComparison.OrdinalIgnoreCase))
             .Value;
 
         if (!includeColorHex)
@@ -188,15 +207,18 @@ public static class SolidColorBrushHelper
         return $"{brushName} ({colorHex})";
     }
 
-    public static string? GetBrushKeyFromHex(
-        string hexValue)
+    public static string? GetBrushKeyFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
 
         if (!hexValue.StartsWith('#') &&
-            !hexValue.StartsWith("0x", StringComparison.Ordinal))
+            !hexValue.StartsWith(
+                "0x",
+                StringComparison.Ordinal))
         {
-            throw new ArgumentException("It is not a hex value", nameof(hexValue));
+            throw new ArgumentException(
+                "It is not a hex value",
+                nameof(hexValue));
         }
 
         EnsureBaseBrushes();
@@ -204,26 +226,41 @@ public static class SolidColorBrushHelper
         if (hexValue.StartsWith('#') &&
             hexValue.Length == 7)
         {
-            hexValue = hexValue.Replace("#", "#FF", StringComparison.Ordinal);
+            hexValue = hexValue.Replace(
+                "#",
+                "#FF",
+                StringComparison.Ordinal);
         }
-        else if (hexValue.StartsWith("0x", StringComparison.Ordinal) &&
+        else if (hexValue.StartsWith(
+                     "0x",
+                     StringComparison.Ordinal) &&
                  hexValue.Length == 8)
         {
-            hexValue = hexValue.Replace("0x", "0xFF", StringComparison.Ordinal);
+            hexValue = hexValue.Replace(
+                "0x",
+                "0xFF",
+                StringComparison.Ordinal);
         }
 
-        if (hexValue.StartsWith("0x", StringComparison.Ordinal))
+        if (hexValue.StartsWith(
+                "0x",
+                StringComparison.Ordinal))
         {
-            hexValue = hexValue.Replace("0x", "#", StringComparison.Ordinal);
+            hexValue = hexValue.Replace(
+                "0x",
+                "#",
+                StringComparison.Ordinal);
         }
 
         return BaseBrushes
-            .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), hexValue, StringComparison.Ordinal))
+            .FirstOrDefault(x => string.Equals(
+                x.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
+                hexValue,
+                StringComparison.Ordinal))
             .Key;
     }
 
-    public static string? GetBrushNameFromHex(
-        string hexValue)
+    public static string? GetBrushNameFromHex(string hexValue)
         => GetBrushNameFromHex(hexValue, CultureInfo.CurrentUICulture);
 
     public static string? GetBrushNameFromHex(
@@ -248,21 +285,30 @@ public static class SolidColorBrushHelper
     {
         EnsureBaseBrushes();
 
-        if ("Aqua".Equals(brushKey, StringComparison.Ordinal))
+        if ("Aqua".Equals(
+                brushKey,
+                StringComparison.Ordinal))
         {
             brushKey = "Cyan";
         }
-        else if ("Fuchsia".Equals(brushKey, StringComparison.Ordinal))
+        else if ("Fuchsia".Equals(
+                     brushKey,
+                     StringComparison.Ordinal))
         {
             brushKey = "Magenta";
         }
 
         var item = BaseBrushes
-            .FirstOrDefault(x => string.Equals(x.Key, brushKey, StringComparison.Ordinal));
+            .FirstOrDefault(x => string.Equals(
+                x.Key,
+                brushKey,
+                StringComparison.Ordinal));
 
         return string.IsNullOrEmpty(item.Key)
             ? null
-            : GetBrushNameFromBrush(item.Value, culture);
+            : GetBrushNameFromBrush(
+                item.Value,
+                culture);
     }
 
     private static void EnsureBaseBrushes()
@@ -275,20 +321,28 @@ public static class SolidColorBrushHelper
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
 
         var colorDictionary = colorProperties
-            .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.OrdinalIgnoreCase)
-            .OrderBy(x => x.Key, StringComparer.Ordinal);
+            .ToDictionary(
+                p => p.Name,
+                p => (Color)p.GetValue(
+                    obj: null,
+                    index: null)!,
+                StringComparer.OrdinalIgnoreCase)
+            .OrderBy(
+                x => x.Key,
+                StringComparer.Ordinal);
 
         foreach (var item in colorDictionary)
         {
             var brush = new SolidColorBrush(item.Value);
             brush.Freeze();
 
-            BaseBrushes.TryAdd(item.Key, brush);
+            BaseBrushes.TryAdd(
+                item.Key,
+                brush);
         }
     }
 
-    private static void EnsureBrushNamesForCulture(
-        CultureInfo culture)
+    private static void EnsureBrushNamesForCulture(CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(culture);
 
@@ -317,8 +371,12 @@ public static class SolidColorBrushHelper
         {
             var entryKey = entry.Key.ToString()!;
             if (string.IsNullOrEmpty(BaseBrushes.FirstOrDefault(x => x.Key == entryKey).Key) ||
-                "Aqua".Equals(entryKey, StringComparison.Ordinal) ||
-                "Fuchsia".Equals(entryKey, StringComparison.Ordinal))
+                "Aqua".Equals(
+                    entryKey,
+                    StringComparison.Ordinal) ||
+                "Fuchsia".Equals(
+                    entryKey,
+                    StringComparison.Ordinal))
             {
                 continue;
             }
@@ -330,7 +388,9 @@ public static class SolidColorBrushHelper
                     var brush = new SolidColorBrush(color);
                     brush.Freeze();
 
-                    dictionary.TryAdd(brush, entry.Value!.ToString()!);
+                    dictionary.TryAdd(
+                        brush,
+                        entry.Value!.ToString()!);
                 }
             }
             catch (FormatException)
@@ -339,11 +399,12 @@ public static class SolidColorBrushHelper
             }
         }
 
-        BrushNames.TryAdd(brushKey, dictionary);
+        BrushNames.TryAdd(
+            brushKey,
+            dictionary);
     }
 
-    private static int GetBrushKeyFromCulture(
-        CultureInfo culture)
+    private static int GetBrushKeyFromCulture(CultureInfo culture)
         => culture.LCID == CultureInfo.InvariantCulture.LCID
             ? GlobalizationConstants.EnglishCultureInfo.LCID
             : culture.LCID;

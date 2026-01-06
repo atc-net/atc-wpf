@@ -19,7 +19,8 @@ public interface ILabelControlsFormColumn
 
     IList<string?> GetGroupIdentifiers();
 
-    IList<ILabelControlBase> GetLabelControlsByGroupIdentifier(string? groupIdentifier);
+    IList<ILabelControlBase> GetLabelControlsByGroupIdentifier(
+        string? groupIdentifier);
 
     int CalculateHeight();
 

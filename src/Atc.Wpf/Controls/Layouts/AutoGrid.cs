@@ -339,8 +339,7 @@ public sealed partial class AutoGrid : Grid
     /// <returns>
     ///   <see cref="Size" /> that represents the required size to arrange child content.
     /// </returns>
-    protected override Size MeasureOverride(
-        Size constraint)
+    protected override Size MeasureOverride(Size constraint)
     {
         PerformLayout();
         return base.MeasureOverride(constraint);
@@ -409,17 +408,14 @@ public sealed partial class AutoGrid : Grid
     private static int Clamp(
         int value,
         int max)
-    {
-        return value > max
+        => value > max
             ? max
             : value;
-    }
 
     /// <summary>
     /// Apply child margins and layout effects such as alignment.
     /// </summary>
-    private void ApplyChildLayout(
-        DependencyObject d)
+    private void ApplyChildLayout(DependencyObject d)
     {
         if (ChildMargin is not null)
         {

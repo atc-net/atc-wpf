@@ -13,8 +13,7 @@ public static class TextBlockHelper
             defaultValue: null,
             OnInlinesChanged));
 
-    public static ObservableCollection<Run> GetInlines(
-        DependencyObject d)
+    public static ObservableCollection<Run> GetInlines(DependencyObject d)
         => (ObservableCollection<Run>)d.GetValue(InlinesProperty);
 
     public static void SetInlines(
@@ -45,7 +44,9 @@ public static class TextBlockHelper
 
         inlines.CollectionChanged += (_, args) =>
         {
-            OnCollectionChangedHandler(textBlock, args);
+            OnCollectionChangedHandler(
+                textBlock,
+                args);
         };
     }
 

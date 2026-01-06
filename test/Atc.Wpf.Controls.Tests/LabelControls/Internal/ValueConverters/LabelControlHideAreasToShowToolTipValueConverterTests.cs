@@ -11,13 +11,19 @@ public sealed class LabelControlHideAreasToShowToolTipValueConverterTests
     [InlineData(true, LabelControlHideAreasType.AsteriskAndValidation)]
     [InlineData(true, LabelControlHideAreasType.InformationAndValidation)]
     [InlineData(true, LabelControlHideAreasType.All)]
-    public void Convert(bool expected, LabelControlHideAreasType hideAreasType)
+    public void Convert(
+        bool expected,
+        LabelControlHideAreasType hideAreasType)
     {
         // Arrange
         var sut = new LabelControlHideAreasToShowToolTipValueConverter();
 
         // Act
-        var actual = sut.Convert(hideAreasType, null!, null!, null!);
+        var actual = sut.Convert(
+            hideAreasType,
+            null!,
+            null!,
+            null!);
 
         // Assert
         Assert.Equal(expected, actual);

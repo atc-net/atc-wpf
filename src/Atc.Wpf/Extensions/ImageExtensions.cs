@@ -3,8 +3,7 @@ namespace System.Windows.Controls;
 
 public static class ImageExtensions
 {
-    public static BitmapImage ToBitmapImage(
-        this Image image)
+    public static BitmapImage ToBitmapImage(this Image image)
     {
         ArgumentNullException.ThrowIfNull(image);
 
@@ -14,11 +13,16 @@ public static class ImageExtensions
             return renderTargetBitmap.ToBitmapImage();
         }
 
-        if (image.Source.ToString(GlobalizationConstants.EnglishCultureInfo).Contains('/', StringComparison.Ordinal) ||
-            image.Source.ToString(GlobalizationConstants.EnglishCultureInfo).Contains('\\', StringComparison.Ordinal))
+        if (image.Source
+                .ToString(GlobalizationConstants.EnglishCultureInfo)
+                .Contains('/', StringComparison.Ordinal) ||
+            image.Source
+                .ToString(GlobalizationConstants.EnglishCultureInfo)
+                .Contains('\\', StringComparison.Ordinal))
         {
             // Get the source bitmap from Uri
-            return BitmapImageFactory.Create(image.Source.ToString(GlobalizationConstants.EnglishCultureInfo));
+            return BitmapImageFactory.Create(
+                image.Source.ToString(GlobalizationConstants.EnglishCultureInfo));
         }
 
         if (image.Source is BitmapImage bitmapImage)

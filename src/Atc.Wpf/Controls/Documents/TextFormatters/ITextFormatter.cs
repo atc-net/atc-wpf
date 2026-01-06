@@ -10,8 +10,7 @@ public interface ITextFormatter
     /// </summary>
     /// <param name="document">The document.</param>
     /// <returns>The text.</returns>
-    string GetText(
-        FlowDocument document);
+    string GetText(FlowDocument document);
 
     /// <summary>
     /// Sets the text.

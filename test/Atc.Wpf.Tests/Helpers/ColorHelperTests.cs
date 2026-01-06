@@ -10,9 +10,15 @@ public sealed class ColorHelperTests
         var colorKeys = ColorHelper.GetColorKeys();
         var basicColorKeys = ColorHelper.GetBasicColorKeys();
 
-        Assert.Equal(139, colorNames.Count);
-        Assert.Equal(141, colorKeys.Count);
-        Assert.Equal(16, basicColorKeys.Count);
+        Assert.Equal(
+            139,
+            colorNames.Count);
+        Assert.Equal(
+            141,
+            colorKeys.Count);
+        Assert.Equal(
+            16,
+            basicColorKeys.Count);
     }
 
     [Theory]
@@ -20,17 +26,29 @@ public sealed class ColorHelperTests
     [InlineData("#FF2F4F4F", 47, 79, 79, GlobalizationLcidConstants.UnitedStates)]
     [InlineData("Red", 255, 0, 0, GlobalizationLcidConstants.UnitedStates)]
     [InlineData("Rød", 255, 0, 0, GlobalizationLcidConstants.Denmark)]
-    public void GetBrushFromString(string input, byte r, byte g, byte b, int lcid)
+    public void GetBrushFromString(
+        string input,
+        byte r,
+        byte g,
+        byte b,
+        int lcid)
     {
         // Arrange
-        var expectedColor = Color.FromRgb(r, g, b);
+        var expectedColor = Color.FromRgb(
+            r,
+            g,
+            b);
 
         // Act
-        var color = ColorHelper.GetColorFromString(input, new CultureInfo(lcid));
+        var color = ColorHelper.GetColorFromString(
+            input,
+            new CultureInfo(lcid));
 
         // Assert
         Assert.NotNull(color);
-        Assert.Equal(expectedColor, color);
+        Assert.Equal(
+            expectedColor,
+            color);
     }
 
     [Theory]
@@ -42,17 +60,26 @@ public sealed class ColorHelperTests
     [InlineData("#FFFF0000", 255, 0, 0)]
     [InlineData("#FF0000", 255, 0, 0)]
     [InlineData("#F00", 255, 0, 0)]
-    public void GetBrushFromHex(string hex, byte r, byte g, byte b)
+    public void GetBrushFromHex(
+        string hex,
+        byte r,
+        byte g,
+        byte b)
     {
         // Arrange
-        var expectedColor = Color.FromRgb(r, g, b);
+        var expectedColor = Color.FromRgb(
+            r,
+            g,
+            b);
 
         // Act
         var color = ColorHelper.GetColorFromHex(hex);
 
         // Assert
         Assert.NotNull(color);
-        Assert.Equal(expectedColor, color);
+        Assert.Equal(
+            expectedColor,
+            color);
     }
 
     [Theory]
@@ -62,17 +89,29 @@ public sealed class ColorHelperTests
     [InlineData("Rød", 255, 0, 0, GlobalizationLcidConstants.Denmark)]
     [InlineData("Grøn", 0, 128, 0, GlobalizationLcidConstants.Denmark)]
     [InlineData("Blå", 0, 0, 255, GlobalizationLcidConstants.Denmark)]
-    public void GetBrushFromName(string name, byte r, byte g, byte b, int lcid)
+    public void GetBrushFromName(
+        string name,
+        byte r,
+        byte g,
+        byte b,
+        int lcid)
     {
         // Arrange
-        var expectedColor = Color.FromRgb(r, g, b);
+        var expectedColor = Color.FromRgb(
+            r,
+            g,
+            b);
 
         // Act
-        var color = ColorHelper.GetColorFromName(name, new CultureInfo(lcid));
+        var color = ColorHelper.GetColorFromName(
+            name,
+            new CultureInfo(lcid));
 
         // Assert
         Assert.NotNull(color);
-        Assert.Equal(expectedColor, color);
+        Assert.Equal(
+            expectedColor,
+            color);
     }
 
     [Theory]
@@ -215,13 +254,17 @@ public sealed class ColorHelperTests
     [InlineData("WhiteSmoke", "0xFFF5F5F5")]
     [InlineData("Yellow", "0xFFFFFF00")]
     [InlineData("YellowGreen", "0xFF9ACD32")]
-    public void GetColorKeyFromHex(string expectedColorKey, string hexValue)
+    public void GetColorKeyFromHex(
+        string expectedColorKey,
+        string hexValue)
     {
         // Act
         var colorKey = ColorHelper.GetColorKeyFromHex(hexValue);
 
         // Assert
         Assert.NotNull(colorKey);
-        Assert.Equal(expectedColorKey, colorKey);
+        Assert.Equal(
+            expectedColorKey,
+            colorKey);
     }
 }

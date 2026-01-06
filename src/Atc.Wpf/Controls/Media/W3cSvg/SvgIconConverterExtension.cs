@@ -70,7 +70,11 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         try
         {
@@ -114,10 +118,12 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
         return null;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return null;
-    }
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => null;
 
     /// <summary>
     /// Converts the SVG source file to <see cref="Uri"/>

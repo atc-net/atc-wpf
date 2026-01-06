@@ -16,14 +16,18 @@ public sealed class MethodToValueConverter : IValueConverter
             return null;
         }
 
-        var methodInfo = value.GetType().GetMethod(methodName, Type.EmptyTypes);
+        var methodInfo = value
+            .GetType()
+            .GetMethod(
+                methodName,
+                Type.EmptyTypes);
+
         if (methodInfo == null)
         {
             return null;
         }
 
-        var returnValue = methodInfo.Invoke(value, []);
-        return returnValue;
+        return methodInfo.Invoke(value, []);
     }
 
     public object ConvertBack(

@@ -14,8 +14,14 @@ public sealed class MultiObjectNullToVisibilityCollapsedValueConverterTests
     [InlineData(Visibility.Collapsed, new object[] { false, null })]
     [InlineData(Visibility.Collapsed, new object[] { true, null })]
     [InlineData(Visibility.Collapsed, new object[] { "Hello", null })]
-    public void Convert(Visibility expected, object[]? input)
+    public void Convert(
+        Visibility expected,
+        object[]? input)
         => Assert.Equal(
             expected,
-            converter.Convert(input, targetType: null, parameter: null, culture: null));
+            converter.Convert(
+                input,
+                targetType: null,
+                parameter: null,
+                culture: null));
 }

@@ -17,7 +17,8 @@ public sealed class StringToSplitStringListValueConverter : IValueConverter
         object? parameter,
         CultureInfo culture)
         => value is string stringValue
-            ? stringValue.Split([Separator], StringSplitOptions.RemoveEmptyEntries)
+            ? stringValue
+                .Split([Separator], StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToList()
             : value;
@@ -27,12 +28,7 @@ public sealed class StringToSplitStringListValueConverter : IValueConverter
         Type targetType,
         object? parameter,
         CultureInfo culture)
-    {
-        if (value is IList<string> list)
-        {
-            return string.Join(Separator.ToString(), list);
-        }
-
-        return value;
-    }
+        => value is IList<string> list
+            ? string.Join(Separator.ToString(), list)
+            : value;
 }

@@ -6,8 +6,7 @@ public sealed class ToastNotificationManager : IToastNotificationManager
     private static readonly List<ToastNotificationArea> Areas = [];
     private static ToastNotificationsOverlayWindow? window;
 
-    public ToastNotificationManager(
-        Dispatcher? dispatcher = null)
+    public ToastNotificationManager(Dispatcher? dispatcher = null)
     {
         dispatcher ??= Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         this.dispatcher = dispatcher;
@@ -91,7 +90,9 @@ public sealed class ToastNotificationManager : IToastNotificationManager
 
         if (!toastNotificationAreas.Any())
         {
-            toastNotificationAreas = Areas.Where(a => a.Name != "DesktopArea").ToArray();
+            toastNotificationAreas = Areas
+                .Where(a => a.Name != "DesktopArea")
+                .ToArray();
         }
 
         foreach (var area in toastNotificationAreas)
@@ -104,9 +105,6 @@ public sealed class ToastNotificationManager : IToastNotificationManager
         }
     }
 
-    internal static void AddArea(
-        ToastNotificationArea area)
-    {
-        Areas.Add(area);
-    }
+    internal static void AddArea(ToastNotificationArea area)
+        => Areas.Add(area);
 }

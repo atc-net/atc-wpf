@@ -7,13 +7,11 @@ public partial class App
 
     public App()
     {
-        host = Host.CreateDefaultBuilder()
-            .ConfigureLogging(logging =>
-            {
-                logging
-                    .AddDebug()
-                    .SetMinimumLevel(LogLevel.Trace);
-            })
+        host = Host
+            .CreateDefaultBuilder()
+            .ConfigureLogging(logging => logging
+                .AddDebug()
+                .SetMinimumLevel(LogLevel.Trace))
             .ConfigureServices((_, services) =>
             {
                 services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
@@ -26,8 +24,7 @@ public partial class App
     /// Raises the Startup event.
     /// </summary>
     /// <param name="e">The <see cref="StartupEventArgs"/> instance containing the event data.</param>
-    protected override void OnStartup(
-        StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -104,7 +101,9 @@ public partial class App
             GlobalizationConstants.EnglishCultureInfo,
             GlobalizationConstants.EnglishCultureInfo);
 
-        ThemeManager.Current.ChangeTheme(Current, "Light.Blue");
+        ThemeManager.Current.ChangeTheme(
+            Current,
+            "Light.Blue");
 
         var mainWindow = host
             .Services

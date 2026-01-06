@@ -12,8 +12,7 @@ internal static class TextRender
         typeof(TextShape.TSpan.Element),
         typeof(DependencyObject));
 
-    public static GeometryGroup BuildTextGeometry(
-        TextShape shape)
+    public static GeometryGroup BuildTextGeometry(TextShape shape)
     {
         ArgumentNullException.ThrowIfNull(shape);
 
@@ -27,14 +26,18 @@ internal static class TextRender
         var txt = shape.Text;
         if (shape.TextStyle is not null)
         {
-            geometryGroup.Children.Add(BuildGlyphRun(shape.TextStyle, txt, shape.X, shape.Y, ref totalWidth));
+            geometryGroup.Children.Add(BuildGlyphRun(
+                shape.TextStyle,
+                txt,
+                shape.X,
+                shape.Y,
+                ref totalWidth));
         }
 
         return geometryGroup;
     }
 
-    public static GeometryGroup BuildTextSpan(
-        TextShape shape)
+    public static GeometryGroup BuildTextSpan(TextShape shape)
     {
         ArgumentNullException.ThrowIfNull(shape);
 
@@ -43,7 +46,12 @@ internal static class TextRender
         var geometryGroup = new GeometryGroup();
         if (shape.TextStyle is not null && shape.TextSpan is not null)
         {
-            BuildTextSpan(geometryGroup, shape.TextStyle, shape.TextSpan, ref x, ref y);
+            BuildTextSpan(
+                geometryGroup,
+                shape.TextStyle,
+                shape.TextSpan,
+                ref x,
+                ref y);
         }
 
         return geometryGroup;
@@ -58,8 +66,7 @@ internal static class TextRender
         d.SetValue(TSpanElementProperty, value);
     }
 
-    public static TextShape.TSpan.Element GetElement(
-        DependencyObject d)
+    public static TextShape.TSpan.Element GetElement(DependencyObject d)
     {
         ArgumentNullException.ThrowIfNull(d);
 
@@ -98,8 +105,15 @@ internal static class TextRender
                             break;
                     }
 
-                    var gm = BuildGlyphRun(child.TextStyle, txt, x, baseline, ref totalWidth);
-                    SetElement(gm, child);
+                    var gm = BuildGlyphRun(
+                        child.TextStyle,
+                        txt,
+                        x,
+                        baseline,
+                        ref totalWidth);
+                    SetElement(
+                        gm,
+                        child);
                     gp.Children.Add(gm);
                     x += totalWidth;
                 }
@@ -109,14 +123,24 @@ internal static class TextRender
 
             if (child.ElementType == TextShapeElementType.Tag)
             {
-                BuildTextSpan(gp, textStyle, child, ref x, ref y);
+                BuildTextSpan(
+                    gp,
+                    textStyle,
+                    child,
+                    ref x,
+                    ref y);
             }
         }
     }
 
     [SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
-    private static Geometry BuildGlyphRun(TextStyle textStyle, string text, double x, double y, ref double totalWidth)
+    private static Geometry BuildGlyphRun(
+        TextStyle textStyle,
+        string text,
+        double x,
+        double y,
+        ref double totalWidth)
     {
         ArgumentNullException.ThrowIfNull(textStyle);
 
@@ -154,7 +178,9 @@ internal static class TextRender
         double baseLine;
         if (font.TryGetGlyphTypeface(out var glyphFace))
         {
-            var dpiScale = new DpiScale(dpiX, dpiY);
+            var dpiScale = new DpiScale(
+                dpiX,
+                dpiY);
             glyphs = new GlyphRun((float)dpiScale.PixelsPerDip);
             ((ISupportInitialize)glyphs).BeginInit();
             glyphs.GlyphTypeface = glyphFace;
@@ -195,7 +221,9 @@ internal static class TextRender
             };
 
             baseLine = y;
-            glyphs.BaselineOrigin = new Point(x - alignmentOffset, baseLine);
+            glyphs.BaselineOrigin = new Point(
+                x - alignmentOffset,
+                baseLine);
             ((ISupportInitialize)glyphs).EndInit();
         }
         else
@@ -230,7 +258,11 @@ internal static class TextRender
             decorationThickness = font.StrikethroughThickness * fontSize;
         }
 
-        var bounds = new Rect(geometryGroup.Bounds.Left, decorationPos, geometryGroup.Bounds.Width, decorationThickness);
+        var bounds = new Rect(
+            geometryGroup.Bounds.Left,
+            decorationPos,
+            geometryGroup.Bounds.Width,
+            decorationThickness);
         geometryGroup.Children.Add(new RectangleGeometry(bounds));
         return geometryGroup;
     }

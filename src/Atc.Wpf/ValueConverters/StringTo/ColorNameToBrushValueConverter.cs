@@ -10,7 +10,11 @@ public sealed class ColorNameToBrushValueConverter : IValueConverter
     public static readonly ColorNameToBrushValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is null)
         {
@@ -27,7 +31,11 @@ public sealed class ColorNameToBrushValueConverter : IValueConverter
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is null)
         {

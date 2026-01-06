@@ -21,7 +21,9 @@ public static class FrameworkElementExtensions
         }
         else
         {
-            void ElementLoaded(object o, RoutedEventArgs a)
+            void ElementLoaded(
+                object o,
+                RoutedEventArgs a)
             {
                 element.Loaded -= ElementLoaded;
                 element.Invoke(invokeAction);

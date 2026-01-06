@@ -23,7 +23,12 @@ internal sealed class Stroke
     [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1011:Closing square brackets should be spaced correctly", Justification = "OK.")]
     public double[]? StrokeArray { get; set; }
 
-    public Brush? StrokeBrush(Svg svg, SvgRender svgRender, Shape shape, double elementOpacity, Rect bounds)
+    public Brush? StrokeBrush(
+        Svg svg,
+        SvgRender svgRender,
+        Shape shape,
+        double elementOpacity,
+        Rect bounds)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(shape);
@@ -44,13 +49,21 @@ internal sealed class Stroke
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
             if (shapePaintServer is not null)
             {
-                return shapePaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
+                return shapePaintServer.GetBrush(
+                    Opacity * elementOpacity,
+                    svg,
+                    svgRender,
+                    bounds);
             }
         }
 
         if (paintServer is not InheritPaintServer)
         {
-            return paintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
+            return paintServer.GetBrush(
+                Opacity * elementOpacity,
+                svg,
+                svgRender,
+                bounds);
         }
 
         var p = shape.RealParent ?? shape.Parent;
@@ -62,7 +75,11 @@ internal sealed class Stroke
                 if (checkPaintServer is not null &&
                     checkPaintServer is not InheritPaintServer)
                 {
-                    return checkPaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
+                    return checkPaintServer.GetBrush(
+                        Opacity * elementOpacity,
+                        svg,
+                        svgRender,
+                        bounds);
                 }
             }
 

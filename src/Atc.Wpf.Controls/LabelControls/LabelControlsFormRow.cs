@@ -7,8 +7,7 @@ public sealed class LabelControlsFormRow : ILabelControlsFormRow
         Columns ??= new List<ILabelControlsFormColumn>();
     }
 
-    public LabelControlsFormRow(
-        ILabelControlsFormColumn column)
+    public LabelControlsFormRow(ILabelControlsFormColumn column)
     {
         ArgumentNullException.ThrowIfNull(column);
 

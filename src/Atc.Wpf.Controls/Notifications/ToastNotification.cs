@@ -30,6 +30,7 @@ public sealed partial class ToastNotification : ContentControl
             new FrameworkPropertyMetadata(typeof(ToastNotification)));
     }
 
+    [SuppressMessage("", "SA1118:The parameter spans multiple lines", Justification = "OK")]
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -39,8 +40,11 @@ public sealed partial class ToastNotification : ContentControl
             closeButton.Click += OnCloseButtonOnClick;
         }
 
-        var storyboards = Template.Triggers.OfType<System.Windows.EventTrigger>()
-            .FirstOrDefault(x => x.RoutedEvent == NotificationCloseInvokedEvent)?.Actions.OfType<BeginStoryboard>()
+        var storyboards = Template.Triggers
+            .OfType<System.Windows.EventTrigger>()
+            .FirstOrDefault(x => x.RoutedEvent == NotificationCloseInvokedEvent)?
+            .Actions
+            .OfType<BeginStoryboard>()
             .Select(a => a.Storyboard);
 
         closingAnimationTime = new TimeSpan(
@@ -49,7 +53,10 @@ public sealed partial class ToastNotification : ContentControl
                     (x.Duration.HasTimeSpan
                         ? x.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero)
                         : TimeSpan.MaxValue).Ticks,
-                    x.Children.Select(ch => ch.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero)).Max().Ticks)) ?? 0);
+                    x.Children
+                        .Select(ch => ch.Duration.TimeSpan + (x.BeginTime ?? TimeSpan.Zero))
+                        .Max()
+                        .Ticks)) ?? 0);
     }
 
     /// <summary>
