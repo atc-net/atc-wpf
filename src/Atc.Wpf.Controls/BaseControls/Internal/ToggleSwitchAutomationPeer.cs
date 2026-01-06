@@ -18,15 +18,21 @@ public class ToggleSwitchAutomationPeer : FrameworkElementAutomationPeer, IToggl
             ? this
             : base.GetPattern(patternInterface);
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
-    internal virtual void RaiseToggleStatePropertyChangedEvent(bool oldValue, bool newValue)
+    [System.Runtime.CompilerServices.MethodImpl(
+        System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    internal virtual void RaiseToggleStatePropertyChangedEvent(
+        bool oldValue,
+        bool newValue)
     {
         if (oldValue == newValue)
         {
             return;
         }
 
-        RaisePropertyChangedEvent(TogglePatternIdentifiers.ToggleStateProperty, ConvertToToggleState(oldValue), ConvertToToggleState(newValue));
+        RaisePropertyChangedEvent(
+            TogglePatternIdentifiers.ToggleStateProperty,
+            ConvertToToggleState(oldValue),
+            ConvertToToggleState(newValue));
     }
 
     private static ToggleState ConvertToToggleState(bool value)
@@ -34,7 +40,8 @@ public class ToggleSwitchAutomationPeer : FrameworkElementAutomationPeer, IToggl
             ? ToggleState.On
             : ToggleState.Off;
 
-    public ToggleState ToggleState => ConvertToToggleState(((ToggleSwitch)Owner).IsOn);
+    public ToggleState ToggleState
+        => ConvertToToggleState(((ToggleSwitch)Owner).IsOn);
 
     public void Toggle()
     {

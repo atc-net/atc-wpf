@@ -110,7 +110,11 @@ public partial class EndpointBox
             return;
         }
 
-        control.RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkProtocolType>(oldValue, newValue, NetworkProtocolChangedEvent));
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<NetworkProtocolType>(
+                oldValue,
+                newValue,
+                NetworkProtocolChangedEvent));
 
         control.NetworkProtocolLostFocus?.Invoke(
             control,
@@ -140,7 +144,11 @@ public partial class EndpointBox
 
         control.IsDirty = true;
 
-        control.RaiseEvent(new RoutedPropertyChangedEventArgs<string>(oldValue, newValue, HostChangedEvent));
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<string>(
+                oldValue,
+                newValue,
+                HostChangedEvent));
 
         control.HostLostFocus?.Invoke(
             control,
@@ -168,7 +176,11 @@ public partial class EndpointBox
             return;
         }
 
-        control.RaiseEvent(new RoutedPropertyChangedEventArgs<int>(oldValue, newValue, PortChangedEvent));
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<int>(
+                oldValue,
+                newValue,
+                PortChangedEvent));
 
         control.PortLostFocus?.Invoke(
             control,
@@ -202,7 +214,11 @@ public partial class EndpointBox
         var oldUri = e.OldValue as Uri;
         var newUri = e.NewValue as Uri;
 
-        control.RaiseEvent(new RoutedPropertyChangedEventArgs<Uri?>(oldUri, newUri, ValueChangedEvent));
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<Uri?>(
+                oldUri,
+                newUri,
+                ValueChangedEvent));
 
         control.ValueLostFocus?.Invoke(
             control,
@@ -270,8 +286,7 @@ public partial class EndpointBox
         }
     }
 
-    private void ParseUriToComponents(
-        Uri uri)
+    private void ParseUriToComponents(Uri uri)
     {
         if (uri is null)
         {

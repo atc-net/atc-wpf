@@ -11,8 +11,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetThumbFillBrush(
-        UIElement element)
+    public static Brush? GetThumbFillBrush(UIElement element)
         => (Brush?)element.GetValue(ThumbFillBrushProperty);
 
     public static void SetThumbFillBrush(
@@ -28,8 +27,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetThumbFillHoverBrush(
-        UIElement element)
+    public static Brush? GetThumbFillHoverBrush(UIElement element)
         => (Brush?)element.GetValue(ThumbFillHoverBrushProperty);
 
     public static void SetThumbFillHoverBrush(
@@ -45,8 +43,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetThumbFillPressedBrush(
-        UIElement element)
+    public static Brush? GetThumbFillPressedBrush(UIElement element)
         => (Brush?)element.GetValue(ThumbFillPressedBrushProperty);
 
     public static void SetThumbFillPressedBrush(
@@ -62,7 +59,8 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetThumbFillDisabledBrush(UIElement element) => (Brush?)element.GetValue(ThumbFillDisabledBrushProperty);
+    public static Brush? GetThumbFillDisabledBrush(UIElement element)
+        => (Brush?)element.GetValue(ThumbFillDisabledBrushProperty);
 
     public static void SetThumbFillDisabledBrush(
         UIElement element,
@@ -77,8 +75,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackFillBrush(
-        UIElement element)
+    public static Brush? GetTrackFillBrush(UIElement element)
         => (Brush?)element.GetValue(TrackFillBrushProperty);
 
     public static void SetTrackFillBrush(
@@ -94,8 +91,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackFillHoverBrush(
-        UIElement element)
+    public static Brush? GetTrackFillHoverBrush(UIElement element)
         => (Brush?)element.GetValue(TrackFillHoverBrushProperty);
 
     public static void SetTrackFillHoverBrush(
@@ -111,8 +107,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackFillPressedBrush(
-        UIElement element)
+    public static Brush? GetTrackFillPressedBrush(UIElement element)
         => (Brush?)element.GetValue(TrackFillPressedBrushProperty);
 
     public static void SetTrackFillPressedBrush(
@@ -128,8 +123,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackFillDisabledBrush(
-        UIElement element)
+    public static Brush? GetTrackFillDisabledBrush(UIElement element)
         => (Brush?)element.GetValue(TrackFillDisabledBrushProperty);
 
     public static void SetTrackFillDisabledBrush(
@@ -145,8 +139,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackValueFillBrush(
-        UIElement element)
+    public static Brush? GetTrackValueFillBrush(UIElement element)
         => (Brush?)element.GetValue(TrackValueFillBrushProperty);
 
     public static void SetTrackValueFillBrush(
@@ -162,8 +155,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackValueFillHoverBrush(
-        UIElement element)
+    public static Brush? GetTrackValueFillHoverBrush(UIElement element)
         => (Brush?)element.GetValue(TrackValueFillHoverBrushProperty);
 
     public static void SetTrackValueFillHoverBrush(
@@ -179,8 +171,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackValueFillPressedBrush(
-        UIElement element)
+    public static Brush? GetTrackValueFillPressedBrush(UIElement element)
         => (Brush?)element.GetValue(TrackValueFillPressedBrushProperty);
 
     public static void SetTrackValueFillPressedBrush(
@@ -196,8 +187,7 @@ public static class SliderHelper
             default(Brush),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush? GetTrackValueFillDisabledBrush(
-        UIElement element)
+    public static Brush? GetTrackValueFillDisabledBrush(UIElement element)
         => (Brush?)element.GetValue(TrackValueFillDisabledBrushProperty);
 
     public static void SetTrackValueFillDisabledBrush(
@@ -211,8 +201,7 @@ public static class SliderHelper
         typeof(SliderHelper),
         new PropertyMetadata(MouseWheelChangeState.SmallChange));
 
-    public static MouseWheelChangeState GetChangeValueBy(
-        UIElement element)
+    public static MouseWheelChangeState GetChangeValueBy(UIElement element)
         => (MouseWheelChangeState)element.GetValue(ChangeValueByProperty);
 
     public static void SetChangeValueBy(
@@ -228,8 +217,7 @@ public static class SliderHelper
             MouseWheelState.None,
             OnEnableMouseWheelChanged));
 
-    public static MouseWheelState GetEnableMouseWheel(
-        UIElement element)
+    public static MouseWheelState GetEnableMouseWheel(UIElement element)
         => (MouseWheelState)element.GetValue(EnableMouseWheelProperty);
 
     public static void SetEnableMouseWheel(

@@ -10,10 +10,13 @@ public sealed class StringNullOrEmptyToBoolValueConverter : IValueConverter
     public static readonly StringNullOrEmptyToBoolValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is null || string.IsNullOrEmpty(value.ToString());
-    }
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is null ||
+           string.IsNullOrEmpty(value.ToString());
 
     /// <inheritdoc />
     public object ConvertBack(

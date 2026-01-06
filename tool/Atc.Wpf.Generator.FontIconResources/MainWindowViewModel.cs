@@ -11,19 +11,40 @@ public sealed class MainWindowViewModel : MainWindowViewModelBase, IMainWindowVi
         OutputEnumFolder = @"D:\Code\atc-net\atc-wpf\src\Atc.Wpf.FontIcons\Enums";
     }
 
-    public ICommand GenerateFontAwesomeBrandCommand => new RelayCommand(GenerateFontAwesomeBrandCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateFontAwesomeBrandCommand
+        => new RelayCommand(
+            GenerateFontAwesomeBrandCommandHandler,
+            CanGenerateCommandHandler);
 
-    public ICommand GenerateFontAwesomeRegularCommand => new RelayCommand(GenerateFontAwesomeRegularCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateFontAwesomeRegularCommand
+        => new RelayCommand(
+            GenerateFontAwesomeRegularCommandHandler,
+            CanGenerateCommandHandler);
 
-    public ICommand GenerateFontAwesomeSolidCommand => new RelayCommand(GenerateFontAwesomeSolidCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateFontAwesomeSolidCommand
+        => new RelayCommand(
+            GenerateFontAwesomeSolidCommandHandler,
+            CanGenerateCommandHandler);
 
-    public ICommand GenerateBootstrapCommand => new RelayCommand(GenerateBootstrapCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateBootstrapCommand
+        => new RelayCommand(
+            GenerateBootstrapCommandHandler,
+            CanGenerateCommandHandler);
 
-    public ICommand GenerateIcoCommand => new RelayCommand(GenerateIcoCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateIcoCommand
+        => new RelayCommand(
+            GenerateIcoCommandHandler,
+            CanGenerateCommandHandler);
 
-    public ICommand GenerateMaterialDesignCommand => new RelayCommand(GenerateMaterialDesignCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateMaterialDesignCommand
+        => new RelayCommand(
+            GenerateMaterialDesignCommandHandler,
+            CanGenerateCommandHandler);
 
-    public ICommand GenerateWeatherCommand => new RelayCommand(GenerateWeatherCommandHandler, CanGenerateCommandHandler);
+    public ICommand GenerateWeatherCommand
+        => new RelayCommand(
+            GenerateWeatherCommandHandler,
+            CanGenerateCommandHandler);
 
     public string? ResourcesFolder
     {

@@ -97,8 +97,7 @@ public sealed class ClipBorder : Decorator
         set => SetValue(OptimizeClipRenderingProperty, BooleanBoxes.Box(value));
     }
 
-    protected override Size MeasureOverride(
-        Size constraint)
+    protected override Size MeasureOverride(Size constraint)
     {
         var child = Child;
         var desiredSize = new Size(0, 0);
@@ -136,8 +135,7 @@ public sealed class ClipBorder : Decorator
         return desiredSize;
     }
 
-    protected override Size ArrangeOverride(
-        Size arrangeSize)
+    protected override Size ArrangeOverride(Size arrangeSize)
     {
         var borders = BorderThickness;
         var boundRect = new Rect(arrangeSize);
@@ -201,8 +199,7 @@ public sealed class ClipBorder : Decorator
         return arrangeSize;
     }
 
-    protected override void OnRender(
-        DrawingContext drawingContext)
+    protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);
 
@@ -290,8 +287,7 @@ public sealed class ClipBorder : Decorator
         }
     }
 
-    private static bool OnValidateThickness(
-        object? value)
+    private static bool OnValidateThickness(object? value)
     {
         var th = (Thickness)(value ?? default(Thickness));
         return th.IsValid(
@@ -301,8 +297,7 @@ public sealed class ClipBorder : Decorator
             allowNegativeInfinity: false);
     }
 
-    private static bool OnValidateCornerRadius(
-        object? value)
+    private static bool OnValidateCornerRadius(object? value)
     {
         var cr = (CornerRadius)(value ?? default(CornerRadius));
         return cr.IsValid(

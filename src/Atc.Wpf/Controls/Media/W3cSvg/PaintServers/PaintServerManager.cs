@@ -5,7 +5,9 @@ internal sealed class PaintServerManager
 {
     private readonly Dictionary<string, PaintServer> paintServers = new(StringComparer.Ordinal);
 
-    public void Create(Svg svg, XmlNode node)
+    public void Create(
+        Svg svg,
+        XmlNode node)
     {
         ArgumentNullException.ThrowIfNull(node);
 
@@ -13,10 +15,14 @@ internal sealed class PaintServerManager
         {
             case SvgTagConstants.LinearGradient:
             {
-                var id = SvgXmlUtil.AttrValue(node, "id");
+                var id = SvgXmlUtil.AttrValue(
+                    node,
+                    "id");
                 if (id is not null && !paintServers.ContainsKey(id))
                 {
-                    paintServers[id] = new LinearGradientColorPaintServer(this, node);
+                    paintServers[id] = new LinearGradientColorPaintServer(
+                        this,
+                        node);
                 }
 
                 return;
@@ -24,10 +30,14 @@ internal sealed class PaintServerManager
 
             case SvgTagConstants.RadialGradient:
             {
-                var id = SvgXmlUtil.AttrValue(node, "id");
+                var id = SvgXmlUtil.AttrValue(
+                    node,
+                    "id");
                 if (id is not null && !paintServers.ContainsKey(id))
                 {
-                    paintServers[id] = new RadialGradientColorPaintServer(this, node);
+                    paintServers[id] = new RadialGradientColorPaintServer(
+                        this,
+                        node);
                 }
 
                 return;
@@ -35,10 +45,15 @@ internal sealed class PaintServerManager
 
             case SvgTagConstants.Pattern:
             {
-                var id = SvgXmlUtil.AttrValue(node, "id");
+                var id = SvgXmlUtil.AttrValue(
+                    node,
+                    "id");
                 if (id is not null && !paintServers.ContainsKey(id))
                 {
-                    paintServers[id] = new PatternPaintServer(this, svg, node);
+                    paintServers[id] = new PatternPaintServer(
+                        this,
+                        svg,
+                        node);
                 }
 
                 return;
@@ -49,7 +64,9 @@ internal sealed class PaintServerManager
         }
     }
 
-    public void AddServer(string key, PaintServer server)
+    public void AddServer(
+        string key,
+        PaintServer server)
     {
         if (string.IsNullOrWhiteSpace(key))
         {
@@ -66,29 +83,42 @@ internal sealed class PaintServerManager
             return null;
         }
 
-        return paintServers.TryGetValue(serverKey, out var paintServer)
+        return paintServers.TryGetValue(
+                serverKey,
+                out var paintServer)
             ? paintServer
             : null;
     }
 
     public Dictionary<string, PaintServer> GetServers()
-    {
-        return paintServers;
-    }
+        => paintServers;
 
-    public void CreateServerFromBrush(string key, Brush customBrush)
+    public void CreateServerFromBrush(
+        string key,
+        Brush customBrush)
     {
         paintServers[key] = customBrush switch
         {
-            SolidColorBrush => new SolidColorPaintServer(this, customBrush),
-            LinearGradientBrush => new LinearGradientColorPaintServer(this, customBrush),
-            RadialGradientBrush => new RadialGradientColorPaintServer(this, customBrush),
-            DrawingBrush => new PatternPaintServer(this, customBrush),
-            _ => new PaintServer(this, customBrush),
+            SolidColorBrush => new SolidColorPaintServer(
+                this,
+                customBrush),
+            LinearGradientBrush => new LinearGradientColorPaintServer(
+                this,
+                customBrush),
+            RadialGradientBrush => new RadialGradientColorPaintServer(
+                this,
+                customBrush),
+            DrawingBrush => new PatternPaintServer(
+                this,
+                customBrush),
+            _ => new PaintServer(
+                this,
+                customBrush),
         };
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public string? Parse(string value)
     {
         try
@@ -103,7 +133,9 @@ internal sealed class PaintServerManager
                 return null;
             }
 
-            if (paintServers.TryGetValue(value, out _))
+            if (paintServers.TryGetValue(
+                    value,
+                    out _))
             {
                 return value;
             }
@@ -125,13 +157,18 @@ internal sealed class PaintServerManager
 
             if (value.StartsWith("url", StringComparison.Ordinal))
             {
-                var id = ShapeUtil.ExtractBetween(value, '(', ')');
+                var id = ShapeUtil.ExtractBetween(
+                    value,
+                    '(',
+                    ')');
                 if (id.Length > 0 && id[0] == '#')
                 {
                     id = id.Substring(1);
                 }
 
-                paintServers.TryGetValue(id, out _);
+                paintServers.TryGetValue(
+                    id,
+                    out _);
                 return id;
             }
 
@@ -149,14 +186,18 @@ internal sealed class PaintServerManager
 
     public static Color KnownColor(string value)
     {
-        var color = ColorHelper.GetColorFromString(value, GlobalizationConstants.EnglishCultureInfo);
+        var color = ColorHelper.GetColorFromString(
+            value,
+            GlobalizationConstants.EnglishCultureInfo);
         return color ?? Colors.Black;
     }
 
     private string ParseSolidColor(string value)
     {
         var id = value;
-        if (paintServers.TryGetValue(id, out _))
+        if (paintServers.TryGetValue(
+                id,
+                out _))
         {
             return id;
         }
@@ -167,28 +208,74 @@ internal sealed class PaintServerManager
             return id;
         }
 
-        var paintServer = new SolidColorPaintServer(this, color.Value);
+        var paintServer = new SolidColorPaintServer(
+            this,
+            color.Value);
         paintServers[id] = paintServer;
         return id;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private string? ParseSolidRgbColor(string value)
     {
         value = value
-            .Replace("\r", string.Empty, StringComparison.Ordinal)
-            .Replace("\n", string.Empty, StringComparison.Ordinal)
-            .Replace("\t", string.Empty, StringComparison.Ordinal)
-            .Replace(" ", string.Empty, StringComparison.Ordinal);
+            .Replace(
+                "\r",
+                string.Empty,
+                StringComparison.Ordinal)
+            .Replace(
+                "\n",
+                string.Empty,
+                StringComparison.Ordinal)
+            .Replace(
+                "\t",
+                string.Empty,
+                StringComparison.Ordinal)
+            .Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal);
         if (value.StartsWith("rgb(", StringComparison.Ordinal))
         {
-            var newVal = value.Substring(4, value.Length - 5).Split(',');
-            return ParseSolidColor("#" + ParseColorNumber(newVal[0]).ToString("x", GlobalizationConstants.EnglishCultureInfo) + ParseColorNumber(newVal[1]).ToString("x", GlobalizationConstants.EnglishCultureInfo) + ParseColorNumber(newVal[2]).ToString("x", GlobalizationConstants.EnglishCultureInfo));
+            var newVal = value
+                .Substring(
+                    4,
+                    value.Length - 5)
+                .Split(',');
+            return ParseSolidColor(
+                "#" +
+                ParseColorNumber(newVal[0]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo) +
+                ParseColorNumber(newVal[1]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo) +
+                ParseColorNumber(newVal[2]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo));
         }
 
         if (value.StartsWith("rgba(", StringComparison.Ordinal))
         {
-            var newVal = value.Substring(5, value.Length - 6).Split(',');
-            return ParseSolidColor("#" + ParseColorNumber(newVal[0]).ToString("x", GlobalizationConstants.EnglishCultureInfo) + ParseColorNumber(newVal[1]).ToString("x", GlobalizationConstants.EnglishCultureInfo) + ParseColorNumber(newVal[2]).ToString("x", GlobalizationConstants.EnglishCultureInfo) + ParseColorNumber(newVal[3]).ToString("x", GlobalizationConstants.EnglishCultureInfo));
+            var newVal = value
+                .Substring(
+                    5,
+                    value.Length - 6)
+                .Split(',');
+            return ParseSolidColor(
+                "#" +
+                ParseColorNumber(newVal[0]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo) +
+                ParseColorNumber(newVal[1]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo) +
+                ParseColorNumber(newVal[2]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo) +
+                ParseColorNumber(newVal[3]).ToString(
+                    "x",
+                    GlobalizationConstants.EnglishCultureInfo));
         }
 
         return null;
@@ -201,7 +288,11 @@ internal sealed class PaintServerManager
             return NumberHelper.ParseToInt(value);
         }
 
-        var nr = int.Parse(value.AsSpan(0, value.Length - 1), GlobalizationConstants.EnglishCultureInfo);
+        var nr = int.Parse(
+            value.AsSpan(
+                0,
+                value.Length - 1),
+            GlobalizationConstants.EnglishCultureInfo);
         if (nr < 0)
         {
             nr = 255 - nr;
@@ -212,18 +303,24 @@ internal sealed class PaintServerManager
 
     private string? ParseKnownColor(string value)
     {
-        if (paintServers.TryGetValue(value, out _))
+        if (paintServers.TryGetValue(
+                value,
+                out _))
         {
             return value;
         }
 
-        var color = ColorHelper.GetColorFromString(value, GlobalizationConstants.EnglishCultureInfo);
+        var color = ColorHelper.GetColorFromString(
+            value,
+            GlobalizationConstants.EnglishCultureInfo);
         if (!color.HasValue)
         {
             return null;
         }
 
-        var paintServer = new SolidColorPaintServer(this, color.Value);
+        var paintServer = new SolidColorPaintServer(
+            this,
+            color.Value);
         paintServers[value] = paintServer;
         return value;
     }

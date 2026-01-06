@@ -12,13 +12,21 @@ public class AtcAppsException : Exception
     {
     }
 
-    public AtcAppsException(string message, Exception? innerException)
-        : base(message, innerException)
+    public AtcAppsException(
+        string message,
+        Exception? innerException)
+        : base(
+            message,
+            innerException)
     {
     }
 
-    protected AtcAppsException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
+    protected AtcAppsException(
+        SerializationInfo info,
+        StreamingContext context)
+        : base(
+            info,
+            context)
     {
     }
 }

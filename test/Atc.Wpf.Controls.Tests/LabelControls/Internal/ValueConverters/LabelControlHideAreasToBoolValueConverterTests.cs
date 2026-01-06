@@ -38,13 +38,20 @@ public sealed class LabelControlHideAreasToBoolValueConverterTests
     [InlineData(false, LabelControlHideAreasType.AsteriskAndValidation, LabelControlHideAreasType.Validation)]
     [InlineData(false, LabelControlHideAreasType.InformationAndValidation, LabelControlHideAreasType.Validation)]
     [InlineData(false, LabelControlHideAreasType.All, LabelControlHideAreasType.Validation)]
-    public void Convert(bool expected, LabelControlHideAreasType hideAreasType, LabelControlHideAreasType requiredHideAreasType)
+    public void Convert(
+        bool expected,
+        LabelControlHideAreasType hideAreasType,
+        LabelControlHideAreasType requiredHideAreasType)
     {
         // Arrange
         var sut = new LabelControlHideAreasToBoolValueConverter();
 
         // Act
-        var actual = sut.Convert(hideAreasType, null!, requiredHideAreasType, null!);
+        var actual = sut.Convert(
+            hideAreasType,
+            null!,
+            requiredHideAreasType,
+            null!);
 
         // Assert
         Assert.Equal(expected, actual);

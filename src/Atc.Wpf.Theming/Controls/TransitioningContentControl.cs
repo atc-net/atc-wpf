@@ -3,9 +3,16 @@ namespace Atc.Wpf.Theming.Controls;
 /// <summary>
 /// A ContentControl that animates content as it loads and unloads.
 /// </summary>
-[SuppressMessage("WpfAnalyzers.TemplatePart", "WPF0132:Use PART prefix", Justification = "OK.")]
-[TemplatePart(Name = PreviousContentPresentationSitePartName, Type = typeof(ContentPresenter))]
-[TemplatePart(Name = CurrentContentPresentationSitePartName, Type = typeof(ContentPresenter))]
+[SuppressMessage(
+    "WpfAnalyzers.TemplatePart",
+    "WPF0132:Use PART prefix",
+    Justification = "OK.")]
+[TemplatePart(
+    Name = PreviousContentPresentationSitePartName,
+    Type = typeof(ContentPresenter))]
+[TemplatePart(
+    Name = CurrentContentPresentationSitePartName,
+    Type = typeof(ContentPresenter))]
 public class TransitioningContentControl : ContentControl
 {
     internal const string PresentationGroup = "PresentationStates";
@@ -41,7 +48,9 @@ public class TransitioningContentControl : ContentControl
             allowIsTransitioningPropertyWrite = true;
             try
             {
-                SetValue(IsTransitioningProperty, BooleanBoxes.Box(value));
+                SetValue(
+                    IsTransitioningProperty,
+                    BooleanBoxes.Box(value));
             }
             finally
             {
@@ -65,7 +74,9 @@ public class TransitioningContentControl : ContentControl
     public TransitionType Transition
     {
         get => (TransitionType)GetValue(TransitionProperty);
-        set => SetValue(TransitionProperty, value);
+        set => SetValue(
+            TransitionProperty,
+            value);
     }
 
     public static readonly DependencyProperty RestartTransitionOnContentChangeProperty = DependencyProperty.Register(
@@ -82,7 +93,9 @@ public class TransitioningContentControl : ContentControl
     public bool RestartTransitionOnContentChange
     {
         get => (bool)GetValue(RestartTransitionOnContentChangeProperty);
-        set => SetValue(RestartTransitionOnContentChangeProperty, BooleanBoxes.Box(value));
+        set => SetValue(
+            RestartTransitionOnContentChangeProperty,
+            BooleanBoxes.Box(value));
     }
 
     public static readonly DependencyProperty CustomVisualStatesProperty = DependencyProperty.Register(
@@ -96,8 +109,11 @@ public class TransitioningContentControl : ContentControl
     /// </summary>
     public ObservableCollection<VisualState>? CustomVisualStates
     {
-        get => (ObservableCollection<VisualState>?)GetValue(CustomVisualStatesProperty);
-        set => SetValue(CustomVisualStatesProperty, value);
+        get =>
+            (ObservableCollection<VisualState>?)GetValue(CustomVisualStatesProperty);
+        set => SetValue(
+            CustomVisualStatesProperty,
+            value);
     }
 
     public static readonly DependencyProperty CustomVisualStatesNameProperty = DependencyProperty.Register(
@@ -112,7 +128,9 @@ public class TransitioningContentControl : ContentControl
     public string CustomVisualStatesName
     {
         get => (string)GetValue(CustomVisualStatesNameProperty);
-        set => SetValue(CustomVisualStatesNameProperty, value);
+        set => SetValue(
+            CustomVisualStatesNameProperty,
+            value);
     }
 
     internal Storyboard? CurrentTransition
@@ -165,13 +183,17 @@ public class TransitioningContentControl : ContentControl
 
         if (newStoryboard is null)
         {
-            if (VisualStates.TryGetVisualStateGroup(source, PresentationGroup) is null)
+            if (VisualStates.TryGetVisualStateGroup(
+                    source,
+                    PresentationGroup) is null)
             {
                 source.CurrentTransition = null;
             }
             else
             {
-                source.SetValue(TransitionProperty, oldTransition);
+                source.SetValue(
+                    TransitionProperty,
+                    oldTransition);
             }
         }
         else
@@ -184,7 +206,9 @@ public class TransitioningContentControl : ContentControl
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        ((TransitioningContentControl)d).OnRestartTransitionOnContentChangeChanged((bool)e.OldValue, (bool)e.NewValue);
+        ((TransitioningContentControl)d).OnRestartTransitionOnContentChangeChanged(
+            (bool)e.OldValue,
+            (bool)e.NewValue);
     }
 
     protected virtual void OnRestartTransitionOnContentChangeChanged(
@@ -208,7 +232,9 @@ public class TransitioningContentControl : ContentControl
 
         if (CustomVisualStates is not null && CustomVisualStates.Any())
         {
-            var presentationGroup = VisualStates.TryGetVisualStateGroup(this, PresentationGroup);
+            var presentationGroup = VisualStates.TryGetVisualStateGroup(
+                this,
+                PresentationGroup);
             if (presentationGroup is not null)
             {
                 foreach (var state in CustomVisualStates)
@@ -233,20 +259,33 @@ public class TransitioningContentControl : ContentControl
             throw new AtcAppsException($"'{invalidTransition}' transition could not be found!");
         }
 
-        VisualStateManager.GoToState(this, HiddenState, false);
+        VisualStateManager.GoToState(
+            this,
+            HiddenState,
+            false);
     }
 
-    protected override void OnContentChanged(object oldContent, object newContent)
+    protected override void OnContentChanged(
+        object oldContent,
+        object newContent)
     {
-        base.OnContentChanged(oldContent, newContent);
+        base.OnContentChanged(
+            oldContent,
+            newContent);
 
         if (oldContent != newContent)
         {
-            StartTransition(oldContent, newContent);
+            StartTransition(
+                oldContent,
+                newContent);
         }
     }
 
-    [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "newContent", Justification = "Should be used in the future.")]
+    [SuppressMessage(
+        "Microsoft.Usage",
+        "CA1801:ReviewUnusedParameters",
+        MessageId = "newContent",
+        Justification = "Should be used in the future.")]
     private void StartTransition(
         object oldContent,
         object newContent)
@@ -260,8 +299,12 @@ public class TransitioningContentControl : ContentControl
                 CurrentTransition.Completed -= OnTransitionCompleted;
             }
 
-            currentContentPresentationSite.SetCurrentValue(ContentPresenter.ContentProperty, newContent);
-            previousContentPresentationSite.SetCurrentValue(ContentPresenter.ContentProperty, oldContent);
+            currentContentPresentationSite.SetCurrentValue(
+                ContentPresenter.ContentProperty,
+                newContent);
+            previousContentPresentationSite.SetCurrentValue(
+                ContentPresenter.ContentProperty,
+                oldContent);
 
             // and start a new transition
             if (!IsTransitioning || RestartTransitionOnContentChange)
@@ -273,8 +316,14 @@ public class TransitioningContentControl : ContentControl
                 }
 
                 IsTransitioning = true;
-                VisualStateManager.GoToState(this, HiddenState, false);
-                VisualStateManager.GoToState(this, GetTransitionName(Transition), true);
+                VisualStateManager.GoToState(
+                    this,
+                    HiddenState,
+                    false);
+                VisualStateManager.GoToState(
+                    this,
+                    GetTransitionName(Transition),
+                    true);
             }
         }
     }
@@ -302,8 +351,14 @@ public class TransitioningContentControl : ContentControl
                 }
 
                 IsTransitioning = true;
-                VisualStateManager.GoToState(this, HiddenState, false);
-                VisualStateManager.GoToState(this, GetTransitionName(Transition), true);
+                VisualStateManager.GoToState(
+                    this,
+                    HiddenState,
+                    false);
+                VisualStateManager.GoToState(
+                    this,
+                    GetTransitionName(Transition),
+                    true);
             }
         }
     }
@@ -316,37 +371,44 @@ public class TransitioningContentControl : ContentControl
         if (sender is not ClockGroup clockGroup ||
             clockGroup.CurrentState == ClockState.Stopped)
         {
-            TransitionCompleted?.Invoke(this, new RoutedEventArgs());
+            TransitionCompleted?.Invoke(
+                this,
+                new RoutedEventArgs());
         }
     }
 
     public void AbortTransition()
     {
         // go to normal state and release our hold on the old content.
-        VisualStateManager.GoToState(this, HiddenState, false);
+        VisualStateManager.GoToState(
+            this,
+            HiddenState,
+            false);
         IsTransitioning = false;
-        previousContentPresentationSite?.SetCurrentValue(ContentPresenter.ContentProperty, null);
+        previousContentPresentationSite?.SetCurrentValue(
+            ContentPresenter.ContentProperty,
+            null);
     }
 
-    private Storyboard? GetStoryboard(
-        TransitionType newTransition)
+    private Storyboard? GetStoryboard(TransitionType newTransition)
     {
-        var presentationGroup = VisualStates.TryGetVisualStateGroup(this, PresentationGroup);
-        if (presentationGroup is not null)
+        var presentationGroup = VisualStates.TryGetVisualStateGroup(
+            this,
+            PresentationGroup);
+        if (presentationGroup is null)
         {
-            var transitionName = GetTransitionName(newTransition);
-            return presentationGroup.States
-                .OfType<VisualState>()
-                .Where(state => state.Name == transitionName)
-                .Select(state => state.Storyboard)
-                .FirstOrDefault();
+            return null;
         }
 
-        return null;
+        var transitionName = GetTransitionName(newTransition);
+        return presentationGroup.States
+            .OfType<VisualState>()
+            .Where(state => state.Name == transitionName)
+            .Select(state => state.Storyboard)
+            .FirstOrDefault();
     }
 
-    private string GetTransitionName(
-        TransitionType transition)
+    private string GetTransitionName(TransitionType transition)
         => transition switch
         {
             TransitionType.Default => "DefaultTransition",

@@ -14,7 +14,12 @@ internal sealed class Fill
 
     public double Opacity { get; set; }
 
-    public Brush? FillBrush(Svg svg, SvgRender svgRender, Shape shape, double elementOpacity, Rect bounds)
+    public Brush? FillBrush(
+        Svg svg,
+        SvgRender svgRender,
+        Shape shape,
+        double elementOpacity,
+        Rect bounds)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(shape);
@@ -35,13 +40,21 @@ internal sealed class Fill
             var shapePaintServer = svg.PaintServers.GetServer(shape.PaintServerKey);
             if (shapePaintServer is not null)
             {
-                return shapePaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
+                return shapePaintServer.GetBrush(
+                    Opacity * elementOpacity,
+                    svg,
+                    svgRender,
+                    bounds);
             }
         }
 
         if (paintServer is not InheritPaintServer)
         {
-            return paintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
+            return paintServer.GetBrush(
+                Opacity * elementOpacity,
+                svg,
+                svgRender,
+                bounds);
         }
 
         var p = shape.RealParent;
@@ -52,7 +65,11 @@ internal sealed class Fill
                 var checkPaintServer = svg.PaintServers.GetServer(p.Fill.PaintServerKey);
                 if (checkPaintServer is not null && checkPaintServer is not InheritPaintServer)
                 {
-                    return checkPaintServer.GetBrush(Opacity * elementOpacity, svg, svgRender, bounds);
+                    return checkPaintServer.GetBrush(
+                        Opacity * elementOpacity,
+                        svg,
+                        svgRender,
+                        bounds);
                 }
             }
 

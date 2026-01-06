@@ -21,7 +21,9 @@ public sealed class MultiFrameImage : Image
 
     static MultiFrameImage()
     {
-        SourceProperty.OverrideMetadata(typeof(MultiFrameImage), new FrameworkPropertyMetadata(OnSourceChanged));
+        SourceProperty.OverrideMetadata(
+            typeof(MultiFrameImage),
+            new FrameworkPropertyMetadata(OnSourceChanged));
     }
 
     private static void OnSourceChanged(
@@ -48,7 +50,9 @@ public sealed class MultiFrameImage : Image
             .Frames
             .GroupBy(f => f.PixelWidth * f.PixelHeight)
             .OrderBy(g => g.Key)
-            .Select(g => g.OrderByDescending(f => f.Format.BitsPerPixel).First()));
+            .Select(g => g
+                .OrderByDescending(f => f.Format.BitsPerPixel)
+                .First()));
     }
 
     protected override void OnRender(DrawingContext dc)
@@ -66,12 +70,16 @@ public sealed class MultiFrameImage : Image
             case MultiFrameImageMode.ScaleDownLargerFrame:
                 var minSize = System.Math.Max(RenderSize.Width, RenderSize.Height);
                 var minFrame = frames.Find(f => f.Width >= minSize && f.Height >= minSize) ?? frames.Last();
-                dc.DrawImage(minFrame, new Rect(0, 0, RenderSize.Width, RenderSize.Height));
+                dc.DrawImage(
+                    minFrame,
+                    new Rect(0, 0, RenderSize.Width, RenderSize.Height));
                 break;
             case MultiFrameImageMode.NoScaleSmallerFrame:
                 var maxSize = System.Math.Min(RenderSize.Width, RenderSize.Height);
                 var maxFrame = frames.LastOrDefault(f => f.Width <= maxSize && f.Height <= maxSize) ?? frames[0];
-                dc.DrawImage(maxFrame, new Rect((RenderSize.Width - maxFrame.Width) / 2, (RenderSize.Height - maxFrame.Height) / 2, maxFrame.Width, maxFrame.Height));
+                dc.DrawImage(
+                    maxFrame,
+                    new Rect((RenderSize.Width - maxFrame.Width) / 2, (RenderSize.Height - maxFrame.Height) / 2, maxFrame.Width, maxFrame.Height));
                 break;
             default:
                 throw new SwitchCaseDefaultException(MultiFrameImageMode);

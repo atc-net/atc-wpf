@@ -10,12 +10,14 @@ public sealed class StringNullOrEmptyToVisibilityVisibleValueConverter : IValueC
     public static readonly StringNullOrEmptyToVisibilityVisibleValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is null || string.IsNullOrEmpty(value.ToString())
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is null || string.IsNullOrEmpty(value.ToString())
             ? Visibility.Visible
             : Visibility.Collapsed;
-    }
 
     /// <inheritdoc />
     public object ConvertBack(

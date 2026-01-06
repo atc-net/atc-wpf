@@ -13,30 +13,49 @@ public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
 {
     public MathOperation Operation { get; set; }
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return DoConvert(value, parameter, Operation);
-    }
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => DoConvert(
+            value,
+            parameter,
+            Operation);
 
-    public object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return values is null
+    public object? Convert(
+        object[]? values,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => values is null
             ? Binding.DoNothing
-            : DoConvert(values.ElementAtOrDefault(0), values.ElementAtOrDefault(1), Operation);
-    }
+            : DoConvert(
+                values.ElementAtOrDefault(0),
+                values.ElementAtOrDefault(1),
+                Operation);
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return DependencyProperty.UnsetValue;
-    }
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => DependencyProperty.UnsetValue;
 
-    public object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-        return targetTypes.Select(_ => DependencyProperty.UnsetValue).ToArray();
-    }
+    public object[] ConvertBack(
+        object? value,
+        Type[] targetTypes,
+        object? parameter,
+        CultureInfo culture)
+        => targetTypes
+            .Select(_ => DependencyProperty.UnsetValue)
+            .ToArray();
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]
-    private static object? DoConvert(object? firstValue, object? secondValue, MathOperation operation)
+    private static object? DoConvert(
+        object? firstValue,
+        object? secondValue,
+        MathOperation operation)
     {
         if (firstValue is null ||
             secondValue is null ||
@@ -50,8 +69,16 @@ public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
 
         try
         {
-            var value1 = (firstValue as double?).GetValueOrDefault(System.Convert.ToDouble(firstValue, CultureInfo.InvariantCulture));
-            var value2 = (secondValue as double?).GetValueOrDefault(System.Convert.ToDouble(secondValue, CultureInfo.InvariantCulture));
+            var value1 = (firstValue as double?)
+                .GetValueOrDefault(
+                    System.Convert.ToDouble(
+                        firstValue,
+                        CultureInfo.InvariantCulture));
+            var value2 = (secondValue as double?)
+                .GetValueOrDefault(
+                    System.Convert.ToDouble(
+                        secondValue,
+                        CultureInfo.InvariantCulture));
 
             switch (operation)
             {

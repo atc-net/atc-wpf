@@ -2,8 +2,7 @@ namespace Atc.Wpf.Theming.Helpers;
 
 public static class CommandHelpers
 {
-    public static bool CanExecuteCommandSource(
-        ICommandSource commandSource)
+    public static bool CanExecuteCommandSource(ICommandSource commandSource)
     {
         ArgumentNullException.ThrowIfNull(commandSource);
 
@@ -17,7 +16,9 @@ public static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            return routedCommand.CanExecute(commandParameter, target);
+            return routedCommand.CanExecute(
+                commandParameter,
+                target);
         }
 
         return command.CanExecute(commandParameter);
@@ -38,7 +39,9 @@ public static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            return routedCommand.CanExecute(commandParameter, target);
+            return routedCommand.CanExecute(
+                commandParameter,
+                target);
         }
 
         return command.CanExecute(commandParameter);
@@ -46,20 +49,17 @@ public static class CommandHelpers
 
     [SecurityCritical]
     [SecuritySafeCritical]
-    public static void ExecuteCommandSource(
-        ICommandSource commandSource)
-    {
-        CriticalExecuteCommandSource(commandSource);
-    }
+    public static void ExecuteCommandSource(ICommandSource commandSource)
+        => CriticalExecuteCommandSource(commandSource);
 
     [SecurityCritical]
     [SecuritySafeCritical]
     public static void ExecuteCommandSource(
         ICommandSource commandSource,
         ICommand? command)
-    {
-        CriticalExecuteCommandSource(commandSource, command);
-    }
+        => CriticalExecuteCommandSource(
+            commandSource,
+            command);
 
     [SecurityCritical]
     public static void CriticalExecuteCommandSource(
@@ -77,9 +77,13 @@ public static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            if (routedCommand.CanExecute(commandParameter, target))
+            if (routedCommand.CanExecute(
+                commandParameter,
+                target))
             {
-                routedCommand.Execute(commandParameter, target);
+                routedCommand.Execute(
+                    commandParameter,
+                    target);
             }
         }
         else
@@ -107,9 +111,13 @@ public static class CommandHelpers
         if (command is RoutedCommand routedCommand)
         {
             var target = commandSource.CommandTarget ?? commandSource as IInputElement;
-            if (routedCommand.CanExecute(commandParameter, target))
+            if (routedCommand.CanExecute(
+                commandParameter,
+                target))
             {
-                routedCommand.Execute(commandParameter, target);
+                routedCommand.Execute(
+                    commandParameter,
+                    target);
             }
         }
         else

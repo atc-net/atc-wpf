@@ -57,8 +57,7 @@ public static class CornerRadiusExtensions
     /// </summary>
     /// <param name="cornerRadius">CornerRadius</param>
     /// <returns>Size</returns>
-    public static bool IsZero(
-        this CornerRadius cornerRadius)
+    public static bool IsZero(this CornerRadius cornerRadius)
         => cornerRadius.TopLeft.IsZero() &&
            cornerRadius.TopRight.IsZero() &&
            cornerRadius.BottomRight.IsZero() &&
@@ -69,8 +68,7 @@ public static class CornerRadiusExtensions
     /// </summary>
     /// <param name="corner">CornerRadius</param>
     /// <returns>true if yes, otherwise false</returns>
-    public static bool IsUniform(
-        this CornerRadius corner)
+    public static bool IsUniform(this CornerRadius corner)
     {
         var topLeft = corner.TopLeft;
         return topLeft.AreClose(corner.TopRight) &&
@@ -78,8 +76,7 @@ public static class CornerRadiusExtensions
                topLeft.AreClose(corner.BottomRight);
     }
 
-    private static bool IsNaN(
-        double value)
+    private static bool IsNaN(double value)
     {
         var t = new NanUnion
         {

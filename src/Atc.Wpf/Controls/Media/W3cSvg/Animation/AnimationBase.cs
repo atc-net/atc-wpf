@@ -2,7 +2,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Animation;
 
 internal class AnimationBase : Shape
 {
-    public AnimationBase(Svg svg, XmlNode node, Shape parent)
+    public AnimationBase(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
         var dur = SvgXmlUtil.AttrValue(node, "dur", string.Empty);
@@ -27,5 +30,6 @@ internal class AnimationBase : Shape
 
     public TimeSpan Duration { get; init; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(Duration)}: {Duration}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(Duration)}: {Duration}";
 }

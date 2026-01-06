@@ -7,8 +7,7 @@ public struct PanelUvSize : IEquatable<PanelUvSize>
 {
     private readonly Orientation orientation;
 
-    public PanelUvSize(
-        Orientation orientation)
+    public PanelUvSize(Orientation orientation)
     {
         U = V = 0d;
         this.orientation = orientation;

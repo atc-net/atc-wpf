@@ -2,14 +2,11 @@ namespace Atc.Wpf.Theming.Automation.Peers;
 
 public sealed class NiceWindowAutomationPeer : WindowAutomationPeer
 {
-    public NiceWindowAutomationPeer(
-        Window owner)
+    public NiceWindowAutomationPeer(Window owner)
         : base(owner)
     {
     }
 
     protected override string GetClassNameCore()
-    {
-        return "NiceWindow";
-    }
+        => "NiceWindow";
 }

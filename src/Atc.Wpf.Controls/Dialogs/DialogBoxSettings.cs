@@ -65,8 +65,23 @@ public sealed class DialogBoxSettings
         : this(
             dialogBoxType,
             iconShapeAndColor,
-            (Color)new LogCategoryTypeToColorValueConverter().Convert(iconShapeAndColor, typeof(Color), parameter: null, CultureInfo.CurrentUICulture))
+            Convert(iconShapeAndColor))
     {
+    }
+
+    private static Color Convert(LogCategoryType iconShapeAndColor)
+    {
+        var converter = new LogCategoryTypeToColorValueConverter();
+
+        var o = converter.Convert(
+            iconShapeAndColor,
+            typeof(Color),
+            parameter: null,
+            CultureInfo.CurrentUICulture);
+
+        return o is null
+            ? Colors.DeepPink
+            : (Color)o;
     }
 
     public double Width { get; set; } = 350;
@@ -137,8 +152,7 @@ public sealed class DialogBoxSettings
 
     public LabelInputFormPanelSettings Form { get; set; }
 
-    public static DialogBoxSettings Create(
-        DialogBoxType dialogBoxType)
+    public static DialogBoxSettings Create(DialogBoxType dialogBoxType)
         => new(dialogBoxType);
 
     public override string ToString()

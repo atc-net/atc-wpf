@@ -6,20 +6,31 @@ internal abstract class GradientColorPaintServer : PaintServer
     private readonly List<GradientStop> gradientStop = new();
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
-    protected GradientColorPaintServer(PaintServerManager owner, XmlNode node)
+    protected GradientColorPaintServer(
+        PaintServerManager owner,
+        XmlNode node)
         : base(owner)
     {
         ArgumentNullException.ThrowIfNull(owner);
         ArgumentNullException.ThrowIfNull(node);
 
-        GradientUnits = SvgXmlUtil.AttrValue(node, "gradientUnits", string.Empty);
-        var transform = SvgXmlUtil.AttrValue(node, "gradientTransform", string.Empty);
+        GradientUnits = SvgXmlUtil.AttrValue(
+            node,
+            "gradientUnits",
+            string.Empty);
+        var transform = SvgXmlUtil.AttrValue(
+            node,
+            "gradientTransform",
+            string.Empty);
         if (!string.IsNullOrEmpty(transform))
         {
             Transform = ShapeUtil.ParseTransform(transform.ToLower(GlobalizationConstants.EnglishCultureInfo));
         }
 
-        var refId = SvgXmlUtil.AttrValue(node, "xlink:href", string.Empty);
+        var refId = SvgXmlUtil.AttrValue(
+            node,
+            "xlink:href",
+            string.Empty);
         if (node.ChildNodes.Count == 0 && !string.IsNullOrEmpty(refId))
         {
             var paintServerKey = owner.Parse(refId.Substring(1));
@@ -44,25 +55,46 @@ internal abstract class GradientColorPaintServer : PaintServer
             }
 
             var styleAttr = new List<KeyValueItem>();
-            var fullStyle = SvgXmlUtil.AttrValue(childNode, SvgTagConstants.Style, string.Empty);
+            var fullStyle = SvgXmlUtil.AttrValue(
+                childNode,
+                SvgTagConstants.Style,
+                string.Empty);
             if (!string.IsNullOrEmpty(fullStyle))
             {
-                styleAttr.AddRange(SvgXmlUtil.SplitStyle(fullStyle).Select(x => new KeyValueItem(x.Key, x.Value)));
+                styleAttr.AddRange(
+                    SvgXmlUtil
+                        .SplitStyle(fullStyle)
+                        .Select(x => new KeyValueItem(
+                            x.Key,
+                            x.Value)));
             }
 
             foreach (var attr in styleAttr)
             {
-                childNode.Attributes?.Append(new TempXmlAttribute(childNode, attr.Key, attr.Value));
+                childNode.Attributes?.Append(
+                    new TempXmlAttribute(
+                        childNode,
+                        attr.Key,
+                        attr.Value));
             }
 
-            var offset = SvgXmlUtil.AttrValue(childNode, "offset", 0);
-            var stopColor = SvgXmlUtil.AttrValue(childNode, "stop-color", "#0");
+            var offset = SvgXmlUtil.AttrValue(
+                childNode,
+                "offset",
+                0);
+            var stopColor = SvgXmlUtil.AttrValue(
+                childNode,
+                "stop-color",
+                "#0");
             if (stopColor is null)
             {
                 continue;
             }
 
-            var stopOpacity = SvgXmlUtil.AttrValue(childNode, "stop-opacity", 1);
+            var stopOpacity = SvgXmlUtil.AttrValue(
+                childNode,
+                "stop-opacity",
+                1);
 
             var color = stopColor.StartsWith('#')
                 ? ColorHelper.GetColorFromHex(stopColor)
@@ -75,7 +107,11 @@ internal abstract class GradientColorPaintServer : PaintServer
 
             if (!stopOpacity.Equals(1))
             {
-                color = Color.FromArgb((byte)(stopOpacity * 255), color.Value.R, color.Value.G, color.Value.B);
+                color = Color.FromArgb(
+                    (byte)(stopOpacity * 255),
+                    color.Value.R,
+                    color.Value.G,
+                    color.Value.B);
             }
 
             if (offset > 1)
@@ -83,7 +119,10 @@ internal abstract class GradientColorPaintServer : PaintServer
                 offset /= 100;
             }
 
-            gradientStop.Add(new GradientStop(color.Value, offset));
+            gradientStop.Add(
+                new GradientStop(
+                    color.Value,
+                    offset));
         }
     }
 
@@ -100,8 +139,15 @@ internal abstract class GradientColorPaintServer : PaintServer
 
     public sealed class TempXmlAttribute : XmlAttribute
     {
-        public TempXmlAttribute(XmlNode owner, string name, string value)
-            : base(string.Empty, name, string.Empty, owner.OwnerDocument!)
+        public TempXmlAttribute(
+            XmlNode owner,
+            string name,
+            string value)
+            : base(
+                string.Empty,
+                name,
+                string.Empty,
+                owner.OwnerDocument!)
         {
             Value = value;
         }

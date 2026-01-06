@@ -6,12 +6,10 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
     private readonly BasicApplicationSettingsViewModel applicationSettingsBackup;
 
     public IRelayCommand<NiceDialogBox> OkCommand
-        => new RelayCommand<NiceDialogBox>(
-            OkCommandHandler);
+        => new RelayCommand<NiceDialogBox>(OkCommandHandler);
 
     public IRelayCommand<NiceDialogBox> CancelCommand
-        => new RelayCommand<NiceDialogBox>(
-            CancelCommandHandler);
+        => new RelayCommand<NiceDialogBox>(CancelCommandHandler);
 
     public BasicApplicationSettingsDialogBoxViewModel(
         BasicApplicationSettingsViewModel basicApplicationSettingsViewModel)
@@ -128,8 +126,7 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
         ApplicationSettings.Language = e.NewCulture.Name;
     }
 
-    private void OkCommandHandler(
-        NiceDialogBox dialogBox)
+    private void OkCommandHandler(NiceDialogBox dialogBox)
     {
         ThemeManager.Current.ThemeChanged -= OnThemeChanged;
 
@@ -147,8 +144,7 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
         dialogBox.Close();
     }
 
-    private void CancelCommandHandler(
-        NiceDialogBox dialogBox)
+    private void CancelCommandHandler(NiceDialogBox dialogBox)
     {
         ThemeManager.Current.ThemeChanged -= OnThemeChanged;
 

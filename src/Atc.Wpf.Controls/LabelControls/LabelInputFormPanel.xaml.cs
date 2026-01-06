@@ -8,8 +8,7 @@ public partial class LabelInputFormPanel
         DataContext = this;
     }
 
-    public LabelInputFormPanel(
-        ILabelControlsForm labelInputFormPanel)
+    public LabelInputFormPanel(ILabelControlsForm labelInputFormPanel)
         : this()
     {
         Render(
@@ -86,8 +85,7 @@ public partial class LabelInputFormPanel
         };
     }
 
-    private void UpdateSettingContentControls(
-        Panel panel)
+    private void UpdateSettingContentControls(Panel panel)
     {
         foreach (UIElement uiElement in panel.Children)
         {

@@ -2,7 +2,10 @@ namespace Atc.Wpf.Serialization.JsonConverters;
 
 public sealed class ColorToNameJsonConverter : JsonConverter<Color?>
 {
-    public override Color? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Color? Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
     {
         var colorName = reader.GetString();
         return string.IsNullOrEmpty(colorName)
@@ -10,7 +13,10 @@ public sealed class ColorToNameJsonConverter : JsonConverter<Color?>
             : ColorHelper.GetColorFromString(colorName, GlobalizationConstants.EnglishCultureInfo);
     }
 
-    public override void Write(Utf8JsonWriter writer, Color? value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        Color? value,
+        JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
 

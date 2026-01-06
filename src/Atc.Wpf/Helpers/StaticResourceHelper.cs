@@ -17,8 +17,7 @@ public static class StaticResourceHelper
             typeof(StaticResourceHelper),
             new PropertyMetadata(OnResourceKeyChanged));
 
-    public static DependencyProperty GetProperty(
-        FrameworkElement element)
+    public static DependencyProperty GetProperty(FrameworkElement element)
         => (DependencyProperty)element.GetValue(PropertyProperty);
 
     public static void SetProperty(
@@ -26,8 +25,7 @@ public static class StaticResourceHelper
         DependencyProperty value)
         => element.SetValue(PropertyProperty, value);
 
-    public static object GetResourceKey(
-        FrameworkElement element)
+    public static object GetResourceKey(FrameworkElement element)
         => element.GetValue(ResourceKeyProperty);
 
     public static void SetResourceKey(

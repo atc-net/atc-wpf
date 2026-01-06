@@ -19,7 +19,11 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
     public ThicknessSideType TakeThicknessSide { get; set; } = ThicknessSideType.None;
 
     /// <inheritdoc />
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is not Thickness thickness)
         {
@@ -39,7 +43,11 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
     }
 
     /// <inheritdoc />
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is not double doubleValue)
         {
@@ -59,12 +67,7 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
     }
 
     private ThicknessSideType GetThicknessSide(object? parameter)
-    {
-        if (parameter is ThicknessSideType sideType)
-        {
-            return sideType;
-        }
-
-        return TakeThicknessSide;
-    }
+        => parameter is ThicknessSideType sideType
+            ? sideType
+            : TakeThicknessSide;
 }

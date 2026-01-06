@@ -15,7 +15,9 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         var detectTheme = ThemeManager.Current.DetectTheme(this);
         if (detectTheme is not null)
         {
-            SelectedKey = detectTheme.Name.Split('.').Last();
+            SelectedKey = detectTheme.Name
+                .Split('.')
+                .Last();
         }
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;
@@ -40,14 +42,18 @@ public partial class AccentColorSelector : INotifyPropertyChanged
             selectedKey = value;
             OnPropertyChanged();
 
-            ThemeManager.Current.ChangeThemeColorScheme(Application.Current, SelectedKey);
+            ThemeManager.Current.ChangeThemeColorScheme(
+                Application.Current,
+                SelectedKey);
         }
     }
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(
+            this,
+            new PropertyChangedEventArgs(propertyName));
     }
 
     private void PopulateData()
@@ -62,10 +68,16 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         var list = new List<ColorItem>();
         foreach (var item in ThemeManager.Current
                      .Themes
-                     .Where(x => !x.ColorScheme.Contains('.', StringComparison.Ordinal))
-                     .GroupBy(x => x.ColorScheme, StringComparer.Ordinal)
+                     .Where(x => !x.ColorScheme.Contains(
+                         '.',
+                         StringComparison.Ordinal))
+                     .GroupBy(
+                         x => x.ColorScheme,
+                         StringComparer.Ordinal)
                      .Select(x => x.First())
-                     .OrderBy(x => x.ColorScheme, StringComparer.Ordinal))
+                     .OrderBy(
+                         x => x.ColorScheme,
+                         StringComparer.Ordinal))
         {
             var translatedName = ColorNames.ResourceManager.GetString(
                 item.ColorScheme,
@@ -81,7 +93,9 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         }
 
         Items = list
-            .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
+            .OrderBy(
+                x => x.DisplayName,
+                StringComparer.Ordinal)
             .ToList();
     }
 

@@ -2,13 +2,17 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
 internal sealed class SolidColorPaintServer : PaintServer
 {
-    public SolidColorPaintServer(PaintServerManager owner, Color color)
+    public SolidColorPaintServer(
+        PaintServerManager owner,
+        Color color)
         : base(owner)
     {
         Color = color;
     }
 
-    public SolidColorPaintServer(PaintServerManager owner, Brush brush)
+    public SolidColorPaintServer(
+        PaintServerManager owner,
+        Brush brush)
         : base(owner)
     {
         Brush = brush;
@@ -16,7 +20,11 @@ internal sealed class SolidColorPaintServer : PaintServer
 
     public Color Color { get; }
 
-    public override Brush? GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
+    public override Brush? GetBrush(
+        double opacity,
+        Svg svg,
+        SvgRender svgRender,
+        Rect bounds)
     {
         if (Brush is not null)
         {

@@ -14,12 +14,9 @@ internal sealed class IndicatorVisualStateNames : MarkupExtension
     public string Name { get; }
 
     public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return Name;
-    }
+        => Name;
 
-    private IndicatorVisualStateNames(
-        string name)
+    private IndicatorVisualStateNames(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {

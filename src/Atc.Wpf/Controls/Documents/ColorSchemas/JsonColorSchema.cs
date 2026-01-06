@@ -85,8 +85,7 @@ public static class JsonColorSchema
             ? LightNullBrush
             : DarkNullBrush;
 
-    public static void SetThemeMode(
-        ThemeMode themeMode)
+    public static void SetThemeMode(ThemeMode themeMode)
     {
         if (Equals(mode, themeMode))
         {

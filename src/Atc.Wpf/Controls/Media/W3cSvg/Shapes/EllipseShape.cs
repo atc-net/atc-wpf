@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class EllipseShape : Shape
 {
-    public EllipseShape(Svg svg, XmlNode node)
+    public EllipseShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
         ArgumentNullException.ThrowIfNull(svg);
@@ -24,5 +26,6 @@ internal sealed class EllipseShape : Shape
 
     public double Ry { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(Cx)}: {Cx}, {nameof(Cy)}: {Cy}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(Cx)}: {Cx}, {nameof(Cy)}: {Cy}, {nameof(Rx)}: {Rx}, {nameof(Ry)}: {Ry}";
 }

@@ -56,8 +56,7 @@ public partial class SvgImageListView
         LoadFiles(svgFiles);
     }
 
-    private void LoadFiles(
-        IEnumerable<FileInfo> svgFiles)
+    private void LoadFiles(IEnumerable<FileInfo> svgFiles)
     {
         UsagePanel.Children.Clear();
         foreach (var svgFile in svgFiles)

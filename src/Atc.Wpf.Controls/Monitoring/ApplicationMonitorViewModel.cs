@@ -16,7 +16,9 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
     {
         Entries = [];
         filter = new ApplicationFilterViewModel();
-        BindingOperations.EnableCollectionSynchronization(Entries, SyncLock);
+        BindingOperations.EnableCollectionSynchronization(
+            Entries,
+            SyncLock);
         view = CollectionViewSource.GetDefaultView(Entries);
         view.SortDescriptions.Clear();
         AutoScroll = true;
@@ -26,7 +28,9 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 
         FilterChangeCommandHandler();
 
-        MessengerInstance.Register<ApplicationEventEntry>(this, OnApplicationEventEntryHandler);
+        MessengerInstance.Register<ApplicationEventEntry>(
+            this,
+            OnApplicationEventEntryHandler);
 
         if (XamlToolkit.Helpers.DesignModeHelper.IsInDesignMode)
         {
@@ -36,14 +40,17 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 
     public IRelayCommand ClearCommand => new RelayCommand(ClearCommandHandler);
 
-    public IRelayCommand FilterChangeCommand => new RelayCommand(FilterChangeCommandHandler);
+    public IRelayCommand FilterChangeCommand
+        => new RelayCommand(FilterChangeCommandHandler);
 
     public ApplicationFilterViewModel Filter
     {
         get => filter;
         set
         {
-            if (Equals(value, filter))
+            if (Equals(
+                    value,
+                    filter))
             {
                 return;
             }
@@ -73,7 +80,9 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
         get => selectedEntry;
         set
         {
-            if (Equals(value, selectedEntry))
+            if (Equals(
+                    value,
+                    selectedEntry))
             {
                 return;
             }
@@ -119,9 +128,11 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
         }
     }
 
-    public bool IsScrollingUp => AutoScroll && SortDirection == ListSortDirection.Ascending;
+    public bool IsScrollingUp
+        => AutoScroll && SortDirection == ListSortDirection.Ascending;
 
-    public bool IsScrollingDown => AutoScroll && SortDirection == ListSortDirection.Descending;
+    public bool IsScrollingDown
+        => AutoScroll && SortDirection == ListSortDirection.Descending;
 
     public string MatchOnText
     {
@@ -151,17 +162,20 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 
             if (listenOnToastNotificationMessage)
             {
-                MessengerInstance.Register<ToastNotificationMessage>(this, OnToastNotificationMessageHandler);
+                MessengerInstance.Register<ToastNotificationMessage>(
+                    this,
+                    OnToastNotificationMessageHandler);
             }
             else
             {
-                MessengerInstance.UnRegister<ToastNotificationMessage>(this, OnToastNotificationMessageHandler);
+                MessengerInstance.UnRegister<ToastNotificationMessage>(
+                    this,
+                    OnToastNotificationMessageHandler);
             }
         }
     }
 
-    public void AddEntry(
-        ApplicationEventEntry entry)
+    public void AddEntry(ApplicationEventEntry entry)
     {
         lock (SyncLock)
         {
@@ -188,12 +202,15 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 
     public void Dispose()
     {
-        MessengerInstance.UnRegister<ApplicationEventEntry>(this, OnApplicationEventEntryHandler);
-        MessengerInstance.UnRegister<ToastNotificationMessage>(this, OnToastNotificationMessageHandler);
+        MessengerInstance.UnRegister<ApplicationEventEntry>(
+            this,
+            OnApplicationEventEntryHandler);
+        MessengerInstance.UnRegister<ToastNotificationMessage>(
+            this,
+            OnToastNotificationMessageHandler);
     }
 
-    private void OnApplicationEventEntryHandler(
-        ApplicationEventEntry entry)
+    private void OnApplicationEventEntryHandler(ApplicationEventEntry entry)
         => AddEntry(entry);
 
     private void OnToastNotificationMessageHandler(
@@ -253,12 +270,21 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
             if (ShowColumnArea)
             {
                 return string.IsNullOrEmpty(filter.MatchOnTextInData) ||
-                       entry.Area.Contains(filter.MatchOnTextInData, StringComparison.OrdinalIgnoreCase) ||
-                       entry.Message.Contains(filter.MatchOnTextInData, StringComparison.OrdinalIgnoreCase);
+                       entry.Area
+                           .Contains(
+                               filter.MatchOnTextInData,
+                               StringComparison.OrdinalIgnoreCase) ||
+                       entry.Message
+                           .Contains(
+                               filter.MatchOnTextInData,
+                               StringComparison.OrdinalIgnoreCase);
             }
 
             return string.IsNullOrEmpty(filter.MatchOnTextInData) ||
-                   entry.Message.Contains(filter.MatchOnTextInData, StringComparison.OrdinalIgnoreCase);
+                   entry.Message
+                       .Contains(
+                           filter.MatchOnTextInData,
+                           StringComparison.OrdinalIgnoreCase);
         };
     }
 }

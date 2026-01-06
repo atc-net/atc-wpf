@@ -37,9 +37,7 @@ public partial class LabelIntegerBox : ILabelIntegerBox
     }
 
     public override bool IsValid()
-    {
-        return string.IsNullOrEmpty(ValidationText);
-    }
+        => string.IsNullOrEmpty(ValidationText);
 
     private static void OnValueLostFocus(
         DependencyObject d,

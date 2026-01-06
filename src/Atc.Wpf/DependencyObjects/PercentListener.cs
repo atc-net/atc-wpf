@@ -21,7 +21,8 @@ public sealed partial class PercentListener : DependencyObject
     /// <summary>
     /// Gets MessageListener instance.
     /// </summary>
-    public static PercentListener Instance => percentListener ??= new PercentListener();
+    public static PercentListener Instance
+        => percentListener ??= new PercentListener();
 
     /// <summary>
     /// Receives the percent.

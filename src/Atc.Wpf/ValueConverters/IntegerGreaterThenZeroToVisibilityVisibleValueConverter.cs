@@ -9,7 +9,11 @@ public sealed class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IV
     public static readonly IntegerGreaterThenZeroToVisibilityVisibleValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is null)
         {

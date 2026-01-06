@@ -100,7 +100,8 @@ public class StringValidationRule : ValidationRule
     private static string[] SplitCsv(string? csv)
         => string.IsNullOrWhiteSpace(csv)
             ? []
-            : csv.Split(',')
+            : csv
+                .Split(',')
                 .Select(s => s.Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToArray();

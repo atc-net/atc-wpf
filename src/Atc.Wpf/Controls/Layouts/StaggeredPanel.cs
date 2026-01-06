@@ -85,8 +85,7 @@ public sealed partial class StaggeredPanel : Panel
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride(
-        Size availableSize)
+    protected override Size MeasureOverride(Size availableSize)
     {
         if (Children.Count == 0)
         {
@@ -141,8 +140,7 @@ public sealed partial class StaggeredPanel : Panel
     }
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride(
-        Size finalSize)
+    protected override Size ArrangeOverride(Size finalSize)
     {
         if (Children.Count == 0)
         {

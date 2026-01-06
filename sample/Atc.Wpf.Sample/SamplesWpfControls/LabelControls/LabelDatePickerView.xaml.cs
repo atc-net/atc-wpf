@@ -9,12 +9,11 @@ public partial class LabelDatePickerView
         DataContext = this;
     }
 
-    public CultureInfo DanishCultureInfo => GlobalizationConstants.DanishCultureInfo;
+    public CultureInfo DanishCultureInfo
+        => GlobalizationConstants.DanishCultureInfo;
 
     private void OnClickDpMyLabel1(
         object sender,
         RoutedEventArgs e)
-    {
-        DpMyLabel1.SelectedDate = null;
-    }
+        => DpMyLabel1.SelectedDate = null;
 }

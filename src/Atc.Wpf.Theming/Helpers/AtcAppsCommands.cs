@@ -15,18 +15,19 @@ public static class AtcAppsCommands
                 (_, args) => CanClearControl(args)));
     }
 
-    public static ICommand ClearControlCommand => clearControlCommand ??= new RoutedUICommand(
-        "Clear",
-        nameof(ClearControlCommand),
-        typeof(AtcAppsCommands));
+    public static ICommand ClearControlCommand
+        => clearControlCommand ??= new RoutedUICommand(
+            "Clear",
+            nameof(ClearControlCommand),
+            typeof(AtcAppsCommands));
 
-    public static ICommand SearchCommand => searchCommand ??= new RoutedUICommand(
-        "Search",
-        nameof(SearchCommand),
-        typeof(AtcAppsCommands));
+    public static ICommand SearchCommand
+        => searchCommand ??= new RoutedUICommand(
+            "Search",
+            nameof(SearchCommand),
+            typeof(AtcAppsCommands));
 
-    private static void CanClearControl(
-        CanExecuteRoutedEventArgs args)
+    private static void CanClearControl(CanExecuteRoutedEventArgs args)
     {
         ArgumentNullException.ThrowIfNull(args);
 
@@ -50,8 +51,7 @@ public static class AtcAppsCommands
         };
     }
 
-    public static void ClearControl(
-        ExecutedRoutedEventArgs args)
+    public static void ClearControl(ExecutedRoutedEventArgs args)
     {
         ArgumentNullException.ThrowIfNull(args);
 
@@ -70,11 +70,18 @@ public static class AtcAppsCommands
         {
             case RichTextBox richTextBox:
                 richTextBox.Document?.Blocks.Clear();
-                richTextBox.Selection.Select(richTextBox.CaretPosition, richTextBox.CaretPosition);
+                richTextBox.Selection
+                    .Select(
+                        richTextBox.CaretPosition,
+                        richTextBox.CaretPosition);
                 break;
             case DatePicker datePicker:
-                datePicker.SetCurrentValue(DatePicker.SelectedDateProperty, value: null);
-                datePicker.SetCurrentValue(DatePicker.TextProperty, string.Empty);
+                datePicker.SetCurrentValue(
+                    DatePicker.SelectedDateProperty,
+                    value: null);
+                datePicker.SetCurrentValue(
+                    DatePicker.TextProperty,
+                    string.Empty);
                 datePicker.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
                 break;
             case TextBox textBox:
@@ -89,11 +96,15 @@ public static class AtcAppsCommands
             {
                 if (comboBox.IsEditable)
                 {
-                    comboBox.SetCurrentValue(ComboBox.TextProperty, string.Empty);
+                    comboBox.SetCurrentValue(
+                        ComboBox.TextProperty,
+                        string.Empty);
                     comboBox.GetBindingExpression(ComboBox.TextProperty)?.UpdateSource();
                 }
 
-                comboBox.SetCurrentValue(Selector.SelectedItemProperty, value: null);
+                comboBox.SetCurrentValue(
+                    Selector.SelectedItemProperty,
+                    value: null);
                 comboBox.GetBindingExpression(Selector.SelectedItemProperty)?.UpdateSource();
 
                 break;

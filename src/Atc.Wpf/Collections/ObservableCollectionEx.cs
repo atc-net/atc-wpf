@@ -48,8 +48,7 @@ public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
     /// </summary>
     /// <param name="list">The collection of items to be added to the ObservableCollectionEx. The items in this collection
     /// will be added to the ObservableCollectionEx, and a single notification will be raised after all items are added.</param>
-    public void AddRange(
-        IEnumerable<T> list)
+    public void AddRange(IEnumerable<T> list)
     {
         ArgumentNullException.ThrowIfNull(list);
 
@@ -127,13 +126,19 @@ public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
                 switch (handler.Target)
                 {
                     case DispatcherObject dispatcherObject when !dispatcherObject.CheckAccess():
-                        dispatcherObject.Dispatcher?.Invoke(DispatcherPriority.DataBind, handler, this, e);
+                        dispatcherObject.Dispatcher?.Invoke(
+                            DispatcherPriority.DataBind,
+                            handler,
+                            this,
+                            e);
                         break;
                     case CollectionView target:
                         target.Refresh();
                         break;
                     default:
-                        handler(this, e);
+                        handler(
+                            this,
+                            e);
                         break;
                 }
             }

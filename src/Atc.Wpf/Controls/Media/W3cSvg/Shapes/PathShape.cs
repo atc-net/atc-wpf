@@ -43,17 +43,23 @@ internal sealed class PathShape : Shape
             {
                 var len = val.Length - startPos;
                 curPos = val.Length;
-                return val.Substring(startPos, len).Trim();
+                return val
+                    .Substring(startPos, len)
+                    .Trim();
             }
             else
             {
                 var len = cmdEnd - startPos;
                 curPos = cmdEnd;
-                return val.Substring(startPos, len).Trim();
+                return val
+                    .Substring(startPos, len)
+                    .Trim();
             }
         }
 
-        public StringSplitter SplitCommand(string command, out char cmd)
+        public StringSplitter SplitCommand(
+            string command,
+            out char cmd)
         {
             ArgumentNullException.ThrowIfNull(command);
 
@@ -77,7 +83,9 @@ internal sealed class PathShape : Shape
 
     internal sealed class MoveTo : PathElement
     {
-        public MoveTo(char command, StringSplitter value)
+        public MoveTo(
+            char command,
+            StringSplitter value)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -90,7 +98,9 @@ internal sealed class PathShape : Shape
 
     internal sealed class LineTo : PathElement
     {
-        public LineTo(char command, StringSplitter value)
+        public LineTo(
+            char command,
+            StringSplitter value)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -101,7 +111,9 @@ internal sealed class PathShape : Shape
                 var v = value.ReadNextValue();
                 Points = new[]
                 {
-                    new Point(v, 0),
+                    new Point(
+                        v,
+                        0),
                 };
 
                 return;
@@ -113,7 +125,9 @@ internal sealed class PathShape : Shape
                 var v = value.ReadNextValue();
                 Points = new[]
                 {
-                    new Point(0, v),
+                    new Point(
+                        0,
+                        v),
                 };
 
                 return;
@@ -137,7 +151,9 @@ internal sealed class PathShape : Shape
 
     internal sealed class CurveTo : PathElement
     {
-        public CurveTo(char command, StringSplitter value)
+        public CurveTo(
+            char command,
+            StringSplitter value)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -147,7 +163,10 @@ internal sealed class PathShape : Shape
             Point = value.ReadNextPoint();
         }
 
-        public CurveTo(char command, StringSplitter value, Point ctrlPoint)
+        public CurveTo(
+            char command,
+            StringSplitter value,
+            Point ctrlPoint)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -166,7 +185,9 @@ internal sealed class PathShape : Shape
 
     internal sealed class QuadraticCurveTo : PathElement
     {
-        public QuadraticCurveTo(char command, StringSplitter value)
+        public QuadraticCurveTo(
+            char command,
+            StringSplitter value)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -175,7 +196,10 @@ internal sealed class PathShape : Shape
             Point = value.ReadNextPoint();
         }
 
-        public QuadraticCurveTo(char command, StringSplitter value, Point ctrlPoint)
+        public QuadraticCurveTo(
+            char command,
+            StringSplitter value,
+            Point ctrlPoint)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -191,7 +215,9 @@ internal sealed class PathShape : Shape
 
     internal sealed class EllipticalArcTo : PathElement
     {
-        public EllipticalArcTo(char command, StringSplitter value)
+        public EllipticalArcTo(
+            char command,
+            StringSplitter value)
             : base(command)
         {
             ArgumentNullException.ThrowIfNull(value);
@@ -235,7 +261,10 @@ internal sealed class PathShape : Shape
     public string? Data { get; }
 
     [SuppressMessage("Major Code Smell", "S3010:Static fields should not be updated in constructors", Justification = "OK.")]
-    internal PathShape(Svg svg, XmlNode node, Shape parent)
+    internal PathShape(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
         ArgumentNullException.ThrowIfNull(svg);

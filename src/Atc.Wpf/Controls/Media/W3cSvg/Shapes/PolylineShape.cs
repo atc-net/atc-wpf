@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class PolylineShape : Shape
 {
-    public PolylineShape(Svg svg, XmlNode node)
+    public PolylineShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
         var list = new List<Point>();
@@ -21,5 +23,6 @@ internal sealed class PolylineShape : Shape
 
     public Point[] Points { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(Points)}: {Points}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(Points)}: {Points}";
 }

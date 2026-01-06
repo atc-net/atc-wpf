@@ -31,6 +31,7 @@ public sealed class CSharp : CLike
     /// <summary>
     /// The list of C# preprocessors.
     /// </summary>
-    protected override string Preprocessors => "#if #else #elif #endif #define #undef #warning "
-                                               + "#error #line #region #endregion #pragma";
+    protected override string Preprocessors
+        => "#if #else #elif #endif #define #undef #warning "
+           + "#error #line #region #endregion #pragma";
 }

@@ -9,10 +9,12 @@ public sealed class IsNotNullValueConverter : IValueConverter
     public static readonly IsNotNullValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is not null;
-    }
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is not null;
 
     /// <inheritdoc />
     public object ConvertBack(

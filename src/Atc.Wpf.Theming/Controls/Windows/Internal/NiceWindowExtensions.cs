@@ -13,11 +13,15 @@ internal static class NiceWindowExtensions
         ArgumentNullException.ThrowIfNull(window);
 
         var inputElement = window.GetPart<T>(name) as IInputElement;
-        Debug.Assert(inputElement is not null, $"{name} is not a IInputElement");
+        Debug.Assert(
+            inputElement is not null,
+            $"{name} is not a IInputElement");
         if (inputElement is not null &&
             WindowChrome.GetIsHitTestVisibleInChrome(inputElement) != hitTestVisible)
         {
-            WindowChrome.SetIsHitTestVisibleInChrome(inputElement, hitTestVisible);
+            WindowChrome.SetIsHitTestVisibleInChrome(
+                inputElement,
+                hitTestVisible);
         }
     }
 
@@ -29,15 +33,18 @@ internal static class NiceWindowExtensions
         ArgumentNullException.ThrowIfNull(window);
 
         var inputElement = window.GetPart<IInputElement>(name);
-        Debug.Assert(inputElement is not null, $"{name} is not a IInputElement");
+        Debug.Assert(
+            inputElement is not null,
+            $"{name} is not a IInputElement");
         if (inputElement is not null && WindowChrome.GetResizeGripDirection(inputElement) != direction)
         {
-            WindowChrome.SetResizeGripDirection(inputElement, direction);
+            WindowChrome.SetResizeGripDirection(
+                inputElement,
+                direction);
         }
     }
 
-    private static Theme? GetCurrentTheme(
-        this NiceWindow window)
+    private static Theme? GetCurrentTheme(this NiceWindow window)
     {
         ArgumentNullException.ThrowIfNull(window);
 
@@ -56,13 +63,16 @@ internal static class NiceWindowExtensions
         return currentTheme;
     }
 
-    public static void ResetAllWindowCommandsBrush(
-        this NiceWindow window)
+    public static void ResetAllWindowCommandsBrush(this NiceWindow window)
     {
         var currentTheme = window.GetCurrentTheme();
 
-        window.ChangeAllWindowCommandsBrush(window.OverrideDefaultWindowCommandsBrush, currentTheme);
-        window.ChangeAllWindowButtonCommandsBrush(window.OverrideDefaultWindowCommandsBrush, currentTheme);
+        window.ChangeAllWindowCommandsBrush(
+            window.OverrideDefaultWindowCommandsBrush,
+            currentTheme);
+        window.ChangeAllWindowButtonCommandsBrush(
+            window.OverrideDefaultWindowCommandsBrush,
+            currentTheme);
     }
 
     private static void ChangeAllWindowCommandsBrush(
@@ -80,13 +90,21 @@ internal static class NiceWindowExtensions
             ? ThemeManager.BaseColorDark
             : ThemeManager.BaseColorLight;
 
-        window.LeftWindowCommands?.SetValue(WindowCommands.ThemeProperty, theme);
-        window.RightWindowCommands?.SetValue(WindowCommands.ThemeProperty, theme);
+        window.LeftWindowCommands?.SetValue(
+            WindowCommands.ThemeProperty,
+            theme);
+        window.RightWindowCommands?.SetValue(
+            WindowCommands.ThemeProperty,
+            theme);
 
         if (foregroundBrush is not null)
         {
-            window.LeftWindowCommands?.SetValue(Control.ForegroundProperty, foregroundBrush);
-            window.RightWindowCommands?.SetValue(Control.ForegroundProperty, foregroundBrush);
+            window.LeftWindowCommands?.SetValue(
+                Control.ForegroundProperty,
+                foregroundBrush);
+            window.RightWindowCommands?.SetValue(
+                Control.ForegroundProperty,
+                foregroundBrush);
         }
     }
 
@@ -110,11 +128,15 @@ internal static class NiceWindowExtensions
             ? ThemeManager.BaseColorDark
             : ThemeManager.BaseColorLight;
 
-        window.WindowButtonCommands?.SetValue(WindowButtonCommands.ThemeProperty, theme);
+        window.WindowButtonCommands?.SetValue(
+            WindowButtonCommands.ThemeProperty,
+            theme);
 
         if (foregroundBrush is not null)
         {
-            window.WindowButtonCommands?.SetValue(Control.ForegroundProperty, foregroundBrush);
+            window.WindowButtonCommands?.SetValue(
+                Control.ForegroundProperty,
+                foregroundBrush);
         }
     }
 }

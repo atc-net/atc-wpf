@@ -33,8 +33,7 @@ public partial class SaturationBrightnessPicker
         Loaded += OnLoaded;
     }
 
-    protected override void OnMouseMove(
-        MouseEventArgs e)
+    protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -54,8 +53,7 @@ public partial class SaturationBrightnessPicker
         Update(pos);
     }
 
-    protected override void OnMouseUp(
-        MouseButtonEventArgs e)
+    protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -127,8 +125,7 @@ public partial class SaturationBrightnessPicker
         };
     }
 
-    private void Update(
-        Point point)
+    private void Update(Point point)
     {
         adorner.Position = point;
         Saturation = point.X / ActualWidth;

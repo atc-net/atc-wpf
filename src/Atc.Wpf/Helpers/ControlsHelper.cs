@@ -21,7 +21,9 @@ public static class ControlsHelper
     public static void SetDisabledVisualElementVisibility(
         UIElement element,
         Visibility value)
-        => element.SetValue(DisabledVisualElementVisibilityProperty, value);
+        => element.SetValue(
+            DisabledVisualElementVisibilityProperty,
+            value);
 
     public static readonly DependencyProperty ContentCharacterCasingProperty = DependencyProperty.RegisterAttached(
         "ContentCharacterCasing",
@@ -32,14 +34,15 @@ public static class ControlsHelper
             FrameworkPropertyMetadataOptions.AffectsMeasure),
         value => (CharacterCasing)value >= CharacterCasing.Normal && (CharacterCasing)value <= CharacterCasing.Upper);
 
-    public static CharacterCasing GetContentCharacterCasing(
-        UIElement element)
+    public static CharacterCasing GetContentCharacterCasing(UIElement element)
         => (CharacterCasing)element.GetValue(ContentCharacterCasingProperty);
 
     public static void SetContentCharacterCasing(
         UIElement element,
         CharacterCasing value)
-        => element.SetValue(ContentCharacterCasingProperty, value);
+        => element.SetValue(
+            ContentCharacterCasingProperty,
+            value);
 
     public static readonly DependencyProperty RecognizesAccessKeyProperty = DependencyProperty.RegisterAttached(
         "RecognizesAccessKey",
@@ -47,14 +50,15 @@ public static class ControlsHelper
         typeof(ControlsHelper),
         new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
 
-    public static bool GetRecognizesAccessKey(
-        UIElement element)
+    public static bool GetRecognizesAccessKey(UIElement element)
         => (bool)element.GetValue(RecognizesAccessKeyProperty);
 
     public static void SetRecognizesAccessKey(
         UIElement element,
         bool value)
-        => element.SetValue(RecognizesAccessKeyProperty, BooleanBoxes.Box(value));
+        => element.SetValue(
+            RecognizesAccessKeyProperty,
+            BooleanBoxes.Box(value));
 
     public static readonly DependencyProperty FocusBorderBrushProperty = DependencyProperty.RegisterAttached(
         "FocusBorderBrush",
@@ -64,14 +68,15 @@ public static class ControlsHelper
             Brushes.Transparent,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush GetFocusBorderBrush(
-        DependencyObject d)
+    public static Brush GetFocusBorderBrush(DependencyObject d)
         => (Brush)d.GetValue(FocusBorderBrushProperty);
 
     public static void SetFocusBorderBrush(
         DependencyObject d,
         Brush value)
-        => d.SetValue(FocusBorderBrushProperty, value);
+        => d.SetValue(
+            FocusBorderBrushProperty,
+            value);
 
     public static readonly DependencyProperty FocusBorderThicknessProperty = DependencyProperty.RegisterAttached(
         "FocusBorderThickness",
@@ -81,14 +86,15 @@ public static class ControlsHelper
             default(Thickness),
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Thickness GetFocusBorderThickness(
-        DependencyObject d)
+    public static Thickness GetFocusBorderThickness(DependencyObject d)
         => (Thickness)d.GetValue(FocusBorderThicknessProperty);
 
     public static void SetFocusBorderThickness(
         DependencyObject d,
         Thickness value)
-        => d.SetValue(FocusBorderThicknessProperty, value);
+        => d.SetValue(
+            FocusBorderThicknessProperty,
+            value);
 
     public static readonly DependencyProperty MouseOverBackgroundBrushProperty = DependencyProperty.RegisterAttached(
         "MouseOverBackgroundBrush",
@@ -98,14 +104,15 @@ public static class ControlsHelper
             Brushes.Transparent,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush GetMouseOverBackgroundBrush(
-        DependencyObject d)
+    public static Brush GetMouseOverBackgroundBrush(DependencyObject d)
         => (Brush)d.GetValue(MouseOverBackgroundBrushProperty);
 
     public static void SetMouseOverBackgroundBrush(
         DependencyObject d,
         Brush value)
-        => d.SetValue(MouseOverBackgroundBrushProperty, value);
+        => d.SetValue(
+            MouseOverBackgroundBrushProperty,
+            value);
 
     public static readonly DependencyProperty MouseOverForegroundBrushProperty = DependencyProperty.RegisterAttached(
         "MouseOverForegroundBrush",
@@ -115,14 +122,15 @@ public static class ControlsHelper
             Brushes.Transparent,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush GetMouseOverForegroundBrush(
-        DependencyObject d)
+    public static Brush GetMouseOverForegroundBrush(DependencyObject d)
         => (Brush)d.GetValue(MouseOverForegroundBrushProperty);
 
     public static void SetMouseOverForegroundBrush(
         DependencyObject d,
         Brush value)
-        => d.SetValue(MouseOverForegroundBrushProperty, value);
+        => d.SetValue(
+            MouseOverForegroundBrushProperty,
+            value);
 
     public static readonly DependencyProperty MouseOverBorderBrushProperty = DependencyProperty.RegisterAttached(
         "MouseOverBorderBrush",
@@ -132,14 +140,15 @@ public static class ControlsHelper
             Brushes.Transparent,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush GetMouseOverBorderBrush(
-        DependencyObject d)
+    public static Brush GetMouseOverBorderBrush(DependencyObject d)
         => (Brush)d.GetValue(MouseOverBorderBrushProperty);
 
     public static void SetMouseOverBorderBrush(
         DependencyObject d,
         Brush value)
-        => d.SetValue(MouseOverBorderBrushProperty, value);
+        => d.SetValue(
+            MouseOverBorderBrushProperty,
+            value);
 
     public static readonly DependencyProperty PressedBackgroundBrushProperty = DependencyProperty.RegisterAttached(
         "PressedBackgroundBrush",
@@ -149,14 +158,15 @@ public static class ControlsHelper
             Brushes.Transparent,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush GetPressedBackgroundBrush(
-        DependencyObject d)
+    public static Brush GetPressedBackgroundBrush(DependencyObject d)
         => (Brush)d.GetValue(PressedBackgroundBrushProperty);
 
     public static void SetPressedBackgroundBrush(
         DependencyObject d,
         Brush value)
-        => d.SetValue(PressedBackgroundBrushProperty, value);
+        => d.SetValue(
+            PressedBackgroundBrushProperty,
+            value);
 
     public static readonly DependencyProperty PressedBorderBrushProperty = DependencyProperty.RegisterAttached(
         "PressedBorderBrush",
@@ -166,14 +176,15 @@ public static class ControlsHelper
             Brushes.Transparent,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    public static Brush GetPressedBorderBrush(
-        DependencyObject d)
+    public static Brush GetPressedBorderBrush(DependencyObject d)
         => (Brush)d.GetValue(PressedBorderBrushProperty);
 
     public static void SetPressedBorderBrush(
         DependencyObject d,
         Brush value)
-        => d.SetValue(PressedBorderBrushProperty, value);
+        => d.SetValue(
+            PressedBorderBrushProperty,
+            value);
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.RegisterAttached(
         "CornerRadius",
@@ -183,14 +194,15 @@ public static class ControlsHelper
             default(CornerRadius),
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static CornerRadius GetCornerRadius(
-        UIElement element)
+    public static CornerRadius GetCornerRadius(UIElement element)
         => (CornerRadius)element.GetValue(CornerRadiusProperty);
 
     public static void SetCornerRadius(
         UIElement element,
         CornerRadius value)
-        => element.SetValue(CornerRadiusProperty, value);
+        => element.SetValue(
+            CornerRadiusProperty,
+            value);
 
     public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.RegisterAttached(
         "IsReadOnly",
@@ -198,12 +210,13 @@ public static class ControlsHelper
         typeof(ControlsHelper),
         new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
 
-    public static bool GetIsReadOnly(
-        UIElement element)
+    public static bool GetIsReadOnly(UIElement element)
         => (bool)element.GetValue(IsReadOnlyProperty);
 
     public static void SetIsReadOnly(
         UIElement element,
         bool value)
-        => element.SetValue(IsReadOnlyProperty, BooleanBoxes.Box(value));
+        => element.SetValue(
+            IsReadOnlyProperty,
+            BooleanBoxes.Box(value));
 }

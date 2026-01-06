@@ -7,7 +7,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
     public SampleViewerViewModel()
     {
-        Messenger.Default.Register<SampleItemMessage>(this, SampleItemMessageHandler);
+        Messenger.Default.Register<SampleItemMessage>(
+            this,
+            SampleItemMessageHandler);
     }
 
     private FileInfo[]? markdownDocumentsFiles;
@@ -155,8 +157,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
-    private void SampleItemMessageHandler(
-        SampleItemMessage obj)
+    private void SampleItemMessageHandler(SampleItemMessage obj)
     {
         TabSelectedIndex = 0;
 
@@ -168,7 +169,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         {
             if (obj.Header is not null)
             {
-                SetSelectedViewData(obj.Header, obj.SampleItemPath);
+                SetSelectedViewData(
+                    obj.Header,
+                    obj.SampleItemPath);
             }
         }
     }
@@ -203,22 +206,31 @@ public sealed class SampleViewerViewModel : ViewModelBase
         SampleContent = null;
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void SetSelectedViewData(
         string sampleHeader,
         string samplePath)
     {
         var entryAssembly = Assembly.GetEntryAssembly()!;
-        var sampleType = GetTypeBySamplePath(entryAssembly, samplePath);
+        var sampleType = GetTypeBySamplePath(
+            entryAssembly,
+            samplePath);
 
         if (sampleType is null)
         {
-            _ = MessageBox.Show($"Can't find sample by path '{samplePath}'", Error, MessageBoxButton.OK);
+            _ = MessageBox.Show(
+                $"Can't find sample by path '{samplePath}'",
+                Error,
+                MessageBoxButton.OK);
             return;
         }
 
         if (Activator.CreateInstance(sampleType) is not UserControl instance)
         {
-            MessageBox.Show($"Can't create instance of sample by path '{samplePath}'", Error, MessageBoxButton.OK);
+            MessageBox.Show(
+                $"Can't create instance of sample by path '{samplePath}'",
+                Error,
+                MessageBoxButton.OK);
             return;
         }
 
@@ -226,7 +238,10 @@ public sealed class SampleViewerViewModel : ViewModelBase
         var baseLocation = ExtractBasePath(sampleTypeAssemblyLocation);
         if (baseLocation is null)
         {
-            MessageBox.Show("Can't find sample by invalid base location", Error, MessageBoxButton.OK);
+            MessageBox.Show(
+                "Can't find sample by invalid base location",
+                Error,
+                MessageBoxButton.OK);
             return;
         }
 
@@ -234,7 +249,10 @@ public sealed class SampleViewerViewModel : ViewModelBase
         var sampleLocation = ExtractSamplePath(baseLocation, classViewName, sampleType);
         if (sampleLocation is null)
         {
-            MessageBox.Show("Can't find sample by invalid location", Error, MessageBoxButton.OK);
+            MessageBox.Show(
+                "Can't find sample by invalid location",
+                Error,
+                MessageBoxButton.OK);
             return;
         }
 
@@ -246,7 +264,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         CodeBehindCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewName + ".xaml.cs"));
 
         if (instance.DataContext is null ||
-            nameof(SampleViewerViewModel).Equals(ExtractClassName(instance.DataContext.ToString()!), StringComparison.Ordinal))
+            nameof(SampleViewerViewModel).Equals(
+                ExtractClassName(instance.DataContext.ToString()!),
+                StringComparison.Ordinal))
         {
             ViewModelCode = null;
         }
@@ -276,7 +296,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
             return;
         }
 
-        var className = classViewName.EndsWith(classViewName, StringComparison.Ordinal)
+        var className = classViewName.EndsWith(
+                classViewName,
+                StringComparison.Ordinal)
             ? classViewName[..^4]
             : classViewName;
 
@@ -299,15 +321,23 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
             if (type?.FullName is not null)
             {
-                var sa = type.FullName.Split('.', StringSplitOptions.RemoveEmptyEntries);
+                var sa = type.FullName.Split(
+                    '.',
+                    StringSplitOptions.RemoveEmptyEntries);
                 if (sa.Length > 2)
                 {
                     var classFolder = sa[^2];
-                    markdownFile = FindMarkdownFile(Path.Combine(classFolder, "@Readme"));
+                    markdownFile = FindMarkdownFile(
+                        Path.Combine(
+                            classFolder,
+                            "@Readme"));
                     if (markdownFile is null && classFolder.EndsWith('s'))
                     {
                         classFolder = classFolder[..^1];
-                        markdownFile = FindMarkdownFile(Path.Combine(classFolder, "@Readme"));
+                        markdownFile = FindMarkdownFile(
+                            Path.Combine(
+                                classFolder,
+                                "@Readme"));
                     }
 
                     if (markdownFile is not null && classFolder == "ValueConverters")
@@ -330,12 +360,16 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
     private FileInfo? FindMarkdownFile(string endPath)
     {
-        if (!endPath.EndsWith(".md", StringComparison.Ordinal))
+        if (!endPath.EndsWith(
+                ".md",
+                StringComparison.Ordinal))
         {
             endPath += ".md";
         }
 
-        return markdownDocumentsFiles!.FirstOrDefault(x => x.FullName.EndsWith(endPath, StringComparison.OrdinalIgnoreCase));
+        return markdownDocumentsFiles!.FirstOrDefault(x => x.FullName.EndsWith(
+            endPath,
+            StringComparison.OrdinalIgnoreCase));
     }
 
     private static Type? FindCustomTypeByName(string className)
@@ -349,15 +383,23 @@ public sealed class SampleViewerViewModel : ViewModelBase
         var customAssemblies = AppDomain
             .CurrentDomain
             .GetCustomAssemblies()
-            .OrderBy(x => x.FullName, StringComparer.Ordinal);
+            .OrderBy(
+                x => x.FullName,
+                StringComparer.Ordinal);
 
         foreach (var customAssembly in customAssemblies)
         {
             var exportedTypes = customAssembly.GetExportedTypes();
 
-            type = exportedTypes.FirstOrDefault(x => x.Name.Equals(className, StringComparison.Ordinal) &&
-                                                     !x.FullName!.Contains("Models", StringComparison.Ordinal) &&
-                                                     !x.FullName!.Contains("XUnitTestTypes", StringComparison.Ordinal));
+            type = exportedTypes.FirstOrDefault(x => x.Name.Equals(
+                                                         className,
+                                                         StringComparison.Ordinal) &&
+                                                     !x.FullName!.Contains(
+                                                         "Models",
+                                                         StringComparison.Ordinal) &&
+                                                     !x.FullName!.Contains(
+                                                         "XUnitTestTypes",
+                                                         StringComparison.Ordinal));
 
             if (type is not null)
             {
@@ -373,7 +415,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         var entryAssembly = Assembly.GetEntryAssembly()!;
         var assemblyLocation = entryAssembly.Location;
 
-        var indexOf = assemblyLocation.IndexOf("\\sample", StringComparison.OrdinalIgnoreCase);
+        var indexOf = assemblyLocation.IndexOf(
+            "\\sample",
+            StringComparison.OrdinalIgnoreCase);
         var baseLocation = indexOf == -1
             ? assemblyLocation
             : assemblyLocation[..indexOf];
@@ -385,7 +429,11 @@ public sealed class SampleViewerViewModel : ViewModelBase
     {
         var basePath = GetBasePath();
 
-        markdownDocumentsFiles = FileHelper.GetFiles(basePath, "*.md").ToArray();
+        markdownDocumentsFiles = FileHelper
+            .GetFiles(
+                basePath,
+                "*.md")
+            .ToArray();
     }
 
     private static Type? GetTypeBySamplePath(
@@ -394,22 +442,31 @@ public sealed class SampleViewerViewModel : ViewModelBase
     {
         var sampleType = entryAssembly
             .GetExportedTypes()
-            .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
+            .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(
+                samplePath,
+                StringComparison.Ordinal));
 
         if (sampleType is not null)
         {
             return sampleType;
         }
 
-        var assemblyStartName = entryAssembly.GetName().Name!.Split('.')[0];
+        var assemblyStartName = entryAssembly
+            .GetName()
+            .Name!
+            .Split('.')[0];
         foreach (var assembly in AppDomain.CurrentDomain
                      .GetAssemblies()
                      .Where(x => !x.IsDynamic &&
-                                 x.FullName!.StartsWith(assemblyStartName, StringComparison.Ordinal)))
+                                 x.FullName!.StartsWith(
+                                     assemblyStartName,
+                                     StringComparison.Ordinal)))
         {
             sampleType = assembly
                 .GetExportedTypes()
-                .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(samplePath, StringComparison.Ordinal));
+                .FirstOrDefault(x => x.FullName is not null && x.FullName.EndsWith(
+                    samplePath,
+                    StringComparison.Ordinal));
 
             if (sampleType is not null)
             {
@@ -421,16 +478,16 @@ public sealed class SampleViewerViewModel : ViewModelBase
     }
 
     [SuppressMessage("Performance", "MA0098:Use indexer instead of LINQ methods", Justification = "OK.")]
-    private static string ExtractClassName(
-        string classFullName)
-    {
-        return classFullName.Split('.').Last();
-    }
+    private static string ExtractClassName(string classFullName)
+        => classFullName
+            .Split('.')
+            .Last();
 
-    private static DirectoryInfo? ExtractBasePath(
-        DirectoryInfo path)
+    private static DirectoryInfo? ExtractBasePath(DirectoryInfo path)
     {
-        if ("bin".Equals(path.Name, StringComparison.Ordinal))
+        if ("bin".Equals(
+                path.Name,
+                StringComparison.Ordinal))
         {
             return path.Parent;
         }
@@ -445,7 +502,10 @@ public sealed class SampleViewerViewModel : ViewModelBase
         string classViewName,
         Type sampleType)
     {
-        var files = Directory.GetFiles(baseLocation.FullName, $"{classViewName}.xaml", SearchOption.AllDirectories);
+        var files = Directory.GetFiles(
+            baseLocation.FullName,
+            $"{classViewName}.xaml",
+            SearchOption.AllDirectories);
         switch (files.Length)
         {
             case 0:
@@ -457,7 +517,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         foreach (var file in files)
         {
             var s = file.Replace('\\', '.');
-            if (s.Contains(sampleType.FullName!, StringComparison.OrdinalIgnoreCase))
+            if (s.Contains(
+                    sampleType.FullName!,
+                    StringComparison.OrdinalIgnoreCase))
             {
                 return new DirectoryInfo(file).Parent;
             }
@@ -466,11 +528,8 @@ public sealed class SampleViewerViewModel : ViewModelBase
         return null;
     }
 
-    private static string? ReadFileText(
-        string filePath)
-    {
-        return File.Exists(filePath)
+    private static string? ReadFileText(string filePath)
+        => File.Exists(filePath)
             ? File.ReadAllText(filePath)
             : null;
-    }
 }

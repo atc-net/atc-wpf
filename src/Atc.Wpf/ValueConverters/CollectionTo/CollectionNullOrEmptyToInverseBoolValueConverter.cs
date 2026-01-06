@@ -10,10 +10,12 @@ public sealed class CollectionNullOrEmptyToInverseBoolValueConverter : IValueCon
     public static readonly CollectionNullOrEmptyToInverseBoolValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return !(value is not ICollection collectionValue || collectionValue.Count == 0);
-    }
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => !(value is not ICollection collectionValue || collectionValue.Count == 0);
 
     /// <inheritdoc />
     public object ConvertBack(

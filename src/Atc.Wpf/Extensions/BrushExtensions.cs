@@ -16,13 +16,11 @@ public static class BrushExtensions
         int pixelWidthAndHeight = 32,
         double dpiX = 96,
         double dpiY = 96)
-    {
-        return brush.ToBitmapSource(
+        => brush.ToBitmapSource(
             pixelWidthAndHeight,
             pixelWidthAndHeight,
             dpiX,
             dpiY);
-    }
 
     /// <summary>
     /// Create BitmapSource from a brush.
@@ -75,11 +73,7 @@ public static class BrushExtensions
             drawingContext.DrawRectangle(
                 brush,
                 pen: null,
-                new Rect(
-                    0,
-                    0,
-                    pixelWidth,
-                    pixelHeight));
+                new Rect(0, 0, pixelWidth, pixelHeight));
         }
 
         renderTargetBitmap.Render(drawingVisual);
@@ -92,8 +86,7 @@ public static class BrushExtensions
     /// </summary>
     /// <param name="brush">Brush</param>
     /// <returns>true if yes, otherwise false</returns>
-    public static bool IsOpaqueSolidColorBrush(
-        this Brush brush)
+    public static bool IsOpaqueSolidColorBrush(this Brush brush)
         => (brush as SolidColorBrush)?.Color.A == 0xFF;
 
     /// <summary>

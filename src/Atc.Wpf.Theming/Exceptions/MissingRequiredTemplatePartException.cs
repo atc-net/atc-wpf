@@ -12,8 +12,12 @@ public class MissingRequiredTemplatePartException : AtcAppsException
     {
     }
 
-    public MissingRequiredTemplatePartException(string message, Exception innerException)
-        : base(message, innerException)
+    public MissingRequiredTemplatePartException(
+        string message,
+        Exception innerException)
+        : base(
+            message,
+            innerException)
     {
     }
 
@@ -28,7 +32,9 @@ public class MissingRequiredTemplatePartException : AtcAppsException
     protected MissingRequiredTemplatePartException(
         SerializationInfo info,
         StreamingContext context)
-        : base(info, context)
+        : base(
+            info,
+            context)
     {
     }
 }

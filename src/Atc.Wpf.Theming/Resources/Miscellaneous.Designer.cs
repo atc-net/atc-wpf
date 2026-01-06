@@ -88,3 +88,4 @@ namespace Atc.Wpf.Theming.Resources {
         }
     }
 }
+

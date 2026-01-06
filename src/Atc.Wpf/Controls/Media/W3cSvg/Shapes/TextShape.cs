@@ -7,19 +7,33 @@ internal sealed class TextShape : Shape
     private static Stroke? defaultStroke;
 
     [SuppressMessage("Major Code Smell", "S3010:Static fields should not be updated in constructors", Justification = "OK.")]
-    public TextShape(Svg svg, XmlNode node, Shape parent)
-        : base(svg, node, parent)
+    public TextShape(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
+        : base(
+            svg,
+            node,
+            parent)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(node);
 
-        X = SvgXmlUtil.AttrValue(node, "x", 0);
-        Y = SvgXmlUtil.AttrValue(node, "y", 0);
+        X = SvgXmlUtil.AttrValue(
+            node,
+            "x",
+            0);
+        Y = SvgXmlUtil.AttrValue(
+            node,
+            "y",
+            0);
         Text = node.InnerText;
         GetTextStyle();
         if (node.InnerXml.Contains('<', StringComparison.Ordinal))
         {
-            TextSpan = ParseTSpan(svg, node.InnerXml);
+            TextSpan = ParseTSpan(
+                svg,
+                node.InnerXml);
         }
 
         defaultFill ??= new Fill
@@ -46,11 +60,16 @@ internal sealed class TextShape : Shape
     public override Stroke? Stroke => base.Stroke ?? defaultStroke;
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
-    private TSpan.Element? ParseTSpan(Svg svg, string tSpanText)
+    private TSpan.Element? ParseTSpan(
+        Svg svg,
+        string tSpanText)
     {
         try
         {
-            return TSpan.Parse(svg, tSpanText, this);
+            return TSpan.Parse(
+                svg,
+                tSpanText,
+                this);
         }
         catch
         {
@@ -76,42 +95,66 @@ internal sealed class TextShape : Shape
 
             public Element? End { get; set; }
 
-            public Element(Svg svg, Shape parent, string text)
-                : base(svg, (XmlNode)null!, parent)
+            public Element(
+                Svg svg,
+                Shape parent,
+                string text)
+                : base(
+                    svg,
+                    (XmlNode)null!,
+                    parent)
             {
                 ElementType = TextShapeElementType.Text;
                 Text = text;
             }
 
-            public Element(Svg svg, Shape parent, TextShapeElementType elementType, IReadOnlyCollection<KeyValueItem>? attributes)
-                : base(svg, attributes, parent)
+            public Element(
+                Svg svg,
+                Shape parent,
+                TextShapeElementType elementType,
+                IReadOnlyCollection<KeyValueItem>? attributes)
+                : base(
+                    svg,
+                    attributes,
+                    parent)
             {
                 ElementType = elementType;
                 Text = string.Empty;
                 Children = new List<Element>();
             }
 
-            public override string ToString()
-            {
-                return Text;
-            }
+            public override string ToString() => Text;
         }
 
-        public static Element? Parse(Svg svg, string text, TextShape owner)
+        public static Element? Parse(
+            Svg svg,
+            string text,
+            TextShape owner)
         {
             ArgumentNullException.ThrowIfNull(text);
 
             var curPos = 0;
-            var root = new Element(svg, owner, TextShapeElementType.Tag, attributes: null)
+            var root = new Element(
+                svg,
+                owner,
+                TextShapeElementType.Tag,
+                attributes: null)
             {
                 Text = "<root>",
                 StartIndex = 0,
             };
 
-            return Parse(svg, text, ref curPos, parent: null, root);
+            return Parse(
+                svg,
+                text,
+                ref curPos,
+                parent: null,
+                root);
         }
 
-        public static void Print(Element tag, string indent)
+        public static void Print(
+            Element tag,
+            string indent)
         {
             ArgumentNullException.ThrowIfNull(tag);
 
@@ -128,13 +171,19 @@ internal sealed class TextShape : Shape
             indent += "   ";
             foreach (var c in tag.Children)
             {
-                Print(c, indent);
+                Print(
+                    c,
+                    indent);
             }
         }
 
         [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "OK.")]
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
-        private static Element? NextTag(Svg svg, Element parent, string text, ref int curPos)
+        private static Element? NextTag(
+            Svg svg,
+            Element parent,
+            string text,
+            ref int curPos)
         {
             var start = text.IndexOf('<', curPos);
             if (start < 0)
@@ -150,7 +199,9 @@ internal sealed class TextShape : Shape
 
             end++;
 
-            var tagText = text.Substring(start, end - start);
+            var tagText = text.Substring(
+                start,
+                end - start);
             if (tagText.IndexOf('<', 1) != -1)
             {
                 throw new Exception("Start '<' within tag 'tag'");
@@ -163,14 +214,22 @@ internal sealed class TextShape : Shape
                 attrStart += 5;
                 while (attrStart < tagText.Length - 1)
                 {
-                    attrs.Add(ShapeUtil.ReadNextAttr(tagText, ref attrStart));
+                    attrs.Add(ShapeUtil.ReadNextAttr(
+                        tagText,
+                        ref attrStart));
                 }
             }
 
-            var tag = new Element(svg, parent, TextShapeElementType.Tag, attrs)
+            var tag = new Element(
+                svg,
+                parent,
+                TextShapeElementType.Tag,
+                attrs)
             {
                 StartIndex = start,
-                Text = text.Substring(start, end - start),
+                Text = text.Substring(
+                    start,
+                    end - start),
             };
 
             if (tag.Text.IndexOf('<', 1) != -1)
@@ -185,18 +244,37 @@ internal sealed class TextShape : Shape
         [SuppressMessage("Usage", "CA1514:Uses a redundant length calculation that can be removed", Justification = "OK.")]
         [SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "OK.")]
         [SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "OK.")]
-        private static Element? Parse(Svg svg, string text, ref int curPos, Element? parent, Element? curTag)
+        [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+        private static Element? Parse(
+            Svg svg,
+            string text,
+            ref int curPos,
+            Element? parent,
+            Element? curTag)
         {
-            var tag = curTag ?? NextTag(svg, parent!, text, ref curPos);
+            var tag = curTag ?? NextTag(
+                svg,
+                parent!,
+                text,
+                ref curPos);
 
             while (curPos < text.Length)
             {
                 var prevPos = curPos;
-                var next = NextTag(svg, tag!, text, ref curPos);
+                var next = NextTag(
+                    svg,
+                    tag!,
+                    text,
+                    ref curPos);
                 if (tag?.Children is not null && next is null && curPos < text.Length)
                 {
-                    var s = text.Substring(curPos, text.Length - curPos);
-                    tag.Children.Add(new Element(svg, tag, s));
+                    var s = text.Substring(
+                        curPos,
+                        text.Length - curPos);
+                    tag.Children.Add(new Element(
+                        svg,
+                        tag,
+                        s));
                     return tag;
                 }
 
@@ -208,13 +286,23 @@ internal sealed class TextShape : Shape
                 if (tag?.Children is not null && next.StartIndex - prevPos > 0)
                 {
                     var diff = next.StartIndex - prevPos;
-                    var s = text.Substring(prevPos, diff);
-                    tag.Children.Add(new Element(svg, tag, s));
+                    var s = text.Substring(
+                        prevPos,
+                        diff);
+                    tag.Children.Add(new Element(
+                        svg,
+                        tag,
+                        s));
                 }
 
                 if (tag?.Children is not null && next.Text.StartsWith("<tspan", StringComparison.Ordinal))
                 {
-                    next = Parse(svg, text, ref curPos, tag, next);
+                    next = Parse(
+                        svg,
+                        text,
+                        ref curPos,
+                        tag,
+                        next);
                     if (next is not null)
                     {
                         tag.Children.Add(next);

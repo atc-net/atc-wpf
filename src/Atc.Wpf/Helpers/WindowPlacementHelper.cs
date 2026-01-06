@@ -7,7 +7,9 @@ public static class WindowPlacementHelper
     private static readonly Encoding Encoding = new UTF8Encoding();
     private static readonly XmlSerializer Serializer = new(typeof(WINDOWPLACEMENT));
 
-    public static void SetPlacement(IntPtr windowHandle, string placementXml)
+    public static void SetPlacement(
+        IntPtr windowHandle,
+        string placementXml)
     {
         if (string.IsNullOrEmpty(placementXml))
         {
@@ -24,7 +26,9 @@ public static class WindowPlacementHelper
                 DtdProcessing = DtdProcessing.Prohibit,
                 XmlResolver = null,
             };
-            using var reader = XmlReader.Create(memoryStream, settings);
+            using var reader = XmlReader.Create(
+                memoryStream,
+                settings);
             var placement = (WINDOWPLACEMENT)Serializer.Deserialize(reader)!;
 
             placement.length = Marshal.SizeOf<WINDOWPLACEMENT>();
@@ -33,7 +37,9 @@ public static class WindowPlacementHelper
                 ? ShowNormal
                 : placement.showCmd;
 
-            NativeMethods.SetWindowPlacement(windowHandle, ref placement);
+            NativeMethods.SetWindowPlacement(
+                windowHandle,
+                ref placement);
         }
         catch (InvalidOperationException)
         {
@@ -43,11 +49,17 @@ public static class WindowPlacementHelper
 
     public static string GetPlacement(IntPtr windowHandle)
     {
-        NativeMethods.GetWindowPlacement(windowHandle, out var placement);
+        NativeMethods.GetWindowPlacement(
+            windowHandle,
+            out var placement);
 
         using var memoryStream = new MemoryStream();
-        using var xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-        Serializer.Serialize(xmlTextWriter, placement);
+        using var xmlTextWriter = new XmlTextWriter(
+            memoryStream,
+            Encoding.UTF8);
+        Serializer.Serialize(
+            xmlTextWriter,
+            placement);
         var xmlBytes = memoryStream.ToArray();
         return Encoding.GetString(xmlBytes);
     }

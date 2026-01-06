@@ -5,7 +5,9 @@ internal sealed class PolygonShape : Shape
     private static Fill? defaultFill;
 
     [SuppressMessage("Major Code Smell", "S3010:Static fields should not be updated in constructors", Justification = "OK.")]
-    public PolygonShape(Svg svg, XmlNode node)
+    public PolygonShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
         ArgumentNullException.ThrowIfNull(svg);
@@ -33,5 +35,6 @@ internal sealed class PolygonShape : Shape
 
     public override Fill? Fill => base.Fill ?? defaultFill;
 
-    public override string ToString() => $"{base.ToString()}, {nameof(Points)}: {Points}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(Points)}: {Points}";
 }

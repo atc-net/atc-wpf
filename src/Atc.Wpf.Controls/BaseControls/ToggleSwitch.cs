@@ -188,8 +188,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         UpdateVisualStates(useTransitions: false);
     }
 
-    protected override void OnKeyUp(
-        KeyEventArgs e)
+    protected override void OnKeyUp(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
@@ -231,8 +230,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         }
     }
 
-    protected override void OnRenderSizeChanged(
-        SizeChangedInfo sizeInfo)
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
 
@@ -272,12 +270,16 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     private static void OnOffContentChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
-        => ((ToggleSwitch)d).OnOffContentChanged(e.OldValue, e.NewValue);
+        => ((ToggleSwitch)d).OnOffContentChanged(
+            e.OldValue,
+            e.NewValue);
 
     private static void OnOnContentChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
-        => ((ToggleSwitch)d).OnOnContentChanged(e.OldValue, e.NewValue);
+        => ((ToggleSwitch)d).OnOnContentChanged(
+            e.OldValue,
+            e.NewValue);
 
     private void OnIsEnabledChanged(
         object sender,
@@ -375,8 +377,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         wasDragged = false;
     }
 
-    private void UpdateVisualStates(
-        bool useTransitions)
+    private void UpdateVisualStates(bool useTransitions)
     {
         string stateName;
 
@@ -425,7 +426,9 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     private static void OnCommandChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
-        => ((ToggleSwitch)d).OnCommandChanged((ICommand?)e.OldValue, (ICommand?)e.NewValue);
+        => ((ToggleSwitch)d).OnCommandChanged(
+            (ICommand?)e.OldValue,
+            (ICommand?)e.NewValue);
 
     private void OnCommandChanged(
         ICommand? oldCommand,
@@ -442,15 +445,13 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         }
     }
 
-    private void UnhookCommand(
-        ICommand cmd)
+    private void UnhookCommand(ICommand cmd)
     {
         CanExecuteChangedEventManager.RemoveHandler(cmd, OnCanExecuteChanged);
         UpdateCanExecute();
     }
 
-    private void HookCommand(
-        ICommand cmd)
+    private void HookCommand(ICommand cmd)
     {
         CanExecuteChangedEventManager.AddHandler(cmd, OnCanExecuteChanged);
         UpdateCanExecute();

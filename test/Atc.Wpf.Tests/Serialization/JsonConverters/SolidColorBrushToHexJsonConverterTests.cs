@@ -20,14 +20,13 @@ public sealed class SolidColorBrushToHexJsonConverterTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(
-            brushAsHex,
-            result.ToString(GlobalizationConstants.EnglishCultureInfo));
+        Assert.Equal(brushAsHex, result.ToString(GlobalizationConstants.EnglishCultureInfo));
     }
 
     [StaTheory]
     [InlineData("Red")]
-    public void Write_ShouldWriteSolidColorBrushNameToUtf8JsonWriter(string brushName)
+    public void Write_ShouldWriteSolidColorBrushNameToUtf8JsonWriter(
+        string brushName)
     {
         // Arrange
         var jsonSerializerOptions = JsonSerializerOptionsFactory.Create();
@@ -44,8 +43,6 @@ public sealed class SolidColorBrushToHexJsonConverterTests
         var result = Encoding.UTF8.GetString(memoryStream.ToArray());
 
         Assert.NotNull(result);
-        Assert.Equal(
-            $"\"{solidColorBrush}\"",
-            result);
+        Assert.Equal($"\"{solidColorBrush}\"", result);
     }
 }

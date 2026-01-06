@@ -8,10 +8,16 @@ public sealed class HexBrushToBrushKeyValueConverterTests
     [Theory]
     [InlineData("Gainsboro", "#FFDCDCDC")]
     [InlineData("IndianRed", "#FFCD5C5C")]
-    public void Convert(string expected, string? input)
+    public void Convert(
+        string expected,
+        string? input)
     {
         // Act
-        var actual = converter.Convert(input, targetType: null, parameter: null, culture: null);
+        var actual = converter.Convert(
+            input,
+            targetType: null,
+            parameter: null,
+            culture: null);
 
         // Assert
         Assert.NotNull(actual);
@@ -22,10 +28,16 @@ public sealed class HexBrushToBrushKeyValueConverterTests
     [Theory]
     [InlineData("#FFDCDCDC", "Gainsboro")]
     [InlineData("#FFCD5C5C", "Indian Red")]
-    public void ConvertBack(string expected, string? input)
+    public void ConvertBack(
+        string expected,
+        string? input)
     {
         // Act
-        var actual = converter.ConvertBack(input, targetType: null, parameter: null, culture: null);
+        var actual = converter.ConvertBack(
+            input,
+            targetType: null,
+            parameter: null,
+            culture: null);
 
         // Assert
         Assert.NotNull(actual);

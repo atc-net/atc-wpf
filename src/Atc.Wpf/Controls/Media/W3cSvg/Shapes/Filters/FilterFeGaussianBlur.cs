@@ -3,7 +3,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes.Filters;
 
 internal sealed class FilterFeGaussianBlur : FilterBaseFe
 {
-    public FilterFeGaussianBlur(Svg svg, XmlNode node, Shape parent)
+    public FilterFeGaussianBlur(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
         StdDeviationX = StdDeviationY = SvgXmlUtil.AttrValue(node, "stdDeviation", 0);
@@ -21,5 +24,6 @@ internal sealed class FilterFeGaussianBlur : FilterBaseFe
             Radius = StdDeviationX,
         };
 
-    public override string ToString() => $"{base.ToString()}, {nameof(In)}: {In}, {nameof(StdDeviationX)}: {StdDeviationX}, {nameof(StdDeviationY)}: {StdDeviationY}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(In)}: {In}, {nameof(StdDeviationX)}: {StdDeviationX}, {nameof(StdDeviationY)}: {StdDeviationY}";
 }

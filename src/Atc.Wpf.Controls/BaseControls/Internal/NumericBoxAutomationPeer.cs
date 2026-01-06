@@ -49,11 +49,15 @@ public class NumericBoxAutomationPeer : FrameworkElementAutomationPeer, IRangeVa
             throw new ArgumentOutOfRangeException(nameof(value));
         }
 
-        NumericBox.SetCurrentValue(NumericBox.ValueProperty, value);
+        NumericBox.SetCurrentValue(
+            NumericBox.ValueProperty,
+            value);
     }
 
     [SuppressMessage("Major Code Smell", "S1244:Floating point numbers should not be tested for equality", Justification = "Nullable comparison is intentional for automation events.")]
-    internal void RaiseValuePropertyChangedEvent(double? oldValue, double? newValue)
+    internal void RaiseValuePropertyChangedEvent(
+        double? oldValue,
+        double? newValue)
     {
         if (Nullable.Equals(oldValue, newValue))
         {

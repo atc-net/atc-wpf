@@ -21,7 +21,8 @@ public sealed partial class MessageListener : DependencyObject
     /// <summary>
     /// Gets MessageListener instance.
     /// </summary>
-    public static MessageListener Instance => messageListener ??= new MessageListener();
+    public static MessageListener Instance
+        => messageListener ??= new MessageListener();
 
     /// <summary>
     /// Receives the message.

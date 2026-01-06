@@ -40,8 +40,7 @@ public static class PanelHelper
             defaultValue: 0d,
             OnSpacingChanged));
 
-    public static double GetSpacing(
-        DependencyObject obj)
+    public static double GetSpacing(DependencyObject obj)
         => (double)obj.GetValue(SpacingProperty);
 
     public static void SetSpacing(
@@ -57,8 +56,7 @@ public static class PanelHelper
             defaultValue: 0d,
             OnHorizontalSpacingChanged));
 
-    public static double GetHorizontalSpacing(
-        DependencyObject obj)
+    public static double GetHorizontalSpacing(DependencyObject obj)
         => (double)obj.GetValue(HorizontalSpacingProperty);
 
     public static void SetHorizontalSpacing(
@@ -74,8 +72,7 @@ public static class PanelHelper
             defaultValue: 0d,
             OnVerticalSpacingChanged));
 
-    public static double GetVerticalSpacing(
-        DependencyObject obj)
+    public static double GetVerticalSpacing(DependencyObject obj)
         => (double)obj.GetValue(VerticalSpacingProperty);
 
     public static void SetVerticalSpacing(
@@ -91,8 +88,7 @@ public static class PanelHelper
             new Thickness(0),
             OnItemMarginChanged));
 
-    public static Thickness GetItemMargin(
-        DependencyObject obj)
+    public static Thickness GetItemMargin(DependencyObject obj)
         => (Thickness)obj.GetValue(ItemMarginProperty);
 
     private static void SetItemMargin(
@@ -108,8 +104,7 @@ public static class PanelHelper
             new Thickness(0),
             OnItemMarginChanged));
 
-    public static Thickness GetLastItemMargin(
-        DependencyObject obj)
+    public static Thickness GetLastItemMargin(DependencyObject obj)
         => (Thickness)obj.GetValue(LastItemMarginProperty);
 
     private static void SetLastItemMargin(

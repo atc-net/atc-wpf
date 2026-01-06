@@ -12,8 +12,7 @@ public partial class HueSlider
         InitializeComponent();
     }
 
-    protected override void OnAdornerPositionChanged(
-        double verticalPercent)
+    protected override void OnAdornerPositionChanged(double verticalPercent)
     {
         var color = hueGradients.GradientStops.GetColorAtOffset(verticalPercent);
         AdornerColor = color;
@@ -28,8 +27,7 @@ public partial class HueSlider
         control.UpdateAdorner((double)e.NewValue);
     }
 
-    private void UpdateAdorner(
-        double hue)
+    private void UpdateAdorner(double hue)
     {
         var percent = hue / 360;
 

@@ -56,7 +56,9 @@ public static class ColorHelper
         var colors = new List<Color>();
         foreach (var key in GetBasicColorKeys())
         {
-            var colorFromKey = GetColorFromName(key, GlobalizationConstants.EnglishCultureInfo);
+            var colorFromKey = GetColorFromName(
+                key,
+                GlobalizationConstants.EnglishCultureInfo);
             if (colorFromKey is { } color)
             {
                 colors.Add(color);
@@ -66,8 +68,7 @@ public static class ColorHelper
         return [.. colors];
     }
 
-    public static Color? GetColorFromString(
-        string value)
+    public static Color? GetColorFromString(string value)
         => GetColorFromString(value, CultureInfo.CurrentUICulture);
 
     public static Color? GetColorFromString(
@@ -94,11 +95,15 @@ public static class ColorHelper
             }
         }
 
-        if (!value.Contains(' ', StringComparison.Ordinal))
+        if (!value.Contains(
+                ' ',
+                StringComparison.Ordinal))
         {
             EnsureBaseColors();
 
-            if (BaseColors.TryGetValue(value, out var baseColor))
+            if (BaseColors.TryGetValue(
+                    value,
+                    out var baseColor))
             {
                 return baseColor;
             }
@@ -107,12 +112,14 @@ public static class ColorHelper
         EnsureColorNamesForCulture(culture);
 
         return ColorNames[GetColorKeyFromCulture(culture)]
-            .FirstOrDefault(x => string.Equals(x.Value, value, StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault(x => string.Equals(
+                x.Value,
+                value,
+                StringComparison.OrdinalIgnoreCase))
             .Key;
     }
 
-    public static Color? GetColorFromName(
-        string colorName)
+    public static Color? GetColorFromName(string colorName)
         => GetColorFromString(colorName, CultureInfo.CurrentUICulture);
 
     public static Color? GetColorFromName(
@@ -124,35 +131,43 @@ public static class ColorHelper
 
         if (colorName.StartsWith('#'))
         {
-            throw new ArgumentException("It is a hex value", nameof(colorName));
+            throw new ArgumentException(
+                "It is a hex value",
+                nameof(colorName));
         }
 
-        return GetColorFromString(colorName, culture);
+        return GetColorFromString(
+            colorName,
+            culture);
     }
 
-    public static Color? GetColorFromHex(
-        string hexValue)
+    public static Color? GetColorFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
 
         if (!hexValue.StartsWith('#'))
         {
-            throw new ArgumentException("It is not a hex value", nameof(hexValue));
+            throw new ArgumentException(
+                "It is not a hex value",
+                nameof(hexValue));
         }
 
         if (hexValue.Length is not (9 or 7 or 4))
         {
-            throw new ArgumentException("Invalid format", nameof(hexValue));
+            throw new ArgumentException(
+                "Invalid format",
+                nameof(hexValue));
         }
 
-        return GetColorFromString(hexValue, CultureInfo.InvariantCulture);
+        return GetColorFromString(
+            hexValue,
+            CultureInfo.InvariantCulture);
     }
 
     public static IList<string> GetAllColorNames()
         => GetAllColorNames(CultureInfo.CurrentUICulture);
 
-    public static IList<string> GetAllColorNames(
-        CultureInfo culture)
+    public static IList<string> GetAllColorNames(CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(culture);
 
@@ -161,7 +176,9 @@ public static class ColorHelper
         var colorNames = ColorNames[GetColorKeyFromCulture(culture)];
         return colorNames
             .Select(x => x.Value)
-            .OrderBy(x => x, StringComparer.Ordinal)
+            .OrderBy(
+                x => x,
+                StringComparer.Ordinal)
             .ToList();
     }
 
@@ -197,22 +214,25 @@ public static class ColorHelper
         };
 
         return list
-            .OrderBy(x => x, StringComparer.Ordinal)
+            .OrderBy(
+                x => x,
+                StringComparer.Ordinal)
             .ToList();
     }
 
-    public static string? GetColorKeyFromColor(
-        Color brush)
+    public static string? GetColorKeyFromColor(Color brush)
     {
         EnsureBaseColors();
 
         return BaseColors
-            .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), brush.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.Ordinal))
+            .FirstOrDefault(x => string.Equals(
+                x.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
+                brush.ToString(GlobalizationConstants.EnglishCultureInfo),
+                StringComparison.Ordinal))
             .Key;
     }
 
-    public static string? GetColorNameFromColor(
-        Color color)
+    public static string? GetColorNameFromColor(Color color)
         => GetColorNameFromColor(color, CultureInfo.CurrentUICulture);
 
     public static string? GetColorNameFromColor(
@@ -226,7 +246,10 @@ public static class ColorHelper
         EnsureColorNamesForCulture(culture);
 
         var colorName = ColorNames[GetColorKeyFromCulture(culture)]
-            .FirstOrDefault(x => string.Equals(x.Key.ToString(GlobalizationConstants.EnglishCultureInfo), color.ToString(GlobalizationConstants.EnglishCultureInfo), StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault(x => string.Equals(
+                x.Key.ToString(GlobalizationConstants.EnglishCultureInfo),
+                color.ToString(GlobalizationConstants.EnglishCultureInfo),
+                StringComparison.OrdinalIgnoreCase))
             .Value;
 
         if (!includeColorHex)
@@ -241,15 +264,18 @@ public static class ColorHelper
         return $"{colorName} ({colorHex})";
     }
 
-    public static string? GetColorKeyFromHex(
-        string hexValue)
+    public static string? GetColorKeyFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
 
         if (!hexValue.StartsWith('#') &&
-            !hexValue.StartsWith("0x", StringComparison.Ordinal))
+            !hexValue.StartsWith(
+                "0x",
+                StringComparison.Ordinal))
         {
-            throw new ArgumentException("It is not a hex value", nameof(hexValue));
+            throw new ArgumentException(
+                "It is not a hex value",
+                nameof(hexValue));
         }
 
         EnsureBaseColors();
@@ -257,17 +283,30 @@ public static class ColorHelper
         if (hexValue.StartsWith('#') &&
             hexValue.Length == 7)
         {
-            hexValue = hexValue.Replace("#", "#FF", StringComparison.Ordinal);
+            hexValue = hexValue.Replace(
+                "#",
+                "#FF",
+                StringComparison.Ordinal);
         }
-        else if (hexValue.StartsWith("0x", StringComparison.Ordinal) &&
+        else if (hexValue.StartsWith(
+                     "0x",
+                     StringComparison.Ordinal) &&
                  hexValue.Length == 8)
         {
-            hexValue = hexValue.Replace("0x", "0xFF", StringComparison.Ordinal);
+            hexValue = hexValue.Replace(
+                "0x",
+                "0xFF",
+                StringComparison.Ordinal);
         }
 
-        if (hexValue.StartsWith("0x", StringComparison.Ordinal))
+        if (hexValue.StartsWith(
+                "0x",
+                StringComparison.Ordinal))
         {
-            hexValue = hexValue.Replace("0x", "#", StringComparison.Ordinal);
+            hexValue = hexValue.Replace(
+                "0x",
+                "#",
+                StringComparison.Ordinal);
         }
 
         if (hexValue == "#FF00FFFF")
@@ -276,12 +315,14 @@ public static class ColorHelper
         }
 
         return BaseColors
-            .FirstOrDefault(x => string.Equals(x.Value.ToString(GlobalizationConstants.EnglishCultureInfo), hexValue, StringComparison.Ordinal))
+            .FirstOrDefault(x => string.Equals(
+                x.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
+                hexValue,
+                StringComparison.Ordinal))
             .Key;
     }
 
-    public static string? GetColorNameFromHex(
-        string hexValue)
+    public static string? GetColorNameFromHex(string hexValue)
         => GetColorNameFromHex(hexValue, CultureInfo.CurrentUICulture);
 
     public static string? GetColorNameFromHex(
@@ -307,11 +348,16 @@ public static class ColorHelper
         EnsureBaseColors();
 
         var item = BaseColors
-            .FirstOrDefault(x => string.Equals(x.Key, colorKey, StringComparison.Ordinal));
+            .FirstOrDefault(x => string.Equals(
+                x.Key,
+                colorKey,
+                StringComparison.Ordinal));
 
         return string.IsNullOrEmpty(item.Key)
             ? null
-            : GetColorNameFromColor(item.Value, culture);
+            : GetColorNameFromColor(
+                item.Value,
+                culture);
     }
 
     /// <summary>
@@ -328,18 +374,36 @@ public static class ColorHelper
         double s,
         double v)
     {
-        h = Clamp(h, 0, 360);
-        s = Clamp(s, 0, 1);
-        v = Clamp(v, 0, 1);
+        h = Clamp(
+            h,
+            0,
+            360);
+        s = Clamp(
+            s,
+            0,
+            1);
+        v = Clamp(
+            v,
+            0,
+            1);
 
         byte f(double n)
         {
             var k = (n + (h / 60)) % 6;
-            var value = v - (v * s * System.Math.Max(System.Math.Min(System.Math.Min(k, 4 - k), 1), 0));
+            var value = v - (v * s * System.Math.Max(
+                System.Math.Min(
+                    System.Math.Min(
+                        k,
+                        4 - k),
+                    1),
+                0));
             return (byte)System.Math.Round(value * 255);
         }
 
-        return Color.FromRgb(f(5), f(3), f(1));
+        return Color.FromRgb(
+            f(5),
+            f(3),
+            f(1));
     }
 
     private static double Clamp(
@@ -367,17 +431,25 @@ public static class ColorHelper
         var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
 
         var colorDictionary = colorProperties
-            .ToDictionary(p => p.Name, p => (Color)p.GetValue(obj: null, index: null)!, StringComparer.Ordinal)
-            .OrderBy(x => x.Key, StringComparer.Ordinal);
+            .ToDictionary(
+                p => p.Name,
+                p => (Color)p.GetValue(
+                    obj: null,
+                    index: null)!,
+                StringComparer.Ordinal)
+            .OrderBy(
+                x => x.Key,
+                StringComparer.Ordinal);
 
         foreach (var item in colorDictionary)
         {
-            BaseColors.TryAdd(item.Key, item.Value);
+            BaseColors.TryAdd(
+                item.Key,
+                item.Value);
         }
     }
 
-    private static void EnsureColorNamesForCulture(
-        CultureInfo culture)
+    private static void EnsureColorNamesForCulture(CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(culture);
 
@@ -414,7 +486,9 @@ public static class ColorHelper
             {
                 if (ColorConverter.ConvertFromString(entryKey) is Color color)
                 {
-                    dictionary.TryAdd(color, entry.Value!.ToString()!);
+                    dictionary.TryAdd(
+                        color,
+                        entry.Value!.ToString()!);
                 }
             }
             catch
@@ -423,11 +497,12 @@ public static class ColorHelper
             }
         }
 
-        ColorNames.TryAdd(colorKey, dictionary);
+        ColorNames.TryAdd(
+            colorKey,
+            dictionary);
     }
 
-    private static int GetColorKeyFromCulture(
-        CultureInfo culture)
+    private static int GetColorKeyFromCulture(CultureInfo culture)
         => culture.LCID == CultureInfo.InvariantCulture.LCID
             ? GlobalizationConstants.EnglishCultureInfo.LCID
             : culture.LCID;

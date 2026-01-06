@@ -12,7 +12,11 @@ public sealed class ObjectNotNullToVisibilityVisibleValueConverter : IValueConve
     public Visibility NonVisibility { get; set; } = Visibility.Collapsed;
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         var nonVisibility = NonVisibility;
 

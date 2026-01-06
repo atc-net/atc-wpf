@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.PaintServers;
 
 internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
 {
-    public LinearGradientColorPaintServer(PaintServerManager owner, XmlNode node)
+    public LinearGradientColorPaintServer(
+        PaintServerManager owner,
+        XmlNode node)
         : base(owner, node)
     {
         X1 = SvgXmlUtil.AttrValue(node, "x1", double.NaN);
@@ -11,7 +13,9 @@ internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
         Y2 = SvgXmlUtil.AttrValue(node, "y2", double.NaN);
     }
 
-    public LinearGradientColorPaintServer(PaintServerManager owner, Brush newBrush)
+    public LinearGradientColorPaintServer(
+        PaintServerManager owner,
+        Brush newBrush)
         : base(owner)
     {
         Brush = newBrush;
@@ -25,7 +29,11 @@ internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
 
     public double Y2 { get; private set; }
 
-    public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
+    public override Brush GetBrush(
+        double opacity,
+        Svg svg,
+        SvgRender svgRender,
+        Rect bounds)
     {
         if (Brush is not null)
         {
@@ -129,5 +137,6 @@ internal sealed class LinearGradientColorPaintServer : GradientColorPaintServer
         }
     }
 
-    public override string ToString() => $"{nameof(X1)}: {X1}, {nameof(Y1)}: {Y1}, {nameof(X2)}: {X2}, {nameof(Y2)}: {Y2}";
+    public override string ToString()
+        => $"{nameof(X1)}: {X1}, {nameof(Y1)}: {Y1}, {nameof(X2)}: {X2}, {nameof(Y2)}: {Y2}";
 }

@@ -14,5 +14,6 @@ public abstract class CLike : Code
     /// <summary>
     /// Regular expression string to match string and character literals.
     /// </summary>
-    protected override string StringRegEx => @"@?""""|@?"".*?(?!\\).""|''|'.*?(?!\\).'";
+    protected override string StringRegEx
+        => @"@?""""|@?"".*?(?!\\).""|''|'.*?(?!\\).'";
 }

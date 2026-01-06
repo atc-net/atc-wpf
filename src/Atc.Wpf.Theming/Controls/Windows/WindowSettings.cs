@@ -16,13 +16,20 @@ public sealed class WindowPlacementSetting
     public Rect normalPosition;
 
     internal WINDOWPLACEMENT ToWindowPlacement()
-    {
-        return new WINDOWPLACEMENT
+        => new WINDOWPLACEMENT
         {
             length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(),
             showCmd = (SHOW_WINDOW_CMD)showCmd,
-            ptMinPosition = new System.Drawing.Point { X = (int)minPosition.X, Y = (int)minPosition.Y },
-            ptMaxPosition = new System.Drawing.Point { X = (int)maxPosition.X, Y = (int)maxPosition.Y },
+            ptMinPosition = new System.Drawing.Point
+            {
+                X = (int)minPosition.X,
+                Y = (int)minPosition.Y,
+            },
+            ptMaxPosition = new System.Drawing.Point
+            {
+                X = (int)maxPosition.X,
+                Y = (int)maxPosition.Y,
+            },
             rcNormalPosition = new RECT
             {
                 left = (int)normalPosition.X,
@@ -31,20 +38,22 @@ public sealed class WindowPlacementSetting
                 bottom = (int)normalPosition.Bottom,
             },
         };
-    }
 
-    internal static WindowPlacementSetting FromWindowPlacement(WINDOWPLACEMENT windowPlacement)
-    {
-        return new WindowPlacementSetting
+    internal static WindowPlacementSetting FromWindowPlacement(
+        WINDOWPLACEMENT windowPlacement)
+        => new WindowPlacementSetting
         {
             showCmd = (uint)windowPlacement.showCmd,
-            minPosition = new Point(windowPlacement.ptMinPosition.X, windowPlacement.ptMinPosition.Y),
-            maxPosition = new Point(windowPlacement.ptMaxPosition.X, windowPlacement.ptMaxPosition.Y),
+            minPosition = new Point(
+                windowPlacement.ptMinPosition.X,
+                windowPlacement.ptMinPosition.Y),
+            maxPosition = new Point(
+                windowPlacement.ptMaxPosition.X,
+                windowPlacement.ptMaxPosition.Y),
             normalPosition = new Rect(
                 windowPlacement.rcNormalPosition.left,
                 windowPlacement.rcNormalPosition.top,
                 windowPlacement.rcNormalPosition.GetWidth(),
                 windowPlacement.rcNormalPosition.GetHeight()),
         };
-    }
 }

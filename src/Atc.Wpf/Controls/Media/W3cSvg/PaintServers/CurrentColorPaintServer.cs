@@ -7,8 +7,10 @@ internal sealed class CurrentColorPaintServer : PaintServer
     {
     }
 
-    public override Brush? GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
-    {
-        return null;
-    }
+    public override Brush? GetBrush(
+        double opacity,
+        Svg svg,
+        SvgRender svgRender,
+        Rect bounds)
+        => null;
 }

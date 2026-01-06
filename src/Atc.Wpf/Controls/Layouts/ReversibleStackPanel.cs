@@ -5,14 +5,15 @@ public sealed partial class ReversibleStackPanel : StackPanel
     [DependencyProperty]
     private bool reverseOrder;
 
-    protected override Size ArrangeOverride(
-        Size arrangeSize)
+    protected override Size ArrangeOverride(Size arrangeSize)
     {
         double x = 0;
         double y = 0;
 
         var children = ReverseOrder
-            ? InternalChildren.Cast<UIElement>().Reverse()
+            ? InternalChildren
+                .Cast<UIElement>()
+                .Reverse()
             : InternalChildren.Cast<UIElement>();
 
         foreach (var child in children)

@@ -12,7 +12,11 @@ public sealed class ColorItemHelperTests
     [InlineData(GlobalizationLcidConstants.Germany, "AntiqueWhite", "#FFFAEBD7", "Antikweiß")]
     [InlineData(GlobalizationLcidConstants.GreatBritain, "AntiqueWhite", "#FFFAEBD7", "Antique White")]
     [InlineData(GlobalizationLcidConstants.UnitedStates, "AntiqueWhite", "#FFFAEBD7", "Antique White")]
-    public void GetColorItems(int lcid, string findColorKey, string expectedHexCode, string expectedDisplayName)
+    public void GetColorItems(
+        int lcid,
+        string findColorKey,
+        string expectedHexCode,
+        string expectedDisplayName)
     {
         var originalCulture = CultureInfo.CurrentUICulture;
         CultureInfo.CurrentUICulture = new CultureInfo(lcid);
@@ -33,7 +37,11 @@ public sealed class ColorItemHelperTests
     [InlineData(GlobalizationLcidConstants.Germany, "Red", "#FFFF0000", "Rot")]
     [InlineData(GlobalizationLcidConstants.GreatBritain, "Red", "#FFFF0000", "Red")]
     [InlineData(GlobalizationLcidConstants.UnitedStates, "Red", "#FFFF0000", "Red")]
-    public void GetBasicColorItems(int lcid, string findColorKey, string expectedHexCode, string expectedDisplayName)
+    public void GetBasicColorItems(
+        int lcid,
+        string findColorKey,
+        string expectedHexCode,
+        string expectedDisplayName)
     {
         var originalCulture = CultureInfo.CurrentUICulture;
         CultureInfo.CurrentUICulture = new CultureInfo(lcid);

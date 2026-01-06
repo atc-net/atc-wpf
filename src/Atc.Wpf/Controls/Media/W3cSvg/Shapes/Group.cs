@@ -4,29 +4,46 @@ internal class Group : Shape
 {
     private readonly List<Shape> elements = new();
 
-    public Group(Svg svg, XmlNode node, Shape parent)
-        : base(svg, node)
+    public Group(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
+        : base(
+            svg,
+            node)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(node);
 
-        var clp = SvgXmlUtil.AttrValue(node, "clip-path", defaultValue: null);
+        var clp = SvgXmlUtil.AttrValue(
+            node,
+            "clip-path",
+            defaultValue: null);
         if (!string.IsNullOrEmpty(clp))
         {
-            var id = ShapeUtil.ExtractBetween(clp, '(', ')');
+            var id = ShapeUtil.ExtractBetween(
+                clp,
+                '(',
+                ')');
             if (id.Length > 0 && id[0] == '#')
             {
                 id = id.Substring(1);
             }
 
-            svg.Shapes.TryGetValue(id, out var shape);
+            svg.Shapes.TryGetValue(
+                id,
+                out var shape);
             Clip = shape as Clip;
         }
 
         Parent = parent;
         foreach (XmlNode childNode in node.ChildNodes)
         {
-            var shape = AddToList(svg, elements, childNode, this);
+            var shape = AddToList(
+                svg,
+                elements,
+                childNode,
+                this);
             if (shape is not null)
             {
                 shape.Parent = this;
@@ -39,7 +56,11 @@ internal class Group : Shape
     public bool IsSwitch { get; init; }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-    public static Shape? AddToList(Svg svg, List<Shape> list, XmlNode childNode, Shape? parent)
+    public static Shape? AddToList(
+        Svg svg,
+        List<Shape> list,
+        XmlNode childNode,
+        Shape? parent)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(list);
@@ -60,79 +81,140 @@ internal class Group : Shape
         switch (nodeName)
         {
             case SvgTagConstants.Style:
-                CssStyleParser.ParseStyle(svg, childNode.InnerText);
+                CssStyleParser.ParseStyle(
+                    svg,
+                    childNode.InnerText);
                 break;
             case SvgTagConstants.ShapeRect:
-                retVal = new RectangleShape(svg, childNode);
+                retVal = new RectangleShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.Filter:
-                retVal = new Filter(svg, childNode, parent!);
+                retVal = new Filter(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.FeGaussianBlur:
-                retVal = new FilterFeGaussianBlur(svg, childNode, parent!);
+                retVal = new FilterFeGaussianBlur(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.ShapeCircle:
-                retVal = new CircleShape(svg, childNode);
+                retVal = new CircleShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.ShapeEllipse:
-                retVal = new EllipseShape(svg, childNode);
+                retVal = new EllipseShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.ShapeLine:
-                retVal = new LineShape(svg, childNode);
+                retVal = new LineShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.ShapePolyline:
-                retVal = new PolylineShape(svg, childNode);
+                retVal = new PolylineShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.ShapePolygon:
-                retVal = new PolygonShape(svg, childNode);
+                retVal = new PolygonShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.ShapePath:
-                retVal = new PathShape(svg, childNode, parent!);
+                retVal = new PathShape(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.ClipPath:
-                retVal = new Clip(svg, childNode, parent!);
+                retVal = new Clip(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.ShapeGroup:
-                retVal = new Group(svg, childNode, parent!);
+                retVal = new Group(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.Switch:
-                retVal = new Group(svg, childNode, parent!)
+                retVal = new Group(
+                    svg,
+                    childNode,
+                    parent!)
                 {
                     IsSwitch = true,
                 };
                 break;
             case SvgTagConstants.ShapeUse:
-                retVal = new UseShape(svg, childNode);
+                retVal = new UseShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.ShapeImage:
-                retVal = new ImageShape(svg, childNode);
+                retVal = new ImageShape(
+                    svg,
+                    childNode);
                 break;
             case SvgTagConstants.Animate:
-                retVal = new Animate(svg, childNode, parent!);
+                retVal = new Animate(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.AnimateColor:
-                retVal = new AnimateColor(svg, childNode, parent!);
+                retVal = new AnimateColor(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.AnimateMotion:
-                retVal = new AnimateMotion(svg, childNode, parent!);
+                retVal = new AnimateMotion(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.AnimateTransform:
-                retVal = new AnimateTransform(svg, childNode, parent!);
+                retVal = new AnimateTransform(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.Text:
-                retVal = new TextShape(svg, childNode, parent!);
+                retVal = new TextShape(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
             case SvgTagConstants.LinearGradient:
-                svg.PaintServers.Create(svg, childNode);
+                svg.PaintServers.Create(
+                    svg,
+                    childNode);
                 return null;
             case SvgTagConstants.RadialGradient:
-                svg.PaintServers.Create(svg, childNode);
+                svg.PaintServers.Create(
+                    svg,
+                    childNode);
                 return null;
             case SvgTagConstants.Definitions:
-                ReadDefs(svg, list, childNode);
+                ReadDefs(
+                    svg,
+                    list,
+                    childNode);
                 return null;
             case SvgTagConstants.Symbol:
-                retVal = new Group(svg, childNode, parent!);
+                retVal = new Group(
+                    svg,
+                    childNode,
+                    parent!);
                 break;
         }
 
@@ -141,7 +223,9 @@ internal class Group : Shape
             list.Add(retVal);
             if (retVal.Id.Length > 0)
             {
-                svg.AddShape(retVal.Id, retVal);
+                svg.AddShape(
+                    retVal.Id,
+                    retVal);
             }
         }
 
@@ -150,7 +234,10 @@ internal class Group : Shape
             : retVal;
     }
 
-    private static void ReadDefs(Svg svg, List<Shape> list, XmlNode node)
+    private static void ReadDefs(
+        Svg svg,
+        List<Shape> list,
+        XmlNode node)
     {
         ArgumentNullException.ThrowIfNull(list);
 
@@ -162,11 +249,17 @@ internal class Group : Shape
                 nodeName == SvgTagConstants.RadialGradient ||
                 nodeName == SvgTagConstants.Pattern)
             {
-                svg.PaintServers.Create(svg, childNode);
+                svg.PaintServers.Create(
+                    svg,
+                    childNode);
                 continue;
             }
 
-            AddToList(svg, list, childNode, parent: null);
+            AddToList(
+                svg,
+                list,
+                childNode,
+                parent: null);
         }
     }
 

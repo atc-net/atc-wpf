@@ -2,7 +2,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes.Filters;
 
 internal sealed class Filter : Group
 {
-    public Filter(Svg svg, XmlNode node, Shape parent)
+    public Filter(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
     }

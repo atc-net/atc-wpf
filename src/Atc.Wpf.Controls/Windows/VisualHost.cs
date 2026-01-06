@@ -19,8 +19,7 @@ public sealed class VisualHost : FrameworkElement
     /// Initializes a new instance of the <see cref="VisualHost" /> class.
     /// </summary>
     /// <param name="visual">The visual.</param>
-    public VisualHost(
-        Visual visual)
+    public VisualHost(Visual visual)
         : this()
         => Add(visual);
 
@@ -35,8 +34,7 @@ public sealed class VisualHost : FrameworkElement
     /// Adds the specified visual.
     /// </summary>
     /// <param name="visual">The visual.</param>
-    public void Add(
-        Visual visual)
+    public void Add(Visual visual)
     {
         ArgumentNullException.ThrowIfNull(visual);
 
@@ -57,8 +55,7 @@ public sealed class VisualHost : FrameworkElement
     /// <returns>
     /// The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.
     /// </returns>
-    protected override Visual GetVisualChild(
-        int index)
+    protected override Visual GetVisualChild(int index)
     {
         if (index < 0 || index >= visualCollection.Count)
         {

@@ -22,7 +22,9 @@ public static class VisualStateExtensions
 
         try
         {
-            castedVisualStateGroups = groups.Cast<VisualStateGroup>().ToArray();
+            castedVisualStateGroups = groups
+                .Cast<VisualStateGroup>()
+                .ToArray();
             if (!castedVisualStateGroups.Any())
             {
                 return Array.Empty<VisualStateGroup>();

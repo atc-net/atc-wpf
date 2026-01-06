@@ -60,8 +60,7 @@ public static class ThicknessExtensions
     /// </summary>
     /// <param name="thickness">Thickness</param>
     /// <returns>Size</returns>
-    public static Size CollapseThickness(
-        this Thickness thickness)
+    public static Size CollapseThickness(this Thickness thickness)
         => new(thickness.Left + thickness.Right, thickness.Top + thickness.Bottom);
 
     /// <summary>
@@ -69,8 +68,7 @@ public static class ThicknessExtensions
     /// </summary>
     /// <param name="thickness">Thickness</param>
     /// <returns>Size</returns>
-    public static bool IsZero(
-        this Thickness thickness)
+    public static bool IsZero(this Thickness thickness)
         => thickness.Left.IsZero() &&
            thickness.Top.IsZero() &&
            thickness.Right.IsZero() &&
@@ -81,14 +79,12 @@ public static class ThicknessExtensions
     /// </summary>
     /// <param name="thickness">Thickness</param>
     /// <returns>true if yes, otherwise false</returns>
-    public static bool IsUniform(
-        this Thickness thickness)
+    public static bool IsUniform(this Thickness thickness)
         => thickness.Left.AreClose(thickness.Top) &&
            thickness.Left.AreClose(thickness.Right) &&
            thickness.Left.AreClose(thickness.Bottom);
 
-    private static bool IsNaN(
-        double value)
+    private static bool IsNaN(double value)
     {
         var t = new NanUnion
         {

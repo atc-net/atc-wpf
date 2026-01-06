@@ -20,7 +20,9 @@ public static class ControlExtensions
 
         var transformGroup = control.RenderTransform as TransformGroup ?? new TransformGroup();
 
-        var rotateTransform = transformGroup.Children.OfType<RotateTransform>().FirstOrDefault();
+        var rotateTransform = transformGroup.Children
+            .OfType<RotateTransform>()
+            .FirstOrDefault();
 
         if (rotateTransform is not null)
         {
@@ -98,7 +100,9 @@ public static class ControlExtensions
 
         var transformGroup = control.RenderTransform as TransformGroup ?? new TransformGroup();
 
-        var rotateTransform = transformGroup.Children.OfType<RotateTransform>().FirstOrDefault();
+        var rotateTransform = transformGroup.Children
+            .OfType<RotateTransform>()
+            .FirstOrDefault();
         if (rotateTransform is null)
         {
             transformGroup.Children.Add(new RotateTransform(control.Rotation));
@@ -126,7 +130,9 @@ public static class ControlExtensions
         var scaleX = control.FlipOrientation is FlipOrientationType.Normal or FlipOrientationType.Vertical ? 1 : -1;
         var scaleY = control.FlipOrientation is FlipOrientationType.Normal or FlipOrientationType.Horizontal ? 1 : -1;
 
-        var scaleTransform = transformGroup.Children.OfType<ScaleTransform>().FirstOrDefault();
+        var scaleTransform = transformGroup.Children
+            .OfType<ScaleTransform>()
+            .FirstOrDefault();
         if (scaleTransform is null)
         {
             transformGroup.Children.Add(new ScaleTransform(scaleX, scaleY));

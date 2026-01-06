@@ -32,8 +32,7 @@ public static class AdornerExtensions
     /// </summary>
     /// <typeparam name="T">The element type.</typeparam>
     /// <param name="uiElement">The UI element.</param>
-    public static void TryRemoveAdorners<T>(
-        this UIElement uiElement)
+    public static void TryRemoveAdorners<T>(this UIElement uiElement)
         where T : Adorner
     {
         ArgumentNullException.ThrowIfNull(uiElement);

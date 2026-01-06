@@ -39,7 +39,9 @@ public static class LabelControlFactory
 
         const DropDownFirstItemType firstItem = DropDownFirstItemType.PleaseSelect;
         control.Items.Add(
-            DropDownFirstItemTypeHelper.GetEnumGuid(firstItem).ToString(),
+            DropDownFirstItemTypeHelper
+                .GetEnumGuid(firstItem)
+                .ToString(),
             firstItem.GetDescription());
 
         var nonNullableType = inputDataType.GetNonNullableType();
@@ -53,7 +55,11 @@ public static class LabelControlFactory
                 continue;
             }
 
-            control.Items.Add(key, enumValue.GetDescription().NormalizePascalCase());
+            control.Items.Add(
+                key,
+                enumValue
+                    .GetDescription()
+                    .NormalizePascalCase());
         }
 
         if (selectedKey is not null)

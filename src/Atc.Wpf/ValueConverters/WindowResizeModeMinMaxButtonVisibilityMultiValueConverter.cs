@@ -7,15 +7,21 @@ public sealed class WindowResizeModeMinMaxButtonVisibilityMultiValueConverter : 
     /// </summary>
     public static readonly WindowResizeModeMinMaxButtonVisibilityMultiValueConverter Instance = new();
 
-    public object Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object[]? values,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (values is null || parameter is not WindowResizeModeButtonType whichButton)
         {
             return Visibility.Visible;
         }
 
-        var showButton = (values.ElementAtOrDefault(0) as bool?).GetValueOrDefault(defaultValue: true);
-        var useNoneWindowStyle = (values.ElementAtOrDefault(1) as bool?).GetValueOrDefault(defaultValue: false);
+        var showButton = (values.ElementAtOrDefault(0) as bool?)
+            .GetValueOrDefault(defaultValue: true);
+        var useNoneWindowStyle = (values.ElementAtOrDefault(1) as bool?)
+            .GetValueOrDefault(defaultValue: false);
 
         if (whichButton == WindowResizeModeButtonType.Close)
         {
@@ -24,7 +30,8 @@ public sealed class WindowResizeModeMinMaxButtonVisibilityMultiValueConverter : 
                 : Visibility.Visible;
         }
 
-        var windowResizeMode = (values.ElementAtOrDefault(2) as ResizeMode?).GetValueOrDefault(ResizeMode.CanResize);
+        var windowResizeMode = (values.ElementAtOrDefault(2) as ResizeMode?)
+            .GetValueOrDefault(ResizeMode.CanResize);
 
         switch (windowResizeMode)
         {
@@ -48,8 +55,12 @@ public sealed class WindowResizeModeMinMaxButtonVisibilityMultiValueConverter : 
         }
     }
 
-    public object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-        return targetTypes.Select(_ => DependencyProperty.UnsetValue).ToArray();
-    }
+    public object[] ConvertBack(
+        object? value,
+        Type[] targetTypes,
+        object? parameter,
+        CultureInfo culture)
+        => targetTypes
+            .Select(_ => DependencyProperty.UnsetValue)
+            .ToArray();
 }

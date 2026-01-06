@@ -10,12 +10,14 @@ public sealed class ObjectNullToVisibilityCollapsedValueConverter : IValueConver
     public static readonly ObjectNullToVisibilityCollapsedValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is null
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is null
             ? Visibility.Collapsed
             : Visibility.Visible;
-    }
 
     /// <inheritdoc />
     public object ConvertBack(

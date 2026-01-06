@@ -9,8 +9,7 @@ public static class HeaderedControlHelper
         typeof(HeaderedControlHelper),
         new UIPropertyMetadata(Brushes.White));
 
-    public static Brush GetHeaderForeground(
-        UIElement element)
+    public static Brush GetHeaderForeground(UIElement element)
         => (Brush)element.GetValue(HeaderForegroundProperty);
 
     public static void SetHeaderForeground(
@@ -24,8 +23,7 @@ public static class HeaderedControlHelper
         typeof(HeaderedControlHelper),
         new UIPropertyMetadata(Panel.BackgroundProperty.DefaultMetadata.DefaultValue));
 
-    public static Brush GetHeaderBackground(
-        UIElement element)
+    public static Brush GetHeaderBackground(UIElement element)
         => (Brush)element.GetValue(HeaderBackgroundProperty);
 
     public static void SetHeaderBackground(
@@ -41,7 +39,8 @@ public static class HeaderedControlHelper
 
     public static HorizontalAlignment GetHeaderHorizontalContentAlignment(
         UIElement element)
-        => (HorizontalAlignment)element.GetValue(HeaderHorizontalContentAlignmentProperty);
+        => (HorizontalAlignment)element
+            .GetValue(HeaderHorizontalContentAlignmentProperty);
 
     public static void SetHeaderHorizontalContentAlignment(
         UIElement element,
@@ -56,7 +55,8 @@ public static class HeaderedControlHelper
 
     public static VerticalAlignment GetHeaderVerticalContentAlignment(
         UIElement element)
-        => (VerticalAlignment)element.GetValue(HeaderVerticalContentAlignmentProperty);
+        => (VerticalAlignment)element
+            .GetValue(HeaderVerticalContentAlignmentProperty);
 
     public static void SetHeaderVerticalContentAlignment(
         UIElement element,
@@ -69,8 +69,7 @@ public static class HeaderedControlHelper
         typeof(HeaderedControlHelper),
         new UIPropertyMetadata(new Thickness(0)));
 
-    public static Thickness GetHeaderMargin(
-        UIElement element)
+    public static Thickness GetHeaderMargin(UIElement element)
         => (Thickness)element.GetValue(HeaderMarginProperty);
 
     public static void SetHeaderMargin(
@@ -86,8 +85,7 @@ public static class HeaderedControlHelper
             SystemFonts.MessageFontFamily,
             FrameworkPropertyMetadataOptions.Inherits));
 
-    public static FontFamily GetHeaderFontFamily(
-        UIElement element)
+    public static FontFamily GetHeaderFontFamily(UIElement element)
         => (FontFamily)element.GetValue(HeaderFontFamilyProperty);
 
     public static void SetHeaderFontFamily(
@@ -103,8 +101,7 @@ public static class HeaderedControlHelper
             SystemFonts.MessageFontSize,
             FrameworkPropertyMetadataOptions.Inherits));
 
-    public static double GetHeaderFontSize(
-        UIElement element)
+    public static double GetHeaderFontSize(UIElement element)
         => (double)element.GetValue(HeaderFontSizeProperty);
 
     public static void SetHeaderFontSize(
@@ -120,8 +117,7 @@ public static class HeaderedControlHelper
             TextElement.FontStretchProperty.DefaultMetadata.DefaultValue,
             FrameworkPropertyMetadataOptions.Inherits));
 
-    public static FontStretch GetHeaderFontStretch(
-        UIElement element)
+    public static FontStretch GetHeaderFontStretch(UIElement element)
         => (FontStretch)element.GetValue(HeaderFontStretchProperty);
 
     public static void SetHeaderFontStretch(
@@ -137,8 +133,7 @@ public static class HeaderedControlHelper
             SystemFonts.MessageFontWeight,
             FrameworkPropertyMetadataOptions.Inherits));
 
-    public static FontWeight GetHeaderFontWeight(
-        UIElement element)
+    public static FontWeight GetHeaderFontWeight(UIElement element)
         => (FontWeight)element.GetValue(HeaderFontWeightProperty);
 
     public static void SetHeaderFontWeight(

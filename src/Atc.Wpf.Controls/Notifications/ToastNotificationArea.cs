@@ -42,7 +42,11 @@ public sealed partial class ToastNotificationArea : Control
         TimeSpan expirationTime,
         Action? onClick,
         Action? onClose)
-        => _ = ShowAsync(contentControl, expirationTime, onClick, onClose);
+        => _ = ShowAsync(
+            contentControl,
+            expirationTime,
+            onClick,
+            onClose);
 
     /// <summary>
     /// Shows a toast notification asynchronously.
@@ -52,6 +56,7 @@ public sealed partial class ToastNotificationArea : Control
     /// <param name="onClick">Action to invoke when clicked.</param>
     /// <param name="onClose">Action to invoke when closed.</param>
     /// <returns>A task that completes when the notification expires or is closed.</returns>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public async Task ShowAsync(
         ContentControl contentControl,
         TimeSpan expirationTime,
@@ -101,8 +106,12 @@ public sealed partial class ToastNotificationArea : Control
             items ??= new List<ToastNotification>();
             items.Add(toastNotification);
 
-            var notifications = items.OfType<ToastNotification>().Where(i => !i.IsClosing).Skip(MaxItems).ToList();
-            if (notifications.Count > 0)
+            var notifications = items
+                .OfType<ToastNotification>()
+                .Where(i => !i.IsClosing)
+                .Skip(MaxItems)
+                .ToArray();
+            if (notifications.Length > 0)
             {
                 toastNotificationToClose = notifications[0];
             }
@@ -110,7 +119,9 @@ public sealed partial class ToastNotificationArea : Control
 
         if (toastNotificationToClose is not null)
         {
-            await toastNotificationToClose.CloseAsync().ConfigureAwait(true);
+            await toastNotificationToClose
+                .CloseAsync()
+                .ConfigureAwait(true);
         }
 
         if (expirationTime == TimeSpan.MaxValue)
@@ -118,8 +129,12 @@ public sealed partial class ToastNotificationArea : Control
             return;
         }
 
-        await Task.Delay(expirationTime).ConfigureAwait(true);
-        await toastNotification.CloseAsync().ConfigureAwait(true);
+        await Task
+            .Delay(expirationTime)
+            .ConfigureAwait(true);
+        await toastNotification
+            .CloseAsync()
+            .ConfigureAwait(true);
     }
 
     private void OnNotificationClosed(

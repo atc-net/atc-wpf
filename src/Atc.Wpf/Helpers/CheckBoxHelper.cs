@@ -9,8 +9,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(18.0));
 
-    public static double GetCheckSize(
-        DependencyObject d)
+    public static double GetCheckSize(DependencyObject d)
         => (double)d.GetValue(CheckSizeProperty);
 
     public static void SetCheckSize(
@@ -26,8 +25,7 @@ public static class CheckBoxHelper
             new CornerRadius(0),
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public static CornerRadius GetCheckCornerRadius(
-        UIElement element)
+    public static CornerRadius GetCheckCornerRadius(UIElement element)
         => (CornerRadius)element.GetValue(CheckCornerRadiusProperty);
 
     public static void SetCheckCornerRadius(
@@ -41,8 +39,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(1d));
 
-    public static double GetCheckStrokeThickness(
-        DependencyObject d)
+    public static double GetCheckStrokeThickness(DependencyObject d)
         => (double)d.GetValue(CheckStrokeThicknessProperty);
 
     public static void SetCheckStrokeThickness(
@@ -56,8 +53,8 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static object? GetCheckGlyphUnchecked(
-        DependencyObject d) => d.GetValue(CheckGlyphUncheckedProperty);
+    public static object? GetCheckGlyphUnchecked(DependencyObject d)
+        => d.GetValue(CheckGlyphUncheckedProperty);
 
     public static void SetCheckGlyphUnchecked(
         DependencyObject d,
@@ -85,8 +82,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundUnchecked(
-        DependencyObject d)
+    public static Brush? GetForegroundUnchecked(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundUncheckedProperty);
 
     public static void SetForegroundUnchecked(
@@ -100,8 +96,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundUnchecked(
-        DependencyObject d)
+    public static Brush? GetBackgroundUnchecked(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundUncheckedProperty);
 
     public static void SetBackgroundUnchecked(
@@ -115,8 +110,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushUnchecked(
-        DependencyObject d)
+    public static Brush? GetBorderBrushUnchecked(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushUncheckedProperty);
 
     public static void SetBorderBrushUnchecked(
@@ -130,8 +124,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckBackgroundFillUnchecked(
-        DependencyObject d)
+    public static Brush? GetCheckBackgroundFillUnchecked(DependencyObject d)
         => (Brush?)d.GetValue(CheckBackgroundFillUncheckedProperty);
 
     public static void SetCheckBackgroundFillUnchecked(
@@ -145,8 +138,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckBackgroundStrokeUnchecked(
-        DependencyObject d)
+    public static Brush? GetCheckBackgroundStrokeUnchecked(DependencyObject d)
         => (Brush?)d.GetValue(CheckBackgroundStrokeUncheckedProperty);
 
     public static void SetCheckBackgroundStrokeUnchecked(
@@ -160,8 +152,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphForegroundUnchecked(
-        DependencyObject d)
+    public static Brush? GetCheckGlyphForegroundUnchecked(DependencyObject d)
         => (Brush?)d.GetValue(CheckGlyphForegroundUncheckedProperty);
 
     public static void SetCheckGlyphForegroundUnchecked(
@@ -175,8 +166,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundUncheckedMouseOver(
-        DependencyObject d)
+    public static Brush? GetForegroundUncheckedMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundUncheckedMouseOverProperty);
 
     public static void SetForegroundUncheckedMouseOver(
@@ -190,8 +180,8 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundUncheckedMouseOver(
-        DependencyObject d) => (Brush?)d.GetValue(BackgroundUncheckedMouseOverProperty);
+    public static Brush? GetBackgroundUncheckedMouseOver(DependencyObject d)
+        => (Brush?)d.GetValue(BackgroundUncheckedMouseOverProperty);
 
     public static void SetBackgroundUncheckedMouseOver(
         DependencyObject d,
@@ -204,8 +194,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushUncheckedMouseOver(
-        DependencyObject d)
+    public static Brush? GetBorderBrushUncheckedMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushUncheckedMouseOverProperty);
 
     public static void SetBorderBrushUncheckedMouseOver(
@@ -264,8 +253,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundUncheckedPressed(
-        DependencyObject d)
+    public static Brush? GetForegroundUncheckedPressed(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundUncheckedPressedProperty);
 
     public static void SetForegroundUncheckedPressed(
@@ -279,8 +267,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundUncheckedPressed(
-        DependencyObject d)
+    public static Brush? GetBackgroundUncheckedPressed(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundUncheckedPressedProperty);
 
     public static void SetBackgroundUncheckedPressed(
@@ -353,8 +340,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundUncheckedDisabled(
-        DependencyObject d)
+    public static Brush? GetForegroundUncheckedDisabled(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundUncheckedDisabledProperty);
 
     public static void SetForegroundUncheckedDisabled(
@@ -368,8 +354,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundUncheckedDisabled(
-        DependencyObject d)
+    public static Brush? GetBackgroundUncheckedDisabled(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundUncheckedDisabledProperty);
 
     public static void SetBackgroundUncheckedDisabled(
@@ -383,8 +368,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushUncheckedDisabled(
-        DependencyObject d)
+    public static Brush? GetBorderBrushUncheckedDisabled(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushUncheckedDisabledProperty);
 
     public static void SetBorderBrushUncheckedDisabled(
@@ -443,8 +427,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static object? GetCheckGlyphChecked(
-        DependencyObject d)
+    public static object? GetCheckGlyphChecked(DependencyObject d)
         => d.GetValue(CheckGlyphCheckedProperty);
 
     public static void SetCheckGlyphChecked(
@@ -458,8 +441,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(DataTemplate)));
 
-    public static DataTemplate? GetCheckGlyphCheckedTemplate(
-        DependencyObject d)
+    public static DataTemplate? GetCheckGlyphCheckedTemplate(DependencyObject d)
         => (DataTemplate?)d.GetValue(CheckGlyphCheckedTemplateProperty);
 
     public static void SetCheckGlyphCheckedTemplate(
@@ -473,9 +455,13 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundChecked(DependencyObject d) => (Brush?)d.GetValue(ForegroundCheckedProperty);
+    public static Brush? GetForegroundChecked(DependencyObject d)
+        => (Brush?)d.GetValue(ForegroundCheckedProperty);
 
-    public static void SetForegroundChecked(DependencyObject d, Brush? value) => d.SetValue(ForegroundCheckedProperty, value);
+    public static void SetForegroundChecked(
+        DependencyObject d,
+        Brush? value)
+        => d.SetValue(ForegroundCheckedProperty, value);
 
     public static readonly DependencyProperty BackgroundCheckedProperty = DependencyProperty.RegisterAttached(
         "BackgroundChecked",
@@ -483,8 +469,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundChecked(
-        DependencyObject d)
+    public static Brush? GetBackgroundChecked(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundCheckedProperty);
 
     public static void SetBackgroundChecked(
@@ -498,8 +483,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushChecked(
-        DependencyObject d)
+    public static Brush? GetBorderBrushChecked(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushCheckedProperty);
 
     public static void SetBorderBrushChecked(
@@ -513,8 +497,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckBackgroundFillChecked(
-        DependencyObject d)
+    public static Brush? GetCheckBackgroundFillChecked(DependencyObject d)
         => (Brush?)d.GetValue(CheckBackgroundFillCheckedProperty);
 
     public static void SetCheckBackgroundFillChecked(
@@ -528,8 +511,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckBackgroundStrokeChecked(
-        DependencyObject d)
+    public static Brush? GetCheckBackgroundStrokeChecked(DependencyObject d)
         => (Brush?)d.GetValue(CheckBackgroundStrokeCheckedProperty);
 
     public static void SetCheckBackgroundStrokeChecked(
@@ -543,8 +525,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckGlyphForegroundChecked(
-        DependencyObject d)
+    public static Brush? GetCheckGlyphForegroundChecked(DependencyObject d)
         => (Brush?)d.GetValue(CheckGlyphForegroundCheckedProperty);
 
     public static void SetCheckGlyphForegroundChecked(
@@ -558,8 +539,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundCheckedMouseOver(
-        DependencyObject d)
+    public static Brush? GetForegroundCheckedMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundCheckedMouseOverProperty);
 
     public static void SetForegroundCheckedMouseOver(
@@ -573,8 +553,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundCheckedMouseOver(
-        DependencyObject d)
+    public static Brush? GetBackgroundCheckedMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundCheckedMouseOverProperty);
 
     public static void SetBackgroundCheckedMouseOver(
@@ -588,8 +567,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushCheckedMouseOver(
-        DependencyObject d)
+    public static Brush? GetBorderBrushCheckedMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushCheckedMouseOverProperty);
 
     public static void SetBorderBrushCheckedMouseOver(
@@ -648,8 +626,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundCheckedPressed(
-        DependencyObject d)
+    public static Brush? GetForegroundCheckedPressed(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundCheckedPressedProperty);
 
     public static void SetForegroundCheckedPressed(
@@ -663,8 +640,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundCheckedPressed(
-        DependencyObject d)
+    public static Brush? GetBackgroundCheckedPressed(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundCheckedPressedProperty);
 
     public static void SetBackgroundCheckedPressed(
@@ -678,8 +654,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushCheckedPressed(
-        DependencyObject d)
+    public static Brush? GetBorderBrushCheckedPressed(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushCheckedPressedProperty);
 
     public static void SetBorderBrushCheckedPressed(
@@ -738,8 +713,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundCheckedDisabled(
-        DependencyObject d)
+    public static Brush? GetForegroundCheckedDisabled(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundCheckedDisabledProperty);
 
     public static void SetForegroundCheckedDisabled(
@@ -753,8 +727,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundCheckedDisabled(
-        DependencyObject d)
+    public static Brush? GetBackgroundCheckedDisabled(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundCheckedDisabledProperty);
 
     public static void SetBackgroundCheckedDisabled(
@@ -768,8 +741,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushCheckedDisabled(
-        DependencyObject d)
+    public static Brush? GetBorderBrushCheckedDisabled(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushCheckedDisabledProperty);
 
     public static void SetBorderBrushCheckedDisabled(
@@ -828,8 +800,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
-    public static object? GetCheckGlyphIndeterminate(
-        DependencyObject d)
+    public static object? GetCheckGlyphIndeterminate(DependencyObject d)
         => d.GetValue(CheckGlyphIndeterminateProperty);
 
     public static void SetCheckGlyphIndeterminate(
@@ -858,8 +829,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundIndeterminate(
-        DependencyObject d)
+    public static Brush? GetForegroundIndeterminate(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundIndeterminateProperty);
 
     public static void SetForegroundIndeterminate(
@@ -873,8 +843,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundIndeterminate(
-        DependencyObject d)
+    public static Brush? GetBackgroundIndeterminate(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundIndeterminateProperty);
 
     public static void SetBackgroundIndeterminate(
@@ -888,8 +857,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushIndeterminate(
-        DependencyObject d)
+    public static Brush? GetBorderBrushIndeterminate(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushIndeterminateProperty);
 
     public static void SetBorderBrushIndeterminate(
@@ -903,8 +871,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetCheckBackgroundFillIndeterminate(
-        DependencyObject d)
+    public static Brush? GetCheckBackgroundFillIndeterminate(DependencyObject d)
         => (Brush?)d.GetValue(CheckBackgroundFillIndeterminateProperty);
 
     public static void SetCheckBackgroundFillIndeterminate(
@@ -948,8 +915,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundIndeterminateMouseOver(
-        DependencyObject d)
+    public static Brush? GetForegroundIndeterminateMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundIndeterminateMouseOverProperty);
 
     public static void SetForegroundIndeterminateMouseOver(
@@ -963,8 +929,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundIndeterminateMouseOver(
-        DependencyObject d)
+    public static Brush? GetBackgroundIndeterminateMouseOver(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundIndeterminateMouseOverProperty);
 
     public static void SetBackgroundIndeterminateMouseOver(
@@ -1038,8 +1003,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundIndeterminatePressed(
-        DependencyObject d)
+    public static Brush? GetForegroundIndeterminatePressed(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundIndeterminatePressedProperty);
 
     public static void SetForegroundIndeterminatePressed(
@@ -1053,8 +1017,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundIndeterminatePressed(
-        DependencyObject d)
+    public static Brush? GetBackgroundIndeterminatePressed(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundIndeterminatePressedProperty);
 
     public static void SetBackgroundIndeterminatePressed(
@@ -1068,8 +1031,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushIndeterminatePressed(
-        DependencyObject d)
+    public static Brush? GetBorderBrushIndeterminatePressed(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushIndeterminatePressedProperty);
 
     public static void SetBorderBrushIndeterminatePressed(
@@ -1128,8 +1090,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetForegroundIndeterminateDisabled(
-        DependencyObject d)
+    public static Brush? GetForegroundIndeterminateDisabled(DependencyObject d)
         => (Brush?)d.GetValue(ForegroundIndeterminateDisabledProperty);
 
     public static void SetForegroundIndeterminateDisabled(
@@ -1143,8 +1104,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBackgroundIndeterminateDisabled(
-        DependencyObject d)
+    public static Brush? GetBackgroundIndeterminateDisabled(DependencyObject d)
         => (Brush?)d.GetValue(BackgroundIndeterminateDisabledProperty);
 
     public static void SetBackgroundIndeterminateDisabled(
@@ -1158,8 +1118,7 @@ public static class CheckBoxHelper
         typeof(CheckBoxHelper),
         new FrameworkPropertyMetadata(default(Brush)));
 
-    public static Brush? GetBorderBrushIndeterminateDisabled(
-        DependencyObject d)
+    public static Brush? GetBorderBrushIndeterminateDisabled(DependencyObject d)
         => (Brush?)d.GetValue(BorderBrushIndeterminateDisabledProperty);
 
     public static void SetBorderBrushIndeterminateDisabled(

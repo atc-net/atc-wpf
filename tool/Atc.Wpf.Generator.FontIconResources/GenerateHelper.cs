@@ -145,7 +145,11 @@ public static class GenerateHelper
         }
 
         var fontFamily = fontFamilies.First();
-        var typeface = new Typeface(fontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+        var typeface = new Typeface(
+            fontFamily,
+            FontStyles.Normal,
+            FontWeights.Normal,
+            FontStretches.Normal);
 
         string text;
         using (var reader = File.OpenText(cssFileInfo.FullName))
@@ -154,7 +158,10 @@ public static class GenerateHelper
         }
 
         var allCompacts = GetCategorizedCharacterStringsWithoutWhiteSpaces(text);
-        var collectedKeyValues = GetAllFontClassesWithContentValue(allCompacts, typeface, prefix);
+        var collectedKeyValues = GetAllFontClassesWithContentValue(
+            allCompacts,
+            typeface,
+            prefix);
         if (collectedKeyValues.Count <= 0)
         {
             return logItems;
@@ -216,19 +223,11 @@ public static class GenerateHelper
         return logItems;
     }
 
-    private static bool IsInconsistentNaming(
-        string enumName)
-    {
-        if (enumName.StartsWith('_'))
-        {
-            return true;
-        }
+    private static bool IsInconsistentNaming(string enumName)
+        => enumName.StartsWith('_') ||
+           (enumName.Length > 2 && char.IsUpper(enumName, 1));
 
-        return enumName.Length > 2 && char.IsUpper(enumName, 1);
-    }
-
-    private static string CreateEnumDescription(
-        string key)
+    private static string CreateEnumDescription(string key)
         => key
             .Replace(":before", string.Empty, StringComparison.Ordinal)
             .ToLower(GlobalizationConstants.EnglishCultureInfo);
@@ -258,7 +257,10 @@ public static class GenerateHelper
                     continue;
                 }
 
-                sb.Append(s[i + 1].ToString().ToUpperInvariant());
+                sb.Append(
+                    s[i + 1]
+                        .ToString()
+                        .ToUpperInvariant());
                 i++;
             }
             else
@@ -273,20 +275,19 @@ public static class GenerateHelper
             : $"{char.ToUpper(s[0], GlobalizationConstants.EnglishCultureInfo)}{s[1..]}";
     }
 
-    private static string CreateEnumValue(
-        string key)
+    private static string CreateEnumValue(string key)
         => "0x" + key
             .Replace("\"", string.Empty, StringComparison.Ordinal)
             .Replace("\\", string.Empty, StringComparison.Ordinal);
 
     private static List<CategorisedCharacterString> GetCategorizedCharacterStringsWithoutWhiteSpaces(
         string text)
-    {
-        IEnumerable<CategorisedCharacterString> all = CSSParser.Parser.ParseCSS(text);
-        return all.Where(x =>
-            x.CharacterCategorisation != CharacterCategorisationOptions.Whitespace &&
-            x.Value is not null).ToList();
-    }
+        => CSSParser.Parser
+            .ParseCSS(text)
+            .Where(x =>
+                x.CharacterCategorisation != CharacterCategorisationOptions.Whitespace &&
+                x.Value is not null)
+            .ToList();
 
     private static Dictionary<string, string> GetAllFontClassesWithContentValue(
         IReadOnlyCollection<CategorisedCharacterString> allCompacts,
@@ -294,15 +295,19 @@ public static class GenerateHelper
         string prefix)
     {
         var tmpKeyValueList = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var allEndsWithBefore = allCompacts.Where(x =>
-            x.Value.StartsWith(prefix, StringComparison.CurrentCulture) &&
-            x.Value.EndsWith(":before", StringComparison.CurrentCulture));
+        var allEndsWithBefore = allCompacts
+            .Where(x =>
+                x.Value.StartsWith(prefix, StringComparison.CurrentCulture) &&
+                x.Value.EndsWith(":before", StringComparison.CurrentCulture));
         foreach (var before in allEndsWithBefore)
         {
-            var allFromBefore = allCompacts.Where(x => x.IndexInSource > before.IndexInSource);
+            var allFromBefore = allCompacts
+                .Where(x => x.IndexInSource > before.IndexInSource);
             var scopeList = new List<CategorisedCharacterString>();
-            scopeList.AddRange(allFromBefore.TakeWhile(x => x.CharacterCategorisation != CharacterCategorisationOptions.CloseBrace));
-            var properties = scopeList.Where(x => x.CharacterCategorisation == CharacterCategorisationOptions.SelectorOrStyleProperty);
+            scopeList.AddRange(allFromBefore.TakeWhile(
+                x => x.CharacterCategorisation != CharacterCategorisationOptions.CloseBrace));
+            var properties = scopeList
+                .Where(x => x.CharacterCategorisation == CharacterCategorisationOptions.SelectorOrStyleProperty);
             foreach (var s
                      in
                      from property
@@ -325,9 +330,15 @@ public static class GenerateHelper
 
         var tmpKeyValueFontList = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         foreach (var item in tmpKeyValueList
-                     .ToDictionary(x => x.Key.Replace(":before", string.Empty, StringComparison.Ordinal), x => x.Value, StringComparer.OrdinalIgnoreCase))
+                     .ToDictionary(
+                         x => x.Key
+                             .Replace(":before", string.Empty, StringComparison.Ordinal),
+                         x => x.Value,
+                         StringComparer.OrdinalIgnoreCase))
         {
-            var s = item.Value.Replace("\"", string.Empty, StringComparison.Ordinal).Replace("\\", string.Empty, StringComparison.Ordinal);
+            var s = item.Value
+                .Replace("\"", string.Empty, StringComparison.Ordinal)
+                .Replace("\\", string.Empty, StringComparison.Ordinal);
             var ik = NumberHelper.ParseToInt(s);
             if (characterMap.ContainsKey(ik))
             {
@@ -337,6 +348,9 @@ public static class GenerateHelper
 
         return tmpKeyValueFontList
             .OrderBy(x => x.Key, StringComparer.Ordinal)
-            .ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
+            .ToDictionary(
+                x => x.Key,
+                x => x.Value,
+                StringComparer.OrdinalIgnoreCase);
     }
 }

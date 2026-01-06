@@ -2,12 +2,10 @@ namespace Atc.Wpf.Helpers;
 
 public static class GridHelper
 {
-    public static int CalculatorRowCountByScreenFormat43(
-        int itemCount)
+    public static int CalculatorRowCountByScreenFormat43(int itemCount)
         => CalculatorRowCountByScreenFormat(itemCount, 1);
 
-    public static int CalculatorRowCountByScreenFormat169(
-        int itemCount)
+    public static int CalculatorRowCountByScreenFormat169(int itemCount)
         => CalculatorRowCountByScreenFormat(itemCount, 2);
 
     private static int CalculatorRowCountByScreenFormat(

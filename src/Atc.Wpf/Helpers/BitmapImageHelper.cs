@@ -5,15 +5,16 @@ public static class BitmapImageHelper
     private const string Base64Header = "base64,";
 
     [SuppressMessage("X", "S1696:Do not catch NullReferenceException", Justification = "OK.")]
-    public static BitmapImage? ConvertFromBase64(
-        string base64Value)
+    public static BitmapImage? ConvertFromBase64(string base64Value)
     {
         if (string.IsNullOrWhiteSpace(base64Value))
         {
             return null;
         }
 
-        var index = base64Value.IndexOf(Base64Header, StringComparison.OrdinalIgnoreCase);
+        var index = base64Value.IndexOf(
+            Base64Header,
+            StringComparison.OrdinalIgnoreCase);
         if (index > -1)
         {
             base64Value = base64Value[(index + Base64Header.Length)..];

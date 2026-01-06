@@ -25,15 +25,16 @@ public static class AccessKeyHelper
     public static void SetIsAccessKeyScope(
         DependencyObject d,
         bool value)
-        => d.SetValue(IsAccessKeyScopeProperty, BooleanBoxes.Box(value));
+        => d.SetValue(
+            IsAccessKeyScopeProperty,
+            BooleanBoxes.Box(value));
 
     /// <summary>
     /// Gets the value of the IsAccessKeyScope attached property for the specified object
     /// </summary>
     /// <param name="d">The object to retrieve the value for</param>
     /// <returns>The value of IsAccessKeyScope attached property for the specified object</returns>
-    public static bool GetIsAccessKeyScope(
-        DependencyObject d)
+    public static bool GetIsAccessKeyScope(DependencyObject d)
         => (bool)d.GetValue(IsAccessKeyScopeProperty);
 
     private static void HandleIsAccessKeyScopePropertyChanged(
@@ -42,11 +43,15 @@ public static class AccessKeyHelper
     {
         if (e.NewValue.Equals(true))
         {
-            AccessKeyManager.AddAccessKeyPressedHandler(d, HandleScopedElementAccessKeyPressed);
+            AccessKeyManager.AddAccessKeyPressedHandler(
+                d,
+                HandleScopedElementAccessKeyPressed);
         }
         else
         {
-            AccessKeyManager.RemoveAccessKeyPressedHandler(d, HandleScopedElementAccessKeyPressed);
+            AccessKeyManager.RemoveAccessKeyPressedHandler(
+                d,
+                HandleScopedElementAccessKeyPressed);
         }
     }
 

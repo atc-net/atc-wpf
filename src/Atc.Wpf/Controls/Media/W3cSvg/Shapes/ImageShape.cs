@@ -5,22 +5,46 @@ internal sealed class ImageShape : Shape
 {
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "OK for now")]
-    public ImageShape(Svg svg, XmlNode node)
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
+    public ImageShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
         ArgumentNullException.ThrowIfNull(svg);
 
-        X = SvgXmlUtil.AttrValue(node, "x", 0, svg.Size.Width);
-        Y = SvgXmlUtil.AttrValue(node, "y", 0, svg.Size.Height);
-        Width = SvgXmlUtil.AttrValue(node, "width", 0, svg.Size.Width);
-        Height = SvgXmlUtil.AttrValue(node, "height", 0, svg.Size.Height);
-        var hRef = SvgXmlUtil.AttrValue(node, "xlink:href", string.Empty);
+        X = SvgXmlUtil.AttrValue(
+            node,
+            "x",
+            0,
+            svg.Size.Width);
+        Y = SvgXmlUtil.AttrValue(
+            node,
+            "y",
+            0,
+            svg.Size.Height);
+        Width = SvgXmlUtil.AttrValue(
+            node,
+            "width",
+            0,
+            svg.Size.Width);
+        Height = SvgXmlUtil.AttrValue(
+            node,
+            "height",
+            0,
+            svg.Size.Height);
+        var hRef = SvgXmlUtil.AttrValue(
+            node,
+            "xlink:href",
+            string.Empty);
         if (!string.IsNullOrEmpty(hRef))
         {
             try
             {
                 Stream? imageStream = null;
-                if (hRef.StartsWith("data:image/png;base64", StringComparison.OrdinalIgnoreCase))
+                if (hRef.StartsWith(
+                        "data:image/png;base64",
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     var embeddedImage = hRef.Substring("data:image/png;base64,".Length);
                     if (!string.IsNullOrWhiteSpace(embeddedImage))
@@ -32,7 +56,9 @@ internal sealed class ImageShape : Shape
                 {
                     if (svg.ExternalFileLoader is not null)
                     {
-                        imageStream = svg.ExternalFileLoader.LoadFile(hRef, svg.Filename);
+                        imageStream = svg.ExternalFileLoader.LoadFile(
+                            hRef,
+                            svg.Filename);
                     }
                 }
 
@@ -64,5 +90,6 @@ internal sealed class ImageShape : Shape
 
     public ImageSource? ImageSource { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(ImageSource)}: {ImageSource}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(ImageSource)}: {ImageSource}";
 }

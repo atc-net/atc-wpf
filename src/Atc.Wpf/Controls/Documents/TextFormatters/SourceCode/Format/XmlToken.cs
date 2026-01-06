@@ -23,7 +23,9 @@ internal struct XmlToken
     /// </summary>
     /// <param name="kind">The kind.</param>
     /// <param name="length">The length.</param>
-    public XmlToken(XmlTokenKind kind, int length)
+    public XmlToken(
+        XmlTokenKind kind,
+        int length)
     {
         Kind = kind;
         Length = (short)length;

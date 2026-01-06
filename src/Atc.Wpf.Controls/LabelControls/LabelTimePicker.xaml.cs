@@ -95,11 +95,15 @@ public partial class LabelTimePicker : ILabelTimePicker
             return;
         }
 
-        control.SetCurrentValue(TextProperty, textBox.Text);
+        control.SetCurrentValue(
+            TextProperty,
+            textBox.Text);
 
         var dateTime = ValidateText(control);
 
-        UpdateSelectedTime(control, dateTime);
+        UpdateSelectedTime(
+            control,
+            dateTime);
     }
 
     private static void OnTextLostFocus(
@@ -118,9 +122,14 @@ public partial class LabelTimePicker : ILabelTimePicker
             control.Text = string.Empty;
         }
 
-        var dateTime = ValidateText(e, control, raiseEvents: true);
+        var dateTime = ValidateText(
+            e,
+            control,
+            raiseEvents: true);
 
-        UpdateSelectedTime(control, dateTime);
+        UpdateSelectedTime(
+            control,
+            dateTime);
     }
 
     private void OnClockPanelPickerSelectedClockChanged(
@@ -137,12 +146,16 @@ public partial class LabelTimePicker : ILabelTimePicker
         var cultureInfo = CustomCulture ?? Thread.CurrentThread.CurrentUICulture;
         var shortTime = clockPanelPicker.SelectedDateTime.Value.ToShortTimeStringUsingSpecificCulture(cultureInfo);
 
-        if (shortTime.Equals(Text, StringComparison.Ordinal))
+        if (shortTime.Equals(
+                Text,
+                StringComparison.Ordinal))
         {
             return;
         }
 
-        SetCurrentValue(TextProperty, shortTime);
+        SetCurrentValue(
+            TextProperty,
+            shortTime);
     }
 
     private static void OnSelectedTimeChanged(
@@ -153,7 +166,9 @@ public partial class LabelTimePicker : ILabelTimePicker
 
         if (control.SelectedTime is null)
         {
-            control.SetCurrentValue(TextProperty, string.Empty);
+            control.SetCurrentValue(
+                TextProperty,
+                string.Empty);
         }
         else
         {
@@ -196,19 +211,22 @@ public partial class LabelTimePicker : ILabelTimePicker
         {
             if (string.IsNullOrEmpty(control.ValidationText))
             {
-                OnLostFocusFireValidEvent(control, e);
+                OnLostFocusFireValidEvent(
+                    control,
+                    e);
             }
             else
             {
-                OnLostFocusFireInvalidEvent(control, e);
+                OnLostFocusFireInvalidEvent(
+                    control,
+                    e);
             }
         }
 
         return dateTime;
     }
 
-    private static DateTime? ValidateText(
-        LabelTimePicker control)
+    private static DateTime? ValidateText(LabelTimePicker control)
     {
         var isTimeEmpty = string.IsNullOrWhiteSpace(control.Text);
 
@@ -270,12 +288,15 @@ public partial class LabelTimePicker : ILabelTimePicker
         object? value)
         => DateTimePickerEventHelper.CoerceText(value);
 
-    private void SetDefaultWatermarkIfNeeded(
-        CultureInfo cultureInfo)
+    private void SetDefaultWatermarkIfNeeded(CultureInfo cultureInfo)
     {
         if (string.IsNullOrEmpty(WatermarkText) ||
-            WatermarkText.Contains(':', StringComparison.Ordinal) ||
-            WatermarkText.Contains('.', StringComparison.Ordinal))
+            WatermarkText.Contains(
+                ':',
+                StringComparison.Ordinal) ||
+            WatermarkText.Contains(
+                '.',
+                StringComparison.Ordinal))
         {
             WatermarkText = cultureInfo.DateTimeFormat.ShortTimePattern;
         }

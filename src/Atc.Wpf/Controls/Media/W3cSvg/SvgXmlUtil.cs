@@ -2,7 +2,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg;
 
 internal static class SvgXmlUtil
 {
-    public static bool GetValueRespectingUnits(string input, out double value, double percentageMaximum)
+    public static bool GetValueRespectingUnits(
+        string input,
+        out double value,
+        double percentageMaximum)
     {
         ArgumentNullException.ThrowIfNull(input);
 
@@ -14,7 +17,9 @@ internal static class SvgXmlUtil
             return false;
         }
 
-        var tmp = input.Substring(0, index + 1);
+        var tmp = input.Substring(
+            0,
+            index + 1);
         if (index + 1 < input.Length)
         {
             units = input.Substring(index + 1);
@@ -56,11 +61,16 @@ internal static class SvgXmlUtil
         return false;
     }
 
-    public static double GetDoubleValue(string value, double percentageMaximum = 1)
+    public static double GetDoubleValue(
+        string value,
+        double percentageMaximum = 1)
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        return GetValueRespectingUnits(value, out var result, percentageMaximum)
+        return GetValueRespectingUnits(
+            value,
+            out var result,
+            percentageMaximum)
             ? result
             : 0;
     }
@@ -69,12 +79,19 @@ internal static class SvgXmlUtil
     {
         ArgumentNullException.ThrowIfNull(attr);
 
-        return GetValueRespectingUnits(attr.Value, out var result, 1)
+        return GetValueRespectingUnits(
+            attr.Value,
+            out var result,
+            1)
             ? result
             : 0;
     }
 
-    public static double AttrValue(XmlNode node, string id, double defaultValue, double percentageMaximum = 1)
+    public static double AttrValue(
+        XmlNode node,
+        string id,
+        double defaultValue,
+        double percentageMaximum = 1)
     {
         ArgumentNullException.ThrowIfNull(node);
 
@@ -84,12 +101,18 @@ internal static class SvgXmlUtil
             return defaultValue;
         }
 
-        return GetValueRespectingUnits(attr.Value, out var result, percentageMaximum)
+        return GetValueRespectingUnits(
+            attr.Value,
+            out var result,
+            percentageMaximum)
             ? result
             : defaultValue;
     }
 
-    public static string? AttrValue(XmlNode node, string id, string? defaultValue)
+    public static string? AttrValue(
+        XmlNode node,
+        string id,
+        string? defaultValue)
     {
         ArgumentNullException.ThrowIfNull(node);
 
@@ -104,16 +127,22 @@ internal static class SvgXmlUtil
             : defaultValue;
     }
 
-    public static string? AttrValue(XmlNode node, string id)
-    {
-        return AttrValue(node, id, string.Empty);
-    }
+    public static string? AttrValue(
+        XmlNode node,
+        string id)
+        => AttrValue(
+            node,
+            id,
+            string.Empty);
 
     public static double ParseDouble(string value)
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        return GetValueRespectingUnits(value, out var result, 1)
+        return GetValueRespectingUnits(
+            value,
+            out var result,
+            1)
             ? result
             : 0.1;
     }
@@ -135,7 +164,9 @@ internal static class SvgXmlUtil
             select attr.Split(':')
             into s
             where s.Length == 2
-            select new KeyValueItem(s[0].Trim(), s[1].Trim()));
+            select new KeyValueItem(
+                s[0].Trim(),
+                s[1].Trim()));
 
         return list;
     }

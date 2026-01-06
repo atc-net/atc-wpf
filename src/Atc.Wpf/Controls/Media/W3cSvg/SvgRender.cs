@@ -48,7 +48,9 @@ internal sealed class SvgRender
 
     public DrawingGroup LoadDrawing(string fileName)
     {
-        Svg = new Svg(fileName, ExternalFileLoader);
+        Svg = new Svg(
+            fileName,
+            ExternalFileLoader);
         return CreateDrawing(Svg);
     }
 
@@ -75,7 +77,9 @@ internal sealed class SvgRender
 
     public DrawingGroup LoadDrawing(Stream stream)
     {
-        Svg = new Svg(stream, ExternalFileLoader);
+        Svg = new Svg(
+            stream,
+            ExternalFileLoader);
         return CreateDrawing(Svg);
     }
 
@@ -83,16 +87,22 @@ internal sealed class SvgRender
     {
         ArgumentNullException.ThrowIfNull(svg);
 
-        return LoadGroup(svg.Elements, svg.ViewBox, isSwitch: false);
+        return LoadGroup(
+            svg.Elements,
+            svg.ViewBox,
+            isSwitch: false);
     }
 
     public DrawingGroup CreateDrawing(Shape shape)
-    {
-        return LoadGroup(new[] { shape }, viewBox: null, isSwitch: false);
-    }
+        => LoadGroup(
+            new[] { shape },
+            viewBox: null,
+            isSwitch: false);
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
-    private GeometryDrawing NewDrawingItem(Shape shape, Geometry geometry)
+    private GeometryDrawing NewDrawingItem(
+        Shape shape,
+        Geometry geometry)
     {
         shape.GeometryElement = geometry;
         var geometryDrawing = new GeometryDrawing();
@@ -109,17 +119,34 @@ internal sealed class SvgRender
                 stroke.Width = OverrideStrokeWidth.Value;
             }
 
-            var brush = stroke.StrokeBrush(Svg, this, shape, shape.Opacity, geometry.Bounds);
+            var brush = stroke.StrokeBrush(
+                Svg,
+                this,
+                shape,
+                shape.Opacity,
+                geometry.Bounds);
             if (OverrideStrokeColor is not null)
             {
-                brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideStrokeColor.Value.R, OverrideStrokeColor.Value.G, OverrideStrokeColor.Value.B));
+                brush = new SolidColorBrush(
+                    Color.FromArgb(
+                        (byte)(255 * shape.Opacity),
+                        OverrideStrokeColor.Value.R,
+                        OverrideStrokeColor.Value.G,
+                        OverrideStrokeColor.Value.B));
             }
             else if (OverrideColor is not null)
             {
-                brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
+                brush = new SolidColorBrush(
+                    Color.FromArgb(
+                        (byte)(255 * shape.Opacity),
+                        OverrideColor.Value.R,
+                        OverrideColor.Value.G,
+                        OverrideColor.Value.B));
             }
 
-            geometryDrawing.Pen = new Pen(brush, stroke.Width);
+            geometryDrawing.Pen = new Pen(
+                brush,
+                stroke.Width);
             if (stroke.StrokeArray is not null)
             {
                 geometryDrawing.Pen.DashCap = PenLineCap.Flat;
@@ -169,7 +196,12 @@ internal sealed class SvgRender
             geometryDrawing.Brush = Brushes.Black;
             if (OverrideColor is not null)
             {
-                geometryDrawing.Brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
+                geometryDrawing.Brush = new SolidColorBrush(
+                    Color.FromArgb(
+                        (byte)(255 * shape.Opacity),
+                        OverrideColor.Value.R,
+                        OverrideColor.Value.G,
+                        OverrideColor.Value.B));
             }
 
             var g = new GeometryGroup
@@ -182,10 +214,20 @@ internal sealed class SvgRender
         }
         else
         {
-            geometryDrawing.Brush = Svg.Fill ?? shape.Fill.FillBrush(Svg, this, shape, shape.Opacity, geometry.Bounds);
+            geometryDrawing.Brush = Svg.Fill ?? shape.Fill.FillBrush(
+                Svg,
+                this,
+                shape,
+                shape.Opacity,
+                geometry.Bounds);
             if (OverrideColor is not null)
             {
-                geometryDrawing.Brush = new SolidColorBrush(Color.FromArgb((byte)(255 * shape.Opacity), OverrideColor.Value.R, OverrideColor.Value.G, OverrideColor.Value.B));
+                geometryDrawing.Brush = new SolidColorBrush(
+                    Color.FromArgb(
+                        (byte)(255 * shape.Opacity),
+                        OverrideColor.Value.R,
+                        OverrideColor.Value.G,
+                        OverrideColor.Value.B));
             }
 
             var g = new GeometryGroup
@@ -207,7 +249,10 @@ internal sealed class SvgRender
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
-    internal DrawingGroup LoadGroup(IEnumerable<Shape> elements, Rect? viewBox, bool isSwitch)
+    internal DrawingGroup LoadGroup(
+        IEnumerable<Shape> elements,
+        Rect? viewBox,
+        bool isSwitch)
     {
         var drawingGroup = new DrawingGroup();
         if (viewBox.HasValue)
@@ -232,7 +277,9 @@ internal sealed class SvgRender
 
                 if (!string.IsNullOrEmpty(shape.RequiredFeatures))
                 {
-                    if (!SvgFeatures.Features.Contains(shape.RequiredFeatures, StringComparer.Ordinal))
+                    if (!SvgFeatures.Features.Contains(
+                            shape.RequiredFeatures,
+                            StringComparer.Ordinal))
                     {
                         continue;
                     }
@@ -260,15 +307,21 @@ internal sealed class SvgRender
                                 {
                                     var animation = new DoubleAnimation
                                     {
-                                        From = double.Parse(animateTransform.From, GlobalizationConstants.EnglishCultureInfo),
-                                        To = double.Parse(animateTransform.To, GlobalizationConstants.EnglishCultureInfo),
+                                        From = double.Parse(
+                                            animateTransform.From,
+                                            GlobalizationConstants.EnglishCultureInfo),
+                                        To = double.Parse(
+                                            animateTransform.To,
+                                            GlobalizationConstants.EnglishCultureInfo),
                                         Duration = animateTransform.Duration,
                                         RepeatBehavior = RepeatBehavior.Forever,
                                     };
 
                                     var r = new RotateTransform();
                                     drawingGroup.Transform = r;
-                                    r.BeginAnimation(RotateTransform.AngleProperty, animation);
+                                    r.BeginAnimation(
+                                        RotateTransform.AngleProperty,
+                                        animation);
                                 }
 
                                 break;
@@ -296,15 +349,22 @@ internal sealed class SvgRender
                                         {
                                             foreach (var d in animate.Values
                                                          .Split(';')
-                                                         .Select(x => new LinearDoubleKeyFrame(double.Parse(x, GlobalizationConstants.EnglishCultureInfo))))
+                                                         .Select(x => new LinearDoubleKeyFrame(
+                                                             double.Parse(
+                                                                 x,
+                                                                 GlobalizationConstants.EnglishCultureInfo))))
                                             {
                                                 animation.KeyFrames.Add(d);
                                             }
                                         }
 
                                         animation.RepeatBehavior = RepeatBehavior.Forever;
-                                        g.BeginAnimation(EllipseGeometry.RadiusXProperty, animation);
-                                        g.BeginAnimation(EllipseGeometry.RadiusYProperty, animation);
+                                        g.BeginAnimation(
+                                            EllipseGeometry.RadiusXProperty,
+                                            animation);
+                                        g.BeginAnimation(
+                                            EllipseGeometry.RadiusYProperty,
+                                            animation);
                                         break;
                                     }
 
@@ -319,14 +379,21 @@ internal sealed class SvgRender
                                         {
                                             foreach (var d in animate.Values
                                                          .Split(';')
-                                                         .Select(_ => new LinearPointKeyFrame(new Point(double.Parse(_, GlobalizationConstants.EnglishCultureInfo), ((EllipseGeometry)g)!.Center.Y))))
+                                                         .Select(_ => new LinearPointKeyFrame(
+                                                             new Point(
+                                                                 double.Parse(
+                                                                     _,
+                                                                     GlobalizationConstants.EnglishCultureInfo),
+                                                                 ((EllipseGeometry)g)!.Center.Y))))
                                             {
                                                 animation.KeyFrames.Add(d);
                                             }
                                         }
 
                                         animation.RepeatBehavior = RepeatBehavior.Forever;
-                                        g.BeginAnimation(EllipseGeometry.CenterProperty, animation);
+                                        g.BeginAnimation(
+                                            EllipseGeometry.CenterProperty,
+                                            animation);
                                         break;
                                     }
 
@@ -341,14 +408,21 @@ internal sealed class SvgRender
                                         {
                                             foreach (var d in animate.Values
                                                          .Split(';')
-                                                         .Select(_ => new LinearPointKeyFrame(new Point(((EllipseGeometry)g)!.Center.X, double.Parse(_, GlobalizationConstants.EnglishCultureInfo)))))
+                                                         .Select(_ => new LinearPointKeyFrame(
+                                                             new Point(
+                                                                 ((EllipseGeometry)g)!.Center.X,
+                                                                 double.Parse(
+                                                                     _,
+                                                                     GlobalizationConstants.EnglishCultureInfo)))))
                                             {
                                                 animation.KeyFrames.Add(d);
                                             }
                                         }
 
                                         animation.RepeatBehavior = RepeatBehavior.Forever;
-                                        g.BeginAnimation(EllipseGeometry.CenterProperty, animation);
+                                        g.BeginAnimation(
+                                            EllipseGeometry.CenterProperty,
+                                            animation);
                                         break;
                                     }
                                 }
@@ -371,11 +445,17 @@ internal sealed class SvgRender
                         DrawingGroup subgroup;
                         if (currentUsedShape is Shapes.Group group)
                         {
-                            subgroup = LoadGroup(group.Elements, viewBox: null, isSwitch: false);
+                            subgroup = LoadGroup(
+                                group.Elements,
+                                viewBox: null,
+                                isSwitch: false);
                         }
                         else
                         {
-                            subgroup = LoadGroup(new[] { currentUsedShape }, viewBox: null, isSwitch: false);
+                            subgroup = LoadGroup(
+                                new[] { currentUsedShape },
+                                viewBox: null,
+                                isSwitch: false);
                         }
 
                         if (currentUsedShape.Clip is not null)
@@ -383,14 +463,17 @@ internal sealed class SvgRender
                             subgroup.ClipGeometry = currentUsedShape.Clip.ClipGeometry;
                         }
 
-                        subgroup.Transform = new TranslateTransform(useShape.X, useShape.Y);
+                        subgroup.Transform = new TranslateTransform(
+                            useShape.X,
+                            useShape.Y);
                         if (useShape.Transform is not null)
                         {
                             subgroup.Transform = new TransformGroup
                             {
                                 Children = new TransformCollection
                                 {
-                                    subgroup.Transform, useShape.Transform,
+                                    subgroup.Transform,
+                                    useShape.Transform,
                                 },
                             };
                         }
@@ -404,7 +487,10 @@ internal sealed class SvgRender
 
                 case Clip clip:
                 {
-                    var subgroup = LoadGroup(clip.Elements, viewBox: null, isSwitch: false);
+                    var subgroup = LoadGroup(
+                        clip.Elements,
+                        viewBox: null,
+                        isSwitch: false);
                     if (clip.Transform is not null)
                     {
                         subgroup.Transform = clip.Transform;
@@ -416,8 +502,14 @@ internal sealed class SvgRender
 
                 case Shapes.Group groupShape:
                 {
-                    var subgroup = LoadGroup(groupShape.Elements, viewBox: null, groupShape.IsSwitch);
-                    AddDrawingToGroup(drawingGroup, groupShape, subgroup);
+                    var subgroup = LoadGroup(
+                        groupShape.Elements,
+                        viewBox: null,
+                        groupShape.IsSwitch);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        groupShape,
+                        subgroup);
                     continue;
                 }
 
@@ -444,17 +536,36 @@ internal sealed class SvgRender
                             break;
                     }
 
-                    var rect = new RectangleGeometry(new Rect(dx, dy, width, height), rx, ry);
-                    var di = NewDrawingItem(rectangleShape, rect);
-                    AddDrawingToGroup(drawingGroup, rectangleShape, di);
+                    var rect = new RectangleGeometry(
+                        new Rect(
+                            dx,
+                            dy,
+                            width,
+                            height),
+                        rx,
+                        ry);
+                    var di = NewDrawingItem(
+                        rectangleShape,
+                        rect);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        rectangleShape,
+                        di);
                     continue;
                 }
 
                 case LineShape lineShape:
                 {
-                    var lineGeometry = new LineGeometry(lineShape.P1, lineShape.P2);
-                    var di = NewDrawingItem(lineShape, lineGeometry);
-                    AddDrawingToGroup(drawingGroup, lineShape, di);
+                    var lineGeometry = new LineGeometry(
+                        lineShape.P1,
+                        lineShape.P2);
+                    var di = NewDrawingItem(
+                        lineShape,
+                        lineGeometry);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        lineShape,
+                        di);
                     continue;
                 }
 
@@ -467,11 +578,18 @@ internal sealed class SvgRender
                     pathFigure.StartPoint = polylineShape.Points[0];
                     for (var index = 1; index < polylineShape.Points.Length; index++)
                     {
-                        pathFigure.Segments.Add(new LineSegment(polylineShape.Points[index], isStroked: true));
+                        pathFigure.Segments.Add(new LineSegment(
+                            polylineShape.Points[index],
+                            isStroked: true));
                     }
 
-                    var di = NewDrawingItem(polylineShape, pathGeometry);
-                    AddDrawingToGroup(drawingGroup, polylineShape, di);
+                    var di = NewDrawingItem(
+                        polylineShape,
+                        pathGeometry);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        polylineShape,
+                        di);
                     continue;
                 }
 
@@ -484,34 +602,70 @@ internal sealed class SvgRender
                     pathFigure.StartPoint = polygonShape.Points[0];
                     for (var index = 1; index < polygonShape.Points.Length; index++)
                     {
-                        pathFigure.Segments.Add(new LineSegment(polygonShape.Points[index], isStroked: true));
+                        pathFigure.Segments.Add(new LineSegment(
+                            polygonShape.Points[index],
+                            isStroked: true));
                     }
 
-                    var di = NewDrawingItem(polygonShape, pathGeometry);
-                    AddDrawingToGroup(drawingGroup, polygonShape, di);
+                    var di = NewDrawingItem(
+                        polygonShape,
+                        pathGeometry);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        polygonShape,
+                        di);
                     continue;
                 }
 
                 case CircleShape circleShape:
                 {
-                    var ellipseGeometry = new EllipseGeometry(new Point(circleShape.Cx, circleShape.Cy), circleShape.R, circleShape.R);
-                    var di = NewDrawingItem(circleShape, ellipseGeometry);
-                    AddDrawingToGroup(drawingGroup, circleShape, di);
+                    var ellipseGeometry = new EllipseGeometry(
+                        new Point(
+                            circleShape.Cx,
+                            circleShape.Cy),
+                        circleShape.R,
+                        circleShape.R);
+                    var di = NewDrawingItem(
+                        circleShape,
+                        ellipseGeometry);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        circleShape,
+                        di);
                     continue;
                 }
 
                 case EllipseShape ellipseShape:
                 {
-                    var ellipseGeometry = new EllipseGeometry(new Point(ellipseShape.Cx, ellipseShape.Cy), ellipseShape.Rx, ellipseShape.Ry);
-                    var di = NewDrawingItem(ellipseShape, ellipseGeometry);
-                    AddDrawingToGroup(drawingGroup, ellipseShape, di);
+                    var ellipseGeometry = new EllipseGeometry(
+                        new Point(
+                            ellipseShape.Cx,
+                            ellipseShape.Cy),
+                        ellipseShape.Rx,
+                        ellipseShape.Ry);
+                    var di = NewDrawingItem(
+                        ellipseShape,
+                        ellipseGeometry);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        ellipseShape,
+                        di);
                     continue;
                 }
 
                 case ImageShape image:
                 {
-                    var imageDrawing = new ImageDrawing(image.ImageSource, new Rect(image.X, image.Y, image.Width, image.Height));
-                    AddDrawingToGroup(drawingGroup, image, imageDrawing);
+                    var imageDrawing = new ImageDrawing(
+                        image.ImageSource,
+                        new Rect(
+                            image.X,
+                            image.Y,
+                            image.Width,
+                            image.Height));
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        image,
+                        imageDrawing);
                     continue;
                 }
 
@@ -525,13 +679,23 @@ internal sealed class SvgRender
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                         if (tSpan is null)
                         {
-                            var di = NewDrawingItem(textShape, gm);
-                            AddDrawingToGroup(drawingGroup, textShape, di);
+                            var di = NewDrawingItem(
+                                textShape,
+                                gm);
+                            AddDrawingToGroup(
+                                drawingGroup,
+                                textShape,
+                                di);
                         }
                         else
                         {
-                            var di = NewDrawingItem(tSpan, gm);
-                            AddDrawingToGroup(drawingGroup, textShape, di);
+                            var di = NewDrawingItem(
+                                tSpan,
+                                gm);
+                            AddDrawingToGroup(
+                                drawingGroup,
+                                textShape,
+                                di);
                         }
                     }
 
@@ -540,9 +704,15 @@ internal sealed class SvgRender
 
                 case PathShape pathShape:
                 {
-                    var path = PathGeometry.CreateFromGeometry(Geometry.Parse(pathShape.Data));
-                    var di = NewDrawingItem(pathShape, path);
-                    AddDrawingToGroup(drawingGroup, pathShape, di);
+                    var path = PathGeometry.CreateFromGeometry(
+                        Geometry.Parse(pathShape.Data));
+                    var di = NewDrawingItem(
+                        pathShape,
+                        path);
+                    AddDrawingToGroup(
+                        drawingGroup,
+                        pathShape,
+                        di);
                     break;
                 }
             }
@@ -551,7 +721,10 @@ internal sealed class SvgRender
         return drawingGroup;
     }
 
-    private static void AddDrawingToGroup(DrawingGroup grp, Shape shape, Drawing drawing)
+    private static void AddDrawingToGroup(
+        DrawingGroup grp,
+        Shape shape,
+        Drawing drawing)
     {
         if (shape.Clip is not null || shape.Transform is not null || shape.Filter is not null)
         {

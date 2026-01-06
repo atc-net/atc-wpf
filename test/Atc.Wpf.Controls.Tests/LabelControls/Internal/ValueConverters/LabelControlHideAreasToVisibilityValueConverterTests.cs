@@ -38,13 +38,20 @@ public sealed class LabelControlHideAreasToVisibilityValueConverterTests
     [InlineData(Visibility.Collapsed, LabelControlHideAreasType.AsteriskAndValidation, LabelControlHideAreasType.Validation)]
     [InlineData(Visibility.Collapsed, LabelControlHideAreasType.InformationAndValidation, LabelControlHideAreasType.Validation)]
     [InlineData(Visibility.Collapsed, LabelControlHideAreasType.All, LabelControlHideAreasType.Validation)]
-    public void Convert(Visibility expected, LabelControlHideAreasType hideAreasType, LabelControlHideAreasType requiredHideAreasType)
+    public void Convert(
+        Visibility expected,
+        LabelControlHideAreasType hideAreasType,
+        LabelControlHideAreasType requiredHideAreasType)
     {
         // Arrange
         var sut = new LabelControlHideAreasToVisibilityValueConverter();
 
         // Act
-        var actual = sut.Convert(hideAreasType, null!, requiredHideAreasType, null!);
+        var actual = sut.Convert(
+            hideAreasType,
+            null!,
+            requiredHideAreasType,
+            null!);
 
         // Assert
         Assert.Equal(expected, actual);

@@ -22,7 +22,11 @@ internal struct BorderInfo
     /// <param name="borders">BorderThickness</param>
     /// <param name="padding">Padding</param>
     /// <param name="isOuterBorder">Flag to indicate whether outer or inner border needs to be calculated</param>
-    internal BorderInfo(CornerRadius corners, Thickness borders, Thickness padding, bool isOuterBorder)
+    internal BorderInfo(
+        CornerRadius corners,
+        Thickness borders,
+        Thickness padding,
+        bool isOuterBorder)
     {
         var left = (0.5 * borders.Left) + padding.Left;
         var top = (0.5 * borders.Top) + padding.Top;

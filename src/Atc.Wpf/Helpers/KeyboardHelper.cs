@@ -61,8 +61,7 @@ public static class KeyboardHelper
         => IsKeyDownRegularNumber() ||
            IsKeyDownNumPadNumber();
 
-    public static bool IsKeyRegularNumber(
-        Key key)
+    public static bool IsKeyRegularNumber(Key key)
         => key is
             Key.D0 or
             Key.D1 or
@@ -75,8 +74,7 @@ public static class KeyboardHelper
             Key.D8 or
             Key.D9;
 
-    public static bool IsKeyNumPadNumber(
-        Key key)
+    public static bool IsKeyNumPadNumber(Key key)
         => key is
             Key.NumPad0 or
             Key.NumPad1 or
@@ -89,13 +87,11 @@ public static class KeyboardHelper
             Key.NumPad8 or
             Key.NumPad9;
 
-    public static bool IsKeyNumber(
-        Key key)
+    public static bool IsKeyNumber(Key key)
         => IsKeyRegularNumber(key) ||
            IsKeyNumPadNumber(key);
 
-    public static bool IsKeyArrow(
-        Key key)
+    public static bool IsKeyArrow(Key key)
         => key is
             Key.Left or
             Key.Up or

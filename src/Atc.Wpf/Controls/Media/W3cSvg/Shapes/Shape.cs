@@ -14,7 +14,10 @@ internal class Shape
     private string? localStyle;
     private double opacity;
 
-    public Shape(Svg svg, XmlNode? node = null, Shape? parent = null)
+    public Shape(
+        Svg svg,
+        XmlNode? node = null,
+        Shape? parent = null)
     {
         if (node is null)
         {
@@ -43,7 +46,10 @@ internal class Shape
         ParseLocalStyle(svg);
     }
 
-    public Shape(Svg svg, IReadOnlyCollection<KeyValueItem>? attrs, Shape parent)
+    public Shape(
+        Svg svg,
+        IReadOnlyCollection<KeyValueItem>? attrs,
+        Shape parent)
     {
         Id = "<null>";
 
@@ -162,7 +168,9 @@ internal class Shape
 
     public Shape? Parent { get; set; }
 
-    protected virtual void ParseAtStart(Svg svg, XmlNode? node)
+    protected virtual void ParseAtStart(
+        Svg svg,
+        XmlNode? node)
     {
         ArgumentNullException.ThrowIfNull(svg);
 
@@ -209,7 +217,10 @@ internal class Shape
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
-    protected virtual void Parse(Svg svg, string name, string value)
+    protected virtual void Parse(
+        Svg svg,
+        string name,
+        string value)
     {
         ArgumentNullException.ThrowIfNull(svg);
         ArgumentNullException.ThrowIfNull(name);
@@ -418,10 +429,7 @@ internal class Shape
 
     protected TextStyle GetTextStyle() => textStyle ??= new TextStyle(this);
 
-    public override string ToString()
-    {
-        return GetType().Name + " (" + Id + ")";
-    }
+    public override string ToString() => GetType().Name + " (" + Id + ")";
 
     private Stroke GetStroke() => stroke ??= new Stroke();
 }

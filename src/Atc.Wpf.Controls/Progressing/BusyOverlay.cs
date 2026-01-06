@@ -60,8 +60,7 @@ public partial class BusyOverlay : ContentControl
 
     protected bool IsContentVisible { get; set; }
 
-    protected virtual void OnIsBusyChanged(
-        DependencyPropertyChangedEventArgs e)
+    protected virtual void OnIsBusyChanged(DependencyPropertyChangedEventArgs e)
     {
         if (IsBusy)
         {
@@ -82,10 +81,7 @@ public partial class BusyOverlay : ContentControl
 
             _ = FocusAfterBusy?.Dispatcher.BeginInvoke(
                 DispatcherPriority.Input,
-                new Action(() =>
-                    {
-                        FocusAfterBusy.Focus();
-                    }));
+                new Action(() => FocusAfterBusy.Focus()));
         }
 
         ChangeVisualState(useTransitions: true);
@@ -102,17 +98,24 @@ public partial class BusyOverlay : ContentControl
         DependencyPropertyChangedEventArgs e)
         => ((BusyOverlay)d).OnIsBusyChanged(e);
 
-    private void DisplayAfterTimerElapsed(object? sender, EventArgs e)
+    private void DisplayAfterTimerElapsed(
+        object? sender,
+        EventArgs e)
     {
         displayAfterTimer.Stop();
         IsContentVisible = true;
         ChangeVisualState(useTransitions: true);
     }
 
-    protected virtual void ChangeVisualState(
-        bool useTransitions)
+    protected virtual void ChangeVisualState(bool useTransitions)
     {
-        VisualStateManager.GoToState(this, IsBusy ? Internal.VisualStates.StateBusy : Internal.VisualStates.StateIdle, useTransitions);
-        VisualStateManager.GoToState(this, IsContentVisible ? Internal.VisualStates.StateVisible : Internal.VisualStates.StateHidden, useTransitions);
+        VisualStateManager.GoToState(
+            this,
+            IsBusy ? Internal.VisualStates.StateBusy : Internal.VisualStates.StateIdle,
+            useTransitions);
+        VisualStateManager.GoToState(
+            this,
+            IsContentVisible ? Internal.VisualStates.StateVisible : Internal.VisualStates.StateHidden,
+            useTransitions);
     }
 }

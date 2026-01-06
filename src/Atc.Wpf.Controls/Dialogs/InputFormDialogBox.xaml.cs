@@ -100,8 +100,7 @@ public partial class InputFormDialogBox
         UpdateWidthAndHeight();
     }
 
-    private void InitializeDialogBox(
-        ILabelControlsForm labelControlsForm)
+    private void InitializeDialogBox(ILabelControlsForm labelControlsForm)
     {
         InitializeComponent();
 

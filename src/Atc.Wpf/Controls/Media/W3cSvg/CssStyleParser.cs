@@ -5,7 +5,9 @@ internal static class CssStyleParser
     [SuppressMessage("Performance", "MA0023:Add RegexOptions.ExplicitCapture", Justification = "OK.")]
     private static readonly Regex RxStyle = new("([\\.,<>a-zA-Z0-9: \\-#]*){([^}]*)}", RegexOptions.Compiled | RegexOptions.Singleline, TimeSpan.FromSeconds(5));
 
-    public static void ParseStyle(Svg svg, string style)
+    public static void ParseStyle(
+        Svg svg,
+        string style)
     {
         ArgumentNullException.ThrowIfNull(svg);
 
@@ -25,7 +27,9 @@ internal static class CssStyleParser
 
                 foreach (var item in SvgXmlUtil.SplitStyle(value))
                 {
-                    svgStyles[nm].Add(new KeyValueItem(item.Key, item.Value));
+                    svgStyles[nm].Add(new KeyValueItem(
+                        item.Key,
+                        item.Value));
                 }
             }
 

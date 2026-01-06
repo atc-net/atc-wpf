@@ -12,7 +12,10 @@ internal static class DateTimePickerEventHelper
     /// <param name="cultureInfo">The culture to use for parsing.</param>
     /// <param name="result">The parsed DateTime result.</param>
     /// <returns>True if parsing succeeded; otherwise false.</returns>
-    public delegate bool TryParseDateTime(string value, CultureInfo cultureInfo, out DateTime result);
+    public delegate bool TryParseDateTime(
+        string value,
+        CultureInfo cultureInfo,
+        out DateTime result);
 
     /// <summary>
     /// Fires the LostFocusValid event for date/time picker controls.
@@ -36,7 +39,10 @@ internal static class DateTimePickerEventHelper
             return;
         }
 
-        var (oldValue, newValue) = ParseOldAndNewValues(e, customCulture, tryParse);
+        var (oldValue, newValue) = ParseOldAndNewValues(
+            e,
+            customCulture,
+            tryParse);
 
         eventHandler.Invoke(
             control,
@@ -68,7 +74,10 @@ internal static class DateTimePickerEventHelper
             return;
         }
 
-        var (oldValue, newValue) = ParseOldAndNewValues(e, customCulture, tryParse);
+        var (oldValue, newValue) = ParseOldAndNewValues(
+            e,
+            customCulture,
+            tryParse);
 
         eventHandler.Invoke(
             control,
@@ -95,14 +104,20 @@ internal static class DateTimePickerEventHelper
 
         DateTime? oldValue = null;
         if (e.OldValue is not null &&
-            tryParse(e.OldValue.ToString()!, cultureInfo, out var resultOld))
+            tryParse(
+                e.OldValue.ToString()!,
+                cultureInfo,
+                out var resultOld))
         {
             oldValue = resultOld;
         }
 
         DateTime? newValue = null;
         if (e.NewValue is not null &&
-            tryParse(e.NewValue.ToString()!, cultureInfo, out var resultNew))
+            tryParse(
+                e.NewValue.ToString()!,
+                cultureInfo,
+                out var resultNew))
         {
             newValue = resultNew;
         }

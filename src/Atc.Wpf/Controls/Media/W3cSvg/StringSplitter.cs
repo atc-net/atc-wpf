@@ -11,7 +11,9 @@ internal sealed class StringSplitter
         curPos = 0;
     }
 
-    public void SetString(string value, int startPos)
+    public void SetString(
+        string value,
+        int startPos)
     {
         val = value;
         curPos = startPos;
@@ -60,7 +62,9 @@ internal sealed class StringSplitter
         }
 
         curPos = endPos;
-        var s = val.Substring(startPos, len);
+        var s = val.Substring(
+            startPos,
+            len);
 
         startPos = endPos;
         while (startPos < val.Length && !numbers.Contains(val[startPos], StringComparison.Ordinal))
@@ -81,6 +85,8 @@ internal sealed class StringSplitter
     {
         var x = ReadNextValue();
         var y = ReadNextValue();
-        return new Point(x, y);
+        return new Point(
+            x,
+            y);
     }
 }

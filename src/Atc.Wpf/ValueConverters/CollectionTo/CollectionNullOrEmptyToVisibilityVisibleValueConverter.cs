@@ -10,12 +10,14 @@ public sealed class CollectionNullOrEmptyToVisibilityVisibleValueConverter : IVa
     public static readonly CollectionNullOrEmptyToVisibilityVisibleValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is not ICollection collectionValue || collectionValue.Count == 0
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is not ICollection collectionValue || collectionValue.Count == 0
             ? Visibility.Visible
             : Visibility.Collapsed;
-    }
 
     /// <inheritdoc />
     public object ConvertBack(

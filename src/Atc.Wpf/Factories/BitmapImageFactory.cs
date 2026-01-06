@@ -3,7 +3,9 @@ namespace Atc.Wpf.Factories;
 public static class BitmapImageFactory
 {
     [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "OK.")]
-    public static BitmapImage Create(string uriLocation, UriKind uriKind = UriKind.RelativeOrAbsolute)
+    public static BitmapImage Create(
+        string uriLocation,
+        UriKind uriKind = UriKind.RelativeOrAbsolute)
     {
         ArgumentNullException.ThrowIfNull(uriLocation);
 

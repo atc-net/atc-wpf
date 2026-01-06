@@ -9,8 +9,7 @@ public static class ToggleButtonHelper
         typeof(ToggleButtonHelper),
         new FrameworkPropertyMetadata(FlowDirection.LeftToRight));
 
-    public static FlowDirection GetContentDirection(
-        UIElement element)
+    public static FlowDirection GetContentDirection(UIElement element)
         => (FlowDirection)element.GetValue(ContentDirectionProperty);
 
     public static void SetContentDirection(

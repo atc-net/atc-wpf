@@ -2,7 +2,9 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Shapes;
 
 internal sealed class CircleShape : Shape
 {
-    public CircleShape(Svg svg, XmlNode node)
+    public CircleShape(
+        Svg svg,
+        XmlNode node)
         : base(svg, node)
     {
         ArgumentNullException.ThrowIfNull(svg);
@@ -21,5 +23,6 @@ internal sealed class CircleShape : Shape
 
     public double R { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(Cx)}: {Cx}, {nameof(Cy)}: {Cy}, {nameof(R)}: {R}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(Cx)}: {Cx}, {nameof(Cy)}: {Cy}, {nameof(R)}: {R}";
 }

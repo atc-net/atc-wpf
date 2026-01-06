@@ -8,8 +8,7 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
 
     protected object? TargetProperty { get; private set; }
 
-    public sealed override object ProvideValue(
-        IServiceProvider serviceProvider)
+    public sealed override object ProvideValue(IServiceProvider serviceProvider)
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
@@ -31,7 +30,9 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
 
         if (TargetProperty is DependencyProperty dp)
         {
-            HandleDependencyProperty(value, dp);
+            HandleDependencyProperty(
+                value,
+                dp);
         }
         else
         {
@@ -42,12 +43,18 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
                 TargetObject = newBinding;
 
                 var prop = TargetProperty as PropertyInfo;
-                prop?.SetValue(TargetObject, value, index: null);
+                prop?.SetValue(
+                    TargetObject,
+                    value,
+                    index: null);
             }
             else
             {
                 var prop = TargetProperty as PropertyInfo;
-                prop?.SetValue(TargetObject, value, index: null);
+                prop?.SetValue(
+                    TargetObject,
+                    value,
+                    index: null);
             }
         }
     }
@@ -64,7 +71,10 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
             return;
         }
 
-        void UpdateAction() => d.SetValue(dp, value);
+        void UpdateAction()
+            => d.SetValue(
+                dp,
+                value);
         if (d.CheckAccess())
         {
             UpdateAction();
@@ -75,8 +85,7 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
         }
     }
 
-    private static Binding CloneDataBinding(
-        Binding orgBinding)
+    private static Binding CloneDataBinding(Binding orgBinding)
     {
         var newBinding = new Binding
         {

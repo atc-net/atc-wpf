@@ -23,7 +23,9 @@ public partial class LabelColorPicker : ILabelColorPicker
 
         DataContext = this;
 
-        var colorPickers = this.FindChildren<ColorPicker>().ToList();
+        var colorPickers = this
+            .FindChildren<ColorPicker>()
+            .ToList();
         if (colorPickers.Count != 1)
         {
             throw new UnexpectedTypeException($"{nameof(LabelColorPicker)} should only contains one {nameof(ColorPicker)}");
@@ -45,7 +47,9 @@ public partial class LabelColorPicker : ILabelColorPicker
 
         if (control.BrushValue?.Color != color)
         {
-            control.SetCurrentValue(BrushValueProperty, new SolidColorBrush(color));
+            control.SetCurrentValue(
+                BrushValueProperty,
+                new SolidColorBrush(color));
         }
     }
 
@@ -62,7 +66,9 @@ public partial class LabelColorPicker : ILabelColorPicker
 
         if (control.ColorValue != brush.Color)
         {
-            control.SetCurrentValue(ColorValueProperty, brush.Color);
+            control.SetCurrentValue(
+                ColorValueProperty,
+                brush.Color);
         }
     }
 
@@ -74,8 +80,12 @@ public partial class LabelColorPicker : ILabelColorPicker
 
         var solidColorBrush = SolidColorBrushHelper.GetBrushFromHex(e.NewValue.ToString(GlobalizationConstants.EnglishCultureInfo))!;
 
-        SetCurrentValue(BrushValueProperty, solidColorBrush);
-        SetCurrentValue(ColorValueProperty, solidColorBrush.Color);
+        SetCurrentValue(
+            BrushValueProperty,
+            solidColorBrush);
+        SetCurrentValue(
+            ColorValueProperty,
+            solidColorBrush.Color);
 
         ColorChanged?.Invoke(
             this,

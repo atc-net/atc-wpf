@@ -8,8 +8,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
 
     public IList<ILabelControlsFormRow>? Rows { get; set; }
 
-    public void AddColumn(
-        IList<ILabelControlBase> labelControls)
+    public void AddColumn(IList<ILabelControlBase> labelControls)
     {
         ArgumentNullException.ThrowIfNull(labelControls);
 
@@ -18,8 +17,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         AddColumn(labelControlsFormColumn);
     }
 
-    public void AddColumn(
-        ILabelControlsFormColumn labelControlsFormColumn)
+    public void AddColumn(ILabelControlsFormColumn labelControlsFormColumn)
     {
         ArgumentNullException.ThrowIfNull(labelControlsFormColumn);
 
@@ -80,7 +78,9 @@ public sealed class LabelControlsForm : ILabelControlsForm
             {
                 foreach (var groupIdentifier in column.GetGroupIdentifiers())
                 {
-                    if (!uniqGroupIdentifier.Contains(groupIdentifier, StringComparer.Ordinal))
+                    if (!uniqGroupIdentifier.Contains(
+                            groupIdentifier,
+                            StringComparer.Ordinal))
                     {
                         uniqGroupIdentifier.Add(groupIdentifier);
                     }
@@ -113,7 +113,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
 
             rowHeight += row.Columns
                 .Select(x => x.CalculateHeight())
-                .Prepend(0)
+                .Concat([0])
                 .Max();
         }
 

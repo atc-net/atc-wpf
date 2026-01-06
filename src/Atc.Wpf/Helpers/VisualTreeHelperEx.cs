@@ -12,8 +12,7 @@ public static class VisualTreeHelperEx
     /// <typeparam name="T">The type of the parent to find.</typeparam>
     /// <param name="control">The starting dependency object to search up from.</param>
     /// <returns>The first parent object of type T found in the visual tree, or null if no such parent exists.</returns>
-    public static T? GetParent<T>(
-        DependencyObject control)
+    public static T? GetParent<T>(DependencyObject control)
         where T : DependencyObject
         => FindParent<T>(control);
 
@@ -23,8 +22,7 @@ public static class VisualTreeHelperEx
     /// <typeparam name="T">The type of the child to find.</typeparam>
     /// <param name="control">The parent dependency object to search down from.</param>
     /// <returns>The first child of type T found within the visual tree, or null if no such child exists.</returns>
-    public static T? GetChild<T>(
-        DependencyObject control)
+    public static T? GetChild<T>(DependencyObject control)
         where T : DependencyObject
         => FindChild<T>(control);
 
@@ -34,8 +32,7 @@ public static class VisualTreeHelperEx
     /// <typeparam name="T">The type of the parent to find.</typeparam>
     /// <param name="control">The starting point dependency object to search up from.</param>
     /// <returns>The first parent object of type T in the visual tree, or null if no such parent is found.</returns>
-    public static T? FindParent<T>(
-        DependencyObject control)
+    public static T? FindParent<T>(DependencyObject control)
         where T : DependencyObject
     {
         var parent = VisualTreeHelper.GetParent(control);
@@ -58,8 +55,7 @@ public static class VisualTreeHelperEx
     /// <typeparam name="T">The type of the child to find.</typeparam>
     /// <param name="control">The parent dependency object to search down from.</param>
     /// <returns>The first child of type T, or null if no such child is found.</returns>
-    public static T? FindChild<T>(
-        DependencyObject control)
+    public static T? FindChild<T>(DependencyObject control)
         where T : DependencyObject
     {
         var childNumber = VisualTreeHelper.GetChildrenCount(control);

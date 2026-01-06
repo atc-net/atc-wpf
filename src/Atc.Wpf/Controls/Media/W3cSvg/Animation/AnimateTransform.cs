@@ -2,7 +2,10 @@ namespace Atc.Wpf.Controls.Media.W3cSvg.Animation;
 
 internal sealed class AnimateTransform : AnimationBase
 {
-    public AnimateTransform(Svg svg, XmlNode node, Shape parent)
+    public AnimateTransform(
+        Svg svg,
+        XmlNode node,
+        Shape parent)
         : base(svg, node, parent)
     {
         Type = Enum<AnimateTransformType>.Parse(SvgXmlUtil.AttrValue(node, "type", "translate")!);
@@ -25,5 +28,6 @@ internal sealed class AnimateTransform : AnimationBase
 
     public string? RepeatType { get; }
 
-    public override string ToString() => $"{base.ToString()}, {nameof(AttributeName)}: {AttributeName}, {nameof(Type)}: {Type}, {nameof(From)}: {From}, {nameof(To)}: {To}, {nameof(Values)}: {Values}, {nameof(RepeatType)}: {RepeatType}";
+    public override string ToString()
+        => $"{base.ToString()}, {nameof(AttributeName)}: {AttributeName}, {nameof(Type)}: {Type}, {nameof(From)}: {From}, {nameof(To)}: {To}, {nameof(Values)}: {Values}, {nameof(RepeatType)}: {RepeatType}";
 }

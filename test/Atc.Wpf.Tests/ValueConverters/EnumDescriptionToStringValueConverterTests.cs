@@ -25,16 +25,28 @@ public sealed class EnumDescriptionToStringValueConverterTests
     [InlineData("monday:", DayOfWeek.Monday, "l:")]
     [InlineData("mONDAY:", DayOfWeek.Monday, "Ul:")]
     [InlineData("Monday:", DayOfWeek.Monday, "Lu:")]
-    public void Convert(string expected, DayOfWeek input, string? inputParameter)
+    public void Convert(
+        string expected,
+        DayOfWeek input,
+        string? inputParameter)
         => Assert.Equal(
             expected,
-            converter.Convert(input, targetType: null, inputParameter, culture: null));
+            converter.Convert(
+                input,
+                targetType: null,
+                inputParameter,
+                culture: null));
 
     [Fact]
     public void ConvertBack_Should_Throw_Exception()
     {
         // Act
-        var exception = Record.Exception(() => converter.ConvertBack(value: null, targetType: null, parameter: null, culture: null));
+        var exception = Record.Exception(
+            () => converter.ConvertBack(
+                value: null,
+                targetType: null,
+                parameter: null,
+                culture: null));
 
         // Assert
         Assert.IsType<NotSupportedException>(exception);

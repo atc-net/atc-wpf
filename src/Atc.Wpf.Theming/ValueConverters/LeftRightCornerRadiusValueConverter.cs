@@ -17,7 +17,11 @@ public sealed class LeftRightCornerRadiusValueConverter : IValueConverter
         }
 
         var r = globalRadius.TopLeft;
-        return new CornerRadius(0, r, r, 0);
+        return new CornerRadius(
+            0,
+            r,
+            r,
+            0);
     }
 
     public object ConvertBack(
@@ -25,7 +29,5 @@ public sealed class LeftRightCornerRadiusValueConverter : IValueConverter
         Type targetType,
         object? parameter,
         CultureInfo culture)
-    {
-        return DependencyProperty.UnsetValue;
-    }
+        => DependencyProperty.UnsetValue;
 }

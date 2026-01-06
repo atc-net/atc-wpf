@@ -129,8 +129,7 @@ public partial class RichTextBoxEx : RichTextBox
     /// Is called when content in this editing control changes.
     /// </summary>
     /// <param name="e">The arguments that are associated with the <see cref="TextBoxBase.TextChanged" /> event.</param>
-    protected override void OnTextChanged(
-        TextChangedEventArgs e)
+    protected override void OnTextChanged(TextChangedEventArgs e)
     {
         base.OnTextChanged(e);
         UpdateTextFromDocument();
@@ -178,9 +177,7 @@ public partial class RichTextBoxEx : RichTextBox
     private static object CoerceText(
         DependencyObject d,
         object? value)
-    {
-        return value ?? string.Empty;
-    }
+        => value ?? string.Empty;
 
     private static void OnTextFormatterChanged(
         DependencyObject d,

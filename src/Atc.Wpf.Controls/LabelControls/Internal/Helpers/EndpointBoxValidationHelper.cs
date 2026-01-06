@@ -3,7 +3,8 @@ namespace Atc.Wpf.Controls.LabelControls.Internal.Helpers;
 
 internal static class EndpointBoxValidationHelper
 {
-    public static TextBoxValidationRuleType MapNetworkProtocolToValidationType(NetworkProtocolType protocol)
+    public static TextBoxValidationRuleType MapNetworkProtocolToValidationType(
+        NetworkProtocolType protocol)
         => protocol switch
         {
             NetworkProtocolType.Ftp => TextBoxValidationRuleType.Ftp,
@@ -16,7 +17,8 @@ internal static class EndpointBoxValidationHelper
             _ => TextBoxValidationRuleType.None,
         };
 
-    public static TextBoxValidationRuleType MapNetworkValidationRuleToValidationType(NetworkValidationRule validationRule)
+    public static TextBoxValidationRuleType MapNetworkValidationRuleToValidationType(
+        NetworkValidationRule validationRule)
         => validationRule switch
         {
             NetworkValidationRule.IPAddress => TextBoxValidationRuleType.IPAddress,

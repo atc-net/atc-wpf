@@ -10,12 +10,14 @@ public sealed class StringNullOrEmptyToVisibilityCollapsedValueConverter : IValu
     public static readonly StringNullOrEmptyToVisibilityCollapsedValueConverter Instance = new();
 
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is null || string.IsNullOrEmpty(value.ToString())
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
+        => value is null || string.IsNullOrEmpty(value.ToString())
             ? Visibility.Collapsed
             : Visibility.Visible;
-    }
 
     /// <inheritdoc />
     public object ConvertBack(

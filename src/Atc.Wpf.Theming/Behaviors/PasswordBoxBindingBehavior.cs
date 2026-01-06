@@ -19,8 +19,7 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
     /// <summary>Helper for getting <see cref="PasswordProperty"/> from <paramref name="d"/>.</summary>
     /// <param name="d"><see cref="DependencyObject"/> to read <see cref="PasswordProperty"/> from.</param>
     /// <returns>Password property value.</returns>
-    public static string GetPassword(
-        DependencyObject d)
+    public static string GetPassword(DependencyObject d)
         => (string)d.GetValue(PasswordProperty);
 
     /// <summary>Helper for setting <see cref="PasswordProperty"/> on <paramref name="d"/>.</summary>
@@ -69,8 +68,7 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
         SetIsChanging(passwordBox, value: false);
     }
 
-    private static void SetRevealedPasswordCaretIndex(
-        PasswordBox passwordBox)
+    private static void SetRevealedPasswordCaretIndex(PasswordBox passwordBox)
     {
         var textBox = GetRevealedPasswordTextBox(passwordBox);
         if (textBox is null)
@@ -82,13 +80,21 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
         textBox.CaretIndex = caretPos;
     }
 
-    private static int GetPasswordBoxCaretPosition(
-        PasswordBox passwordBox)
+    private static int GetPasswordBoxCaretPosition(PasswordBox passwordBox)
     {
         var selection = GetSelection(passwordBox);
-        var tTextRange = selection?.GetType().GetInterfaces().FirstOrDefault(i => i.Name == "ITextRange");
-        var oStart = tTextRange?.GetProperty("Start")?.GetGetMethod()?.Invoke(selection, parameters: null);
-        var value = oStart?.GetType().GetProperty("Offset", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(oStart, index: null) as int?;
+        var tTextRange = selection?
+            .GetType()
+            .GetInterfaces()
+            .FirstOrDefault(i => i.Name == "ITextRange");
+        var oStart = tTextRange?
+            .GetProperty("Start")?
+            .GetGetMethod()?
+            .Invoke(selection, parameters: null);
+        var value = oStart?
+            .GetType()
+            .GetProperty("Offset", BindingFlags.NonPublic | BindingFlags.Instance)?
+            .GetValue(oStart, index: null) as int?;
         var caretPosition = value.GetValueOrDefault(0);
         return caretPosition;
     }
@@ -130,7 +136,9 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
             return;
         }
 
-        var infos = AssociatedObject.GetType().GetProperty("Selection", BindingFlags.NonPublic | BindingFlags.Instance);
+        var infos = AssociatedObject
+            .GetType()
+            .GetProperty("Selection", BindingFlags.NonPublic | BindingFlags.Instance);
         selection = infos?.GetValue(AssociatedObject, null) as TextSelection;
         SetSelection(AssociatedObject, selection);
         if (selection is null)
@@ -180,11 +188,8 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
             typeof(PasswordBoxBindingBehavior),
             new UIPropertyMetadata(BooleanBoxes.FalseBox));
 
-    private static bool GetIsChanging(
-        UIElement element)
-    {
-        return (bool)element.GetValue(IsChangingProperty);
-    }
+    private static bool GetIsChanging(UIElement element)
+        => (bool)element.GetValue(IsChangingProperty);
 
     private static void SetIsChanging(
         UIElement element,
@@ -201,9 +206,7 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
             new UIPropertyMetadata(default(TextSelection)));
 
     private static TextSelection? GetSelection(DependencyObject obj)
-    {
-        return (TextSelection?)obj.GetValue(SelectionProperty);
-    }
+        => (TextSelection?)obj.GetValue(SelectionProperty);
 
     private static void SetSelection(
         DependencyObject obj,
@@ -220,9 +223,7 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
             new UIPropertyMetadata(default(TextBox)));
 
     private static TextBox? GetRevealedPasswordTextBox(DependencyObject obj)
-    {
-        return (TextBox?)obj.GetValue(RevealedPasswordTextBoxProperty);
-    }
+        => (TextBox?)obj.GetValue(RevealedPasswordTextBoxProperty);
 
     private static void SetRevealedPasswordTextBox(
         DependencyObject obj,

@@ -128,11 +128,15 @@ public partial class LabelDatePicker : ILabelDatePicker
             return;
         }
 
-        control.SetCurrentValue(TextProperty, textBox.Text);
+        control.SetCurrentValue(
+            TextProperty,
+            textBox.Text);
 
         var dateTime = ValidateText(control);
 
-        UpdateSelectedDate(control, dateTime);
+        UpdateSelectedDate(
+            control,
+            dateTime);
     }
 
     private static void OnTextLostFocus(
@@ -151,9 +155,14 @@ public partial class LabelDatePicker : ILabelDatePicker
             control.Text = string.Empty;
         }
 
-        var dateTime = ValidateText(e, control, raiseEvents: true);
+        var dateTime = ValidateText(
+            e,
+            control,
+            raiseEvents: true);
 
-        UpdateSelectedDate(control, dateTime);
+        UpdateSelectedDate(
+            control,
+            dateTime);
     }
 
     private static void OnSelectedDateChanged(
@@ -164,7 +173,9 @@ public partial class LabelDatePicker : ILabelDatePicker
 
         if (control.SelectedDate is null)
         {
-            control.SetCurrentValue(TextProperty, string.Empty);
+            control.SetCurrentValue(
+                TextProperty,
+                string.Empty);
         }
         else
         {
@@ -210,11 +221,15 @@ public partial class LabelDatePicker : ILabelDatePicker
         {
             if (string.IsNullOrEmpty(control.ValidationText))
             {
-                OnLostFocusFireValidEvent(control, e);
+                OnLostFocusFireValidEvent(
+                    control,
+                    e);
             }
             else
             {
-                OnLostFocusFireInvalidEvent(control, e);
+                OnLostFocusFireInvalidEvent(
+                    control,
+                    e);
             }
         }
 
@@ -222,8 +237,7 @@ public partial class LabelDatePicker : ILabelDatePicker
     }
 
     [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
-    private static DateTime? ValidateText(
-        LabelDatePicker control)
+    private static DateTime? ValidateText(LabelDatePicker control)
     {
         var isDateEmpty = string.IsNullOrWhiteSpace(control.Text);
 
@@ -277,7 +291,11 @@ public partial class LabelDatePicker : ILabelDatePicker
             e,
             control.CustomCulture,
             (string value, CultureInfo culture, out DateTime result) =>
-                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(control.SelectedDateFormat, value, culture, out result),
+                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
+                    control.SelectedDateFormat,
+                    value,
+                    culture,
+                    out result),
             control.LostFocusValid);
 
     private static void OnLostFocusFireInvalidEvent(
@@ -288,7 +306,11 @@ public partial class LabelDatePicker : ILabelDatePicker
             e,
             control.CustomCulture,
             (string value, CultureInfo culture, out DateTime result) =>
-                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(control.SelectedDateFormat, value, culture, out result),
+                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
+                    control.SelectedDateFormat,
+                    value,
+                    culture,
+                    out result),
             control.LostFocusInvalid);
 
     private static object CoerceText(
@@ -296,13 +318,18 @@ public partial class LabelDatePicker : ILabelDatePicker
         object? value)
         => DateTimePickerEventHelper.CoerceText(value);
 
-    private void SetDefaultWatermarkIfNeeded(
-        CultureInfo cultureInfo)
+    private void SetDefaultWatermarkIfNeeded(CultureInfo cultureInfo)
     {
         if (string.IsNullOrEmpty(WatermarkText) ||
-            WatermarkText.Contains('/', StringComparison.Ordinal) ||
-            WatermarkText.Contains('.', StringComparison.Ordinal) ||
-            WatermarkText.Contains(',', StringComparison.Ordinal))
+            WatermarkText.Contains(
+                '/',
+                StringComparison.Ordinal) ||
+            WatermarkText.Contains(
+                '.',
+                StringComparison.Ordinal) ||
+            WatermarkText.Contains(
+                ',',
+                StringComparison.Ordinal))
         {
             WatermarkText = SelectedDateFormat == DatePickerFormat.Short
                 ? cultureInfo.DateTimeFormat.ShortDatePattern

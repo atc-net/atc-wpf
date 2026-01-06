@@ -24,8 +24,7 @@ internal partial class SliderPickerAdorner : Adorner
 
     public Rect ElementSize { get; set; }
 
-    protected override void OnRender(
-        DrawingContext drawingContext)
+    protected override void OnRender(DrawingContext drawingContext)
     {
         base.OnRender(drawingContext);
 

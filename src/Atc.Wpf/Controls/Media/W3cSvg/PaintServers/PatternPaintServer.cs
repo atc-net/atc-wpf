@@ -5,7 +5,10 @@ internal sealed class PatternPaintServer : PaintServer
     private readonly IList<Shape>? elements;
     private readonly IDictionary<string, PaintServer>? patternPaintServers;
 
-    public PatternPaintServer(PaintServerManager owner, Svg svg, XmlNode node)
+    public PatternPaintServer(
+        PaintServerManager owner,
+        Svg svg,
+        XmlNode node)
         : base(owner)
     {
         ArgumentNullException.ThrowIfNull(svg);
@@ -30,7 +33,9 @@ internal sealed class PatternPaintServer : PaintServer
         Height = SvgXmlUtil.AttrValue(node, "height", 1, svg.Size.Height);
     }
 
-    public PatternPaintServer(PaintServerManager owner, Brush newBrush)
+    public PatternPaintServer(
+        PaintServerManager owner,
+        Brush newBrush)
         : base(owner)
     {
         Brush = newBrush;
@@ -48,7 +53,11 @@ internal sealed class PatternPaintServer : PaintServer
 
     public string? PatternUnits { get; }
 
-    public override Brush GetBrush(double opacity, Svg svg, SvgRender svgRender, Rect bounds)
+    public override Brush GetBrush(
+        double opacity,
+        Svg svg,
+        SvgRender svgRender,
+        Rect bounds)
     {
         ArgumentNullException.ThrowIfNull(svgRender);
 
@@ -84,5 +93,6 @@ internal sealed class PatternPaintServer : PaintServer
         return brush;
     }
 
-    public override string ToString() => $"{nameof(elements)}: {elements}, {nameof(patternPaintServers)}: {patternPaintServers}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(PatternTransform)}: {PatternTransform}, {nameof(PatternUnits)}: {PatternUnits}";
+    public override string ToString()
+        => $"{nameof(elements)}: {elements}, {nameof(patternPaintServers)}: {patternPaintServers}, {nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(PatternTransform)}: {PatternTransform}, {nameof(PatternUnits)}: {PatternUnits}";
 }

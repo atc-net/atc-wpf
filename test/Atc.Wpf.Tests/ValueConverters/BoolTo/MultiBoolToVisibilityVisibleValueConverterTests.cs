@@ -14,13 +14,19 @@ public sealed class MultiBoolToVisibilityVisibleValueConverterTests
     [InlineData(Visibility.Visible, nameof(AllTrue))]
     [InlineData(Visibility.Collapsed, nameof(OneFalse))]
     [InlineData(Visibility.Visible, nameof(Empty))]
-    public void Convert_AND_DefaultOperator(Visibility expected, string inputSetName)
+    public void Convert_AND_DefaultOperator(
+        Visibility expected,
+        string inputSetName)
     {
         // Arrange
         var input = GetInput(inputSetName);
 
         // Act
-        var actual = converter.Convert(input, targetType: null!, parameter: null, culture: CultureInfo.InvariantCulture);
+        var actual = converter.Convert(
+            input,
+            targetType: null!,
+            parameter: null,
+            culture: CultureInfo.InvariantCulture);
 
         // Assert
         Assert.Equal(expected, actual);
@@ -31,7 +37,9 @@ public sealed class MultiBoolToVisibilityVisibleValueConverterTests
     [InlineData(Visibility.Visible, nameof(OneFalse))]
     [InlineData(Visibility.Collapsed, nameof(AllFalse))]
     [InlineData(Visibility.Collapsed, nameof(Empty))]
-    public void Convert_OR_WithEnumParameter(Visibility expected, string inputSetName)
+    public void Convert_OR_WithEnumParameter(
+        Visibility expected,
+        string inputSetName)
     {
         // Arrange
         var input = GetInput(inputSetName);

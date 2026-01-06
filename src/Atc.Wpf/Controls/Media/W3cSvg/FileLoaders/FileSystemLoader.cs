@@ -9,7 +9,9 @@ public sealed class FileSystemLoader : IExternalFileLoader
 
     public static FileSystemLoader Instance { get; }
 
-    public Stream? LoadFile(string hRef, string svgFilename)
+    public Stream? LoadFile(
+        string hRef,
+        string svgFilename)
     {
         var path = Environment.CurrentDirectory;
         if (!string.IsNullOrEmpty(svgFilename))

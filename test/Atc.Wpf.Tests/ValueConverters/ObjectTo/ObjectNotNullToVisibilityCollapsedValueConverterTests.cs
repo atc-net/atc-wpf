@@ -9,10 +9,16 @@ public sealed class ObjectNotNullToVisibilityCollapsedValueConverterTests
     [InlineData(Visibility.Visible, null)]
     [InlineData(Visibility.Collapsed, true)]
     [InlineData(Visibility.Collapsed, "Hello")]
-    public void Convert(Visibility expected, object? input)
+    public void Convert(
+        Visibility expected,
+        object? input)
         => Assert.Equal(
             expected,
-            converter.Convert(input, targetType: null, parameter: null, culture: null));
+            converter.Convert(
+                input,
+                targetType: null,
+                parameter: null,
+                culture: null));
 
     [Theory]
     [InlineData(Visibility.Visible, null, null)]
@@ -27,16 +33,28 @@ public sealed class ObjectNotNullToVisibilityCollapsedValueConverterTests
     [InlineData(Visibility.Visible, null, Visibility.Visible)]
     [InlineData(Visibility.Collapsed, true, Visibility.Visible)]
     [InlineData(Visibility.Collapsed, "Hello", Visibility.Visible)]
-    public void Convert_Parameter(Visibility expected, object? input, object? parameter)
+    public void Convert_Parameter(
+        Visibility expected,
+        object? input,
+        object? parameter)
         => Assert.Equal(
             expected,
-            converter.Convert(input, targetType: null, parameter, culture: null));
+            converter.Convert(
+                input,
+                targetType: null,
+                parameter,
+                culture: null));
 
     [Fact]
     public void ConvertBack_Should_Throw_Exception()
     {
         // Act
-        var exception = Record.Exception(() => converter.ConvertBack(value: null, targetType: null, parameter: null, culture: null));
+        var exception = Record.Exception(
+            () => converter.ConvertBack(
+                value: null,
+                targetType: null,
+                parameter: null,
+                culture: null));
 
         // Assert
         Assert.IsType<NotSupportedException>(exception);
