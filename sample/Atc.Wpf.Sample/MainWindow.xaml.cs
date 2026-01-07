@@ -24,6 +24,7 @@ public partial class MainWindow
         [
             StvSampleWpf,
             StvSampleWpfControls,
+            StvSampleWpfNetworkControls,
             StvSamplesWpfSourceGenerators,
             StvSampleWpfFontIcons,
             StvSampleWpfTheming,
@@ -169,15 +170,12 @@ public partial class MainWindow
             var header = treeViewItem.Header?.ToString();
             var tag = treeViewItem.Tag?.ToString();
 
-            if (header is not null &&
-                header.Length > 0 &&
-                header.StartsWith(filter, StringComparison.OrdinalIgnoreCase))
-            {
-                count++;
-            }
-            else if (tag is not null &&
-                     tag.Length > 0 &&
-                     tag.StartsWith(filter, StringComparison.OrdinalIgnoreCase))
+            if ((header is not null &&
+                 header.Length > 0 &&
+                 header.StartsWith(filter, StringComparison.OrdinalIgnoreCase)) ||
+                (tag is not null &&
+                    tag.Length > 0 &&
+                    tag.StartsWith(filter, StringComparison.OrdinalIgnoreCase)))
             {
                 count++;
             }

@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.Network" Version="1.0.235" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\EnumResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnumResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\EnumResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

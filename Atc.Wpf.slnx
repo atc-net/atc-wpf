@@ -9,11 +9,13 @@
     <Project Path="src/Atc.Wpf.Controls.Sample/Atc.Wpf.Controls.Sample.csproj" />
     <Project Path="src/Atc.Wpf.Controls/Atc.Wpf.Controls.csproj" />
     <Project Path="src/Atc.Wpf.FontIcons/Atc.Wpf.FontIcons.csproj" />
+    <Project Path="src/Atc.Wpf.NetworkControls/Atc.Wpf.NetworkControls.csproj" />
     <Project Path="src/Atc.Wpf.Theming/Atc.Wpf.Theming.csproj" />
     <Project Path="src/Atc.Wpf/Atc.Wpf.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/Atc.Wpf.Controls.Tests/Atc.Wpf.Controls.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.NetworkControls.Tests/Atc.Wpf.NetworkControls.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Tests/Atc.Wpf.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Theming.Tests/Atc.Wpf.Theming.Tests.csproj" />
   </Folder>

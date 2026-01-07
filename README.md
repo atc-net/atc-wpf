@@ -25,9 +25,10 @@ This framework provides a rich collection of reusable controls, theming support,
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Base Controls, ValueConverters, Extensions etc.     | <ul><li>Atc</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                                          |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Miscellaneous UI Controls                           | <ul><li>Atc.Wpf</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                    |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for creating WPF sample apps               | <ul><li>Atc.Wpf</li><li>Atc.Wpf.Theming</li><li>Atc.Wpf.Controls</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.NetworkControls.svg?label=Atc.Wpf.NetworkControls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.NetworkControls) | Network scanning and discovery controls             | <ul><li>Atc</li><li>Atc.Network</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                                             |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for creating WPF sample apps               | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Theming</li><li>Atc.Wpf.Controls</li><li>MdXaml</li></ul> |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Render Svg and Img resources based on fonts         | <ul><li>Atc.Wpf</li></ul>                                      |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Theming for Light & Dark mode for WPF base controls | <ul><li>Atc.Wpf</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                                      |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Theming for Light & Dark mode for WPF base controls | <ul><li>Atc.Wpf</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li><li>ControlzEx</li><li>Microsoft.Windows.CsWin32</li></ul>                                      |
 
 ## 🔎 Demonstration Application
 
@@ -303,6 +304,61 @@ Complete theming infrastructure with Light and Dark mode support for all WPF con
 ### Resources
 
 - **[ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)** - Theme-aware value converters
+
+## 💟 Atc.Wpf.NetworkControls - Network Discovery Controls
+
+Specialized controls for network scanning and host discovery, built on the [Atc.Network](https://github.com/atc-net/atc-network) library.
+
+### NetworkScannerView Control
+
+A comprehensive network scanner control that displays scan results in a sortable, filterable ListView.
+
+**Features:**
+
+- 🔍 IP range scanning with configurable start/end addresses
+- 📊 Real-time progress reporting with cancellation support
+- 🌐 Displays IP address, hostname, MAC address, and vendor information
+- 🚪 Port scanning with configurable port lists
+- 📶 Network quality indicators (ping status visualization)
+- 🔄 Sortable columns with click-to-sort headers
+- 🎛️ Configurable column visibility
+- 🔎 Built-in filtering (show only successful pings, show only hosts with open ports)
+- 🌍 Localization support (English, Danish, German)
+
+**Usage:**
+
+```xml
+<Window xmlns:atcNetwork="clr-namespace:Atc.Wpf.NetworkControls;assembly=Atc.Wpf.NetworkControls">
+    <atcNetwork:NetworkScannerView DataContext="{Binding NetworkScannerVm}" />
+</Window>
+```
+
+```csharp
+// ViewModel setup
+var viewModel = new NetworkScannerViewModel
+{
+    StartIpAddress = "192.168.1.1",
+    EndIpAddress = "192.168.1.254",
+    PortsNumbers = [80, 443, 22, 3389]
+};
+
+// Start scanning
+await viewModel.ScanCommand.ExecuteAsync(null);
+
+// Handle selection changes
+viewModel.EntrySelected += (sender, args) =>
+{
+    var selectedHost = args.NetworkHost;
+    // Handle selected host
+};
+```
+
+**ViewModels:**
+
+- `NetworkScannerViewModel` - Main ViewModel for the scanner control
+- `NetworkHostViewModel` - Represents a discovered network host
+- `NetworkScannerColumnsViewModel` - Controls column visibility
+- `NetworkScannerFilterViewModel` - Controls result filtering
 
 ---
 
