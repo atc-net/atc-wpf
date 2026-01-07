@@ -16,7 +16,7 @@ This framework provides a rich collection of reusable controls, theming support,
 
 ## Requirements
 
-- [.NET 9 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [.NET 10 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 - Windows 10 or later
 
 ## NuGet Packages Provided in this Repository
