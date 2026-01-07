@@ -65,6 +65,7 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
+    <ProjectReference Include="..\..\src\Atc.Wpf.NetworkControls\Atc.Wpf.NetworkControls.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
   </ItemGroup>
 

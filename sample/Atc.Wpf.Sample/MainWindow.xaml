@@ -75,6 +75,13 @@
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
+                <TabItem Header="Wpf.NetworkControls">
+                    <sample:SamplesWpfNetworkControlsTreeView
+                        x:Name="StvSampleWpfNetworkControls"
+                        BorderThickness="0"
+                        ScrollViewer.CanContentScroll="True"
+                        SelectedItemChanged="TreeViewOnSelectionChanged" />
+                </TabItem>
                 <TabItem Header="Wpf.Theming">
                     <sample:SamplesWpfThemingTreeView
                         x:Name="StvSampleWpfTheming"

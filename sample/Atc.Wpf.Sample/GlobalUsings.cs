@@ -39,6 +39,7 @@ global using Atc.Wpf.Data;
 global using Atc.Wpf.FontIcons;
 global using Atc.Wpf.FontIcons.ValueConverters;
 global using Atc.Wpf.Helpers;
+global using Atc.Wpf.NetworkControls;
 global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Helpers;
