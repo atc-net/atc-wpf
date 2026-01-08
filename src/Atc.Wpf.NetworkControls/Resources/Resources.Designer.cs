@@ -88,6 +88,60 @@ namespace Atc.Wpf.NetworkControls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hostname: {0}.
+        /// </summary>
+        public static string CopyInfoHostnameFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoHostnameFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP Address: {0}.
+        /// </summary>
+        public static string CopyInfoIpAddressFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoIpAddressFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAC Address: {0}.
+        /// </summary>
+        public static string CopyInfoMacAddressFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoMacAddressFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAC Vendor: {0}.
+        /// </summary>
+        public static string CopyInfoMacVendorFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoMacVendorFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Ports: {0}.
+        /// </summary>
+        public static string CopyInfoOpenPortsFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoOpenPortsFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status: {0}.
+        /// </summary>
+        public static string CopyInfoStatusFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoStatusFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy IP Address.
         /// </summary>
         public static string CopyIpAddress {
@@ -104,61 +158,7 @@ namespace Atc.Wpf.NetworkControls.Resources {
                 return ResourceManager.GetString("CopyMacAddress", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Hostname: {0}.
-        /// </summary>
-        public static string CopyInfoHostnameFormat1 {
-            get {
-                return ResourceManager.GetString("CopyInfoHostnameFormat1", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to IP Address: {0}.
-        /// </summary>
-        public static string CopyInfoIpAddressFormat1 {
-            get {
-                return ResourceManager.GetString("CopyInfoIpAddressFormat1", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to MAC Address: {0}.
-        /// </summary>
-        public static string CopyInfoMacAddressFormat1 {
-            get {
-                return ResourceManager.GetString("CopyInfoMacAddressFormat1", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to MAC Vendor: {0}.
-        /// </summary>
-        public static string CopyInfoMacVendorFormat1 {
-            get {
-                return ResourceManager.GetString("CopyInfoMacVendorFormat1", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Open Ports: {0}.
-        /// </summary>
-        public static string CopyInfoOpenPortsFormat1 {
-            get {
-                return ResourceManager.GetString("CopyInfoOpenPortsFormat1", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Status: {0}.
-        /// </summary>
-        public static string CopyInfoStatusFormat1 {
-            get {
-                return ResourceManager.GetString("CopyInfoStatusFormat1", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hostname.
         /// </summary>
