@@ -5,9 +5,11 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample"
     xmlns:sampleControls="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    xmlns:themingControls="clr-namespace:Atc.Wpf.Theming.Controls;assembly=Atc.Wpf.Theming"
     Title="..:: Atc.Wpf.Sample ::.."
     Width="1600"
     Height="1000"
@@ -61,42 +63,156 @@
                 atc:TabControlHelper.Underlined="SelectedTabItem"
                 DockPanel.Dock="Bottom"
                 TabStripPlacement="Left">
-                <TabItem Width="200" Header="Wpf">
+                <TabItem Width="200">
+                    <TabItem.Header>
+                        <Grid
+                            TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                            TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                            TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                            TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Wpf" />
+                            <layouts:Badge
+                                x:Name="BadgeWpf"
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                BadgePlacementMode="Right" />
+                        </Grid>
+                    </TabItem.Header>
                     <sample:SamplesWpfTreeView
                         x:Name="StvSampleWpf"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Wpf.Controls">
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid
+                            TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                            TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                            TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                            TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Wpf.Controls" />
+                            <layouts:Badge
+                                x:Name="BadgeWpfControls"
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                BadgePlacementMode="Right" />
+                        </Grid>
+                    </TabItem.Header>
                     <sample:SamplesWpfControlsTreeView
                         x:Name="StvSampleWpfControls"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Wpf.NetworkControls">
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid
+                            TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                            TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                            TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                            TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Wpf.NetworkControls" />
+                            <layouts:Badge
+                                x:Name="BadgeWpfNetworkControls"
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                BadgePlacementMode="Right" />
+                        </Grid>
+                    </TabItem.Header>
                     <sample:SamplesWpfNetworkControlsTreeView
                         x:Name="StvSampleWpfNetworkControls"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Wpf.Theming">
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid
+                            TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                            TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                            TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                            TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Wpf.Theming" />
+                            <layouts:Badge
+                                x:Name="BadgeWpfTheming"
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                BadgePlacementMode="Right" />
+                        </Grid>
+                    </TabItem.Header>
                     <sample:SamplesWpfThemingTreeView
                         x:Name="StvSampleWpfTheming"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Wpf.SourceGenerators">
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid
+                            TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                            TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                            TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                            TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Wpf.SourceGenerators" />
+                            <layouts:Badge
+                                x:Name="BadgeWpfSourceGenerators"
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                BadgePlacementMode="Right" />
+                        </Grid>
+                    </TabItem.Header>
                     <sample:SamplesWpfSourceGeneratorsTreeView
                         x:Name="StvSamplesWpfSourceGenerators"
                         BorderThickness="0"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItemChanged="TreeViewOnSelectionChanged" />
                 </TabItem>
-                <TabItem Header="Wpf.FontIcons">
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid
+                            TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                            TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                            TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                            TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Wpf.FontIcons" />
+                            <layouts:Badge
+                                x:Name="BadgeWpfFontIcons"
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                BadgePlacementMode="Right" />
+                        </Grid>
+                    </TabItem.Header>
                     <sample:SamplesWpfFontIconsTreeView
                         x:Name="StvSampleWpfFontIcons"
                         BorderThickness="0"

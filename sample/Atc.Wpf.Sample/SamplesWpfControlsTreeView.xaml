@@ -238,6 +238,10 @@
 
     <TreeViewItem Header="Layouts">
         <sample:SampleTreeViewItem
+            Header="Badge"
+            IsExpanded="True"
+            SamplePath="Layouts.BadgeView" />
+        <sample:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />
