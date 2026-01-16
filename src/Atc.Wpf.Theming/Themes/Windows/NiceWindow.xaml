@@ -280,6 +280,16 @@
         </Setter>
         <Setter Property="WindowTitleBrush" Value="{DynamicResource AtcApps.Brushes.WindowTitle}" />
         <Style.Triggers>
+            <!-- WindowStyle.None: Hide chrome and disable resize -->
+            <Trigger Property="WindowStyle" Value="None">
+                <Setter Property="UseNoneWindowStyle" Value="True" />
+                <Setter Property="ResizeMode" Value="NoResize" />
+            </Trigger>
+            <!-- WindowStyle.ToolWindow: Hide min/max buttons -->
+            <Trigger Property="WindowStyle" Value="ToolWindow">
+                <Setter Property="ShowMinButton" Value="False" />
+                <Setter Property="ShowMaxRestoreButton" Value="False" />
+            </Trigger>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Icon, Mode=OneWay, Converter={x:Static atcValueConverters:IsNullValueConverter.Instance}}" Value="False">
                 <Setter Property="IconTemplate">
                     <Setter.Value>

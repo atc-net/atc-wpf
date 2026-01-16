@@ -42,6 +42,7 @@ global using Atc.Wpf.Helpers;
 global using Atc.Wpf.NetworkControls;
 global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.Serialization.JsonConverters;
+global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
