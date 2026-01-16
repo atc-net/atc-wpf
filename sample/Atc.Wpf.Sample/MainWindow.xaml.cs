@@ -9,7 +9,7 @@ public partial class MainWindow
 
     private readonly TreeView[] sampleTreeViews;
     private readonly Dictionary<TreeView, TabItem> treeViewToTabItem = [];
-    private readonly Dictionary<TabItem, string> originalTabHeaders = [];
+    private readonly Dictionary<TreeView, Badge> treeViewToBadge = [];
 
     public MainWindow(IMainWindowViewModel viewModel)
     {
@@ -45,7 +45,22 @@ public partial class MainWindow
             }
 
             treeViewToTabItem[treeView] = tabItem;
-            originalTabHeaders[tabItem] = tabItem.Header?.ToString() ?? string.Empty;
+
+            // Find Badge - it may be directly the Header or inside a Grid/StackPanel
+            if (tabItem.Header is Badge badge)
+            {
+                treeViewToBadge[treeView] = badge;
+            }
+            else if (tabItem.Header is Panel panel)
+            {
+                var badgeInPanel = panel.Children
+                    .OfType<Badge>()
+                    .FirstOrDefault();
+                if (badgeInPanel is not null)
+                {
+                    treeViewToBadge[treeView] = badgeInPanel;
+                }
+            }
         }
     }
 
@@ -114,24 +129,19 @@ public partial class MainWindow
         Dictionary<TreeView, int> matchCounts,
         bool resetToOriginal)
     {
-        foreach (var (treeView, tabItem) in treeViewToTabItem)
+        foreach (var (treeView, badge) in treeViewToBadge)
         {
-            if (!originalTabHeaders.TryGetValue(tabItem, out var originalHeader))
-            {
-                continue;
-            }
-
             if (resetToOriginal)
             {
-                tabItem.Header = originalHeader;
+                badge.BadgeContent = null;
             }
             else if (matchCounts.TryGetValue(treeView, out var count) && count > 0)
             {
-                tabItem.Header = $"{originalHeader} ({count})";
+                badge.BadgeContent = count;
             }
             else
             {
-                tabItem.Header = originalHeader;
+                badge.BadgeContent = null;
             }
         }
     }
@@ -302,7 +312,7 @@ public partial class MainWindow
                 continue;
             }
 
-            if (tabItem.Content.GetType() != treeView.GetType())
+            if (tabItem.Content is null || tabItem.Content.GetType() != treeView.GetType())
             {
                 continue;
             }

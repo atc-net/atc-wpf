@@ -40,14 +40,14 @@ dotnet run --project sample/Atc.Wpf.Sample
 
 ### Source Generators (Key Pattern)
 
-The project uses C# source generators extensively for MVVM boilerplate reduction:
+The project uses C# source generators from the `Atc.XamlToolkit` package for MVVM boilerplate reduction:
 
 - `[ObservableProperty]` - Generates properties with INotifyPropertyChanged from private fields
 - `[RelayCommand]` - Generates ICommand properties from methods (supports async and CanExecute)
 - `[DependencyProperty]` - Generates WPF dependency properties
 - `[AttachedProperty]` - Generates WPF attached properties
 
-Source generator implementation: `src/Atc.Wpf.SourceGenerators/`
+Source generators are provided by the `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf` NuGet packages.
 
 ### Control Architecture
 
@@ -88,7 +88,8 @@ sample/Atc.Wpf.Sample/            # Demo application
 ## Testing
 
 - Framework: XUnit 3 with Microsoft Testing Platform
-- Test utilities: AutoFixture, FluentAssertions, NSubstitute
+- WPF-specific testing: Xunit.StaFact (for STA thread tests)
+- Test utilities: Atc.XUnit, AutoFixture, FluentAssertions, NSubstitute
 - Global usings for test projects include: AutoFixture, FluentAssertions, NSubstitute, Xunit
 
 ## Key Documentation
