@@ -241,6 +241,10 @@
             Header="Divider"
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />
+        <sample:SampleTreeViewItem
+            Header="GroupBoxExpander"
+            IsExpanded="True"
+            SamplePath="Layouts.GroupBoxExpanderView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Monitoring">

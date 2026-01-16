@@ -1,0 +1,234 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.GroupBoxExpanderView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Atc.Wpf.Controls.Helpers;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <TextBlock TextWrapping="Wrap">
+                GroupBoxExpander combines GroupBox styling with Expander functionality.
+                The toggle button is placed in the header (left or right) and the content area is collapsible.
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="10" Orientation="Vertical">
+
+                    <!--  Default (Left button, Expanded)  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Default (Left button, Expanded)" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Settings">
+                        <StackPanel Margin="10">
+                            <CheckBox Content="Enable notifications" IsChecked="True" />
+                            <CheckBox Margin="0,5,0,0" Content="Auto-save enabled" />
+                            <CheckBox Margin="0,5,0,0" Content="Dark mode" />
+                        </StackPanel>
+                    </atc:GroupBoxExpander>
+
+                    <!--  Right button placement  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Right button placement" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        ExpanderButtonLocation="Right"
+                        Header="Advanced Options">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="Timeout (seconds):" />
+                            <TextBox
+                                Width="100"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="30" />
+                            <TextBlock Margin="0,10,0,0" Text="Max retries:" />
+                            <TextBox
+                                Width="100"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="3" />
+                        </StackPanel>
+                    </atc:GroupBoxExpander>
+
+                    <!--  Initially collapsed  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Initially collapsed" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Debug Information"
+                        IsExpanded="False">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="Application Version: 1.0.0" />
+                            <TextBlock Margin="0,5,0,0" Text="Build Date: 2026-01-16" />
+                            <TextBlock Margin="0,5,0,0" Text="Environment: Development" />
+                        </StackPanel>
+                    </atc:GroupBoxExpander>
+
+                    <!--  Custom colors  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom colors (HeaderBackground, HeaderForeground)" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Custom Styled Section"
+                        HeaderBackground="#4A90D9"
+                        HeaderForeground="White">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="This section has custom header colors." />
+                            <Button
+                                Width="100"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Left"
+                                Content="Click Me" />
+                        </StackPanel>
+                    </atc:GroupBoxExpander>
+
+                    <!--  Custom toggle button colors  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom toggle button colors" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        helpers:GroupBoxExpanderHelper.ToggleArrowStroke="#2E5D3A"
+                        helpers:GroupBoxExpanderHelper.ToggleArrowStrokeMouseOver="Yellow"
+                        helpers:GroupBoxExpanderHelper.ToggleArrowStrokePressed="YellowGreen"
+                        helpers:GroupBoxExpanderHelper.ToggleCircleFill="#C8E6C9"
+                        helpers:GroupBoxExpanderHelper.ToggleCircleFillMouseOver="#66BB6A"
+                        helpers:GroupBoxExpanderHelper.ToggleCircleFillPressed="#388E3C"
+                        helpers:GroupBoxExpanderHelper.ToggleCircleStroke="#4CAF50"
+                        helpers:GroupBoxExpanderHelper.ToggleCircleStrokeMouseOver="#388E3C"
+                        helpers:GroupBoxExpanderHelper.ToggleCircleStrokePressed="#1B5E20"
+                        Header="Custom Toggle Button">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="This section has custom toggle button colors." />
+                            <TextBlock Margin="0,5,0,0" Text="Hover over and click the toggle button to see the custom state colors." />
+                        </StackPanel>
+                    </atc:GroupBoxExpander>
+
+                    <!--  Custom CornerRadius  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom CornerRadius" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        CornerRadius="10"
+                        Header="Rounded Corners">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="This section has rounded corners with radius 10." />
+                        </StackPanel>
+                    </atc:GroupBoxExpander>
+
+                    <!--  Complex content  -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Complex content" />
+                    <atc:GroupBoxExpander
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="User Profile">
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                VerticalAlignment="Center"
+                                Text="Name:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                Text="John Doe" />
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                VerticalAlignment="Center"
+                                Text="Email:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                Text="john.doe@example.com" />
+
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                VerticalAlignment="Center"
+                                Text="Active:" />
+                            <CheckBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                IsChecked="True" />
+
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <Button
+                                    Width="80"
+                                    Margin="0,0,10,0"
+                                    Content="Save" />
+                                <Button Width="80" Content="Cancel" />
+                            </StackPanel>
+                        </Grid>
+                    </atc:GroupBoxExpander>
+
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+    </atc:AutoGrid>
+
+</UserControl>
