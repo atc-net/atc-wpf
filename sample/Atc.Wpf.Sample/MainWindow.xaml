@@ -61,7 +61,7 @@
                 atc:TabControlHelper.Underlined="SelectedTabItem"
                 DockPanel.Dock="Bottom"
                 TabStripPlacement="Left">
-                <TabItem Header="Wpf">
+                <TabItem Width="200" Header="Wpf">
                     <sample:SamplesWpfTreeView
                         x:Name="StvSampleWpf"
                         BorderThickness="0"
