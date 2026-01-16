@@ -8,6 +8,8 @@ public partial class MainWindow
         => (IMainWindowViewModel)DataContext!;
 
     private readonly TreeView[] sampleTreeViews;
+    private readonly Dictionary<TreeView, TabItem> treeViewToTabItem = [];
+    private readonly Dictionary<TabItem, string> originalTabHeaders = [];
 
     public MainWindow(IMainWindowViewModel viewModel)
     {
@@ -29,6 +31,22 @@ public partial class MainWindow
             StvSampleWpfFontIcons,
             StvSampleWpfTheming,
         ];
+
+        InitializeTabMappings();
+    }
+
+    private void InitializeTabMappings()
+    {
+        foreach (var item in SamplesTabControl.Items)
+        {
+            if (item is not TabItem tabItem || tabItem.Content is not TreeView treeView)
+            {
+                continue;
+            }
+
+            treeViewToTabItem[treeView] = tabItem;
+            originalTabHeaders[tabItem] = tabItem.Header?.ToString() ?? string.Empty;
+        }
     }
 
     private void OnLoaded(
@@ -57,7 +75,15 @@ public partial class MainWindow
     private void TreeViewOnSelectionChanged(
         object sender,
         RoutedPropertyChangedEventArgs<object> e)
-        => GetViewModel().UpdateSelectedView(e.NewValue as SampleTreeViewItem);
+    {
+        GetViewModel().UpdateSelectedView(e.NewValue as SampleTreeViewItem);
+
+        // Track selection: switch to the tab containing the selected item
+        if (sender is TreeView treeView && e.NewValue is SampleTreeViewItem)
+        {
+            SelectTabItem(treeView);
+        }
+    }
 
     private void SampleFilterOnTextChanged(
         object sender,
@@ -68,12 +94,46 @@ public partial class MainWindow
             return;
         }
 
+        var filter = textBox.Text.Trim();
+        var isFilterEmpty = string.IsNullOrWhiteSpace(filter);
+
+        var treeViewMatchCounts = new Dictionary<TreeView, int>();
+
         foreach (var sampleTreeView in sampleTreeViews)
         {
-            _ = SetVisibilityByFilterTreeViewItems(sampleTreeView.Items, textBox.Text);
+            _ = SetVisibilityByFilterTreeViewItems(sampleTreeView.Items, filter);
+            var count = isFilterEmpty ? 0 : CountByFilterTreeViewItems(sampleTreeView.Items, filter);
+            treeViewMatchCounts[sampleTreeView] = count;
         }
 
-        TrySelectUniqueMatchingTab(textBox.Text);
+        UpdateTabHeaders(treeViewMatchCounts, isFilterEmpty);
+        TrySelectMatchingTab(treeViewMatchCounts, filter);
+    }
+
+    private void UpdateTabHeaders(
+        Dictionary<TreeView, int> matchCounts,
+        bool resetToOriginal)
+    {
+        foreach (var (treeView, tabItem) in treeViewToTabItem)
+        {
+            if (!originalTabHeaders.TryGetValue(tabItem, out var originalHeader))
+            {
+                continue;
+            }
+
+            if (resetToOriginal)
+            {
+                tabItem.Header = originalHeader;
+            }
+            else if (matchCounts.TryGetValue(treeView, out var count) && count > 0)
+            {
+                tabItem.Header = $"{originalHeader} ({count})";
+            }
+            else
+            {
+                tabItem.Header = originalHeader;
+            }
+        }
     }
 
     private static bool SetVisibilityByFilterTreeViewItems(
@@ -81,6 +141,8 @@ public partial class MainWindow
         string filter)
     {
         var showRoot = false;
+        var isFilterEmpty = string.IsNullOrWhiteSpace(filter);
+
         foreach (var item in items)
         {
             if (item is not TreeViewItem treeViewItem)
@@ -92,21 +154,17 @@ public partial class MainWindow
                 treeViewItem.Items,
                 filter);
 
-            var header = treeViewItem.Header?.ToString();
-            var tag = treeViewItem.Tag?.ToString();
-            var showByItem = false;
-
-            if (header is not null &&
-                header.Length > 0 &&
-                header.Contains(filter, StringComparison.OrdinalIgnoreCase))
+            bool showByItem;
+            if (isFilterEmpty)
             {
+                // Show all items when filter is empty
                 showByItem = true;
             }
-            else if (tag is not null &&
-                     tag.Length > 0 &&
-                     tag.Contains(filter, StringComparison.OrdinalIgnoreCase))
+            else
             {
-                showByItem = true;
+                var header = treeViewItem.Header?.ToString();
+                var tag = treeViewItem.Tag?.ToString();
+                showByItem = MatchesFilter(header, filter) || MatchesFilter(tag, filter);
             }
 
             treeViewItem.Visibility = showByItem || showBySubItems
@@ -123,27 +181,48 @@ public partial class MainWindow
         return showRoot;
     }
 
-    private void TrySelectUniqueMatchingTab(string filter)
+    private void TrySelectMatchingTab(
+        Dictionary<TreeView, int> treeViewMatchCounts,
+        string filter)
     {
-        if (filter is not null &&
-            filter.Length > 2)
+        if (string.IsNullOrWhiteSpace(filter) || filter.Length < 2)
         {
-            var treeViewMatchCounts = new Dictionary<TreeView, int>();
-            foreach (var sampleTreeView in sampleTreeViews)
-            {
-                var count = CountByFilterTreeViewItems(sampleTreeView.Items, filter);
-                treeViewMatchCounts.Add(sampleTreeView, count);
-            }
-
-            var matchingTreeViews = treeViewMatchCounts
-                .Where(kvp => kvp.Value > 0)
-                .ToList();
-
-            if (matchingTreeViews.Count == 1)
-            {
-                SelectTabItem(matchingTreeViews[0].Key);
-            }
+            return;
         }
+
+        var matchingTreeViews = treeViewMatchCounts
+            .Where(kvp => kvp.Value > 0)
+            .ToList();
+
+        switch (matchingTreeViews.Count)
+        {
+            case 0:
+                return;
+
+            // If only one tab has matches, switch to it
+            case 1:
+                SelectTabItem(matchingTreeViews[0].Key);
+                return;
+        }
+
+        // If current tab has no matches, switch to the first tab that does
+        var currentTreeView = GetCurrentTreeView();
+        if (currentTreeView is not null &&
+            treeViewMatchCounts.TryGetValue(currentTreeView, out var currentCount) &&
+            currentCount == 0)
+        {
+            SelectTabItem(matchingTreeViews[0].Key);
+        }
+    }
+
+    private TreeView? GetCurrentTreeView()
+    {
+        if (SamplesTabControl.SelectedItem is not TabItem tabItem)
+        {
+            return null;
+        }
+
+        return tabItem.Content as TreeView;
     }
 
     private static int CountByFilterTreeViewItems(
@@ -170,18 +249,48 @@ public partial class MainWindow
             var header = treeViewItem.Header?.ToString();
             var tag = treeViewItem.Tag?.ToString();
 
-            if ((header is not null &&
-                 header.Length > 0 &&
-                 header.StartsWith(filter, StringComparison.OrdinalIgnoreCase)) ||
-                (tag is not null &&
-                    tag.Length > 0 &&
-                    tag.StartsWith(filter, StringComparison.OrdinalIgnoreCase)))
+            if (MatchesFilter(header, filter) || MatchesFilter(tag, filter))
             {
                 count++;
             }
         }
 
         return count;
+    }
+
+    private static bool MatchesFilter(
+        string? text,
+        string filter)
+    {
+        if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(filter))
+        {
+            return false;
+        }
+
+        // PascalCase abbreviation match: "NW" matches "NiceWindow", "RC" matches "RelayCommand"
+        // When filter is all uppercase (2+ chars), ONLY match against PascalCase initials
+        if (filter.Length >= 2 && IsAllUpperCase(filter))
+        {
+            var upperCaseLetters = GetUpperCaseLetters(text);
+            return upperCaseLetters.Contains(filter, StringComparison.Ordinal);
+        }
+
+        // Contains match (case-insensitive) for normal text filters
+        return text.Contains(filter, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsAllUpperCase(string text)
+        => text.All(char.IsUpper);
+
+    private static string GetUpperCaseLetters(string text)
+    {
+        var sb = new StringBuilder();
+        foreach (var c in text.Where(char.IsUpper))
+        {
+            sb.Append(c);
+        }
+
+        return sb.ToString();
     }
 
     private void SelectTabItem(TreeView treeView)
