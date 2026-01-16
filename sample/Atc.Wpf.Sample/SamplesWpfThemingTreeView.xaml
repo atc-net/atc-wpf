@@ -134,5 +134,11 @@
             IsExpanded="True"
             SamplePath="Misc.MixView" />
     </TreeViewItem>
+    <TreeViewItem Header="Window">
+        <sample:SampleTreeViewItem
+            Header="NiceWindow"
+            IsExpanded="True"
+            SamplePath="Window.NiceWindowView" />
+    </TreeViewItem>
 
 </TreeView>
