@@ -42,6 +42,10 @@
             IsExpanded="True"
             SamplePath="BaseControls.PixelSizeBoxView" />
         <sample:SampleTreeViewItem
+            Header="RangeSlider"
+            IsExpanded="True"
+            SamplePath="BaseControls.RangeSliderView" />
+        <sample:SampleTreeViewItem
             Header="ToggleSwitch"
             IsExpanded="True"
             SamplePath="BaseControls.ToggleSwitchView" />

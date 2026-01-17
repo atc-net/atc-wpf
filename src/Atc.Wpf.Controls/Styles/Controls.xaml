@@ -9,6 +9,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/NumericBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/RangeSlider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/ToggleSwitch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Badge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Card.xaml" />
@@ -25,6 +26,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.DecimalBox}" TargetType="{x:Type baseControls:DecimalBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type baseControls:IntegerBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type baseControls:ToggleSwitch}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.RangeSlider}" TargetType="{x:Type baseControls:RangeSlider}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Badge}" TargetType="{x:Type layouts:Badge}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type layouts:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type layouts:Chip}" />
