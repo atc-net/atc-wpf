@@ -246,6 +246,10 @@
             IsExpanded="True"
             SamplePath="Layouts.CardView" />
         <sample:SampleTreeViewItem
+            Header="Chip"
+            IsExpanded="True"
+            SamplePath="Layouts.ChipView" />
+        <sample:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />

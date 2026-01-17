@@ -1,0 +1,209 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts">
+
+    <!-- Remove button style -->
+    <Style x:Key="AtcApps.Styles.Chip.RemoveButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="Transparent">
+                        <Ellipse
+                            x:Name="circle"
+                            Width="16"
+                            Height="16"
+                            Fill="Transparent" />
+                        <Path
+                            x:Name="cross"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="M 0,0 L 6,6 M 0,6 L 6,0"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeThickness="1.5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="circle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="circle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Checkmark path for selected state -->
+    <Style x:Key="AtcApps.Styles.Chip.Checkmark" TargetType="{x:Type Path}">
+        <Setter Property="Data" Value="M 0,4 L 3,7 L 8,0" />
+        <Setter Property="Stretch" Value="None" />
+        <Setter Property="StrokeThickness" Value="1.5" />
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.Chip" TargetType="{x:Type layouts:Chip}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent4}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="HoverBackground" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="PressedBackground" Value="{DynamicResource AtcApps.Brushes.Accent2}" />
+        <Setter Property="SelectedBackground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="SelectedForeground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type layouts:Chip}">
+                    <Border
+                        x:Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="CheckmarkColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="IconColumn" Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition x:Name="RemoveColumn" Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Checkmark for selected state (Filter variant) -->
+                            <Path
+                                x:Name="PART_Checkmark"
+                                Grid.Column="0"
+                                Margin="0,0,6,0"
+                                VerticalAlignment="Center"
+                                Data="M 0,4 L 3,7 L 8,0"
+                                Stroke="{TemplateBinding Foreground}"
+                                StrokeThickness="1.5"
+                                Visibility="Collapsed" />
+
+                            <!-- Icon -->
+                            <ContentPresenter
+                                x:Name="PART_Icon"
+                                Grid.Column="1"
+                                Margin="0,0,6,0"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Icon}"
+                                ContentTemplate="{TemplateBinding IconTemplate}"
+                                Visibility="Collapsed" />
+
+                            <!-- Main content -->
+                            <ContentPresenter
+                                x:Name="PART_Content"
+                                Grid.Column="2"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                            <!-- Remove button -->
+                            <Button
+                                x:Name="PART_RemoveButton"
+                                Grid.Column="3"
+                                Margin="6,0,0,0"
+                                VerticalAlignment="Center"
+                                Foreground="{TemplateBinding Foreground}"
+                                Style="{StaticResource AtcApps.Styles.Chip.RemoveButton}"
+                                Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Show icon when present -->
+                        <DataTrigger Binding="{Binding Icon, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible">
+                            <Setter TargetName="PART_Icon" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+
+                        <!-- Show remove button when CanRemove is true -->
+                        <Trigger Property="CanRemove" Value="True">
+                            <Setter TargetName="PART_RemoveButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
+                        <!-- Hover state -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsClickable" Value="True" />
+                                <Condition Property="IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_Border" Property="Background" Value="{Binding HoverBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!-- Selected state -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding SelectedBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Foreground" Value="{Binding SelectedForeground, RelativeSource={RelativeSource Self}}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding SelectedBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
+
+                        <!-- Show checkmark for Filter variant when selected -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Filter" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_Checkmark" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!-- Filter variant defaults to selectable -->
+                        <Trigger Property="Variant" Value="Filter">
+                            <Setter Property="IsSelectable" Value="True" />
+                        </Trigger>
+
+                        <!-- Input variant defaults to removable -->
+                        <Trigger Property="Variant" Value="Input">
+                            <Setter Property="CanRemove" Value="True" />
+                        </Trigger>
+
+                        <!-- Small size -->
+                        <Trigger Property="Size" Value="Small">
+                            <Setter Property="FontSize" Value="11" />
+                            <Setter Property="Padding" Value="8,4" />
+                            <Setter Property="CornerRadius" Value="12" />
+                        </Trigger>
+
+                        <!-- Large size -->
+                        <Trigger Property="Size" Value="Large">
+                            <Setter Property="FontSize" Value="15" />
+                            <Setter Property="Padding" Value="16,8" />
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Trigger>
+
+                        <!-- Disabled state -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                            <Setter Property="Cursor" Value="Arrow" />
+                        </Trigger>
+
+                        <!-- Non-clickable state -->
+                        <Trigger Property="IsClickable" Value="False">
+                            <Setter Property="Cursor" Value="Arrow" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
