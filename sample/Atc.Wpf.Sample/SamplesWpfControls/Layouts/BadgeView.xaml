@@ -12,7 +12,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
 
             <GroupBox
                 Margin="0,0,0,10"
@@ -20,7 +20,8 @@
                 Header="Features">
                 <TextBlock TextWrapping="Wrap">
                     The Badge control overlays content with a small indicator such as a count, status dot, or notification marker.
-                    It supports 8 placement modes, customizable colors, and can be used for notification counts, status indicators, or inline labels.
+                    It supports 8 placement modes, customizable colors, dot mode (IsDot), max value display (BadgeMaxValue),
+                    auto-hide when zero (HideWhenZero), and can be used for notification counts, status indicators, or inline labels.
                 </TextBlock>
             </GroupBox>
 
@@ -516,6 +517,138 @@
                             HorizontalAlignment="Center"
                             FontSize="10"
                             Text="Hidden (IsBadgeVisible)" />
+                    </StackPanel>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox Padding="10" Header="Advanced Features">
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="40"
+                    Orientation="Horizontal"
+                    VerticalSpacing="20">
+
+                    <!-- Dot Badge (IsDot=True) -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <layouts:Badge
+                            BadgeBackground="LimeGreen"
+                            BadgePlacementMode="BottomRight"
+                            IsDot="True">
+                            <Border
+                                Width="50"
+                                Height="50"
+                                Background="{DynamicResource AtcApps.Brushes.Gray6}"
+                                CornerRadius="25">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Online" />
+                            </Border>
+                        </layouts:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Dot Badge (IsDot)" />
+                    </StackPanel>
+
+                    <!-- Dot Badge - Different Color -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <layouts:Badge
+                            BadgeBackground="Orange"
+                            BadgePlacementMode="BottomRight"
+                            IsDot="True">
+                            <Border
+                                Width="50"
+                                Height="50"
+                                Background="{DynamicResource AtcApps.Brushes.Gray6}"
+                                CornerRadius="25">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Away" />
+                            </Border>
+                        </layouts:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Dot Badge (Away)" />
+                    </StackPanel>
+
+                    <!-- Max Value (BadgeMaxValue) -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <layouts:Badge
+                            BadgeContent="150"
+                            BadgeMargin="0,-8,-8,0"
+                            BadgeMaxValue="99"
+                            BadgePlacementMode="TopRight">
+                            <Button
+                                Width="80"
+                                Height="40"
+                                Content="Messages" />
+                        </layouts:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Max Value (150 → 99+)" />
+                    </StackPanel>
+
+                    <!-- Max Value - Under Limit -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <layouts:Badge
+                            BadgeContent="42"
+                            BadgeMargin="0,-8,-8,0"
+                            BadgeMaxValue="99"
+                            BadgePlacementMode="TopRight">
+                            <Button
+                                Width="80"
+                                Height="40"
+                                Content="Emails" />
+                        </layouts:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Max Value (42 shown)" />
+                    </StackPanel>
+
+                    <!-- Hide When Zero (HideWhenZero=True, value=0) -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <layouts:Badge
+                            BadgeContent="0"
+                            BadgeMargin="0,-8,-8,0"
+                            BadgePlacementMode="TopRight"
+                            HideWhenZero="True">
+                            <Button
+                                Width="80"
+                                Height="40"
+                                Content="Tasks" />
+                        </layouts:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Hide When Zero (0)" />
+                    </StackPanel>
+
+                    <!-- Hide When Zero - Non-Zero -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <layouts:Badge
+                            BadgeContent="5"
+                            BadgeMargin="0,-8,-8,0"
+                            BadgePlacementMode="TopRight"
+                            HideWhenZero="True">
+                            <Button
+                                Width="80"
+                                Height="40"
+                                Content="Tasks" />
+                        </layouts:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Hide When Zero (5)" />
                     </StackPanel>
                 </atc:UniformSpacingPanel>
             </GroupBox>

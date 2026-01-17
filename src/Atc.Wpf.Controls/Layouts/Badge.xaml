@@ -49,19 +49,24 @@
                                 Margin="{TemplateBinding BadgePadding}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Content="{TemplateBinding BadgeContent}"
+                                Content="{TemplateBinding DisplayBadgeContent}"
                                 ContentTemplate="{TemplateBinding BadgeContentTemplate}"
                                 TextElement.FontSize="{TemplateBinding BadgeFontSize}"
                                 TextElement.Foreground="{TemplateBinding BadgeForeground}" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <!-- Hide badge when content is null or empty -->
-                        <Trigger Property="BadgeContent" Value="{x:Null}">
+                        <!-- Hide badge when computed visibility is false -->
+                        <Trigger Property="ComputedBadgeVisibility" Value="False">
                             <Setter TargetName="PART_Badge" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="IsBadgeVisible" Value="False">
-                            <Setter TargetName="PART_Badge" Property="Visibility" Value="Collapsed" />
+
+                        <!-- IsDot mode - hide content presenter and use minimal sizing -->
+                        <Trigger Property="IsDot" Value="True">
+                            <Setter TargetName="PART_BadgeContent" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Badge" Property="MinWidth" Value="10" />
+                            <Setter TargetName="PART_Badge" Property="MinHeight" Value="10" />
+                            <Setter TargetName="PART_Badge" Property="CornerRadius" Value="5" />
                         </Trigger>
 
                         <!-- TopLeft placement -->

@@ -9,7 +9,7 @@ public sealed partial class Badge : ContentControl
     /// <summary>
     /// Content displayed in the badge (e.g., a number or text).
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnBadgeDisplayPropertiesChanged))]
     private object? badgeContent;
 
     /// <summary>
@@ -87,13 +87,122 @@ public sealed partial class Badge : ContentControl
     /// <summary>
     /// Gets or sets whether the badge is visible.
     /// </summary>
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnBadgeDisplayPropertiesChanged))]
     private bool isBadgeVisible;
+
+    /// <summary>
+    /// Gets or sets whether the badge is displayed as a simple dot indicator.
+    /// When true, BadgeContent is ignored and only a dot is shown.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnBadgeDisplayPropertiesChanged))]
+    private bool isDot;
+
+    /// <summary>
+    /// Gets or sets the maximum value to display. When BadgeContent exceeds this value,
+    /// the display shows "Max+" (e.g., "99+" when max is 99).
+    /// Set to null or 0 to disable this behavior.
+    /// </summary>
+    [DependencyProperty(DefaultValue = 0, PropertyChangedCallback = nameof(OnBadgeDisplayPropertiesChanged))]
+    private int badgeMaxValue;
+
+    /// <summary>
+    /// Gets or sets whether the badge should be hidden when the value is zero.
+    /// Only applies when BadgeContent is an integer or can be parsed as one.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnBadgeDisplayPropertiesChanged))]
+    private bool hideWhenZero;
+
+    /// <summary>
+    /// Gets the computed content to display in the badge.
+    /// This handles IsDot mode and BadgeMaxValue formatting.
+    /// </summary>
+    [DependencyProperty]
+    private object? displayBadgeContent;
+
+    /// <summary>
+    /// Gets whether the badge should be visible based on all visibility conditions.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool computedBadgeVisibility;
 
     static Badge()
     {
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Badge),
             new FrameworkPropertyMetadata(typeof(Badge)));
+    }
+
+    private static void OnBadgeDisplayPropertiesChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Badge badge)
+        {
+            badge.UpdateDisplayProperties();
+        }
+    }
+
+    private void UpdateDisplayProperties()
+    {
+        // Handle IsDot mode
+        if (IsDot)
+        {
+            DisplayBadgeContent = null;
+            ComputedBadgeVisibility = IsBadgeVisible;
+            return;
+        }
+
+        // Get numeric value if possible
+        var numericValue = GetNumericValue(BadgeContent);
+
+        // Handle HideWhenZero
+        if (HideWhenZero && numericValue == 0)
+        {
+            ComputedBadgeVisibility = false;
+            DisplayBadgeContent = BadgeContent;
+            return;
+        }
+
+        // Handle BadgeMaxValue
+        if (BadgeMaxValue > 0 && numericValue > BadgeMaxValue)
+        {
+            DisplayBadgeContent = $"{BadgeMaxValue}+";
+        }
+        else
+        {
+            DisplayBadgeContent = BadgeContent;
+        }
+
+        ComputedBadgeVisibility = IsBadgeVisible && BadgeContent is not null;
+    }
+
+    private static int? GetNumericValue(object? content)
+    {
+        if (content is null)
+        {
+            return null;
+        }
+
+        if (content is int intValue)
+        {
+            return intValue;
+        }
+
+        if (content is long longValue)
+        {
+            return (int)longValue;
+        }
+
+        if (content is double doubleValue)
+        {
+            return (int)doubleValue;
+        }
+
+        if (content is string stringValue && int.TryParse(stringValue, out var parsed))
+        {
+            return parsed;
+        }
+
+        return null;
     }
 }

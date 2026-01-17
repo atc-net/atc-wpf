@@ -1,0 +1,392 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.CardView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Atc.Wpf.Controls.Helpers;assembly=Atc.Wpf.Controls"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="1200"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    The Card control provides a modern container for grouping related content.
+                    It supports elevation/shadow effects, optional header and footer sections,
+                    and expand/collapse functionality similar to GroupBoxExpander.
+                </TextBlock>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Cards">
+                <StackPanel Orientation="Vertical">
+
+                    <!-- Basic Card with content only -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Basic Card (content only)" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        ShowHeader="False">
+                        <StackPanel Margin="0">
+                            <TextBlock Text="This is a basic card without a header." />
+                            <TextBlock Margin="0,5,0,0" Text="It only contains content." />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Card with Header -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Card with Header" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Settings">
+                        <StackPanel>
+                            <CheckBox Content="Enable notifications" IsChecked="True" />
+                            <CheckBox Margin="0,5,0,0" Content="Auto-save enabled" />
+                            <CheckBox Margin="0,5,0,0" Content="Dark mode" />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Card with Header and Footer -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Card with Header and Footer" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="User Profile">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                VerticalAlignment="Center"
+                                Text="Name:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                Text="John Doe" />
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center"
+                                Text="Email:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Text="john@example.com" />
+                        </Grid>
+                        <layouts:Card.Footer>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Button
+                                    Width="80"
+                                    Margin="0,0,8,0"
+                                    Content="Cancel" />
+                                <Button Width="80" Content="Save" />
+                            </StackPanel>
+                        </layouts:Card.Footer>
+                    </layouts:Card>
+
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Elevation Levels">
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="20"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
+                    <layouts:Card
+                        Width="100"
+                        Elevation="0"
+                        Header="Flat">
+                        <TextBlock Text="Elevation 0" />
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="100"
+                        Elevation="1"
+                        Header="Level 1">
+                        <TextBlock Text="Elevation 1" />
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="100"
+                        Elevation="2"
+                        Header="Default">
+                        <TextBlock Text="Elevation 2" />
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="100"
+                        Elevation="3"
+                        Header="Level 3">
+                        <TextBlock Text="Elevation 3" />
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="100"
+                        Elevation="4"
+                        Header="Level 4">
+                        <TextBlock Text="Elevation 4" />
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="100"
+                        Elevation="5"
+                        Header="Raised">
+                        <TextBlock Text="Elevation 5" />
+                    </layouts:Card>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Expandable Cards">
+                <StackPanel Orientation="Vertical">
+
+                    <!-- Expandable Card (left toggle) -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Expandable Card (left toggle)" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Advanced Settings"
+                        IsExpandable="True">
+                        <StackPanel>
+                            <TextBlock Text="Timeout (seconds):" />
+                            <TextBox
+                                Width="100"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="30" />
+                            <TextBlock Margin="0,10,0,0" Text="Max retries:" />
+                            <TextBox
+                                Width="100"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="3" />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Expandable Card (right toggle) -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Expandable Card (right toggle)" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        ExpanderButtonLocation="Right"
+                        Header="Network Options"
+                        IsExpandable="True">
+                        <StackPanel>
+                            <CheckBox Content="Use proxy" />
+                            <CheckBox Margin="0,5,0,0" Content="Enable caching" />
+                            <CheckBox Margin="0,5,0,0" Content="Compress data" />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Initially Collapsed -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Initially Collapsed (IsExpanded=False)" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Debug Information"
+                        IsExpandable="True"
+                        IsExpanded="False">
+                        <StackPanel>
+                            <TextBlock Text="Application Version: 1.0.0" />
+                            <TextBlock Margin="0,5,0,0" Text="Build Date: 2026-01-17" />
+                            <TextBlock Margin="0,5,0,0" Text="Environment: Development" />
+                        </StackPanel>
+                    </layouts:Card>
+
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Custom Styling">
+                <StackPanel Orientation="Vertical">
+
+                    <!-- Custom Colors -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom Colors (HeaderBackground, HeaderForeground)" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        Header="Custom Styled Card"
+                        HeaderBackground="#4A90D9"
+                        HeaderForeground="White">
+                        <StackPanel>
+                            <TextBlock Text="This card has custom header colors." />
+                            <Button
+                                Width="100"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Left"
+                                Content="Click Me" />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Custom Toggle Button Colors -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom Toggle Button Colors" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        helpers:CardHelper.ToggleArrowStroke="#2E5D3A"
+                        helpers:CardHelper.ToggleArrowStrokeMouseOver="Yellow"
+                        helpers:CardHelper.ToggleArrowStrokePressed="YellowGreen"
+                        helpers:CardHelper.ToggleCircleFill="#C8E6C9"
+                        helpers:CardHelper.ToggleCircleFillMouseOver="#66BB6A"
+                        helpers:CardHelper.ToggleCircleFillPressed="#388E3C"
+                        helpers:CardHelper.ToggleCircleStroke="#4CAF50"
+                        helpers:CardHelper.ToggleCircleStrokeMouseOver="#388E3C"
+                        helpers:CardHelper.ToggleCircleStrokePressed="#1B5E20"
+                        Header="Custom Toggle Button"
+                        IsExpandable="True">
+                        <StackPanel>
+                            <TextBlock Text="This card has custom toggle button colors." />
+                            <TextBlock Margin="0,5,0,0" Text="Hover over and click the toggle button to see the custom state colors." />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Custom CornerRadius -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom CornerRadius" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        CornerRadius="16"
+                        Header="Rounded Corners">
+                        <StackPanel>
+                            <TextBlock Text="This card has a corner radius of 16." />
+                        </StackPanel>
+                    </layouts:Card>
+
+                    <!-- Custom Footer Background -->
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom Footer Background" />
+                    <layouts:Card
+                        Width="400"
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Left"
+                        FooterBackground="#E3F2FD"
+                        Header="Actions Panel">
+                        <TextBlock Text="Content area with default background." />
+                        <layouts:Card.Footer>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Button
+                                    Width="80"
+                                    Margin="0,0,8,0"
+                                    Content="Delete" />
+                                <Button
+                                    Width="80"
+                                    Margin="0,0,8,0"
+                                    Content="Edit" />
+                                <Button Width="80" Content="View" />
+                            </StackPanel>
+                        </layouts:Card.Footer>
+                    </layouts:Card>
+
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Padding="10" Header="Card Grid Layout">
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="16"
+                    Orientation="Horizontal"
+                    VerticalSpacing="16">
+                    <layouts:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Dashboard">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="42" />
+                            <TextBlock Foreground="Gray" Text="Active Users" />
+                        </StackPanel>
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Analytics">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="1,234" />
+                            <TextBlock Foreground="Gray" Text="Page Views" />
+                        </StackPanel>
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Revenue">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="$9,876" />
+                            <TextBlock Foreground="Gray" Text="This Month" />
+                        </StackPanel>
+                    </layouts:Card>
+                    <layouts:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Orders">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="89" />
+                            <TextBlock Foreground="Gray" Text="Pending" />
+                        </StackPanel>
+                    </layouts:Card>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>
