@@ -1,0 +1,269 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.ChipView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    The Chip control displays small, interactive elements for tags, filters, or selections.
+                    It supports optional icons, remove buttons, selectable/checkable mode, multiple sizes, and different variants.
+                </TextBlock>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Chips">
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="10"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
+                    <layouts:Chip Content="Basic Chip" />
+                    <layouts:Chip Content="Another Chip" />
+                    <layouts:Chip Content="Tag" />
+                    <layouts:Chip Content="Label" />
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Chip Variants">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="Default, Filter, Input, Action" />
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="10"
+                        Orientation="Horizontal"
+                        VerticalSpacing="10">
+
+                        <!-- Default variant -->
+                        <StackPanel>
+                            <layouts:Chip
+                                Content="Default"
+                                Variant="Default" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="10"
+                                Foreground="Gray"
+                                Text="Basic display" />
+                        </StackPanel>
+
+                        <!-- Filter variant (selectable) -->
+                        <StackPanel>
+                            <layouts:Chip
+                                Content="Filter"
+                                Variant="Filter" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="10"
+                                Foreground="Gray"
+                                Text="Click to toggle" />
+                        </StackPanel>
+
+                        <!-- Input variant (removable) -->
+                        <StackPanel>
+                            <layouts:Chip
+                                Content="Input"
+                                Variant="Input" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="10"
+                                Foreground="Gray"
+                                Text="Has remove button" />
+                        </StackPanel>
+
+                        <!-- Action variant -->
+                        <StackPanel>
+                            <layouts:Chip
+                                Content="Action"
+                                Variant="Action" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                FontSize="10"
+                                Foreground="Gray"
+                                Text="Clickable action" />
+                        </StackPanel>
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Chip Sizes">
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="15"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    VerticalSpacing="10">
+                    <StackPanel>
+                        <layouts:Chip
+                            Content="Small"
+                            Size="Small" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="10"
+                            Foreground="Gray"
+                            Text="Size=Small" />
+                    </StackPanel>
+                    <StackPanel>
+                        <layouts:Chip
+                            Content="Medium"
+                            Size="Medium" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="10"
+                            Foreground="Gray"
+                            Text="Size=Medium (default)" />
+                    </StackPanel>
+                    <StackPanel>
+                        <layouts:Chip
+                            Content="Large"
+                            Size="Large" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="10"
+                            Foreground="Gray"
+                            Text="Size=Large" />
+                    </StackPanel>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Selectable Chips (Filter Chips)">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="Click to select/deselect. Shows checkmark when selected." />
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="10"
+                        Orientation="Horizontal"
+                        VerticalSpacing="10">
+                        <layouts:Chip
+                            Content="JavaScript"
+                            IsSelectable="True"
+                            IsSelected="True" />
+                        <layouts:Chip
+                            Content="TypeScript"
+                            IsSelectable="True" />
+                        <layouts:Chip
+                            Content="Python"
+                            IsSelectable="True" />
+                        <layouts:Chip
+                            Content="C#"
+                            IsSelectable="True"
+                            IsSelected="True" />
+                        <layouts:Chip
+                            Content="Go"
+                            IsSelectable="True" />
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Removable Chips (Input Chips)">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="Chips with remove/close button. Click X to trigger RemoveClick event." />
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="10"
+                        Orientation="Horizontal"
+                        VerticalSpacing="10">
+                        <layouts:Chip
+                            CanRemove="True"
+                            Content="john@example.com" />
+                        <layouts:Chip
+                            CanRemove="True"
+                            Content="jane@example.com" />
+                        <layouts:Chip
+                            CanRemove="True"
+                            Content="bob@example.com" />
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Padding="10" Header="Custom Styling">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="Custom colors and icons" />
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="10"
+                        Orientation="Horizontal"
+                        VerticalSpacing="10">
+
+                        <!-- Custom background -->
+                        <layouts:Chip
+                            Background="#E3F2FD"
+                            BorderBrush="#2196F3"
+                            Content="Info"
+                            Foreground="#1565C0" />
+
+                        <!-- Success style -->
+                        <layouts:Chip
+                            Background="#E8F5E9"
+                            BorderBrush="#4CAF50"
+                            Content="Success"
+                            Foreground="#2E7D32" />
+
+                        <!-- Warning style -->
+                        <layouts:Chip
+                            Background="#FFF3E0"
+                            BorderBrush="#FF9800"
+                            Content="Warning"
+                            Foreground="#E65100" />
+
+                        <!-- Error style -->
+                        <layouts:Chip
+                            Background="#FFEBEE"
+                            BorderBrush="#F44336"
+                            Content="Error"
+                            Foreground="#C62828" />
+
+                        <!-- Custom selected colors -->
+                        <layouts:Chip
+                            Content="Custom Selected"
+                            IsSelectable="True"
+                            IsSelected="True"
+                            SelectedBackground="#9C27B0"
+                            SelectedForeground="White" />
+
+                        <!-- Disabled -->
+                        <layouts:Chip
+                            Content="Disabled"
+                            IsEnabled="False" />
+
+                        <!-- Non-clickable -->
+                        <layouts:Chip
+                            Content="Not Clickable"
+                            IsClickable="False" />
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>
