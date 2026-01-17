@@ -11,6 +11,8 @@ public partial class MainWindow
     private readonly Dictionary<TreeView, TabItem> treeViewToTabItem = [];
     private readonly Dictionary<TreeView, Badge> treeViewToBadge = [];
 
+    private bool suppressSelectionChanged;
+
     public MainWindow(IMainWindowViewModel viewModel)
     {
         InitializeComponent();
@@ -37,31 +39,21 @@ public partial class MainWindow
 
     private void InitializeTabMappings()
     {
-        foreach (var item in SamplesTabControl.Items)
-        {
-            if (item is not TabItem tabItem || tabItem.Content is not TreeView treeView)
-            {
-                continue;
-            }
+        // Map TreeViews to TabItems
+        treeViewToTabItem[StvSampleWpf] = TabWpf;
+        treeViewToTabItem[StvSampleWpfControls] = TabWpfControls;
+        treeViewToTabItem[StvSampleWpfNetworkControls] = TabWpfNetworkControls;
+        treeViewToTabItem[StvSampleWpfTheming] = TabWpfTheming;
+        treeViewToTabItem[StvSamplesWpfSourceGenerators] = TabWpfSourceGenerators;
+        treeViewToTabItem[StvSampleWpfFontIcons] = TabWpfFontIcons;
 
-            treeViewToTabItem[treeView] = tabItem;
-
-            // Find Badge - it may be directly the Header or inside a Grid/StackPanel
-            if (tabItem.Header is Badge badge)
-            {
-                treeViewToBadge[treeView] = badge;
-            }
-            else if (tabItem.Header is Panel panel)
-            {
-                var badgeInPanel = panel.Children
-                    .OfType<Badge>()
-                    .FirstOrDefault();
-                if (badgeInPanel is not null)
-                {
-                    treeViewToBadge[treeView] = badgeInPanel;
-                }
-            }
-        }
+        // Map TreeViews to Badges
+        treeViewToBadge[StvSampleWpf] = BadgeWpf;
+        treeViewToBadge[StvSampleWpfControls] = BadgeWpfControls;
+        treeViewToBadge[StvSampleWpfNetworkControls] = BadgeWpfNetworkControls;
+        treeViewToBadge[StvSampleWpfTheming] = BadgeWpfTheming;
+        treeViewToBadge[StvSamplesWpfSourceGenerators] = BadgeWpfSourceGenerators;
+        treeViewToBadge[StvSampleWpfFontIcons] = BadgeWpfFontIcons;
     }
 
     private void OnLoaded(
@@ -69,6 +61,13 @@ public partial class MainWindow
         RoutedEventArgs e)
     {
         GetViewModel().OnLoaded(this, e);
+
+        // Rule 1: Application startup - no tab selected, all TreeViews visible
+        suppressSelectionChanged = true;
+        SamplesTabControl.SelectedIndex = -1;
+        suppressSelectionChanged = false;
+
+        UpdateTreeViewVisibility();
         Keyboard.Focus(TbSampleFilter);
     }
 
@@ -87,20 +86,34 @@ public partial class MainWindow
         KeyEventArgs e)
         => GetViewModel().OnKeyUp(this, e);
 
+    private void TabControlOnSelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e)
+    {
+        if (suppressSelectionChanged)
+        {
+            return;
+        }
+
+        // Rule 5: Tab clicked - show only that category's TreeView
+        UpdateTreeViewVisibility();
+        ApplyCurrentFilter();
+    }
+
     private void TreeViewOnSelectionChanged(
         object sender,
         RoutedPropertyChangedEventArgs<object> e)
     {
         GetViewModel().UpdateSelectedView(e.NewValue as SampleTreeViewItem);
 
-        // Track selection: switch to the tab containing the selected item
+        // Rule 4: TreeView item clicked - select the tab containing this item
         if (sender is TreeView treeView && e.NewValue is SampleTreeViewItem)
         {
-            SelectTabItem(treeView);
+            SelectTabForTreeView(treeView);
         }
     }
 
-    private void SampleFilterOnTextChanged(
+    private void FilterOnTextChanged(
         object sender,
         TextChangedEventArgs e)
     {
@@ -110,6 +123,82 @@ public partial class MainWindow
         }
 
         var filter = textBox.Text.Trim();
+        var isFilterEmpty = string.IsNullOrWhiteSpace(filter);
+
+        // Rule 3: SearchBox cleared - deselect tab, show all TreeViews
+        // Rule 6: SearchBox text changed while tab selected - deselect tab
+        suppressSelectionChanged = true;
+        SamplesTabControl.SelectedIndex = -1;
+        suppressSelectionChanged = false;
+        UpdateTreeViewVisibility();
+
+        // Deselect all TreeView items when searching
+        ClearTreeViewSelections();
+
+        var treeViewMatchCounts = new Dictionary<TreeView, int>();
+
+        foreach (var sampleTreeView in sampleTreeViews)
+        {
+            _ = SetVisibilityByFilterTreeViewItems(sampleTreeView.Items, filter);
+            var count = isFilterEmpty ? 0 : CountByFilterTreeViewItems(sampleTreeView.Items, filter);
+            treeViewMatchCounts[sampleTreeView] = count;
+        }
+
+        UpdateTabHeaders(treeViewMatchCounts, isFilterEmpty);
+    }
+
+    private void UpdateTreeViewVisibility()
+    {
+        var selectedTab = SamplesTabControl.SelectedItem as TabItem;
+
+        foreach (var (treeView, tabItem) in treeViewToTabItem)
+        {
+            if (selectedTab is null)
+            {
+                // No tab selected - show all TreeViews
+                treeView.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Tab selected - show only matching TreeView
+                treeView.Visibility = tabItem == selectedTab
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+    }
+
+    private void SelectTabForTreeView(TreeView treeView)
+    {
+        if (treeViewToTabItem.TryGetValue(treeView, out var tabItem))
+        {
+            tabItem.IsSelected = true;
+        }
+    }
+
+    private void ClearTreeViewSelections()
+    {
+        foreach (var treeView in sampleTreeViews)
+        {
+            ClearTreeViewItemSelection(treeView.Items);
+        }
+    }
+
+    private static void ClearTreeViewItemSelection(ItemCollection items)
+    {
+        foreach (var item in items)
+        {
+            if (item is TreeViewItem treeViewItem)
+            {
+                treeViewItem.IsSelected = false;
+                ClearTreeViewItemSelection(treeViewItem.Items);
+            }
+        }
+    }
+
+    private void ApplyCurrentFilter()
+    {
+        var filter = TbSampleFilter.Text.Trim();
         var isFilterEmpty = string.IsNullOrWhiteSpace(filter);
 
         var treeViewMatchCounts = new Dictionary<TreeView, int>();
@@ -122,7 +211,6 @@ public partial class MainWindow
         }
 
         UpdateTabHeaders(treeViewMatchCounts, isFilterEmpty);
-        TrySelectMatchingTab(treeViewMatchCounts, filter);
     }
 
     private void UpdateTabHeaders(
@@ -191,50 +279,6 @@ public partial class MainWindow
         return showRoot;
     }
 
-    private void TrySelectMatchingTab(
-        Dictionary<TreeView, int> treeViewMatchCounts,
-        string filter)
-    {
-        if (string.IsNullOrWhiteSpace(filter) || filter.Length < 2)
-        {
-            return;
-        }
-
-        var matchingTreeViews = treeViewMatchCounts
-            .Where(kvp => kvp.Value > 0)
-            .ToList();
-
-        switch (matchingTreeViews.Count)
-        {
-            case 0:
-                return;
-
-            // If only one tab has matches, switch to it
-            case 1:
-                SelectTabItem(matchingTreeViews[0].Key);
-                return;
-        }
-
-        // If current tab has no matches, switch to the first tab that does
-        var currentTreeView = GetCurrentTreeView();
-        if (currentTreeView is not null &&
-            treeViewMatchCounts.TryGetValue(currentTreeView, out var currentCount) &&
-            currentCount == 0)
-        {
-            SelectTabItem(matchingTreeViews[0].Key);
-        }
-    }
-
-    private TreeView? GetCurrentTreeView()
-    {
-        if (SamplesTabControl.SelectedItem is not TabItem tabItem)
-        {
-            return null;
-        }
-
-        return tabItem.Content as TreeView;
-    }
-
     private static int CountByFilterTreeViewItems(
         IEnumerable items,
         string filter)
@@ -301,25 +345,6 @@ public partial class MainWindow
         }
 
         return sb.ToString();
-    }
-
-    private void SelectTabItem(TreeView treeView)
-    {
-        foreach (var item in SamplesTabControl.Items)
-        {
-            if (item is not TabItem tabItem)
-            {
-                continue;
-            }
-
-            if (tabItem.Content is null || tabItem.Content.GetType() != treeView.GetType())
-            {
-                continue;
-            }
-
-            tabItem.IsSelected = true;
-            break;
-        }
     }
 
     private void SampleExpandAll(
