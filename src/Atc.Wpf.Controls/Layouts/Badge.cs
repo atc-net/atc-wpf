@@ -122,7 +122,7 @@ public sealed partial class Badge : ContentControl
     /// <summary>
     /// Gets whether the badge should be visible based on all visibility conditions.
     /// </summary>
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = false)]
     private bool computedBadgeVisibility;
 
     static Badge()
@@ -130,6 +130,21 @@ public sealed partial class Badge : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Badge),
             new FrameworkPropertyMetadata(typeof(Badge)));
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Badge"/> class.
+    /// </summary>
+    public Badge()
+    {
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        UpdateDisplayProperties();
     }
 
     private static void OnBadgeDisplayPropertiesChanged(
@@ -173,7 +188,22 @@ public sealed partial class Badge : ContentControl
             DisplayBadgeContent = BadgeContent;
         }
 
-        ComputedBadgeVisibility = IsBadgeVisible && BadgeContent is not null;
+        ComputedBadgeVisibility = IsBadgeVisible && HasValidContent(BadgeContent);
+    }
+
+    private static bool HasValidContent(object? content)
+    {
+        if (content is null)
+        {
+            return false;
+        }
+
+        if (content is string stringValue)
+        {
+            return !string.IsNullOrEmpty(stringValue);
+        }
+
+        return true;
     }
 
     private static int? GetNumericValue(object? content)
