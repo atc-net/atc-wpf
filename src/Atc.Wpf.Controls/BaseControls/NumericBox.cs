@@ -150,9 +150,9 @@ public partial class NumericBox : Control
     private Style? spinButtonStyle;
 
     [DependencyProperty(
-        DefaultValue = ButtonsAlignment.Right,
+        DefaultValue = ButtonsAlignmentType.Right,
         Flags = FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure)]
-    private ButtonsAlignment buttonsAlignment;
+    private ButtonsAlignmentType buttonsAlignment;
 
     [DependencyProperty(DefaultValue = false)]
     private bool hideUpDownButtons;
