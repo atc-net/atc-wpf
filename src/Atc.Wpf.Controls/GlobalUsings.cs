@@ -67,6 +67,7 @@ global using Atc.Wpf.Controls.Viewers.JsonTree;
 global using Atc.Wpf.Controls.ViewModels;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Data.Models;
+global using Atc.Wpf.Dialogs;
 global using Atc.Wpf.FontIcons;
 global using Atc.Wpf.FontIcons.ValueConverters;
 global using Atc.Wpf.Helpers;
