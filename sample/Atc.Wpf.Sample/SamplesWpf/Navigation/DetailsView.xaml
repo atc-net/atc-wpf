@@ -1,0 +1,41 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpf.Navigation.DetailsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Navigation"
+    d:DataContext="{d:DesignInstance Type=navigation:DetailsViewModel}"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <StackPanel Margin="20">
+        <TextBlock
+            FontSize="24"
+            FontWeight="Bold"
+            Text="Details" />
+
+        <atc:UniformSpacingPanel
+            Margin="0,20,0,0"
+            Orientation="Vertical"
+            Spacing="10">
+
+            <TextBlock Text="This view received navigation parameters:" />
+
+            <Border
+                Margin="0,10,0,0"
+                Background="{DynamicResource AtcApps.Brushes.Gray10}"
+                CornerRadius="4"
+                Padding="15">
+                <StackPanel>
+                    <TextBlock Text="{Binding ItemId, StringFormat='Item ID: {0}'}" />
+                    <TextBlock Text="{Binding ItemName, StringFormat='Item Name: {0}'}" />
+                </StackPanel>
+            </Border>
+
+        </atc:UniformSpacingPanel>
+    </StackPanel>
+
+</UserControl>
