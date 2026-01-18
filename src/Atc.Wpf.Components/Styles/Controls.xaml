@@ -1,0 +1,13 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:notifications="clr-namespace:Atc.Wpf.Components.Notifications">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Components;component/Notifications/ToastNotification.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToastNotification}" TargetType="{x:Type notifications:ToastNotification}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToastNotificationArea}" TargetType="{x:Type notifications:ToastNotificationArea}" />
+
+</ResourceDictionary>

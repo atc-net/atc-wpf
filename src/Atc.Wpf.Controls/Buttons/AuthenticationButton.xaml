@@ -1,0 +1,34 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Buttons.AuthenticationButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="100"
+    d:DesignWidth="200"
+    mc:Ignorable="d">
+
+    <buttonControls:ImageToggledButton
+        Width="{Binding Path=Width, ElementName=Root}"
+        Height="{Binding Path=Height, ElementName=Root}"
+        ImageBorderSpacing="{Binding Path=ImageBorderSpacing, ElementName=Root}"
+        ImageContentSpacing="{Binding Path=ImageContentSpacing, ElementName=Root}"
+        ImageHeight="{Binding Path=ImageHeight, ElementName=Root}"
+        ImageLocation="{Binding Path=ImageLocation, ElementName=Root}"
+        ImageWidth="{Binding Path=ImageWidth, ElementName=Root}"
+        IsBusy="{Binding Path=IsBusy, ElementName=Root}"
+        IsToggled="{Binding Path=IsAuthenticated, ElementName=Root, Mode=TwoWay}"
+        OffCommand="{Binding Path=LoginCommand, ElementName=Root}"
+        OffContent="{Binding Path=LoginContent, ElementName=Root}"
+        OffImageSource="{Binding Path=LoginImageSource, ElementName=Root}"
+        OffSvgImageOverrideColor="{Binding Path=LoginSvgImageOverrideColor, ElementName=Root}"
+        OffSvgImageSource="{Binding Path=LoginSvgImageSource, ElementName=Root}"
+        OnCommand="{Binding Path=LogoutCommand, ElementName=Root}"
+        OnContent="{Binding Path=LogoutContent, ElementName=Root}"
+        OnImageSource="{Binding Path=LogoutImageSource, ElementName=Root}"
+        OnSvgImageOverrideColor="{Binding Path=LogoutSvgImageOverrideColor, ElementName=Root}"
+        OnSvgImageSource="{Binding Path=LogoutSvgImageSource, ElementName=Root}" />
+
+</UserControl>

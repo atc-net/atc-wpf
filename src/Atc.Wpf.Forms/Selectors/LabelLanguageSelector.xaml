@@ -1,0 +1,40 @@
+<labelControls:LabelControl
+    x:Class="Atc.Wpf.Forms.LabelLanguageSelector"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Forms"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <labelControls:LabelContent
+        HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
+        InformationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationColor}"
+        InformationContent="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationContent}"
+        InformationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=InformationText}"
+        IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
+        IsTabStop="False"
+        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                        Key=Language}"
+        LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
+        LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
+        MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"
+        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}"
+        ShowAsteriskOnMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShowAsteriskOnMandatory}"
+        ValidationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor}"
+        ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
+
+        <atcTheming:LanguageSelector
+            DefaultCultureIdentifier="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=DefaultCultureIdentifier}"
+            DropDownFirstItemType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=DropDownFirstItemType}"
+            RenderFlagIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=RenderFlagIndicatorType}"
+            SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=SelectedKey}"
+            SelectorChanged="OnSelectorChanged"
+            UpdateUiCultureOnChangeEvent="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=UpdateUiCultureOnChangeEvent}"
+            UseOnlySupportedLanguages="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelLanguageSelector}}, Path=UseOnlySupportedLanguages}" />
+
+    </labelControls:LabelContent>
+
+</labelControls:LabelControl>

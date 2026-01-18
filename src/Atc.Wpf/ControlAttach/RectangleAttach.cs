@@ -1,9 +1,26 @@
 namespace Atc.Wpf.ControlAttach;
 
-public static partial class RectangleAttach
+public static class RectangleAttach
 {
-    [AttachedProperty(PropertyChangedCallback = nameof(OnCircularChanged))]
-    private static bool circular;
+    public static readonly DependencyProperty CircularProperty = DependencyProperty.RegisterAttached(
+        "Circular",
+        typeof(bool),
+        typeof(RectangleAttach),
+        new PropertyMetadata(false, OnCircularChanged));
+
+    public static bool GetCircular(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (bool)obj.GetValue(CircularProperty);
+    }
+
+    public static void SetCircular(
+        DependencyObject obj,
+        bool value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(CircularProperty, value);
+    }
 
     private static void OnCircularChanged(
         DependencyObject d,

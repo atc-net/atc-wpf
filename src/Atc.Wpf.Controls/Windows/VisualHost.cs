@@ -11,9 +11,7 @@ public sealed class VisualHost : FrameworkElement
     /// Initializes a new instance of the <see cref="VisualHost" /> class.
     /// </summary>
     public VisualHost()
-    {
-        this.visualCollection = new VisualCollection(this);
-    }
+        => visualCollection = new VisualCollection(this);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="VisualHost" /> class.

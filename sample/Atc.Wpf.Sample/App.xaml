@@ -27,9 +27,11 @@
             </Style>
 
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfComponentsTreeView}" />
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfControlsTreeView}" />
-            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfNetworkControlsTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfNetworkTreeView}" />
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfFontIconsTreeView}" />
+            <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfFormsTreeView}" />
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfSourceGeneratorsTreeView}" />
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeView}" TargetType="{x:Type sample:SamplesWpfThemingTreeView}" />
 

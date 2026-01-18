@@ -91,6 +91,14 @@
             Duration="0:0:0.2" />
     </Storyboard>
 
+    <Style x:Key="AtcApps.Styles.ContentControl.FloatingMessageContainer" TargetType="{x:Type ContentControl}">
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="Visibility" Value="Collapsed" />
+    </Style>
+
     <Storyboard x:Key="AtcApps.Storyboard.HideFloatingMessage" po:Freeze="True">
         <DoubleAnimation
             EasingFunction="{StaticResource AtcApps.ExponentialEase.EaseInOut}"

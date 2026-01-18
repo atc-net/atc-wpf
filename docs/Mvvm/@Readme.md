@@ -2,24 +2,26 @@
 
 Windows Presentation Foundation (WPF) fully supports the **Model-View-ViewModel (MVVM)** pattern, which promotes a clear separation of concerns between the UI and business logic.
 
-The **Atc.Wpf** library provides a robust foundation for implementing MVVM effectively, reducing boilerplate code and simplifying development.
+The **Atc.Wpf** library includes the [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) MVVM infrastructure as a dependency, providing a robust foundation for implementing MVVM effectively, reducing boilerplate code and simplifying development.
 
 ## ⚙️ Features
 
-The `Atc.Wpf` library offers a variety of base classes and utilities to streamline MVVM implementation:
+The MVVM infrastructure is provided by the **Atc.XamlToolkit** and **Atc.XamlToolkit.Wpf** packages, which are included as dependencies of `Atc.Wpf`:
 
-| 🧩 Component             | 📋 Description                                                                 |
-|---------------------------|--------------------------------------------------------------------------------|
-| `ViewModelBase`           | A base class for ViewModels.                                                   |
-| `MainWindowViewModelBase` | A base class for the main window ViewModel.                                    |
-| `ViewModelDialogBase`     | A base class for dialog ViewModels.                                            |
-| `ObservableObject`        | A base class for observable objects implementing `INotifyPropertyChanged`.     |
-| `RelayCommand`            | A command supporting `CanExecute`.                                             |
-| `RelayCommand<T>`         | A command with a generic parameter and `CanExecute`.                           |
-| `RelayCommandAsync`       | An asynchronous command supporting `CanExecute`.                               |
-| `RelayCommandAsync<T>`    | An asynchronous command with a generic parameter and `CanExecute`.             |
+| 🧩 Component             | 📦 Source Namespace       | 📋 Description                                                                 |
+|---------------------------|---------------------------|--------------------------------------------------------------------------------|
+| `ViewModelBase`           | Atc.XamlToolkit.Mvvm      | A base class for ViewModels.                                                   |
+| `MainWindowViewModelBase` | Atc.XamlToolkit.Mvvm      | A base class for the main window ViewModel.                                    |
+| `ViewModelDialogBase`     | Atc.XamlToolkit.Mvvm      | A base class for dialog ViewModels.                                            |
+| `ObservableObject`        | Atc.XamlToolkit.Mvvm      | A base class for observable objects implementing `INotifyPropertyChanged`.     |
+| `RelayCommand`            | Atc.XamlToolkit.Command   | A command supporting `CanExecute`.                                             |
+| `RelayCommand<T>`         | Atc.XamlToolkit.Command   | A command with a generic parameter and `CanExecute`.                           |
+| `RelayCommandAsync`       | Atc.XamlToolkit.Command   | An asynchronous command supporting `CanExecute`.                               |
+| `RelayCommandAsync<T>`    | Atc.XamlToolkit.Command   | An asynchronous command with a generic parameter and `CanExecute`.             |
 
-📖 For detailed information about commands, refer to the [RelayCommand documentation](../SourceGenerators/ViewModel.md).
+📖 For detailed information about source generators and commands, refer to the [ViewModel Source Generation documentation](../SourceGenerators/ViewModel.md).
+
+📦 For more information about the MVVM infrastructure, see the [Atc.XamlToolkit repository](https://github.com/atc-net/atc-xaml-toolkit).
 
 ---
 

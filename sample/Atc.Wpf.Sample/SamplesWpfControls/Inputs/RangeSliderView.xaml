@@ -1,0 +1,215 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Inputs.RangeSliderView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs;assembly=Atc.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    The RangeSlider control provides a dual-thumb slider for selecting a range of values.
+                    It supports minimum/maximum bounds, step increments, keyboard navigation, and customizable styling.
+                </TextBlock>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Usage">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Default Range Slider (0-100)" />
+                    <inputs:RangeSlider
+                        x:Name="basicSlider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        RangeStart="20"
+                        RangeEnd="80" />
+                    <TextBlock Margin="0,5,0,0">
+                        <Run Text="Selected Range: " />
+                        <Run Text="{Binding RangeStart, ElementName=basicSlider, StringFormat=N0}" />
+                        <Run Text=" - " />
+                        <Run Text="{Binding RangeEnd, ElementName=basicSlider, StringFormat=N0}" />
+                    </TextBlock>
+
+                    <TextBlock
+                        Margin="0,20,0,5"
+                        FontWeight="Bold"
+                        Text="Price Filter (0-1000, Step 50)" />
+                    <inputs:RangeSlider
+                        x:Name="priceSlider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        Maximum="1000"
+                        Minimum="0"
+                        RangeEnd="750"
+                        RangeStart="200"
+                        Step="50" />
+                    <TextBlock Margin="0,5,0,0">
+                        <Run Text="Price Range: $" />
+                        <Run Text="{Binding RangeStart, ElementName=priceSlider, StringFormat=N0}" />
+                        <Run Text=" - $" />
+                        <Run Text="{Binding RangeEnd, ElementName=priceSlider, StringFormat=N0}" />
+                    </TextBlock>
+
+                    <TextBlock
+                        Margin="0,20,0,5"
+                        FontWeight="Bold"
+                        Text="Temperature Range (-20 to 50)" />
+                    <inputs:RangeSlider
+                        x:Name="tempSlider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        Maximum="50"
+                        Minimum="-20"
+                        RangeEnd="30"
+                        RangeStart="15"
+                        Step="1" />
+                    <TextBlock Margin="0,5,0,0">
+                        <Run Text="Temperature: " />
+                        <Run Text="{Binding RangeStart, ElementName=tempSlider, StringFormat=N0}" />
+                        <Run Text="°C - " />
+                        <Run Text="{Binding RangeEnd, ElementName=tempSlider, StringFormat=N0}" />
+                        <Run Text="°C" />
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Step Increments">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Step = 1 (Fine control)" />
+                    <inputs:RangeSlider
+                        x:Name="step1Slider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        RangeEnd="70"
+                        RangeStart="30"
+                        Step="1" />
+                    <TextBlock Margin="0,5,0,15" Text="{Binding RangeStart, ElementName=step1Slider, StringFormat='Range: {0:N0}'}" />
+
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Step = 5" />
+                    <inputs:RangeSlider
+                        x:Name="step5Slider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        RangeEnd="75"
+                        RangeStart="25"
+                        Step="5" />
+                    <TextBlock Margin="0,5,0,15" Text="{Binding RangeStart, ElementName=step5Slider, StringFormat='Range: {0:N0}'}" />
+
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Step = 10 (Coarse control)" />
+                    <inputs:RangeSlider
+                        x:Name="step10Slider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        RangeEnd="80"
+                        RangeStart="20"
+                        Step="10" />
+                    <TextBlock Margin="0,5,0,0" Text="{Binding RangeStart, ElementName=step10Slider, StringFormat='Range: {0:N0}'}" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Custom Styling">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Custom Colors" />
+                    <inputs:RangeSlider
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        RangeEnd="75"
+                        RangeHighlightBrush="#4CAF50"
+                        RangeStart="25"
+                        ThumbBrush="#4CAF50"
+                        ThumbHoverBrush="#66BB6A"
+                        ThumbPressedBrush="#388E3C"
+                        TrackBackground="#C8E6C9" />
+
+                    <TextBlock
+                        Margin="0,20,0,5"
+                        FontWeight="Bold"
+                        Text="Larger Track and Thumbs" />
+                    <inputs:RangeSlider
+                        Width="400"
+                        Height="40"
+                        HorizontalAlignment="Left"
+                        RangeEnd="70"
+                        RangeStart="30"
+                        ThumbSize="28"
+                        TrackHeight="8" />
+
+                    <TextBlock
+                        Margin="0,20,0,5"
+                        FontWeight="Bold"
+                        Text="Smaller/Compact" />
+                    <inputs:RangeSlider
+                        Width="300"
+                        Height="24"
+                        HorizontalAlignment="Left"
+                        RangeEnd="80"
+                        RangeStart="20"
+                        ThumbSize="14"
+                        TrackHeight="2" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Padding="10" Header="Keyboard Navigation">
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">
+                        Click on a thumb to focus it, then use the keyboard to adjust values:
+                    </TextBlock>
+                    <TextBlock Margin="0,0,0,5" Text="- Left/Down Arrow: Decrease value by step" />
+                    <TextBlock Margin="0,0,0,5" Text="- Right/Up Arrow: Increase value by step" />
+                    <TextBlock Margin="0,0,0,5" Text="- Shift + Arrow: Increase/decrease by step × 10" />
+                    <TextBlock Margin="0,0,0,5" Text="- Home: Move to minimum (lower) or to lower thumb (upper)" />
+                    <TextBlock Margin="0,0,0,15" Text="- End: Move to upper thumb (lower) or maximum (upper)" />
+
+                    <inputs:RangeSlider
+                        x:Name="keyboardSlider"
+                        Width="400"
+                        HorizontalAlignment="Left"
+                        RangeEnd="60"
+                        RangeStart="40"
+                        Step="5" />
+                    <TextBlock Margin="0,5,0,0">
+                        <Run Text="Value: " />
+                        <Run Text="{Binding RangeStart, ElementName=keyboardSlider, StringFormat=N0}" />
+                        <Run Text=" - " />
+                        <Run Text="{Binding RangeEnd, ElementName=keyboardSlider, StringFormat=N0}" />
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

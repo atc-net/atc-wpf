@@ -25,9 +25,13 @@
     <system:Double x:Key="AtcApps.Font.Size.Content">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Button">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.Button.Large">16</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.Button.Text">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.Button.ClearText">10</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.FloatingWatermark">10</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.StatusBar">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.TabItem">16</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.ToggleSwitch">12</system:Double>
+    <system:Double x:Key="AtcApps.Font.Size.ToggleSwitch.Header">12</system:Double>
     <system:Double x:Key="AtcApps.Font.Size.ToolTip">12</system:Double>
 
     <!--  CharacterCasing  -->

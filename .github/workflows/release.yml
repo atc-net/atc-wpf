@@ -57,8 +57,10 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/packages
           dotnet nuget push Atc.Wpf.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
+          dotnet nuget push Atc.Wpf.Components.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.Controls.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.Controls.Sample.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.FontIcons.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
-          dotnet nuget push Atc.Wpf.NetworkControls.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
+          dotnet nuget push Atc.Wpf.Forms.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
+          dotnet nuget push Atc.Wpf.Network.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.Theming.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols

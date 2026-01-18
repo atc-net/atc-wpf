@@ -5,8 +5,8 @@
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.Theming</Title>
     <PackageId>Atc.Wpf.Theming</PackageId>
-    <PackageTags>wpf;theming</PackageTags>
-    <Description>A base library for building WPF application with theming.</Description>
+    <PackageTags>wpf;theming;styles;light-theme;dark-theme</PackageTags>
+    <Description>WPF theming library providing light and dark themes with customizable styles for WPF applications.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);SYSLIB0051;CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>
@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.1" />
     <PackageReference Include="ControlzEx" version="7.0.2" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->

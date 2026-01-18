@@ -25,12 +25,27 @@ The left panel consists of:
 │                      │       └─ StackPanel          │
 │ ► Wpf            [3] │           ├─ WpfTreeView     │
 │   Wpf.Controls   [5] │           ├─ ControlsTreeView│
+│   Wpf.Forms          │           ├─ FormsTreeView   │
+│   Wpf.Components     │           ├─ ComponentsTreeView│
 │   Wpf.Network...     │           ├─ NetworkTreeView │
 │   Wpf.Theming        │           ├─ ThemingTreeView │
 │   Wpf.SourceGen      │           ├─ SourceGenTreeView│
 │   Wpf.FontIcons      │           └─ FontIconsTreeView│
 └──────────────────────┴──────────────────────────────┘
 ```
+
+### Categories (8 total)
+
+| Category | TreeView File | Description |
+|----------|---------------|-------------|
+| Wpf | `SamplesWpfTreeView.xaml` | Core library: Commands, Layouts, Media, Markup, Dialogs, Navigation |
+| Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Atomic controls: Base, Buttons, Colors, Layouts, Progress |
+| Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Form controls: Label*, Selectors, Pickers |
+| Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Composite: Dialogs, Viewers, Monitoring, Notifications |
+| Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | Network: NetworkScanner |
+| Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
+| Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demonstrations |
+| Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |
 
 ### Key Design Decisions
 
@@ -176,13 +191,14 @@ The left panel consists of:
         Background="Transparent"
         BorderBrush="Transparent"
         TabStripPlacement="Left">
-        <TabItem Tag="Wpf">
-            <TabItem.Header>
-                <!-- Header with Badge -->
-            </TabItem.Header>
-            <!-- No content -->
-        </TabItem>
-        <!-- ... more TabItems -->
+        <TabItem Tag="Wpf">...</TabItem>
+        <TabItem Tag="Wpf.Controls">...</TabItem>
+        <TabItem Tag="Wpf.Forms">...</TabItem>
+        <TabItem Tag="Wpf.Components">...</TabItem>
+        <TabItem Tag="Wpf.Network">...</TabItem>
+        <TabItem Tag="Wpf.Theming">...</TabItem>
+        <TabItem Tag="Wpf.SourceGenerators">...</TabItem>
+        <TabItem Tag="Wpf.FontIcons">...</TabItem>
     </TabControl>
 
     <!-- TreeViews in ScrollViewer -->
@@ -191,7 +207,12 @@ The left panel consists of:
             <StackPanel>
                 <sample:SamplesWpfTreeView />
                 <sample:SamplesWpfControlsTreeView />
-                <!-- ... more TreeViews -->
+                <sample:SamplesWpfFormsTreeView />
+                <sample:SamplesWpfComponentsTreeView />
+                <sample:SamplesWpfNetworkTreeView />
+                <sample:SamplesWpfThemingTreeView />
+                <sample:SamplesWpfSourceGeneratorsTreeView />
+                <sample:SamplesWpfFontIconsTreeView />
             </StackPanel>
         </ScrollViewer>
     </Border>

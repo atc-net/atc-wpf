@@ -9,238 +9,96 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
-    <TreeViewItem Header="DialogBoxes">
-        <sample:SampleTreeViewItem
-            Header="Standard"
-            IsExpanded="True"
-            SamplePath="DialogBoxes.StandardDialogBoxView" />
-    </TreeViewItem>
-
-    <TreeViewItem Header="Base Controls">
+    <TreeViewItem Header="Inputs">
         <sample:SampleTreeViewItem
             Header="DecimalBox"
             IsExpanded="True"
-            SamplePath="BaseControls.DecimalBoxView" />
+            SamplePath="Inputs.DecimalBoxView" />
         <sample:SampleTreeViewItem
             Header="DecimalXyBox"
             IsExpanded="True"
-            SamplePath="BaseControls.DecimalXyBoxView" />
+            SamplePath="Inputs.DecimalXyBoxView" />
         <sample:SampleTreeViewItem
             Header="IntegerBox"
             IsExpanded="True"
-            SamplePath="BaseControls.IntegerBoxView" />
+            SamplePath="Inputs.IntegerBoxView" />
         <sample:SampleTreeViewItem
             Header="IntegerXyBox"
             IsExpanded="True"
-            SamplePath="BaseControls.IntegerXyBoxView" />
+            SamplePath="Inputs.IntegerXyBoxView" />
         <sample:SampleTreeViewItem
             Header="NumericBox"
             IsExpanded="True"
-            SamplePath="BaseControls.NumericBoxView" />
+            SamplePath="Inputs.NumericBoxView" />
         <sample:SampleTreeViewItem
             Header="PixelSizeBox"
             IsExpanded="True"
-            SamplePath="BaseControls.PixelSizeBoxView" />
+            SamplePath="Inputs.PixelSizeBoxView" />
         <sample:SampleTreeViewItem
             Header="RangeSlider"
             IsExpanded="True"
-            SamplePath="BaseControls.RangeSliderView" />
+            SamplePath="Inputs.RangeSliderView" />
         <sample:SampleTreeViewItem
             Header="ToggleSwitch"
             IsExpanded="True"
-            SamplePath="BaseControls.ToggleSwitchView" />
+            SamplePath="Inputs.ToggleSwitchView" />
         <sample:SampleTreeViewItem
             Header="EndpointBox"
             IsExpanded="True"
-            SamplePath="BaseControls.EndpointBoxView" />
-        <sample:SampleTreeViewItem
-            Header="DirectoryPicker"
-            IsExpanded="True"
-            SamplePath="BaseControls.DirectoryPickerView" />
-        <sample:SampleTreeViewItem
-            Header="FilePicker"
-            IsExpanded="True"
-            SamplePath="BaseControls.FilePickerView" />
+            SamplePath="Inputs.EndpointBoxView" />
         <sample:SampleTreeViewItem
             Header="ColorPicker"
             IsExpanded="True"
-            SamplePath="BaseControls.ColorPickerView" />
+            SamplePath="Inputs.ColorPickerView" />
         <sample:SampleTreeViewItem
             Header="RichTextBoxEx"
             IsExpanded="True"
-            SamplePath="BaseControls.RichTextBoxExView" />
+            SamplePath="Inputs.RichTextBoxExView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Button Controls">
         <sample:SampleTreeViewItem
             Header="AuthenticationButton"
             IsExpanded="True"
-            SamplePath="ButtonControls.AuthenticationButtonView" />
+            SamplePath="Buttons.AuthenticationButtonView" />
         <sample:SampleTreeViewItem
             Header="ConnectivityButton"
             IsExpanded="True"
-            SamplePath="ButtonControls.ConnectivityButtonView" />
+            SamplePath="Buttons.ConnectivityButtonView" />
         <sample:SampleTreeViewItem
             Header="ImageButton"
             IsExpanded="True"
-            SamplePath="ButtonControls.ImageButtonView" />
+            SamplePath="Buttons.ImageButtonView" />
         <sample:SampleTreeViewItem
             Header="ImageToggledButton"
             IsExpanded="True"
-            SamplePath="ButtonControls.ImageToggledButtonView" />
+            SamplePath="Buttons.ImageToggledButtonView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Color Controls">
+    <TreeViewItem Header="Color Editing">
         <sample:SampleTreeViewItem
-            Header="AdvancedColorPickerView"
+            Header="AdvancedColorPicker"
             IsExpanded="True"
-            SamplePath="ColorControls.AdvancedColorPickerView" />
+            SamplePath="ColorEditing.AdvancedColorPickerView" />
         <sample:SampleTreeViewItem
             Header="HueSlider"
             IsExpanded="True"
-            SamplePath="ColorControls.HueSliderView" />
+            SamplePath="ColorEditing.HueSliderView" />
         <sample:SampleTreeViewItem
             Header="SaturationBrightnessPicker"
             IsExpanded="True"
-            SamplePath="ColorControls.SaturationBrightnessPickerView" />
+            SamplePath="ColorEditing.SaturationBrightnessPickerView" />
         <sample:SampleTreeViewItem
             Header="WellKnownColorPicker"
             IsExpanded="True"
-            SamplePath="ColorControls.WellKnownColorPickerView" />
-    </TreeViewItem>
-
-    <TreeViewItem Header="Label Controls">
-        <TreeViewItem Header="Selectors">
-            <sample:SampleTreeViewItem
-                Header="LabelCountrySelector"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelCountrySelectorView" />
-            <sample:SampleTreeViewItem
-                Header="LabelLanguageSelector"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelLanguageSelectorView" />
-            <sample:SampleTreeViewItem
-                Header="LabelFontFamilySelector"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelFontFamilySelectorView" />
-            <sample:SampleTreeViewItem
-                Header="LabelThemeSelector"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelThemeSelectorView" />
-            <sample:SampleTreeViewItem
-                Header="LabelAccentColorSelector"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelAccentColorSelectorView" />
-            <sample:SampleTreeViewItem
-                Header="LabelThemeAndAccentColorSelectors"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelThemeAndAccentColorSelectorsView" />
-            <sample:SampleTreeViewItem
-                Header="LabelWellKnownColorSelectorView"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelWellKnownColorSelectorView" />
-        </TreeViewItem>
-        <TreeViewItem Header="Pickers">
-            <sample:SampleTreeViewItem
-                Header="LabelDateTimePicker"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelDateTimePickerView" />
-            <sample:SampleTreeViewItem
-                Header="LabelDatePicker"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelDatePickerView" />
-            <sample:SampleTreeViewItem
-                Header="LabelTimePicker"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelTimePickerView" />
-            <sample:SampleTreeViewItem
-                Header="LabelDirectoryPicker"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelDirectoryPickerView" />
-            <sample:SampleTreeViewItem
-                Header="LabelFilePicker"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelFilePickerView" />
-            <sample:SampleTreeViewItem
-                Header="LabelColorPicker"
-                IsExpanded="True"
-                SamplePath="LabelControls.LabelColorPickerView" />
-        </TreeViewItem>
-        <sample:SampleTreeViewItem
-            Header="LabelCheckBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelCheckBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelComboBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelComboBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelContent"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelContentView" />
-        <sample:SampleTreeViewItem
-            Header="LabelDecimalBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelDecimalBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelDecimalXyBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelDecimalXyBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelEndpointBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelEndpointBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelIntegerBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelIntegerBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelIntegerXyBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelIntegerXyBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelPasswordBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelPasswordBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelPixelSizeBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelPixelSizeBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelSlider"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelSliderView" />
-        <sample:SampleTreeViewItem
-            Header="LabelTextBox"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelTextBoxView" />
-        <sample:SampleTreeViewItem
-            Header="LabelTextInfo"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelTextInfoView" />
-        <sample:SampleTreeViewItem
-            Header="LabelToggleSwitch"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelToggleSwitchView" />
-        <sample:SampleTreeViewItem
-            Header="Label-MIX"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelMixView" />
-        <sample:SampleTreeViewItem
-            Header="Label-MIX-Compact"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelMixCompactView" />
-        <sample:SampleTreeViewItem
-            Header="Label-MIX-Bindings"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelMixBindingsView" />
-        <sample:SampleTreeViewItem
-            Header="Label-InputFormPanel"
-            IsExpanded="True"
-            SamplePath="LabelControls.LabelInputFormPanelView" />
+            SamplePath="ColorEditing.WellKnownColorPickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Layouts">
+        <sample:SampleTreeViewItem
+            Header="AutoGrid"
+            IsExpanded="True"
+            SamplePath="Layouts.AutoGridView" />
         <sample:SampleTreeViewItem
             Header="Badge"
             IsExpanded="True"
@@ -258,23 +116,40 @@
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />
         <sample:SampleTreeViewItem
+            Header="GridLines"
+            IsExpanded="True"
+            SamplePath="Layouts.GridLinesView" />
+        <sample:SampleTreeViewItem
             Header="GroupBoxExpander"
             IsExpanded="True"
             SamplePath="Layouts.GroupBoxExpanderView" />
+        <sample:SampleTreeViewItem
+            Header="ReversibleStackPanel"
+            IsExpanded="True"
+            SamplePath="Layouts.ReversibleStackPanelView" />
+        <sample:SampleTreeViewItem
+            Header="StaggeredPanel"
+            IsExpanded="True"
+            SamplePath="Layouts.StaggeredPanelView" />
+        <sample:SampleTreeViewItem
+            Header="UniformSpacingPanel"
+            IsExpanded="True"
+            SamplePath="Layouts.UniformSpacingPanelView" />
+        <sample:SampleTreeViewItem
+            Header="VirtualizingStaggeredPanel"
+            IsExpanded="True"
+            SamplePath="Layouts.VirtualizingStaggeredPanelView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Monitoring">
+    <TreeViewItem Header="Pickers">
         <sample:SampleTreeViewItem
-            Header="ApplicationMonitor"
+            Header="DirectoryPicker"
             IsExpanded="True"
-            SamplePath="Monitoring.ApplicationMonitorView" />
-    </TreeViewItem>
-
-    <TreeViewItem Header="Notifications">
+            SamplePath="Pickers.DirectoryPickerView" />
         <sample:SampleTreeViewItem
-            Header="ToastNotification"
+            Header="FilePicker"
             IsExpanded="True"
-            SamplePath="Notifications.ToastNotificationView" />
+            SamplePath="Pickers.FilePickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Progressing">
@@ -288,15 +163,19 @@
             SamplePath="Progressing.BusyOverlayView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Viewers">
+    <TreeViewItem Header="Selectors">
         <sample:SampleTreeViewItem
-            Header="JsonViewer"
+            Header="CountrySelector"
             IsExpanded="True"
-            SamplePath="Viewers.JsonViewerView" />
+            SamplePath="Selectors.CountrySelectorView" />
         <sample:SampleTreeViewItem
-            Header="TerminalViewer"
+            Header="FontFamilySelector"
             IsExpanded="True"
-            SamplePath="Viewers.TerminalViewerView" />
+            SamplePath="Selectors.FontFamilySelectorView" />
+        <sample:SampleTreeViewItem
+            Header="LanguageSelector"
+            IsExpanded="True"
+            SamplePath="Selectors.LanguageSelectorView" />
     </TreeViewItem>
 
 </TreeView>

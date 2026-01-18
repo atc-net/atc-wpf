@@ -5,8 +5,8 @@
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.FontIcons</Title>
     <PackageId>Atc.Wpf.FontIcons</PackageId>
-    <PackageTags>wpf;controls.font,icons</PackageTags>
-    <Description>A base library for building WPF application.</Description>
+    <PackageTags>wpf;fonticons;fontawesome;materialdesign;icons</PackageTags>
+    <Description>WPF font icon library providing Font Awesome, Material Design, and other icon fonts.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>

@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.Components</Title>
+    <PackageId>Atc.Wpf.Components</PackageId>
+    <PackageTags>wpf;components;dialogs;viewers;settings;notifications</PackageTags>
+    <Description>WPF composite component library providing dialogs, viewers, settings panels, and notifications.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\eraser.png" />
+    <None Remove="Resources\Images\error.png" />
+    <None Remove="Resources\Images\information.png" />
+    <None Remove="Resources\Images\scrollrefresh.png" />
+    <None Remove="Resources\Images\warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\eraser.png" />
+    <Resource Include="Resources\Images\error.png" />
+    <Resource Include="Resources\Images\information.png" />
+    <Resource Include="Resources\Images\scrollrefresh.png" />
+    <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.Forms\Atc.Wpf.Forms.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+</Project>

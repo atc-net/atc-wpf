@@ -1,0 +1,9 @@
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
+
+[assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas", "atc")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Dialogs")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Monitoring")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Notifications")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Settings")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Viewers")]

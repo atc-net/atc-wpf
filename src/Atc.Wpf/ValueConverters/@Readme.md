@@ -120,3 +120,19 @@ Or by the ValueConverter's Instance:
 |                           | MathMultiplyValueConverter                               |                                         |                                         |
 |                           | MathSubtractValueConverter                               |                                         |                                         |
 |                           | MathValueConverter                                       |                                         |                                         |
+
+## #️⃣ ValueConverters - JSON
+
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| JsonNode -> Length        | JsonArrayLengthConverter                                 | JsonArrayNode -> "[5]"                  | Not supported                           |
+| JsonNode -> Children      | JsonNodeChildrenConverter                                | JsonNode -> IEnumerable<JsonNode>       | Not supported                           |
+| JsonPropertyNode -> Brush | JsonPropertyTypeToColorConverter                         | JsonPropertyNode -> SolidColorBrush     | Not supported                           |
+| JsonValueNode -> String   | JsonValueDisplayConverter                                | JsonValueNode -> DisplayValue           | Not supported                           |
+| JsonValueNode -> Brush    | JsonValueTypeToColorConverter                            | JsonValueNode -> SolidColorBrush        | Not supported                           |
+
+## #️⃣ ValueConverters - Method
+
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| Object -> Object          | MethodToValueConverter                                   | Object.Method() -> Result               | Not supported                           |

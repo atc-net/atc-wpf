@@ -1,0 +1,41 @@
+<UserControl
+    x:Class="Atc.Wpf.Forms.BaseControls.ClockPanelPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:baseControls="clr-namespace:Atc.Wpf.Forms.BaseControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Forms"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Padding="0,4,0,9"
+    d:DataContext="{d:DesignInstance Type=baseControls:ClockPanelPicker}"
+    mc:Ignorable="d">
+
+    <Border
+        Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
+        BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground7}"
+        BorderThickness="1"
+        CornerRadius="1">
+        <StackPanel
+            Width="250"
+            Height="105"
+            Margin="0,20,0,0"
+            Orientation="Vertical">
+            <local:LabelComboBox
+                Items="{Binding Path=Hours}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                Key=Hour}"
+                LabelWidthNumber="50"
+                LabelWidthSizeDefinition="Pixel"
+                SelectedKey="{Binding Path=SelectedKeyHour}" />
+            <local:LabelComboBox
+                Items="{Binding Path=Minutes}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                Key=Minute}"
+                LabelWidthNumber="50"
+                LabelWidthSizeDefinition="Pixel"
+                SelectedKey="{Binding Path=SelectedKeyMinute}" />
+        </StackPanel>
+    </Border>
+
+</UserControl>

@@ -1,0 +1,57 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.ColorEditing.SaturationBrightnessPickerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:colorEditing="clr-namespace:Atc.Wpf.Controls.ColorEditing;assembly=Atc.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:GridEx Columns="Auto,10,300,10,Auto">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text="Binding to the first usage 'MySaturationBrightnessPicker1':" />
+                <Rectangle
+                    Grid.Column="2"
+                    Width="100"
+                    Height="32"
+                    Fill="{Binding ElementName=MySaturationBrightnessPicker1, Path=BrushValue}" />
+            </atc:GridEx>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <ScrollViewer>
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <atc:UniformSpacingPanel
+                        Grid.Column="0"
+                        Orientation="Vertical"
+                        Spacing="10">
+
+                        <colorEditing:SaturationBrightnessPicker x:Name="MySaturationBrightnessPicker1" />
+
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        Spacing="10">
+
+                        <colorEditing:SaturationBrightnessPicker />
+
+                    </atc:UniformSpacingPanel>
+                </atc:GridEx>
+            </ScrollViewer>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>

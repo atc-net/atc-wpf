@@ -5,8 +5,8 @@
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.Controls</Title>
     <PackageId>Atc.Wpf.Controls</PackageId>
-    <PackageTags>wpf;controls</PackageTags>
-    <Description>A base library for building WPF application.</Description>
+    <PackageTags>wpf;controls;input;picker;layout;progress</PackageTags>
+    <Description>WPF control library providing atomic UI controls including input controls, pickers, layouts, and progress indicators.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
   </PropertyGroup>
@@ -22,24 +22,9 @@
     <None Remove="Resources\Icons\color_palette.svg" />
     <None Remove="Resources\Icons\file.svg" />
     <None Remove="Resources\Icons\folder.svg" />
-    <None Remove="Resources\Images\eraser.png" />
-    <None Remove="Resources\Images\error.png" />
-    <None Remove="Resources\Images\information.png" />
-    <None Remove="Resources\Images\scrollrefresh.png" />
-    <None Remove="Resources\Images\warning.png" />
     <None Remove="Resources\information.svg" />
-    <None Remove="Resources\LogCategoryIcons\error.svg" />
-    <None Remove="Resources\LogCategoryIcons\warning.svg" />
     <None Remove="Resources\question-mark.svg" />
     <None Remove="Resources\question.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Images\eraser.png" />
-    <Resource Include="Resources\Images\error.png" />
-    <Resource Include="Resources\Images\information.png" />
-    <Resource Include="Resources\Images\scrollrefresh.png" />
-    <Resource Include="Resources\Images\warning.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,11 +49,8 @@
     <Resource Include="Resources\Icons\color_palette.svg" />
     <Resource Include="Resources\Icons\file.svg" />
     <Resource Include="Resources\Icons\folder.svg" />
-    <Resource Include="Resources\LogCategoryIcons\information.svg" />
     <Resource Include="Resources\Icons\info_help.svg" />
     <Resource Include="Resources\Icons\question-mark.svg" />
-    <Resource Include="Resources\LogCategoryIcons\error.svg" />
-    <Resource Include="Resources\LogCategoryIcons\warning.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,11 +58,6 @@
       <DependentUpon>Miscellaneous.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\Validations.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Validations.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Word.Designer.cs">
       <DependentUpon>Word.resx</DependentUpon>
@@ -101,16 +78,6 @@
     <EmbeddedResource Update="Resources\Miscellaneous.resx">
       <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validations.da-DK.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validations.de-DE.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validations.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Validations.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Word.da-DK.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
