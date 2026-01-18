@@ -31,6 +31,10 @@
         <sample:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.Media.SvgImageListView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Dialogs">
+        <sample:SampleTreeViewItem Header="DialogService" SamplePath="Dialogs.DialogServiceView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Extensions">
         <TreeViewItem Header="BitmapSource">
             <sample:SampleTreeViewItem Header="Invert Colors" SamplePath="Extensions.BitmapSourceInvertColorsView" />

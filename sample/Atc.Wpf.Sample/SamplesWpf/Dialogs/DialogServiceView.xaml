@@ -1,0 +1,123 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpf.Dialogs.DialogServiceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <dialogs:DialogServiceViewModel />
+    </UserControl.DataContext>
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <TextBlock TextWrapping="Wrap">
+                The IDialogService interface provides an MVVM-friendly way to show dialogs from ViewModels.
+                It wraps existing dialog controls (InfoDialogBox, QuestionDialogBox, InputDialogBox, ColorPickerDialogBox)
+                with an async/await pattern.
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <ScrollViewer>
+                <atc:UniformSpacingPanel
+                    Margin="40"
+                    Orientation="Vertical"
+                    Spacing="15">
+
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="Message Dialogs" />
+
+                    <Button
+                        Command="{Binding ShowInformationCommand}"
+                        Content="Show Information Dialog"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Button
+                        Command="{Binding ShowWarningCommand}"
+                        Content="Show Warning Dialog"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Button
+                        Command="{Binding ShowErrorCommand}"
+                        Content="Show Error Dialog"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Separator Margin="0,10" />
+
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="Confirmation Dialogs" />
+
+                    <Button
+                        Command="{Binding ShowConfirmationCommand}"
+                        Content="Show Yes/No Confirmation"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Button
+                        Command="{Binding ShowOkCancelCommand}"
+                        Content="Show OK/Cancel Confirmation"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Separator Margin="0,10" />
+
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="Input Dialogs" />
+
+                    <Button
+                        Command="{Binding ShowInputCommand}"
+                        Content="Show Text Input Dialog"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Button
+                        Command="{Binding ShowColorPickerCommand}"
+                        Content="Show Color Picker Dialog"
+                        HorizontalAlignment="Left"
+                        MinWidth="200" />
+
+                    <Separator Margin="0,10" />
+
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="Results" />
+
+                    <TextBlock Text="{Binding LastResult, StringFormat='Last Result: {0}'}" />
+
+                    <Border
+                        Width="100"
+                        Height="50"
+                        HorizontalAlignment="Left"
+                        Background="{Binding SelectedColorBrush}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Visibility="{Binding HasSelectedColor, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+
+                </atc:UniformSpacingPanel>
+            </ScrollViewer>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>
