@@ -6,16 +6,19 @@
     <Project Path="sample/Atc.Wpf.Sample/Atc.Wpf.Sample.csproj" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/Atc.Wpf.Components/Atc.Wpf.Components.csproj" Id="6048e278-a313-4195-92dd-d90200306f9d" />
     <Project Path="src/Atc.Wpf.Controls.Sample/Atc.Wpf.Controls.Sample.csproj" />
     <Project Path="src/Atc.Wpf.Controls/Atc.Wpf.Controls.csproj" />
     <Project Path="src/Atc.Wpf.FontIcons/Atc.Wpf.FontIcons.csproj" />
-    <Project Path="src/Atc.Wpf.NetworkControls/Atc.Wpf.NetworkControls.csproj" />
+    <Project Path="src/Atc.Wpf.Forms/Atc.Wpf.Forms.csproj" Id="4a140a02-e1e9-4104-bf37-99ea7b62b74b" />
+    <Project Path="src/Atc.Wpf.Network/Atc.Wpf.Network.csproj" />
     <Project Path="src/Atc.Wpf.Theming/Atc.Wpf.Theming.csproj" />
     <Project Path="src/Atc.Wpf/Atc.Wpf.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/Atc.Wpf.Controls.Tests/Atc.Wpf.Controls.Tests.csproj" />
-    <Project Path="test/Atc.Wpf.NetworkControls.Tests/Atc.Wpf.NetworkControls.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.Forms.Tests/Atc.Wpf.Forms.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.Network.Tests/Atc.Wpf.Network.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Tests/Atc.Wpf.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Theming.Tests/Atc.Wpf.Theming.Tests.csproj" />
   </Folder>

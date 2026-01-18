@@ -4,13 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 40+ controls, and source generators. The project consists of six NuGet packages:
+ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 70+ controls, and source generators. The project follows a four-tier architecture:
 
-- **Atc.Wpf** - Core library (base controls, MVVM, layouts, value converters)
-- **Atc.Wpf.Controls** - Rich control library (25+ labeled controls, 14 base controls)
+- **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
+- **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
+- **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation)
+- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
-- **Atc.Wpf.NetworkControls** - Network scanning and discovery controls (NetworkScannerView)
+- **Atc.Wpf.Network** - Network scanning and discovery controls
 - **Atc.Wpf.Controls.Sample** - Controls for building sample applications
 
 ## Build Commands
@@ -38,42 +40,51 @@ dotnet run --project sample/Atc.Wpf.Sample
 
 ## Architecture
 
-### Source Generators (Key Pattern)
+### Source Generators and MVVM (from Atc.XamlToolkit)
 
-The project uses C# source generators from the `Atc.XamlToolkit` package for MVVM boilerplate reduction:
+The project uses C# source generators and MVVM infrastructure from the [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) packages (included as dependencies of Atc.Wpf):
 
+**Source Generator Attributes:**
 - `[ObservableProperty]` - Generates properties with INotifyPropertyChanged from private fields
 - `[RelayCommand]` - Generates ICommand properties from methods (supports async and CanExecute)
 - `[DependencyProperty]` - Generates WPF dependency properties
 - `[AttachedProperty]` - Generates WPF attached properties
 
+**MVVM Base Classes:**
+- `ViewModelBase`, `MainWindowViewModelBase`, `ViewModelDialogBase` - from `Atc.XamlToolkit.Mvvm`
+- `RelayCommand<T>`, `RelayCommandAsync<T>` - from `Atc.XamlToolkit.Command`
+- `ObservableObject` - from `Atc.XamlToolkit.Mvvm`
+
 Source generators are provided by the `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf` NuGet packages.
 
-### Control Architecture
+### Control Architecture (Four-Tier)
 
-**Label Controls** (`src/Atc.Wpf.Controls/LabelControls/`): Composite controls with integrated label, validation display, and mandatory indicators. Use for standard forms.
+**Base Controls** (`src/Atc.Wpf.Controls/BaseControls/`): Atomic/primitive controls - single-purpose building blocks like NumericBox, IntegerBox, ToggleSwitch.
 
-**Base Controls** (`src/Atc.Wpf.Controls/BaseControls/`): Core functionality controls without label wrapper. Use for custom layouts or building composite controls.
+**Form Controls** (`src/Atc.Wpf.Forms/`): Labeled form field controls with validation display and mandatory indicators. Use for building data entry forms. Examples: LabelTextBox, LabelComboBox, LabelDatePicker.
+
+**Composite Components** (`src/Atc.Wpf.Components/`): Higher-level components combining multiple controls - dialogs (InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, BasicApplicationSettingsDialogBox), viewers (JsonViewer, TerminalViewer), monitoring (ApplicationMonitorView), notifications (ToastNotification system), and settings panels.
 
 ### MVVM Base Classes
 
-Located in `src/Atc.Wpf/Mvvm/`:
-- `ViewModelBase` - Standard ViewModel base
-- `MainWindowViewModelBase` - For main window ViewModels
-- `ViewModelDialogBase` - For dialog ViewModels
-- `RelayCommand<T>` / `RelayCommandAsync<T>` - Command implementations
+The MVVM base classes come from the `Atc.XamlToolkit` package (included as a dependency):
+- `ViewModelBase` - Standard ViewModel base (from `Atc.XamlToolkit.Mvvm`)
+- `MainWindowViewModelBase` - For main window ViewModels (from `Atc.XamlToolkit.Mvvm`)
+- `ViewModelDialogBase` - For dialog ViewModels (from `Atc.XamlToolkit.Mvvm`)
+- `RelayCommand<T>` / `RelayCommandAsync<T>` - Command implementations (from `Atc.XamlToolkit.Command`)
 
 ### Project Structure
 
 ```
 src/
 ├── Atc.Wpf/                      # Core: MVVM, layouts, converters
-├── Atc.Wpf.Controls/             # Rich control library
+├── Atc.Wpf.Controls/             # Atomic controls (base, buttons, colors)
+├── Atc.Wpf.Forms/                # Form field controls (Label*)
+├── Atc.Wpf.Components/           # Composite components (dialogs, viewers)
 ├── Atc.Wpf.Controls.Sample/      # Sample app controls
 ├── Atc.Wpf.FontIcons/            # Font icon support
 ├── Atc.Wpf.Theming/              # Theme infrastructure
-├── Atc.Wpf.NetworkControls/      # Network scanning controls
-└── Atc.Wpf.SourceGenerators/     # Code generators
+└── Atc.Wpf.Network/              # Network scanning controls
 test/                             # XUnit test projects
 sample/Atc.Wpf.Sample/            # Demo application
 ```
@@ -92,9 +103,50 @@ sample/Atc.Wpf.Sample/            # Demo application
 - Test utilities: Atc.XUnit, AutoFixture, FluentAssertions, NSubstitute
 - Global usings for test projects include: AutoFixture, FluentAssertions, NSubstitute, Xunit
 
+### Test Projects Structure
+
+| Test Project | Focus Area | Coverage |
+|--------------|------------|----------|
+| `Atc.Wpf.Tests` | Core library (Helpers, ValueConverters, Serialization) | 42 test files |
+| `Atc.Wpf.Controls.Tests` | Controls library (code compliance) | 1 test file |
+| `Atc.Wpf.Forms.Tests` | Form controls (Extractors, Factories, Helpers) | 8 test files |
+| `Atc.Wpf.Network.Tests` | Network ViewModels | 5 test files |
+| `Atc.Wpf.Theming.Tests` | Theme infrastructure (code compliance) | 1 test file |
+
+### Running Tests
+
+```bash
+# Run all tests (719 tests)
+dotnet test
+
+# Run specific test project
+dotnet test test/Atc.Wpf.Tests
+dotnet test test/Atc.Wpf.Forms.Tests
+
+# Run single test by name
+dotnet test --filter "FullyQualifiedName~TestMethodName"
+```
+
+## Sample Application
+
+The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 main categories:
+
+| Category | TreeView | Samples |
+|----------|----------|---------|
+| Wpf | `SamplesWpfTreeView.xaml` | Commands, Layouts, Media, Markup, etc. |
+| Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts |
+| Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls, Selectors, Pickers |
+| Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers (to be populated) |
+| Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
+| Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
+| Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demos |
+| Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |
+
 ## Key Documentation
 
 - MVVM guide: `docs/Mvvm/@Readme.md`
 - Source generators: `docs/SourceGenerators/ViewModel.md`
-- Label controls: `src/Atc.Wpf.Controls/LabelControls/Readme.md`
-- Base controls: `src/Atc.Wpf.Controls/BaseControls/Readme.md`
+- Restructuring plan: `docs/RESTRUCTURING_PLAN.md`
+- Form controls: `src/Atc.Wpf.Forms/` (LabelTextBox, LabelComboBox, etc.)
+- Base controls: `src/Atc.Wpf.Controls/BaseControls/` (NumericBox, IntegerBox, etc.)
+- Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications)

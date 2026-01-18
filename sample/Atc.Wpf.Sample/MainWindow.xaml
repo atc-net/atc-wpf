@@ -33,7 +33,33 @@
                     atc:TextBoxHelper.ClearTextButton="True"
                     atc:TextBoxHelper.Watermark="Filter"
                     Focusable="True"
-                    TextChanged="FilterOnTextChanged" />
+                    TextChanged="FilterOnTextChanged">
+                    <TextBox.ToolTip>
+                        <TextBlock>
+                            <Run FontWeight="Bold">Filter Samples</Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold">Text search</Run>
+                            <Run>(case-insensitive)</Run>
+                            <LineBreak />
+                            <Run>  button    → AuthenticationButton, ImageButton, ...</Run>
+                            <LineBreak />
+                            <Run>  color     → ColorPicker, LabelColorPicker, ...</Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold">PascalCase initials</Run>
+                            <Run>(2+ uppercase letters)</Run>
+                            <LineBreak />
+                            <Run>  NW        → NiceWindow</Run>
+                            <LineBreak />
+                            <Run>  RC        → RelayCommand</Run>
+                            <LineBreak />
+                            <Run>  TS        → ToggleSwitch, ThemeSelector, ...</Run>
+                            <LineBreak />
+                            <Run>  LTS       → LabelToggleSwitch, LabelThemeSelector</Run>
+                        </TextBlock>
+                    </TextBox.ToolTip>
+                </TextBox>
                 <atc:UniformSpacingPanel
                     Margin="10,5,5,15"
                     HorizontalAlignment="Right"
@@ -119,7 +145,7 @@
                             </Grid>
                         </TabItem.Header>
                     </TabItem>
-                    <TabItem x:Name="TabWpfNetworkControls" Tag="WpfNetworkControls">
+                    <TabItem x:Name="TabWpfForms" Tag="WpfForms">
                         <TabItem.Header>
                             <Grid
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
@@ -130,9 +156,51 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="Wpf.NetworkControls" />
+                                <TextBlock Grid.Column="0" Text="Wpf.Forms" />
                                 <layouts:Badge
-                                    x:Name="BadgeWpfNetworkControls"
+                                    x:Name="BadgeWpfForms"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    BadgePlacementMode="Right" />
+                            </Grid>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="TabWpfComponents" Tag="WpfComponents">
+                        <TabItem.Header>
+                            <Grid
+                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Wpf.Components" />
+                                <layouts:Badge
+                                    x:Name="BadgeWpfComponents"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    BadgePlacementMode="Right" />
+                            </Grid>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="TabWpfNetwork" Tag="WpfNetwork">
+                        <TabItem.Header>
+                            <Grid
+                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Wpf.Network" />
+                                <layouts:Badge
+                                    x:Name="BadgeWpfNetwork"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
@@ -223,8 +291,16 @@
                                 x:Name="StvSampleWpfControls"
                                 BorderThickness="0"
                                 SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfNetworkControlsTreeView
-                                x:Name="StvSampleWpfNetworkControls"
+                            <sample:SamplesWpfFormsTreeView
+                                x:Name="StvSampleWpfForms"
+                                BorderThickness="0"
+                                SelectedItemChanged="TreeViewOnSelectionChanged" />
+                            <sample:SamplesWpfComponentsTreeView
+                                x:Name="StvSampleWpfComponents"
+                                BorderThickness="0"
+                                SelectedItemChanged="TreeViewOnSelectionChanged" />
+                            <sample:SamplesWpfNetworkTreeView
+                                x:Name="StvSampleWpfNetwork"
                                 BorderThickness="0"
                                 SelectedItemChanged="TreeViewOnSelectionChanged" />
                             <sample:SamplesWpfThemingTreeView

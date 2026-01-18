@@ -1,6 +1,8 @@
 # ⚙️ ViewModel with Source Generation
 
-The **Atc.Wpf Source Generators** simplify ViewModel development by reducing boilerplate code for properties and commands. With attributes like `ObservableProperty` and `RelayCommand`, you can focus on business logic while automatically handling property change notifications and command implementations.
+The **[Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) Source Generators** (included as a dependency of Atc.Wpf) simplify ViewModel development by reducing boilerplate code for properties and commands. With attributes like `ObservableProperty` and `RelayCommand`, you can focus on business logic while automatically handling property change notifications and command implementations.
+
+> **Note:** The source generators are provided by the `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf` NuGet packages, which are automatically included when you reference `Atc.Wpf`.
 
 ---
 
@@ -337,11 +339,12 @@ private bool CanSave() => !string.IsNullOrEmpty(Name);
 - ✔️ **Use async commands** for better UI responsiveness.
 - ✔️ **Improve performance** by leveraging `CanExecute` for commands.
 
-### 🚀 Why Use Atc.Wpf Source Generators?
+### 🚀 Why Use Atc.XamlToolkit Source Generators?
 
 - ✅ **Reduces boilerplate** – Write less code, get more done.
 - ✅ **Improves maintainability** – Focus on business logic instead of plumbing.
 - ✅ **Enhances MVVM architecture** – Ensures best practices in WPF development.
+- ✅ **Cross-platform ready** – Same patterns work in WPF, WinUI, and Avalonia via Atc.XamlToolkit.
 
 ---
 

@@ -23,21 +23,35 @@ namespace Atc.Wpf.Controls.Layouts;
 /// ]]>
 /// </example>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public sealed partial class GridEx : Grid
+public sealed class GridEx : Grid
 {
-    [DependencyProperty(
-        Category = "Layout",
-        Description = "The rows property",
-        DefaultValue = null,
-        PropertyChangedCallback = nameof(OnRowsChanged))]
-    private string rows;
+    public static readonly DependencyProperty RowsProperty = DependencyProperty.Register(
+        nameof(Rows),
+        typeof(string),
+        typeof(GridEx),
+        new PropertyMetadata(default(string), OnRowsChanged));
 
-    [DependencyProperty(
-        Category = "Layout",
-        Description = "The columns property",
-        DefaultValue = null,
-        PropertyChangedCallback = nameof(OnColumnsChanged))]
-    private string columns;
+    public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
+        nameof(Columns),
+        typeof(string),
+        typeof(GridEx),
+        new PropertyMetadata(default(string), OnColumnsChanged));
+
+    [Category("Layout")]
+    [Description("The rows property")]
+    public string Rows
+    {
+        get => (string)GetValue(RowsProperty);
+        set => SetValue(RowsProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("The columns property")]
+    public string Columns
+    {
+        get => (string)GetValue(ColumnsProperty);
+        set => SetValue(ColumnsProperty, value);
+    }
 
     /// <summary>
     /// Called when the rows property is changed.

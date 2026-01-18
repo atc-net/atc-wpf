@@ -1,0 +1,45 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Buttons.ImageToggledButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    mc:Ignorable="d">
+
+    <Grid>
+        <buttonControls:ImageButton
+            Width="{Binding ElementName=Root, Path=Width}"
+            Height="{Binding ElementName=Root, Path=Height}"
+            Command="{Binding ElementName=Root, Path=OffCommand}"
+            Content="{Binding ElementName=Root, Path=OffContent}"
+            ImageBorderSpacing="{Binding ElementName=Root, Path=ImageBorderSpacing}"
+            ImageContentSpacing="{Binding ElementName=Root, Path=ImageContentSpacing}"
+            ImageHeight="{Binding ElementName=Root, Path=ImageHeight}"
+            ImageLocation="{Binding ElementName=Root, Path=ImageLocation}"
+            ImageSource="{Binding ElementName=Root, Path=OffImageSource}"
+            ImageWidth="{Binding ElementName=Root, Path=ImageWidth}"
+            IsBusy="{Binding ElementName=Root, Path=IsBusy}"
+            SvgImageOverrideColor="{Binding ElementName=Root, Path=OffSvgImageOverrideColor}"
+            SvgImageSource="{Binding ElementName=Root, Path=OffSvgImageSource}"
+            Visibility="{Binding ElementName=Root, Path=IsToggled, Converter={x:Static atcValueConverters:BoolToVisibilityCollapsedValueConverter.Instance}}" />
+
+        <buttonControls:ImageButton
+            Width="{Binding ElementName=Root, Path=Width}"
+            Height="{Binding ElementName=Root, Path=Height}"
+            Command="{Binding ElementName=Root, Path=OnCommand}"
+            Content="{Binding ElementName=Root, Path=OnContent}"
+            ImageBorderSpacing="{Binding ElementName=Root, Path=ImageBorderSpacing}"
+            ImageContentSpacing="{Binding ElementName=Root, Path=ImageContentSpacing}"
+            ImageHeight="{Binding ElementName=Root, Path=ImageHeight}"
+            ImageLocation="{Binding ElementName=Root, Path=ImageLocation}"
+            ImageSource="{Binding ElementName=Root, Path=OnImageSource}"
+            ImageWidth="{Binding ElementName=Root, Path=ImageWidth}"
+            IsBusy="{Binding ElementName=Root, Path=IsBusy}"
+            SvgImageOverrideColor="{Binding ElementName=Root, Path=OnSvgImageOverrideColor}"
+            SvgImageSource="{Binding ElementName=Root, Path=OnSvgImageSource}"
+            Visibility="{Binding ElementName=Root, Path=IsToggled, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+    </Grid>
+</UserControl>

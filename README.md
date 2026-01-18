@@ -5,7 +5,8 @@ This framework provides a rich collection of reusable controls, theming support,
 
 ## ✨ Key Features
 
-- 🎨 **Rich Control Library** - 25+ labeled controls, color pickers, selectors, and specialized input controls
+- 🎨 **Rich Control Library** - 70+ controls including labeled form controls, color pickers, selectors, and specialized input controls
+- 🏛️ **Four-Tier Architecture** - Clear separation: Base → Controls → Forms → Components
 - 🌓 **Light/Dark Theming** - Built-in theme support for all controls with easy customization
 - 🎯 **MVVM Ready** - Complete MVVM infrastructure with observable properties and relay commands
 - 🔤 **Font Icon Support** - Render SVG and image resources based on fonts
@@ -23,12 +24,14 @@ This framework provides a rich collection of reusable controls, theming support,
 
 | Nuget package                                                                                                                                                                                       | Description                                         | Dependencies                                 |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Base Controls, ValueConverters, Extensions etc.     | <ul><li>Atc</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                                          |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Miscellaneous UI Controls                           | <ul><li>Atc.Wpf</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                    |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.NetworkControls.svg?label=Atc.Wpf.NetworkControls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.NetworkControls) | Network scanning and discovery controls             | <ul><li>Atc</li><li>Atc.Network</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul>                                             |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for creating WPF sample apps               | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Theming</li><li>Atc.Wpf.Controls</li><li>MdXaml</li></ul> |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Render Svg and Img resources based on fonts         | <ul><li>Atc.Wpf</li></ul>                                      |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Theming for Light & Dark mode for WPF base controls | <ul><li>Atc.Wpf</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li><li>ControlzEx</li><li>Microsoft.Windows.CsWin32</li></ul>                                      |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Core library: MVVM, layouts, value converters       | <ul><li>Atc</li></ul>                                          |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Atomic controls: base inputs, buttons, colors       | <ul><li>Atc.Wpf</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li></ul>                    |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Forms.svg?label=Atc.Wpf.Forms&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Forms)                               | Form field controls: 25+ labeled controls with validation | <ul><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Theming</li></ul>                    |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Components.svg?label=Atc.Wpf.Components&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Components)                | Composite components: dialogs, viewers, settings    | <ul><li>Atc.Wpf.Forms</li><li>Atc.Wpf.FontIcons</li></ul>                    |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Font-based icon rendering                           | <ul><li>Atc.Wpf</li></ul>                                      |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Light & Dark mode theming infrastructure            | <ul><li>Atc.Wpf</li><li>ControlzEx</li><li>Microsoft.Windows.CsWin32</li></ul>                                      |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Network.svg?label=Atc.Wpf.Network&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Network)                         | Network scanning and discovery controls             | <ul><li>Atc.Network</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li></ul>                                             |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for building sample applications           | <ul><li>Atc.Wpf.Components</li><li>MdXaml</li></ul> |
 
 ## 🔎 Demonstration Application
 
@@ -68,10 +71,18 @@ Add the NuGet packages to your `.csproj` file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Atc.Wpf" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.Controls" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.FontIcons" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.Theming" Version="2.*" />
+  <!-- Core packages -->
+  <PackageReference Include="Atc.Wpf" Version="4.*" />
+  <PackageReference Include="Atc.Wpf.Theming" Version="4.*" />
+
+  <!-- For form controls (LabelTextBox, LabelComboBox, etc.) -->
+  <PackageReference Include="Atc.Wpf.Forms" Version="4.*" />
+
+  <!-- For composite components (dialogs, viewers) -->
+  <PackageReference Include="Atc.Wpf.Components" Version="4.*" />
+
+  <!-- Optional: Font icons -->
+  <PackageReference Include="Atc.Wpf.FontIcons" Version="4.*" />
 </ItemGroup>
 ```
 
@@ -130,40 +141,54 @@ Now you can use all controls with full theming support:
 
 All standard WPF controls (Button, TextBox, ComboBox, etc.) are automatically styled with Light/Dark theme support.
 
-## 🎯 Label Controls vs Base Controls
+## 🎯 Four-Tier Architecture
 
-Understanding when to use each type of control:
+Understanding the package hierarchy and when to use each:
 
-| Aspect | Label Controls | Base Controls |
-|--------|----------------|---------------|
-| **Label** | Integrated label with text | No label (you provide your own) |
-| **Validation** | Built-in validation message display | Validation logic only |
-| **Mandatory** | Asterisk indicator support | Not applicable |
-| **Use Case** | Standard forms and dialogs | Custom layouts and composite controls |
-| **Example** | `<atc:LabelTextBox LabelText="Name" Text="{Binding Name}" />` | `<atc:IntegerBox Value="{Binding Count}" />` |
+| Tier | Package | Purpose | Example Controls |
+|------|---------|---------|------------------|
+| **1. Base** | `Atc.Wpf` | MVVM, layouts, converters - no UI controls | ViewModelBase, GridEx, AutoGrid |
+| **2. Controls** | `Atc.Wpf.Controls` | Atomic/primitive controls | IntegerBox, ToggleSwitch, ColorPicker |
+| **3. Forms** | `Atc.Wpf.Forms` | Labeled form fields with validation | LabelTextBox, LabelComboBox, LabelDatePicker |
+| **4. Components** | `Atc.Wpf.Components` | Composite high-level components | InfoDialogBox, JsonViewer, SettingsView |
 
-**Quick Guideline:**
+**Quick Guidelines:**
 
-- Use **Label Controls** for standard forms where you want consistency and less markup
-- Use **Base Controls** when you need custom layouts or are building your own controls
+- Use **Form Controls** (`Atc.Wpf.Forms`) for standard forms - they include labels, validation, and mandatory indicators
+- Use **Base Controls** (`Atc.Wpf.Controls`) when you need custom layouts or are building composite controls
+- Use **Components** (`Atc.Wpf.Components`) for dialogs, viewers, and settings panels
 
 ## 💝 MVVM Made Easy
 
-The `Atc.Wpf` package provides a complete MVVM infrastructure that makes it easy to separate UI and business logic using the MVVM pattern.
+For MVVM infrastructure, add the [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) package to your project. This provides powerful source generators and base classes for clean MVVM architecture.
 
-### Key MVVM Features
+> **Note:** As of version 4.x, `Atc.Wpf` no longer directly depends on `Atc.XamlToolkit` to optimize build performance. Add `Atc.XamlToolkit` directly to your project to use source generators and MVVM base classes.
 
-- **Observable Properties** - Automatic `INotifyPropertyChanged` implementation
-- **Relay Commands** - Simple command implementation with `CanExecute` support
+### Key MVVM Features (from Atc.XamlToolkit)
+
+- **Observable Properties** - Automatic `INotifyPropertyChanged` implementation via `[ObservableProperty]` attribute
+- **Relay Commands** - Simple command implementation with `CanExecute` support via `[RelayCommand]` attribute
 - **Async Commands** - Built-in support for async/await patterns
-- **Source Generators** - Automatic code generation for ViewModels and properties
+- **Source Generators** - Automatic code generation for ViewModels, DependencyProperties, and AttachedProperties
+
+### MVVM Components
+
+| Component | Source | Description |
+|-----------|--------|-------------|
+| `ViewModelBase` | Atc.XamlToolkit.Mvvm | Base class for ViewModels |
+| `ObservableObject` | Atc.XamlToolkit.Mvvm | Base class implementing `INotifyPropertyChanged` |
+| `RelayCommand<T>` | Atc.XamlToolkit.Command | Command with `CanExecute` support |
+| `RelayCommandAsync<T>` | Atc.XamlToolkit.Command | Async command with `CanExecute` support |
+| `[ObservableProperty]` | Atc.XamlToolkit | Source generator for properties |
+| `[RelayCommand]` | Atc.XamlToolkit | Source generator for commands |
+| `[DependencyProperty]` | Atc.XamlToolkit.Wpf | Source generator for WPF dependency properties |
+| `[AttachedProperty]` | Atc.XamlToolkit.Wpf | Source generator for WPF attached properties |
 
 ### Learn More
 
 - [MVVM Framework Documentation](docs/Mvvm/@Readme.md)
-  - [Observable Properties](docs/Mvvm/@Readme.md#observable-properties)
-  - [RelayCommands](docs/Mvvm/@Readme.md#relay-commands)
-  - [Source Generators](docs/SourceGenerators/ViewModel.md)
+- [Source Generators Documentation](docs/SourceGenerators/ViewModel.md)
+- [Atc.XamlToolkit GitHub Repository](https://github.com/atc-net/atc-xaml-toolkit)
 
 ### Quick MVVM Example
 
@@ -202,8 +227,8 @@ The foundation library providing essential WPF controls, layouts, and utilities.
 Modern layout panels for advanced UI composition:
 
 - **[GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)** - Enhanced Grid with auto-row/column generation
-- **[StaggeredPanel](src/Atc.Wpf/Controls/Layouts/StaggeredPanel_Readme.md)** - Masonry-style layout panel
-- **[UniformSpacingPanel](src/Atc.Wpf/Controls/Layouts/UniformSpacingPanel_Readme.md)** - Panel with consistent item spacing
+- **[StaggeredPanel](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)** - Masonry-style layout panel
+- **[UniformSpacingPanel](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)** - Panel with consistent item spacing
 
 ### Media Controls
 
@@ -220,20 +245,47 @@ Modern layout panels for advanced UI composition:
 - **[Translation & Localization](src/Atc.Wpf/Translation/@Readme.md)** - Multi-language support
 - **[ValueConverters](src/Atc.Wpf/ValueConverters/@Readme.md)** - Collection of XAML value converters
 
-## 💟 Atc.Wpf.Controls - Rich Control Library
+## 💟 Atc.Wpf.Controls - Atomic Control Library
 
-A comprehensive collection of specialized WPF controls for enterprise applications.
+A collection of primitive/atomic WPF controls - single-purpose building blocks.
+
+### ⭐ Base Controls (14 Controls)
+
+Unlabeled input controls that provide core functionality:
+
+- **Number Input**: NumericBox, IntegerBox, DecimalBox, IntegerXyBox, DecimalXyBox, PixelSizeBox
+- **Toggle**: ToggleSwitch, RangeSlider
+- **Pickers**: DirectoryPicker, FilePicker
+- **Text Input**: RichTextBoxEx
+
+### Button Controls
+
+- AuthenticationButton, ConnectivityButton, ImageButton, ImageToggledButton
+
+### Color Controls
+
+- HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker
+
+### Layout Controls
+
+- Badge, Card, Chip, Divider, GroupBoxExpander
+
+### Progress Controls
+
+- BusyOverlay, LoadingIndicator
+
+## 💟 Atc.Wpf.Forms - Form Field Library
+
+Form field components with labels, validation, and mandatory indicators for building data entry forms.
 
 ### ⭐ Label Controls (25+ Controls)
 
-**[📖 Complete Label Controls Documentation](src/Atc.Wpf.Controls/LabelControls/Readme.md)**
-
-Labeled input controls with built-in validation, mandatory indicators, and consistent styling:
+Labeled input controls with built-in validation and consistent styling:
 
 - **Text Input**: LabelTextBox, LabelPasswordBox
 - **Number Input**: LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox
 - **Date/Time**: LabelDatePicker, LabelTimePicker, LabelDateTimePicker
-- **Selection**: LabelCheckBox, LabelComboBox, LabelToggleSwitch
+- **Selection**: LabelCheckBox, LabelComboBox, LabelToggleSwitch, LabelSlider
 - **Selectors**: LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelWellKnownColorSelector
 - **Pickers**: LabelColorPicker, LabelDirectoryPicker, LabelFilePicker
 - **Network**: LabelEndpointBox (protocol + host + port with validation)
@@ -246,33 +298,40 @@ All label controls support:
 - ✅ Consistent styling and theming
 - ✅ MVVM-friendly data binding
 
-### ⭐ Base Controls (14 Controls)
+### Form Infrastructure
 
-**[📖 Complete Base Controls Documentation](src/Atc.Wpf.Controls/BaseControls/Readme.md)**
+- **Abstractions**: ILabelControl, ILabelControlsForm
+- **Extractors**: Form data extraction utilities
+- **Factories**: LabelControlFactory, LabelControlsFormFactory
+- **Writers**: Form rendering utilities
 
-Unlabeled input controls that provide core functionality without the label wrapper:
+## 💟 Atc.Wpf.Components - Composite Components
 
-- **Text Input**: RichTextBoxEx
-- **Number Input**: IntegerBox, DecimalBox, IntegerXyBox, DecimalXyBox, PixelSizeBox
-- **Time Selection**: ClockPanelPicker
-- **Toggle**: ToggleSwitch
-- **Pickers**: ColorPicker, DirectoryPicker, FilePicker
-- **Network**: EndpointBox (protocol + host + port with validation)
+Higher-level composite components combining multiple controls for business-ready UI.
 
-Base controls are perfect for:
+### Dialogs
 
-- 🎯 Custom layouts where you position labels yourself
-- 🧩 Building composite controls
-- 📐 Situations where labels are not needed
-- 🔨 Creating your own labeled control wrappers
+- InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, BasicApplicationSettingsDialogBox
+- DialogService - MVVM-friendly dialog management
 
-### Color Controls
+*Note: ColorPickerDialogBox is located in `Atc.Wpf.Forms.Dialogs`*
 
-- **[WellKnownColorPicker](src/Atc.Wpf.Controls/ColorControls/WellKnownColorPicker_Readme.md)** - Predefined color palette picker
+### Viewers
 
-### Additional Resources
+- JsonViewer - JSON document viewer with syntax highlighting
+- TerminalViewer - Terminal/console output viewer
 
-- **[ValueConverters](src/Atc.Wpf.Controls/ValueConverters/@Readme.md)** - Control-specific value converters
+### Monitoring
+
+- ApplicationMonitorView - Application event monitoring component
+
+### Notifications
+
+- ToastNotificationManager, ToastNotificationArea, ToastNotification - Toast notification system
+
+### Settings
+
+- BasicApplicationSettingsView, BasicApplicationSettingsViewModel
 
 ## 💟 Atc.Wpf.FontIcons - Font-Based Icons
 
@@ -305,7 +364,7 @@ Complete theming infrastructure with Light and Dark mode support for all WPF con
 
 - **[ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)** - Theme-aware value converters
 
-## 💟 Atc.Wpf.NetworkControls - Network Discovery Controls
+## 💟 Atc.Wpf.Network - Network Discovery Controls
 
 Specialized controls for network scanning and host discovery, built on the [Atc.Network](https://github.com/atc-net/atc-network) library.
 
@@ -328,7 +387,7 @@ A comprehensive network scanner control that displays scan results in a sortable
 **Usage:**
 
 ```xml
-<Window xmlns:atcNetwork="clr-namespace:Atc.Wpf.NetworkControls;assembly=Atc.Wpf.NetworkControls">
+<Window xmlns:atcNetwork="clr-namespace:Atc.Wpf.Network;assembly=Atc.Wpf.Network">
     <atcNetwork:NetworkScannerView DataContext="{Binding NetworkScannerVm}" />
 </Window>
 ```
@@ -364,11 +423,11 @@ viewModel.EntrySelected += (sender, args) =>
 
 ## 🎯 Source Generators
 
-Atc.Wpf includes powerful source generators to reduce boilerplate code:
+Atc.Wpf includes powerful source generators from [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) to reduce boilerplate code:
 
-- **[ViewModel Generator](docs/SourceGenerators/ViewModel.md)** - Auto-generate ViewModels with observable properties
-- **[DependencyProperty Generator](docs/SourceGenerators/DependencyProperty.md)** - Auto-generate dependency properties
-- **[AttachedProperty Generator](docs/SourceGenerators/AttachedProperty.md)** - Auto-generate attached properties
+- **[ViewModel Generator](docs/SourceGenerators/ViewModel.md)** - Auto-generate ViewModels with `[ObservableProperty]` and `[RelayCommand]`
+- **[DependencyProperty Generator](docs/SourceGenerators/DependencyProperty.md)** - Auto-generate WPF dependency properties with `[DependencyProperty]`
+- **[AttachedProperty Generator](docs/SourceGenerators/AttachedProperty.md)** - Auto-generate WPF attached properties with `[AttachedProperty]`
 
 ---
 

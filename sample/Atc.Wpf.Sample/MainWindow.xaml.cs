@@ -28,7 +28,9 @@ public partial class MainWindow
         [
             StvSampleWpf,
             StvSampleWpfControls,
-            StvSampleWpfNetworkControls,
+            StvSampleWpfForms,
+            StvSampleWpfComponents,
+            StvSampleWpfNetwork,
             StvSamplesWpfSourceGenerators,
             StvSampleWpfFontIcons,
             StvSampleWpfTheming,
@@ -42,7 +44,9 @@ public partial class MainWindow
         // Map TreeViews to TabItems
         treeViewToTabItem[StvSampleWpf] = TabWpf;
         treeViewToTabItem[StvSampleWpfControls] = TabWpfControls;
-        treeViewToTabItem[StvSampleWpfNetworkControls] = TabWpfNetworkControls;
+        treeViewToTabItem[StvSampleWpfForms] = TabWpfForms;
+        treeViewToTabItem[StvSampleWpfComponents] = TabWpfComponents;
+        treeViewToTabItem[StvSampleWpfNetwork] = TabWpfNetwork;
         treeViewToTabItem[StvSampleWpfTheming] = TabWpfTheming;
         treeViewToTabItem[StvSamplesWpfSourceGenerators] = TabWpfSourceGenerators;
         treeViewToTabItem[StvSampleWpfFontIcons] = TabWpfFontIcons;
@@ -50,7 +54,9 @@ public partial class MainWindow
         // Map TreeViews to Badges
         treeViewToBadge[StvSampleWpf] = BadgeWpf;
         treeViewToBadge[StvSampleWpfControls] = BadgeWpfControls;
-        treeViewToBadge[StvSampleWpfNetworkControls] = BadgeWpfNetworkControls;
+        treeViewToBadge[StvSampleWpfForms] = BadgeWpfForms;
+        treeViewToBadge[StvSampleWpfComponents] = BadgeWpfComponents;
+        treeViewToBadge[StvSampleWpfNetwork] = BadgeWpfNetwork;
         treeViewToBadge[StvSampleWpfTheming] = BadgeWpfTheming;
         treeViewToBadge[StvSamplesWpfSourceGenerators] = BadgeWpfSourceGenerators;
         treeViewToBadge[StvSampleWpfFontIcons] = BadgeWpfFontIcons;
@@ -263,11 +269,23 @@ public partial class MainWindow
                 var header = treeViewItem.Header?.ToString();
                 var tag = treeViewItem.Tag?.ToString();
                 showByItem = MatchesFilter(header, filter) || MatchesFilter(tag, filter);
+
+                // Also check SamplePath for SampleTreeViewItem
+                if (!showByItem && treeViewItem is SampleTreeViewItem sampleItem)
+                {
+                    showByItem = MatchesFilter(sampleItem.SamplePath, filter);
+                }
             }
 
             treeViewItem.Visibility = showByItem || showBySubItems
                     ? Visibility.Visible
                     : Visibility.Collapsed;
+
+            // Auto-expand parent items when there are matching children
+            if (!isFilterEmpty && showBySubItems)
+            {
+                treeViewItem.IsExpanded = true;
+            }
 
             if (!showRoot &&
                 treeViewItem.Visibility == Visibility.Visible)
@@ -300,12 +318,20 @@ public partial class MainWindow
                 treeViewItem.Items,
                 filter);
 
-            var header = treeViewItem.Header?.ToString();
-            var tag = treeViewItem.Tag?.ToString();
-
-            if (MatchesFilter(header, filter) || MatchesFilter(tag, filter))
+            // Only count SampleTreeViewItems (clickable samples), not category headers
+            if (treeViewItem is SampleTreeViewItem sampleItem)
             {
-                count++;
+                var header = sampleItem.Header?.ToString();
+                var tag = sampleItem.Tag?.ToString();
+
+                var matches = MatchesFilter(header, filter) ||
+                              MatchesFilter(tag, filter) ||
+                              MatchesFilter(sampleItem.SamplePath, filter);
+
+                if (matches)
+                {
+                    count++;
+                }
             }
         }
 

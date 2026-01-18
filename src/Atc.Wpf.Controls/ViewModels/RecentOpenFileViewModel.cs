@@ -1,16 +1,14 @@
 namespace Atc.Wpf.Controls.ViewModels;
 
-public sealed class RecentOpenFileViewModel : ViewModelBase
+public sealed partial class RecentOpenFileViewModel : ViewModelBase
 {
     private readonly DirectoryInfo applicationDataDirectory;
-    private DateTime timeStamp;
-    private string file = string.Empty;
+    [ObservableProperty] private DateTime timeStamp;
+    [ObservableProperty(DependentPropertyNames = [nameof(FileDisplay)])] private string file = string.Empty;
 
     [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "OK.")]
     public RecentOpenFileViewModel()
-    {
-        applicationDataDirectory = new DirectoryInfo(@"C:\");
-    }
+        => applicationDataDirectory = new DirectoryInfo(@"C:\");
 
     public RecentOpenFileViewModel(
         DirectoryInfo applicationDataDirectory,
@@ -23,36 +21,6 @@ public sealed class RecentOpenFileViewModel : ViewModelBase
         this.applicationDataDirectory = applicationDataDirectory;
         TimeStamp = timeStamp;
         File = file;
-    }
-
-    public DateTime TimeStamp
-    {
-        get => timeStamp;
-        set
-        {
-            if (value == timeStamp)
-            {
-                return;
-            }
-
-            timeStamp = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string File
-    {
-        get => file;
-        set
-        {
-            if (value == file)
-            {
-                return;
-            }
-
-            file = value;
-            RaisePropertyChanged();
-        }
     }
 
     public string FileDisplay

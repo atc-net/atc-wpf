@@ -1,0 +1,76 @@
+namespace Atc.Wpf.Forms.Dialogs;
+
+public partial class ColorPickerDialogBox
+{
+    [DependencyProperty(
+        DefaultValue = nameof(Brushes.Black))]
+    private Color color;
+
+    public ColorPickerDialogBox(
+        Window owningWindow,
+        Color color)
+        : this(
+            owningWindow,
+            CreateDefaultSettings(),
+            color)
+    {
+    }
+
+    public ColorPickerDialogBox(
+        Window owningWindow,
+        DialogBoxSettings settings,
+        Color color)
+    {
+        OwningWindow = owningWindow;
+        Settings = settings;
+        Color = color;
+        Width = Settings.Width;
+        Height = Settings.Height;
+
+        InitializeDialogBox();
+    }
+
+    public Window OwningWindow { get; private set; }
+
+    public DialogBoxSettings Settings { get; }
+
+    public ContentControl? HeaderControl { get; set; }
+
+    public SolidColorBrush ColorAsBrush => new(Color);
+
+    private void InitializeDialogBox()
+    {
+        InitializeComponent();
+
+        DataContext = this;
+
+        UcAdvancedColorPicker.OriginalColor = Color;
+    }
+
+    private void OnOkClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        Color = UcAdvancedColorPicker.Color;
+
+        DialogResult = true;
+        Close();
+    }
+
+    private void OnOkCancel(
+        object sender,
+        RoutedEventArgs e)
+    {
+        DialogResult = false;
+        Close();
+    }
+
+    private static DialogBoxSettings CreateDefaultSettings()
+    {
+        var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
+        settings.Width = 770;
+        settings.Height = 700;
+        settings.TitleBarText = Miscellaneous.ColorPicker;
+        return settings;
+    }
+}

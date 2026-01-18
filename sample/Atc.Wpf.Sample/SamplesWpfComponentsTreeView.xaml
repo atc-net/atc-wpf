@@ -1,0 +1,44 @@
+<TreeView
+    x:Class="Atc.Wpf.Sample.SamplesWpfComponentsTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="400"
+    d:DesignWidth="230"
+    mc:Ignorable="d">
+
+    <TreeViewItem Header="Dialogs">
+        <sample:SampleTreeViewItem
+            Header="Standard DialogBox"
+            IsExpanded="True"
+            SamplePath="DialogBoxes.StandardDialogBoxView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Monitoring">
+        <sample:SampleTreeViewItem
+            Header="ApplicationMonitor"
+            IsExpanded="True"
+            SamplePath="Monitoring.ApplicationMonitorView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Notifications">
+        <sample:SampleTreeViewItem
+            Header="ToastNotification"
+            IsExpanded="True"
+            SamplePath="Notifications.ToastNotificationView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Viewers">
+        <sample:SampleTreeViewItem
+            Header="JsonViewer"
+            IsExpanded="True"
+            SamplePath="Viewers.JsonViewerView" />
+        <sample:SampleTreeViewItem
+            Header="TerminalViewer"
+            IsExpanded="True"
+            SamplePath="Viewers.TerminalViewerView" />
+    </TreeViewItem>
+
+</TreeView>

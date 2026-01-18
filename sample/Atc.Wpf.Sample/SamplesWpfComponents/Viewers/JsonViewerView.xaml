@@ -1,0 +1,51 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Viewers.JsonViewerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewers="clr-namespace:Atc.Wpf.Components.Viewers;assembly=Atc.Wpf.Components"
+    xmlns:vm="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Viewers"
+    d:DesignHeight="500"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <vm:JsonViewerViewModel />
+    </UserControl.DataContext>
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+
+            <atc:UniformSpacingPanel Orientation="Horizontal">
+                <atc:LabelCheckBox
+                    x:Name="LcbShowActionAndInformationBar"
+                    IsChecked="True"
+                    LabelText="Show Action Bar" />
+
+                <atc:LabelCheckBox
+                    x:Name="LcbStartExpanded"
+                    IsChecked="True"
+                    LabelText="Start Expanded" />
+            </atc:UniformSpacingPanel>
+
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <ScrollViewer>
+
+                <viewers:JsonViewer
+                    Data="{Binding Path=JsonData}"
+                    ShowActionAndInformationBar="{Binding ElementName=LcbShowActionAndInformationBar, Path=IsChecked}"
+                    StartExpanded="{Binding ElementName=LcbStartExpanded, Path=IsChecked}" />
+
+            </ScrollViewer>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>

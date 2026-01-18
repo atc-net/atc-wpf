@@ -157,5 +157,20 @@
         </Style.Triggers>
     </Style>
 
+    <!--  Win10 Light close button style  -->
+    <Style
+        x:Key="AtcApps.Styles.Button.NiceWindow.Close.Light.Win10"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.LightHighlight}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="46" />
+    </Style>
+
+    <!--  Win10 Dark close button style  -->
+    <Style
+        x:Key="AtcApps.Styles.Button.NiceWindow.Close.Dark.Win10"
+        BasedOn="{StaticResource AtcApps.Styles.Button.NiceWindow.DarkHighlight}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="46" />
+    </Style>
 
 </ResourceDictionary>

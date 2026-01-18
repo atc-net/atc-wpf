@@ -1,0 +1,50 @@
+<UserControl
+    x:Class="Atc.Wpf.Forms.BaseControls.ColorPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Forms.BaseControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:ColorPicker}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <atc:RenderColorIndicatorTypeToVisibilityValueConverter x:Key="RenderColorIndicatorTypeToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <atc:GridEx Columns="*,10,Auto">
+        <atc:GridEx Grid.Column="0" Columns="Auto,10,*">
+            <Rectangle
+                Grid.Column="0"
+                Width="22"
+                Height="22"
+                Fill="{Binding Path=BrushValue, FallbackValue=Green}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static atc:RenderColorIndicatorType.Square}}" />
+            <Ellipse
+                Grid.Column="0"
+                Width="22"
+                Height="22"
+                Fill="{Binding Path=BrushValue, FallbackValue=Green}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RenderColorIndicatorType, Converter={StaticResource RenderColorIndicatorTypeToVisibilityConverter}, ConverterParameter={x:Static atc:RenderColorIndicatorType.Circle}}" />
+            <TextBlock
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Text="{Binding Path=DisplayHexCode, FallbackValue='#FF000000'}" />
+        </atc:GridEx>
+        <Button
+            Grid.Column="2"
+            Padding="4"
+            Click="OnClick">
+            <atc:SvgImage
+                Width="16"
+                Height="16"
+                ControlSizeType="ContentToSizeNoStretch"
+                IsTabStop="False"
+                OverrideColor="{DynamicResource AtcApps.Colors.ThemeForeground}"
+                OverrideStrokeColor="{DynamicResource AtcApps.Colors.ThemeForeground}"
+                Source="/Atc.Wpf.Controls;component/Resources/Icons/color_palette.svg" />
+        </Button>
+    </atc:GridEx>
+
+</UserControl>

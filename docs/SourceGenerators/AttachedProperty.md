@@ -1,6 +1,8 @@
 # ⚙️ AttachedProperty with SourceGeneration
 
-In WPF, **attached properties** are a type of dependency property that allows properties to be defined in one class but used in another. They are widely used in scenarios like behaviors, layout configurations, and interactions where a property needs to be applied to multiple elements without modifying their class definitions. Traditionally, defining attached properties requires boilerplate code, but source generators can automate this process, reducing errors and improving maintainability.
+In WPF, **attached properties** are a type of dependency property that allows properties to be defined in one class but used in another. They are widely used in scenarios like behaviors, layout configurations, and interactions where a property needs to be applied to multiple elements without modifying their class definitions. Traditionally, defining attached properties requires boilerplate code, but the **[Atc.XamlToolkit.Wpf](https://github.com/atc-net/atc-xaml-toolkit)** source generators (included as a dependency of Atc.Wpf) can automate this process, reducing errors and improving maintainability.
+
+> **Note:** The `[AttachedProperty]` attribute is provided by the `Atc.XamlToolkit.Wpf` NuGet package, which is automatically included when you reference `Atc.Wpf`.
 
 ---
 
@@ -46,10 +48,10 @@ This example showcases `advanced metadata` for attached properties, allowing:
 - ✔️ **Efficient UI updates**
 - ✔️ **Simplified code structure**
 
-### 🚀 Why Use Atc.Wpf Source Generators?
+### 🚀 Why Use Atc.XamlToolkit.Wpf Source Generators?
 
 - ✅ **Eliminates boilerplate** – Just declare the property, and the generator handles the rest.
-- ✅ **Ensures consistency** – Less room for human error.
+- ✅ **Ensures consistency** – Less room for human error in property registration.
 
 ---
 

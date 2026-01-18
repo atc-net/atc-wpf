@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.Network</Title>
+    <PackageId>Atc.Wpf.Network</PackageId>
+    <PackageTags>wpf;network;scanner;ip-scanner</PackageTags>
+    <Description>WPF network controls library providing network scanning and discovery components.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.Network" Version="1.0.235" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.Forms\Atc.Wpf.Forms.csproj" />
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\EnumResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnumResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\EnumResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

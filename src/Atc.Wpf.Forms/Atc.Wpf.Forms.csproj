@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.Forms</Title>
+    <PackageId>Atc.Wpf.Forms</PackageId>
+    <PackageTags>wpf;forms;label-controls;validation;data-entry</PackageTags>
+    <Description>WPF form library providing labeled form field controls with built-in validation for data entry.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\LogCategoryIcons\error.svg" />
+    <None Remove="Resources\LogCategoryIcons\information.svg" />
+    <None Remove="Resources\LogCategoryIcons\warning.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\LogCategoryIcons\error.svg" />
+    <Resource Include="Resources\LogCategoryIcons\information.svg" />
+    <Resource Include="Resources\LogCategoryIcons\warning.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="3.0.16" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Validations.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Validations.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Validations.da-DK.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validations.de-DE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validations.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Validations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

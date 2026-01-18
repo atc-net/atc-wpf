@@ -1,39 +1,35 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:baseControls="clr-namespace:Atc.Wpf.Controls.BaseControls"
-    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.ButtonControls"
+    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons"
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
-    xmlns:notifications="clr-namespace:Atc.Wpf.Controls.Notifications"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/NumericBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/RangeSlider.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/BaseControls/ToggleSwitch.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/NumericBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/RangeSlider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/ToggleSwitch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Badge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Card.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Chip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Divider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/GroupBoxExpander.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Notifications/ToastNotification.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/BusyOverlay.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/LoadingIndicator.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/ButtonControls/ImageButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/ImageButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource AtcApps.Styles.NumericBox}" TargetType="{x:Type baseControls:NumericBox}" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.DecimalBox}" TargetType="{x:Type baseControls:DecimalBox}" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type baseControls:IntegerBox}" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type baseControls:ToggleSwitch}" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.RangeSlider}" TargetType="{x:Type baseControls:RangeSlider}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.NumericBox}" TargetType="{x:Type inputs:NumericBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DecimalBox}" TargetType="{x:Type inputs:DecimalBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.IntegerBox}" TargetType="{x:Type inputs:IntegerBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type inputs:ToggleSwitch}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.RangeSlider}" TargetType="{x:Type inputs:RangeSlider}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Badge}" TargetType="{x:Type layouts:Badge}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type layouts:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type layouts:Chip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type layouts:Divider}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GroupBoxExpander}" TargetType="{x:Type layouts:GroupBoxExpander}" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ToastNotification}" TargetType="{x:Type notifications:ToastNotification}" />
-    <Style BasedOn="{StaticResource AtcApps.Styles.ToastNotificationArea}" TargetType="{x:Type notifications:ToastNotificationArea}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.BusyOverlay}" TargetType="{x:Type progressing:BusyOverlay}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.LoadingIndicator}" TargetType="{x:Type progressing:LoadingIndicator}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ImageButton}" TargetType="{x:Type buttonControls:ImageButton}" />

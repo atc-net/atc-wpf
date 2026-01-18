@@ -1,0 +1,95 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfForms.LabelControls.LabelDatePickerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.LabelControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=labelControls:LabelDatePickerView}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:GridEx Columns="Auto,10,300,10,Auto">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text="Binding to the first usage 'MyLabel1':" />
+                <TextBlock
+                    Grid.Column="2"
+                    FontSize="24"
+                    Text="{Binding ElementName=DpMyLabel1, Path=SelectedDate}" />
+                <Button
+                    Grid.Column="4"
+                    Click="OnClickDpMyLabel1"
+                    Content="Clear" />
+            </atc:GridEx>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <ScrollViewer>
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
+
+                        <atc:LabelDatePicker
+                            x:Name="DpMyLabel1"
+                            CustomCulture="{Binding Path=DanishCultureInfo}"
+                            FirstDayOfWeek="Wednesday"
+                            LabelText="MyLabel1"
+                            Orientation="Horizontal"
+                            WatermarkText="Hello watermark" />
+
+                        <atc:LabelDatePicker
+                            IsEnabled="False"
+                            LabelText="MyLabel2"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelDatePicker
+                            LabelText="MyLabel3"
+                            Orientation="Horizontal"
+                            SelectedDate="8/25/2023" />
+
+                        <atc:LabelDatePicker
+                            LabelText="MyLabel4"
+                            Orientation="Horizontal"
+                            SelectedDate="8/25/2023"
+                            WatermarkText="Select a date" />
+
+                        <atc:LabelDatePicker
+                            IsMandatory="True"
+                            LabelText="MyLabel5"
+                            Orientation="Horizontal"
+                            SelectedDate="8/25/2023"
+                            WatermarkText="Select a date" />
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelDatePicker
+                            LabelText="MyLabel6"
+                            Orientation="Vertical"
+                            SelectedDateFormat="Long" />
+
+                        <atc:LabelDatePicker
+                            IsMandatory="True"
+                            LabelText="MyLabel7"
+                            Orientation="Vertical"
+                            SelectedDate="8/25/2023"
+                            SelectedDateFormat="Long"
+                            WatermarkText="Select a date" />
+
+                    </StackPanel>
+                </atc:GridEx>
+            </ScrollViewer>
+        </GroupBox>
+    </atc:AutoGrid>
+
+</UserControl>

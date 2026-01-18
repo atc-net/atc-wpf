@@ -1,6 +1,8 @@
 # ⚙️ DependencyProperties with SourceGeneration
 
-In WPF, **dependency properties** are a specialized type of property that extends the functionality of standard CLR properties. They support features such as data binding, animation, and property value inheritance, which are integral to the WPF property system. However, defining dependency properties traditionally involves verbose boilerplate code. To streamline this process, source generators can automatically generate the necessary code, reducing errors and improving maintainability.
+In WPF, **dependency properties** are a specialized type of property that extends the functionality of standard CLR properties. They support features such as data binding, animation, and property value inheritance, which are integral to the WPF property system. However, defining dependency properties traditionally involves verbose boilerplate code. To streamline this process, the **[Atc.XamlToolkit.Wpf](https://github.com/atc-net/atc-xaml-toolkit)** source generators (included as a dependency of Atc.Wpf) can automatically generate the necessary code, reducing errors and improving maintainability.
+
+> **Note:** The `[DependencyProperty]` attribute is provided by the `Atc.XamlToolkit.Wpf` NuGet package, which is automatically included when you reference `Atc.Wpf`.
 
 ---
 
@@ -58,9 +60,10 @@ This example showcases **advanced metadata** for dependency properties, allowing
 - ✔️ **Flexible data binding behavior**
 - ✔️ **Control over animation support**
 
-### 🚀 Why Use Atc.Wpf Source Generators?
+### 🚀 Why Use Atc.XamlToolkit.Wpf Source Generators?
 
 - ✅ **Eliminates boilerplate** – Just declare the property, and the generator handles the rest.
+- ✅ **Ensures consistency** – Less room for human error in property registration.
 
 ---
 
