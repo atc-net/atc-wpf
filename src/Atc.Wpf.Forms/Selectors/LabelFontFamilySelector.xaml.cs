@@ -22,6 +22,24 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
     public LabelFontFamilySelector()
     {
         InitializeComponent();
+
+        if (string.IsNullOrEmpty(LabelText))
+        {
+            LabelText = Miscellaneous.Font;
+        }
+
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        var oldTranslation = Miscellaneous.ResourceManager.GetString(nameof(Miscellaneous.Font), e.OldCulture);
+        if (oldTranslation is not null && oldTranslation.Equals(LabelText, StringComparison.Ordinal))
+        {
+            LabelText = Miscellaneous.Font;
+        }
     }
 
     public string GetKey()

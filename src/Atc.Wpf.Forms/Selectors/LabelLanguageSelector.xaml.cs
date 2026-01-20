@@ -35,6 +35,24 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
     public LabelLanguageSelector()
     {
         InitializeComponent();
+
+        if (string.IsNullOrEmpty(LabelText))
+        {
+            LabelText = Miscellaneous.Language;
+        }
+
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        var oldTranslation = Miscellaneous.ResourceManager.GetString(nameof(Miscellaneous.Language), e.OldCulture);
+        if (oldTranslation is not null && oldTranslation.Equals(LabelText, StringComparison.Ordinal))
+        {
+            LabelText = Miscellaneous.Language;
+        }
     }
 
     public string GetKey()

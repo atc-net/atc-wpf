@@ -39,7 +39,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         InitializeComponent();
 
         isFirstOnSelectedKeyLostFocus = true;
-        if (Constants.DefaultLabelControlLabel.Equals(LabelText, StringComparison.Ordinal))
+        if (string.IsNullOrEmpty(LabelText))
         {
             LabelText = Miscellaneous.Color;
         }
@@ -113,8 +113,8 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         object? sender,
         UiCultureEventArgs e)
     {
-        var s = Miscellaneous.ResourceManager.GetString(LabelText, e.OldCulture);
-        if (s is not null && s.Equals(LabelText, StringComparison.Ordinal))
+        var oldTranslation = Miscellaneous.ResourceManager.GetString(nameof(Miscellaneous.Color), e.OldCulture);
+        if (oldTranslation is not null && oldTranslation.Equals(LabelText, StringComparison.Ordinal))
         {
             LabelText = Miscellaneous.Color;
         }
