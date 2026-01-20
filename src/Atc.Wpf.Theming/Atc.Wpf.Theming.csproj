@@ -31,8 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.16" />
-    <PackageReference Include="Atc.XamlToolkit" Version="3.0.5" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.5" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.6" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.6" />
     <PackageReference Include="ControlzEx" version="7.0.3" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
