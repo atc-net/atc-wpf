@@ -9,8 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.16" />
-    <PackageReference Include="Atc.XamlToolkit" Version="3.0.5" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.5" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.6" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.6" />
     <PackageReference Include="ControlzEx" Version="7.0.3" />
     <PackageReference Include="CssParser" Version="1.3.0">
       <NoWarn>NU1701</NoWarn>
