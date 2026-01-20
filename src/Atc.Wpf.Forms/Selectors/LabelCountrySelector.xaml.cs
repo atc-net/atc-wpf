@@ -31,6 +31,24 @@ public partial class LabelCountrySelector : ILabelCountrySelector
     public LabelCountrySelector()
     {
         InitializeComponent();
+
+        if (string.IsNullOrEmpty(LabelText))
+        {
+            LabelText = Miscellaneous.Country;
+        }
+
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        var oldTranslation = Miscellaneous.ResourceManager.GetString(nameof(Miscellaneous.Country), e.OldCulture);
+        if (oldTranslation is not null && oldTranslation.Equals(LabelText, StringComparison.Ordinal))
+        {
+            LabelText = Miscellaneous.Country;
+        }
     }
 
     public string GetKey()
