@@ -16,6 +16,8 @@ Use this table to quickly identify which panel best suits your layout needs:
 | [DockPanel](#-dockpanel-wpf-built-in) | WPF | Edge docking | Dock (TRBL) | ❌ No | ❌ No | ❌ No | ❌ No |
 | [DockPanelPro](#-dockpanelpro) | Atc.Wpf | IDE-style resizable docking | Dock (TRBL) | ❌ No | Via splitters | ❌ No | ❌ No |
 | [FlexPanel](#-flexpanel) | Atc.Wpf | CSS Flexbox layouts | Row/Column + Reverse | ✅ Yes | ✅ Yes | ✅ Yes (Grow/Shrink) | ❌ No |
+| [Panel](#-panel-wpf-built-in) | WPF | Base class for custom panels | N/A | ❌ No | ❌ No | ❌ No | ❌ No |
+| [PanelEx](#-panelex) | Atc.Wpf | Layered/overlay content | Overlay | ❌ No | ❌ No | ❌ No | ❌ No |
 | [ReversibleStackPanel](#-reversiblestackpanel) | Atc.Wpf | Reversible stacking | Row/Column | ❌ No | ❌ No | ❌ No | ❌ No |
 | [StackPanel](#-stackpanel-wpf-built-in) | WPF | Simple stacking | Row/Column | ❌ No | ❌ No | ❌ No | ❌ No |
 | [StaggeredPanel](#-staggeredpanel) | Atc.Wpf | Masonry/waterfall layout | Vertical columns | Auto | ✅ Yes | ❌ No | ❌ No |
@@ -61,6 +63,8 @@ Use this table to quickly identify which panel best suits your layout needs:
 | Responsive Bootstrap-style layout | **Row / Col** | Breakpoint-based columns |
 | Navigation bar: logo left, menu right | **FlexPanel** | `JustifyContent="SpaceBetween"` |
 | IDE-style resizable tool windows | **DockPanelPro** | Built-in splitters + collapse |
+| Layered content / overlays | **PanelEx** | Children stack on top of each other |
+| Custom panel implementation | **Panel** | Base class for custom layout logic |
 | Content card with header/footer | **Card** | Built-in elevation + expand |
 | Collapsible settings section | **GroupBoxExpander** | Expand/collapse with header |
 | Status indicator on icon | **Badge** | Overlay positioning |
@@ -80,6 +84,7 @@ Use this table to quickly identify which panel best suits your layout needs:
 - Absolute positioning requirements
 
 **Example:**
+
 ```xml
 <Canvas>
     <Rectangle Canvas.Left="50" Canvas.Top="30" Width="100" Height="50" Fill="Blue" />
@@ -98,6 +103,7 @@ Use this table to quickly identify which panel best suits your layout needs:
 - Sidebar + main content layouts
 
 **Example:**
+
 ```xml
 <DockPanel>
     <Menu DockPanel.Dock="Top"><!-- Menu items --></Menu>
@@ -303,6 +309,113 @@ dockPanel.ResetLayout();
 
 ---
 
+### 📘 Panel (WPF Built-in)
+
+**Description:** The abstract base class for all WPF panel controls. Panel provides the framework for arranging child elements.
+
+**When to Use:**
+- Creating custom layout controls
+- As a base class for specialized panels
+- Understanding WPF layout fundamentals
+
+**Key Concepts:**
+- Override `MeasureOverride(Size)` to determine desired size
+- Override `ArrangeOverride(Size)` to position children
+- Access children via `InternalChildren` collection
+
+**Example:**
+
+```csharp
+public class SimpleOverlayPanel : Panel
+{
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        var maxSize = new Size();
+        foreach (UIElement child in InternalChildren)
+        {
+            child.Measure(availableSize);
+            maxSize.Width = Math.Max(maxSize.Width, child.DesiredSize.Width);
+            maxSize.Height = Math.Max(maxSize.Height, child.DesiredSize.Height);
+        }
+        return maxSize;
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        foreach (UIElement child in InternalChildren)
+        {
+            child.Arrange(new Rect(finalSize));
+        }
+        return finalSize;
+    }
+}
+```
+
+---
+
+### 🟢 PanelEx
+
+**Location:** `Atc.Wpf.Controls.Layouts`
+
+**Description:** A simple panel that overlays all children on top of each other, sizing to the largest child. Similar to placing multiple items in the same Grid cell.
+
+**When to Use:**
+- Watermarks over content
+- Loading overlays
+- Badge/notification overlays
+- Layered UI elements
+- Any scenario requiring stacked content
+
+**Examples:**
+
+```xml
+<!-- Example 1: Simple overlay -->
+<atc:PanelEx Width="200" Height="150">
+    <Border Background="LightBlue">
+        <TextBlock Text="Background content" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Border>
+    <TextBlock Text="NEW" HorizontalAlignment="Right" VerticalAlignment="Top"
+               Foreground="Red" FontWeight="Bold" Margin="5" />
+</atc:PanelEx>
+
+<!-- Example 2: Watermark -->
+<atc:PanelEx>
+    <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="16">
+        <TextBlock Text="Document content..." />
+    </Border>
+    <TextBlock Text="DRAFT" HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="48" Foreground="#20000000" FontWeight="Bold" />
+</atc:PanelEx>
+
+<!-- Example 3: Loading overlay -->
+<atc:PanelEx>
+    <Border Background="White">
+        <StackPanel>
+            <TextBlock Text="Your content here" />
+        </StackPanel>
+    </Border>
+    <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Loading..." Foreground="White" />
+        </StackPanel>
+    </Border>
+</atc:PanelEx>
+
+<!-- Example 4: Corner badge -->
+<atc:PanelEx Width="100" Height="100">
+    <Border Background="LightGreen" CornerRadius="8">
+        <TextBlock Text="Product" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Border>
+    <Border Width="24" Height="24" Background="Orange" CornerRadius="12"
+            HorizontalAlignment="Right" VerticalAlignment="Top" Margin="-8,-8,0,0">
+        <TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="White" FontWeight="Bold" FontSize="10" />
+    </Border>
+</atc:PanelEx>
+```
+
+---
+
 ### 🟢 ReversibleStackPanel
 
 **Location:** `Atc.Wpf.Controls.Layouts`
@@ -353,6 +466,7 @@ dockPanel.ResetLayout();
 - Horizontal toolbars without proportional sizing
 
 **Example:**
+
 ```xml
 <StackPanel Orientation="Vertical">
     <TextBlock Text="Item 1" />
@@ -431,6 +545,7 @@ dockPanel.ResetLayout();
 - Equally-sized item grids
 
 **Example:**
+
 ```xml
 <UniformGrid Rows="3" Columns="3">
     <Button Content="1" />
@@ -544,6 +659,7 @@ dockPanel.ResetLayout();
 - Any content that should flow and wrap
 
 **Example:**
+
 ```xml
 <WrapPanel Orientation="Horizontal">
     <Button Content="Tag 1" Margin="4" />
@@ -1106,7 +1222,7 @@ dockPanel.ResetLayout();
 
 | Category | Count | Key Controls |
 |----------|-------|--------------|
-| 📦 Panels | 11 | FlexPanel, StaggeredPanel, UniformSpacingPanel |
+| 📦 Panels | 13 | FlexPanel, PanelEx, StaggeredPanel, UniformSpacingPanel |
 | 🔲 Grids | 4 | AutoGrid, GridEx, Row/Col |
 | 🎨 Containers | 7 | Badge, Card, Chip, GroupBoxExpander |
 

@@ -75,6 +75,30 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure, RowsChanged));
 
+    public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
+        nameof(Spacing),
+        typeof(double),
+        typeof(AutoGrid),
+        new FrameworkPropertyMetadata(
+            double.NaN,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
+        nameof(HorizontalSpacing),
+        typeof(double),
+        typeof(AutoGrid),
+        new FrameworkPropertyMetadata(
+            double.NaN,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
+        nameof(VerticalSpacing),
+        typeof(double),
+        typeof(AutoGrid),
+        new FrameworkPropertyMetadata(
+            double.NaN,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
     [Category("Layout")]
     [Description("Presets the horizontal alignment of all child controls")]
     public HorizontalAlignment? ChildHorizontalAlignment
@@ -161,6 +185,30 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
     {
         get => (string)GetValue(RowsProperty);
         set => SetValue(RowsProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("Sets uniform spacing between grid cells (sets both horizontal and vertical)")]
+    public double Spacing
+    {
+        get => (double)GetValue(SpacingProperty);
+        set => SetValue(SpacingProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("Sets horizontal spacing between grid columns")]
+    public double HorizontalSpacing
+    {
+        get => (double)GetValue(HorizontalSpacingProperty);
+        set => SetValue(HorizontalSpacingProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("Sets vertical spacing between grid rows")]
+    public double VerticalSpacing
+    {
+        get => (double)GetValue(VerticalSpacingProperty);
+        set => SetValue(VerticalSpacingProperty, value);
     }
 
     /// <summary>
@@ -481,13 +529,74 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
             : value;
 
     /// <summary>
+    /// Gets the effective horizontal and vertical spacing values.
+    /// Individual spacing properties (HorizontalSpacing, VerticalSpacing) take precedence over unified Spacing.
+    /// </summary>
+    /// <returns>A tuple containing the effective horizontal and vertical spacing.</returns>
+    private (double Horizontal, double Vertical) GetEffectiveSpacing()
+    {
+        var horizontal = HorizontalSpacing;
+        var vertical = VerticalSpacing;
+
+        if (double.IsNaN(horizontal))
+        {
+            horizontal = double.IsNaN(Spacing) ? 0 : Spacing;
+        }
+
+        if (double.IsNaN(vertical))
+        {
+            vertical = double.IsNaN(Spacing) ? 0 : Spacing;
+        }
+
+        return (horizontal, vertical);
+    }
+
+    /// <summary>
     /// Apply child margins and layout effects such as alignment.
     /// </summary>
-    private void ApplyChildLayout(DependencyObject d)
+    /// <param name="d">The dependency object (child element).</param>
+    /// <param name="row">The row index of the child.</param>
+    /// <param name="column">The column index of the child.</param>
+    private void ApplyChildLayout(
+        DependencyObject d,
+        int row,
+        int column)
     {
-        if (ChildMargin is not null)
+        // Calculate spacing margin
+        var (hSpacing, vSpacing) = GetEffectiveSpacing();
+        var colCount = ColumnDefinitions.Count;
+        var rowCount = RowDefinitions.Count;
+
+        // Determine if this is the last column/row (accounting for spans)
+        var colSpan = 1;
+        var rowSpan = 1;
+        if (d is UIElement uiElement)
         {
-            _ = d.SetIfDefault(MarginProperty, ChildMargin.Value);
+            colSpan = GetColumnSpan(uiElement);
+            rowSpan = GetRowSpan(uiElement);
+        }
+
+        var isLastColumn = colCount == 0 || column + colSpan >= colCount;
+        var isLastRow = rowCount == 0 || row + rowSpan >= rowCount;
+
+        // Build spacing margin (right for columns, bottom for rows)
+        var rightMargin = isLastColumn ? 0 : hSpacing;
+        var bottomMargin = isLastRow ? 0 : vSpacing;
+
+        // Combine with ChildMargin if set
+        if (ChildMargin.HasValue)
+        {
+            var cm = ChildMargin.Value;
+            var combinedMargin = new Thickness(
+                cm.Left,
+                cm.Top,
+                cm.Right + rightMargin,
+                cm.Bottom + bottomMargin);
+            _ = d.SetIfDefault(MarginProperty, combinedMargin);
+        }
+        else if (rightMargin > 0 || bottomMargin > 0)
+        {
+            _ = d.SetIfDefault(MarginProperty, new Thickness(0, 0, rightMargin, bottomMargin));
         }
 
         if (ChildHorizontalAlignment is not null)
@@ -568,7 +677,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
                 }
             }
 
-            ApplyChildLayout(child);
+            ApplyChildLayout(child, GetRow(child), GetColumn(child));
         }
     }
 }

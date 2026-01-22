@@ -37,6 +37,30 @@ public sealed class GridEx : Grid
         typeof(GridEx),
         new PropertyMetadata(default(string), OnColumnsChanged));
 
+    public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
+        nameof(Spacing),
+        typeof(double),
+        typeof(GridEx),
+        new FrameworkPropertyMetadata(
+            double.NaN,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
+        nameof(HorizontalSpacing),
+        typeof(double),
+        typeof(GridEx),
+        new FrameworkPropertyMetadata(
+            double.NaN,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
+        nameof(VerticalSpacing),
+        typeof(double),
+        typeof(GridEx),
+        new FrameworkPropertyMetadata(
+            double.NaN,
+            FrameworkPropertyMetadataOptions.AffectsMeasure));
+
     [Category("Layout")]
     [Description("The rows property")]
     public string Rows
@@ -51,6 +75,43 @@ public sealed class GridEx : Grid
     {
         get => (string)GetValue(ColumnsProperty);
         set => SetValue(ColumnsProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("Sets uniform spacing between grid cells (sets both horizontal and vertical)")]
+    public double Spacing
+    {
+        get => (double)GetValue(SpacingProperty);
+        set => SetValue(SpacingProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("Sets horizontal spacing between grid columns")]
+    public double HorizontalSpacing
+    {
+        get => (double)GetValue(HorizontalSpacingProperty);
+        set => SetValue(HorizontalSpacingProperty, value);
+    }
+
+    [Category("Layout")]
+    [Description("Sets vertical spacing between grid rows")]
+    public double VerticalSpacing
+    {
+        get => (double)GetValue(VerticalSpacingProperty);
+        set => SetValue(VerticalSpacingProperty, value);
+    }
+
+    /// <summary>
+    /// Measures the children of a <see cref="Grid" /> in anticipation of arranging them during the ArrangeOverride pass.
+    /// </summary>
+    /// <param name="constraint">Indicates an upper limit size that should not be exceeded.</param>
+    /// <returns>
+    ///   <see cref="Size" /> that represents the required size to arrange child content.
+    /// </returns>
+    protected override Size MeasureOverride(Size constraint)
+    {
+        ApplySpacingToChildren();
+        return base.MeasureOverride(constraint);
     }
 
     /// <summary>
@@ -147,5 +208,67 @@ public sealed class GridEx : Grid
         }));
 
         return gridLengths;
+    }
+
+    /// <summary>
+    /// Gets the effective horizontal and vertical spacing values.
+    /// Individual spacing properties (HorizontalSpacing, VerticalSpacing) take precedence over unified Spacing.
+    /// </summary>
+    /// <returns>A tuple containing the effective horizontal and vertical spacing.</returns>
+    private (double Horizontal, double Vertical) GetEffectiveSpacing()
+    {
+        var horizontal = HorizontalSpacing;
+        var vertical = VerticalSpacing;
+
+        if (double.IsNaN(horizontal))
+        {
+            horizontal = double.IsNaN(Spacing) ? 0 : Spacing;
+        }
+
+        if (double.IsNaN(vertical))
+        {
+            vertical = double.IsNaN(Spacing) ? 0 : Spacing;
+        }
+
+        return (horizontal, vertical);
+    }
+
+    /// <summary>
+    /// Applies spacing margins to all children based on their grid position.
+    /// </summary>
+    private void ApplySpacingToChildren()
+    {
+        var (hSpacing, vSpacing) = GetEffectiveSpacing();
+        if (hSpacing <= 0 && vSpacing <= 0)
+        {
+            return;
+        }
+
+        var colCount = ColumnDefinitions.Count;
+        var rowCount = RowDefinitions.Count;
+
+        foreach (UIElement child in Children)
+        {
+            if (child is not FrameworkElement fe)
+            {
+                continue;
+            }
+
+            var col = GetColumn(child);
+            var row = GetRow(child);
+            var colSpan = GetColumnSpan(child);
+            var rowSpan = GetRowSpan(child);
+
+            var isLastColumn = colCount == 0 || col + colSpan >= colCount;
+            var isLastRow = rowCount == 0 || row + rowSpan >= rowCount;
+
+            var spacingMargin = new Thickness(
+                0,
+                0,
+                isLastColumn ? 0 : hSpacing,
+                isLastRow ? 0 : vSpacing);
+
+            fe.SetIfDefault(MarginProperty, spacingMargin);
+        }
     }
 }
