@@ -11,7 +11,7 @@ This framework provides a rich collection of reusable controls, theming support,
 - 🎯 **MVVM Ready** - Complete MVVM infrastructure with observable properties and relay commands
 - 🔤 **Font Icon Support** - Render SVG and image resources based on fonts
 - ✅ **Smart Validation** - Deferred validation pattern for better user experience
-- 📐 **Advanced Layouts** - GridEx, StaggeredPanel, UniformSpacingPanel and more
+- 📐 **Advanced Layouts** - FlexPanel, AutoGrid, StaggeredPanel, Card, Badge and more
 - 🌍 **Localization** - Built-in translation and localization support
 - 🎭 **Value Converters** - Extensive collection of XAML value converters
 
@@ -224,11 +224,18 @@ The foundation library providing essential WPF controls, layouts, and utilities.
 
 ### Layout Controls
 
-Modern layout panels for advanced UI composition:
+Modern layout panels and containers for advanced UI composition. See the **[complete Layout Controls documentation](docs/Layouts/@Readme.md)** for detailed usage.
 
-- **[GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)** - Enhanced Grid with auto-row/column generation
-- **[StaggeredPanel](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)** - Masonry-style layout panel
-- **[UniformSpacingPanel](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)** - Panel with consistent item spacing
+| Control | Description | Key Features |
+|---------|-------------|--------------|
+| **[GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)** | Enhanced Grid | String-based row/column definitions |
+| **[AutoGrid](docs/Layouts/@Readme.md#-autogrid)** | Auto-indexed Grid | Automatic child positioning |
+| **[FlexPanel](docs/Layouts/@Readme.md#-flexpanel)** | CSS Flexbox panel | Grow/shrink, justify, align |
+| **[StaggeredPanel](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)** | Masonry layout | Pinterest-style waterfall |
+| **[UniformSpacingPanel](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)** | Uniform spacing | Consistent gaps + wrapping |
+| **[Card](docs/Layouts/@Readme.md#-card)** | Content container | Elevation, header/footer, expand |
+| **[Badge](docs/Layouts/@Readme.md#-badge)** | Status indicator | Notification counts, dots |
+| **[Chip](docs/Layouts/@Readme.md#-chip)** | Tag/filter control | Selectable, removable |
 
 ### Media Controls
 

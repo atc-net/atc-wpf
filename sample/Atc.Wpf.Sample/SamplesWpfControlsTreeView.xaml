@@ -39,6 +39,10 @@
             IsExpanded="True"
             SamplePath="Inputs.RangeSliderView" />
         <sample:SampleTreeViewItem
+            Header="Rating"
+            IsExpanded="True"
+            SamplePath="Inputs.RatingView" />
+        <sample:SampleTreeViewItem
             Header="ToggleSwitch"
             IsExpanded="True"
             SamplePath="Inputs.ToggleSwitchView" />
@@ -115,6 +119,10 @@
             Header="Divider"
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />
+        <sample:SampleTreeViewItem
+            Header="FlexPanel"
+            IsExpanded="True"
+            SamplePath="Layouts.FlexPanelView" />
         <sample:SampleTreeViewItem
             Header="GridLines"
             IsExpanded="True"
