@@ -140,6 +140,10 @@
             IsExpanded="True"
             SamplePath="Layouts.ReversibleStackPanelView" />
         <sample:SampleTreeViewItem
+            Header="ResponsivePanel"
+            IsExpanded="True"
+            SamplePath="Layouts.ResponsivePanelView" />
+        <sample:SampleTreeViewItem
             Header="Row/Col"
             IsExpanded="True"
             SamplePath="Layouts.RowColView" />

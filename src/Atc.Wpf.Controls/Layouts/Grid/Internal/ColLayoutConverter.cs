@@ -74,33 +74,32 @@ internal sealed class ColLayoutConverter : TypeConverter
             return ToString(th, culture);
         }
 
-        if (destinationType == typeof(InstanceDescriptor))
+        if (destinationType != typeof(InstanceDescriptor))
         {
-            var ci = typeof(ColLayout).GetConstructor(
-                new[]
-                {
-                    typeof(int),
-                    typeof(int),
-                    typeof(int),
-                    typeof(int),
-                    typeof(int),
-                    typeof(int),
-                });
-
-            return new InstanceDescriptor(
-                ci,
-                new object[]
-                {
-                    th.Xs,
-                    th.Sm,
-                    th.Md,
-                    th.Lg,
-                    th.Xl,
-                    th.Xxl,
-                });
+            throw new ArgumentException("CannotConvertType");
         }
 
-        throw new ArgumentException("CannotConvertType");
+        var ci = typeof(ColLayout).GetConstructor(
+        [
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(int),
+            typeof(int)
+        ]);
+
+        return new InstanceDescriptor(
+            ci,
+            new object[]
+            {
+                th.Xs,
+                th.Sm,
+                th.Md,
+                th.Lg,
+                th.Xl,
+                th.Xxl,
+            });
     }
 
     private static string ToString(
