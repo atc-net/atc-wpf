@@ -120,6 +120,10 @@
             IsExpanded="True"
             SamplePath="Layouts.DividerView" />
         <sample:SampleTreeViewItem
+            Header="DockPanelPro"
+            IsExpanded="True"
+            SamplePath="Layouts.DockPanelProView" />
+        <sample:SampleTreeViewItem
             Header="FlexPanel"
             IsExpanded="True"
             SamplePath="Layouts.FlexPanelView" />

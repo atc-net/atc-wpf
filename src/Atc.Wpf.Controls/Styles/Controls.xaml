@@ -15,6 +15,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Card.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Chip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Divider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/DockPanelPro.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/FlexPanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/GroupBoxExpander.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/BusyOverlay.xaml" />
@@ -32,6 +33,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type layouts:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type layouts:Chip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type layouts:Divider}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DockPanelPro}" TargetType="{x:Type layouts:DockPanelPro}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DockRegion}" TargetType="{x:Type layouts:DockRegion}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.FlexPanel}" TargetType="{x:Type layouts:FlexPanel}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.GroupBoxExpander}" TargetType="{x:Type layouts:GroupBoxExpander}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.BusyOverlay}" TargetType="{x:Type progressing:BusyOverlay}" />
