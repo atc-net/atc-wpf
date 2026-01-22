@@ -1,8 +1,8 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
     xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons"
+    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing">
 
