@@ -223,6 +223,42 @@ namespace Atc.Wpf.Forms.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password must contain at least one digit.
+        /// </summary>
+        public static string PasswordNeedsDigit {
+            get {
+                return ResourceManager.GetString("PasswordNeedsDigit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contain upper and lower case letters.
+        /// </summary>
+        public static string PasswordNeedsMixedCase {
+            get {
+                return ResourceManager.GetString("PasswordNeedsMixedCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contain at least one special character.
+        /// </summary>
+        public static string PasswordNeedsSpecialChar {
+            get {
+                return ResourceManager.GetString("PasswordNeedsSpecialChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is too short.
+        /// </summary>
+        public static string PasswordTooShort {
+            get {
+                return ResourceManager.GetString("PasswordTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a {0}.
         /// </summary>
         public static string PleaseSelect1 {

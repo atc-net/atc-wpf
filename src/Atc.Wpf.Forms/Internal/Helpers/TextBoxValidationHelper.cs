@@ -68,6 +68,15 @@ internal static class TextBoxValidationHelper
             case TextBoxValidationRuleType.Udp:
                 ValidateUdp(value, ref isValid, ref errorMessage);
                 break;
+            case TextBoxValidationRuleType.PasswordWeak:
+                ValidatePasswordStrength(value, PasswordStrengthLevel.Weak, ref isValid, ref errorMessage);
+                break;
+            case TextBoxValidationRuleType.PasswordMedium:
+                ValidatePasswordStrength(value, PasswordStrengthLevel.Medium, ref isValid, ref errorMessage);
+                break;
+            case TextBoxValidationRuleType.PasswordStrong:
+                ValidatePasswordStrength(value, PasswordStrengthLevel.Strong, ref isValid, ref errorMessage);
+                break;
             default:
                 throw new SwitchCaseDefaultException(validationRule);
         }
@@ -260,5 +269,70 @@ internal static class TextBoxValidationHelper
 
         isValid = false;
         errorMessage = Validations.InvalidTcpUrl;
+    }
+
+    private static void ValidatePasswordStrength(
+        string? value,
+        PasswordStrengthLevel strengthLevel,
+        ref bool isValid,
+        ref string errorMessage)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            isValid = false;
+            errorMessage = Validations.PasswordTooShort;
+            return;
+        }
+
+        var error = strengthLevel switch
+        {
+            PasswordStrengthLevel.Weak => ValidateWeakPassword(value),
+            PasswordStrengthLevel.Medium => ValidateMediumPassword(value),
+            PasswordStrengthLevel.Strong => ValidateStrongPassword(value),
+            _ => null,
+        };
+
+        if (error is not null)
+        {
+            isValid = false;
+            errorMessage = error;
+        }
+    }
+
+    private static string? ValidateWeakPassword(string value)
+        => value.Length >= 6 ? null : Validations.PasswordTooShort;
+
+    private static string? ValidateMediumPassword(string value)
+    {
+        if (value.Length < 8)
+        {
+            return Validations.PasswordTooShort;
+        }
+
+        var hasUpperCase = value.Any(char.IsUpper);
+        var hasLowerCase = value.Any(char.IsLower);
+        return hasUpperCase && hasLowerCase ? null : Validations.PasswordNeedsMixedCase;
+    }
+
+    private static string? ValidateStrongPassword(string value)
+    {
+        if (value.Length < 12)
+        {
+            return Validations.PasswordTooShort;
+        }
+
+        var hasUpperCase = value.Any(char.IsUpper);
+        var hasLowerCase = value.Any(char.IsLower);
+        if (!hasUpperCase || !hasLowerCase)
+        {
+            return Validations.PasswordNeedsMixedCase;
+        }
+
+        if (!value.Any(char.IsDigit))
+        {
+            return Validations.PasswordNeedsDigit;
+        }
+
+        return value.Any(c => !char.IsLetterOrDigit(c)) ? null : Validations.PasswordNeedsSpecialChar;
     }
 }
