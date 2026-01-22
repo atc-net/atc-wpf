@@ -1,0 +1,203 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.RowColView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:grid="clr-namespace:Atc.Wpf.Controls.Layouts.Grid;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    Row and Col provide a Bootstrap-style responsive 24-column grid system.
+                    Resize the window to see columns wrap at different breakpoints.
+                </TextBlock>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Row with Equal Columns">
+                <grid:Row Gutter="16">
+                    <grid:Col Span="8">
+                        <Border Background="#E3F2FD" Padding="16">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Col Span=8" />
+                        </Border>
+                    </grid:Col>
+                    <grid:Col Span="8">
+                        <Border Background="#BBDEFB" Padding="16">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Col Span=8" />
+                        </Border>
+                    </grid:Col>
+                    <grid:Col Span="8">
+                        <Border Background="#90CAF9" Padding="16">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Col Span=8" />
+                        </Border>
+                    </grid:Col>
+                </grid:Row>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Responsive Layout (resize window to see changes)">
+                <grid:Row Gutter="16">
+                    <grid:Col>
+                        <grid:Col.Layout>
+                            <grid:ColLayout
+                                Lg="6"
+                                Md="8"
+                                Sm="12"
+                                Xl="4"
+                                Xs="24"
+                                Xxl="4" />
+                        </grid:Col.Layout>
+                        <Border Background="#C8E6C9" Padding="16">
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Column 1" />
+                                <TextBlock
+                                    FontSize="10"
+                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                            </StackPanel>
+                        </Border>
+                    </grid:Col>
+                    <grid:Col>
+                        <grid:Col.Layout>
+                            <grid:ColLayout
+                                Lg="6"
+                                Md="8"
+                                Sm="12"
+                                Xl="4"
+                                Xs="24"
+                                Xxl="4" />
+                        </grid:Col.Layout>
+                        <Border Background="#A5D6A7" Padding="16">
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Column 2" />
+                                <TextBlock
+                                    FontSize="10"
+                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                            </StackPanel>
+                        </Border>
+                    </grid:Col>
+                    <grid:Col>
+                        <grid:Col.Layout>
+                            <grid:ColLayout
+                                Lg="6"
+                                Md="8"
+                                Sm="12"
+                                Xl="4"
+                                Xs="24"
+                                Xxl="4" />
+                        </grid:Col.Layout>
+                        <Border Background="#81C784" Padding="16">
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Column 3" />
+                                <TextBlock
+                                    FontSize="10"
+                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                            </StackPanel>
+                        </Border>
+                    </grid:Col>
+                    <grid:Col>
+                        <grid:Col.Layout>
+                            <grid:ColLayout
+                                Lg="6"
+                                Md="8"
+                                Sm="12"
+                                Xl="4"
+                                Xs="24"
+                                Xxl="4" />
+                        </grid:Col.Layout>
+                        <Border Background="#66BB6A" Padding="16">
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Column 4" />
+                                <TextBlock
+                                    FontSize="10"
+                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                            </StackPanel>
+                        </Border>
+                    </grid:Col>
+                </grid:Row>
+            </GroupBox>
+
+            <GroupBox
+                Padding="10"
+                Header="Sidebar + Content Layout">
+                <grid:Row Gutter="16">
+                    <grid:Col>
+                        <grid:Col.Layout>
+                            <grid:ColLayout
+                                Lg="6"
+                                Md="8"
+                                Sm="24"
+                                Xl="4"
+                                Xs="24"
+                                Xxl="4" />
+                        </grid:Col.Layout>
+                        <Border
+                            Background="#FFF3E0"
+                            Padding="16">
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Sidebar" />
+                                <TextBlock Text="Navigation" />
+                                <TextBlock Text="Links" />
+                                <TextBlock Text="Settings" />
+                            </StackPanel>
+                        </Border>
+                    </grid:Col>
+                    <grid:Col>
+                        <grid:Col.Layout>
+                            <grid:ColLayout
+                                Lg="18"
+                                Md="16"
+                                Sm="24"
+                                Xl="20"
+                                Xs="24"
+                                Xxl="20" />
+                        </grid:Col.Layout>
+                        <Border
+                            Background="#FFE0B2"
+                            Padding="16">
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Main Content" />
+                                <TextBlock
+                                    Text="This area takes up the remaining space. On small screens, both columns stack vertically."
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </grid:Col>
+                </grid:Row>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

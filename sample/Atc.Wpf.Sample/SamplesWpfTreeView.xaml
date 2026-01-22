@@ -16,6 +16,7 @@
 
     <TreeViewItem Header="Controls - Layouts">
         <sample:SampleTreeViewItem Header="GridEx" SamplePath="Controls.Layouts.GridExView" />
+        <sample:SampleTreeViewItem Header="PanelEx" SamplePath="Controls.Layouts.PanelExView" />
         <sample:SampleTreeViewItem Header="PanelHelper" SamplePath="Controls.Layouts.PanelHelperView" />
     </TreeViewItem>
 

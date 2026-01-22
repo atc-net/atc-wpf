@@ -9,12 +9,37 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,Auto,*">
 
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
             Header="Features" />
+
+        <GroupBox Header="Spacing Examples" Margin="0,0,0,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="GridEx with Uniform Spacing (10px):" FontWeight="Bold" Margin="0,0,0,5" />
+                <atc:GridEx Rows="Auto,Auto,Auto" Columns="*,*,*" Spacing="10" Margin="0,0,0,15">
+                    <Border Background="LightBlue" Padding="10"><TextBlock Text="[0,0]" /></Border>
+                    <Border Grid.Column="1" Background="LightGreen" Padding="10"><TextBlock Text="[0,1]" /></Border>
+                    <Border Grid.Column="2" Background="LightCoral" Padding="10"><TextBlock Text="[0,2]" /></Border>
+                    <Border Grid.Row="1" Background="LightYellow" Padding="10"><TextBlock Text="[1,0]" /></Border>
+                    <Border Grid.Row="1" Grid.Column="1" Background="LightPink" Padding="10"><TextBlock Text="[1,1]" /></Border>
+                    <Border Grid.Row="1" Grid.Column="2" Background="LightCyan" Padding="10"><TextBlock Text="[1,2]" /></Border>
+                    <Border Grid.Row="2" Background="LightGray" Padding="10"><TextBlock Text="[2,0]" /></Border>
+                    <Border Grid.Row="2" Grid.Column="1" Background="Lavender" Padding="10"><TextBlock Text="[2,1]" /></Border>
+                    <Border Grid.Row="2" Grid.Column="2" Background="PeachPuff" Padding="10"><TextBlock Text="[2,2]" /></Border>
+                </atc:GridEx>
+
+                <TextBlock Text="GridEx with Separate H/V Spacing (H=20, V=8):" FontWeight="Bold" Margin="0,0,0,5" />
+                <atc:GridEx Rows="Auto,Auto" Columns="Auto,*" HorizontalSpacing="20" VerticalSpacing="8">
+                    <TextBlock Text="Label:" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="1" />
+                    <TextBlock Grid.Row="1" Text="Value:" VerticalAlignment="Center" />
+                    <TextBox Grid.Row="1" Grid.Column="1" />
+                </atc:GridEx>
+            </StackPanel>
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>

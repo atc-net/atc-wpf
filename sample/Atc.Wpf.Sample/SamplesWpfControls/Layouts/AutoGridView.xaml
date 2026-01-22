@@ -9,12 +9,33 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,Auto,*">
 
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
             Header="Features" />
+
+        <GroupBox Header="Spacing Examples" Margin="0,0,0,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Uniform Spacing (10px):" FontWeight="Bold" Margin="0,0,0,5" />
+                <atc:AutoGrid Columns="*,*,*" Spacing="10" Margin="0,0,0,15">
+                    <Button Content="A" />
+                    <Button Content="B" />
+                    <Button Content="C" />
+                </atc:AutoGrid>
+
+                <TextBlock Text="Separate H/V Spacing (H=20, V=8):" FontWeight="Bold" Margin="0,0,0,5" />
+                <atc:AutoGrid Columns="Auto,*" HorizontalSpacing="20" VerticalSpacing="8" Rows="Auto,Auto,Auto">
+                    <TextBlock Text="Name:" VerticalAlignment="Center" />
+                    <TextBox />
+                    <TextBlock Text="Email:" VerticalAlignment="Center" />
+                    <TextBox />
+                    <TextBlock Text="Phone:" VerticalAlignment="Center" />
+                    <TextBox />
+                </atc:AutoGrid>
+            </StackPanel>
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
