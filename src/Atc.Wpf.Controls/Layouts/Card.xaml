@@ -8,7 +8,7 @@
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters;assembly=Atc.Wpf.Theming"
     xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
 
-    <!-- Shadow effects for different elevation levels -->
+    <!--  Shadow effects for different elevation levels  -->
     <DropShadowEffect
         x:Key="AtcApps.Effects.Card.Elevation0"
         BlurRadius="0"
@@ -156,7 +156,7 @@
                                 <RowDefinition x:Name="FooterRow" Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!-- Header -->
+                            <!--  Header  -->
                             <Border
                                 x:Name="HeaderBorder"
                                 Grid.Row="0"
@@ -209,7 +209,7 @@
                                 </Grid>
                             </Border>
 
-                            <!-- Content -->
+                            <!--  Content  -->
                             <Border
                                 x:Name="ContentBorder"
                                 Grid.Row="1"
@@ -224,7 +224,7 @@
                                     UseLayoutRounding="False" />
                             </Border>
 
-                            <!-- Footer -->
+                            <!--  Footer  -->
                             <Border
                                 x:Name="FooterBorder"
                                 Grid.Row="2"
@@ -242,36 +242,36 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- Show toggle button when expandable -->
+                        <!--  Show toggle button when expandable  -->
                         <Trigger Property="IsExpandable" Value="True">
                             <Setter TargetName="ExpanderToggleButton" Property="Visibility" Value="Visible" />
                         </Trigger>
 
-                        <!-- Collapsed state -->
+                        <!--  Collapsed state  -->
                         <Trigger Property="IsExpanded" Value="False">
                             <Setter TargetName="ContentBorder" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="FooterBorder" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="HeaderBorder" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}" />
                         </Trigger>
 
-                        <!-- Right button placement -->
+                        <!--  Right button placement  -->
                         <Trigger Property="ExpanderButtonLocation" Value="Right">
                             <Setter TargetName="ExpanderToggleButton" Property="Grid.Column" Value="2" />
                         </Trigger>
 
-                        <!-- Hide header when ShowHeader is false -->
+                        <!--  Hide header when ShowHeader is false  -->
                         <Trigger Property="ShowHeader" Value="False">
                             <Setter TargetName="HeaderBorder" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="ContentBorder" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={x:Static valueConverters:CornerRadiusBindingValueConverter.Instance}, ConverterParameter={x:Static enums:RadiusType.Bottom}}" />
                         </Trigger>
 
-                        <!-- Hide header when Header is null -->
+                        <!--  Hide header when Header is null  -->
                         <Trigger Property="Header" Value="{x:Null}">
                             <Setter TargetName="HeaderBorder" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="ContentBorder" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={x:Static valueConverters:CornerRadiusBindingValueConverter.Instance}, ConverterParameter={x:Static enums:RadiusType.Bottom}}" />
                         </Trigger>
 
-                        <!-- Show footer when Footer is not null and ShowFooter is true -->
+                        <!--  Show footer when Footer is not null and ShowFooter is true  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="ShowFooter" Value="True" />
@@ -282,17 +282,17 @@
                             </MultiTrigger.Setters>
                         </MultiTrigger>
 
-                        <!-- Hide footer when Footer is null -->
+                        <!--  Hide footer when Footer is null  -->
                         <Trigger Property="Footer" Value="{x:Null}">
                             <Setter TargetName="FooterBorder" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <!-- Hide footer when ShowFooter is false -->
+                        <!--  Hide footer when ShowFooter is false  -->
                         <Trigger Property="ShowFooter" Value="False">
                             <Setter TargetName="FooterBorder" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <!-- Disabled state -->
+                        <!--  Disabled state  -->
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
@@ -301,24 +301,24 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <!-- Elevation 0 - No shadow -->
+            <!--  Elevation 0 - No shadow  -->
             <Trigger Property="Elevation" Value="0">
                 <Setter Property="Effect" Value="{StaticResource AtcApps.Effects.Card.Elevation0}" />
             </Trigger>
-            <!-- Elevation 1 -->
+            <!--  Elevation 1  -->
             <Trigger Property="Elevation" Value="1">
                 <Setter Property="Effect" Value="{StaticResource AtcApps.Effects.Card.Elevation1}" />
             </Trigger>
-            <!-- Elevation 2 is default, set in style setters -->
-            <!-- Elevation 3 -->
+            <!--  Elevation 2 is default, set in style setters  -->
+            <!--  Elevation 3  -->
             <Trigger Property="Elevation" Value="3">
                 <Setter Property="Effect" Value="{StaticResource AtcApps.Effects.Card.Elevation3}" />
             </Trigger>
-            <!-- Elevation 4 -->
+            <!--  Elevation 4  -->
             <Trigger Property="Elevation" Value="4">
                 <Setter Property="Effect" Value="{StaticResource AtcApps.Effects.Card.Elevation4}" />
             </Trigger>
-            <!-- Elevation 5 -->
+            <!--  Elevation 5  -->
             <Trigger Property="Elevation" Value="5">
                 <Setter Property="Effect" Value="{StaticResource AtcApps.Effects.Card.Elevation5}" />
             </Trigger>

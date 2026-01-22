@@ -23,7 +23,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type layouts:Badge}">
                     <Grid>
-                        <!-- Main Content -->
+                        <!--  Main Content  -->
                         <ContentPresenter
                             x:Name="PART_ContentPresenter"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -32,7 +32,7 @@
                             ContentTemplate="{TemplateBinding ContentTemplate}"
                             ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
 
-                        <!-- Badge -->
+                        <!--  Badge  -->
                         <Border
                             x:Name="PART_Badge"
                             MinWidth="{TemplateBinding BadgeMinWidth}"
@@ -56,12 +56,12 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <!-- Hide badge when computed visibility is false -->
+                        <!--  Hide badge when computed visibility is false  -->
                         <Trigger Property="ComputedBadgeVisibility" Value="False">
                             <Setter TargetName="PART_Badge" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <!-- IsDot mode - hide content presenter and use minimal sizing -->
+                        <!--  IsDot mode - hide content presenter and use minimal sizing  -->
                         <Trigger Property="IsDot" Value="True">
                             <Setter TargetName="PART_BadgeContent" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_Badge" Property="MinWidth" Value="10" />
@@ -69,49 +69,49 @@
                             <Setter TargetName="PART_Badge" Property="CornerRadius" Value="5" />
                         </Trigger>
 
-                        <!-- TopLeft placement -->
+                        <!--  TopLeft placement  -->
                         <Trigger Property="BadgePlacementMode" Value="TopLeft">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Left" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Top" />
                         </Trigger>
 
-                        <!-- Top placement -->
+                        <!--  Top placement  -->
                         <Trigger Property="BadgePlacementMode" Value="Top">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Center" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Top" />
                         </Trigger>
 
-                        <!-- TopRight placement (default) -->
+                        <!--  TopRight placement (default)  -->
                         <Trigger Property="BadgePlacementMode" Value="TopRight">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Right" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Top" />
                         </Trigger>
 
-                        <!-- Right placement -->
+                        <!--  Right placement  -->
                         <Trigger Property="BadgePlacementMode" Value="Right">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Right" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Center" />
                         </Trigger>
 
-                        <!-- BottomRight placement -->
+                        <!--  BottomRight placement  -->
                         <Trigger Property="BadgePlacementMode" Value="BottomRight">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Right" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Bottom" />
                         </Trigger>
 
-                        <!-- Bottom placement -->
+                        <!--  Bottom placement  -->
                         <Trigger Property="BadgePlacementMode" Value="Bottom">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Center" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Bottom" />
                         </Trigger>
 
-                        <!-- BottomLeft placement -->
+                        <!--  BottomLeft placement  -->
                         <Trigger Property="BadgePlacementMode" Value="BottomLeft">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Left" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Bottom" />
                         </Trigger>
 
-                        <!-- Left placement -->
+                        <!--  Left placement  -->
                         <Trigger Property="BadgePlacementMode" Value="Left">
                             <Setter TargetName="PART_Badge" Property="HorizontalAlignment" Value="Left" />
                             <Setter TargetName="PART_Badge" Property="VerticalAlignment" Value="Center" />

@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs">
 
-    <!-- Thumb style for RangeSlider -->
+    <!--  Thumb style for RangeSlider  -->
     <Style x:Key="AtcApps.Styles.RangeSlider.Thumb" TargetType="{x:Type Thumb}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
@@ -59,7 +59,7 @@
         </Setter>
     </Style>
 
-    <!-- Main RangeSlider style -->
+    <!--  Main RangeSlider style  -->
     <Style x:Key="AtcApps.Styles.RangeSlider" TargetType="{x:Type inputs:RangeSlider}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Focusable" Value="True" />
@@ -79,26 +79,26 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid VerticalAlignment="Center">
-                            <!-- Track background -->
+                            <!--  Track background  -->
                             <Canvas
                                 x:Name="PART_Track"
                                 Height="{TemplateBinding TrackHeight}"
                                 VerticalAlignment="Center">
-                                <!-- Full track -->
+                                <!--  Full track  -->
                                 <Border
                                     Width="{Binding ActualWidth, ElementName=PART_Track}"
                                     Height="{TemplateBinding TrackHeight}"
                                     Background="{TemplateBinding TrackBackground}"
                                     CornerRadius="2" />
 
-                                <!-- Selected range highlight -->
+                                <!--  Selected range highlight  -->
                                 <Border
                                     x:Name="PART_RangeHighlight"
                                     Height="{TemplateBinding TrackHeight}"
                                     Background="{TemplateBinding RangeHighlightBrush}"
                                     CornerRadius="2" />
 
-                                <!-- Lower thumb -->
+                                <!--  Lower thumb  -->
                                 <Thumb
                                     x:Name="PART_LowerThumb"
                                     Style="{StaticResource AtcApps.Styles.RangeSlider.Thumb}"
@@ -111,7 +111,7 @@
                                     </Canvas.Top>
                                 </Thumb>
 
-                                <!-- Upper thumb -->
+                                <!--  Upper thumb  -->
                                 <Thumb
                                     x:Name="PART_UpperThumb"
                                     Style="{StaticResource AtcApps.Styles.RangeSlider.Thumb}"

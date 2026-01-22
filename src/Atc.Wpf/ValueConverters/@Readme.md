@@ -47,6 +47,8 @@ Or by the ValueConverter's Instance:
 | String -> Bool            | StringNullOrEmptyToInverseBoolValueConverter             | NULL or empty -> False                  | Not supported                           |
 | String -> Visibility      | StringNullOrEmptyToVisibilityCollapsedValueConverter     | NULL or empty -> Collapsed              | Not supported                           |
 | String -> Visibility      | StringNullOrEmptyToVisibilityVisibleValueConverter       | NULL or empty -> Visible                | Not supported                           |
+| String -> Visibility      | StringToVisibilityVisibleValueConverter                  | "Active" + param "Active" -> Visible    | Not supported                           |
+| String -> Visibility      | StringToVisibilityCollapsedValueConverter                | "Active" + param "Active" -> Collapsed  | Not supported                           |
 | String -> List<String>    | StringToSplitStringListValueConverter                    | String -> List<String>                  | Not supported                           |
 | String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 | String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
@@ -84,18 +86,27 @@ Or by the ValueConverter's Instance:
 |                           | MarkupValueConverter                                     |                                         |                                         |
 |                           | MarkupValueConverterBase                                 |                                         |                                         |
 
+## #️⃣ ValueConverters - Enum to [...]
+
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
+| Enum -> Visibility        | EnumToVisibilityVisibleValueConverter                    | Status.Active + param "Active" -> Visible | Not supported                         |
+| Enum -> Visibility        | EnumToVisibilityCollapsedValueConverter                  | Status.Active + param "Active" -> Collapsed | Not supported                       |
+
 ## #️⃣ ValueConverters - Others to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
 |                           | BackgroundToForegroundValueConverter                     |                                         |                                         |
 | Brush -> Color            | BrushToColorValueConverter                               | Brushs.Green -> Colors.Green            | Colors.Green -> Brushs.Green            |
+| byte[] -> ImageSource     | ByteArrayToImageSourceValueConverter                     | byte[] -> BitmapImage                   | BitmapSource -> byte[] (PNG)            |
 | Color -> Brush            | ColorToBrushValueConverter                               | Colors.Green -> Brushs.Green            | Brushs.Green -> Colors.Green            |
 | Color -> SolidColor       | ColorToSolidColorValueConverter                          | Colors.Green -> Colors.Green            | Not supported                           |
 | Color -> String           | ColorHexToColorValueConverter                            | "#FF00FF00" -> "Green"                  | "Green" -> "#FF00FF00"                  |
+| Double -> GridLength      | DoubleToGridLengthValueConverter                         | 100.0 -> GridLength(100, Pixel)         | GridLength -> double ✅                 |
 | Hex-Brush -> Brush-Key    | HexBrushToBrushKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Brushs.Green                 |
 | Hex-Color -> Color-Key    | HexColorToColorKeyValueConverter                         | "#FF00FF00" -> "Green"                  | "Green" -> Color.Green                  |
-| Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
 | Int -> Visibility         | IntegerGreaterThenZeroToVisibilityVisibleValueConverter  | 0 -> Collapsed<br/>1 -> Visible         | Not supported                           |
 | Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | TimeSpan -> int (milliseconds) ✅       |
 | LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> DodgerBlue               | Not supported                           |
@@ -107,6 +118,7 @@ Or by the ValueConverter's Instance:
 |                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |
 | Thickness -> Double       | ThicknessToDoubleValueConverter                          | Thickness.Left -> double                | double -> Thickness (single side) ✅    |
 | DateTime (UTC) -> DateTime (Local) | UtcToLocalDateTimeValueConverter                  | UTC -> Local                            | Local -> UTC ✅                         |
+| String -> Bool (Regex)    | RegexValidationValueConverter                            | "test@example.com" + pattern -> True    | Not supported                           |
 | Errors -> String          | ValidationErrorsToFirstValidationErrorContentValueConverter |                                      | Not supported                           |
 | Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |
 |                           | WindowResizeModeMinMaxButtonVisibilityMultiValueConverter|                                         |                                         |
