@@ -18,6 +18,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ListView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/DataGrid.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Menu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/PasswordBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ProgressBar.xaml" />
@@ -59,6 +60,11 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.ListBoxItem}" TargetType="{x:Type ListBoxItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ListView}" TargetType="{x:Type ListView}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ListViewItem}" TargetType="{x:Type ListViewItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DataGrid}" TargetType="{x:Type DataGrid}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DataGridRow}" TargetType="{x:Type DataGridRow}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DataGridCell}" TargetType="{x:Type DataGridCell}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.DataGridRowHeader}" TargetType="{x:Type DataGridRowHeader}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Menu}" TargetType="{x:Type Menu}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.MenuItem}" TargetType="{x:Type MenuItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.PasswordBox}" TargetType="{x:Type PasswordBox}" />

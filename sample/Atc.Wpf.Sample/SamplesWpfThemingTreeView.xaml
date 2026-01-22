@@ -98,6 +98,10 @@
             IsExpanded="True"
             SamplePath="Misc.ListViewView" />
         <sample:SampleTreeViewItem
+            Header="DataGrid"
+            IsExpanded="True"
+            SamplePath="Misc.DataGridView" />
+        <sample:SampleTreeViewItem
             Header="Menu"
             IsExpanded="True"
             SamplePath="Misc.MenuView" />

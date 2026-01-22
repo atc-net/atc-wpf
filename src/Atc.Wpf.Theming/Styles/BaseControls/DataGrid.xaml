@@ -1,0 +1,463 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:controls="clr-namespace:Atc.Wpf.Theming.Controls">
+
+    <!--  DataGridColumnHeaderGripper  -->
+    <Style x:Key="AtcApps.Styles.Thumb.DataGridColumnHeaderGripper" TargetType="{x:Type Thumb}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ListView.Border}" />
+        <Setter Property="Cursor" Value="SizeWE" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+                        Margin="0,0,0,2"
+                        Padding="{TemplateBinding Padding}"
+                        Background="Transparent">
+                        <Rectangle
+                            Width="1"
+                            HorizontalAlignment="Center"
+                            Fill="{TemplateBinding Background}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Width" Value="8" />
+    </Style>
+
+    <!--  DataGridColumnHeader  -->
+    <Style x:Key="AtcApps.Styles.DataGridColumnHeader" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ListView.Border}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Padding" Value="4,3" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                    <Grid>
+                        <Rectangle Fill="Transparent" IsHitTestVisible="True" />
+                        <Border
+                            x:Name="HeaderBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <controls:ContentControlEx
+                                x:Name="HeaderContent"
+                                Margin="0,0,0,1"
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.ContentCharacterCasing)}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                RecognizesAccessKey="{TemplateBinding atc:ControlsHelper.RecognizesAccessKey}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <Thumb
+                            x:Name="PART_LeftHeaderGripper"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource AtcApps.Styles.Thumb.DataGridColumnHeaderGripper}" />
+                        <Thumb
+                            x:Name="PART_RightHeaderGripper"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource AtcApps.Styles.Thumb.DataGridColumnHeaderGripper}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+                            <Setter TargetName="HeaderContent" Property="Margin" Value="1,1,0,0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="SortDirection" Value="Ascending">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+                        </Trigger>
+                        <Trigger Property="SortDirection" Value="Descending">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="atc:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource AtcApps.CharacterCasing.DataGridColumnHeader}" />
+    </Style>
+
+    <!--  DataGridRowHeader  -->
+    <Style x:Key="AtcApps.Styles.DataGridRowHeader" TargetType="{x:Type DataGridRowHeader}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ListView.Border}" />
+        <Setter Property="BorderThickness" Value="0,0,1,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridRowHeader}">
+                    <Grid>
+                        <Border
+                            x:Name="RowHeaderBorder"
+                            Width="10"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsRowSelected" Value="True">
+                            <Setter TargetName="RowHeaderBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="RowHeaderBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  DataGridCell  -->
+    <Style x:Key="AtcApps.Styles.DataGridCell" TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="Padding" Value="4,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border
+                        x:Name="CellBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+            </Trigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="False" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+            </MultiDataTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  DataGridRow  -->
+    <Style x:Key="AtcApps.Styles.DataGridRow" TargetType="{x:Type DataGridRow}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridRow}">
+                    <Border
+                        x:Name="DGR_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <SelectiveScrollingGrid>
+                            <SelectiveScrollingGrid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </SelectiveScrollingGrid.ColumnDefinitions>
+                            <SelectiveScrollingGrid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </SelectiveScrollingGrid.RowDefinitions>
+                            <DataGridCellsPresenter
+                                x:Name="PART_CellsPresenter"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ItemsPanel="{TemplateBinding ItemsPanel}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <DataGridDetailsPresenter
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                Visibility="{TemplateBinding DetailsVisibility}" />
+                            <DataGridRowHeader
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                        </SelectiveScrollingGrid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!--  Selected  -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.SelectedBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.ActiveSelectionBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.HoverSelectedBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.HoverBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsEnabled" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                                <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
+                                <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.DisabledSelectedBorderBrush), Mode=OneWay}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  Not-Selected (Alternating Row)  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="atc:ItemHelper.DisableAlternatingRowColoring" Value="False" />
+                                <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.AlternatingRowBackgroundBrush), Mode=OneWay}" />
+                        </MultiTrigger>
+
+                        <!--  Other  -->
+                        <Trigger Property="atc:ItemHelper.IsMouseLeftButtonPressed" Value="True">
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.MouseLeftButtonPressedBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}" />
+                        </Trigger>
+                        <Trigger Property="atc:ItemHelper.IsMouseRightButtonPressed" Value="True">
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.MouseRightButtonPressedBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="DGR_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="DGR_Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ItemHelper.DisabledBorderBrush), Mode=OneWay}" />
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Setter Property="ValidationErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <TextBlock
+                        Margin="2,0,0,0"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource AtcApps.Brushes.Control.Validation}"
+                        Text="!" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="atc:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="atc:ItemHelper.ActiveSelectionBorderBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+        <Setter Property="atc:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Setter Property="atc:ItemHelper.AlternatingRowBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.SystemControlBackgroundListLow}" />
+        <Setter Property="atc:ItemHelper.DisabledBorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+        <Setter Property="atc:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+        <Setter Property="atc:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+        <Setter Property="atc:ItemHelper.DisabledSelectedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+        <Setter Property="atc:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Setter Property="atc:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+        <Setter Property="atc:ItemHelper.HoverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+        <Setter Property="atc:ItemHelper.HoverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="atc:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="atc:ItemHelper.HoverSelectedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+        <Setter Property="atc:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Setter Property="atc:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent2}" />
+        <Setter Property="atc:ItemHelper.SelectedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+        <Setter Property="atc:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+    </Style>
+
+    <!--  DataGrid  -->
+    <Style x:Key="AtcApps.Styles.DataGrid" TargetType="{x:Type DataGrid}">
+        <Setter Property="AlternatingRowBackground" Value="Transparent" />
+        <Setter Property="AlternationCount" Value="2" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.ListView.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CellStyle" Value="{StaticResource AtcApps.Styles.DataGridCell}" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource AtcApps.Styles.DataGridColumnHeader}" />
+        <Setter Property="DropLocationIndicatorStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type Separator}">
+                    <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.AccentBase}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Separator}">
+                                <Rectangle Width="2" Fill="{TemplateBinding Background}" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="EnableColumnVirtualization" Value="True" />
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource AtcApps.Brushes.ListView.Border}" />
+        <Setter Property="MinRowHeight" Value="25" />
+        <Setter Property="RowHeaderStyle" Value="{StaticResource AtcApps.Styles.DataGridRowHeader}" />
+        <Setter Property="RowStyle" Value="{StaticResource AtcApps.Styles.DataGridRow}" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGrid}">
+                    <Border
+                        x:Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ScrollViewer
+                            x:Name="DG_ScrollViewer"
+                            Focusable="False"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ScrollViewer.Template>
+                                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Button
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                            Command="{x:Static DataGrid.SelectAllCommand}"
+                                            Focusable="False"
+                                            Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
+                                                                                          TypeInTargetAssembly={x:Type DataGrid}}}"
+                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+
+                                        <DataGridColumnHeadersPresenter
+                                            x:Name="PART_ColumnHeadersPresenter"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+
+                                        <ScrollContentPresenter
+                                            x:Name="PART_ScrollContentPresenter"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            CanContentScroll="{TemplateBinding CanContentScroll}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
+                                        <ScrollBar
+                                            x:Name="PART_VerticalScrollBar"
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            Maximum="{TemplateBinding ScrollableHeight}"
+                                            Orientation="Vertical"
+                                            ViewportSize="{TemplateBinding ViewportHeight}"
+                                            Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                            Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                        <Grid Grid.Row="2" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <ScrollBar
+                                                x:Name="PART_HorizontalScrollBar"
+                                                Grid.Column="1"
+                                                Maximum="{TemplateBinding ScrollableWidth}"
+                                                Orientation="Horizontal"
+                                                ViewportSize="{TemplateBinding ViewportWidth}"
+                                                Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </ScrollViewer.Template>
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray9}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource AtcApps.Brushes.ListView.Border}" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizingWhenGrouping" Value="True" />
+        <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="atc:ItemHelper.AlternatingRowBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.SystemControlBackgroundListLow}" />
+        <Setter Property="atc:ItemHelper.DisableAlternatingRowColoring" Value="False" />
+    </Style>
+
+</ResourceDictionary>
