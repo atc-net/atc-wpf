@@ -183,4 +183,16 @@
   <data name="ValueShouldBeAInteger" xml:space="preserve">
     <value>Value should be a integer</value>
   </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Password is too short</value>
+  </data>
+  <data name="PasswordNeedsMixedCase" xml:space="preserve">
+    <value>Password must contain upper and lower case letters</value>
+  </data>
+  <data name="PasswordNeedsDigit" xml:space="preserve">
+    <value>Password must contain at least one digit</value>
+  </data>
+  <data name="PasswordNeedsSpecialChar" xml:space="preserve">
+    <value>Password must contain at least one special character</value>
+  </data>
 </root>

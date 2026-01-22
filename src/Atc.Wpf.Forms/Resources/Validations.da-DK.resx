@@ -183,4 +183,16 @@
   <data name="InvalidHttpsUrl" xml:space="preserve">
     <value>Ugyldig HTTPS webadresse</value>
   </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Adgangskoden er for kort</value>
+  </data>
+  <data name="PasswordNeedsMixedCase" xml:space="preserve">
+    <value>Adgangskoden skal indeholde store og små bogstaver</value>
+  </data>
+  <data name="PasswordNeedsDigit" xml:space="preserve">
+    <value>Adgangskoden skal indeholde mindst ét tal</value>
+  </data>
+  <data name="PasswordNeedsSpecialChar" xml:space="preserve">
+    <value>Adgangskoden skal indeholde mindst ét specialtegn</value>
+  </data>
 </root>

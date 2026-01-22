@@ -183,4 +183,16 @@
   <data name="InvalidHttpsUrl" xml:space="preserve">
     <value>Ungültige HTTPS-URL</value>
   </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Passwort ist zu kurz</value>
+  </data>
+  <data name="PasswordNeedsMixedCase" xml:space="preserve">
+    <value>Passwort muss Groß- und Kleinbuchstaben enthalten</value>
+  </data>
+  <data name="PasswordNeedsDigit" xml:space="preserve">
+    <value>Passwort muss mindestens eine Ziffer enthalten</value>
+  </data>
+  <data name="PasswordNeedsSpecialChar" xml:space="preserve">
+    <value>Passwort muss mindestens ein Sonderzeichen enthalten</value>
+  </data>
 </root>
