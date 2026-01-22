@@ -19,6 +19,7 @@ Use this table to quickly identify which panel best suits your layout needs:
 | [Panel](#-panel-wpf-built-in) | WPF | Base class for custom panels | N/A | ❌ No | ❌ No | ❌ No | ❌ No |
 | [PanelEx](#-panelex) | Atc.Wpf | Layered/overlay content | Overlay | ❌ No | ❌ No | ❌ No | ❌ No |
 | [ReversibleStackPanel](#-reversiblestackpanel) | Atc.Wpf | Reversible stacking | Row/Column | ❌ No | ❌ No | ❌ No | ❌ No |
+| [ResponsivePanel](#-responsivepanel) | Atc.Wpf | Breakpoint-based responsive | Row | ✅ Yes | ✅ Yes | ❌ No | ❌ No |
 | [StackPanel](#-stackpanel-wpf-built-in) | WPF | Simple stacking | Row/Column | ❌ No | ❌ No | ❌ No | ❌ No |
 | [StaggeredPanel](#-staggeredpanel) | Atc.Wpf | Masonry/waterfall layout | Vertical columns | Auto | ✅ Yes | ❌ No | ❌ No |
 | [UniformGrid](#-uniformgrid-wpf-built-in) | WPF | Equal-sized cells | Row/Column | ❌ No | ❌ No | ✅ Yes | ❌ No |
@@ -61,6 +62,7 @@ Use this table to quickly identify which panel best suits your layout needs:
 | Complex form with rows/columns | **Grid** or **AutoGrid** | Precise cell positioning |
 | Quick prototype grid | **AutoGrid** | Auto-indexing saves time |
 | Responsive Bootstrap-style layout | **Row / Col** | Breakpoint-based columns |
+| Responsive cards with visibility control | **ResponsivePanel** | Auto columns + hide/show at breakpoints |
 | Navigation bar: logo left, menu right | **FlexPanel** | `JustifyContent="SpaceBetween"` |
 | IDE-style resizable tool windows | **DockPanelPro** | Built-in splitters + collapse |
 | Layered content / overlays | **PanelEx** | Children stack on top of each other |
@@ -453,6 +455,103 @@ public class SimpleOverlayPanel : Panel
     <TextBlock Text="Message 3" />
 </layouts:ReversibleStackPanel>
 ```
+
+---
+
+### 🟢 ResponsivePanel
+
+**Location:** `Atc.Wpf.Controls.Layouts`
+
+**Description:** A responsive layout panel that adapts its column count based on available width using configurable breakpoints. Supports auto-calculated columns, explicit column counts per breakpoint, visibility control, and item reordering.
+
+**When to Use:**
+- Responsive card/tile layouts
+- Dashboards that adapt to screen size
+- Layouts requiring visibility control at breakpoints
+- Mobile-first or desktop-first responsive designs
+
+**Breakpoints:**
+
+| Breakpoint | Width Range | Typical Device |
+|------------|-------------|----------------|
+| `Xs` | < 576px | Small phones |
+| `Sm` | 576px - 767px | Phones, small tablets |
+| `Md` | 768px - 991px | Tablets |
+| `Lg` | 992px - 1199px | Small laptops |
+| `Xl` | >= 1200px | Desktops, large screens |
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| Gap | double | 0 | Uniform gap between items |
+| RowGap | double | NaN | Vertical gap (overrides Gap) |
+| ColumnGap | double | NaN | Horizontal gap (overrides Gap) |
+| MinItemWidth | double | NaN | Auto-calculate columns from this width |
+| ColumnsXs | int | 1 | Columns at XS breakpoint |
+| ColumnsSm | int | 2 | Columns at SM breakpoint |
+| ColumnsMd | int | 3 | Columns at MD breakpoint |
+| ColumnsLg | int | 4 | Columns at LG breakpoint |
+| ColumnsXl | int | 6 | Columns at XL breakpoint |
+
+**Attached Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| SpanXs/Sm/Md/Lg/Xl | int | Column span at each breakpoint |
+| VisibleFrom | ResponsiveBreakpoint? | Show at this breakpoint and larger |
+| HiddenFrom | ResponsiveBreakpoint? | Hide at this breakpoint and larger |
+| OrderXs/Sm/Md/Lg/Xl | int | Display order at each breakpoint |
+
+**Examples:**
+
+```xml
+<!-- Example 1: Auto column count -->
+<layouts:ResponsivePanel MinItemWidth="280" Gap="16">
+    <Border Background="LightBlue" Height="100" />
+    <Border Background="LightGreen" Height="100" />
+    <Border Background="LightCoral" Height="100" />
+</layouts:ResponsivePanel>
+
+<!-- Example 2: Explicit column counts -->
+<layouts:ResponsivePanel
+    ColumnsXs="1"
+    ColumnsSm="2"
+    ColumnsMd="3"
+    ColumnsLg="4"
+    Gap="16">
+    <Border Background="LightBlue" />
+    <Border Background="LightGreen" />
+</layouts:ResponsivePanel>
+
+<!-- Example 3: 12-column grid with spans -->
+<layouts:ResponsivePanel
+    ColumnsLg="12"
+    ColumnsMd="12"
+    Gap="16">
+    <Border
+        layouts:ResponsivePanel.SpanLg="4"
+        layouts:ResponsivePanel.SpanMd="12"
+        Background="LightBlue">
+        <TextBlock Text="Sidebar" />
+    </Border>
+    <Border
+        layouts:ResponsivePanel.SpanLg="8"
+        layouts:ResponsivePanel.SpanMd="12"
+        Background="LightGreen">
+        <TextBlock Text="Main Content" />
+    </Border>
+</layouts:ResponsivePanel>
+
+<!-- Example 4: Visibility control -->
+<layouts:ResponsivePanel ColumnsLg="4" Gap="16">
+    <Border Background="LightBlue" />
+    <Border layouts:ResponsivePanel.VisibleFrom="Lg" Background="LightGreen" />
+    <Border layouts:ResponsivePanel.HiddenFrom="Md" Background="LightCoral" />
+</layouts:ResponsivePanel>
+```
+
+**See Also:** [Full ResponsivePanel Documentation](../src/Atc.Wpf.Controls/Layouts/ResponsivePanel_Readme.md)
 
 ---
 
@@ -1222,7 +1321,7 @@ public class SimpleOverlayPanel : Panel
 
 | Category | Count | Key Controls |
 |----------|-------|--------------|
-| 📦 Panels | 13 | FlexPanel, PanelEx, StaggeredPanel, UniformSpacingPanel |
+| 📦 Panels | 14 | FlexPanel, PanelEx, ResponsivePanel, StaggeredPanel, UniformSpacingPanel |
 | 🔲 Grids | 4 | AutoGrid, GridEx, Row/Col |
 | 🎨 Containers | 7 | Badge, Card, Chip, GroupBoxExpander |
 
