@@ -1,187 +1,217 @@
-# WellKnownColorPicker
+# 🎨 WellKnownColorPicker
 
-The `WellKnownColorPicker` control can render a list of color defined as `well known` by a alias name.
+A color picker control that displays a list of well-known named colors for easy selection.
 
-## Example for WellKnownColorPicker usages
+## 🔍 Overview
 
-```xml
-<WellKnownColorPicker ShowOnlyBasicColors="False" />
+`WellKnownColorPicker` renders a visual list of colors defined by their standard names (like "Red", "Blue", "ForestGreen"). Users can select from a curated set of basic colors or the full range of 140+ named colors.
+
+## 📍 Namespace
+
+```csharp
+using Atc.Wpf.Controls.ColorEditing;
 ```
 
-## Properties
+## 🚀 Usage
 
-| Property            | Type        | Description                      |
-|---------------------|-------------|----------------------------------|
-| ShowOnlyBasicColors | bool        | If `true`, limit to basic color  |
+### Basic Example
 
-## Basic Color Codes
+```xml
+<!-- Show all well-known colors -->
+<atc:WellKnownColorPicker />
 
-| Color-Key | Hex code |
-|-|-|
-| White | 0xFFFFFFFF |
-| Silver | 0xFFC0C0C0 |
-| Gray | 0xFF808080 |
-| Black | 0xFF000000 |
-| Red | 0xFFFF0000 |
-| Maroon | 0xFF800000 |
-| Yellow | 0xFFFFFF00 |
-| Olive | 0xFF808000 |
-| Lime | 0xFF00FF00 |
-| Green | 0xFF008000 |
-| Aqua | 0xFF00FFFF |
-| Teal | 0xFF008080 |
-| Blue | 0xFF0000FF |
-| Navy | 0xFF000080 |
-| Fuchsia | 0xFFFF00FF |
-| Purple | 0xFF800080 |
+<!-- Show only basic colors (16 colors) -->
+<atc:WellKnownColorPicker ShowOnlyBasicColors="True" />
+```
 
-## Color Codes
+### With Data Binding
 
-| Color-Key | Hex code |
-|-|-|
-| AliceBlue | 0xFFF0F8FF |
-| AntiqueWhite | 0xFFFAEBD7 |
-| Aqua | 0xFF00FFFF |
-| Aquamarine | 0xFF7FFFD4 |
-| Azure | 0xFFF0FFFF |
-| Beige | 0xFFF5F5DC |
-| Bisque | 0xFFFFE4C4 |
-| Black | 0xFF000000 |
-| BlanchedAlmond | 0xFFFFEBCD |
-| Blue | 0xFF0000FF |
-| BlueViolet | 0xFF8A2BE2 |
-| Brown | 0xFFA52A2A |
-| BurlyWood | 0xFFDEB887 |
-| CadetBlue | 0xFF5F9EA0 |
-| Chartreuse | 0xFF7FFF00 |
-| Chocolate | 0xFFD2691E |
-| Coral | 0xFFFF7F50 |
-| CornflowerBlue | 0xFF6495ED |
-| Cornsilk | 0xFFFFF8DC |
-| Crimson | 0xFFDC143C |
-| Cyan | 0xFF00FFFF |
-| DarkBlue | 0xFF00008B |
-| DarkCyan | 0xFF008B8B |
-| DarkGoldenrod | 0xFFB8860B |
-| DarkGray | 0xFFA9A9A9 |
-| DarkGreen | 0xFF006400 |
-| DarkKhaki | 0xFFBDB76B |
-| DarkMagenta | 0xFF8B008B |
-| DarkOliveGreen | 0xFF556B2F |
-| DarkOrange | 0xFFFF8C00 |
-| DarkOrchid | 0xFF9932CC |
-| DarkRed | 0xFF8B0000 |
-| DarkSalmon | 0xFFE9967A |
-| DarkSeaGreen | 0xFF8FBC8F |
-| DarkSlateBlue | 0xFF483D8B |
-| DarkSlateGray | 0xFF2F4F4F |
-| DarkTurquoise | 0xFF00CED1 |
-| DarkViolet | 0xFF9400D3 |
-| DeepPink | 0xFFFF1493 |
-| DeepSkyBlue | 0xFF00BFFF |
-| DimGray | 0xFF696969 |
-| DodgerBlue | 0xFF1E90FF |
-| Firebrick | 0xFFB22222 |
-| FloralWhite | 0xFFFFFAF0 |
-| ForestGreen | 0xFF228B22 |
-| Fuchsia | 0xFFFF00FF |
-| Gainsboro | 0xFFDCDCDC |
-| GhostWhite | 0xFFF8F8FF |
-| Gold | 0xFFFFD700 |
-| Goldenrod | 0xFFDAA520 |
-| Gray | 0xFF808080 |
-| Green | 0xFF008000 |
-| GreenYellow | 0xFFADFF2F |
-| Honeydew | 0xFFF0FFF0 |
-| HotPink | 0xFFFF69B4 |
-| IndianRed | 0xFFCD5C5C |
-| Indigo | 0xFF4B0082 |
-| Ivory | 0xFFFFFFF0 |
-| Khaki | 0xFFF0E68C |
-| Lavender | 0xFFE6E6FA |
-| LavenderBlush | 0xFFFFF0F5 |
-| LawnGreen | 0xFF7CFC00 |
-| LemonChiffon | 0xFFFFFACD |
-| LightBlue | 0xFFADD8E6 |
-| LightCoral | 0xFFF08080 |
-| LightCyan | 0xFFE0FFFF |
-| LightGoldenrodYellow | 0xFFFAFAD2 |
-| LightGreen | 0xFF90EE90 |
-| LightGray | 0xFFD3D3D3 |
-| LightPink | 0xFFFFB6C1 |
-| LightSalmon | 0xFFFFA07A |
-| LightSeaGreen | 0xFF20B2AA |
-| LightSkyBlue | 0xFF87CEFA |
-| LightSlateGray | 0xFF778899 |
-| LightSteelBlue | 0xFFB0C4DE |
-| LightYellow | 0xFFFFFFE0 |
-| Lime | 0xFF00FF00 |
-| LimeGreen | 0xFF32CD32 |
-| Linen | 0xFFFAF0E6 |
-| Magenta | 0xFFFF00FF |
-| Maroon | 0xFF800000 |
-| MediumAquamarine | 0xFF66CDAA |
-| MediumBlue | 0xFF0000CD |
-| MediumOrchid | 0xFFBA55D3 |
-| MediumPurple | 0xFF9370DB |
-| MediumSeaGreen | 0xFF3CB371 |
-| MediumSlateBlue | 0xFF7B68EE |
-| MediumSpringGreen | 0xFF00FA9A |
-| MediumTurquoise | 0xFF48D1CC |
-| MediumVioletRed | 0xFFC71585 |
-| MidnightBlue | 0xFF191970 |
-| MintCream | 0xFFF5FFFA |
-| MistyRose | 0xFFFFE4E1 |
-| Moccasin | 0xFFFFE4B5 |
-| NavajoWhite | 0xFFFFDEAD |
-| Navy | 0xFF000080 |
-| OldLace | 0xFFFDF5E6 |
-| Olive | 0xFF808000 |
-| OliveDrab | 0xFF6B8E23 |
-| Orange | 0xFFFFA500 |
-| OrangeRed | 0xFFFF4500 |
-| Orchid | 0xFFDA70D6 |
-| PaleGoldenrod | 0xFFEEE8AA |
-| PaleGreen | 0xFF98FB98 |
-| PaleTurquoise | 0xFFAFEEEE |
-| PaleVioletRed | 0xFFDB7093 |
-| PapayaWhip | 0xFFFFEFD5 |
-| PeachPuff | 0xFFFFDAB9 |
-| Peru | 0xFFCD853F |
-| Pink | 0xFFFFC0CB |
-| Plum | 0xFFDDA0DD |
-| PowderBlue | 0xFFB0E0E6 |
-| Purple | 0xFF800080 |
-| Red | 0xFFFF0000 |
-| RosyBrown | 0xFFBC8F8F |
-| RoyalBlue | 0xFF4169E1 |
-| SaddleBrown | 0xFF8B4513 |
-| Salmon | 0xFFFA8072 |
-| SandyBrown | 0xFFF4A460 |
-| SeaGreen | 0xFF2E8B57 |
-| SeaShell | 0xFFFFF5EE |
-| Sienna | 0xFFA0522D |
-| Silver | 0xFFC0C0C0 |
-| SkyBlue | 0xFF87CEEB |
-| SlateBlue | 0xFF6A5ACD |
-| SlateGray | 0xFF708090 |
-| Snow | 0xFFFFFAFA |
-| SpringGreen | 0xFF00FF7F |
-| SteelBlue | 0xFF4682B4 |
-| Tan | 0xFFD2B48C |
-| Teal | 0xFF008080 |
-| Thistle | 0xFFD8BFD8 |
-| Tomato | 0xFFFF6347 |
-| Transparent | 0x00FFFFFF |
-| Turquoise | 0xFF40E0D0 |
-| Violet | 0xFFEE82EE |
-| Wheat | 0xFFF5DEB3 |
-| White | 0xFFFFFFFF |
-| WhiteSmoke | 0xFFF5F5F5 |
-| Yellow | 0xFFFFFF00 |
-| YellowGreen | 0xFF9ACD32 |
+```xml
+<atc:WellKnownColorPicker
+    SelectedColor="{Binding SelectedColor}"
+    ShowOnlyBasicColors="False" />
+```
 
-## Notes
+## ⚙️ Properties
 
-Cyan and Aqua has the same hex code (#FF00FFFF)
-Magenta and Fuchsia has the same hex code (#0xFFFF00FF)
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `ShowOnlyBasicColors` | `bool` | `false` | Limit display to 16 basic colors |
+| `SelectedColor` | `Color?` | `null` | Currently selected color |
+
+## 🎨 Basic Colors (16)
+
+When `ShowOnlyBasicColors="True"`, only these colors are shown:
+
+| Color | Hex Code | | Color | Hex Code |
+|-------|----------|--|-------|----------|
+| ⬜ White | `#FFFFFF` | | 🔴 Red | `#FF0000` |
+| 🔘 Silver | `#C0C0C0` | | 🟤 Maroon | `#800000` |
+| ⚫ Gray | `#808080` | | 🟡 Yellow | `#FFFF00` |
+| ⬛ Black | `#000000` | | 🫒 Olive | `#808000` |
+| 🟢 Lime | `#00FF00` | | 🔵 Blue | `#0000FF` |
+| 🌲 Green | `#008000` | | 🔷 Navy | `#000080` |
+| 🩵 Aqua | `#00FFFF` | | 🩷 Fuchsia | `#FF00FF` |
+| 🌊 Teal | `#008080` | | 🟣 Purple | `#800080` |
+
+## 🌈 All Colors (140+)
+
+When `ShowOnlyBasicColors="False"` (default), all 140+ named colors are available, including:
+
+<details>
+<summary>Click to expand full color list</summary>
+
+| Color | Hex Code |
+|-------|----------|
+| AliceBlue | `#F0F8FF` |
+| AntiqueWhite | `#FAEBD7` |
+| Aqua | `#00FFFF` |
+| Aquamarine | `#7FFFD4` |
+| Azure | `#F0FFFF` |
+| Beige | `#F5F5DC` |
+| Bisque | `#FFE4C4` |
+| Black | `#000000` |
+| BlanchedAlmond | `#FFEBCD` |
+| Blue | `#0000FF` |
+| BlueViolet | `#8A2BE2` |
+| Brown | `#A52A2A` |
+| BurlyWood | `#DEB887` |
+| CadetBlue | `#5F9EA0` |
+| Chartreuse | `#7FFF00` |
+| Chocolate | `#D2691E` |
+| Coral | `#FF7F50` |
+| CornflowerBlue | `#6495ED` |
+| Cornsilk | `#FFF8DC` |
+| Crimson | `#DC143C` |
+| Cyan | `#00FFFF` |
+| DarkBlue | `#00008B` |
+| DarkCyan | `#008B8B` |
+| DarkGoldenrod | `#B8860B` |
+| DarkGray | `#A9A9A9` |
+| DarkGreen | `#006400` |
+| DarkKhaki | `#BDB76B` |
+| DarkMagenta | `#8B008B` |
+| DarkOliveGreen | `#556B2F` |
+| DarkOrange | `#FF8C00` |
+| DarkOrchid | `#9932CC` |
+| DarkRed | `#8B0000` |
+| DarkSalmon | `#E9967A` |
+| DarkSeaGreen | `#8FBC8F` |
+| DarkSlateBlue | `#483D8B` |
+| DarkSlateGray | `#2F4F4F` |
+| DarkTurquoise | `#00CED1` |
+| DarkViolet | `#9400D3` |
+| DeepPink | `#FF1493` |
+| DeepSkyBlue | `#00BFFF` |
+| DimGray | `#696969` |
+| DodgerBlue | `#1E90FF` |
+| Firebrick | `#B22222` |
+| FloralWhite | `#FFFAF0` |
+| ForestGreen | `#228B22` |
+| Fuchsia | `#FF00FF` |
+| Gainsboro | `#DCDCDC` |
+| GhostWhite | `#F8F8FF` |
+| Gold | `#FFD700` |
+| Goldenrod | `#DAA520` |
+| Gray | `#808080` |
+| Green | `#008000` |
+| GreenYellow | `#ADFF2F` |
+| Honeydew | `#F0FFF0` |
+| HotPink | `#FF69B4` |
+| IndianRed | `#CD5C5C` |
+| Indigo | `#4B0082` |
+| Ivory | `#FFFFF0` |
+| Khaki | `#F0E68C` |
+| Lavender | `#E6E6FA` |
+| LavenderBlush | `#FFF0F5` |
+| LawnGreen | `#7CFC00` |
+| LemonChiffon | `#FFFACD` |
+| LightBlue | `#ADD8E6` |
+| LightCoral | `#F08080` |
+| LightCyan | `#E0FFFF` |
+| LightGoldenrodYellow | `#FAFAD2` |
+| LightGreen | `#90EE90` |
+| LightGray | `#D3D3D3` |
+| LightPink | `#FFB6C1` |
+| LightSalmon | `#FFA07A` |
+| LightSeaGreen | `#20B2AA` |
+| LightSkyBlue | `#87CEFA` |
+| LightSlateGray | `#778899` |
+| LightSteelBlue | `#B0C4DE` |
+| LightYellow | `#FFFFE0` |
+| Lime | `#00FF00` |
+| LimeGreen | `#32CD32` |
+| Linen | `#FAF0E6` |
+| Magenta | `#FF00FF` |
+| Maroon | `#800000` |
+| MediumAquamarine | `#66CDAA` |
+| MediumBlue | `#0000CD` |
+| MediumOrchid | `#BA55D3` |
+| MediumPurple | `#9370DB` |
+| MediumSeaGreen | `#3CB371` |
+| MediumSlateBlue | `#7B68EE` |
+| MediumSpringGreen | `#00FA9A` |
+| MediumTurquoise | `#48D1CC` |
+| MediumVioletRed | `#C71585` |
+| MidnightBlue | `#191970` |
+| MintCream | `#F5FFFA` |
+| MistyRose | `#FFE4E1` |
+| Moccasin | `#FFE4B5` |
+| NavajoWhite | `#FFDEAD` |
+| Navy | `#000080` |
+| OldLace | `#FDF5E6` |
+| Olive | `#808000` |
+| OliveDrab | `#6B8E23` |
+| Orange | `#FFA500` |
+| OrangeRed | `#FF4500` |
+| Orchid | `#DA70D6` |
+| PaleGoldenrod | `#EEE8AA` |
+| PaleGreen | `#98FB98` |
+| PaleTurquoise | `#AFEEEE` |
+| PaleVioletRed | `#DB7093` |
+| PapayaWhip | `#FFEFD5` |
+| PeachPuff | `#FFDAB9` |
+| Peru | `#CD853F` |
+| Pink | `#FFC0CB` |
+| Plum | `#DDA0DD` |
+| PowderBlue | `#B0E0E6` |
+| Purple | `#800080` |
+| Red | `#FF0000` |
+| RosyBrown | `#BC8F8F` |
+| RoyalBlue | `#4169E1` |
+| SaddleBrown | `#8B4513` |
+| Salmon | `#FA8072` |
+| SandyBrown | `#F4A460` |
+| SeaGreen | `#2E8B57` |
+| SeaShell | `#FFF5EE` |
+| Sienna | `#A0522D` |
+| Silver | `#C0C0C0` |
+| SkyBlue | `#87CEEB` |
+| SlateBlue | `#6A5ACD` |
+| SlateGray | `#708090` |
+| Snow | `#FFFAFA` |
+| SpringGreen | `#00FF7F` |
+| SteelBlue | `#4682B4` |
+| Tan | `#D2B48C` |
+| Teal | `#008080` |
+| Thistle | `#D8BFD8` |
+| Tomato | `#FF6347` |
+| Transparent | `#00FFFFFF` |
+| Turquoise | `#40E0D0` |
+| Violet | `#EE82EE` |
+| Wheat | `#F5DEB3` |
+| White | `#FFFFFF` |
+| WhiteSmoke | `#F5F5F5` |
+| Yellow | `#FFFF00` |
+| YellowGreen | `#9ACD32` |
+
+</details>
+
+## 📝 Notes
+
+- `Cyan` and `Aqua` share the same hex code (`#00FFFF`)
+- `Magenta` and `Fuchsia` share the same hex code (`#FF00FF`)
+
+## 🎮 Sample Application
+
+See the WellKnownColorPicker sample in the Atc.Wpf.Sample application under **Wpf.Controls > Colors > WellKnownColorPicker** for interactive examples.

@@ -1,65 +1,116 @@
-# PanelHelper
+# 🔧 PanelHelper
 
-The `PanelHelper` enhances the functionality of WPF Panel controls and any controls
-derived from the `Panel` class. It serves as a versatile extension, offering additional
-capabilities and utilities to streamline the management and manipulation of panel layouts
-within your applications.
+A helper class that adds spacing capabilities to any WPF Panel control through attached properties.
 
-## Supported Controls
+## 🔍 Overview
 
-`PanelHelper` seamlessly integrates with a variety of panel controls in 
-the WPF framework, including but not limited to:
+`PanelHelper` enhances the functionality of WPF Panel controls by providing attached properties for uniform spacing between child elements. It works with any control derived from the `Panel` class, allowing you to add consistent spacing without creating custom panels.
 
-- Grid
-- GridEx
-- DockPanel
-- PanelEx
-- StackPanel
-- StaggeredPanel
-- TabPanel
-- UniformSpacingPanel
-- WrapPanel
+## 📍 Namespace
 
-## Example for PanelHelper usages
+```csharp
+using Atc.Wpf.Helpers;
+```
+
+## ✅ Supported Controls
+
+`PanelHelper` seamlessly integrates with all WPF panel controls:
+
+- 📦 Grid / GridEx
+- 📦 DockPanel
+- 📦 StackPanel
+- 📦 WrapPanel
+- 📦 UniformGrid
+- 📦 TabPanel
+- 📦 StaggeredPanel
+- 📦 UniformSpacingPanel
+- 📦 PanelEx
+- 📦 Any custom `Panel` derivative
+
+## 🚀 Usage
+
+### Separate Horizontal and Vertical Spacing
 
 ```xml
-<!-- Example: Set the horizontal spacing to 15 and vertical spacing to 20. -->
 <WrapPanel
-   atc:PanelHelper.HorizontalSpacing="15"
-   atc:PanelHelper.VerticalSpacing="20">
-
-   <!-- panel content -->
-
+    atc:PanelHelper.HorizontalSpacing="15"
+    atc:PanelHelper.VerticalSpacing="20">
+    <Button Content="Item 1" />
+    <Button Content="Item 2" />
+    <Button Content="Item 3" />
 </WrapPanel>
 ```
 
+### Uniform Spacing (Both Directions)
+
 ```xml
-<!-- Example: Set the horizontal and vertical spacing to 10. -->
-<WrapPanel
-   atc:PanelHelper.Spacing="10">
-
-   <!-- panel content -->
-
+<WrapPanel atc:PanelHelper.Spacing="10">
+    <Button Content="Item 1" />
+    <Button Content="Item 2" />
+    <Button Content="Item 3" />
 </WrapPanel>
 ```
 
-## The equvalent example with UniformSpacingPanel usages
+### With StackPanel
 
 ```xml
-<!-- Example: Set the horizontal spacing to 15 and vertical spacing to 20. -->
-<UniformSpacingPanel
-   HorizontalSpacing="15"
-   VerticalSpacing="20">
-
-   <!-- panel content -->
-
-</UniformSpacingPanel>
+<StackPanel
+    Orientation="Vertical"
+    atc:PanelHelper.Spacing="8">
+    <TextBox PlaceholderText="Name" />
+    <TextBox PlaceholderText="Email" />
+    <Button Content="Submit" />
+</StackPanel>
 ```
 
-## Properties
+### With Grid
 
-| Property          | Type        | Description                                                           |
-|-------------------|-------------|-----------------------------------------------------------------------|
-| HorizontalSpacing | double      | Set the horizontal spacing between the panel's items                  |
-| VerticalSpacing   | double      | Set the vertical spacing between the panel's items                    |
-| Spacing           | double      | Set both the  horizontal & vertical spacing between the panel's items |
+```xml
+<Grid atc:PanelHelper.Spacing="10">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Button Grid.Column="0" Content="Left" />
+    <Button Grid.Column="1" Content="Right" />
+</Grid>
+```
+
+## 🔄 Alternative: UniformSpacingPanel
+
+For dedicated spacing control, you can also use `UniformSpacingPanel`:
+
+```xml
+<!-- Using PanelHelper -->
+<WrapPanel
+    atc:PanelHelper.HorizontalSpacing="15"
+    atc:PanelHelper.VerticalSpacing="20">
+    <!-- content -->
+</WrapPanel>
+
+<!-- Using UniformSpacingPanel -->
+<atc:UniformSpacingPanel
+    HorizontalSpacing="15"
+    VerticalSpacing="20"
+    ChildWrapping="Wrap">
+    <!-- content -->
+</atc:UniformSpacingPanel>
+```
+
+## ⚙️ Attached Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `PanelHelper.HorizontalSpacing` | `double` | Horizontal spacing between items |
+| `PanelHelper.VerticalSpacing` | `double` | Vertical spacing between items |
+| `PanelHelper.Spacing` | `double` | Uniform spacing (sets both horizontal and vertical) |
+
+## 📝 Notes
+
+- `Spacing` sets both `HorizontalSpacing` and `VerticalSpacing` at once
+- Individual `HorizontalSpacing` or `VerticalSpacing` values override `Spacing`
+- Works by applying margins to child elements
+
+## 🎮 Sample Application
+
+See the PanelHelper sample in the Atc.Wpf.Sample application under **Wpf > Helpers > PanelHelper** for interactive examples.

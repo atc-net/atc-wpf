@@ -1,69 +1,100 @@
-# SvgImage
+# 🖼️ SvgImage
 
-The `SvgImage` control is a control that can render a SVG drawing as image.
+A control that renders SVG (Scalable Vector Graphics) drawings as images in WPF.
 
-## Example for SvgImage usages
+## 🔍 Overview
+
+`SvgImage` is a WPF control that loads and displays SVG files with support for various sizing modes, color overrides, and animations. It provides a simple way to use vector graphics in your WPF applications.
+
+## 📍 Namespace
+
+```csharp
+using Atc.Wpf.Controls.Media;
+```
+
+## 🚀 Usage
+
+### Basic Example
 
 ```xml
 <atc:SvgImage
-    ControlSizeType="ControlSizeType.ContentToSizeStretch"
-    Source="/Atc.Wpf.Sample;component/Assets/eggeaster.svg" />
+    ControlSizeType="ContentToSizeStretch"
+    Source="/Atc.Wpf.Sample;component/Assets/icon.svg" />
 ```
 
-| Enum ControlSizeType   | Description |
-|------------------------|-------------|
-| None                   | The image is not scaled. The image location is translated so the top left corner of the image bounding box is moved to the top left corner of the image control. |
-| ContentToSizeNoStretch | The image is scaled to fit the control without any stretching. Either X or Y direction will be scaled to fill the entire width or height. |
-| ContentToSizeStretch   | The image will be stretched to fill the entire width and height. |
-| SizeToContent          | The control will be resized to fit the un-scaled image. If the image is larger than the maximum size for the control, the control is set to maximum size and the image is scaled. |
+### 🎨 With Color Override
 
-## Properties
+```xml
+<atc:SvgImage
+    Source="/MyApp;component/Assets/logo.svg"
+    OverrideColor="DodgerBlue"
+    ControlSizeType="ContentToSizeNoStretch" />
+```
 
-| Property            | Type        | Description                                                                       |
-|---------------------|-------------------------------------------------------------------------------------------------|
-| Background          | Brush       | Background brush                                                                  |
-| ControlSizeType     | ControlSizeType | How to stretched/resize/scale the drawing                                     |
-| Source              | string      | The relative URL - For assembly component, rember to set "Build action=Resource"  |
-| FileSource          | [TODO]      | [TODO] |
-| ImageSource         | [TODO]      | [TODO] |
-| UseAnimations       | [TODO]      | [TODO] |
-| OverrideColor       | [TODO]      | [TODO] |
-| OverrideStrokeColor | [TODO]      | [TODO] |
-| OverrideStrokeWidth | [TODO]      | [TODO] |
-| CustomBrushes       | [TODO]      | [TODO] |
-| ExternalFileLoader  | [TODO]      | [TODO] |
+### 📐 Different Size Modes
 
-## Methods
+```xml
+<!-- Stretch to fill -->
+<atc:SvgImage
+    Source="/MyApp;component/Assets/background.svg"
+    ControlSizeType="ContentToSizeStretch" />
 
-| Method              | Description                                                                               |
-|---------------------|-------------------------------------------------------------------------------------------|
-| SetImage            | Alternativ to `Source`, a method that by `string`, `Stream`, `Drawing` render the content |
+<!-- Maintain aspect ratio -->
+<atc:SvgImage
+    Source="/MyApp;component/Assets/icon.svg"
+    ControlSizeType="ContentToSizeNoStretch" />
 
-## Abbreviations
+<!-- Size control to image -->
+<atc:SvgImage
+    Source="/MyApp;component/Assets/badge.svg"
+    ControlSizeType="SizeToContent" />
+```
 
-SVG - Scalable Vector Graphics
+## ⚙️ Properties
 
-### W3C Specification for SVG
+| Property | Type | Description |
+|----------|------|-------------|
+| `Source` | `string` | Relative URL to SVG resource. Set "Build Action=Resource" for embedded files |
+| `ControlSizeType` | `ControlSizeType` | How to stretch/resize/scale the drawing |
+| `Background` | `Brush` | Background brush behind the SVG |
+| `OverrideColor` | `Color?` | Override all fill colors in the SVG |
+| `OverrideStrokeColor` | `Color?` | Override all stroke colors in the SVG |
+| `OverrideStrokeWidth` | `double?` | Override stroke width in the SVG |
+| `FileSource` | `string` | Path to external SVG file |
+| `ImageSource` | `ImageSource` | Pre-loaded image source |
+| `UseAnimations` | `bool` | Enable SVG animations |
+| `CustomBrushes` | `Dictionary` | Custom brush mappings |
+| `ExternalFileLoader` | `IExternalFileLoader` | Custom file loader for external resources |
 
-[W3C - Scalable Vector Graphics (SVG) Tiny 1.2 Specification](https://www.w3.org/TR/SVGTiny12)
+## 📋 ControlSizeType Enumeration
 
-| Section | Table of Contents |
-| ------- | ----------------- |
-| 1  | [Introduction](https://www.w3.org/TR/SVGTiny12/intro.html)
-| 2  | [Concepts](https://www.w3.org/TR/SVGTiny12/concepts.html)
-| 3  | [Rendering Model](https://www.w3.org/TR/SVGTiny12/render.html)
-| 4  | [Basic Data Types](https://www.w3.org/TR/SVGTiny12/types.html)
-| 5  | [Document Structure](https://www.w3.org/TR/SVGTiny12/struct.html)
-| 6  | [Styling](https://www.w3.org/TR/SVGTiny12/styling.html)
-| 7  | [Coordinate Systems, Transformations and Units](https://www.w3.org/TR/SVGTiny12/coords.html)
-| 8  | [Paths](http://www.w3.org/TR/SVGTiny12/paths.html)
-| 9  | [Basic Shapes](http://www.w3.org/TR/SVGTiny12/shapes.html)
-| 10 | [Text](https://www.w3.org/TR/SVGTiny12/text.html)
-| 11 | [Painting: Filling, Stroking, Colors and Paint Servers](https://www.w3.org/TR/SVGTiny12/painting.html)
-| 12 | [Multimedia](https://www.w3.org/TR/SVGTiny12/multimedia.html)
-| 13 | [Interactivity](https://www.w3.org/TR/SVGTiny12/interact.html)
-| 14 | [Linking](https://www.w3.org/TR/SVGTiny12/linking.html)
-| 15 | [Scripting](https://www.w3.org/TR/SVGTiny12/script.html)
-| 16 | [Animation](https://www.w3.org/TR/SVGTiny12/animate.html)
-| 17 | [Fonts](https://www.w3.org/TR/SVGTiny12/fonts.html)
-| 18 | [Metadata](https://www.w3.org/TR/SVGTiny12/metadata.html)
+| Value | Description |
+|-------|-------------|
+| `None` | Image is not scaled. Top-left corner aligned to control |
+| `ContentToSizeNoStretch` | Image scaled to fit without stretching (maintains aspect ratio) |
+| `ContentToSizeStretch` | Image stretched to fill entire width and height |
+| `SizeToContent` | Control resized to fit the un-scaled image |
+
+## 🔧 Methods
+
+| Method | Description |
+|--------|-------------|
+| `SetImage(string)` | Load SVG from a string path |
+| `SetImage(Stream)` | Load SVG from a stream |
+| `SetImage(Drawing)` | Set content from a Drawing object |
+
+## 📝 Notes
+
+- For embedded resources, set the SVG file's **Build Action** to `Resource`
+- SVG files are rendered as vector graphics, maintaining quality at any size
+- Color overrides apply to all matching elements in the SVG
+
+## 🔗 References
+
+**SVG** - Scalable Vector Graphics
+
+- [W3C SVG Tiny 1.2 Specification](https://www.w3.org/TR/SVGTiny12)
+
+## 🎮 Sample Application
+
+See the SvgImage sample in the Atc.Wpf.Sample application under **Wpf > Media > SvgImage** for interactive examples.

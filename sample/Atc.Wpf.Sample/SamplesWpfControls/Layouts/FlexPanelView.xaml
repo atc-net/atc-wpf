@@ -1,0 +1,261 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.FlexPanelView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="DemoBox" TargetType="{x:Type Border}">
+            <Setter Property="MinWidth" Value="60" />
+            <Setter Property="MinHeight" Value="40" />
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="8,4" />
+        </Style>
+        <Style
+            x:Key="BlueBox"
+            BasedOn="{StaticResource DemoBox}"
+            TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#3B82F6" />
+        </Style>
+        <Style
+            x:Key="GreenBox"
+            BasedOn="{StaticResource DemoBox}"
+            TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#22C55E" />
+        </Style>
+        <Style
+            x:Key="PurpleBox"
+            BasedOn="{StaticResource DemoBox}"
+            TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#A855F7" />
+        </Style>
+        <Style
+            x:Key="OrangeBox"
+            BasedOn="{StaticResource DemoBox}"
+            TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#F97316" />
+        </Style>
+        <Style
+            x:Key="PinkBox"
+            BasedOn="{StaticResource DemoBox}"
+            TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#EC4899" />
+        </Style>
+        <Style x:Key="LabelText" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style x:Key="OptionLabel" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid
+            Margin="10"
+            Columns="*"
+            Rows="Auto,Auto,Auto,Auto,Auto">
+
+            <!--  Control Panel  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Options">
+                <atc:UniformSpacingPanel HorizontalAlignment="Stretch" Spacing="20">
+                    <StackPanel Width="160">
+                        <TextBlock Style="{StaticResource OptionLabel}" Text="Direction" />
+                        <ComboBox x:Name="CbDirection" SelectedIndex="0">
+                            <ComboBoxItem Content="Row" />
+                            <ComboBoxItem Content="Column" />
+                            <ComboBoxItem Content="RowReverse" />
+                            <ComboBoxItem Content="ColumnReverse" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Width="160">
+                        <TextBlock Style="{StaticResource OptionLabel}" Text="JustifyContent" />
+                        <ComboBox x:Name="CbJustifyContent" SelectedIndex="0">
+                            <ComboBoxItem Content="Start" />
+                            <ComboBoxItem Content="End" />
+                            <ComboBoxItem Content="Center" />
+                            <ComboBoxItem Content="SpaceBetween" />
+                            <ComboBoxItem Content="SpaceAround" />
+                            <ComboBoxItem Content="SpaceEvenly" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Width="160">
+                        <TextBlock Style="{StaticResource OptionLabel}" Text="AlignItems" />
+                        <ComboBox x:Name="CbAlignItems" SelectedIndex="1">
+                            <ComboBoxItem Content="Auto" />
+                            <ComboBoxItem Content="Stretch" />
+                            <ComboBoxItem Content="Start" />
+                            <ComboBoxItem Content="End" />
+                            <ComboBoxItem Content="Center" />
+                            <ComboBoxItem Content="Baseline" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Width="160">
+                        <TextBlock Style="{StaticResource OptionLabel}" Text="Wrap" />
+                        <ComboBox x:Name="CbWrap" SelectedIndex="0">
+                            <ComboBoxItem Content="NoWrap" />
+                            <ComboBoxItem Content="Wrap" />
+                            <ComboBoxItem Content="WrapReverse" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <atc:LabelSlider
+                            x:Name="SliderGap"
+                            LabelText="Gap"
+                            Maximum="30"
+                            Minimum="0"
+                            Value="10" />
+                    </StackPanel>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <!--  Interactive Demo  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Interactive Demo">
+                <Border
+                    Height="150"
+                    Background="#1E293B"
+                    BorderBrush="#475569"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <atc:FlexPanel
+                        x:Name="DemoPanel"
+                        Margin="10"
+                        Gap="{Binding ElementName=SliderGap, Path=Value}">
+                        <Border Style="{StaticResource BlueBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="1" />
+                        </Border>
+                        <Border Style="{StaticResource GreenBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="2" />
+                        </Border>
+                        <Border Style="{StaticResource PurpleBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="3" />
+                        </Border>
+                        <Border Style="{StaticResource OrangeBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="4" />
+                        </Border>
+                        <Border Style="{StaticResource PinkBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="5" />
+                        </Border>
+                    </atc:FlexPanel>
+                </Border>
+            </GroupBox>
+
+            <!--  Grow Example  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Grow Property (1:2:1 ratio)">
+                <Border
+                    Height="80"
+                    Background="#1E293B"
+                    BorderBrush="#475569"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <atc:FlexPanel Margin="10" Gap="10">
+                        <Border atc:FlexPanel.Grow="1" Style="{StaticResource BlueBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Grow=1" />
+                        </Border>
+                        <Border atc:FlexPanel.Grow="2" Style="{StaticResource GreenBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Grow=2" />
+                        </Border>
+                        <Border atc:FlexPanel.Grow="1" Style="{StaticResource PurpleBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Grow=1" />
+                        </Border>
+                    </atc:FlexPanel>
+                </Border>
+            </GroupBox>
+
+            <!--  Wrap Example  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Wrap Example">
+                <Border
+                    Height="200"
+                    Background="#1E293B"
+                    BorderBrush="#475569"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <atc:FlexPanel
+                        Margin="10"
+                        Gap="10"
+                        Wrap="Wrap">
+                        <Border Width="120" Style="{StaticResource BlueBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 1" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource GreenBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 2" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource PurpleBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 3" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource OrangeBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 4" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource PinkBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 5" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource BlueBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 6" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource GreenBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 7" />
+                        </Border>
+                        <Border Width="120" Style="{StaticResource PurpleBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Item 8" />
+                        </Border>
+                    </atc:FlexPanel>
+                </Border>
+            </GroupBox>
+
+            <!--  AlignSelf Example  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="AlignSelf Example (within AlignItems=Stretch)">
+                <Border
+                    Height="120"
+                    Background="#1E293B"
+                    BorderBrush="#475569"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <atc:FlexPanel
+                        Margin="10"
+                        AlignItems="Stretch"
+                        Gap="10">
+                        <Border atc:FlexPanel.AlignSelf="Start" Style="{StaticResource BlueBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Start" />
+                        </Border>
+                        <Border atc:FlexPanel.AlignSelf="Center" Style="{StaticResource GreenBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Center" />
+                        </Border>
+                        <Border atc:FlexPanel.AlignSelf="End" Style="{StaticResource PurpleBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="End" />
+                        </Border>
+                        <Border atc:FlexPanel.AlignSelf="Stretch" Style="{StaticResource OrangeBox}">
+                            <TextBlock Style="{StaticResource LabelText}" Text="Stretch" />
+                        </Border>
+                    </atc:FlexPanel>
+                </Border>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>
