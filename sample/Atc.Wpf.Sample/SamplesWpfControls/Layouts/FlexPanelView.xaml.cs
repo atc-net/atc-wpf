@@ -1,10 +1,5 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.Layouts;
 
-using System.Windows.Controls;
-
-using Atc.Wpf.Controls;
-using Atc.Wpf.Controls.Layouts;
-
 public partial class FlexPanelView
 {
     public FlexPanelView()
