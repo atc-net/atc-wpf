@@ -17,6 +17,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Card.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Chip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Divider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Carousel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/DockPanelPro.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/FlexPanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/GroupBoxExpander.xaml" />
@@ -38,6 +39,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type dataDisplay:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type dataDisplay:Chip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type dataDisplay:Divider}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Carousel}" TargetType="{x:Type dataDisplay:Carousel}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.DockPanelPro}" TargetType="{x:Type layouts:DockPanelPro}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.DockRegion}" TargetType="{x:Type layouts:DockRegion}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.FlexPanel}" TargetType="{x:Type layouts:FlexPanel}" />

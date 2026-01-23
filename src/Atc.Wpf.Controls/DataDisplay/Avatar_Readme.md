@@ -1,18 +1,18 @@
-# Avatar
+# 👤 Avatar
 
 A control for displaying user profile pictures with fallback options for initials.
 
-## Overview
+## 🔍 Overview
 
 `Avatar` displays user profile pictures with intelligent fallback behavior. When no image is provided, it shows initials (auto-generated from the display name or explicitly set). The background color can be auto-generated from the user's name using a deterministic hash algorithm, ensuring consistent colors for the same user across the application.
 
-## Namespace
+## 📍 Namespace
 
 ```csharp
 using Atc.Wpf.Controls.Layouts;
 ```
 
-## Usage
+## 🚀 Usage
 
 ### Basic Avatar with Image
 
@@ -33,7 +33,7 @@ using Atc.Wpf.Controls.Layouts;
 <atc:Avatar Initials="AB" Size="Large" />
 ```
 
-### Avatar with Status Indicator
+### 🟢 Avatar with Status Indicator
 
 ```xml
 <atc:Avatar DisplayName="John Doe" Status="Online" Size="Large" />
@@ -43,7 +43,7 @@ using Atc.Wpf.Controls.Layouts;
 <atc:Avatar DisplayName="Sam Davis" Status="Offline" Size="Large" />
 ```
 
-### Avatar with Custom Styling
+### 🎨 Avatar with Custom Styling
 
 ```xml
 <!-- Custom background color -->
@@ -56,7 +56,7 @@ using Atc.Wpf.Controls.Layouts;
 <atc:Avatar DisplayName="Rounded" CornerRadius="12" Size="Large" />
 ```
 
-### Avatar Group (Overlapping Avatars)
+### 👥 Avatar Group (Overlapping Avatars)
 
 ```xml
 <atc:AvatarGroup MaxVisible="3" Size="Medium">
@@ -69,7 +69,7 @@ using Atc.Wpf.Controls.Layouts;
 <!-- Shows 3 avatars + "+2" overflow indicator -->
 ```
 
-## Properties
+## ⚙️ Properties
 
 ### Avatar Properties
 
@@ -96,7 +96,7 @@ using Atc.Wpf.Controls.Layouts;
 | `OverflowBackground` | `Brush?` | `Gray` | Background for overflow indicator |
 | `OverflowForeground` | `Brush?` | `White` | Text color for overflow indicator |
 
-## Enumerations
+## 📊 Enumerations
 
 ### AvatarSize
 
@@ -119,7 +119,7 @@ using Atc.Wpf.Controls.Layouts;
 | `DoNotDisturb` | Red + dash | User does not want to be disturbed |
 | `Offline` | Gray | User is offline |
 
-## Initials Generation
+## 🔤 Initials Generation
 
 When `DisplayName` is provided but `Initials` is not, initials are automatically generated:
 
@@ -130,7 +130,7 @@ When `DisplayName` is provided but `Initials` is not, initials are automatically
 | `"Mary Jane Watson"` | `"MW"` (first + last) |
 | `""` or `null` | `"?"` |
 
-## Color Generation
+## 🎨 Color Generation
 
 Background colors are deterministically generated from names using HSV color space:
 
@@ -139,7 +139,7 @@ Background colors are deterministically generated from names using HSV color spa
 - Only the hue varies (0-360) based on a stable hash of the name
 - Empty/null names default to gray
 
-## Notes
+## 📝 Notes
 
 - The `ImageSource` takes precedence over initials when both are provided
 - Background color is auto-generated only when not explicitly set
@@ -148,11 +148,11 @@ Background colors are deterministically generated from names using HSV color spa
 - Status indicator is positioned at bottom-right
 - `DoNotDisturb` status includes a small dash icon
 
-## Related Controls
+## 🔗 Related Controls
 
 - **Badge** - Overlay content with a small indicator (count, status dot)
 - **Chip** - Compact elements for tags, filters, or selections
 
-## Sample Application
+## 🎮 Sample Application
 
 See the Avatar sample in the Atc.Wpf.Sample application under **Wpf.Controls > Layouts > Avatar** for interactive examples.

@@ -1,3 +1,4 @@
+// ReSharper disable RedundantSwitchExpressionArms
 namespace Atc.Wpf.Controls.Layouts;
 
 /// <summary>

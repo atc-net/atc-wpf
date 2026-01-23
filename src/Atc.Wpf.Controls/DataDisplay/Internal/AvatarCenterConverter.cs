@@ -1,3 +1,4 @@
+#pragma warning disable IDE0130
 namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
