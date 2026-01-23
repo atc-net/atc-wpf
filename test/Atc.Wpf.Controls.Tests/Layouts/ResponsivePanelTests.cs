@@ -56,7 +56,9 @@ public sealed class ResponsivePanelTests
     [InlineData(1200, ResponsiveBreakpoint.Xl)]
     [InlineData(1920, ResponsiveBreakpoint.Xl)]
     [InlineData(2560, ResponsiveBreakpoint.Xl)]
-    public void GetBreakpoint_ReturnsCorrectBreakpoint(double width, ResponsiveBreakpoint expected)
+    public void GetBreakpoint_ReturnsCorrectBreakpoint(
+        double width,
+        ResponsiveBreakpoint expected)
     {
         // Act
         var actual = ResponsivePanel.GetBreakpoint(width);
@@ -345,7 +347,8 @@ public sealed class ResponsivePanelTests
     [InlineData(ResponsiveBreakpoint.Md)]
     [InlineData(ResponsiveBreakpoint.Lg)]
     [InlineData(ResponsiveBreakpoint.Xl)]
-    public void VisibleFrom_AttachedProperty_CanBeGetAndSet(ResponsiveBreakpoint expected)
+    public void VisibleFrom_AttachedProperty_CanBeGetAndSet(
+        ResponsiveBreakpoint expected)
     {
         // Arrange
         var child = new Border();
@@ -364,7 +367,8 @@ public sealed class ResponsivePanelTests
     [InlineData(ResponsiveBreakpoint.Md)]
     [InlineData(ResponsiveBreakpoint.Lg)]
     [InlineData(ResponsiveBreakpoint.Xl)]
-    public void HiddenFrom_AttachedProperty_CanBeGetAndSet(ResponsiveBreakpoint expected)
+    public void HiddenFrom_AttachedProperty_CanBeGetAndSet(
+        ResponsiveBreakpoint expected)
     {
         // Arrange
         var child = new Border();

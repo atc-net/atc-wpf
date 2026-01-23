@@ -280,4 +280,3 @@ public sealed class RatingTests
         Assert.False(eventRaised);
     }
 }
-

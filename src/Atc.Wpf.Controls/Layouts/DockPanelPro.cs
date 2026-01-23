@@ -96,7 +96,9 @@ public sealed partial class DockPanelPro : Panel
     /// </summary>
     /// <param name="element">The element to modify.</param>
     /// <param name="value">The dock position to set.</param>
-    public static void SetDock(UIElement element, DockPosition value)
+    public static void SetDock(
+        UIElement element,
+        DockPosition value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(DockProperty, value);
@@ -150,6 +152,7 @@ public sealed partial class DockPanelPro : Panel
     /// Loads layout from a JSON string.
     /// </summary>
     /// <param name="json">The JSON string containing the layout.</param>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public void LoadLayout(string json)
     {
         if (string.IsNullOrWhiteSpace(json))
@@ -264,6 +267,7 @@ public sealed partial class DockPanelPro : Panel
     }
 
     /// <inheritdoc/>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override Size MeasureOverride(Size availableSize)
     {
         CategorizeChildren();
@@ -358,6 +362,7 @@ public sealed partial class DockPanelPro : Panel
     }
 
     /// <inheritdoc/>
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected override Size ArrangeOverride(Size finalSize)
     {
         var splitterSize = SplitterThickness;
@@ -452,6 +457,8 @@ public sealed partial class DockPanelPro : Panel
         return null;
     }
 
+    [SuppressMessage("Design", "CA1508: 'x' is always 'null'. Remove or refactor the condition(s) to avoid dead code.", Justification = "OK.")]
+    [SuppressMessage("Design", "S3458: Remove this empty 'case' clause", Justification = "OK.")]
     private void CategorizeChildren()
     {
         topRegion = null;
@@ -498,7 +505,10 @@ public sealed partial class DockPanelPro : Panel
         EnsureSplitter(ref rightSplitter, rightRegion, isHorizontal: false);
     }
 
-    private void EnsureSplitter(ref Thumb? splitter, DockRegion? region, bool isHorizontal)
+    private void EnsureSplitter(
+        ref Thumb? splitter,
+        DockRegion? region,
+        bool isHorizontal)
     {
         if (region is null || !region.IsResizable || !region.IsExpanded)
         {
@@ -521,7 +531,9 @@ public sealed partial class DockPanelPro : Panel
         AddVisualChild(splitter);
     }
 
-    private Thumb CreateSplitter(bool isHorizontal, DockRegion region)
+    private Thumb CreateSplitter(
+        bool isHorizontal,
+        DockRegion region)
     {
         var splitter = new Thumb
         {
@@ -568,7 +580,9 @@ public sealed partial class DockPanelPro : Panel
         }
     }
 
-    private void OnSplitterDragDelta(object sender, DragDeltaEventArgs e)
+    private void OnSplitterDragDelta(
+        object sender,
+        DragDeltaEventArgs e)
     {
         if (sender is not Thumb splitter)
         {
@@ -597,7 +611,9 @@ public sealed partial class DockPanelPro : Panel
         }
     }
 
-    private void OnSplitterDragCompleted(object sender, DragCompletedEventArgs e)
+    private void OnSplitterDragCompleted(
+        object sender,
+        DragCompletedEventArgs e)
     {
         // Notify regions that their size may have changed
         foreach (var child in InternalChildren)
@@ -609,7 +625,10 @@ public sealed partial class DockPanelPro : Panel
         }
     }
 
-    private static double GetRegionWidth(DockRegion region, ref double storedWidth, double defaultWidth)
+    private static double GetRegionWidth(
+        DockRegion region,
+        ref double storedWidth,
+        double defaultWidth)
     {
         if (storedWidth > 0)
         {
@@ -623,7 +642,10 @@ public sealed partial class DockPanelPro : Panel
         return storedWidth;
     }
 
-    private static double GetRegionHeight(DockRegion region, ref double storedHeight, double defaultHeight)
+    private static double GetRegionHeight(
+        DockRegion region,
+        ref double storedHeight,
+        double defaultHeight)
     {
         if (storedHeight > 0)
         {
@@ -637,14 +659,18 @@ public sealed partial class DockPanelPro : Panel
         return storedHeight;
     }
 
-    private static double ClampWidth(double width, DockRegion region)
+    private static double ClampWidth(
+        double width,
+        DockRegion region)
     {
         var min = region.MinWidth;
         var max = double.IsPositiveInfinity(region.MaxWidth) ? double.MaxValue : region.MaxWidth;
         return System.Math.Max(min, System.Math.Min(max, width));
     }
 
-    private static double ClampHeight(double height, DockRegion region)
+    private static double ClampHeight(
+        double height,
+        DockRegion region)
     {
         var min = region.MinHeight;
         var max = double.IsPositiveInfinity(region.MaxHeight) ? double.MaxValue : region.MaxHeight;

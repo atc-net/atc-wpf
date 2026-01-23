@@ -753,7 +753,7 @@ public sealed partial class Carousel : Selector
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is Carousel carousel && carousel.autoPlayTimer is not null)
+        if (d is Carousel { autoPlayTimer: not null } carousel)
         {
             carousel.autoPlayTimer.Interval = TimeSpan.FromMilliseconds((double)e.NewValue);
         }

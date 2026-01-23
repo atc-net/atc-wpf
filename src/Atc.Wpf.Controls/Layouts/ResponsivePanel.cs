@@ -391,7 +391,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the column span at extra-small breakpoint.
     /// </summary>
-    public static void SetSpanXs(DependencyObject element, int value)
+    public static void SetSpanXs(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(SpanXsProperty, value);
@@ -409,7 +411,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the column span at small breakpoint.
     /// </summary>
-    public static void SetSpanSm(DependencyObject element, int value)
+    public static void SetSpanSm(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(SpanSmProperty, value);
@@ -427,7 +431,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the column span at medium breakpoint.
     /// </summary>
-    public static void SetSpanMd(DependencyObject element, int value)
+    public static void SetSpanMd(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(SpanMdProperty, value);
@@ -445,7 +451,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the column span at large breakpoint.
     /// </summary>
-    public static void SetSpanLg(DependencyObject element, int value)
+    public static void SetSpanLg(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(SpanLgProperty, value);
@@ -463,7 +471,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the column span at extra-large breakpoint.
     /// </summary>
-    public static void SetSpanXl(DependencyObject element, int value)
+    public static void SetSpanXl(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(SpanXlProperty, value);
@@ -481,7 +491,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the breakpoint from which the element becomes visible.
     /// </summary>
-    public static void SetVisibleFrom(DependencyObject element, ResponsiveBreakpoint? value)
+    public static void SetVisibleFrom(
+        DependencyObject element,
+        ResponsiveBreakpoint? value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(VisibleFromProperty, value);
@@ -499,7 +511,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the breakpoint from which the element becomes hidden.
     /// </summary>
-    public static void SetHiddenFrom(DependencyObject element, ResponsiveBreakpoint? value)
+    public static void SetHiddenFrom(
+        DependencyObject element,
+        ResponsiveBreakpoint? value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(HiddenFromProperty, value);
@@ -517,7 +531,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the display order at extra-small breakpoint.
     /// </summary>
-    public static void SetOrderXs(DependencyObject element, int value)
+    public static void SetOrderXs(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(OrderXsProperty, value);
@@ -535,7 +551,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the display order at small breakpoint.
     /// </summary>
-    public static void SetOrderSm(DependencyObject element, int value)
+    public static void SetOrderSm(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(OrderSmProperty, value);
@@ -553,7 +571,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the display order at medium breakpoint.
     /// </summary>
-    public static void SetOrderMd(DependencyObject element, int value)
+    public static void SetOrderMd(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(OrderMdProperty, value);
@@ -571,7 +591,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the display order at large breakpoint.
     /// </summary>
-    public static void SetOrderLg(DependencyObject element, int value)
+    public static void SetOrderLg(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(OrderLgProperty, value);
@@ -589,7 +611,9 @@ public class ResponsivePanel : Panel
     /// <summary>
     /// Sets the display order at extra-large breakpoint.
     /// </summary>
-    public static void SetOrderXl(DependencyObject element, int value)
+    public static void SetOrderXl(
+        DependencyObject element,
+        int value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(OrderXlProperty, value);
@@ -642,8 +666,7 @@ public class ResponsivePanel : Panel
         => double.IsNaN(ColumnGap) ? Gap : ColumnGap;
 
     private int GetColumnCountForBreakpoint(ResponsiveBreakpoint breakpoint)
-    {
-        return breakpoint switch
+        => breakpoint switch
         {
             ResponsiveBreakpoint.Xs => ColumnsXs,
             ResponsiveBreakpoint.Sm => ColumnsSm,
@@ -652,9 +675,10 @@ public class ResponsivePanel : Panel
             ResponsiveBreakpoint.Xl => ColumnsXl,
             _ => ColumnsXl,
         };
-    }
 
-    private int GetColumnCount(double availableWidth, ResponsiveBreakpoint breakpoint)
+    private int GetColumnCount(
+        double availableWidth,
+        ResponsiveBreakpoint breakpoint)
     {
         // If MinItemWidth is set, auto-calculate columns
         if (!double.IsNaN(MinItemWidth) && MinItemWidth > 0)
@@ -668,7 +692,9 @@ public class ResponsivePanel : Panel
         return GetColumnCountForBreakpoint(breakpoint);
     }
 
-    private static int GetSpanForBreakpoint(UIElement element, ResponsiveBreakpoint breakpoint)
+    private static int GetSpanForBreakpoint(
+        UIElement element,
+        ResponsiveBreakpoint breakpoint)
     {
         var span = breakpoint switch
         {
@@ -696,7 +722,10 @@ public class ResponsivePanel : Panel
         return span;
     }
 
-    private static int GetOrderForBreakpoint(UIElement element, ResponsiveBreakpoint breakpoint, int defaultOrder)
+    private static int GetOrderForBreakpoint(
+        UIElement element,
+        ResponsiveBreakpoint breakpoint,
+        int defaultOrder)
     {
         var order = breakpoint switch
         {
@@ -724,7 +753,9 @@ public class ResponsivePanel : Panel
         return order == int.MaxValue ? defaultOrder : order;
     }
 
-    private static bool IsVisibleAtBreakpoint(UIElement element, ResponsiveBreakpoint breakpoint)
+    private static bool IsVisibleAtBreakpoint(
+        UIElement element,
+        ResponsiveBreakpoint breakpoint)
     {
         if (element.Visibility == Visibility.Collapsed)
         {
@@ -930,4 +961,3 @@ public class ResponsivePanel : Panel
         return finalSize;
     }
 }
-

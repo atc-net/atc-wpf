@@ -66,231 +66,229 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid
-            Margin="10"
-            Columns="*"
-            Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+    <atc:AutoGrid
+        Margin="10"
+        Columns="*"
+        Rows="Auto,Auto,Auto,Auto,Auto,Auto">
 
-            <!--  Info Panel  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Current Breakpoint">
-                <StackPanel>
-                    <TextBlock x:Name="TxtBreakpoint" FontSize="16" />
-                    <TextBlock
-                        Margin="0,4,0,0"
-                        Foreground="Gray"
-                        Text="Resize the window to see breakpoint changes" />
-                </StackPanel>
-            </GroupBox>
+        <!--  Info Panel  -->
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Current Breakpoint">
+            <StackPanel>
+                <TextBlock x:Name="TxtBreakpoint" FontSize="16" />
+                <TextBlock
+                    Margin="0,4,0,0"
+                    Foreground="Gray"
+                    Text="Resize the window to see breakpoint changes" />
+            </StackPanel>
+        </GroupBox>
 
-            <!--  Auto Column Example  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Auto Column Count (MinItemWidth=200, Gap=16)">
-                <Border
-                    MinHeight="150"
-                    Background="#1E293B"
-                    BorderBrush="#475569"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <atc:ResponsivePanel
-                        Margin="10"
-                        Gap="16"
-                        MinItemWidth="200">
-                        <Border Style="{StaticResource BlueBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Card 1" />
-                        </Border>
-                        <Border Style="{StaticResource GreenBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Card 2" />
-                        </Border>
-                        <Border Style="{StaticResource PurpleBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Card 3" />
-                        </Border>
-                        <Border Style="{StaticResource OrangeBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Card 4" />
-                        </Border>
-                        <Border Style="{StaticResource PinkBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Card 5" />
-                        </Border>
-                        <Border Style="{StaticResource YellowBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Card 6" />
-                        </Border>
-                    </atc:ResponsivePanel>
-                </Border>
-            </GroupBox>
+        <!--  Auto Column Example  -->
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Auto Column Count (MinItemWidth=200, Gap=16)">
+            <Border
+                MinHeight="150"
+                Background="#1E293B"
+                BorderBrush="#475569"
+                BorderThickness="1"
+                CornerRadius="4">
+                <atc:ResponsivePanel
+                    Margin="10"
+                    Gap="16"
+                    MinItemWidth="200">
+                    <Border Style="{StaticResource BlueBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Card 1" />
+                    </Border>
+                    <Border Style="{StaticResource GreenBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Card 2" />
+                    </Border>
+                    <Border Style="{StaticResource PurpleBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Card 3" />
+                    </Border>
+                    <Border Style="{StaticResource OrangeBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Card 4" />
+                    </Border>
+                    <Border Style="{StaticResource PinkBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Card 5" />
+                    </Border>
+                    <Border Style="{StaticResource YellowBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Card 6" />
+                    </Border>
+                </atc:ResponsivePanel>
+            </Border>
+        </GroupBox>
 
-            <!--  Explicit Column Count Example  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Explicit Column Count (XS=1, SM=2, MD=3, LG=4, XL=6)">
-                <Border
-                    MinHeight="150"
-                    Background="#1E293B"
-                    BorderBrush="#475569"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <atc:ResponsivePanel
-                        x:Name="ExplicitPanel"
-                        Margin="10"
-                        ColumnsLg="4"
-                        ColumnsMd="3"
-                        ColumnsSm="2"
-                        ColumnsXl="6"
-                        ColumnsXs="1"
-                        Gap="16">
-                        <Border Style="{StaticResource BlueBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="1" />
-                        </Border>
-                        <Border Style="{StaticResource GreenBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="2" />
-                        </Border>
-                        <Border Style="{StaticResource PurpleBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="3" />
-                        </Border>
-                        <Border Style="{StaticResource OrangeBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="4" />
-                        </Border>
-                        <Border Style="{StaticResource PinkBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="5" />
-                        </Border>
-                        <Border Style="{StaticResource YellowBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="6" />
-                        </Border>
-                    </atc:ResponsivePanel>
-                </Border>
-            </GroupBox>
+        <!--  Explicit Column Count Example  -->
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Explicit Column Count (XS=1, SM=2, MD=3, LG=4, XL=6)">
+            <Border
+                MinHeight="150"
+                Background="#1E293B"
+                BorderBrush="#475569"
+                BorderThickness="1"
+                CornerRadius="4">
+                <atc:ResponsivePanel
+                    x:Name="ExplicitPanel"
+                    Margin="10"
+                    ColumnsLg="4"
+                    ColumnsMd="3"
+                    ColumnsSm="2"
+                    ColumnsXl="6"
+                    ColumnsXs="1"
+                    Gap="16">
+                    <Border Style="{StaticResource BlueBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="1" />
+                    </Border>
+                    <Border Style="{StaticResource GreenBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="2" />
+                    </Border>
+                    <Border Style="{StaticResource PurpleBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="3" />
+                    </Border>
+                    <Border Style="{StaticResource OrangeBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="4" />
+                    </Border>
+                    <Border Style="{StaticResource PinkBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="5" />
+                    </Border>
+                    <Border Style="{StaticResource YellowBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="6" />
+                    </Border>
+                </atc:ResponsivePanel>
+            </Border>
+        </GroupBox>
 
-            <!--  Span Example  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Span Example (SpanLg=4, SpanMd=12 for sidebar)">
-                <Border
-                    MinHeight="150"
-                    Background="#1E293B"
-                    BorderBrush="#475569"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <atc:ResponsivePanel
-                        Margin="10"
-                        ColumnsLg="12"
-                        ColumnsMd="12"
-                        ColumnsSm="12"
-                        ColumnsXl="12"
-                        ColumnsXs="12"
-                        Gap="16">
-                        <!--  Sidebar: 4 cols on Lg+, full width on smaller  -->
-                        <Border
-                            atc:ResponsivePanel.SpanLg="4"
-                            atc:ResponsivePanel.SpanMd="12"
-                            atc:ResponsivePanel.SpanSm="12"
-                            atc:ResponsivePanel.SpanXl="4"
-                            atc:ResponsivePanel.SpanXs="12"
-                            Style="{StaticResource BlueBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Sidebar (4 cols on Lg+)" />
-                        </Border>
-                        <!--  Main: 8 cols on Lg+, full width on smaller  -->
-                        <Border
-                            atc:ResponsivePanel.SpanLg="8"
-                            atc:ResponsivePanel.SpanMd="12"
-                            atc:ResponsivePanel.SpanSm="12"
-                            atc:ResponsivePanel.SpanXl="8"
-                            atc:ResponsivePanel.SpanXs="12"
-                            Style="{StaticResource GreenBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Main Content (8 cols on Lg+)" />
-                        </Border>
-                    </atc:ResponsivePanel>
-                </Border>
-            </GroupBox>
+        <!--  Span Example  -->
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Span Example (SpanLg=4, SpanMd=12 for sidebar)">
+            <Border
+                MinHeight="150"
+                Background="#1E293B"
+                BorderBrush="#475569"
+                BorderThickness="1"
+                CornerRadius="4">
+                <atc:ResponsivePanel
+                    Margin="10"
+                    ColumnsLg="12"
+                    ColumnsMd="12"
+                    ColumnsSm="12"
+                    ColumnsXl="12"
+                    ColumnsXs="12"
+                    Gap="16">
+                    <!--  Sidebar: 4 cols on Lg+, full width on smaller  -->
+                    <Border
+                        atc:ResponsivePanel.SpanLg="4"
+                        atc:ResponsivePanel.SpanMd="12"
+                        atc:ResponsivePanel.SpanSm="12"
+                        atc:ResponsivePanel.SpanXl="4"
+                        atc:ResponsivePanel.SpanXs="12"
+                        Style="{StaticResource BlueBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Sidebar (4 cols on Lg+)" />
+                    </Border>
+                    <!--  Main: 8 cols on Lg+, full width on smaller  -->
+                    <Border
+                        atc:ResponsivePanel.SpanLg="8"
+                        atc:ResponsivePanel.SpanMd="12"
+                        atc:ResponsivePanel.SpanSm="12"
+                        atc:ResponsivePanel.SpanXl="8"
+                        atc:ResponsivePanel.SpanXs="12"
+                        Style="{StaticResource GreenBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Main Content (8 cols on Lg+)" />
+                    </Border>
+                </atc:ResponsivePanel>
+            </Border>
+        </GroupBox>
 
-            <!--  Visibility Example  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Visibility Control (VisibleFrom, HiddenFrom)">
-                <Border
-                    MinHeight="100"
-                    Background="#1E293B"
-                    BorderBrush="#475569"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <atc:ResponsivePanel
-                        Margin="10"
-                        ColumnsLg="4"
-                        ColumnsMd="3"
-                        ColumnsSm="2"
-                        ColumnsXl="4"
-                        ColumnsXs="1"
-                        Gap="16">
-                        <Border Style="{StaticResource BlueBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Always Visible" />
-                        </Border>
-                        <Border atc:ResponsivePanel.VisibleFrom="Lg" Style="{StaticResource GreenBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Desktop Only (VisibleFrom=Lg)" />
-                        </Border>
-                        <Border atc:ResponsivePanel.HiddenFrom="Md" Style="{StaticResource PurpleBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Mobile Only (HiddenFrom=Md)" />
-                        </Border>
-                        <Border atc:ResponsivePanel.VisibleFrom="Md" Style="{StaticResource OrangeBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Tablet+ (VisibleFrom=Md)" />
-                        </Border>
-                    </atc:ResponsivePanel>
-                </Border>
-            </GroupBox>
+        <!--  Visibility Example  -->
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Visibility Control (VisibleFrom, HiddenFrom)">
+            <Border
+                MinHeight="100"
+                Background="#1E293B"
+                BorderBrush="#475569"
+                BorderThickness="1"
+                CornerRadius="4">
+                <atc:ResponsivePanel
+                    Margin="10"
+                    ColumnsLg="4"
+                    ColumnsMd="3"
+                    ColumnsSm="2"
+                    ColumnsXl="4"
+                    ColumnsXs="1"
+                    Gap="16">
+                    <Border Style="{StaticResource BlueBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Always Visible" />
+                    </Border>
+                    <Border atc:ResponsivePanel.VisibleFrom="Lg" Style="{StaticResource GreenBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Desktop Only (VisibleFrom=Lg)" />
+                    </Border>
+                    <Border atc:ResponsivePanel.HiddenFrom="Md" Style="{StaticResource PurpleBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Mobile Only (HiddenFrom=Md)" />
+                    </Border>
+                    <Border atc:ResponsivePanel.VisibleFrom="Md" Style="{StaticResource OrangeBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Tablet+ (VisibleFrom=Md)" />
+                    </Border>
+                </atc:ResponsivePanel>
+            </Border>
+        </GroupBox>
 
-            <!--  Order Example  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Reorder at Breakpoints (OrderXs, OrderLg)">
-                <Border
-                    MinHeight="100"
-                    Background="#1E293B"
-                    BorderBrush="#475569"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <atc:ResponsivePanel
-                        Margin="10"
-                        ColumnsLg="3"
-                        ColumnsMd="3"
-                        ColumnsSm="1"
-                        ColumnsXl="3"
-                        ColumnsXs="1"
-                        Gap="16">
-                        <!--  Image: Order 1 on mobile, Order 2 on desktop  -->
-                        <Border
-                            Height="80"
-                            atc:ResponsivePanel.OrderLg="2"
-                            atc:ResponsivePanel.OrderXs="1"
-                            Style="{StaticResource BlueBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Image (Order 1 on XS, Order 2 on LG)" />
-                        </Border>
-                        <!--  Text: Order 2 on mobile, Order 1 on desktop  -->
-                        <Border
-                            Height="80"
-                            atc:ResponsivePanel.OrderLg="1"
-                            atc:ResponsivePanel.OrderXs="2"
-                            Style="{StaticResource GreenBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Text (Order 2 on XS, Order 1 on LG)" />
-                        </Border>
-                        <!--  Button: Order 3 always  -->
-                        <Border
-                            Height="80"
-                            atc:ResponsivePanel.OrderLg="3"
-                            atc:ResponsivePanel.OrderXs="3"
-                            Style="{StaticResource PurpleBox}">
-                            <TextBlock Style="{StaticResource LabelText}" Text="Button (Order 3)" />
-                        </Border>
-                    </atc:ResponsivePanel>
-                </Border>
-            </GroupBox>
+        <!--  Order Example  -->
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Reorder at Breakpoints (OrderXs, OrderLg)">
+            <Border
+                MinHeight="100"
+                Background="#1E293B"
+                BorderBrush="#475569"
+                BorderThickness="1"
+                CornerRadius="4">
+                <atc:ResponsivePanel
+                    Margin="10"
+                    ColumnsLg="3"
+                    ColumnsMd="3"
+                    ColumnsSm="1"
+                    ColumnsXl="3"
+                    ColumnsXs="1"
+                    Gap="16">
+                    <!--  Image: Order 1 on mobile, Order 2 on desktop  -->
+                    <Border
+                        Height="80"
+                        atc:ResponsivePanel.OrderLg="2"
+                        atc:ResponsivePanel.OrderXs="1"
+                        Style="{StaticResource BlueBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Image (Order 1 on XS, Order 2 on LG)" />
+                    </Border>
+                    <!--  Text: Order 2 on mobile, Order 1 on desktop  -->
+                    <Border
+                        Height="80"
+                        atc:ResponsivePanel.OrderLg="1"
+                        atc:ResponsivePanel.OrderXs="2"
+                        Style="{StaticResource GreenBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Text (Order 2 on XS, Order 1 on LG)" />
+                    </Border>
+                    <!--  Button: Order 3 always  -->
+                    <Border
+                        Height="80"
+                        atc:ResponsivePanel.OrderLg="3"
+                        atc:ResponsivePanel.OrderXs="3"
+                        Style="{StaticResource PurpleBox}">
+                        <TextBlock Style="{StaticResource LabelText}" Text="Button (Order 3)" />
+                    </Border>
+                </atc:ResponsivePanel>
+            </Border>
+        </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
+    </atc:AutoGrid>
 
 </UserControl>
