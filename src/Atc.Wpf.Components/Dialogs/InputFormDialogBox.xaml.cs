@@ -23,9 +23,7 @@ public partial class InputFormDialogBox
             owningWindow,
             DialogBoxSettings.Create(DialogBoxType.OkCancel),
             labelControlsForm)
-    {
-        Settings.TitleBarText = titleBarText;
-    }
+        => Settings.TitleBarText = titleBarText;
 
     public InputFormDialogBox(
         Window owningWindow,
@@ -37,16 +35,7 @@ public partial class InputFormDialogBox
             titleBarText,
             labelControlsForm)
     {
-        HeaderControl = new ContentControl
-        {
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            Content = new TextBlock
-            {
-                Text = headerText,
-                FontSize = 24,
-            },
-        };
+        HeaderControl = Helpers.DialogBoxHelper.CreateHeaderControl(headerText);
 
         UpdateWidthAndHeight();
     }

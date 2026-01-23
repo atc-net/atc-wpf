@@ -41,7 +41,7 @@ public sealed partial class DialogServiceViewModel : ViewModelBase
         var result = await dialogService
             .ShowInformation(
                 "Information",
-                "This is an information message displayed using IDialogService.")
+                "This is an information message\rdisplayed using IDialogService.")
             .ConfigureAwait(false);
 
         LastResult = result
@@ -55,7 +55,7 @@ public sealed partial class DialogServiceViewModel : ViewModelBase
         var result = await dialogService
             .ShowWarning(
                 "Warning",
-                "This is a warning message. Please pay attention!")
+                "This is a warning message.\rPlease pay attention!")
             .ConfigureAwait(false);
 
         LastResult = result
@@ -69,7 +69,7 @@ public sealed partial class DialogServiceViewModel : ViewModelBase
         var result = await dialogService
             .ShowError(
                 "Error",
-                "An error has occurred. This is how error dialogs look.")
+                "An error has occurred.\rThis is how error dialogs look.")
             .ConfigureAwait(false);
 
         LastResult = result
@@ -83,7 +83,7 @@ public sealed partial class DialogServiceViewModel : ViewModelBase
         var result = await dialogService
             .ShowConfirmation(
                 "Confirm Action",
-                "Are you sure you want to proceed with this action?")
+                "Are you sure you want to proceed\rwith this action?")
             .ConfigureAwait(false);
 
         LastResult = result

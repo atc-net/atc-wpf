@@ -33,18 +33,7 @@ public partial class QuestionDialogBox
             owningWindow,
             titleBarText,
             contentText)
-    {
-        HeaderControl = new ContentControl
-        {
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            Content = new TextBlock
-            {
-                Text = headerText,
-                FontSize = 24,
-            },
-        };
-    }
+        => HeaderControl = Helpers.DialogBoxHelper.CreateHeaderControl(headerText);
 
     public QuestionDialogBox(
         Window owningWindow,
@@ -77,29 +66,7 @@ public partial class QuestionDialogBox
     }
 
     private void PopulateContentControl(string contentText)
-    {
-        var stackPanel = new StackPanel
-        {
-            Orientation = Orientation.Horizontal,
-        };
-
-        if (Settings.ContentSvgImage is not null)
-        {
-            stackPanel.Children.Add(Settings.ContentSvgImage);
-        }
-
-        stackPanel.Children.Add(
-            new TextBlock
-            {
-                Text = contentText,
-                VerticalAlignment = VerticalAlignment.Center,
-            });
-
-        ContentControl = new ContentControl
-        {
-            Content = stackPanel,
-        };
-    }
+        => ContentControl = Helpers.DialogBoxHelper.CreateContentControl(contentText, Settings.ContentSvgImage);
 
     private void OnOkClick(
         object sender,
