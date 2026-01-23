@@ -12,7 +12,7 @@ public partial class NiceWindowWithFlyoutView
         RoutedEventArgs e)
     {
         var window = CreateNiceWindowWithBasicFlyout();
-        window.Show();
+        window.ShowDialog();
     }
 
     private void OnOpenFlyoutHostWindowClick(
@@ -20,7 +20,7 @@ public partial class NiceWindowWithFlyoutView
         RoutedEventArgs e)
     {
         var window = CreateNiceWindowWithFlyoutHost();
-        window.Show();
+        window.ShowDialog();
     }
 
     private void OnOpenSettingsFlyoutWindowClick(
@@ -28,7 +28,7 @@ public partial class NiceWindowWithFlyoutView
         RoutedEventArgs e)
     {
         var window = CreateNiceWindowWithSettingsFlyout();
-        window.Show();
+        window.ShowDialog();
     }
 
     private void OnOpenAllPositionsFlyoutWindowClick(
@@ -36,7 +36,7 @@ public partial class NiceWindowWithFlyoutView
         RoutedEventArgs e)
     {
         var window = CreateNiceWindowWithAllPositions();
-        window.Show();
+        window.ShowDialog();
     }
 
     private void OnOpenAdvancedFlyoutWindowClick(
@@ -44,7 +44,7 @@ public partial class NiceWindowWithFlyoutView
         RoutedEventArgs e)
     {
         var window = CreateNiceWindowWithAdvancedFeatures();
-        window.Show();
+        window.ShowDialog();
     }
 
     private static NiceWindow CreateNiceWindowWithBasicFlyout()

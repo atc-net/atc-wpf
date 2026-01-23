@@ -237,6 +237,51 @@
                     </StackPanel>
                 </GroupBox>
 
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="FlyoutPresenter">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="FlyoutPresenter provides a standardized layout with header, scrollable content, and footer sections. Great for forms with action buttons." />
+                        <Button
+                            x:Name="OpenPresenterFlyoutButton"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OpenPresenterFlyoutButton_Click"
+                            Content="Open FlyoutPresenter Demo" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Focus Trapping">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="When IsFocusTrapEnabled is true (default), Tab/Shift+Tab navigation stays within the flyout. Disable it to allow tabbing out of the flyout." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenFocusTrappedFlyoutButton"
+                                Width="180"
+                                Click="OpenFocusTrappedFlyoutButton_Click"
+                                Content="Focus Trapped (Default)" />
+                            <Button
+                                x:Name="OpenFocusFreeFlyoutButton"
+                                Width="180"
+                                Click="OpenFocusFreeFlyoutButton_Click"
+                                Content="Focus Free" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
             </atc:AutoGrid>
         </ScrollViewer>
 
@@ -724,6 +769,134 @@
                     Click="CloseFlyout_Click"
                     Content="Close"
                     Tag="{Binding ElementName=BouncyFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- FlyoutPresenter Demo -->
+        <flyouts:Flyout
+            x:Name="PresenterFlyout"
+            FlyoutWidth="450"
+            Header="FlyoutPresenter Demo"
+            Position="Right"
+            ShowCloseButton="False">
+            <flyouts:FlyoutPresenter Header="Edit User Profile">
+                <flyouts:FlyoutPresenter.Footer>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            Width="80"
+                            Margin="0,0,8,0"
+                            Click="ClosePresenterFlyout_Click"
+                            Content="Cancel" />
+                        <Button
+                            Width="80"
+                            Click="SavePresenterFlyout_Click"
+                            Content="Save" />
+                    </StackPanel>
+                </flyouts:FlyoutPresenter.Footer>
+
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,4" Text="First Name" />
+                    <TextBox Margin="0,0,0,12" Text="John" />
+
+                    <TextBlock Margin="0,0,0,4" Text="Last Name" />
+                    <TextBox Margin="0,0,0,12" Text="Doe" />
+
+                    <TextBlock Margin="0,0,0,4" Text="Email" />
+                    <TextBox Margin="0,0,0,12" Text="john.doe@example.com" />
+
+                    <TextBlock Margin="0,0,0,4" Text="Department" />
+                    <ComboBox Margin="0,0,0,12" SelectedIndex="0">
+                        <ComboBoxItem Content="Engineering" />
+                        <ComboBoxItem Content="Marketing" />
+                        <ComboBoxItem Content="Sales" />
+                        <ComboBoxItem Content="Support" />
+                    </ComboBox>
+
+                    <TextBlock Margin="0,0,0,4" Text="Bio" />
+                    <TextBox
+                        Height="80"
+                        AcceptsReturn="True"
+                        Text="Software developer with 10 years of experience..."
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
+            </flyouts:FlyoutPresenter>
+        </flyouts:Flyout>
+
+        <!-- Focus Trapped Flyout (Default) -->
+        <flyouts:Flyout
+            x:Name="FocusTrappedFlyout"
+            FlyoutWidth="400"
+            Header="Focus Trapped (Default)"
+            IsFocusTrapEnabled="True"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Focus Trapping Enabled" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Try pressing Tab repeatedly. Focus will cycle through the form fields and buttons below, staying within the flyout." />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 1:" />
+                <TextBox Margin="0,0,0,12" Text="First field" />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 2:" />
+                <TextBox Margin="0,0,0,12" Text="Second field" />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 3:" />
+                <TextBox Margin="0,0,0,12" Text="Third field" />
+
+                <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                    <Button
+                        Width="80"
+                        Margin="0,0,8,0"
+                        Content="Button 1" />
+                    <Button
+                        Width="80"
+                        Margin="0,0,8,0"
+                        Content="Button 2" />
+                    <Button
+                        Width="80"
+                        Click="CloseFlyout_Click"
+                        Content="Close"
+                        Tag="{Binding ElementName=FocusTrappedFlyout}" />
+                </StackPanel>
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Focus Free Flyout -->
+        <flyouts:Flyout
+            x:Name="FocusFreeFlyout"
+            FlyoutWidth="400"
+            Header="Focus Free"
+            IsFocusTrapEnabled="False"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Focus Trapping Disabled" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="With IsFocusTrapEnabled=False, pressing Tab can move focus outside the flyout to elements in the main window." />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 1:" />
+                <TextBox Margin="0,0,0,12" Text="First field" />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 2:" />
+                <TextBox Margin="0,0,0,12" Text="Second field" />
+
+                <Button
+                    Width="100"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=FocusFreeFlyout}" />
             </StackPanel>
         </flyouts:Flyout>
 

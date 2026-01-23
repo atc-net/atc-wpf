@@ -114,6 +114,13 @@ public sealed class FlyoutOptions
     public IEasingFunction? EasingFunction { get; set; }
 
     /// <summary>
+    /// Gets or sets whether focus is trapped within the flyout when open.
+    /// When enabled, Tab/Shift+Tab cycles through focusable elements within the flyout.
+    /// Default is true.
+    /// </summary>
+    public bool IsFocusTrapEnabled { get; set; } = true;
+
+    /// <summary>
     /// Creates default options for a right-side flyout.
     /// </summary>
     public static FlyoutOptions Default => new();

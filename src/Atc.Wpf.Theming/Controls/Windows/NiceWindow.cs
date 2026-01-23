@@ -19,6 +19,7 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [TemplatePart(Name = PART_OverlayBox, Type = typeof(Grid))]
 [TemplatePart(Name = PART_NiceActiveDialogContainer, Type = typeof(Grid))]
 [TemplatePart(Name = PART_NiceInactiveDialogsContainer, Type = typeof(Grid))]
+[TemplatePart(Name = PART_FlyoutHost, Type = typeof(Grid))]
 [TemplatePart(Name = PART_Content, Type = typeof(NiceContentControl))]
 public partial class NiceWindow : WindowChromeWindow
 {
@@ -32,6 +33,7 @@ public partial class NiceWindow : WindowChromeWindow
     private const string PART_OverlayBox = "PART_OverlayBox";
     private const string PART_NiceActiveDialogContainer = "PART_NiceActiveDialogContainer";
     private const string PART_NiceInactiveDialogsContainer = "PART_NiceInactiveDialogsContainer";
+    private const string PART_FlyoutHost = "PART_FlyoutHost";
     private const string PART_Content = "PART_Content";
 
     private FrameworkElement? icon;
@@ -46,6 +48,7 @@ public partial class NiceWindow : WindowChromeWindow
     internal Grid? OverlayBox;
     internal Grid? NiceActiveDialogContainer;
     internal Grid? NiceInactiveDialogContainer;
+    internal Grid? FlyoutHostContainer;
     private Storyboard? overlayStoryboard;
 
     private EventHandler? onOverlayFadeInStoryboardCompleted;
@@ -475,6 +478,7 @@ public partial class NiceWindow : WindowChromeWindow
         OverlayBox = GetTemplateChild(PART_OverlayBox) as Grid;
         NiceActiveDialogContainer = GetTemplateChild(PART_NiceActiveDialogContainer) as Grid;
         NiceInactiveDialogContainer = GetTemplateChild(PART_NiceInactiveDialogsContainer) as Grid;
+        FlyoutHostContainer = GetTemplateChild(PART_FlyoutHost) as Grid;
 
         icon = GetTemplateChild(PART_Icon) as FrameworkElement;
         titleBar = GetTemplateChild(PART_TitleBar) as UIElement;

@@ -6,6 +6,42 @@ A sliding panel overlay control that slides in from an edge of its container.
 
 `Flyout` provides a lightweight, contextual overlay panel that slides in from a specified edge (Right, Left, Top, or Bottom). It supports light dismiss behavior (click outside or press Escape), customizable animations, and optional overlay backgrounds. The default position is Right, following the Azure Portal design pattern.
 
+## 📊 Flyout vs Dialog - When to Use Which
+
+| Use Case                    | Flyout          | Dialog  |
+| --------------------------- | --------------- | ------- |
+| Additional input collection | ✅ Yes          | No      |
+| Contextual information      | ✅ Yes          | No      |
+| Security confirmations      | No              | ✅ Yes  |
+| Irreversible actions        | No              | ✅ Yes  |
+| In-app purchases            | No              | ✅ Yes  |
+| Form wizards / multi-step   | ✅ Yes (nested) | Yes     |
+| Quick settings panel        | ✅ Yes          | No      |
+| Navigation menu             | ✅ Yes          | No      |
+
+**Key differences:**
+
+- **Flyouts** are non-modal, support light dismiss, and are ideal for contextual tasks
+- **Dialogs** are modal, require explicit user action, and are used for critical decisions
+
+## 🏗️ Azure Portal Nesting Pattern
+
+Flyouts support nesting (drill-down) similar to the Azure Portal blade pattern:
+
+```text
+
++------------------+------------------+------------------+
+|                  |                  |                  |
+|   Main Content   |   Flyout 1       |   Flyout 2       |
+|                  |   (Settings)     |   (Confirmation) |
+|                  |                  |                  |
+|   [Click Item]-->|   [Save] ------->|   [Yes] [No]     |
+|                  |                  |                  |
++------------------+------------------+------------------+
+```
+
+Use `FlyoutHost` to manage multiple nested flyouts with the `MaxNestingDepth` property.
+
 ## 📍 Namespace
 
 ```csharp
@@ -244,86 +280,149 @@ MyFlyout.Closed += (s, e) =>
 
 ## ⚙️ Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `IsOpen` | `bool` | `false` | Gets or sets whether the flyout is currently open |
-| `Position` | `FlyoutPosition` | `Right` | Position from which the flyout slides in |
-| `FlyoutWidth` | `double` | `400` | Width of the flyout panel (for Left/Right/Center positions) |
-| `FlyoutHeight` | `double` | `300` | Height of the flyout panel (for Top/Bottom/Center positions) |
-| `Header` | `object?` | `null` | Header content displayed at the top |
-| `HeaderTemplate` | `DataTemplate?` | `null` | Template for the header content |
-| `HeaderBackground` | `Brush?` | theme | Background brush for the header area |
-| `HeaderForeground` | `Brush?` | theme | Foreground brush for the header text |
-| `IsLightDismissEnabled` | `bool` | `true` | Whether clicking outside dismisses the flyout |
-| `ShowOverlay` | `bool` | `true` | Whether to show an overlay background |
-| `OverlayOpacity` | `double` | `0.5` | Opacity of the overlay (0.0 - 1.0) |
-| `OverlayBrush` | `Brush?` | theme | Brush for the overlay background |
-| `ShowCloseButton` | `bool` | `true` | Whether the close button is visible |
-| `ShowPinButton` | `bool` | `false` | Whether the pin button is visible |
-| `IsPinned` | `bool` | `false` | Whether the flyout is pinned (prevents light dismiss) |
-| `IsResizable` | `bool` | `false` | Whether the user can drag to resize the flyout |
-| `MinFlyoutWidth` | `double` | `200` | Minimum width when resizable |
-| `MaxFlyoutWidth` | `double` | `800` | Maximum width when resizable |
-| `MinFlyoutHeight` | `double` | `150` | Minimum height when resizable |
-| `MaxFlyoutHeight` | `double` | `600` | Maximum height when resizable |
-| `AnimationDuration` | `double` | `300` | Duration of slide animation in milliseconds |
-| `EasingFunction` | `IEasingFunction?` | CubicEase | Custom easing function for animations |
-| `CloseOnEscape` | `bool` | `true` | Whether Escape key closes the flyout |
-| `CornerRadius` | `CornerRadius` | `0` | Corner radius for the flyout panel |
-| `FlyoutBackground` | `Brush?` | theme | Background brush for the flyout panel |
-| `FlyoutBorderBrush` | `Brush?` | theme | Border brush for the flyout panel |
-| `FlyoutBorderThickness` | `Thickness` | `1,0,0,0` | Border thickness (varies by position) |
-| `Result` | `object?` | `null` | Result value when the flyout closes |
+| Property                | Type               | Default   | Description                                                              |
+| ----------------------- | ------------------ | --------- | ------------------------------------------------------------------------ |
+| `IsOpen`                | `bool`             | `false`   | Gets or sets whether the flyout is currently open                        |
+| `Position`              | `FlyoutPosition`   | `Right`   | Position from which the flyout slides in                                 |
+| `FlyoutWidth`           | `double`           | `400`     | Width of the flyout panel (for Left/Right/Center positions)              |
+| `FlyoutHeight`          | `double`           | `300`     | Height of the flyout panel (for Top/Bottom/Center positions)             |
+| `Header`                | `object?`          | `null`    | Header content displayed at the top                                      |
+| `HeaderTemplate`        | `DataTemplate?`    | `null`    | Template for the header content                                          |
+| `HeaderBackground`      | `Brush?`           | theme     | Background brush for the header area                                     |
+| `HeaderForeground`      | `Brush?`           | theme     | Foreground brush for the header text                                     |
+| `IsLightDismissEnabled` | `bool`             | `true`    | Whether clicking outside dismisses the flyout                            |
+| `ShowOverlay`           | `bool`             | `true`    | Whether to show an overlay background                                    |
+| `OverlayOpacity`        | `double`           | `0.5`     | Opacity of the overlay (0.0 - 1.0)                                       |
+| `OverlayBrush`          | `Brush?`           | theme     | Brush for the overlay background                                         |
+| `ShowCloseButton`       | `bool`             | `true`    | Whether the close button is visible                                      |
+| `ShowPinButton`         | `bool`             | `false`   | Whether the pin button is visible                                        |
+| `IsPinned`              | `bool`             | `false`   | Whether the flyout is pinned (prevents light dismiss)                    |
+| `IsResizable`           | `bool`             | `false`   | Whether the user can drag to resize the flyout                           |
+| `MinFlyoutWidth`        | `double`           | `200`     | Minimum width when resizable                                             |
+| `MaxFlyoutWidth`        | `double`           | `800`     | Maximum width when resizable                                             |
+| `MinFlyoutHeight`       | `double`           | `150`     | Minimum height when resizable                                            |
+| `MaxFlyoutHeight`       | `double`           | `600`     | Maximum height when resizable                                            |
+| `AnimationDuration`     | `double`           | `300`     | Duration of slide animation in milliseconds                              |
+| `EasingFunction`        | `IEasingFunction?` | CubicEase | Custom easing function for animations                                    |
+| `CloseOnEscape`         | `bool`             | `true`    | Whether Escape key closes the flyout                                     |
+| `CornerRadius`          | `CornerRadius`     | `0`       | Corner radius for the flyout panel                                       |
+| `FlyoutBackground`      | `Brush?`           | theme     | Background brush for the flyout panel                                    |
+| `FlyoutBorderBrush`     | `Brush?`           | theme     | Border brush for the flyout panel                                        |
+| `FlyoutBorderThickness` | `Thickness`        | `1,0,0,0` | Border thickness (varies by position)                                    |
+| `Result`                | `object?`          | `null`    | Result value when the flyout closes                                      |
+| `IsFocusTrapEnabled`    | `bool`             | `true`    | Whether focus is trapped within the flyout (Tab cycles through elements) |
 
 ## 📊 Enumerations
 
 ### FlyoutPosition
 
-| Value | Description |
-|-------|-------------|
-| `Right` | Slides in from the right edge (default, Azure Portal style) |
-| `Left` | Slides in from the left edge |
-| `Top` | Slides in from the top edge |
-| `Bottom` | Slides in from the bottom edge |
-| `Center` | Appears centered with scale animation (modal-like) |
+| Value    | Description                                                 |
+| -------- | ----------------------------------------------------------- |
+| `Right`  | Slides in from the right edge (default, Azure Portal style) |
+| `Left`   | Slides in from the left edge                                |
+| `Top`    | Slides in from the top edge                                 |
+| `Bottom` | Slides in from the bottom edge                              |
+| `Center` | Appears centered with scale animation (modal-like)          |
 
 ## 📡 Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `Opening` | `EventHandler<FlyoutOpeningEventArgs>` | Occurs before the flyout opens (can be cancelled) |
-| `Opened` | `RoutedEventHandler` | Occurs after the flyout has fully opened |
+| Event     | Type                                   | Description                                        |
+| --------- | -------------------------------------- | -------------------------------------------------- |
+| `Opening` | `EventHandler<FlyoutOpeningEventArgs>` | Occurs before the flyout opens (can be cancelled)  |
+| `Opened`  | `RoutedEventHandler`                   | Occurs after the flyout has fully opened           |
 | `Closing` | `EventHandler<FlyoutClosingEventArgs>` | Occurs before the flyout closes (can be cancelled) |
-| `Closed` | `RoutedEventHandler` | Occurs after the flyout has fully closed |
+| `Closed`  | `RoutedEventHandler`                   | Occurs after the flyout has fully closed           |
 
 ### FlyoutOpeningEventArgs
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property | Type   | Description                       |
+| -------- | ------ | --------------------------------- |
 | `Cancel` | `bool` | Set to true to cancel the opening |
 
 ### FlyoutClosingEventArgs
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Cancel` | `bool` | Set to true to cancel the closing |
+| Property         | Type   | Description                                    |
+| ---------------- | ------ | ---------------------------------------------- |
+| `Cancel`         | `bool` | Set to true to cancel the closing              |
 | `IsLightDismiss` | `bool` | True if closing was triggered by light dismiss |
 
 ## 🔧 Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `OpenAsync()` | `Task` | Opens the flyout with animation |
-| `CloseAsync()` | `Task` | Closes the flyout with animation |
-| `CloseWithResultAsync(object?)` | `Task` | Closes the flyout with a result value |
+| Method                          | Returns | Description                           |
+| ------------------------------- | ------- | ------------------------------------- |
+| `OpenAsync()`                   | `Task`  | Opens the flyout with animation       |
+| `CloseAsync()`                  | `Task`  | Closes the flyout with animation      |
+| `CloseWithResultAsync(object?)` | `Task`  | Closes the flyout with a result value |
 
 ## ⌨️ Keyboard Navigation
 
-| Key | Action |
-|-----|--------|
-| `Escape` | Close the flyout (if `CloseOnEscape=true`) |
-| `Tab` | Navigate between focusable elements |
-| `Shift+Tab` | Navigate backwards |
+| Key         | Action                                                                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| `Escape`    | Close the flyout (if `CloseOnEscape=true`)                                                           |
+| `Tab`       | Navigate forward through focusable elements (trapped within flyout when `IsFocusTrapEnabled=true`)   |
+| `Shift+Tab` | Navigate backwards through focusable elements (trapped within flyout when `IsFocusTrapEnabled=true`) |
+
+### Focus Trapping
+
+When `IsFocusTrapEnabled` is true (default), Tab/Shift+Tab navigation is confined to the flyout's content. This prevents users from accidentally tabbing out of the flyout into the underlying window.
+
+```xml
+<!-- Focus trapping enabled (default) -->
+<flyouts:Flyout Header="Trapped Focus" IsFocusTrapEnabled="True">
+    <StackPanel>
+        <TextBox Text="First" />
+        <TextBox Text="Second" />
+        <Button Content="OK" />
+    </StackPanel>
+</flyouts:Flyout>
+
+<!-- Focus trapping disabled (Tab can escape flyout) -->
+<flyouts:Flyout Header="Free Focus" IsFocusTrapEnabled="False">
+    <StackPanel>
+        <TextBox Text="First" />
+        <TextBox Text="Second" />
+        <Button Content="OK" />
+    </StackPanel>
+</flyouts:Flyout>
+```
+
+## ♿ Accessibility
+
+### Screen Reader Support
+
+The Flyout control includes an `AutomationPeer` that exposes:
+
+- Control type: `Pane`
+- Class name: `Flyout`
+- Name: Header content (if available)
+
+Screen readers will announce when flyouts open and close, and users can navigate flyout content using standard keyboard commands.
+
+### Keyboard Shortcuts
+
+| Key         | Action                                        |
+| ----------- | --------------------------------------------- |
+| `Escape`    | Close the flyout (if `CloseOnEscape=true`)    |
+| `Tab`       | Navigate forward through focusable elements   |
+| `Shift+Tab` | Navigate backwards through focusable elements |
+| `Alt+Left`  | Close flyout (back navigation)                |
+
+## 🔗 NiceWindow Integration
+
+Flyouts integrate with `NiceWindow` using the `PART_FlyoutHost` template part at Z-Index 6:
+
+```text
+
+Z-Index Architecture:
+├── 0: Main Content (PART_Content)
+├── 3: Inactive Dialogs (PART_NiceInactiveDialogsContainer)
+├── 4: Overlay Background (PART_OverlayBox)
+├── 5: Active Dialog (PART_NiceActiveDialogContainer)
+├── 6: Flyout Host (PART_FlyoutHost) ← Flyouts appear here
+└── 7+: Nested Flyouts (stacked by FlyoutHost)
+```
+
+When using flyouts in a `NiceWindow`, the window automatically provides the hosting container.
 
 ## 🎨 Theming
 
@@ -384,20 +483,20 @@ The Flyout control uses theme resources for consistent styling:
 
 ### FlyoutHost Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `MaxNestingDepth` | `int` | `5` | Maximum number of flyouts that can be open simultaneously |
-| `OpenFlyoutCount` | `int` | `0` | Number of currently open flyouts (read-only) |
-| `IsAnyFlyoutOpen` | `bool` | `false` | Whether any flyout is currently open (read-only) |
+| Property          | Type   | Default | Description                                               |
+| ----------------- | ------ | ------- | --------------------------------------------------------- |
+| `MaxNestingDepth` | `int`  | `5`     | Maximum number of flyouts that can be open simultaneously |
+| `OpenFlyoutCount` | `int`  | `0`     | Number of currently open flyouts (read-only)              |
+| `IsAnyFlyoutOpen` | `bool` | `false` | Whether any flyout is currently open (read-only)          |
 
 ### FlyoutHost Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `OpenFlyout(Flyout)` | `bool` | Opens a flyout if nesting depth allows |
-| `CloseTopFlyout()` | `bool` | Closes the topmost flyout |
-| `CloseAllFlyouts()` | `void` | Closes all open flyouts |
-| `CloseFlyoutAndDescendants(Flyout)` | `void` | Closes a flyout and all flyouts opened after it |
+| Method                              | Returns | Description                                     |
+| ----------------------------------- | ------- | ----------------------------------------------- |
+| `OpenFlyout(Flyout)`                | `bool`  | Opens a flyout if nesting depth allows          |
+| `CloseTopFlyout()`                  | `bool`  | Closes the topmost flyout                       |
+| `CloseAllFlyouts()`                 | `void`  | Closes all open flyouts                         |
+| `CloseFlyoutAndDescendants(Flyout)` | `void`  | Closes a flyout and all flyouts opened after it |
 
 ## 🎯 IFlyoutService (MVVM)
 
@@ -546,16 +645,16 @@ else if (!result.IsValid)
 
 ### IFlyoutService Interface
 
-| Method | Description |
-|--------|-------------|
-| `ShowAsync(header, content, options)` | Show flyout with content |
-| `ShowAsync<TViewModel>(header, vm, options)` | Show flyout with ViewModel |
-| `ShowAsync<TViewModel, TResult>(...)` | Show flyout and get typed result |
-| `CloseTopFlyout()` | Close the topmost flyout |
-| `CloseAllFlyouts()` | Close all open flyouts |
-| `CloseTopFlyoutWithResult(result)` | Close with a result value |
-| `RegisterView<TViewModel, TView>()` | Register View-ViewModel mapping |
-| `RegisterViewFactory<TViewModel>(factory)` | Register view factory |
+| Method                                       | Description                      |
+| -------------------------------------------- | -------------------------------- |
+| `ShowAsync(header, content, options)`        | Show flyout with content         |
+| `ShowAsync<TViewModel>(header, vm, options)` | Show flyout with ViewModel       |
+| `ShowAsync<TViewModel, TResult>(...)`        | Show flyout and get typed result |
+| `CloseTopFlyout()`                           | Close the topmost flyout         |
+| `CloseAllFlyouts()`                          | Close all open flyouts           |
+| `CloseTopFlyoutWithResult(result)`           | Close with a result value        |
+| `RegisterView<TViewModel, TView>()`          | Register View-ViewModel mapping  |
+| `RegisterViewFactory<TViewModel>(factory)`   | Register view factory            |
 
 ## 📎 FlyoutBase (Attached Properties)
 
@@ -563,18 +662,80 @@ else if (!result.IsValid)
 
 ### Attached Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `AttachedFlyout` | `Flyout` | The flyout associated with the element |
-| `IsOpen` | `bool` | Gets/sets whether the attached flyout is open |
-| `OpenOnClick` | `bool` | When true, clicking the element opens the attached flyout |
+| Property         | Type     | Description                                               |
+| ---------------- | -------- | --------------------------------------------------------- |
+| `AttachedFlyout` | `Flyout` | The flyout associated with the element                    |
+| `IsOpen`         | `bool`   | Gets/sets whether the attached flyout is open             |
+| `OpenOnClick`    | `bool`   | When true, clicking the element opens the attached flyout |
 
 ### Static Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `ShowAttachedFlyout(element)` | `void` | Opens the flyout attached to the element |
-| `HideAttachedFlyout(element)` | `void` | Closes the flyout attached to the element |
+| Method                        | Returns | Description                               |
+| ----------------------------- | ------- | ----------------------------------------- |
+| `ShowAttachedFlyout(element)` | `void`  | Opens the flyout attached to the element  |
+| `HideAttachedFlyout(element)` | `void`  | Closes the flyout attached to the element |
+
+## 🎨 FlyoutPresenter
+
+`FlyoutPresenter` is a content container that provides a standardized layout for flyout content with header, content, and footer sections.
+
+### Basic Usage
+
+```xml
+<flyouts:Flyout Header="My Flyout" ShowCloseButton="False">
+    <flyouts:FlyoutPresenter Header="Section Title" Footer="{Binding FooterButtons}">
+        <StackPanel>
+            <TextBlock Text="Main content goes here." />
+            <TextBox Text="{Binding SomeValue}" />
+        </StackPanel>
+    </flyouts:FlyoutPresenter>
+</flyouts:Flyout>
+```
+
+### Properties
+
+| Property                        | Type                  | Default       | Description                                     |
+| ------------------------------- | --------------------- | ------------- | ----------------------------------------------- |
+| `Header`                        | `object?`             | `null`        | Header content                                  |
+| `HeaderTemplate`                | `DataTemplate?`       | `null`        | Template for header content                     |
+| `HeaderPadding`                 | `Thickness`           | `16,12,16,12` | Padding around the header                       |
+| `HeaderBackground`              | `Brush?`              | theme         | Background brush for header area                |
+| `HeaderForeground`              | `Brush?`              | theme         | Foreground brush for header text                |
+| `Footer`                        | `object?`             | `null`        | Footer content (typically buttons)              |
+| `FooterTemplate`                | `DataTemplate?`       | `null`        | Template for footer content                     |
+| `FooterPadding`                 | `Thickness`           | `16,12,16,12` | Padding around the footer                       |
+| `FooterBackground`              | `Brush?`              | theme         | Background brush for footer area                |
+| `ContentPadding`                | `Thickness`           | `16`          | Padding around the main content                 |
+| `ShowHeader`                    | `bool`                | `true`        | Whether to show the header section              |
+| `ShowFooter`                    | `bool`                | `true`        | Whether to show the footer section              |
+| `ShowHeaderSeparator`           | `bool`                | `true`        | Whether to show line between header and content |
+| `ShowFooterSeparator`           | `bool`                | `true`        | Whether to show line between content and footer |
+| `SeparatorBrush`                | `Brush?`              | theme         | Brush for separator lines                       |
+| `SeparatorThickness`            | `double`              | `1.0`         | Thickness of separator lines                    |
+| `IsContentScrollable`           | `bool`                | `true`        | Whether content area scrolls                    |
+| `VerticalScrollBarVisibility`   | `ScrollBarVisibility` | `Auto`        | Vertical scrollbar visibility                   |
+| `HorizontalScrollBarVisibility` | `ScrollBarVisibility` | `Disabled`    | Horizontal scrollbar visibility                 |
+| `CornerRadius`                  | `CornerRadius`        | `0`           | Corner radius for the presenter                 |
+
+### Example with Custom Footer
+
+```xml
+<flyouts:FlyoutPresenter Header="Edit Settings">
+    <flyouts:FlyoutPresenter.Footer>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Margin="0,0,8,0" Click="Cancel_Click" />
+            <Button Content="Save" Style="{StaticResource AccentButton}" Click="Save_Click" />
+        </StackPanel>
+    </flyouts:FlyoutPresenter.Footer>
+
+    <StackPanel>
+        <TextBlock Text="Name" />
+        <TextBox Text="{Binding Name}" Margin="0,4,0,16" />
+        <TextBlock Text="Description" />
+        <TextBox Text="{Binding Description}" Margin="0,4,0,0" />
+    </StackPanel>
+</flyouts:FlyoutPresenter>
+```
 
 ## 🔗 Related Controls
 
@@ -584,6 +745,7 @@ else if (!result.IsValid)
 ## 🎮 Sample Application
 
 See the Flyout sample in the Atc.Wpf.Sample application under **Wpf.Controls > Flyouts > Flyout** for interactive examples including:
+
 - Basic flyout positions (Right, Left, Top, Bottom)
 - Configuration options (overlay, light dismiss, close button)
 - Form content

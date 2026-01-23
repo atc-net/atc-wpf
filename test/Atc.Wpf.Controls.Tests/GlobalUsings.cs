@@ -8,6 +8,7 @@ global using System.Windows.Controls;
 global using System.Windows.Media;
 
 global using Atc.Wpf.Controls.DataDisplay;
+global using Atc.Wpf.Controls.Flyouts;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.XUnit;

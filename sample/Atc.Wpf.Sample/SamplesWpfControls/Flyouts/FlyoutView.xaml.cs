@@ -92,4 +92,32 @@ public partial class FlyoutView
         object sender,
         RoutedEventArgs e)
         => NestedFlyout3.IsOpen = true;
+
+    private void OpenPresenterFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => PresenterFlyout.IsOpen = true;
+
+    private void ClosePresenterFlyout_Click(
+        object sender,
+        RoutedEventArgs e)
+        => PresenterFlyout.IsOpen = false;
+
+    private void SavePresenterFlyout_Click(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // In a real app, you would save the form data here
+        PresenterFlyout.IsOpen = false;
+    }
+
+    private void OpenFocusTrappedFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => FocusTrappedFlyout.IsOpen = true;
+
+    private void OpenFocusFreeFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => FocusFreeFlyout.IsOpen = true;
 }
