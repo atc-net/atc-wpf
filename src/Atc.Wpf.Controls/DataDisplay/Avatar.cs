@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
 /// A control for displaying user profile pictures with fallback options for initials.
@@ -199,7 +199,8 @@ public sealed partial class Avatar : Control
         ComputedCornerRadius = CornerRadius ?? new CornerRadius(pixels / 2);
     }
 
-    private static (double Pixels, double FontSize, double StatusSize) GetSizeValues(AvatarSize size)
+    private static (double Pixels, double FontSize, double StatusSize) GetSizeValues(
+        AvatarSize size)
         => size switch
         {
             AvatarSize.ExtraSmall => (24, 10, 8),

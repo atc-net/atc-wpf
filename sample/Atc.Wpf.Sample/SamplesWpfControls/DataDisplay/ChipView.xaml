@@ -1,10 +1,10 @@
 <UserControl
-    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.ChipView"
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.ChipView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="900"
     d:DesignWidth="900"
@@ -31,10 +31,10 @@
                     HorizontalSpacing="10"
                     Orientation="Horizontal"
                     VerticalSpacing="10">
-                    <layouts:Chip Content="Basic Chip" />
-                    <layouts:Chip Content="Another Chip" />
-                    <layouts:Chip Content="Tag" />
-                    <layouts:Chip Content="Label" />
+                    <dataDisplay:Chip Content="Basic Chip" />
+                    <dataDisplay:Chip Content="Another Chip" />
+                    <dataDisplay:Chip Content="Tag" />
+                    <dataDisplay:Chip Content="Label" />
                 </atc:UniformSpacingPanel>
             </GroupBox>
 
@@ -54,7 +54,7 @@
 
                         <!-- Default variant -->
                         <StackPanel>
-                            <layouts:Chip
+                            <dataDisplay:Chip
                                 Content="Default"
                                 Variant="Default" />
                             <TextBlock
@@ -66,7 +66,7 @@
 
                         <!-- Filter variant (selectable) -->
                         <StackPanel>
-                            <layouts:Chip
+                            <dataDisplay:Chip
                                 Content="Filter"
                                 Variant="Filter" />
                             <TextBlock
@@ -78,7 +78,7 @@
 
                         <!-- Input variant (removable) -->
                         <StackPanel>
-                            <layouts:Chip
+                            <dataDisplay:Chip
                                 Content="Input"
                                 Variant="Input" />
                             <TextBlock
@@ -90,7 +90,7 @@
 
                         <!-- Action variant -->
                         <StackPanel>
-                            <layouts:Chip
+                            <dataDisplay:Chip
                                 Content="Action"
                                 Variant="Action" />
                             <TextBlock
@@ -113,7 +113,7 @@
                     VerticalAlignment="Center"
                     VerticalSpacing="10">
                     <StackPanel>
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Small"
                             Size="Small" />
                         <TextBlock
@@ -123,7 +123,7 @@
                             Text="Size=Small" />
                     </StackPanel>
                     <StackPanel>
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Medium"
                             Size="Medium" />
                         <TextBlock
@@ -133,7 +133,7 @@
                             Text="Size=Medium (default)" />
                     </StackPanel>
                     <StackPanel>
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Large"
                             Size="Large" />
                         <TextBlock
@@ -157,21 +157,21 @@
                         HorizontalSpacing="10"
                         Orientation="Horizontal"
                         VerticalSpacing="10">
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="JavaScript"
                             IsSelectable="True"
                             IsSelected="True" />
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="TypeScript"
                             IsSelectable="True" />
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Python"
                             IsSelectable="True" />
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="C#"
                             IsSelectable="True"
                             IsSelected="True" />
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Go"
                             IsSelectable="True" />
                     </atc:UniformSpacingPanel>
@@ -190,13 +190,13 @@
                         HorizontalSpacing="10"
                         Orientation="Horizontal"
                         VerticalSpacing="10">
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             CanRemove="True"
                             Content="john@example.com" />
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             CanRemove="True"
                             Content="jane@example.com" />
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             CanRemove="True"
                             Content="bob@example.com" />
                     </atc:UniformSpacingPanel>
@@ -215,35 +215,35 @@
                         VerticalSpacing="10">
 
                         <!-- Custom background -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Background="#E3F2FD"
                             BorderBrush="#2196F3"
                             Content="Info"
                             Foreground="#1565C0" />
 
                         <!-- Success style -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Background="#E8F5E9"
                             BorderBrush="#4CAF50"
                             Content="Success"
                             Foreground="#2E7D32" />
 
                         <!-- Warning style -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Background="#FFF3E0"
                             BorderBrush="#FF9800"
                             Content="Warning"
                             Foreground="#E65100" />
 
                         <!-- Error style -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Background="#FFEBEE"
                             BorderBrush="#F44336"
                             Content="Error"
                             Foreground="#C62828" />
 
                         <!-- Custom selected colors -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Custom Selected"
                             IsSelectable="True"
                             IsSelected="True"
@@ -251,12 +251,12 @@
                             SelectedForeground="White" />
 
                         <!-- Disabled -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Disabled"
                             IsEnabled="False" />
 
                         <!-- Non-clickable -->
-                        <layouts:Chip
+                        <dataDisplay:Chip
                             Content="Not Clickable"
                             IsClickable="False" />
                     </atc:UniformSpacingPanel>

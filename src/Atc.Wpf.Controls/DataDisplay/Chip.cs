@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
 /// A Chip control for displaying tags, filters, or selections with optional icon and remove button.

@@ -1,10 +1,10 @@
 <UserControl
-    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.AvatarView"
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.AvatarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="900"
     d:DesignWidth="900"
@@ -37,7 +37,7 @@
 
                     <!-- ExtraSmall -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="John Doe"
                             Size="ExtraSmall" />
                         <TextBlock
@@ -49,7 +49,7 @@
 
                     <!-- Small -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="John Doe"
                             Size="Small" />
                         <TextBlock
@@ -61,7 +61,7 @@
 
                     <!-- Medium (Default) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="John Doe"
                             Size="Medium" />
                         <TextBlock
@@ -73,7 +73,7 @@
 
                     <!-- Large -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="John Doe"
                             Size="Large" />
                         <TextBlock
@@ -85,7 +85,7 @@
 
                     <!-- ExtraLarge -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="John Doe"
                             Size="ExtraLarge" />
                         <TextBlock
@@ -108,7 +108,7 @@
 
                     <!-- Explicit Initials -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             Initials="AB"
                             Size="Large" />
                         <TextBlock
@@ -120,7 +120,7 @@
 
                     <!-- Auto-generated from Single Name -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Alice"
                             Size="Large" />
                         <TextBlock
@@ -132,7 +132,7 @@
 
                     <!-- Auto-generated from Full Name -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Bob Smith"
                             Size="Large" />
                         <TextBlock
@@ -144,7 +144,7 @@
 
                     <!-- Auto-generated from Multiple Names -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Mary Jane Watson"
                             Size="Large" />
                         <TextBlock
@@ -156,7 +156,7 @@
 
                     <!-- No Name (Fallback) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar Size="Large" />
+                        <dataDisplay:Avatar Size="Large" />
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -177,7 +177,7 @@
 
                     <!-- None -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="No Status"
                             Size="Large"
                             Status="None" />
@@ -190,7 +190,7 @@
 
                     <!-- Online -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Online User"
                             Size="Large"
                             Status="Online" />
@@ -203,7 +203,7 @@
 
                     <!-- Away -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Away User"
                             Size="Large"
                             Status="Away" />
@@ -216,7 +216,7 @@
 
                     <!-- Busy -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Busy User"
                             Size="Large"
                             Status="Busy" />
@@ -229,7 +229,7 @@
 
                     <!-- DoNotDisturb -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="DND User"
                             Size="Large"
                             Status="DoNotDisturb" />
@@ -242,7 +242,7 @@
 
                     <!-- Offline -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             DisplayName="Offline User"
                             Size="Large"
                             Status="Offline" />
@@ -266,7 +266,7 @@
 
                     <!-- Custom Background -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             Background="Purple"
                             DisplayName="Custom BG"
                             Size="Large" />
@@ -279,7 +279,7 @@
 
                     <!-- Custom Foreground -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             Background="DarkSlateGray"
                             DisplayName="Custom FG"
                             Foreground="Gold"
@@ -293,7 +293,7 @@
 
                     <!-- Square Avatar -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             CornerRadius="4"
                             DisplayName="Square"
                             Size="Large" />
@@ -306,7 +306,7 @@
 
                     <!-- Rounded Square -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Avatar
+                        <dataDisplay:Avatar
                             CornerRadius="12"
                             DisplayName="Rounded"
                             Size="Large" />
@@ -320,9 +320,9 @@
                     <!-- Color Consistency Demo -->
                     <StackPanel HorizontalAlignment="Center">
                         <atc:UniformSpacingPanel HorizontalSpacing="5" Orientation="Horizontal">
-                            <layouts:Avatar DisplayName="John Doe" Size="Small" />
-                            <layouts:Avatar DisplayName="John Doe" Size="Medium" />
-                            <layouts:Avatar DisplayName="John Doe" Size="Large" />
+                            <dataDisplay:Avatar DisplayName="John Doe" Size="Small" />
+                            <dataDisplay:Avatar DisplayName="John Doe" Size="Medium" />
+                            <dataDisplay:Avatar DisplayName="John Doe" Size="Large" />
                         </atc:UniformSpacingPanel>
                         <TextBlock
                             Margin="0,5,0,0"
@@ -348,11 +348,11 @@
 
                         <!-- Basic Group -->
                         <StackPanel HorizontalAlignment="Center">
-                            <layouts:AvatarGroup MaxVisible="5" Size="Medium">
-                                <layouts:Avatar DisplayName="Alice Johnson" />
-                                <layouts:Avatar DisplayName="Bob Smith" />
-                                <layouts:Avatar DisplayName="Carol Williams" />
-                            </layouts:AvatarGroup>
+                            <dataDisplay:AvatarGroup MaxVisible="5" Size="Medium">
+                                <dataDisplay:Avatar DisplayName="Alice Johnson" />
+                                <dataDisplay:Avatar DisplayName="Bob Smith" />
+                                <dataDisplay:Avatar DisplayName="Carol Williams" />
+                            </dataDisplay:AvatarGroup>
                             <TextBlock
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
@@ -362,14 +362,14 @@
 
                         <!-- Group with Overflow -->
                         <StackPanel HorizontalAlignment="Center">
-                            <layouts:AvatarGroup MaxVisible="3" Size="Medium">
-                                <layouts:Avatar DisplayName="Alice Johnson" />
-                                <layouts:Avatar DisplayName="Bob Smith" />
-                                <layouts:Avatar DisplayName="Carol Williams" />
-                                <layouts:Avatar DisplayName="David Brown" />
-                                <layouts:Avatar DisplayName="Eve Davis" />
-                                <layouts:Avatar DisplayName="Frank Miller" />
-                            </layouts:AvatarGroup>
+                            <dataDisplay:AvatarGroup MaxVisible="3" Size="Medium">
+                                <dataDisplay:Avatar DisplayName="Alice Johnson" />
+                                <dataDisplay:Avatar DisplayName="Bob Smith" />
+                                <dataDisplay:Avatar DisplayName="Carol Williams" />
+                                <dataDisplay:Avatar DisplayName="David Brown" />
+                                <dataDisplay:Avatar DisplayName="Eve Davis" />
+                                <dataDisplay:Avatar DisplayName="Frank Miller" />
+                            </dataDisplay:AvatarGroup>
                             <TextBlock
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
@@ -379,13 +379,13 @@
 
                         <!-- Large Group -->
                         <StackPanel HorizontalAlignment="Center">
-                            <layouts:AvatarGroup MaxVisible="4" Size="Large">
-                                <layouts:Avatar DisplayName="Team Member 1" />
-                                <layouts:Avatar DisplayName="Team Member 2" />
-                                <layouts:Avatar DisplayName="Team Member 3" />
-                                <layouts:Avatar DisplayName="Team Member 4" />
-                                <layouts:Avatar DisplayName="Team Member 5" />
-                            </layouts:AvatarGroup>
+                            <dataDisplay:AvatarGroup MaxVisible="4" Size="Large">
+                                <dataDisplay:Avatar DisplayName="Team Member 1" />
+                                <dataDisplay:Avatar DisplayName="Team Member 2" />
+                                <dataDisplay:Avatar DisplayName="Team Member 3" />
+                                <dataDisplay:Avatar DisplayName="Team Member 4" />
+                                <dataDisplay:Avatar DisplayName="Team Member 5" />
+                            </dataDisplay:AvatarGroup>
                             <TextBlock
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
@@ -395,15 +395,15 @@
 
                         <!-- Custom Spacing -->
                         <StackPanel HorizontalAlignment="Center">
-                            <layouts:AvatarGroup
+                            <dataDisplay:AvatarGroup
                                 MaxVisible="5"
                                 Size="Medium"
                                 Spacing="-20">
-                                <layouts:Avatar DisplayName="Overlapping" />
-                                <layouts:Avatar DisplayName="More Overlap" />
-                                <layouts:Avatar DisplayName="Even More" />
-                                <layouts:Avatar DisplayName="Tight Group" />
-                            </layouts:AvatarGroup>
+                                <dataDisplay:Avatar DisplayName="Overlapping" />
+                                <dataDisplay:Avatar DisplayName="More Overlap" />
+                                <dataDisplay:Avatar DisplayName="Even More" />
+                                <dataDisplay:Avatar DisplayName="Tight Group" />
+                            </dataDisplay:AvatarGroup>
                             <TextBlock
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"

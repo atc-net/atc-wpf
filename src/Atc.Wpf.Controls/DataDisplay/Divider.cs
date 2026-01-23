@@ -1,6 +1,6 @@
 // ReSharper disable UseCollectionExpression
 // ReSharper disable UnusedMember.Local
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 [ContentProperty(nameof(Content))]
 public sealed partial class Divider : Control

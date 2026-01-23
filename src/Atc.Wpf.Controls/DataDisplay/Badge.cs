@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
 /// A control that overlays content with a small badge indicator (count, status dot, etc.).

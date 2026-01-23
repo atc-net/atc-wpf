@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfControls.Layouts;
+namespace Atc.Wpf.Sample.SamplesWpfControls.DataDisplay;
 
 public partial class DividerView
 {

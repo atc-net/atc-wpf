@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Tests.Layouts;
+namespace Atc.Wpf.Controls.Tests.DataDisplay;
 
 public sealed class AvatarTests
 {

@@ -5,6 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample"
@@ -115,7 +116,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpf"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -136,7 +137,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Controls" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfControls"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -157,7 +158,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Forms" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfForms"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -178,7 +179,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Components" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfComponents"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -199,7 +200,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Network" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfNetwork"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -220,7 +221,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Theming" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfTheming"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -241,7 +242,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.SourceGenerators" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfSourceGenerators"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
@@ -262,7 +263,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.FontIcons" />
-                                <layouts:Badge
+                                <dataDisplay:Badge
                                     x:Name="BadgeWpfFontIcons"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"

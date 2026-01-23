@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
 /// Converts avatar size to center point for ellipse geometry.
@@ -7,7 +7,11 @@ internal sealed class AvatarCenterConverter : IValueConverter
 {
     public static readonly AvatarCenterConverter Instance = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is double size)
         {
@@ -18,6 +22,10 @@ internal sealed class AvatarCenterConverter : IValueConverter
         return new Point(20, 20); // Default for Medium size
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
         => throw new NotSupportedException();
 }

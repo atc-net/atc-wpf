@@ -4,7 +4,7 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:enums="clr-namespace:Atc.Wpf.Theming;assembly=Atc.Wpf.Theming"
     xmlns:helpers="clr-namespace:Atc.Wpf.Controls.Helpers"
-    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters;assembly=Atc.Wpf.Theming"
     xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
 
@@ -68,15 +68,15 @@
                             Height="19"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Fill="{Binding Path=(helpers:CardHelper.ToggleCircleFill), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}"
-                            Stroke="{Binding Path=(helpers:CardHelper.ToggleCircleStroke), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
+                            Fill="{Binding Path=(helpers:CardHelper.ToggleCircleFill), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}"
+                            Stroke="{Binding Path=(helpers:CardHelper.ToggleCircleStroke), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
                         <Path
                             x:Name="arrow"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Data="M 1,4.5 L 4.5,1 L 8,4.5"
                             SnapsToDevicePixels="false"
-                            Stroke="{Binding Path=(helpers:CardHelper.ToggleArrowStroke), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}"
+                            Stroke="{Binding Path=(helpers:CardHelper.ToggleArrowStroke), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}"
                             StrokeThickness="2" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -84,20 +84,20 @@
                             <Setter TargetName="arrow" Property="Data" Value="M 1,1.5 L 4.5,5 L 8,1.5" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="circle" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleCircleStrokeMouseOver), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
-                            <Setter TargetName="circle" Property="Fill" Value="{Binding Path=(helpers:CardHelper.ToggleCircleFillMouseOver), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
-                            <Setter TargetName="arrow" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleArrowStrokeMouseOver), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
+                            <Setter TargetName="circle" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleCircleStrokeMouseOver), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
+                            <Setter TargetName="circle" Property="Fill" Value="{Binding Path=(helpers:CardHelper.ToggleCircleFillMouseOver), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
+                            <Setter TargetName="arrow" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleArrowStrokeMouseOver), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="circle" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleCircleStrokePressed), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
+                            <Setter TargetName="circle" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleCircleStrokePressed), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
                             <Setter TargetName="circle" Property="StrokeThickness" Value="1.5" />
-                            <Setter TargetName="circle" Property="Fill" Value="{Binding Path=(helpers:CardHelper.ToggleCircleFillPressed), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
-                            <Setter TargetName="arrow" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleArrowStrokePressed), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
+                            <Setter TargetName="circle" Property="Fill" Value="{Binding Path=(helpers:CardHelper.ToggleCircleFillPressed), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
+                            <Setter TargetName="arrow" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleArrowStrokePressed), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="circle" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleCircleStrokeDisabled), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
-                            <Setter TargetName="circle" Property="Fill" Value="{Binding Path=(helpers:CardHelper.ToggleCircleFillDisabled), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
-                            <Setter TargetName="arrow" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleArrowStrokeDisabled), RelativeSource={RelativeSource AncestorType={x:Type layouts:Card}}}" />
+                            <Setter TargetName="circle" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleCircleStrokeDisabled), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
+                            <Setter TargetName="circle" Property="Fill" Value="{Binding Path=(helpers:CardHelper.ToggleCircleFillDisabled), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
+                            <Setter TargetName="arrow" Property="Stroke" Value="{Binding Path=(helpers:CardHelper.ToggleArrowStrokeDisabled), RelativeSource={RelativeSource AncestorType={x:Type dataDisplay:Card}}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -105,7 +105,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="AtcApps.Styles.Card" TargetType="{x:Type layouts:Card}">
+    <Style x:Key="AtcApps.Styles.Card" TargetType="{x:Type dataDisplay:Card}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -139,7 +139,7 @@
         <Setter Property="helpers:CardHelper.ToggleArrowStrokeDisabled" Value="{DynamicResource Expander.Disabled.Arrow.Stroke}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type layouts:Card}">
+                <ControlTemplate TargetType="{x:Type dataDisplay:Card}">
                     <Border
                         x:Name="CardBorder"
                         Background="{TemplateBinding Background}"
