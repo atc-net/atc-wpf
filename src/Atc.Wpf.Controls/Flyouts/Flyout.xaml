@@ -1,0 +1,246 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:flyouts="clr-namespace:Atc.Wpf.Controls.Flyouts">
+
+    <!--  Close button style  -->
+    <Style x:Key="AtcApps.Styles.Flyout.CloseButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Ellipse
+                            x:Name="HoverCircle"
+                            Fill="{DynamicResource AtcApps.Brushes.Gray8}"
+                            Opacity="0" />
+                        <Path
+                            x:Name="CloseIcon"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="M 0,0 L 10,10 M 0,10 L 10,0"
+                            SnapsToDevicePixels="True"
+                            Stroke="{DynamicResource AtcApps.Brushes.Gray2}"
+                            StrokeThickness="1.5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverCircle" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="HoverCircle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="CloseIcon" Property="Stroke" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Main Flyout style  -->
+    <Style x:Key="AtcApps.Styles.Flyout" TargetType="{x:Type flyouts:Flyout}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FlyoutBackground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="FlyoutBorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="FlyoutBorderThickness" Value="1,0,0,0" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HeaderBackground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+        <Setter Property="OverlayBrush" Value="#000000" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flyouts:Flyout}">
+                    <Grid>
+                        <!--  Overlay (click to dismiss)  -->
+                        <Border
+                            x:Name="PART_Overlay"
+                            Background="{TemplateBinding OverlayBrush}"
+                            Opacity="0"
+                            Visibility="Collapsed" />
+
+                        <!--  Flyout Panel - Right Position (default)  -->
+                        <Border
+                            x:Name="PART_FlyoutPanel"
+                            Width="{TemplateBinding FlyoutWidth}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding FlyoutBackground}"
+                            BorderBrush="{TemplateBinding FlyoutBorderBrush}"
+                            BorderThickness="{TemplateBinding FlyoutBorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            RenderTransformOrigin="1,0.5"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            UseLayoutRounding="True">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="SlideTransform" />
+                            </Border.RenderTransform>
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="16"
+                                    Direction="180"
+                                    Opacity="0.2"
+                                    ShadowDepth="4"
+                                    Color="Black" />
+                            </Border.Effect>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <!--  Header  -->
+                                <Border
+                                    x:Name="HeaderBorder"
+                                    Grid.Row="0"
+                                    Background="{TemplateBinding HeaderBackground}"
+                                    BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+                                    BorderThickness="0,0,0,1"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    UseLayoutRounding="True">
+                                    <Grid MinHeight="48">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <ContentPresenter
+                                            x:Name="HeaderContent"
+                                            Grid.Column="0"
+                                            Margin="16,8"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding Header}"
+                                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                            RecognizesAccessKey="True"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            TextElement.FontSize="16"
+                                            TextElement.FontWeight="SemiBold"
+                                            TextElement.Foreground="{TemplateBinding HeaderForeground}"
+                                            UseLayoutRounding="False" />
+
+                                        <Button
+                                            x:Name="PART_CloseButton"
+                                            Grid.Column="1"
+                                            Margin="4,8,12,8"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource AtcApps.Styles.Flyout.CloseButton}"
+                                            ToolTip="Close" />
+                                    </Grid>
+                                </Border>
+
+                                <!--  Content  -->
+                                <ScrollViewer
+                                    Grid.Row="1"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    VerticalScrollBarVisibility="Auto">
+                                    <ContentPresenter
+                                        x:Name="PART_ContentPresenter"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        UseLayoutRounding="False" />
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!--  Hide header when Header is null  -->
+                        <Trigger Property="Header" Value="{x:Null}">
+                            <Setter TargetName="HeaderBorder" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Hide close button when ShowCloseButton is false  -->
+                        <Trigger Property="ShowCloseButton" Value="False">
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Left Position  -->
+                        <Trigger Property="Position" Value="Left">
+                            <Setter TargetName="PART_FlyoutPanel" Property="HorizontalAlignment" Value="Left" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0,0.5" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="0,0,1,0" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        BlurRadius="16"
+                                        Direction="0"
+                                        Opacity="0.2"
+                                        ShadowDepth="4"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!--  Top Position  -->
+                        <Trigger Property="Position" Value="Top">
+                            <Setter TargetName="PART_FlyoutPanel" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Width" Value="Auto" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Height" Value="{Binding FlyoutHeight, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0.5,0" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        BlurRadius="16"
+                                        Direction="270"
+                                        Opacity="0.2"
+                                        ShadowDepth="4"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!--  Bottom Position  -->
+                        <Trigger Property="Position" Value="Bottom">
+                            <Setter TargetName="PART_FlyoutPanel" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="VerticalAlignment" Value="Bottom" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Width" Value="Auto" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Height" Value="{Binding FlyoutHeight, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0.5,1" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="0,1,0,0" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        BlurRadius="16"
+                                        Direction="90"
+                                        Opacity="0.2"
+                                        ShadowDepth="4"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

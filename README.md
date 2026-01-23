@@ -5,7 +5,7 @@ This framework provides a rich collection of reusable controls, theming support,
 
 ## ✨ Key Features
 
-- 🎨 **Rich Control Library** - 70+ controls including labeled form controls, color pickers, selectors, and specialized input controls
+- 🎨 **Rich Control Library** - 80+ controls including labeled form controls, flyouts, color pickers, selectors, and specialized input controls
 - 🏛️ **Four-Tier Architecture** - Clear separation: Base → Controls → Forms → Components
 - 🌓 **Light/Dark Theming** - Built-in theme support for all controls with easy customization
 - 🎯 **MVVM Ready** - Complete MVVM infrastructure with observable properties and relay commands
@@ -147,16 +147,37 @@ Understanding the package hierarchy and when to use each:
 
 | Tier | Package | Purpose | Example Controls |
 |------|---------|---------|------------------|
-| **1. Base** | `Atc.Wpf` | MVVM, layouts, converters - no UI controls | ViewModelBase, GridEx, AutoGrid |
-| **2. Controls** | `Atc.Wpf.Controls` | Atomic/primitive controls | IntegerBox, ToggleSwitch, ColorPicker |
+| **1. Base** | `Atc.Wpf` | MVVM, layouts, converters - no UI controls | ViewModelBase, GridEx, FlexPanel |
+| **2. Controls** | `Atc.Wpf.Controls` | Atomic/primitive controls | IntegerBox, ToggleSwitch, Flyout, Carousel |
 | **3. Forms** | `Atc.Wpf.Forms` | Labeled form fields with validation | LabelTextBox, LabelComboBox, LabelDatePicker |
-| **4. Components** | `Atc.Wpf.Components` | Composite high-level components | InfoDialogBox, JsonViewer, SettingsView |
+| **4. Components** | `Atc.Wpf.Components` | Composite high-level components | InfoDialogBox, JsonViewer, ToastNotification |
 
 **Quick Guidelines:**
 
 - Use **Form Controls** (`Atc.Wpf.Forms`) for standard forms - they include labels, validation, and mandatory indicators
 - Use **Base Controls** (`Atc.Wpf.Controls`) when you need custom layouts or are building composite controls
 - Use **Components** (`Atc.Wpf.Components`) for dialogs, viewers, and settings panels
+
+## 📋 Control Catalog at a Glance
+
+A quick reference of all controls organized by category:
+
+| Category | Controls | Package |
+|----------|----------|---------|
+| **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
+| **Data Display** | Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Rating | Atc.Wpf.Controls |
+| **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Controls |
+| **Input Controls** | NumericBox, IntegerBox, DecimalBox, ToggleSwitch, RangeSlider, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
+| **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
+| **Buttons** | ImageButton, AuthenticationButton, ConnectivityButton | Atc.Wpf.Controls |
+| **Progress** | BusyOverlay, LoadingIndicator | Atc.Wpf.Controls |
+| **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
+| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
+| **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
+| **Notifications** | ToastNotification, ToastNotificationManager | Atc.Wpf.Components |
+| **Theming** | NiceWindow, ThemeSelector, AccentColorSelector | Atc.Wpf.Theming |
+| **Font Icons** | FontAwesome (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
+| **Network** | NetworkScannerView | Atc.Wpf.Network |
 
 ## 💝 MVVM Made Easy
 
@@ -226,17 +247,25 @@ The foundation library providing essential WPF controls, layouts, and utilities.
 
 Modern layout panels and containers for advanced UI composition. See the **[complete Layout Controls documentation](docs/Layouts/@Readme.md)** for detailed usage.
 
-| Control | Description | Key Features |
-|---------|-------------|--------------|
-| **[GridEx](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)** | Enhanced Grid | String-based row/column definitions |
-| **[AutoGrid](docs/Layouts/@Readme.md#-autogrid)** | Auto-indexed Grid | Automatic child positioning |
-| **[FlexPanel](docs/Layouts/@Readme.md#-flexpanel)** | CSS Flexbox panel | Grow/shrink, justify, align |
-| **[StaggeredPanel](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)** | Masonry layout | Pinterest-style waterfall |
-| **[UniformSpacingPanel](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)** | Uniform spacing | Consistent gaps + wrapping |
-| **[Card](docs/DataDisplay/@Readme.md#-card)** | Content container | Elevation, header/footer, expand |
-| **[Badge](docs/DataDisplay/@Readme.md#-badge)** | Status indicator | Notification counts, dots |
-| **[Chip](docs/DataDisplay/@Readme.md#-chip)** | Tag/filter control | Selectable, removable |
-| **[Avatar](docs/DataDisplay/@Readme.md#-avatar)** | User profile picture | Initials fallback, status indicator |
+| Control | Description | Key Features | Documentation |
+|---------|-------------|--------------|---------------|
+| **GridEx** | Enhanced Grid | String-based row/column definitions | [Readme](src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md) |
+| **AutoGrid** | Auto-indexed Grid | Automatic child positioning | [Readme](src/Atc.Wpf.Controls/Layouts/AutoGrid_Readme.md) |
+| **FlexPanel** | CSS Flexbox panel | Grow/shrink, justify, align | [Readme](src/Atc.Wpf.Controls/Layouts/FlexPanel_Readme.md) |
+| **StaggeredPanel** | Masonry layout | Pinterest-style waterfall | [Readme](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md) |
+| **UniformSpacingPanel** | Uniform spacing | Consistent gaps + wrapping | [Readme](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md) |
+| **ResponsivePanel** | Responsive layout | Breakpoint-based responsive design | [Readme](src/Atc.Wpf.Controls/Layouts/ResponsivePanel_Readme.md) |
+| **DockPanelPro** | IDE-style docking | Resizable regions | [Readme](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md) |
+
+### Data Display Controls
+
+| Control | Description | Key Features | Documentation |
+|---------|-------------|--------------|---------------|
+| **Card** | Content container | Elevation, header/footer, expand | [Readme](docs/DataDisplay/@Readme.md#-card) |
+| **Badge** | Status indicator | Notification counts, dots | [Readme](docs/DataDisplay/@Readme.md#-badge) |
+| **Chip** | Tag/filter control | Selectable, removable | [Readme](docs/DataDisplay/@Readme.md#-chip) |
+| **Avatar** | User profile picture | Initials fallback, status indicator | [Readme](docs/DataDisplay/@Readme.md#-avatar) |
+| **Divider** | Visual separator | Horizontal/vertical | [Readme](docs/DataDisplay/@Readme.md#-divider) |
 
 ### Media Controls
 
@@ -257,14 +286,16 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 
 A collection of primitive/atomic WPF controls - single-purpose building blocks.
 
-### ⭐ Base Controls (14 Controls)
+### ⭐ Input Controls
 
 Unlabeled input controls that provide core functionality:
 
-- **Number Input**: NumericBox, IntegerBox, DecimalBox, IntegerXyBox, DecimalXyBox, PixelSizeBox
-- **Toggle**: ToggleSwitch, RangeSlider
-- **Pickers**: DirectoryPicker, FilePicker
-- **Text Input**: RichTextBoxEx
+| Category | Controls |
+|----------|----------|
+| **Number Input** | NumericBox, IntegerBox, DecimalBox, IntegerXyBox, DecimalXyBox, PixelSizeBox |
+| **Toggle & Slider** | ToggleSwitch, RangeSlider, [Rating](src/Atc.Wpf.Controls/Inputs/Readme.md) |
+| **Pickers** | [DirectoryPicker, FilePicker](src/Atc.Wpf.Controls/Pickers/Readme.md) |
+| **Text Input** | RichTextBoxEx |
 
 ### Button Controls
 
@@ -272,15 +303,50 @@ Unlabeled input controls that provide core functionality:
 
 ### Color Controls
 
-- HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker
+- HueSlider, SaturationBrightnessPicker, TransparencySlider, [WellKnownColorPicker](src/Atc.Wpf.Controls/ColorEditing/WellKnownColorPicker_Readme.md)
 
 ### Layout Controls
 
-- DockPanelPro, GridLines, GroupBoxExpander
+- [DockPanelPro](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md), GridLines, GroupBoxExpander
 
 ### Data Display Controls
 
-- Avatar, AvatarGroup, Badge, Card, Chip, Divider
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **[Avatar](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md)** | User profile pictures with initials fallback | [Readme](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md) |
+| **AvatarGroup** | Multiple overlapping avatars | - |
+| **Badge** | Status indicator overlay | - |
+| **Card** | Elevated container with header/footer | - |
+| **[Carousel](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md)** | Image carousel/slideshow with navigation | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
+| **Chip** | Tag/filter interactive elements | - |
+| **Divider** | Visual separator (horizontal/vertical) | - |
+
+### Flyout Controls
+
+Sliding panel overlays that slide in from window edges - inspired by Azure Portal blade pattern.
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **[Flyout](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md)** | Sliding panel overlay from edges (Right, Left, Top, Bottom) | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md) |
+| **FlyoutHost** | Container that manages multiple flyouts with nesting support | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md#-flyouthost) |
+| **FlyoutService** | MVVM-friendly service for programmatic flyout management | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md#-iflyoutservice-mvvm) |
+
+**Key Features:**
+- 🎯 Four positions: Right (default), Left, Top, Bottom
+- 🌓 Light dismiss (click outside or Escape key)
+- 📚 Nested flyouts (Azure Portal drill-down style)
+- 🎬 Smooth slide animations
+- 🎨 Full theming support
+
+```xml
+<!-- Basic Flyout -->
+<flyouts:Flyout x:Name="SettingsFlyout" Header="Settings" FlyoutWidth="400">
+    <StackPanel Margin="16">
+        <CheckBox Content="Enable notifications" />
+        <CheckBox Content="Dark mode" />
+    </StackPanel>
+</flyouts:Flyout>
+```
 
 ### Progress Controls
 
