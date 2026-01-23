@@ -127,6 +127,12 @@ public sealed partial class Flyout : ContentControl
     private Brush? headerForeground;
 
     /// <summary>
+    /// Gets or sets the header border brush (separator line under the header).
+    /// </summary>
+    [DependencyProperty]
+    private Brush? headerBorderBrush;
+
+    /// <summary>
     /// Gets or sets whether clicking outside the flyout dismisses it.
     /// </summary>
     [DependencyProperty(DefaultValue = true)]

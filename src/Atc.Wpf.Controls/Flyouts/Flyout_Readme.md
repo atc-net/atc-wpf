@@ -290,6 +290,7 @@ MyFlyout.Closed += (s, e) =>
 | `HeaderTemplate`        | `DataTemplate?`    | `null`    | Template for the header content                                          |
 | `HeaderBackground`      | `Brush?`           | theme     | Background brush for the header area                                     |
 | `HeaderForeground`      | `Brush?`           | theme     | Foreground brush for the header text                                     |
+| `HeaderBorderBrush`     | `Brush?`           | theme     | Border brush for the header separator line                               |
 | `IsLightDismissEnabled` | `bool`             | `true`    | Whether clicking outside dismisses the flyout                            |
 | `ShowOverlay`           | `bool`             | `true`    | Whether to show an overlay background                                    |
 | `OverlayOpacity`        | `double`           | `0.5`     | Opacity of the overlay (0.0 - 1.0)                                       |
@@ -434,6 +435,110 @@ The Flyout control uses theme resources for consistent styling:
 - `AtcApps.Brushes.Gray6` - Flyout border
 - `AtcApps.Brushes.Gray2` - Close button icon
 - `AtcApps.Brushes.IdealForeground` - Overlay brush
+
+### Custom Colors
+
+You can customize flyout colors using the following properties:
+
+```xml
+<!-- Custom colored flyout -->
+<flyouts:Flyout
+    Header="Branded Panel"
+    FlyoutWidth="400"
+    FlyoutBackground="#1E3A5F"
+    FlyoutBorderBrush="#4A90D9"
+    FlyoutBorderThickness="2"
+    HeaderBackground="#2C5282"
+    HeaderForeground="White"
+    HeaderBorderBrush="#4A90D9"
+    OverlayBrush="#000080"
+    OverlayOpacity="0.3">
+    <TextBlock Text="Custom styled content" Foreground="White" Margin="16" />
+</flyouts:Flyout>
+```
+
+### Color Properties Reference
+
+| Property            | Description                              | Default                 |
+| ------------------- | ---------------------------------------- | ----------------------- |
+| `FlyoutBackground`  | Main panel background                    | Theme background        |
+| `FlyoutBorderBrush` | Border around the flyout panel           | Gray6                   |
+| `HeaderBackground`  | Header area background                   | Theme background        |
+| `HeaderForeground`  | Header text color                        | Theme text              |
+| `HeaderBorderBrush` | Separator line under the header          | Gray8                   |
+| `OverlayBrush`      | Semi-transparent overlay behind flyout   | Black                   |
+| `OverlayOpacity`    | Opacity of the overlay (0.0 - 1.0)       | 0.5                     |
+
+### Themed Flyout Examples
+
+```xml
+<!-- Success/Green theme -->
+<flyouts:Flyout
+    Header="Success"
+    FlyoutBackground="#E6F4EA"
+    FlyoutBorderBrush="#34A853"
+    HeaderBackground="#34A853"
+    HeaderForeground="White"
+    HeaderBorderBrush="#34A853">
+    <TextBlock Text="Operation completed successfully!" Margin="16" />
+</flyouts:Flyout>
+
+<!-- Warning/Orange theme -->
+<flyouts:Flyout
+    Header="Warning"
+    FlyoutBackground="#FEF7E0"
+    FlyoutBorderBrush="#F9AB00"
+    HeaderBackground="#F9AB00"
+    HeaderForeground="White"
+    HeaderBorderBrush="#F9AB00">
+    <TextBlock Text="Please review before continuing." Margin="16" />
+</flyouts:Flyout>
+
+<!-- Error/Red theme -->
+<flyouts:Flyout
+    Header="Error"
+    FlyoutBackground="#FCE8E6"
+    FlyoutBorderBrush="#EA4335"
+    HeaderBackground="#EA4335"
+    HeaderForeground="White"
+    HeaderBorderBrush="#EA4335">
+    <TextBlock Text="An error occurred." Margin="16" />
+</flyouts:Flyout>
+
+<!-- Info/Blue theme -->
+<flyouts:Flyout
+    Header="Information"
+    FlyoutBackground="#E8F0FE"
+    FlyoutBorderBrush="#4285F4"
+    HeaderBackground="#4285F4"
+    HeaderForeground="White"
+    HeaderBorderBrush="#4285F4">
+    <TextBlock Text="Here's some helpful information." Margin="16" />
+</flyouts:Flyout>
+```
+
+### Using Resource Brushes
+
+For consistent theming across your application, define brushes in resources:
+
+```xml
+<Application.Resources>
+    <SolidColorBrush x:Key="MyApp.Flyout.Background" Color="#1E3A5F" />
+    <SolidColorBrush x:Key="MyApp.Flyout.Border" Color="#4A90D9" />
+    <SolidColorBrush x:Key="MyApp.Flyout.HeaderBackground" Color="#2C5282" />
+    <SolidColorBrush x:Key="MyApp.Flyout.HeaderForeground" Color="White" />
+</Application.Resources>
+
+<!-- Then use in flyouts -->
+<flyouts:Flyout
+    Header="Branded Panel"
+    FlyoutBackground="{StaticResource MyApp.Flyout.Background}"
+    FlyoutBorderBrush="{StaticResource MyApp.Flyout.Border}"
+    HeaderBackground="{StaticResource MyApp.Flyout.HeaderBackground}"
+    HeaderForeground="{StaticResource MyApp.Flyout.HeaderForeground}">
+    <TextBlock Text="Consistently themed content" />
+</flyouts:Flyout>
+```
 
 ## 📝 Notes
 
