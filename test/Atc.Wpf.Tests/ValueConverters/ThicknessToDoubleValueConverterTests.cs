@@ -11,7 +11,7 @@ public sealed class ThicknessToDoubleValueConverterTests
         var thickness = new Thickness(10, 20, 30, 40);
 
         // Act
-        var result = sut.Convert(thickness, typeof(double), ThicknessSideType.Left, CultureInfo.InvariantCulture);
+        var result = sut.Convert(thickness, typeof(double), LeftTopRightBottomType.Left, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().Be(10d);
@@ -24,7 +24,7 @@ public sealed class ThicknessToDoubleValueConverterTests
         var thickness = new Thickness(10, 20, 30, 40);
 
         // Act
-        var result = sut.Convert(thickness, typeof(double), ThicknessSideType.Top, CultureInfo.InvariantCulture);
+        var result = sut.Convert(thickness, typeof(double), LeftTopRightBottomType.Top, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().Be(20d);
@@ -37,7 +37,7 @@ public sealed class ThicknessToDoubleValueConverterTests
         var thickness = new Thickness(10, 20, 30, 40);
 
         // Act
-        var result = sut.Convert(thickness, typeof(double), ThicknessSideType.Right, CultureInfo.InvariantCulture);
+        var result = sut.Convert(thickness, typeof(double), LeftTopRightBottomType.Right, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().Be(30d);
@@ -50,7 +50,7 @@ public sealed class ThicknessToDoubleValueConverterTests
         var thickness = new Thickness(10, 20, 30, 40);
 
         // Act
-        var result = sut.Convert(thickness, typeof(double), ThicknessSideType.Bottom, CultureInfo.InvariantCulture);
+        var result = sut.Convert(thickness, typeof(double), LeftTopRightBottomType.Bottom, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().Be(40d);
@@ -63,7 +63,7 @@ public sealed class ThicknessToDoubleValueConverterTests
         var thickness = new Thickness(10, 20, 30, 40);
 
         // Act
-        var result = sut.Convert(thickness, typeof(double), ThicknessSideType.None, CultureInfo.InvariantCulture);
+        var result = sut.Convert(thickness, typeof(double), LeftTopRightBottomType.None, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().Be(0d);
@@ -73,7 +73,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void Convert_WithPropertySideSet_ShouldUseProperty()
     {
         // Arrange
-        var converter = new ThicknessToDoubleValueConverter { TakeThicknessSide = ThicknessSideType.Top };
+        var converter = new ThicknessToDoubleValueConverter { TakeThicknessSide = LeftTopRightBottomType.Top };
         var thickness = new Thickness(10, 20, 30, 40);
 
         // Act
@@ -87,7 +87,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void Convert_WithInvalidValue_ShouldReturnZero()
     {
         // Act
-        var result = sut.Convert("not a thickness", typeof(double), ThicknessSideType.Left, CultureInfo.InvariantCulture);
+        var result = sut.Convert("not a thickness", typeof(double), LeftTopRightBottomType.Left, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().Be(0d);
@@ -97,7 +97,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void ConvertBack_WithLeftSide_ShouldReturnThicknessWithLeftValue()
     {
         // Act
-        var result = sut.ConvertBack(15d, typeof(Thickness), ThicknessSideType.Left, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack(15d, typeof(Thickness), LeftTopRightBottomType.Left, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().BeOfType<Thickness>();
@@ -112,7 +112,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void ConvertBack_WithTopSide_ShouldReturnThicknessWithTopValue()
     {
         // Act
-        var result = sut.ConvertBack(25d, typeof(Thickness), ThicknessSideType.Top, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack(25d, typeof(Thickness), LeftTopRightBottomType.Top, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().BeOfType<Thickness>();
@@ -127,7 +127,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void ConvertBack_WithRightSide_ShouldReturnThicknessWithRightValue()
     {
         // Act
-        var result = sut.ConvertBack(35d, typeof(Thickness), ThicknessSideType.Right, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack(35d, typeof(Thickness), LeftTopRightBottomType.Right, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().BeOfType<Thickness>();
@@ -142,7 +142,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void ConvertBack_WithBottomSide_ShouldReturnThicknessWithBottomValue()
     {
         // Act
-        var result = sut.ConvertBack(45d, typeof(Thickness), ThicknessSideType.Bottom, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack(45d, typeof(Thickness), LeftTopRightBottomType.Bottom, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().BeOfType<Thickness>();
@@ -157,7 +157,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void ConvertBack_WithNoSide_ShouldReturnDefaultThickness()
     {
         // Act
-        var result = sut.ConvertBack(15d, typeof(Thickness), ThicknessSideType.None, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack(15d, typeof(Thickness), LeftTopRightBottomType.None, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().BeOfType<Thickness>();
@@ -169,7 +169,7 @@ public sealed class ThicknessToDoubleValueConverterTests
     public void ConvertBack_WithInvalidValue_ShouldReturnDefaultThickness()
     {
         // Act
-        var result = sut.ConvertBack("not a double", typeof(Thickness), ThicknessSideType.Left, CultureInfo.InvariantCulture);
+        var result = sut.ConvertBack("not a double", typeof(Thickness), LeftTopRightBottomType.Left, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().BeOfType<Thickness>();

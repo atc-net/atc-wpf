@@ -8,7 +8,7 @@ namespace Atc.Wpf.ValueConverters;
 /// <para>Convert: Thickness → double (specified side)</para>
 /// <para>ConvertBack: double → Thickness (applies to specified side, others are 0)</para>
 /// </remarks>
-[ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(ThicknessSideType))]
+[ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(LeftTopRightBottomType))]
 public sealed class ThicknessToDoubleValueConverter : IValueConverter
 {
     public static readonly ThicknessToDoubleValueConverter Instance = new();
@@ -16,7 +16,7 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
     /// <summary>
     /// Gets or sets which side of the Thickness to extract/apply.
     /// </summary>
-    public ThicknessSideType TakeThicknessSide { get; set; } = ThicknessSideType.None;
+    public LeftTopRightBottomType TakeThicknessSide { get; set; } = LeftTopRightBottomType.None;
 
     /// <inheritdoc />
     public object? Convert(
@@ -34,10 +34,10 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
 
         return takeThicknessSide switch
         {
-            ThicknessSideType.Left => thickness.Left,
-            ThicknessSideType.Top => thickness.Top,
-            ThicknessSideType.Right => thickness.Right,
-            ThicknessSideType.Bottom => thickness.Bottom,
+            LeftTopRightBottomType.Left => thickness.Left,
+            LeftTopRightBottomType.Top => thickness.Top,
+            LeftTopRightBottomType.Right => thickness.Right,
+            LeftTopRightBottomType.Bottom => thickness.Bottom,
             _ => 0d,
         };
     }
@@ -58,16 +58,16 @@ public sealed class ThicknessToDoubleValueConverter : IValueConverter
 
         return takeThicknessSide switch
         {
-            ThicknessSideType.Left => new Thickness(doubleValue, 0, 0, 0),
-            ThicknessSideType.Top => new Thickness(0, doubleValue, 0, 0),
-            ThicknessSideType.Right => new Thickness(0, 0, doubleValue, 0),
-            ThicknessSideType.Bottom => new Thickness(0, 0, 0, doubleValue),
+            LeftTopRightBottomType.Left => new Thickness(doubleValue, 0, 0, 0),
+            LeftTopRightBottomType.Top => new Thickness(0, doubleValue, 0, 0),
+            LeftTopRightBottomType.Right => new Thickness(0, 0, doubleValue, 0),
+            LeftTopRightBottomType.Bottom => new Thickness(0, 0, 0, doubleValue),
             _ => default(Thickness),
         };
     }
 
-    private ThicknessSideType GetThicknessSide(object? parameter)
-        => parameter is ThicknessSideType sideType
+    private LeftTopRightBottomType GetThicknessSide(object? parameter)
+        => parameter is LeftTopRightBottomType sideType
             ? sideType
             : TakeThicknessSide;
 }

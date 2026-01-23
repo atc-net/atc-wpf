@@ -3,12 +3,12 @@ namespace Atc.Wpf.ValueConverters;
 /// <summary>
 /// ValueConverter: Thickness To Thickness with filter.
 /// </summary>
-[ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(ThicknessSideType))]
+[ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(LeftTopRightBottomType))]
 public sealed class ThicknessFilterValueConverter : IValueConverter
 {
     public static readonly ThicknessFilterValueConverter Instance = new();
 
-    public ThicknessSideType Filter { get; set; } = ThicknessSideType.None;
+    public LeftTopRightBottomType Filter { get; set; } = LeftTopRightBottomType.None;
 
     /// <inheritdoc />
     public object? Convert(
@@ -24,17 +24,17 @@ public sealed class ThicknessFilterValueConverter : IValueConverter
 
         var filter = Filter;
 
-        if (parameter is ThicknessSideType sideType)
+        if (parameter is LeftTopRightBottomType sideType)
         {
             filter = sideType;
         }
 
         return filter switch
         {
-            ThicknessSideType.Left => new Thickness(thickness.Left, 0, 0, 0),
-            ThicknessSideType.Top => new Thickness(0, thickness.Top, 0, 0),
-            ThicknessSideType.Right => new Thickness(0, 0, thickness.Right, 0),
-            ThicknessSideType.Bottom => new Thickness(0, 0, 0, thickness.Bottom),
+            LeftTopRightBottomType.Left => new Thickness(thickness.Left, 0, 0, 0),
+            LeftTopRightBottomType.Top => new Thickness(0, thickness.Top, 0, 0),
+            LeftTopRightBottomType.Right => new Thickness(0, 0, thickness.Right, 0),
+            LeftTopRightBottomType.Bottom => new Thickness(0, 0, 0, thickness.Bottom),
             _ => thickness,
         };
     }
