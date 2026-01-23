@@ -2,11 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcCore="clr-namespace:Atc;assembly=Atc"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:controls="clr-namespace:Atc.Wpf.Theming.Controls"
     xmlns:enums="clr-namespace:Atc.Wpf.Theming"
-    xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters"
-    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf">
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters">
 
     <Thickness x:Key="GroupBoxHeaderThemePadding">4</Thickness>
 
@@ -70,7 +70,7 @@
                             Grid.Row="1"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={x:Static atcValueConverters:ThicknessBindingValueConverter.Instance}, ConverterParameter={x:Static wpf:ThicknessSideType.Top}}"
+                            BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={x:Static atcValueConverters:ThicknessBindingValueConverter.Instance}, ConverterParameter={x:Static atcCore:LeftTopRightBottomType.Top}}"
                             CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.CornerRadius), Converter={x:Static valueConverters:CornerRadiusBindingValueConverter.Instance}, ConverterParameter={x:Static enums:RadiusType.Top}}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="True">
