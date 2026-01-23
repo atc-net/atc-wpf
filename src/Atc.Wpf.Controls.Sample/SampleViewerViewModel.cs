@@ -159,8 +159,6 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
     private void SampleItemMessageHandler(SampleItemMessage obj)
     {
-        TabSelectedIndex = 0;
-
         if (string.IsNullOrEmpty(obj.SampleItemPath))
         {
             ClearSelectedViewData();
@@ -174,6 +172,39 @@ public sealed class SampleViewerViewModel : ViewModelBase
                     obj.SampleItemPath);
             }
         }
+
+        // Auto-select first enabled tab
+        TabSelectedIndex = GetFirstEnabledTabIndex();
+    }
+
+    private int GetFirstEnabledTabIndex()
+    {
+        if (HasSampleContent)
+        {
+            return 0;
+        }
+
+        if (HasXamlCode)
+        {
+            return 1;
+        }
+
+        if (HasCodeBehindCode)
+        {
+            return 2;
+        }
+
+        if (HasViewModelCode)
+        {
+            return 3;
+        }
+
+        if (HasMarkdownDocument)
+        {
+            return 4;
+        }
+
+        return 0;
     }
 
     private void ClearSelectedViewData()

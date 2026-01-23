@@ -1,7 +1,5 @@
 namespace Atc.Wpf.Tests.Controls.Layouts;
 
-using Atc.Wpf.Controls.Layouts;
-
 public sealed class GridExTests
 {
     [StaFact]

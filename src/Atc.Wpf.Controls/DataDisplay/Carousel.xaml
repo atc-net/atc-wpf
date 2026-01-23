@@ -1,0 +1,172 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
+    xmlns:local="clr-namespace:Atc.Wpf.Controls">
+
+    <!-- Navigation Button Style -->
+    <Style x:Key="AtcApps.Styles.Carousel.NavigationButton" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Opacity" Value="0.7" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="20"
+                        Opacity="{TemplateBinding Opacity}">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Opacity" Value="1.0" />
+                            <Setter TargetName="PART_Border" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Opacity" Value="0.9" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Border" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Main Carousel Style -->
+    <Style x:Key="AtcApps.Styles.Carousel" TargetType="{x:Type dataDisplay:Carousel}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="IndicatorActiveBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="IndicatorInactiveBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="MinHeight" Value="100" />
+        <Setter Property="MinWidth" Value="200" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dataDisplay:Carousel}">
+                    <Border
+                        x:Name="PART_RootBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        ClipToBounds="True">
+                        <Grid>
+                            <!-- Content Area -->
+                            <Canvas
+                                x:Name="PART_ContentCanvas"
+                                ClipToBounds="True">
+                                <ContentPresenter
+                                    x:Name="PART_CurrentContent"
+                                    Width="{Binding ActualWidth, ElementName=PART_ContentCanvas}"
+                                    Height="{Binding ActualHeight, ElementName=PART_ContentCanvas}"
+                                    Canvas.Left="0"
+                                    Canvas.Top="0" />
+                                <ContentPresenter
+                                    x:Name="PART_NextContent"
+                                    Width="{Binding ActualWidth, ElementName=PART_ContentCanvas}"
+                                    Height="{Binding ActualHeight, ElementName=PART_ContentCanvas}"
+                                    Canvas.Left="0"
+                                    Canvas.Top="0"
+                                    Opacity="0" />
+                            </Canvas>
+
+                            <!-- Navigation Buttons -->
+                            <Button
+                                x:Name="PART_PreviousButton"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="10,0,0,0"
+                                Style="{StaticResource AtcApps.Styles.Carousel.NavigationButton}">
+                                <Path
+                                    Width="12"
+                                    Height="12"
+                                    Data="M8,0 L0,6 L8,12"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                    Stretch="Uniform" />
+                            </Button>
+
+                            <Button
+                                x:Name="PART_NextButton"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource AtcApps.Styles.Carousel.NavigationButton}">
+                                <Path
+                                    Width="12"
+                                    Height="12"
+                                    Data="M0,0 L8,6 L0,12"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                    Stretch="Uniform" />
+                            </Button>
+
+                            <!-- Indicators Panel - Bottom (default) -->
+                            <StackPanel
+                                x:Name="PART_IndicatorsPanel"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"
+                                Margin="0,0,0,15"
+                                Orientation="Horizontal" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Hide navigation arrows -->
+                        <Trigger Property="ShowNavigationArrows" Value="False">
+                            <Setter TargetName="PART_PreviousButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_NextButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!-- Hide indicators -->
+                        <Trigger Property="ShowIndicators" Value="False">
+                            <Setter TargetName="PART_IndicatorsPanel" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!-- Indicator position: Top -->
+                        <Trigger Property="IndicatorPosition" Value="Top">
+                            <Setter TargetName="PART_IndicatorsPanel" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="Margin" Value="0,15,0,0" />
+                        </Trigger>
+
+                        <!-- Indicator position: Left -->
+                        <Trigger Property="IndicatorPosition" Value="Left">
+                            <Setter TargetName="PART_IndicatorsPanel" Property="HorizontalAlignment" Value="Left" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="Orientation" Value="Vertical" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="Margin" Value="15,0,0,0" />
+                        </Trigger>
+
+                        <!-- Indicator position: Right -->
+                        <Trigger Property="IndicatorPosition" Value="Right">
+                            <Setter TargetName="PART_IndicatorsPanel" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="Orientation" Value="Vertical" />
+                            <Setter TargetName="PART_IndicatorsPanel" Property="Margin" Value="0,0,15,0" />
+                        </Trigger>
+
+                        <!-- Disable previous button at start when not infinite loop -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsInfiniteLoop" Value="False" />
+                                <Condition Property="SelectedIndex" Value="0" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_PreviousButton" Property="IsEnabled" Value="False" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
