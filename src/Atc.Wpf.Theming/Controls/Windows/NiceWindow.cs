@@ -91,6 +91,12 @@ public partial class NiceWindow : WindowChromeWindow
     private bool isAnyDialogOpen;
 
     [DependencyProperty(DefaultValue = true)]
+    private bool showMinButton;
+
+    [DependencyProperty(DefaultValue = true)]
+    private bool showMaxRestoreButton;
+
+    [DependencyProperty(DefaultValue = true)]
     private bool showCloseButton;
 
     [DependencyProperty(DefaultValue = true)]

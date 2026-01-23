@@ -227,7 +227,17 @@ public class FlyoutService : IFlyoutService
             AnimationDuration = options.AnimationDuration,
             CornerRadius = options.CornerRadius,
             Padding = options.Padding,
+            IsPinned = options.IsPinned,
+            IsResizable = options.IsResizable,
+            MinFlyoutWidth = options.MinWidth,
+            MaxFlyoutWidth = options.MaxWidth,
+            MinFlyoutHeight = options.MinHeight,
+            MaxFlyoutHeight = options.MaxHeight,
+            EasingFunction = options.EasingFunction,
         };
+
+        // Show pin button if the flyout is pinned or if light dismiss is enabled
+        flyout.ShowPinButton = options.IsPinned || options.IsLightDismissEnabled;
 
         return flyout;
     }

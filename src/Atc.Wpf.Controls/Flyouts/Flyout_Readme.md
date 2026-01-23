@@ -61,6 +61,11 @@ private void OpenButton_Click(object sender, RoutedEventArgs e)
 <flyouts:Flyout Position="Bottom" FlyoutHeight="250" Header="Bottom Panel">
     <TextBlock Text="Slides in from the bottom." />
 </flyouts:Flyout>
+
+<!-- Center Position (modal-like with scale animation) -->
+<flyouts:Flyout Position="Center" FlyoutWidth="500" FlyoutHeight="400" Header="Centered Dialog">
+    <TextBlock Text="Appears centered with scale animation." />
+</flyouts:Flyout>
 ```
 
 ### Configuring Light Dismiss
@@ -89,6 +94,69 @@ private void OpenButton_Click(object sender, RoutedEventArgs e)
 <flyouts:Flyout ShowOverlay="False" Header="No Overlay">
     <TextBlock Text="No background dimming." />
 </flyouts:Flyout>
+```
+
+### Pin/Unpin Feature
+
+```xml
+<!-- Flyout with pin button - users can pin to prevent light dismiss -->
+<flyouts:Flyout Header="Pinnable Panel" ShowPinButton="True">
+    <TextBlock Text="Click the pin icon to keep this flyout open." />
+</flyouts:Flyout>
+
+<!-- Start pinned (light dismiss disabled until unpinned) -->
+<flyouts:Flyout Header="Pinned Panel" ShowPinButton="True" IsPinned="True">
+    <TextBlock Text="This flyout starts pinned." />
+</flyouts:Flyout>
+```
+
+### Resizable Flyout
+
+```xml
+<!-- User can drag the edge to resize -->
+<flyouts:Flyout Header="Resizable" IsResizable="True"
+               MinFlyoutWidth="300" MaxFlyoutWidth="800">
+    <TextBlock Text="Drag the left edge to resize this panel." />
+</flyouts:Flyout>
+```
+
+### Custom Animation
+
+```xml
+<!-- Custom easing function -->
+<flyouts:Flyout Header="Bouncy" AnimationDuration="500">
+    <flyouts:Flyout.EasingFunction>
+        <BounceEase EasingMode="EaseOut" Bounces="3" Bounciness="2" />
+    </flyouts:Flyout.EasingFunction>
+    <TextBlock Text="Bounces when opening!" />
+</flyouts:Flyout>
+```
+
+### Attached Flyout (Button.Flyout pattern)
+
+```xml
+<!-- Attach flyout to a button - opens on click -->
+<Button Content="Open Settings">
+    <flyouts:FlyoutBase.AttachedFlyout>
+        <flyouts:Flyout Header="Quick Settings" FlyoutWidth="300">
+            <StackPanel Margin="16">
+                <CheckBox Content="Option 1" />
+                <CheckBox Content="Option 2" />
+            </StackPanel>
+        </flyouts:Flyout>
+    </flyouts:FlyoutBase.AttachedFlyout>
+    <flyouts:FlyoutBase.OpenOnClick>True</flyouts:FlyoutBase.OpenOnClick>
+</Button>
+
+<!-- Or open/close via binding -->
+<Button Content="Toggle">
+    <flyouts:FlyoutBase.AttachedFlyout>
+        <flyouts:Flyout Header="Bound Flyout" />
+    </flyouts:FlyoutBase.AttachedFlyout>
+    <flyouts:FlyoutBase.IsOpen>
+        <Binding Path="IsFlyoutOpen" Mode="TwoWay" />
+    </flyouts:FlyoutBase.IsOpen>
+</Button>
 ```
 
 ### Form Flyout Example
@@ -180,8 +248,8 @@ MyFlyout.Closed += (s, e) =>
 |----------|------|---------|-------------|
 | `IsOpen` | `bool` | `false` | Gets or sets whether the flyout is currently open |
 | `Position` | `FlyoutPosition` | `Right` | Position from which the flyout slides in |
-| `FlyoutWidth` | `double` | `400` | Width of the flyout panel (for Left/Right positions) |
-| `FlyoutHeight` | `double` | `300` | Height of the flyout panel (for Top/Bottom positions) |
+| `FlyoutWidth` | `double` | `400` | Width of the flyout panel (for Left/Right/Center positions) |
+| `FlyoutHeight` | `double` | `300` | Height of the flyout panel (for Top/Bottom/Center positions) |
 | `Header` | `object?` | `null` | Header content displayed at the top |
 | `HeaderTemplate` | `DataTemplate?` | `null` | Template for the header content |
 | `HeaderBackground` | `Brush?` | theme | Background brush for the header area |
@@ -191,7 +259,15 @@ MyFlyout.Closed += (s, e) =>
 | `OverlayOpacity` | `double` | `0.5` | Opacity of the overlay (0.0 - 1.0) |
 | `OverlayBrush` | `Brush?` | theme | Brush for the overlay background |
 | `ShowCloseButton` | `bool` | `true` | Whether the close button is visible |
+| `ShowPinButton` | `bool` | `false` | Whether the pin button is visible |
+| `IsPinned` | `bool` | `false` | Whether the flyout is pinned (prevents light dismiss) |
+| `IsResizable` | `bool` | `false` | Whether the user can drag to resize the flyout |
+| `MinFlyoutWidth` | `double` | `200` | Minimum width when resizable |
+| `MaxFlyoutWidth` | `double` | `800` | Maximum width when resizable |
+| `MinFlyoutHeight` | `double` | `150` | Minimum height when resizable |
+| `MaxFlyoutHeight` | `double` | `600` | Maximum height when resizable |
 | `AnimationDuration` | `double` | `300` | Duration of slide animation in milliseconds |
+| `EasingFunction` | `IEasingFunction?` | CubicEase | Custom easing function for animations |
 | `CloseOnEscape` | `bool` | `true` | Whether Escape key closes the flyout |
 | `CornerRadius` | `CornerRadius` | `0` | Corner radius for the flyout panel |
 | `FlyoutBackground` | `Brush?` | theme | Background brush for the flyout panel |
@@ -209,6 +285,7 @@ MyFlyout.Closed += (s, e) =>
 | `Left` | Slides in from the left edge |
 | `Top` | Slides in from the top edge |
 | `Bottom` | Slides in from the bottom edge |
+| `Center` | Appears centered with scale animation (modal-like) |
 
 ## 📡 Events
 
@@ -418,6 +495,53 @@ FlyoutOptions.Left       // Left position
 FlyoutOptions.Top        // Top position
 FlyoutOptions.Bottom     // Bottom position
 FlyoutOptions.Modal      // No light dismiss
+FlyoutOptions.Center     // Centered modal-like with scale animation
+```
+
+### Extension Methods (Fluent API)
+
+```csharp
+// Configure service with fluent API
+flyoutService
+    .WithView<SettingsViewModel, SettingsView>()
+    .WithView<UserDetailsViewModel, UserDetailsView>()
+    .WithViewFactory<DynamicViewModel>(() => new DynamicView());
+
+// Convenience methods
+await flyoutService.ShowWideAsync("Wide Panel", viewModel);
+await flyoutService.ShowNarrowAsync("Narrow Panel", viewModel);
+await flyoutService.ShowModalAsync("Modal Panel", viewModel);
+await flyoutService.ShowCenteredAsync("Centered Dialog", viewModel);
+await flyoutService.ShowFromLeftAsync("Left Panel", viewModel);
+```
+
+### Form Flyout with Validation
+
+```csharp
+// Show a form flyout that returns typed result
+var result = await flyoutService.ShowFormAsync(
+    "Edit User",
+    userViewModel,
+    vm => vm.User,  // Extract model from ViewModel
+    FlyoutOptions.Wide);
+
+if (result.IsSuccess)
+{
+    // Form was submitted and validation passed
+    await SaveUser(result.Model);
+}
+else if (result.IsCancelled)
+{
+    // User cancelled (clicked outside or close button)
+}
+else if (!result.IsValid)
+{
+    // Validation failed
+    foreach (var error in result.ValidationErrors)
+    {
+        Console.WriteLine(error);
+    }
+}
 ```
 
 ### IFlyoutService Interface
@@ -432,6 +556,25 @@ FlyoutOptions.Modal      // No light dismiss
 | `CloseTopFlyoutWithResult(result)` | Close with a result value |
 | `RegisterView<TViewModel, TView>()` | Register View-ViewModel mapping |
 | `RegisterViewFactory<TViewModel>(factory)` | Register view factory |
+
+## 📎 FlyoutBase (Attached Properties)
+
+`FlyoutBase` provides attached properties for associating flyouts with UI elements.
+
+### Attached Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `AttachedFlyout` | `Flyout` | The flyout associated with the element |
+| `IsOpen` | `bool` | Gets/sets whether the attached flyout is open |
+| `OpenOnClick` | `bool` | When true, clicking the element opens the attached flyout |
+
+### Static Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `ShowAttachedFlyout(element)` | `void` | Opens the flyout attached to the element |
+| `HideAttachedFlyout(element)` | `void` | Closes the flyout attached to the element |
 
 ## 🔗 Related Controls
 

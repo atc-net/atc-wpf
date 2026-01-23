@@ -25,7 +25,8 @@
                     <TextBlock TextWrapping="Wrap">
                         The Flyout control provides a sliding panel overlay that slides in from an edge of its container.
                         It supports light dismiss behavior (click outside or press Escape), customizable animations,
-                        overlay backgrounds, and can slide in from any edge (Right, Left, Top, Bottom).
+                        overlay backgrounds, and can slide in from any edge (Right, Left, Top, Bottom, Center).
+                        Features include pin/unpin, resizable panels, custom animations, and attached flyout support.
                         The default position is Right, similar to the Azure Portal design pattern.
                     </TextBlock>
                 </GroupBox>
@@ -76,7 +77,75 @@
                                 Width="120"
                                 Click="OpenBottomFlyoutButton_Click"
                                 Content="Bottom" />
+                            <Button
+                                x:Name="OpenCenterFlyoutButton"
+                                Width="120"
+                                Click="OpenCenterFlyoutButton_Click"
+                                Content="Center" />
                         </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Advanced Features">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Advanced flyout features: pin/unpin to prevent light dismiss, resizable panels, and custom animations." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenPinnableFlyoutButton"
+                                Width="150"
+                                Click="OpenPinnableFlyoutButton_Click"
+                                Content="Pinnable Flyout" />
+                            <Button
+                                x:Name="OpenResizableFlyoutButton"
+                                Width="150"
+                                Click="OpenResizableFlyoutButton_Click"
+                                Content="Resizable Flyout" />
+                            <Button
+                                x:Name="OpenBouncyFlyoutButton"
+                                Width="150"
+                                Click="OpenBouncyFlyoutButton_Click"
+                                Content="Bouncy Animation" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Attached Flyout">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Use FlyoutBase.AttachedFlyout and FlyoutBase.OpenOnClick to attach flyouts directly to buttons." />
+                        <Button
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Content="Click Me (Attached Flyout)"
+                            flyouts:FlyoutBase.OpenOnClick="True">
+                            <flyouts:FlyoutBase.AttachedFlyout>
+                                <flyouts:Flyout Header="Attached Flyout" FlyoutWidth="350">
+                                    <StackPanel Margin="16">
+                                        <TextBlock
+                                            Margin="0,0,0,16"
+                                            TextWrapping="Wrap"
+                                            Text="This flyout is attached directly to the button using FlyoutBase.AttachedFlyout." />
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            Text="No code-behind needed - just set FlyoutBase.OpenOnClick=True!" />
+                                    </StackPanel>
+                                </flyouts:Flyout>
+                            </flyouts:FlyoutBase.AttachedFlyout>
+                        </Button>
                     </StackPanel>
                 </GroupBox>
 
@@ -529,6 +598,132 @@
                     Click="CloseFlyout_Click"
                     Content="Close"
                     Tag="{Binding ElementName=NestedFlyout3}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Center Flyout (modal-like) -->
+        <flyouts:Flyout
+            x:Name="CenterFlyout"
+            FlyoutWidth="500"
+            FlyoutHeight="350"
+            Header="Centered Dialog"
+            Position="Center"
+            CornerRadius="8">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Centered Flyout" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This flyout appears centered with a scale animation, similar to a modal dialog." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Great for confirmation dialogs or focused tasks that don't need slide-in behavior." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Center"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=CenterFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Pinnable Flyout -->
+        <flyouts:Flyout
+            x:Name="PinnableFlyout"
+            FlyoutWidth="400"
+            Header="Pinnable Panel"
+            Position="Right"
+            ShowPinButton="True">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Pin/Unpin Feature" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Click the pin icon in the header to pin this flyout. When pinned, light dismiss is disabled - clicking outside won't close it." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Click the pin again to unpin and restore normal light dismiss behavior." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=PinnableFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Resizable Flyout -->
+        <flyouts:Flyout
+            x:Name="ResizableFlyout"
+            FlyoutWidth="400"
+            Header="Resizable Panel"
+            Position="Right"
+            IsResizable="True"
+            MinFlyoutWidth="250"
+            MaxFlyoutWidth="700">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Resizable Flyout" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Drag the left edge of this flyout to resize it. The width is constrained between 250px and 700px." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This is useful when users need to see more or less content based on their preference." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=ResizableFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Bouncy Animation Flyout -->
+        <flyouts:Flyout
+            x:Name="BouncyFlyout"
+            FlyoutWidth="400"
+            Header="Custom Animation"
+            Position="Right"
+            AnimationDuration="600">
+            <flyouts:Flyout.EasingFunction>
+                <ElasticEase EasingMode="EaseOut" Oscillations="2" Springiness="5" />
+            </flyouts:Flyout.EasingFunction>
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Custom Animation" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This flyout uses an ElasticEase animation for a bouncy effect when opening." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="You can customize the animation by setting the EasingFunction property to any IEasingFunction." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=BouncyFlyout}" />
             </StackPanel>
         </flyouts:Flyout>
 

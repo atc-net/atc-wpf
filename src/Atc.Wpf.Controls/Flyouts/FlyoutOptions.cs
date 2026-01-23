@@ -12,13 +12,13 @@ public sealed class FlyoutOptions
     public FlyoutPosition Position { get; set; } = FlyoutPosition.Right;
 
     /// <summary>
-    /// Gets or sets the width of the flyout panel (for Left/Right positions).
+    /// Gets or sets the width of the flyout panel (for Left/Right/Center positions).
     /// Default is 400.
     /// </summary>
     public double Width { get; set; } = 400;
 
     /// <summary>
-    /// Gets or sets the height of the flyout panel (for Top/Bottom positions).
+    /// Gets or sets the height of the flyout panel (for Top/Bottom/Center positions).
     /// Default is 300.
     /// </summary>
     public double Height { get; set; } = 300;
@@ -72,6 +72,48 @@ public sealed class FlyoutOptions
     public Thickness Padding { get; set; } = new(16);
 
     /// <summary>
+    /// Gets or sets whether the flyout is pinned (prevents light dismiss).
+    /// Default is false.
+    /// </summary>
+    public bool IsPinned { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the flyout can be resized by dragging the edge.
+    /// Default is false.
+    /// </summary>
+    public bool IsResizable { get; set; }
+
+    /// <summary>
+    /// Gets or sets the minimum width when resizing.
+    /// Default is 200.
+    /// </summary>
+    public double MinWidth { get; set; } = 200;
+
+    /// <summary>
+    /// Gets or sets the maximum width when resizing.
+    /// Default is 800.
+    /// </summary>
+    public double MaxWidth { get; set; } = 800;
+
+    /// <summary>
+    /// Gets or sets the minimum height when resizing.
+    /// Default is 150.
+    /// </summary>
+    public double MinHeight { get; set; } = 150;
+
+    /// <summary>
+    /// Gets or sets the maximum height when resizing.
+    /// Default is 600.
+    /// </summary>
+    public double MaxHeight { get; set; } = 600;
+
+    /// <summary>
+    /// Gets or sets the easing function for animations.
+    /// Default is null (uses CubicEase).
+    /// </summary>
+    public IEasingFunction? EasingFunction { get; set; }
+
+    /// <summary>
     /// Creates default options for a right-side flyout.
     /// </summary>
     public static FlyoutOptions Default => new();
@@ -105,11 +147,38 @@ public sealed class FlyoutOptions
         => new() { Position = FlyoutPosition.Bottom };
 
     /// <summary>
+    /// Creates options for a centered flyout (modal-like).
+    /// </summary>
+    public static FlyoutOptions Center => new()
+    {
+        Position = FlyoutPosition.Center,
+        Width = 500,
+        Height = 400,
+        CornerRadius = new CornerRadius(8),
+    };
+
+    /// <summary>
     /// Creates options for a modal flyout (no light dismiss).
     /// </summary>
     public static FlyoutOptions Modal => new()
     {
         IsLightDismissEnabled = false,
         CloseOnEscape = false,
+    };
+
+    /// <summary>
+    /// Creates options for a resizable flyout.
+    /// </summary>
+    public static FlyoutOptions Resizable => new()
+    {
+        IsResizable = true,
+    };
+
+    /// <summary>
+    /// Creates options for a pinned flyout (prevents light dismiss).
+    /// </summary>
+    public static FlyoutOptions Pinned => new()
+    {
+        IsPinned = true,
     };
 }

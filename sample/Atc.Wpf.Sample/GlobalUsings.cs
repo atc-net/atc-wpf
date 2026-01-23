@@ -52,6 +52,7 @@ global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Helpers;
+global using Atc.Wpf.Theming.Themes.Dialogs;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XamlToolkit.Command;

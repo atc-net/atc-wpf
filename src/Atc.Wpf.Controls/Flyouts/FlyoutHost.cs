@@ -247,4 +247,3 @@ public partial class FlyoutHost : ItemsControl
         IsAnyFlyoutOpen = openFlyouts.Count > 0;
     }
 }
-

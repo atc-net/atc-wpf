@@ -24,4 +24,9 @@ public enum FlyoutPosition
     /// The flyout slides in from the bottom edge.
     /// </summary>
     Bottom,
+
+    /// <summary>
+    /// The flyout appears centered as a modal-like overlay.
+    /// </summary>
+    Center,
 }
