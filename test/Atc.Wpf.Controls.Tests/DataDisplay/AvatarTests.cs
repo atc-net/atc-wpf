@@ -95,7 +95,9 @@ public sealed class AvatarTests
     [InlineData("Mary Jane Watson", "MW")]
     [InlineData("", "?")]
     [InlineData("   ", "?")]
-    public void GenerateInitialsFromName_ReturnsExpectedInitials(string name, string expectedInitials)
+    public void GenerateInitialsFromName_ReturnsExpectedInitials(
+        string name,
+        string expectedInitials)
     {
         // Act
         var result = Avatar.GenerateInitialsFromName(name);

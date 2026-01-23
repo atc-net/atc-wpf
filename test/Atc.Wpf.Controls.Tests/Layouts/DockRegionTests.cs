@@ -171,6 +171,7 @@ public sealed class DockRegionTests
         Assert.Equal(cornerRadius, region.CornerRadius);
     }
 
+    [SuppressMessage("", "CA1030: Consider making 'RaiseRegionSizeChanged_RaisesEvent' an event", Justification = "OK.")]
     [StaFact]
     public void RaiseRegionSizeChanged_RaisesEvent()
     {

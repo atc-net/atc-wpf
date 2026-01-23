@@ -9,12 +9,16 @@ public partial class ResponsivePanelView
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         UpdateBreakpointDisplay();
     }
 
-    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+    private void OnSizeChanged(
+        object sender,
+        SizeChangedEventArgs e)
     {
         UpdateBreakpointDisplay();
     }

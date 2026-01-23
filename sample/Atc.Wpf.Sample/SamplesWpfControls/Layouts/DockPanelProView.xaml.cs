@@ -9,7 +9,9 @@ public partial class DockPanelProView
         InitializeComponent();
     }
 
-    private void SaveLayoutButton_Click(object sender, RoutedEventArgs e)
+    private void SaveLayoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
     {
         savedLayout = MainDockPanel.SaveLayout();
         MessageBox.Show(
@@ -19,7 +21,9 @@ public partial class DockPanelProView
             MessageBoxImage.Information);
     }
 
-    private void LoadLayoutButton_Click(object sender, RoutedEventArgs e)
+    private void LoadLayoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
     {
         if (string.IsNullOrEmpty(savedLayout))
         {
@@ -39,7 +43,9 @@ public partial class DockPanelProView
             MessageBoxImage.Information);
     }
 
-    private void ResetLayoutButton_Click(object sender, RoutedEventArgs e)
+    private void ResetLayoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
     {
         MainDockPanel.ResetLayout();
         MessageBox.Show(

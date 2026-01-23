@@ -132,7 +132,9 @@ public class FlexPanel : Panel
     /// <summary>
     /// Sets the Grow value for a child element.
     /// </summary>
-    public static void SetGrow(DependencyObject element, double value)
+    public static void SetGrow(
+        DependencyObject element,
+        double value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(GrowProperty, value);
@@ -150,7 +152,9 @@ public class FlexPanel : Panel
     /// <summary>
     /// Sets the Shrink value for a child element.
     /// </summary>
-    public static void SetShrink(DependencyObject element, double value)
+    public static void SetShrink(
+        DependencyObject element,
+        double value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(ShrinkProperty, value);
@@ -168,7 +172,9 @@ public class FlexPanel : Panel
     /// <summary>
     /// Sets the Basis value for a child element.
     /// </summary>
-    public static void SetBasis(DependencyObject element, double value)
+    public static void SetBasis(
+        DependencyObject element,
+        double value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(BasisProperty, value);
@@ -186,7 +192,9 @@ public class FlexPanel : Panel
     /// <summary>
     /// Sets the AlignSelf value for a child element.
     /// </summary>
-    public static void SetAlignSelf(DependencyObject element, FlexAlign value)
+    public static void SetAlignSelf(
+        DependencyObject element,
+        FlexAlign value)
     {
         ArgumentNullException.ThrowIfNull(element);
         element.SetValue(AlignSelfProperty, value);
@@ -294,16 +302,25 @@ public class FlexPanel : Panel
     private bool IsReversed()
         => Direction is FlexDirection.RowReverse or FlexDirection.ColumnReverse;
 
-    private static double GetMainSize(Size size, bool isHorizontal)
+    private static double GetMainSize(
+        Size size,
+        bool isHorizontal)
         => isHorizontal ? size.Width : size.Height;
 
-    private static double GetCrossSize(Size size, bool isHorizontal)
+    private static double GetCrossSize(
+        Size size,
+        bool isHorizontal)
         => isHorizontal ? size.Height : size.Width;
 
-    private static Size CreateSize(double main, double cross, bool isHorizontal)
+    private static Size CreateSize(
+        double main,
+        double cross,
+        bool isHorizontal)
         => isHorizontal ? new Size(main, cross) : new Size(cross, main);
 
-    private double GetChildBasis(UIElement child, bool isHorizontal)
+    private double GetChildBasis(
+        UIElement child,
+        bool isHorizontal)
     {
         var basis = GetBasis(child);
         if (!double.IsNaN(basis))
