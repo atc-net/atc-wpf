@@ -3,6 +3,99 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flyouts="clr-namespace:Atc.Wpf.Controls.Flyouts">
 
+    <!--  Pin button style  -->
+    <Style x:Key="AtcApps.Styles.Flyout.PinButton" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="ToolTip" Value="Pin (keep open)" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Ellipse
+                            x:Name="HoverCircle"
+                            Fill="{DynamicResource AtcApps.Brushes.Gray8}"
+                            Opacity="0" />
+                        <Path
+                            x:Name="PinIcon"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="M 5,0 L 5,7 L 3,7 L 3,9 L 7,9 L 7,7 L 5,7 M 2,0 L 8,0 L 8,2 L 2,2 Z"
+                            Fill="{DynamicResource AtcApps.Brushes.Gray2}"
+                            RenderTransformOrigin="0.5,0.5"
+                            SnapsToDevicePixels="True">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="0" />
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverCircle" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="HoverCircle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="PinIcon" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-45" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PinIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                            <Setter Property="ToolTip" Value="Unpin" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PinIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Resize grip style  -->
+    <Style x:Key="AtcApps.Styles.Flyout.ResizeGrip" TargetType="{x:Type Thumb}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Cursor" Value="SizeWE" />
+        <Setter Property="Width" Value="6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Rectangle
+                            x:Name="GripIndicator"
+                            Width="2"
+                            Height="24"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Fill="{DynamicResource AtcApps.Brushes.Gray6}"
+                            Opacity="0"
+                            RadiusX="1"
+                            RadiusY="1" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="GripIndicator" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="GripIndicator" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                            <Setter TargetName="GripIndicator" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  Close button style  -->
     <Style x:Key="AtcApps.Styles.Flyout.CloseButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
@@ -107,15 +200,29 @@
                             </Border.Effect>
 
                             <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
+                                <!--  Resize Grip (Left edge for Right position)  -->
+                                <Thumb
+                                    x:Name="PART_ResizeGrip"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Style="{StaticResource AtcApps.Styles.Flyout.ResizeGrip}"
+                                    Visibility="Collapsed" />
+
                                 <!--  Header  -->
                                 <Border
                                     x:Name="HeaderBorder"
                                     Grid.Row="0"
+                                    Grid.Column="1"
                                     Background="{TemplateBinding HeaderBackground}"
                                     BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
                                     BorderThickness="0,0,0,1"
@@ -142,19 +249,27 @@
                                             TextElement.Foreground="{TemplateBinding HeaderForeground}"
                                             UseLayoutRounding="False" />
 
-                                        <Button
-                                            x:Name="PART_CloseButton"
+                                        <StackPanel
                                             Grid.Column="1"
                                             Margin="4,8,12,8"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource AtcApps.Styles.Flyout.CloseButton}"
-                                            ToolTip="Close" />
+                                            Orientation="Horizontal">
+                                            <ToggleButton
+                                                x:Name="PART_PinButton"
+                                                IsChecked="{Binding IsPinned, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                Style="{StaticResource AtcApps.Styles.Flyout.PinButton}"
+                                                Visibility="Collapsed" />
+                                            <Button
+                                                x:Name="PART_CloseButton"
+                                                Style="{StaticResource AtcApps.Styles.Flyout.CloseButton}"
+                                                ToolTip="Close" />
+                                        </StackPanel>
                                     </Grid>
                                 </Border>
 
                                 <!--  Content  -->
                                 <ScrollViewer
                                     Grid.Row="1"
+                                    Grid.Column="1"
                                     HorizontalScrollBarVisibility="Disabled"
                                     VerticalScrollBarVisibility="Auto">
                                     <ContentPresenter
@@ -181,11 +296,24 @@
                             <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
+                        <!--  Show pin button when ShowPinButton is true  -->
+                        <Trigger Property="ShowPinButton" Value="True">
+                            <Setter TargetName="PART_PinButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
+                        <!--  Show resize grip when IsResizable is true  -->
+                        <Trigger Property="IsResizable" Value="True">
+                            <Setter TargetName="PART_ResizeGrip" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
                         <!--  Left Position  -->
                         <Trigger Property="Position" Value="Left">
                             <Setter TargetName="PART_FlyoutPanel" Property="HorizontalAlignment" Value="Left" />
                             <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0,0.5" />
                             <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="0,0,1,0" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_ResizeGrip" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="HeaderBorder" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_FlyoutPanel" Property="Effect">
                                 <Setter.Value>
                                     <DropShadowEffect
@@ -206,6 +334,15 @@
                             <Setter TargetName="PART_FlyoutPanel" Property="Height" Value="{Binding FlyoutHeight, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0.5,0" />
                             <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.RowSpan" Value="1" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_ResizeGrip" Property="VerticalAlignment" Value="Bottom" />
+                            <Setter TargetName="PART_ResizeGrip" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Width" Value="Auto" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Height" Value="6" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Cursor" Value="SizeNS" />
                             <Setter TargetName="PART_FlyoutPanel" Property="Effect">
                                 <Setter.Value>
                                     <DropShadowEffect
@@ -226,6 +363,15 @@
                             <Setter TargetName="PART_FlyoutPanel" Property="Height" Value="{Binding FlyoutHeight, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0.5,1" />
                             <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="0,1,0,0" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.RowSpan" Value="1" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_ResizeGrip" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="PART_ResizeGrip" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Width" Value="Auto" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Height" Value="6" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Cursor" Value="SizeNS" />
                             <Setter TargetName="PART_FlyoutPanel" Property="Effect">
                                 <Setter.Value>
                                     <DropShadowEffect
@@ -233,6 +379,28 @@
                                         Direction="90"
                                         Opacity="0.2"
                                         ShadowDepth="4"
+                                        Color="Black" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!--  Center Position  -->
+                        <Trigger Property="Position" Value="Center">
+                            <Setter TargetName="PART_FlyoutPanel" Property="HorizontalAlignment" Value="Center" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Width" Value="{Binding FlyoutWidth, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Height" Value="{Binding FlyoutHeight, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="RenderTransformOrigin" Value="0.5,0.5" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="PART_ResizeGrip" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_FlyoutPanel" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        BlurRadius="24"
+                                        Direction="270"
+                                        Opacity="0.3"
+                                        ShadowDepth="8"
                                         Color="Black" />
                                 </Setter.Value>
                             </Setter>

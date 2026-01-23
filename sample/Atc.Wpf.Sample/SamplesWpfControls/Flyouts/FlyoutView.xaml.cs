@@ -27,6 +27,26 @@ public partial class FlyoutView
         RoutedEventArgs e)
         => BottomFlyout.IsOpen = true;
 
+    private void OpenCenterFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => CenterFlyout.IsOpen = true;
+
+    private void OpenPinnableFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => PinnableFlyout.IsOpen = true;
+
+    private void OpenResizableFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => ResizableFlyout.IsOpen = true;
+
+    private void OpenBouncyFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => BouncyFlyout.IsOpen = true;
+
     private void OpenConfiguredFlyoutButton_Click(
         object sender,
         RoutedEventArgs e)

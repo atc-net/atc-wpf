@@ -6,7 +6,6 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs;assembly=Atc.Wpf.Theming"
-    xmlns:forms="clr-namespace:Atc.Wpf.Forms;assembly=Atc.Wpf.Forms"
     xmlns:local="clr-namespace:Atc.Wpf.Components.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="{Binding Path=Settings.TitleBarText}"

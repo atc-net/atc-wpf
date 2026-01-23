@@ -143,6 +143,18 @@
             Header="NiceWindow"
             IsExpanded="True"
             SamplePath="Window.NiceWindowView" />
+        <sample:SampleTreeViewItem
+            Header="NiceWindow with Flyout"
+            IsExpanded="True"
+            SamplePath="Window.NiceWindowWithFlyoutView" />
+        <sample:SampleTreeViewItem
+            Header="NiceDialogBox"
+            IsExpanded="True"
+            SamplePath="Window.NiceDialogBoxView" />
+        <sample:SampleTreeViewItem
+            Header="NiceDialogBox with Flyout"
+            IsExpanded="True"
+            SamplePath="Window.NiceDialogBoxWithFlyoutView" />
     </TreeViewItem>
 
 </TreeView>

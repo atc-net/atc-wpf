@@ -18,18 +18,25 @@ namespace Atc.Wpf.Controls.Flyouts;
 [TemplatePart(Name = PartOverlay, Type = typeof(Border))]
 [TemplatePart(Name = PartFlyoutPanel, Type = typeof(Border))]
 [TemplatePart(Name = PartCloseButton, Type = typeof(Button))]
+[TemplatePart(Name = PartPinButton, Type = typeof(ToggleButton))]
+[TemplatePart(Name = PartResizeGrip, Type = typeof(Thumb))]
 [TemplatePart(Name = PartContentPresenter, Type = typeof(ContentPresenter))]
 public sealed partial class Flyout : ContentControl
 {
     private const string PartOverlay = "PART_Overlay";
     private const string PartFlyoutPanel = "PART_FlyoutPanel";
     private const string PartCloseButton = "PART_CloseButton";
+    private const string PartPinButton = "PART_PinButton";
+    private const string PartResizeGrip = "PART_ResizeGrip";
     private const string PartContentPresenter = "PART_ContentPresenter";
 
     private Border? overlayBorder;
     private Border? flyoutPanel;
     private Button? closeButton;
+    private ToggleButton? pinButton;
+    private Thumb? resizeGrip;
     private TranslateTransform? slideTransform;
+    private ScaleTransform? scaleTransform;
 
     private bool isAnimating;
     private IInputElement? previouslyFocusedElement;
@@ -192,6 +199,55 @@ public sealed partial class Flyout : ContentControl
     private object? result;
 
     /// <summary>
+    /// Gets or sets whether the flyout is pinned (prevents light dismiss while pinned).
+    /// </summary>
+    [DependencyProperty(DefaultValue = false)]
+    private bool isPinned;
+
+    /// <summary>
+    /// Gets or sets whether the pin button is visible.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false)]
+    private bool showPinButton;
+
+    /// <summary>
+    /// Gets or sets whether the flyout can be resized by dragging the edge.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false)]
+    private bool isResizable;
+
+    /// <summary>
+    /// Gets or sets the minimum width when resizing (for Left/Right/Center positions).
+    /// </summary>
+    [DependencyProperty(DefaultValue = 200.0)]
+    private double minFlyoutWidth;
+
+    /// <summary>
+    /// Gets or sets the maximum width when resizing (for Left/Right/Center positions).
+    /// </summary>
+    [DependencyProperty(DefaultValue = 800.0)]
+    private double maxFlyoutWidth;
+
+    /// <summary>
+    /// Gets or sets the minimum height when resizing (for Top/Bottom/Center positions).
+    /// </summary>
+    [DependencyProperty(DefaultValue = 150.0)]
+    private double minFlyoutHeight;
+
+    /// <summary>
+    /// Gets or sets the maximum height when resizing (for Top/Bottom/Center positions).
+    /// </summary>
+    [DependencyProperty(DefaultValue = 600.0)]
+    private double maxFlyoutHeight;
+
+    /// <summary>
+    /// Gets or sets the easing function for animations.
+    /// If null, CubicEase is used.
+    /// </summary>
+    [DependencyProperty]
+    private IEasingFunction? easingFunction;
+
+    /// <summary>
     /// Occurs before the flyout opens. Can be cancelled.
     /// </summary>
     public event EventHandler<FlyoutOpeningEventArgs> Opening
@@ -253,13 +309,30 @@ public sealed partial class Flyout : ContentControl
         overlayBorder = GetTemplateChild(PartOverlay) as Border;
         flyoutPanel = GetTemplateChild(PartFlyoutPanel) as Border;
         closeButton = GetTemplateChild(PartCloseButton) as Button;
+        pinButton = GetTemplateChild(PartPinButton) as ToggleButton;
+        resizeGrip = GetTemplateChild(PartResizeGrip) as Thumb;
         _ = GetTemplateChild(PartContentPresenter) as ContentPresenter;
 
-        if (flyoutPanel?.RenderTransform is TranslateTransform transform)
+        if (flyoutPanel?.RenderTransform is TransformGroup transformGroup)
         {
-            slideTransform = transform;
+            foreach (var transform in transformGroup.Children)
+            {
+                if (transform is TranslateTransform translate)
+                {
+                    slideTransform = translate;
+                }
+                else if (transform is ScaleTransform scale)
+                {
+                    scaleTransform = scale;
+                }
+            }
         }
-        else if (flyoutPanel is not null)
+        else if (flyoutPanel?.RenderTransform is TranslateTransform translate)
+        {
+            slideTransform = translate;
+        }
+
+        if (slideTransform is null && flyoutPanel is not null)
         {
             slideTransform = new TranslateTransform();
             flyoutPanel.RenderTransform = slideTransform;
@@ -358,7 +431,7 @@ public sealed partial class Flyout : ContentControl
         object sender,
         KeyEventArgs e)
     {
-        if (e.Key == Key.Escape && CloseOnEscape && IsOpen && !isAnimating)
+        if (e.Key == Key.Escape && CloseOnEscape && IsOpen && !isAnimating && !IsPinned)
         {
             CloseWithLightDismiss();
             e.Handled = true;
@@ -376,6 +449,17 @@ public sealed partial class Flyout : ContentControl
         {
             overlayBorder.MouseLeftButtonDown -= OnOverlayMouseLeftButtonDown;
         }
+
+        if (pinButton is not null)
+        {
+            pinButton.Checked -= OnPinButtonChecked;
+            pinButton.Unchecked -= OnPinButtonUnchecked;
+        }
+
+        if (resizeGrip is not null)
+        {
+            resizeGrip.DragDelta -= OnResizeGripDragDelta;
+        }
     }
 
     private void HookEvents()
@@ -389,6 +473,17 @@ public sealed partial class Flyout : ContentControl
         {
             overlayBorder.MouseLeftButtonDown += OnOverlayMouseLeftButtonDown;
         }
+
+        if (pinButton is not null)
+        {
+            pinButton.Checked += OnPinButtonChecked;
+            pinButton.Unchecked += OnPinButtonUnchecked;
+        }
+
+        if (resizeGrip is not null)
+        {
+            resizeGrip.DragDelta += OnResizeGripDragDelta;
+        }
     }
 
     private void OnCloseButtonClick(
@@ -400,9 +495,59 @@ public sealed partial class Flyout : ContentControl
         object sender,
         MouseButtonEventArgs e)
     {
-        if (IsLightDismissEnabled)
+        if (IsLightDismissEnabled && !IsPinned)
         {
             CloseWithLightDismiss();
+        }
+    }
+
+    private void OnPinButtonChecked(
+        object sender,
+        RoutedEventArgs e)
+        => IsPinned = true;
+
+    private void OnPinButtonUnchecked(
+        object sender,
+        RoutedEventArgs e)
+        => IsPinned = false;
+
+    private void OnResizeGripDragDelta(
+        object sender,
+        DragDeltaEventArgs e)
+    {
+        if (!IsResizable)
+        {
+            return;
+        }
+
+        switch (Position)
+        {
+            case FlyoutPosition.Right:
+                var newWidthRight = FlyoutWidth - e.HorizontalChange;
+                FlyoutWidth = global::System.Math.Clamp(newWidthRight, MinFlyoutWidth, MaxFlyoutWidth);
+                break;
+
+            case FlyoutPosition.Left:
+                var newWidthLeft = FlyoutWidth + e.HorizontalChange;
+                FlyoutWidth = global::System.Math.Clamp(newWidthLeft, MinFlyoutWidth, MaxFlyoutWidth);
+                break;
+
+            case FlyoutPosition.Top:
+                var newHeightTop = FlyoutHeight + e.VerticalChange;
+                FlyoutHeight = global::System.Math.Clamp(newHeightTop, MinFlyoutHeight, MaxFlyoutHeight);
+                break;
+
+            case FlyoutPosition.Bottom:
+                var newHeightBottom = FlyoutHeight - e.VerticalChange;
+                FlyoutHeight = global::System.Math.Clamp(newHeightBottom, MinFlyoutHeight, MaxFlyoutHeight);
+                break;
+
+            case FlyoutPosition.Center:
+                var newWidthCenter = FlyoutWidth + (e.HorizontalChange * 2);
+                var newHeightCenter = FlyoutHeight + (e.VerticalChange * 2);
+                FlyoutWidth = global::System.Math.Clamp(newWidthCenter, MinFlyoutWidth, MaxFlyoutWidth);
+                FlyoutHeight = global::System.Math.Clamp(newHeightCenter, MinFlyoutHeight, MaxFlyoutHeight);
+                break;
         }
     }
 
@@ -482,7 +627,7 @@ public sealed partial class Flyout : ContentControl
 
     private void AnimateOpen()
     {
-        if (flyoutPanel is null || slideTransform is null)
+        if (flyoutPanel is null)
         {
             Visibility = Visibility.Visible;
             RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
@@ -492,22 +637,52 @@ public sealed partial class Flyout : ContentControl
         isAnimating = true;
 
         var duration = TimeSpan.FromMilliseconds(AnimationDuration);
-        var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+        var easing = EasingFunction ?? new CubicEase { EasingMode = EasingMode.EaseOut };
 
-        // Set initial position based on flyout position
+        AnimateOverlayOpen(duration);
+
+        if (UseScaleAnimation)
+        {
+            AnimateOpenWithScale(duration, easing);
+            return;
+        }
+
+        AnimateSlideOpen(duration, easing);
+    }
+
+    private void AnimateOverlayOpen(TimeSpan duration)
+    {
+        if (overlayBorder is null || !ShowOverlay)
+        {
+            return;
+        }
+
+        overlayBorder.Visibility = Visibility.Visible;
+        var overlayAnimation = new DoubleAnimation
+        {
+            From = 0,
+            To = OverlayOpacity,
+            Duration = duration,
+        };
+        overlayBorder.BeginAnimation(OpacityProperty, overlayAnimation);
+    }
+
+    private void AnimateSlideOpen(
+        TimeSpan duration,
+        IEasingFunction easing)
+    {
+        if (slideTransform is null)
+        {
+            Visibility = Visibility.Visible;
+            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            return;
+        }
+
         var startValue = GetSlideStartValue();
         var property = GetSlideProperty();
 
-        if (property == TranslateTransform.XProperty)
-        {
-            slideTransform.X = startValue;
-        }
-        else
-        {
-            slideTransform.Y = startValue;
-        }
+        SetSlideTransformValue(property, startValue);
 
-        // Animate to 0
         var slideAnimation = new DoubleAnimation
         {
             From = startValue,
@@ -520,30 +695,94 @@ public sealed partial class Flyout : ContentControl
         {
             isAnimating = false;
             RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
-
-            // Focus the flyout
             _ = Focus();
         };
-
-        // Animate overlay opacity
-        if (overlayBorder is not null && ShowOverlay)
-        {
-            overlayBorder.Visibility = Visibility.Visible;
-            var overlayAnimation = new DoubleAnimation
-            {
-                From = 0,
-                To = OverlayOpacity,
-                Duration = duration,
-            };
-            overlayBorder.BeginAnimation(OpacityProperty, overlayAnimation);
-        }
 
         slideTransform.BeginAnimation(property, slideAnimation);
     }
 
+    private void SetSlideTransformValue(
+        DependencyProperty property,
+        double value)
+    {
+        if (slideTransform is null)
+        {
+            return;
+        }
+
+        if (property == TranslateTransform.XProperty)
+        {
+            slideTransform.X = value;
+        }
+        else
+        {
+            slideTransform.Y = value;
+        }
+    }
+
+    private void AnimateOpenWithScale(
+        TimeSpan duration,
+        IEasingFunction easing)
+    {
+        if (scaleTransform is null)
+        {
+            // Ensure we have a scale transform
+            var transformGroup = new TransformGroup();
+            scaleTransform = new ScaleTransform(0.9, 0.9);
+            slideTransform = new TranslateTransform();
+            transformGroup.Children.Add(scaleTransform);
+            transformGroup.Children.Add(slideTransform);
+
+            if (flyoutPanel is not null)
+            {
+                flyoutPanel.RenderTransform = transformGroup;
+                flyoutPanel.RenderTransformOrigin = new Point(0.5, 0.5);
+            }
+        }
+
+        scaleTransform.ScaleX = 0.9;
+        scaleTransform.ScaleY = 0.9;
+        flyoutPanel!.Opacity = 0;
+
+        var scaleXAnimation = new DoubleAnimation
+        {
+            From = 0.9,
+            To = 1,
+            Duration = duration,
+            EasingFunction = easing,
+        };
+
+        var scaleYAnimation = new DoubleAnimation
+        {
+            From = 0.9,
+            To = 1,
+            Duration = duration,
+            EasingFunction = easing,
+        };
+
+        var opacityAnimation = new DoubleAnimation
+        {
+            From = 0,
+            To = 1,
+            Duration = duration,
+            EasingFunction = easing,
+        };
+
+        opacityAnimation.Completed += (_, _) =>
+        {
+            isAnimating = false;
+            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            _ = Focus();
+        };
+
+        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation);
+        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnimation);
+        flyoutPanel.BeginAnimation(OpacityProperty, opacityAnimation);
+    }
+
     private void AnimateClose()
     {
-        if (flyoutPanel is null || slideTransform is null)
+        if (flyoutPanel is null)
         {
             Visibility = Visibility.Collapsed;
             RestoreFocus();
@@ -554,7 +793,50 @@ public sealed partial class Flyout : ContentControl
         isAnimating = true;
 
         var duration = TimeSpan.FromMilliseconds(AnimationDuration);
-        var easing = new CubicEase { EasingMode = EasingMode.EaseIn };
+        var easing = EasingFunction ?? new CubicEase { EasingMode = EasingMode.EaseIn };
+
+        AnimateOverlayClose(duration);
+
+        if (UseScaleAnimation)
+        {
+            AnimateCloseWithScale(duration, easing);
+            return;
+        }
+
+        AnimateSlideClose(duration, easing);
+    }
+
+    private void AnimateOverlayClose(TimeSpan duration)
+    {
+        if (overlayBorder is null || !ShowOverlay)
+        {
+            return;
+        }
+
+        var overlayAnimation = new DoubleAnimation
+        {
+            From = OverlayOpacity,
+            To = 0,
+            Duration = duration,
+        };
+        overlayAnimation.Completed += (_, _) =>
+        {
+            overlayBorder.Visibility = Visibility.Collapsed;
+        };
+        overlayBorder.BeginAnimation(OpacityProperty, overlayAnimation);
+    }
+
+    private void AnimateSlideClose(
+        TimeSpan duration,
+        IEasingFunction easing)
+    {
+        if (slideTransform is null)
+        {
+            Visibility = Visibility.Collapsed;
+            RestoreFocus();
+            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            return;
+        }
 
         var endValue = GetSlideStartValue();
         var property = GetSlideProperty();
@@ -575,23 +857,56 @@ public sealed partial class Flyout : ContentControl
             RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
         };
 
-        // Animate overlay opacity
-        if (overlayBorder is not null && ShowOverlay)
+        slideTransform.BeginAnimation(property, slideAnimation);
+    }
+
+    private void AnimateCloseWithScale(
+        TimeSpan duration,
+        IEasingFunction easing)
+    {
+        if (scaleTransform is null || flyoutPanel is null)
         {
-            var overlayAnimation = new DoubleAnimation
-            {
-                From = OverlayOpacity,
-                To = 0,
-                Duration = duration,
-            };
-            overlayAnimation.Completed += (_, _) =>
-            {
-                overlayBorder.Visibility = Visibility.Collapsed;
-            };
-            overlayBorder.BeginAnimation(OpacityProperty, overlayAnimation);
+            Visibility = Visibility.Collapsed;
+            RestoreFocus();
+            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            return;
         }
 
-        slideTransform.BeginAnimation(property, slideAnimation);
+        var scaleXAnimation = new DoubleAnimation
+        {
+            From = 1,
+            To = 0.9,
+            Duration = duration,
+            EasingFunction = easing,
+        };
+
+        var scaleYAnimation = new DoubleAnimation
+        {
+            From = 1,
+            To = 0.9,
+            Duration = duration,
+            EasingFunction = easing,
+        };
+
+        var opacityAnimation = new DoubleAnimation
+        {
+            From = 1,
+            To = 0,
+            Duration = duration,
+            EasingFunction = easing,
+        };
+
+        opacityAnimation.Completed += (_, _) =>
+        {
+            isAnimating = false;
+            Visibility = Visibility.Collapsed;
+            RestoreFocus();
+            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+        };
+
+        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation);
+        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnimation);
+        flyoutPanel.BeginAnimation(OpacityProperty, opacityAnimation);
     }
 
     private double GetSlideStartValue()
@@ -601,6 +916,7 @@ public sealed partial class Flyout : ContentControl
             FlyoutPosition.Left => -FlyoutWidth,
             FlyoutPosition.Bottom => FlyoutHeight,
             FlyoutPosition.Top => -FlyoutHeight,
+            FlyoutPosition.Center => 0,
             _ => FlyoutWidth,
         };
 
@@ -609,8 +925,11 @@ public sealed partial class Flyout : ContentControl
         {
             FlyoutPosition.Right or FlyoutPosition.Left => TranslateTransform.XProperty,
             FlyoutPosition.Top or FlyoutPosition.Bottom => TranslateTransform.YProperty,
+            FlyoutPosition.Center => ScaleTransform.ScaleXProperty,
             _ => TranslateTransform.XProperty,
         };
+
+    private bool UseScaleAnimation => Position == FlyoutPosition.Center;
 
     private void RestoreFocus()
     {
@@ -625,51 +944,81 @@ public sealed partial class Flyout : ContentControl
     {
         if (!IsOpen)
         {
-            Visibility = Visibility.Collapsed;
-
-            if (overlayBorder is not null)
-            {
-                overlayBorder.Visibility = Visibility.Collapsed;
-            }
-
-            if (slideTransform is not null)
-            {
-                var startValue = GetSlideStartValue();
-                var property = GetSlideProperty();
-
-                if (property == TranslateTransform.XProperty)
-                {
-                    slideTransform.X = startValue;
-                }
-                else
-                {
-                    slideTransform.Y = startValue;
-                }
-            }
+            ApplyClosedVisualState();
         }
         else
         {
-            Visibility = Visibility.Visible;
+            ApplyOpenVisualState();
+        }
+    }
 
-            if (overlayBorder is not null && ShowOverlay)
-            {
-                overlayBorder.Visibility = Visibility.Visible;
-                overlayBorder.Opacity = OverlayOpacity;
-            }
+    private void ApplyClosedVisualState()
+    {
+        Visibility = Visibility.Collapsed;
 
-            if (slideTransform is not null)
-            {
-                var property = GetSlideProperty();
+        if (overlayBorder is not null)
+        {
+            overlayBorder.Visibility = Visibility.Collapsed;
+        }
 
-                if (property == TranslateTransform.XProperty)
-                {
-                    slideTransform.X = 0;
-                }
-                else
-                {
-                    slideTransform.Y = 0;
-                }
-            }
+        if (UseScaleAnimation)
+        {
+            ApplyClosedScaleState();
+        }
+        else if (slideTransform is not null)
+        {
+            var startValue = GetSlideStartValue();
+            var property = GetSlideProperty();
+            SetSlideTransformValue(property, startValue);
+        }
+    }
+
+    private void ApplyClosedScaleState()
+    {
+        if (scaleTransform is not null)
+        {
+            scaleTransform.ScaleX = 0.9;
+            scaleTransform.ScaleY = 0.9;
+        }
+
+        if (flyoutPanel is not null)
+        {
+            flyoutPanel.Opacity = 0;
+        }
+    }
+
+    private void ApplyOpenVisualState()
+    {
+        Visibility = Visibility.Visible;
+
+        if (overlayBorder is not null && ShowOverlay)
+        {
+            overlayBorder.Visibility = Visibility.Visible;
+            overlayBorder.Opacity = OverlayOpacity;
+        }
+
+        if (UseScaleAnimation)
+        {
+            ApplyOpenScaleState();
+        }
+        else if (slideTransform is not null)
+        {
+            var property = GetSlideProperty();
+            SetSlideTransformValue(property, 0);
+        }
+    }
+
+    private void ApplyOpenScaleState()
+    {
+        if (scaleTransform is not null)
+        {
+            scaleTransform.ScaleX = 1;
+            scaleTransform.ScaleY = 1;
+        }
+
+        if (flyoutPanel is not null)
+        {
+            flyoutPanel.Opacity = 1;
         }
     }
 }
