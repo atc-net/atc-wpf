@@ -153,6 +153,7 @@
         <Setter Property="FlyoutBorderThickness" Value="1,0,0,0" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HeaderBackground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="HeaderBorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
         <Setter Property="HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -225,7 +226,7 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Background="{TemplateBinding HeaderBackground}"
-                                    BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+                                    BorderBrush="{TemplateBinding HeaderBorderBrush}"
                                     BorderThickness="0,0,0,1"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                     UseLayoutRounding="True">

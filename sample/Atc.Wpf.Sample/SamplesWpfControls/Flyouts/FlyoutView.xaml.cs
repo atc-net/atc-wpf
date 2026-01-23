@@ -120,4 +120,24 @@ public partial class FlyoutView
         object sender,
         RoutedEventArgs e)
         => FocusFreeFlyout.IsOpen = true;
+
+    private void OpenBrandedFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => BrandedFlyout.IsOpen = true;
+
+    private void OpenSuccessFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => SuccessFlyout.IsOpen = true;
+
+    private void OpenWarningFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => WarningFlyout.IsOpen = true;
+
+    private void OpenErrorFlyoutButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => ErrorFlyout.IsOpen = true;
 }

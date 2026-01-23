@@ -282,6 +282,43 @@
                     </StackPanel>
                 </GroupBox>
 
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Custom Colors">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Flyouts support full color customization through properties like FlyoutBackground, FlyoutBorderBrush, HeaderBackground, HeaderForeground, HeaderBorderBrush, and OverlayBrush." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenBrandedFlyoutButton"
+                                Width="140"
+                                Click="OpenBrandedFlyoutButton_Click"
+                                Content="Branded (Blue)" />
+                            <Button
+                                x:Name="OpenSuccessFlyoutButton"
+                                Width="140"
+                                Click="OpenSuccessFlyoutButton_Click"
+                                Content="Success (Green)" />
+                            <Button
+                                x:Name="OpenWarningFlyoutButton"
+                                Width="140"
+                                Click="OpenWarningFlyoutButton_Click"
+                                Content="Warning (Orange)" />
+                            <Button
+                                x:Name="OpenErrorFlyoutButton"
+                                Width="140"
+                                Click="OpenErrorFlyoutButton_Click"
+                                Content="Error (Red)" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
             </atc:AutoGrid>
         </ScrollViewer>
 
@@ -897,6 +934,160 @@
                     Click="CloseFlyout_Click"
                     Content="Close"
                     Tag="{Binding ElementName=FocusFreeFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Branded (Blue) Flyout -->
+        <flyouts:Flyout
+            x:Name="BrandedFlyout"
+            FlyoutWidth="400"
+            Header="Branded Panel"
+            Position="Right"
+            FlyoutBackground="#1E3A5F"
+            FlyoutBorderBrush="#4A90D9"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#2C5282"
+            HeaderForeground="White"
+            HeaderBorderBrush="#4A90D9"
+            OverlayBrush="#000080"
+            OverlayOpacity="0.3">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="Custom Branded Flyout" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B0C4DE"
+                    TextWrapping="Wrap"
+                    Text="This flyout demonstrates full color customization using FlyoutBackground, FlyoutBorderBrush, HeaderBackground, HeaderForeground, and HeaderBorderBrush properties." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B0C4DE"
+                    TextWrapping="Wrap"
+                    Text="The overlay also uses a custom blue tint with OverlayBrush and reduced OverlayOpacity." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=BrandedFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Success (Green) Flyout -->
+        <flyouts:Flyout
+            x:Name="SuccessFlyout"
+            FlyoutWidth="400"
+            Header="Success"
+            Position="Right"
+            FlyoutBackground="#E6F4EA"
+            FlyoutBorderBrush="#34A853"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#34A853"
+            HeaderForeground="White"
+            HeaderBorderBrush="#34A853">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="#1E4620"
+                    Text="Operation Successful" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#2D6A30"
+                    TextWrapping="Wrap"
+                    Text="This green-themed flyout is ideal for success messages and confirmations." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#2D6A30"
+                    TextWrapping="Wrap"
+                    Text="All settings have been saved successfully!" />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=SuccessFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Warning (Orange) Flyout -->
+        <flyouts:Flyout
+            x:Name="WarningFlyout"
+            FlyoutWidth="400"
+            Header="Warning"
+            Position="Right"
+            FlyoutBackground="#FEF7E0"
+            FlyoutBorderBrush="#F9AB00"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#F9AB00"
+            HeaderForeground="White"
+            HeaderBorderBrush="#F9AB00">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="#7A5A00"
+                    Text="Please Review" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#8B6914"
+                    TextWrapping="Wrap"
+                    Text="This orange-themed flyout is suitable for warnings and important notices." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#8B6914"
+                    TextWrapping="Wrap"
+                    Text="Please review your changes before continuing." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=WarningFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Error (Red) Flyout -->
+        <flyouts:Flyout
+            x:Name="ErrorFlyout"
+            FlyoutWidth="400"
+            Header="Error"
+            Position="Right"
+            FlyoutBackground="#FCE8E6"
+            FlyoutBorderBrush="#EA4335"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#EA4335"
+            HeaderForeground="White"
+            HeaderBorderBrush="#EA4335">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="#A50E0E"
+                    Text="An Error Occurred" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B31412"
+                    TextWrapping="Wrap"
+                    Text="This red-themed flyout is appropriate for error messages and alerts." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B31412"
+                    TextWrapping="Wrap"
+                    Text="Unable to connect to the server. Please check your network connection and try again." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=ErrorFlyout}" />
             </StackPanel>
         </flyouts:Flyout>
 
