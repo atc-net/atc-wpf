@@ -2,6 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons"
+    xmlns:flyouts="clr-namespace:Atc.Wpf.Controls.Flyouts"
     xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
@@ -25,6 +26,8 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/BusyOverlay.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/LoadingIndicator.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/ImageButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Flyouts/Flyout.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Flyouts/FlyoutHost.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style BasedOn="{StaticResource AtcApps.Styles.NumericBox}" TargetType="{x:Type inputs:NumericBox}" />
@@ -48,5 +51,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.BusyOverlay}" TargetType="{x:Type progressing:BusyOverlay}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.LoadingIndicator}" TargetType="{x:Type progressing:LoadingIndicator}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ImageButton}" TargetType="{x:Type buttonControls:ImageButton}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Flyout}" TargetType="{x:Type flyouts:Flyout}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.FlyoutHost}" TargetType="{x:Type flyouts:FlyoutHost}" />
 
 </ResourceDictionary>

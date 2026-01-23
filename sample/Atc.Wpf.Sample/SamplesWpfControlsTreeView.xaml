@@ -125,6 +125,13 @@
             SamplePath="DataDisplay.DividerView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Flyouts">
+        <sample:SampleTreeViewItem
+            Header="Flyout"
+            IsExpanded="True"
+            SamplePath="Flyouts.FlyoutView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Layouts">
         <sample:SampleTreeViewItem
             Header="AutoGrid"
