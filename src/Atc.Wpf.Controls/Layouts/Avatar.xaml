@@ -1,0 +1,133 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
+    xmlns:local="clr-namespace:Atc.Wpf.Controls">
+
+    <!-- Status indicator colors -->
+    <SolidColorBrush x:Key="AtcApps.Brushes.Avatar.Status.Online" Color="LimeGreen" />
+    <SolidColorBrush x:Key="AtcApps.Brushes.Avatar.Status.Offline" Color="Gray" />
+    <SolidColorBrush x:Key="AtcApps.Brushes.Avatar.Status.Away" Color="Orange" />
+    <SolidColorBrush x:Key="AtcApps.Brushes.Avatar.Status.Busy" Color="Red" />
+    <SolidColorBrush x:Key="AtcApps.Brushes.Avatar.Status.DoNotDisturb" Color="Red" />
+
+    <Style x:Key="AtcApps.Styles.Avatar" TargetType="{x:Type layouts:Avatar}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="StatusBorderBrush" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="StatusBorderThickness" Value="2" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type layouts:Avatar}">
+                    <Grid>
+                        <!-- Main Avatar Container -->
+                        <Border
+                            x:Name="PART_Container"
+                            Width="{TemplateBinding ComputedSize}"
+                            Height="{TemplateBinding ComputedSize}"
+                            Background="{TemplateBinding ComputedBackground}"
+                            CornerRadius="{TemplateBinding ComputedCornerRadius}">
+                            <Border.Clip>
+                                <EllipseGeometry
+                                    x:Name="PART_ClipGeometry"
+                                    Center="{Binding ComputedSize, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static layouts:AvatarCenterConverter.Instance}}"
+                                    RadiusX="{Binding ComputedSize, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static layouts:AvatarRadiusConverter.Instance}}"
+                                    RadiusY="{Binding ComputedSize, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static layouts:AvatarRadiusConverter.Instance}}" />
+                            </Border.Clip>
+                            <Grid>
+                                <!-- Image -->
+                                <Image
+                                    x:Name="PART_Image"
+                                    Stretch="UniformToFill"
+                                    Source="{TemplateBinding ImageSource}"
+                                    Visibility="Collapsed" />
+
+                                <!-- Initials -->
+                                <TextBlock
+                                    x:Name="PART_Initials"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="{TemplateBinding ComputedFontSize}"
+                                    FontWeight="SemiBold"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Text="{TemplateBinding ComputedInitials}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Status Indicator -->
+                        <Border
+                            x:Name="PART_StatusIndicator"
+                            Width="{TemplateBinding ComputedStatusSize}"
+                            Height="{TemplateBinding ComputedStatusSize}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Background="{StaticResource AtcApps.Brushes.Avatar.Status.Online}"
+                            BorderBrush="{TemplateBinding StatusBorderBrush}"
+                            BorderThickness="{TemplateBinding StatusBorderThickness}"
+                            CornerRadius="{Binding ComputedStatusSize, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static layouts:AvatarRadiusConverter.Instance}}"
+                            Visibility="Collapsed">
+                            <!-- DoNotDisturb dash icon -->
+                            <Path
+                                x:Name="PART_DndIcon"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="M0,0 L6,0"
+                                Stroke="White"
+                                StrokeThickness="2"
+                                Visibility="Collapsed" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Show image when available -->
+                        <Trigger Property="ShowImage" Value="True">
+                            <Setter TargetName="PART_Image" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Initials" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!-- Status indicator visibility and colors -->
+                        <Trigger Property="Status" Value="Online">
+                            <Setter TargetName="PART_StatusIndicator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_StatusIndicator" Property="Background" Value="{StaticResource AtcApps.Brushes.Avatar.Status.Online}" />
+                        </Trigger>
+                        <Trigger Property="Status" Value="Offline">
+                            <Setter TargetName="PART_StatusIndicator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_StatusIndicator" Property="Background" Value="{StaticResource AtcApps.Brushes.Avatar.Status.Offline}" />
+                        </Trigger>
+                        <Trigger Property="Status" Value="Away">
+                            <Setter TargetName="PART_StatusIndicator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_StatusIndicator" Property="Background" Value="{StaticResource AtcApps.Brushes.Avatar.Status.Away}" />
+                        </Trigger>
+                        <Trigger Property="Status" Value="Busy">
+                            <Setter TargetName="PART_StatusIndicator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_StatusIndicator" Property="Background" Value="{StaticResource AtcApps.Brushes.Avatar.Status.Busy}" />
+                        </Trigger>
+                        <Trigger Property="Status" Value="DoNotDisturb">
+                            <Setter TargetName="PART_StatusIndicator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_StatusIndicator" Property="Background" Value="{StaticResource AtcApps.Brushes.Avatar.Status.DoNotDisturb}" />
+                            <Setter TargetName="PART_DndIcon" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
+                        <!-- Use rectangular clip when CornerRadius is explicitly set -->
+                        <Trigger Property="CornerRadius" Value="{x:Null}">
+                            <Setter TargetName="PART_Container" Property="Clip" Value="{x:Null}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.AvatarGroup" TargetType="{x:Type layouts:AvatarGroup}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type layouts:AvatarGroup}">
+                    <StackPanel
+                        x:Name="PART_ItemsHost"
+                        Orientation="Horizontal" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

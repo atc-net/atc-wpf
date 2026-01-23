@@ -94,6 +94,8 @@ Use this table to quickly identify which panel best suits your layout needs:
 </Canvas>
 ```
 
+**See Also:** [Microsoft Docs - Canvas](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/canvas)
+
 ---
 
 ### 📘 DockPanel (WPF Built-in)
@@ -114,6 +116,8 @@ Use this table to quickly identify which panel best suits your layout needs:
     <ContentControl />  <!-- Fills remaining space -->
 </DockPanel>
 ```
+
+**See Also:** [Microsoft Docs - DockPanel](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/dockpanel)
 
 ---
 
@@ -309,6 +313,8 @@ dockPanel.ResetLayout();
 </layouts:FlexPanel>
 ```
 
+**See Also:** [Full FlexPanel Documentation](../src/Atc.Wpf.Controls/Layouts/FlexPanel_Readme.md)
+
 ---
 
 ### 📘 Panel (WPF Built-in)
@@ -352,6 +358,8 @@ public class SimpleOverlayPanel : Panel
     }
 }
 ```
+
+**See Also:** [Microsoft Docs - Panel](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/panel)
 
 ---
 
@@ -574,6 +582,8 @@ public class SimpleOverlayPanel : Panel
 </StackPanel>
 ```
 
+**See Also:** [Microsoft Docs - StackPanel](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/stackpanel)
+
 ---
 
 ### 🟢 StaggeredPanel
@@ -632,6 +642,8 @@ public class SimpleOverlayPanel : Panel
 </ItemsControl>
 ```
 
+**See Also:** [Full StaggeredPanel Documentation](../src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)
+
 ---
 
 ### 📘 UniformGrid (WPF Built-in)
@@ -658,6 +670,8 @@ public class SimpleOverlayPanel : Panel
     <Button Content="9" />
 </UniformGrid>
 ```
+
+**See Also:** [Microsoft Docs - UniformGrid](https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.primitives.uniformgrid)
 
 ---
 
@@ -716,6 +730,8 @@ public class SimpleOverlayPanel : Panel
 </layouts:UniformSpacingPanel>
 ```
 
+**See Also:** [Full UniformSpacingPanel Documentation](../src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)
+
 ---
 
 ### 🟢 VirtualizingStaggeredPanel
@@ -767,6 +783,8 @@ public class SimpleOverlayPanel : Panel
     <!-- Wraps automatically -->
 </WrapPanel>
 ```
+
+**See Also:** [Microsoft Docs - WrapPanel](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/wrappanel)
 
 ---
 
@@ -837,6 +855,8 @@ public class SimpleOverlayPanel : Panel
 </layouts:AutoGrid>
 ```
 
+**See Also:** [Full AutoGrid Documentation](../src/Atc.Wpf.Controls/Layouts/AutoGrid_Readme.md)
+
 ---
 
 ### 📘 Grid (WPF Built-in)
@@ -866,6 +886,8 @@ public class SimpleOverlayPanel : Panel
     <TextBox Grid.Row="0" Grid.Column="1" />
 </Grid>
 ```
+
+**See Also:** [Microsoft Docs - Grid](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/grid)
 
 ---
 
@@ -919,6 +941,8 @@ public class SimpleOverlayPanel : Panel
     <!-- Col 0: 200px, Col 1: fills remaining, Col 2: Auto-sized -->
 </layouts:GridEx>
 ```
+
+**See Also:** [Full GridEx Documentation](../src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)
 
 ---
 
