@@ -30,6 +30,7 @@ global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;
 global using Atc.Wpf.Components.Settings;
 global using Atc.Wpf.Controls;
+global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Controls.Sample;

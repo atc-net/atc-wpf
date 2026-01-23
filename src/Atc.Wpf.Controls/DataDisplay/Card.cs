@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
 /// A Card control for grouping related content with elevation/shadow, optional header/footer,

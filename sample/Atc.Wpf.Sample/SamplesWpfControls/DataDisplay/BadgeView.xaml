@@ -1,10 +1,10 @@
 <UserControl
-    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.BadgeView"
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.BadgeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="UcBadgeView"
     d:DesignHeight="800"
@@ -35,7 +35,7 @@
                     VerticalSpacing="20">
                     <!-- TopLeft -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="1"
                             BadgeMargin="-8,-8,0,0"
                             BadgePlacementMode="TopLeft">
@@ -49,7 +49,7 @@
                                     VerticalAlignment="Center"
                                     Text="TL" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -59,7 +59,7 @@
 
                     <!-- Top -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="2"
                             BadgeMargin="0,-8,0,0"
                             BadgePlacementMode="Top">
@@ -73,7 +73,7 @@
                                     VerticalAlignment="Center"
                                     Text="T" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -83,7 +83,7 @@
 
                     <!-- TopRight -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="3"
                             BadgeMargin="0,-8,-8,0"
                             BadgePlacementMode="TopRight">
@@ -97,7 +97,7 @@
                                     VerticalAlignment="Center"
                                     Text="TR" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -107,7 +107,7 @@
 
                     <!-- Right -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="4"
                             BadgeMargin="0,0,-8,0"
                             BadgePlacementMode="Right">
@@ -121,7 +121,7 @@
                                     VerticalAlignment="Center"
                                     Text="R" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -131,7 +131,7 @@
 
                     <!-- BottomRight -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="5"
                             BadgeMargin="0,0,-8,-8"
                             BadgePlacementMode="BottomRight">
@@ -145,7 +145,7 @@
                                     VerticalAlignment="Center"
                                     Text="BR" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -155,7 +155,7 @@
 
                     <!-- Bottom -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="6"
                             BadgeMargin="0,0,0,-8"
                             BadgePlacementMode="Bottom">
@@ -169,7 +169,7 @@
                                     VerticalAlignment="Center"
                                     Text="B" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -179,7 +179,7 @@
 
                     <!-- BottomLeft -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="7"
                             BadgeMargin="-8,0,0,-8"
                             BadgePlacementMode="BottomLeft">
@@ -193,7 +193,7 @@
                                     VerticalAlignment="Center"
                                     Text="BL" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -203,7 +203,7 @@
 
                     <!-- Left -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="8"
                             BadgeMargin="-8,0,0,0"
                             BadgePlacementMode="Left">
@@ -217,7 +217,7 @@
                                     VerticalAlignment="Center"
                                     Text="L" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -238,7 +238,7 @@
 
                     <!-- Notification Badge -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="99+"
                             BadgeMargin="0,-8,-8,0"
                             BadgePlacementMode="TopRight">
@@ -246,7 +246,7 @@
                                 Width="80"
                                 Height="40"
                                 Content="Inbox" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
@@ -256,7 +256,7 @@
 
                     <!-- Status Dot (Online) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="LimeGreen"
                             BadgeCornerRadius="5"
                             BadgeMinHeight="10"
@@ -274,7 +274,7 @@
                                     OverrideColor="{DynamicResource AtcApps.Colors.IdealForeground}"
                                     Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
@@ -284,7 +284,7 @@
 
                     <!-- Status Dot (Away) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="Orange"
                             BadgeCornerRadius="5"
                             BadgeMinHeight="10"
@@ -302,7 +302,7 @@
                                     OverrideColor="{DynamicResource AtcApps.Colors.IdealForeground}"
                                     Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
@@ -312,7 +312,7 @@
 
                     <!-- Status Dot (Offline) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="Gray"
                             BadgeCornerRadius="5"
                             BadgeMinHeight="10"
@@ -330,7 +330,7 @@
                                     OverrideColor="{DynamicResource AtcApps.Colors.IdealForeground}"
                                     Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
@@ -340,7 +340,7 @@
 
                     <!-- Inline Badge (Tab Header Style) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="12"
                             BadgeMargin="5,0,0,0"
                             BadgePlacementMode="Right">
@@ -348,7 +348,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Text="Messages" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
@@ -358,7 +358,7 @@
 
                     <!-- New Label -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="Crimson"
                             BadgeContent="NEW"
                             BadgeFontSize="8"
@@ -369,7 +369,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Text="Feature" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,10,0,0"
                             HorizontalAlignment="Center"
@@ -387,7 +387,7 @@
 
                     <!-- Custom Colors -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="Purple"
                             BadgeContent="VIP"
                             BadgeFontSize="9"
@@ -404,7 +404,7 @@
                                     VerticalAlignment="Center"
                                     Text="User" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -414,7 +414,7 @@
 
                     <!-- With Border -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="White"
                             BadgeBorderBrush="Red"
                             BadgeBorderThickness="2"
@@ -432,7 +432,7 @@
                                     VerticalAlignment="Center"
                                     Text="Alerts" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -442,7 +442,7 @@
 
                     <!-- Square Badge -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="DarkSlateGray"
                             BadgeContent="PRO"
                             BadgeCornerRadius="2"
@@ -459,7 +459,7 @@
                                     VerticalAlignment="Center"
                                     Text="Plan" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -469,7 +469,7 @@
 
                     <!-- Large Badge -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="50% OFF"
                             BadgeFontSize="11"
                             BadgeMargin="0,-12,-12,0"
@@ -487,7 +487,7 @@
                                     VerticalAlignment="Center"
                                     Text="Product" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -497,7 +497,7 @@
 
                     <!-- Hidden Badge (IsBadgeVisible=False) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="Hidden"
                             BadgePlacementMode="TopRight"
                             IsBadgeVisible="False">
@@ -511,7 +511,7 @@
                                     VerticalAlignment="Center"
                                     Text="No Badge" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -529,7 +529,7 @@
 
                     <!-- Dot Badge (IsDot=True) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="LimeGreen"
                             BadgePlacementMode="BottomRight"
                             IsDot="True">
@@ -543,7 +543,7 @@
                                     VerticalAlignment="Center"
                                     Text="Online" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -553,7 +553,7 @@
 
                     <!-- Dot Badge - Different Color -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeBackground="Orange"
                             BadgePlacementMode="BottomRight"
                             IsDot="True">
@@ -567,7 +567,7 @@
                                     VerticalAlignment="Center"
                                     Text="Away" />
                             </Border>
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -577,7 +577,7 @@
 
                     <!-- Max Value (BadgeMaxValue) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="150"
                             BadgeMargin="0,-8,-8,0"
                             BadgeMaxValue="99"
@@ -586,7 +586,7 @@
                                 Width="80"
                                 Height="40"
                                 Content="Messages" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -596,7 +596,7 @@
 
                     <!-- Max Value - Under Limit -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="42"
                             BadgeMargin="0,-8,-8,0"
                             BadgeMaxValue="99"
@@ -605,7 +605,7 @@
                                 Width="80"
                                 Height="40"
                                 Content="Emails" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -615,7 +615,7 @@
 
                     <!-- Hide When Zero (HideWhenZero=True, value=0) -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="0"
                             BadgeMargin="0,-8,-8,0"
                             BadgePlacementMode="TopRight"
@@ -624,7 +624,7 @@
                                 Width="80"
                                 Height="40"
                                 Content="Tasks" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"
@@ -634,7 +634,7 @@
 
                     <!-- Hide When Zero - Non-Zero -->
                     <StackPanel HorizontalAlignment="Center">
-                        <layouts:Badge
+                        <dataDisplay:Badge
                             BadgeContent="5"
                             BadgeMargin="0,-8,-8,0"
                             BadgePlacementMode="TopRight"
@@ -643,7 +643,7 @@
                                 Width="80"
                                 Height="40"
                                 Content="Tasks" />
-                        </layouts:Badge>
+                        </dataDisplay:Badge>
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"

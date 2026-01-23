@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Controls.Layouts;
+namespace Atc.Wpf.Controls.DataDisplay;
 
 /// <summary>
 /// A control for displaying a group of overlapping avatars with overflow indication.
@@ -111,7 +111,6 @@ public sealed partial class AvatarGroup : Control
 
         var visibleCount = System.Math.Min(Children.Count, MaxVisible);
         var overflowCount = Children.Count - visibleCount;
-        var (pixels, fontSize, _) = GetSizeValues(Size);
 
         for (var i = 0; i < visibleCount; i++)
         {
@@ -146,7 +145,8 @@ public sealed partial class AvatarGroup : Control
         }
     }
 
-    private static (double Pixels, double FontSize, double StatusSize) GetSizeValues(AvatarSize size)
+    private static (double Pixels, double FontSize, double StatusSize) GetSizeValues(
+        AvatarSize size)
         => size switch
         {
             AvatarSize.ExtraSmall => (24, 10, 8),

@@ -233,9 +233,10 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **[FlexPanel](docs/Layouts/@Readme.md#-flexpanel)** | CSS Flexbox panel | Grow/shrink, justify, align |
 | **[StaggeredPanel](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)** | Masonry layout | Pinterest-style waterfall |
 | **[UniformSpacingPanel](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)** | Uniform spacing | Consistent gaps + wrapping |
-| **[Card](docs/Layouts/@Readme.md#-card)** | Content container | Elevation, header/footer, expand |
-| **[Badge](docs/Layouts/@Readme.md#-badge)** | Status indicator | Notification counts, dots |
-| **[Chip](docs/Layouts/@Readme.md#-chip)** | Tag/filter control | Selectable, removable |
+| **[Card](docs/DataDisplay/@Readme.md#-card)** | Content container | Elevation, header/footer, expand |
+| **[Badge](docs/DataDisplay/@Readme.md#-badge)** | Status indicator | Notification counts, dots |
+| **[Chip](docs/DataDisplay/@Readme.md#-chip)** | Tag/filter control | Selectable, removable |
+| **[Avatar](docs/DataDisplay/@Readme.md#-avatar)** | User profile picture | Initials fallback, status indicator |
 
 ### Media Controls
 
@@ -275,7 +276,11 @@ Unlabeled input controls that provide core functionality:
 
 ### Layout Controls
 
-- Badge, Card, Chip, Divider, GroupBoxExpander
+- DockPanelPro, GridLines, GroupBoxExpander
+
+### Data Display Controls
+
+- Avatar, AvatarGroup, Badge, Card, Chip, Divider
 
 ### Progress Controls
 

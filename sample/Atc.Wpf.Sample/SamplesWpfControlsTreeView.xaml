@@ -98,31 +98,34 @@
             SamplePath="ColorEditing.WellKnownColorPickerView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Data Display">
+        <sample:SampleTreeViewItem
+            Header="Avatar"
+            IsExpanded="True"
+            SamplePath="DataDisplay.AvatarView" />
+        <sample:SampleTreeViewItem
+            Header="Badge"
+            IsExpanded="True"
+            SamplePath="DataDisplay.BadgeView" />
+        <sample:SampleTreeViewItem
+            Header="Card"
+            IsExpanded="True"
+            SamplePath="DataDisplay.CardView" />
+        <sample:SampleTreeViewItem
+            Header="Chip"
+            IsExpanded="True"
+            SamplePath="DataDisplay.ChipView" />
+        <sample:SampleTreeViewItem
+            Header="Divider"
+            IsExpanded="True"
+            SamplePath="DataDisplay.DividerView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Layouts">
         <sample:SampleTreeViewItem
             Header="AutoGrid"
             IsExpanded="True"
             SamplePath="Layouts.AutoGridView" />
-        <sample:SampleTreeViewItem
-            Header="Avatar"
-            IsExpanded="True"
-            SamplePath="Layouts.AvatarView" />
-        <sample:SampleTreeViewItem
-            Header="Badge"
-            IsExpanded="True"
-            SamplePath="Layouts.BadgeView" />
-        <sample:SampleTreeViewItem
-            Header="Card"
-            IsExpanded="True"
-            SamplePath="Layouts.CardView" />
-        <sample:SampleTreeViewItem
-            Header="Chip"
-            IsExpanded="True"
-            SamplePath="Layouts.ChipView" />
-        <sample:SampleTreeViewItem
-            Header="Divider"
-            IsExpanded="True"
-            SamplePath="Layouts.DividerView" />
         <sample:SampleTreeViewItem
             Header="DockPanelPro"
             IsExpanded="True"
