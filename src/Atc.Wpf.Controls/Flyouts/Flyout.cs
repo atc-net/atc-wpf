@@ -248,6 +248,13 @@ public sealed partial class Flyout : ContentControl
     private IEasingFunction? easingFunction;
 
     /// <summary>
+    /// Gets or sets whether focus is trapped within the flyout when open.
+    /// When enabled, Tab/Shift+Tab cycles through focusable elements within the flyout.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool isFocusTrapEnabled;
+
+    /// <summary>
     /// Occurs before the flyout opens. Can be cancelled.
     /// </summary>
     public event EventHandler<FlyoutOpeningEventArgs> Opening
@@ -399,6 +406,96 @@ public sealed partial class Flyout : ContentControl
         {
             CloseWithLightDismiss();
             e.Handled = true;
+        }
+    }
+
+    /// <inheritdoc />
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        base.OnPreviewKeyDown(e);
+
+        if (e.Handled || !IsOpen || !IsFocusTrapEnabled)
+        {
+            return;
+        }
+
+        if (e.Key == Key.Tab)
+        {
+            HandleTabNavigation(e);
+        }
+    }
+
+    private void HandleTabNavigation(KeyEventArgs e)
+    {
+        if (flyoutPanel is null)
+        {
+            return;
+        }
+
+        var focusableElements = GetFocusableElements(flyoutPanel);
+        if (focusableElements.Count == 0)
+        {
+            return;
+        }
+
+        var currentFocused = Keyboard.FocusedElement as UIElement;
+        var isShiftPressed = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
+
+        var currentIndex = currentFocused is not null
+            ? focusableElements.IndexOf(currentFocused)
+            : -1;
+
+        int nextIndex;
+        if (isShiftPressed)
+        {
+            // Shift+Tab: Move backwards
+            nextIndex = currentIndex <= 0
+                ? focusableElements.Count - 1
+                : currentIndex - 1;
+        }
+        else
+        {
+            // Tab: Move forwards
+            nextIndex = currentIndex >= focusableElements.Count - 1 || currentIndex < 0
+                ? 0
+                : currentIndex + 1;
+        }
+
+        if (nextIndex >= 0 && nextIndex < focusableElements.Count)
+        {
+            _ = focusableElements[nextIndex].Focus();
+            e.Handled = true;
+        }
+    }
+
+    private static List<UIElement> GetFocusableElements(DependencyObject parent)
+    {
+        var focusableElements = new List<UIElement>();
+        GetFocusableElementsRecursive(parent, focusableElements);
+        return focusableElements;
+    }
+
+    private static void GetFocusableElementsRecursive(
+        DependencyObject parent,
+        List<UIElement> focusableElements)
+    {
+        var childCount = VisualTreeHelper.GetChildrenCount(parent);
+        for (var i = 0; i < childCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+
+            if (child is UIElement element &&
+                element.Visibility == Visibility.Visible &&
+                element.IsEnabled &&
+                element.Focusable &&
+                KeyboardNavigation.GetIsTabStop(element))
+            {
+                focusableElements.Add(element);
+            }
+
+            GetFocusableElementsRecursive(child, focusableElements);
         }
     }
 

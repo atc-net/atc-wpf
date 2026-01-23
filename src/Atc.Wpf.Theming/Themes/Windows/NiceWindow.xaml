@@ -169,6 +169,17 @@
                             Grid.ColumnSpan="3"
                             Panel.ZIndex="5"
                             FocusVisualStyle="{x:Null}" />
+
+                        <!--  FlyoutHost container for managing flyouts  -->
+                        <Grid
+                            x:Name="PART_FlyoutHost"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            Panel.ZIndex="6"
+                            FocusVisualStyle="{x:Null}"
+                            Visibility="Collapsed" />
                     </helpers:GridEx>
 
                     <ResizeGrip
@@ -191,6 +202,8 @@
                 <Setter TargetName="PART_NiceInactiveDialogsContainer" Property="Grid.RowSpan" Value="1" />
                 <Setter TargetName="PART_OverlayBox" Property="Grid.Row" Value="1" />
                 <Setter TargetName="PART_OverlayBox" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="PART_FlyoutHost" Property="Grid.Row" Value="1" />
+                <Setter TargetName="PART_FlyoutHost" Property="Grid.RowSpan" Value="1" />
             </Trigger>
             <Trigger Property="WindowStyle" Value="None">
                 <Setter TargetName="PART_WindowTitleThumb" Property="Grid.RowSpan" Value="2" />

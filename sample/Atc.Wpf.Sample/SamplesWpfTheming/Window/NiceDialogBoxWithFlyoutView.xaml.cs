@@ -12,7 +12,7 @@ public partial class NiceDialogBoxWithFlyoutView
         RoutedEventArgs e)
     {
         var dialog = CreateDialogWithSidePanel();
-        dialog.Show();
+        dialog.ShowDialog();
     }
 
     private void OnOpenSettingsDialogClick(
@@ -20,7 +20,7 @@ public partial class NiceDialogBoxWithFlyoutView
         RoutedEventArgs e)
     {
         var dialog = CreateSettingsDialog();
-        dialog.Show();
+        dialog.ShowDialog();
     }
 
     private void OnOpenWizardDialogClick(
@@ -28,7 +28,7 @@ public partial class NiceDialogBoxWithFlyoutView
         RoutedEventArgs e)
     {
         var dialog = CreateWizardDialog();
-        dialog.Show();
+        dialog.ShowDialog();
     }
 
     private void OnOpenDialogWithCenterFlyoutClick(
@@ -36,7 +36,7 @@ public partial class NiceDialogBoxWithFlyoutView
         RoutedEventArgs e)
     {
         var dialog = CreateDialogWithCenterFlyout();
-        dialog.Show();
+        dialog.ShowDialog();
     }
 
     private static NiceDialogBox CreateDialogWithSidePanel()

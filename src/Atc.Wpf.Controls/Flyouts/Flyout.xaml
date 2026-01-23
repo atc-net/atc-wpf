@@ -159,6 +159,7 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
         <Setter Property="OverlayBrush" Value="#000000" />
+        <Setter Property="Panel.ZIndex" Value="1000" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -410,5 +411,146 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!--  FlyoutPresenter style  -->
+    <Style x:Key="AtcApps.Styles.FlyoutPresenter" TargetType="{x:Type flyouts:FlyoutPresenter}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HeaderBackground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="HeaderForeground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="FooterBackground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="SeparatorBrush" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flyouts:FlyoutPresenter}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--  Header  -->
+                            <ContentPresenter
+                                x:Name="PART_Header"
+                                Grid.Row="0"
+                                Margin="{TemplateBinding HeaderPadding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Header}"
+                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                TextElement.FontSize="16"
+                                TextElement.FontWeight="SemiBold"
+                                TextElement.Foreground="{TemplateBinding HeaderForeground}" />
+
+                            <!--  Header Separator  -->
+                            <Rectangle
+                                x:Name="HeaderSeparator"
+                                Grid.Row="1"
+                                Height="{TemplateBinding SeparatorThickness}"
+                                Fill="{TemplateBinding SeparatorBrush}" />
+
+                            <!--  Content  -->
+                            <ScrollViewer
+                                x:Name="PART_ScrollViewer"
+                                Grid.Row="2"
+                                HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}">
+                                <ContentPresenter
+                                    x:Name="PART_Content"
+                                    Margin="{TemplateBinding ContentPadding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </ScrollViewer>
+
+                            <!--  Footer Separator  -->
+                            <Rectangle
+                                x:Name="FooterSeparator"
+                                Grid.Row="3"
+                                Height="{TemplateBinding SeparatorThickness}"
+                                Fill="{TemplateBinding SeparatorBrush}" />
+
+                            <!--  Footer  -->
+                            <Border
+                                x:Name="FooterBorder"
+                                Grid.Row="4"
+                                Background="{TemplateBinding FooterBackground}">
+                                <ContentPresenter
+                                    x:Name="PART_Footer"
+                                    Margin="{TemplateBinding FooterPadding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Footer}"
+                                    ContentTemplate="{TemplateBinding FooterTemplate}" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!--  Hide header when not visible  -->
+                        <Trigger Property="ShowHeader" Value="False">
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="HeaderSeparator" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Hide header when Header is null  -->
+                        <Trigger Property="Header" Value="{x:Null}">
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="HeaderSeparator" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Hide header separator when not visible  -->
+                        <Trigger Property="ShowHeaderSeparator" Value="False">
+                            <Setter TargetName="HeaderSeparator" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Hide footer when not visible  -->
+                        <Trigger Property="ShowFooter" Value="False">
+                            <Setter TargetName="FooterBorder" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="FooterSeparator" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Hide footer when Footer is null  -->
+                        <Trigger Property="Footer" Value="{x:Null}">
+                            <Setter TargetName="FooterBorder" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="FooterSeparator" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Hide footer separator when not visible  -->
+                        <Trigger Property="ShowFooterSeparator" Value="False">
+                            <Setter TargetName="FooterSeparator" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Disable scrolling when IsContentScrollable is false  -->
+                        <Trigger Property="IsContentScrollable" Value="False">
+                            <Setter TargetName="PART_ScrollViewer" Property="VerticalScrollBarVisibility" Value="Disabled" />
+                            <Setter TargetName="PART_ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Implicit styles  -->
+    <Style BasedOn="{StaticResource AtcApps.Styles.Flyout}" TargetType="{x:Type flyouts:Flyout}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.FlyoutPresenter}" TargetType="{x:Type flyouts:FlyoutPresenter}" />
 
 </ResourceDictionary>
