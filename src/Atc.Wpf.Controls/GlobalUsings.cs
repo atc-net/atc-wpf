@@ -1,3 +1,5 @@
+global using System.Collections.ObjectModel;
+global using System.Collections.Specialized;
 global using System.ComponentModel;
 global using System.ComponentModel.Design.Serialization;
 global using System.Diagnostics;

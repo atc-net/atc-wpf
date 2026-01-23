@@ -104,6 +104,10 @@
             IsExpanded="True"
             SamplePath="Layouts.AutoGridView" />
         <sample:SampleTreeViewItem
+            Header="Avatar"
+            IsExpanded="True"
+            SamplePath="Layouts.AvatarView" />
+        <sample:SampleTreeViewItem
             Header="Badge"
             IsExpanded="True"
             SamplePath="Layouts.BadgeView" />

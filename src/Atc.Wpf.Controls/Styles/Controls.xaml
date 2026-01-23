@@ -11,6 +11,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/RangeSlider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/Rating.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/ToggleSwitch.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Avatar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Badge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Card.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/Chip.xaml" />
@@ -30,6 +31,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type inputs:ToggleSwitch}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.RangeSlider}" TargetType="{x:Type inputs:RangeSlider}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Rating}" TargetType="{x:Type inputs:Rating}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Avatar}" TargetType="{x:Type layouts:Avatar}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.AvatarGroup}" TargetType="{x:Type layouts:AvatarGroup}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Badge}" TargetType="{x:Type layouts:Badge}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type layouts:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type layouts:Chip}" />

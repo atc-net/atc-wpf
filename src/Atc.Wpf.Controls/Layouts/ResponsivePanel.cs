@@ -8,8 +8,6 @@ namespace Atc.Wpf.Controls.Layouts;
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Complex layout algorithm.")]
 public class ResponsivePanel : Panel
 {
-    #region Breakpoint Constants
-
     /// <summary>
     /// Maximum width for extra-small breakpoint (default: 576px).
     /// </summary>
@@ -34,10 +32,6 @@ public class ResponsivePanel : Panel
     /// Default number of columns in a 12-column grid.
     /// </summary>
     public static readonly int MaxColumns = 12;
-
-    #endregion
-
-    #region Dependency Properties
 
     /// <summary>
     /// Identifies the Gap dependency property.
@@ -146,10 +140,6 @@ public class ResponsivePanel : Panel
             6,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
         IsColumnCountValid);
-
-    #endregion
-
-    #region Attached Properties
 
     /// <summary>
     /// Identifies the SpanXs attached property.
@@ -288,10 +278,6 @@ public class ResponsivePanel : Panel
             int.MaxValue,
             FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
 
-    #endregion
-
-    #region CLR Properties
-
     /// <summary>
     /// Gets or sets the uniform gap between items (both row and column).
     /// </summary>
@@ -391,10 +377,6 @@ public class ResponsivePanel : Panel
         get => (int)GetValue(ColumnsXlProperty);
         set => SetValue(ColumnsXlProperty, value);
     }
-
-    #endregion
-
-    #region Attached Property Accessors
 
     /// <summary>
     /// Gets the column span at extra-small breakpoint.
@@ -612,10 +594,6 @@ public class ResponsivePanel : Panel
         element.SetValue(OrderXlProperty, value);
     }
 
-    #endregion
-
-    #region Validation Callbacks
-
     private static bool IsGapValid(object value)
         => value is double gap && (double.IsNaN(gap) || gap >= 0);
 
@@ -627,10 +605,6 @@ public class ResponsivePanel : Panel
 
     private static bool IsSpanValid(object value)
         => value is int span && span >= 0 && span <= MaxColumns;
-
-    #endregion
-
-    #region Helper Methods
 
     /// <summary>
     /// Gets the current breakpoint based on the available width.
@@ -774,7 +748,8 @@ public class ResponsivePanel : Panel
         return true;
     }
 
-    private List<(UIElement Element, int Order, int Index)> GetOrderedVisibleChildren(ResponsiveBreakpoint breakpoint)
+    private List<(UIElement Element, int Order, int Index)> GetOrderedVisibleChildren(
+        ResponsiveBreakpoint breakpoint)
     {
         var result = new List<(UIElement Element, int Order, int Index)>();
         var children = InternalChildren;
@@ -798,10 +773,6 @@ public class ResponsivePanel : Panel
 
         return result;
     }
-
-    #endregion
-
-    #region Layout Overrides
 
     /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
@@ -926,7 +897,7 @@ public class ResponsivePanel : Panel
             double rowHeight = 0;
 
             // First pass: calculate row height
-            foreach (var (element, span) in row)
+            foreach (var (element, _) in row)
             {
                 rowHeight = System.Math.Max(rowHeight, element.DesiredSize.Height);
             }
@@ -957,6 +928,5 @@ public class ResponsivePanel : Panel
 
         return finalSize;
     }
-
-    #endregion
 }
+
