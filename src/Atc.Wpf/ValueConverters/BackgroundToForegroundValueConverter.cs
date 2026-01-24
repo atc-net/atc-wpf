@@ -87,7 +87,14 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         Type[] targetTypes,
         object? parameter,
         CultureInfo culture)
-        => targetTypes
-            .Select(t => DependencyProperty.UnsetValue)
-            .ToArray();
+    {
+        if (targetTypes is null || targetTypes.Length == 0)
+        {
+            return [];
+        }
+
+        var result = new object[targetTypes.Length];
+        Array.Fill(result, DependencyProperty.UnsetValue);
+        return result;
+    }
 }

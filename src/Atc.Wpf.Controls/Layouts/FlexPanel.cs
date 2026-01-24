@@ -576,8 +576,13 @@ public class FlexPanel : Panel
         if (isReversed)
         {
             Array.Reverse(childSizes);
-            lineChildren = lineChildren.ToList();
-            lineChildren.Reverse();
+            var reversed = new List<UIElement>(lineChildren.Count);
+            for (var i = lineChildren.Count - 1; i >= 0; i--)
+            {
+                reversed.Add(lineChildren[i]);
+            }
+
+            lineChildren = reversed;
         }
 
         // Arrange children

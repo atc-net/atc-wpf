@@ -37,13 +37,20 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         window.Closing += OnClosing;
         window.Closed += OnClosed;
 
-        Application.Current?.BeginInvoke(app =>
+        try
         {
-            if (app is not null)
+            Application.Current?.BeginInvoke(app =>
             {
-                app.SessionEnding += CurrentApplicationSessionEnding;
-            }
-        });
+                if (app is not null)
+                {
+                    app.SessionEnding += CurrentApplicationSessionEnding;
+                }
+            });
+        }
+        catch (InvalidOperationException)
+        {
+            // Application may be shutting down
+        }
     }
 
     private void OnClosing(
@@ -94,13 +101,20 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         window.SourceInitialized -= OnSourceInitialized;
 
         // This operation must be thread safe
-        Application.Current?.BeginInvoke(app =>
+        try
         {
-            if (app is not null)
+            Application.Current?.BeginInvoke(app =>
             {
-                app.SessionEnding -= CurrentApplicationSessionEnding;
-            }
-        });
+                if (app is not null)
+                {
+                    app.SessionEnding -= CurrentApplicationSessionEnding;
+                }
+            });
+        }
+        catch (InvalidOperationException)
+        {
+            // Application may be shutting down
+        }
     }
 
     private void LoadWindowState()

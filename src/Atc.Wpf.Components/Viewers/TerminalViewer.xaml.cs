@@ -76,8 +76,22 @@ public sealed partial class TerminalViewer : IDisposable
 
     public void Dispose()
     {
+        cts.Cancel();
+
+        try
+        {
+            queueProcessingTask?.Wait(TimeSpan.FromSeconds(1));
+        }
+        catch (AggregateException)
+        {
+            // Expected when task is cancelled
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when task is cancelled
+        }
+
         cts.Dispose();
-        queueProcessingTask?.Dispose();
     }
 
     private bool CanExecuteHasItems()

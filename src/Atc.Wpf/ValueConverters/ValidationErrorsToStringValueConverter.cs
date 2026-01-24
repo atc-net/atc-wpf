@@ -25,7 +25,7 @@ public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IV
         object? parameter,
         CultureInfo culture)
         => value is ICollection<ValidationError> errors
-            ? string.Join('\n', (from e in errors select e.ErrorContent as string).ToArray())
+            ? string.Join('\n', errors.Select(e => e.ErrorContent as string))
             : string.Empty;
 
     /// <inheritdoc />

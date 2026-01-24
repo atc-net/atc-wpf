@@ -51,20 +51,24 @@ public sealed class ObservableDictionary<TKey, TValue>
 
     public bool Remove(TKey key)
     {
-        var remove = ThisAsCollection()
-            .Where(pair => Equals(
-                key,
-                pair.Key))
-            .ToList();
-        foreach (var pair in remove.Where(pair => ThisAsCollection().Remove(pair)))
+        var pair = ThisAsCollection().FirstOrDefault(p => Equals(key, p.Key));
+
+        if (pair is null || (pair.Key is null && !typeof(TKey).IsValueType))
         {
-            OnCollectionChanged(
-                new NotifyCollectionChangedEventArgs(
-                    NotifyCollectionChangedAction.Remove,
-                    pair));
+            return false;
         }
 
-        return remove.Count > 0;
+        if (!ThisAsCollection().Remove(pair))
+        {
+            return false;
+        }
+
+        OnCollectionChanged(
+            new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Remove,
+                pair));
+
+        return true;
     }
 
     public bool TryGetValue(
@@ -204,18 +208,17 @@ public sealed class ObservableDictionary<TKey, TValue>
     }
 
     public new IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        => (from i in ThisAsCollection()
-            select new KeyValuePair<TKey, TValue>(
-                i.Key,
-                i.Value))
-            .ToList()
+        => ThisAsCollection()
+            .Select(i => new KeyValuePair<TKey, TValue>(i.Key, i.Value))
             .GetEnumerator();
 
-    private List<TKey> GetKeys()
-        => (from i in ThisAsCollection() select i.Key)
-            .ToList();
+    private ICollection<TKey> GetKeys()
+        => ThisAsCollection()
+            .Select(i => i.Key)
+            .ToArray();
 
-    private List<TValue> GetValues()
-        => (from i in ThisAsCollection() select i.Value)
-            .ToList();
+    private ICollection<TValue> GetValues()
+        => ThisAsCollection()
+            .Select(i => i.Value)
+            .ToArray();
 }

@@ -31,8 +31,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return false;
+                }
+
                 var result = false;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var settings = DialogBoxSettings.Create(DialogBoxType.Ok);
@@ -54,8 +59,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return false;
+                }
+
                 var result = false;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var settings = new DialogBoxSettings(
@@ -80,8 +90,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return false;
+                }
+
                 var result = false;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var settings = new DialogBoxSettings(
@@ -106,8 +121,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return false;
+                }
+
                 var result = false;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var dialog = new QuestionDialogBox(owner, title, message);
@@ -125,8 +145,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return false;
+                }
+
                 var result = false;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
@@ -148,8 +173,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return null;
+                }
+
                 string? result = null;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var labelTextBox = new LabelTextBox
@@ -176,8 +206,13 @@ public class DialogService : IDialogService
         => Task.Run(
             () =>
             {
+                if (Application.Current?.Dispatcher is not { HasShutdownStarted: false } dispatcher)
+                {
+                    return null;
+                }
+
                 Color? result = null;
-                Application.Current.Dispatcher.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     var owner = GetOwnerWindow();
                     var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
