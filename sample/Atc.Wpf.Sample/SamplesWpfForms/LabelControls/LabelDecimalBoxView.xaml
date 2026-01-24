@@ -36,6 +36,23 @@
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
 
+                        <TextBlock Text="DecimalPlaces examples:" FontWeight="Bold" Margin="0,10,0,0" />
+
+                        <atc:LabelDecimalBox
+                            DecimalPlaces="0"
+                            LabelText="0 Decimals"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelDecimalBox
+                            DecimalPlaces="2"
+                            LabelText="2 Decimals"
+                            Orientation="Horizontal" />
+
+                        <atc:LabelDecimalBox
+                            DecimalPlaces="4"
+                            LabelText="4 Decimals"
+                            Orientation="Horizontal" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 

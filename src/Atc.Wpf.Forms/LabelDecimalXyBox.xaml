@@ -24,6 +24,7 @@
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
 
         <inputs:DecimalXyBox
+            DecimalPlaces="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalXyBox}}, Path=DecimalPlaces}"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalXyBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalXyBox}}, Path=Maximum}"
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelDecimalXyBox}}, Path=Minimum}"
