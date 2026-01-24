@@ -29,6 +29,14 @@
 
                         <atc:DecimalBox HideUpDownButtons="True" />
 
+                        <TextBlock Text="DecimalPlaces examples:" FontWeight="Bold" Margin="0,10,0,0" />
+
+                        <atc:DecimalBox DecimalPlaces="0" />
+
+                        <atc:DecimalBox DecimalPlaces="2" />
+
+                        <atc:DecimalBox DecimalPlaces="4" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"

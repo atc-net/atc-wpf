@@ -13,6 +13,7 @@
 
         <local:DecimalBox
             Grid.Column="0"
+            DecimalPlaces="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=DecimalPlaces}"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
@@ -23,6 +24,7 @@
 
         <local:DecimalBox
             Grid.Column="2"
+            DecimalPlaces="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=DecimalPlaces}"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DecimalXyBox}}, Path=Minimum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"

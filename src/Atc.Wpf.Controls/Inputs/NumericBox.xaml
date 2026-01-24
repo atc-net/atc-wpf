@@ -385,7 +385,7 @@
         <Setter Property="Minimum" Value="{Binding Source={x:Static system:Decimal.MinValue}}" />
         <Setter Property="Maximum" Value="{Binding Source={x:Static system:Decimal.MaxValue}}" />
         <Setter Property="NumericInputMode" Value="Decimal" />
-        <Setter Property="StringFormat" Value="N3" />
+        <Setter Property="StringFormat" Value="N2" />
         <Setter Property="Value" Value="0" />
     </Style>
 

@@ -17,6 +17,11 @@ public partial class DecimalXyBox
     private bool hideUpDownButtons;
 
     [DependencyProperty(
+        DefaultValue = 2,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    private int decimalPlaces;
+
+    [DependencyProperty(
         DefaultValue = PropertyDefaultValueConstants.MinValue,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private decimal minimum;
