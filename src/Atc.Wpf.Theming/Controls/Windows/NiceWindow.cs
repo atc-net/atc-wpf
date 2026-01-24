@@ -243,7 +243,9 @@ public partial class NiceWindow : WindowChromeWindow
 
         if (!CanUseOverlayFadingStoryboard(sb, out var animation))
         {
-            await ShowOverlayAsync().ConfigureAwait(true);
+            // Direct visibility set without animation when storyboard is not available
+            OverlayBox.SetCurrentValue(VisibilityProperty, Visibility.Visible);
+            OverlayBox.SetCurrentValue(OpacityProperty, OverlayOpacity);
             return;
         }
 
@@ -269,7 +271,7 @@ public partial class NiceWindow : WindowChromeWindow
 
         OverlayBox.BeginStoryboard(sb);
 
-        await tcs.Task.ConfigureAwait(false);
+        await tcs.Task.ConfigureAwait(true);
     }
 
     /// <summary>
@@ -295,7 +297,9 @@ public partial class NiceWindow : WindowChromeWindow
 
         if (!CanUseOverlayFadingStoryboard(sb, out var animation))
         {
-            await ShowOverlayAsync().ConfigureAwait(true);
+            // Direct visibility set without animation when storyboard is not available
+            OverlayBox.SetCurrentValue(OpacityProperty, 0d);
+            OverlayBox.SetCurrentValue(VisibilityProperty, Visibility.Hidden);
             return;
         }
 

@@ -91,7 +91,12 @@ public static class SolidColorBrushHelper
 
         EnsureBrushNamesForCulture(culture);
 
-        return BrushNames[GetBrushKeyFromCulture(culture)]
+        if (!BrushNames.TryGetValue(GetBrushKeyFromCulture(culture), out var brushDict))
+        {
+            return default;
+        }
+
+        return brushDict
             .FirstOrDefault(x => string.Equals(
                 x.Value,
                 value,

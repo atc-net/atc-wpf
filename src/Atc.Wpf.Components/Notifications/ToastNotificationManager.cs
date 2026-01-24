@@ -3,7 +3,7 @@ namespace Atc.Wpf.Components.Notifications;
 public sealed class ToastNotificationManager : IToastNotificationManager
 {
     private readonly Dispatcher dispatcher;
-    private static readonly List<ToastNotificationArea> Areas = [];
+    private static readonly ConcurrentBag<ToastNotificationArea> Areas = [];
     private static ToastNotificationsOverlayWindow? window;
 
     public ToastNotificationManager(Dispatcher? dispatcher = null)

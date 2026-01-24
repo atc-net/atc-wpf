@@ -823,6 +823,7 @@ public sealed partial class Flyout : ContentControl
         }
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Animation logic is clearer when kept together")]
     private void AnimateOpenWithScale(
         TimeSpan duration,
         IEasingFunction easing)
@@ -843,9 +844,17 @@ public sealed partial class Flyout : ContentControl
             }
         }
 
+        if (flyoutPanel is null)
+        {
+            isAnimating = false;
+            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            _ = Focus();
+            return;
+        }
+
         scaleTransform.ScaleX = 0.9;
         scaleTransform.ScaleY = 0.9;
-        flyoutPanel!.Opacity = 0;
+        flyoutPanel.Opacity = 0;
 
         var scaleXAnimation = new DoubleAnimation
         {

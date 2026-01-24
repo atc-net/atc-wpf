@@ -33,13 +33,13 @@ public sealed class DebounceDispatcher
     /// the  Action you pass to this method to debounce the event.
     /// </summary>
     /// <param name="interval">Timeout in Milliseconds.</param>
-    /// <param name="action">Action<object> to fire when debounce event fires.</object></param>
+    /// <param name="action">Action&lt;object?&gt; to fire when debounce event fires.</param>
     /// <param name="param">optional parameter.</param>
     /// <param name="priority">optional priority for the dispatcher.</param>
     /// <param name="dispatcher">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>
     public void Debounce(
         int interval,
-        Action<object> action,
+        Action<object?> action,
         object? param = null,
         DispatcherPriority priority = DispatcherPriority.ApplicationIdle,
         Dispatcher? dispatcher = null)
@@ -65,7 +65,7 @@ public sealed class DebounceDispatcher
 
                 timer?.Stop();
                 timer = null;
-                action.Invoke(param!);
+                action.Invoke(param);
             },
             dispatcher);
 
@@ -80,13 +80,13 @@ public sealed class DebounceDispatcher
     /// Use Throttle where you need to ensure that events fire at given intervals.
     /// </summary>
     /// <param name="interval">Timeout in Milliseconds.</param>
-    /// <param name="action">Action<object> to fire when debounce event fires.</object></param>
+    /// <param name="action">Action&lt;object?&gt; to fire when debounce event fires.</param>
     /// <param name="param">optional parameter.</param>
     /// <param name="priority">optional priority for the dispatcher.</param>
     /// <param name="dispatcher">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>
     public void Throttle(
         int interval,
-        Action<object> action,
+        Action<object?> action,
         object? param = null,
         DispatcherPriority priority = DispatcherPriority.ApplicationIdle,
         Dispatcher? dispatcher = null)
@@ -118,7 +118,7 @@ public sealed class DebounceDispatcher
 
                 timer?.Stop();
                 timer = null;
-                action.Invoke(param!);
+                action.Invoke(param);
             },
             dispatcher);
 

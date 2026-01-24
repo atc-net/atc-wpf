@@ -73,7 +73,8 @@ public partial class FlyoutHost : ItemsControl
             return false;
         }
 
-        // Subscribe to closing event
+        // Subscribe to closing event - unsubscribe first to prevent duplicate handlers
+        flyout.Closed -= OnFlyoutClosed;
         flyout.Closed += OnFlyoutClosed;
 
         openFlyouts.Push(flyout);
