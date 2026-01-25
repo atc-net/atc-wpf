@@ -140,4 +140,11 @@
             SamplePath="LabelControls.LabelInputFormPanelView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="PropertyEditing">
+        <sample:SampleTreeViewItem
+            Header="PropertyGrid"
+            IsExpanded="True"
+            SamplePath="PropertyEditing.PropertyGridView" />
+    </TreeViewItem>
+
 </TreeView>
