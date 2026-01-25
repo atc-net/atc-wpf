@@ -35,6 +35,7 @@ public static class AssemblyHelper
                     !name.StartsWith("DirectWriteForwarder", StringComparison.Ordinal) &&
                     !name.StartsWith("Fluent", StringComparison.Ordinal) &&
                     !name.StartsWith("ControlzEx", StringComparison.Ordinal) &&
+                    !name.StartsWith("AtcApps", StringComparison.Ordinal) &&
                     !name.StartsWith("MahApps", StringComparison.Ordinal) &&
                     !name.StartsWith("WindowsFormsIntegration", StringComparison.Ordinal) &&
                     !name.StartsWith("vshost", StringComparison.Ordinal)
