@@ -1,0 +1,51 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Inputs.ThicknessBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Controls.Inputs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <atc:GridEx Columns="*,5,*,5,*,5,*">
+
+        <local:IntegerBox
+            Grid.Column="0"
+            HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=HideUpDownButtons}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Maximum}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Minimum}"
+            PrefixText="L:"
+            ValueChanged="OnValueLeftChanged"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Left, FallbackValue=0}" />
+
+        <local:IntegerBox
+            Grid.Column="2"
+            HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=HideUpDownButtons}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Maximum}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Minimum}"
+            PrefixText="T:"
+            ValueChanged="OnValueTopChanged"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Top, FallbackValue=0}" />
+
+        <local:IntegerBox
+            Grid.Column="4"
+            HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=HideUpDownButtons}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Maximum}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Minimum}"
+            PrefixText="R:"
+            ValueChanged="OnValueRightChanged"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Right, FallbackValue=0}" />
+
+        <local:IntegerBox
+            Grid.Column="6"
+            HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=HideUpDownButtons}"
+            Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Maximum}"
+            Minimum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Minimum}"
+            PrefixText="B:"
+            ValueChanged="OnValueBottomChanged"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ThicknessBox}}, Path=Bottom, FallbackValue=0}" />
+
+    </atc:GridEx>
+
+</UserControl>
