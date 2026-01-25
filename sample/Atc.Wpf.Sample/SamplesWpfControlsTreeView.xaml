@@ -35,6 +35,10 @@
             IsExpanded="True"
             SamplePath="Inputs.PixelSizeBoxView" />
         <sample:SampleTreeViewItem
+            Header="ThicknessBox"
+            IsExpanded="True"
+            SamplePath="Inputs.ThicknessBoxView" />
+        <sample:SampleTreeViewItem
             Header="RangeSlider"
             IsExpanded="True"
             SamplePath="Inputs.RangeSliderView" />

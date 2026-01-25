@@ -67,7 +67,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="Height" Value="26" />
         <Setter Property="MinWidth" Value="62" />
         <Setter Property="Padding" Value="4" />
@@ -116,7 +117,7 @@
                                     Grid.Column="1"
                                     Margin="0,-1,0,0"
                                     Padding="{TemplateBinding Padding}"
-                                    HorizontalAlignment="Stretch"
+                                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     atcTheming:ControlsHelper.DisabledVisualElementVisibility="Collapsed"
