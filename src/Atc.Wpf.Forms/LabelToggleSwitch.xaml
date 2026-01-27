@@ -16,7 +16,8 @@
         LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=LabelText, FallbackValue=ToggleSwitch}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
-        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
+        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}"
+        LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}">
 
         <inputs:ToggleSwitch
             ContentDirection="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=ContentDirection}"

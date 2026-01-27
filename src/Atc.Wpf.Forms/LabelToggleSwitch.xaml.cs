@@ -23,9 +23,39 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
 
     public event EventHandler<ValueChangedEventArgs<bool>>? IsOnChanged;
 
+    static LabelToggleSwitch()
+    {
+        LabelPositionProperty.OverrideMetadata(
+            typeof(LabelToggleSwitch),
+            new FrameworkPropertyMetadata(
+                LabelPosition.Left,
+                OnLabelPositionChanged));
+    }
+
     public LabelToggleSwitch()
     {
         InitializeComponent();
+    }
+
+    private static void OnLabelPositionChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelToggleSwitch)d;
+
+        control.SetCurrentValue(LabelWidthSizeDefinitionProperty, SizeDefinitionType.Pixel);
+        if (e.NewValue is LabelPosition.Right)
+        {
+            control.SetCurrentValue(LabelWidthNumberProperty, 50);
+            control.SetCurrentValue(OffTextProperty, string.Empty);
+            control.SetCurrentValue(OnTextProperty, string.Empty);
+        }
+        else
+        {
+            control.SetCurrentValue(LabelWidthNumberProperty, 120);
+            control.SetCurrentValue(OffTextProperty, "Off");
+            control.SetCurrentValue(OnTextProperty, "On");
+        }
     }
 
     private static void OnIsOnChanged(

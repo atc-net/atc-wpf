@@ -10,9 +10,30 @@ public partial class LabelCheckBox : ILabelCheckBox
 
     public event EventHandler<ValueChangedEventArgs<bool>>? IsCheckedChanged;
 
+    static LabelCheckBox()
+    {
+        LabelPositionProperty.OverrideMetadata(
+            typeof(LabelCheckBox),
+            new FrameworkPropertyMetadata(
+                LabelPosition.Left,
+                OnLabelPositionChanged));
+    }
+
     public LabelCheckBox()
     {
         InitializeComponent();
+    }
+
+    private static void OnLabelPositionChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (LabelCheckBox)d;
+
+        control.SetCurrentValue(LabelWidthSizeDefinitionProperty, SizeDefinitionType.Pixel);
+        control.SetCurrentValue(
+            LabelWidthNumberProperty,
+            e.NewValue is LabelPosition.Right ? 25 : 120);
     }
 
     private static void OnIsCheckedChanged(

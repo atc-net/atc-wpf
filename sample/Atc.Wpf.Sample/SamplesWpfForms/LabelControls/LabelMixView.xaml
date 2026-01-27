@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     d:DesignHeight="450"
@@ -15,7 +16,18 @@
         <GroupBox
             Margin="0,0,0,10"
             Padding="10"
-            Header="Features" />
+            Header="Features">
+
+            <atc:LabelToggleSwitch
+                x:Name="UseLabelPosition"
+                HideAreas="All"
+                LabelText="Label Position"
+                LabelWidthNumber="160"
+                LabelWidthSizeDefinition="Pixel"
+                OffText="Left"
+                OnText="Right" />
+
+        </GroupBox>
 
         <GroupBox Header="Usage">
             <ScrollViewer>
@@ -24,11 +36,13 @@
 
                         <atc:LabelCheckBox
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyCheckBox"
                             Orientation="Horizontal" />
 
                         <atc:LabelToggleSwitch
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyToggleSwitch"
                             Orientation="Horizontal" />
 
@@ -36,6 +50,7 @@
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyComboBox"
                             Orientation="Horizontal"
                             SelectedKey="None" />
@@ -43,12 +58,14 @@
                         <atc:LabelTextBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyTextBox"
                             Orientation="Horizontal"
                             Text="Hello" />
 
                         <atc:LabelTextInfo
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyTextInfo"
                             Orientation="Horizontal"
                             Text="Hello" />
@@ -56,6 +73,7 @@
                         <atc:LabelTextBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyTextBox"
                             Orientation="Horizontal"
                             ShowClearTextButton="True"
@@ -63,12 +81,14 @@
 
                         <atc:LabelWellKnownColorSelector
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyColorSelector"
                             Orientation="Horizontal"
                             SelectedKey="Blue" />
 
                         <atc:LabelContent
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyContent-TextBox"
                             Orientation="Horizontal">
                             <TextBox />
@@ -76,6 +96,7 @@
 
                         <atc:LabelDecimalBox
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyDecimalBox"
                             Orientation="Horizontal"
                             PrefixText="P123"
@@ -83,6 +104,7 @@
 
                         <atc:LabelIntegerBox
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyIntegerBox"
                             Maximum="10"
                             Minimum="-10"
@@ -91,11 +113,14 @@
                             SuffixText="S123"
                             Value="3" />
 
-                        <atc:LabelSlider LabelText="MySlider" Orientation="Horizontal" />
-
+                        <atc:LabelSlider
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
+                            LabelText="MySlider"
+                            Orientation="Horizontal" />
 
                         <atc:LabelEndpointBox
                             IsMandatory="True"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyEndpointBox"
                             NetworkProtocol="OpcTcp"
                             NetworkValidation="IPv4Address"
@@ -108,11 +133,13 @@
 
                         <atc:LabelCheckBox
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyCheckBox"
                             Orientation="Vertical" />
 
                         <atc:LabelToggleSwitch
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyToggleSwitch"
                             Orientation="Vertical" />
 
@@ -120,6 +147,7 @@
                             InformationText="This is a help text.."
                             IsMandatory="True"
                             Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True, IncludeDefault=True}}"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyComboBox"
                             Orientation="Vertical"
                             SelectedKey="None" />
@@ -127,12 +155,14 @@
                         <atc:LabelTextBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyTextBox"
                             Orientation="Vertical"
                             Text="Hello" />
 
                         <atc:LabelTextInfo
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyTextInfo"
                             Orientation="Vertical"
                             Text="Hello" />
@@ -140,6 +170,7 @@
                         <atc:LabelTextBox
                             InformationText="This is a help text.."
                             IsMandatory="True"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyTextBox"
                             Orientation="Vertical"
                             ShowClearTextButton="True"
@@ -147,11 +178,13 @@
 
                         <atc:LabelWellKnownColorSelector
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             Orientation="Vertical"
                             SelectedKey="Blue" />
 
                         <atc:LabelContent
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyContent-TextBox"
                             Orientation="Vertical">
                             <TextBox />
@@ -159,18 +192,24 @@
 
                         <atc:LabelDecimalBox
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyDecimalBox"
                             Orientation="Vertical" />
 
                         <atc:LabelIntegerBox
                             InformationText="This is a help text.."
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyIntegerBox"
                             Orientation="Vertical" />
 
-                        <atc:LabelSlider LabelText="MySlider" Orientation="Vertical" />
+                        <atc:LabelSlider
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
+                            LabelText="MySlider"
+                            Orientation="Vertical" />
 
                         <atc:LabelEndpointBox
                             IsMandatory="True"
+                            LabelPosition="{Binding ElementName=UseLabelPosition, Path=IsOn, Converter={x:Static local:BoolToLabelPositionValueConverter.Instance}}"
                             LabelText="MyEndpointBox"
                             NetworkProtocol="OpcTcp"
                             NetworkValidation="IPv4Address"

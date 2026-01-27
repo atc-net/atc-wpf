@@ -18,6 +18,7 @@
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}"
+        LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}"
         ShowAsteriskOnMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShowAsteriskOnMandatory}"
         ValidationColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationColor}"
         ValidationText="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ValidationText}">
