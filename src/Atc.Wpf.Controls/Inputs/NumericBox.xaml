@@ -67,10 +67,10 @@
         <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Control}" />
         <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Content}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
-        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="Height" Value="26" />
-        <Setter Property="MinWidth" Value="62" />
+        <Setter Property="MinWidth" Value="26" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
@@ -115,6 +115,7 @@
                                 <TextBox
                                     x:Name="PART_TextBox"
                                     Grid.Column="1"
+                                    MinWidth="{TemplateBinding MinWidth}"
                                     Margin="0,-1,0,0"
                                     Padding="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
