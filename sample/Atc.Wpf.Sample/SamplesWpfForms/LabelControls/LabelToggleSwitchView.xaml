@@ -28,14 +28,27 @@
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
 
+
+                        <atc:LabelToggleSwitch
+                            LabelText="MyLabel3"
+                            OffText=""
+                            OnText=""
+                            Orientation="Horizontal" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
-                        <atc:LabelToggleSwitch LabelText="MyLabel3" Orientation="Vertical" />
+                        <atc:LabelToggleSwitch LabelText="MyLabel11" Orientation="Vertical" />
 
                         <atc:LabelToggleSwitch
                             InformationText="This is a help text.."
-                            LabelText="MyLabel4"
+                            LabelText="MyLabel12"
+                            Orientation="Vertical" />
+
+                        <atc:LabelToggleSwitch
+                            LabelText="MyLabel13"
+                            OffText=""
+                            OnText=""
                             Orientation="Vertical" />
 
                     </StackPanel>

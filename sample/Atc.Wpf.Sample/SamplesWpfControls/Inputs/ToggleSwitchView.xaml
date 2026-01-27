@@ -31,6 +31,10 @@
 
                         <atc:ToggleSwitch ContentDirection="LeftToRight" />
 
+                        <atc:ToggleSwitch Content="Hello" />
+
+                        <atc:ToggleSwitch Content="Hello" ContentDirection="LeftToRight" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"
