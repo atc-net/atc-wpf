@@ -19,6 +19,9 @@ public partial class LabelControlBase : UserControl, ILabelControlBase
     [DependencyProperty(DefaultValue = Orientation.Horizontal)]
     private Orientation orientation;
 
+    [DependencyProperty(DefaultValue = LabelPosition.Left)]
+    private LabelPosition labelPosition;
+
     [DependencyProperty(DefaultValue = 120)]
     private int labelWidthNumber;
 

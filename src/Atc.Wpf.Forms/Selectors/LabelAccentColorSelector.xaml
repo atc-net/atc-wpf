@@ -16,7 +16,8 @@
         LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelAccentColorSelector}}, Path=LabelText, FallbackValue=Accent}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
-        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
+        Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}"
+        LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}">
 
         <atc:AccentColorSelector RenderColorIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelAccentColorSelector}}, Path=RenderColorIndicatorType}" />
 

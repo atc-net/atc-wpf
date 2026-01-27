@@ -48,23 +48,51 @@
                                     <MultiBinding Converter="{x:Static valueConverters:LabelControlHorizontalToWidthMultiValueConverter.Instance}">
                                         <Binding Path="LabelWidthNumber" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                         <Binding Path="LabelWidthSizeDefinition" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="LabelPosition" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </atc:GridEx.Columns>
 
+                                <!--  Label with colon (visible when LabelPosition=Left)  -->
                                 <StackPanel
-                                    Grid.Column="0"
                                     VerticalAlignment="Center"
-                                    Orientation="Horizontal">
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition, Converter={x:Static valueConverters:LabelPositionToVisibilityValueConverter.Instance}, ConverterParameter={x:Static labelControls:LabelPosition.Left}}">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Grid.Column" Value="0" />
+                                        </Style>
+                                    </StackPanel.Style>
                                     <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelContent}}, Path=LabelText, FallbackValue=Label}" />
                                     <TextBlock Margin="0,0,5,0" Text=":" />
                                 </StackPanel>
 
+                                <!--  Label without colon (visible when LabelPosition=Right)  -->
+                                <Border
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition, Converter={x:Static valueConverters:LabelPositionToVisibilityValueConverter.Instance}, ConverterParameter={x:Static labelControls:LabelPosition.Right}}">
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelContent}}, Path=LabelText, FallbackValue=Label}" />
+                                </Border>
+
+                                <!--  Content/Input field  -->
                                 <ContentControl
                                     x:Name="InputFieldHorizontal"
-                                    Grid.Column="1"
                                     MinHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelContent}}, Path=ContentMinHeight}"
                                     Content="{TemplateBinding Content}"
-                                    IsTabStop="False" />
+                                    IsTabStop="False">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Setter Property="Grid.Column" Value="1" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}" Value="{x:Static labelControls:LabelPosition.Right}">
+                                                    <Setter Property="Grid.Column" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
 
                                 <TextBlock
                                     Grid.Row="1"

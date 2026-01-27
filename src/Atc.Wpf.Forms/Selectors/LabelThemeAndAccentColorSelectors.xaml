@@ -14,6 +14,7 @@
 
         <labelControls:LabelThemeSelector
             HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
+            LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}"
             LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
             LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
             Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelControlOrientation}"
@@ -21,6 +22,7 @@
 
         <labelControls:LabelAccentColorSelector
             HideAreas="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HideAreas}"
+            LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}"
             LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
             LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
             Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelControlOrientation}"

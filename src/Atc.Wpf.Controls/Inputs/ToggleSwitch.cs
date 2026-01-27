@@ -53,7 +53,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     private FlowDirection contentDirection;
 
     [DependencyProperty(
-        DefaultValue = "new Thickness(0)",
+        DefaultValue = "new Thickness(0,1,0,0)",
         Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure)]
     private Thickness contentPadding;
 

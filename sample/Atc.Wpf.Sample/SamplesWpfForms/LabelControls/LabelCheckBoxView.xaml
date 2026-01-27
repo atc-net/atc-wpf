@@ -28,14 +28,19 @@
                             LabelText="MyLabel2"
                             Orientation="Horizontal" />
 
+                        <atc:LabelCheckBox
+                            LabelPosition="Right"
+                            LabelText="MyLabel3 (Right)"
+                            Orientation="Horizontal" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
-                        <atc:LabelCheckBox LabelText="MyLabel3" Orientation="Vertical" />
+                        <atc:LabelCheckBox LabelText="MyLabel11" Orientation="Vertical" />
 
                         <atc:LabelCheckBox
                             InformationText="This is a help text.."
-                            LabelText="MyLabel4"
+                            LabelText="MyLabel12"
                             Orientation="Vertical" />
 
                     </StackPanel>

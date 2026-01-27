@@ -2,8 +2,14 @@
 namespace Atc.Wpf.Forms.Internal.ValueConverters;
 
 /// <summary>
-/// MultiValueConverter: Label-Control With To string of columns: "[0],[1]".
+/// MultiValueConverter: Label-Control Width To string of columns: "[0],[1]".
 /// </summary>
+/// <remarks>
+/// Column structure is always "[specifiedWidth],*".
+/// When LabelPosition=Left: Column 0 = Label, Column 1 = Input.
+/// When LabelPosition=Right: Column 0 = Input, Column 1 = Label.
+/// The elements swap positions, not the column widths.
+/// </remarks>
 [ValueConversion(typeof(int), typeof(string))]
 internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiValueConverter
 {
@@ -19,6 +25,7 @@ internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiV
 
         var width = 0;
         var sizeDefinition = SizeDefinitionType.None;
+
         foreach (var value in values)
         {
             switch (value)
@@ -46,9 +53,7 @@ internal sealed class LabelControlHorizontalToWidthMultiValueConverter : IMultiV
                 {
                     var leftWidth = (double)width / 100;
                     var rightWidth = (100 - (double)width) / 100;
-                    var twoColumnWidth = $"{leftWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*,{rightWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*";
-
-                    return twoColumnWidth;
+                    return $"{leftWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*,{rightWidth.ToString(GlobalizationConstants.EnglishCultureInfo)}*";
                 }
 
             case SizeDefinitionType.Auto:
