@@ -1,0 +1,138 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.StepperView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="1200"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock Width="700" TextWrapping="Wrap">
+                    The Stepper control guides users through multi-step processes with numbered
+                    step indicators, completion states, connecting lines, and programmatic navigation.
+                    Supports horizontal and vertical orientation, custom icons, and error states.
+                </TextBlock>
+            </GroupBox>
+
+            <!--  Section 1: Basic Horizontal Stepper  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Horizontal Stepper">
+                <dataDisplay:Stepper ActiveStepIndex="1">
+                    <dataDisplay:StepperItem Title="Cart" Subtitle="Review items" />
+                    <dataDisplay:StepperItem Title="Shipping" Subtitle="Enter address" />
+                    <dataDisplay:StepperItem Title="Payment" Subtitle="Add payment" />
+                    <dataDisplay:StepperItem Title="Confirmation" Subtitle="Place order" />
+                </dataDisplay:Stepper>
+            </GroupBox>
+
+            <!--  Section 2: Vertical Stepper  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Vertical Stepper (Account Setup)">
+                <dataDisplay:Stepper ActiveStepIndex="2" Orientation="Vertical">
+                    <dataDisplay:StepperItem Title="Create Account" Subtitle="Enter email and password" />
+                    <dataDisplay:StepperItem Title="Verify Email" Subtitle="Check your inbox" />
+                    <dataDisplay:StepperItem Title="Profile Setup" Subtitle="Add your details" />
+                    <dataDisplay:StepperItem Title="Preferences" Subtitle="Customize your experience" />
+                </dataDisplay:Stepper>
+            </GroupBox>
+
+            <!--  Section 3: Interactive Stepper with Navigation  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Interactive Stepper with Navigation">
+                <StackPanel>
+                    <dataDisplay:Stepper
+                        x:Name="InteractiveStepper"
+                        ActiveStepIndex="0"
+                        StepChanged="OnStepChanged">
+                        <dataDisplay:StepperItem Title="Personal Info" />
+                        <dataDisplay:StepperItem Title="Address" />
+                        <dataDisplay:StepperItem Title="Review" />
+                        <dataDisplay:StepperItem Title="Submit" />
+                    </dataDisplay:Stepper>
+                    <StackPanel
+                        Margin="0,15,0,0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Margin="0,0,10,0"
+                            Click="OnPreviousClick"
+                            Content="Previous" />
+                        <Button
+                            Width="100"
+                            Click="OnNextClick"
+                            Content="Next" />
+                    </StackPanel>
+                    <TextBlock
+                        x:Name="StepStatus"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Center"
+                        FontStyle="Italic"
+                        Foreground="Gray"
+                        Text="Use the buttons to navigate between steps." />
+                </StackPanel>
+            </GroupBox>
+
+            <!--  Section 4: Custom Indicators and Error State  -->
+            <GroupBox
+                Padding="10"
+                Header="Custom Indicators &amp; Error State">
+                <dataDisplay:Stepper ActiveStepIndex="2" IndicatorSize="36">
+                    <dataDisplay:StepperItem Title="Upload">
+                        <dataDisplay:StepperItem.IconContent>
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="White"
+                                Text="&#x2191;" />
+                        </dataDisplay:StepperItem.IconContent>
+                    </dataDisplay:StepperItem>
+                    <dataDisplay:StepperItem
+                        Title="Validate"
+                        Status="Error"
+                        Subtitle="File format invalid">
+                        <dataDisplay:StepperItem.IconContent>
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="White"
+                                Text="!" />
+                        </dataDisplay:StepperItem.IconContent>
+                    </dataDisplay:StepperItem>
+                    <dataDisplay:StepperItem Title="Process">
+                        <dataDisplay:StepperItem.IconContent>
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="White"
+                                Text="&#x2699;" />
+                        </dataDisplay:StepperItem.IconContent>
+                    </dataDisplay:StepperItem>
+                    <dataDisplay:StepperItem Title="Complete">
+                        <dataDisplay:StepperItem.IconContent>
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="White"
+                                Text="&#x2605;" />
+                        </dataDisplay:StepperItem.IconContent>
+                    </dataDisplay:StepperItem>
+                </dataDisplay:Stepper>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

@@ -132,6 +132,10 @@
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />
         <sample:SampleTreeViewItem
+            Header="Stepper"
+            IsExpanded="True"
+            SamplePath="DataDisplay.StepperView" />
+        <sample:SampleTreeViewItem
             Header="Timeline"
             IsExpanded="True"
             SamplePath="DataDisplay.TimelineView" />
