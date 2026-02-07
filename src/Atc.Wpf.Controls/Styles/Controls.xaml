@@ -25,6 +25,8 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/ResponsivePanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/BusyOverlay.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/LoadingIndicator.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/SkeletonElement.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/Skeleton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/ImageButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Flyouts/Flyout.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Flyouts/FlyoutHost.xaml" />
@@ -50,6 +52,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.ResponsivePanel}" TargetType="{x:Type layouts:ResponsivePanel}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.BusyOverlay}" TargetType="{x:Type progressing:BusyOverlay}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.LoadingIndicator}" TargetType="{x:Type progressing:LoadingIndicator}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.SkeletonElement}" TargetType="{x:Type progressing:SkeletonElement}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Skeleton}" TargetType="{x:Type progressing:Skeleton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ImageButton}" TargetType="{x:Type buttonControls:ImageButton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Flyout}" TargetType="{x:Type flyouts:Flyout}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.FlyoutHost}" TargetType="{x:Type flyouts:FlyoutHost}" />
