@@ -22,6 +22,18 @@ public partial class BusyOverlay : ContentControl
     [DependencyProperty]
     private DataTemplate? busyContentTemplate;
 
+    [DependencyProperty]
+    private object? busyContentBefore;
+
+    [DependencyProperty]
+    private DataTemplate? busyContentTemplateBefore;
+
+    [DependencyProperty]
+    private object? busyContentAfter;
+
+    [DependencyProperty]
+    private DataTemplate? busyContentTemplateAfter;
+
     [DependencyProperty(DefaultValue = "TimeSpan.FromSeconds(0.1)")]
     private TimeSpan displayAfter;
 
