@@ -155,6 +155,13 @@ public partial class FilePicker
         object sender,
         RoutedEventArgs e)
     {
+        var resolvedInitialDirectory = InitialDirectory;
+        if (string.IsNullOrEmpty(resolvedInitialDirectory) &&
+            Value?.Directory is { Exists: true })
+        {
+            resolvedInitialDirectory = Value.Directory.FullName;
+        }
+
         var fileDialog = new OpenFileDialog
         {
             Multiselect = false,
@@ -162,7 +169,7 @@ public partial class FilePicker
                 ? Miscellaneous.SelectFile
                 : Title,
             DefaultDirectory = DefaultDirectory,
-            InitialDirectory = InitialDirectory,
+            InitialDirectory = resolvedInitialDirectory,
             RootDirectory = RootDirectory,
             CheckFileExists = AllowOnlyExisting,
             CheckPathExists = AllowOnlyExisting,
