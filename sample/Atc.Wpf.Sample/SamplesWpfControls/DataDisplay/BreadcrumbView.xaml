@@ -1,0 +1,126 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.BreadcrumbView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    The Breadcrumb control displays a horizontal navigation trail showing the current location
+                    within a hierarchy. Items are clickable except for the last (current) item which is displayed
+                    as bold. Supports custom separators, overflow mode, and MVVM commands.
+                </TextBlock>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Breadcrumb">
+                <dataDisplay:Breadcrumb>
+                    <dataDisplay:BreadcrumbItem Content="Home" />
+                    <dataDisplay:BreadcrumbItem Content="Products" />
+                    <dataDisplay:BreadcrumbItem Content="Electronics" />
+                    <dataDisplay:BreadcrumbItem Content="Laptops" />
+                </dataDisplay:Breadcrumb>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Custom Separators">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="String separator (&gt;)" />
+                    <dataDisplay:Breadcrumb Separator="&gt;">
+                        <dataDisplay:BreadcrumbItem Content="Home" />
+                        <dataDisplay:BreadcrumbItem Content="Settings" />
+                        <dataDisplay:BreadcrumbItem Content="Profile" />
+                        <dataDisplay:BreadcrumbItem Content="Security" />
+                    </dataDisplay:Breadcrumb>
+
+                    <TextBlock
+                        Margin="0,15,0,10"
+                        FontWeight="Bold"
+                        Text="Chevron icon via SeparatorTemplate" />
+                    <dataDisplay:Breadcrumb>
+                        <dataDisplay:Breadcrumb.SeparatorTemplate>
+                            <DataTemplate>
+                                <Path
+                                    Margin="2,0"
+                                    VerticalAlignment="Center"
+                                    Data="M 0,0 L 4,4 L 0,8"
+                                    Stroke="{DynamicResource AtcApps.Brushes.Gray5}"
+                                    StrokeThickness="1.5" />
+                            </DataTemplate>
+                        </dataDisplay:Breadcrumb.SeparatorTemplate>
+                        <dataDisplay:BreadcrumbItem Content="Root" />
+                        <dataDisplay:BreadcrumbItem Content="Documents" />
+                        <dataDisplay:BreadcrumbItem Content="Projects" />
+                        <dataDisplay:BreadcrumbItem Content="MyProject" />
+                    </dataDisplay:Breadcrumb>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Clickable with Events">
+                <StackPanel>
+                    <dataDisplay:Breadcrumb x:Name="ClickableBreadcrumb" ItemClicked="OnBreadcrumbItemClicked">
+                        <dataDisplay:BreadcrumbItem Content="Dashboard" />
+                        <dataDisplay:BreadcrumbItem Content="Users" />
+                        <dataDisplay:BreadcrumbItem Content="John Doe" />
+                        <dataDisplay:BreadcrumbItem Content="Orders" />
+                    </dataDisplay:Breadcrumb>
+                    <TextBlock
+                        x:Name="NavigationStatus"
+                        Margin="0,10,0,0"
+                        FontStyle="Italic"
+                        Foreground="Gray"
+                        Text="Click a breadcrumb item to navigate..." />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Padding="10"
+                Header="Overflow Mode">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        TextWrapping="Wrap">
+                        When OverflowMode is set to Collapsed and MaxVisibleItems is specified,
+                        excess items collapse into a &quot;...&quot; dropdown. The first item is always shown.
+                    </TextBlock>
+                    <dataDisplay:Breadcrumb
+                        MaxVisibleItems="2"
+                        OverflowMode="Collapsed">
+                        <dataDisplay:BreadcrumbItem Content="Root" />
+                        <dataDisplay:BreadcrumbItem Content="Level 1" />
+                        <dataDisplay:BreadcrumbItem Content="Level 2" />
+                        <dataDisplay:BreadcrumbItem Content="Level 3" />
+                        <dataDisplay:BreadcrumbItem Content="Level 4" />
+                        <dataDisplay:BreadcrumbItem Content="Level 5" />
+                        <dataDisplay:BreadcrumbItem Content="SubFolder" />
+                        <dataDisplay:BreadcrumbItem Content="Current" />
+                    </dataDisplay:Breadcrumb>
+                </StackPanel>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

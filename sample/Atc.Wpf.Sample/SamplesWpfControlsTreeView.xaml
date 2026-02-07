@@ -112,6 +112,10 @@
             IsExpanded="True"
             SamplePath="DataDisplay.BadgeView" />
         <sample:SampleTreeViewItem
+            Header="Breadcrumb"
+            IsExpanded="True"
+            SamplePath="DataDisplay.BreadcrumbView" />
+        <sample:SampleTreeViewItem
             Header="Card"
             IsExpanded="True"
             SamplePath="DataDisplay.CardView" />
