@@ -65,14 +65,21 @@
                                             <atcTheming:GridEx
                                                 x:Name="PART_Grid"
                                                 MinWidth="150"
-                                                Rows="Auto,Auto">
+                                                Rows="Auto,Auto,Auto,Auto">
+                                                <ContentPresenter
+                                                    x:Name="PART_BusyContentBefore"
+                                                    Margin="8"
+                                                    HorizontalAlignment="Center"
+                                                    Content="{TemplateBinding BusyContentBefore}"
+                                                    ContentTemplate="{TemplateBinding BusyContentTemplateBefore}" />
                                                 <ContentPresenter
                                                     x:Name="PART_BusyContent"
+                                                    Grid.Row="1"
                                                     Margin="8"
                                                     HorizontalAlignment="Center"
                                                     Content="{TemplateBinding BusyContent}"
                                                     ContentTemplate="{TemplateBinding BusyContentTemplate}" />
-                                                <ProgressBar Grid.Row="1" Style="{TemplateBinding ProgressBarStyle}">
+                                                <ProgressBar Grid.Row="2" Style="{TemplateBinding ProgressBarStyle}">
                                                     <ProgressBar.Width>
                                                         <MultiBinding Converter="{StaticResource ProgressBarWidthConverter}">
                                                             <Binding ElementName="PART_BusyContent" Path="ActualWidth" />
@@ -80,6 +87,13 @@
                                                         </MultiBinding>
                                                     </ProgressBar.Width>
                                                 </ProgressBar>
+                                                <ContentPresenter
+                                                    x:Name="PART_BusyContentAfter"
+                                                    Grid.Row="3"
+                                                    Margin="8"
+                                                    HorizontalAlignment="Center"
+                                                    Content="{TemplateBinding BusyContentAfter}"
+                                                    ContentTemplate="{TemplateBinding BusyContentTemplateAfter}" />
                                             </atcTheming:GridEx>
                                         </Border>
                                     </Border>
@@ -175,6 +189,14 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="BusyContentBefore" Value="{x:Null}">
+                            <Setter TargetName="PART_BusyContentBefore" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="BusyContentAfter" Value="{x:Null}">
+                            <Setter TargetName="PART_BusyContentAfter" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

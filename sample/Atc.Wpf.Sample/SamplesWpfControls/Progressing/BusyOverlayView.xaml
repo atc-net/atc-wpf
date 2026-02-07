@@ -11,7 +11,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:AutoGrid Columns="*" Rows="Auto,Auto,*">
 
         <GroupBox
             Margin="0,0,0,10"
@@ -46,6 +46,55 @@
                         WatermarkText="Enter age" />
                 </StackPanel>
             </atc:BusyOverlay>
+        </GroupBox>
+
+        <GroupBox Margin="0,10,0,0" Header="Cancellable Long-Running Job">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <atc:UniformSpacingPanel
+                    Grid.Row="0"
+                    Margin="10"
+                    Orientation="Horizontal"
+                    Spacing="10">
+                    <Button
+                        x:Name="BtnStartJob"
+                        MinWidth="120"
+                        Click="OnStartJobClick"
+                        Content="Start Job" />
+                    <TextBlock
+                        x:Name="TbJobStatus"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                        Text="Idle" />
+                </atc:UniformSpacingPanel>
+
+                <atc:BusyOverlay
+                    x:Name="JobBusyOverlay"
+                    Grid.Row="1"
+                    DisplayAfter="00:00:00.1">
+                    <atc:BusyOverlay.BusyContentAfter>
+                        <Button
+                            MinWidth="80"
+                            Margin="0,0,0,8"
+                            HorizontalAlignment="Center"
+                            Click="OnCancelJobClick"
+                            Content="Cancel" />
+                    </atc:BusyOverlay.BusyContentAfter>
+                    <StackPanel Margin="20">
+                        <atc:LabelTextBox LabelText="Server" WatermarkText="Enter server address" />
+                        <atc:LabelIntegerBox
+                            LabelText="Port"
+                            Maximum="65535"
+                            Minimum="1"
+                            WatermarkText="Enter port" />
+                        <atc:LabelTextBox LabelText="Database" WatermarkText="Enter database name" />
+                    </StackPanel>
+                </atc:BusyOverlay>
+            </Grid>
         </GroupBox>
 
     </atc:AutoGrid>
