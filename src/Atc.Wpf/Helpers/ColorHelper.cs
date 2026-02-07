@@ -23,8 +23,23 @@ public static class ColorHelper
 {
     /// <summary>
     /// Cache of color keys to Color values. Bounded by WPF's Colors class (~140 colors).
+    /// Lazily initialized once from WPF's <see cref="Colors"/> class via reflection.
     /// </summary>
-    private static readonly ConcurrentDictionary<string, Color> BaseColors = new(StringComparer.Ordinal);
+    private static readonly Lazy<Dictionary<string, Color>> LazyBaseColors = new(
+        static () =>
+        {
+            var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
+            var dict = new Dictionary<string, Color>(colorProperties.Length, StringComparer.Ordinal);
+            foreach (var p in colorProperties.OrderBy(static p => p.Name, StringComparer.Ordinal))
+            {
+                dict.TryAdd(p.Name, (Color)p.GetValue(obj: null, index: null)!);
+            }
+
+            return dict;
+        },
+        LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private static Dictionary<string, Color> BaseColors => LazyBaseColors.Value;
 
     /// <summary>
     /// Cache of culture LCID to color name dictionaries. Bounded by cultures used.
@@ -33,7 +48,6 @@ public static class ColorHelper
 
     public static void InitializeWithSupportedLanguages()
     {
-        EnsureBaseColors();
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.UnitedStates));
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.GreatBritain));
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Denmark));
@@ -41,18 +55,12 @@ public static class ColorHelper
     }
 
     public static Color[] GetColors()
-    {
-        EnsureBaseColors();
-
-        return BaseColors
+        => BaseColors
             .Select(x => x.Value)
             .ToArray();
-    }
 
     public static Color[] GetBasicColors()
     {
-        EnsureBaseColors();
-
         var colors = new List<Color>();
         foreach (var key in GetBasicColorKeys())
         {
@@ -95,18 +103,10 @@ public static class ColorHelper
             }
         }
 
-        if (!value.Contains(
-                ' ',
-                StringComparison.Ordinal))
+        if (!value.Contains(' ', StringComparison.Ordinal) &&
+            BaseColors.TryGetValue(value, out var baseColor))
         {
-            EnsureBaseColors();
-
-            if (BaseColors.TryGetValue(
-                    value,
-                    out var baseColor))
-            {
-                return baseColor;
-            }
+            return baseColor;
         }
 
         EnsureColorNamesForCulture(culture);
@@ -183,13 +183,9 @@ public static class ColorHelper
     }
 
     public static IList<string> GetColorKeys()
-    {
-        EnsureBaseColors();
-
-        return BaseColors
+        => BaseColors
             .Select(x => x.Key)
             .ToList();
-    }
 
     public static IList<string> GetBasicColorKeys()
     {
@@ -221,16 +217,12 @@ public static class ColorHelper
     }
 
     public static string? GetColorKeyFromColor(Color brush)
-    {
-        EnsureBaseColors();
-
-        return BaseColors
+        => BaseColors
             .FirstOrDefault(x => string.Equals(
                 x.Value.ToString(GlobalizationConstants.EnglishCultureInfo),
                 brush.ToString(GlobalizationConstants.EnglishCultureInfo),
                 StringComparison.Ordinal))
             .Key;
-    }
 
     public static string? GetColorNameFromColor(Color color)
         => GetColorNameFromColor(color, CultureInfo.CurrentUICulture);
@@ -277,8 +269,6 @@ public static class ColorHelper
                 "It is not a hex value",
                 nameof(hexValue));
         }
-
-        EnsureBaseColors();
 
         if (hexValue.StartsWith('#') &&
             hexValue.Length == 7)
@@ -345,8 +335,6 @@ public static class ColorHelper
         string colorKey,
         CultureInfo culture)
     {
-        EnsureBaseColors();
-
         var item = BaseColors
             .FirstOrDefault(x => string.Equals(
                 x.Key,
@@ -421,34 +409,6 @@ public static class ColorHelper
             : value;
     }
 
-    private static void EnsureBaseColors()
-    {
-        if (!BaseColors.IsEmpty)
-        {
-            return;
-        }
-
-        var colorProperties = typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static);
-
-        var colorDictionary = colorProperties
-            .ToDictionary(
-                p => p.Name,
-                p => (Color)p.GetValue(
-                    obj: null,
-                    index: null)!,
-                StringComparer.Ordinal)
-            .OrderBy(
-                x => x.Key,
-                StringComparer.Ordinal);
-
-        foreach (var item in colorDictionary)
-        {
-            BaseColors.TryAdd(
-                item.Key,
-                item.Value);
-        }
-    }
-
     private static void EnsureColorNamesForCulture(CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(culture);
@@ -471,8 +431,6 @@ public static class ColorHelper
         {
             return;
         }
-
-        EnsureBaseColors();
 
         foreach (var entry in resourceSet.OfType<DictionaryEntry>())
         {
