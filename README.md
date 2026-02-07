@@ -101,11 +101,16 @@ Add the required resource dictionaries to enable theming and control styles:
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
                 <!-- Base theming styles for Light/Dark mode -->
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
 
                 <!-- Control library styles -->
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
+
+                <!-- Component styles (dialogs, notifications, viewers) -->
+                <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Components;component/Styles/Controls.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
