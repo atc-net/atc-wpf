@@ -131,6 +131,10 @@
             Header="Divider"
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />
+        <sample:SampleTreeViewItem
+            Header="Timeline"
+            IsExpanded="True"
+            SamplePath="DataDisplay.TimelineView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Flyouts">
