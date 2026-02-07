@@ -50,7 +50,7 @@
                             ContentTemplate="{TemplateBinding ContentTemplate}"
                             Focusable="False"
                             IsTabStop="False" />
-                        <Rectangle x:Name="overlay" Style="{TemplateBinding OverlayStyle}" />
+                        <Rectangle x:Name="overlay" Cursor="Wait" Style="{TemplateBinding OverlayStyle}" />
                         <ContentPresenter x:Name="PART_ContentPresenter">
                             <ContentPresenter.Content>
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
