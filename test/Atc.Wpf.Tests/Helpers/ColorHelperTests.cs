@@ -192,7 +192,7 @@ public sealed class ColorHelperTests
     [InlineData("Lime", "0xFF00FF00")]
     [InlineData("LimeGreen", "0xFF32CD32")]
     [InlineData("Linen", "0xFFFAF0E6")]
-    [InlineData("Magenta", "0xFFFF00FF")]
+    [InlineData("Fuchsia", "0xFFFF00FF")]
     [InlineData("Maroon", "0xFF800000")]
     [InlineData("MediumAquamarine", "0xFF66CDAA")]
     [InlineData("MediumBlue", "0xFF0000CD")]
