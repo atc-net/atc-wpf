@@ -222,6 +222,12 @@
   <data name="None" xml:space="preserve">
     <value>Keine</value>
   </data>
+  <data name="Off" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Ein</value>
+  </data>
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>

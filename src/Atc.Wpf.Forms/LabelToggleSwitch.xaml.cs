@@ -6,14 +6,16 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
     private FlowDirection contentDirection;
 
     [DependencyProperty(
-        DefaultValue = "Off",
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
-    private string offText;
+    private string? offText;
 
     [DependencyProperty(
-        DefaultValue = "On",
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
-    private string onText;
+    private string? onText;
+
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    private string? offOnContent;
 
     [DependencyProperty(
         DefaultValue = false,
@@ -35,6 +37,11 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
     public LabelToggleSwitch()
     {
         InitializeComponent();
+
+        SetCurrentValue(OffTextProperty, Word.Off);
+        SetCurrentValue(OnTextProperty, Word.On);
+
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
     private static void OnLabelPositionChanged(
@@ -53,8 +60,8 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
         else
         {
             control.SetCurrentValue(LabelWidthNumberProperty, 120);
-            control.SetCurrentValue(OffTextProperty, "Off");
-            control.SetCurrentValue(OnTextProperty, "On");
+            control.SetCurrentValue(OffTextProperty, Word.Off);
+            control.SetCurrentValue(OnTextProperty, Word.On);
         }
     }
 
@@ -70,5 +77,23 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
                 control.Identifier,
                 control.IsOn,
                 !control.IsOn));
+    }
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        var oldOff = Word.ResourceManager.GetString(nameof(Word.Off), e.OldCulture) ?? "Off";
+        var oldOn = Word.ResourceManager.GetString(nameof(Word.On), e.OldCulture) ?? "On";
+
+        if (string.Equals(OffText, oldOff, StringComparison.Ordinal))
+        {
+            SetCurrentValue(OffTextProperty, Word.Off);
+        }
+
+        if (string.Equals(OnText, oldOn, StringComparison.Ordinal))
+        {
+            SetCurrentValue(OnTextProperty, Word.On);
+        }
     }
 }

@@ -33,6 +33,11 @@
                             LabelText="MyLabel3 (Right)"
                             Orientation="Horizontal" />
 
+                        <atc:LabelToggleSwitch
+                            LabelText="Enable feature"
+                            OffOnContent="Enable feature"
+                            Orientation="Horizontal" />
+
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10">
 
