@@ -19,6 +19,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Card.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Chip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Divider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Segmented.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Stepper.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Timeline.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Carousel.xaml" />
@@ -49,6 +50,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type dataDisplay:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type dataDisplay:Chip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type dataDisplay:Divider}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Segmented}" TargetType="{x:Type dataDisplay:Segmented}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.SegmentedItem}" TargetType="{x:Type dataDisplay:SegmentedItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Stepper}" TargetType="{x:Type dataDisplay:Stepper}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.StepperItem}" TargetType="{x:Type dataDisplay:StepperItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Timeline}" TargetType="{x:Type dataDisplay:Timeline}" />
