@@ -1,0 +1,211 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.TimelineView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="1200"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock Width="700" TextWrapping="Wrap">
+                    The Timeline control displays chronological events in a vertical or horizontal layout.
+                    Supports Left, Right, and Alternate content placement modes with customizable dots,
+                    connecting lines, and per-item overrides for colors and sizes.
+                </TextBlock>
+            </GroupBox>
+
+            <!--  Section 1: Basic Vertical Timeline  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Timeline (Vertical Left)">
+                <dataDisplay:Timeline>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Project Kickoff" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Jan 15, 2025 — Initial planning and team setup" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Design Phase" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Feb 1, 2025 — UI/UX wireframes completed" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Development Sprint 1" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Mar 10, 2025 — Core features implemented" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Release v1.0" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Apr 20, 2025 — Public release" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                </dataDisplay:Timeline>
+            </GroupBox>
+
+            <!--  Section 2: Alternate Layout  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Alternate Layout (Order Tracking)">
+                <dataDisplay:Timeline Mode="Alternate">
+                    <dataDisplay:TimelineItem>
+                        <TextBlock FontWeight="SemiBold" Text="Order Placed" />
+                        <dataDisplay:TimelineItem.OppositeContent>
+                            <TextBlock Foreground="Gray" Text="Dec 1, 2024" />
+                        </dataDisplay:TimelineItem.OppositeContent>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock FontWeight="SemiBold" Text="Payment Confirmed" />
+                        <dataDisplay:TimelineItem.OppositeContent>
+                            <TextBlock Foreground="Gray" Text="Dec 1, 2024" />
+                        </dataDisplay:TimelineItem.OppositeContent>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock FontWeight="SemiBold" Text="Shipped" />
+                        <dataDisplay:TimelineItem.OppositeContent>
+                            <TextBlock Foreground="Gray" Text="Dec 3, 2024" />
+                        </dataDisplay:TimelineItem.OppositeContent>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock FontWeight="SemiBold" Text="Delivered" />
+                        <dataDisplay:TimelineItem.OppositeContent>
+                            <TextBlock Foreground="Gray" Text="Dec 5, 2024" />
+                        </dataDisplay:TimelineItem.OppositeContent>
+                    </dataDisplay:TimelineItem>
+                </dataDisplay:Timeline>
+            </GroupBox>
+
+            <!--  Section 3: Custom Dots with Status Colors  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Custom Dots with Status Colors">
+                <dataDisplay:Timeline DotSize="20" Mode="Right">
+                    <dataDisplay:TimelineItem DotBrush="Green" DotSize="20">
+                        <dataDisplay:TimelineItem.DotContent>
+                            <TextBlock
+                                FontSize="10"
+                                Foreground="White"
+                                Text="&#x2713;" />
+                        </dataDisplay:TimelineItem.DotContent>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Build Succeeded" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="All 719 tests passed" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem DotBrush="Green" DotSize="20">
+                        <dataDisplay:TimelineItem.DotContent>
+                            <TextBlock
+                                FontSize="10"
+                                Foreground="White"
+                                Text="&#x2713;" />
+                        </dataDisplay:TimelineItem.DotContent>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Code Review Approved" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Reviewed by 2 maintainers" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem DotBrush="Orange" DotSize="20">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Deploy to Staging" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="In progress..." />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem DotBrush="Gray" DotSize="20">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Deploy to Production" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Pending" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                </dataDisplay:Timeline>
+            </GroupBox>
+
+            <!--  Section 4: Horizontal Timeline  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Horizontal Timeline (Quarterly Roadmap)">
+                <dataDisplay:Timeline ItemSpacing="10" Orientation="Horizontal">
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Q1" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Research" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Q2" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Design" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Q3" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Develop" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Q4" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Launch" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                </dataDisplay:Timeline>
+            </GroupBox>
+
+            <!--  Section 5: Dashed and Dotted Connectors  -->
+            <GroupBox Padding="10" Header="Dashed &amp; Dotted Connectors">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="Dashed" />
+                    <dataDisplay:Timeline ConnectorStyle="Dashed">
+                        <dataDisplay:TimelineItem Content="Step 1: Initialize" />
+                        <dataDisplay:TimelineItem Content="Step 2: Process" />
+                        <dataDisplay:TimelineItem Content="Step 3: Complete" />
+                    </dataDisplay:Timeline>
+
+                    <TextBlock
+                        Margin="0,15,0,10"
+                        FontWeight="Bold"
+                        Text="Dotted" />
+                    <dataDisplay:Timeline ConnectorStyle="Dotted">
+                        <dataDisplay:TimelineItem Content="Alpha" />
+                        <dataDisplay:TimelineItem Content="Beta" />
+                        <dataDisplay:TimelineItem Content="Release" />
+                    </dataDisplay:Timeline>
+                </StackPanel>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

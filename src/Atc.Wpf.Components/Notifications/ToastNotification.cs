@@ -41,7 +41,7 @@ public sealed partial class ToastNotification : ContentControl
         }
 
         var storyboards = Template.Triggers
-            .OfType<System.Windows.EventTrigger>()
+            .OfType<EventTrigger>()
             .FirstOrDefault(x => x.RoutedEvent == NotificationCloseInvokedEvent)?
             .Actions
             .OfType<BeginStoryboard>()
