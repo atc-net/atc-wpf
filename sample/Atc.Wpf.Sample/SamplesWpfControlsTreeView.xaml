@@ -81,6 +81,10 @@
             Header="ImageToggledButton"
             IsExpanded="True"
             SamplePath="Buttons.ImageToggledButtonView" />
+        <sample:SampleTreeViewItem
+            Header="SplitButton"
+            IsExpanded="True"
+            SamplePath="Buttons.SplitButtonView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Color Editing">
