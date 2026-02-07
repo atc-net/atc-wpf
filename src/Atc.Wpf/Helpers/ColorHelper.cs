@@ -46,6 +46,11 @@ public static class ColorHelper
     /// </summary>
     private static readonly ConcurrentDictionary<int, Dictionary<Color, string>> ColorNames = new();
 
+    /// <summary>
+    /// Reverse lookup cache: color name (case-insensitive) to Color. Built alongside <see cref="ColorNames"/>.
+    /// </summary>
+    private static readonly ConcurrentDictionary<int, Dictionary<string, Color>> ColorNameToColor = new();
+
     public static void InitializeWithSupportedLanguages()
     {
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.UnitedStates));
@@ -111,12 +116,14 @@ public static class ColorHelper
 
         EnsureColorNamesForCulture(culture);
 
-        return ColorNames[GetColorKeyFromCulture(culture)]
-            .FirstOrDefault(x => string.Equals(
-                x.Value,
-                value,
-                StringComparison.OrdinalIgnoreCase))
-            .Key;
+        var cultureKey = GetColorKeyFromCulture(culture);
+        if (ColorNameToColor.TryGetValue(cultureKey, out var nameToColor) &&
+            nameToColor.TryGetValue(value, out var namedColor))
+        {
+            return namedColor;
+        }
+
+        return default(Color);
     }
 
     public static Color? GetColorFromName(string colorName)
@@ -174,12 +181,9 @@ public static class ColorHelper
         EnsureColorNamesForCulture(culture);
 
         var colorNames = ColorNames[GetColorKeyFromCulture(culture)];
-        return colorNames
-            .Select(x => x.Value)
-            .OrderBy(
-                x => x,
-                StringComparer.Ordinal)
-            .ToList();
+        var values = new List<string>(colorNames.Values);
+        values.Sort(StringComparer.Ordinal);
+        return values;
     }
 
     public static IList<string> GetColorKeys()
@@ -273,30 +277,20 @@ public static class ColorHelper
         if (hexValue.StartsWith('#') &&
             hexValue.Length == 7)
         {
-            hexValue = hexValue.Replace(
-                "#",
-                "#FF",
-                StringComparison.Ordinal);
+            hexValue = string.Concat("#FF", hexValue.AsSpan(1));
         }
         else if (hexValue.StartsWith(
                      "0x",
                      StringComparison.Ordinal) &&
                  hexValue.Length == 8)
         {
-            hexValue = hexValue.Replace(
-                "0x",
-                "0xFF",
-                StringComparison.Ordinal);
+            hexValue = string.Concat("#FF", hexValue.AsSpan(2));
         }
-
-        if (hexValue.StartsWith(
-                "0x",
-                StringComparison.Ordinal))
+        else if (hexValue.StartsWith(
+                     "0x",
+                     StringComparison.Ordinal))
         {
-            hexValue = hexValue.Replace(
-                "0x",
-                "#",
-                StringComparison.Ordinal);
+            hexValue = string.Concat("#", hexValue.AsSpan(2));
         }
 
         if (hexValue == "#FF00FFFF")
@@ -458,6 +452,14 @@ public static class ColorHelper
         ColorNames.TryAdd(
             colorKey,
             dictionary);
+
+        var reverseDictionary = new Dictionary<string, Color>(dictionary.Count, StringComparer.OrdinalIgnoreCase);
+        foreach (var kvp in dictionary)
+        {
+            reverseDictionary.TryAdd(kvp.Value, kvp.Key);
+        }
+
+        ColorNameToColor.TryAdd(colorKey, reverseDictionary);
     }
 
     private static int GetColorKeyFromCulture(CultureInfo culture)

@@ -231,30 +231,20 @@ public static class SolidColorBrushHelper
         if (hexValue.StartsWith('#') &&
             hexValue.Length == 7)
         {
-            hexValue = hexValue.Replace(
-                "#",
-                "#FF",
-                StringComparison.Ordinal);
+            hexValue = string.Concat("#FF", hexValue.AsSpan(1));
         }
         else if (hexValue.StartsWith(
                      "0x",
                      StringComparison.Ordinal) &&
                  hexValue.Length == 8)
         {
-            hexValue = hexValue.Replace(
-                "0x",
-                "0xFF",
-                StringComparison.Ordinal);
+            hexValue = string.Concat("#FF", hexValue.AsSpan(2));
         }
-
-        if (hexValue.StartsWith(
-                "0x",
-                StringComparison.Ordinal))
+        else if (hexValue.StartsWith(
+                     "0x",
+                     StringComparison.Ordinal))
         {
-            hexValue = hexValue.Replace(
-                "0x",
-                "#",
-                StringComparison.Ordinal);
+            hexValue = string.Concat("#", hexValue.AsSpan(2));
         }
 
         return BaseBrushes
