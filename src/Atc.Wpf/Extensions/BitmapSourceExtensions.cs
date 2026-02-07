@@ -52,10 +52,8 @@ public static class BitmapSourceExtensions
             throw new ArgumentOutOfRangeException(nameof(y));
         }
 
-        var croppedBitmap = new CroppedBitmap(source, new Int32Rect(x, y, 1, 1));
         var pixels = new byte[4];
-
-        croppedBitmap.CopyPixels(pixels, 4, 0);
+        source.CopyPixels(new Int32Rect(x, y, 1, 1), pixels, 4, 0);
 
         return Color.FromRgb(pixels[2], pixels[1], pixels[0]);
     }
