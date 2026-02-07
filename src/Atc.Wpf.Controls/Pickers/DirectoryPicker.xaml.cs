@@ -148,6 +148,13 @@ public partial class DirectoryPicker
         object sender,
         RoutedEventArgs e)
     {
+        var resolvedInitialDirectory = InitialDirectory;
+        if (string.IsNullOrEmpty(resolvedInitialDirectory) &&
+            Value is { Exists: true })
+        {
+            resolvedInitialDirectory = Value.FullName;
+        }
+
         var folderDialog = new OpenFolderDialog
         {
             Multiselect = false,
@@ -155,7 +162,7 @@ public partial class DirectoryPicker
                 ? Miscellaneous.SelectDirectory
                 : Title,
             DefaultDirectory = DefaultDirectory,
-            InitialDirectory = InitialDirectory,
+            InitialDirectory = resolvedInitialDirectory,
             RootDirectory = RootDirectory,
         };
 
