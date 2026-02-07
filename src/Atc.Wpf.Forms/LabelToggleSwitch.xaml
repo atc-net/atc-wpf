@@ -20,6 +20,7 @@
         LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}">
 
         <inputs:ToggleSwitch
+            Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=OffOnContent}"
             ContentDirection="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=ContentDirection}"
             IsOn="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=IsOn}"
             OffContent="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelToggleSwitch}}, Path=OffText}"

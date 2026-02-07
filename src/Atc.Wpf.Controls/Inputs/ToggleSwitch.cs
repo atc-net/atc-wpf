@@ -64,10 +64,9 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     private bool isOn;
 
     [DependencyProperty(
-        DefaultValue = "\"On\"",
         PropertyChangedCallback = nameof(OnOnContentChanged),
         Flags = FrameworkPropertyMetadataOptions.None)]
-    private object onContent;
+    private object? onContent;
 
     [DependencyProperty]
     private DataTemplate? onContentTemplate;
@@ -81,10 +80,9 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     private string? onContentStringFormat;
 
     [DependencyProperty(
-        DefaultValue = "\"Off\"",
         PropertyChangedCallback = nameof(OnOffContentChanged),
         Flags = FrameworkPropertyMetadataOptions.None)]
-    private object offContent;
+    private object? offContent;
 
     [DependencyProperty]
     private DataTemplate? offContentTemplate;
@@ -138,6 +136,22 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     public ToggleSwitch()
     {
         IsEnabledChanged += OnIsEnabledChanged;
+        CultureManager.UiCultureChanged += OnUiCultureChanged;
+    }
+
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+
+        if (OnContent is null)
+        {
+            SetCurrentValue(OnContentProperty, Word.On);
+        }
+
+        if (OffContent is null)
+        {
+            SetCurrentValue(OffContentProperty, Word.Off);
+        }
     }
 
     protected virtual void OnOnContentChanged(
@@ -285,6 +299,24 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         object sender,
         DependencyPropertyChangedEventArgs e)
         => UpdateVisualStates(useTransitions: true);
+
+    private void OnUiCultureChanged(
+        object? sender,
+        UiCultureEventArgs e)
+    {
+        var oldOff = Word.ResourceManager.GetString(nameof(Word.Off), e.OldCulture) ?? "Off";
+        var oldOn = Word.ResourceManager.GetString(nameof(Word.On), e.OldCulture) ?? "On";
+
+        if (Equals(OffContent, oldOff))
+        {
+            SetCurrentValue(OffContentProperty, Word.Off);
+        }
+
+        if (Equals(OnContent, oldOn))
+        {
+            SetCurrentValue(OnContentProperty, Word.On);
+        }
+    }
 
     private static void OnMouseLeftButtonDown(
         object sender,

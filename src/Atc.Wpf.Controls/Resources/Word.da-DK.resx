@@ -222,6 +222,12 @@
   <data name="None" xml:space="preserve">
     <value>Ingenting</value>
   </data>
+  <data name="Off" xml:space="preserve">
+    <value>Fra</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Til</value>
+  </data>
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>
