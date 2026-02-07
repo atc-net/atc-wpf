@@ -203,6 +203,10 @@
             Header="BusyOverlay"
             IsExpanded="True"
             SamplePath="Progressing.BusyOverlayView" />
+        <sample:SampleTreeViewItem
+            Header="Skeleton"
+            IsExpanded="True"
+            SamplePath="Progressing.SkeletonView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Selectors">
