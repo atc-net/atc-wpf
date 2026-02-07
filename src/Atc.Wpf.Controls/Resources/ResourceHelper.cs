@@ -7,6 +7,7 @@ internal static class ResourceHelper
     private static readonly Dictionary<string, BitmapImage> CacheFlags = new(StringComparer.Ordinal);
     private static readonly Dictionary<RenderFlagIndicatorType, Dictionary<string, BitmapImage>> CachedResults = [];
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static Dictionary<string, BitmapImage> GetFlags(
         RenderFlagIndicatorType renderFlagIndicatorType)
     {

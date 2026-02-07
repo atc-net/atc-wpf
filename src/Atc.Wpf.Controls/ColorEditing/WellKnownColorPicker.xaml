@@ -23,6 +23,7 @@
                     Width="16"
                     Height="16"
                     Margin="2"
+                    AutomationProperties.Name="{Binding Path=DisplayName}"
                     Background="{Binding Path=ColorBrush}"
                     BorderThickness="1"
                     Click="OnPaletteColorClick">
