@@ -117,6 +117,10 @@ public sealed partial class RangeSlider : Control
     }
 
     /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new RangeSliderAutomationPeer(this);
+
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -421,6 +425,11 @@ public sealed partial class RangeSlider : Control
             slider.CoerceRangeValues();
             slider.UpdateThumbPositions();
             slider.OnRangeChanged();
+
+            if (FrameworkElementAutomationPeer.FromElement(slider) is RangeSliderAutomationPeer peer)
+            {
+                peer.RaiseRangeStartPropertyChangedEvent((double)e.OldValue, (double)e.NewValue);
+            }
         }
     }
 
@@ -433,6 +442,11 @@ public sealed partial class RangeSlider : Control
             slider.CoerceRangeValues();
             slider.UpdateThumbPositions();
             slider.OnRangeChanged();
+
+            if (FrameworkElementAutomationPeer.FromElement(slider) is RangeSliderAutomationPeer peer)
+            {
+                peer.RaiseRangeEndPropertyChangedEvent((double)e.OldValue, (double)e.NewValue);
+            }
         }
     }
 

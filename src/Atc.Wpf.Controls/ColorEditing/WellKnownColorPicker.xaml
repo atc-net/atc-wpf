@@ -11,7 +11,10 @@
     d:DesignWidth="200"
     mc:Ignorable="d">
 
-    <ItemsControl ItemsSource="{Binding Path=Palette}">
+    <ItemsControl
+        KeyboardNavigation.DirectionalNavigation="Cycle"
+        KeyboardNavigation.TabNavigation="Once"
+        ItemsSource="{Binding Path=Palette}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapPanel HorizontalAlignment="Center" />
@@ -41,6 +44,10 @@
                         <Style TargetType="{x:Type Button}">
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="3" />
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
                                     <Setter Property="BorderBrush" Value="Black" />
                                     <Setter Property="BorderThickness" Value="3" />
                                 </Trigger>
