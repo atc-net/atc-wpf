@@ -32,6 +32,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/SkeletonElement.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/Skeleton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/ImageButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/SplitButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Flyouts/Flyout.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Flyouts/FlyoutHost.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -67,6 +68,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.SkeletonElement}" TargetType="{x:Type progressing:SkeletonElement}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Skeleton}" TargetType="{x:Type progressing:Skeleton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ImageButton}" TargetType="{x:Type buttonControls:ImageButton}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.SplitButton}" TargetType="{x:Type buttonControls:SplitButton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Flyout}" TargetType="{x:Type flyouts:Flyout}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.FlyoutHost}" TargetType="{x:Type flyouts:FlyoutHost}" />
 

@@ -1,0 +1,164 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons">
+
+    <Style x:Key="AtcApps.Styles.SplitButton.InnerButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="InnerBorder"
+                        Background="{TemplateBinding Background}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InnerBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="InnerBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.SplitButton" TargetType="{x:Type buttonControls:SplitButton}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray10}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource AtcApps.CornerRadius.Button}" />
+        <Setter Property="FontFamily" Value="{DynamicResource AtcApps.Fonts.Family.Button}" />
+        <Setter Property="FontSize" Value="{DynamicResource AtcApps.Font.Size.Button}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type buttonControls:SplitButton}">
+                    <Grid>
+                        <Border
+                            x:Name="OuterBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    x:Name="PART_ActionButton"
+                                    Grid.Column="0"
+                                    Padding="{TemplateBinding Padding}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Style="{StaticResource AtcApps.Styles.SplitButton.InnerButton}">
+                                    <ContentPresenter
+                                        Content="{TemplateBinding Content}"
+                                        ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
+                                </Button>
+
+                                <Border
+                                    Grid.Column="1"
+                                    Width="1"
+                                    Margin="0,4"
+                                    Background="{TemplateBinding BorderBrush}" />
+
+                                <Button
+                                    x:Name="PART_DropdownButton"
+                                    Grid.Column="2"
+                                    Width="24"
+                                    Padding="0"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Style="{StaticResource AtcApps.Styles.SplitButton.InnerButton}">
+                                    <Path
+                                        x:Name="ArrowPath"
+                                        Width="8"
+                                        Height="4"
+                                        Data="M 0 0 L 4 4 L 8 0 Z"
+                                        Fill="{TemplateBinding Foreground}"
+                                        RenderTransformOrigin="0.5,0.5"
+                                        Stretch="Uniform">
+                                        <Path.RenderTransform>
+                                            <RotateTransform Angle="0" />
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <Popup
+                            x:Name="PART_Popup"
+                            AllowsTransparency="True"
+                            IsOpen="{Binding IsDropdownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            Placement="Bottom"
+                            PlacementTarget="{Binding ElementName=OuterBorder}"
+                            PopupAnimation="Fade"
+                            StaysOpen="False">
+                            <Border
+                                MinWidth="{Binding ActualWidth, ElementName=OuterBorder}"
+                                Margin="0,2,0,0"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
+                                BorderThickness="1"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                SnapsToDevicePixels="True">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="8"
+                                        Direction="270"
+                                        Opacity="0.2"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Border.Effect>
+                                <ContentPresenter
+                                    Margin="1"
+                                    Content="{TemplateBinding DropdownContent}"
+                                    ContentTemplate="{TemplateBinding DropdownContentTemplate}" />
+                            </Border>
+                        </Popup>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDropdownOpen" Value="True">
+                            <Setter TargetName="ArrowPath" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Button.Border.Focus}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
