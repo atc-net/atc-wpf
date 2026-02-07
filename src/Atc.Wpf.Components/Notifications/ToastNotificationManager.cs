@@ -84,16 +84,23 @@ public sealed class ToastNotificationManager : IToastNotificationManager
             areaName = "DesktopArea";
         }
 
-        var toastNotificationAreas = Areas
-            .Where(a => a.Name == areaName)
-            .ToArray();
+        var named = new List<ToastNotificationArea>();
+        var nonDesktop = new List<ToastNotificationArea>();
 
-        if (!toastNotificationAreas.Any())
+        foreach (var a in Areas)
         {
-            toastNotificationAreas = Areas
-                .Where(a => a.Name != "DesktopArea")
-                .ToArray();
+            if (a.Name == areaName)
+            {
+                named.Add(a);
+            }
+
+            if (a.Name != "DesktopArea")
+            {
+                nonDesktop.Add(a);
+            }
         }
+
+        var toastNotificationAreas = named.Count > 0 ? named : nonDesktop;
 
         foreach (var area in toastNotificationAreas)
         {

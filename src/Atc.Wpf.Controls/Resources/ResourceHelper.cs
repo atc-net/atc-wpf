@@ -5,10 +5,16 @@ namespace Atc.Wpf.Controls.Resources;
 internal static class ResourceHelper
 {
     private static readonly Dictionary<string, BitmapImage> CacheFlags = new(StringComparer.Ordinal);
+    private static readonly Dictionary<RenderFlagIndicatorType, Dictionary<string, BitmapImage>> CachedResults = [];
 
     public static Dictionary<string, BitmapImage> GetFlags(
         RenderFlagIndicatorType renderFlagIndicatorType)
     {
+        if (CachedResults.TryGetValue(renderFlagIndicatorType, out var cached))
+        {
+            return cached;
+        }
+
         var filterStyle = string.Empty;
         var filterSize = string.Empty;
 
@@ -64,6 +70,7 @@ internal static class ResourceHelper
             }
         }
 
+        CachedResults[renderFlagIndicatorType] = flagBitmaps;
         return flagBitmaps;
     }
 }

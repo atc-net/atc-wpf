@@ -227,7 +227,7 @@ public static class BitmapSourceExtensions
 
         var bitmapImage = new BitmapImage();
         var bitmapEncoder = BitmapEncoderFactory.Create(imageFormatType);
-        var memoryStream = new MemoryStream();
+        using var memoryStream = new MemoryStream();
 
         var bitmapFrame = BitmapFrame.Create(bitmapSource);
         bitmapEncoder.Frames.Add(bitmapFrame);
@@ -244,7 +244,6 @@ public static class BitmapSourceExtensions
         bitmapImage.StreamSource = memoryStream;
         bitmapImage.EndInit();
         bitmapImage.Freeze();
-        memoryStream.Close();
 
         return bitmapImage;
     }
