@@ -15,6 +15,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/ToggleSwitch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Avatar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Badge.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Breadcrumb.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Card.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Chip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Divider.xaml" />
@@ -41,6 +42,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Avatar}" TargetType="{x:Type dataDisplay:Avatar}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.AvatarGroup}" TargetType="{x:Type dataDisplay:AvatarGroup}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Badge}" TargetType="{x:Type dataDisplay:Badge}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Breadcrumb}" TargetType="{x:Type dataDisplay:Breadcrumb}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.BreadcrumbItem}" TargetType="{x:Type dataDisplay:BreadcrumbItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Card}" TargetType="{x:Type dataDisplay:Card}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Chip}" TargetType="{x:Type dataDisplay:Chip}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Divider}" TargetType="{x:Type dataDisplay:Divider}" />
