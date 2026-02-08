@@ -135,6 +135,9 @@
   <data name="ClearAll" xml:space="preserve">
     <value>Slet alt</value>
   </data>
+  <data name="ClearHistory" xml:space="preserve">
+    <value>Ryd historik</value>
+  </data>
   <data name="CollapseAll" xml:space="preserve">
     <value>Skjul alle</value>
   </data>
@@ -171,6 +174,9 @@
   <data name="Information" xml:space="preserve">
     <value>Information</value>
   </data>
+  <data name="InitialState" xml:space="preserve">
+    <value>Starttilstand</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Sprog</value>
   </data>
@@ -195,6 +201,12 @@
   <data name="PleaseWait3Dots" xml:space="preserve">
     <value>Vent venligst...</value>
   </data>
+  <data name="Redo" xml:space="preserve">
+    <value>Annuller fortryd</value>
+  </data>
+  <data name="RedoAll" xml:space="preserve">
+    <value>Annuller fortryd alle</value>
+  </data>
   <data name="SelectDirectory" xml:space="preserve">
     <value>Vælg en mappe</value>
   </data>
@@ -206,6 +218,12 @@
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Tidsstempel</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+    <value>Fortryd</value>
+  </data>
+  <data name="UndoAll" xml:space="preserve">
+    <value>Fortryd alle</value>
   </data>
   <data name="Warnings" xml:space="preserve">
     <value>Advarsler</value>

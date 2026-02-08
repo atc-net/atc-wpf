@@ -115,6 +115,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear History.
+        /// </summary>
+        public static string ClearHistory {
+            get {
+                return ResourceManager.GetString("ClearHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collapse All.
         /// </summary>
         public static string CollapseAll {
@@ -205,24 +214,6 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} items.
-        /// </summary>
-        public static string ItemCountFormat1 {
-            get {
-                return ResourceManager.GetString("ItemCountFormat1", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to {0} of {1}.
-        /// </summary>
-        public static string ItemCountFilteredFormat2 {
-            get {
-                return ResourceManager.GetString("ItemCountFilteredFormat2", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Font.
         /// </summary>
         public static string Font {
@@ -246,6 +237,33 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Information {
             get {
                 return ResourceManager.GetString("Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial state.
+        /// </summary>
+        public static string InitialState {
+            get {
+                return ResourceManager.GetString("InitialState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string ItemCountFilteredFormat2 {
+            get {
+                return ResourceManager.GetString("ItemCountFilteredFormat2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} items.
+        /// </summary>
+        public static string ItemCountFormat1 {
+            get {
+                return ResourceManager.GetString("ItemCountFormat1", resourceCulture);
             }
         }
         
@@ -349,20 +367,20 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No items found.
-        /// </summary>
-        public static string NoItemsFound {
-            get {
-                return ResourceManager.GetString("NoItemsFound", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No items found.
+        /// </summary>
+        public static string NoItemsFound {
+            get {
+                return ResourceManager.GetString("NoItemsFound", resourceCulture);
             }
         }
         
@@ -403,6 +421,24 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redo.
+        /// </summary>
+        public static string Redo {
+            get {
+                return ResourceManager.GetString("Redo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redo All.
+        /// </summary>
+        public static string RedoAll {
+            get {
+                return ResourceManager.GetString("RedoAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a directory.
         /// </summary>
         public static string SelectDirectory {
@@ -435,6 +471,24 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Timestamp {
             get {
                 return ResourceManager.GetString("Timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo.
+        /// </summary>
+        public static string Undo {
+            get {
+                return ResourceManager.GetString("Undo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo All.
+        /// </summary>
+        public static string UndoAll {
+            get {
+                return ResourceManager.GetString("UndoAll", resourceCulture);
             }
         }
         

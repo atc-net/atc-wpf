@@ -135,6 +135,9 @@
   <data name="ClearAll" xml:space="preserve">
     <value>Alles löschen</value>
   </data>
+  <data name="ClearHistory" xml:space="preserve">
+    <value>Verlauf löschen</value>
+  </data>
   <data name="CollapseAll" xml:space="preserve">
     <value>Alles reduzieren</value>
   </data>
@@ -171,6 +174,9 @@
   <data name="Information" xml:space="preserve">
     <value>Information</value>
   </data>
+  <data name="InitialState" xml:space="preserve">
+    <value>Ausgangszustand</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
@@ -195,6 +201,12 @@
   <data name="PleaseWait3Dots" xml:space="preserve">
     <value>Warten Sie mal...</value>
   </data>
+  <data name="Redo" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="RedoAll" xml:space="preserve">
+    <value>Alles wiederherstellen</value>
+  </data>
   <data name="SelectDirectory" xml:space="preserve">
     <value>Wählen Sie ein Verzeichnis aus</value>
   </data>
@@ -206,6 +218,12 @@
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Zeitstempel</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+    <value>Rückgängig</value>
+  </data>
+  <data name="UndoAll" xml:space="preserve">
+    <value>Alles rückgängig</value>
   </data>
   <data name="Warnings" xml:space="preserve">
     <value>Warnungen</value>

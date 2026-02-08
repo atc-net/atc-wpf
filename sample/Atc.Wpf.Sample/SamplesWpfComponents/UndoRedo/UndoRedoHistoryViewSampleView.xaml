@@ -1,0 +1,83 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfComponents.UndoRedo.UndoRedoHistoryViewSampleView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:components="clr-namespace:Atc.Wpf.Components.UndoRedo;assembly=Atc.Wpf.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:undoRedo="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.UndoRedo"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <undoRedo:UndoRedoHistoryViewSampleViewModel />
+    </UserControl.DataContext>
+
+    <atc:GridEx Columns="300,*" Rows="Auto,*">
+
+        <GroupBox
+            Grid.ColumnSpan="2"
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="8">
+                <TextBlock Width="700" TextWrapping="Wrap">
+                    UndoRedoHistoryView is a ready-made control that displays the undo/redo history
+                    with a toolbar for navigation, mark-saved, and clear operations.
+                </TextBlock>
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="16">
+                    <CheckBox
+                        x:Name="CbShowToolbar"
+                        Content="ShowToolbar"
+                        IsChecked="True" />
+                    <CheckBox
+                        x:Name="CbShowClear"
+                        Content="ShowClear"
+                        IsChecked="True" />
+                    <CheckBox
+                        x:Name="CbShowMarkSaved"
+                        Content="ShowMarkSaved" />
+                </atc:UniformSpacingPanel>
+            </atc:UniformSpacingPanel>
+        </GroupBox>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+
+            <GroupBox Padding="10" Header="Text Input">
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="8">
+                    <TextBox Text="{Binding TextInput, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button Command="{Binding SetTextCommand}" Content="Set Text (tracked)" />
+                    <Button Command="{Binding GroupedChangeCommand}" Content="Grouped Change" />
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,10,0,0"
+                Padding="10"
+                Header="Current Value">
+                <TextBlock
+                    FontFamily="Consolas"
+                    FontSize="14"
+                    Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                    Text="{Binding CurrentText}" />
+            </GroupBox>
+
+        </StackPanel>
+
+        <GroupBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Padding="5"
+            Header="Undo/Redo History">
+            <components:UndoRedoHistoryView
+                DataContext="{Binding HistoryViewModel}"
+                ShowClear="{Binding ElementName=CbShowClear, Path=IsChecked}"
+                ShowMarkSaved="{Binding ElementName=CbShowMarkSaved, Path=IsChecked}"
+                ShowToolbar="{Binding ElementName=CbShowToolbar, Path=IsChecked}" />
+        </GroupBox>
+
+    </atc:GridEx>
+
+</UserControl>

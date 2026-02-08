@@ -371,6 +371,135 @@ public sealed class UndoRedoServiceTests
     }
 
     [Fact]
+    public void HasUnsavedChanges_FalseInitially()
+    {
+        Assert.False(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_TrueAfterExecute()
+    {
+        sut.Execute(new UndoCommand("test", () => { }, () => { }));
+
+        Assert.True(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void MarkSaved_ClearsHasUnsavedChanges()
+    {
+        sut.Execute(new UndoCommand("test", () => { }, () => { }));
+        Assert.True(sut.HasUnsavedChanges);
+
+        sut.MarkSaved();
+
+        Assert.False(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_TrueAfterExecutePostSave()
+    {
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        sut.MarkSaved();
+
+        sut.Execute(new UndoCommand("b", () => { }, () => { }));
+
+        Assert.True(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_FalseAfterUndoBackToSavePoint()
+    {
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        sut.MarkSaved();
+        sut.Execute(new UndoCommand("b", () => { }, () => { }));
+        Assert.True(sut.HasUnsavedChanges);
+
+        sut.Undo();
+
+        Assert.False(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_TrueAfterUndoPastSavePoint()
+    {
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        sut.MarkSaved();
+
+        sut.Undo();
+
+        Assert.True(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_FalseAfterRedoBackToSavePoint()
+    {
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        sut.MarkSaved();
+        sut.Undo();
+        Assert.True(sut.HasUnsavedChanges);
+
+        sut.Redo();
+
+        Assert.False(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_FalseAfterClear()
+    {
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        sut.MarkSaved();
+        sut.Execute(new UndoCommand("b", () => { }, () => { }));
+
+        sut.Clear();
+
+        Assert.False(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void HasUnsavedChanges_TrueWhenSavePointTrimmed()
+    {
+        sut.MaxHistorySize = 2;
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        sut.MarkSaved();
+        sut.Execute(new UndoCommand("b", () => { }, () => { }));
+        sut.Execute(new UndoCommand("c", () => { }, () => { }));
+
+        // "a" (the saved command) should have been trimmed
+        Assert.True(sut.HasUnsavedChanges);
+
+        // Undoing back won't help since save point is gone
+        sut.UndoAll();
+        Assert.True(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void MarkSaved_AtInitialState_TracksCorrectly()
+    {
+        // Mark saved when no commands exist
+        sut.MarkSaved();
+        Assert.False(sut.HasUnsavedChanges);
+
+        // Execute makes it dirty
+        sut.Execute(new UndoCommand("a", () => { }, () => { }));
+        Assert.True(sut.HasUnsavedChanges);
+
+        // Undo back to initial state makes it clean
+        sut.Undo();
+        Assert.False(sut.HasUnsavedChanges);
+    }
+
+    [Fact]
+    public void MarkSaved_FiresStateChanged()
+    {
+        var fired = false;
+        sut.StateChanged += (_, _) => fired = true;
+
+        sut.MarkSaved();
+
+        Assert.True(fired);
+    }
+
+    [Fact]
     public void ActionPerformed_FiredOnAdd()
     {
         UndoRedoEventArgs? receivedArgs = null;

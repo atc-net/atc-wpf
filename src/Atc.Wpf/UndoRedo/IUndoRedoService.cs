@@ -39,6 +39,14 @@ public interface IUndoRedoService
     int MaxHistorySize { get; set; }
 
     /// <summary>
+    /// Gets a value indicating whether the current state differs from the
+    /// last saved state. Use with <see cref="MarkSaved"/> to track document
+    /// modifications (e.g., enabling/disabling a Save button or showing a
+    /// dirty indicator in the title bar).
+    /// </summary>
+    bool HasUnsavedChanges { get; }
+
+    /// <summary>
     /// Raised after a command is executed, undone, or redone.
     /// </summary>
     event EventHandler<UndoRedoEventArgs>? ActionPerformed;
@@ -110,4 +118,11 @@ public interface IUndoRedoService
     /// Clears both the undo and redo stacks.
     /// </summary>
     void Clear();
+
+    /// <summary>
+    /// Marks the current state as saved. <see cref="HasUnsavedChanges"/> will
+    /// return <see langword="false"/> until the undo/redo position changes
+    /// from this point.
+    /// </summary>
+    void MarkSaved();
 }

@@ -33,6 +33,7 @@ global using Atc.Wpf.Components.Notifications;
 global using Atc.Wpf.Components.Printing;
 global using Atc.Wpf.Components.Progressing;
 global using Atc.Wpf.Components.Settings;
+global using Atc.Wpf.Components.UndoRedo;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.DragDrop;

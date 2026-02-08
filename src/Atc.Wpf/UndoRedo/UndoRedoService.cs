@@ -15,6 +15,9 @@ public sealed class UndoRedoService : IUndoRedoService
 
     private UndoCommandGroupScope? activeScope;
     private bool isExecuting;
+    private IUndoCommand? savedCommand;
+    private bool savedAtInitialState = true;
+    private bool savedCommandTrimmed;
 
     public event EventHandler<UndoRedoEventArgs>? ActionPerformed;
 
@@ -76,6 +79,28 @@ public sealed class UndoRedoService : IUndoRedoService
     }
 
     public int MaxHistorySize { get; set; } = DefaultMaxHistorySize;
+
+    public bool HasUnsavedChanges
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                if (savedCommandTrimmed)
+                {
+                    return true;
+                }
+
+                if (savedAtInitialState)
+                {
+                    return undoStack.Count > 0;
+                }
+
+                return undoStack.First is null ||
+                       !ReferenceEquals(undoStack.First.Value, savedCommand);
+            }
+        }
+    }
 
     public void Execute(IUndoCommand command)
     {
@@ -296,6 +321,30 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             undoStack.Clear();
             redoStack.Clear();
+            savedCommand = null;
+            savedAtInitialState = true;
+            savedCommandTrimmed = false;
+        }
+
+        StateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void MarkSaved()
+    {
+        lock (stackLock)
+        {
+            savedCommandTrimmed = false;
+
+            if (undoStack.First is null)
+            {
+                savedCommand = null;
+                savedAtInitialState = true;
+            }
+            else
+            {
+                savedCommand = undoStack.First.Value;
+                savedAtInitialState = false;
+            }
         }
 
         StateChanged?.Invoke(this, EventArgs.Empty);
@@ -347,7 +396,13 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         while (undoStack.Count > MaxHistorySize)
         {
+            var removed = undoStack.Last!.Value;
             undoStack.RemoveLast();
+
+            if (!savedAtInitialState && ReferenceEquals(removed, savedCommand))
+            {
+                savedCommandTrimmed = true;
+            }
         }
     }
 
