@@ -11,6 +11,10 @@
 
     <TreeViewItem Header="Inputs">
         <sample:SampleTreeViewItem
+            Header="CurrencyBox"
+            IsExpanded="True"
+            SamplePath="Inputs.CurrencyBoxView" />
+        <sample:SampleTreeViewItem
             Header="DecimalBox"
             IsExpanded="True"
             SamplePath="Inputs.DecimalBoxView" />
