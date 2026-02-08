@@ -1328,5 +1328,23 @@ namespace Atc.Wpf.Controls.Resources {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Selected.
+        /// </summary>
+        public static string Selected {
+            get {
+                return ResourceManager.GetString("Selected", resourceCulture);
+            }
+        }
     }
 }

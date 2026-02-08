@@ -213,4 +213,40 @@
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="MoveToSelected" xml:space="preserve">
+    <value>Flyt til valgt</value>
+  </data>
+  <data name="MoveAllToSelected" xml:space="preserve">
+    <value>Flyt alle til valgt</value>
+  </data>
+  <data name="MoveToAvailable" xml:space="preserve">
+    <value>Flyt til tilgængelig</value>
+  </data>
+  <data name="MoveAllToAvailable" xml:space="preserve">
+    <value>Flyt alle til tilgængelig</value>
+  </data>
+  <data name="MoveToTop" xml:space="preserve">
+    <value>Flyt til toppen</value>
+  </data>
+  <data name="MoveUp" xml:space="preserve">
+    <value>Flyt op</value>
+  </data>
+  <data name="MoveDown" xml:space="preserve">
+    <value>Flyt ned</value>
+  </data>
+  <data name="MoveToBottom" xml:space="preserve">
+    <value>Flyt til bunden</value>
+  </data>
+  <data name="FilterPlaceholder" xml:space="preserve">
+    <value>Søg...</value>
+  </data>
+  <data name="ItemCountFormat1" xml:space="preserve">
+    <value>{0} elementer</value>
+  </data>
+  <data name="ItemCountFilteredFormat2" xml:space="preserve">
+    <value>{0} af {1}</value>
+  </data>
+  <data name="NoItemsFound" xml:space="preserve">
+    <value>Ingen elementer fundet</value>
+  </data>
 </root>

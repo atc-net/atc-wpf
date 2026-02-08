@@ -19,7 +19,7 @@ namespace Atc.Wpf.Controls.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Miscellaneous {
@@ -196,6 +196,33 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search....
+        /// </summary>
+        public static string FilterPlaceholder {
+            get {
+                return ResourceManager.GetString("FilterPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} items.
+        /// </summary>
+        public static string ItemCountFormat1 {
+            get {
+                return ResourceManager.GetString("ItemCountFormat1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string ItemCountFilteredFormat2 {
+            get {
+                return ResourceManager.GetString("ItemCountFilteredFormat2", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Font.
         /// </summary>
         public static string Font {
@@ -249,6 +276,87 @@ namespace Atc.Wpf.Controls.Resources {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Move all to available.
+        /// </summary>
+        public static string MoveAllToAvailable {
+            get {
+                return ResourceManager.GetString("MoveAllToAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move all to selected.
+        /// </summary>
+        public static string MoveAllToSelected {
+            get {
+                return ResourceManager.GetString("MoveAllToSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move down.
+        /// </summary>
+        public static string MoveDown {
+            get {
+                return ResourceManager.GetString("MoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to available.
+        /// </summary>
+        public static string MoveToAvailable {
+            get {
+                return ResourceManager.GetString("MoveToAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to bottom.
+        /// </summary>
+        public static string MoveToBottom {
+            get {
+                return ResourceManager.GetString("MoveToBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to selected.
+        /// </summary>
+        public static string MoveToSelected {
+            get {
+                return ResourceManager.GetString("MoveToSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to top.
+        /// </summary>
+        public static string MoveToTop {
+            get {
+                return ResourceManager.GetString("MoveToTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move up.
+        /// </summary>
+        public static string MoveUp {
+            get {
+                return ResourceManager.GetString("MoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No items found.
+        /// </summary>
+        public static string NoItemsFound {
+            get {
+                return ResourceManager.GetString("NoItemsFound", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>

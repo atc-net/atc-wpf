@@ -213,4 +213,40 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="MoveToSelected" xml:space="preserve">
+    <value>Move to selected</value>
+  </data>
+  <data name="MoveAllToSelected" xml:space="preserve">
+    <value>Move all to selected</value>
+  </data>
+  <data name="MoveToAvailable" xml:space="preserve">
+    <value>Move to available</value>
+  </data>
+  <data name="MoveAllToAvailable" xml:space="preserve">
+    <value>Move all to available</value>
+  </data>
+  <data name="MoveToTop" xml:space="preserve">
+    <value>Move to top</value>
+  </data>
+  <data name="MoveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="MoveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="MoveToBottom" xml:space="preserve">
+    <value>Move to bottom</value>
+  </data>
+  <data name="FilterPlaceholder" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="ItemCountFormat1" xml:space="preserve">
+    <value>{0} items</value>
+  </data>
+  <data name="ItemCountFilteredFormat2" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="NoItemsFound" xml:space="preserve">
+    <value>No items found</value>
+  </data>
 </root>
