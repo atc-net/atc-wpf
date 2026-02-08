@@ -39,6 +39,7 @@ public partial class App
                     .ValidateDataAnnotations()
                     .ValidateOnStart();
 
+                services.AddSingleton<IToastNotificationService, ToastNotificationService>();
                 services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
                 services.AddSingleton<MainWindow>();
             })

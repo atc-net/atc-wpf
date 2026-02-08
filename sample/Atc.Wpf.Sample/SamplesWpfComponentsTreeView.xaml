@@ -28,6 +28,10 @@
             Header="ToastNotification"
             IsExpanded="True"
             SamplePath="Notifications.ToastNotificationView" />
+        <sample:SampleTreeViewItem
+            Header="ToastNotificationService"
+            IsExpanded="True"
+            SamplePath="Notifications.ToastNotificationServiceView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Viewers">
