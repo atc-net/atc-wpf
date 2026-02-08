@@ -1,0 +1,52 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing">
+
+    <Style x:Key="AtcApps.Styles.Overlay" TargetType="{x:Type progressing:Overlay}">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="OverlayBrush" Value="#000000" />
+        <Setter Property="OverlayOpacity" Value="0.5" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type progressing:Overlay}">
+                    <Grid>
+                        <ContentPresenter
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                        <Grid
+                            x:Name="PART_OverlayPanel"
+                            Opacity="0"
+                            Visibility="Collapsed">
+                            <Rectangle
+                                x:Name="PART_DimmingRect"
+                                Fill="{TemplateBinding OverlayBrush}"
+                                Opacity="{TemplateBinding OverlayOpacity}" />
+                            <ContentPresenter
+                                x:Name="PART_OverlayContentPresenter"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding OverlayContent}"
+                                ContentTemplate="{TemplateBinding OverlayContentTemplate}"
+                                TextElement.Foreground="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
