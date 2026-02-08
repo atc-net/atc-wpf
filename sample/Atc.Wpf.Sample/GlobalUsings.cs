@@ -47,6 +47,7 @@ global using Atc.Wpf.Forms.Writers;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Network;
+global using Atc.Wpf.Notifications;
 global using Atc.Wpf.Options;
 global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.Serialization.JsonConverters;
