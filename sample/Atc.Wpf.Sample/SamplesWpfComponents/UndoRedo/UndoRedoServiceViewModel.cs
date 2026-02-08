@@ -88,11 +88,16 @@ public sealed partial class UndoRedoServiceViewModel : ViewModelBase
     private void ClearHistory()
         => undoRedoService.Clear();
 
+    [RelayCommand]
+    private void MarkSaved()
+        => undoRedoService.MarkSaved();
+
     private void RefreshStacks()
     {
         UndoItems = new ObservableCollection<IUndoCommand>(undoRedoService.UndoCommands);
         RedoItems = new ObservableCollection<IUndoCommand>(undoRedoService.RedoCommands);
         UndoHeaderText = $"Undo Stack ({UndoItems.Count})";
         RedoHeaderText = $"Redo Stack ({RedoItems.Count})";
+        IsDirty = undoRedoService.HasUnsavedChanges;
     }
 }

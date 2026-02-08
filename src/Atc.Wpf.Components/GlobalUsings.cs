@@ -38,6 +38,7 @@ global using Atc.Wpf.Printing;
 global using Atc.Wpf.Progressing;
 global using Atc.Wpf.Theming.Themes.Dialogs;
 global using Atc.Wpf.Translation;
+global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.XamlToolkit.Command;
 global using Atc.XamlToolkit.Controls.Attributes;
