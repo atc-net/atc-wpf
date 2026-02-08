@@ -52,6 +52,11 @@
 
                         <atc:ImageButton ImageLocation="Center" ImageSource="/Assets/ok.png" />
 
+                        <atc:ImageButton
+                            Width="50"
+                            ImageLocation="Center"
+                            ImageSource="/Assets/ok.png" />
+
                     </atc:UniformSpacingPanel>
                     <atc:UniformSpacingPanel
                         Grid.Column="1"
