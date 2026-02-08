@@ -107,7 +107,7 @@ public sealed partial class TerminalViewer : IDisposable
             sb.AppendLine(terminalLineItem.Text);
         }
 
-        Clipboard.SetText(sb.ToString());
+        System.Windows.Clipboard.SetText(sb.ToString());
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteHasItems))]

@@ -118,7 +118,7 @@ public partial class JsonViewer
     private void CopyToClipboard(
         object sender,
         RoutedEventArgs e)
-        => Clipboard.SetText(
+        => System.Windows.Clipboard.SetText(
             string.IsNullOrEmpty(Data)
                 ? "{ }"
                 : Data);

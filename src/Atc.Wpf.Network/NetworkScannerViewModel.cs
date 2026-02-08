@@ -192,7 +192,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry is not null)
         {
-            Clipboard.SetText(SelectedEntry.IpAddress.ToString());
+            System.Windows.Clipboard.SetText(SelectedEntry.IpAddress.ToString());
         }
     }
 
@@ -201,7 +201,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry?.Hostname is not null)
         {
-            Clipboard.SetText(SelectedEntry.Hostname);
+            System.Windows.Clipboard.SetText(SelectedEntry.Hostname);
         }
     }
 
@@ -210,7 +210,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry?.MacAddress is not null)
         {
-            Clipboard.SetText(SelectedEntry.MacAddress);
+            System.Windows.Clipboard.SetText(SelectedEntry.MacAddress);
         }
     }
 
@@ -250,7 +250,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
             sb.AppendLine(string.Format(CultureInfo.CurrentCulture, Resources.Resources.CopyInfoOpenPortsFormat1, SelectedEntry.OpenPortNumbersAsCommaList));
         }
 
-        Clipboard.SetText(sb.ToString());
+        System.Windows.Clipboard.SetText(sb.ToString());
     }
 
     private bool CanScan()
