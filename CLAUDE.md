@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 70+ controls, and source generators. The project follows a four-tier architecture:
+ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 150+ controls, and source generators. The project follows a four-tier architecture:
 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
 - **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
@@ -142,11 +142,44 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 | Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demos |
 | Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |
 
+## Control Readme Conventions
+
+Each control can have a `_Readme.md` file that is displayed in the sample app's **Readme** tab. Three naming conventions exist:
+
+| Convention | Placement | Scope | Example |
+|---|---|---|---|
+| `[Control]_Readme.md` | Next to the control `.cs` file | Single control | `Badge_Readme.md` |
+| `@Readme.md` | In a category folder under `docs/` or `src/` | All controls in that namespace | `docs/Theming/@Readme.md` |
+| `Readme.md` | In a library/folder root | Multiple controls in that folder | `src/Atc.Wpf.Forms/Readme.md` |
+
+### Sample App Readme Discovery
+
+The sample app auto-discovers readme files via `SampleViewerViewModel.LoadAndRenderMarkdownDocumentIfPossible()` in `src/Atc.Wpf.Controls.Sample/SampleViewerViewModel.cs`. It pre-caches all `*.md` files from the solution root and uses case-insensitive `EndsWith()` matching with this fallback chain:
+
+1. `docs/{section}/{className}@Readme.md` — section-based lookup
+2. `{className}_Readme.md` — control-specific readme next to source
+3. `docs/{namespace_folder}/@Readme.md` — namespace-based category fallback (also tries singular form)
+4. `{classViewName}_Readme.md` — view class name fallback
+
+### When Creating a New Control
+
+Place a `[ControlName]_Readme.md` file next to the control's `.cs` file. Follow the template pattern from `GridEx_Readme.md`: emoji title, Overview, Namespace, Usage examples, Properties table (Property/Type/Default/Description), Notes, Related Controls, Sample Application path.
+
+### Important
+
+- The `@Readme.md` and `_Readme.md` naming patterns are **intentional** for sample-app readme pickup — do NOT rename them
+- `@` prefix files serve as category-level documentation shared across a namespace
+- Controls without their own `_Readme.md` fall back to category or folder-level readmes
+
 ## Key Documentation
 
 - MVVM guide: `docs/Mvvm/@Readme.md`
 - Source generators: `docs/SourceGenerators/ViewModel.md`
 - Restructuring plan: `docs/RESTRUCTURING_PLAN.md`
+- Theming controls: `docs/Theming/@Readme.md`
+- Font icons: `docs/FontIcons/@Readme.md`
+- Layout controls: `docs/Layouts/@Readme.md`
+- Data display controls: `docs/DataDisplay/@Readme.md`
 - Form controls: `src/Atc.Wpf.Forms/` (LabelTextBox, LabelComboBox, etc.)
 - Base controls: `src/Atc.Wpf.Controls/BaseControls/` (NumericBox, IntegerBox, etc.)
 - Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications)

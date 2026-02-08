@@ -53,13 +53,13 @@ public sealed class SvgImage : Control
         nameof(OverrideColor),
         typeof(Color?),
         typeof(SvgImage),
-        new PropertyMetadata(default(Color?)));
+        new FrameworkPropertyMetadata(default(Color?), FrameworkPropertyMetadataOptions.AffectsRender, OverrideColorPropertyChanged));
 
     public static readonly DependencyProperty OverrideStrokeColorProperty = DependencyProperty.Register(
         nameof(OverrideStrokeColor),
         typeof(Color?),
         typeof(SvgImage),
-        new PropertyMetadata(default(Color?)));
+        new FrameworkPropertyMetadata(default(Color?), FrameworkPropertyMetadataOptions.AffectsRender, OverrideStrokeColorPropertyChanged));
 
     public static readonly DependencyProperty OverrideStrokeWidthProperty = DependencyProperty.Register(
         nameof(OverrideStrokeWidth),
@@ -433,6 +433,32 @@ public sealed class SvgImage : Control
         {
             svgImage.SetImage(newDrawing);
         }
+    }
+
+    private static void OverrideColorPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not SvgImage svgImage ||
+            svgImage.svgRender is null)
+        {
+            return;
+        }
+
+        svgImage.ReRenderSvg();
+    }
+
+    private static void OverrideStrokeColorPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not SvgImage svgImage ||
+            svgImage.svgRender is null)
+        {
+            return;
+        }
+
+        svgImage.ReRenderSvg();
     }
 
     private static void OverrideStrokeWidthPropertyChanged(

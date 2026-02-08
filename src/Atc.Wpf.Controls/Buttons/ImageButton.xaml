@@ -72,9 +72,11 @@
                                 Width="{Binding Path=ImageWidth, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 Height="{Binding Path=ImageHeight, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 ControlSizeType="ContentToSizeNoStretch"
+                                HorizontalContentAlignment="Center"
                                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 OverrideColor="{Binding Path=SvgImageOverrideColor, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
                                 Source="{Binding Path=SvgImageSource, RelativeSource={RelativeSource AncestorType=buttonControls:ImageButton}}"
+                                VerticalContentAlignment="Center"
                                 Visibility="Collapsed">
                                 <atc:SvgImage.Margin>
                                     <MultiBinding Converter="{StaticResource ImageLocationToMarginMultiValueConverter}">
