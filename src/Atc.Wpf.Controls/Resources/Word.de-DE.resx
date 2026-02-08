@@ -540,4 +540,10 @@
   <data name="Logout" xml:space="preserve">
     <value>Ausloggen</value>
   </data>
+  <data name="Available" xml:space="preserve">
+    <value>Verfügbar</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Ausgewählt</value>
+  </data>
 </root>

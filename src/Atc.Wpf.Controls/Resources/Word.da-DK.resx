@@ -540,4 +540,10 @@
   <data name="Logout" xml:space="preserve">
     <value>Log ud</value>
   </data>
+  <data name="Available" xml:space="preserve">
+    <value>Tilgængelig</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Valgt</value>
+  </data>
 </root>

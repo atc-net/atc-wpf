@@ -22,6 +22,14 @@
     <None Remove="Resources\Icons\color_palette.svg" />
     <None Remove="Resources\Icons\file.svg" />
     <None Remove="Resources\Icons\folder.svg" />
+    <None Remove="Resources\Icons\arrow_bottom.svg" />
+    <None Remove="Resources\Icons\arrow_down.svg" />
+    <None Remove="Resources\Icons\arrow_top.svg" />
+    <None Remove="Resources\Icons\arrow_up.svg" />
+    <None Remove="Resources\Icons\chevron_double_left.svg" />
+    <None Remove="Resources\Icons\chevron_double_right.svg" />
+    <None Remove="Resources\Icons\chevron_left.svg" />
+    <None Remove="Resources\Icons\chevron_right.svg" />
     <None Remove="Resources\information.svg" />
     <None Remove="Resources\question-mark.svg" />
     <None Remove="Resources\question.svg" />
@@ -51,6 +59,14 @@
     <Resource Include="Resources\Icons\folder.svg" />
     <Resource Include="Resources\Icons\info_help.svg" />
     <Resource Include="Resources\Icons\question-mark.svg" />
+    <Resource Include="Resources\Icons\arrow_bottom.svg" />
+    <Resource Include="Resources\Icons\arrow_down.svg" />
+    <Resource Include="Resources\Icons\arrow_top.svg" />
+    <Resource Include="Resources\Icons\arrow_up.svg" />
+    <Resource Include="Resources\Icons\chevron_double_left.svg" />
+    <Resource Include="Resources\Icons\chevron_double_right.svg" />
+    <Resource Include="Resources\Icons\chevron_left.svg" />
+    <Resource Include="Resources\Icons\chevron_right.svg" />
   </ItemGroup>
 
   <ItemGroup>

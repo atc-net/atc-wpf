@@ -235,6 +235,10 @@
 
     <TreeViewItem Header="Selectors">
         <sample:SampleTreeViewItem
+            Header="DualListSelector"
+            IsExpanded="True"
+            SamplePath="Selectors.DualListSelectorView" />
+        <sample:SampleTreeViewItem
             Header="CountrySelector"
             IsExpanded="True"
             SamplePath="Selectors.CountrySelectorView" />
