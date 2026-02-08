@@ -1,0 +1,167 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Progressing.OverlayView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="700"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto">
+
+            <!--  Section 1: Features  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock Width="700" TextWrapping="Wrap">
+                    The Overlay control provides a general-purpose translucent dimming layer
+                    over wrapped content. Unlike BusyOverlay (which provides a built-in progress bar
+                    and "Please wait" UI), the Overlay is content-agnostic — you provide any content
+                    to display on top of the dimming layer. Supports fade animations, auto-close on
+                    click, and customizable opacity.
+                </TextBlock>
+            </GroupBox>
+
+            <!--  Section 2: Basic Overlay  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Basic Overlay">
+                <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+                    <!--  Controls  -->
+                    <atc:UniformSpacingPanel
+                        Margin="0,0,0,10"
+                        Orientation="Horizontal"
+                        Spacing="20">
+                        <Button
+                            x:Name="BtnToggleBasic"
+                            MinWidth="120"
+                            Click="OnToggleBasicClick"
+                            Content="Show Overlay" />
+                        <atc:LabelCheckBox
+                            x:Name="CbAutoClose"
+                            IsChecked="True"
+                            LabelText="AutoClose" />
+                    </atc:UniformSpacingPanel>
+
+                    <!--  Overlay wrapping content  -->
+                    <atc:Overlay x:Name="BasicOverlay" AutoClose="{Binding ElementName=CbAutoClose, Path=IsChecked}">
+                        <atc:Overlay.OverlayContent>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <atc:LoadingIndicator
+                                    Width="48"
+                                    Height="48"
+                                    HorizontalAlignment="Center"
+                                    Foreground="White"
+                                    IsActive="True"
+                                    SpeedRatio="1" />
+                                <TextBlock
+                                    Margin="0,12,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontSize="14"
+                                    Foreground="White"
+                                    Text="Loading..." />
+                            </StackPanel>
+                        </atc:Overlay.OverlayContent>
+
+                        <!--  Wrapped content  -->
+                        <StackPanel Margin="20">
+                            <atc:LabelTextBox LabelText="First name" WatermarkText="Enter first name" />
+                            <atc:LabelTextBox LabelText="Last name" WatermarkText="Enter last name" />
+                            <atc:LabelIntegerBox
+                                LabelText="Age"
+                                Maximum="120"
+                                Minimum="0"
+                                WatermarkText="Enter age" />
+                        </StackPanel>
+                    </atc:Overlay>
+                </atc:AutoGrid>
+            </GroupBox>
+
+            <!--  Section 3: Custom Content Overlay  -->
+            <GroupBox Padding="10" Header="Custom Content Overlay">
+                <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+                    <!--  Controls  -->
+                    <atc:UniformSpacingPanel
+                        Margin="0,0,0,10"
+                        Orientation="Horizontal"
+                        Spacing="20">
+                        <Button
+                            x:Name="BtnToggleCustom"
+                            MinWidth="120"
+                            Click="OnToggleCustomClick"
+                            Content="Show Overlay" />
+                        <TextBlock VerticalAlignment="Center" Text="Overlay Opacity:" />
+                        <Slider
+                            x:Name="SliderOpacity"
+                            Width="120"
+                            VerticalAlignment="Center"
+                            Maximum="1.0"
+                            Minimum="0.0"
+                            Value="0.6" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=SliderOpacity, Path=Value, StringFormat='{}{0:F2}'}" />
+                    </atc:UniformSpacingPanel>
+
+                    <!--  Overlay with custom card content  -->
+                    <atc:Overlay x:Name="CustomOverlay" OverlayOpacity="{Binding ElementName=SliderOpacity, Path=Value}">
+                        <atc:Overlay.OverlayContent>
+                            <Border
+                                MinWidth="300"
+                                Padding="24"
+                                Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.AccentBase}"
+                                BorderThickness="1"
+                                CornerRadius="6">
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="0,0,0,8"
+                                        FontSize="16"
+                                        FontWeight="SemiBold"
+                                        Foreground="{DynamicResource AtcApps.Brushes.ThemeForeground}"
+                                        Text="Confirmation" />
+                                    <TextBlock
+                                        Margin="0,0,0,16"
+                                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                                        Text="Are you sure you want to proceed with this action?"
+                                        TextWrapping="Wrap" />
+                                    <atc:UniformSpacingPanel
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal"
+                                        Spacing="8">
+                                        <Button
+                                            MinWidth="80"
+                                            Click="OnDismissCustomClick"
+                                            Content="Cancel" />
+                                        <Button
+                                            MinWidth="80"
+                                            Click="OnDismissCustomClick"
+                                            Content="Confirm" />
+                                    </atc:UniformSpacingPanel>
+                                </StackPanel>
+                            </Border>
+                        </atc:Overlay.OverlayContent>
+
+                        <!--  Wrapped content  -->
+                        <StackPanel Margin="20">
+                            <atc:LabelTextBox LabelText="Server" WatermarkText="Enter server address" />
+                            <atc:LabelIntegerBox
+                                LabelText="Port"
+                                Maximum="65535"
+                                Minimum="1"
+                                WatermarkText="Enter port" />
+                            <atc:LabelTextBox LabelText="Database" WatermarkText="Enter database name" />
+                        </StackPanel>
+                    </atc:Overlay>
+                </atc:AutoGrid>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

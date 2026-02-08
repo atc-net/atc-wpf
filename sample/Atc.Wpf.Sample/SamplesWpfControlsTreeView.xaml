@@ -227,6 +227,10 @@
             Header="Skeleton"
             IsExpanded="True"
             SamplePath="Progressing.SkeletonView" />
+        <sample:SampleTreeViewItem
+            Header="Overlay"
+            IsExpanded="True"
+            SamplePath="Progressing.OverlayView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Selectors">
