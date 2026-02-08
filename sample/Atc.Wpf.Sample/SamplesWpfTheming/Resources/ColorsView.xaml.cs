@@ -61,7 +61,7 @@ public partial class ColorsView : INotifyPropertyChanged
         }
 
         var key = item.CommandParameter.ToString()!;
-        Clipboard.SetText(key);
+        System.Windows.Clipboard.SetText(key);
     }
 
     private void OnCopyColorCodeToClipboardClick(
@@ -75,7 +75,7 @@ public partial class ColorsView : INotifyPropertyChanged
         }
 
         var brush = item.CommandParameter;
-        Clipboard.SetText(brush.ToString()!);
+        System.Windows.Clipboard.SetText(brush.ToString()!);
     }
 
     private void PopulateBrushes()
