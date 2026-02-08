@@ -391,6 +391,21 @@
         <Setter Property="Value" Value="0" />
     </Style>
 
+    <!--  Currency  -->
+    <Style
+        x:Key="AtcApps.Styles.CurrencyBox"
+        BasedOn="{StaticResource AtcApps.Styles.NumericBox}"
+        TargetType="{x:Type atc:CurrencyBox}">
+        <Setter Property="Culture" Value="{Binding Source={x:Static globalization:CultureInfo.CurrentUICulture}}" />
+        <Setter Property="DecimalPointCorrection" Value="Currency" />
+        <Setter Property="DefaultValue" Value="0" />
+        <Setter Property="Minimum" Value="{Binding Source={x:Static system:Decimal.MinValue}}" />
+        <Setter Property="Maximum" Value="{Binding Source={x:Static system:Decimal.MaxValue}}" />
+        <Setter Property="NumericInputMode" Value="Decimal" />
+        <Setter Property="StringFormat" Value="C2" />
+        <Setter Property="Value" Value="0" />
+    </Style>
+
     <!--  Integer  -->
     <Style
         x:Key="AtcApps.Styles.IntegerBox"

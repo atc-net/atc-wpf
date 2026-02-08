@@ -79,6 +79,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelContentView" />
         <sample:SampleTreeViewItem
+            Header="LabelCurrencyBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelCurrencyBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelDecimalBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelDecimalBoxView" />
