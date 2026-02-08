@@ -212,6 +212,13 @@ When `ShowOnlyBasicColors="False"` (default), all 140+ named colors are availabl
 - `Cyan` and `Aqua` share the same hex code (`#00FFFF`)
 - `Magenta` and `Fuchsia` share the same hex code (`#FF00FF`)
 
+## 🔗 Related Controls
+
+- **HueSlider** - Slider for selecting hue values
+- **SaturationBrightnessPicker** - 2D picker for saturation and brightness
+- **TransparencySlider** - Slider for alpha channel selection
+- **AdvancedColorPicker** - Full-featured color picker with multiple input modes
+
 ## 🎮 Sample Application
 
 See the WellKnownColorPicker sample in the Atc.Wpf.Sample application under **Wpf.Controls > Colors > WellKnownColorPicker** for interactive examples.

@@ -52,19 +52,19 @@ using Atc.Wpf.Controls.Media;
 
 ## ⚙️ Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Source` | `string` | Relative URL to SVG resource. Set "Build Action=Resource" for embedded files |
-| `ControlSizeType` | `ControlSizeType` | How to stretch/resize/scale the drawing |
-| `Background` | `Brush` | Background brush behind the SVG |
-| `OverrideColor` | `Color?` | Override all fill colors in the SVG |
-| `OverrideStrokeColor` | `Color?` | Override all stroke colors in the SVG |
-| `OverrideStrokeWidth` | `double?` | Override stroke width in the SVG |
-| `FileSource` | `string` | Path to external SVG file |
-| `ImageSource` | `ImageSource` | Pre-loaded image source |
-| `UseAnimations` | `bool` | Enable SVG animations |
-| `CustomBrushes` | `Dictionary` | Custom brush mappings |
-| `ExternalFileLoader` | `IExternalFileLoader` | Custom file loader for external resources |
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `Source` | `string` | `null` | Relative URL to SVG resource. Set "Build Action=Resource" for embedded files |
+| `ControlSizeType` | `ControlSizeType` | `None` | How to stretch/resize/scale the drawing |
+| `Background` | `Brush` | `null` | Background brush behind the SVG |
+| `OverrideColor` | `Color?` | `null` | Override all fill colors in the SVG |
+| `OverrideStrokeColor` | `Color?` | `null` | Override all stroke colors in the SVG |
+| `OverrideStrokeWidth` | `double?` | `null` | Override stroke width in the SVG |
+| `FileSource` | `string` | `null` | Path to external SVG file |
+| `ImageSource` | `ImageSource` | `null` | Pre-loaded image source |
+| `UseAnimations` | `bool` | `false` | Enable SVG animations |
+| `CustomBrushes` | `Dictionary` | `null` | Custom brush mappings |
+| `ExternalFileLoader` | `IExternalFileLoader` | `null` | Custom file loader for external resources |
 
 ## 📋 ControlSizeType Enumeration
 
@@ -88,6 +88,10 @@ using Atc.Wpf.Controls.Media;
 - For embedded resources, set the SVG file's **Build Action** to `Resource`
 - SVG files are rendered as vector graphics, maintaining quality at any size
 - Color overrides apply to all matching elements in the SVG
+
+## 🔗 Related Controls
+
+- **AutoGreyableImage** - Image control that automatically greys out when disabled
 
 ## 🔗 References
 

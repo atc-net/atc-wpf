@@ -9,7 +9,7 @@ A control for displaying user profile pictures with fallback options for initial
 ## 📍 Namespace
 
 ```csharp
-using Atc.Wpf.Controls.Layouts;
+using Atc.Wpf.Controls.DataDisplay;
 ```
 
 ## 🚀 Usage
@@ -155,4 +155,4 @@ Background colors are deterministically generated from names using HSV color spa
 
 ## 🎮 Sample Application
 
-See the Avatar sample in the Atc.Wpf.Sample application under **Wpf.Controls > Layouts > Avatar** for interactive examples.
+See the Avatar sample in the Atc.Wpf.Sample application under **Wpf.Controls > Data Display > Avatar** for interactive examples.

@@ -5,7 +5,7 @@ This framework provides a rich collection of reusable controls, theming support,
 
 ## ✨ Key Features
 
-- 🎨 **Rich Control Library** - 80+ controls including labeled form controls, flyouts, color pickers, selectors, and specialized input controls
+- 🎨 **Rich Control Library** - 150+ controls including labeled form controls, flyouts, color pickers, selectors, and specialized input controls
 - 🏛️ **Four-Tier Architecture** - Clear separation: Base → Controls → Forms → Components
 - 🌓 **Light/Dark Theming** - Built-in theme support for all controls with easy customization
 - 🎯 **MVVM Ready** - Complete MVVM infrastructure with observable properties and relay commands
@@ -170,17 +170,18 @@ A quick reference of all controls organized by category:
 | Category | Controls | Package |
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
-| **Data Display** | Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Rating | Atc.Wpf.Controls |
+| **Data Display** | Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline | Atc.Wpf.Controls |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Controls |
-| **Input Controls** | NumericBox, IntegerBox, DecimalBox, ToggleSwitch, RangeSlider, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
+| **Input Controls** | NumericBox, IntegerBox, DecimalBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
-| **Buttons** | ImageButton, AuthenticationButton, ConnectivityButton | Atc.Wpf.Controls |
-| **Progress** | BusyOverlay, LoadingIndicator | Atc.Wpf.Controls |
+| **Buttons** | ImageButton, SplitButton, AuthenticationButton, ConnectivityButton | Atc.Wpf.Controls |
+| **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
+| **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector, DualListSelector | Atc.Wpf.Controls |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
-| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
+| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
-| **Notifications** | ToastNotification, ToastNotificationManager | Atc.Wpf.Components |
-| **Theming** | NiceWindow, ThemeSelector, AccentColorSelector | Atc.Wpf.Theming |
+| **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
+| **Theming** | NiceWindow, ThemeSelector, AccentColorSelector, TransitioningContentControl | Atc.Wpf.Theming |
 | **Font Icons** | FontAwesome (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
 | **Network** | NetworkScannerView | Atc.Wpf.Network |
 
@@ -266,11 +267,16 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 
 | Control | Description | Key Features | Documentation |
 |---------|-------------|--------------|---------------|
-| **Card** | Content container | Elevation, header/footer, expand | [Readme](docs/DataDisplay/@Readme.md#-card) |
-| **Badge** | Status indicator | Notification counts, dots | [Readme](docs/DataDisplay/@Readme.md#-badge) |
-| **Chip** | Tag/filter control | Selectable, removable | [Readme](docs/DataDisplay/@Readme.md#-chip) |
-| **Avatar** | User profile picture | Initials fallback, status indicator | [Readme](docs/DataDisplay/@Readme.md#-avatar) |
-| **Divider** | Visual separator | Horizontal/vertical | [Readme](docs/DataDisplay/@Readme.md#-divider) |
+| **Card** | Content container | Elevation, header/footer, expand | [Readme](src/Atc.Wpf.Controls/DataDisplay/Card_Readme.md) |
+| **Badge** | Status indicator | Notification counts, dots | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
+| **Chip** | Tag/filter control | Selectable, removable | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
+| **Avatar** | User profile picture | Initials fallback, status indicator | [Readme](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md) |
+| **Divider** | Visual separator | Horizontal/vertical | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
+| **Carousel** | Image carousel | Navigation, auto-play, swipe | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
+| **Breadcrumb** | Navigation path | Overflow, custom separators | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
+| **Stepper** | Step-by-step progress | Cancelable transitions | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
+| **Segmented** | Segment selector | Mutually exclusive selection | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **Timeline** | Timeline display | Vertical/horizontal, alternate mode | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
 ### Media Controls
 
@@ -304,27 +310,45 @@ Unlabeled input controls that provide core functionality:
 
 ### Button Controls
 
-- AuthenticationButton, ConnectivityButton, ImageButton, ImageToggledButton
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **ImageButton** | Button with bitmap/SVG image | [Readme](src/Atc.Wpf.Controls/Buttons/ImageButton_Readme.md) |
+| **ImageToggledButton** | Two-state toggle button | [Readme](src/Atc.Wpf.Controls/Buttons/ImageToggledButton_Readme.md) |
+| **SplitButton** | Primary action + dropdown menu | [Readme](src/Atc.Wpf.Controls/Buttons/SplitButton_Readme.md) |
+| **AuthenticationButton** | Login/logout toggle | [Readme](src/Atc.Wpf.Controls/Buttons/AuthenticationButton_Readme.md) |
+| **ConnectivityButton** | Connect/disconnect toggle | [Readme](src/Atc.Wpf.Controls/Buttons/ConnectivityButton_Readme.md) |
 
 ### Color Controls
 
-- HueSlider, SaturationBrightnessPicker, TransparencySlider, [WellKnownColorPicker](src/Atc.Wpf.Controls/ColorEditing/WellKnownColorPicker_Readme.md)
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **WellKnownColorPicker** | Named color palette picker | [Readme](src/Atc.Wpf.Controls/ColorEditing/WellKnownColorPicker_Readme.md) |
+| **HueSlider** | Hue selection slider | [Readme](src/Atc.Wpf.Controls/ColorEditing/HueSlider_Readme.md) |
+| **SaturationBrightnessPicker** | 2D saturation/brightness picker | [Readme](src/Atc.Wpf.Controls/ColorEditing/SaturationBrightnessPicker_Readme.md) |
+| **TransparencySlider** | Alpha channel slider | [Readme](src/Atc.Wpf.Controls/ColorEditing/TransparencySlider_Readme.md) |
 
 ### Layout Controls
 
-- [DockPanelPro](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md), GridLines, GroupBoxExpander
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **DockPanelPro** | IDE-style docking panel | [Readme](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md) |
+| **GridLines** | Grid overlay for debugging | [Readme](src/Atc.Wpf.Controls/Layouts/GridLines_Readme.md) |
+| **GroupBoxExpander** | Collapsible group box | [Readme](src/Atc.Wpf.Controls/Layouts/GroupBoxExpander_Readme.md) |
 
 ### Data Display Controls
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
 | **[Avatar](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md)** | User profile pictures with initials fallback | [Readme](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md) |
-| **AvatarGroup** | Multiple overlapping avatars | - |
-| **Badge** | Status indicator overlay | - |
-| **Card** | Elevated container with header/footer | - |
 | **[Carousel](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md)** | Image carousel/slideshow with navigation | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
-| **Chip** | Tag/filter interactive elements | - |
-| **Divider** | Visual separator (horizontal/vertical) | - |
+| **Badge** | Status indicator overlay | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
+| **Card** | Elevated container with header/footer | [Readme](src/Atc.Wpf.Controls/DataDisplay/Card_Readme.md) |
+| **Chip** | Tag/filter interactive elements | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
+| **Divider** | Visual separator (horizontal/vertical) | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
+| **Breadcrumb** | Navigation path with overflow | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
+| **Segmented** | Mutually exclusive segment selector | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **Stepper** | Step-by-step progress indicator | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
+| **Timeline** | Vertical/horizontal timeline display | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
 ### Flyout Controls
 
@@ -353,9 +377,23 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
 </flyouts:Flyout>
 ```
 
+### Selector Controls
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **CountrySelector** | Country dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/CountrySelector_Readme.md) |
+| **LanguageSelector** | Language dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/LanguageSelector_Readme.md) |
+| **FontFamilySelector** | Font family dropdown with previews | [Readme](src/Atc.Wpf.Controls/Selectors/FontFamilySelector_Readme.md) |
+| **DualListSelector** | Dual-list transfer control | [Readme](src/Atc.Wpf.Controls/Selectors/DualListSelector_Readme.md) |
+
 ### Progress Controls
 
-- BusyOverlay, LoadingIndicator
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **BusyOverlay** | Dimming overlay with loading indicator | [Readme](src/Atc.Wpf.Controls/Progressing/BusyOverlay_Readme.md) |
+| **LoadingIndicator** | Animated loading indicator | [Readme](src/Atc.Wpf.Controls/Progressing/LoadingIndicator_Readme.md) |
+| **Overlay** | Content dimming with fade animations | [Readme](src/Atc.Wpf.Controls/Progressing/Overlay_Readme.md) |
+| **Skeleton** | Loading placeholder with shimmer effect | [Readme](src/Atc.Wpf.Controls/Progressing/Skeleton_Readme.md) |
 
 ## 💟 Atc.Wpf.Forms - Form Field Library
 
@@ -394,46 +432,66 @@ Higher-level composite components combining multiple controls for business-ready
 
 ### Dialogs
 
-- InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, BasicApplicationSettingsDialogBox
-- DialogService - MVVM-friendly dialog management
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **InfoDialogBox** | Information-only dialog | [Readme](src/Atc.Wpf.Components/Dialogs/InfoDialogBox_Readme.md) |
+| **QuestionDialogBox** | Yes/No confirmation dialog | [Readme](src/Atc.Wpf.Components/Dialogs/QuestionDialogBox_Readme.md) |
+| **InputDialogBox** | Single input dialog | [Readme](src/Atc.Wpf.Components/Dialogs/InputDialogBox_Readme.md) |
+| **InputFormDialogBox** | Multi-field form dialog | [Readme](src/Atc.Wpf.Components/Dialogs/InputFormDialogBox_Readme.md) |
+| **BasicApplicationSettingsDialogBox** | Settings dialog | [Readme](src/Atc.Wpf.Components/Dialogs/BasicApplicationSettingsDialogBox_Readme.md) |
+| **DialogService** | MVVM-friendly dialog management | - |
 
 *Note: ColorPickerDialogBox is located in `Atc.Wpf.Forms.Dialogs`*
 
 ### Viewers
 
-- JsonViewer - JSON document viewer with syntax highlighting
-- TerminalViewer - Terminal/console output viewer
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **JsonViewer** | JSON document viewer with syntax highlighting | [Readme](src/Atc.Wpf.Components/Viewers/JsonViewer_Readme.md) |
+| **TerminalViewer** | Terminal/console output viewer | [Readme](src/Atc.Wpf.Components/Viewers/TerminalViewer_Readme.md) |
 
 ### Monitoring
 
-- ApplicationMonitorView - Application event monitoring component
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **ApplicationMonitorView** | Application event monitoring component | [Readme](src/Atc.Wpf.Components/Monitoring/ApplicationMonitorView_Readme.md) |
 
 ### Notifications
 
-- ToastNotificationManager, ToastNotificationArea, ToastNotification - Toast notification system
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **ToastNotification** | Toast notification system | [Readme](src/Atc.Wpf.Components/Notifications/ToastNotification_Readme.md) |
+| **IToastNotificationService** | MVVM-friendly notification service | [Readme](src/Atc.Wpf.Components/Notifications/ToastNotification_Readme.md) |
 
 ### Settings
 
-- BasicApplicationSettingsView, BasicApplicationSettingsViewModel
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **BasicApplicationSettingsView** | Embeddable settings panel | [Readme](src/Atc.Wpf.Components/Settings/BasicApplicationSettingsView_Readme.md) |
 
 ## 💟 Atc.Wpf.FontIcons - Font-Based Icons
 
-Render SVG and image resources using font-based icon systems for crisp, scalable icons.
+Render SVG and image resources using font-based icon systems for crisp, scalable icons. See the **[complete Font Icons documentation](docs/FontIcons/@Readme.md)** for detailed usage.
 
 ### Features
 
-- 🎨 Scalable vector icons
-- 🎯 Font-based rendering
-- 📦 Multiple icon font support
+- 🎨 Scalable vector icons from 7 font families
+- 🎯 Font-based (`Font*`) and image-based (`Image*`) rendering
+- 🔄 Spin animation, rotation, and flip transformations
 - 🌈 Color and size customization
+
+### Supported Icon Families
+
+Font Awesome (Solid, Regular, Brand), Bootstrap Glyphicons, Material Design, Weather Icons, IcoFont
 
 ### Resources
 
+- **[Font Icons Guide](docs/FontIcons/@Readme.md)** - Complete documentation for all 14 icon controls
 - **[ValueConverters](src/Atc.Wpf.FontIcons/ValueConverters/@Readme.md)** - Icon-related value converters
 
 ## 💟 Atc.Wpf.Theming - Light & Dark Mode
 
-Complete theming infrastructure with Light and Dark mode support for all WPF controls.
+Complete theming infrastructure with Light and Dark mode support for all WPF controls. See the **[complete Theming documentation](docs/Theming/@Readme.md)** for detailed usage.
 
 ### Features
 
@@ -441,10 +499,20 @@ Complete theming infrastructure with Light and Dark mode support for all WPF con
 - 🎨 Accent color customization
 - 🎯 Automatic control styling
 - 🔄 Runtime theme changes
-- 📱 Consistent visual design
+- 🪟 NiceWindow with customizable title bar, window commands, and dialog hosting
+
+### Key Controls
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **NiceWindow** | Enhanced window with title bar, commands, overlays | [Readme](docs/Theming/@Readme.md#-nicewindow) |
+| **ThemeSelector** | Light/Dark theme dropdown | [Readme](docs/Theming/@Readme.md#-themeselector) |
+| **AccentColorSelector** | Accent color dropdown | [Readme](docs/Theming/@Readme.md#-accentcolorselector) |
+| **TransitioningContentControl** | Animated content transitions | [Readme](docs/Theming/@Readme.md#-transitioningcontentcontrol) |
 
 ### Resources
 
+- **[Theming Guide](docs/Theming/@Readme.md)** - Complete documentation for all theming controls
 - **[ValueConverters](src/Atc.Wpf.Theming/ValueConverters/@Readme.md)** - Theme-aware value converters
 
 ## 💟 Atc.Wpf.Network - Network Discovery Controls
