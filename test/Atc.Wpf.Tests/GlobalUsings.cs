@@ -15,5 +15,6 @@ global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Tests.XUnitTestTypes;
+global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XUnit;
