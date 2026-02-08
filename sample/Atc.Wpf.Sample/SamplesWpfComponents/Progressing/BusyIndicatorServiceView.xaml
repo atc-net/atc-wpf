@@ -1,0 +1,122 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Progressing.BusyIndicatorServiceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:progressing="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Progressing"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <progressing:BusyIndicatorServiceViewModel />
+    </UserControl.DataContext>
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*,Auto">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <TextBlock Width="700" TextWrapping="Wrap">
+                IBusyIndicatorService provides a DI-friendly, MVVM service for managing busy overlays
+                from ViewModels. It supports manual show/hide, automatic lifecycle via RunAsync,
+                progress reporting, and cancellation.
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <DockPanel Margin="10">
+
+                <atc:UniformSpacingPanel
+                    DockPanel.Dock="Left"
+                    Orientation="Vertical"
+                    Spacing="16">
+
+                    <GroupBox Padding="10" Header="Automatic Lifecycle">
+                        <atc:UniformSpacingPanel
+                            ItemWidth="140"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button
+                                Command="{Binding ShowThreeSecondsCommand}"
+                                Content="Show 3s" />
+                            <Button
+                                Command="{Binding ShowProgressCommand}"
+                                Content="Show Progress" />
+                            <Button
+                                Command="{Binding RunAsyncTaskCommand}"
+                                Content="Run Async Task" />
+                        </atc:UniformSpacingPanel>
+                    </GroupBox>
+
+                    <GroupBox Padding="10" Header="Progress &amp; Cancellation">
+                        <atc:UniformSpacingPanel
+                            ItemWidth="140"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button
+                                Command="{Binding RunWithProgressCommand}"
+                                Content="Run With Progress" />
+                            <Button
+                                Command="{Binding CancellableTaskCommand}"
+                                Content="Cancellable Task" />
+                        </atc:UniformSpacingPanel>
+                    </GroupBox>
+
+                    <GroupBox Padding="10" Header="Manual Control">
+                        <atc:UniformSpacingPanel
+                            ItemWidth="140"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button
+                                Command="{Binding ShowManualCommand}"
+                                Content="Show Manual" />
+                            <Button
+                                Command="{Binding HideManualCommand}"
+                                Content="Hide Manual" />
+                        </atc:UniformSpacingPanel>
+                    </GroupBox>
+
+                </atc:UniformSpacingPanel>
+
+                <atc:BusyOverlay
+                    Margin="20,0,0,0"
+                    atc:BusyIndicatorManager.RegionName="SampleRegion">
+                    <Border
+                        MinHeight="200"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            Text="Content area (overlay target)" />
+                    </Border>
+                </atc:BusyOverlay>
+
+            </DockPanel>
+        </GroupBox>
+
+        <GroupBox
+            Margin="0,10,0,0"
+            Padding="10"
+            Header="Result Log">
+            <ScrollViewer
+                MaxHeight="150"
+                VerticalScrollBarVisibility="Auto">
+                <TextBlock
+                    FontFamily="Consolas"
+                    Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                    Text="{Binding ResultLog}"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
+        </GroupBox>
+
+    </atc:AutoGrid>
+
+</UserControl>

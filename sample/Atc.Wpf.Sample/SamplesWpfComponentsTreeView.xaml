@@ -34,6 +34,13 @@
             SamplePath="Notifications.ToastNotificationServiceView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Progressing">
+        <sample:SampleTreeViewItem
+            Header="BusyIndicatorService"
+            IsExpanded="True"
+            SamplePath="Progressing.BusyIndicatorServiceView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Viewers">
         <sample:SampleTreeViewItem
             Header="JsonViewer"
