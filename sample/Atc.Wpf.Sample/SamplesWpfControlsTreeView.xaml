@@ -110,6 +110,13 @@
             SamplePath="ColorEditing.WellKnownColorPickerView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Drag and Drop">
+        <sample:SampleTreeViewItem
+            Header="DragDrop"
+            IsExpanded="True"
+            SamplePath="DragDrop.DragDropView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Data Display">
         <sample:SampleTreeViewItem
             Header="Avatar"

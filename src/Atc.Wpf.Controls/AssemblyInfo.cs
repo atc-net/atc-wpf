@@ -11,4 +11,5 @@
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Layouts")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Pickers")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Progressing")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.DragDrop")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Selectors")]

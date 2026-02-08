@@ -1,15 +1,15 @@
-namespace Atc.Wpf.Controls.Selectors;
+namespace Atc.Wpf.Controls.DragDrop;
 
 /// <summary>
 /// Adorner that renders a semi-transparent ghost of the dragged item during drag-and-drop.
 /// </summary>
-internal sealed class DualListSelectorDragAdorner : Adorner
+internal sealed class DragDropAdorner : Adorner
 {
     private readonly VisualBrush visualBrush;
     private readonly Size renderSize;
     private Point currentPosition;
 
-    public DualListSelectorDragAdorner(
+    public DragDropAdorner(
         UIElement adornedElement,
         UIElement draggedElement)
         : base(adornedElement)

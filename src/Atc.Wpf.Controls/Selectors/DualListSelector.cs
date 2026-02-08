@@ -37,8 +37,8 @@ public sealed partial class DualListSelector : Control
     private TextBlock? selectedEmptyText;
     private Point? dragStartPoint;
     private ListBox? dragSourceListBox;
-    private DualListSelectorDragAdorner? dragAdorner;
-    private DualListSelectorDropIndicatorAdorner? dropIndicatorAdorner;
+    private DragDropAdorner? dragAdorner;
+    private DropTargetInsertionAdorner? dropIndicatorAdorner;
 
     /// <summary>
     /// The source list of available items.
@@ -800,18 +800,17 @@ public sealed partial class DualListSelector : Control
         dragStartPoint = null;
         dragSourceListBox = listBox;
 
-        var container = listBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-        if (container is not null)
+        if (listBox.ItemContainerGenerator.ContainerFromItem(item) is ListBoxItem container)
         {
             var adornerLayer = AdornerLayer.GetAdornerLayer(listBox);
             if (adornerLayer is not null)
             {
-                dragAdorner = new DualListSelectorDragAdorner(listBox, container);
+                dragAdorner = new DragDropAdorner(listBox, container);
                 adornerLayer.Add(dragAdorner);
             }
         }
 
-        DragDrop.DoDragDrop(listBox, item, DragDropEffects.Move);
+        System.Windows.DragDrop.DoDragDrop(listBox, item, DragDropEffects.Move);
         RemoveDragAdorners();
     }
 
@@ -847,14 +846,14 @@ public sealed partial class DualListSelector : Control
             var adornerLayer = AdornerLayer.GetAdornerLayer(targetListBox);
             if (adornerLayer is not null)
             {
-                var dropIndex = GetDropIndex(targetListBox, e);
+                var dropIndex = DragDropHelper.GetInsertIndex(targetListBox, e);
                 if (dropIndicatorAdorner is null)
                 {
-                    dropIndicatorAdorner = new DualListSelectorDropIndicatorAdorner(targetListBox);
+                    dropIndicatorAdorner = new DropTargetInsertionAdorner(targetListBox);
                     adornerLayer.Add(dropIndicatorAdorner);
                 }
 
-                var yPosition = GetDropIndicatorY(targetListBox, dropIndex);
+                var yPosition = DragDropHelper.GetDropIndicatorY(targetListBox, dropIndex);
                 dropIndicatorAdorner.UpdatePosition(yPosition);
             }
         }
@@ -887,26 +886,6 @@ public sealed partial class DualListSelector : Control
             listBox.BorderBrush = listBox.TryFindResource("AtcApps.Brushes.Gray6") as Brush
                 ?? SystemColors.ActiveBorderBrush;
         }
-    }
-
-    private static double GetDropIndicatorY(
-        ListBox listBox,
-        int dropIndex)
-    {
-        if (dropIndex <= 0)
-        {
-            return 0;
-        }
-
-        var containerIndex = System.Math.Min(dropIndex, listBox.Items.Count) - 1;
-        if (listBox.ItemContainerGenerator.ContainerFromIndex(containerIndex) is ListBoxItem container)
-        {
-            var transform = container.TransformToAncestor(listBox);
-            var point = transform.Transform(new Point(0, container.ActualHeight));
-            return point.Y;
-        }
-
-        return 0;
     }
 
     private void OnAvailableListBoxDrop(
@@ -952,7 +931,7 @@ public sealed partial class DualListSelector : Control
         if (ReferenceEquals(dragSourceListBox, availableListBox))
         {
             AvailableItems.Remove(item);
-            var dropIndex = GetDropIndex(selectedListBox, e);
+            var dropIndex = DragDropHelper.GetInsertIndex(selectedListBox, e);
             if (dropIndex >= 0 && dropIndex < SelectedItems.Count)
             {
                 SelectedItems.Insert(dropIndex, item);
@@ -970,11 +949,10 @@ public sealed partial class DualListSelector : Control
         else if (ReferenceEquals(dragSourceListBox, selectedListBox))
         {
             var oldIndex = SelectedItems.IndexOf(item);
-            var dropIndex = GetDropIndex(selectedListBox, e);
-            if (dropIndex < 0)
-            {
-                dropIndex = SelectedItems.Count - 1;
-            }
+            var dropIndex = System.Math.Clamp(
+                DragDropHelper.GetInsertIndex(selectedListBox, e),
+                0,
+                SelectedItems.Count - 1);
 
             if (oldIndex != dropIndex && oldIndex >= 0)
             {
@@ -1002,28 +980,6 @@ public sealed partial class DualListSelector : Control
 
         listBox.BorderBrush = listBox.TryFindResource("AtcApps.Brushes.Gray6") as Brush
             ?? SystemColors.ActiveBorderBrush;
-    }
-
-    private static int GetDropIndex(
-        ListBox listBox,
-        DragEventArgs e)
-    {
-        for (var i = 0; i < listBox.Items.Count; i++)
-        {
-            if (listBox.ItemContainerGenerator.ContainerFromIndex(i) is not ListBoxItem container)
-            {
-                continue;
-            }
-
-            var position = e.GetPosition(container);
-            var bounds = VisualTreeHelper.GetDescendantBounds(container);
-            if (position.Y < bounds.Height / 2)
-            {
-                return i;
-            }
-        }
-
-        return listBox.Items.Count;
     }
 
     private static bool IsSourcedFrom(
@@ -1061,8 +1017,7 @@ public sealed partial class DualListSelector : Control
         object sender,
         MouseButtonEventArgs e)
     {
-        if (availableListBox?.SelectedItem is DualListSelectorItem item &&
-            item.IsEnabled &&
+        if (availableListBox?.SelectedItem is DualListSelectorItem { IsEnabled: true } item &&
             IsMouseOverListBoxItem(availableListBox, e))
         {
             AvailableItems.Remove(item);
@@ -1079,8 +1034,7 @@ public sealed partial class DualListSelector : Control
         object sender,
         MouseButtonEventArgs e)
     {
-        if (selectedListBox?.SelectedItem is DualListSelectorItem item &&
-            item.IsEnabled &&
+        if (selectedListBox?.SelectedItem is DualListSelectorItem { IsEnabled: true } item &&
             IsMouseOverListBoxItem(selectedListBox, e))
         {
             SelectedItems.Remove(item);
@@ -1131,7 +1085,7 @@ public sealed partial class DualListSelector : Control
             {
                 var filteredCount = view.Cast<object>().Count();
                 availableItemCount.Text = string.Format(
-                    System.Globalization.CultureInfo.CurrentCulture,
+                    CultureInfo.CurrentCulture,
                     Miscellaneous.ItemCountFilteredFormat2,
                     filteredCount,
                     AvailableItems.Count);
@@ -1139,7 +1093,7 @@ public sealed partial class DualListSelector : Control
             else
             {
                 availableItemCount.Text = string.Format(
-                    System.Globalization.CultureInfo.CurrentCulture,
+                    CultureInfo.CurrentCulture,
                     Miscellaneous.ItemCountFormat1,
                     AvailableItems.Count);
             }
@@ -1148,11 +1102,11 @@ public sealed partial class DualListSelector : Control
         if (selectedItemCount is not null)
         {
             var view = CollectionViewSource.GetDefaultView(SelectedItems);
-            if (view is not null && view.Filter is not null)
+            if (view?.Filter is not null)
             {
                 var filteredCount = view.Cast<object>().Count();
                 selectedItemCount.Text = string.Format(
-                    System.Globalization.CultureInfo.CurrentCulture,
+                    CultureInfo.CurrentCulture,
                     Miscellaneous.ItemCountFilteredFormat2,
                     filteredCount,
                     SelectedItems.Count);
@@ -1160,7 +1114,7 @@ public sealed partial class DualListSelector : Control
             else
             {
                 selectedItemCount.Text = string.Format(
-                    System.Globalization.CultureInfo.CurrentCulture,
+                    CultureInfo.CurrentCulture,
                     Miscellaneous.ItemCountFormat1,
                     SelectedItems.Count);
             }
@@ -1180,7 +1134,7 @@ public sealed partial class DualListSelector : Control
         }
 
         var view = CollectionViewSource.GetDefaultView(items);
-        if (view is not null && view.Filter is not null && items.Count > 0)
+        if (view?.Filter is not null && items.Count > 0)
         {
             var filteredCount = view.Cast<object>().Count();
             emptyText.Visibility = filteredCount == 0

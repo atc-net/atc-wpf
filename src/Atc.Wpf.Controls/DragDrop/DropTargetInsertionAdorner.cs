@@ -1,14 +1,14 @@
-namespace Atc.Wpf.Controls.Selectors;
+namespace Atc.Wpf.Controls.DragDrop;
 
 /// <summary>
-/// Adorner that draws a horizontal insertion line during drag-reorder operations.
+/// Adorner that draws a horizontal insertion line at the drop position.
 /// </summary>
-internal sealed class DualListSelectorDropIndicatorAdorner : Adorner
+internal sealed class DropTargetInsertionAdorner : Adorner
 {
     private readonly Pen indicatorPen;
     private double yPosition;
 
-    public DualListSelectorDropIndicatorAdorner(UIElement adornedElement)
+    public DropTargetInsertionAdorner(UIElement adornedElement)
         : base(adornedElement)
     {
         var brush = (adornedElement as FrameworkElement)?.TryFindResource("AtcApps.Brushes.Accent") as Brush

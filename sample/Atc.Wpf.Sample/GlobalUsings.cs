@@ -33,6 +33,7 @@ global using Atc.Wpf.Components.Progressing;
 global using Atc.Wpf.Components.Settings;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.DataDisplay;
+global using Atc.Wpf.Controls.DragDrop;
 global using Atc.Wpf.Controls.Flyouts;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Media;

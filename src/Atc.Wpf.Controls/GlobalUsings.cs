@@ -39,6 +39,7 @@ global using Atc.Wpf.Controls.ColorEditing.Internal;
 global using Atc.Wpf.Controls.Documents.ColorSchemas;
 global using Atc.Wpf.Controls.Documents.TextFormatters;
 global using Atc.Wpf.Controls.Documents.TextFormatters.SourceCode.Format;
+global using Atc.Wpf.Controls.DragDrop;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs.Internal;
 global using Atc.Wpf.Controls.Layouts.Grid.Internal;
