@@ -62,6 +62,7 @@ global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Theming.Themes.Dialogs;
 global using Atc.Wpf.Translation;
+global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XamlToolkit.Command;
 global using Atc.XamlToolkit.Controls.Attributes;
