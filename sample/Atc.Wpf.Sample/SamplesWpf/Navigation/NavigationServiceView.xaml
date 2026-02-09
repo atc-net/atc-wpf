@@ -24,6 +24,7 @@
                 The INavigationService interface provides ViewModel-based navigation with history support.
                 It supports navigation guards (INavigationGuard) and navigation awareness (INavigationAware)
                 for ViewModels that need to respond to navigation events.
+                Try changing settings in the Settings page — navigation will be blocked until changes are reverted.
             </TextBlock>
         </GroupBox>
 
@@ -45,14 +46,12 @@
                     <Button
                         Command="{Binding GoBackCommand}"
                         Content="Back"
-                        MinWidth="80"
-                        IsEnabled="{Binding CanGoBack}" />
+                        MinWidth="80" />
 
                     <Button
                         Command="{Binding GoForwardCommand}"
                         Content="Forward"
-                        MinWidth="80"
-                        IsEnabled="{Binding CanGoForward}" />
+                        MinWidth="80" />
 
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 

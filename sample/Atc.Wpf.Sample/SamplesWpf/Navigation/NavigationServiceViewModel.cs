@@ -1,10 +1,20 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Navigation;
 
-public sealed class NavigationServiceViewModel : ViewModelBase
+public sealed partial class NavigationServiceViewModel : ViewModelBase
 {
     private readonly INavigationService navigationService;
+
+    [ObservableProperty]
     private object? currentView;
+
+    [ObservableProperty]
     private string navigationStatus = "Ready";
+
+    [ObservableProperty]
+    private bool canGoBack;
+
+    [ObservableProperty]
+    private bool canGoForward;
 
     public NavigationServiceViewModel()
     {
@@ -15,52 +25,28 @@ public sealed class NavigationServiceViewModel : ViewModelBase
         navigationService.NavigateTo<HomeViewModel>();
     }
 
-    public object? CurrentView
-    {
-        get => currentView;
-        set
-        {
-            currentView = value;
-            RaisePropertyChanged();
-        }
-    }
+    [RelayCommand]
+    private void GoBack()
+        => navigationService.GoBack();
 
-    public string NavigationStatus
-    {
-        get => navigationStatus;
-        set
-        {
-            navigationStatus = value;
-            RaisePropertyChanged();
-        }
-    }
+    [RelayCommand]
+    private void GoForward()
+        => navigationService.GoForward();
 
-    public bool CanGoBack => navigationService.CanGoBack;
+    [RelayCommand]
+    private void NavigateToHome()
+        => navigationService.NavigateTo<HomeViewModel>();
 
-    public bool CanGoForward => navigationService.CanGoForward;
+    [RelayCommand]
+    private void NavigateToSettings()
+        => navigationService.NavigateTo<SettingsViewModel>();
 
-    public IRelayCommand GoBackCommand
-        => new RelayCommand(
-            () => navigationService.GoBack(),
-            () => CanGoBack);
-
-    public IRelayCommand GoForwardCommand
-        => new RelayCommand(
-            () => navigationService.GoForward(),
-            () => CanGoForward);
-
-    public IRelayCommand NavigateToHomeCommand
-        => new RelayCommand(() => navigationService.NavigateTo<HomeViewModel>());
-
-    public IRelayCommand NavigateToSettingsCommand
-        => new RelayCommand(() => navigationService.NavigateTo<SettingsViewModel>());
-
-    public IRelayCommand NavigateToDetailsCommand
-        => new RelayCommand(
-            () => navigationService.NavigateTo<DetailsViewModel>(
-                new NavigationParameters()
-                    .WithParameter("ItemId", 42)
-                    .WithParameter("ItemName", "Sample Item")));
+    [RelayCommand]
+    private void NavigateToDetails()
+        => navigationService.NavigateTo<DetailsViewModel>(
+            new NavigationParameters()
+                .WithParameter("ItemId", 42)
+                .WithParameter("ItemName", "Sample Item"));
 
     private void OnNavigated(
         object? sender,
@@ -68,8 +54,8 @@ public sealed class NavigationServiceViewModel : ViewModelBase
     {
         CurrentView = CreateViewForViewModel(e.CurrentViewModel);
         NavigationStatus = $"Navigated to: {e.CurrentViewModel.GetType().Name}";
-        RaisePropertyChanged(nameof(CanGoBack));
-        RaisePropertyChanged(nameof(CanGoForward));
+        CanGoBack = navigationService.CanGoBack;
+        CanGoForward = navigationService.CanGoForward;
     }
 
     private static object CreateViewModel(Type viewModelType)
