@@ -53,6 +53,7 @@ global using Atc.Wpf.Forms.Dialogs;
 global using Atc.Wpf.Forms.Extractors;
 global using Atc.Wpf.Forms.Writers;
 global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Hotkeys;
 global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Network;
 global using Atc.Wpf.Notifications;

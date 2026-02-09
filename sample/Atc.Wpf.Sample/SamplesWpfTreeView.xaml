@@ -34,6 +34,10 @@
         <sample:SampleTreeViewItem Header="DialogService" SamplePath="Dialogs.DialogServiceView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Hotkeys">
+        <sample:SampleTreeViewItem Header="HotkeyService" SamplePath="Hotkeys.HotkeyServiceView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Extensions">
         <TreeViewItem Header="BitmapSource">
             <sample:SampleTreeViewItem Header="Invert Colors" SamplePath="Extensions.BitmapSourceInvertColorsView" />
