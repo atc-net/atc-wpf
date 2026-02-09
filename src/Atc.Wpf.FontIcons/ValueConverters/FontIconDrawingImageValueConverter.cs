@@ -29,6 +29,18 @@ public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValue
                 type,
                 brush,
                 emSize),
+            FontAwesomeRegular7Type type => ImageAwesomeRegular7.CreateDrawingImage(
+                type,
+                brush,
+                emSize),
+            FontAwesomeSolid7Type type => ImageAwesomeSolid7.CreateDrawingImage(
+                type,
+                brush,
+                emSize),
+            FontAwesomeBrand7Type type => ImageAwesomeBrand7.CreateDrawingImage(
+                type,
+                brush,
+                emSize),
             FontBootstrapType bootstrapType => ImageBootstrap.CreateDrawingImage(
                 bootstrapType,
                 brush,

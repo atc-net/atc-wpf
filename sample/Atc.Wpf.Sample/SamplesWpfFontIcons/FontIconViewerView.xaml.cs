@@ -8,6 +8,9 @@ public partial class FontIconViewerView : INotifyPropertyChanged
     private readonly Dictionary<string, string> fontAwesomeBrandList;
     private readonly Dictionary<string, string> fontAwesomeRegularList;
     private readonly Dictionary<string, string> fontAwesomeSolidList;
+    private readonly Dictionary<string, string> fontAwesomeBrand7List;
+    private readonly Dictionary<string, string> fontAwesomeRegular7List;
+    private readonly Dictionary<string, string> fontAwesomeSolid7List;
     private readonly Dictionary<string, string> fontBootstrapList;
     private readonly Dictionary<string, string> fontIcoFontList;
     private readonly Dictionary<string, string> fontMaterialDesignList;
@@ -30,6 +33,15 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         fontAwesomeSolidList = Enum<FontAwesomeSolidType>.ToDictionaryWithStringKey(
             useDescriptionAttribute: true,
             includeDefault: false);
+        fontAwesomeBrand7List = Enum<FontAwesomeBrand7Type>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontAwesomeRegular7List = Enum<FontAwesomeRegular7Type>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
+        fontAwesomeSolid7List = Enum<FontAwesomeSolid7Type>.ToDictionaryWithStringKey(
+            useDescriptionAttribute: true,
+            includeDefault: false);
         fontBootstrapList = Enum<FontBootstrapType>.ToDictionaryWithStringKey(
             useDescriptionAttribute: true,
             includeDefault: false);
@@ -46,6 +58,9 @@ public partial class FontIconViewerView : INotifyPropertyChanged
         FilterFontAwesomeBrand.LabelText += $" ({fontAwesomeBrandList.Count})";
         FilterFontAwesomeRegular.LabelText += $" ({fontAwesomeRegularList.Count})";
         FilterFontAwesomeSolid.LabelText += $" ({fontAwesomeSolidList.Count})";
+        FilterFontAwesomeBrand7.LabelText += $" ({fontAwesomeBrand7List.Count})";
+        FilterFontAwesomeRegular7.LabelText += $" ({fontAwesomeRegular7List.Count})";
+        FilterFontAwesomeSolid7.LabelText += $" ({fontAwesomeSolid7List.Count})";
         FilterBootstrap.LabelText += $" ({fontBootstrapList.Count})";
         FilterIcoFont.LabelText += $" ({fontIcoFontList.Count})";
         FilterMaterialDesign.LabelText += $" ({fontMaterialDesignList.Count})";
@@ -192,6 +207,45 @@ public partial class FontIconViewerView : INotifyPropertyChanged
                 new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
         }
 
+        foreach (var pair in fontAwesomeBrand7List)
+        {
+            var key = $"{nameof(FontAwesomeBrand7Type)}_{pair.Key}";
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontAwesomeBrand7Type>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+        }
+
+        foreach (var pair in fontAwesomeRegular7List)
+        {
+            var key = $"{nameof(FontAwesomeRegular7Type)}_{pair.Key}";
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontAwesomeRegular7Type>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+        }
+
+        foreach (var pair in fontAwesomeSolid7List)
+        {
+            var key = $"{nameof(FontAwesomeSolid7Type)}_{pair.Key}";
+            var drawingImage = (fontConverter.Convert(
+                Enum<FontAwesomeSolid7Type>.Parse(pair.Key),
+                targetType: null,
+                brushColor,
+                culture: null) as DrawingImage)!;
+            AddToListOfIcon(
+                key,
+                new ImageSet(drawingImage, pair.Key.Humanize(), pair.Value));
+        }
+
         foreach (var pair in fontBootstrapList)
         {
             var key = $"{nameof(FontBootstrapType)}_{pair.Key}";
@@ -266,6 +320,7 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             DispatcherPriority.Background);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private void UiFilterListOfIcons(string filterText)
     {
         filterText = filterText
@@ -290,6 +345,21 @@ public partial class FontIconViewerView : INotifyPropertyChanged
             nameof(FontAwesomeSolidType),
             fontAwesomeSolidList,
             FilterFontAwesomeSolid.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontAwesomeBrand7Type),
+            fontAwesomeBrand7List,
+            FilterFontAwesomeBrand7.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontAwesomeRegular7Type),
+            fontAwesomeRegular7List,
+            FilterFontAwesomeRegular7.IsChecked,
+            filterText);
+        FilterIcons(
+            nameof(FontAwesomeSolid7Type),
+            fontAwesomeSolid7List,
+            FilterFontAwesomeSolid7.IsChecked,
             filterText);
         FilterIcons(
             nameof(FontBootstrapType),

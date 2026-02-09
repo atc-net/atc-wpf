@@ -53,6 +53,36 @@ public static class ResourceFontHelper
         return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 5 Free Solid", StringComparison.OrdinalIgnoreCase));
     }
 
+    public static FontFamily GetAwesome7Brand()
+    {
+        // ReSharper disable once InvertIf
+        if (fontFamilies is null)
+        {
+            LoadFonts();
+            if (fontFamilies is null)
+            {
+                throw new Exception("fontFamilies is not loaded");
+            }
+        }
+
+        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 7 Brands", StringComparison.OrdinalIgnoreCase));
+    }
+
+    public static FontFamily GetAwesome7Free()
+    {
+        // ReSharper disable once InvertIf
+        if (fontFamilies is null)
+        {
+            LoadFonts();
+            if (fontFamilies is null)
+            {
+                throw new Exception("fontFamilies is not loaded");
+            }
+        }
+
+        return fontFamilies.First(x => x.Source.Equals("./#Font Awesome 7 Free", StringComparison.OrdinalIgnoreCase));
+    }
+
     public static FontFamily GetBootstrap()
     {
         // ReSharper disable once InvertIf

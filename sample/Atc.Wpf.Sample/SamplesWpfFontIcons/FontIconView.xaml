@@ -95,6 +95,29 @@
                     Orientation="Vertical"
                     Spacing="10">
                     <atc:LabelComboBox
+                        x:Name="FontAwesomeBrand7ComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontAwesomeBrand7Type}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FA7 Brand"
+                        SelectedKey="Github" />
+                    <atc:LabelComboBox
+                        x:Name="FontAwesomeRegular7ComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontAwesomeRegular7Type}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FA7 Regular"
+                        SelectedKey="AddressBook" />
+                    <atc:LabelComboBox
+                        x:Name="FontAwesomeSolid7ComboBox"
+                        HideAreas="All"
+                        Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontAwesomeSolid7Type}, None, False, True, Ascending, KeyAsString=True}}"
+                        LabelText="FA7 Solid"
+                        SelectedKey="AddressBook" />
+                </atc:UniformSpacingPanel>
+                <atc:UniformSpacingPanel
+                    Width="300"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelComboBox
                         x:Name="FontBootstrapComboBox"
                         HideAreas="All"
                         Items="{Binding Source={atc:EnumToKeyValueBindingSourceExtension {x:Type fontIcons:FontBootstrapType}, None, False, True, Ascending, KeyAsString=True}}"
@@ -189,6 +212,72 @@
                     FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
                     Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
                     Icon="{Binding ElementName=FontAwesomeSolidComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontAwesomeBrand7
+                    x:Name="Fab7"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeBrand7ComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageAwesomeBrand7
+                    x:Name="Iab7"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeBrand7ComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontAwesomeRegular7
+                    x:Name="Far7"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeRegular7ComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageAwesomeRegular7
+                    x:Name="Iar7"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeRegular7ComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:FontAwesomeSolid7
+                    x:Name="Fas7"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    FontSize="{Binding ElementName=FontSizeSlider, Path=Value}"
+                    Foreground="{Binding ElementName=FontForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeSolid7ComboBox, Path=SelectedKey}"
+                    Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
+                    SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
+
+                <fontIcons:ImageAwesomeSolid7
+                    x:Name="Ias7"
+                    Width="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Height="{Binding ElementName=ImageSizeSlider, Path=Value}"
+                    Margin="10"
+                    FlipOrientation="{Binding ElementName=FlipOrientationComboBox, Path=SelectedKey}"
+                    Foreground="{Binding ElementName=ImageForegroundColorPicker, Path=SelectedKey}"
+                    Icon="{Binding ElementName=FontAwesomeSolid7ComboBox, Path=SelectedKey}"
                     Spin="{Binding ElementName=SpinCheckBox, Path=IsChecked}"
                     SpinDuration="{Binding ElementName=SpinSlider, Path=Value}" />
 

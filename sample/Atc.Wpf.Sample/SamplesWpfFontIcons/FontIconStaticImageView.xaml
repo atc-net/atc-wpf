@@ -48,6 +48,11 @@
                     Width="100"
                     Height="100"
                     Source="{Binding Source={x:Static fontIcons:FontWeatherType.Barometer}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
+
+                <Image
+                    Width="100"
+                    Height="100"
+                    Source="{Binding Source={x:Static fontIcons:FontAwesomeSolid7Type.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}, ConverterParameter={StaticResource OrangeRedBrush}}" />
             </WrapPanel>
 
         </GroupBox>
