@@ -147,6 +147,10 @@
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />
         <sample:SampleTreeViewItem
+            Header="Popover"
+            IsExpanded="True"
+            SamplePath="DataDisplay.PopoverView" />
+        <sample:SampleTreeViewItem
             Header="Segmented"
             IsExpanded="True"
             SamplePath="DataDisplay.SegmentedView" />
