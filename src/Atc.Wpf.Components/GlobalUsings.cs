@@ -19,6 +19,7 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
 
 global using Atc.Serialization;
+global using Atc.Wpf.Capture;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;
@@ -28,6 +29,7 @@ global using Atc.Wpf.Controls.Progressing;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Dialogs;
+global using Atc.Wpf.Factories;
 global using Atc.Wpf.Forms;
 global using Atc.Wpf.Forms.Abstractions;
 global using Atc.Wpf.Forms.Dialogs;
