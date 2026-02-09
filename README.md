@@ -5,7 +5,7 @@ This framework provides a rich collection of reusable controls, theming support,
 
 ## ✨ Key Features
 
-- 🎨 **Rich Control Library** - 150+ controls including labeled form controls, flyouts, color pickers, selectors, and specialized input controls
+- 🎨 **Rich Control Library** - 160+ controls including labeled form controls, flyouts, color pickers, selectors, and specialized input controls
 - 🏛️ **Four-Tier Architecture** - Clear separation: Base → Controls → Forms → Components
 - 🌓 **Light/Dark Theming** - Built-in theme support for all controls with easy customization
 - 🎯 **MVVM Ready** - Complete MVVM infrastructure with observable properties and relay commands
@@ -172,15 +172,20 @@ A quick reference of all controls organized by category:
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
 | **Data Display** | Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline | Atc.Wpf.Controls |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Controls |
-| **Input Controls** | NumericBox, IntegerBox, DecimalBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
+| **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
 | **Buttons** | ImageButton, SplitButton, AuthenticationButton, ConnectivityButton | Atc.Wpf.Controls |
 | **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
+| **Drag & Drop** | DragDropAttach | Atc.Wpf.Controls |
 | **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector, DualListSelector | Atc.Wpf.Controls |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
 | **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
+| **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |
+| **Undo/Redo** | IUndoRedoService, UndoRedoService, UndoRedoHistoryView | Atc.Wpf / Atc.Wpf.Components |
+| **Clipboard** | IClipboardService, ClipboardService | Atc.Wpf |
+| **Busy Indicator** | IBusyIndicatorService, BusyIndicatorService | Atc.Wpf.Components |
 | **Theming** | NiceWindow, ThemeSelector, AccentColorSelector, TransitioningContentControl | Atc.Wpf.Theming |
 | **Font Icons** | FontAwesome (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
 | **Network** | NetworkScannerView | Atc.Wpf.Network |
@@ -286,6 +291,14 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 
 - **[PanelHelper](src/Atc.Wpf/Helpers/PanelHelper_Readme.md)** - Helper methods for panel layout calculations
 
+### Services
+
+| Service | Description | Documentation |
+|---------|-------------|---------------|
+| **IClipboardService** | MVVM-friendly clipboard operations with history | [Readme](src/Atc.Wpf/Clipboard/ClipboardService_Readme.md) |
+| **IUndoRedoService** | Undo/redo with command grouping and history limits | [Readme](src/Atc.Wpf/UndoRedo/UndoRedoService_Readme.md) |
+| **IPrintService** | Print and print-preview service interface | [Readme](src/Atc.Wpf.Components/Printing/PrintService_Readme.md) |
+
 ### Additional Features
 
 - **[ShaderEffects](src/Atc.Wpf/Media/ShaderEffects/@Readme.md)** - HLSL-based visual effects
@@ -303,7 +316,7 @@ Unlabeled input controls that provide core functionality:
 
 | Category | Controls |
 |----------|----------|
-| **Number Input** | NumericBox, IntegerBox, DecimalBox, IntegerXyBox, DecimalXyBox, PixelSizeBox |
+| **Number Input** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, IntegerXyBox, DecimalXyBox, PixelSizeBox |
 | **Toggle & Slider** | ToggleSwitch, RangeSlider, [Rating](src/Atc.Wpf.Controls/Inputs/Readme.md) |
 | **Pickers** | [DirectoryPicker, FilePicker](src/Atc.Wpf.Controls/Pickers/Readme.md) |
 | **Text Input** | RichTextBoxEx |
@@ -339,8 +352,8 @@ Unlabeled input controls that provide core functionality:
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **[Avatar](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md)** | User profile pictures with initials fallback | [Readme](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md) |
-| **[Carousel](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md)** | Image carousel/slideshow with navigation | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
+| **Avatar** | User profile pictures with initials fallback | [Readme](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md) |
+| **Carousel** | Image carousel/slideshow with navigation | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
 | **Badge** | Status indicator overlay | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
 | **Card** | Elevated container with header/footer | [Readme](src/Atc.Wpf.Controls/DataDisplay/Card_Readme.md) |
 | **Chip** | Tag/filter interactive elements | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
@@ -356,7 +369,7 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **[Flyout](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md)** | Sliding panel overlay from edges (Right, Left, Top, Bottom) | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md) |
+| **Flyout** | Sliding panel overlay from edges (Right, Left, Top, Bottom) | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md) |
 | **FlyoutHost** | Container that manages multiple flyouts with nesting support | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md#-flyouthost) |
 | **FlyoutService** | MVVM-friendly service for programmatic flyout management | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md#-iflyoutservice-mvvm) |
 
@@ -376,6 +389,12 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
     </StackPanel>
 </flyouts:Flyout>
 ```
+
+### Drag & Drop
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **DragDropAttach** | XAML-driven drag-and-drop framework | [Readme](src/Atc.Wpf.Controls/DragDrop/DragDropAttach_Readme.md) |
 
 ### Selector Controls
 
@@ -462,6 +481,24 @@ Higher-level composite components combining multiple controls for business-ready
 |---------|-------------|---------------|
 | **ToastNotification** | Toast notification system | [Readme](src/Atc.Wpf.Components/Notifications/ToastNotification_Readme.md) |
 | **IToastNotificationService** | MVVM-friendly notification service | [Readme](src/Atc.Wpf.Components/Notifications/ToastNotification_Readme.md) |
+
+### Printing
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **IPrintService / PrintService** | MVVM-friendly print and preview service | [Readme](src/Atc.Wpf.Components/Printing/PrintService_Readme.md) |
+
+### Undo/Redo
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **UndoRedoHistoryView** | Unified history view for navigating undo/redo stacks | [Readme](src/Atc.Wpf.Components/UndoRedo/UndoRedoHistoryView_Readme.md) |
+
+### Busy Indicator
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **IBusyIndicatorService** | MVVM-friendly busy overlay management | [Readme](src/Atc.Wpf.Components/Progressing/BusyIndicatorService_Readme.md) |
 
 ### Settings
 
