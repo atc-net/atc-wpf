@@ -24,4 +24,20 @@ internal static class NativeMethods
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool RegisterHotKey(
+        IntPtr hWnd,
+        int id,
+        uint fsModifiers,
+        uint vk);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool UnregisterHotKey(
+        IntPtr hWnd,
+        int id);
 }

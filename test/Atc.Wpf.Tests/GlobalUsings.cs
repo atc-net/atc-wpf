@@ -7,12 +7,14 @@ global using System.Text.Json;
 global using System.Windows;
 global using System.Windows.Controls;
 global using System.Windows.Data;
+global using System.Windows.Input;
 global using System.Windows.Media;
 global using System.Windows.Media.Imaging;
 
 global using Atc.Serialization;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Hotkeys;
 global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Tests.Navigation.Models;
