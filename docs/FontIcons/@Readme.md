@@ -15,27 +15,45 @@ The library contains two parallel sets of controls:
 - **Font controls** (`Font*`) — extend `TextBlock`, render icons as font glyphs
 - **Image controls** (`Image*`) — extend `Image`, render icons as `ImageSource` bitmaps
 
-Both sets support the same 7 icon font families and share common animation/transformation features.
+Both sets support the same icon font families and share common animation/transformation features.
 
 ## 🎯 Available Icon Families
 
-| Font Family | Font Control | Image Control | Enum Type |
-|-------------|-------------|---------------|-----------|
-| **Font Awesome Solid** | `FontAwesomeSolid` | `ImageAwesomeSolid` | `FontAwesomeSolidType` |
-| **Font Awesome Regular** | `FontAwesomeRegular` | `ImageAwesomeRegular` | `FontAwesomeRegularType` |
-| **Font Awesome Brand** | `FontAwesomeBrand` | `ImageAwesomeBrand` | `FontAwesomeBrandType` |
-| **Bootstrap Glyphicons** | `FontBootstrap` | `ImageBootstrap` | `FontBootstrapType` |
-| **Material Design** | `FontMaterialDesign` | `ImageMaterialDesign` | `FontMaterialDesignType` |
-| **Weather Icons** | `FontWeather` | `ImageWeather` | `FontWeatherType` |
-| **IcoFont** | `IcoFont` | `ImageIcoFont` | `IcoFontType` |
+### Font Awesome 7 (recommended)
+
+| Font Family | Font Control | Image Control | Enum Type | Icons |
+|-------------|-------------|---------------|-----------|-------|
+| **FA7 Solid** | `FontAwesomeSolid7` | `ImageAwesomeSolid7` | `FontAwesomeSolid7Type` | 1943 |
+| **FA7 Regular** | `FontAwesomeRegular7` | `ImageAwesomeRegular7` | `FontAwesomeRegular7Type` | 283 |
+| **FA7 Brand** | `FontAwesomeBrand7` | `ImageAwesomeBrand7` | `FontAwesomeBrand7Type` | 549 |
+
+### Font Awesome 5 (legacy)
+
+| Font Family | Font Control | Image Control | Enum Type | Icons |
+|-------------|-------------|---------------|-----------|-------|
+| **FA5 Solid** | `FontAwesomeSolid` | `ImageAwesomeSolid` | `FontAwesomeSolidType` | 766 |
+| **FA5 Regular** | `FontAwesomeRegular` | `ImageAwesomeRegular` | `FontAwesomeRegularType` | 151 |
+| **FA5 Brand** | `FontAwesomeBrand` | `ImageAwesomeBrand` | `FontAwesomeBrandType` | 378 |
+
+### Other Icon Families
+
+| Font Family | Font Control | Image Control | Enum Type | Icons |
+|-------------|-------------|---------------|-----------|-------|
+| **Bootstrap Glyphicons** | `FontBootstrap` | `ImageBootstrap` | `FontBootstrapType` | 262 |
+| **Material Design** | `FontMaterialDesign` | `ImageMaterialDesign` | `FontMaterialDesignType` | 2696 |
+| **Weather Icons** | `FontWeather` | `ImageWeather` | `FontWeatherType` | 584 |
+| **IcoFont** | `IcoFont` | `ImageIcoFont` | `IcoFontType` | 2095 |
 
 ## 🚀 Usage
 
 ### Font Controls (TextBlock-based)
 
 ```xml
-<!-- Font Awesome Solid icon -->
-<fontIcons:FontAwesomeSolid Icon="Home" Foreground="Blue" FontSize="24" />
+<!-- Font Awesome 7 Solid icon -->
+<fontIcons:FontAwesomeSolid7 Icon="Home" Foreground="Blue" FontSize="24" />
+
+<!-- Font Awesome 7 Regular icon -->
+<fontIcons:FontAwesomeRegular7 Icon="Flag" Foreground="Red" FontSize="24" />
 
 <!-- Material Design icon with rotation -->
 <fontIcons:FontMaterialDesign Icon="Settings" Rotation="45" FontSize="32" />
@@ -50,8 +68,8 @@ Both sets support the same 7 icon font families and share common animation/trans
 ### Image Controls (Image-based)
 
 ```xml
-<!-- Font Awesome as Image (for use in menus, buttons, etc.) -->
-<fontIcons:ImageAwesomeSolid Icon="Save" Foreground="Green" Width="16" Height="16" />
+<!-- Font Awesome 7 as Image (for use in menus, buttons, etc.) -->
+<fontIcons:ImageAwesomeSolid7 Icon="Save" Foreground="Green" Width="16" Height="16" />
 
 <!-- Material Design as Image -->
 <fontIcons:ImageMaterialDesign Icon="ContentCopy" Foreground="Gray" Width="20" Height="20" />
@@ -61,12 +79,12 @@ Both sets support the same 7 icon font families and share common animation/trans
 
 ```xml
 <!-- Bind icon type from ViewModel -->
-<fontIcons:FontAwesomeSolid Icon="{Binding CurrentIcon}" FontSize="24" />
+<fontIcons:FontAwesomeSolid7 Icon="{Binding CurrentIcon}" FontSize="24" />
 
 <!-- Use in a Button -->
 <Button>
     <StackPanel Orientation="Horizontal">
-        <fontIcons:FontAwesomeSolid Icon="Save" FontSize="14" Margin="0,0,8,0" />
+        <fontIcons:FontAwesomeSolid7 Icon="Save" FontSize="14" Margin="0,0,8,0" />
         <TextBlock Text="Save" />
     </StackPanel>
 </Button>
@@ -76,14 +94,14 @@ Both sets support the same 7 icon font families and share common animation/trans
 
 ```csharp
 // Create ImageSource for use in code
-ImageSource icon = ImageAwesomeSolid.CreateImageSource(
-    FontAwesomeSolidType.Home,
+ImageSource icon = ImageAwesomeSolid7.CreateImageSource(
+    FontAwesomeSolid7Type.Home,
     Brushes.Blue,
     emSize: 100);
 
-// Create DrawingImage
-DrawingImage drawing = ImageMaterialDesign.CreateDrawingImage(
-    FontMaterialDesignType.Settings,
+// Create DrawingImage (vector, better for scaling)
+DrawingImage drawing = ImageAwesomeSolid7.CreateDrawingImage(
+    FontAwesomeSolid7Type.Settings,
     Brushes.Black,
     emSize: 64);
 ```
@@ -125,6 +143,8 @@ Font controls inherit `Foreground` from `TextBlock`.
 - Spin, Rotation, and FlipOrientation can be combined simultaneously
 - Font files are embedded as resources (no external dependencies)
 - Icon enums are auto-generated from font metadata by `Atc.Wpf.Generator.FontIconResources`
+- FA7 Regular and Solid share the WPF font family `"Font Awesome 7 Free"` — the Solid variant is selected via `FontWeights.Black`
+- FA5 controls remain fully functional for backward compatibility
 
 ## 🔗 Related
 
