@@ -26,6 +26,21 @@ public sealed class MainWindowViewModel : MainWindowViewModelBase, IMainWindowVi
             GenerateFontAwesomeSolidCommandHandler,
             CanGenerateCommandHandler);
 
+    public ICommand GenerateFontAwesome7BrandCommand
+        => new RelayCommand(
+            GenerateFontAwesome7BrandCommandHandler,
+            CanGenerateCommandHandler);
+
+    public ICommand GenerateFontAwesome7RegularCommand
+        => new RelayCommand(
+            GenerateFontAwesome7RegularCommandHandler,
+            CanGenerateCommandHandler);
+
+    public ICommand GenerateFontAwesome7SolidCommand
+        => new RelayCommand(
+            GenerateFontAwesome7SolidCommandHandler,
+            CanGenerateCommandHandler);
+
     public ICommand GenerateBootstrapCommand
         => new RelayCommand(
             GenerateBootstrapCommandHandler,
@@ -94,6 +109,27 @@ public sealed class MainWindowViewModel : MainWindowViewModelBase, IMainWindowVi
     private void GenerateFontAwesomeSolidCommandHandler()
     {
         GenerateHelper.GenerateFontAwesomeSolid(
+            new DirectoryInfo(ResourcesFolder!),
+            new DirectoryInfo(OutputEnumFolder!));
+    }
+
+    private void GenerateFontAwesome7BrandCommandHandler()
+    {
+        GenerateHelper.GenerateFontAwesome7Brand(
+            new DirectoryInfo(ResourcesFolder!),
+            new DirectoryInfo(OutputEnumFolder!));
+    }
+
+    private void GenerateFontAwesome7RegularCommandHandler()
+    {
+        GenerateHelper.GenerateFontAwesome7Regular(
+            new DirectoryInfo(ResourcesFolder!),
+            new DirectoryInfo(OutputEnumFolder!));
+    }
+
+    private void GenerateFontAwesome7SolidCommandHandler()
+    {
+        GenerateHelper.GenerateFontAwesome7Solid(
             new DirectoryInfo(ResourcesFolder!),
             new DirectoryInfo(OutputEnumFolder!));
     }

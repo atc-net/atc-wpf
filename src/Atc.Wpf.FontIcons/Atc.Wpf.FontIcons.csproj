@@ -19,6 +19,9 @@
     <None Remove="Resources\fonts\fa-brands-400.ttf" />
     <None Remove="Resources\fonts\fa-regular-400.ttf" />
     <None Remove="Resources\fonts\fa-solid-900.ttf" />
+    <None Remove="Resources\fonts\fa7-brands-400.otf" />
+    <None Remove="Resources\fonts\fa7-regular-400.otf" />
+    <None Remove="Resources\fonts\fa7-solid-900.otf" />
     <None Remove="Resources\fonts\glyphicons-halflings-regular.ttf" />
     <None Remove="Resources\fonts\icofont.ttf" />
     <None Remove="Resources\fonts\materialdesignicons-webfont.ttf" />
@@ -33,6 +36,9 @@
     <Resource Include="Resources\fonts\fa-brands-400.ttf" />
     <Resource Include="Resources\fonts\fa-regular-400.ttf" />
     <Resource Include="Resources\fonts\fa-solid-900.ttf" />
+    <Resource Include="Resources\fonts\fa7-brands-400.otf" />
+    <Resource Include="Resources\fonts\fa7-regular-400.otf" />
+    <Resource Include="Resources\fonts\fa7-solid-900.otf" />
     <Resource Include="Resources\fonts\glyphicons-halflings-regular.ttf" />
     <Resource Include="Resources\fonts\icofont.ttf" />
     <Resource Include="Resources\fonts\materialdesignicons-webfont.ttf" />

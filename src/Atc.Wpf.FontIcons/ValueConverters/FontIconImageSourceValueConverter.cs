@@ -29,6 +29,18 @@ public sealed class FontIconImageSourceValueConverter : MarkupExtension, IValueC
                 type,
                 brush,
                 emSize),
+            FontAwesomeRegular7Type type => ImageAwesomeRegular7.CreateImageSource(
+                type,
+                brush,
+                emSize),
+            FontAwesomeSolid7Type type => ImageAwesomeSolid7.CreateImageSource(
+                type,
+                brush,
+                emSize),
+            FontAwesomeBrand7Type type => ImageAwesomeBrand7.CreateImageSource(
+                type,
+                brush,
+                emSize),
             FontBootstrapType bootstrapType => ImageBootstrap.CreateImageSource(
                 bootstrapType,
                 brush,

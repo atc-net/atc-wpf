@@ -50,6 +50,30 @@
                     Orientation="Vertical"
                     Spacing="10">
                     <atc:LabelCheckBox
+                        x:Name="FilterFontAwesomeBrand7"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="FA7 Brand" />
+                    <atc:LabelCheckBox
+                        x:Name="FilterFontAwesomeRegular7"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="FA7 Regular" />
+                    <atc:LabelCheckBox
+                        x:Name="FilterFontAwesomeSolid7"
+                        HideAreas="All"
+                        IsChecked="True"
+                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
+                        LabelText="FA7 Solid" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel
+                    Width="180"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:LabelCheckBox
                         x:Name="FilterBootstrap"
                         HideAreas="All"
                         IsChecked="True"

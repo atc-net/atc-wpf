@@ -30,6 +30,9 @@
                 <Button Command="{Binding Path=GenerateFontAwesomeBrandCommand}" Content="FontAwesome Brand" />
                 <Button Command="{Binding Path=GenerateFontAwesomeRegularCommand}" Content="FontAwesome Regular" />
                 <Button Command="{Binding Path=GenerateFontAwesomeSolidCommand}" Content="FontAwesome Solid" />
+                <Button Command="{Binding Path=GenerateFontAwesome7BrandCommand}" Content="FontAwesome7 Brand" />
+                <Button Command="{Binding Path=GenerateFontAwesome7RegularCommand}" Content="FontAwesome7 Regular" />
+                <Button Command="{Binding Path=GenerateFontAwesome7SolidCommand}" Content="FontAwesome7 Solid" />
                 <Button Command="{Binding Path=GenerateBootstrapCommand}" Content="Bootstrap" />
                 <Button Command="{Binding Path=GenerateIcoCommand}" Content="Ico" />
                 <Button Command="{Binding Path=GenerateMaterialDesignCommand}" Content="Material-Design" />
