@@ -1,0 +1,251 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay">
+
+    <Style x:Key="AtcApps.Styles.Popover" TargetType="{x:Type dataDisplay:Popover}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="PopoverBackground" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="PopoverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dataDisplay:Popover}">
+                    <Grid>
+                        <!--  Anchor  -->
+                        <ContentPresenter
+                            x:Name="PART_Anchor"
+                            Content="{TemplateBinding Anchor}"
+                            ContentTemplate="{TemplateBinding AnchorTemplate}" />
+
+                        <!--  Popup  -->
+                        <Popup
+                            x:Name="PART_Popup"
+                            AllowsTransparency="True"
+                            IsOpen="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            Placement="Custom"
+                            PlacementTarget="{Binding ElementName=PART_Anchor}"
+                            PopupAnimation="Fade">
+                            <Grid Margin="8">
+                                <!--  Arrow - Top (shown when placement is Bottom*)  -->
+                                <Path
+                                    x:Name="ArrowTop"
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    Data="M 0,8 L 8,0 L 16,8 Z"
+                                    Fill="{TemplateBinding PopoverBackground}"
+                                    Stroke="{TemplateBinding PopoverBorderBrush}"
+                                    StrokeThickness="1"
+                                    Visibility="Collapsed" />
+
+                                <!--  Arrow - Bottom (shown when placement is Top*)  -->
+                                <Path
+                                    x:Name="ArrowBottom"
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Data="M 0,0 L 8,8 L 16,0 Z"
+                                    Fill="{TemplateBinding PopoverBackground}"
+                                    Stroke="{TemplateBinding PopoverBorderBrush}"
+                                    StrokeThickness="1"
+                                    Visibility="Collapsed" />
+
+                                <!--  Arrow - Left (shown when placement is Right*)  -->
+                                <Path
+                                    x:Name="ArrowLeft"
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Data="M 8,0 L 0,8 L 8,16 Z"
+                                    Fill="{TemplateBinding PopoverBackground}"
+                                    Stroke="{TemplateBinding PopoverBorderBrush}"
+                                    StrokeThickness="1"
+                                    Visibility="Collapsed" />
+
+                                <!--  Arrow - Right (shown when placement is Left*)  -->
+                                <Path
+                                    x:Name="ArrowRight"
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Data="M 0,0 L 8,8 L 0,16 Z"
+                                    Fill="{TemplateBinding PopoverBackground}"
+                                    Stroke="{TemplateBinding PopoverBorderBrush}"
+                                    StrokeThickness="1"
+                                    Visibility="Collapsed" />
+
+                                <!--  Content border  -->
+                                <Border
+                                    x:Name="PopoverBorder"
+                                    Background="{TemplateBinding PopoverBackground}"
+                                    BorderBrush="{TemplateBinding PopoverBorderBrush}"
+                                    BorderThickness="{TemplateBinding PopoverBorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    MaxWidth="{TemplateBinding MaxPopoverWidth}"
+                                    MaxHeight="{TemplateBinding MaxPopoverHeight}"
+                                    SnapsToDevicePixels="True">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="8"
+                                            Direction="270"
+                                            Opacity="0.15"
+                                            ShadowDepth="2"
+                                            Color="Black" />
+                                    </Border.Effect>
+                                    <ScrollViewer
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        VerticalScrollBarVisibility="Auto">
+                                        <ContentPresenter
+                                            Margin="{TemplateBinding PopoverPadding}"
+                                            Content="{TemplateBinding PopoverContent}"
+                                            ContentTemplate="{TemplateBinding PopoverContentTemplate}" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--  Show top arrow for Bottom placements  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="Bottom" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowTop" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="BottomStart" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowTop" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowTop" Property="HorizontalAlignment" Value="Left" />
+                                <Setter TargetName="ArrowTop" Property="Margin" Value="12,0,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="BottomEnd" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowTop" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowTop" Property="HorizontalAlignment" Value="Right" />
+                                <Setter TargetName="ArrowTop" Property="Margin" Value="0,0,12,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  Show bottom arrow for Top placements  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="Top" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowBottom" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="TopStart" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowBottom" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowBottom" Property="HorizontalAlignment" Value="Left" />
+                                <Setter TargetName="ArrowBottom" Property="Margin" Value="12,0,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="TopEnd" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowBottom" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowBottom" Property="HorizontalAlignment" Value="Right" />
+                                <Setter TargetName="ArrowBottom" Property="Margin" Value="0,0,12,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  Show left arrow for Right placements  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="Right" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowLeft" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="RightStart" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowLeft" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowLeft" Property="VerticalAlignment" Value="Top" />
+                                <Setter TargetName="ArrowLeft" Property="Margin" Value="0,12,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="RightEnd" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowLeft" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowLeft" Property="VerticalAlignment" Value="Bottom" />
+                                <Setter TargetName="ArrowLeft" Property="Margin" Value="0,0,0,12" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  Show right arrow for Left placements  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="Left" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowRight" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="LeftStart" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowRight" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowRight" Property="VerticalAlignment" Value="Top" />
+                                <Setter TargetName="ArrowRight" Property="Margin" Value="0,12,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowArrow" Value="True" />
+                                <Condition Property="Placement" Value="LeftEnd" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ArrowRight" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ArrowRight" Property="VerticalAlignment" Value="Bottom" />
+                                <Setter TargetName="ArrowRight" Property="Margin" Value="0,0,0,12" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  Disabled state  -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
