@@ -5,8 +5,12 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// </summary>
 [ContentProperty(nameof(Content))]
 [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
+[TemplatePart(Name = "PART_Border", Type = typeof(Border))]
 public sealed partial class Alert : ContentControl
 {
+    private Border? partBorder;
+    private Storyboard? pulseStoryboard;
+
     /// <summary>
     /// The severity level of the alert, which determines colors and default icon.
     /// </summary>
@@ -30,6 +34,30 @@ public sealed partial class Alert : ContentControl
     /// </summary>
     [DependencyProperty(DefaultValue = false)]
     private bool isDense;
+
+    /// <summary>
+    /// Whether the alert plays a subtle breathing/pulse animation to draw attention.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsPulsingChanged))]
+    private bool isPulsing;
+
+    /// <summary>
+    /// The half-cycle duration of the pulse animation (full cycle = 2x with auto-reverse).
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = "new TimeSpan(0, 0, 0, 1, 500)",
+        PropertyChangedCallback = nameof(OnPulseParameterChanged))]
+    private TimeSpan pulseDuration;
+
+    /// <summary>
+    /// The minimum opacity during the pulse animation (0.0–1.0).
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = 0.65,
+        PropertyChangedCallback = nameof(OnPulseParameterChanged))]
+    private double pulseOpacity;
 
     /// <summary>
     /// Whether the severity icon is shown.
@@ -102,9 +130,85 @@ public sealed partial class Alert : ContentControl
     {
         base.OnApplyTemplate();
 
+        partBorder = GetTemplateChild("PART_Border") as Border;
+
         if (GetTemplateChild("PART_CloseButton") is Button closeButton)
         {
             closeButton.Click += OnCloseButtonClick;
+        }
+
+        if (IsPulsing)
+        {
+            StartPulseAnimation();
+        }
+    }
+
+    private static void OnIsPulsingChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Alert alert)
+        {
+            if ((bool)e.NewValue)
+            {
+                alert.StartPulseAnimation();
+            }
+            else
+            {
+                alert.StopPulseAnimation();
+            }
+        }
+    }
+
+    private static void OnPulseParameterChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Alert { IsPulsing: true } alert)
+        {
+            alert.StopPulseAnimation();
+            alert.StartPulseAnimation();
+        }
+    }
+
+    private void StartPulseAnimation()
+    {
+        if (partBorder is null)
+        {
+            return;
+        }
+
+        var animation = new DoubleAnimation
+        {
+            From = 1.0,
+            To = PulseOpacity,
+            Duration = new Duration(PulseDuration),
+            AutoReverse = true,
+            RepeatBehavior = RepeatBehavior.Forever,
+            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+        };
+
+        var storyboard = new Storyboard();
+        storyboard.Children.Add(animation);
+
+        Storyboard.SetTarget(animation, partBorder);
+        Storyboard.SetTargetProperty(animation, new PropertyPath(UIElement.OpacityProperty));
+
+        storyboard.Begin();
+        pulseStoryboard = storyboard;
+    }
+
+    private void StopPulseAnimation()
+    {
+        if (pulseStoryboard is not null)
+        {
+            pulseStoryboard.Stop();
+            pulseStoryboard = null;
+        }
+
+        if (partBorder is not null)
+        {
+            partBorder.Opacity = 1.0;
         }
     }
 
