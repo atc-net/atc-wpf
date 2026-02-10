@@ -5,7 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
-    xmlns:colorSchemas="clr-namespace:Atc.Wpf.Controls.Documents.ColorSchemas;assembly=Atc.Wpf.Controls"
+    xmlns:colorSchemas="clr-namespace:Atc.Wpf.Documents.ColorSchemas;assembly=Atc.Wpf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:jsonTree="clr-namespace:Atc.Wpf.Viewers.JsonTree;assembly=Atc.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

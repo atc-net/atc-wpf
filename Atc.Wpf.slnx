@@ -16,6 +16,7 @@
     <Project Path="src/Atc.Wpf/Atc.Wpf.csproj" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/Atc.Wpf.Components.Tests/Atc.Wpf.Components.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Controls.Tests/Atc.Wpf.Controls.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Forms.Tests/Atc.Wpf.Forms.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Network.Tests/Atc.Wpf.Network.Tests.csproj" />

@@ -1,0 +1,1095 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Flyouts.FlyoutView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:flyouts="clr-namespace:Atc.Wpf.Components.Flyouts;assembly=Atc.Wpf.Components"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Features">
+                    <TextBlock TextWrapping="Wrap">
+                        The Flyout control provides a sliding panel overlay that slides in from an edge of its container.
+                        It supports light dismiss behavior (click outside or press Escape), customizable animations,
+                        overlay backgrounds, and can slide in from any edge (Right, Left, Top, Bottom, Center).
+                        Features include pin/unpin, resizable panels, custom animations, and attached flyout support.
+                        The default position is Right, similar to the Azure Portal design pattern.
+                    </TextBlock>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Basic Flyout (Right Position)">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Click the button below to open a basic flyout sliding in from the right edge." />
+                        <Button
+                            x:Name="OpenRightFlyoutButton"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OpenRightFlyoutButton_Click"
+                            Content="Open Right Flyout" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Position Variants">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Flyouts can slide in from any edge of their container." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenLeftFlyoutButton"
+                                Width="120"
+                                Click="OpenLeftFlyoutButton_Click"
+                                Content="Left" />
+                            <Button
+                                x:Name="OpenTopFlyoutButton"
+                                Width="120"
+                                Click="OpenTopFlyoutButton_Click"
+                                Content="Top" />
+                            <Button
+                                x:Name="OpenBottomFlyoutButton"
+                                Width="120"
+                                Click="OpenBottomFlyoutButton_Click"
+                                Content="Bottom" />
+                            <Button
+                                x:Name="OpenCenterFlyoutButton"
+                                Width="120"
+                                Click="OpenCenterFlyoutButton_Click"
+                                Content="Center" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Advanced Features">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Advanced flyout features: pin/unpin to prevent light dismiss, resizable panels, and custom animations." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenPinnableFlyoutButton"
+                                Width="150"
+                                Click="OpenPinnableFlyoutButton_Click"
+                                Content="Pinnable Flyout" />
+                            <Button
+                                x:Name="OpenResizableFlyoutButton"
+                                Width="150"
+                                Click="OpenResizableFlyoutButton_Click"
+                                Content="Resizable Flyout" />
+                            <Button
+                                x:Name="OpenBouncyFlyoutButton"
+                                Width="150"
+                                Click="OpenBouncyFlyoutButton_Click"
+                                Content="Bouncy Animation" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Attached Flyout">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Use FlyoutBase.AttachedFlyout and FlyoutBase.OpenOnClick to attach flyouts directly to buttons." />
+                        <Button
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Content="Click Me (Attached Flyout)"
+                            flyouts:FlyoutBase.OpenOnClick="True">
+                            <flyouts:FlyoutBase.AttachedFlyout>
+                                <flyouts:Flyout Header="Attached Flyout" FlyoutWidth="350">
+                                    <StackPanel Margin="16">
+                                        <TextBlock
+                                            Margin="0,0,0,16"
+                                            TextWrapping="Wrap"
+                                            Text="This flyout is attached directly to the button using FlyoutBase.AttachedFlyout." />
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            Text="No code-behind needed - just set FlyoutBase.OpenOnClick=True!" />
+                                    </StackPanel>
+                                </flyouts:Flyout>
+                            </flyouts:FlyoutBase.AttachedFlyout>
+                        </Button>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Configuration Options">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Flyouts can be configured with various options like width, overlay, and light dismiss behavior." />
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <CheckBox
+                                x:Name="ShowOverlayCheckBox"
+                                VerticalAlignment="Center"
+                                Content="Show Overlay"
+                                IsChecked="True" />
+                            <CheckBox
+                                x:Name="LightDismissCheckBox"
+                                Margin="20,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="Light Dismiss Enabled"
+                                IsChecked="True" />
+                            <CheckBox
+                                x:Name="ShowCloseButtonCheckBox"
+                                Margin="20,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="Show Close Button"
+                                IsChecked="True" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Width:" />
+                            <Slider
+                                x:Name="FlyoutWidthSlider"
+                                Width="200"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                Maximum="600"
+                                Minimum="200"
+                                Value="400" />
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Value, ElementName=FlyoutWidthSlider, StringFormat={}{0:F0}px}" />
+                        </StackPanel>
+                        <Button
+                            x:Name="OpenConfiguredFlyoutButton"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OpenConfiguredFlyoutButton_Click"
+                            Content="Open Configured Flyout" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Flyout with Form Content">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Flyouts are commonly used to display forms or settings panels." />
+                        <Button
+                            x:Name="OpenFormFlyoutButton"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OpenFormFlyoutButton_Click"
+                            Content="Open Settings Panel" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Nested Flyouts (Azure Portal Style)">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Flyouts can be nested to create drill-down experiences like the Azure Portal. Click a button in a flyout to open another flyout on top." />
+                        <Button
+                            x:Name="OpenNestedFlyoutButton"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OpenNestedFlyoutButton_Click"
+                            Content="Open Nested Demo" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="FlyoutPresenter">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="FlyoutPresenter provides a standardized layout with header, scrollable content, and footer sections. Great for forms with action buttons." />
+                        <Button
+                            x:Name="OpenPresenterFlyoutButton"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OpenPresenterFlyoutButton_Click"
+                            Content="Open FlyoutPresenter Demo" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Focus Trapping">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="When IsFocusTrapEnabled is true (default), Tab/Shift+Tab navigation stays within the flyout. Disable it to allow tabbing out of the flyout." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenFocusTrappedFlyoutButton"
+                                Width="180"
+                                Click="OpenFocusTrappedFlyoutButton_Click"
+                                Content="Focus Trapped (Default)" />
+                            <Button
+                                x:Name="OpenFocusFreeFlyoutButton"
+                                Width="180"
+                                Click="OpenFocusFreeFlyoutButton_Click"
+                                Content="Focus Free" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Custom Colors">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"
+                            Text="Flyouts support full color customization through properties like FlyoutBackground, FlyoutBorderBrush, HeaderBackground, HeaderForeground, HeaderBorderBrush, and OverlayBrush." />
+                        <atc:UniformSpacingPanel
+                            HorizontalSpacing="10"
+                            Orientation="Horizontal"
+                            VerticalSpacing="10">
+                            <Button
+                                x:Name="OpenBrandedFlyoutButton"
+                                Width="140"
+                                Click="OpenBrandedFlyoutButton_Click"
+                                Content="Branded (Blue)" />
+                            <Button
+                                x:Name="OpenSuccessFlyoutButton"
+                                Width="140"
+                                Click="OpenSuccessFlyoutButton_Click"
+                                Content="Success (Green)" />
+                            <Button
+                                x:Name="OpenWarningFlyoutButton"
+                                Width="140"
+                                Click="OpenWarningFlyoutButton_Click"
+                                Content="Warning (Orange)" />
+                            <Button
+                                x:Name="OpenErrorFlyoutButton"
+                                Width="140"
+                                Click="OpenErrorFlyoutButton_Click"
+                                Content="Error (Red)" />
+                        </atc:UniformSpacingPanel>
+                    </StackPanel>
+                </GroupBox>
+
+            </atc:AutoGrid>
+        </ScrollViewer>
+
+        <!-- Right Flyout -->
+        <flyouts:Flyout
+            x:Name="RightFlyout"
+            FlyoutWidth="400"
+            Header="Right Flyout"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This is a basic flyout that slides in from the right edge." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Click outside, press Escape, or click the close button to dismiss." />
+                <Button
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=RightFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Left Flyout -->
+        <flyouts:Flyout
+            x:Name="LeftFlyout"
+            FlyoutWidth="350"
+            Header="Left Flyout"
+            Position="Left">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This flyout slides in from the left edge." />
+                <Button
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=LeftFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Top Flyout -->
+        <flyouts:Flyout
+            x:Name="TopFlyout"
+            FlyoutHeight="200"
+            Header="Top Flyout"
+            Position="Top">
+            <StackPanel Margin="16" Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,16,0"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap"
+                    Text="This flyout slides in from the top edge." />
+                <Button
+                    Width="100"
+                    VerticalAlignment="Center"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=TopFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Bottom Flyout -->
+        <flyouts:Flyout
+            x:Name="BottomFlyout"
+            FlyoutHeight="200"
+            Header="Bottom Flyout"
+            Position="Bottom">
+            <StackPanel Margin="16" Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,16,0"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap"
+                    Text="This flyout slides in from the bottom edge." />
+                <Button
+                    Width="100"
+                    VerticalAlignment="Center"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=BottomFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Configured Flyout -->
+        <flyouts:Flyout
+            x:Name="ConfiguredFlyout"
+            FlyoutWidth="{Binding Value, ElementName=FlyoutWidthSlider}"
+            Header="Configured Flyout"
+            IsLightDismissEnabled="{Binding IsChecked, ElementName=LightDismissCheckBox}"
+            Position="Right"
+            ShowCloseButton="{Binding IsChecked, ElementName=ShowCloseButtonCheckBox}"
+            ShowOverlay="{Binding IsChecked, ElementName=ShowOverlayCheckBox}">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This flyout is configured based on the options above." />
+                <TextBlock Margin="0,0,0,8" Text="Current Settings:" />
+                <TextBlock Text="{Binding Value, ElementName=FlyoutWidthSlider, StringFormat=Width: {0:F0}px}" />
+                <TextBlock Text="{Binding IsChecked, ElementName=ShowOverlayCheckBox, StringFormat=Show Overlay: {0}}" />
+                <TextBlock Text="{Binding IsChecked, ElementName=LightDismissCheckBox, StringFormat=Light Dismiss: {0}}" />
+                <TextBlock Text="{Binding IsChecked, ElementName=ShowCloseButtonCheckBox, StringFormat=Show Close Button: {0}}" />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=ConfiguredFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Form Flyout -->
+        <flyouts:Flyout
+            x:Name="FormFlyout"
+            FlyoutWidth="450"
+            Header="Settings"
+            Position="Right">
+            <Grid Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="General Settings" />
+
+                <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                    <TextBlock Margin="0,0,0,4" Text="Display Name" />
+                    <TextBox Text="John Doe" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Margin="0,0,0,12">
+                    <TextBlock Margin="0,0,0,4" Text="Email Address" />
+                    <TextBox Text="john@example.com" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Margin="0,0,0,12">
+                    <TextBlock Margin="0,0,0,4" Text="Theme" />
+                    <ComboBox SelectedIndex="0">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                        <ComboBoxItem Content="System" />
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="4" Margin="0,0,0,12">
+                    <CheckBox Content="Enable notifications" IsChecked="True" />
+                    <CheckBox Margin="0,8,0,0" Content="Auto-save documents" IsChecked="True" />
+                    <CheckBox Margin="0,8,0,0" Content="Show welcome screen on startup" />
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="6"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="80"
+                        Margin="0,0,8,0"
+                        Click="CloseFlyout_Click"
+                        Content="Cancel"
+                        Tag="{Binding ElementName=FormFlyout}" />
+                    <Button
+                        Width="80"
+                        Click="SaveAndCloseFlyout_Click"
+                        Content="Save"
+                        Tag="{Binding ElementName=FormFlyout}" />
+                </StackPanel>
+            </Grid>
+        </flyouts:Flyout>
+
+        <!-- Nested Flyout Level 1 -->
+        <flyouts:Flyout
+            x:Name="NestedFlyout1"
+            FlyoutWidth="500"
+            Header="Resource Group"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Resource Group Details" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This is the first level flyout. Click a resource below to see its details in a nested flyout." />
+
+                <Border
+                    Margin="0,0,0,8"
+                    Padding="12"
+                    Background="{DynamicResource AtcApps.Brushes.Gray9}"
+                    CornerRadius="4"
+                    Cursor="Hand"
+                    MouseLeftButtonUp="OpenNestedFlyout2_Click">
+                    <StackPanel>
+                        <TextBlock FontWeight="SemiBold" Text="Virtual Machine 1" />
+                        <TextBlock
+                            Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                            Text="Standard_DS2_v2 - Running" />
+                    </StackPanel>
+                </Border>
+
+                <Border
+                    Margin="0,0,0,8"
+                    Padding="12"
+                    Background="{DynamicResource AtcApps.Brushes.Gray9}"
+                    CornerRadius="4"
+                    Cursor="Hand"
+                    MouseLeftButtonUp="OpenNestedFlyout2_Click">
+                    <StackPanel>
+                        <TextBlock FontWeight="SemiBold" Text="Storage Account" />
+                        <TextBlock
+                            Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                            Text="Standard_LRS - Active" />
+                    </StackPanel>
+                </Border>
+
+                <Border
+                    Margin="0,0,0,8"
+                    Padding="12"
+                    Background="{DynamicResource AtcApps.Brushes.Gray9}"
+                    CornerRadius="4"
+                    Cursor="Hand"
+                    MouseLeftButtonUp="OpenNestedFlyout2_Click">
+                    <StackPanel>
+                        <TextBlock FontWeight="SemiBold" Text="SQL Database" />
+                        <TextBlock
+                            Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                            Text="Basic - Online" />
+                    </StackPanel>
+                </Border>
+
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=NestedFlyout1}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Nested Flyout Level 2 -->
+        <flyouts:Flyout
+            x:Name="NestedFlyout2"
+            FlyoutWidth="450"
+            Header="Resource Details"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Virtual Machine Details" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This is the second level flyout. Click below to see more details." />
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="Status" />
+                    <TextBlock FontWeight="SemiBold" Text="Running" />
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="Size" />
+                    <TextBlock FontWeight="SemiBold" Text="Standard_DS2_v2" />
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="Location" />
+                    <TextBlock FontWeight="SemiBold" Text="West Europe" />
+                </StackPanel>
+
+                <Button
+                    Width="150"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="OpenNestedFlyout3_Click"
+                    Content="View Metrics" />
+
+                <Button
+                    Width="100"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=NestedFlyout2}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Nested Flyout Level 3 -->
+        <flyouts:Flyout
+            x:Name="NestedFlyout3"
+            FlyoutWidth="400"
+            Header="Metrics"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Performance Metrics" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This is the third level flyout. You can nest as deep as needed." />
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="CPU Usage" />
+                    <TextBlock FontWeight="SemiBold" Text="23%" />
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="Memory Usage" />
+                    <TextBlock FontWeight="SemiBold" Text="4.2 GB / 8 GB" />
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="Network In" />
+                    <TextBlock FontWeight="SemiBold" Text="1.2 MB/s" />
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock
+                        Foreground="{DynamicResource AtcApps.Brushes.Gray3}"
+                        Text="Network Out" />
+                    <TextBlock FontWeight="SemiBold" Text="0.8 MB/s" />
+                </StackPanel>
+
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=NestedFlyout3}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Center Flyout (modal-like) -->
+        <flyouts:Flyout
+            x:Name="CenterFlyout"
+            FlyoutWidth="500"
+            FlyoutHeight="350"
+            Header="Centered Dialog"
+            Position="Center"
+            CornerRadius="8">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Centered Flyout" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This flyout appears centered with a scale animation, similar to a modal dialog." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Great for confirmation dialogs or focused tasks that don't need slide-in behavior." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Center"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=CenterFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Pinnable Flyout -->
+        <flyouts:Flyout
+            x:Name="PinnableFlyout"
+            FlyoutWidth="400"
+            Header="Pinnable Panel"
+            Position="Right"
+            ShowPinButton="True">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Pin/Unpin Feature" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Click the pin icon in the header to pin this flyout. When pinned, light dismiss is disabled - clicking outside won't close it." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Click the pin again to unpin and restore normal light dismiss behavior." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=PinnableFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Resizable Flyout -->
+        <flyouts:Flyout
+            x:Name="ResizableFlyout"
+            FlyoutWidth="400"
+            Header="Resizable Panel"
+            Position="Right"
+            IsResizable="True"
+            MinFlyoutWidth="250"
+            MaxFlyoutWidth="700">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Resizable Flyout" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Drag the left edge of this flyout to resize it. The width is constrained between 250px and 700px." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This is useful when users need to see more or less content based on their preference." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=ResizableFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Bouncy Animation Flyout -->
+        <flyouts:Flyout
+            x:Name="BouncyFlyout"
+            FlyoutWidth="400"
+            Header="Custom Animation"
+            Position="Right"
+            AnimationDuration="600">
+            <flyouts:Flyout.EasingFunction>
+                <ElasticEase EasingMode="EaseOut" Oscillations="2" Springiness="5" />
+            </flyouts:Flyout.EasingFunction>
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Custom Animation" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="This flyout uses an ElasticEase animation for a bouncy effect when opening." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="You can customize the animation by setting the EasingFunction property to any IEasingFunction." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=BouncyFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- FlyoutPresenter Demo -->
+        <flyouts:Flyout
+            x:Name="PresenterFlyout"
+            FlyoutWidth="450"
+            Header="FlyoutPresenter Demo"
+            Position="Right"
+            ShowCloseButton="False">
+            <flyouts:FlyoutPresenter Header="Edit User Profile">
+                <flyouts:FlyoutPresenter.Footer>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            Width="80"
+                            Margin="0,0,8,0"
+                            Click="ClosePresenterFlyout_Click"
+                            Content="Cancel" />
+                        <Button
+                            Width="80"
+                            Click="SavePresenterFlyout_Click"
+                            Content="Save" />
+                    </StackPanel>
+                </flyouts:FlyoutPresenter.Footer>
+
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,4" Text="First Name" />
+                    <TextBox Margin="0,0,0,12" Text="John" />
+
+                    <TextBlock Margin="0,0,0,4" Text="Last Name" />
+                    <TextBox Margin="0,0,0,12" Text="Doe" />
+
+                    <TextBlock Margin="0,0,0,4" Text="Email" />
+                    <TextBox Margin="0,0,0,12" Text="john.doe@example.com" />
+
+                    <TextBlock Margin="0,0,0,4" Text="Department" />
+                    <ComboBox Margin="0,0,0,12" SelectedIndex="0">
+                        <ComboBoxItem Content="Engineering" />
+                        <ComboBoxItem Content="Marketing" />
+                        <ComboBoxItem Content="Sales" />
+                        <ComboBoxItem Content="Support" />
+                    </ComboBox>
+
+                    <TextBlock Margin="0,0,0,4" Text="Bio" />
+                    <TextBox
+                        Height="80"
+                        AcceptsReturn="True"
+                        Text="Software developer with 10 years of experience..."
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
+            </flyouts:FlyoutPresenter>
+        </flyouts:Flyout>
+
+        <!-- Focus Trapped Flyout (Default) -->
+        <flyouts:Flyout
+            x:Name="FocusTrappedFlyout"
+            FlyoutWidth="400"
+            Header="Focus Trapped (Default)"
+            IsFocusTrapEnabled="True"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Focus Trapping Enabled" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="Try pressing Tab repeatedly. Focus will cycle through the form fields and buttons below, staying within the flyout." />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 1:" />
+                <TextBox Margin="0,0,0,12" Text="First field" />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 2:" />
+                <TextBox Margin="0,0,0,12" Text="Second field" />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 3:" />
+                <TextBox Margin="0,0,0,12" Text="Third field" />
+
+                <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                    <Button
+                        Width="80"
+                        Margin="0,0,8,0"
+                        Content="Button 1" />
+                    <Button
+                        Width="80"
+                        Margin="0,0,8,0"
+                        Content="Button 2" />
+                    <Button
+                        Width="80"
+                        Click="CloseFlyout_Click"
+                        Content="Close"
+                        Tag="{Binding ElementName=FocusTrappedFlyout}" />
+                </StackPanel>
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Focus Free Flyout -->
+        <flyouts:Flyout
+            x:Name="FocusFreeFlyout"
+            FlyoutWidth="400"
+            Header="Focus Free"
+            IsFocusTrapEnabled="False"
+            Position="Right">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Text="Focus Trapping Disabled" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    TextWrapping="Wrap"
+                    Text="With IsFocusTrapEnabled=False, pressing Tab can move focus outside the flyout to elements in the main window." />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 1:" />
+                <TextBox Margin="0,0,0,12" Text="First field" />
+
+                <TextBlock Margin="0,0,0,4" Text="Field 2:" />
+                <TextBox Margin="0,0,0,12" Text="Second field" />
+
+                <Button
+                    Width="100"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=FocusFreeFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Branded (Blue) Flyout -->
+        <flyouts:Flyout
+            x:Name="BrandedFlyout"
+            FlyoutWidth="400"
+            Header="Branded Panel"
+            Position="Right"
+            FlyoutBackground="#1E3A5F"
+            FlyoutBorderBrush="#4A90D9"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#2C5282"
+            HeaderForeground="White"
+            HeaderBorderBrush="#4A90D9"
+            OverlayBrush="#000080"
+            OverlayOpacity="0.3">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="Custom Branded Flyout" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B0C4DE"
+                    TextWrapping="Wrap"
+                    Text="This flyout demonstrates full color customization using FlyoutBackground, FlyoutBorderBrush, HeaderBackground, HeaderForeground, and HeaderBorderBrush properties." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B0C4DE"
+                    TextWrapping="Wrap"
+                    Text="The overlay also uses a custom blue tint with OverlayBrush and reduced OverlayOpacity." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=BrandedFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Success (Green) Flyout -->
+        <flyouts:Flyout
+            x:Name="SuccessFlyout"
+            FlyoutWidth="400"
+            Header="Success"
+            Position="Right"
+            FlyoutBackground="#E6F4EA"
+            FlyoutBorderBrush="#34A853"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#34A853"
+            HeaderForeground="White"
+            HeaderBorderBrush="#34A853">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="#1E4620"
+                    Text="Operation Successful" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#2D6A30"
+                    TextWrapping="Wrap"
+                    Text="This green-themed flyout is ideal for success messages and confirmations." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#2D6A30"
+                    TextWrapping="Wrap"
+                    Text="All settings have been saved successfully!" />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=SuccessFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Warning (Orange) Flyout -->
+        <flyouts:Flyout
+            x:Name="WarningFlyout"
+            FlyoutWidth="400"
+            Header="Warning"
+            Position="Right"
+            FlyoutBackground="#FEF7E0"
+            FlyoutBorderBrush="#F9AB00"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#F9AB00"
+            HeaderForeground="White"
+            HeaderBorderBrush="#F9AB00">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="#7A5A00"
+                    Text="Please Review" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#8B6914"
+                    TextWrapping="Wrap"
+                    Text="This orange-themed flyout is suitable for warnings and important notices." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#8B6914"
+                    TextWrapping="Wrap"
+                    Text="Please review your changes before continuing." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=WarningFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+        <!-- Error (Red) Flyout -->
+        <flyouts:Flyout
+            x:Name="ErrorFlyout"
+            FlyoutWidth="400"
+            Header="Error"
+            Position="Right"
+            FlyoutBackground="#FCE8E6"
+            FlyoutBorderBrush="#EA4335"
+            FlyoutBorderThickness="2"
+            HeaderBackground="#EA4335"
+            HeaderForeground="White"
+            HeaderBorderBrush="#EA4335">
+            <StackPanel Margin="16">
+                <TextBlock
+                    Margin="0,0,0,16"
+                    FontWeight="SemiBold"
+                    Foreground="#A50E0E"
+                    Text="An Error Occurred" />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B31412"
+                    TextWrapping="Wrap"
+                    Text="This red-themed flyout is appropriate for error messages and alerts." />
+                <TextBlock
+                    Margin="0,0,0,16"
+                    Foreground="#B31412"
+                    TextWrapping="Wrap"
+                    Text="Unable to connect to the server. Please check your network connection and try again." />
+                <Button
+                    Width="100"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Left"
+                    Click="CloseFlyout_Click"
+                    Content="Close"
+                    Tag="{Binding ElementName=ErrorFlyout}" />
+            </StackPanel>
+        </flyouts:Flyout>
+
+    </Grid>
+</UserControl>

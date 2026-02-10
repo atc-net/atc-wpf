@@ -1,0 +1,292 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:buttonControls="clr-namespace:Atc.Wpf.Controls.Buttons;assembly=Atc.Wpf.Controls"
+    xmlns:resources="clr-namespace:Atc.Wpf.Controls.Resources;assembly=Atc.Wpf.Controls"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Components.Selectors">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/ImageButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate x:Key="AtcApps.DataTemplate.DualListSelectorItem" DataType="{x:Type selectors:DualListSelectorItem}">
+        <StackPanel Margin="4,2">
+            <TextBlock
+                FontWeight="SemiBold"
+                Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                Text="{Binding Path=Name}" />
+            <TextBlock
+                FontSize="11"
+                Foreground="{DynamicResource AtcApps.Brushes.Gray6}"
+                Text="{Binding Path=Description}"
+                Visibility="{Binding Path=Description, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <Style
+        x:Key="AtcApps.Styles.DualListSelector.ImageButton"
+        BasedOn="{StaticResource AtcApps.Styles.ImageButton}"
+        TargetType="{x:Type buttonControls:ImageButton}">
+        <Setter Property="MinWidth" Value="36" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="ImageLocation" Value="Center" />
+        <Setter Property="SvgImageOverrideColor" Value="{DynamicResource AtcApps.Colors.Accent}" />
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.DualListSelector.ItemContainer"
+        BasedOn="{StaticResource AtcApps.Styles.ListBoxItem}"
+        TargetType="{x:Type ListBoxItem}">
+        <Setter Property="atc:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="atc:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Setter Property="atc:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+        <Setter Property="atc:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Gray7}" />
+        <Setter Property="atc:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Setter Property="atc:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+        <Setter Property="atc:ItemHelper.HoverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="atc:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+        <Setter Property="atc:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Setter Property="atc:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent2}" />
+        <Setter Property="atc:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Selected.Foreground}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="Opacity" Value="0.5" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.DualListSelector" TargetType="{x:Type selectors:DualListSelector}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type selectors:DualListSelector}">
+                    <atc:GridEx Columns="Auto,*,Auto,*,Auto">
+
+                        <!--  Available List Panel  -->
+                        <DockPanel x:Name="AvailablePanel" Grid.Column="1">
+                            <ContentPresenter
+                                x:Name="AvailableHeaderPresenter"
+                                Margin="0,0,0,4"
+                                Content="{TemplateBinding AvailableHeader}"
+                                ContentTemplate="{TemplateBinding AvailableHeaderTemplate}"
+                                DockPanel.Dock="Top"
+                                Visibility="{Binding AvailableHeader, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" />
+                            <TextBox
+                                x:Name="PART_AvailableFilterTextBox"
+                                Margin="0,0,0,4"
+                                atc:TextBoxHelper.ClearTextButton="True"
+                                atc:TextBoxHelper.Watermark="{x:Static resources:Miscellaneous.FilterPlaceholder}"
+                                DockPanel.Dock="Top"
+                                Visibility="{Binding ShowFilter, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                            <TextBlock
+                                x:Name="PART_AvailableItemCount"
+                                Margin="0,4,0,0"
+                                DockPanel.Dock="Bottom"
+                                FontSize="11"
+                                Foreground="{DynamicResource AtcApps.Brushes.Gray6}"
+                                Visibility="{Binding ShowItemCount, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                            <ContentPresenter
+                                x:Name="AvailableFooterPresenter"
+                                DockPanel.Dock="Bottom"
+                                Content="{TemplateBinding AvailableFooter}"
+                                Visibility="{Binding AvailableFooter, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" />
+                            <Grid>
+                                <ListBox
+                                    x:Name="PART_AvailableListBox"
+                                    MinWidth="{TemplateBinding ListMinWidth}"
+                                    MinHeight="{TemplateBinding ListMinHeight}"
+                                    MaxHeight="{TemplateBinding ListMaxHeight}"
+                                    AllowDrop="{Binding AllowDragDrop, RelativeSource={RelativeSource TemplatedParent}}"
+                                    AutomationProperties.Name="{Binding AvailableHeader, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Available items'}"
+                                    Background="{DynamicResource AtcApps.Brushes.Control.Background}"
+                                    BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
+                                    BorderThickness="1"
+                                    ItemContainerStyle="{StaticResource AtcApps.Styles.DualListSelector.ItemContainer}"
+                                    ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={StaticResource AtcApps.DataTemplate.DualListSelectorItem}}"
+                                    ItemsSource="{TemplateBinding AvailableItems}"
+                                    SelectionMode="Extended" />
+                                <TextBlock
+                                    x:Name="PART_AvailableEmptyText"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Foreground="{DynamicResource AtcApps.Brushes.Gray6}"
+                                    IsHitTestVisible="False"
+                                    Text="{x:Static resources:Miscellaneous.NoItemsFound}"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                        </DockPanel>
+
+                        <!--  Transfer Buttons  -->
+                        <StackPanel
+                            x:Name="TransferButtonPanel"
+                            Grid.Column="2"
+                            Width="{TemplateBinding ButtonAreaWidth}"
+                            Margin="6,0"
+                            VerticalAlignment="Center">
+                            <buttonControls:ImageButton
+                                x:Name="MoveAllToSelectedButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveAllToSelected}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveAllToSelected}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/chevron_double_right.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveAllToSelected}"
+                                Visibility="{Binding ShowTransferAllButtons, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                            <buttonControls:ImageButton
+                                x:Name="MoveToSelectedButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveToSelected}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveToSelected}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/chevron_right.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveToSelected}" />
+                            <buttonControls:ImageButton
+                                x:Name="MoveToAvailableButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveToAvailable}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveToAvailable}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/chevron_left.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveToAvailable}" />
+                            <buttonControls:ImageButton
+                                x:Name="MoveAllToAvailableButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveAllToAvailable}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveAllToAvailable}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/chevron_double_left.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveAllToAvailable}"
+                                Visibility="{Binding ShowTransferAllButtons, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                        </StackPanel>
+
+                        <!--  Selected List Panel  -->
+                        <DockPanel x:Name="SelectedPanel" Grid.Column="3">
+                            <ContentPresenter
+                                x:Name="SelectedHeaderPresenter"
+                                Margin="0,0,0,4"
+                                Content="{TemplateBinding SelectedHeader}"
+                                ContentTemplate="{TemplateBinding SelectedHeaderTemplate}"
+                                DockPanel.Dock="Top"
+                                Visibility="{Binding SelectedHeader, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" />
+                            <TextBox
+                                x:Name="PART_SelectedFilterTextBox"
+                                Margin="0,0,0,4"
+                                atc:TextBoxHelper.ClearTextButton="True"
+                                atc:TextBoxHelper.Watermark="{x:Static resources:Miscellaneous.FilterPlaceholder}"
+                                DockPanel.Dock="Top"
+                                Visibility="{Binding ShowFilter, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                            <TextBlock
+                                x:Name="PART_SelectedItemCount"
+                                Margin="0,4,0,0"
+                                DockPanel.Dock="Bottom"
+                                FontSize="11"
+                                Foreground="{DynamicResource AtcApps.Brushes.Gray6}"
+                                Visibility="{Binding ShowItemCount, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                            <ContentPresenter
+                                x:Name="SelectedFooterPresenter"
+                                DockPanel.Dock="Bottom"
+                                Content="{TemplateBinding SelectedFooter}"
+                                Visibility="{Binding SelectedFooter, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" />
+                            <Grid>
+                                <ListBox
+                                    x:Name="PART_SelectedListBox"
+                                    MinWidth="{TemplateBinding ListMinWidth}"
+                                    MinHeight="{TemplateBinding ListMinHeight}"
+                                    MaxHeight="{TemplateBinding ListMaxHeight}"
+                                    AllowDrop="{Binding AllowDragDrop, RelativeSource={RelativeSource TemplatedParent}}"
+                                    AutomationProperties.Name="{Binding SelectedHeader, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Selected items'}"
+                                    Background="{DynamicResource AtcApps.Brushes.Control.Background}"
+                                    BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
+                                    BorderThickness="1"
+                                    ItemContainerStyle="{StaticResource AtcApps.Styles.DualListSelector.ItemContainer}"
+                                    ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={StaticResource AtcApps.DataTemplate.DualListSelectorItem}}"
+                                    ItemsSource="{TemplateBinding SelectedItems}"
+                                    SelectionMode="Extended" />
+                                <TextBlock
+                                    x:Name="PART_SelectedEmptyText"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Foreground="{DynamicResource AtcApps.Brushes.Gray6}"
+                                    IsHitTestVisible="False"
+                                    Text="{x:Static resources:Miscellaneous.NoItemsFound}"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                        </DockPanel>
+
+                        <!--  Reorder Buttons  -->
+                        <StackPanel
+                            x:Name="ReorderButtonPanel"
+                            Grid.Column="4"
+                            Width="{TemplateBinding ButtonAreaWidth}"
+                            Margin="6,0"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding ShowReorderButtons, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
+                            <buttonControls:ImageButton
+                                x:Name="MoveToTopButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveToTop}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveToTop}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/arrow_top.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveToTop}" />
+                            <buttonControls:ImageButton
+                                x:Name="MoveUpButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveUp}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveUp}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/arrow_up.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveUp}" />
+                            <buttonControls:ImageButton
+                                x:Name="MoveDownButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveDown}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveDown}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/arrow_down.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveDown}" />
+                            <buttonControls:ImageButton
+                                x:Name="MoveToBottomButton"
+                                AutomationProperties.Name="{x:Static resources:Miscellaneous.MoveToBottom}"
+                                Command="{x:Static selectors:DualListSelectorCommands.MoveToBottom}"
+                                Style="{StaticResource AtcApps.Styles.DualListSelector.ImageButton}"
+                                SvgImageSource="/Atc.Wpf.Controls;component/Resources/Icons/arrow_bottom.svg"
+                                ToolTip="{x:Static resources:Miscellaneous.MoveToBottom}" />
+                        </StackPanel>
+                    </atc:GridEx>
+                    <ControlTemplate.Triggers>
+                        <!--  SelectedFirst layout: swap columns and arrow directions  -->
+                        <Trigger Property="LayoutMode" Value="SelectedFirst">
+                            <Setter TargetName="ReorderButtonPanel" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="SelectedPanel" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="TransferButtonPanel" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="AvailablePanel" Property="Grid.Column" Value="3" />
+                            <Setter TargetName="MoveAllToSelectedButton" Property="SvgImageSource" Value="/Atc.Wpf.Controls;component/Resources/Icons/chevron_double_left.svg" />
+                            <Setter TargetName="MoveToSelectedButton" Property="SvgImageSource" Value="/Atc.Wpf.Controls;component/Resources/Icons/chevron_left.svg" />
+                            <Setter TargetName="MoveToAvailableButton" Property="SvgImageSource" Value="/Atc.Wpf.Controls;component/Resources/Icons/chevron_right.svg" />
+                            <Setter TargetName="MoveAllToAvailableButton" Property="SvgImageSource" Value="/Atc.Wpf.Controls;component/Resources/Icons/chevron_double_right.svg" />
+                        </Trigger>
+                        <!--  AllowMultiSelect: switch to single selection mode  -->
+                        <Trigger Property="AllowMultiSelect" Value="False">
+                            <Setter TargetName="PART_AvailableListBox" Property="SelectionMode" Value="Single" />
+                            <Setter TargetName="PART_SelectedListBox" Property="SelectionMode" Value="Single" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Default header style for string content  -->
+    <DataTemplate x:Key="AtcApps.DataTemplate.DualListSelector.StringHeader" DataType="{x:Type system:String}" xmlns:system="clr-namespace:System;assembly=mscorlib">
+        <TextBlock
+            FontWeight="SemiBold"
+            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+            Text="{Binding}" />
+    </DataTemplate>
+
+</ResourceDictionary>

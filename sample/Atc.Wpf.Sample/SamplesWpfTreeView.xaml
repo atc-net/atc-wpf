@@ -34,6 +34,13 @@
         <sample:SampleTreeViewItem Header="SvgImage List" SamplePath="Controls.Media.SvgImageListView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Drag and Drop">
+        <sample:SampleTreeViewItem
+            Header="DragDrop"
+            IsExpanded="True"
+            SamplePath="DragDrop.DragDropView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Dialogs">
         <sample:SampleTreeViewItem Header="DialogService" SamplePath="Dialogs.DialogServiceView" />
     </TreeViewItem>

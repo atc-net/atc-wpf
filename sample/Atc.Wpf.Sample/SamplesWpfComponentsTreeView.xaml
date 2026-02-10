@@ -9,6 +9,13 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="Flyouts">
+        <sample:SampleTreeViewItem
+            Header="Flyout"
+            IsExpanded="True"
+            SamplePath="Flyouts.FlyoutView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Dialogs">
         <sample:SampleTreeViewItem
             Header="Standard DialogBox"
@@ -64,6 +71,13 @@
             Header="BusyIndicatorService"
             IsExpanded="True"
             SamplePath="Progressing.BusyIndicatorServiceView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Selectors">
+        <sample:SampleTreeViewItem
+            Header="DualListSelector"
+            IsExpanded="True"
+            SamplePath="Selectors.DualListSelectorView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Viewers">
