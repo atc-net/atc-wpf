@@ -9,6 +9,10 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="Animation">
+        <sample:SampleTreeViewItem Header="AnimationLibrary" SamplePath="Animation.AnimationView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Commands">
         <sample:SampleTreeViewItem Header="RelayCommand" SamplePath="Commands.RelayCommandView" />
         <sample:SampleTreeViewItem Header="RelayCommandAsync" SamplePath="Commands.RelayCommandAsyncView" />

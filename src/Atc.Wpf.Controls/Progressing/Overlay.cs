@@ -145,6 +145,7 @@ public partial class Overlay : ContentControl
         }
     }
 
+    [SuppressMessage("Usage", "MA0134:Observe result of async calls", Justification = "Fire-and-forget animation")]
     private void OnIsActiveChanged(bool newValue)
     {
         if (overlayPanel is null)
@@ -154,32 +155,19 @@ public partial class Overlay : ContentControl
 
         if (newValue)
         {
-            overlayPanel.Visibility = Visibility.Visible;
-
-            var fadeIn = new DoubleAnimation(0.0, 1.0, new Duration(FadeInDuration))
-            {
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut },
-            };
-
-            overlayPanel.BeginAnimation(OpacityProperty, fadeIn);
+            var parameters = new AnimationParameters { Duration = FadeInDuration };
+            overlayPanel.FadeInAsync(parameters);
             RaiseEvent(new RoutedEventArgs(ActivatedEvent, this));
         }
         else
         {
-            var fadeOut = new DoubleAnimation(1.0, 0.0, new Duration(FadeOutDuration))
+            var parameters = new AnimationParameters
             {
+                Duration = FadeOutDuration,
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn },
             };
 
-            fadeOut.Completed += (_, _) =>
-            {
-                if (!IsActive && overlayPanel is not null)
-                {
-                    overlayPanel.Visibility = Visibility.Collapsed;
-                }
-            };
-
-            overlayPanel.BeginAnimation(OpacityProperty, fadeOut);
+            overlayPanel.FadeOutAsync(parameters);
             RaiseEvent(new RoutedEventArgs(DeactivatedEvent, this));
         }
     }

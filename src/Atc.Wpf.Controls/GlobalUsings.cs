@@ -33,6 +33,7 @@ global using System.Windows.Threading;
 global using Atc.Data.Models;
 global using Atc.Helpers;
 global using Atc.Serialization;
+global using Atc.Wpf.Animation;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Controls.Adorners;
 global using Atc.Wpf.Controls.ColorEditing.Internal;

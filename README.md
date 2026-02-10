@@ -184,6 +184,7 @@ A quick reference of all controls organized by category:
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
 | **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |
 | **Undo/Redo** | IUndoRedoService, UndoRedoService, UndoRedoHistoryView | Atc.Wpf / Atc.Wpf.Components |
+| **Animation** | AnimationExtensions, AnimateAttach, AnimationParameters | Atc.Wpf |
 | **Clipboard** | IClipboardService, ClipboardService | Atc.Wpf |
 | **Hotkeys** | IHotkeyService, HotkeyService | Atc.Wpf |
 | **Navigation** | INavigationService, INavigationGuard | Atc.Wpf |
@@ -305,6 +306,16 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **IHotkeyService** | Global and local keyboard shortcut management | - |
 | **INavigationService** | View navigation with guards and history | - |
 | **IPrintService** | Print and print-preview service interface | [Readme](src/Atc.Wpf.Components/Printing/PrintService_Readme.md) |
+
+### Animation Library
+
+Reusable animation utilities for fade, slide, and scale effects — both async code-behind and XAML-only attached properties.
+
+| Component | Description | Documentation |
+|-----------|-------------|---------------|
+| **AnimationExtensions** | Async extension methods (FadeIn/Out, SlideIn/Out, ScaleIn/Out) | [Readme](src/Atc.Wpf/Animation/@Readme.md) |
+| **AnimateAttach** | XAML attached properties for declarative animations | [Readme](src/Atc.Wpf/Animation/@Readme.md#animateattach-properties) |
+| **AnimationParameters** | Configuration with presets (Fast, Default, Slow) | [Readme](src/Atc.Wpf/Animation/@Readme.md#animationparameters-properties) |
 
 ### Additional Features
 
