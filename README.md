@@ -153,9 +153,9 @@ Understanding the package hierarchy and when to use each:
 | Tier | Package | Purpose | Example Controls |
 |------|---------|---------|------------------|
 | **1. Base** | `Atc.Wpf` | MVVM, layouts, converters - no UI controls | ViewModelBase, GridEx, FlexPanel |
-| **2. Controls** | `Atc.Wpf.Controls` | Atomic/primitive controls | IntegerBox, ToggleSwitch, Flyout, Carousel |
+| **2. Controls** | `Atc.Wpf.Controls` | Atomic/primitive controls | IntegerBox, ToggleSwitch, Carousel, CountrySelector |
 | **3. Forms** | `Atc.Wpf.Forms` | Labeled form fields with validation | LabelTextBox, LabelComboBox, LabelDatePicker |
-| **4. Components** | `Atc.Wpf.Components` | Composite high-level components | InfoDialogBox, JsonViewer, ToastNotification |
+| **4. Components** | `Atc.Wpf.Components` | Composite high-level components | InfoDialogBox, Flyout, DualListSelector, JsonViewer |
 
 **Quick Guidelines:**
 
@@ -171,13 +171,14 @@ A quick reference of all controls organized by category:
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
 | **Data Display** | Alert, Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline, Popover | Atc.Wpf.Controls |
-| **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Controls |
+| **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Components |
 | **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
 | **Buttons** | ImageButton, SplitButton, AuthenticationButton, ConnectivityButton | Atc.Wpf.Controls |
 | **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
-| **Drag & Drop** | DragDropAttach | Atc.Wpf.Controls |
-| **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector, DualListSelector | Atc.Wpf.Controls |
+| **Drag & Drop** | DragDropAttach | Atc.Wpf |
+| **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector | Atc.Wpf.Controls |
+| **Selectors** | DualListSelector | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
 | **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
@@ -317,6 +318,14 @@ Reusable animation utilities for fade, slide, and scale effects — both async c
 | **AnimateAttach** | XAML attached properties for declarative animations | [Readme](src/Atc.Wpf/Animation/@Readme.md#animateattach-properties) |
 | **AnimationParameters** | Configuration with presets (Fast, Default, Slow) | [Readme](src/Atc.Wpf/Animation/@Readme.md#animationparameters-properties) |
 
+### Drag & Drop Framework
+
+| Component | Description | Documentation |
+|-----------|-------------|---------------|
+| **DragDropAttach** | XAML attached properties for declarative drag-and-drop | [Readme](src/Atc.Wpf/DragDrop/DragDropAttach_Readme.md) |
+
+Infrastructure framework providing reusable drag-and-drop behavior via attached properties, interfaces (`IDragHandler`, `IDropHandler`), and adorners.
+
 ### Additional Features
 
 - **[ShaderEffects](src/Atc.Wpf/Media/ShaderEffects/@Readme.md)** - HLSL-based visual effects
@@ -383,38 +392,13 @@ Unlabeled input controls that provide core functionality:
 | **Stepper** | Step-by-step progress indicator | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Timeline** | Vertical/horizontal timeline display | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
-### Flyout Controls
-
-Sliding panel overlays that slide in from window edges - inspired by Azure Portal blade pattern.
-
-| Control | Description | Documentation |
-|---------|-------------|---------------|
-| **Flyout** | Sliding panel overlay from edges (Right, Left, Top, Bottom) | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md) |
-| **FlyoutHost** | Container that manages multiple flyouts with nesting support | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md#-flyouthost) |
-| **FlyoutService** | MVVM-friendly service for programmatic flyout management | [Readme](src/Atc.Wpf.Controls/Flyouts/Flyout_Readme.md#-iflyoutservice-mvvm) |
-
-**Key Features:**
-- 🎯 Four positions: Right (default), Left, Top, Bottom
-- 🌓 Light dismiss (click outside or Escape key)
-- 📚 Nested flyouts (Azure Portal drill-down style)
-- 🎬 Smooth slide animations
-- 🎨 Full theming support
-
-```xml
-<!-- Basic Flyout -->
-<flyouts:Flyout x:Name="SettingsFlyout" Header="Settings" FlyoutWidth="400">
-    <StackPanel Margin="16">
-        <CheckBox Content="Enable notifications" />
-        <CheckBox Content="Dark mode" />
-    </StackPanel>
-</flyouts:Flyout>
-```
-
 ### Drag & Drop
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **DragDropAttach** | XAML-driven drag-and-drop framework | [Readme](src/Atc.Wpf.Controls/DragDrop/DragDropAttach_Readme.md) |
+| **DragDropAttach** | XAML-driven drag-and-drop framework | [Readme](src/Atc.Wpf/DragDrop/DragDropAttach_Readme.md) |
+
+> **Note:** DragDrop is infrastructure in `Atc.Wpf` (core), not in Controls.
 
 ### Selector Controls
 
@@ -423,7 +407,6 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
 | **CountrySelector** | Country dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/CountrySelector_Readme.md) |
 | **LanguageSelector** | Language dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/LanguageSelector_Readme.md) |
 | **FontFamilySelector** | Font family dropdown with previews | [Readme](src/Atc.Wpf.Controls/Selectors/FontFamilySelector_Readme.md) |
-| **DualListSelector** | Dual-list transfer control | [Readme](src/Atc.Wpf.Controls/Selectors/DualListSelector_Readme.md) |
 
 ### Progress Controls
 
@@ -481,6 +464,22 @@ Higher-level composite components combining multiple controls for business-ready
 | **DialogService** | MVVM-friendly dialog management | - |
 
 *Note: ColorPickerDialogBox is located in `Atc.Wpf.Forms.Dialogs`*
+
+### Flyout Controls
+
+Sliding panel overlays that slide in from window edges - inspired by Azure Portal blade pattern.
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **Flyout** | Sliding panel overlay from edges (Right, Left, Top, Bottom) | [Readme](src/Atc.Wpf.Components/Flyouts/Flyout_Readme.md) |
+| **FlyoutHost** | Container that manages multiple flyouts with nesting support | [Readme](src/Atc.Wpf.Components/Flyouts/Flyout_Readme.md#-flyouthost) |
+| **FlyoutService** | MVVM-friendly service for programmatic flyout management | [Readme](src/Atc.Wpf.Components/Flyouts/Flyout_Readme.md#-iflyoutservice-mvvm) |
+
+### Selectors
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **DualListSelector** | Dual-list transfer control with filtering, reordering, and drag-drop | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
 
 ### Viewers
 

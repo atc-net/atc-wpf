@@ -5,7 +5,7 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:textFormatters="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters;assembly=Atc.Wpf.Controls"
+    xmlns:textFormatters="clr-namespace:Atc.Wpf.Documents.TextFormatters;assembly=Atc.Wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">

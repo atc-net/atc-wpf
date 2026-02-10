@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mdXaml="https://github.com/whistyun/MdXaml"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample"
-    xmlns:textFormatters="clr-namespace:Atc.Wpf.Controls.Documents.TextFormatters;assembly=Atc.Wpf.Controls"
+    xmlns:textFormatters="clr-namespace:Atc.Wpf.Documents.TextFormatters;assembly=Atc.Wpf"
     x:Name="UcSampleViewerView"
     d:DataContext="{d:DesignInstance Type=sample:SampleViewerViewModel}"
     d:DesignHeight="450"

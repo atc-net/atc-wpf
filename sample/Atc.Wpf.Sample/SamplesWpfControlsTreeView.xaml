@@ -110,13 +110,6 @@
             SamplePath="ColorEditing.WellKnownColorPickerView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="Drag and Drop">
-        <sample:SampleTreeViewItem
-            Header="DragDrop"
-            IsExpanded="True"
-            SamplePath="DragDrop.DragDropView" />
-    </TreeViewItem>
-
     <TreeViewItem Header="Data Display">
         <sample:SampleTreeViewItem
             Header="Alert"
@@ -166,13 +159,6 @@
             Header="Timeline"
             IsExpanded="True"
             SamplePath="DataDisplay.TimelineView" />
-    </TreeViewItem>
-
-    <TreeViewItem Header="Flyouts">
-        <sample:SampleTreeViewItem
-            Header="Flyout"
-            IsExpanded="True"
-            SamplePath="Flyouts.FlyoutView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Layouts">
@@ -253,10 +239,6 @@
     </TreeViewItem>
 
     <TreeViewItem Header="Selectors">
-        <sample:SampleTreeViewItem
-            Header="DualListSelector"
-            IsExpanded="True"
-            SamplePath="Selectors.DualListSelectorView" />
         <sample:SampleTreeViewItem
             Header="CountrySelector"
             IsExpanded="True"
