@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
             <GroupBox
                 Margin="0,0,0,10"
@@ -144,6 +144,38 @@
                     <dataDisplay:Alert
                         Severity="Info">
                         Normal alert for comparison.
+                    </dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Pulsing Animation">
+                <atc:UniformSpacingPanel
+                    Orientation="Vertical"
+                    VerticalSpacing="8">
+                    <dataDisplay:Alert
+                        IsPulsing="True"
+                        Severity="Warning">
+                        Default pulse (1.5s duration, 0.65 opacity).
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        IsPulsing="True"
+                        PulseDuration="0:0:0.75"
+                        PulseOpacity="0.4"
+                        Severity="Error"
+                        Variant="Filled">
+                        Fast deep-fade pulse (0.75s, 0.4 opacity).
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        IsDismissible="True"
+                        IsPulsing="True"
+                        PulseDuration="0:0:2.5"
+                        PulseOpacity="0.8"
+                        Severity="Info"
+                        Variant="Outlined">
+                        Slow gentle pulse (2.5s, 0.8 opacity) — also dismissible.
                     </dataDisplay:Alert>
                 </atc:UniformSpacingPanel>
             </GroupBox>

@@ -49,6 +49,22 @@ using Atc.Wpf.Controls.DataDisplay;
 </dataDisplay:Alert>
 ```
 
+### Pulsing Alert
+
+```xml
+<dataDisplay:Alert Severity="Warning" IsPulsing="True">
+    This alert pulses to draw attention.
+</dataDisplay:Alert>
+```
+
+### Pulsing Alert with Custom Duration and Opacity
+
+```xml
+<dataDisplay:Alert Severity="Error" IsPulsing="True" PulseDuration="0:0:0.75" PulseOpacity="0.4">
+    Fast deep-fade pulse for urgent alerts.
+</dataDisplay:Alert>
+```
+
 ### Custom Icon
 
 ```xml
@@ -68,6 +84,9 @@ using Atc.Wpf.Controls.DataDisplay;
 | `Variant` | `AlertVariant` | `Filled` | Visual variant (Filled, Outlined, Text) |
 | `IsDismissible` | `bool` | `false` | Shows a close button when true |
 | `IsDense` | `bool` | `false` | Uses reduced padding for compact layouts |
+| `IsPulsing` | `bool` | `false` | Plays a subtle breathing animation to draw attention |
+| `PulseDuration` | `TimeSpan` | `0:0:1.5` | Half-cycle duration of the pulse animation (full cycle = 2x with auto-reverse) |
+| `PulseOpacity` | `double` | `0.65` | Minimum opacity during the pulse animation (0.0–1.0) |
 | `ShowIcon` | `bool` | `true` | Shows or hides the severity icon |
 | `Icon` | `object?` | `null` | Custom icon content (overrides default severity icon) |
 | `IconTemplate` | `DataTemplate?` | `null` | Template for custom icon content |
@@ -109,6 +128,7 @@ using Atc.Wpf.Controls.DataDisplay;
 - The `Filled` variant uses the Bootstrap 500-level color as background with white text
 - `AlertBackground`, `AlertForeground`, and `AlertBorderBrush` override any severity/variant colors when set
 - The close button fires the `CloseClick` event but does not automatically hide the alert; handle visibility in your code
+- The pulse animation targets the border opacity (1.0 → `PulseOpacity`), configurable via `PulseDuration` and `PulseOpacity`; it composes correctly with the disabled state which sets control-level opacity
 
 ## Related Controls
 
