@@ -14,6 +14,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/RangeSlider.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/Rating.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/ToggleSwitch.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Alert.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Avatar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Badge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Breadcrumb.xaml" />
@@ -48,6 +49,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.ToggleSwitch}" TargetType="{x:Type inputs:ToggleSwitch}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.RangeSlider}" TargetType="{x:Type inputs:RangeSlider}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Rating}" TargetType="{x:Type inputs:Rating}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.Alert}" TargetType="{x:Type dataDisplay:Alert}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Avatar}" TargetType="{x:Type dataDisplay:Avatar}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.AvatarGroup}" TargetType="{x:Type dataDisplay:AvatarGroup}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Badge}" TargetType="{x:Type dataDisplay:Badge}" />

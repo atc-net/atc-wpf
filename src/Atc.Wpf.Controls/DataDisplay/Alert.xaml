@@ -1,0 +1,382 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay">
+
+    <!--  Close button style  -->
+    <Style x:Key="AtcApps.Styles.Alert.CloseButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="Transparent">
+                        <Ellipse
+                            x:Name="circle"
+                            Width="20"
+                            Height="20"
+                            Fill="Transparent" />
+                        <Path
+                            x:Name="cross"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="M 0,0 L 6,6 M 0,6 L 6,0"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeThickness="1.5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="circle" Property="Fill" Value="#20000000" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="circle" Property="Fill" Value="#40000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.Alert" TargetType="{x:Type dataDisplay:Alert}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue100}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue900}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dataDisplay:Alert}">
+                    <Border
+                        x:Name="PART_Border"
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="IconColumn" Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition x:Name="ActionsColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="CloseColumn" Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Severity icon  -->
+                            <ContentPresenter
+                                x:Name="PART_Icon"
+                                Grid.Column="0"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Icon}"
+                                ContentTemplate="{TemplateBinding IconTemplate}" />
+
+                            <!--  Default Info icon  -->
+                            <Viewbox
+                                x:Name="PART_DefaultIcon"
+                                Grid.Column="0"
+                                Width="20"
+                                Height="20"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center">
+                                <Canvas Width="24" Height="24">
+                                    <Ellipse
+                                        Canvas.Left="2"
+                                        Canvas.Top="2"
+                                        Width="20"
+                                        Height="20"
+                                        Stroke="{TemplateBinding Foreground}"
+                                        StrokeThickness="2" />
+                                    <Line
+                                        Stroke="{TemplateBinding Foreground}"
+                                        StrokeThickness="2"
+                                        X1="12"
+                                        X2="12"
+                                        Y1="11"
+                                        Y2="17" />
+                                    <Ellipse
+                                        Canvas.Left="10.5"
+                                        Canvas.Top="7"
+                                        Width="3"
+                                        Height="3"
+                                        Fill="{TemplateBinding Foreground}" />
+                                </Canvas>
+                            </Viewbox>
+
+                            <!--  Main content  -->
+                            <ContentPresenter
+                                x:Name="PART_Content"
+                                Grid.Column="1"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                            <!--  Actions area  -->
+                            <ContentPresenter
+                                x:Name="PART_Actions"
+                                Grid.Column="2"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Actions}"
+                                ContentTemplate="{TemplateBinding ActionsTemplate}"
+                                Visibility="Collapsed" />
+
+                            <!--  Close button  -->
+                            <Button
+                                x:Name="PART_CloseButton"
+                                Grid.Column="3"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                Foreground="{TemplateBinding Foreground}"
+                                Style="{StaticResource AtcApps.Styles.Alert.CloseButton}"
+                                Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+
+                        <!--  Show custom icon when provided (hides default icon)  -->
+                        <DataTrigger Binding="{Binding Icon, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible">
+                            <Setter TargetName="PART_Icon" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_DefaultIcon" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+
+                        <!--  Hide custom icon by default  -->
+                        <DataTrigger Binding="{Binding Icon, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Collapsed">
+                            <Setter TargetName="PART_Icon" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+
+                        <!--  Show actions when provided  -->
+                        <DataTrigger Binding="{Binding Actions, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible">
+                            <Setter TargetName="PART_Actions" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+
+                        <!--  Show close button when dismissible  -->
+                        <Trigger Property="IsDismissible" Value="True">
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
+                        <!--  Hide icon when ShowIcon is false  -->
+                        <Trigger Property="ShowIcon" Value="False">
+                            <Setter TargetName="PART_DefaultIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Icon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--  Dense mode: reduced padding  -->
+                        <Trigger Property="IsDense" Value="True">
+                            <Setter Property="Padding" Value="8,4" />
+                        </Trigger>
+
+                        <!--  ===== Severity: Success =====  -->
+                        <Trigger Property="Severity" Value="Success">
+                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green100}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green900}" />
+                        </Trigger>
+
+                        <!--  ===== Severity: Warning =====  -->
+                        <Trigger Property="Severity" Value="Warning">
+                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow100}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow900}" />
+                        </Trigger>
+
+                        <!--  ===== Severity: Error =====  -->
+                        <Trigger Property="Severity" Value="Error">
+                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red100}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red900}" />
+                        </Trigger>
+
+                        <!--  ===== Default severity icon replacements =====  -->
+
+                        <!--  Success icon: checkmark circle  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Severity" Value="Success" />
+                                <Condition Property="ShowIcon" Value="True" />
+                            </MultiTrigger.Conditions>
+                        </MultiTrigger>
+
+                        <!--  ===== Variant: Filled =====  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Filled" />
+                                <Condition Property="Severity" Value="Info" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Filled" />
+                                <Condition Property="Severity" Value="Success" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Filled" />
+                                <Condition Property="Severity" Value="Warning" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow900}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Filled" />
+                                <Condition Property="Severity" Value="Error" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+                                <Setter Property="Foreground" Value="White" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  ===== Variant: Outlined =====  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Outlined" />
+                                <Condition Property="Severity" Value="Info" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Outlined" />
+                                <Condition Property="Severity" Value="Success" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Outlined" />
+                                <Condition Property="Severity" Value="Warning" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Outlined" />
+                                <Condition Property="Severity" Value="Error" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  ===== Variant: Text =====  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Text" />
+                                <Condition Property="Severity" Value="Info" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Text" />
+                                <Condition Property="Severity" Value="Success" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Text" />
+                                <Condition Property="Severity" Value="Warning" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Variant" Value="Text" />
+                                <Condition Property="Severity" Value="Error" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!--  ===== Override brushes =====  -->
+                        <DataTrigger Binding="{Binding AlertBackground, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible">
+                            <Setter Property="Background" Value="{Binding AlertBackground, RelativeSource={RelativeSource Self}}" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding AlertForeground, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible">
+                            <Setter Property="Foreground" Value="{Binding AlertForeground, RelativeSource={RelativeSource Self}}" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding AlertBorderBrush, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible">
+                            <Setter Property="BorderBrush" Value="{Binding AlertBorderBrush, RelativeSource={RelativeSource Self}}" />
+                        </DataTrigger>
+
+                        <!--  Disabled state  -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

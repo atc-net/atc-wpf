@@ -1,0 +1,199 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.AlertView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    The Alert control displays prominent inline messages with severity levels (Info, Success, Warning, Error),
+                    visual variants (Filled, Outlined, Text), optional close button, custom icons, and action buttons.
+                </TextBlock>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Severity Levels (Default Variant)">
+                <atc:UniformSpacingPanel
+                    Orientation="Vertical"
+                    VerticalSpacing="8">
+                    <dataDisplay:Alert Severity="Info">
+                        This is an informational alert — check it out!
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Success">
+                        This is a success alert — well done!
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Warning">
+                        This is a warning alert — be careful!
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Error">
+                        This is an error alert — something went wrong!
+                    </dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Variants">
+                <atc:AutoGrid Columns="*,*,*" Rows="Auto,Auto,Auto,Auto">
+                    <!--  Headers  -->
+                    <TextBlock
+                        Margin="0,0,0,8"
+                        FontWeight="SemiBold"
+                        Text="Filled" />
+                    <TextBlock
+                        Margin="8,0,0,8"
+                        FontWeight="SemiBold"
+                        Text="Outlined" />
+                    <TextBlock
+                        Margin="8,0,0,8"
+                        FontWeight="SemiBold"
+                        Text="Text" />
+
+                    <!--  Info  -->
+                    <dataDisplay:Alert
+                        Margin="0,0,4,8"
+                        Severity="Info"
+                        Variant="Filled">Info</dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Margin="4,0,4,8"
+                        Severity="Info"
+                        Variant="Outlined">Info</dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Margin="4,0,0,8"
+                        Severity="Info"
+                        Variant="Text">Info</dataDisplay:Alert>
+
+                    <!--  Success  -->
+                    <dataDisplay:Alert
+                        Margin="0,0,4,8"
+                        Severity="Success"
+                        Variant="Filled">Success</dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Margin="4,0,4,8"
+                        Severity="Success"
+                        Variant="Outlined">Success</dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Margin="4,0,0,8"
+                        Severity="Success"
+                        Variant="Text">Success</dataDisplay:Alert>
+
+                    <!--  Warning  -->
+                    <dataDisplay:Alert
+                        Margin="0,0,4,0"
+                        Severity="Warning"
+                        Variant="Filled">Warning</dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Margin="4,0,4,0"
+                        Severity="Warning"
+                        Variant="Outlined">Warning</dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Margin="4,0,0,0"
+                        Severity="Warning"
+                        Variant="Text">Warning</dataDisplay:Alert>
+                </atc:AutoGrid>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Dismissible Alerts">
+                <atc:UniformSpacingPanel
+                    Orientation="Vertical"
+                    VerticalSpacing="8">
+                    <dataDisplay:Alert
+                        IsDismissible="True"
+                        Severity="Info">
+                        This alert can be dismissed by clicking the close button.
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        IsDismissible="True"
+                        Severity="Error"
+                        Variant="Outlined">
+                        This outlined error alert is also dismissible.
+                    </dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Dense Mode">
+                <atc:UniformSpacingPanel
+                    Orientation="Vertical"
+                    VerticalSpacing="8">
+                    <dataDisplay:Alert
+                        IsDense="True"
+                        Severity="Info">
+                        Dense alert with reduced padding.
+                    </dataDisplay:Alert>
+                    <dataDisplay:Alert
+                        Severity="Info">
+                        Normal alert for comparison.
+                    </dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+            <GroupBox
+                Padding="10"
+                Header="Additional Features">
+                <atc:UniformSpacingPanel
+                    Orientation="Vertical"
+                    VerticalSpacing="8">
+
+                    <!--  Custom icon  -->
+                    <dataDisplay:Alert Severity="Info">
+                        <dataDisplay:Alert.Icon>
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="!" />
+                        </dataDisplay:Alert.Icon>
+                        Alert with a custom icon override.
+                    </dataDisplay:Alert>
+
+                    <!--  No icon  -->
+                    <dataDisplay:Alert
+                        ShowIcon="False"
+                        Severity="Success">
+                        Alert without an icon (ShowIcon=False).
+                    </dataDisplay:Alert>
+
+                    <!--  With action button  -->
+                    <dataDisplay:Alert Severity="Warning">
+                        <dataDisplay:Alert.Actions>
+                            <Button
+                                Padding="8,2"
+                                Content="Undo"
+                                Cursor="Hand" />
+                        </dataDisplay:Alert.Actions>
+                        This alert has an action button.
+                    </dataDisplay:Alert>
+
+                    <!--  Disabled  -->
+                    <dataDisplay:Alert
+                        IsEnabled="False"
+                        Severity="Error">
+                        This alert is disabled.
+                    </dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+            </GroupBox>
+
+        </atc:AutoGrid>
+    </ScrollViewer>
+
+</UserControl>

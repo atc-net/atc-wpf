@@ -119,6 +119,10 @@
 
     <TreeViewItem Header="Data Display">
         <sample:SampleTreeViewItem
+            Header="Alert"
+            IsExpanded="True"
+            SamplePath="DataDisplay.AlertView" />
+        <sample:SampleTreeViewItem
             Header="Avatar"
             IsExpanded="True"
             SamplePath="DataDisplay.AvatarView" />
