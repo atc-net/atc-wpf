@@ -1,0 +1,241 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpf.Animation.AnimationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <atc:UniformSpacingPanel
+            Margin="10"
+            Orientation="Vertical"
+            Spacing="10">
+
+            <!--  Features  -->
+            <GroupBox Padding="10" Header="Features">
+                <TextBlock TextWrapping="Wrap">
+                    Centralized Animation Library providing reusable extension methods for fade, slide, and scale animations.
+                    Includes async code-behind methods and XAML-only attached properties for declarative use.
+                </TextBlock>
+            </GroupBox>
+
+            <!--  Fade Animations  -->
+            <GroupBox Padding="10" Header="Fade Animations">
+                <StackPanel Orientation="Vertical">
+                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                        <Button
+                            Width="100"
+                            Click="OnFadeInClick"
+                            Content="Fade In" />
+                        <Button
+                            Width="100"
+                            Click="OnFadeOutClick"
+                            Content="Fade Out" />
+                    </atc:UniformSpacingPanel>
+                    <Border
+                        x:Name="FadeTarget"
+                        Width="200"
+                        Height="60"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Left"
+                        Background="#2196F3"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Text="Fade Target" />
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!--  Slide Animations  -->
+            <GroupBox Padding="10" Header="Slide Animations">
+                <StackPanel Orientation="Vertical">
+                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                        <Button
+                            Width="120"
+                            Click="OnSlideInLeftClick"
+                            Content="Slide In Left" />
+                        <Button
+                            Width="120"
+                            Click="OnSlideInRightClick"
+                            Content="Slide In Right" />
+                        <Button
+                            Width="120"
+                            Click="OnSlideInTopClick"
+                            Content="Slide In Top" />
+                        <Button
+                            Width="120"
+                            Click="OnSlideInBottomClick"
+                            Content="Slide In Bottom" />
+                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Margin="0,5,0,0"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <Button
+                            Width="120"
+                            Click="OnSlideOutLeftClick"
+                            Content="Slide Out Left" />
+                        <Button
+                            Width="120"
+                            Click="OnSlideOutRightClick"
+                            Content="Slide Out Right" />
+                        <Button
+                            Width="120"
+                            Click="OnSlideOutTopClick"
+                            Content="Slide Out Top" />
+                        <Button
+                            Width="120"
+                            Click="OnSlideOutBottomClick"
+                            Content="Slide Out Bottom" />
+                    </atc:UniformSpacingPanel>
+                    <Border
+                        x:Name="SlideTarget"
+                        Width="200"
+                        Height="60"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Left"
+                        Background="#4CAF50"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Text="Slide Target" />
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!--  Scale Animations  -->
+            <GroupBox Padding="10" Header="Scale Animations">
+                <StackPanel Orientation="Vertical">
+                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                        <Button
+                            Width="100"
+                            Click="OnScaleInClick"
+                            Content="Scale In" />
+                        <Button
+                            Width="100"
+                            Click="OnScaleOutClick"
+                            Content="Scale Out" />
+                    </atc:UniformSpacingPanel>
+                    <Border
+                        x:Name="ScaleTarget"
+                        Width="200"
+                        Height="60"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Left"
+                        Background="#FF9800"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Text="Scale Target" />
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!--  XAML Attached Properties  -->
+            <GroupBox Padding="10" Header="XAML Attached Properties">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        Text="These elements animate automatically on load using attached properties:"
+                        TextWrapping="Wrap" />
+                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                        <Border
+                            Width="140"
+                            Height="50"
+                            Background="#9C27B0"
+                            CornerRadius="4"
+                            atc:AnimateAttach.OnLoaded="FadeIn">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="FadeIn" />
+                        </Border>
+                        <Border
+                            Width="140"
+                            Height="50"
+                            Background="#E91E63"
+                            CornerRadius="4"
+                            atc:AnimateAttach.OnLoaded="SlideInFromLeft">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="SlideInFromLeft" />
+                        </Border>
+                        <Border
+                            Width="140"
+                            Height="50"
+                            Background="#00BCD4"
+                            CornerRadius="4"
+                            atc:AnimateAttach.OnLoaded="SlideInFromBottom">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="SlideInFromBottom" />
+                        </Border>
+                        <Border
+                            Width="140"
+                            Height="50"
+                            Background="#795548"
+                            CornerRadius="4"
+                            atc:AnimateAttach.OnLoaded="ScaleIn">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="ScaleIn" />
+                        </Border>
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!--  Speed Presets  -->
+            <GroupBox Padding="10" Header="Speed Presets">
+                <StackPanel Orientation="Vertical">
+                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
+                        <Button
+                            Width="120"
+                            Click="OnFastPresetClick"
+                            Content="Fast (150ms)" />
+                        <Button
+                            Width="120"
+                            Click="OnDefaultPresetClick"
+                            Content="Default (300ms)" />
+                        <Button
+                            Width="120"
+                            Click="OnSlowPresetClick"
+                            Content="Slow (500ms)" />
+                    </atc:UniformSpacingPanel>
+                    <Border
+                        x:Name="PresetTarget"
+                        Width="200"
+                        Height="60"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Left"
+                        Background="#607D8B"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Text="Preset Target" />
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+        </atc:UniformSpacingPanel>
+    </ScrollViewer>
+</UserControl>

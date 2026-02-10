@@ -39,6 +39,7 @@ global using Atc;
 global using Atc.Data.Models;
 global using Atc.Helpers;
 global using Atc.Wpf;
+global using Atc.Wpf.Animation;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Controls.Media.W3cSvg;
 global using Atc.Wpf.Controls.Media.W3cSvg.Animation;

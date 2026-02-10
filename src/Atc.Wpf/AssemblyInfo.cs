@@ -3,6 +3,7 @@
 [assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas", "atc")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Layouts")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Controls.Media")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Animation")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Helpers")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.MarkupExtensions")]
 
