@@ -170,7 +170,7 @@ A quick reference of all controls organized by category:
 | Category | Controls | Package |
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
-| **Data Display** | Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline | Atc.Wpf.Controls |
+| **Data Display** | Alert, Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline, Popover | Atc.Wpf.Controls |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Controls |
 | **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
@@ -185,9 +185,12 @@ A quick reference of all controls organized by category:
 | **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |
 | **Undo/Redo** | IUndoRedoService, UndoRedoService, UndoRedoHistoryView | Atc.Wpf / Atc.Wpf.Components |
 | **Clipboard** | IClipboardService, ClipboardService | Atc.Wpf |
+| **Hotkeys** | IHotkeyService, HotkeyService | Atc.Wpf |
+| **Navigation** | INavigationService, INavigationGuard | Atc.Wpf |
+| **Screen Capture** | ICaptureService, CaptureService | Atc.Wpf.Components |
 | **Busy Indicator** | IBusyIndicatorService, BusyIndicatorService | Atc.Wpf.Components |
 | **Theming** | NiceWindow, ThemeSelector, AccentColorSelector, TransitioningContentControl | Atc.Wpf.Theming |
-| **Font Icons** | FontAwesome (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
+| **Font Icons** | FontAwesome 5 (3 variants), FontAwesome 7 (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
 | **Network** | NetworkScannerView | Atc.Wpf.Network |
 
 ## 💝 MVVM Made Easy
@@ -272,6 +275,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 
 | Control | Description | Key Features | Documentation |
 |---------|-------------|--------------|---------------|
+| **Alert** | Inline message | Severity levels, variants, dismissible | [Readme](src/Atc.Wpf.Controls/DataDisplay/Alert_Readme.md) |
 | **Card** | Content container | Elevation, header/footer, expand | [Readme](src/Atc.Wpf.Controls/DataDisplay/Card_Readme.md) |
 | **Badge** | Status indicator | Notification counts, dots | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
 | **Chip** | Tag/filter control | Selectable, removable | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
@@ -279,6 +283,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **Divider** | Visual separator | Horizontal/vertical | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
 | **Carousel** | Image carousel | Navigation, auto-play, swipe | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
 | **Breadcrumb** | Navigation path | Overflow, custom separators | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
+| **Popover** | Positioned popup | Placement modes, triggers, light dismiss | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
 | **Stepper** | Step-by-step progress | Cancelable transitions | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Segmented** | Segment selector | Mutually exclusive selection | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Timeline** | Timeline display | Vertical/horizontal, alternate mode | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
@@ -297,6 +302,8 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 |---------|-------------|---------------|
 | **IClipboardService** | MVVM-friendly clipboard operations with history | [Readme](src/Atc.Wpf/Clipboard/ClipboardService_Readme.md) |
 | **IUndoRedoService** | Undo/redo with command grouping and history limits | [Readme](src/Atc.Wpf/UndoRedo/UndoRedoService_Readme.md) |
+| **IHotkeyService** | Global and local keyboard shortcut management | - |
+| **INavigationService** | View navigation with guards and history | - |
 | **IPrintService** | Print and print-preview service interface | [Readme](src/Atc.Wpf.Components/Printing/PrintService_Readme.md) |
 
 ### Additional Features
@@ -352,6 +359,7 @@ Unlabeled input controls that provide core functionality:
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
+| **Alert** | Inline message with severity levels and variants | [Readme](src/Atc.Wpf.Controls/DataDisplay/Alert_Readme.md) |
 | **Avatar** | User profile pictures with initials fallback | [Readme](src/Atc.Wpf.Controls/DataDisplay/Avatar_Readme.md) |
 | **Carousel** | Image carousel/slideshow with navigation | [Readme](src/Atc.Wpf.Controls/DataDisplay/Carousel_Readme.md) |
 | **Badge** | Status indicator overlay | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
@@ -359,6 +367,7 @@ Unlabeled input controls that provide core functionality:
 | **Chip** | Tag/filter interactive elements | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
 | **Divider** | Visual separator (horizontal/vertical) | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
 | **Breadcrumb** | Navigation path with overflow | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
+| **Popover** | Positioned popup with placement and triggers | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
 | **Segmented** | Mutually exclusive segment selector | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Stepper** | Step-by-step progress indicator | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Timeline** | Vertical/horizontal timeline display | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
@@ -500,6 +509,12 @@ Higher-level composite components combining multiple controls for business-ready
 |---------|-------------|---------------|
 | **IBusyIndicatorService** | MVVM-friendly busy overlay management | [Readme](src/Atc.Wpf.Components/Progressing/BusyIndicatorService_Readme.md) |
 
+### Screen Capture
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **ICaptureService** | MVVM-friendly screen and element capture | [Readme](src/Atc.Wpf.Components/Capture/CaptureService_Readme.md) |
+
 ### Settings
 
 | Control | Description | Documentation |
@@ -519,7 +534,7 @@ Render SVG and image resources using font-based icon systems for crisp, scalable
 
 ### Supported Icon Families
 
-Font Awesome (Solid, Regular, Brand), Bootstrap Glyphicons, Material Design, Weather Icons, IcoFont
+Font Awesome 5 (Solid, Regular, Brand), Font Awesome 7 (Solid, Regular, Brand), Bootstrap Glyphicons, Material Design, Weather Icons, IcoFont
 
 ### Resources
 
