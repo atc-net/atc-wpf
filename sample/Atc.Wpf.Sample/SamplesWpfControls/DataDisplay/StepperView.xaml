@@ -6,12 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     d:DesignHeight="1200"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
+        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
 
             <GroupBox
                 Margin="0,0,0,10"
@@ -20,8 +21,192 @@
                 <TextBlock Width="700" TextWrapping="Wrap">
                     The Stepper control guides users through multi-step processes with numbered
                     step indicators, completion states, connecting lines, and programmatic navigation.
-                    Supports horizontal and vertical orientation, custom icons, and error states.
+                    Supports horizontal and vertical orientation, custom icons, click-to-navigate,
+                    opacity-based visual depth, and full theme integration.
                 </TextBlock>
+            </GroupBox>
+
+            <!--  Usage: Interactive control-under-test management  -->
+            <GroupBox
+                Margin="0,0,0,10"
+                Padding="10"
+                Header="Usage">
+                <StackPanel>
+                    <!--  The stepper under test  -->
+                    <dataDisplay:Stepper
+                        x:Name="UsageStepper"
+                        ActiveStepIndex="1"
+                        IndicatorSize="{Binding Value, ElementName=IndicatorSizeSlider}"
+                        LineThickness="{Binding Value, ElementName=LineThicknessSlider}"
+                        StepChanged="OnUsageStepChanged"
+                        StepSpacing="{Binding Value, ElementName=StepSpacingSlider}">
+                        <dataDisplay:StepperItem Title="Account" Subtitle="Create your account" />
+                        <dataDisplay:StepperItem Title="Profile" Subtitle="Set up your profile" />
+                        <dataDisplay:StepperItem Title="Settings" Subtitle="Configure preferences" />
+                        <dataDisplay:StepperItem Title="Confirm" Subtitle="Review and confirm" />
+                    </dataDisplay:Stepper>
+
+                    <!--  Controls  -->
+                    <Grid Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  Orientation  -->
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,0,0,8"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Width="100"
+                                VerticalAlignment="Center"
+                                Text="Orientation:" />
+                            <ComboBox
+                                x:Name="OrientationComboBox"
+                                Width="120"
+                                SelectedIndex="0"
+                                SelectionChanged="OnOrientationChanged">
+                                <system:String>Horizontal</system:String>
+                                <system:String>Vertical</system:String>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!--  IsClickable  -->
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,0,0,8"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Width="100"
+                                VerticalAlignment="Center"
+                                Text="IsClickable:" />
+                            <CheckBox
+                                x:Name="IsClickableCheckBox"
+                                IsChecked="True"
+                                Checked="OnIsClickableChanged"
+                                Unchecked="OnIsClickableChanged" />
+                        </StackPanel>
+
+                        <!--  IndicatorSize  -->
+                        <StackPanel
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="0,0,0,8"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Width="100"
+                                VerticalAlignment="Center"
+                                Text="IndicatorSize:" />
+                            <Slider
+                                x:Name="IndicatorSizeSlider"
+                                Width="120"
+                                Maximum="48"
+                                Minimum="24"
+                                VerticalAlignment="Center"
+                                Value="32" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Value, ElementName=IndicatorSizeSlider, StringFormat='{}{0:F0}'}" />
+                        </StackPanel>
+
+                        <!--  StepSpacing  -->
+                        <StackPanel
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,0,8"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Width="100"
+                                VerticalAlignment="Center"
+                                Text="StepSpacing:" />
+                            <Slider
+                                x:Name="StepSpacingSlider"
+                                Width="120"
+                                Maximum="20"
+                                Minimum="0"
+                                VerticalAlignment="Center"
+                                Value="0" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Value, ElementName=StepSpacingSlider, StringFormat='{}{0:F0}'}" />
+                        </StackPanel>
+
+                        <!--  LineThickness  -->
+                        <StackPanel
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="0,0,0,8"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Width="100"
+                                VerticalAlignment="Center"
+                                Text="LineThickness:" />
+                            <Slider
+                                x:Name="LineThicknessSlider"
+                                Width="120"
+                                Maximum="4"
+                                Minimum="1"
+                                VerticalAlignment="Center"
+                                Value="2" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Value, ElementName=LineThicknessSlider, StringFormat='{}{0:F0}'}" />
+                        </StackPanel>
+
+                        <!--  Navigation buttons  -->
+                        <StackPanel
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="0,8,0,0"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="80"
+                                Margin="0,0,8,0"
+                                Click="OnUsagePreviousClick"
+                                Content="Previous" />
+                            <Button
+                                Width="80"
+                                Margin="0,0,8,0"
+                                Click="OnUsageNextClick"
+                                Content="Next" />
+                            <Button
+                                Width="80"
+                                Margin="0,0,8,0"
+                                Click="OnUsageResetClick"
+                                Content="Reset" />
+                            <Button
+                                Width="120"
+                                Click="OnSetErrorClick"
+                                Content="Set Error Step 2" />
+                        </StackPanel>
+
+                        <!--  Status text  -->
+                        <TextBlock
+                            x:Name="UsageStepStatus"
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="0,8,0,0"
+                            FontStyle="Italic"
+                            Foreground="Gray"
+                            Text="Click a step indicator or use the buttons to navigate." />
+                    </Grid>
+                </StackPanel>
             </GroupBox>
 
             <!--  Section 1: Basic Horizontal Stepper  -->
@@ -85,7 +270,7 @@
                         HorizontalAlignment="Center"
                         FontStyle="Italic"
                         Foreground="Gray"
-                        Text="Use the buttons to navigate between steps." />
+                        Text="Use the buttons or click step indicators to navigate." />
                 </StackPanel>
             </GroupBox>
 

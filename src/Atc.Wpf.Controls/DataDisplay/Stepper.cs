@@ -5,11 +5,10 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// numbered step indicators, completion states, connecting lines, and programmatic navigation.
 /// </summary>
 [ContentProperty(nameof(Items))]
-[TemplatePart(Name = "PART_ItemsHost", Type = typeof(StackPanel))]
-[SuppressMessage("Design", "MA0051:Method is too long", Justification = "Grid layout construction requires sequential setup.")]
+[TemplatePart(Name = "PART_ItemsHost", Type = typeof(Panel))]
 public sealed partial class Stepper : Control
 {
-    private StackPanel? itemsHost;
+    private Panel? itemsHost;
 
     /// <summary>
     /// The orientation of the stepper (Horizontal or Vertical).
@@ -88,6 +87,12 @@ public sealed partial class Stepper : Control
     private double stepSpacing;
 
     /// <summary>
+    /// Whether clicking a step indicator navigates to that step.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool isClickable;
+
+    /// <summary>
     /// Gets the collection of stepper items.
     /// </summary>
     public ObservableCollection<StepperItem> Items { get; } = [];
@@ -113,6 +118,11 @@ public sealed partial class Stepper : Control
     {
         Items.CollectionChanged += OnItemsCollectionChanged;
         Loaded += OnLoaded;
+
+        CommandBindings.Add(new CommandBinding(
+            StepperCommands.StepClickedCommand,
+            OnStepClickedExecuted,
+            OnStepClickedCanExecute));
     }
 
     /// <summary>
@@ -159,7 +169,7 @@ public sealed partial class Stepper : Control
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        itemsHost = GetTemplateChild("PART_ItemsHost") as StackPanel;
+        itemsHost = GetTemplateChild("PART_ItemsHost") as Panel;
         RebuildVisualTree();
     }
 
@@ -235,6 +245,51 @@ public sealed partial class Stepper : Control
         }
     }
 
+    private void UpdateItemAppearance()
+    {
+        for (var i = 0; i < Items.Count; i++)
+        {
+            var item = Items[i];
+
+            // Indicator text (skip items with custom icon content)
+            if (item.IconContent is null && item.IconTemplate is null)
+            {
+                item.IndicatorText = item.Status switch
+                {
+                    StepperStepStatus.Completed => "\u2713",
+                    StepperStepStatus.Error => "!",
+                    _ => (item.StepIndex + 1).ToString(CultureInfo.InvariantCulture),
+                };
+            }
+
+            // Push resolved brushes based on status
+            item.IndicatorBrush = GetIndicatorBrush(item);
+            item.ConnectorBrush = item.Status == StepperStepStatus.Completed
+                ? (CompletedLineBrush ?? ActiveBrush)
+                : LineBrush;
+
+            // Push layout properties
+            item.ResolvedIndicatorSize = IndicatorSize;
+            item.ResolvedLineThickness = LineThickness;
+            item.ResolvedIsClickable = IsClickable;
+
+            // Compute connector margin: base gap (4px) plus half the step spacing on each side
+            var halfSpacing = StepSpacing / 2;
+            item.ConnectorMargin = Orientation == Orientation.Horizontal
+                ? new Thickness(4 + halfSpacing, 0, 4 + halfSpacing, 0)
+                : new Thickness(0, 4 + halfSpacing, 0, 4 + halfSpacing);
+        }
+    }
+
+    private Brush? GetIndicatorBrush(StepperItem item)
+        => item.Status switch
+        {
+            StepperStepStatus.Active => ActiveBrush,
+            StepperStepStatus.Completed => CompletedBrush,
+            StepperStepStatus.Error => ErrorBrush,
+            _ => PendingBrush,
+        };
+
     private void RebuildVisualTree()
     {
         if (itemsHost is null)
@@ -250,331 +305,43 @@ public sealed partial class Stepper : Control
         }
 
         UpdateItemMetadata();
+        UpdateItemStatuses();
+        UpdateItemAppearance();
 
-        if (Orientation == Orientation.Horizontal)
-        {
-            BuildHorizontalLayout();
-        }
-        else
-        {
-            BuildVerticalLayout();
-        }
-    }
+        var templateKey = Orientation == Orientation.Horizontal
+            ? "AtcApps.DataTemplate.StepperItemContainer.Horizontal"
+            : "AtcApps.DataTemplate.StepperItemContainer.Vertical";
 
-    private void BuildHorizontalLayout()
-    {
+        var template = TryFindResource(templateKey) as DataTemplate;
+
         for (var i = 0; i < Items.Count; i++)
         {
             var item = Items[i];
-            var grid = CreateHorizontalStepGrid(item);
 
-            if (i > 0 && StepSpacing > 0)
+            var presenter = new ContentPresenter
             {
-                grid.Margin = new Thickness(StepSpacing, 0, 0, 0);
-            }
-
-            itemsHost!.Children.Add(grid);
-        }
-    }
-
-    private void BuildVerticalLayout()
-    {
-        for (var i = 0; i < Items.Count; i++)
-        {
-            var item = Items[i];
-            var grid = CreateVerticalStepGrid(item);
-
-            if (i > 0 && StepSpacing > 0)
-            {
-                grid.Margin = new Thickness(0, StepSpacing, 0, 0);
-            }
-
-            itemsHost!.Children.Add(grid);
-        }
-    }
-
-    private Grid CreateHorizontalStepGrid(StepperItem item)
-    {
-        var grid = new Grid();
-
-        // Row 0: indicator + connector line
-        // Row 1: title + subtitle
-        grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-
-        // Col 0: indicator circle
-        // Col 1: connector line (star fills remaining space)
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star), MinWidth = item.IsLast ? 0 : 20 });
-
-        // Indicator
-        var indicator = CreateIndicator(item);
-        Grid.SetRow(indicator, 0);
-        Grid.SetColumn(indicator, 0);
-        grid.Children.Add(indicator);
-
-        // Connector line (not on last item)
-        if (!item.IsLast)
-        {
-            var line = CreateConnectorLine(item, isVertical: false);
-            Grid.SetRow(line, 0);
-            Grid.SetColumn(line, 1);
-            grid.Children.Add(line);
-        }
-
-        // Title + subtitle below
-        var labelPanel = CreateLabelPanel(item);
-        Grid.SetRow(labelPanel, 1);
-        Grid.SetColumn(labelPanel, 0);
-        Grid.SetColumnSpan(labelPanel, 2);
-        grid.Children.Add(labelPanel);
-
-        return grid;
-    }
-
-    private Grid CreateVerticalStepGrid(StepperItem item)
-    {
-        var grid = new Grid();
-
-        // Row 0: indicator + content
-        // Row 1: connector line
-        grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star), MinHeight = item.IsLast ? 0 : 20 });
-
-        // Col 0: indicator / connector
-        // Col 1: 8px gap
-        // Col 2: content
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8, GridUnitType.Pixel) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-        // Indicator
-        var indicator = CreateIndicator(item);
-        Grid.SetRow(indicator, 0);
-        Grid.SetColumn(indicator, 0);
-        grid.Children.Add(indicator);
-
-        // Title + subtitle + content to the right
-        var contentPanel = CreateVerticalContentPanel(item);
-        Grid.SetRow(contentPanel, 0);
-        Grid.SetColumn(contentPanel, 2);
-        Grid.SetRowSpan(contentPanel, 2);
-        grid.Children.Add(contentPanel);
-
-        // Connector line (not on last item)
-        if (!item.IsLast)
-        {
-            var line = CreateConnectorLine(item, isVertical: true);
-            Grid.SetRow(line, 1);
-            Grid.SetColumn(line, 0);
-            grid.Children.Add(line);
-        }
-
-        return grid;
-    }
-
-    private Border CreateIndicator(StepperItem item)
-    {
-        var size = IndicatorSize;
-        var brush = GetIndicatorBrush(item);
-
-        var border = new Border
-        {
-            Width = size,
-            Height = size,
-            CornerRadius = new CornerRadius(size / 2),
-            Background = brush,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            SnapsToDevicePixels = true,
-        };
-
-        var content = GetIndicatorContent(item);
-        border.Child = content;
-
-        return border;
-    }
-
-    private UIElement GetIndicatorContent(StepperItem item)
-    {
-        // Custom icon content takes priority
-        if (item.IconContent is not null || item.IconTemplate is not null)
-        {
-            return new ContentPresenter
-            {
-                Content = item.IconContent,
-                ContentTemplate = item.IconTemplate,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-        }
-
-        var text = item.Status switch
-        {
-            StepperStepStatus.Completed => "\u2713",
-            StepperStepStatus.Error => "!",
-            _ => (item.StepIndex + 1).ToString(CultureInfo.InvariantCulture),
-        };
-
-        var foreground = item.Status switch
-        {
-            StepperStepStatus.Pending => Foreground,
-            _ => Brushes.White,
-        };
-
-        var fontSize = item.Status switch
-        {
-            StepperStepStatus.Completed or StepperStepStatus.Error => IndicatorSize * 0.45,
-            _ => IndicatorSize * 0.4,
-        };
-
-        return new TextBlock
-        {
-            Text = text,
-            Foreground = foreground,
-            FontSize = fontSize,
-            FontWeight = FontWeights.SemiBold,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            TextAlignment = TextAlignment.Center,
-        };
-    }
-
-    private Brush GetIndicatorBrush(StepperItem item)
-        => item.Status switch
-        {
-            StepperStepStatus.Active => ActiveBrush ?? Brushes.DodgerBlue,
-            StepperStepStatus.Completed => CompletedBrush ?? Brushes.DodgerBlue,
-            StepperStepStatus.Error => ErrorBrush ?? Brushes.Red,
-            _ => PendingBrush ?? Brushes.Gray,
-        };
-
-    private Line CreateConnectorLine(
-        StepperItem item,
-        bool isVertical)
-    {
-        // Determine connector color: if the item and the next item are both completed,
-        // use the completed line brush; otherwise use the default line brush.
-        var isCompletedSpan = item.Status == StepperStepStatus.Completed;
-        var brush = isCompletedSpan
-            ? (CompletedLineBrush ?? ActiveBrush ?? Brushes.DodgerBlue)
-            : (LineBrush ?? Brushes.Gray);
-
-        var line = new Line
-        {
-            Stroke = brush,
-            StrokeThickness = LineThickness,
-            SnapsToDevicePixels = true,
-        };
-
-        if (isVertical)
-        {
-            line.X1 = 0;
-            line.X2 = 0;
-            line.Y1 = 0;
-            line.Y2 = 1;
-            line.Stretch = Stretch.Fill;
-            line.HorizontalAlignment = HorizontalAlignment.Center;
-            line.VerticalAlignment = VerticalAlignment.Stretch;
-            line.MinHeight = 20;
-        }
-        else
-        {
-            line.X1 = 0;
-            line.X2 = 1;
-            line.Y1 = 0;
-            line.Y2 = 0;
-            line.Stretch = Stretch.Fill;
-            line.HorizontalAlignment = HorizontalAlignment.Stretch;
-            line.VerticalAlignment = VerticalAlignment.Center;
-            line.MinWidth = 20;
-            line.Margin = new Thickness(4, 0, 4, 0);
-        }
-
-        return line;
-    }
-
-    private StackPanel CreateLabelPanel(StepperItem item)
-    {
-        var panel = new StackPanel
-        {
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Margin = new Thickness(0, 6, 0, 0),
-        };
-
-        if (item.Title is not null)
-        {
-            var titleBlock = new TextBlock
-            {
-                Text = item.Title,
-                FontWeight = item.Status == StepperStepStatus.Active ? FontWeights.SemiBold : FontWeights.Normal,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                TextTrimming = TextTrimming.CharacterEllipsis,
+                Content = item,
+                ContentTemplate = template,
             };
 
-            panel.Children.Add(titleBlock);
+            itemsHost.Children.Add(presenter);
         }
-
-        if (item.Subtitle is not null)
-        {
-            var subtitleBlock = new TextBlock
-            {
-                Text = item.Subtitle,
-                Foreground = Brushes.Gray,
-                FontSize = 11,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                TextTrimming = TextTrimming.CharacterEllipsis,
-            };
-
-            panel.Children.Add(subtitleBlock);
-        }
-
-        return panel;
     }
 
-    private StackPanel CreateVerticalContentPanel(StepperItem item)
+    private void OnStepClickedExecuted(
+        object sender,
+        ExecutedRoutedEventArgs e)
     {
-        var panel = new StackPanel
+        if (e.Parameter is StepperItem item)
         {
-            VerticalAlignment = VerticalAlignment.Top,
-        };
-
-        if (item.Title is not null)
-        {
-            var titleBlock = new TextBlock
-            {
-                Text = item.Title,
-                FontWeight = item.Status == StepperStepStatus.Active ? FontWeights.SemiBold : FontWeights.Normal,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-
-            panel.Children.Add(titleBlock);
+            GoToStep(item.StepIndex);
         }
+    }
 
-        if (item.Subtitle is not null)
-        {
-            var subtitleBlock = new TextBlock
-            {
-                Text = item.Subtitle,
-                Foreground = Brushes.Gray,
-                FontSize = 11,
-            };
-
-            panel.Children.Add(subtitleBlock);
-        }
-
-        if (item.Content is not null)
-        {
-            var contentPresenter = new ContentPresenter
-            {
-                Content = item.Content,
-                ContentTemplate = item.ContentTemplate,
-                Margin = new Thickness(0, 4, 0, 0),
-            };
-
-            panel.Children.Add(contentPresenter);
-        }
-
-        return panel;
+    private void OnStepClickedCanExecute(
+        object sender,
+        CanExecuteRoutedEventArgs e)
+    {
+        e.CanExecute = IsClickable;
     }
 }
