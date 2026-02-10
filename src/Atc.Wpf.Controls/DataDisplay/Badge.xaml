@@ -26,6 +26,7 @@
                         <!--  Main Content  -->
                         <ContentPresenter
                             x:Name="PART_ContentPresenter"
+                            Margin="{TemplateBinding BadgeOverhangMargin}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Content="{TemplateBinding Content}"
@@ -37,7 +38,7 @@
                             x:Name="PART_Badge"
                             MinWidth="{TemplateBinding BadgeMinWidth}"
                             MinHeight="{TemplateBinding BadgeMinHeight}"
-                            Margin="{TemplateBinding BadgeMargin}"
+                            Margin="{TemplateBinding BadgeIndicatorMargin}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Background="{TemplateBinding BadgeBackground}"

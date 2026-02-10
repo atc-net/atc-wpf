@@ -56,9 +56,24 @@ public sealed partial class Badge : ContentControl
 
     /// <summary>
     /// Additional margin for fine-tuning badge position.
+    /// Negative values shift the badge outside the content bounds.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnBadgeMarginChanged))]
+    private Thickness badgeMargin;
+
+    /// <summary>
+    /// Gets the computed margin applied to content to create space for badge overhang.
+    /// Derived from the negative components of <see cref="BadgeMargin"/>.
     /// </summary>
     [DependencyProperty]
-    private Thickness badgeMargin;
+    private Thickness badgeOverhangMargin;
+
+    /// <summary>
+    /// Gets the computed margin applied to the badge indicator for inward positioning.
+    /// Derived from the non-negative components of <see cref="BadgeMargin"/>.
+    /// </summary>
+    [DependencyProperty]
+    private Thickness badgeIndicatorMargin;
 
     /// <summary>
     /// Font size for the badge content.
@@ -138,6 +153,26 @@ public sealed partial class Badge : ContentControl
     public Badge()
     {
         Loaded += OnLoaded;
+    }
+
+    private static void OnBadgeMarginChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Badge badge && e.NewValue is Thickness margin)
+        {
+            badge.BadgeOverhangMargin = new Thickness(
+                System.Math.Max(0, -margin.Left),
+                System.Math.Max(0, -margin.Top),
+                System.Math.Max(0, -margin.Right),
+                System.Math.Max(0, -margin.Bottom));
+
+            badge.BadgeIndicatorMargin = new Thickness(
+                System.Math.Max(0, margin.Left),
+                System.Math.Max(0, margin.Top),
+                System.Math.Max(0, margin.Right),
+                System.Math.Max(0, margin.Bottom));
+        }
     }
 
     private void OnLoaded(
