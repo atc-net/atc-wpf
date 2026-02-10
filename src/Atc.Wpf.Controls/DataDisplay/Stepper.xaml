@@ -3,6 +3,263 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay">
 
+    <!--  Shared: indicator text  -->
+    <Style x:Key="AtcApps.Styles.StepperIndicatorText" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.IdealForeground}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Status}" Value="Pending">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  Shared: title text  -->
+    <Style x:Key="AtcApps.Styles.StepperTitleText" TargetType="TextBlock">
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Status}" Value="Active">
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  Shared: subtitle text  -->
+    <Style x:Key="AtcApps.Styles.StepperSubtitleText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+    </Style>
+
+    <!--  Horizontal step item DataTemplate  -->
+    <DataTemplate x:Key="AtcApps.DataTemplate.StepperItemContainer.Horizontal">
+        <Grid x:Name="StepRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Indicator circle  -->
+            <Border
+                x:Name="PART_Indicator"
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="{Binding ResolvedIndicatorSize}"
+                Height="{Binding ResolvedIndicatorSize}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{Binding IndicatorBrush}"
+                CornerRadius="100"
+                Cursor="Hand"
+                SnapsToDevicePixels="True">
+                <Border.InputBindings>
+                    <MouseBinding
+                        Command="{x:Static dataDisplay:StepperCommands.StepClickedCommand}"
+                        CommandParameter="{Binding}"
+                        MouseAction="LeftClick" />
+                </Border.InputBindings>
+                <Grid>
+                    <!--  Custom icon content (visible when IconContent is set)  -->
+                    <ContentPresenter
+                        x:Name="PART_IconContent"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{Binding IconContent}"
+                        ContentTemplate="{Binding IconTemplate}" />
+                    <!--  Default indicator text (hidden when IconContent is set)  -->
+                    <TextBlock
+                        x:Name="PART_IndicatorText"
+                        Style="{StaticResource AtcApps.Styles.StepperIndicatorText}"
+                        Text="{Binding IndicatorText}"
+                        Visibility="Collapsed" />
+                </Grid>
+            </Border>
+
+            <!--  Connector line  -->
+            <Line
+                x:Name="PART_Connector"
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="{Binding ConnectorMargin}"
+                MinWidth="20"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                SnapsToDevicePixels="True"
+                Stretch="Fill"
+                Stroke="{Binding ConnectorBrush}"
+                StrokeThickness="{Binding ResolvedLineThickness}"
+                X1="0"
+                X2="1"
+                Y1="0"
+                Y2="0" />
+
+            <!--  Label panel  -->
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,6,0,0"
+                HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource AtcApps.Styles.StepperTitleText}" Text="{Binding Title}" />
+                <TextBlock
+                    x:Name="PART_Subtitle"
+                    Style="{StaticResource AtcApps.Styles.StepperSubtitleText}"
+                    Text="{Binding Subtitle}" />
+            </StackPanel>
+        </Grid>
+        <DataTemplate.Triggers>
+            <!--  Opacity by status  -->
+            <DataTrigger Binding="{Binding Status}" Value="Pending">
+                <Setter TargetName="StepRoot" Property="Opacity" Value="0.5" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Completed">
+                <Setter TargetName="StepRoot" Property="Opacity" Value="0.85" />
+            </DataTrigger>
+            <!--  Active and Error remain at 1.0 (default)  -->
+
+            <!--  Hide connector on last item  -->
+            <DataTrigger Binding="{Binding IsLast}" Value="True">
+                <Setter TargetName="PART_Connector" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <!--  Hide subtitle when null  -->
+            <DataTrigger Binding="{Binding Subtitle}" Value="{x:Null}">
+                <Setter TargetName="PART_Subtitle" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <!--  Show custom icon, hide text when IconContent is set  -->
+            <DataTrigger Binding="{Binding IconContent}" Value="{x:Null}">
+                <Setter TargetName="PART_IconContent" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="PART_IndicatorText" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <!--  Cursor when not clickable  -->
+            <DataTrigger Binding="{Binding ResolvedIsClickable}" Value="False">
+                <Setter TargetName="PART_Indicator" Property="Cursor" Value="Arrow" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!--  Vertical step item DataTemplate  -->
+    <DataTemplate x:Key="AtcApps.DataTemplate.StepperItemContainer.Vertical">
+        <Grid x:Name="StepRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Indicator circle  -->
+            <Border
+                x:Name="PART_Indicator"
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="{Binding ResolvedIndicatorSize}"
+                Height="{Binding ResolvedIndicatorSize}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{Binding IndicatorBrush}"
+                CornerRadius="100"
+                Cursor="Hand"
+                SnapsToDevicePixels="True">
+                <Border.InputBindings>
+                    <MouseBinding
+                        Command="{x:Static dataDisplay:StepperCommands.StepClickedCommand}"
+                        CommandParameter="{Binding}"
+                        MouseAction="LeftClick" />
+                </Border.InputBindings>
+                <Grid>
+                    <ContentPresenter
+                        x:Name="PART_IconContent"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{Binding IconContent}"
+                        ContentTemplate="{Binding IconTemplate}" />
+                    <TextBlock
+                        x:Name="PART_IndicatorText"
+                        Style="{StaticResource AtcApps.Styles.StepperIndicatorText}"
+                        Text="{Binding IndicatorText}"
+                        Visibility="Collapsed" />
+                </Grid>
+            </Border>
+
+            <!--  Content panel (title + subtitle + content)  -->
+            <StackPanel
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                VerticalAlignment="Top">
+                <TextBlock Style="{StaticResource AtcApps.Styles.StepperTitleText}" Text="{Binding Title}" />
+                <TextBlock
+                    x:Name="PART_Subtitle"
+                    Style="{StaticResource AtcApps.Styles.StepperSubtitleText}"
+                    Text="{Binding Subtitle}" />
+                <ContentPresenter
+                    x:Name="PART_StepContent"
+                    Margin="0,4,0,0"
+                    Content="{Binding Content}"
+                    ContentTemplate="{Binding ContentTemplate}" />
+            </StackPanel>
+
+            <!--  Vertical connector line  -->
+            <Line
+                x:Name="PART_Connector"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="{Binding ConnectorMargin}"
+                MinHeight="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Stretch"
+                SnapsToDevicePixels="True"
+                Stretch="Fill"
+                Stroke="{Binding ConnectorBrush}"
+                StrokeThickness="{Binding ResolvedLineThickness}"
+                X1="0"
+                X2="0"
+                Y1="0"
+                Y2="1" />
+        </Grid>
+        <DataTemplate.Triggers>
+            <!--  Opacity by status  -->
+            <DataTrigger Binding="{Binding Status}" Value="Pending">
+                <Setter TargetName="StepRoot" Property="Opacity" Value="0.5" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Completed">
+                <Setter TargetName="StepRoot" Property="Opacity" Value="0.85" />
+            </DataTrigger>
+            <!--  Hide connector on last item  -->
+            <DataTrigger Binding="{Binding IsLast}" Value="True">
+                <Setter TargetName="PART_Connector" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <!--  Hide subtitle when null  -->
+            <DataTrigger Binding="{Binding Subtitle}" Value="{x:Null}">
+                <Setter TargetName="PART_Subtitle" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <!--  Hide step content when null  -->
+            <DataTrigger Binding="{Binding Content}" Value="{x:Null}">
+                <Setter TargetName="PART_StepContent" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <!--  Show custom icon, hide text when IconContent is set  -->
+            <DataTrigger Binding="{Binding IconContent}" Value="{x:Null}">
+                <Setter TargetName="PART_IconContent" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="PART_IndicatorText" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <!--  Cursor when not clickable  -->
+            <DataTrigger Binding="{Binding ResolvedIsClickable}" Value="False">
+                <Setter TargetName="PART_Indicator" Property="Cursor" Value="Arrow" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
     <!--  StepperItem style (minimal; layout is managed by the Stepper container)  -->
     <Style x:Key="AtcApps.Styles.StepperItem" TargetType="{x:Type dataDisplay:StepperItem}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -25,6 +282,7 @@
         <Setter Property="CompletedBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
         <Setter Property="CompletedLineBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
         <Setter Property="ErrorBrush" Value="#D32F2F" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="LineBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
         <Setter Property="PendingBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />

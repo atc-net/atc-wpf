@@ -52,6 +52,55 @@ public sealed partial class StepperItem : ContentControl
     [DependencyProperty(DefaultValue = false)]
     private bool isLast;
 
+    /// <summary>
+    /// The display text inside the indicator circle (e.g., step number, checkmark, or error symbol).
+    /// Set automatically by the parent <see cref="Stepper"/> container.
+    /// </summary>
+    [DependencyProperty(DefaultValue = "")]
+    private string indicatorText;
+
+    /// <summary>
+    /// The resolved brush for the step indicator background.
+    /// Set automatically by the parent <see cref="Stepper"/> based on the step's status.
+    /// </summary>
+    [DependencyProperty]
+    private Brush? indicatorBrush;
+
+    /// <summary>
+    /// The resolved brush for the connector line after this step.
+    /// Set automatically by the parent <see cref="Stepper"/> based on the step's status.
+    /// </summary>
+    [DependencyProperty]
+    private Brush? connectorBrush;
+
+    /// <summary>
+    /// The diameter of the indicator circle.
+    /// Pushed from the parent <see cref="Stepper.IndicatorSize"/>.
+    /// </summary>
+    [DependencyProperty(DefaultValue = 32d)]
+    private double resolvedIndicatorSize;
+
+    /// <summary>
+    /// The thickness of the connector line.
+    /// Pushed from the parent <see cref="Stepper.LineThickness"/>.
+    /// </summary>
+    [DependencyProperty(DefaultValue = 2d)]
+    private double resolvedLineThickness;
+
+    /// <summary>
+    /// Whether clicking the step indicator is enabled.
+    /// Pushed from the parent <see cref="Stepper.IsClickable"/>.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool resolvedIsClickable;
+
+    /// <summary>
+    /// The computed margin for the connector line, incorporating base gap and step spacing.
+    /// Pushed from the parent <see cref="Stepper"/>.
+    /// </summary>
+    [DependencyProperty]
+    private Thickness connectorMargin;
+
     static StepperItem()
     {
         DefaultStyleKeyProperty.OverrideMetadata(

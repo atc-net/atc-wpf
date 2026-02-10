@@ -1,10 +1,10 @@
 # 🔢 Stepper
 
-A step-by-step progress indicator with navigation support and cancelable step transitions.
+A step-by-step progress indicator with navigation support, click-to-navigate, and cancelable step transitions.
 
 ## 🔍 Overview
 
-`Stepper` displays a sequence of steps with visual indicators for pending, active, completed, and error states. It supports both horizontal and vertical orientations, programmatic navigation with cancelable transitions, custom step icons, and configurable colors for each state. Connecting lines between steps show completion progress.
+`Stepper` displays a sequence of steps with visual indicators for pending, active, completed, and error states. It supports both horizontal and vertical orientations, programmatic navigation with cancelable transitions, click-to-navigate on step indicators, custom step icons, configurable colors for each state, and opacity-based visual depth. Connecting lines between steps show completion progress. All colors use theme brushes for full light/dark theme support.
 
 ## 📍 Namespace
 
@@ -31,6 +31,17 @@ using Atc.Wpf.Controls.DataDisplay;
     <dataDisplay:StepperItem Title="Step 1" Content="First step content here." />
     <dataDisplay:StepperItem Title="Step 2" Content="Second step content here." />
     <dataDisplay:StepperItem Title="Step 3" Content="Final step content here." />
+</dataDisplay:Stepper>
+```
+
+### Click-to-Navigate
+
+By default, clicking a step indicator navigates to that step. Disable with `IsClickable="False"`:
+
+```xml
+<dataDisplay:Stepper IsClickable="False" ActiveStepIndex="0">
+    <dataDisplay:StepperItem Title="Step 1" />
+    <dataDisplay:StepperItem Title="Step 2" />
 </dataDisplay:Stepper>
 ```
 
@@ -81,12 +92,13 @@ stepper.StepChanging += (s, e) =>
 | `Orientation` | `Orientation` | `Horizontal` | Layout direction |
 | `ActiveStepIndex` | `int` | `0` | Currently active step index |
 | `IndicatorSize` | `double` | `32` | Size of step indicator circles |
-| `ActiveBrush` | `Brush?` | `null` | Color for active step |
-| `CompletedBrush` | `Brush?` | `null` | Color for completed steps |
-| `PendingBrush` | `Brush?` | `null` | Color for pending steps |
-| `ErrorBrush` | `Brush?` | `null` | Color for error steps |
-| `LineBrush` | `Brush?` | `null` | Color for incomplete connector lines |
-| `CompletedLineBrush` | `Brush?` | `null` | Color for completed connector lines |
+| `IsClickable` | `bool` | `True` | Whether clicking a step indicator navigates to it |
+| `ActiveBrush` | `Brush?` | Theme accent | Color for active step |
+| `CompletedBrush` | `Brush?` | Theme accent | Color for completed steps |
+| `PendingBrush` | `Brush?` | Theme gray | Color for pending steps |
+| `ErrorBrush` | `Brush?` | `#D32F2F` | Color for error steps |
+| `LineBrush` | `Brush?` | Theme gray | Color for incomplete connector lines |
+| `CompletedLineBrush` | `Brush?` | Theme accent | Color for completed connector lines |
 | `LineThickness` | `double` | `2` | Connector line thickness |
 | `StepSpacing` | `double` | `0` | Spacing between steps |
 | `Items` | `ObservableCollection<StepperItem>` | empty | Step items |
@@ -127,9 +139,33 @@ stepper.StepChanging += (s, e) =>
 | `Completed` | Successfully completed |
 | `Error` | Step has an error |
 
+## 🎨 Visual States & Opacity
+
+Step indicators use opacity to provide visual depth:
+
+| Status | Opacity | Description |
+|--------|---------|-------------|
+| `Active` | 1.0 | Full opacity — current step |
+| `Completed` | 0.85 | Slightly dimmed — already done |
+| `Pending` | 0.5 | Half opacity — not yet reached |
+| `Error` | 1.0 | Full opacity — needs attention |
+
+## 🌗 Theme Integration
+
+All brushes default to theme-aware `DynamicResource` values:
+
+- **Active/Completed indicators**: `AtcApps.Brushes.Accent`
+- **Pending indicators/lines**: `AtcApps.Brushes.Gray6`
+- **Indicator foreground**: `AtcApps.Brushes.IdealForeground` (active/completed/error), `AtcApps.Brushes.Text` (pending)
+- **Title text**: `AtcApps.Brushes.Text`
+- **Subtitle text**: `AtcApps.Brushes.Gray6`
+
+The control automatically updates when switching between light and dark themes.
+
 ## 📝 Notes
 
 - `StepChanging` event can cancel navigation by setting `e.Cancel = true`
+- Click-to-navigate respects the `StepChanging` cancelation mechanism
 - Completed connector lines use `CompletedLineBrush`, pending lines use `LineBrush`
 - Step indicators show the step number by default, or custom `IconContent`
 - `ActiveStepIndex` change triggers both `StepChanging` (cancelable) and `StepChanged` events
@@ -142,4 +178,4 @@ stepper.StepChanging += (s, e) =>
 
 ## 🎮 Sample Application
 
-See the Stepper sample in the Atc.Wpf.Sample application under **Wpf.Controls > Data Display > Stepper** for interactive examples.
+See the Stepper sample in the Atc.Wpf.Sample application under **Wpf.Controls > Data Display > Stepper** for interactive examples including the Usage section with live property controls.
