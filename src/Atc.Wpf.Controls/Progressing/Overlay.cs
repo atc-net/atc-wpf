@@ -156,7 +156,7 @@ public partial class Overlay : ContentControl
         if (newValue)
         {
             var parameters = new AnimationParameters { Duration = FadeInDuration };
-            overlayPanel.FadeInAsync(parameters);
+            _ = overlayPanel.FadeInAsync(parameters);
             RaiseEvent(new RoutedEventArgs(ActivatedEvent, this));
         }
         else
@@ -167,7 +167,7 @@ public partial class Overlay : ContentControl
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn },
             };
 
-            overlayPanel.FadeOutAsync(parameters);
+            _ = overlayPanel.FadeOutAsync(parameters);
             RaiseEvent(new RoutedEventArgs(DeactivatedEvent, this));
         }
     }
