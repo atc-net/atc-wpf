@@ -5,5 +5,6 @@ public partial class TimelineView
     public TimelineView()
     {
         InitializeComponent();
+        DataContext = new TimelineDemoViewModel();
     }
 }

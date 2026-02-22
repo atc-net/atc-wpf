@@ -1,13 +1,19 @@
+global using System.ComponentModel;
 global using System.Diagnostics.CodeAnalysis;
+global using System.Globalization;
 global using System.IO;
 global using System.Reflection;
 global using System.Windows;
 global using System.Windows.Controls;
+global using System.Windows.Controls.Primitives;
 global using System.Windows.Input;
 global using System.Windows.Markup;
 global using System.Windows.Media;
 
 global using Atc.Helpers;
+global using Atc.Wpf.Controls.ColorEditing;
+global using Atc.Wpf.Controls.Inputs;
 global using Atc.XamlToolkit.Controls.Attributes;
 global using Atc.XamlToolkit.Messaging;
+global using Atc.XamlToolkit.Metadata;
 global using Atc.XamlToolkit.Mvvm;

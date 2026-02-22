@@ -5,5 +5,6 @@ public partial class PopoverView
     public PopoverView()
     {
         InitializeComponent();
+        DataContext = new PopoverDemoViewModel();
     }
 }

@@ -5,5 +5,6 @@ public partial class CardView
     public CardView()
     {
         InitializeComponent();
+        DataContext = new CardDemoViewModel();
     }
 }

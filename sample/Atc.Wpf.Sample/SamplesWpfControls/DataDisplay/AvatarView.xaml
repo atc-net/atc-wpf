@@ -6,361 +6,159 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
-                <TextBlock TextWrapping="Wrap">
-                    The Avatar control displays user profile pictures with fallback options.
-                    It supports image sources, initials fallback (auto-generated from display name),
-                    background color generated from name hash, size presets (ExtraSmall, Small, Medium, Large, ExtraLarge),
-                    and status indicators (Online, Offline, Away, Busy, DoNotDisturb).
-                    AvatarGroup displays overlapping avatars with overflow indication.
-                </TextBlock>
-            </GroupBox>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10">
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Size Presets">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
+                <!--  Interactive demo  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Interactive Demo">
+                    <dataDisplay:Avatar
+                        x:Name="UsageArea"
+                        HorizontalAlignment="Center"
+                        DisplayName="{Binding DisplayName}"
+                        Initials="{Binding Initials}"
+                        Size="{Binding Size}"
+                        Status="{Binding Status}" />
+                </GroupBox>
 
-                    <!-- ExtraSmall -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="John Doe"
-                            Size="ExtraSmall" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="ExtraSmall (24px)" />
-                    </StackPanel>
-
-                    <!-- Small -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="John Doe"
-                            Size="Small" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Small (32px)" />
-                    </StackPanel>
-
-                    <!-- Medium (Default) -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="John Doe"
-                            Size="Medium" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Medium (40px)" />
-                    </StackPanel>
-
-                    <!-- Large -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="John Doe"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Large (56px)" />
-                    </StackPanel>
-
-                    <!-- ExtraLarge -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="John Doe"
-                            Size="ExtraLarge" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="ExtraLarge (80px)" />
-                    </StackPanel>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Initials and Auto-Generation">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
-
-                    <!-- Explicit Initials -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            Initials="AB"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Explicit Initials" />
-                    </StackPanel>
-
-                    <!-- Auto-generated from Single Name -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Alice"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Single Name (Alice)" />
-                    </StackPanel>
-
-                    <!-- Auto-generated from Full Name -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Bob Smith"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Full Name (Bob Smith)" />
-                    </StackPanel>
-
-                    <!-- Auto-generated from Multiple Names -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Mary Jane Watson"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Multiple (Mary Jane Watson)" />
-                    </StackPanel>
-
-                    <!-- No Name (Fallback) -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="No Name (Fallback)" />
-                    </StackPanel>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Status Indicators">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
-
-                    <!-- None -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="No Status"
-                            Size="Large"
-                            Status="None" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="None" />
-                    </StackPanel>
-
-                    <!-- Online -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Online User"
-                            Size="Large"
-                            Status="Online" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Online" />
-                    </StackPanel>
-
-                    <!-- Away -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Away User"
-                            Size="Large"
-                            Status="Away" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Away" />
-                    </StackPanel>
-
-                    <!-- Busy -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Busy User"
-                            Size="Large"
-                            Status="Busy" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Busy" />
-                    </StackPanel>
-
-                    <!-- DoNotDisturb -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="DND User"
-                            Size="Large"
-                            Status="DoNotDisturb" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Do Not Disturb" />
-                    </StackPanel>
-
-                    <!-- Offline -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            DisplayName="Offline User"
-                            Size="Large"
-                            Status="Offline" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Offline" />
-                    </StackPanel>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Custom Styling">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
-
-                    <!-- Custom Background -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            Background="Purple"
-                            DisplayName="Custom BG"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Custom Background" />
-                    </StackPanel>
-
-                    <!-- Custom Foreground -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            Background="DarkSlateGray"
-                            DisplayName="Custom FG"
-                            Foreground="Gold"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Custom Foreground" />
-                    </StackPanel>
-
-                    <!-- Square Avatar -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            CornerRadius="4"
-                            DisplayName="Square"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Square (CornerRadius=4)" />
-                    </StackPanel>
-
-                    <!-- Rounded Square -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <dataDisplay:Avatar
-                            CornerRadius="12"
-                            DisplayName="Rounded"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Rounded (CornerRadius=12)" />
-                    </StackPanel>
-
-                    <!-- Color Consistency Demo -->
-                    <StackPanel HorizontalAlignment="Center">
-                        <atc:UniformSpacingPanel HorizontalSpacing="5" Orientation="Horizontal">
+                <!--  Showcase: Sizes  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Size Presets">
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="30"
+                        Orientation="Horizontal"
+                        VerticalSpacing="20">
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar DisplayName="John Doe" Size="ExtraSmall" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="ExtraSmall" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
                             <dataDisplay:Avatar DisplayName="John Doe" Size="Small" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Small" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
                             <dataDisplay:Avatar DisplayName="John Doe" Size="Medium" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Medium" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
                             <dataDisplay:Avatar DisplayName="John Doe" Size="Large" />
-                        </atc:UniformSpacingPanel>
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Text="Same Name = Same Color" />
-                    </StackPanel>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Large" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar DisplayName="John Doe" Size="ExtraLarge" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="ExtraLarge" />
+                        </StackPanel>
+                    </atc:UniformSpacingPanel>
+                </GroupBox>
 
-            <GroupBox Padding="10" Header="Avatar Group">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,15"
-                        TextWrapping="Wrap">
-                        AvatarGroup displays multiple avatars with overlapping layout and overflow indicator.
-                    </TextBlock>
+                <!--  Showcase: Status Indicators  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Status Indicators">
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="30"
+                        Orientation="Horizontal"
+                        VerticalSpacing="20">
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar
+                                DisplayName="Online"
+                                Size="Large"
+                                Status="Online" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Online" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar
+                                DisplayName="Away"
+                                Size="Large"
+                                Status="Away" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Away" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar
+                                DisplayName="Busy"
+                                Size="Large"
+                                Status="Busy" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Busy" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar
+                                DisplayName="DND"
+                                Size="Large"
+                                Status="DoNotDisturb" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="DoNotDisturb" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <dataDisplay:Avatar
+                                DisplayName="Offline"
+                                Size="Large"
+                                Status="Offline" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="10"
+                                Text="Offline" />
+                        </StackPanel>
+                    </atc:UniformSpacingPanel>
+                </GroupBox>
 
+                <!--  Showcase: Avatar Group  -->
+                <GroupBox Padding="10" Header="Avatar Group">
                     <atc:UniformSpacingPanel
                         HorizontalSpacing="50"
                         Orientation="Horizontal"
                         VerticalSpacing="20">
-
-                        <!-- Basic Group -->
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:AvatarGroup MaxVisible="5" Size="Medium">
-                                <dataDisplay:Avatar DisplayName="Alice Johnson" />
-                                <dataDisplay:Avatar DisplayName="Bob Smith" />
-                                <dataDisplay:Avatar DisplayName="Carol Williams" />
-                            </dataDisplay:AvatarGroup>
-                            <TextBlock
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="3 Avatars" />
-                        </StackPanel>
-
-                        <!-- Group with Overflow -->
                         <StackPanel HorizontalAlignment="Center">
                             <dataDisplay:AvatarGroup MaxVisible="3" Size="Medium">
                                 <dataDisplay:Avatar DisplayName="Alice Johnson" />
@@ -368,16 +166,13 @@
                                 <dataDisplay:Avatar DisplayName="Carol Williams" />
                                 <dataDisplay:Avatar DisplayName="David Brown" />
                                 <dataDisplay:Avatar DisplayName="Eve Davis" />
-                                <dataDisplay:Avatar DisplayName="Frank Miller" />
                             </dataDisplay:AvatarGroup>
                             <TextBlock
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
                                 FontSize="10"
-                                Text="6 Avatars (MaxVisible=3)" />
+                                Text="5 Avatars (MaxVisible=3)" />
                         </StackPanel>
-
-                        <!-- Large Group -->
                         <StackPanel HorizontalAlignment="Center">
                             <dataDisplay:AvatarGroup MaxVisible="4" Size="Large">
                                 <dataDisplay:Avatar DisplayName="Team Member 1" />
@@ -392,29 +187,16 @@
                                 FontSize="10"
                                 Text="Large Size Group" />
                         </StackPanel>
-
-                        <!-- Custom Spacing -->
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:AvatarGroup
-                                MaxVisible="5"
-                                Size="Medium"
-                                Spacing="-20">
-                                <dataDisplay:Avatar DisplayName="Overlapping" />
-                                <dataDisplay:Avatar DisplayName="More Overlap" />
-                                <dataDisplay:Avatar DisplayName="Even More" />
-                                <dataDisplay:Avatar DisplayName="Tight Group" />
-                            </dataDisplay:AvatarGroup>
-                            <TextBlock
-                                Margin="0,10,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="More Overlap (Spacing=-20)" />
-                        </StackPanel>
                     </atc:UniformSpacingPanel>
-                </StackPanel>
-            </GroupBox>
+                </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
+            </StackPanel>
+        </ScrollViewer>
+
+        <GroupBox Grid.Column="1" Header="Properties">
+            <sample:SamplePropertyController SourceObject="{Binding}" />
+        </GroupBox>
+
+    </Grid>
 
 </UserControl>

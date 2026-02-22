@@ -5,5 +5,6 @@ public partial class DividerView
     public DividerView()
     {
         InitializeComponent();
+        DataContext = new DividerDemoViewModel();
     }
 }

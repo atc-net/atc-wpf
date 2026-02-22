@@ -5,5 +5,6 @@ public partial class BadgeView
     public BadgeView()
     {
         InitializeComponent();
+        DataContext = new BadgeDemoViewModel();
     }
 }
