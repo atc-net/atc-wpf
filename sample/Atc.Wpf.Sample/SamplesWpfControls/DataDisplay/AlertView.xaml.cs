@@ -5,5 +5,6 @@ public partial class AlertView
     public AlertView()
     {
         InitializeComponent();
+        DataContext = new AlertDemoViewModel();
     }
 }

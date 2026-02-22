@@ -11,6 +11,8 @@ public partial class MainWindow
     private readonly Dictionary<TreeView, TabItem> treeViewToTabItem = [];
     private readonly Dictionary<TreeView, Badge> treeViewToBadge = [];
 
+    internal TreeView[] SampleTreeViews => sampleTreeViews;
+
     private bool suppressSelectionChanged;
 
     public MainWindow(IMainWindowViewModel viewModel)

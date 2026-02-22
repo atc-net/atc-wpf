@@ -5,5 +5,6 @@ public partial class AvatarView
     public AvatarView()
     {
         InitializeComponent();
+        DataContext = new AvatarDemoViewModel();
     }
 }

@@ -5,5 +5,6 @@ public partial class CarouselView
     public CarouselView()
     {
         InitializeComponent();
+        DataContext = new CarouselDemoViewModel();
     }
 }

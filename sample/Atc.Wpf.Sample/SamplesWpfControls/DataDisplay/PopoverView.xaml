@@ -5,79 +5,117 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.DataDisplay"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto">
+    <UserControl.Resources>
+        <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
+    </UserControl.Resources>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
-                <TextBlock TextWrapping="Wrap">
-                    The Popover control displays popup content positioned relative to an anchor element.
-                    It supports 12 placement options, optional arrow pointer, multiple trigger modes (click, hover, manual),
-                    open/close delays, max size constraints, and automatic flip behavior when constrained.
-                </TextBlock>
-            </GroupBox>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Basic Click Popover">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
-                    <dataDisplay:Popover>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10">
+
+                <!--  Interactive demo  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Interactive Demo">
+                    <dataDisplay:Popover
+                        x:Name="UsageArea"
+                        HorizontalAlignment="Center"
+                        CloseDelay="{Binding CloseDelay}"
+                        CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                        IsOpen="{Binding IsOpen, Mode=TwoWay}"
+                        OpenDelay="{Binding OpenDelay}"
+                        Placement="{Binding Placement}"
+                        ShowArrow="{Binding ShowArrow}"
+                        TriggerMode="{Binding TriggerMode}">
                         <dataDisplay:Popover.Anchor>
                             <Button
-                                Width="120"
-                                Height="32"
-                                Content="Click Me" />
+                                Width="140"
+                                Height="36"
+                                Content="Open Popover" />
                         </dataDisplay:Popover.Anchor>
                         <dataDisplay:Popover.PopoverContent>
                             <StackPanel Width="200">
-                                <TextBlock
-                                    FontWeight="SemiBold"
-                                    Text="Popover Title" />
+                                <TextBlock FontWeight="SemiBold" Text="Popover Content" />
                                 <TextBlock
                                     Margin="0,4,0,0"
-                                    Foreground="{DynamicResource AtcApps.Brushes.Gray2}"
-                                    Text="This is a basic click-triggered popover. Click outside to dismiss."
+                                    Text="This is the interactive demo popover. Change properties in the panel."
                                     TextWrapping="Wrap" />
                             </StackPanel>
                         </dataDisplay:Popover.PopoverContent>
                     </dataDisplay:Popover>
+                </GroupBox>
 
-                    <dataDisplay:Popover ShowArrow="False">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="120"
-                                Height="32"
-                                Content="No Arrow" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock
-                                Width="180"
-                                Text="This popover has no arrow pointer."
-                                TextWrapping="Wrap" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
+                <!--  Showcase: Placement Options  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Placement Options">
+                    <atc:UniformSpacingPanel
+                        HorizontalSpacing="20"
+                        Orientation="Horizontal"
+                        VerticalSpacing="20">
+                        <dataDisplay:Popover Placement="Top">
+                            <dataDisplay:Popover.Anchor>
+                                <Button
+                                    Width="80"
+                                    Height="32"
+                                    Content="Top" />
+                            </dataDisplay:Popover.Anchor>
+                            <dataDisplay:Popover.PopoverContent>
+                                <TextBlock Text="Placed on top" />
+                            </dataDisplay:Popover.PopoverContent>
+                        </dataDisplay:Popover>
+                        <dataDisplay:Popover Placement="Bottom">
+                            <dataDisplay:Popover.Anchor>
+                                <Button
+                                    Width="80"
+                                    Height="32"
+                                    Content="Bottom" />
+                            </dataDisplay:Popover.Anchor>
+                            <dataDisplay:Popover.PopoverContent>
+                                <TextBlock Text="Placed on bottom" />
+                            </dataDisplay:Popover.PopoverContent>
+                        </dataDisplay:Popover>
+                        <dataDisplay:Popover Placement="Left">
+                            <dataDisplay:Popover.Anchor>
+                                <Button
+                                    Width="80"
+                                    Height="32"
+                                    Content="Left" />
+                            </dataDisplay:Popover.Anchor>
+                            <dataDisplay:Popover.PopoverContent>
+                                <TextBlock Text="Placed on left" />
+                            </dataDisplay:Popover.PopoverContent>
+                        </dataDisplay:Popover>
+                        <dataDisplay:Popover Placement="Right">
+                            <dataDisplay:Popover.Anchor>
+                                <Button
+                                    Width="80"
+                                    Height="32"
+                                    Content="Right" />
+                            </dataDisplay:Popover.Anchor>
+                            <dataDisplay:Popover.PopoverContent>
+                                <TextBlock Text="Placed on right" />
+                            </dataDisplay:Popover.PopoverContent>
+                        </dataDisplay:Popover>
+                    </atc:UniformSpacingPanel>
+                </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Hover Trigger">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
+                <!--  Showcase: Hover Trigger  -->
+                <GroupBox Padding="10" Header="Hover Trigger">
                     <dataDisplay:Popover
                         CloseDelay="300"
                         OpenDelay="200"
@@ -93,179 +131,22 @@
                         <dataDisplay:Popover.PopoverContent>
                             <TextBlock
                                 Width="200"
-                                Text="This popover opens on hover with a 200ms delay and closes 300ms after the mouse leaves."
+                                Text="Opens on hover with 200ms delay."
                                 TextWrapping="Wrap" />
                         </dataDisplay:Popover.PopoverContent>
                     </dataDisplay:Popover>
+                </GroupBox>
 
-                    <dataDisplay:Popover
-                        OpenDelay="0"
-                        Placement="Right"
-                        TriggerMode="Hover">
-                        <dataDisplay:Popover.Anchor>
-                            <Border
-                                Padding="12,6"
-                                Background="{DynamicResource AtcApps.Brushes.Gray8}"
-                                CornerRadius="4">
-                                <TextBlock Text="Instant hover (Right)" />
-                            </Border>
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock
-                                Width="160"
-                                Text="No open delay, placed to the right."
-                                TextWrapping="Wrap" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Placement Options">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="20"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
-                    <dataDisplay:Popover Placement="Top">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="80"
-                                Height="32"
-                                Content="Top" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock Text="Placed on top" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
+        <GroupBox
+            Grid.Column="1"
+            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
+            Header="Properties">
+            <sample:SamplePropertyController SourceObject="{Binding}" />
+        </GroupBox>
 
-                    <dataDisplay:Popover Placement="Bottom">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="80"
-                                Height="32"
-                                Content="Bottom" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock Text="Placed on bottom" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-
-                    <dataDisplay:Popover Placement="Left">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="80"
-                                Height="32"
-                                Content="Left" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock Text="Placed on left" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-
-                    <dataDisplay:Popover Placement="Right">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="80"
-                                Height="32"
-                                Content="Right" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock Text="Placed on right" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-
-                    <dataDisplay:Popover Placement="TopStart">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="90"
-                                Height="32"
-                                Content="TopStart" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock Text="Placed at TopStart" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-
-                    <dataDisplay:Popover Placement="BottomEnd">
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="100"
-                                Height="32"
-                                Content="BottomEnd" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <TextBlock Text="Placed at BottomEnd" />
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Rich Content">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="30"
-                    Orientation="Horizontal"
-                    VerticalSpacing="20">
-                    <dataDisplay:Popover>
-                        <dataDisplay:Popover.Anchor>
-                            <Button
-                                Width="140"
-                                Height="32"
-                                Content="Rich Content" />
-                        </dataDisplay:Popover.Anchor>
-                        <dataDisplay:Popover.PopoverContent>
-                            <StackPanel Width="250">
-                                <TextBlock
-                                    FontSize="14"
-                                    FontWeight="SemiBold"
-                                    Text="User Settings" />
-                                <Separator Margin="0,8" />
-                                <TextBlock Text="Display name:" />
-                                <TextBox
-                                    Margin="0,4,0,8"
-                                    Text="John Doe" />
-                                <TextBlock Text="Theme:" />
-                                <ComboBox
-                                    Margin="0,4,0,8"
-                                    SelectedIndex="0">
-                                    <ComboBoxItem Content="Light" />
-                                    <ComboBoxItem Content="Dark" />
-                                </ComboBox>
-                                <Button
-                                    HorizontalAlignment="Right"
-                                    Content="Apply"
-                                    Padding="16,4" />
-                            </StackPanel>
-                        </dataDisplay:Popover.PopoverContent>
-                    </dataDisplay:Popover>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
-
-            <GroupBox
-                Padding="10"
-                Header="Max Size Constraint">
-                <dataDisplay:Popover
-                    MaxPopoverHeight="120"
-                    MaxPopoverWidth="200">
-                    <dataDisplay:Popover.Anchor>
-                        <Button
-                            Width="160"
-                            Height="32"
-                            Content="Constrained Size" />
-                    </dataDisplay:Popover.Anchor>
-                    <dataDisplay:Popover.PopoverContent>
-                        <TextBlock
-                            Text="This popover has a maximum width of 200 pixels and a maximum height of 120 pixels. When content exceeds these limits, the border constrains it and scrollbars may appear if the content is scrollable."
-                            TextWrapping="Wrap" />
-                    </dataDisplay:Popover.PopoverContent>
-                </dataDisplay:Popover>
-            </GroupBox>
-
-        </atc:AutoGrid>
-    </ScrollViewer>
+    </Grid>
 
 </UserControl>

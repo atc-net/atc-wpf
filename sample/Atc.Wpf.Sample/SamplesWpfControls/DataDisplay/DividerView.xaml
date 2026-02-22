@@ -5,69 +5,75 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="UcDividerView"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10">
+
+                <!--  Interactive demo  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Interactive Demo">
+                    <StackPanel x:Name="UsageArea" Margin="20">
+                        <atc:Divider
+                            Content="{Binding Content}"
+                            LineStrokeThickness="{Binding LineStrokeThickness}"
+                            Orientation="{Binding Orientation}" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!--  Static examples  -->
+                <GroupBox Padding="10" Header="Examples">
+                    <StackPanel>
+                        <StackPanel Margin="20" Orientation="Horizontal">
+                            <atc:SvgImage
+                                Width="50"
+                                Height="50"
+                                Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
+
+                            <atc:Divider Orientation="Vertical" />
+
+                            <atc:SvgImage
+                                Width="50"
+                                Height="50"
+                                Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
+
+                            <atc:Divider LineStroke="Orange" Orientation="Vertical" />
+
+                            <atc:SvgImage
+                                Width="50"
+                                Height="50"
+                                Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
+                        </StackPanel>
+
+                        <atc:Divider
+                            LineStroke="Green"
+                            LineStrokeDashArray="5"
+                            LineStrokeThickness="2"
+                            Orientation="Horizontal" />
+                    </StackPanel>
+                </GroupBox>
+
+            </StackPanel>
+        </ScrollViewer>
 
         <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
-
-        <GroupBox Header="Usage">
-            <StackPanel Orientation="Vertical">
-                <StackPanel Margin="20" Orientation="Horizontal">
-                    <atc:SvgImage
-                        Width="50"
-                        Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
-
-                    <atc:Divider Orientation="Vertical" />
-
-                    <atc:SvgImage
-                        Width="50"
-                        Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
-
-                    <atc:Divider LineStroke="Orange" Orientation="Vertical" />
-
-                    <atc:SvgImage
-                        Width="50"
-                        Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
-
-                    <atc:Divider LineStrokeDashArray="5" Orientation="Vertical" />
-
-                    <atc:SvgImage
-                        Width="50"
-                        Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
-                </StackPanel>
-
-                <atc:Divider
-                    LineStroke="Green"
-                    LineStrokeDashArray="5"
-                    LineStrokeThickness="2"
-                    Orientation="Horizontal" />
-
-                <StackPanel Margin="20" Orientation="Horizontal">
-                    <atc:SvgImage
-                        Width="50"
-                        Height="50"
-                        Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg" />
-
-                    <atc:Divider
-                        LineStroke="Chocolate"
-                        LineStrokeDashArray="5"
-                        LineStrokeThickness="2"
-                        Orientation="Vertical" />
-                </StackPanel>
-            </StackPanel>
+            Grid.Column="1"
+            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
+            Header="Properties">
+            <sample:SamplePropertyController SourceObject="{Binding}" />
         </GroupBox>
 
-    </atc:AutoGrid>
+    </Grid>
 
 </UserControl>

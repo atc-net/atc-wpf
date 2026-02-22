@@ -5,265 +5,115 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.DataDisplay"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+    <UserControl.Resources>
+        <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
+    </UserControl.Resources>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
-                <TextBlock TextWrapping="Wrap">
-                    The Chip control displays small, interactive elements for tags, filters, or selections.
-                    It supports optional icons, remove buttons, selectable/checkable mode, multiple sizes, and different variants.
-                </TextBlock>
-            </GroupBox>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Basic Chips">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="10"
-                    Orientation="Horizontal"
-                    VerticalSpacing="10">
-                    <dataDisplay:Chip Content="Basic Chip" />
-                    <dataDisplay:Chip Content="Another Chip" />
-                    <dataDisplay:Chip Content="Tag" />
-                    <dataDisplay:Chip Content="Label" />
-                </atc:UniformSpacingPanel>
-            </GroupBox>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10">
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Chip Variants">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        FontWeight="Bold"
-                        Text="Default, Filter, Input, Action" />
+                <!--  Interactive demo  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Interactive Demo">
+                    <dataDisplay:Chip
+                        x:Name="UsageArea"
+                        CanRemove="{Binding CanRemove}"
+                        Content="{Binding Content}"
+                        CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                        IsClickable="{Binding IsClickable}"
+                        IsSelectable="{Binding IsSelectable}"
+                        IsSelected="{Binding ChipIsSelected}"
+                        Size="{Binding Size}"
+                        Variant="{Binding Variant}" />
+                </GroupBox>
+
+                <!--  Showcase: Variants  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Chip Variants">
                     <atc:UniformSpacingPanel
                         HorizontalSpacing="10"
                         Orientation="Horizontal"
                         VerticalSpacing="10">
-
-                        <!-- Default variant -->
-                        <StackPanel>
-                            <dataDisplay:Chip
-                                Content="Default"
-                                Variant="Default" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                FontSize="10"
-                                Foreground="Gray"
-                                Text="Basic display" />
-                        </StackPanel>
-
-                        <!-- Filter variant (selectable) -->
-                        <StackPanel>
-                            <dataDisplay:Chip
-                                Content="Filter"
-                                Variant="Filter" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                FontSize="10"
-                                Foreground="Gray"
-                                Text="Click to toggle" />
-                        </StackPanel>
-
-                        <!-- Input variant (removable) -->
-                        <StackPanel>
-                            <dataDisplay:Chip
-                                Content="Input"
-                                Variant="Input" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                FontSize="10"
-                                Foreground="Gray"
-                                Text="Has remove button" />
-                        </StackPanel>
-
-                        <!-- Action variant -->
-                        <StackPanel>
-                            <dataDisplay:Chip
-                                Content="Action"
-                                Variant="Action" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                FontSize="10"
-                                Foreground="Gray"
-                                Text="Clickable action" />
-                        </StackPanel>
+                        <dataDisplay:Chip Content="Default" Variant="Default" />
+                        <dataDisplay:Chip Content="Filter" Variant="Filter" />
+                        <dataDisplay:Chip Content="Input" Variant="Input" />
+                        <dataDisplay:Chip Content="Action" Variant="Action" />
                     </atc:UniformSpacingPanel>
-                </StackPanel>
-            </GroupBox>
+                </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Chip Sizes">
-                <atc:UniformSpacingPanel
-                    HorizontalSpacing="15"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    VerticalSpacing="10">
-                    <StackPanel>
-                        <dataDisplay:Chip
-                            Content="Small"
-                            Size="Small" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            FontSize="10"
-                            Foreground="Gray"
-                            Text="Size=Small" />
-                    </StackPanel>
-                    <StackPanel>
-                        <dataDisplay:Chip
-                            Content="Medium"
-                            Size="Medium" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            FontSize="10"
-                            Foreground="Gray"
-                            Text="Size=Medium (default)" />
-                    </StackPanel>
-                    <StackPanel>
-                        <dataDisplay:Chip
-                            Content="Large"
-                            Size="Large" />
-                        <TextBlock
-                            Margin="0,5,0,0"
-                            FontSize="10"
-                            Foreground="Gray"
-                            Text="Size=Large" />
-                    </StackPanel>
-                </atc:UniformSpacingPanel>
-            </GroupBox>
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Selectable Chips (Filter Chips)">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        Text="Click to select/deselect. Shows checkmark when selected." />
+                <!--  Showcase: Sizes  -->
+                <GroupBox
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    Header="Chip Sizes">
                     <atc:UniformSpacingPanel
-                        HorizontalSpacing="10"
+                        VerticalAlignment="Center"
+                        HorizontalSpacing="15"
                         Orientation="Horizontal"
                         VerticalSpacing="10">
-                        <dataDisplay:Chip
-                            Content="JavaScript"
-                            IsSelectable="True"
-                            IsSelected="True" />
-                        <dataDisplay:Chip
-                            Content="TypeScript"
-                            IsSelectable="True" />
-                        <dataDisplay:Chip
-                            Content="Python"
-                            IsSelectable="True" />
-                        <dataDisplay:Chip
-                            Content="C#"
-                            IsSelectable="True"
-                            IsSelected="True" />
-                        <dataDisplay:Chip
-                            Content="Go"
-                            IsSelectable="True" />
+                        <dataDisplay:Chip Content="Small" Size="Small" />
+                        <dataDisplay:Chip Content="Medium" Size="Medium" />
+                        <dataDisplay:Chip Content="Large" Size="Large" />
                     </atc:UniformSpacingPanel>
-                </StackPanel>
-            </GroupBox>
+                </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Removable Chips (Input Chips)">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        Text="Chips with remove/close button. Click X to trigger RemoveClick event." />
+                <!--  Showcase: Custom Styling  -->
+                <GroupBox Padding="10" Header="Custom Styling">
                     <atc:UniformSpacingPanel
                         HorizontalSpacing="10"
                         Orientation="Horizontal"
                         VerticalSpacing="10">
-                        <dataDisplay:Chip
-                            CanRemove="True"
-                            Content="john@example.com" />
-                        <dataDisplay:Chip
-                            CanRemove="True"
-                            Content="jane@example.com" />
-                        <dataDisplay:Chip
-                            CanRemove="True"
-                            Content="bob@example.com" />
-                    </atc:UniformSpacingPanel>
-                </StackPanel>
-            </GroupBox>
-
-            <GroupBox Padding="10" Header="Custom Styling">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        FontWeight="Bold"
-                        Text="Custom colors and icons" />
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="10"
-                        Orientation="Horizontal"
-                        VerticalSpacing="10">
-
-                        <!-- Custom background -->
                         <dataDisplay:Chip
                             Background="#E3F2FD"
                             BorderBrush="#2196F3"
                             Content="Info"
                             Foreground="#1565C0" />
-
-                        <!-- Success style -->
                         <dataDisplay:Chip
                             Background="#E8F5E9"
                             BorderBrush="#4CAF50"
                             Content="Success"
                             Foreground="#2E7D32" />
-
-                        <!-- Warning style -->
                         <dataDisplay:Chip
                             Background="#FFF3E0"
                             BorderBrush="#FF9800"
                             Content="Warning"
                             Foreground="#E65100" />
-
-                        <!-- Error style -->
                         <dataDisplay:Chip
                             Background="#FFEBEE"
                             BorderBrush="#F44336"
                             Content="Error"
                             Foreground="#C62828" />
-
-                        <!-- Custom selected colors -->
-                        <dataDisplay:Chip
-                            Content="Custom Selected"
-                            IsSelectable="True"
-                            IsSelected="True"
-                            SelectedBackground="#9C27B0"
-                            SelectedForeground="White" />
-
-                        <!-- Disabled -->
-                        <dataDisplay:Chip
-                            Content="Disabled"
-                            IsEnabled="False" />
-
-                        <!-- Non-clickable -->
-                        <dataDisplay:Chip
-                            Content="Not Clickable"
-                            IsClickable="False" />
+                        <dataDisplay:Chip Content="Disabled" IsEnabled="False" />
                     </atc:UniformSpacingPanel>
-                </StackPanel>
-            </GroupBox>
+                </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
+            </StackPanel>
+        </ScrollViewer>
+
+        <GroupBox
+            Grid.Column="1"
+            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
+            Header="Properties">
+            <sample:SamplePropertyController SourceObject="{Binding}" />
+        </GroupBox>
+
+    </Grid>
 
 </UserControl>

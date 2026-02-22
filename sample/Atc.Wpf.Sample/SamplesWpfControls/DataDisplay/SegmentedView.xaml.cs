@@ -5,6 +5,7 @@ public partial class SegmentedView
     public SegmentedView()
     {
         InitializeComponent();
+        DataContext = new SegmentedDemoViewModel();
     }
 
     private void OnSelectionChanged(

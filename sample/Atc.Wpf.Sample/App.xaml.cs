@@ -115,6 +115,7 @@ public partial class App
         Shutdown(-1);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private async void ApplicationStartup(
         object sender,
         StartupEventArgs e)
@@ -141,7 +142,67 @@ public partial class App
             .Services
             .GetService<MainWindow>()!;
 
+        var isScreenshotMode = e.Args.Contains(
+            "--generate-screenshots",
+            StringComparer.OrdinalIgnoreCase);
+
+        if (isScreenshotMode)
+        {
+            mainWindow.WindowState = WindowState.Minimized;
+        }
+
         mainWindow.Show();
+
+        if (isScreenshotMode)
+        {
+            mainWindow.Loaded += (_, _) =>
+            {
+                _ = Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, () =>
+                {
+                    RunScreenshotGeneration(mainWindow);
+                });
+            };
+        }
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Top-level handler for screenshot generation.")]
+    private static void RunScreenshotGeneration(MainWindow mainWindow)
+    {
+        try
+        {
+            var solutionRoot = FindSolutionRoot();
+            System.Console.WriteLine($"[Screenshots] Solution root: {solutionRoot}");
+
+            var generator = new ScreenshotGenerator(solutionRoot);
+            generator.GenerateAll(mainWindow.SampleTreeViews);
+
+            Application.Current.Shutdown(0);
+        }
+        catch (Exception ex)
+        {
+            System.Console.Error.WriteLine($"[Screenshots] Fatal error: {ex.Message}");
+            System.Console.Error.WriteLine(ex.StackTrace);
+            Application.Current.Shutdown(1);
+        }
+    }
+
+    private static string FindSolutionRoot()
+    {
+        var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+
+        while (directory is not null)
+        {
+            if (directory.GetFiles("*.sln").Length > 0)
+            {
+                return directory.FullName;
+            }
+
+            directory = directory.Parent;
+        }
+
+        // Fallback: navigate up from bin/Debug/net10.0-windows
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        return Path.GetFullPath(Path.Combine(basePath, "..", "..", "..", "..", ".."));
     }
 
     private async void ApplicationExit(

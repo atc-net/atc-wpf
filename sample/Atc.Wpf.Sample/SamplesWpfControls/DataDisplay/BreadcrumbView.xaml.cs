@@ -5,6 +5,7 @@ public partial class BreadcrumbView
     public BreadcrumbView()
     {
         InitializeComponent();
+        DataContext = new BreadcrumbDemoViewModel();
     }
 
     private void OnBreadcrumbItemClicked(
