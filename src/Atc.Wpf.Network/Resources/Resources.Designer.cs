@@ -347,5 +347,131 @@ namespace Atc.Wpf.Network.Resources {
                 return ResourceManager.GetString("TotalTime", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication failed.
+        /// </summary>
+        public static string VncAuthenticationFailed {
+            get {
+                return ResourceManager.GetString("VncAuthenticationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect....
+        /// </summary>
+        public static string VncConnect {
+            get {
+                return ResourceManager.GetString("VncConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect to VNC Server.
+        /// </summary>
+        public static string VncConnectDialogTitle {
+            get {
+                return ResourceManager.GetString("VncConnectDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        public static string VncConnected {
+            get {
+                return ResourceManager.GetString("VncConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connecting....
+        /// </summary>
+        public static string VncConnecting {
+            get {
+                return ResourceManager.GetString("VncConnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not connect to VNC server.
+        /// </summary>
+        public static string VncConnectionFailed {
+            get {
+                return ResourceManager.GetString("VncConnectionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection failed: {0}.
+        /// </summary>
+        public static string VncConnectionFailedFormat1 {
+            get {
+                return ResourceManager.GetString("VncConnectionFailedFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection lost.
+        /// </summary>
+        public static string VncConnectionLost {
+            get {
+                return ResourceManager.GetString("VncConnectionLost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string VncDisconnect {
+            get {
+                return ResourceManager.GetString("VncDisconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnecting....
+        /// </summary>
+        public static string VncDisconnecting {
+            get {
+                return ResourceManager.GetString("VncDisconnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host.
+        /// </summary>
+        public static string VncHost {
+            get {
+                return ResourceManager.GetString("VncHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right-click to connect.
+        /// </summary>
+        public static string VncNotConnected {
+            get {
+                return ResourceManager.GetString("VncNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string VncPassword {
+            get {
+                return ResourceManager.GetString("VncPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        public static string VncPort {
+            get {
+                return ResourceManager.GetString("VncPort", resourceCulture);
+            }
+        }
     }
 }

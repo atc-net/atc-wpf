@@ -1,0 +1,90 @@
+<UserControl
+    x:Class="Atc.Wpf.Network.Vnc.VncViewerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Network.Vnc"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:VncViewerViewModel}"
+    d:DesignHeight="480"
+    d:DesignWidth="640"
+    Focusable="True"
+    mc:Ignorable="d">
+
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem
+                Command="{Binding Path=ConnectCommand}"
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=VncConnect}" />
+            <MenuItem
+                Command="{Binding Path=DisconnectCommand}"
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=VncDisconnect}" />
+        </ContextMenu>
+    </UserControl.ContextMenu>
+
+    <Grid Background="{DynamicResource AtcApps.Brushes.ThemeBackground}">
+
+        <!-- Placeholder when not connected -->
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Foreground="{DynamicResource AtcApps.Brushes.ThemeForeground4}"
+            Text="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=VncNotConnected}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <!-- VNC framebuffer -->
+        <Image
+            x:Name="VncImage"
+            Focusable="True"
+            RenderOptions.BitmapScalingMode="NearestNeighbor"
+            Stretch="Uniform">
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+
+        <!-- Loading overlay -->
+        <Border
+            Background="#80000000"
+            Visibility="{Binding Path=IsBusy, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <atc:LoadingIndicator
+                    Width="60"
+                    Height="60"
+                    Foreground="{DynamicResource AtcApps.Brushes.Accent}"
+                    IsActive="{Binding Path=IsBusy}" />
+                <TextBlock
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="14"
+                    Foreground="White"
+                    Text="{Binding Path=StatusMessage}" />
+            </StackPanel>
+        </Border>
+
+    </Grid>
+
+</UserControl>

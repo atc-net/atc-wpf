@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfNetwork.Network;
+namespace Atc.Wpf.Sample.SamplesWpfNetwork.Scanner;
 
 public partial class NetworkScannerSampleView
 {

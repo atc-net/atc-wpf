@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network.Tests;
+namespace Atc.Wpf.Network.Tests.Scanner;
 
 [SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Test cleanup handled by xUnit.")]
 public sealed class NetworkScannerViewModelTests

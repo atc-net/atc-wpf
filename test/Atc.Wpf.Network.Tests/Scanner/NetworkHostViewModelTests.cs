@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network.Tests;
+namespace Atc.Wpf.Network.Tests.Scanner;
 
 public sealed class NetworkHostViewModelTests
 {
