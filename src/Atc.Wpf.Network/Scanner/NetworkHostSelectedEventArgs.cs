@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network;
+namespace Atc.Wpf.Network.Scanner;
 
 /// <summary>
 /// Provides data for the <see cref="NetworkScannerViewModel.EntrySelected"/> event.

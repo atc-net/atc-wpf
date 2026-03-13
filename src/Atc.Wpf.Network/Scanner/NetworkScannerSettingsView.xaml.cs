@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network;
+namespace Atc.Wpf.Network.Scanner;
 
 /// <summary>
 /// Provides a settings panel for the network scanner, allowing configuration of

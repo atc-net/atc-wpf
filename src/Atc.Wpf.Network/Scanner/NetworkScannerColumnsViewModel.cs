@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network;
+namespace Atc.Wpf.Network.Scanner;
 
 /// <summary>
 /// ViewModel for controlling the visibility of columns in the network scanner grid.

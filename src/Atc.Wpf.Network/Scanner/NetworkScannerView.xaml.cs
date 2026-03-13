@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network;
+namespace Atc.Wpf.Network.Scanner;
 
 public partial class NetworkScannerView
 {

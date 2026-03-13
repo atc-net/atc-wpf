@@ -1,5 +1,5 @@
 // ReSharper disable InvertIf
-namespace Atc.Wpf.Network;
+namespace Atc.Wpf.Network.Scanner;
 
 /// <summary>
 /// ViewModel for the network scanner control, providing IP range scanning functionality.

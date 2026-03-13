@@ -13,7 +13,8 @@
         <sample:SampleTreeViewItem
             Header="NetworkScanner"
             IsExpanded="True"
-            SamplePath="Network.NetworkScannerSampleView" />
+            SamplePath="Scanner.NetworkScannerSampleView" />
+        <sample:SampleTreeViewItem Header="VncViewer" SamplePath="Vnc.VncViewerSampleView" />
     </TreeViewItem>
 
 </TreeView>

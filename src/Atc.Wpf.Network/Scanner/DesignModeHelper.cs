@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Network;
+namespace Atc.Wpf.Network.Scanner;
 
 /// <summary>
 /// Provides design-time sample data for the network scanner controls.

@@ -213,4 +213,46 @@
   <data name="Time" xml:space="preserve">
     <value>Zeit</value>
   </data>
+  <data name="VncConnect" xml:space="preserve">
+    <value>Verbinden...</value>
+  </data>
+  <data name="VncDisconnect" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="VncConnecting" xml:space="preserve">
+    <value>Verbindung wird hergestellt...</value>
+  </data>
+  <data name="VncDisconnecting" xml:space="preserve">
+    <value>Verbindung wird getrennt...</value>
+  </data>
+  <data name="VncNotConnected" xml:space="preserve">
+    <value>Rechtsklick zum Verbinden</value>
+  </data>
+  <data name="VncConnected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="VncConnectionFailed" xml:space="preserve">
+    <value>Verbindung zum VNC-Server fehlgeschlagen</value>
+  </data>
+  <data name="VncConnectionFailedFormat1" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="VncAuthenticationFailed" xml:space="preserve">
+    <value>Authentifizierung fehlgeschlagen</value>
+  </data>
+  <data name="VncConnectionLost" xml:space="preserve">
+    <value>Verbindung unterbrochen</value>
+  </data>
+  <data name="VncConnectDialogTitle" xml:space="preserve">
+    <value>Mit VNC-Server verbinden</value>
+  </data>
+  <data name="VncHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="VncPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="VncPassword" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
 </root>

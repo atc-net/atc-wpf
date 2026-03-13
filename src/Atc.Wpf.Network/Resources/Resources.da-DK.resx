@@ -213,4 +213,46 @@
   <data name="Time" xml:space="preserve">
     <value>Tid</value>
   </data>
+  <data name="VncConnect" xml:space="preserve">
+    <value>Forbind...</value>
+  </data>
+  <data name="VncDisconnect" xml:space="preserve">
+    <value>Afbryd</value>
+  </data>
+  <data name="VncConnecting" xml:space="preserve">
+    <value>Forbinder...</value>
+  </data>
+  <data name="VncDisconnecting" xml:space="preserve">
+    <value>Afbryder...</value>
+  </data>
+  <data name="VncNotConnected" xml:space="preserve">
+    <value>Højreklik for at forbinde</value>
+  </data>
+  <data name="VncConnected" xml:space="preserve">
+    <value>Forbundet</value>
+  </data>
+  <data name="VncConnectionFailed" xml:space="preserve">
+    <value>Kunne ikke forbinde til VNC-server</value>
+  </data>
+  <data name="VncConnectionFailedFormat1" xml:space="preserve">
+    <value>Forbindelse mislykkedes: {0}</value>
+  </data>
+  <data name="VncAuthenticationFailed" xml:space="preserve">
+    <value>Godkendelse mislykkedes</value>
+  </data>
+  <data name="VncConnectionLost" xml:space="preserve">
+    <value>Forbindelsen blev afbrudt</value>
+  </data>
+  <data name="VncConnectDialogTitle" xml:space="preserve">
+    <value>Forbind til VNC-server</value>
+  </data>
+  <data name="VncHost" xml:space="preserve">
+    <value>Vært</value>
+  </data>
+  <data name="VncPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="VncPassword" xml:space="preserve">
+    <value>Adgangskode</value>
+  </data>
 </root>
