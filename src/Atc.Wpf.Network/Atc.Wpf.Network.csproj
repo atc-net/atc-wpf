@@ -17,9 +17,9 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.18" />
-    <PackageReference Include="Atc.Network" Version="1.0.235" />
-    <PackageReference Include="Atc.XamlToolkit" Version="3.0.14" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.14" />
+    <PackageReference Include="Atc.Network" Version="1.0.236" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.16" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.16" />
   </ItemGroup>
 
   <ItemGroup>
