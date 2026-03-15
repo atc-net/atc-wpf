@@ -197,4 +197,4 @@ public sealed class VncConnectionService : IDisposable
 
         framebuffer = null;
     }
-}
+}

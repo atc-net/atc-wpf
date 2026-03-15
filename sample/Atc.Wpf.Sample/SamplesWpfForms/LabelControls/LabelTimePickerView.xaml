@@ -4,44 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:labelControls="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=labelControls:LabelTimePickerView}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+                <atc:LabelTimePicker
+                    IsMandatory="{Binding IsMandatory}"
+                    InformationText="{Binding InformationText}"
+                    LabelText="{Binding LabelText}"
+                    Orientation="{Binding Orientation}"
+                    WatermarkText="{Binding WatermarkText}" />
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:GridEx Columns="Auto,10,300,10,Auto">
-                <TextBlock
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    FontSize="18"
-                    Text="Binding to the first usage 'MyLabel1':" />
-                <TextBlock
-                    Grid.Column="2"
-                    FontSize="24"
-                    Text="{Binding ElementName=TpMyLabel1, Path=SelectedTime}" />
-                <Button
-                    Grid.Column="4"
-                    Click="OnClickTpMyLabel1"
-                    Content="Clear" />
-            </atc:GridEx>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">
 
                         <atc:LabelTimePicker
-                            x:Name="TpMyLabel1"
-                            CustomCulture="{Binding Path=DanishCultureInfo}"
                             LabelText="MyLabel1"
                             Orientation="Horizontal"
                             WatermarkText="Hello watermark" />
@@ -83,8 +67,9 @@
 
                     </StackPanel>
                 </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
 
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

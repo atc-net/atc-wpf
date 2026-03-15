@@ -5,5 +5,6 @@ public partial class LabelTextInfoView
     public LabelTextInfoView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

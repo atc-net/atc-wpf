@@ -42,4 +42,4 @@ public sealed class PrintSettings
     /// before printing. Default is true.
     /// </summary>
     public bool ShowPrintDialog { get; set; } = true;
-}
+}

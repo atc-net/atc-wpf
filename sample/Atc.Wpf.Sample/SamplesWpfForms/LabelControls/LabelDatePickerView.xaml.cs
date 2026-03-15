@@ -5,15 +5,6 @@ public partial class LabelDatePickerView
     public LabelDatePickerView()
     {
         InitializeComponent();
-
-        DataContext = this;
+        DataContext = new LabelControlDemoViewModel();
     }
-
-    public CultureInfo DanishCultureInfo
-        => GlobalizationConstants.DanishCultureInfo;
-
-    private void OnClickDpMyLabel1(
-        object sender,
-        RoutedEventArgs e)
-        => DpMyLabel1.SelectedDate = null;
 }

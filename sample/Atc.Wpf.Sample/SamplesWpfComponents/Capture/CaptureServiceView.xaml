@@ -6,36 +6,29 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:capture="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Capture"
-    d:DesignHeight="600"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
         <capture:CaptureServiceViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*,Auto">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <TextBlock Width="700" TextWrapping="Wrap">
-                ICaptureService provides MVVM-friendly screen and control capture functionality.
-                It supports capturing any visual element, a rectangular region, or a full window
-                to file or clipboard with configurable DPI and format options.
-            </TextBlock>
-        </GroupBox>
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <DockPanel Margin="10">
+                <DockPanel x:Name="InteractiveCaptureDemo" Margin="10">
 
-                <atc:UniformSpacingPanel
-                    DockPanel.Dock="Left"
-                    Orientation="Vertical"
-                    Spacing="16">
+                    <atc:UniformSpacingPanel
+                        DockPanel.Dock="Left"
+                        Orientation="Vertical"
+                        Spacing="16">
 
-                    <GroupBox Padding="10" Header="Capture Control">
                         <atc:UniformSpacingPanel
                             ItemWidth="150"
                             Orientation="Horizontal"
@@ -49,9 +42,7 @@
                                 CommandParameter="{Binding ElementName=CaptureTarget}"
                                 Content="Copy to Clipboard" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
 
-                    <GroupBox Padding="10" Header="Capture Region (200x100)">
                         <atc:UniformSpacingPanel
                             ItemWidth="150"
                             Orientation="Horizontal"
@@ -65,9 +56,7 @@
                                 CommandParameter="{Binding ElementName=CaptureTarget}"
                                 Content="Copy to Clipboard" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
 
-                    <GroupBox Padding="10" Header="Capture Window">
                         <atc:UniformSpacingPanel
                             ItemWidth="150"
                             Orientation="Horizontal"
@@ -79,9 +68,7 @@
                                 Command="{Binding CaptureWindowToClipboardCommand}"
                                 Content="Copy to Clipboard" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
 
-                    <GroupBox Padding="10" Header="Settings">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
                                 <TextBlock
@@ -106,67 +93,64 @@
                                 </ComboBox>
                             </StackPanel>
                         </StackPanel>
-                    </GroupBox>
 
-                </atc:UniformSpacingPanel>
+                    </atc:UniformSpacingPanel>
 
-                <Border
-                    x:Name="CaptureTarget"
-                    Margin="20,0,0,0"
-                    Padding="20"
-                    Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                    BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <StackPanel>
-                        <TextBlock
-                            FontSize="20"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                            Text="Sample Capture Target" />
-                        <TextBlock
-                            Margin="0,10,0,0"
-                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                            Text="This panel is the capture target. Click the buttons to capture this content to file or clipboard."
-                            TextWrapping="Wrap" />
-                        <Rectangle
-                            Height="100"
-                            Margin="0,10,0,0"
-                            Fill="CornflowerBlue"
-                            RadiusX="8"
-                            RadiusY="8" />
-                        <Ellipse
-                            Width="80"
-                            Height="80"
-                            Margin="0,10,0,0"
-                            HorizontalAlignment="Left"
-                            Fill="Coral" />
-                        <TextBlock
-                            Margin="0,10,0,0"
-                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                            Text="The capture service supports PNG, JPEG, BMP, GIF, and TIFF formats with configurable DPI."
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </Border>
+                    <Border
+                        x:Name="CaptureTarget"
+                        Margin="20,0,0,0"
+                        Padding="20"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <StackPanel>
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                                Text="Sample Capture Target" />
+                            <TextBlock
+                                Margin="0,10,0,0"
+                                Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                                Text="This panel is the capture target. Click the buttons to capture this content to file or clipboard."
+                                TextWrapping="Wrap" />
+                            <Rectangle
+                                Height="100"
+                                Margin="0,10,0,0"
+                                Fill="CornflowerBlue"
+                                RadiusX="8"
+                                RadiusY="8" />
+                            <Ellipse
+                                Width="80"
+                                Height="80"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Left"
+                                Fill="Coral" />
+                            <TextBlock
+                                Margin="0,10,0,0"
+                                Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                                Text="The capture service supports PNG, JPEG, BMP, GIF, and TIFF formats with configurable DPI."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
 
-            </DockPanel>
-        </GroupBox>
+                </DockPanel>
 
-        <GroupBox
-            Margin="0,10,0,0"
-            Padding="10"
-            Header="Result Log">
-            <ScrollViewer
-                MaxHeight="150"
-                VerticalScrollBarVisibility="Auto">
-                <TextBlock
-                    FontFamily="Consolas"
-                    Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                    Text="{Binding ResultLog}"
-                    TextWrapping="Wrap" />
-            </ScrollViewer>
-        </GroupBox>
+                <ScrollViewer
+                    MaxHeight="150"
+                    VerticalScrollBarVisibility="Auto">
+                    <TextBlock
+                        FontFamily="Consolas"
+                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                        Text="{Binding ResultLog}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
 
-    </atc:AutoGrid>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

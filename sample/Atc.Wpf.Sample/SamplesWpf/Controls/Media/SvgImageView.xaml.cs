@@ -5,5 +5,6 @@ public partial class SvgImageView
     public SvgImageView()
     {
         InitializeComponent();
+        DataContext = new SvgImageDemoViewModel();
     }
 }

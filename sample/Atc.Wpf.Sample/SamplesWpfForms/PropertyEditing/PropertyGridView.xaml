@@ -6,34 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:propertyEditing="clr-namespace:Atc.Wpf.Forms.PropertyEditing;assembly=Atc.Wpf.Forms"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.PropertyEditing"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=local:PropertyGridDemoViewModel}"
     d:DesignHeight="600"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox Padding="10" Header="Features">
-            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                <atc:LabelCheckBox
-                    HideAreas="All"
-                    IsChecked="{Binding ElementName=SamplePropertyGrid, Path=ShowCategories}"
-                    LabelText="Show Categories" />
-                <atc:LabelCheckBox
-                    HideAreas="All"
-                    IsChecked="{Binding ElementName=SamplePropertyGrid, Path=ShowDescriptions}"
-                    LabelText="Show Descriptions" />
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
+
+                <propertyEditing:PropertyGrid
+                    x:Name="SamplePropertyGrid"
+                    Width="550"
+                    ShowCategories="{Binding ShowCategories}"
+                    ShowDescriptions="{Binding ShowDescriptions}" />
+
             </atc:UniformSpacingPanel>
-        </GroupBox>
+        </ScrollViewer>
 
-        <GroupBox Header="Usage">
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-            <propertyEditing:PropertyGrid
-                x:Name="SamplePropertyGrid"
-                Width="550"
-                ShowCategories="False"
-                ShowDescriptions="True" />
-
-        </GroupBox>
-    </atc:AutoGrid>
+    </atc:GridEx>
 
 </UserControl>

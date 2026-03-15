@@ -5,5 +5,6 @@ public partial class CountrySelectorView
     public CountrySelectorView()
     {
         InitializeComponent();
+        DataContext = new SelectorDemoViewModel();
     }
 }

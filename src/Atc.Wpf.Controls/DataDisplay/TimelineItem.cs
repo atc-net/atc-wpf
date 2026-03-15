@@ -91,4 +91,4 @@ public sealed partial class TimelineItem : ContentControl
             typeof(TimelineItem),
             new FrameworkPropertyMetadata(typeof(TimelineItem)));
     }
-}
+}

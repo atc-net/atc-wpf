@@ -5,5 +5,6 @@ public partial class RowColView
     public RowColView()
     {
         InitializeComponent();
+        DataContext = new LayoutDemoViewModel();
     }
 }

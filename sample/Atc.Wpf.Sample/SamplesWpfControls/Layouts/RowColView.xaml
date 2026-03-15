@@ -6,28 +6,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:grid="clr-namespace:Atc.Wpf.Controls.Layouts.Grid;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="600"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900" d:DesignWidth="900" mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto">
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
-                <TextBlock TextWrapping="Wrap">
-                    Row and Col provide a Bootstrap-style responsive 24-column grid system.
-                    Resize the window to see columns wrap at different breakpoints.
-                </TextBlock>
-            </GroupBox>
-
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Basic Row with Equal Columns">
-                <grid:Row Gutter="16">
+                <grid:Row
+                    x:Name="InteractiveRow"
+                    Gutter="{Binding Spacing}">
                     <grid:Col Span="8">
                         <Border Background="#E3F2FD" Padding="16">
                             <TextBlock
@@ -50,13 +39,40 @@
                         </Border>
                     </grid:Col>
                 </grid:Row>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Responsive Layout (resize window to see changes)">
-                <grid:Row Gutter="16">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontWeight="Bold"
+                    Text="Basic Row with Equal Columns" />
+                <grid:Row Margin="0,0,0,15" Gutter="16">
+                    <grid:Col Span="8">
+                        <Border Background="#E3F2FD" Padding="16">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Col Span=8" />
+                        </Border>
+                    </grid:Col>
+                    <grid:Col Span="8">
+                        <Border Background="#BBDEFB" Padding="16">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Col Span=8" />
+                        </Border>
+                    </grid:Col>
+                    <grid:Col Span="8">
+                        <Border Background="#90CAF9" Padding="16">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Col Span=8" />
+                        </Border>
+                    </grid:Col>
+                </grid:Row>
+
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontWeight="Bold"
+                    Text="Responsive Layout (resize window to see changes)" />
+                <grid:Row Margin="0,0,0,15" Gutter="16">
                     <grid:Col>
                         <grid:Col.Layout>
                             <grid:ColLayout
@@ -142,11 +158,11 @@
                         </Border>
                     </grid:Col>
                 </grid:Row>
-            </GroupBox>
 
-            <GroupBox
-                Padding="10"
-                Header="Sidebar + Content Layout">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontWeight="Bold"
+                    Text="Sidebar + Content Layout" />
                 <grid:Row Gutter="16">
                     <grid:Col>
                         <grid:Col.Layout>
@@ -195,9 +211,9 @@
                         </Border>
                     </grid:Col>
                 </grid:Row>
-            </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
-
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

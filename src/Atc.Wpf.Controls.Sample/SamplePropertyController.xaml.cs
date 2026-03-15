@@ -192,10 +192,9 @@ public partial class SamplePropertyController
     }
 
     private static FrameworkElement CreateReadOnlyEditor(object? currentValue)
-        => new TextBox
+        => new TextBlock
         {
             Text = currentValue?.ToString() ?? string.Empty,
-            IsReadOnly = true,
             VerticalAlignment = VerticalAlignment.Center,
         };
 
@@ -377,20 +376,33 @@ public partial class SamplePropertyController
         PropertyInfo propInfo,
         object? currentValue)
     {
-        var picker = new WellKnownColorPicker
+        var selector = new WellKnownColorSelector
         {
-            ShowOnlyBasicColors = false,
             VerticalAlignment = VerticalAlignment.Center,
         };
 
         if (currentValue is Color color)
         {
-            picker.ColorBrush = new SolidColorBrush(color);
+            var colorName = ColorHelper.GetColorNameFromColor(color);
+            if (colorName is not null)
+            {
+                selector.SelectedKey = colorName;
+            }
         }
 
-        picker.ColorChanged += (_, e) => SetSourceValue(propInfo, e.NewValue);
+        selector.SelectorChanged += (_, e) =>
+        {
+            if (e.NewValue is not null)
+            {
+                var newColor = ColorHelper.GetColorFromName(e.NewValue);
+                if (newColor.HasValue)
+                {
+                    SetSourceValue(propInfo, newColor.Value);
+                }
+            }
+        };
 
-        return picker;
+        return selector;
     }
 
     private FrameworkElement CreateThicknessEditor(
@@ -474,13 +486,22 @@ public partial class SamplePropertyController
             case ComboBox combo:
                 combo.SelectedItem = value;
                 break;
-            case WellKnownColorPicker cp:
-                cp.ColorBrush = value is Color c
-                    ? new SolidColorBrush(c)
-                    : Brushes.Transparent;
+            case WellKnownColorSelector cs:
+                if (value is Color c)
+                {
+                    var name = ColorHelper.GetColorNameFromColor(c);
+                    if (name is not null)
+                    {
+                        cs.SelectedKey = name;
+                    }
+                }
+
                 break;
             case ThicknessBox tb:
                 tb.Value = value is Thickness t ? t : default;
+                break;
+            case TextBlock textBlock:
+                textBlock.Text = value?.ToString() ?? string.Empty;
                 break;
             case TextBox textBox:
                 textBox.Text = value switch

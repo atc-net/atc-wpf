@@ -43,4 +43,4 @@ public class FlyoutClosingEventArgs : RoutedEventArgs
     /// (clicking outside the flyout or pressing Escape).
     /// </summary>
     public bool IsLightDismiss { get; set; }
-}
+}

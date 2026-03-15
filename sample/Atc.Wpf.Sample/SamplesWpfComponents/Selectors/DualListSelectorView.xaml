@@ -5,155 +5,39 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="600"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Selectors"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=local:DualListSelectorDemoViewModel}"
+    d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:GridEx Columns="Auto,*,Auto,*" Rows="Auto,Auto,Auto,Auto,Auto">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="Layout Mode:" />
-                <ComboBox
-                    x:Name="CbLayoutMode"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="10,4"
-                    SelectedIndex="0">
-                    <ComboBoxItem Content="AvailableFirst" />
-                    <ComboBoxItem Content="SelectedFirst" />
-                </ComboBox>
+                <atc:DualListSelector
+                    x:Name="InteractiveDualListSelector"
+                    Margin="10"
+                    AllowDragDrop="{Binding AllowDragDrop}"
+                    AllowMultiSelect="{Binding AllowMultiSelect}"
+                    AutoRecalculateSortOrder="{Binding AutoRecalculateSortOrder}"
+                    AvailableHeader="Available Permissions"
+                    LayoutMode="{Binding LayoutMode}"
+                    SelectedHeader="Granted Permissions"
+                    ShowFilter="{Binding ShowFilter}"
+                    ShowItemCount="{Binding ShowItemCount}"
+                    ShowReorderButtons="{Binding ShowReorderButtons}"
+                    ShowTransferAllButtons="{Binding ShowTransferAllButtons}" />
 
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="Show Reorder Buttons:" />
-                <CheckBox
-                    x:Name="CbShowReorderButtons"
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="Show Transfer All Buttons:" />
-                <CheckBox
-                    x:Name="CbShowTransferAllButtons"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="Auto Recalculate Sort Order:" />
-                <CheckBox
-                    x:Name="CbAutoRecalculateSortOrder"
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
-
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="Show Filter:" />
-                <CheckBox
-                    x:Name="CbShowFilter"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
-
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="Allow Drag &amp; Drop:" />
-                <CheckBox
-                    x:Name="CbAllowDragDrop"
-                    Grid.Row="2"
-                    Grid.Column="3"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
-
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="Allow Multi Select:" />
-                <CheckBox
-                    x:Name="CbAllowMultiSelect"
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
-
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="Show Item Count:" />
-                <CheckBox
-                    x:Name="CbShowItemCount"
-                    Grid.Row="3"
-                    Grid.Column="3"
-                    Margin="10,4"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
-
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Width="100"
-                    Height="30"
-                    Margin="0,6,0,0"
-                    Click="ResetOnClick"
-                    Content="Reset" />
-
-            </atc:GridEx>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <atc:DualListSelector
-                x:Name="DualListSelectorControl"
-                Margin="10"
-                AllowDragDrop="{Binding IsChecked, ElementName=CbAllowDragDrop}"
-                AllowMultiSelect="{Binding IsChecked, ElementName=CbAllowMultiSelect}"
-                AutoRecalculateSortOrder="{Binding IsChecked, ElementName=CbAutoRecalculateSortOrder}"
-                AvailableHeader="Available Permissions"
-                SelectedHeader="Granted Permissions"
-                ShowFilter="{Binding IsChecked, ElementName=CbShowFilter}"
-                ShowItemCount="{Binding IsChecked, ElementName=CbShowItemCount}"
-                ShowReorderButtons="{Binding IsChecked, ElementName=CbShowReorderButtons}"
-                ShowTransferAllButtons="{Binding IsChecked, ElementName=CbShowTransferAllButtons}" />
-        </GroupBox>
-
-    </atc:AutoGrid>
+    </atc:GridEx>
 
 </UserControl>

@@ -29,7 +29,7 @@
                     Orientation="Vertical"
                     Spacing="20">
 
-                    <!-- Basic Dialog -->
+                    <!--  Basic Dialog  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -47,7 +47,7 @@
                             Content="Open Basic Dialog" />
                     </StackPanel>
 
-                    <!-- Dialog with Close Button -->
+                    <!--  Dialog with Close Button  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -65,7 +65,7 @@
                             Content="Open with Close Button" />
                     </StackPanel>
 
-                    <!-- Modal Dialog -->
+                    <!--  Modal Dialog  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -83,7 +83,7 @@
                             Content="Open Modal Dialog" />
                     </StackPanel>
 
-                    <!-- Confirmation Dialog -->
+                    <!--  Confirmation Dialog  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -101,7 +101,7 @@
                             Content="Open Confirmation Dialog" />
                     </StackPanel>
 
-                    <!-- Custom Sized Dialog -->
+                    <!--  Custom Sized Dialog  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"

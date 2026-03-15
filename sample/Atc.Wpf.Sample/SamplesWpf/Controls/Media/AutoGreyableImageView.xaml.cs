@@ -5,5 +5,7 @@ public partial class AutoGreyableImageView
     public AutoGreyableImageView()
     {
         InitializeComponent();
+
+        DataContext = new AutoGreyableImageDemoViewModel();
     }
 }

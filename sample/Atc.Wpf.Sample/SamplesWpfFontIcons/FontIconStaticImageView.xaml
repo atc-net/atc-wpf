@@ -6,57 +6,52 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:valueConverters="clr-namespace:Atc.Wpf.FontIcons.ValueConverters;assembly=Atc.Wpf.FontIcons"
-    d:DesignHeight="600"
-    d:DesignWidth="600"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="OrangeRedBrush" Color="OrangeRed" />
     </UserControl.Resources>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
+                <WrapPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeRegularType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}, ConverterParameter={StaticResource OrangeRedBrush}}" />
 
-            <WrapPanel />
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="{Binding Source={x:Static fontIcons:FontBootstrapType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
 
-        </GroupBox>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
 
-        <GroupBox Header="Usage">
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="{Binding Source={x:Static fontIcons:FontWeatherType.Barometer}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
 
-            <WrapPanel>
-                <Image
-                    Width="100"
-                    Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontAwesomeRegularType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}, ConverterParameter={StaticResource OrangeRedBrush}}" />
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeSolid7Type.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}, ConverterParameter={StaticResource OrangeRedBrush}}" />
+                </WrapPanel>
 
-                <Image
-                    Width="100"
-                    Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontBootstrapType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
-
-                <Image
-                    Width="100"
-                    Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
-
-                <Image
-                    Width="100"
-                    Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontWeatherType.Barometer}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}}" />
-
-                <Image
-                    Width="100"
-                    Height="100"
-                    Source="{Binding Source={x:Static fontIcons:FontAwesomeSolid7Type.Flag}, Converter={x:Static valueConverters:FontIconDrawingImageValueConverter.Instance}, ConverterParameter={StaticResource OrangeRedBrush}}" />
-            </WrapPanel>
-
-        </GroupBox>
-
-    </atc:AutoGrid>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

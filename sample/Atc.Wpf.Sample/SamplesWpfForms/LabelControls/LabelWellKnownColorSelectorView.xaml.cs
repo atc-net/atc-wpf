@@ -5,5 +5,6 @@ public partial class LabelWellKnownColorSelectorView
     public LabelWellKnownColorSelectorView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

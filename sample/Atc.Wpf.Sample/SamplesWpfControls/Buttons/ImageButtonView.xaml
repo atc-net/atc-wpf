@@ -5,67 +5,56 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
-                    <atc:UniformSpacingPanel
-                        Grid.Column="0"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10">
+                <atc:ImageButton
+                    Content="{Binding Content}"
+                    ImageLocation="Left"
+                    ImageSource="/Assets/ok.png"
+                    IsEnabled="{Binding IsEnabled}" />
 
-                        <atc:ImageButton
-                            Content="Hello"
-                            ImageLocation="Left"
-                            ImageSource="/Assets/ok.png" />
+                <atc:ImageButton
+                    Content="Hello"
+                    ImageLocation="Top"
+                    ImageSource="/Assets/ok.png" />
 
-                        <atc:ImageButton
-                            Content="Hello"
-                            ImageLocation="Top"
-                            ImageSource="/Assets/ok.png" />
+                <atc:ImageButton
+                    Content="Hello"
+                    ImageLocation="Right"
+                    ImageSource="/Assets/ok.png" />
 
-                        <atc:ImageButton
-                            Content="Hello"
-                            ImageLocation="Right"
-                            ImageSource="/Assets/ok.png" />
+                <atc:ImageButton
+                    Content="Hello"
+                    ImageLocation="Bottom"
+                    ImageSource="/Assets/ok.png" />
 
-                        <atc:ImageButton
-                            Content="Hello"
-                            ImageLocation="Bottom"
-                            ImageSource="/Assets/ok.png" />
+                <atc:ImageButton
+                    Content="Hello"
+                    ImageLocation="Center"
+                    ImageSource="/Assets/ok.png" />
 
-                        <atc:ImageButton
-                            Content="Hello"
-                            ImageLocation="Center"
-                            ImageSource="/Assets/ok.png" />
+                <atc:ImageButton ImageLocation="Center" ImageSource="/Assets/ok.png" />
 
-                        <atc:ImageButton ImageLocation="Center" ImageSource="/Assets/ok.png" />
+                <atc:ImageButton
+                    Width="50"
+                    ImageLocation="Center"
+                    ImageSource="/Assets/ok.png" />
 
-                        <atc:ImageButton
-                            Width="50"
-                            ImageLocation="Center"
-                            ImageSource="/Assets/ok.png" />
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-                    </atc:UniformSpacingPanel>
-                    <atc:UniformSpacingPanel
-                        Grid.Column="1"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10" />
-                </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

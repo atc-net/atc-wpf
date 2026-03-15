@@ -5,5 +5,6 @@ public partial class IntegerXyBoxView
     public IntegerXyBoxView()
     {
         InitializeComponent();
+        DataContext = new IntegerXyBoxDemoViewModel();
     }
 }

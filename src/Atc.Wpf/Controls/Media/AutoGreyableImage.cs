@@ -1,3 +1,5 @@
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
 namespace Atc.Wpf.Controls.Media;
 
 /// <summary>

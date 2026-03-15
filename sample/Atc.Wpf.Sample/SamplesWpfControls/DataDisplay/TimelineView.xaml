@@ -11,130 +11,109 @@
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
-                    <dataDisplay:Timeline
-                        x:Name="UsageArea"
-                        ConnectorStyle="{Binding ConnectorStyle}"
-                        DotSize="{Binding DotSize}"
-                        ItemSpacing="{Binding ItemSpacing}"
-                        LineThickness="{Binding LineThickness}"
-                        Mode="{Binding Mode}"
-                        Orientation="{Binding Orientation}">
-                        <dataDisplay:TimelineItem>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Project Kickoff" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="Initial planning" />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
-                        <dataDisplay:TimelineItem>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Design Phase" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="Wireframes completed" />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
-                        <dataDisplay:TimelineItem>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Development" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="Core features built" />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
-                        <dataDisplay:TimelineItem>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Release" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="Public launch" />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
+                <dataDisplay:Timeline
+                    ConnectorStyle="{Binding ConnectorStyle}"
+                    DotSize="{Binding DotSize}"
+                    ItemSpacing="{Binding ItemSpacing}"
+                    LineThickness="{Binding LineThickness}"
+                    Mode="{Binding Mode}"
+                    Orientation="{Binding Orientation}">
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Project Kickoff" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Initial planning" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Design Phase" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Wireframes completed" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Development" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Core features built" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Release" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Public launch" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                </dataDisplay:Timeline>
+
+                <!--  Custom Dots with Status Colors  -->
+                <dataDisplay:Timeline DotSize="20" Mode="Right">
+                    <dataDisplay:TimelineItem DotBrush="Green" DotSize="20">
+                        <dataDisplay:TimelineItem.DotContent>
+                            <TextBlock
+                                FontSize="10"
+                                Foreground="White"
+                                Text="&#x2713;" />
+                        </dataDisplay:TimelineItem.DotContent>
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Build Succeeded" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="All tests passed" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem DotBrush="Orange" DotSize="20">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Deploy to Staging" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="In progress..." />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                    <dataDisplay:TimelineItem DotBrush="Gray" DotSize="20">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold" Text="Deploy to Production" />
+                            <LineBreak />
+                            <Run Foreground="Gray" Text="Pending" />
+                        </TextBlock>
+                    </dataDisplay:TimelineItem>
+                </dataDisplay:Timeline>
+
+                <!--  Dashed &amp; Dotted Connectors  -->
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="Dashed" />
+                    <dataDisplay:Timeline ConnectorStyle="Dashed">
+                        <dataDisplay:TimelineItem Content="Step 1: Initialize" />
+                        <dataDisplay:TimelineItem Content="Step 2: Process" />
+                        <dataDisplay:TimelineItem Content="Step 3: Complete" />
                     </dataDisplay:Timeline>
-                </GroupBox>
 
-                <!--  Showcase: Custom Dots with Status Colors  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Custom Dots with Status Colors">
-                    <dataDisplay:Timeline DotSize="20" Mode="Right">
-                        <dataDisplay:TimelineItem DotBrush="Green" DotSize="20">
-                            <dataDisplay:TimelineItem.DotContent>
-                                <TextBlock
-                                    FontSize="10"
-                                    Foreground="White"
-                                    Text="&#x2713;" />
-                            </dataDisplay:TimelineItem.DotContent>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Build Succeeded" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="All tests passed" />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
-                        <dataDisplay:TimelineItem DotBrush="Orange" DotSize="20">
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Deploy to Staging" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="In progress..." />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
-                        <dataDisplay:TimelineItem DotBrush="Gray" DotSize="20">
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="Deploy to Production" />
-                                <LineBreak />
-                                <Run Foreground="Gray" Text="Pending" />
-                            </TextBlock>
-                        </dataDisplay:TimelineItem>
+                    <TextBlock
+                        Margin="0,15,0,10"
+                        FontWeight="Bold"
+                        Text="Dotted" />
+                    <dataDisplay:Timeline ConnectorStyle="Dotted">
+                        <dataDisplay:TimelineItem Content="Alpha" />
+                        <dataDisplay:TimelineItem Content="Beta" />
+                        <dataDisplay:TimelineItem Content="Release" />
                     </dataDisplay:Timeline>
-                </GroupBox>
+                </StackPanel>
 
-                <!--  Showcase: Connector Styles  -->
-                <GroupBox Padding="10" Header="Dashed &amp; Dotted Connectors">
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontWeight="Bold"
-                            Text="Dashed" />
-                        <dataDisplay:Timeline ConnectorStyle="Dashed">
-                            <dataDisplay:TimelineItem Content="Step 1: Initialize" />
-                            <dataDisplay:TimelineItem Content="Step 2: Process" />
-                            <dataDisplay:TimelineItem Content="Step 3: Complete" />
-                        </dataDisplay:Timeline>
-
-                        <TextBlock
-                            Margin="0,15,0,10"
-                            FontWeight="Bold"
-                            Text="Dotted" />
-                        <dataDisplay:Timeline ConnectorStyle="Dotted">
-                            <dataDisplay:TimelineItem Content="Alpha" />
-                            <dataDisplay:TimelineItem Content="Beta" />
-                            <dataDisplay:TimelineItem Content="Release" />
-                        </dataDisplay:Timeline>
-                    </StackPanel>
-                </GroupBox>
-
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

@@ -14,4 +14,4 @@ public sealed class HotkeyPressedEventArgs(IHotkeyRegistration registration) : E
     /// Gets or sets a value indicating whether the hotkey press has been handled.
     /// </summary>
     public bool Handled { get; set; }
-}
+}

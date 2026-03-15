@@ -82,4 +82,4 @@ public interface IHotkeyService : IDisposable
     /// </summary>
     /// <param name="filePath">The file path to read the JSON from.</param>
     void LoadBindings(string filePath);
-}
+}

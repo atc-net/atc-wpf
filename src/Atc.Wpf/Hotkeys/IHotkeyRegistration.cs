@@ -35,4 +35,4 @@ public interface IHotkeyRegistration : IDisposable
     /// Gets the chord definition if this is a chord registration; otherwise <c>null</c>.
     /// </summary>
     HotkeyChord? Chord { get; }
-}
+}

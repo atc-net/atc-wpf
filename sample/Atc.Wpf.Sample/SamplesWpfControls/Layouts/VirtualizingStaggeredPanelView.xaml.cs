@@ -17,18 +17,29 @@ public partial class VirtualizingStaggeredPanelView
     ];
 
     private readonly Random random = new();
+    private readonly VirtualizingStaggeredPanelDemoViewModel viewModel;
 
     public VirtualizingStaggeredPanelView()
     {
         InitializeComponent();
 
-        LsItemCount.ValueChanged += (_, _) => GenerateItems();
+        viewModel = new VirtualizingStaggeredPanelDemoViewModel();
+        DataContext = viewModel;
+
+        viewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(VirtualizingStaggeredPanelDemoViewModel.ItemCount))
+            {
+                GenerateItems();
+            }
+        };
+
         Loaded += (_, _) => GenerateItems();
     }
 
     private void GenerateItems()
     {
-        var count = Convert.ToInt32(LsItemCount.Value);
+        var count = Convert.ToInt32(viewModel.ItemCount);
         var items = new List<StaggeredItem>(count);
 
         for (var i = 0; i < count; i++)

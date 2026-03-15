@@ -5,5 +5,7 @@ public partial class LabelFilePickerView
     public LabelFilePickerView()
     {
         InitializeComponent();
+
+        DataContext = new LabelControlDemoViewModel();
     }
 }

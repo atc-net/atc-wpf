@@ -5,33 +5,22 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <TextBlock TextWrapping="Wrap">
-                SplitButton provides a primary action button with an attached dropdown for additional options.
-                Click the main area to execute the primary action, or click the arrow to open the dropdown menu.
-                Supports keyboard: Enter/Space for primary action, Alt+Down or F4 to open dropdown, Escape to close.
-            </TextBlock>
-        </GroupBox>
-
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Basic Usage">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel
-                Orientation="Vertical"
-                Spacing="10">
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
+
                 <atc:SplitButton
                     x:Name="SaveSplitButton"
-                    Content="Save"
+                    Content="{Binding Content}"
+                    IsEnabled="{Binding IsEnabled}"
                     Click="OnSaveClick">
                     <atc:SplitButton.DropdownContent>
                         <StackPanel>
@@ -62,48 +51,42 @@
                     x:Name="StatusText"
                     Foreground="{DynamicResource AtcApps.Brushes.Gray2}"
                     Text="Click a button to see the action." />
+
+                <atc:SplitButton Content="Run">
+                    <atc:SplitButton.DropdownContent>
+                        <StackPanel>
+                            <Button
+                                Padding="8,6"
+                                HorizontalContentAlignment="Left"
+                                Content="Run with Debugging"
+                                Style="{StaticResource AtcApps.Styles.Button.Chromeless}" />
+                            <Button
+                                Padding="8,6"
+                                HorizontalContentAlignment="Left"
+                                Content="Run without Debugging"
+                                Style="{StaticResource AtcApps.Styles.Button.Chromeless}" />
+                            <Button
+                                Padding="8,6"
+                                HorizontalContentAlignment="Left"
+                                Content="Run Tests"
+                                Style="{StaticResource AtcApps.Styles.Button.Chromeless}" />
+                        </StackPanel>
+                    </atc:SplitButton.DropdownContent>
+                </atc:SplitButton>
+
+                <atc:SplitButton
+                    Content="Disabled"
+                    IsEnabled="False">
+                    <atc:SplitButton.DropdownContent>
+                        <TextBlock Text="This should not appear." />
+                    </atc:SplitButton.DropdownContent>
+                </atc:SplitButton>
+
             </atc:UniformSpacingPanel>
-        </GroupBox>
+        </ScrollViewer>
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="With Command Binding">
-            <atc:SplitButton Content="Run">
-                <atc:SplitButton.DropdownContent>
-                    <StackPanel>
-                        <Button
-                            Padding="8,6"
-                            HorizontalContentAlignment="Left"
-                            Content="Run with Debugging"
-                            Style="{StaticResource AtcApps.Styles.Button.Chromeless}" />
-                        <Button
-                            Padding="8,6"
-                            HorizontalContentAlignment="Left"
-                            Content="Run without Debugging"
-                            Style="{StaticResource AtcApps.Styles.Button.Chromeless}" />
-                        <Button
-                            Padding="8,6"
-                            HorizontalContentAlignment="Left"
-                            Content="Run Tests"
-                            Style="{StaticResource AtcApps.Styles.Button.Chromeless}" />
-                    </StackPanel>
-                </atc:SplitButton.DropdownContent>
-            </atc:SplitButton>
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-        <GroupBox
-            Padding="10"
-            Header="Disabled State">
-            <atc:SplitButton
-                Content="Disabled"
-                IsEnabled="False">
-                <atc:SplitButton.DropdownContent>
-                    <TextBlock Text="This should not appear." />
-                </atc:SplitButton.DropdownContent>
-            </atc:SplitButton>
-        </GroupBox>
-
-    </atc:AutoGrid>
+    </atc:GridEx>
 
 </UserControl>

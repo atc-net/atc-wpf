@@ -5,6 +5,7 @@ public partial class FlyoutView
     public FlyoutView()
     {
         InitializeComponent();
+        DataContext = new FlyoutDemoViewModel();
     }
 
     private void OpenRightFlyoutButton_Click(

@@ -5,5 +5,6 @@ public partial class StandardDialogBoxView
     public StandardDialogBoxView()
     {
         InitializeComponent();
+        DataContext = new StandardDialogBoxViewModel();
     }
 }

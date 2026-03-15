@@ -211,4 +211,4 @@ public sealed partial class HotkeyServiceViewModel : ViewModelBase, IDisposable
     {
         RegisteredHotkeys = new ObservableCollection<IHotkeyRegistration>(hotkeyService.Registrations);
     }
-}
+}

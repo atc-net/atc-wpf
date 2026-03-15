@@ -6,79 +6,78 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
         <labelControls:LabelInputFormPanelViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:GridEx Columns="*,10,*,10,*" Rows="Auto,10,Auto,10,Auto,10,Auto">
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Command="{Binding Path=ShowInputForm1ColumnCommand}"
-                    Content="Input Form 1 columns" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Command="{Binding Path=ShowInputForm2ColumnsCommand}"
-                    Content="Input Form 2 columns" />
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Command="{Binding Path=ShowInputForm3ColumnsCommand}"
-                    Content="Input Form 3 columns" />
-                <Button
-                    Grid.Row="6"
-                    Grid.Column="0"
-                    Command="{Binding Path=ShowInputForm4ColumnsCommand}"
-                    Content="Input Form 4 columns" />
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Command="{Binding Path=ShowInputFormAddressWithDataCommands}"
-                    Content="Input Form - Address model with data" />
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    Command="{Binding Path=ShowInputFormAddressWithoutDataCommands}"
-                    Content="Input Form - Address model without data" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    Command="{Binding Path=ShowInputFormPersonWithDataCommands}"
-                    Content="Input Form - Person model with data" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="4"
-                    Command="{Binding Path=ShowInputFormPersonWithoutDataCommands}"
-                    Content="Input Form - Person model without data" />
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    Command="{Binding Path=ShowInputFormAccountWithDataCommands}"
-                    Content="Input Form - Account model with data" />
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="4"
-                    Command="{Binding Path=ShowInputFormAccountWithoutDataCommands}"
-                    Content="Input Form - Account model without data" />
-            </atc:GridEx>
-        </GroupBox>
+                <atc:GridEx Columns="*,10,*,10,*" Rows="Auto,10,Auto,10,Auto,10,Auto">
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Command="{Binding Path=ShowInputForm1ColumnCommand}"
+                        Content="Input Form 1 columns" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Command="{Binding Path=ShowInputForm2ColumnsCommand}"
+                        Content="Input Form 2 columns" />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Command="{Binding Path=ShowInputForm3ColumnsCommand}"
+                        Content="Input Form 3 columns" />
+                    <Button
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Command="{Binding Path=ShowInputForm4ColumnsCommand}"
+                        Content="Input Form 4 columns" />
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Command="{Binding Path=ShowInputFormAddressWithDataCommands}"
+                        Content="Input Form - Address model with data" />
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        Command="{Binding Path=ShowInputFormAddressWithoutDataCommands}"
+                        Content="Input Form - Address model without data" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Command="{Binding Path=ShowInputFormPersonWithDataCommands}"
+                        Content="Input Form - Person model with data" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="4"
+                        Command="{Binding Path=ShowInputFormPersonWithoutDataCommands}"
+                        Content="Input Form - Person model without data" />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Command="{Binding Path=ShowInputFormAccountWithDataCommands}"
+                        Content="Input Form - Account model with data" />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="4"
+                        Command="{Binding Path=ShowInputFormAccountWithoutDataCommands}"
+                        Content="Input Form - Account model without data" />
+                </atc:GridEx>
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
                 <ContentControl Content="{Binding Path=FormPanel}" />
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
 
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

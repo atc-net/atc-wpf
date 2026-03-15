@@ -1,30 +1,17 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.DataDisplay;
 
-public class BreadcrumbDemoViewModel : ViewModelBase
+public partial class BreadcrumbDemoViewModel : ViewModelBase
 {
-    private string separator = "/";
-    private BreadcrumbOverflowMode overflowMode = BreadcrumbOverflowMode.None;
-    private int maxVisibleItems;
-
     [PropertyDisplay("Separator", "Appearance", 1)]
-    public string Separator
-    {
-        get => separator;
-        set => Set(ref separator, value);
-    }
+    [ObservableProperty]
+    private string separator = "/";
 
     [PropertyDisplay("Overflow Mode", "Behavior", 1)]
-    public BreadcrumbOverflowMode OverflowMode
-    {
-        get => overflowMode;
-        set => Set(ref overflowMode, value);
-    }
+    [ObservableProperty]
+    private BreadcrumbOverflowMode overflowMode = BreadcrumbOverflowMode.None;
 
     [PropertyDisplay("Max Visible Items", "Behavior", 2)]
     [PropertyRange(0, 10, 1)]
-    public int MaxVisibleItems
-    {
-        get => maxVisibleItems;
-        set => Set(ref maxVisibleItems, value);
-    }
+    [ObservableProperty]
+    private int maxVisibleItems;
 }

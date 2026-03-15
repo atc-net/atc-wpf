@@ -35,9 +35,7 @@
                         ItemsSource="{Binding Items, ElementName=UcDataGridView}"
                         SelectedItem="{Binding SelectedItem, ElementName=UcDataGridView, Mode=TwoWay}">
                         <DataGrid.InputBindings>
-                            <MouseBinding
-                                Command="{Binding DoubleClickCommand, ElementName=UcDataGridView}"
-                                Gesture="LeftDoubleClick" />
+                            <MouseBinding Command="{Binding DoubleClickCommand, ElementName=UcDataGridView}" Gesture="LeftDoubleClick" />
                         </DataGrid.InputBindings>
                         <DataGrid.Columns>
                             <DataGridTextColumn

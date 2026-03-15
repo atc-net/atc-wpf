@@ -4,34 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfSourceGenerators"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     x:Name="UcDependencyProperty"
+    d:DataContext="{d:DesignInstance Type=local:DependencyPropertyDemoViewModel}"
     d:DesignHeight="600"
     d:DesignWidth="600"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-
-            <WrapPanel>
-
-                <atc:LabelToggleSwitch IsOn="{Binding ElementName=UcDependencyProperty, Path=IsRunning}" LabelText="Start / Stop spinner" />
-
-            </WrapPanel>
-
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <atc:UniformSpacingPanel
-                Margin="40"
-                Orientation="Vertical"
-                Spacing="10">
-
-                <atc:BusyOverlay IsBusy="{Binding ElementName=UcDependencyProperty, Path=IsRunning}">
+                <atc:BusyOverlay IsBusy="{Binding IsRunning}">
                     <TextBlock
                         Margin="100"
                         HorizontalAlignment="Center"
@@ -41,8 +27,8 @@
                 </atc:BusyOverlay>
 
             </atc:UniformSpacingPanel>
-        </GroupBox>
-
-    </atc:AutoGrid>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

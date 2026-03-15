@@ -77,4 +77,4 @@ public sealed class PrintResult
 
         return $"Failed: {ErrorMessage}";
     }
-}
+}

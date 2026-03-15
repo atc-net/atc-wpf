@@ -1,8 +1,16 @@
 namespace Atc.Wpf.Sample.SamplesWpfComponents.Viewers;
 
-public sealed class JsonViewerViewModel : ViewModelBase
+public sealed partial class JsonViewerViewModel : ViewModelBase
 {
     private string jsonData = string.Empty;
+
+    [PropertyDisplay("Show Action Bar", "Behavior", 1)]
+    [ObservableProperty]
+    private bool showActionAndInformationBar = true;
+
+    [PropertyDisplay("Start Expanded", "Behavior", 2)]
+    [ObservableProperty]
+    private bool startExpanded = true;
 
     public JsonViewerViewModel()
     {

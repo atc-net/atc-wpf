@@ -5,5 +5,6 @@ public partial class LabelPixelSizeBoxView
     public LabelPixelSizeBoxView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

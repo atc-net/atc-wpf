@@ -5,53 +5,33 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Layouts"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
-
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
-
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:UniformSpacingPanel Orientation="Vertical">
-                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
-                    <atc:LabelCheckBox
-                        x:Name="LcbShow"
-                        IsChecked="True"
-                        LabelText="Show"
-                        LabelWidthNumber="50" />
-                    <atc:LabelWellKnownColorSelector
-                        x:Name="LcsLine"
-                        LabelWidthNumber="50"
-                        SelectedKey="Orange" />
-                </atc:UniformSpacingPanel>
-                <atc:LabelSlider
-                    x:Name="LsHorizontalStep"
-                    LabelText="HorizontalStep"
-                    Minimum="3"
-                    Value="20" />
-                <atc:LabelSlider
-                    x:Name="LsVerticalStep"
-                    LabelText="VerticalStep"
-                    Minimum="3"
-                    Value="20" />
-            </atc:UniformSpacingPanel>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=local:GridLinesDemoViewModel}"
+    d:DesignHeight="900" d:DesignWidth="900" mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:GridLines
-                    HorizontalStep="{Binding ElementName=LsHorizontalStep, Path=Value}"
-                    LineBrush="{Binding ElementName=LcsLine, Path=SelectedKey}"
-                    VerticalStep="{Binding ElementName=LsVerticalStep, Path=Value}"
-                    Visibility="{Binding ElementName=LcbShow, Path=IsChecked, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+                    x:Name="InteractiveGridLines"
+                    Height="200"
+                    HorizontalStep="{Binding Spacing}"
+                    VerticalStep="{Binding Spacing}" />
 
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+                <atc:GridLines
+                    Margin="0,10,0,0"
+                    Height="200"
+                    HorizontalStep="{Binding HorizontalStep}"
+                    LineBrush="{Binding LineBrushColor, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
+                    VerticalStep="{Binding VerticalStep}"
+                    Visibility="{Binding IsVisible, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

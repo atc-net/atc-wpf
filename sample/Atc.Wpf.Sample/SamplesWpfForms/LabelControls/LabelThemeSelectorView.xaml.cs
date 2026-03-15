@@ -5,5 +5,6 @@ public partial class LabelThemeSelectorView
     public LabelThemeSelectorView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

@@ -2,6 +2,7 @@
     x:Class="Atc.Wpf.Sample.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcSample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample"
     Exit="ApplicationExit"
@@ -14,6 +15,17 @@
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Components;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="SampleScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+                <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                <Setter Property="VerticalScrollBarVisibility" Value="Visible" />
+            </Style>
+
+            <Style x:Key="SampleUsageAreaStyle" TargetType="{x:Type atc:UniformSpacingPanel}">
+                <Setter Property="Margin" Value="0,0,10,0" />
+                <Setter Property="Orientation" Value="Vertical" />
+                <Setter Property="Spacing" Value="20" />
+            </Style>
 
             <Style BasedOn="{StaticResource AtcApps.Styles.TreeViewItem}" TargetType="{x:Type TreeViewItem}">
                 <Setter Property="IsExpanded" Value="True" />

@@ -5,5 +5,6 @@ public partial class LoadingIndicatorView
     public LoadingIndicatorView()
     {
         InitializeComponent();
+        DataContext = new LoadingIndicatorDemoViewModel();
     }
 }

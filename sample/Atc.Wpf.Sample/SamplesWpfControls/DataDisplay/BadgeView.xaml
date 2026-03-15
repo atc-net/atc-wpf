@@ -16,196 +16,181 @@
         <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
-                    <dataDisplay:Badge
-                        x:Name="UsageArea"
-                        HorizontalAlignment="Center"
-                        BadgeContent="{Binding BadgeContent}"
-                        BadgeCornerRadius="{Binding BadgeCornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
-                        BadgeFontSize="{Binding BadgeFontSize}"
-                        BadgeMaxValue="{Binding BadgeMaxValue}"
-                        BadgePlacementMode="{Binding BadgePlacementMode}"
-                        HideWhenZero="{Binding HideWhenZero}"
-                        IsBadgeVisible="{Binding IsBadgeVisible}"
-                        IsDot="{Binding IsDot}">
-                        <Border
-                            Width="60"
-                            Height="60"
-                            Background="{DynamicResource AtcApps.Brushes.Gray8}"
-                            CornerRadius="4">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="Item" />
-                        </Border>
-                    </dataDisplay:Badge>
-                </GroupBox>
+                <dataDisplay:Badge
+                    HorizontalAlignment="Center"
+                    BadgeContent="{Binding BadgeContent}"
+                    BadgeCornerRadius="{Binding BadgeCornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                    BadgeFontSize="{Binding BadgeFontSize}"
+                    BadgeMaxValue="{Binding BadgeMaxValue}"
+                    BadgePlacementMode="{Binding BadgePlacementMode}"
+                    HideWhenZero="{Binding HideWhenZero}"
+                    IsBadgeVisible="{Binding IsBadgeVisible}"
+                    IsDot="{Binding IsDot}">
+                    <Border
+                        Width="60"
+                        Height="60"
+                        Background="{DynamicResource AtcApps.Brushes.Gray8}"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Item" />
+                    </Border>
+                </dataDisplay:Badge>
 
-                <!--  Showcase: Placement Modes  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Placement Modes">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="30"
-                        Orientation="Horizontal"
-                        VerticalSpacing="20">
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:Badge
-                                BadgeContent="1"
-                                BadgeMargin="-8,-8,0,0"
-                                BadgePlacementMode="TopLeft">
-                                <Border
-                                    Width="60"
-                                    Height="60"
-                                    Background="{DynamicResource AtcApps.Brushes.Gray8}"
-                                    CornerRadius="4">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="TL" />
-                                </Border>
-                            </dataDisplay:Badge>
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="TopLeft" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:Badge
-                                BadgeContent="2"
-                                BadgeMargin="0,-8,-8,0"
-                                BadgePlacementMode="TopRight">
-                                <Border
-                                    Width="60"
-                                    Height="60"
-                                    Background="{DynamicResource AtcApps.Brushes.Gray8}"
-                                    CornerRadius="4">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="TR" />
-                                </Border>
-                            </dataDisplay:Badge>
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="TopRight" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:Badge
-                                BadgeContent="3"
-                                BadgeMargin="0,0,-8,-8"
-                                BadgePlacementMode="BottomRight">
-                                <Border
-                                    Width="60"
-                                    Height="60"
-                                    Background="{DynamicResource AtcApps.Brushes.Gray8}"
-                                    CornerRadius="4">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="BR" />
-                                </Border>
-                            </dataDisplay:Badge>
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="BottomRight" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:Badge
-                                BadgeContent="4"
-                                BadgeMargin="-8,0,0,-8"
-                                BadgePlacementMode="BottomLeft">
-                                <Border
-                                    Width="60"
-                                    Height="60"
-                                    Background="{DynamicResource AtcApps.Brushes.Gray8}"
-                                    CornerRadius="4">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="BL" />
-                                </Border>
-                            </dataDisplay:Badge>
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="BottomLeft" />
-                        </StackPanel>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
+                <!--  Placement Modes  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="30"
+                    Orientation="Horizontal"
+                    VerticalSpacing="20">
+                    <StackPanel HorizontalAlignment="Center">
+                        <dataDisplay:Badge
+                            BadgeContent="1"
+                            BadgeMargin="-8,-8,0,0"
+                            BadgePlacementMode="TopLeft">
+                            <Border
+                                Width="60"
+                                Height="60"
+                                Background="{DynamicResource AtcApps.Brushes.Gray8}"
+                                CornerRadius="4">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="TL" />
+                            </Border>
+                        </dataDisplay:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="TopLeft" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <dataDisplay:Badge
+                            BadgeContent="2"
+                            BadgeMargin="0,-8,-8,0"
+                            BadgePlacementMode="TopRight">
+                            <Border
+                                Width="60"
+                                Height="60"
+                                Background="{DynamicResource AtcApps.Brushes.Gray8}"
+                                CornerRadius="4">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="TR" />
+                            </Border>
+                        </dataDisplay:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="TopRight" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <dataDisplay:Badge
+                            BadgeContent="3"
+                            BadgeMargin="0,0,-8,-8"
+                            BadgePlacementMode="BottomRight">
+                            <Border
+                                Width="60"
+                                Height="60"
+                                Background="{DynamicResource AtcApps.Brushes.Gray8}"
+                                CornerRadius="4">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="BR" />
+                            </Border>
+                        </dataDisplay:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="BottomRight" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <dataDisplay:Badge
+                            BadgeContent="4"
+                            BadgeMargin="-8,0,0,-8"
+                            BadgePlacementMode="BottomLeft">
+                            <Border
+                                Width="60"
+                                Height="60"
+                                Background="{DynamicResource AtcApps.Brushes.Gray8}"
+                                CornerRadius="4">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="BL" />
+                            </Border>
+                        </dataDisplay:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="BottomLeft" />
+                    </StackPanel>
+                </atc:UniformSpacingPanel>
 
-                <!--  Showcase: Dot and Max Value  -->
-                <GroupBox Padding="10" Header="Dot Badge &amp; Max Value">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="40"
-                        Orientation="Horizontal"
-                        VerticalSpacing="20">
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:Badge
-                                BadgeBackground="LimeGreen"
-                                BadgePlacementMode="BottomRight"
-                                IsDot="True">
-                                <Border
-                                    Width="50"
-                                    Height="50"
-                                    Background="{DynamicResource AtcApps.Brushes.Gray6}"
-                                    CornerRadius="25">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="Online" />
-                                </Border>
-                            </dataDisplay:Badge>
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="Dot Badge" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center">
-                            <dataDisplay:Badge
-                                BadgeContent="150"
-                                BadgeMargin="0,-8,-8,0"
-                                BadgeMaxValue="99"
-                                BadgePlacementMode="TopRight">
-                                <Button
-                                    Width="80"
-                                    Height="40"
-                                    Content="Messages" />
-                            </dataDisplay:Badge>
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontSize="10"
-                                Text="Max Value (99+)" />
-                        </StackPanel>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
+                <!--  Dot Badge &amp; Max Value  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="40"
+                    Orientation="Horizontal"
+                    VerticalSpacing="20">
+                    <StackPanel HorizontalAlignment="Center">
+                        <dataDisplay:Badge
+                            BadgeBackground="LimeGreen"
+                            BadgePlacementMode="BottomRight"
+                            IsDot="True">
+                            <Border
+                                Width="50"
+                                Height="50"
+                                Background="{DynamicResource AtcApps.Brushes.Gray6}"
+                                CornerRadius="25">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Online" />
+                            </Border>
+                        </dataDisplay:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Dot Badge" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <dataDisplay:Badge
+                            BadgeContent="150"
+                            BadgeMargin="0,-8,-8,0"
+                            BadgeMaxValue="99"
+                            BadgePlacementMode="TopRight">
+                            <Button
+                                Width="80"
+                                Height="40"
+                                Content="Messages" />
+                        </dataDisplay:Badge>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Text="Max Value (99+)" />
+                    </StackPanel>
+                </atc:UniformSpacingPanel>
 
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SamplePropertyController Grid.Column="1" SourceObject="{Binding}" />
-    </Grid>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

@@ -107,4 +107,4 @@ internal sealed class HeaderFooterDocumentPaginator : DocumentPaginator
             dc.DrawText(ft, new Point(x + width - ft.Width, y));
         }
     }
-}
+}

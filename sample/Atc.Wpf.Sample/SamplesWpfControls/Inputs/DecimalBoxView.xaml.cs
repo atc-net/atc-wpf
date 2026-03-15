@@ -5,5 +5,6 @@ public partial class DecimalBoxView
     public DecimalBoxView()
     {
         InitializeComponent();
+        DataContext = new DecimalBoxDemoViewModel();
     }
 }

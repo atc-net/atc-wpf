@@ -5,12 +5,6 @@ public partial class DesaturateShaderEffectView
     public DesaturateShaderEffectView()
     {
         InitializeComponent();
-    }
-
-    private void ResetOnClick(
-        object sender,
-        RoutedEventArgs e)
-    {
-        SliderStrength.Value = 0;
+        DataContext = new DesaturateShaderEffectDemoViewModel();
     }
 }

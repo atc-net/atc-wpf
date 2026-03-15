@@ -5,32 +5,30 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-                <StackPanel Orientation="Vertical">
-                    <Button
-                        Width="100"
-                        Click="BtnBrowseOnClick"
-                        Content="Browse svg files" />
-                </StackPanel>
+                <Button
+                    Width="100"
+                    Click="BtnBrowseOnClick"
+                    Content="Browse svg files" />
+
+                <WrapPanel
+                    x:Name="UsagePanel"
+                    Margin="20"
+                    Orientation="Horizontal" />
+
             </atc:UniformSpacingPanel>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <WrapPanel
-                x:Name="UsagePanel"
-                Margin="20"
-                Orientation="Horizontal" />
-        </GroupBox>
-    </atc:AutoGrid>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

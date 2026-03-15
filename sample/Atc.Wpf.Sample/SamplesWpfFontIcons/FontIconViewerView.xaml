@@ -6,145 +6,53 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfFontIcons"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="UcFontIconViewerView"
-    d:DataContext="{d:DesignInstance Type=local:FontIconViewerView}"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=local:FontIconViewerDemoViewModel}"
     d:DesignHeight="600"
     d:DesignWidth="1200"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-
-            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-
-                <atc:UniformSpacingPanel
-                    Width="180"
-                    Orientation="Vertical"
-                    Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="FilterFontAwesomeBrand"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="FA Brand" />
-                    <atc:LabelCheckBox
-                        x:Name="FilterFontAwesomeRegular"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="FA Regular" />
-                    <atc:LabelCheckBox
-                        x:Name="FilterFontAwesomeSolid"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="FA Solid" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel
-                    Width="180"
-                    Orientation="Vertical"
-                    Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="FilterFontAwesomeBrand7"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="FA7 Brand" />
-                    <atc:LabelCheckBox
-                        x:Name="FilterFontAwesomeRegular7"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="FA7 Regular" />
-                    <atc:LabelCheckBox
-                        x:Name="FilterFontAwesomeSolid7"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="FA7 Solid" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel
-                    Width="180"
-                    Orientation="Vertical"
-                    Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="FilterBootstrap"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="Bootstrap" />
-                    <atc:LabelCheckBox
-                        x:Name="FilterIcoFont"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="IcoFont" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel
-                    Width="180"
-                    Orientation="Vertical"
-                    Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="FilterMaterialDesign"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="Material Design" />
-                    <atc:LabelCheckBox
-                        x:Name="FilterWeather"
-                        HideAreas="All"
-                        IsChecked="True"
-                        IsCheckedChanged="FilterCheckBoxOnIsCheckedChanged"
-                        LabelText="Weather" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel
-                    Width="300"
-                    Orientation="Vertical"
-                    Spacing="10">
-                    <atc:LabelWellKnownColorSelector
-                        x:Name="IconColorPicker"
-                        HideAreas="All"
-                        LabelText="Color"
-                        SelectedKey="Green"
-                        SelectorChanged="IconColorPickerOnSelectorChanged" />
-                    <atc:LabelTextBox
-                        x:Name="FilterText"
-                        HideAreas="All"
-                        LabelText="Filter"
-                        TextChanged="FilterOnTextChanged" />
-                    <atc:LabelTextInfo
-                        x:Name="CountListOfIcons"
-                        HideAreas="All"
-                        LabelText="Icon counts" />
-                </atc:UniformSpacingPanel>
+                <atc:BusyOverlay DisplayAfter="0" IsBusy="{Binding IsBusy}">
+                <ItemsControl ItemsSource="{Binding IconsView}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:IconItem}">
+                            <StackPanel
+                                Width="150"
+                                Margin="20"
+                                Orientation="Vertical"
+                                ToolTip="{Binding ToolTip}">
+                                <Image
+                                    Width="50"
+                                    Height="50"
+                                    HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{x:Static local:FontIconViewerImageConverter.Instance}">
+                                            <Binding Path="EnumValue" />
+                                            <Binding Path="DataContext.IconColor" RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding DisplayName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                </atc:BusyOverlay>
 
             </atc:UniformSpacingPanel>
-
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-
-            <atc:BusyOverlay DisplayAfter="0" IsBusy="{Binding ElementName=UcFontIconViewerView, Path=IsBusy, Mode=OneWay}">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <WrapPanel
-                        x:Name="ListOfIcons"
-                        VirtualizingPanel.IsContainerVirtualizable="True"
-                        VirtualizingPanel.IsVirtualizing="True"
-                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                        VirtualizingPanel.VirtualizationMode="Recycling" />
-                </ScrollViewer>
-            </atc:BusyOverlay>
-
-        </GroupBox>
-
-    </atc:AutoGrid>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

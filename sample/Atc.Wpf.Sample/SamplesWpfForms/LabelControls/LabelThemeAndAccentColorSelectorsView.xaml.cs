@@ -5,5 +5,6 @@ public partial class LabelThemeAndAccentColorSelectorsView
     public LabelThemeAndAccentColorSelectorsView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

@@ -5,19 +5,34 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900" d:DesignWidth="900" mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
-
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
+                <atc:ReversibleStackPanel
+                    x:Name="InteractiveReversibleStackPanel"
+                    Orientation="{Binding Orientation}">
+                    <Rectangle
+                        Width="50"
+                        Height="50"
+                        Fill="Blue" />
+                    <Rectangle
+                        Width="50"
+                        Height="50"
+                        Fill="Red" />
+                    <Rectangle
+                        Width="50"
+                        Height="50"
+                        Fill="Green" />
+                    <Rectangle
+                        Width="50"
+                        Height="50"
+                        Fill="Yellow" />
+                </atc:ReversibleStackPanel>
 
                 <atc:UniformSpacingPanel Margin="50" Spacing="50">
                     <atc:ReversibleStackPanel ReverseOrder="False">
@@ -98,8 +113,8 @@
 
                 </atc:UniformSpacingPanel>
 
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
-
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

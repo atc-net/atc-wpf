@@ -5,5 +5,7 @@ public partial class LabelFontFamilySelectorView
     public LabelFontFamilySelectorView()
     {
         InitializeComponent();
+
+        DataContext = new LabelControlDemoViewModel();
     }
 }

@@ -5,18 +5,19 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="700"
-    d:DesignWidth="800"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Progressing"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=local:OverlayDemoViewModel}"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-            <!--  Section 1: Features  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
                 <TextBlock Width="700" TextWrapping="Wrap">
                     The Overlay control provides a general-purpose translucent dimming layer
                     over wrapped content. Unlike BusyOverlay (which provides a built-in progress bar
@@ -24,13 +25,7 @@
                     to display on top of the dimming layer. Supports fade animations, auto-close on
                     click, and customizable opacity.
                 </TextBlock>
-            </GroupBox>
 
-            <!--  Section 2: Basic Overlay  -->
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Basic Overlay">
                 <atc:AutoGrid Columns="*" Rows="Auto,*">
 
                     <!--  Controls  -->
@@ -43,14 +38,10 @@
                             MinWidth="120"
                             Click="OnToggleBasicClick"
                             Content="Show Overlay" />
-                        <atc:LabelCheckBox
-                            x:Name="CbAutoClose"
-                            IsChecked="True"
-                            LabelText="AutoClose" />
                     </atc:UniformSpacingPanel>
 
                     <!--  Overlay wrapping content  -->
-                    <atc:Overlay x:Name="BasicOverlay" AutoClose="{Binding ElementName=CbAutoClose, Path=IsChecked}">
+                    <atc:Overlay x:Name="BasicOverlay" AutoClose="{Binding AutoClose}">
                         <atc:Overlay.OverlayContent>
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <atc:LoadingIndicator
@@ -81,10 +72,7 @@
                         </StackPanel>
                     </atc:Overlay>
                 </atc:AutoGrid>
-            </GroupBox>
 
-            <!--  Section 3: Custom Content Overlay  -->
-            <GroupBox Padding="10" Header="Custom Content Overlay">
                 <atc:AutoGrid Columns="*" Rows="Auto,*">
 
                     <!--  Controls  -->
@@ -97,19 +85,10 @@
                             MinWidth="120"
                             Click="OnToggleCustomClick"
                             Content="Show Overlay" />
-                        <TextBlock VerticalAlignment="Center" Text="Overlay Opacity:" />
-                        <Slider
-                            x:Name="SliderOpacity"
-                            Width="120"
-                            VerticalAlignment="Center"
-                            Maximum="1.0"
-                            Minimum="0.0"
-                            Value="0.6" />
-                        <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=SliderOpacity, Path=Value, StringFormat='{}{0:F2}'}" />
                     </atc:UniformSpacingPanel>
 
                     <!--  Overlay with custom card content  -->
-                    <atc:Overlay x:Name="CustomOverlay" OverlayOpacity="{Binding ElementName=SliderOpacity, Path=Value}">
+                    <atc:Overlay x:Name="CustomOverlay" OverlayOpacity="{Binding OverlayOpacity}">
                         <atc:Overlay.OverlayContent>
                             <Border
                                 MinWidth="300"
@@ -159,9 +138,10 @@
                         </StackPanel>
                     </atc:Overlay>
                 </atc:AutoGrid>
-            </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

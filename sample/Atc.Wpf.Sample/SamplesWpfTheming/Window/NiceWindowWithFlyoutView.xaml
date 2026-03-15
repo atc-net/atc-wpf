@@ -29,7 +29,7 @@
                     Orientation="Vertical"
                     Spacing="20">
 
-                    <!-- Basic Flyout in NiceWindow -->
+                    <!--  Basic Flyout in NiceWindow  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -47,7 +47,7 @@
                             Content="Open NiceWindow with Flyout" />
                     </StackPanel>
 
-                    <!-- FlyoutHost with Multiple Flyouts -->
+                    <!--  FlyoutHost with Multiple Flyouts  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -65,7 +65,7 @@
                             Content="Open NiceWindow with FlyoutHost" />
                     </StackPanel>
 
-                    <!-- Flyout with Settings Form -->
+                    <!--  Flyout with Settings Form  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -83,7 +83,7 @@
                             Content="Open NiceWindow with Settings" />
                     </StackPanel>
 
-                    <!-- All Flyout Positions -->
+                    <!--  All Flyout Positions  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -101,7 +101,7 @@
                             Content="Open NiceWindow with All Positions" />
                     </StackPanel>
 
-                    <!-- Advanced Features -->
+                    <!--  Advanced Features  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"

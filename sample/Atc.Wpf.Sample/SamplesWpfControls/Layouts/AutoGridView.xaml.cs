@@ -5,5 +5,6 @@ public partial class AutoGridView
     public AutoGridView()
     {
         InitializeComponent();
+        DataContext = new AutoGridDemoViewModel();
     }
 }

@@ -5,71 +5,65 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:GridEx Columns="*,*" ShowGridLines="True">
-                    <atc:UniformSpacingPanel
-                        Grid.Column="0"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10">
+                <!--  Interactive demo  -->
+                <atc:IntegerBox
+                    Width="300"
+                    HorizontalAlignment="Left"
+                    ButtonsAlignment="{Binding ButtonsAlignment}"
+                    HideUpDownButtons="{Binding HideUpDownButtons}"
+                    Interval="{Binding Interval}"
+                    IsReadOnly="{Binding IsReadOnly}"
+                    Maximum="{Binding Maximum}"
+                    Minimum="{Binding Minimum}"
+                    PrefixText="{Binding PrefixText}"
+                    SuffixText="{Binding SuffixText}"
+                    SwitchUpDownButtons="{Binding SwitchUpDownButtons}"
+                    Value="{Binding Value}" />
 
-                        <atc:IntegerBox ButtonsAlignment="Right" SwitchUpDownButtons="False" />
+                <!--  Showcase: Button Alignments  -->
+                <atc:UniformSpacingPanel
+                    Margin="10"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:IntegerBox ButtonsAlignment="Right" SwitchUpDownButtons="False" />
+                    <atc:IntegerBox ButtonsAlignment="Right" SwitchUpDownButtons="True" />
+                    <atc:IntegerBox ButtonsAlignment="Left" SwitchUpDownButtons="False" />
+                    <atc:IntegerBox ButtonsAlignment="Left" SwitchUpDownButtons="True" />
+                    <atc:IntegerBox ButtonsAlignment="Opposite" SwitchUpDownButtons="False" />
+                    <atc:IntegerBox ButtonsAlignment="Opposite" SwitchUpDownButtons="True" />
+                </atc:UniformSpacingPanel>
 
-                        <atc:IntegerBox ButtonsAlignment="Right" SwitchUpDownButtons="True" />
+                <!--  Showcase: Special States  -->
+                <atc:UniformSpacingPanel
+                    Margin="10"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:IntegerBox
+                        atc:TextBoxHelper.Watermark="Hello Watermark..."
+                        atc:TextBoxHelper.WatermarkAlignment="Center"
+                        PrefixText="P123"
+                        SuffixText="S123" />
+                    <atc:IntegerBox IsEnabled="False" />
+                    <atc:IntegerBox IsReadOnly="True" />
+                </atc:UniformSpacingPanel>
 
-                        <atc:IntegerBox ButtonsAlignment="Left" SwitchUpDownButtons="False" />
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-                        <atc:IntegerBox ButtonsAlignment="Left" SwitchUpDownButtons="True" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-                        <atc:IntegerBox ButtonsAlignment="Opposite" SwitchUpDownButtons="False" />
-
-                        <atc:IntegerBox ButtonsAlignment="Opposite" SwitchUpDownButtons="True" />
-
-                        <atc:IntegerBox
-                            atc:TextBoxHelper.Watermark="Hello Watermark..."
-                            atc:TextBoxHelper.WatermarkAlignment="Center"
-                            PrefixText="P123"
-                            SuffixText="S123" />
-
-                        <atc:IntegerBox IsEnabled="False" />
-
-                        <atc:IntegerBox IsReadOnly="True" />
-
-                    </atc:UniformSpacingPanel>
-                    <atc:UniformSpacingPanel
-                        Grid.Column="1"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10">
-
-                        <atc:IntegerBox
-                            Maximum="1000"
-                            Minimum="10"
-                            TextAlignment="Center"
-                            Value="23" />
-
-                        <atc:IntegerBox
-                            Maximum="-10"
-                            Minimum="-1000"
-                            TextAlignment="Center"
-                            Value="-23" />
-
-                    </atc:UniformSpacingPanel>
-                </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+    </atc:GridEx>
 
 </UserControl>

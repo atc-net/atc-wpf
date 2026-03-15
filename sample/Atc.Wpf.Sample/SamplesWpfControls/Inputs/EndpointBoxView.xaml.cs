@@ -5,5 +5,6 @@ public partial class EndpointBoxView
     public EndpointBoxView()
     {
         InitializeComponent();
+        DataContext = new EndpointBoxDemoViewModel();
     }
 }

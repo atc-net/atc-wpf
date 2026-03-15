@@ -42,4 +42,4 @@ public partial class PrintPreviewWindow
         UserWantsToPrint = false;
         DialogResult = false;
     }
-}
+}

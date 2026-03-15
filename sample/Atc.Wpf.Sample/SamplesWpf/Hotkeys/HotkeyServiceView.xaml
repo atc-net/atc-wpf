@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hotkeys="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Hotkeys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="700"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
@@ -14,21 +15,18 @@
         <hotkeys:HotkeyServiceViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <TextBlock TextWrapping="Wrap">
-                The IHotkeyService interface provides MVVM-friendly keyboard shortcut management
-                with support for global (system-wide) and local (window-scoped) hotkeys,
-                two-stroke chord sequences, and conflict detection.
-            </TextBlock>
-        </GroupBox>
+                <TextBlock TextWrapping="Wrap">
+                    The IHotkeyService interface provides MVVM-friendly keyboard shortcut management
+                    with support for global (system-wide) and local (window-scoped) hotkeys,
+                    two-stroke chord sequences, and conflict detection.
+                </TextBlock>
 
-        <GroupBox Header="Usage">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <atc:UniformSpacingPanel
                     Margin="20"
                     Orientation="Vertical"
@@ -159,8 +157,10 @@
                         ItemsSource="{Binding EventLog}" />
 
                 </atc:UniformSpacingPanel>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

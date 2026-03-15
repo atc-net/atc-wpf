@@ -2,72 +2,15 @@ namespace Atc.Wpf.Sample.SamplesWpfComponents.Monitoring;
 
 public partial class ApplicationMonitorView : IDisposable
 {
-    private readonly DispatcherTimer dispatcherTimer;
+    private readonly ApplicationMonitorDemoViewModel viewModel;
 
     public ApplicationMonitorView()
     {
         InitializeComponent();
 
-        DataContext = this;
-        ApplicationMonitorViewModel = new ApplicationMonitorViewModel();
-
-        dispatcherTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(300),
-        };
-
-        dispatcherTimer.Tick += TimerTick;
-
-        if (EnableTimer)
-        {
-            dispatcherTimer.Start();
-        }
+        viewModel = new ApplicationMonitorDemoViewModel();
+        DataContext = viewModel;
     }
-
-    [DependencyProperty(PropertyChangedCallback = nameof(OnEnableTimerChanged))]
-    private bool enableTimer;
-
-    private static void OnEnableTimerChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var view = (ApplicationMonitorView)d;
-
-        var isEnabled = (bool)e.NewValue;
-
-        if (isEnabled)
-        {
-            view.dispatcherTimer.Start();
-        }
-        else
-        {
-            view.dispatcherTimer.Stop();
-        }
-    }
-
-    public ApplicationMonitorViewModel ApplicationMonitorViewModel { get; set; }
-
-    public IRelayCommand AddOneCommand
-        => new RelayCommand(AddOneCommandHandler);
-
-    public IRelayCommand AddManyCommand
-        => new RelayCommand(AddManyCommandHandler);
-
-    private static void AddOneCommandHandler()
-        => LogSimulator.SendRandomLogMessage();
-
-    private static void AddManyCommandHandler()
-    {
-        for (var i = 0; i < 10; i++)
-        {
-            LogSimulator.SendRandomLogMessage();
-        }
-    }
-
-    private static void TimerTick(
-        object? sender,
-        EventArgs e)
-        => LogSimulator.SendRandomLogMessage();
 
     public void Dispose()
     {
@@ -82,6 +25,6 @@ public partial class ApplicationMonitorView : IDisposable
             return;
         }
 
-        dispatcherTimer.Stop();
+        viewModel.Dispose();
     }
 }

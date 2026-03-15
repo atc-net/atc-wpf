@@ -7,73 +7,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:GridEx Columns="*,10,*" ShowGridLines="True">
-                    <atc:UniformSpacingPanel
-                        Grid.Column="0"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10">
+                <atc:ConnectivityButton
+                    ConnectCommand="{Binding Path=ConnectCommand}"
+                    DisconnectCommand="{Binding Path=DisconnectCommand}"
+                    IsBusy="{Binding Path=IsBusy}"
+                    IsConnected="{Binding Path=IsConnected}" />
 
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Horizontal"
-                            Spacing="10">
+                <atc:ConnectivityButton
+                    ConnectCommand="{Binding Path=ConnectCommand}"
+                    ConnectContent="MyConnect"
+                    ConnectImageSource="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Login}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.ThemeForeground}}"
+                    DisconnectCommand="{Binding Path=DisconnectCommand}"
+                    DisconnectContent="MyDisconnect"
+                    DisconnectImageSource="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Logout}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
+                    IsBusy="{Binding Path=IsBusy}"
+                    IsConnected="{Binding Path=IsConnected}" />
 
-                            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-                                <atc:ConnectivityButton
-                                    ConnectCommand="{Binding Path=ConnectCommand}"
-                                    DisconnectCommand="{Binding Path=DisconnectCommand}"
-                                    IsBusy="{Binding Path=IsBusy}"
-                                    IsConnected="{Binding Path=IsConnected}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-                                <atc:ConnectivityButton
-                                    ConnectCommand="{Binding Path=ConnectCommand}"
-                                    ConnectContent="MyConnect"
-                                    ConnectImageSource="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Login}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.ThemeForeground}}"
-                                    DisconnectCommand="{Binding Path=DisconnectCommand}"
-                                    DisconnectContent="MyDisconnect"
-                                    DisconnectImageSource="{Binding Source={x:Static fontIcons:FontMaterialDesignType.Logout}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
-                                    IsBusy="{Binding Path=IsBusy}"
-                                    IsConnected="{Binding Path=IsConnected}" />
-
-                            </atc:UniformSpacingPanel>
-
-                        </atc:UniformSpacingPanel>
-
-                    </atc:UniformSpacingPanel>
-                    <atc:UniformSpacingPanel
-                        Grid.Column="2"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10">
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Horizontal"
-                            Spacing="10">
-
-                            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10" />
-
-                        </atc:UniformSpacingPanel>
-
-                    </atc:UniformSpacingPanel>
-                </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+    </atc:GridEx>
 
 </UserControl>

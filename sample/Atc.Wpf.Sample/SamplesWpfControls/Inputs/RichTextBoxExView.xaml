@@ -5,62 +5,74 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:textFormatters="clr-namespace:Atc.Wpf.Documents.TextFormatters;assembly=Atc.Wpf"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <Grid>
-        <GroupBox Header="Usage">
-            <TabControl>
+    <atc:GridEx Columns="*,400">
 
-                <TabItem Header=" XAML ">
-                    <atc:RichTextBoxEx
-                        Margin="5,10,5,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                        FontFamily="Courier New"
-                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                        HorizontalScrollBarVisibility="Auto"
-                        IsReadOnly="True"
-                        Text="{Binding Path=DataContext.XamlCode, Mode=OneTime}"
-                        TextFormatter="{x:Static textFormatters:XamlFormatter.Instance}"
-                        VerticalScrollBarVisibility="Auto" />
-                </TabItem>
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-                <TabItem Header=" C# ">
-                    <atc:RichTextBoxEx
-                        Margin="5,10,5,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                        FontFamily="Courier New"
-                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                        HorizontalScrollBarVisibility="Auto"
-                        IsReadOnly="True"
-                        Text="{Binding Path=DataContext.CSharpCode, Mode=OneTime}"
-                        TextFormatter="{x:Static textFormatters:CSharpFormatter.Instance}"
-                        VerticalScrollBarVisibility="Auto" />
-                </TabItem>
+                <!--  Interactive demo  -->
+                <TabControl>
 
-                <TabItem Header=" JSON ">
-                    <atc:RichTextBoxEx
-                        Margin="5,10,5,5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                        FontFamily="Courier New"
-                        Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                        HorizontalScrollBarVisibility="Auto"
-                        IsReadOnly="True"
-                        Text="{Binding Path=DataContext.JsonText, Mode=OneTime}"
-                        TextFormatter="{x:Static textFormatters:JsonFormatter.Instance}"
-                        VerticalScrollBarVisibility="Auto" />
-                </TabItem>
+                    <TabItem Header=" XAML ">
+                        <atc:RichTextBoxEx
+                            Margin="5,10,5,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                            FontFamily="Courier New"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            HorizontalScrollBarVisibility="Auto"
+                            IsReadOnly="True"
+                            Text="{Binding Path=DataContext.XamlCode, Mode=OneTime}"
+                            TextFormatter="{x:Static textFormatters:XamlFormatter.Instance}"
+                            VerticalScrollBarVisibility="Auto" />
+                    </TabItem>
 
-            </TabControl>
-        </GroupBox>
-    </Grid>
+                    <TabItem Header=" C# ">
+                        <atc:RichTextBoxEx
+                            Margin="5,10,5,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                            FontFamily="Courier New"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            HorizontalScrollBarVisibility="Auto"
+                            IsReadOnly="True"
+                            Text="{Binding Path=DataContext.CSharpCode, Mode=OneTime}"
+                            TextFormatter="{x:Static textFormatters:CSharpFormatter.Instance}"
+                            VerticalScrollBarVisibility="Auto" />
+                    </TabItem>
+
+                    <TabItem Header=" JSON ">
+                        <atc:RichTextBoxEx
+                            Margin="5,10,5,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                            FontFamily="Courier New"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            HorizontalScrollBarVisibility="Auto"
+                            IsReadOnly="True"
+                            Text="{Binding Path=DataContext.JsonText, Mode=OneTime}"
+                            TextFormatter="{x:Static textFormatters:JsonFormatter.Instance}"
+                            VerticalScrollBarVisibility="Auto" />
+                    </TabItem>
+
+                </TabControl>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

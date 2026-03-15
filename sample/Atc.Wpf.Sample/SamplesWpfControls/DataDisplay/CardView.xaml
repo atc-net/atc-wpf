@@ -16,156 +16,130 @@
         <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
+                <dataDisplay:Card
+                    Width="400"
+                    HorizontalAlignment="Left"
+                    CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                    Elevation="{Binding Elevation}"
+                    ExpanderButtonLocation="{Binding ExpanderButtonLocation}"
+                    Header="{Binding Header}"
+                    IsExpandable="{Binding IsExpandable}"
+                    IsExpanded="{Binding IsExpanded}"
+                    ShowHeader="{Binding ShowHeader}">
+                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+                </dataDisplay:Card>
+
+                <!--  Elevation Levels  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="20"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
                     <dataDisplay:Card
-                        x:Name="UsageArea"
+                        Width="100"
+                        Elevation="0"
+                        Header="Flat">
+                        <TextBlock Text="Elevation 0" />
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Width="100"
+                        Elevation="1"
+                        Header="Level 1">
+                        <TextBlock Text="Elevation 1" />
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Width="100"
+                        Elevation="2"
+                        Header="Default">
+                        <TextBlock Text="Elevation 2" />
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Width="100"
+                        Elevation="3"
+                        Header="Level 3">
+                        <TextBlock Text="Elevation 3" />
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Width="100"
+                        Elevation="5"
+                        Header="Raised">
+                        <TextBlock Text="Elevation 5" />
+                    </dataDisplay:Card>
+                </atc:UniformSpacingPanel>
+
+                <!--  Expandable Cards  -->
+                <StackPanel>
+                    <dataDisplay:Card
+                        Width="400"
+                        Margin="0,0,0,15"
+                        HorizontalAlignment="Left"
+                        Header="Advanced Settings"
+                        IsExpandable="True">
+                        <StackPanel>
+                            <TextBlock Text="Timeout (seconds):" />
+                            <TextBox
+                                Width="100"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="30" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
                         Width="400"
                         HorizontalAlignment="Left"
-                        CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
-                        Elevation="{Binding Elevation}"
-                        ExpanderButtonLocation="{Binding ExpanderButtonLocation}"
-                        Header="{Binding Header}"
-                        IsExpandable="{Binding IsExpandable}"
-                        IsExpanded="{Binding IsExpanded}"
-                        ShowHeader="{Binding ShowHeader}">
-                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+                        ExpanderButtonLocation="Right"
+                        Header="Right Toggle"
+                        IsExpandable="True"
+                        IsExpanded="False">
+                        <TextBlock Text="Initially collapsed with right-side toggle." />
                     </dataDisplay:Card>
-                </GroupBox>
+                </StackPanel>
 
-                <!--  Showcase: Elevation Levels  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Elevation Levels">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="20"
-                        Orientation="Horizontal"
-                        VerticalSpacing="10">
-                        <dataDisplay:Card
-                            Width="100"
-                            Elevation="0"
-                            Header="Flat">
-                            <TextBlock Text="Elevation 0" />
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="100"
-                            Elevation="1"
-                            Header="Level 1">
-                            <TextBlock Text="Elevation 1" />
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="100"
-                            Elevation="2"
-                            Header="Default">
-                            <TextBlock Text="Elevation 2" />
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="100"
-                            Elevation="3"
-                            Header="Level 3">
-                            <TextBlock Text="Elevation 3" />
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="100"
-                            Elevation="5"
-                            Header="Raised">
-                            <TextBlock Text="Elevation 5" />
-                        </dataDisplay:Card>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
+                <!--  Card Grid Layout  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="16"
+                    Orientation="Horizontal"
+                    VerticalSpacing="16">
+                    <dataDisplay:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Dashboard">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="42" />
+                            <TextBlock Foreground="Gray" Text="Active Users" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Analytics">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="1,234" />
+                            <TextBlock Foreground="Gray" Text="Page Views" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Width="180"
+                        Elevation="2"
+                        Header="Revenue">
+                        <StackPanel>
+                            <TextBlock FontSize="24" Text="$9,876" />
+                            <TextBlock Foreground="Gray" Text="This Month" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                </atc:UniformSpacingPanel>
 
-                <!--  Showcase: Expandable Card  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Expandable Cards">
-                    <StackPanel>
-                        <dataDisplay:Card
-                            Width="400"
-                            Margin="0,0,0,15"
-                            HorizontalAlignment="Left"
-                            Header="Advanced Settings"
-                            IsExpandable="True">
-                            <StackPanel>
-                                <TextBlock Text="Timeout (seconds):" />
-                                <TextBox
-                                    Width="100"
-                                    Margin="0,5,0,0"
-                                    HorizontalAlignment="Left"
-                                    Text="30" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="400"
-                            HorizontalAlignment="Left"
-                            ExpanderButtonLocation="Right"
-                            Header="Right Toggle"
-                            IsExpandable="True"
-                            IsExpanded="False">
-                            <TextBlock Text="Initially collapsed with right-side toggle." />
-                        </dataDisplay:Card>
-                    </StackPanel>
-                </GroupBox>
-
-                <!--  Showcase: Dashboard Grid  -->
-                <GroupBox Padding="10" Header="Card Grid Layout">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="16"
-                        Orientation="Horizontal"
-                        VerticalSpacing="16">
-                        <dataDisplay:Card
-                            Width="180"
-                            Elevation="2"
-                            Header="Dashboard">
-                            <StackPanel>
-                                <TextBlock FontSize="24" Text="42" />
-                                <TextBlock Foreground="Gray" Text="Active Users" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="180"
-                            Elevation="2"
-                            Header="Analytics">
-                            <StackPanel>
-                                <TextBlock FontSize="24" Text="1,234" />
-                                <TextBlock Foreground="Gray" Text="Page Views" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Width="180"
-                            Elevation="2"
-                            Header="Revenue">
-                            <StackPanel>
-                                <TextBlock FontSize="24" Text="$9,876" />
-                                <TextBlock Foreground="Gray" Text="This Month" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

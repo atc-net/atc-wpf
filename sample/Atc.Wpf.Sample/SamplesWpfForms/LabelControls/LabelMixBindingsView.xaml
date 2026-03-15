@@ -7,27 +7,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     x:Name="UcLabelControlToCommandView"
     d:DataContext="{d:DesignInstance Type=labelControls:LabelMixBindingsViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+                <StackPanel>
+                    <Button
+                        Width="100"
+                        Command="{Binding Path=AddCommand}"
+                        Content="Add F2" />
+                </StackPanel>
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <Button
-                Width="100"
-                Command="{Binding Path=AddCommand}"
-                Content="Add F2" />
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Orientation="Vertical">
 
@@ -83,9 +82,9 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="10" />
                 </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
 
-    </atc:AutoGrid>
-
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

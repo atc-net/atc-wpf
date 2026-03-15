@@ -52,4 +52,4 @@ internal sealed class HotkeyRegistration : IHotkeyRegistration
         disposed = true;
         unregisterCallback?.Invoke(this);
     }
-}
+}

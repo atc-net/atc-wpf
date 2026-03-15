@@ -5,5 +5,6 @@ public partial class UniformSpacingPanelView
     public UniformSpacingPanelView()
     {
         InitializeComponent();
+        DataContext = new UniformSpacingPanelDemoViewModel();
     }
 }

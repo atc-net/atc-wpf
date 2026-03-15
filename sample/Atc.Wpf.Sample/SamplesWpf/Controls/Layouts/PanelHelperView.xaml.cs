@@ -5,5 +5,6 @@ public partial class PanelHelperView
     public PanelHelperView()
     {
         InitializeComponent();
+        DataContext = new PanelHelperDemoViewModel();
     }
 }

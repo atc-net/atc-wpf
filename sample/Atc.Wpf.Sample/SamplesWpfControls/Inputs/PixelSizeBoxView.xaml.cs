@@ -5,5 +5,6 @@ public partial class PixelSizeBoxView
     public PixelSizeBoxView()
     {
         InitializeComponent();
+        DataContext = new PixelSizeBoxDemoViewModel();
     }
 }

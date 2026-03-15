@@ -5,5 +5,6 @@ public partial class ColorPickerView
     public ColorPickerView()
     {
         InitializeComponent();
+        DataContext = new ColorPickerDemoViewModel();
     }
 }

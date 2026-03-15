@@ -5,5 +5,6 @@ public partial class LabelToggleSwitchView
     public LabelToggleSwitchView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

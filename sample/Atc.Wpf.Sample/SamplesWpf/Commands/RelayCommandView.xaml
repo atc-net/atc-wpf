@@ -6,51 +6,41 @@
     xmlns:commands="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Commands"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=commands:RelayCommandViewModel}"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
         <commands:RelayCommandViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+                <Button Command="{Binding Path=Test1Command}" Content="Button with no canExecute" />
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
+                <Button Command="{Binding Path=Test2Command}" Content="Button with canExecute depend on 'IsTestEnabled'" />
 
-                <atc:UniformSpacingPanel
-                    Margin="40"
-                    Orientation="Vertical"
-                    Spacing="20">
+                <Button
+                    Command="{Binding Path=Test3Command}"
+                    CommandParameter="Hello"
+                    Content="Button with no canExecute, and have a string as CommandParameter" />
 
-                    <Button Command="{Binding Path=Test1Command}" Content="Button with no canExecute" />
+                <Button
+                    Command="{Binding Path=Test4Command}"
+                    CommandParameter="Hello word"
+                    Content="Button with canExecute method depend on Checkbox 'IsTestEnabled', and have a string as CommandParameter" />
 
-                    <CheckBox
-                        Margin="0,0,0,10"
-                        Content="IsTestEnabled"
-                        IsChecked="{Binding Path=IsTestEnabled}" />
-                    <Button Command="{Binding Path=Test2Command}" Content="Button with canExecute depend on Checkbox 'IsTestEnabled'" />
 
-                    <Button
-                        Command="{Binding Path=Test3Command}"
-                        CommandParameter="Hello"
-                        Content="Button with no canExecute, and have a string as CommandParameter" />
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
-                    <Button
-                        Command="{Binding Path=Test4Command}"
-                        CommandParameter="Hello word"
-                        Content="Button with canExecute method depend on Checkbox 'IsTestEnabled', and have a string as CommandParameter" />
-
-                </atc:UniformSpacingPanel>
-
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
 
 </UserControl>

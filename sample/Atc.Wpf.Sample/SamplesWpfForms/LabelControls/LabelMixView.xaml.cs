@@ -5,5 +5,6 @@ public partial class LabelMixView
     public LabelMixView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

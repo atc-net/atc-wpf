@@ -1,91 +1,50 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.DataDisplay;
 
-public class AlertDemoViewModel : ViewModelBase
+public partial class AlertDemoViewModel : ViewModelBase
 {
-    private AlertSeverity severity = AlertSeverity.Info;
-    private AlertVariant variant = AlertVariant.Filled;
-    private bool isDismissible;
-    private bool isDense;
-    private bool isPulsing;
-    private double pulseDurationSeconds = 1.5;
-    private double pulseOpacity = 0.65;
-    private bool showIcon = true;
-    private string content = "This is an alert message.";
-    private string title = "Alert";
-
     [PropertyDisplay("Severity", "Appearance", 1)]
-    public AlertSeverity Severity
-    {
-        get => severity;
-        set => Set(ref severity, value);
-    }
+    [ObservableProperty]
+    private AlertSeverity severity = AlertSeverity.Info;
 
     [PropertyDisplay("Variant", "Appearance", 2)]
-    public AlertVariant Variant
-    {
-        get => variant;
-        set => Set(ref variant, value);
-    }
+    [ObservableProperty]
+    private AlertVariant variant = AlertVariant.Filled;
 
     [PropertyDisplay("Is Dismissible", "Behavior", 1)]
-    public bool IsDismissible
-    {
-        get => isDismissible;
-        set => Set(ref isDismissible, value);
-    }
+    [ObservableProperty]
+    private bool isDismissible;
 
     [PropertyDisplay("Is Dense", "Behavior", 2)]
-    public bool IsDense
-    {
-        get => isDense;
-        set => Set(ref isDense, value);
-    }
+    [ObservableProperty]
+    private bool isDense;
 
     [PropertyDisplay("Is Pulsing", "Animation", 1)]
-    public bool IsPulsing
-    {
-        get => isPulsing;
-        set => Set(ref isPulsing, value);
-    }
+    [ObservableProperty]
+    private bool isPulsing;
 
     [PropertyDisplay("Pulse Duration (s)", "Animation", 2)]
     [PropertyRange(0.3, 5.0, 0.1)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double PulseDurationSeconds
-    {
-        get => pulseDurationSeconds;
-        set => Set(ref pulseDurationSeconds, value);
-    }
+    [ObservableProperty]
+    private double pulseDurationSeconds = 1.5;
 
     [PropertyDisplay("Pulse Opacity", "Animation", 3)]
     [PropertyRange(0.1, 1.0, 0.05)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double PulseOpacity
-    {
-        get => pulseOpacity;
-        set => Set(ref pulseOpacity, value);
-    }
+    [ObservableProperty]
+    private double pulseOpacity = 0.65;
 
     [PropertyDisplay("Show Icon", "Appearance", 3)]
-    public bool ShowIcon
-    {
-        get => showIcon;
-        set => Set(ref showIcon, value);
-    }
+    [ObservableProperty]
+    private bool showIcon = true;
 
     [PropertyDisplay("Content", "Content", 1)]
-    public string Content
-    {
-        get => content;
-        set => Set(ref content, value);
-    }
+    [ObservableProperty]
+    private string content = "This is an alert message.";
 
     [PropertyDisplay("Title", "Content", 2)]
-    public string Title
-    {
-        get => title;
-        set => Set(ref title, value);
-    }
+    [ObservableProperty]
+    private string title = "Alert";
 
     public TimeSpan PulseDuration => TimeSpan.FromSeconds(PulseDurationSeconds);
 }
