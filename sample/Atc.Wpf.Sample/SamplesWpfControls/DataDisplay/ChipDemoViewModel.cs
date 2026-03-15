@@ -1,71 +1,38 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.DataDisplay;
 
-public class ChipDemoViewModel : ViewModelBase
+public partial class ChipDemoViewModel : ViewModelBase
 {
-    private ChipVariant variant = ChipVariant.Default;
-    private ChipSize size = ChipSize.Medium;
-    private bool isSelectable;
-    private bool chipIsSelected;
-    private bool canRemove;
-    private bool isClickable = true;
-    private double cornerRadius = 16;
-    private string content = "Sample Chip";
-
     [PropertyDisplay("Variant", "Appearance", 1)]
-    public ChipVariant Variant
-    {
-        get => variant;
-        set => Set(ref variant, value);
-    }
+    [ObservableProperty]
+    private ChipVariant variant = ChipVariant.Default;
 
     [PropertyDisplay("Size", "Appearance", 2)]
-    public ChipSize Size
-    {
-        get => size;
-        set => Set(ref size, value);
-    }
+    [ObservableProperty]
+    private ChipSize size = ChipSize.Medium;
 
     [PropertyDisplay("Is Selectable", "Behavior", 1)]
-    public bool IsSelectable
-    {
-        get => isSelectable;
-        set => Set(ref isSelectable, value);
-    }
+    [ObservableProperty]
+    private bool isSelectable;
 
     [PropertyDisplay("Is Selected", "Behavior", 2)]
-    public bool ChipIsSelected
-    {
-        get => chipIsSelected;
-        set => Set(ref chipIsSelected, value);
-    }
+    [ObservableProperty]
+    private bool chipIsSelected;
 
     [PropertyDisplay("Can Remove", "Behavior", 3)]
-    public bool CanRemove
-    {
-        get => canRemove;
-        set => Set(ref canRemove, value);
-    }
+    [ObservableProperty]
+    private bool canRemove;
 
     [PropertyDisplay("Is Clickable", "Behavior", 4)]
-    public bool IsClickable
-    {
-        get => isClickable;
-        set => Set(ref isClickable, value);
-    }
+    [ObservableProperty]
+    private bool isClickable = true;
 
     [PropertyDisplay("Corner Radius", "Appearance", 3)]
     [PropertyRange(0, 30, 1)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double CornerRadius
-    {
-        get => cornerRadius;
-        set => Set(ref cornerRadius, value);
-    }
+    [ObservableProperty]
+    private double cornerRadius = 16;
 
     [PropertyDisplay("Content", "Content", 1)]
-    public string Content
-    {
-        get => content;
-        set => Set(ref content, value);
-    }
+    [ObservableProperty]
+    private string content = "Sample Chip";
 }

@@ -5,6 +5,7 @@ public partial class SplitButtonView
     public SplitButtonView()
     {
         InitializeComponent();
+        DataContext = new SplitButtonDemoViewModel();
     }
 
     private void OnSaveClick(

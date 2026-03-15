@@ -440,4 +440,4 @@ public sealed partial class Timeline : Control
             ContentTemplate = item.OppositeContentTemplate,
             VerticalAlignment = VerticalAlignment.Center,
         };
-}
+}

@@ -5,51 +5,21 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sample="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Monitoring"
-    d:DataContext="{d:DesignInstance Type=sample:ApplicationMonitorView}"
+    xmlns:monitoring="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Monitoring"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=monitoring:ApplicationMonitorDemoViewModel}"
     d:DesignHeight="600"
     d:DesignWidth="1200"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-
-                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="ShowToolbar"
-                        HideAreas="All"
-                        IsChecked="True"
-                        LabelText="Show Toolbar" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="ShowClearInToolbar"
-                        HideAreas="All"
-                        IsChecked="True"
-                        LabelText="Show Clear" />
-                    <atc:LabelCheckBox
-                        x:Name="ShowAutoScrollInToolbar"
-                        HideAreas="All"
-                        IsChecked="True"
-                        LabelText="Show AutoScroll" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                    <atc:LabelCheckBox
-                        x:Name="ShowSearchInToolbar"
-                        HideAreas="All"
-                        IsChecked="True"
-                        LabelText="Show Search" />
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                     <Button
                         Width="200"
                         Command="{Binding Path=AddOneCommand}"
@@ -60,28 +30,18 @@
                         Content="Add many items" />
                 </atc:UniformSpacingPanel>
 
-                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                    <atc:LabelCheckBox
-                        HideAreas="All"
-                        IsChecked="{Binding Path=EnableTimer}"
-                        LabelText="Add by timer" />
-                </atc:UniformSpacingPanel>
+                <atc:ApplicationMonitorView
+                    DataContext="{Binding Path=ApplicationMonitorViewModel}"
+                    ShowAutoScrollInToolbar="{Binding DataContext.ShowAutoScrollInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    ShowClearInToolbar="{Binding DataContext.ShowClearInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    ShowSearchInToolbar="{Binding DataContext.ShowSearchInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    ShowToolbar="{Binding DataContext.ShowToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
             </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-        <GroupBox Header="Usage">
-
-            <atc:ApplicationMonitorView
-                DataContext="{Binding Path=ApplicationMonitorViewModel}"
-                ShowAutoScrollInToolbar="{Binding ElementName=ShowAutoScrollInToolbar, Path=IsChecked}"
-                ShowClearInToolbar="{Binding ElementName=ShowClearInToolbar, Path=IsChecked}"
-                ShowSearchInToolbar="{Binding ElementName=ShowSearchInToolbar, Path=IsChecked}"
-                ShowToolbar="{Binding ElementName=ShowToolbar, Path=IsChecked}" />
-
-        </GroupBox>
-
-    </atc:AutoGrid>
+    </atc:GridEx>
 
 </UserControl>

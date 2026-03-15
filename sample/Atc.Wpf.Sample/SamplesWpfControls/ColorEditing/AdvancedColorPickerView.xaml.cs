@@ -5,5 +5,6 @@ public partial class AdvancedColorPickerView
     public AdvancedColorPickerView()
     {
         InitializeComponent();
+        DataContext = new AdvancedColorPickerDemoViewModel();
     }
 }

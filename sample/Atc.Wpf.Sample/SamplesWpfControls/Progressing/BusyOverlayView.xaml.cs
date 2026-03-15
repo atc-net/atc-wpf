@@ -7,6 +7,7 @@ public partial class BusyOverlayView : IDisposable
     public BusyOverlayView()
     {
         InitializeComponent();
+        DataContext = new BusyOverlayDemoViewModel();
     }
 
     public void Dispose()

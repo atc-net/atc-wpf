@@ -5,6 +5,7 @@ public partial class CurrencyBoxView
     public CurrencyBoxView()
     {
         InitializeComponent();
+        DataContext = new CurrencyBoxDemoViewModel();
     }
 
     private void OnCurrencyChanged(
@@ -18,7 +19,7 @@ public partial class CurrencyBoxView
 
         var culture = new System.Globalization.CultureInfo(cultureTag);
 
-        foreach (var box in UsagePanel.FindChildren<Atc.Wpf.Controls.Inputs.CurrencyBox>())
+        foreach (var box in CurrencyShowcasePanel.FindChildren<Atc.Wpf.Controls.Inputs.CurrencyBox>())
         {
             box.Culture = culture;
         }

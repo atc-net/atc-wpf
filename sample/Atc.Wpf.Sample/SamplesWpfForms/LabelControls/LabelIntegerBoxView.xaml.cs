@@ -5,5 +5,6 @@ public partial class LabelIntegerBoxView
     public LabelIntegerBoxView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

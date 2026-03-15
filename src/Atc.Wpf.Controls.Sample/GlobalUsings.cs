@@ -13,6 +13,8 @@ global using System.Windows.Media;
 global using Atc.Helpers;
 global using Atc.Wpf.Controls.ColorEditing;
 global using Atc.Wpf.Controls.Inputs;
+global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.XamlToolkit.Controls.Attributes;
 global using Atc.XamlToolkit.Messaging;
 global using Atc.XamlToolkit.Metadata;

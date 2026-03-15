@@ -6,30 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfSourceGenerators"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:textFormatters="clr-namespace:Atc.Wpf.Documents.TextFormatters;assembly=Atc.Wpf"
     x:Name="UcAttachedPropertyView"
-    d:DataContext="{d:DesignInstance Type=local:AttachedPropertyView}"
     d:DesignHeight="600"
     d:DesignWidth="600"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
+                <Button
+                    Width="160"
+                    HorizontalAlignment="Left"
+                    Click="OnToggleDraggingClick"
+                    Content="Toggle Dragging" />
 
-            <WrapPanel>
-                <Button Click="OnToggleDraggingClick" Content="Toggle Dragging" />
-            </WrapPanel>
-
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <atc:GridEx Margin="20" Rows="Auto,100,300*">
                 <Border
-                    Grid.Row="0"
                     BorderBrush="Red"
                     BorderThickness="1">
                     <TextBlock
@@ -42,7 +36,7 @@
                 </Border>
 
                 <atc:RichTextBoxEx
-                    Grid.Row="2"
+                    Height="300"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Panel.ZIndex="-1"
@@ -55,9 +49,9 @@
                     TextFormatter="{x:Static textFormatters:CSharpFormatter.Instance}"
                     VerticalScrollBarVisibility="Auto" />
 
-            </atc:GridEx>
-        </GroupBox>
-
-    </atc:AutoGrid>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

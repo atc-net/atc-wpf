@@ -8,5 +8,7 @@ public partial class DependencyPropertyView
     public DependencyPropertyView()
     {
         InitializeComponent();
+
+        DataContext = new DependencyPropertyDemoViewModel();
     }
 }

@@ -5,5 +5,6 @@ public partial class DirectoryPickerView
     public DirectoryPickerView()
     {
         InitializeComponent();
+        DataContext = new PickerDemoViewModel();
     }
 }

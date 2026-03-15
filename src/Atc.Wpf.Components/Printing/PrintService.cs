@@ -250,4 +250,4 @@ public class PrintService : IPrintService
         var owner = ownerResolver?.Invoke();
         return owner ?? Application.Current.MainWindow ?? throw new InvalidOperationException("No owner window available.");
     }
-}
+}

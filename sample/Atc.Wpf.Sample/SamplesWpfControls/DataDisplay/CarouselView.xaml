@@ -16,307 +16,281 @@
         <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
-                    <dataDisplay:Carousel
-                        x:Name="UsageArea"
-                        Width="500"
-                        Height="250"
-                        HorizontalAlignment="Left"
-                        AutoPlay="{Binding AutoPlay}"
-                        AutoPlayInterval="{Binding AutoPlayInterval}"
-                        CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
-                        IndicatorPosition="{Binding IndicatorPosition}"
-                        IndicatorSize="{Binding IndicatorSize}"
-                        IndicatorSpacing="{Binding IndicatorSpacing}"
-                        IsDragEnabled="{Binding IsDragEnabled}"
-                        IsInfiniteLoop="{Binding IsInfiniteLoop}"
-                        PauseOnHover="{Binding PauseOnHover}"
-                        ShowIndicators="{Binding ShowIndicators}"
-                        ShowNavigationArrows="{Binding ShowNavigationArrows}"
-                        TransitionDuration="{Binding TransitionDuration}"
-                        TransitionType="{Binding TransitionType}">
-                        <Border Background="#4A90D9">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="32"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Slide 1" />
-                        </Border>
-                        <Border Background="#7B68EE">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="32"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Slide 2" />
-                        </Border>
-                        <Border Background="#20B2AA">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="32"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Slide 3" />
-                        </Border>
-                        <Border Background="#FF6347">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="32"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Slide 4" />
-                        </Border>
-                    </dataDisplay:Carousel>
-                </GroupBox>
+                <dataDisplay:Carousel
+                    Width="500"
+                    Height="250"
+                    HorizontalAlignment="Left"
+                    AutoPlay="{Binding AutoPlay}"
+                    AutoPlayInterval="{Binding AutoPlayInterval}"
+                    CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                    IndicatorPosition="{Binding IndicatorPosition}"
+                    IndicatorSize="{Binding IndicatorSize}"
+                    IndicatorSpacing="{Binding IndicatorSpacing}"
+                    IsDragEnabled="{Binding IsDragEnabled}"
+                    IsInfiniteLoop="{Binding IsInfiniteLoop}"
+                    PauseOnHover="{Binding PauseOnHover}"
+                    ShowIndicators="{Binding ShowIndicators}"
+                    ShowNavigationArrows="{Binding ShowNavigationArrows}"
+                    TransitionDuration="{Binding TransitionDuration}"
+                    TransitionType="{Binding TransitionType}">
+                    <Border Background="#4A90D9">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="32"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Slide 1" />
+                    </Border>
+                    <Border Background="#7B68EE">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="32"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Slide 2" />
+                    </Border>
+                    <Border Background="#20B2AA">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="32"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Slide 3" />
+                    </Border>
+                    <Border Background="#FF6347">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="32"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Slide 4" />
+                    </Border>
+                </dataDisplay:Carousel>
 
-                <!--  Showcase: Custom Content Cards  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Custom Content Cards">
-                    <dataDisplay:Carousel
-                        Width="500"
-                        Height="280"
-                        HorizontalAlignment="Left"
-                        CornerRadius="8"
-                        TransitionType="SlideAndFade">
-                        <dataDisplay:Card
-                            Margin="20"
-                            Elevation="3"
-                            Header="Product A">
-                            <StackPanel Margin="10">
-                                <TextBlock
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Text="Premium Widget" />
-                                <TextBlock
-                                    Margin="0,5,0,0"
-                                    Text="High-quality product with amazing features."
-                                    TextWrapping="Wrap" />
-                                <TextBlock
-                                    Margin="0,10,0,0"
-                                    FontSize="24"
-                                    FontWeight="Bold"
-                                    Foreground="#4A90D9"
-                                    Text="$99.99" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Margin="20"
-                            Elevation="3"
-                            Header="Product B">
-                            <StackPanel Margin="10">
-                                <TextBlock
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Text="Standard Widget" />
-                                <TextBlock
-                                    Margin="0,5,0,0"
-                                    Text="Reliable and affordable solution for everyday use."
-                                    TextWrapping="Wrap" />
-                                <TextBlock
-                                    Margin="0,10,0,0"
-                                    FontSize="24"
-                                    FontWeight="Bold"
-                                    Foreground="#20B2AA"
-                                    Text="$49.99" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                        <dataDisplay:Card
-                            Margin="20"
-                            Elevation="3"
-                            Header="Product C">
-                            <StackPanel Margin="10">
-                                <TextBlock
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Text="Budget Widget" />
-                                <TextBlock
-                                    Margin="0,5,0,0"
-                                    Text="Great value at an unbeatable price point."
-                                    TextWrapping="Wrap" />
-                                <TextBlock
-                                    Margin="0,10,0,0"
-                                    FontSize="24"
-                                    FontWeight="Bold"
-                                    Foreground="#FF6347"
-                                    Text="$19.99" />
-                            </StackPanel>
-                        </dataDisplay:Card>
-                    </dataDisplay:Carousel>
-                </GroupBox>
+                <!--  Custom Content Cards  -->
+                <dataDisplay:Carousel
+                    Width="500"
+                    Height="280"
+                    HorizontalAlignment="Left"
+                    CornerRadius="8"
+                    TransitionType="SlideAndFade">
+                    <dataDisplay:Card
+                        Margin="20"
+                        Elevation="3"
+                        Header="Product A">
+                        <StackPanel Margin="10">
+                            <TextBlock
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Text="Premium Widget" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                Text="High-quality product with amazing features."
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,10,0,0"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Foreground="#4A90D9"
+                                Text="$99.99" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Margin="20"
+                        Elevation="3"
+                        Header="Product B">
+                        <StackPanel Margin="10">
+                            <TextBlock
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Text="Standard Widget" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                Text="Reliable and affordable solution for everyday use."
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,10,0,0"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Foreground="#20B2AA"
+                                Text="$49.99" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                    <dataDisplay:Card
+                        Margin="20"
+                        Elevation="3"
+                        Header="Product C">
+                        <StackPanel Margin="10">
+                            <TextBlock
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Text="Budget Widget" />
+                            <TextBlock
+                                Margin="0,5,0,0"
+                                Text="Great value at an unbeatable price point."
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,10,0,0"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Foreground="#FF6347"
+                                Text="$19.99" />
+                        </StackPanel>
+                    </dataDisplay:Card>
+                </dataDisplay:Carousel>
 
-                <!--  Showcase: Transition Types  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Transition Types">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="20"
-                        Orientation="Horizontal"
-                        VerticalSpacing="10">
-                        <StackPanel>
-                            <TextBlock
-                                Margin="0,0,0,5"
-                                FontWeight="Bold"
-                                Text="None (Instant)" />
-                            <dataDisplay:Carousel
-                                Width="200"
-                                Height="120"
-                                CornerRadius="4"
-                                TransitionType="None">
-                                <Border Background="#3F51B5">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="32"
-                                        Foreground="White"
-                                        Text="1" />
-                                </Border>
-                                <Border Background="#2196F3">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="32"
-                                        Foreground="White"
-                                        Text="2" />
-                                </Border>
-                            </dataDisplay:Carousel>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock
-                                Margin="0,0,0,5"
-                                FontWeight="Bold"
-                                Text="Slide" />
-                            <dataDisplay:Carousel
-                                Width="200"
-                                Height="120"
-                                CornerRadius="4"
-                                TransitionType="Slide">
-                                <Border Background="#4CAF50">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="32"
-                                        Foreground="White"
-                                        Text="1" />
-                                </Border>
-                                <Border Background="#8BC34A">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="32"
-                                        Foreground="White"
-                                        Text="2" />
-                                </Border>
-                            </dataDisplay:Carousel>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock
-                                Margin="0,0,0,5"
-                                FontWeight="Bold"
-                                Text="Fade" />
-                            <dataDisplay:Carousel
-                                Width="200"
-                                Height="120"
-                                CornerRadius="4"
-                                TransitionType="Fade">
-                                <Border Background="#FF9800">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="32"
-                                        Foreground="White"
-                                        Text="1" />
-                                </Border>
-                                <Border Background="#FFC107">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="32"
-                                        Foreground="White"
-                                        Text="2" />
-                                </Border>
-                            </dataDisplay:Carousel>
-                        </StackPanel>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-                <!--  Showcase: Bounded Mode  -->
-                <GroupBox Padding="10" Header="Bounded Mode (Non-Infinite Loop)">
-                    <StackPanel Orientation="Vertical">
+                <!--  Transition Types  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="20"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
+                    <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
                             FontWeight="Bold"
-                            Text="Previous button disabled at first slide, next disabled at last" />
+                            Text="None (Instant)" />
                         <dataDisplay:Carousel
-                            Width="400"
-                            Height="150"
-                            Margin="0,0,0,10"
-                            HorizontalAlignment="Left"
-                            CornerRadius="8"
-                            IsInfiniteLoop="False"
-                            TransitionType="Slide">
-                            <Border Background="#795548">
+                            Width="200"
+                            Height="120"
+                            CornerRadius="4"
+                            TransitionType="None">
+                            <Border Background="#3F51B5">
                                 <TextBlock
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    FontSize="16"
+                                    FontSize="32"
                                     Foreground="White"
-                                    Text="First (Previous Disabled)" />
+                                    Text="1" />
                             </Border>
-                            <Border Background="#8D6E63">
+                            <Border Background="#2196F3">
                                 <TextBlock
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    FontSize="16"
+                                    FontSize="32"
                                     Foreground="White"
-                                    Text="Middle Slide" />
-                            </Border>
-                            <Border Background="#A1887F">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Foreground="White"
-                                    Text="Last (Next Disabled)" />
+                                    Text="2" />
                             </Border>
                         </dataDisplay:Carousel>
-                        <TextBlock>
-                            <Run FontWeight="Bold" Text="Note:" />
-                            <Run Text="When IsInfiniteLoop is False, the carousel stops at the first and last slides." />
-                        </TextBlock>
                     </StackPanel>
-                </GroupBox>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontWeight="Bold"
+                            Text="Slide" />
+                        <dataDisplay:Carousel
+                            Width="200"
+                            Height="120"
+                            CornerRadius="4"
+                            TransitionType="Slide">
+                            <Border Background="#4CAF50">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="32"
+                                    Foreground="White"
+                                    Text="1" />
+                            </Border>
+                            <Border Background="#8BC34A">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="32"
+                                    Foreground="White"
+                                    Text="2" />
+                            </Border>
+                        </dataDisplay:Carousel>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontWeight="Bold"
+                            Text="Fade" />
+                        <dataDisplay:Carousel
+                            Width="200"
+                            Height="120"
+                            CornerRadius="4"
+                            TransitionType="Fade">
+                            <Border Background="#FF9800">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="32"
+                                    Foreground="White"
+                                    Text="1" />
+                            </Border>
+                            <Border Background="#FFC107">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="32"
+                                    Foreground="White"
+                                    Text="2" />
+                            </Border>
+                        </dataDisplay:Carousel>
+                    </StackPanel>
+                </atc:UniformSpacingPanel>
 
-            </StackPanel>
+                <!--  Bounded Mode (Non-Infinite Loop)  -->
+                <StackPanel Orientation="Vertical">
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="Previous button disabled at first slide, next disabled at last" />
+                    <dataDisplay:Carousel
+                        Width="400"
+                        Height="150"
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        CornerRadius="8"
+                        IsInfiniteLoop="False"
+                        TransitionType="Slide">
+                        <Border Background="#795548">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="White"
+                                Text="First (Previous Disabled)" />
+                        </Border>
+                        <Border Background="#8D6E63">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="White"
+                                Text="Middle Slide" />
+                        </Border>
+                        <Border Background="#A1887F">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="White"
+                                Text="Last (Next Disabled)" />
+                        </Border>
+                    </dataDisplay:Carousel>
+                    <TextBlock>
+                        <Run FontWeight="Bold" Text="Note:" />
+                        <Run Text="When IsInfiniteLoop is False, the carousel stops at the first and last slides." />
+                    </TextBlock>
+                </StackPanel>
+
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

@@ -37,4 +37,4 @@ public class FlyoutOpeningEventArgs : RoutedEventArgs
     /// Gets or sets a value indicating whether the flyout opening should be cancelled.
     /// </summary>
     public bool Cancel { get; set; }
-}
+}

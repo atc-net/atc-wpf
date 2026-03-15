@@ -5,5 +5,6 @@ public partial class ThicknessBoxView
     public ThicknessBoxView()
     {
         InitializeComponent();
+        DataContext = new ThicknessBoxDemoViewModel();
     }
 }

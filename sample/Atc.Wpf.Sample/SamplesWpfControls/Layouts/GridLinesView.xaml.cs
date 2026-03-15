@@ -5,5 +5,6 @@ public partial class GridLinesView
     public GridLinesView()
     {
         InitializeComponent();
+        DataContext = new GridLinesDemoViewModel();
     }
 }

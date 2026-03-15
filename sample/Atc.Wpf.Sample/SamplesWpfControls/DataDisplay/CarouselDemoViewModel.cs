@@ -1,119 +1,66 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.DataDisplay;
 
-public class CarouselDemoViewModel : ViewModelBase
+public partial class CarouselDemoViewModel : ViewModelBase
 {
-    private CarouselTransitionType transitionType = CarouselTransitionType.Slide;
-    private double transitionDuration = 300;
-    private bool autoPlay;
-    private double autoPlayInterval = 5000;
-    private bool pauseOnHover = true;
-    private bool isInfiniteLoop = true;
-    private bool showNavigationArrows = true;
-    private bool showIndicators = true;
-    private IndicatorPosition indicatorPosition = IndicatorPosition.Bottom;
-    private double indicatorSize = 10;
-    private double indicatorSpacing = 8;
-    private bool isDragEnabled = true;
-    private double cornerRadius;
-
     [PropertyDisplay("Transition Type", "Animation", 1)]
-    public CarouselTransitionType TransitionType
-    {
-        get => transitionType;
-        set => Set(ref transitionType, value);
-    }
+    [ObservableProperty]
+    private CarouselTransitionType transitionType = CarouselTransitionType.Slide;
 
     [PropertyDisplay("Transition Duration (ms)", "Animation", 2)]
     [PropertyRange(50, 2000, 50)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double TransitionDuration
-    {
-        get => transitionDuration;
-        set => Set(ref transitionDuration, value);
-    }
+    [ObservableProperty]
+    private double transitionDuration = 300;
 
     [PropertyDisplay("Auto Play", "Behavior", 1)]
-    public bool AutoPlay
-    {
-        get => autoPlay;
-        set => Set(ref autoPlay, value);
-    }
+    [ObservableProperty]
+    private bool autoPlay;
 
     [PropertyDisplay("Auto Play Interval (ms)", "Behavior", 2)]
     [PropertyRange(500, 10000, 500)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double AutoPlayInterval
-    {
-        get => autoPlayInterval;
-        set => Set(ref autoPlayInterval, value);
-    }
+    [ObservableProperty]
+    private double autoPlayInterval = 5000;
 
     [PropertyDisplay("Pause On Hover", "Behavior", 3)]
-    public bool PauseOnHover
-    {
-        get => pauseOnHover;
-        set => Set(ref pauseOnHover, value);
-    }
+    [ObservableProperty]
+    private bool pauseOnHover = true;
 
     [PropertyDisplay("Is Infinite Loop", "Behavior", 4)]
-    public bool IsInfiniteLoop
-    {
-        get => isInfiniteLoop;
-        set => Set(ref isInfiniteLoop, value);
-    }
+    [ObservableProperty]
+    private bool isInfiniteLoop = true;
 
     [PropertyDisplay("Show Navigation Arrows", "Appearance", 1)]
-    public bool ShowNavigationArrows
-    {
-        get => showNavigationArrows;
-        set => Set(ref showNavigationArrows, value);
-    }
+    [ObservableProperty]
+    private bool showNavigationArrows = true;
 
     [PropertyDisplay("Show Indicators", "Appearance", 2)]
-    public bool ShowIndicators
-    {
-        get => showIndicators;
-        set => Set(ref showIndicators, value);
-    }
+    [ObservableProperty]
+    private bool showIndicators = true;
 
     [PropertyDisplay("Indicator Position", "Appearance", 3)]
-    public IndicatorPosition IndicatorPosition
-    {
-        get => indicatorPosition;
-        set => Set(ref indicatorPosition, value);
-    }
+    [ObservableProperty]
+    private IndicatorPosition indicatorPosition = IndicatorPosition.Bottom;
 
     [PropertyDisplay("Indicator Size", "Appearance", 4)]
     [PropertyRange(4, 30, 2)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double IndicatorSize
-    {
-        get => indicatorSize;
-        set => Set(ref indicatorSize, value);
-    }
+    [ObservableProperty]
+    private double indicatorSize = 10;
 
     [PropertyDisplay("Indicator Spacing", "Appearance", 5)]
     [PropertyRange(0, 20, 2)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double IndicatorSpacing
-    {
-        get => indicatorSpacing;
-        set => Set(ref indicatorSpacing, value);
-    }
+    [ObservableProperty]
+    private double indicatorSpacing = 8;
 
     [PropertyDisplay("Is Drag Enabled", "Behavior", 5)]
-    public bool IsDragEnabled
-    {
-        get => isDragEnabled;
-        set => Set(ref isDragEnabled, value);
-    }
+    [ObservableProperty]
+    private bool isDragEnabled = true;
 
     [PropertyDisplay("Corner Radius", "Appearance", 6)]
     [PropertyRange(0, 30, 1)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double CornerRadius
-    {
-        get => cornerRadius;
-        set => Set(ref cornerRadius, value);
-    }
+    [ObservableProperty]
+    private double cornerRadius;
 }

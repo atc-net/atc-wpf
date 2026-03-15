@@ -59,4 +59,4 @@ public sealed class HeaderFooterSettings
             HeaderRight = "{Date}",
             FooterCenter = "Page {PageNumber} of {TotalPages}",
         };
-}
+}

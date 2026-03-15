@@ -190,4 +190,4 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
     {
         FramebufferUpdated?.Invoke(this, EventArgs.Empty);
     }
-}
+}

@@ -14,6 +14,7 @@ public sealed partial class StandardDialogBoxViewModel : ViewModelBase
         jsonOptions.Converters.Add(new ColorToNameJsonConverter());
     }
 
+    [PropertyDisplay("Show Result As Key Values", "Behavior", 1)]
     public bool ShowResultAsKeyValues
     {
         get => showResultAsKeyValues;

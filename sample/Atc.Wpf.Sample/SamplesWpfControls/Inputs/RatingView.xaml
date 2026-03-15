@@ -7,75 +7,37 @@
     xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
     xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+    <atc:GridEx Columns="*,400">
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
-                <TextBlock TextWrapping="Wrap">
-                    The RatingControl provides an intuitive star-based rating input.
-                    It supports configurable number of stars, half-star precision, custom icons, read-only mode, hover preview, and full keyboard accessibility.
-                </TextBlock>
-            </GroupBox>
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Basic Usage">
+                <!--  Interactive demo  -->
                 <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontWeight="Bold"
-                        Text="Default Rating (5 stars)" />
                     <inputs:Rating
-                        x:Name="basicRating"
-                        Value="3" />
+                        AllowHalfStars="{Binding AllowHalfStars}"
+                        IsReadOnly="{Binding IsReadOnly}"
+                        ItemSize="{Binding ItemSize}"
+                        ItemSpacing="{Binding ItemSpacing}"
+                        Maximum="{Binding Maximum}"
+                        ShowPreviewOnHover="{Binding ShowPreviewOnHover}"
+                        Value="{Binding Value}" />
                     <TextBlock Margin="0,5,0,0">
                         <Run Text="Rating: " />
-                        <Run Text="{Binding Value, ElementName=basicRating, StringFormat=N1}" />
-                        <Run Text=" / 5" />
-                    </TextBlock>
-
-                    <TextBlock
-                        Margin="0,20,0,5"
-                        FontWeight="Bold"
-                        Text="10-Star Rating" />
-                    <inputs:Rating
-                        x:Name="tenStarRating"
-                        Maximum="10"
-                        Value="7" />
-                    <TextBlock Margin="0,5,0,0">
-                        <Run Text="Rating: " />
-                        <Run Text="{Binding Value, ElementName=tenStarRating, StringFormat=N1}" />
-                        <Run Text=" / 10" />
-                    </TextBlock>
-
-                    <TextBlock
-                        Margin="0,20,0,5"
-                        FontWeight="Bold"
-                        Text="3-Star Rating" />
-                    <inputs:Rating
-                        x:Name="threeStarRating"
-                        Maximum="3"
-                        Value="2" />
-                    <TextBlock Margin="0,5,0,0">
-                        <Run Text="Rating: " />
-                        <Run Text="{Binding Value, ElementName=threeStarRating, StringFormat=N1}" />
-                        <Run Text=" / 3" />
+                        <Run Text="{Binding Value, StringFormat=N1}" />
+                        <Run Text=" / " />
+                        <Run Text="{Binding Maximum}" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Half-Star Precision">
+                <!--  Showcase: Half-Star Precision  -->
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -106,12 +68,8 @@
                         <Run Text=" / 10" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Custom Styling">
+                <!--  Showcase: Custom Styling  -->
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -175,12 +133,8 @@
                         ItemSize="32"
                         Value="4" />
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="FontIcon Stars">
+                <!--  Showcase: FontIcon Stars  -->
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -249,12 +203,8 @@
                         ItemSize="28"
                         Value="3" />
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Read-Only Mode">
+                <!--  Showcase: Read-Only Mode  -->
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -282,9 +232,8 @@
                         IsEnabled="False"
                         Value="2" />
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox Padding="10" Header="Keyboard Navigation">
+                <!--  Showcase: Keyboard Navigation  -->
                 <StackPanel>
                     <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">
                         Click on the rating control to focus it, then use the keyboard to adjust the value:
@@ -305,9 +254,12 @@
                         <Run Text="{Binding Value, ElementName=keyboardRating, StringFormat=N1}" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

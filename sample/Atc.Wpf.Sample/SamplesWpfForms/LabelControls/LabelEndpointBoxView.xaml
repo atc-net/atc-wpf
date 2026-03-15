@@ -5,68 +5,24 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="550"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+                <atc:LabelEndpointBox
+                    InformationText="{Binding InformationText}"
+                    IsMandatory="{Binding IsMandatory}"
+                    LabelText="{Binding LabelText}"
+                    Orientation="{Binding Orientation}"
+                    ShowClearTextButton="{Binding ShowClearTextButton}"
+                    WatermarkText="{Binding WatermarkText}" />
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:GridEx Columns="Auto,10,*" Rows="Auto,10,Auto,10,Auto,10,Auto">
-
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="EndpointBox1:" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Text="{Binding ElementName=EndpointBox1, Path=Value, TargetNullValue='(No valid endpoint)'}" />
-
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Text="EndpointBox2:" />
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    Text="{Binding ElementName=EndpointBox2, Path=Value, TargetNullValue='(No valid endpoint)'}" />
-
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Text="EndpointBox3:" />
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    Text="{Binding ElementName=EndpointBox3, Path=Value, TargetNullValue='(No valid endpoint)'}" />
-
-                <TextBlock
-                    Grid.Row="6"
-                    Grid.Column="0"
-                    Text="EndpointBox4:" />
-                <TextBlock
-                    Grid.Row="6"
-                    Grid.Column="2"
-                    Text="{Binding ElementName=EndpointBox4, Path=Value, TargetNullValue='(No valid endpoint)'}" />
-
-                <TextBlock
-                    Grid.Row="8"
-                    Grid.Column="0"
-                    Text="EndpointBox5:" />
-                <TextBlock
-                    Grid.Row="8"
-                    Grid.Column="2"
-                    Text="{Binding ElementName=EndpointBox5, Path=Value, TargetNullValue='(No valid endpoint)'}" />
-
-            </atc:GridEx>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <atc:UniformSpacingPanel
                         Grid.Column="0"
@@ -131,8 +87,9 @@
                         Spacing="10" />
 
                 </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
 
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

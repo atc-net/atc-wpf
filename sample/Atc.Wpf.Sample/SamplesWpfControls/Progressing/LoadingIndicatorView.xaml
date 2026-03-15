@@ -5,114 +5,98 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Progressing"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     x:Name="UcBusyOverlayView"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance Type=local:LoadingIndicatorDemoViewModel}"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
-
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
-                <atc:LabelCheckBox
-                    x:Name="LcbIsActive"
-                    IsChecked="True"
-                    LabelText="IsActive" />
-                <atc:LabelWellKnownColorSelector
-                    x:Name="LcsCustomColorBrush"
-                    LabelText="CustomColorBrush"
-                    SelectedKey="Orange" />
-                <atc:LabelDecimalBox
-                    x:Name="LdbSpeedRatio"
-                    LabelText="SpeedRatio"
-                    Maximum="100"
-                    Minimum="0"
-                    Value="0.5" />
-            </atc:UniformSpacingPanel>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel
-                HorizontalAlignment="Center"
-                Orientation="Horizontal"
-                Spacing="50">
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:UniformSpacingPanel
-                    Margin="10"
-                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
                     Spacing="50">
 
-                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
-                        <atc:LoadingIndicator Mode="ArcsRing" />
-                        <atc:LoadingIndicator Mode="Ring" />
-                        <atc:LoadingIndicator Mode="ThreeDots" />
+                    <atc:UniformSpacingPanel
+                        Margin="10"
+                        Orientation="Vertical"
+                        Spacing="50">
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
+                            <atc:LoadingIndicator Mode="ArcsRing" />
+                            <atc:LoadingIndicator Mode="Ring" />
+                            <atc:LoadingIndicator Mode="ThreeDots" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
+                            <atc:LoadingIndicator
+                                Width="32"
+                                Height="32"
+                                Mode="ArcsRing" />
+                            <atc:LoadingIndicator
+                                Width="32"
+                                Height="32"
+                                Mode="Ring" />
+                            <atc:LoadingIndicator
+                                Width="32"
+                                Height="32"
+                                Mode="ThreeDots" />
+                        </atc:UniformSpacingPanel>
+
+                        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
+                            <atc:LoadingIndicator
+                                Width="16"
+                                Height="16"
+                                Mode="ArcsRing" />
+                            <atc:LoadingIndicator
+                                Width="16"
+                                Height="16"
+                                Mode="Ring" />
+                            <atc:LoadingIndicator
+                                Width="16"
+                                Height="16"
+                                Mode="ThreeDots" />
+                        </atc:UniformSpacingPanel>
+
                     </atc:UniformSpacingPanel>
 
-                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
-                        <atc:LoadingIndicator
-                            Width="32"
-                            Height="32"
-                            Mode="ArcsRing" />
-                        <atc:LoadingIndicator
-                            Width="32"
-                            Height="32"
-                            Mode="Ring" />
-                        <atc:LoadingIndicator
-                            Width="32"
-                            Height="32"
-                            Mode="ThreeDots" />
-                    </atc:UniformSpacingPanel>
+                    <atc:UniformSpacingPanel
+                        Margin="10"
+                        Orientation="Vertical"
+                        Spacing="50">
 
-                    <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="50">
-                        <atc:LoadingIndicator
-                            Width="16"
-                            Height="16"
-                            Mode="ArcsRing" />
-                        <atc:LoadingIndicator
-                            Width="16"
-                            Height="16"
-                            Mode="Ring" />
-                        <atc:LoadingIndicator
-                            Width="16"
-                            Height="16"
-                            Mode="ThreeDots" />
-                    </atc:UniformSpacingPanel>
+                        <atc:UniformSpacingPanel Orientation="Vertical" Spacing="50">
+                            <atc:LoadingIndicator
+                                CustomColorBrush="{Binding CustomColorBrush, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
+                                IsActive="{Binding IsActive}"
+                                Mode="ArcsRing"
+                                SpeedRatio="{Binding SpeedRatio}" />
+                            <atc:LoadingIndicator
+                                CustomColorBrush="{Binding CustomColorBrush, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
+                                IsActive="{Binding IsActive}"
+                                Mode="Ring"
+                                SpeedRatio="{Binding SpeedRatio}" />
+                            <atc:LoadingIndicator
+                                CustomColorBrush="{Binding CustomColorBrush, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
+                                IsActive="{Binding IsActive}"
+                                Mode="ThreeDots"
+                                SpeedRatio="{Binding SpeedRatio}" />
+                        </atc:UniformSpacingPanel>
 
-                </atc:UniformSpacingPanel>
-
-                <atc:UniformSpacingPanel
-                    Margin="10"
-                    Orientation="Vertical"
-                    Spacing="50">
-
-                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="50">
-                        <atc:LoadingIndicator
-                            CustomColorBrush="{Binding ElementName=LcsCustomColorBrush, Path=SelectedKey}"
-                            IsActive="{Binding ElementName=LcbIsActive, Path=IsChecked}"
-                            Mode="ArcsRing"
-                            SpeedRatio="{Binding ElementName=LdbSpeedRatio, Path=Value}" />
-                        <atc:LoadingIndicator
-                            CustomColorBrush="{Binding ElementName=LcsCustomColorBrush, Path=SelectedKey}"
-                            IsActive="{Binding ElementName=LcbIsActive, Path=IsChecked}"
-                            Mode="Ring"
-                            SpeedRatio="{Binding ElementName=LdbSpeedRatio, Path=Value}" />
-                        <atc:LoadingIndicator
-                            CustomColorBrush="{Binding ElementName=LcsCustomColorBrush, Path=SelectedKey}"
-                            IsActive="{Binding ElementName=LcbIsActive, Path=IsChecked}"
-                            Mode="ThreeDots"
-                            SpeedRatio="{Binding ElementName=LdbSpeedRatio, Path=Value}" />
                     </atc:UniformSpacingPanel>
 
                 </atc:UniformSpacingPanel>
 
             </atc:UniformSpacingPanel>
-
-        </GroupBox>
-
-    </atc:AutoGrid>
-
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

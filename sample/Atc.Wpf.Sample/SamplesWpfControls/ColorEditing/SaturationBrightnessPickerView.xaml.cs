@@ -5,5 +5,6 @@ public partial class SaturationBrightnessPickerView
     public SaturationBrightnessPickerView()
     {
         InitializeComponent();
+        DataContext = new SaturationBrightnessPickerDemoViewModel();
     }
 }

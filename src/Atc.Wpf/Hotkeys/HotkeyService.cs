@@ -628,4 +628,4 @@ public sealed class HotkeyService : IHotkeyService
             service.InvokeCallback(registration);
         }
     }
-}
+}

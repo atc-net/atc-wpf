@@ -5,5 +5,6 @@ public partial class MonochromeShaderEffectView
     public MonochromeShaderEffectView()
     {
         InitializeComponent();
+        DataContext = new MonochromeShaderEffectDemoViewModel();
     }
 }

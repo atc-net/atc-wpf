@@ -94,4 +94,4 @@ public sealed class HotkeyChord : IEquatable<HotkeyChord>
 
         return string.Join('+', parts);
     }
-}
+}

@@ -11,111 +11,85 @@
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
-                    <StackPanel>
-                        <dataDisplay:Breadcrumb
-                            x:Name="UsageArea"
-                            MaxVisibleItems="{Binding MaxVisibleItems}"
-                            OverflowMode="{Binding OverflowMode}"
-                            Separator="{Binding Separator}">
-                            <dataDisplay:BreadcrumbItem Content="Home" />
-                            <dataDisplay:BreadcrumbItem Content="Products" />
-                            <dataDisplay:BreadcrumbItem Content="Electronics" />
-                            <dataDisplay:BreadcrumbItem Content="Laptops" />
-                            <dataDisplay:BreadcrumbItem Content="Gaming" />
-                        </dataDisplay:Breadcrumb>
-                    </StackPanel>
-                </GroupBox>
+                <StackPanel>
+                    <dataDisplay:Breadcrumb
+                        MaxVisibleItems="{Binding MaxVisibleItems}"
+                        OverflowMode="{Binding OverflowMode}"
+                        Separator="{Binding Separator}">
+                        <dataDisplay:BreadcrumbItem Content="Home" />
+                        <dataDisplay:BreadcrumbItem Content="Products" />
+                        <dataDisplay:BreadcrumbItem Content="Electronics" />
+                        <dataDisplay:BreadcrumbItem Content="Laptops" />
+                        <dataDisplay:BreadcrumbItem Content="Gaming" />
+                    </dataDisplay:Breadcrumb>
+                </StackPanel>
 
-                <!--  Showcase: Clickable with Events  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Clickable with Events">
-                    <StackPanel>
-                        <dataDisplay:Breadcrumb x:Name="ClickableBreadcrumb" ItemClicked="OnBreadcrumbItemClicked">
-                            <dataDisplay:BreadcrumbItem Content="Dashboard" />
-                            <dataDisplay:BreadcrumbItem Content="Users" />
-                            <dataDisplay:BreadcrumbItem Content="John Doe" />
-                            <dataDisplay:BreadcrumbItem Content="Orders" />
-                        </dataDisplay:Breadcrumb>
-                        <TextBlock
-                            x:Name="NavigationStatus"
-                            Margin="0,10,0,0"
-                            FontStyle="Italic"
-                            Foreground="Gray"
-                            Text="Click a breadcrumb item to navigate..." />
-                    </StackPanel>
-                </GroupBox>
+                <!--  Clickable with Events  -->
+                <StackPanel>
+                    <dataDisplay:Breadcrumb x:Name="ClickableBreadcrumb" ItemClicked="OnBreadcrumbItemClicked">
+                        <dataDisplay:BreadcrumbItem Content="Dashboard" />
+                        <dataDisplay:BreadcrumbItem Content="Users" />
+                        <dataDisplay:BreadcrumbItem Content="John Doe" />
+                        <dataDisplay:BreadcrumbItem Content="Orders" />
+                    </dataDisplay:Breadcrumb>
+                    <TextBlock
+                        x:Name="NavigationStatus"
+                        Margin="0,10,0,0"
+                        FontStyle="Italic"
+                        Foreground="Gray"
+                        Text="Click a breadcrumb item to navigate..." />
+                </StackPanel>
 
-                <!--  Showcase: Custom Separators  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Custom Separators">
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontWeight="Bold"
-                            Text="Chevron icon via SeparatorTemplate" />
-                        <dataDisplay:Breadcrumb>
-                            <dataDisplay:Breadcrumb.SeparatorTemplate>
-                                <DataTemplate>
-                                    <Path
-                                        Margin="2,0"
-                                        VerticalAlignment="Center"
-                                        Data="M 0,0 L 4,4 L 0,8"
-                                        Stroke="{DynamicResource AtcApps.Brushes.Gray5}"
-                                        StrokeThickness="1.5" />
-                                </DataTemplate>
-                            </dataDisplay:Breadcrumb.SeparatorTemplate>
-                            <dataDisplay:BreadcrumbItem Content="Root" />
-                            <dataDisplay:BreadcrumbItem Content="Documents" />
-                            <dataDisplay:BreadcrumbItem Content="Projects" />
-                            <dataDisplay:BreadcrumbItem Content="MyProject" />
-                        </dataDisplay:Breadcrumb>
-                    </StackPanel>
-                </GroupBox>
+                <!--  Custom Separators  -->
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="Chevron icon via SeparatorTemplate" />
+                    <dataDisplay:Breadcrumb>
+                        <dataDisplay:Breadcrumb.SeparatorTemplate>
+                            <DataTemplate>
+                                <Path
+                                    Margin="2,0"
+                                    VerticalAlignment="Center"
+                                    Data="M 0,0 L 4,4 L 0,8"
+                                    Stroke="{DynamicResource AtcApps.Brushes.Gray5}"
+                                    StrokeThickness="1.5" />
+                            </DataTemplate>
+                        </dataDisplay:Breadcrumb.SeparatorTemplate>
+                        <dataDisplay:BreadcrumbItem Content="Root" />
+                        <dataDisplay:BreadcrumbItem Content="Documents" />
+                        <dataDisplay:BreadcrumbItem Content="Projects" />
+                        <dataDisplay:BreadcrumbItem Content="MyProject" />
+                    </dataDisplay:Breadcrumb>
+                </StackPanel>
 
-                <!--  Showcase: Overflow Mode  -->
-                <GroupBox Padding="10" Header="Overflow Mode">
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">
-                            OverflowMode=Collapsed with MaxVisibleItems=2.
-                        </TextBlock>
-                        <dataDisplay:Breadcrumb MaxVisibleItems="2" OverflowMode="Collapsed">
-                            <dataDisplay:BreadcrumbItem Content="Root" />
-                            <dataDisplay:BreadcrumbItem Content="Level 1" />
-                            <dataDisplay:BreadcrumbItem Content="Level 2" />
-                            <dataDisplay:BreadcrumbItem Content="Level 3" />
-                            <dataDisplay:BreadcrumbItem Content="Current" />
-                        </dataDisplay:Breadcrumb>
-                    </StackPanel>
-                </GroupBox>
+                <!--  Overflow Mode  -->
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">
+                        OverflowMode=Collapsed with MaxVisibleItems=2.
+                    </TextBlock>
+                    <dataDisplay:Breadcrumb MaxVisibleItems="2" OverflowMode="Collapsed">
+                        <dataDisplay:BreadcrumbItem Content="Root" />
+                        <dataDisplay:BreadcrumbItem Content="Level 1" />
+                        <dataDisplay:BreadcrumbItem Content="Level 2" />
+                        <dataDisplay:BreadcrumbItem Content="Level 3" />
+                        <dataDisplay:BreadcrumbItem Content="Current" />
+                    </dataDisplay:Breadcrumb>
+                </StackPanel>
 
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

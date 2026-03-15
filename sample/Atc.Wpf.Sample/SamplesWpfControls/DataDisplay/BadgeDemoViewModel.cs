@@ -1,74 +1,41 @@
 namespace Atc.Wpf.Sample.SamplesWpfControls.DataDisplay;
 
-public class BadgeDemoViewModel : ViewModelBase
+public partial class BadgeDemoViewModel : ViewModelBase
 {
-    private BadgePlacementMode badgePlacementMode = BadgePlacementMode.TopRight;
-    private string badgeContent = "5";
-    private bool isDot;
-    private bool isBadgeVisible = true;
-    private bool hideWhenZero;
-    private int badgeMaxValue;
-    private double badgeFontSize = 10;
-    private double badgeCornerRadius = 8;
-
     [PropertyDisplay("Placement Mode", "Layout", 1)]
-    public BadgePlacementMode BadgePlacementMode
-    {
-        get => badgePlacementMode;
-        set => Set(ref badgePlacementMode, value);
-    }
+    [ObservableProperty]
+    private BadgePlacementMode badgePlacementMode = BadgePlacementMode.TopRight;
 
     [PropertyDisplay("Badge Content", "Content", 1)]
-    public string BadgeContent
-    {
-        get => badgeContent;
-        set => Set(ref badgeContent, value);
-    }
+    [ObservableProperty]
+    private string badgeContent = "5";
 
     [PropertyDisplay("Is Dot", "Appearance", 1)]
-    public bool IsDot
-    {
-        get => isDot;
-        set => Set(ref isDot, value);
-    }
+    [ObservableProperty]
+    private bool isDot;
 
     [PropertyDisplay("Is Badge Visible", "Appearance", 2)]
-    public bool IsBadgeVisible
-    {
-        get => isBadgeVisible;
-        set => Set(ref isBadgeVisible, value);
-    }
+    [ObservableProperty]
+    private bool isBadgeVisible = true;
 
     [PropertyDisplay("Hide When Zero", "Behavior", 1)]
-    public bool HideWhenZero
-    {
-        get => hideWhenZero;
-        set => Set(ref hideWhenZero, value);
-    }
+    [ObservableProperty]
+    private bool hideWhenZero;
 
     [PropertyDisplay("Badge Max Value", "Behavior", 2)]
     [PropertyRange(0, 999, 1)]
-    public int BadgeMaxValue
-    {
-        get => badgeMaxValue;
-        set => Set(ref badgeMaxValue, value);
-    }
+    [ObservableProperty]
+    private int badgeMaxValue;
 
     [PropertyDisplay("Badge Font Size", "Appearance", 3)]
     [PropertyRange(6, 20, 1)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double BadgeFontSize
-    {
-        get => badgeFontSize;
-        set => Set(ref badgeFontSize, value);
-    }
+    [ObservableProperty]
+    private double badgeFontSize = 10;
 
     [PropertyDisplay("Badge Corner Radius", "Appearance", 4)]
     [PropertyRange(0, 20, 1)]
     [PropertyEditorHint(EditorHint.Slider)]
-    public double BadgeCornerRadius
-    {
-        get => badgeCornerRadius;
-        set => Set(ref badgeCornerRadius, value);
-    }
+    [ObservableProperty]
+    private double badgeCornerRadius = 8;
 }

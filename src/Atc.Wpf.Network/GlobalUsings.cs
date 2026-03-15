@@ -24,4 +24,4 @@ global using Atc.Wpf.Components.Dialogs;
 global using Atc.Wpf.Forms;
 global using Atc.Wpf.Forms.Abstractions;
 global using Atc.XamlToolkit.Command;
-global using Atc.XamlToolkit.Mvvm;
+global using Atc.XamlToolkit.Mvvm;

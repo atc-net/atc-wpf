@@ -61,4 +61,4 @@ internal static class FlowDocumentPrintHelper
 
         return clone;
     }
-}
+}

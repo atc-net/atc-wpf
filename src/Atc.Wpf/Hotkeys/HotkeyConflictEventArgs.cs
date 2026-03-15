@@ -17,4 +17,4 @@ public sealed class HotkeyConflictEventArgs(
     /// Gets the newly requested registration that caused the conflict.
     /// </summary>
     public IHotkeyRegistration Requested { get; } = requested;
-}
+}

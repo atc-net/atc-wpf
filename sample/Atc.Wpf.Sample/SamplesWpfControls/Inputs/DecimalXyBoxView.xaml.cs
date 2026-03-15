@@ -5,5 +5,6 @@ public partial class DecimalXyBoxView
     public DecimalXyBoxView()
     {
         InitializeComponent();
+        DataContext = new DecimalXyBoxDemoViewModel();
     }
 }

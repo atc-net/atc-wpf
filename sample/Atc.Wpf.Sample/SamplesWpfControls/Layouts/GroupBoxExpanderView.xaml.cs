@@ -5,5 +5,6 @@ public partial class GroupBoxExpanderView
     public GroupBoxExpanderView()
     {
         InitializeComponent();
+        DataContext = new LayoutDemoViewModel();
     }
 }

@@ -12,26 +12,26 @@ public partial class StepperView
         object sender,
         RoutedEventArgs e)
     {
-        UsageArea.Previous();
+        InteractiveStepper.Previous();
     }
 
     private void OnUsageNextClick(
         object sender,
         RoutedEventArgs e)
     {
-        UsageArea.Next();
+        InteractiveStepper.Next();
     }
 
     private void OnUsageResetClick(
         object sender,
         RoutedEventArgs e)
     {
-        foreach (var item in UsageArea.Items)
+        foreach (var item in InteractiveStepper.Items)
         {
             item.Status = StepperStepStatus.Pending;
         }
 
-        UsageArea.ActiveStepIndex = 0;
+        InteractiveStepper.ActiveStepIndex = 0;
         UsageStepStatus.Text = "Stepper reset to step 1.";
     }
 
@@ -39,9 +39,9 @@ public partial class StepperView
         object sender,
         RoutedEventArgs e)
     {
-        if (UsageArea.Items.Count > 1)
+        if (InteractiveStepper.Items.Count > 1)
         {
-            UsageArea.Items[1].Status = StepperStepStatus.Error;
+            InteractiveStepper.Items[1].Status = StepperStepStatus.Error;
             UsageStepStatus.Text = "Step 2 set to Error state.";
         }
     }

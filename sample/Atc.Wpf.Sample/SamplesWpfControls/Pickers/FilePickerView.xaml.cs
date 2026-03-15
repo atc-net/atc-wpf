@@ -5,5 +5,6 @@ public partial class FilePickerView
     public FilePickerView()
     {
         InitializeComponent();
+        DataContext = new PickerDemoViewModel();
     }
 }

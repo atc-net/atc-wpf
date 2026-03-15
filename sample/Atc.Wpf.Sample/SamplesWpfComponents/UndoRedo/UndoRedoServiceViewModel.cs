@@ -4,6 +4,14 @@ public sealed partial class UndoRedoServiceViewModel : ViewModelBase
 {
     private readonly IUndoRedoService undoRedoService = new UndoRedoService();
 
+    [PropertyDisplay("Show Clear", "Behavior", 1)]
+    [ObservableProperty]
+    private bool showClear = true;
+
+    [PropertyDisplay("Show Mark Saved", "Behavior", 2)]
+    [ObservableProperty]
+    private bool showMarkSaved;
+
     [ObservableProperty]
     private string textInput = string.Empty;
 

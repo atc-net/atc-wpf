@@ -5,5 +5,6 @@ public partial class FontFamilySelectorView
     public FontFamilySelectorView()
     {
         InitializeComponent();
+        DataContext = new SelectorDemoViewModel();
     }
 }

@@ -5,132 +5,133 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
-
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <TextBlock TextWrapping="Wrap">
-                PanelEx overlays all children on top of each other, sizing to the largest child.
-                Useful for layered content like watermarks, overlays, or loading indicators.
-            </TextBlock>
-        </GroupBox>
-
-        <GroupBox Header="Usage" Padding="10">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel
-                ChildWrapping="Wrap"
-                HorizontalSpacing="20"
-                Orientation="Horizontal"
-                VerticalSpacing="20">
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-                <!--  Example 1: Simple overlay  -->
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontWeight="Bold"
-                        Text="Simple Overlay" />
-                    <atc:PanelEx Width="150" Height="100">
-                        <Border Background="LightBlue">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="Background" />
-                        </Border>
+                <TextBlock TextWrapping="Wrap">
+                    PanelEx overlays all children on top of each other, sizing to the largest child.
+                    Useful for layered content like watermarks, overlays, or loading indicators.
+                </TextBlock>
+
+                <atc:UniformSpacingPanel
+                    ChildWrapping="Wrap"
+                    HorizontalSpacing="20"
+                    Orientation="Horizontal"
+                    VerticalSpacing="20">
+
+                    <!--  Example 1: Simple overlay  -->
+                    <StackPanel>
                         <TextBlock
-                            Margin="5"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
+                            Margin="0,0,0,5"
                             FontWeight="Bold"
-                            Foreground="Red"
-                            Text="NEW" />
-                    </atc:PanelEx>
-                </StackPanel>
-
-                <!--  Example 2: Watermark  -->
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontWeight="Bold"
-                        Text="Watermark" />
-                    <atc:PanelEx Width="150" Height="100">
-                        <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                            Text="Simple Overlay" />
+                        <atc:PanelEx Width="150" Height="100">
+                            <Border Background="LightBlue">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Background" />
+                            </Border>
                             <TextBlock
-                                Margin="8"
-                                Text="Document content here..."
-                                TextWrapping="Wrap" />
-                        </Border>
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            FontWeight="Bold"
-                            Foreground="#20000000"
-                            Text="DRAFT" />
-                    </atc:PanelEx>
-                </StackPanel>
-
-                <!--  Example 3: Loading overlay  -->
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontWeight="Bold"
-                        Text="Loading Overlay" />
-                    <atc:PanelEx Width="150" Height="100">
-                        <Border Background="LightGray">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="Content" />
-                        </Border>
-                        <Border Background="#80000000">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Foreground="White"
-                                Text="Loading..." />
-                        </Border>
-                    </atc:PanelEx>
-                </StackPanel>
-
-                <!--  Example 4: Corner badge  -->
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontWeight="Bold"
-                        Text="Corner Badge" />
-                    <atc:PanelEx Width="150" Height="100">
-                        <Border Background="LightGreen" CornerRadius="8">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="Product" />
-                        </Border>
-                        <Border
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Background="Orange"
-                            CornerRadius="0,8,0,8">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="10"
+                                Margin="5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
                                 FontWeight="Bold"
-                                Foreground="White"
-                                Text="5" />
-                        </Border>
-                    </atc:PanelEx>
-                </StackPanel>
+                                Foreground="Red"
+                                Text="NEW" />
+                        </atc:PanelEx>
+                    </StackPanel>
+
+                    <!--  Example 2: Watermark  -->
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontWeight="Bold"
+                            Text="Watermark" />
+                        <atc:PanelEx Width="150" Height="100">
+                            <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                                <TextBlock
+                                    Margin="8"
+                                    Text="Document content here..."
+                                    TextWrapping="Wrap" />
+                            </Border>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Foreground="#20000000"
+                                Text="DRAFT" />
+                        </atc:PanelEx>
+                    </StackPanel>
+
+                    <!--  Example 3: Loading overlay  -->
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontWeight="Bold"
+                            Text="Loading Overlay" />
+                        <atc:PanelEx Width="150" Height="100">
+                            <Border Background="LightGray">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Content" />
+                            </Border>
+                            <Border Background="#80000000">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="White"
+                                    Text="Loading..." />
+                            </Border>
+                        </atc:PanelEx>
+                    </StackPanel>
+
+                    <!--  Example 4: Corner badge  -->
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontWeight="Bold"
+                            Text="Corner Badge" />
+                        <atc:PanelEx Width="150" Height="100">
+                            <Border Background="LightGreen" CornerRadius="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Product" />
+                            </Border>
+                            <Border
+                                Width="30"
+                                Height="30"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Background="Orange"
+                                CornerRadius="0,8,0,8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="10"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="5" />
+                            </Border>
+                        </atc:PanelEx>
+                    </StackPanel>
+
+                </atc:UniformSpacingPanel>
 
             </atc:UniformSpacingPanel>
-        </GroupBox>
-
-    </atc:AutoGrid>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

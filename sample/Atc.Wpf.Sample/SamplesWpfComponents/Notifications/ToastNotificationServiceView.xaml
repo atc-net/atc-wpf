@@ -6,37 +6,29 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:notifications="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Notifications"
-    d:DesignHeight="500"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
         <notifications:ToastNotificationServiceViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <TextBlock Width="700" TextWrapping="Wrap">
-                IToastNotificationService provides a DI-friendly, MVVM service for showing
-                toast notifications from ViewModels. It wraps the existing ToastNotificationManager
-                with typed convenience methods (ShowInformation, ShowSuccess, ShowWarning, ShowError)
-                so callers never need to create ToastNotificationContent manually.
-            </TextBlock>
-        </GroupBox>
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <DockPanel Margin="20">
+                <DockPanel x:Name="InteractiveToastServiceDemo" Margin="20">
 
-                <atc:UniformSpacingPanel
-                    DockPanel.Dock="Left"
-                    Orientation="Vertical"
-                    Spacing="20">
+                    <atc:UniformSpacingPanel
+                        DockPanel.Dock="Left"
+                        Orientation="Vertical"
+                        Spacing="20">
 
-                    <GroupBox Padding="10" Header="Severity Levels">
                         <atc:UniformSpacingPanel
                             ItemWidth="100"
                             Orientation="Horizontal"
@@ -58,17 +50,13 @@
                                 Content="Error"
                                 Style="{StaticResource ButtonDanger}" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
 
-                    <GroupBox Padding="10" Header="Desktop">
                         <Button
                             MinWidth="100"
                             Command="{Binding ShowDesktopCommand}"
                             Content="Desktop"
                             Style="{StaticResource ButtonInfo}" />
-                    </GroupBox>
 
-                    <GroupBox Padding="10" Header="Options">
                         <atc:UniformSpacingPanel
                             ItemWidth="130"
                             Orientation="Horizontal"
@@ -80,16 +68,18 @@
                                 Command="{Binding ShowWithClickActionCommand}"
                                 Content="Click Action" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
-                </atc:UniformSpacingPanel>
+                    </atc:UniformSpacingPanel>
 
-                <atc:ToastNotificationArea
-                    x:Name="ServiceArea"
-                    MaxItems="5"
-                    Position="TopRight" />
-            </DockPanel>
-        </GroupBox>
+                    <atc:ToastNotificationArea
+                        x:Name="ServiceArea"
+                        MaxItems="5"
+                        Position="TopRight" />
+                </DockPanel>
 
-    </atc:AutoGrid>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

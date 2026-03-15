@@ -1,10 +1,17 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Threading;
 
-public sealed class DebounceViewModel : ViewModelBase
+public sealed partial class DebounceViewModel : ViewModelBase
 {
     private readonly Collection<string> totalItems;
+    private CancellationTokenSource? searchCts;
     private string status;
     private string filter;
+
+    [PropertyDisplay("Delay (ms)", "Behavior", 1)]
+    [PropertyRange(100, 3000, 100)]
+    [PropertyEditorHint(EditorHint.Slider)]
+    [ObservableProperty]
+    private int debounceDelayMs = 300;
 
     public DebounceViewModel()
     {
@@ -50,6 +57,11 @@ public sealed class DebounceViewModel : ViewModelBase
 
     public async Task Search(string searchQuery)
     {
+        CancelPreviousSearch();
+
+        var cts = new CancellationTokenSource();
+        searchCts = cts;
+
         Filter = searchQuery;
         FoundItems.Clear();
 
@@ -61,7 +73,19 @@ public sealed class DebounceViewModel : ViewModelBase
 
         Status = "Searching...";
 
-        await Task.Delay(1000).ConfigureAwait(true);
+        try
+        {
+            await Task.Delay(1000, cts.Token).ConfigureAwait(true);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
+        if (cts.Token.IsCancellationRequested)
+        {
+            return;
+        }
 
         foreach (var item in totalItems
                      .Where(item => item.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)))
@@ -70,5 +94,17 @@ public sealed class DebounceViewModel : ViewModelBase
         }
 
         Status = $"Done - found {FoundItems.Count}";
+    }
+
+    private void CancelPreviousSearch()
+    {
+        if (searchCts is null)
+        {
+            return;
+        }
+
+        searchCts.Cancel();
+        searchCts.Dispose();
+        searchCts = null;
     }
 }

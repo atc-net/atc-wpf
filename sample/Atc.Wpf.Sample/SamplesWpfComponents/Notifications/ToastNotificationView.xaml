@@ -6,27 +6,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:notifications="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Notifications"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     x:Name="UcBusyOverlayView"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
         <notifications:ToastNotificationViewModel />
     </UserControl.DataContext>
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <DockPanel Margin="50">
+                <DockPanel x:Name="InteractiveToastDemo" Margin="50">
 
-                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="50">
-                    <GroupBox Padding="20" Header="Window">
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="50">
                         <atc:UniformSpacingPanel
                             ItemWidth="100"
                             Orientation="Horizontal"
@@ -48,9 +47,7 @@
                                 Content="Error"
                                 Style="{StaticResource ButtonDanger}" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
 
-                    <GroupBox Padding="20" Header="Desktop">
                         <atc:UniformSpacingPanel
                             ItemWidth="100"
                             Orientation="Horizontal"
@@ -72,16 +69,18 @@
                                 Content="Error"
                                 Style="{StaticResource ButtonDanger}" />
                         </atc:UniformSpacingPanel>
-                    </GroupBox>
-                </atc:UniformSpacingPanel>
+                    </atc:UniformSpacingPanel>
 
-                <atc:ToastNotificationArea
-                    x:Name="WindowArea"
-                    MaxItems="3"
-                    Position="TopLeft" />
-            </DockPanel>
-        </GroupBox>
+                    <atc:ToastNotificationArea
+                        x:Name="WindowArea"
+                        MaxItems="3"
+                        Position="TopLeft" />
+                </DockPanel>
 
-    </atc:AutoGrid>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 
 </UserControl>

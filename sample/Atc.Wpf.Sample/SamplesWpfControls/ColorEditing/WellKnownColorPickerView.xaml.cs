@@ -5,5 +5,6 @@ public partial class WellKnownColorPickerView
     public WellKnownColorPickerView()
     {
         InitializeComponent();
+        DataContext = new WellKnownColorPickerDemoViewModel();
     }
 }

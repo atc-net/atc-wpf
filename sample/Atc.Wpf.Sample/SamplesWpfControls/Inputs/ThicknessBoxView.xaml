@@ -5,75 +5,65 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox Padding="10" Header="Features">
-            <TextBlock TextWrapping="Wrap">
-                ThicknessBox is a control for editing Thickness values with four separate input boxes for Left, Top, Right, and Bottom values.
-            </TextBlock>
-        </GroupBox>
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:UniformSpacingPanel
-                    Margin="10"
-                    Orientation="Vertical"
-                    Spacing="15">
+                <!--  Interactive demo  -->
+                <atc:ThicknessBox
+                    Width="460"
+                    HorizontalAlignment="Left"
+                    HideUpDownButtons="{Binding HideUpDownButtons}"
+                    Maximum="{Binding Maximum}"
+                    Minimum="{Binding Minimum}" />
 
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,5" Text="Default:" />
-                        <atc:ThicknessBox x:Name="DefaultBox" Width="460" />
-                    </StackPanel>
+                <!--  Showcase: Initial Value  -->
+                <atc:ThicknessBox Width="350" Value="5,10,15,20" />
 
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,5" Text="With initial value (5, 10, 15, 20):" />
-                        <atc:ThicknessBox Width="350" Value="5,10,15,20" />
-                    </StackPanel>
+                <!--  Showcase: Hide Up/Down Buttons  -->
+                <atc:ThicknessBox
+                    Width="350"
+                    HideUpDownButtons="True"
+                    Value="10,10,10,10" />
 
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,5" Text="Hide up/down buttons:" />
-                        <atc:ThicknessBox
-                            Width="350"
-                            HideUpDownButtons="True"
-                            Value="10,10,10,10" />
-                    </StackPanel>
+                <!--  Showcase: Min/Max Constraints  -->
+                <atc:ThicknessBox
+                    Width="350"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="25,25,25,25" />
 
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,5" Text="With min (0) and max (100) constraints:" />
-                        <atc:ThicknessBox
-                            Width="350"
-                            Maximum="100"
-                            Minimum="0"
-                            Value="25,25,25,25" />
-                    </StackPanel>
+                <!--  Showcase: Disabled  -->
+                <atc:ThicknessBox
+                    Width="350"
+                    IsEnabled="False"
+                    Value="5,5,5,5" />
 
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,5" Text="Disabled:" />
-                        <atc:ThicknessBox
-                            Width="350"
-                            IsEnabled="False"
-                            Value="5,5,5,5" />
-                    </StackPanel>
+                <!--  Showcase: Bound Value Display  -->
+                <StackPanel>
+                    <atc:ThicknessBox
+                        x:Name="BoundBox"
+                        Width="350"
+                        Value="8,16,8,16" />
+                    <TextBlock Margin="0,5,0,0">
+                        <Run Text="Current Value: " />
+                        <Run Text="{Binding ElementName=BoundBox, Path=Value}" />
+                    </TextBlock>
+                </StackPanel>
 
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,5" Text="Bound value display:" />
-                        <atc:ThicknessBox
-                            x:Name="BoundBox"
-                            Width="350"
-                            Value="8,16,8,16" />
-                        <TextBlock Margin="0,5,0,0">
-                            <Run Text="Current Value: " />
-                            <Run Text="{Binding ElementName=BoundBox, Path=Value}" />
-                        </TextBlock>
-                    </StackPanel>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-                </atc:UniformSpacingPanel>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

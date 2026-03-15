@@ -25,6 +25,7 @@ global using System.Windows.Threading;
 global using Atc.Data.Models;
 global using Atc.Helpers;
 global using Atc.Serialization.JsonConverters;
+global using Atc.Wpf;
 global using Atc.Wpf.Animation;
 global using Atc.Wpf.Capture;
 global using Atc.Wpf.Clipboard;

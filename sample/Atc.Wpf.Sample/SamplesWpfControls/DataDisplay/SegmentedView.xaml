@@ -16,119 +16,93 @@
         <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
+                <dataDisplay:Segmented
+                    CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                    EqualSegmentWidth="{Binding EqualSegmentWidth}"
+                    SelectedIndex="{Binding SelectedIndex}">
+                    <dataDisplay:SegmentedItem Content="Day" />
+                    <dataDisplay:SegmentedItem Content="Week" />
+                    <dataDisplay:SegmentedItem Content="Month" />
+                    <dataDisplay:SegmentedItem Content="Year" />
+                </dataDisplay:Segmented>
+
+                <!--  With Icons  -->
+                <dataDisplay:Segmented SelectedIndex="0">
+                    <dataDisplay:SegmentedItem Content="List">
+                        <dataDisplay:SegmentedItem.Icon>
+                            <TextBlock FontSize="14" Text="&#x2630;" />
+                        </dataDisplay:SegmentedItem.Icon>
+                    </dataDisplay:SegmentedItem>
+                    <dataDisplay:SegmentedItem Content="Grid">
+                        <dataDisplay:SegmentedItem.Icon>
+                            <TextBlock FontSize="14" Text="&#x25A6;" />
+                        </dataDisplay:SegmentedItem.Icon>
+                    </dataDisplay:SegmentedItem>
+                    <dataDisplay:SegmentedItem Content="Map">
+                        <dataDisplay:SegmentedItem.Icon>
+                            <TextBlock FontSize="14" Text="&#x2691;" />
+                        </dataDisplay:SegmentedItem.Icon>
+                    </dataDisplay:SegmentedItem>
+                </dataDisplay:Segmented>
+
+                <!--  Interactive with Event  -->
+                <StackPanel>
                     <dataDisplay:Segmented
-                        x:Name="UsageArea"
-                        CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
-                        EqualSegmentWidth="{Binding EqualSegmentWidth}"
-                        SelectedIndex="{Binding SelectedIndex}">
-                        <dataDisplay:SegmentedItem Content="Day" />
-                        <dataDisplay:SegmentedItem Content="Week" />
-                        <dataDisplay:SegmentedItem Content="Month" />
-                        <dataDisplay:SegmentedItem Content="Year" />
+                        x:Name="InteractiveSegmented"
+                        SelectedIndex="0"
+                        SelectionChanged="OnSelectionChanged">
+                        <dataDisplay:SegmentedItem Content="All" />
+                        <dataDisplay:SegmentedItem Content="Active" />
+                        <dataDisplay:SegmentedItem Content="Completed" />
+                        <dataDisplay:SegmentedItem Content="Archived" />
                     </dataDisplay:Segmented>
-                </GroupBox>
+                    <TextBlock
+                        x:Name="SelectionStatus"
+                        Margin="0,10,0,0"
+                        FontStyle="Italic"
+                        Foreground="Gray"
+                        Text="Click a segment to see the selection change event." />
+                </StackPanel>
 
-                <!--  Showcase: With Icons  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="With Icons">
-                    <dataDisplay:Segmented SelectedIndex="0">
-                        <dataDisplay:SegmentedItem Content="List">
-                            <dataDisplay:SegmentedItem.Icon>
-                                <TextBlock FontSize="14" Text="&#x2630;" />
-                            </dataDisplay:SegmentedItem.Icon>
-                        </dataDisplay:SegmentedItem>
-                        <dataDisplay:SegmentedItem Content="Grid">
-                            <dataDisplay:SegmentedItem.Icon>
-                                <TextBlock FontSize="14" Text="&#x25A6;" />
-                            </dataDisplay:SegmentedItem.Icon>
-                        </dataDisplay:SegmentedItem>
-                        <dataDisplay:SegmentedItem Content="Map">
-                            <dataDisplay:SegmentedItem.Icon>
-                                <TextBlock FontSize="14" Text="&#x2691;" />
-                            </dataDisplay:SegmentedItem.Icon>
-                        </dataDisplay:SegmentedItem>
+                <!--  Sizing &amp; Styling  -->
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="Proportional width (EqualSegmentWidth=False)" />
+                    <dataDisplay:Segmented EqualSegmentWidth="False" SelectedIndex="1">
+                        <dataDisplay:SegmentedItem Content="S" />
+                        <dataDisplay:SegmentedItem Content="Medium" />
+                        <dataDisplay:SegmentedItem Content="Extra Large" />
                     </dataDisplay:Segmented>
-                </GroupBox>
 
-                <!--  Showcase: Interactive with Event  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive with Event">
-                    <StackPanel>
-                        <dataDisplay:Segmented
-                            x:Name="InteractiveSegmented"
-                            SelectedIndex="0"
-                            SelectionChanged="OnSelectionChanged">
-                            <dataDisplay:SegmentedItem Content="All" />
-                            <dataDisplay:SegmentedItem Content="Active" />
-                            <dataDisplay:SegmentedItem Content="Completed" />
-                            <dataDisplay:SegmentedItem Content="Archived" />
-                        </dataDisplay:Segmented>
-                        <TextBlock
-                            x:Name="SelectionStatus"
-                            Margin="0,10,0,0"
-                            FontStyle="Italic"
-                            Foreground="Gray"
-                            Text="Click a segment to see the selection change event." />
-                    </StackPanel>
-                </GroupBox>
+                    <TextBlock
+                        Margin="0,15,0,10"
+                        FontWeight="Bold"
+                        Text="Custom colors" />
+                    <dataDisplay:Segmented
+                        CornerRadius="12"
+                        SelectedBackground="#4CAF50"
+                        SelectedForeground="White"
+                        SelectedIndex="0">
+                        <dataDisplay:SegmentedItem Content="Low" />
+                        <dataDisplay:SegmentedItem Content="Medium" />
+                        <dataDisplay:SegmentedItem Content="High" />
+                    </dataDisplay:Segmented>
+                </StackPanel>
 
-                <!--  Showcase: Styling  -->
-                <GroupBox Padding="10" Header="Sizing &amp; Styling">
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontWeight="Bold"
-                            Text="Proportional width (EqualSegmentWidth=False)" />
-                        <dataDisplay:Segmented EqualSegmentWidth="False" SelectedIndex="1">
-                            <dataDisplay:SegmentedItem Content="S" />
-                            <dataDisplay:SegmentedItem Content="Medium" />
-                            <dataDisplay:SegmentedItem Content="Extra Large" />
-                        </dataDisplay:Segmented>
-
-                        <TextBlock
-                            Margin="0,15,0,10"
-                            FontWeight="Bold"
-                            Text="Custom colors" />
-                        <dataDisplay:Segmented
-                            CornerRadius="12"
-                            SelectedBackground="#4CAF50"
-                            SelectedForeground="White"
-                            SelectedIndex="0">
-                            <dataDisplay:SegmentedItem Content="Low" />
-                            <dataDisplay:SegmentedItem Content="Medium" />
-                            <dataDisplay:SegmentedItem Content="High" />
-                        </dataDisplay:Segmented>
-                    </StackPanel>
-                </GroupBox>
-
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

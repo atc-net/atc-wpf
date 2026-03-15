@@ -5,6 +5,7 @@ public partial class PropertyGridView
     public PropertyGridView()
     {
         InitializeComponent();
+        DataContext = new PropertyGridDemoViewModel();
 
         var sampleModel = new SamplePropertyGridModel
         {

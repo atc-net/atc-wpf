@@ -5,5 +5,6 @@ public partial class RangeSliderView
     public RangeSliderView()
     {
         InitializeComponent();
+        DataContext = new RangeSliderDemoViewModel();
     }
 }

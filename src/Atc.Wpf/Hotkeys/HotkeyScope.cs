@@ -14,4 +14,4 @@ public enum HotkeyScope
     /// The hotkey is active system-wide via Win32 RegisterHotKey.
     /// </summary>
     Global,
-}
+}

@@ -56,4 +56,4 @@ public interface IPrintService
     PrintResult PrintDocumentWithPreview(
         FlowDocument document,
         PrintSettings? settings = null);
-}
+}

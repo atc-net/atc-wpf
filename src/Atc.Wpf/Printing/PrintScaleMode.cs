@@ -20,4 +20,4 @@ public enum PrintScaleMode
     /// Content smaller than the printable area is not scaled up.
     /// </summary>
     ShrinkToFit,
-}
+}

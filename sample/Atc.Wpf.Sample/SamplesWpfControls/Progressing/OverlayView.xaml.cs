@@ -5,6 +5,7 @@ public partial class OverlayView
     public OverlayView()
     {
         InitializeComponent();
+        DataContext = new OverlayDemoViewModel();
     }
 
     private void OnToggleBasicClick(

@@ -29,7 +29,7 @@
                     Orientation="Vertical"
                     Spacing="20">
 
-                    <!-- Dialog with Side Panel -->
+                    <!--  Dialog with Side Panel  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -47,7 +47,7 @@
                             Content="Open Dialog with Side Panel" />
                     </StackPanel>
 
-                    <!-- Settings Dialog with Details Flyout -->
+                    <!--  Settings Dialog with Details Flyout  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -65,7 +65,7 @@
                             Content="Open Settings with Details Flyout" />
                     </StackPanel>
 
-                    <!-- Wizard-Style Dialog -->
+                    <!--  Wizard-Style Dialog  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"
@@ -83,7 +83,7 @@
                             Content="Open Wizard Dialog" />
                     </StackPanel>
 
-                    <!-- Dialog with Center Flyout -->
+                    <!--  Dialog with Center Flyout  -->
                     <StackPanel>
                         <TextBlock
                             Margin="0,0,0,5"

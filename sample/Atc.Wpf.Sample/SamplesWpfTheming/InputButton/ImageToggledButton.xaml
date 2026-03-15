@@ -6,36 +6,21 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfTheming.InputButton"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DataContext="{d:DesignInstance Type=local:ImageToggledButtonDemoViewModel}"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-            <StackPanel>
-                <atc:LabelCheckBox
-                    x:Name="CbIsBusy"
-                    HideAreas="All"
-                    LabelText="IsBusy" />
-
-                <atc:LabelToggleSwitch
-                    x:Name="CbIsPrimary"
-                    HideAreas="All"
-                    LabelText="State"
-                    OffText="Secondary"
-                    OnText="Primary" />
-            </StackPanel>
-
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
                 <atc:GridEx Columns="*,10,*" ShowGridLines="True">
                     <atc:UniformSpacingPanel
                         Grid.Column="0"
@@ -54,16 +39,16 @@
                                     HorizontalContentAlignment="Left"
                                     ImageBorderSpacing="5"
                                     ImageContentSpacing="10"
-                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
-                                    IsToggled="{Binding ElementName=CbIsPrimary, Path=IsOn}"
+                                    IsBusy="{Binding Path=IsBusy}"
+                                    IsToggled="{Binding Path=IsPrimary}"
                                     OffContent="State Off"
                                     OffImageSource="/Assets/error.png"
                                     OnContent="State On"
                                     OnImageSource="/Assets/ok.png" />
 
                                 <atc:ImageToggledButton
-                                    IsBusy="{Binding ElementName=CbIsBusy, Path=IsChecked}"
-                                    IsToggled="{Binding ElementName=CbIsPrimary, Path=IsOn}"
+                                    IsBusy="{Binding Path=IsBusy}"
+                                    IsToggled="{Binding Path=IsPrimary}"
                                     OffContent="Login"
                                     OffSvgImageSource="/Atc.Wpf.Sample;component/Assets/eggeaster.svg"
                                     OnContent="Logout"
@@ -103,8 +88,12 @@
 
                     </atc:UniformSpacingPanel>
                 </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

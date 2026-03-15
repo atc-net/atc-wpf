@@ -5,5 +5,6 @@ public partial class ImageButtonView
     public ImageButtonView()
     {
         InitializeComponent();
+        DataContext = new ImageButtonDemoViewModel();
     }
 }

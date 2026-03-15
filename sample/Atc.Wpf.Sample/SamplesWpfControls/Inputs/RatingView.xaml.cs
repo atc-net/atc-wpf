@@ -5,5 +5,6 @@ public partial class RatingView
     public RatingView()
     {
         InitializeComponent();
+        DataContext = new RatingDemoViewModel();
     }
 }

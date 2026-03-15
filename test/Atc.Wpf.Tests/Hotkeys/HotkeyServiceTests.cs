@@ -310,4 +310,4 @@ public sealed class HotkeyServiceTests : IDisposable
     {
         sut.Dispose();
     }
-}
+}

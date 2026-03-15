@@ -5,5 +5,6 @@ public partial class ReversibleStackPanelView
     public ReversibleStackPanelView()
     {
         InitializeComponent();
+        DataContext = new LayoutDemoViewModel();
     }
 }

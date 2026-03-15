@@ -10,6 +10,18 @@ public sealed partial class UndoRedoHistoryViewSampleViewModel : ViewModelBase
     [ObservableProperty]
     private string currentText = "(empty)";
 
+    [PropertyDisplay("Show Toolbar", "Behavior", 1)]
+    [ObservableProperty]
+    private bool showToolbar = true;
+
+    [PropertyDisplay("Show Clear", "Behavior", 2)]
+    [ObservableProperty]
+    private bool showClear = true;
+
+    [PropertyDisplay("Show Mark Saved", "Behavior", 3)]
+    [ObservableProperty]
+    private bool showMarkSaved;
+
     public UndoRedoHistoryViewSampleViewModel()
     {
         HistoryViewModel = new UndoRedoHistoryViewModel

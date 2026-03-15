@@ -17,6 +17,7 @@ public sealed class RelayCommandViewModel : ViewModelBase
         Test4CommandHandler,
         CanTest4CommandHandler);
 
+    [PropertyDisplay("Is Test Enabled", "Behavior", 1)]
     public bool IsTestEnabled
     {
         get => isTestEnabled;

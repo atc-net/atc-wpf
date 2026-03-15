@@ -5,49 +5,34 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:shaderEffects="clr-namespace:Atc.Wpf.Media.ShaderEffects;assembly=Atc.Wpf"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+                <atc:GridEx
+                    Margin="20"
+                    Columns="*,10,*"
+                    Rows="Auto,1,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Original image" />
+                    <Image Grid.Row="2" Grid.Column="0" Width="640" Source="../../../Assets/road.jpg" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Changed image" />
+                    <Image x:Name="TestImage" Grid.Row="2" Grid.Column="2" Width="640" Source="../../../Assets/road.jpg">
+                        <Image.Effect>
+                            <shaderEffects:InvertColorsShaderEffect />
+                        </Image.Effect>
+                    </Image>
+                </atc:GridEx>
 
-        <GroupBox Header="Usage">
-            <atc:GridEx
-                Margin="20"
-                Columns="*,10,*"
-                Rows="Auto,1,Auto">
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="Original image" />
-                <Image
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Width="640"
-                    Source="../../../Assets/road.jpg" />
-
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Text="Changed image" />
-                <Image
-                    x:Name="TestImage"
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    Width="640"
-                    Source="../../../Assets/road.jpg">
-                    <Image.Effect>
-                        <shaderEffects:InvertColorsShaderEffect />
-                    </Image.Effect>
-                </Image>
-            </atc:GridEx>
-        </GroupBox>
-    </atc:AutoGrid>
-
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

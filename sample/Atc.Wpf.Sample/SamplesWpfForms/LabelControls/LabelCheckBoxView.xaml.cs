@@ -5,5 +5,6 @@ public partial class LabelCheckBoxView
     public LabelCheckBoxView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }

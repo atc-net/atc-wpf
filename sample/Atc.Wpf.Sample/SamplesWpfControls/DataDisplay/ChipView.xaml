@@ -16,104 +16,78 @@
         <local:DoubleToCornerRadiusValueConverter x:Key="DoubleToCornerRadiusConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
+                <dataDisplay:Chip
+                    CanRemove="{Binding CanRemove}"
+                    Content="{Binding Content}"
+                    CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
+                    IsClickable="{Binding IsClickable}"
+                    IsSelectable="{Binding IsSelectable}"
+                    IsSelected="{Binding ChipIsSelected}"
+                    Size="{Binding Size}"
+                    Variant="{Binding Variant}" />
+
+                <!--  Chip Variants  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="10"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
+                    <dataDisplay:Chip Content="Default" Variant="Default" />
+                    <dataDisplay:Chip Content="Filter" Variant="Filter" />
+                    <dataDisplay:Chip Content="Input" Variant="Input" />
+                    <dataDisplay:Chip Content="Action" Variant="Action" />
+                </atc:UniformSpacingPanel>
+
+                <!--  Chip Sizes  -->
+                <atc:UniformSpacingPanel
+                    VerticalAlignment="Center"
+                    HorizontalSpacing="15"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
+                    <dataDisplay:Chip Content="Small" Size="Small" />
+                    <dataDisplay:Chip Content="Medium" Size="Medium" />
+                    <dataDisplay:Chip Content="Large" Size="Large" />
+                </atc:UniformSpacingPanel>
+
+                <!--  Custom Styling  -->
+                <atc:UniformSpacingPanel
+                    HorizontalSpacing="10"
+                    Orientation="Horizontal"
+                    VerticalSpacing="10">
                     <dataDisplay:Chip
-                        x:Name="UsageArea"
-                        CanRemove="{Binding CanRemove}"
-                        Content="{Binding Content}"
-                        CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
-                        IsClickable="{Binding IsClickable}"
-                        IsSelectable="{Binding IsSelectable}"
-                        IsSelected="{Binding ChipIsSelected}"
-                        Size="{Binding Size}"
-                        Variant="{Binding Variant}" />
-                </GroupBox>
+                        Background="#E3F2FD"
+                        BorderBrush="#2196F3"
+                        Content="Info"
+                        Foreground="#1565C0" />
+                    <dataDisplay:Chip
+                        Background="#E8F5E9"
+                        BorderBrush="#4CAF50"
+                        Content="Success"
+                        Foreground="#2E7D32" />
+                    <dataDisplay:Chip
+                        Background="#FFF3E0"
+                        BorderBrush="#FF9800"
+                        Content="Warning"
+                        Foreground="#E65100" />
+                    <dataDisplay:Chip
+                        Background="#FFEBEE"
+                        BorderBrush="#F44336"
+                        Content="Error"
+                        Foreground="#C62828" />
+                    <dataDisplay:Chip Content="Disabled" IsEnabled="False" />
+                </atc:UniformSpacingPanel>
 
-                <!--  Showcase: Variants  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Chip Variants">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="10"
-                        Orientation="Horizontal"
-                        VerticalSpacing="10">
-                        <dataDisplay:Chip Content="Default" Variant="Default" />
-                        <dataDisplay:Chip Content="Filter" Variant="Filter" />
-                        <dataDisplay:Chip Content="Input" Variant="Input" />
-                        <dataDisplay:Chip Content="Action" Variant="Action" />
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-                <!--  Showcase: Sizes  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Chip Sizes">
-                    <atc:UniformSpacingPanel
-                        VerticalAlignment="Center"
-                        HorizontalSpacing="15"
-                        Orientation="Horizontal"
-                        VerticalSpacing="10">
-                        <dataDisplay:Chip Content="Small" Size="Small" />
-                        <dataDisplay:Chip Content="Medium" Size="Medium" />
-                        <dataDisplay:Chip Content="Large" Size="Large" />
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-                <!--  Showcase: Custom Styling  -->
-                <GroupBox Padding="10" Header="Custom Styling">
-                    <atc:UniformSpacingPanel
-                        HorizontalSpacing="10"
-                        Orientation="Horizontal"
-                        VerticalSpacing="10">
-                        <dataDisplay:Chip
-                            Background="#E3F2FD"
-                            BorderBrush="#2196F3"
-                            Content="Info"
-                            Foreground="#1565C0" />
-                        <dataDisplay:Chip
-                            Background="#E8F5E9"
-                            BorderBrush="#4CAF50"
-                            Content="Success"
-                            Foreground="#2E7D32" />
-                        <dataDisplay:Chip
-                            Background="#FFF3E0"
-                            BorderBrush="#FF9800"
-                            Content="Warning"
-                            Foreground="#E65100" />
-                        <dataDisplay:Chip
-                            Background="#FFEBEE"
-                            BorderBrush="#F44336"
-                            Content="Error"
-                            Foreground="#C62828" />
-                        <dataDisplay:Chip Content="Disabled" IsEnabled="False" />
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

@@ -5,26 +5,23 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:UniformSpacingPanel
-            Margin="10"
-            Orientation="Vertical"
-            Spacing="10">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-            <!--  Features  -->
-            <GroupBox Padding="10" Header="Features">
                 <TextBlock TextWrapping="Wrap">
                     Centralized Animation Library providing reusable extension methods for fade, slide, and scale animations.
                     Includes async code-behind methods and XAML-only attached properties for declarative use.
                 </TextBlock>
-            </GroupBox>
 
-            <!--  Fade Animations  -->
-            <GroupBox Padding="10" Header="Fade Animations">
+                <!--  Fade Animations  -->
                 <StackPanel Orientation="Vertical">
                     <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                         <Button
@@ -51,10 +48,8 @@
                             Text="Fade Target" />
                     </Border>
                 </StackPanel>
-            </GroupBox>
 
-            <!--  Slide Animations  -->
-            <GroupBox Padding="10" Header="Slide Animations">
+                <!--  Slide Animations  -->
                 <StackPanel Orientation="Vertical">
                     <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                         <Button
@@ -110,10 +105,8 @@
                             Text="Slide Target" />
                     </Border>
                 </StackPanel>
-            </GroupBox>
 
-            <!--  Scale Animations  -->
-            <GroupBox Padding="10" Header="Scale Animations">
+                <!--  Scale Animations  -->
                 <StackPanel Orientation="Vertical">
                     <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                         <Button
@@ -140,10 +133,8 @@
                             Text="Scale Target" />
                     </Border>
                 </StackPanel>
-            </GroupBox>
 
-            <!--  XAML Attached Properties  -->
-            <GroupBox Padding="10" Header="XAML Attached Properties">
+                <!--  XAML Attached Properties  -->
                 <StackPanel Orientation="Vertical">
                     <TextBlock
                         Margin="0,0,0,10"
@@ -153,9 +144,9 @@
                         <Border
                             Width="140"
                             Height="50"
+                            atc:AnimateAttach.OnLoaded="FadeIn"
                             Background="#9C27B0"
-                            CornerRadius="4"
-                            atc:AnimateAttach.OnLoaded="FadeIn">
+                            CornerRadius="4">
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -165,9 +156,9 @@
                         <Border
                             Width="140"
                             Height="50"
+                            atc:AnimateAttach.OnLoaded="SlideInFromLeft"
                             Background="#E91E63"
-                            CornerRadius="4"
-                            atc:AnimateAttach.OnLoaded="SlideInFromLeft">
+                            CornerRadius="4">
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -177,9 +168,9 @@
                         <Border
                             Width="140"
                             Height="50"
+                            atc:AnimateAttach.OnLoaded="SlideInFromBottom"
                             Background="#00BCD4"
-                            CornerRadius="4"
-                            atc:AnimateAttach.OnLoaded="SlideInFromBottom">
+                            CornerRadius="4">
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -189,9 +180,9 @@
                         <Border
                             Width="140"
                             Height="50"
+                            atc:AnimateAttach.OnLoaded="ScaleIn"
                             Background="#795548"
-                            CornerRadius="4"
-                            atc:AnimateAttach.OnLoaded="ScaleIn">
+                            CornerRadius="4">
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -200,10 +191,8 @@
                         </Border>
                     </atc:UniformSpacingPanel>
                 </StackPanel>
-            </GroupBox>
 
-            <!--  Speed Presets  -->
-            <GroupBox Padding="10" Header="Speed Presets">
+                <!--  Speed Presets  -->
                 <StackPanel Orientation="Vertical">
                     <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
                         <Button
@@ -234,8 +223,9 @@
                             Text="Preset Target" />
                     </Border>
                 </StackPanel>
-            </GroupBox>
 
-        </atc:UniformSpacingPanel>
-    </ScrollViewer>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

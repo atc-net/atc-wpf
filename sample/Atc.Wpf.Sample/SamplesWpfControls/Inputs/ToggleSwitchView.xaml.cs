@@ -5,5 +5,6 @@ public partial class ToggleSwitchView
     public ToggleSwitchView()
     {
         InitializeComponent();
+        DataContext = new ToggleSwitchDemoViewModel();
     }
 }

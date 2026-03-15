@@ -5,5 +5,6 @@ public partial class HueSliderView
     public HueSliderView()
     {
         InitializeComponent();
+        DataContext = new HueSliderDemoViewModel();
     }
 }

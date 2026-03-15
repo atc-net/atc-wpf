@@ -5,5 +5,6 @@ public partial class FontIconView
     public FontIconView()
     {
         InitializeComponent();
+        DataContext = new FontIconDemoViewModel();
     }
 }

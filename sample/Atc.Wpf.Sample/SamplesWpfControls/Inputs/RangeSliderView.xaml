@@ -3,95 +3,43 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs;assembly=Atc.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto,Auto,Auto">
+    <atc:GridEx Columns="*,400">
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Features">
-                <TextBlock TextWrapping="Wrap">
-                    The RangeSlider control provides a dual-thumb slider for selecting a range of values.
-                    It supports minimum/maximum bounds, step increments, keyboard navigation, and customizable styling.
-                </TextBlock>
-            </GroupBox>
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Basic Usage">
+                <!--  Interactive demo  -->
                 <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontWeight="Bold"
-                        Text="Default Range Slider (0-100)" />
                     <inputs:RangeSlider
-                        x:Name="basicSlider"
                         Width="400"
                         HorizontalAlignment="Left"
-                        RangeStart="20"
-                        RangeEnd="80" />
+                        Maximum="{Binding Maximum}"
+                        Minimum="{Binding Minimum}"
+                        RangeEnd="{Binding RangeEnd}"
+                        RangeStart="{Binding RangeStart}"
+                        ShowValueToolTips="{Binding ShowValueToolTips}"
+                        Step="{Binding Step}"
+                        ThumbSize="{Binding ThumbSize}"
+                        TrackHeight="{Binding TrackHeight}" />
                     <TextBlock Margin="0,5,0,0">
                         <Run Text="Selected Range: " />
-                        <Run Text="{Binding RangeStart, ElementName=basicSlider, StringFormat=N0}" />
+                        <Run Text="{Binding RangeStart, StringFormat=N0}" />
                         <Run Text=" - " />
-                        <Run Text="{Binding RangeEnd, ElementName=basicSlider, StringFormat=N0}" />
-                    </TextBlock>
-
-                    <TextBlock
-                        Margin="0,20,0,5"
-                        FontWeight="Bold"
-                        Text="Price Filter (0-1000, Step 50)" />
-                    <inputs:RangeSlider
-                        x:Name="priceSlider"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Maximum="1000"
-                        Minimum="0"
-                        RangeEnd="750"
-                        RangeStart="200"
-                        Step="50" />
-                    <TextBlock Margin="0,5,0,0">
-                        <Run Text="Price Range: $" />
-                        <Run Text="{Binding RangeStart, ElementName=priceSlider, StringFormat=N0}" />
-                        <Run Text=" - $" />
-                        <Run Text="{Binding RangeEnd, ElementName=priceSlider, StringFormat=N0}" />
-                    </TextBlock>
-
-                    <TextBlock
-                        Margin="0,20,0,5"
-                        FontWeight="Bold"
-                        Text="Temperature Range (-20 to 50)" />
-                    <inputs:RangeSlider
-                        x:Name="tempSlider"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Maximum="50"
-                        Minimum="-20"
-                        RangeEnd="30"
-                        RangeStart="15"
-                        Step="1" />
-                    <TextBlock Margin="0,5,0,0">
-                        <Run Text="Temperature: " />
-                        <Run Text="{Binding RangeStart, ElementName=tempSlider, StringFormat=N0}" />
-                        <Run Text="°C - " />
-                        <Run Text="{Binding RangeEnd, ElementName=tempSlider, StringFormat=N0}" />
-                        <Run Text="°C" />
+                        <Run Text="{Binding RangeEnd, StringFormat=N0}" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Step Increments">
+                <!--  Showcase: Step Increments  -->
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -132,12 +80,8 @@
                         Step="10" />
                     <TextBlock Margin="0,5,0,0" Text="{Binding RangeStart, ElementName=step10Slider, StringFormat='Range: {0:N0}'}" />
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox
-                Margin="0,0,0,10"
-                Padding="10"
-                Header="Custom Styling">
+                <!--  Showcase: Custom Styling  -->
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -180,9 +124,8 @@
                         ThumbSize="14"
                         TrackHeight="2" />
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox Padding="10" Header="Keyboard Navigation">
+                <!--  Showcase: Keyboard Navigation  -->
                 <StackPanel>
                     <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">
                         Click on a thumb to focus it, then use the keyboard to adjust values:
@@ -207,9 +150,12 @@
                         <Run Text="{Binding RangeEnd, ElementName=keyboardSlider, StringFormat=N0}" />
                     </TextBlock>
                 </StackPanel>
-            </GroupBox>
 
-        </atc:AutoGrid>
-    </ScrollViewer>
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

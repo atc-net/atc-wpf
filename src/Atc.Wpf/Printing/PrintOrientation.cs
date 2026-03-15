@@ -14,4 +14,4 @@ public enum PrintOrientation
     /// Landscape orientation (wider than tall).
     /// </summary>
     Landscape,
-}
+}

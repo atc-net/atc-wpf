@@ -5,5 +5,6 @@ public partial class LanguageSelectorView
     public LanguageSelectorView()
     {
         InitializeComponent();
+        DataContext = new SelectorDemoViewModel();
     }
 }

@@ -24,4 +24,4 @@ internal static class HeaderFooterFormatter
             .Replace("{DateTime}", DateTime.Now.ToString("g", CultureInfo.CurrentCulture), StringComparison.Ordinal)
             .Replace("{Title}", title, StringComparison.Ordinal);
     }
-}
+}

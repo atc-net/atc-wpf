@@ -5,5 +5,6 @@ public partial class StaggeredPanelView
     public StaggeredPanelView()
     {
         InitializeComponent();
+        DataContext = new StaggeredPanelDemoViewModel();
     }
 }

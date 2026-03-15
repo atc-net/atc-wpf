@@ -5,5 +5,7 @@ public partial class LabelDecimalBoxView
     public LabelDecimalBoxView()
     {
         InitializeComponent();
+
+        DataContext = new LabelControlDemoViewModel();
     }
 }

@@ -5,44 +5,45 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+    <atc:GridEx Columns="*,400">
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features" />
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-        <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:GridEx Columns="*,*" ShowGridLines="True">
-                    <atc:UniformSpacingPanel
-                        Grid.Column="0"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10">
+                <!--  Interactive demo  -->
+                <atc:IntegerXyBox
+                    Width="300"
+                    HorizontalAlignment="Left"
+                    HideUpDownButtons="{Binding HideUpDownButtons}"
+                    PrefixTextX="{Binding PrefixTextX}"
+                    PrefixTextY="{Binding PrefixTextY}"
+                    SuffixText="{Binding SuffixText}" />
 
-                        <atc:IntegerXyBox />
+                <!--  Showcase: Watermark  -->
+                <atc:UniformSpacingPanel
+                    Margin="10"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <atc:IntegerXyBox
+                        atc:TextBoxHelper.Watermark="Hello Watermark..."
+                        atc:TextBoxHelper.WatermarkAlignment="Center"
+                        PrefixTextX="x:"
+                        PrefixTextY="y:"
+                        SuffixText="mm" />
+                </atc:UniformSpacingPanel>
 
-                        <atc:IntegerXyBox
-                            atc:TextBoxHelper.Watermark="Hello Watermark..."
-                            atc:TextBoxHelper.WatermarkAlignment="Center"
-                            PrefixTextX="x:"
-                            PrefixTextY="y:"
-                            SuffixText="mm" />
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
 
-                    </atc:UniformSpacingPanel>
-                    <atc:UniformSpacingPanel
-                        Grid.Column="1"
-                        Margin="10"
-                        Orientation="Vertical"
-                        Spacing="10" />
-                </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+
+    </atc:GridEx>
 
 </UserControl>

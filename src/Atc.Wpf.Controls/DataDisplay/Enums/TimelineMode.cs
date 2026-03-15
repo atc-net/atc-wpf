@@ -20,4 +20,4 @@ public enum TimelineMode
     /// Content alternates between left and right sides.
     /// </summary>
     Alternate,
-}
+}

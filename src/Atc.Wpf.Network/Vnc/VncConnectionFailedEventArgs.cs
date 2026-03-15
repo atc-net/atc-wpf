@@ -8,4 +8,4 @@ public sealed class VncConnectionFailedEventArgs : EventArgs
     }
 
     public string Message { get; }
-}
+}

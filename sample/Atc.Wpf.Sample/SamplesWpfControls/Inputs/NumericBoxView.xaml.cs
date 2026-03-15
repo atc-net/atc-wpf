@@ -5,5 +5,6 @@ public partial class NumericBoxView
     public NumericBoxView()
     {
         InitializeComponent();
+        DataContext = new NumericBoxDemoViewModel();
     }
 }

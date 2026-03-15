@@ -20,4 +20,4 @@ public enum TimelineConnectorStyle
     /// A dotted connecting line.
     /// </summary>
     Dotted,
-}
+}

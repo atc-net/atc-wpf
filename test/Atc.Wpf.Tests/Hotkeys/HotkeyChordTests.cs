@@ -71,4 +71,4 @@ public class HotkeyChordTests
         // Assert
         result.Should().Be("Ctrl+Shift+K, Alt+C");
     }
-}
+}

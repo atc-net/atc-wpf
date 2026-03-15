@@ -5,37 +5,23 @@
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
     mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
-    <atc:AutoGrid Columns="*" Rows="Auto,*">
+                <atc:LabelCurrencyBox
+                    IsMandatory="{Binding IsMandatory}"
+                    LabelText="{Binding LabelText}"
+                    InformationText="{Binding InformationText}"
+                    Orientation="{Binding Orientation}" />
 
-        <GroupBox
-            Margin="0,0,0,10"
-            Padding="10"
-            Header="Features">
-            <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-                <TextBlock VerticalAlignment="Center" Text="Currency:" />
-                <ComboBox
-                    x:Name="CbCurrency"
-                    Margin="10,4"
-                    SelectedIndex="0"
-                    SelectionChanged="OnCurrencyChanged">
-                    <ComboBoxItem Content="US Dollar (USD)" Tag="en-US" />
-                    <ComboBoxItem Content="Euro (EUR)" Tag="de-DE" />
-                    <ComboBoxItem Content="Danish Krone (DKK)" Tag="da-DK" />
-                    <ComboBoxItem Content="UK Pound (GBP)" Tag="en-GB" />
-                </ComboBox>
-            </atc:UniformSpacingPanel>
-        </GroupBox>
-
-        <GroupBox Header="Usage">
-            <ScrollViewer>
-                <atc:GridEx
-                    x:Name="UsageGrid"
-                    Columns="*,*"
-                    ShowGridLines="True">
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">
 
                         <atc:LabelCurrencyBox LabelText="MyLabel1" Orientation="Horizontal" />
@@ -93,8 +79,9 @@
 
                     </StackPanel>
                 </atc:GridEx>
-            </ScrollViewer>
-        </GroupBox>
-    </atc:AutoGrid>
 
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
 </UserControl>

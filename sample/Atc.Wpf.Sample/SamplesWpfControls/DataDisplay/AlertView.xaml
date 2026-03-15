@@ -11,85 +11,59 @@
     d:DesignWidth="900"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
-        </Grid.ColumnDefinitions>
+    <atc:GridEx Columns="*,400">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel
+                x:Name="UsageArea"
+                Style="{StaticResource SampleUsageAreaStyle}">
 
                 <!--  Interactive demo  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Interactive Demo">
+                <dataDisplay:Alert
+                    Content="{Binding Content}"
+                    IsDense="{Binding IsDense}"
+                    IsDismissible="{Binding IsDismissible}"
+                    IsPulsing="{Binding IsPulsing}"
+                    PulseDuration="{Binding PulseDuration}"
+                    PulseOpacity="{Binding PulseOpacity}"
+                    Severity="{Binding Severity}"
+                    ShowIcon="{Binding ShowIcon}"
+                    Variant="{Binding Variant}" />
+
+                <!--  Severity Levels  -->
+                <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
+                    <dataDisplay:Alert Severity="Info">Informational alert</dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Success">Success alert</dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Warning">Warning alert</dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Error">Error alert</dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+
+                <!--  Variants  -->
+                <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
+                    <dataDisplay:Alert Severity="Info" Variant="Filled">Filled</dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Info" Variant="Outlined">Outlined</dataDisplay:Alert>
+                    <dataDisplay:Alert Severity="Info" Variant="Text">Text</dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
+
+                <!--  Pulsing Animation  -->
+                <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
+                    <dataDisplay:Alert IsPulsing="True" Severity="Warning">
+                        Default pulse (1.5s duration, 0.65 opacity).
+                    </dataDisplay:Alert>
                     <dataDisplay:Alert
-                        x:Name="UsageArea"
-                        Content="{Binding Content}"
-                        IsDense="{Binding IsDense}"
-                        IsDismissible="{Binding IsDismissible}"
-                        IsPulsing="{Binding IsPulsing}"
-                        PulseDuration="{Binding PulseDuration}"
-                        PulseOpacity="{Binding PulseOpacity}"
-                        Severity="{Binding Severity}"
-                        ShowIcon="{Binding ShowIcon}"
-                        Variant="{Binding Variant}" />
-                </GroupBox>
+                        IsPulsing="True"
+                        PulseDuration="0:0:0.75"
+                        PulseOpacity="0.4"
+                        Severity="Error"
+                        Variant="Filled">
+                        Fast deep-fade pulse (0.75s, 0.4 opacity).
+                    </dataDisplay:Alert>
+                </atc:UniformSpacingPanel>
 
-                <!--  Showcase: Severity Levels  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Severity Levels">
-                    <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
-                        <dataDisplay:Alert Severity="Info">Informational alert</dataDisplay:Alert>
-                        <dataDisplay:Alert Severity="Success">Success alert</dataDisplay:Alert>
-                        <dataDisplay:Alert Severity="Warning">Warning alert</dataDisplay:Alert>
-                        <dataDisplay:Alert Severity="Error">Error alert</dataDisplay:Alert>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-                <!--  Showcase: Variants  -->
-                <GroupBox
-                    Margin="0,0,0,10"
-                    Padding="10"
-                    Header="Variants">
-                    <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
-                        <dataDisplay:Alert Severity="Info" Variant="Filled">Filled</dataDisplay:Alert>
-                        <dataDisplay:Alert Severity="Info" Variant="Outlined">Outlined</dataDisplay:Alert>
-                        <dataDisplay:Alert Severity="Info" Variant="Text">Text</dataDisplay:Alert>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-                <!--  Showcase: Pulsing  -->
-                <GroupBox Padding="10" Header="Pulsing Animation">
-                    <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
-                        <dataDisplay:Alert IsPulsing="True" Severity="Warning">
-                            Default pulse (1.5s duration, 0.65 opacity).
-                        </dataDisplay:Alert>
-                        <dataDisplay:Alert
-                            IsPulsing="True"
-                            PulseDuration="0:0:0.75"
-                            PulseOpacity="0.4"
-                            Severity="Error"
-                            Variant="Filled">
-                            Fast deep-fade pulse (0.75s, 0.4 opacity).
-                        </dataDisplay:Alert>
-                    </atc:UniformSpacingPanel>
-                </GroupBox>
-
-            </StackPanel>
+            </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <GroupBox
-            Grid.Column="1"
-            atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
-            Header="Properties">
-            <sample:SamplePropertyController SourceObject="{Binding}" />
-        </GroupBox>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
 
-    </Grid>
-
+    </atc:GridEx>
 </UserControl>

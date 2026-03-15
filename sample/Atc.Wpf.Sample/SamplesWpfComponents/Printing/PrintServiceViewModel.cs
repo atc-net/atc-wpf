@@ -131,4 +131,4 @@ public sealed partial class PrintServiceViewModel : ViewModelBase
 
     private void AppendLog(string entry)
         => ResultLog = $"[{DateTime.Now:T}] {entry}{Environment.NewLine}{ResultLog}";
-}
+}

@@ -5,5 +5,6 @@ public partial class LabelColorPickerView
     public LabelColorPickerView()
     {
         InitializeComponent();
+        DataContext = new LabelControlDemoViewModel();
     }
 }
