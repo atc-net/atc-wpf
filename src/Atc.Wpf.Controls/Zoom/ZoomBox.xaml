@@ -1,0 +1,127 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:zoom="clr-namespace:Atc.Wpf.Controls.Zoom"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Controls.Zoom.ValueConverters">
+
+    <Style x:Key="AtcApps.Styles.ZoomBox" TargetType="{x:Type zoom:ZoomBox}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type zoom:ZoomBox}">
+                    <Grid>
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                                x:Name="PART_Content"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top" />
+                        </Border>
+                        <Canvas
+                            x:Name="PART_DragZoomCanvas"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Visibility="Collapsed">
+                            <Border
+                                x:Name="PART_DragZoomBorder"
+                                Background="{DynamicResource AtcApps.Brushes.Accent}"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
+                                BorderThickness="1"
+                                CornerRadius="1"
+                                Opacity="0.3" />
+                        </Canvas>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.ZoomScrollViewer" TargetType="{x:Type zoom:ZoomScrollViewer}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderThickness" Value="0.5" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type zoom:ZoomScrollViewer}">
+                    <ScrollViewer
+                        x:Name="PART_ZoomScrollViewer"
+                        CanContentScroll="True"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto">
+                        <zoom:ZoomBox
+                            x:Name="PART_ZoomControl"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            MinimumZoomType="{TemplateBinding MinimumZoomType}"
+                            MousePosition="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWayToSource, Path=MousePosition}"
+                            UseAnimations="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Path=UseAnimations}"
+                            ViewportZoom="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, Path=ViewportZoom}"
+                            ZoomInitialPosition="{TemplateBinding ZoomInitialPosition}">
+                            <ContentPresenter
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Content="{TemplateBinding Content}" />
+                        </zoom:ZoomBox>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.ZoomMiniMap" TargetType="{x:Type zoom:ZoomMiniMap}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderThickness" Value="0.5" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type zoom:ZoomMiniMap}">
+                    <Viewbox>
+                        <Canvas
+                            Name="PART_Content"
+                            Width="{Binding Path=Content.ActualWidth}"
+                            Height="{Binding Path=Content.ActualHeight}">
+                            <Border
+                                Name="PART_DraggingBorder"
+                                Canvas.Left="{Binding Path=ZoomContent.ContentOffsetX, Mode=TwoWay}"
+                                Canvas.Top="{Binding Path=ZoomContent.ContentOffsetY, Mode=TwoWay}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="10"
+                                CornerRadius="1">
+                                <Border.Width>
+                                    <MultiBinding Converter="{valueConverters:ZoomMiniMapClampMultiValueConverter}" ConverterParameter="width">
+                                        <Binding Mode="OneWay" Path="ZoomContent.ContentViewportWidth" />
+                                        <Binding Mode="OneWay" Path="ZoomContent.ContentOffsetX" />
+                                        <Binding Mode="OneWay" Path="ZoomContent.ViewportZoom" />
+                                        <Binding Path="ZoomContent" />
+                                    </MultiBinding>
+                                </Border.Width>
+                                <Border.Height>
+                                    <MultiBinding Converter="{valueConverters:ZoomMiniMapClampMultiValueConverter}" ConverterParameter="height">
+                                        <Binding Mode="OneWay" Path="ZoomContent.ContentViewportHeight" />
+                                        <Binding Mode="OneWay" Path="ZoomContent.ContentOffsetY" />
+                                        <Binding Mode="OneWay" Path="ZoomContent.ViewportZoom" />
+                                        <Binding Path="ZoomContent" />
+                                    </MultiBinding>
+                                </Border.Height>
+                            </Border>
+                            <Border
+                                Name="PART_SizingBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="10"
+                                CornerRadius="1"
+                                Visibility="Hidden" />
+                        </Canvas>
+                    </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

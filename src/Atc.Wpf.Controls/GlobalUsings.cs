@@ -45,6 +45,8 @@ global using Atc.Wpf.Controls.Progressing.Internal;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Controls.ViewModels;
+global using Atc.Wpf.Controls.Zoom.Internal;
+global using Atc.Wpf.Controls.Zoom.Messages;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Data.Models;
 global using Atc.Wpf.Documents.ColorSchemas;
@@ -57,7 +59,9 @@ global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.XamlToolkit;
+global using Atc.XamlToolkit.Command;
 global using Atc.XamlToolkit.Controls.Attributes;
+global using Atc.XamlToolkit.Messaging;
 global using Atc.XamlToolkit.Mvvm;
 
 global using ControlzEx.Theming;

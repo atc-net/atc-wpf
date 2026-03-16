@@ -267,4 +267,19 @@
   <data name="NoItemsFound" xml:space="preserve">
     <value>No items found</value>
   </data>
+  <data name="ZoomIn" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+  <data name="ZoomOut" xml:space="preserve">
+    <value>Zoom Out</value>
+  </data>
+  <data name="ZoomToFit" xml:space="preserve">
+    <value>Zoom to Fit</value>
+  </data>
+  <data name="ZoomToFill" xml:space="preserve">
+    <value>Zoom to Fill</value>
+  </data>
+  <data name="ZoomPercentFormat1" xml:space="preserve">
+    <value>Zoom {0}%</value>
+  </data>
 </root>

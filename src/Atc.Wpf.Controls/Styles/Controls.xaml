@@ -5,7 +5,8 @@
     xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
-    xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing">
+    xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing"
+    xmlns:zoom="clr-namespace:Atc.Wpf.Controls.Zoom">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Inputs/NumericBox.xaml" />
@@ -35,6 +36,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Progressing/Overlay.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/ImageButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Buttons/SplitButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Zoom/ZoomBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style BasedOn="{StaticResource AtcApps.Styles.NumericBox}" TargetType="{x:Type inputs:NumericBox}" />
@@ -73,5 +75,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Overlay}" TargetType="{x:Type progressing:Overlay}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ImageButton}" TargetType="{x:Type buttonControls:ImageButton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.SplitButton}" TargetType="{x:Type buttonControls:SplitButton}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ZoomBox}" TargetType="{x:Type zoom:ZoomBox}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ZoomScrollViewer}" TargetType="{x:Type zoom:ZoomScrollViewer}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ZoomMiniMap}" TargetType="{x:Type zoom:ZoomMiniMap}" />
 
 </ResourceDictionary>

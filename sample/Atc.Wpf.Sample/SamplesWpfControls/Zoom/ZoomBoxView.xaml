@@ -1,0 +1,161 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Zoom.ZoomBoxView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Zoom"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    xmlns:zoom="clr-namespace:Atc.Wpf.Controls.Zoom;assembly=Atc.Wpf.Controls"
+    d:DataContext="{d:DesignInstance Type=local:ZoomBoxDemoViewModel}"
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <atc:GridEx Columns="*,400">
+
+        <zoom:ZoomScrollViewer
+            x:Name="ZoomScrollViewer"
+            Grid.Column="0"
+            MinimumZoomType="{Binding MinimumZoomType}"
+            UseAnimations="{Binding UseAnimations}"
+            ViewportZoom="{Binding ViewportZoom, Mode=TwoWay}"
+            ZoomInitialPosition="{Binding ZoomInitialPosition}">
+            <Canvas Width="800" Height="600">
+                <!--  Sample content for zooming  -->
+                <Rectangle
+                    Canvas.Left="50"
+                    Canvas.Top="50"
+                    Width="200"
+                    Height="150"
+                    Fill="#FF4A90D9"
+                    RadiusX="10"
+                    RadiusY="10"
+                    Stroke="#FF2D5F8A"
+                    StrokeThickness="2" />
+                <Ellipse
+                    Canvas.Left="350"
+                    Canvas.Top="80"
+                    Width="180"
+                    Height="180"
+                    Fill="#FF7BC67E"
+                    Stroke="#FF4A8B4D"
+                    StrokeThickness="2" />
+                <Polygon
+                    Fill="#FFE8A838"
+                    Points="600,50 700,200 500,200"
+                    Stroke="#FFB8842A"
+                    StrokeThickness="2" />
+                <TextBlock
+                    Canvas.Left="100"
+                    Canvas.Top="300"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Foreground="#FF333333"
+                    Text="ZoomBox Demo" />
+                <TextBlock
+                    Canvas.Left="100"
+                    Canvas.Top="350"
+                    FontSize="16"
+                    Foreground="#FF666666"
+                    Text="Ctrl+Scroll to zoom, Ctrl+Drag to pan" />
+                <TextBlock
+                    Canvas.Left="100"
+                    Canvas.Top="380"
+                    FontSize="16"
+                    Foreground="#FF666666"
+                    Text="Ctrl+Shift+Drag to select zoom region" />
+                <TextBlock
+                    Canvas.Left="100"
+                    Canvas.Top="410"
+                    FontSize="16"
+                    Foreground="#FF666666"
+                    Text="Double-click to snap to point" />
+                <Rectangle
+                    Canvas.Left="50"
+                    Canvas.Top="460"
+                    Width="700"
+                    Height="100"
+                    Fill="#FFD64545"
+                    RadiusX="5"
+                    RadiusY="5"
+                    Stroke="#FFB33636"
+                    StrokeThickness="2" />
+                <TextBlock
+                    Canvas.Left="300"
+                    Canvas.Top="495"
+                    FontSize="20"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="Bottom Area" />
+            </Canvas>
+        </zoom:ZoomScrollViewer>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <atc:UniformSpacingPanel VerticalSpacing="8">
+
+                <!--  MiniMap  -->
+                <Expander Header="MiniMap" IsExpanded="True">
+                    <zoom:ZoomMiniMap
+                        Height="200"
+                        Margin="8"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
+                        BorderThickness="1"
+                        DataContext="{Binding ElementName=ZoomScrollViewer}"
+                        VisualElement="{Binding ElementName=ZoomScrollViewer, Path=Content}" />
+                </Expander>
+
+                <!--  Properties &amp; Commands  -->
+                <sample:SampleSidePanel SourceObject="{Binding}" />
+
+                <!--  Keyboard Shortcuts  -->
+                <Expander Header="Keyboard Shortcuts" IsExpanded="True">
+                    <atc:GridEx Margin="8,4" Columns="Auto,*" Rows="Auto,Auto,Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl + Scroll" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,2" Text="Zoom in / out" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl + Drag" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,2" Text="Pan" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Shift + Drag" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,2" Text="Drag-zoom rectangle" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Double-click" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,2" Text="Snap to point" />
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Alt + 8/9/0" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Margin="12,2" Text="Fill / Fit / 100%" />
+                    </atc:GridEx>
+                </Expander>
+
+                <!--  Mouse Interactions  -->
+                <Expander Header="Mouse Interactions" IsExpanded="False">
+                    <atc:GridEx Margin="8,4" Columns="Auto,*" Rows="Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Shift + Click" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,2" Text="Zoom in at point" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Shift + Right" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,2" Text="Zoom out at point" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl + +/-" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,2" Text="Zoom in / out" />
+                    </atc:GridEx>
+                </Expander>
+
+                <!--  Touch Gestures  -->
+                <Expander Header="Touch Gestures" IsExpanded="False">
+                    <atc:GridEx Margin="8,4" Columns="Auto,*" Rows="Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Pinch" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,2" Text="Zoom in / out" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Two-finger drag" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,2" Text="Pan" />
+                    </atc:GridEx>
+                </Expander>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+    </atc:GridEx>
+
+</UserControl>
