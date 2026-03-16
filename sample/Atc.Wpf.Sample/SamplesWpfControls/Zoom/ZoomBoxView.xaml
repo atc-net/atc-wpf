@@ -93,66 +93,176 @@
         </zoom:ZoomScrollViewer>
 
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-            <atc:UniformSpacingPanel VerticalSpacing="8">
+            <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
 
                 <!--  MiniMap  -->
-                <Expander Header="MiniMap" IsExpanded="True">
+                <GroupBox
+                    Margin="10,0,10,0"
+                    atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
+                    Header="MiniMap">
                     <zoom:ZoomMiniMap
+                        x:Name="ZoomMiniMap"
                         Height="200"
                         Margin="8"
                         BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
                         BorderThickness="1"
-                        DataContext="{Binding ElementName=ZoomScrollViewer}"
-                        VisualElement="{Binding ElementName=ZoomScrollViewer, Path=Content}" />
-                </Expander>
+                        DataContext="{Binding ElementName=ZoomScrollViewer}" />
+                </GroupBox>
 
                 <!--  Properties &amp; Commands  -->
                 <sample:SampleSidePanel SourceObject="{Binding}" />
 
                 <!--  Keyboard Shortcuts  -->
-                <Expander Header="Keyboard Shortcuts" IsExpanded="True">
-                    <atc:GridEx Margin="8,4" Columns="Auto,*" Rows="Auto,Auto,Auto,Auto,Auto">
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl + Scroll" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,2" Text="Zoom in / out" />
+                <GroupBox
+                    Margin="10,0,10,0"
+                    atc:HeaderedControlHelper.HeaderBackground="{DynamicResource AtcApps.Brushes.Accent4}"
+                    Header="Keyboard Shortcuts">
+                    <atc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8">
+                        <Expander Header="Keyboard Shortcuts" IsExpanded="True">
+                            <atc:GridEx
+                                Margin="8,4"
+                                Columns="Auto,*"
+                                Rows="Auto,Auto,Auto,Auto,Auto">
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl + Scroll" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Zoom in / out" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl + Drag" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,2" Text="Pan" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl + Drag" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Pan" />
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Shift + Drag" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,2" Text="Drag-zoom rectangle" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl+Shift + Drag" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Drag-zoom rectangle" />
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Double-click" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,2" Text="Snap to point" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Double-click" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Snap to point" />
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Alt + 8/9/0" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Margin="12,2" Text="Fill / Fit / 100%" />
-                    </atc:GridEx>
-                </Expander>
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl+Alt + 8/9/0" />
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Fill / Fit / 100%" />
+                            </atc:GridEx>
+                        </Expander>
 
-                <!--  Mouse Interactions  -->
-                <Expander Header="Mouse Interactions" IsExpanded="False">
-                    <atc:GridEx Margin="8,4" Columns="Auto,*" Rows="Auto,Auto,Auto">
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Shift + Click" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,2" Text="Zoom in at point" />
+                        <!--  Mouse Interactions  -->
+                        <Expander Header="Mouse Interactions" IsExpanded="False">
+                            <atc:GridEx
+                                Margin="8,4"
+                                Columns="Auto,*"
+                                Rows="Auto,Auto,Auto">
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl+Shift + Click" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Zoom in at point" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl+Shift + Right" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,2" Text="Zoom out at point" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl+Shift + Right" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Zoom out at point" />
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Ctrl + +/-" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,2" Text="Zoom in / out" />
-                    </atc:GridEx>
-                </Expander>
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Ctrl + +/-" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Zoom in / out" />
+                            </atc:GridEx>
+                        </Expander>
 
-                <!--  Touch Gestures  -->
-                <Expander Header="Touch Gestures" IsExpanded="False">
-                    <atc:GridEx Margin="8,4" Columns="Auto,*" Rows="Auto,Auto">
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Pinch" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,2" Text="Zoom in / out" />
+                        <!--  Touch Gestures  -->
+                        <Expander Header="Touch Gestures" IsExpanded="False">
+                            <atc:GridEx
+                                Margin="8,4"
+                                Columns="Auto,*"
+                                Rows="Auto,Auto">
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Pinch" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Zoom in / out" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2" FontWeight="SemiBold" Text="Two-finger drag" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,2" Text="Pan" />
-                    </atc:GridEx>
-                </Expander>
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,2"
+                                    FontWeight="SemiBold"
+                                    Text="Two-finger drag" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="12,2"
+                                    Text="Pan" />
+                            </atc:GridEx>
+                        </Expander>
+
+                    </atc:UniformSpacingPanel>
+                </GroupBox>
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>

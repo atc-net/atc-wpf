@@ -111,6 +111,16 @@ public partial class ZoomBox
         () => InternalViewportZoom < MaximumZoom);
 
     /// <summary>
+    /// Handles keyboard shortcuts internally. Uses PreviewKeyDown to catch Alt-modified keys
+    /// before they are swallowed as system key events.
+    /// </summary>
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        base.OnPreviewKeyDown(e);
+        TryHandleKeyDown(e);
+    }
+
+    /// <summary>
     /// Attempts to handle key down events and execute corresponding zoom commands.
     /// </summary>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
@@ -142,12 +152,15 @@ public partial class ZoomBox
             return e.Handled = true;
         }
 
-        if (!KeyboardHelper.IsKeyDownCtrlOrShift())
+        if (!KeyboardHelper.IsKeyDownCtrl() || !KeyboardHelper.IsKeyDownAlt())
         {
             return false;
         }
 
-        if (e.Key is Key.D8)
+        // When Alt is held, WPF reports Key.System; the actual key is in SystemKey.
+        var key = e.Key == Key.System ? e.SystemKey : e.Key;
+
+        if (key is Key.D8)
         {
             if (!ZoomFillCommand.CanExecute(parameter: null))
             {
@@ -158,7 +171,7 @@ public partial class ZoomBox
             return e.Handled = true;
         }
 
-        if (e.Key is Key.D9)
+        if (key is Key.D9)
         {
             if (!ZoomFitCommand.CanExecute(parameter: null))
             {
@@ -169,7 +182,7 @@ public partial class ZoomBox
             return e.Handled = true;
         }
 
-        if (e.Key is Key.D0)
+        if (key is Key.D0)
         {
             if (!ZoomPercentCommand.CanExecute(parameter: 100.0))
             {
@@ -200,8 +213,8 @@ public partial class ZoomBox
             SaveZoom();
         }
 
-        content.Focus();
-        Keyboard.Focus(content);
+        Focus();
+        Keyboard.Focus(this);
 
         mouseButtonDown = e.ChangedButton;
         zoomControlMouseDownPoint = e.GetPosition(this);
@@ -209,7 +222,7 @@ public partial class ZoomBox
 
         if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None &&
             (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None &&
-            e.ChangedButton == MouseButton.Left)
+            e.ChangedButton is MouseButton.Left or MouseButton.Right)
         {
             mouseHandlingMode = MouseHandlingModeType.Zooming;
         }

@@ -32,11 +32,7 @@
                     </StackPanel>
                 </atc:BusyOverlay>
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <atc:GridEx Rows="Auto,*">
 
                     <atc:UniformSpacingPanel
                         Grid.Row="0"
@@ -77,7 +73,7 @@
                             <atc:LabelTextBox LabelText="Database" WatermarkText="Enter database name" />
                         </StackPanel>
                     </atc:BusyOverlay>
-                </Grid>
+                </atc:GridEx>
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>

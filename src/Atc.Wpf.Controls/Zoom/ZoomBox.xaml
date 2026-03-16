@@ -83,14 +83,14 @@
                     <Viewbox>
                         <Canvas
                             Name="PART_Content"
-                            Width="{Binding Path=Content.ActualWidth}"
-                            Height="{Binding Path=Content.ActualHeight}">
+                            Width="{Binding Path=ZoomContent.Content.ActualWidth, FallbackValue=0}"
+                            Height="{Binding Path=ZoomContent.Content.ActualHeight, FallbackValue=0}">
                             <Border
                                 Name="PART_DraggingBorder"
                                 Canvas.Left="{Binding Path=ZoomContent.ContentOffsetX, Mode=TwoWay}"
                                 Canvas.Top="{Binding Path=ZoomContent.ContentOffsetY, Mode=TwoWay}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="#30000000"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
                                 BorderThickness="10"
                                 CornerRadius="1">
                                 <Border.Width>
@@ -112,8 +112,8 @@
                             </Border>
                             <Border
                                 Name="PART_SizingBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="#20000000"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
                                 BorderThickness="10"
                                 CornerRadius="1"
                                 Visibility="Hidden" />

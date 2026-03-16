@@ -75,6 +75,12 @@ public partial class ZoomScrollViewer : ScrollViewer
         RefreshProperties();
     }
 
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        base.OnPreviewKeyDown(e);
+        ZoomContent?.TryHandleKeyDown(e);
+    }
+
     /// <summary>
     /// Command to implement the zoom to fill.
     /// </summary>

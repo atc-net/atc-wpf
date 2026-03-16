@@ -210,6 +210,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
 
     public ZoomBox()
     {
+        Focusable = true;
         IsManipulationEnabled = true;
         Messenger.Default.Register<ZoomCommandMessage>(this, OnZoomCommandMessageHandler);
     }

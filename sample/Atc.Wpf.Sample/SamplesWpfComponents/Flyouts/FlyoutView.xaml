@@ -356,16 +356,7 @@
             FlyoutWidth="450"
             Header="Settings"
             Position="Right">
-            <Grid Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <atc:GridEx Margin="16" Rows="Auto,Auto,Auto,Auto,Auto,*,Auto">
 
                 <TextBlock
                     Grid.Row="0"
@@ -414,7 +405,7 @@
                         Content="Save"
                         Tag="{Binding ElementName=FormFlyout}" />
                 </StackPanel>
-            </Grid>
+            </atc:GridEx>
         </flyouts:Flyout>
 
         <!-- Nested Flyout Level 1 -->
