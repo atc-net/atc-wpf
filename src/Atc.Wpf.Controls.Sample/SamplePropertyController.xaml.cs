@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.Sample;
 public partial class SamplePropertyController
 {
     private readonly Dictionary<string, (PropertyInfo Property, FrameworkElement Editor)> editorMap = new(StringComparer.Ordinal);
-    private bool suppressEditorUpdates;
+    private string? suppressedPropertyName;
 
     [DependencyProperty(PropertyChangedCallback = nameof(OnSourceObjectChanged))]
     private object? sourceObject;
@@ -37,14 +37,15 @@ public partial class SamplePropertyController
         object? sender,
         PropertyChangedEventArgs e)
     {
-        if (suppressEditorUpdates ||
-            e.PropertyName is null ||
+        if (e.PropertyName is null ||
+            e.PropertyName == suppressedPropertyName ||
             !editorMap.TryGetValue(e.PropertyName, out var entry))
         {
             return;
         }
 
-        suppressEditorUpdates = true;
+        var previous = suppressedPropertyName;
+        suppressedPropertyName = e.PropertyName;
         try
         {
             var value = entry.Property.GetValue(SourceObject);
@@ -52,7 +53,7 @@ public partial class SamplePropertyController
         }
         finally
         {
-            suppressEditorUpdates = false;
+            suppressedPropertyName = previous;
         }
     }
 
@@ -99,6 +100,17 @@ public partial class SamplePropertyController
         PropertyMetadataInfo info,
         PropertyInfo propInfo)
     {
+        var editor = CreateEditor(info, propInfo);
+
+        // Command buttons span the full width — no label needed.
+        if (typeof(ICommand).IsAssignableFrom(propInfo.PropertyType))
+        {
+            var container = new Grid { Margin = new Thickness(0, 2, 0, 2) };
+            container.Children.Add(editor);
+            editorMap[info.PropertyName] = (propInfo, editor);
+            return container;
+        }
+
         var grid = new Grid { Margin = new Thickness(0, 2, 0, 2) };
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
@@ -118,7 +130,6 @@ public partial class SamplePropertyController
         Grid.SetColumn(label, 0);
         grid.Children.Add(label);
 
-        var editor = CreateEditor(info, propInfo);
         Grid.SetColumn(editor, 1);
         grid.Children.Add(editor);
 
@@ -133,6 +144,12 @@ public partial class SamplePropertyController
         PropertyInfo propInfo)
     {
         var currentValue = propInfo.GetValue(SourceObject);
+
+        // Commands must be checked before read-only, since get-only ICommand properties are marked IsReadOnly.
+        if (typeof(ICommand).IsAssignableFrom(propInfo.PropertyType))
+        {
+            return CreateCommandEditor(info, propInfo);
+        }
 
         if (info.IsReadOnly || info.EditorHint == EditorHint.ReadOnly)
         {
@@ -455,6 +472,29 @@ public partial class SamplePropertyController
         return textBox;
     }
 
+    private FrameworkElement CreateCommandEditor(
+        PropertyMetadataInfo info,
+        PropertyInfo propInfo)
+    {
+        var button = new Button
+        {
+            Content = info.DisplayName,
+            Padding = new Thickness(8, 4, 8, 4),
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
+        button.Click += (_, _) =>
+        {
+            var command = propInfo.GetValue(SourceObject) as ICommand;
+            if (command?.CanExecute(parameter: null) == true)
+            {
+                command.Execute(parameter: null);
+            }
+        };
+
+        return button;
+    }
+
     private static FrameworkElement CreateFallbackEditor(object? currentValue)
         => new TextBlock
         {
@@ -518,19 +558,20 @@ public partial class SamplePropertyController
         PropertyInfo propInfo,
         object? value)
     {
-        if (suppressEditorUpdates)
+        if (propInfo.Name == suppressedPropertyName)
         {
             return;
         }
 
-        suppressEditorUpdates = true;
+        var previous = suppressedPropertyName;
+        suppressedPropertyName = propInfo.Name;
         try
         {
             propInfo.SetValue(SourceObject, value);
         }
         finally
         {
-            suppressEditorUpdates = false;
+            suppressedPropertyName = previous;
         }
     }
 
@@ -538,12 +579,13 @@ public partial class SamplePropertyController
         PropertyInfo propInfo,
         double value)
     {
-        if (suppressEditorUpdates)
+        if (propInfo.Name == suppressedPropertyName)
         {
             return;
         }
 
-        suppressEditorUpdates = true;
+        var previous = suppressedPropertyName;
+        suppressedPropertyName = propInfo.Name;
         try
         {
             var targetType = UnwrapNullable(propInfo.PropertyType);
@@ -552,7 +594,7 @@ public partial class SamplePropertyController
         }
         finally
         {
-            suppressEditorUpdates = false;
+            suppressedPropertyName = previous;
         }
     }
 

@@ -1,0 +1,162 @@
+namespace Atc.Wpf.Controls.Zoom;
+
+[SuppressMessage("Design", "MA0048:File name must match type name", Justification = "OK - partial class")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:Partial elements should be documented", Justification = "OK - partial class")]
+public partial class ZoomBox
+{
+    private readonly Stack<UndoRedoStackItem> undoStack = new();
+    private readonly Stack<UndoRedoStackItem> redoStack = new();
+    private KeepAliveTimer? timer750MilliSeconds;
+    private KeepAliveTimer? timer1500MilliSeconds;
+    private UndoRedoStackItem? viewportZoomCache;
+    private RelayCommand? redoZoomCommand;
+    private RelayCommand? undoZoomCommand;
+
+    private bool CanUndoZoom => undoStack.Count != 0;
+
+    private bool CanRedoZoom => redoStack.Count != 0;
+
+    /// <summary>
+    /// Record the previous zoom level, so that we can return to it.
+    /// </summary>
+    public void SaveZoom()
+    {
+        viewportZoomCache = CreateUndoRedoStackItem();
+        if (undoStack.Count != 0 &&
+            viewportZoomCache.Equals(undoStack.Peek()))
+        {
+            return;
+        }
+
+        undoStack.Push(viewportZoomCache);
+        redoStack.Clear();
+        undoZoomCommand?.RaiseCanExecuteChanged();
+        redoZoomCommand?.RaiseCanExecuteChanged();
+    }
+
+    /// <summary>
+    /// Record the last saved zoom level, so that we can return to it if no activity for 750 milliseconds.
+    /// </summary>
+    [SuppressMessage("Major Code Smell", "S1121:Assignments should not be made from within sub-expressions", Justification = "OK.")]
+    public void DelayedSaveZoom750MilliSeconds()
+    {
+        if (timer750MilliSeconds?.Running != true)
+        {
+            viewportZoomCache = CreateUndoRedoStackItem();
+        }
+
+        if (viewportZoomCache is null)
+        {
+            return;
+        }
+
+        (timer750MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(740), () =>
+        {
+            if (undoStack.Count != 0 &&
+                viewportZoomCache.Equals(undoStack.Peek()))
+            {
+                return;
+            }
+
+            undoStack.Push(viewportZoomCache);
+            redoStack.Clear();
+            undoZoomCommand?.RaiseCanExecuteChanged();
+            redoZoomCommand?.RaiseCanExecuteChanged();
+        })).Nudge();
+    }
+
+    /// <summary>
+    /// Record the last saved zoom level, so that we can return to it if no activity for 1500 milliseconds.
+    /// </summary>
+    [SuppressMessage("Major Code Smell", "S1121:Assignments should not be made from within sub-expressions", Justification = "OK.")]
+    public void DelayedSaveZoom1500MilliSeconds()
+    {
+        if (timer1500MilliSeconds?.Running != true)
+        {
+            viewportZoomCache = CreateUndoRedoStackItem();
+        }
+
+        if (viewportZoomCache is null)
+        {
+            return;
+        }
+
+        (timer1500MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(1500), () =>
+        {
+            if (undoStack.Count != 0 &&
+                viewportZoomCache.Equals(undoStack.Peek()))
+            {
+                return;
+            }
+
+            undoStack.Push(viewportZoomCache);
+            redoStack.Clear();
+            undoZoomCommand?.RaiseCanExecuteChanged();
+            redoZoomCommand?.RaiseCanExecuteChanged();
+        })).Nudge();
+    }
+
+    private UndoRedoStackItem CreateUndoRedoStackItem()
+        => new(
+            ContentOffsetX,
+            ContentOffsetY,
+            ContentViewportWidth,
+            ContentViewportHeight,
+            InternalViewportZoom);
+
+    private void UndoZoom()
+    {
+        viewportZoomCache = CreateUndoRedoStackItem();
+        if (undoStack.Count == 0 ||
+            !viewportZoomCache.Equals(undoStack.Peek()))
+        {
+            redoStack.Push(viewportZoomCache);
+        }
+
+        viewportZoomCache = undoStack.Pop();
+        AnimatedZoomTo(viewportZoomCache.Zoom, viewportZoomCache.Rect);
+        SetScrollViewerFocus();
+        undoZoomCommand?.RaiseCanExecuteChanged();
+        redoZoomCommand?.RaiseCanExecuteChanged();
+    }
+
+    private void RedoZoom()
+    {
+        viewportZoomCache = CreateUndoRedoStackItem();
+        if (redoStack.Count == 0 ||
+            !viewportZoomCache.Equals(redoStack.Peek()))
+        {
+            undoStack.Push(viewportZoomCache);
+        }
+
+        viewportZoomCache = redoStack.Pop();
+        AnimatedZoomTo(viewportZoomCache.Zoom, viewportZoomCache.Rect);
+        SetScrollViewerFocus();
+        undoZoomCommand?.RaiseCanExecuteChanged();
+        redoZoomCommand?.RaiseCanExecuteChanged();
+    }
+
+    /// <summary>
+    /// Command to implement Undo.
+    /// </summary>
+    public ICommand UndoZoomCommand
+        => undoZoomCommand ??= new RelayCommand(UndoZoom, () => CanUndoZoom);
+
+    /// <summary>
+    /// Command to implement Redo.
+    /// </summary>
+    public ICommand RedoZoomCommand
+        => redoZoomCommand ??= new RelayCommand(RedoZoom, () => CanRedoZoom);
+
+    private void SetScrollViewerFocus()
+    {
+        var scrollViewer = content?.TryFindParent<ScrollViewer>();
+        if (scrollViewer is null)
+        {
+            return;
+        }
+
+        Keyboard.Focus(scrollViewer);
+        scrollViewer.Focus();
+    }
+}

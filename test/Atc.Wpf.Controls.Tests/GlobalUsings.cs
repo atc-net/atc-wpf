@@ -10,6 +10,8 @@ global using System.Windows.Media;
 global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
+global using Atc.Wpf.Controls.Zoom.Internal;
+global using Atc.Wpf.Controls.Zoom.ValueConverters;
 global using Atc.XUnit;
 
 global using Xunit;

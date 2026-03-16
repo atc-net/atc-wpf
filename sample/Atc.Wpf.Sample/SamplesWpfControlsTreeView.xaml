@@ -253,4 +253,11 @@
             SamplePath="Selectors.LanguageSelectorView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Zoom">
+        <sample:SampleTreeViewItem
+            Header="ZoomBox"
+            IsExpanded="True"
+            SamplePath="Zoom.ZoomBoxView" />
+    </TreeViewItem>
+
 </TreeView>
