@@ -161,17 +161,7 @@
                     Margin="0,0,0,20"
                     HorizontalAlignment="Left"
                     Header="User Profile">
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <atc:GridEx Margin="10" Columns="Auto,*" Rows="Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             Grid.Row="0"
@@ -222,7 +212,7 @@
                                 Content="Save" />
                             <Button Width="80" Content="Cancel" />
                         </StackPanel>
-                    </Grid>
+                    </atc:GridEx>
                 </atc:GroupBoxExpander>
 
             </atc:UniformSpacingPanel>

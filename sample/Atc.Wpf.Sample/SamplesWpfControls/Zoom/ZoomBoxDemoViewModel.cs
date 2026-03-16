@@ -7,7 +7,7 @@ public partial class ZoomBoxDemoViewModel : ViewModelBase
     private double viewportZoom = 1.0;
 
     [PropertyDisplay("Viewport Zoom", "Zoom", 1)]
-    [PropertyRange(0.1, 10.0, 0.1)]
+    [PropertyRange(0.1, 5.0, 0.1)]
     [PropertyEditorHint(EditorHint.Slider)]
     public double ViewportZoom
     {
@@ -27,7 +27,7 @@ public partial class ZoomBoxDemoViewModel : ViewModelBase
     }
 
     [PropertyDisplay("Zoom %", "Zoom", 2)]
-    [PropertyRange(1, 1000, 1)]
+    [PropertyRange(10, 500, 1)]
     public int ZoomPercent
     {
         get => (int)System.Math.Round(ViewportZoom * 100);

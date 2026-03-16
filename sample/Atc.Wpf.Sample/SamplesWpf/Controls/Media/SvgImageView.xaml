@@ -8,7 +8,6 @@
     xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Controls.Media"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
-    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
     d:DataContext="{d:DesignInstance Type=local:SvgImageDemoViewModel}"
     d:DesignHeight="900"
     d:DesignWidth="900"
@@ -16,24 +15,17 @@
 
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <StackPanel
+                <!--  ReSharper disable once MarkupAttributeTypo  -->
+                <atc:SvgImage
+                    x:Name="MySvgImage"
+                    Width="{Binding ImageWidth}"
+                    Height="{Binding ImageHeight}"
                     Margin="20"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-                    <!--  ReSharper disable once MarkupAttributeTypo  -->
-                    <atc:SvgImage
-                        x:Name="MySvgImage"
-                        Width="{Binding ImageWidth}"
-                        Height="{Binding ImageHeight}"
-                        Margin="20"
-                        Background="{Binding BackgroundColor, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
-                        ControlSizeType="{Binding ControlSizeType}"
-                        Source="/Atc.Wpf.Sample;component/Assets/eggeaster.svg" />
-                </StackPanel>
+                    Background="{Binding BackgroundColor, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
+                    ControlSizeType="{Binding ControlSizeType}"
+                    Source="/Atc.Wpf.Sample;component/Assets/eggeaster.svg" />
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>

@@ -29,12 +29,7 @@
         </GroupBox>
 
         <GroupBox Header="Usage">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <atc:GridEx Rows="Auto,*,Auto">
 
                 <!-- Navigation Buttons -->
                 <atc:UniformSpacingPanel
@@ -93,7 +88,7 @@
                     <TextBlock Text="{Binding NavigationStatus}" />
                 </Border>
 
-            </Grid>
+            </atc:GridEx>
         </GroupBox>
     </atc:AutoGrid>
 

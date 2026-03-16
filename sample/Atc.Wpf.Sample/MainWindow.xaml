@@ -84,11 +84,7 @@
             </StackPanel>
 
             <!--  Grid with TabControl headers on left, TreeViews on right  -->
-            <Grid Margin="0,0,5,10" DockPanel.Dock="Bottom">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <atc:GridEx Margin="0,0,5,10" Columns="Auto,*" DockPanel.Dock="Bottom">
 
                 <!--  TabControl for styled category headers (no content)  -->
                 <TabControl
@@ -106,15 +102,12 @@
                         Width="200"
                         Tag="Wpf">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpf"
@@ -122,20 +115,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfControls" Tag="WpfControls">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Controls" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfControls"
@@ -143,20 +133,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfForms" Tag="WpfForms">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Forms" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfForms"
@@ -164,20 +151,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfComponents" Tag="WpfComponents">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Components" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfComponents"
@@ -185,20 +169,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfNetwork" Tag="WpfNetwork">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Network" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfNetwork"
@@ -206,20 +187,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfTheming" Tag="WpfTheming">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.Theming" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfTheming"
@@ -227,20 +205,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfSourceGenerators" Tag="WpfSourceGenerators">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.SourceGenerators" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfSourceGenerators"
@@ -248,20 +223,17 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                     <TabItem x:Name="TabWpfFontIcons" Tag="WpfFontIcons">
                         <TabItem.Header>
-                            <Grid
+                            <atc:GridEx
+                                Columns="*,Auto"
                                 TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
                                 TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
                                 TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Wpf.FontIcons" />
                                 <dataDisplay:Badge
                                     x:Name="BadgeWpfFontIcons"
@@ -269,7 +241,7 @@
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     BadgePlacementMode="Right" />
-                            </Grid>
+                            </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
                 </TabControl>
@@ -319,7 +291,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
-            </Grid>
+            </atc:GridEx>
         </DockPanel>
 
         <Grid

@@ -78,7 +78,12 @@ public partial class SamplePropertyController
                 Margin = new Thickness(0, 0, 0, 4),
             };
 
-            var panel = new StackPanel();
+            var panel = new UniformSpacingPanel
+            {
+                Margin =  new Thickness(0, 5, 0, 5),
+                Orientation = Orientation.Vertical,
+                VerticalSpacing = 5,
+            };
 
             foreach (var info in properties)
             {
