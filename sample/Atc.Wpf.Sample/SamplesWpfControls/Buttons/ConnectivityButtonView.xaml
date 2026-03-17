@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Buttons.ConnectivityButtonView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,9 +15,7 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:ConnectivityButton
                     ConnectCommand="{Binding Path=ConnectCommand}"

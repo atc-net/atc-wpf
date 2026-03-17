@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.RowColView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,35 +7,27 @@
     xmlns:grid="clr-namespace:Atc.Wpf.Controls.Layouts.Grid;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
-    d:DesignHeight="900" d:DesignWidth="900" mc:Ignorable="d">
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <grid:Row
-                    x:Name="InteractiveRow"
-                    Gutter="{Binding Spacing}">
+                <grid:Row x:Name="InteractiveRow" Gutter="{Binding Spacing}">
                     <grid:Col Span="8">
-                        <Border Background="#E3F2FD" Padding="16">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Col Span=8" />
+                        <Border Padding="16" Background="#E3F2FD">
+                            <TextBlock HorizontalAlignment="Center" Text="Col Span=8" />
                         </Border>
                     </grid:Col>
                     <grid:Col Span="8">
-                        <Border Background="#BBDEFB" Padding="16">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Col Span=8" />
+                        <Border Padding="16" Background="#BBDEFB">
+                            <TextBlock HorizontalAlignment="Center" Text="Col Span=8" />
                         </Border>
                     </grid:Col>
                     <grid:Col Span="8">
-                        <Border Background="#90CAF9" Padding="16">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Col Span=8" />
+                        <Border Padding="16" Background="#90CAF9">
+                            <TextBlock HorizontalAlignment="Center" Text="Col Span=8" />
                         </Border>
                     </grid:Col>
                 </grid:Row>
@@ -46,24 +38,18 @@
                     Text="Basic Row with Equal Columns" />
                 <grid:Row Margin="0,0,0,15" Gutter="16">
                     <grid:Col Span="8">
-                        <Border Background="#E3F2FD" Padding="16">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Col Span=8" />
+                        <Border Padding="16" Background="#E3F2FD">
+                            <TextBlock HorizontalAlignment="Center" Text="Col Span=8" />
                         </Border>
                     </grid:Col>
                     <grid:Col Span="8">
-                        <Border Background="#BBDEFB" Padding="16">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Col Span=8" />
+                        <Border Padding="16" Background="#BBDEFB">
+                            <TextBlock HorizontalAlignment="Center" Text="Col Span=8" />
                         </Border>
                     </grid:Col>
                     <grid:Col Span="8">
-                        <Border Background="#90CAF9" Padding="16">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Col Span=8" />
+                        <Border Padding="16" Background="#90CAF9">
+                            <TextBlock HorizontalAlignment="Center" Text="Col Span=8" />
                         </Border>
                     </grid:Col>
                 </grid:Row>
@@ -83,14 +69,10 @@
                                 Xs="24"
                                 Xxl="4" />
                         </grid:Col.Layout>
-                        <Border Background="#C8E6C9" Padding="16">
+                        <Border Padding="16" Background="#C8E6C9">
                             <StackPanel>
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Text="Column 1" />
-                                <TextBlock
-                                    FontSize="10"
-                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                                <TextBlock FontWeight="Bold" Text="Column 1" />
+                                <TextBlock FontSize="10" Text="Xs=24, Sm=12, Md=8, Lg=6" />
                             </StackPanel>
                         </Border>
                     </grid:Col>
@@ -104,14 +86,10 @@
                                 Xs="24"
                                 Xxl="4" />
                         </grid:Col.Layout>
-                        <Border Background="#A5D6A7" Padding="16">
+                        <Border Padding="16" Background="#A5D6A7">
                             <StackPanel>
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Text="Column 2" />
-                                <TextBlock
-                                    FontSize="10"
-                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                                <TextBlock FontWeight="Bold" Text="Column 2" />
+                                <TextBlock FontSize="10" Text="Xs=24, Sm=12, Md=8, Lg=6" />
                             </StackPanel>
                         </Border>
                     </grid:Col>
@@ -125,14 +103,10 @@
                                 Xs="24"
                                 Xxl="4" />
                         </grid:Col.Layout>
-                        <Border Background="#81C784" Padding="16">
+                        <Border Padding="16" Background="#81C784">
                             <StackPanel>
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Text="Column 3" />
-                                <TextBlock
-                                    FontSize="10"
-                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                                <TextBlock FontWeight="Bold" Text="Column 3" />
+                                <TextBlock FontSize="10" Text="Xs=24, Sm=12, Md=8, Lg=6" />
                             </StackPanel>
                         </Border>
                     </grid:Col>
@@ -146,14 +120,10 @@
                                 Xs="24"
                                 Xxl="4" />
                         </grid:Col.Layout>
-                        <Border Background="#66BB6A" Padding="16">
+                        <Border Padding="16" Background="#66BB6A">
                             <StackPanel>
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Text="Column 4" />
-                                <TextBlock
-                                    FontSize="10"
-                                    Text="Xs=24, Sm=12, Md=8, Lg=6" />
+                                <TextBlock FontWeight="Bold" Text="Column 4" />
+                                <TextBlock FontSize="10" Text="Xs=24, Sm=12, Md=8, Lg=6" />
                             </StackPanel>
                         </Border>
                     </grid:Col>
@@ -174,13 +144,9 @@
                                 Xs="24"
                                 Xxl="4" />
                         </grid:Col.Layout>
-                        <Border
-                            Background="#FFF3E0"
-                            Padding="16">
+                        <Border Padding="16" Background="#FFF3E0">
                             <StackPanel>
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Text="Sidebar" />
+                                <TextBlock FontWeight="Bold" Text="Sidebar" />
                                 <TextBlock Text="Navigation" />
                                 <TextBlock Text="Links" />
                                 <TextBlock Text="Settings" />
@@ -197,16 +163,10 @@
                                 Xs="24"
                                 Xxl="20" />
                         </grid:Col.Layout>
-                        <Border
-                            Background="#FFE0B2"
-                            Padding="16">
+                        <Border Padding="16" Background="#FFE0B2">
                             <StackPanel>
-                                <TextBlock
-                                    FontWeight="Bold"
-                                    Text="Main Content" />
-                                <TextBlock
-                                    Text="This area takes up the remaining space. On small screens, both columns stack vertically."
-                                    TextWrapping="Wrap" />
+                                <TextBlock FontWeight="Bold" Text="Main Content" />
+                                <TextBlock Text="This area takes up the remaining space. On small screens, both columns stack vertically." TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
                     </grid:Col>

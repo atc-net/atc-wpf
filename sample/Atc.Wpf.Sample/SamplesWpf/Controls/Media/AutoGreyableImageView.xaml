@@ -1,4 +1,4 @@
-<!--  ReSharper disable IdentifierTypo  -->
+﻿<!--  ReSharper disable IdentifierTypo  -->
 <!--  ReSharper disable MarkupAttributeTypo  -->
 <UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpf.Controls.Media.AutoGreyableImageView"
@@ -15,9 +15,7 @@
     mc:Ignorable="d">
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:AutoGreyableImage
                     Width="640"

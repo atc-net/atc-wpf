@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfFontIcons.FontIconViewerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -17,37 +17,35 @@
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:BusyOverlay DisplayAfter="0" IsBusy="{Binding IsBusy}">
-                <ItemsControl ItemsSource="{Binding IconsView}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:IconItem}">
-                            <StackPanel
-                                Width="150"
-                                Margin="20"
-                                Orientation="Vertical"
-                                ToolTip="{Binding ToolTip}">
-                                <Image
-                                    Width="50"
-                                    Height="50"
-                                    HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{x:Static local:FontIconViewerImageConverter.Instance}">
-                                            <Binding Path="EnumValue" />
-                                            <Binding Path="DataContext.IconColor" RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    Text="{Binding DisplayName}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding IconsView}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:IconItem}">
+                                <StackPanel
+                                    Width="150"
+                                    Margin="20"
+                                    Orientation="Vertical"
+                                    ToolTip="{Binding ToolTip}">
+                                    <Image
+                                        Width="50"
+                                        Height="50"
+                                        HorizontalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{x:Static local:FontIconViewerImageConverter.Instance}">
+                                                <Binding Path="EnumValue" />
+                                                <Binding Path="DataContext.IconColor" RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding DisplayName}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </atc:BusyOverlay>
 
             </atc:UniformSpacingPanel>

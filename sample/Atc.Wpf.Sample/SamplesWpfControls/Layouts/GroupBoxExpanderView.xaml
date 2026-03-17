@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.GroupBoxExpanderView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,12 +7,12 @@
     xmlns:helpers="clr-namespace:Atc.Wpf.Controls.Helpers;assembly=Atc.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
-    d:DesignHeight="900" d:DesignWidth="900" mc:Ignorable="d">
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:GroupBoxExpander
                     x:Name="InteractiveGroupBoxExpander"
@@ -161,7 +161,10 @@
                     Margin="0,0,0,20"
                     HorizontalAlignment="Left"
                     Header="User Profile">
-                    <atc:GridEx Margin="10" Columns="Auto,*" Rows="Auto,Auto,Auto,Auto">
+                    <atc:GridEx
+                        Margin="10"
+                        Columns="Auto,*"
+                        Rows="Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             Grid.Row="0"

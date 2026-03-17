@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpf.Commands.RelayCommandView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,9 +18,7 @@
 
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <Button Command="{Binding Path=Test1Command}" Content="Button with no canExecute" />
 

@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Buttons.SplitButtonView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,15 +13,13 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:SplitButton
                     x:Name="SaveSplitButton"
+                    Click="OnSaveClick"
                     Content="{Binding Content}"
-                    IsEnabled="{Binding IsEnabled}"
-                    Click="OnSaveClick">
+                    IsEnabled="{Binding IsEnabled}">
                     <atc:SplitButton.DropdownContent>
                         <StackPanel>
                             <Button
@@ -74,9 +72,7 @@
                     </atc:SplitButton.DropdownContent>
                 </atc:SplitButton>
 
-                <atc:SplitButton
-                    Content="Disabled"
-                    IsEnabled="False">
+                <atc:SplitButton Content="Disabled" IsEnabled="False">
                     <atc:SplitButton.DropdownContent>
                         <TextBlock Text="This should not appear." />
                     </atc:SplitButton.DropdownContent>

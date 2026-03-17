@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpf.Clipboard.ClipboardServiceView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,9 +18,7 @@
 
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <TextBlock TextWrapping="Wrap">
                     The IClipboardService interface provides MVVM-friendly clipboard operations
@@ -33,14 +31,12 @@
                     Orientation="Vertical"
                     Spacing="12">
 
-                    <!-- Status -->
-                    <TextBlock
-                        FontWeight="SemiBold"
-                        Text="{Binding StatusText, StringFormat='Status: {0}'}" />
+                    <!--  Status  -->
+                    <TextBlock FontWeight="SemiBold" Text="{Binding StatusText, StringFormat='Status: {0}'}" />
 
                     <Separator />
 
-                    <!-- Text Operations -->
+                    <!--  Text Operations  -->
                     <TextBlock
                         FontSize="16"
                         FontWeight="Bold"
@@ -66,7 +62,7 @@
 
                     <Separator />
 
-                    <!-- Image Operations -->
+                    <!--  Image Operations  -->
                     <TextBlock
                         FontSize="16"
                         FontWeight="Bold"
@@ -98,7 +94,7 @@
 
                     <Separator />
 
-                    <!-- Clear and Monitor -->
+                    <!--  Clear and Monitor  -->
                     <TextBlock
                         FontSize="16"
                         FontWeight="Bold"
@@ -129,13 +125,13 @@
 
                     <Separator />
 
-                    <!-- Monitor Log -->
+                    <!--  Monitor Log  -->
                     <atc:GridEx Columns="*,Auto" Rows="Auto">
                         <TextBlock
+                            VerticalAlignment="Center"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Monitor Log"
-                            VerticalAlignment="Center" />
+                            Text="Monitor Log" />
                         <Button
                             Grid.Column="1"
                             MinWidth="100"
@@ -143,19 +139,17 @@
                             Content="Clear Log" />
                     </atc:GridEx>
 
-                    <ListBox
-                        MaxHeight="150"
-                        ItemsSource="{Binding MonitorLog}" />
+                    <ListBox MaxHeight="150" ItemsSource="{Binding MonitorLog}" />
 
                     <Separator />
 
-                    <!-- History -->
+                    <!--  History  -->
                     <atc:GridEx Columns="*,Auto" Rows="Auto">
                         <TextBlock
+                            VerticalAlignment="Center"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Clipboard History"
-                            VerticalAlignment="Center" />
+                            Text="Clipboard History" />
                         <Button
                             Grid.Column="1"
                             MinWidth="100"
@@ -163,9 +157,7 @@
                             Content="Clear History" />
                     </atc:GridEx>
 
-                    <ListBox
-                        MaxHeight="200"
-                        ItemsSource="{Binding HistoryEntries}">
+                    <ListBox MaxHeight="200" ItemsSource="{Binding HistoryEntries}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>

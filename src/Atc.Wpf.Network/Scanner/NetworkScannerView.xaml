@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Network.Scanner.NetworkScannerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -74,23 +74,11 @@
                     SelectionMode="Single">
                     <ListView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem
-                                Command="{Binding Path=CopyIpAddressCommand}"
-                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
-                                                             Key=CopyIpAddress}" />
-                            <MenuItem
-                                Command="{Binding Path=CopyHostnameCommand}"
-                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
-                                                             Key=CopyHostname}" />
-                            <MenuItem
-                                Command="{Binding Path=CopyMacAddressCommand}"
-                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
-                                                             Key=CopyMacAddress}" />
+                            <MenuItem Command="{Binding Path=CopyIpAddressCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyIpAddress}" />
+                            <MenuItem Command="{Binding Path=CopyHostnameCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyHostname}" />
+                            <MenuItem Command="{Binding Path=CopyMacAddressCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyMacAddress}" />
                             <Separator />
-                            <MenuItem
-                                Command="{Binding Path=CopyAllInfoCommand}"
-                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
-                                                             Key=CopyAllInfo}" />
+                            <MenuItem Command="{Binding Path=CopyAllInfoCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyAllInfo}" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <ListView.View>

@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.UndoRedo.UndoRedoHistoryViewSampleView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,18 +20,24 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <atc:GridEx x:Name="InteractiveHistoryDemo" Columns="300,*" Rows="*">
+                <atc:GridEx
+                    x:Name="InteractiveHistoryDemo"
+                    Columns="300,*"
+                    Rows="*">
                     <StackPanel Grid.Column="0" Margin="0,0,10,0">
                         <atc:UniformSpacingPanel Orientation="Vertical" Spacing="8">
                             <TextBox Text="{Binding TextInput, UpdateSourceTrigger=PropertyChanged}" />
                             <Button Command="{Binding SetTextCommand}" Content="Set Text (tracked)" />
                             <Button Command="{Binding GroupedChangeCommand}" Content="Grouped Change" />
                         </atc:UniformSpacingPanel>
-                        <TextBlock Margin="0,10,0,0" FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding CurrentText}" />
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            FontFamily="Consolas"
+                            FontSize="14"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            Text="{Binding CurrentText}" />
                     </StackPanel>
                     <components:UndoRedoHistoryView
                         Grid.Column="1"

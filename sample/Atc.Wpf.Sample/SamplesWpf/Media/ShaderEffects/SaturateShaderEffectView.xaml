@@ -1,11 +1,11 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpf.Media.ShaderEffects.SaturateShaderEffectView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Media.ShaderEffects"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:shaderEffects="clr-namespace:Atc.Wpf.Media.ShaderEffects;assembly=Atc.Wpf"
     d:DataContext="{d:DesignInstance Type=local:SaturateShaderEffectDemoViewModel}"
@@ -15,18 +15,31 @@
 
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:GridEx
                     Margin="20"
                     Columns="*,10,*"
                     Rows="Auto,1,Auto">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Original image" />
-                    <Image Grid.Row="2" Grid.Column="0" Width="640" Source="../../../Assets/road.jpg" />
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Changed image" />
-                    <Image x:Name="TestImage" Grid.Row="2" Grid.Column="2" Width="640" Source="../../../Assets/road.jpg">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Original image" />
+                    <Image
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Width="640"
+                        Source="../../../Assets/road.jpg" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="Changed image" />
+                    <Image
+                        x:Name="TestImage"
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Width="640"
+                        Source="../../../Assets/road.jpg">
                         <Image.Effect>
                             <shaderEffects:SaturateShaderEffect Progress="{Binding DataContext.Progress, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                         </Image.Effect>

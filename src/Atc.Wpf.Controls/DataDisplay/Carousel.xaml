@@ -1,10 +1,10 @@
-<ResourceDictionary
+﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
     xmlns:local="clr-namespace:Atc.Wpf.Controls">
 
-    <!-- Navigation Button Style -->
+    <!--  Navigation Button Style  -->
     <Style x:Key="AtcApps.Styles.Carousel.NavigationButton" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
@@ -23,9 +23,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="20"
                         Opacity="{TemplateBinding Opacity}">
-                        <ContentPresenter
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -45,7 +43,7 @@
         </Setter>
     </Style>
 
-    <!-- Main Carousel Style -->
+    <!--  Main Carousel Style  -->
     <Style x:Key="AtcApps.Styles.Carousel" TargetType="{x:Type dataDisplay:Carousel}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Background" Value="Transparent" />
@@ -61,34 +59,32 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        ClipToBounds="True">
+                        ClipToBounds="True"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                         <Grid>
-                            <!-- Content Area -->
-                            <Canvas
-                                x:Name="PART_ContentCanvas"
-                                ClipToBounds="True">
+                            <!--  Content Area  -->
+                            <Canvas x:Name="PART_ContentCanvas" ClipToBounds="True">
                                 <ContentPresenter
                                     x:Name="PART_CurrentContent"
-                                    Width="{Binding ActualWidth, ElementName=PART_ContentCanvas}"
-                                    Height="{Binding ActualHeight, ElementName=PART_ContentCanvas}"
-                                    Canvas.Left="0"
-                                    Canvas.Top="0" />
-                                <ContentPresenter
-                                    x:Name="PART_NextContent"
-                                    Width="{Binding ActualWidth, ElementName=PART_ContentCanvas}"
-                                    Height="{Binding ActualHeight, ElementName=PART_ContentCanvas}"
                                     Canvas.Left="0"
                                     Canvas.Top="0"
+                                    Width="{Binding ActualWidth, ElementName=PART_ContentCanvas}"
+                                    Height="{Binding ActualHeight, ElementName=PART_ContentCanvas}" />
+                                <ContentPresenter
+                                    x:Name="PART_NextContent"
+                                    Canvas.Left="0"
+                                    Canvas.Top="0"
+                                    Width="{Binding ActualWidth, ElementName=PART_ContentCanvas}"
+                                    Height="{Binding ActualHeight, ElementName=PART_ContentCanvas}"
                                     Opacity="0" />
                             </Canvas>
 
-                            <!-- Navigation Buttons -->
+                            <!--  Navigation Buttons  -->
                             <Button
                                 x:Name="PART_PreviousButton"
+                                Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Margin="10,0,0,0"
                                 Style="{StaticResource AtcApps.Styles.Carousel.NavigationButton}">
                                 <Path
                                     Width="12"
@@ -100,9 +96,9 @@
 
                             <Button
                                 x:Name="PART_NextButton"
+                                Margin="0,0,10,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Margin="0,0,10,0"
                                 Style="{StaticResource AtcApps.Styles.Carousel.NavigationButton}">
                                 <Path
                                     Width="12"
@@ -112,34 +108,34 @@
                                     Stretch="Uniform" />
                             </Button>
 
-                            <!-- Indicators Panel - Bottom (default) -->
+                            <!--  Indicators Panel - Bottom (default)  -->
                             <StackPanel
                                 x:Name="PART_IndicatorsPanel"
+                                Margin="0,0,0,15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Bottom"
-                                Margin="0,0,0,15"
                                 Orientation="Horizontal" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- Hide navigation arrows -->
+                        <!--  Hide navigation arrows  -->
                         <Trigger Property="ShowNavigationArrows" Value="False">
                             <Setter TargetName="PART_PreviousButton" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_NextButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <!-- Hide indicators -->
+                        <!--  Hide indicators  -->
                         <Trigger Property="ShowIndicators" Value="False">
                             <Setter TargetName="PART_IndicatorsPanel" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <!-- Indicator position: Top -->
+                        <!--  Indicator position: Top  -->
                         <Trigger Property="IndicatorPosition" Value="Top">
                             <Setter TargetName="PART_IndicatorsPanel" Property="VerticalAlignment" Value="Top" />
                             <Setter TargetName="PART_IndicatorsPanel" Property="Margin" Value="0,15,0,0" />
                         </Trigger>
 
-                        <!-- Indicator position: Left -->
+                        <!--  Indicator position: Left  -->
                         <Trigger Property="IndicatorPosition" Value="Left">
                             <Setter TargetName="PART_IndicatorsPanel" Property="HorizontalAlignment" Value="Left" />
                             <Setter TargetName="PART_IndicatorsPanel" Property="VerticalAlignment" Value="Center" />
@@ -147,7 +143,7 @@
                             <Setter TargetName="PART_IndicatorsPanel" Property="Margin" Value="15,0,0,0" />
                         </Trigger>
 
-                        <!-- Indicator position: Right -->
+                        <!--  Indicator position: Right  -->
                         <Trigger Property="IndicatorPosition" Value="Right">
                             <Setter TargetName="PART_IndicatorsPanel" Property="HorizontalAlignment" Value="Right" />
                             <Setter TargetName="PART_IndicatorsPanel" Property="VerticalAlignment" Value="Center" />
@@ -155,7 +151,7 @@
                             <Setter TargetName="PART_IndicatorsPanel" Property="Margin" Value="0,0,15,0" />
                         </Trigger>
 
-                        <!-- Disable previous button at start when not infinite loop -->
+                        <!--  Disable previous button at start when not infinite loop  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsInfiniteLoop" Value="False" />

@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Progressing.SkeletonView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -33,9 +33,7 @@
                     <!--  Shape variants  -->
                     <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
                         <TextBlock FontWeight="SemiBold" Text="Rectangle (default)" />
-                        <atc:SkeletonElement
-                            Height="16"
-                            IsActive="{Binding ElementName=CbIsActive, Path=IsChecked}" />
+                        <atc:SkeletonElement Height="16" IsActive="{Binding ElementName=CbIsActive, Path=IsChecked}" />
 
                         <TextBlock FontWeight="SemiBold" Text="Rounded" />
                         <atc:SkeletonElement

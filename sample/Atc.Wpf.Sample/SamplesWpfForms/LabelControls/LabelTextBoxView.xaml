@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfForms.LabelControls.LabelTextBoxView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -11,14 +11,12 @@
     mc:Ignorable="d">
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:LabelTextBox
+                    InformationText="{Binding InformationText}"
                     IsMandatory="{Binding IsMandatory}"
                     LabelText="{Binding LabelText}"
-                    InformationText="{Binding InformationText}"
                     Orientation="{Binding Orientation}"
                     ShowClearTextButton="{Binding ShowClearTextButton}"
                     WatermarkText="{Binding WatermarkText}" />

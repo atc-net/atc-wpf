@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.UndoRedo.UndoRedoServiceView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,9 +20,7 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <DockPanel x:Name="InteractiveUndoRedoDemo" Margin="10">
                     <StackPanel Width="260" DockPanel.Dock="Left">
@@ -31,14 +29,29 @@
                             <Button Command="{Binding SetTextCommand}" Content="Set Text (tracked)" />
                             <Button Command="{Binding GroupedChangeCommand}" Content="Grouped Change" />
                         </atc:UniformSpacingPanel>
-                        <atc:UniformSpacingPanel Margin="0,10,0,0" Orientation="Vertical" Spacing="8">
+                        <atc:UniformSpacingPanel
+                            Margin="0,10,0,0"
+                            Orientation="Vertical"
+                            Spacing="8">
                             <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="8">
-                                <Button Width="120" Command="{Binding UndoCommand}" Content="Undo" />
-                                <Button Width="120" Command="{Binding RedoCommand}" Content="Redo" />
+                                <Button
+                                    Width="120"
+                                    Command="{Binding UndoCommand}"
+                                    Content="Undo" />
+                                <Button
+                                    Width="120"
+                                    Command="{Binding RedoCommand}"
+                                    Content="Redo" />
                             </atc:UniformSpacingPanel>
                             <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="8">
-                                <Button Width="120" Command="{Binding UndoAllCommand}" Content="Undo All" />
-                                <Button Width="120" Command="{Binding RedoAllCommand}" Content="Redo All" />
+                                <Button
+                                    Width="120"
+                                    Command="{Binding UndoAllCommand}"
+                                    Content="Undo All" />
+                                <Button
+                                    Width="120"
+                                    Command="{Binding RedoAllCommand}"
+                                    Content="Redo All" />
                             </atc:UniformSpacingPanel>
                             <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="8">
                                 <Button
@@ -55,14 +68,26 @@
                         </atc:UniformSpacingPanel>
                     </StackPanel>
                     <atc:GridEx Margin="20,0,0,0" Columns="*,*">
-                        <ListBox Grid.Column="0" Margin="0,0,5,0" DisplayMemberPath="Description" ItemsSource="{Binding UndoItems}" />
-                        <ListBox Grid.Column="1" Margin="5,0,0,0" DisplayMemberPath="Description" ItemsSource="{Binding RedoItems}" />
+                        <ListBox
+                            Grid.Column="0"
+                            Margin="0,0,5,0"
+                            DisplayMemberPath="Description"
+                            ItemsSource="{Binding UndoItems}" />
+                        <ListBox
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            DisplayMemberPath="Description"
+                            ItemsSource="{Binding RedoItems}" />
                     </atc:GridEx>
                 </DockPanel>
 
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource AtcApps.Brushes.Text}" Text="{Binding CurrentText}" />
+                        <TextBlock
+                            FontFamily="Consolas"
+                            FontSize="14"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            Text="{Binding CurrentText}" />
                         <TextBlock
                             Margin="12,0,0,0"
                             FontSize="14"

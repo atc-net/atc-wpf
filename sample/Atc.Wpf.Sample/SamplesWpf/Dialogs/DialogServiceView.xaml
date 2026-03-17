@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpf.Dialogs.DialogServiceView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -41,22 +41,22 @@
                         Text="Message Dialogs" />
 
                     <Button
+                        MinWidth="200"
+                        HorizontalAlignment="Left"
                         Command="{Binding ShowInformationCommand}"
-                        Content="Show Information Dialog"
-                        HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Content="Show Information Dialog" />
 
                     <Button
+                        MinWidth="200"
+                        HorizontalAlignment="Left"
                         Command="{Binding ShowWarningCommand}"
-                        Content="Show Warning Dialog"
-                        HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Content="Show Warning Dialog" />
 
                     <Button
-                        Command="{Binding ShowErrorCommand}"
-                        Content="Show Error Dialog"
+                        MinWidth="200"
                         HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Command="{Binding ShowErrorCommand}"
+                        Content="Show Error Dialog" />
 
                     <Separator Margin="0,10" />
 
@@ -66,16 +66,16 @@
                         Text="Confirmation Dialogs" />
 
                     <Button
-                        Command="{Binding ShowConfirmationCommand}"
-                        Content="Show Yes/No Confirmation"
+                        MinWidth="200"
                         HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Command="{Binding ShowConfirmationCommand}"
+                        Content="Show Yes/No Confirmation" />
 
                     <Button
-                        Command="{Binding ShowOkCancelCommand}"
-                        Content="Show OK/Cancel Confirmation"
+                        MinWidth="200"
                         HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Command="{Binding ShowOkCancelCommand}"
+                        Content="Show OK/Cancel Confirmation" />
 
                     <Separator Margin="0,10" />
 
@@ -85,16 +85,16 @@
                         Text="Input Dialogs" />
 
                     <Button
-                        Command="{Binding ShowInputCommand}"
-                        Content="Show Text Input Dialog"
+                        MinWidth="200"
                         HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Command="{Binding ShowInputCommand}"
+                        Content="Show Text Input Dialog" />
 
                     <Button
-                        Command="{Binding ShowColorPickerCommand}"
-                        Content="Show Color Picker Dialog"
+                        MinWidth="200"
                         HorizontalAlignment="Left"
-                        MinWidth="200" />
+                        Command="{Binding ShowColorPickerCommand}"
+                        Content="Show Color Picker Dialog" />
 
                     <Separator Margin="0,10" />
 

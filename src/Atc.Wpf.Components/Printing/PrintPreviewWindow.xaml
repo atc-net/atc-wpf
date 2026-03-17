@@ -1,4 +1,4 @@
-<theming:NiceWindow
+﻿<theming:NiceWindow
     x:Class="Atc.Wpf.Components.Printing.PrintPreviewWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -35,9 +35,7 @@
             </ToolBar>
         </ToolBarTray>
 
-        <DocumentViewer
-            x:Name="PreviewViewer"
-            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <DocumentViewer x:Name="PreviewViewer" Background="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
 
     </DockPanel>
 

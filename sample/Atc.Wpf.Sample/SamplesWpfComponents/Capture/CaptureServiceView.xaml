@@ -1,11 +1,11 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Capture.CaptureServiceView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:capture="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Capture"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:capture="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Capture"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DesignHeight="900"
     d:DesignWidth="900"
@@ -18,9 +18,7 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <DockPanel x:Name="InteractiveCaptureDemo" Margin="10">
 
@@ -61,12 +59,8 @@
                             ItemWidth="150"
                             Orientation="Horizontal"
                             Spacing="10">
-                            <Button
-                                Command="{Binding CaptureWindowToFileCommand}"
-                                Content="Save to File" />
-                            <Button
-                                Command="{Binding CaptureWindowToClipboardCommand}"
-                                Content="Copy to Clipboard" />
+                            <Button Command="{Binding CaptureWindowToFileCommand}" Content="Save to File" />
+                            <Button Command="{Binding CaptureWindowToClipboardCommand}" Content="Copy to Clipboard" />
                         </atc:UniformSpacingPanel>
 
                         <StackPanel Orientation="Vertical">
@@ -85,7 +79,10 @@
                                     Margin="0,0,8,0"
                                     VerticalAlignment="Center"
                                     Text="DPI:" />
-                                <ComboBox Width="120" SelectedValue="{Binding Dpi}" SelectedValuePath="Content">
+                                <ComboBox
+                                    Width="120"
+                                    SelectedValue="{Binding Dpi}"
+                                    SelectedValuePath="Content">
                                     <ComboBoxItem Content="96" IsSelected="True" />
                                     <ComboBoxItem Content="144" />
                                     <ComboBoxItem Content="192" />
@@ -137,9 +134,7 @@
 
                 </DockPanel>
 
-                <ScrollViewer
-                    MaxHeight="150"
-                    VerticalScrollBarVisibility="Auto">
+                <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto">
                     <TextBlock
                         FontFamily="Consolas"
                         Foreground="{DynamicResource AtcApps.Brushes.Text}"

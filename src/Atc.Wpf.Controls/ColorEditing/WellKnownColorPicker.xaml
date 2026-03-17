@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Controls.ColorEditing.WellKnownColorPicker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,9 +12,9 @@
     mc:Ignorable="d">
 
     <ItemsControl
+        ItemsSource="{Binding Path=Palette}"
         KeyboardNavigation.DirectionalNavigation="Cycle"
-        KeyboardNavigation.TabNavigation="Once"
-        ItemsSource="{Binding Path=Palette}">
+        KeyboardNavigation.TabNavigation="Once">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapPanel HorizontalAlignment="Center" />
