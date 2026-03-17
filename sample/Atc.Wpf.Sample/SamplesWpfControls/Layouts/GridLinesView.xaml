@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.GridLinesView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,12 +9,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     d:DataContext="{d:DesignInstance Type=local:GridLinesDemoViewModel}"
-    d:DesignHeight="900" d:DesignWidth="900" mc:Ignorable="d">
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
     <atc:GridEx Columns="*,400">
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:GridLines
                     x:Name="InteractiveGridLines"
@@ -23,8 +23,8 @@
                     VerticalStep="{Binding Spacing}" />
 
                 <atc:GridLines
-                    Margin="0,10,0,0"
                     Height="200"
+                    Margin="0,10,0,0"
                     HorizontalStep="{Binding HorizontalStep}"
                     LineBrush="{Binding LineBrushColor, Converter={x:Static atcValueConverters:ColorToBrushValueConverter.Instance}}"
                     VerticalStep="{Binding VerticalStep}"

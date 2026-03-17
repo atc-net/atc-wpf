@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.DockPanelProView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -47,10 +47,10 @@
 
             <!--  Left Panel  -->
             <layouts:DockRegion
-                layouts:DockPanelPro.Dock="Left"
                 Width="200"
                 MinWidth="100"
                 MaxWidth="350"
+                layouts:DockPanelPro.Dock="Left"
                 Header="Left Panel"
                 IsCollapsible="True"
                 RegionId="Left">
@@ -62,10 +62,10 @@
 
             <!--  Right Panel  -->
             <layouts:DockRegion
-                layouts:DockPanelPro.Dock="Right"
                 Width="200"
                 MinWidth="100"
                 MaxWidth="350"
+                layouts:DockPanelPro.Dock="Right"
                 Header="Right Panel"
                 IsCollapsible="True"
                 RegionId="Right">
@@ -77,10 +77,10 @@
 
             <!--  Bottom Panel  -->
             <layouts:DockRegion
-                layouts:DockPanelPro.Dock="Bottom"
                 Height="120"
                 MinHeight="80"
                 MaxHeight="250"
+                layouts:DockPanelPro.Dock="Bottom"
                 Header="Bottom Panel"
                 IsCollapsible="True"
                 RegionId="Bottom">

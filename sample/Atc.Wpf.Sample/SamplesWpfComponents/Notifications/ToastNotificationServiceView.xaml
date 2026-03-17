@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Notifications.ToastNotificationServiceView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,9 +18,7 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <DockPanel x:Name="InteractiveToastServiceDemo" Margin="20">
 
@@ -61,12 +59,8 @@
                             ItemWidth="130"
                             Orientation="Horizontal"
                             Spacing="10">
-                            <Button
-                                Command="{Binding ShowCustomDurationCommand}"
-                                Content="10s Duration" />
-                            <Button
-                                Command="{Binding ShowWithClickActionCommand}"
-                                Content="Click Action" />
+                            <Button Command="{Binding ShowCustomDurationCommand}" Content="10s Duration" />
+                            <Button Command="{Binding ShowWithClickActionCommand}" Content="Click Action" />
                         </atc:UniformSpacingPanel>
                     </atc:UniformSpacingPanel>
 

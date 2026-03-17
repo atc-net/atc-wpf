@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfSourceGenerators.AttachedPropertyView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -23,9 +23,7 @@
                     Click="OnToggleDraggingClick"
                     Content="Toggle Dragging" />
 
-                <Border
-                    BorderBrush="Red"
-                    BorderThickness="1">
+                <Border BorderBrush="Red" BorderThickness="1">
                     <TextBlock
                         x:Name="MyTextBlock"
                         Padding="10"

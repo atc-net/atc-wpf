@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpf.DragDrop.DragDropView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -105,8 +105,8 @@
                         Grid.Column="1"
                         MinHeight="140"
                         Margin="5,4,0,0"
-                        atc:DragDropAttach.IsDropTarget="True"
                         atc:DragDropAttach.DropHandler="{Binding}"
+                        atc:DragDropAttach.IsDropTarget="True"
                         ItemsSource="{Binding AcceptedItems}" />
                 </atc:GridEx>
             </GroupBox>

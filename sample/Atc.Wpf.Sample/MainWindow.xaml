@@ -1,4 +1,4 @@
-<atc:NiceWindow
+﻿<atc:NiceWindow
     x:Class="Atc.Wpf.Sample.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -43,21 +43,21 @@
                             <Run FontWeight="SemiBold">Text search</Run>
                             <Run>(case-insensitive)</Run>
                             <LineBreak />
-                            <Run>  button    → AuthenticationButton, ImageButton, ...</Run>
+                            <Run>button    → AuthenticationButton, ImageButton, ...</Run>
                             <LineBreak />
-                            <Run>  color     → ColorPicker, LabelColorPicker, ...</Run>
+                            <Run>color     → ColorPicker, LabelColorPicker, ...</Run>
                             <LineBreak />
                             <LineBreak />
                             <Run FontWeight="SemiBold">PascalCase initials</Run>
                             <Run>(2+ uppercase letters)</Run>
                             <LineBreak />
-                            <Run>  NW        → NiceWindow</Run>
+                            <Run>NW        → NiceWindow</Run>
                             <LineBreak />
-                            <Run>  RC        → RelayCommand</Run>
+                            <Run>RC        → RelayCommand</Run>
                             <LineBreak />
-                            <Run>  TS        → ToggleSwitch, ThemeSelector, ...</Run>
+                            <Run>TS        → ToggleSwitch, ThemeSelector, ...</Run>
                             <LineBreak />
-                            <Run>  LTS       → LabelToggleSwitch, LabelThemeSelector</Run>
+                            <Run>LTS       → LabelToggleSwitch, LabelThemeSelector</Run>
                         </TextBlock>
                     </TextBox.ToolTip>
                 </TextBox>
@@ -84,7 +84,10 @@
             </StackPanel>
 
             <!--  Grid with TabControl headers on left, TreeViews on right  -->
-            <atc:GridEx Margin="0,0,5,10" Columns="Auto,*" DockPanel.Dock="Bottom">
+            <atc:GridEx
+                Margin="0,0,5,10"
+                Columns="Auto,*"
+                DockPanel.Dock="Bottom">
 
                 <!--  TabControl for styled category headers (no content)  -->
                 <TabControl

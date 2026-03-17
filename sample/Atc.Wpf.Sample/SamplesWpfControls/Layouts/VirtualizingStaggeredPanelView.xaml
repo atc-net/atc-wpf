@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.Layouts.VirtualizingStaggeredPanelView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,9 +15,7 @@
     <atc:GridEx Columns="*,400">
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel
-                x:Name="UsageArea"
-                Style="{StaticResource SampleUsageAreaStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <ItemsControl
                     x:Name="ItemsControlPanel"
@@ -43,9 +41,7 @@
                                 BorderBrush="DarkGray"
                                 BorderThickness="1"
                                 CornerRadius="4">
-                                <StackPanel
-                                    Margin="8"
-                                    VerticalAlignment="Center">
+                                <StackPanel Margin="8" VerticalAlignment="Center">
                                     <TextBlock
                                         FontSize="14"
                                         FontWeight="SemiBold"

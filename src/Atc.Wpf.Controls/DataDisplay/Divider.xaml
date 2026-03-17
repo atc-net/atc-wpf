@@ -1,8 +1,8 @@
-<ResourceDictionary
+﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:grid="clr-namespace:Atc.Wpf.Controls.Layouts.Grid"
-    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay">
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
+    xmlns:grid="clr-namespace:Atc.Wpf.Controls.Layouts.Grid">
 
     <Style x:Key="AtcApps.Styles.DividerBaseStyle" TargetType="{x:Type dataDisplay:Divider}">
         <Setter Property="Focusable" Value="False" />
