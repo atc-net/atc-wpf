@@ -198,4 +198,4 @@ public partial class ZoomBox
 
         return rectangle;
     }
-}
+}

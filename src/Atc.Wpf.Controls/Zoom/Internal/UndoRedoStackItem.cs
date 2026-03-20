@@ -31,4 +31,4 @@ internal sealed class UndoRedoStackItem(
 
     public override int GetHashCode()
         => Rect.GetHashCode() + Zoom.GetHashCode();
-}
+}

@@ -14,4 +14,4 @@ internal static class DoubleExtensions
            double.IsNaN(value)
             ? defaultValue
             : value;
-}
+}

@@ -32,4 +32,4 @@ public class ZoomAdjustValueConverter : MarkupExtension, IValueConverter
 
         return null;
     }
-}
+}

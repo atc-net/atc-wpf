@@ -73,4 +73,4 @@ internal static class AnimationHelper
     {
         animatableElement.BeginAnimation(dependencyProperty, animation: null);
     }
-}
+}

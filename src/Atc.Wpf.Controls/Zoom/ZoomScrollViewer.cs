@@ -148,4 +148,4 @@ public partial class ZoomScrollViewer : ScrollViewer
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UndoZoomCommand)));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RedoZoomCommand)));
     }
-}
+}

@@ -32,7 +32,10 @@
         <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
             <sample:SampleSidePanel.ActionsContent>
                 <StackPanel>
-                    <TextBlock Margin="0,0,0,4" FontWeight="SemiBold" Text="Window Notifications" />
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        FontWeight="SemiBold"
+                        Text="Window Notifications" />
                     <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
                         <Button
                             Command="{Binding WindowInformationCommand}"
@@ -52,7 +55,10 @@
                             Style="{StaticResource ButtonDanger}" />
                     </atc:UniformSpacingPanel>
 
-                    <TextBlock Margin="0,10,0,4" FontWeight="SemiBold" Text="Desktop Notifications" />
+                    <TextBlock
+                        Margin="0,10,0,4"
+                        FontWeight="SemiBold"
+                        Text="Desktop Notifications" />
                     <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
                         <Button
                             Command="{Binding DesktopInformationCommand}"

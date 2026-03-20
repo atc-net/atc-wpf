@@ -5,4 +5,4 @@ public enum ZoomMinimumType
     FitScreen,
     FillScreen,
     MinimumZoom,
-}
+}

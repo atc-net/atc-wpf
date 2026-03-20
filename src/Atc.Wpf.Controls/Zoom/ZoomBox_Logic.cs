@@ -292,4 +292,4 @@ public partial class ZoomBox
         ContentOffsetX = contentZoomFocus.X - (ContentViewportWidth / 2);
         ContentOffsetY = contentZoomFocus.Y - (ContentViewportHeight / 2);
     }
-}
+}

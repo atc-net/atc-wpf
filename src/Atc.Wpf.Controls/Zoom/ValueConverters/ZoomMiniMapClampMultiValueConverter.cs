@@ -46,4 +46,4 @@ public class ZoomMiniMapClampMultiValueConverter : MarkupExtension, IMultiValueC
     {
         throw new NotImplementedException();
     }
-}
+}

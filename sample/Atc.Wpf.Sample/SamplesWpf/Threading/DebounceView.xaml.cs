@@ -9,6 +9,7 @@ public partial class DebounceView
         InitializeComponent();
     }
 
+    [SuppressMessage("Usage", "MA0134:Observe result of async calls", Justification = "Fire-and-forget in debounce callback")]
     private void SearchTextBoxOnKeyup(
         object sender,
         KeyEventArgs e)
@@ -18,13 +19,14 @@ public partial class DebounceView
             return;
         }
 
+#pragma warning disable CS4014 // Because this call is not awaited
         debounceTimer.Debounce(
             vm.DebounceDelayMs,
-            _ => ExecuteSearch());
+            _ => ExecuteSearchAsync());
+#pragma warning restore CS4014
     }
 
-    [SuppressMessage("Usage", "MA0134:Observe result of async calls", Justification = "OK")]
-    private async void ExecuteSearch()
+    private async Task ExecuteSearchAsync()
     {
         if (DataContext is not DebounceViewModel vm)
         {

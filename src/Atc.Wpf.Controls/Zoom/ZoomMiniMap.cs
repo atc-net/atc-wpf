@@ -219,4 +219,4 @@ public partial class ZoomMiniMap : ContentControl
 
         return zoomBox ?? throw new InvalidOperationException("DataContext is not of type ZoomBox");
     }
-}
+}
