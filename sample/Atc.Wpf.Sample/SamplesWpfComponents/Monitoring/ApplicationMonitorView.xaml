@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Monitoring.ApplicationMonitorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -17,17 +17,6 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="10">
-                    <Button
-                        Width="200"
-                        Command="{Binding Path=AddOneCommand}"
-                        Content="Add 1 item" />
-                    <Button
-                        Width="200"
-                        Command="{Binding Path=AddManyCommand}"
-                        Content="Add many items" />
-                </atc:UniformSpacingPanel>
-
                 <atc:ApplicationMonitorView
                     DataContext="{Binding Path=ApplicationMonitorViewModel}"
                     ShowAutoScrollInToolbar="{Binding DataContext.ShowAutoScrollInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -38,7 +27,14 @@
             </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
+                    <Button Command="{Binding Path=AddOneCommand}" Content="Add 1 item" />
+                    <Button Command="{Binding Path=AddManyCommand}" Content="Add many items" />
+                </atc:UniformSpacingPanel>
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
 
     </atc:GridEx>
 

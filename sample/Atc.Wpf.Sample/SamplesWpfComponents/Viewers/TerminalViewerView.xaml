@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Viewers.TerminalViewerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,22 +15,6 @@
 
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
-
-                <atc:UniformSpacingPanel
-                    Margin="0,0,0,10"
-                    Orientation="Horizontal"
-                    Spacing="10">
-                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                        <Button Click="SendLineOnClick" Content="Send Line" />
-                        <Button Click="SendLineWithErrorOnClick" Content="Send Line of with Error" />
-                        <Button Click="SendLineWithSuccessfulOnClick" Content="Send Line of with Successful" />
-                    </atc:UniformSpacingPanel>
-                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="10">
-                        <Button Click="SendLineWithOneOfTerms1OnClick" Content="Send Line of with Terms1" />
-                        <Button Click="SendLineWithOneOfTerms2OnClick" Content="Send Line of with Terms2" />
-                        <Button Click="SendLineWithOneOfTerms3OnClick" Content="Send Line of with Terms3" />
-                    </atc:UniformSpacingPanel>
-                </atc:UniformSpacingPanel>
 
                 <atc:TerminalViewer
                     x:Name="UcTerminalViewer"
@@ -50,7 +34,18 @@
             </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
+                    <Button Click="SendLineOnClick" Content="Send Line" />
+                    <Button Click="SendLineWithErrorOnClick" Content="Send Line of with Error" />
+                    <Button Click="SendLineWithSuccessfulOnClick" Content="Send Line of with Successful" />
+                    <Button Click="SendLineWithOneOfTerms1OnClick" Content="Send Line of with Terms1" />
+                    <Button Click="SendLineWithOneOfTerms2OnClick" Content="Send Line of with Terms2" />
+                    <Button Click="SendLineWithOneOfTerms3OnClick" Content="Send Line of with Terms3" />
+                </atc:UniformSpacingPanel>
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
 
     </atc:GridEx>
 

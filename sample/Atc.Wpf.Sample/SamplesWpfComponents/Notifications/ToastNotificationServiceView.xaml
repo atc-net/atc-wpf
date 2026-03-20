@@ -20,60 +20,53 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <DockPanel x:Name="InteractiveToastServiceDemo" Margin="20">
-
-                    <atc:UniformSpacingPanel
-                        DockPanel.Dock="Left"
-                        Orientation="Vertical"
-                        Spacing="20">
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button
-                                Command="{Binding ShowInformationCommand}"
-                                Content="Information"
-                                Style="{StaticResource ButtonInfo}" />
-                            <Button
-                                Command="{Binding ShowSuccessCommand}"
-                                Content="Success"
-                                Style="{StaticResource ButtonSuccess}" />
-                            <Button
-                                Command="{Binding ShowWarningCommand}"
-                                Content="Warning"
-                                Style="{StaticResource ButtonWarning}" />
-                            <Button
-                                Command="{Binding ShowErrorCommand}"
-                                Content="Error"
-                                Style="{StaticResource ButtonDanger}" />
-                        </atc:UniformSpacingPanel>
-
-                        <Button
-                            MinWidth="100"
-                            Command="{Binding ShowDesktopCommand}"
-                            Content="Desktop"
-                            Style="{StaticResource ButtonInfo}" />
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="130"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button Command="{Binding ShowCustomDurationCommand}" Content="10s Duration" />
-                            <Button Command="{Binding ShowWithClickActionCommand}" Content="Click Action" />
-                        </atc:UniformSpacingPanel>
-                    </atc:UniformSpacingPanel>
-
-                    <atc:ToastNotificationArea
-                        x:Name="ServiceArea"
-                        MaxItems="5"
-                        Position="TopRight" />
-                </DockPanel>
+                <atc:ToastNotificationArea
+                    x:Name="ServiceArea"
+                    MaxItems="5"
+                    Position="TopRight" />
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,4" FontWeight="SemiBold" Text="Toast Notifications" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
+                        <Button
+                            Command="{Binding ShowInformationCommand}"
+                            Content="Information"
+                            Style="{StaticResource ButtonInfo}" />
+                        <Button
+                            Command="{Binding ShowSuccessCommand}"
+                            Content="Success"
+                            Style="{StaticResource ButtonSuccess}" />
+                        <Button
+                            Command="{Binding ShowWarningCommand}"
+                            Content="Warning"
+                            Style="{StaticResource ButtonWarning}" />
+                        <Button
+                            Command="{Binding ShowErrorCommand}"
+                            Content="Error"
+                            Style="{StaticResource ButtonDanger}" />
+                    </atc:UniformSpacingPanel>
+
+                    <TextBlock Margin="0,10,0,4" FontWeight="SemiBold" Text="Desktop" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
+                        <Button
+                            Command="{Binding ShowDesktopCommand}"
+                            Content="Desktop"
+                            Style="{StaticResource ButtonInfo}" />
+                    </atc:UniformSpacingPanel>
+
+                    <TextBlock Margin="0,10,0,4" FontWeight="SemiBold" Text="Options" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
+                        <Button Command="{Binding ShowCustomDurationCommand}" Content="10s Duration" />
+                        <Button Command="{Binding ShowWithClickActionCommand}" Content="Click Action" />
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
     </atc:GridEx>
 
 </UserControl>

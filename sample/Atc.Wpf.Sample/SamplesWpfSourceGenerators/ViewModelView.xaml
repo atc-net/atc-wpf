@@ -39,17 +39,16 @@
 
                 <atc:LabelTextInfo LabelText="FullName" Text="{Binding Path=FullName}" />
 
-                <atc:UniformSpacingPanel
-                    HorizontalAlignment="Center"
-                    HorizontalSpacing="50"
-                    Orientation="Horizontal">
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
                     <Button Command="{Binding Path=ShowDataCommand}" Content="Show data" />
                     <Button Command="{Binding Path=SaveCommand}" Content="Save data" />
                 </atc:UniformSpacingPanel>
-
-            </atc:UniformSpacingPanel>
-        </ScrollViewer>
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
     </atc:GridEx>
 
 </UserControl>

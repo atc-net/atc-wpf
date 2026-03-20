@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Progressing.BusyIndicatorServiceView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,56 +20,20 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <DockPanel x:Name="InteractiveBusyIndicatorDemo" Margin="10">
-
-                    <atc:UniformSpacingPanel
-                        DockPanel.Dock="Left"
-                        Orientation="Vertical"
-                        Spacing="16">
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="140"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button Command="{Binding ShowThreeSecondsCommand}" Content="Show 3s" />
-                            <Button Command="{Binding ShowProgressCommand}" Content="Show Progress" />
-                            <Button Command="{Binding RunAsyncTaskCommand}" Content="Run Async Task" />
-                        </atc:UniformSpacingPanel>
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="140"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button Command="{Binding RunWithProgressCommand}" Content="Run With Progress" />
-                            <Button Command="{Binding CancellableTaskCommand}" Content="Cancellable Task" />
-                        </atc:UniformSpacingPanel>
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="140"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button Command="{Binding ShowManualCommand}" Content="Show Manual" />
-                            <Button Command="{Binding HideManualCommand}" Content="Hide Manual" />
-                        </atc:UniformSpacingPanel>
-
-                    </atc:UniformSpacingPanel>
-
-                    <atc:BusyOverlay Margin="20,0,0,0" atc:BusyIndicatorManager.RegionName="SampleRegion">
-                        <Border
-                            MinHeight="200"
-                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
-                            BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
-                            BorderThickness="1"
-                            CornerRadius="4">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                                Text="Content area (overlay target)" />
-                        </Border>
-                    </atc:BusyOverlay>
-
-                </DockPanel>
+                <atc:BusyOverlay Margin="10" atc:BusyIndicatorManager.RegionName="SampleRegion">
+                    <Border
+                        MinHeight="200"
+                        Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource AtcApps.Brushes.Text}"
+                            Text="Content area (overlay target)" />
+                    </Border>
+                </atc:BusyOverlay>
 
                 <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto">
                     <TextBlock
@@ -82,7 +46,32 @@
             </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="SemiBold"
+                        Text="Timed / Async" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
+                        <Button Command="{Binding ShowThreeSecondsCommand}" Content="Show 3s" />
+                        <Button Command="{Binding ShowProgressCommand}" Content="Show Progress" />
+                        <Button Command="{Binding RunAsyncTaskCommand}" Content="Run Async Task" />
+                        <Button Command="{Binding RunWithProgressCommand}" Content="Run With Progress" />
+                        <Button Command="{Binding CancellableTaskCommand}" Content="Cancellable Task" />
+                    </atc:UniformSpacingPanel>
+
+                    <TextBlock
+                        Margin="0,10,0,5"
+                        FontWeight="SemiBold"
+                        Text="Manual" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
+                        <Button Command="{Binding ShowManualCommand}" Content="Show Manual" />
+                        <Button Command="{Binding HideManualCommand}" Content="Hide Manual" />
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
     </atc:GridEx>
 
 </UserControl>
