@@ -21,64 +21,59 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <DockPanel x:Name="InteractiveToastDemo" Margin="50">
-
-                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="50">
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button
-                                Command="{Binding WindowInformationCommand}"
-                                Content="Information"
-                                Style="{StaticResource ButtonInfo}" />
-                            <Button
-                                Command="{Binding WindowSuccessCommand}"
-                                Content="Success"
-                                Style="{StaticResource ButtonSuccess}" />
-                            <Button
-                                Command="{Binding WindowWarningCommand}"
-                                Content="Warning"
-                                Style="{StaticResource ButtonWarning}" />
-                            <Button
-                                Command="{Binding WindowErrorCommand}"
-                                Content="Error"
-                                Style="{StaticResource ButtonDanger}" />
-                        </atc:UniformSpacingPanel>
-
-                        <atc:UniformSpacingPanel
-                            ItemWidth="100"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                            <Button
-                                Command="{Binding DesktopInformationCommand}"
-                                Content="Information"
-                                Style="{StaticResource ButtonInfo}" />
-                            <Button
-                                Command="{Binding DesktopSuccessCommand}"
-                                Content="Success"
-                                Style="{StaticResource ButtonSuccess}" />
-                            <Button
-                                Command="{Binding DesktopWarningCommand}"
-                                Content="Warning"
-                                Style="{StaticResource ButtonWarning}" />
-                            <Button
-                                Command="{Binding DesktopErrorCommand}"
-                                Content="Error"
-                                Style="{StaticResource ButtonDanger}" />
-                        </atc:UniformSpacingPanel>
-                    </atc:UniformSpacingPanel>
-
-                    <atc:ToastNotificationArea
-                        x:Name="WindowArea"
-                        MaxItems="3"
-                        Position="TopLeft" />
-                </DockPanel>
+                <atc:ToastNotificationArea
+                    x:Name="WindowArea"
+                    MaxItems="3"
+                    Position="TopLeft" />
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,4" FontWeight="SemiBold" Text="Window Notifications" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
+                        <Button
+                            Command="{Binding WindowInformationCommand}"
+                            Content="Information"
+                            Style="{StaticResource ButtonInfo}" />
+                        <Button
+                            Command="{Binding WindowSuccessCommand}"
+                            Content="Success"
+                            Style="{StaticResource ButtonSuccess}" />
+                        <Button
+                            Command="{Binding WindowWarningCommand}"
+                            Content="Warning"
+                            Style="{StaticResource ButtonWarning}" />
+                        <Button
+                            Command="{Binding WindowErrorCommand}"
+                            Content="Error"
+                            Style="{StaticResource ButtonDanger}" />
+                    </atc:UniformSpacingPanel>
+
+                    <TextBlock Margin="0,10,0,4" FontWeight="SemiBold" Text="Desktop Notifications" />
+                    <atc:UniformSpacingPanel Orientation="Vertical" Spacing="4">
+                        <Button
+                            Command="{Binding DesktopInformationCommand}"
+                            Content="Information"
+                            Style="{StaticResource ButtonInfo}" />
+                        <Button
+                            Command="{Binding DesktopSuccessCommand}"
+                            Content="Success"
+                            Style="{StaticResource ButtonSuccess}" />
+                        <Button
+                            Command="{Binding DesktopWarningCommand}"
+                            Content="Warning"
+                            Style="{StaticResource ButtonWarning}" />
+                        <Button
+                            Command="{Binding DesktopErrorCommand}"
+                            Content="Error"
+                            Style="{StaticResource ButtonDanger}" />
+                    </atc:UniformSpacingPanel>
+                </StackPanel>
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
     </atc:GridEx>
 
 </UserControl>

@@ -2,12 +2,25 @@ namespace Atc.Wpf.Controls.Sample;
 
 public partial class SampleSidePanel
 {
+    [DependencyProperty(PropertyChangedCallback = nameof(OnActionsContentChanged))]
+    private object? actionsContent;
+
     [DependencyProperty(PropertyChangedCallback = nameof(OnSourceObjectChanged))]
     private object? sourceObject;
 
     public SampleSidePanel()
     {
         InitializeComponent();
+    }
+
+    private static void OnActionsContentChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (SampleSidePanel)d;
+        control.ActionsGroupBox.Visibility = e.NewValue is not null
+            ? Visibility.Visible
+            : Visibility.Collapsed;
     }
 
     private static void OnSourceObjectChanged(

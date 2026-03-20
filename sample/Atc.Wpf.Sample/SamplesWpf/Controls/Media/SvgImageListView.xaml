@@ -14,11 +14,6 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <Button
-                    Width="100"
-                    Click="BtnBrowseOnClick"
-                    Content="Browse svg files" />
-
                 <WrapPanel
                     x:Name="UsagePanel"
                     Margin="20"
@@ -26,7 +21,11 @@
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <Button Click="BtnBrowseOnClick" Content="Browse svg files" />
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
     </atc:GridEx>
 
 </UserControl>

@@ -20,6 +20,10 @@ public partial class IntegerBoxDemoViewModel : ViewModelBase
     [ObservableProperty]
     private double interval = 1;
 
+    [PropertyDisplay("Buttons Alignment", "Appearance", 0)]
+    [ObservableProperty]
+    private ButtonsAlignmentType buttonsAlignment = ButtonsAlignmentType.Right;
+
     [PropertyDisplay("Hide Up/Down Buttons", "Appearance", 1)]
     [ObservableProperty]
     private bool hideUpDownButtons;

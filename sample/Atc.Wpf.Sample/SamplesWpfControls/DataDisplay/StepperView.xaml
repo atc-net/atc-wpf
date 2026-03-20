@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataDisplay.StepperView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -32,29 +32,6 @@
                         <dataDisplay:StepperItem Title="Settings" Subtitle="Configure preferences" />
                         <dataDisplay:StepperItem Title="Confirm" Subtitle="Review and confirm" />
                     </dataDisplay:Stepper>
-
-                    <!--  Navigation buttons  -->
-                    <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
-                        <Button
-                            Width="80"
-                            Margin="0,0,8,0"
-                            Click="OnUsagePreviousClick"
-                            Content="Previous" />
-                        <Button
-                            Width="80"
-                            Margin="0,0,8,0"
-                            Click="OnUsageNextClick"
-                            Content="Next" />
-                        <Button
-                            Width="80"
-                            Margin="0,0,8,0"
-                            Click="OnUsageResetClick"
-                            Content="Reset" />
-                        <Button
-                            Width="120"
-                            Click="OnSetErrorClick"
-                            Content="Set Error Step 2" />
-                    </StackPanel>
 
                     <TextBlock
                         x:Name="UsageStepStatus"
@@ -114,7 +91,16 @@
             </atc:UniformSpacingPanel>
         </ScrollViewer>
 
-        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
+            <sample:SampleSidePanel.ActionsContent>
+                <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
+                    <Button Click="OnUsagePreviousClick" Content="Previous" />
+                    <Button Click="OnUsageNextClick" Content="Next" />
+                    <Button Click="OnUsageResetClick" Content="Reset" />
+                    <Button Click="OnSetErrorClick" Content="Set Error Step 2" />
+                </atc:UniformSpacingPanel>
+            </sample:SampleSidePanel.ActionsContent>
+        </sample:SampleSidePanel>
 
     </atc:GridEx>
 </UserControl>

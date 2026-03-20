@@ -99,6 +99,20 @@ public partial class SamplePropertyController
             expander.Content = panel;
             ContentPanel.Children.Add(expander);
         }
+
+        if (ContentPanel.Children.Count == 0)
+        {
+            ContentPanel.Children.Add(new TextBlock
+            {
+                Text = "No properties to configure",
+                FontStyle = FontStyles.Italic,
+                Foreground = Brushes.Gray,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                TextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0, 20, 0, 20),
+            });
+        }
     }
 
     private UIElement CreatePropertyRow(
