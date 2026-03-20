@@ -6,4 +6,4 @@ public enum ZoomInitialPositionType
     FitScreen,
     FillScreen,
     OneHundredPercentCentered,
-}
+}

@@ -39,4 +39,4 @@ public class DoubleExtensionsTests
         // Assert
         result.Should().Be(expected);
     }
-}
+}

@@ -80,7 +80,7 @@ public partial class SamplePropertyController
 
             var panel = new UniformSpacingPanel
             {
-                Margin =  new Thickness(0, 5, 0, 5),
+                Margin = new Thickness(0, 5, 0, 5),
                 Orientation = Orientation.Vertical,
                 VerticalSpacing = 5,
             };
@@ -428,13 +428,15 @@ public partial class SamplePropertyController
 
         selector.SelectorChanged += (_, e) =>
         {
-            if (e.NewValue is not null)
+            if (e.NewValue is null)
             {
-                var newColor = ColorHelper.GetColorFromName(e.NewValue);
-                if (newColor.HasValue)
-                {
-                    SetSourceValue(propInfo, newColor.Value);
-                }
+                return;
+            }
+
+            var newColor = ColorHelper.GetColorFromName(e.NewValue, GlobalizationConstants.EnglishCultureInfo);
+            if (newColor.HasValue)
+            {
+                SetSourceValue(propInfo, newColor.Value);
             }
         };
 
@@ -605,6 +607,7 @@ public partial class SamplePropertyController
 
         var previous = suppressedPropertyName;
         suppressedPropertyName = propInfo.Name;
+
         try
         {
             var targetType = UnwrapNullable(propInfo.PropertyType);

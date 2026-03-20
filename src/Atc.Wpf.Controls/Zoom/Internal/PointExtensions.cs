@@ -32,4 +32,4 @@ internal static class PointExtensions
         => value.X < 0 || value.X > xMax || value.Y < 0 || value.Y > yMax
             ? null
             : value;
-}
+}

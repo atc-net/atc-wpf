@@ -5,4 +5,4 @@ internal enum CurrentZoomType
     Fill,
     Fit,
     Other,
-}
+}

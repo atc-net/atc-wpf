@@ -588,4 +588,4 @@ public partial class ZoomBox
         zoomFitCommand?.RaiseCanExecuteChanged();
         zoomFillCommand?.RaiseCanExecuteChanged();
     }
-}
+}

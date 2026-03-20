@@ -159,4 +159,4 @@ public partial class ZoomBox
         Keyboard.Focus(scrollViewer);
         scrollViewer.Focus();
     }
-}
+}

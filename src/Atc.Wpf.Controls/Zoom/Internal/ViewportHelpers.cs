@@ -70,4 +70,4 @@ internal static class ViewportHelpers
             actualWidth / contentWidth.Value,
             actualHeight / contentHeight.Value);
     }
-}
+}

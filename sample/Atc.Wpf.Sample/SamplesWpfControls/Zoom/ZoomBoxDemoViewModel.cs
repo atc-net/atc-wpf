@@ -14,8 +14,7 @@ public partial class ZoomBoxDemoViewModel : ViewModelBase
         get => viewportZoom;
         set
         {
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (viewportZoom == value)
+            if (System.Math.Abs(viewportZoom - value) < double.Epsilon)
             {
                 return;
             }

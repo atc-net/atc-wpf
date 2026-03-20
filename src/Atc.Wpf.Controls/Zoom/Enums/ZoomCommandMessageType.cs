@@ -5,4 +5,4 @@ public enum ZoomCommandMessageType
     ZoomToFill,
     ZoomToFit,
     ZoomToPercentage,
-}
+}

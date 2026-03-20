@@ -86,4 +86,4 @@ public class PointExtensionsTests
         // Assert
         result.Should().BeNull();
     }
-}
+}

@@ -55,4 +55,4 @@ public class ZoomAdjustValueConverterTests
         // Assert
         result.Should().BeNull();
     }
-}
+}

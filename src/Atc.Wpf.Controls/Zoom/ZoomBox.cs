@@ -635,4 +635,4 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
             currentZoomType = CurrentZoomType.Other;
         }
     }
-}
+}

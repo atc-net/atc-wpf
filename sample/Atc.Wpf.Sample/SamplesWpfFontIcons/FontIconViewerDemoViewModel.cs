@@ -108,11 +108,14 @@ public partial class FontIconViewerDemoViewModel : ViewModelBase
         IsBusy = false;
     }
 
+    [SuppressMessage("Usage", "MA0134:Observe result of async calls", Justification = "Fire-and-forget in debounce callback")]
     public void DebouncedRefreshFilter()
     {
+#pragma warning disable CS4014 // Because this call is not awaited
         debounceDispatcher.Debounce(
             300,
-            _ => _ = RefreshFilterAsync());
+            _ => RefreshFilterAsync());
+#pragma warning restore CS4014
     }
 
     private bool FilterPredicate(object obj)

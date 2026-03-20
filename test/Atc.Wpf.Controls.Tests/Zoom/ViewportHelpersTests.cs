@@ -71,4 +71,4 @@ public class ViewportHelpersTests
         // Assert
         result.Should().Be(1);
     }
-}
+}
