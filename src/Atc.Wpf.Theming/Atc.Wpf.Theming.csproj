@@ -36,7 +36,7 @@
     <PackageReference Include="ControlzEx" version="7.0.3" />
 
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
-    <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha0167" PrivateAssets="all" IncludeAssets="build" />-->
+    <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha.189" PrivateAssets="all" IncludeAssets="build" />-->
 
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.269">
       <PrivateAssets>all</PrivateAssets>
