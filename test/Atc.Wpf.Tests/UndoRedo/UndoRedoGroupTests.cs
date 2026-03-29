@@ -412,4 +412,39 @@ public sealed class UndoRedoGroupTests
 
         Assert.False(stack1.CanUndo);
     }
+
+    [Fact]
+    [SuppressMessage("Reliability", "S1215:GC.Collect should not be called", Justification = "Required to test weak event reference behavior.")]
+    public void WeakEvent_AllowsGroupToBeCollected_WhenNoStrongReferencesExist()
+    {
+        // Arrange: create a group, add a stack, and set it as active.
+        // Then drop all strong references to the group.
+        var stack = new UndoRedoService();
+        var weakRef = CreateGroupAndGetWeakReference(stack);
+
+        // Act: force garbage collection.
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+
+        // Assert: the group should have been collected because the
+        // WeakEventManager does not hold a strong reference to it.
+        Assert.False(weakRef.TryGetTarget(out _));
+    }
+
+    /// <summary>
+    /// Helper method that creates an <see cref="UndoRedoGroup"/>,
+    /// subscribes it to the stack's events, and returns a weak reference.
+    /// The method boundary ensures no strong reference survives on the stack.
+    /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(
+        System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static WeakReference<UndoRedoGroup> CreateGroupAndGetWeakReference(
+        UndoRedoService stack)
+    {
+        var group = new UndoRedoGroup();
+        group.AddStack(stack, "Doc1");
+        group.ActiveStack = stack;
+        return new WeakReference<UndoRedoGroup>(group);
+    }
 }
