@@ -74,12 +74,12 @@ public partial class ZoomBox
         if (UndoRedoService is not null)
         {
             (timer750MilliSeconds ??= new KeepAliveTimer(
-                TimeSpan.FromMilliseconds(740),
+                TimeSpan.FromMilliseconds(ZoomSaveDelayShortMs),
                 () => SaveZoomToService())).Nudge();
             return;
         }
 
-        (timer750MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(740), () =>
+        (timer750MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(ZoomSaveDelayShortMs), () =>
         {
             if (undoStack.Count != 0 &&
                 viewportZoomCache.Equals(undoStack.Peek()))
@@ -113,12 +113,12 @@ public partial class ZoomBox
         if (UndoRedoService is not null)
         {
             (timer1500MilliSeconds ??= new KeepAliveTimer(
-                TimeSpan.FromMilliseconds(1500),
+                TimeSpan.FromMilliseconds(ZoomSaveDelayLongMs),
                 () => SaveZoomToService())).Nudge();
             return;
         }
 
-        (timer1500MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(1500), () =>
+        (timer1500MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(ZoomSaveDelayLongMs), () =>
         {
             if (undoStack.Count != 0 &&
                 viewportZoomCache.Equals(undoStack.Peek()))

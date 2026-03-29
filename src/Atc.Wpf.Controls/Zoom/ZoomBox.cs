@@ -39,6 +39,20 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty(DefaultValue = 0.4)]
     private double animationDuration;
 
+    /// <summary>
+    /// Gets or sets the delay in milliseconds before a scroll-zoom gesture
+    /// commits to the undo history. Default is 750.
+    /// </summary>
+    [DependencyProperty(DefaultValue = 750)]
+    private int zoomSaveDelayShortMs;
+
+    /// <summary>
+    /// Gets or sets the delay in milliseconds before a zoom-in/out command
+    /// commits to the undo history. Default is 1500.
+    /// </summary>
+    [DependencyProperty(DefaultValue = 1500)]
+    private int zoomSaveDelayLongMs;
+
     [DependencyProperty(DefaultValue = ZoomInitialPositionType.Default)]
     private ZoomInitialPositionType zoomInitialPosition;
 
@@ -111,7 +125,8 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         typeof(ZoomBox),
         new FrameworkPropertyMetadata(
             10.0,
-            OnMinimumOrMaximumZoomChanged));
+            OnMinimumOrMaximumZoomChanged,
+            CoerceMaximumZoom));
 
     /// <summary>
     /// Gets or sets the maximum value for 'ViewportZoom'.
@@ -543,11 +558,24 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         return value;
     }
 
+    private static object CoerceMaximumZoom(
+        DependencyObject d,
+        object baseValue)
+    {
+        var c = (ZoomBox)d;
+        var value = (double)baseValue;
+        return System.Math.Max(value, c.MinimumZoom);
+    }
+
     private static void OnMinimumOrMaximumZoomChanged(
         DependencyObject o,
         DependencyPropertyChangedEventArgs e)
     {
         var c = (ZoomBox)o;
+
+        // Re-coerce MaximumZoom when MinimumZoom changes to keep them consistent
+        c.CoerceValue(MaximumZoomProperty);
+
         c.InternalViewportZoom = System.Math.Min(System.Math.Max(c.InternalViewportZoom, c.MinimumZoomClamped), c.MaximumZoom);
     }
 

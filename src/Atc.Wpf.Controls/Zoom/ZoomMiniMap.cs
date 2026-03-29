@@ -35,6 +35,10 @@ public partial class ZoomMiniMap : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(ZoomMiniMap),
             new FrameworkPropertyMetadata(typeof(ZoomMiniMap)));
+
+        DataContextProperty.OverrideMetadata(
+            typeof(ZoomMiniMap),
+            new FrameworkPropertyMetadata(OnDataContextChangedCallback));
     }
 
     public override void OnApplyTemplate()
@@ -224,6 +228,14 @@ public partial class ZoomMiniMap : ContentControl
                 viewportCanvas.Background = visualBrush;
             }
         };
+    }
+
+    private static void OnDataContextChangedCallback(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var miniMap = (ZoomMiniMap)d;
+        miniMap.SetBackground(miniMap.VisualElement);
     }
 
     private ZoomBox GetZoomBox()

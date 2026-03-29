@@ -378,10 +378,12 @@ public partial class ZoomBox
             return;
         }
 
-        var oldContentMousePoint = MousePosition;
         var curContentMousePoint = e.GetPosition(content);
-        MousePosition = curContentMousePoint.FilterClamp(content.ActualWidth - 1, content.ActualHeight - 1);
-        OnPropertyChanged(new DependencyPropertyChangedEventArgs(MousePositionProperty, oldContentMousePoint, curContentMousePoint));
+        var clampedPoint = curContentMousePoint.FilterClamp(content.ActualWidth - 1, content.ActualHeight - 1);
+
+        var oldContentMousePoint = MousePosition;
+        MousePosition = clampedPoint;
+        OnPropertyChanged(new DependencyPropertyChangedEventArgs(MousePositionProperty, oldContentMousePoint, clampedPoint));
 
         if (mouseHandlingMode == MouseHandlingModeType.Panning)
         {
