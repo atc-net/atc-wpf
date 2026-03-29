@@ -81,6 +81,7 @@ Clicking any row navigates the undo/redo service to that position.
 | `IsHighlighted` | `bool` | Whether this item is the current position |
 | `IsSavePoint` | `bool` | Whether this item represents the save point |
 | `Image` | `ImageSource?` | Optional icon from `IRichUndoCommand.Image` metadata |
+| `Timestamp` | `DateTimeOffset?` | When the command was created (from `IRichUndoCommand.Timestamp`) |
 | `Command` | `IUndoCommand?` | The underlying command (`null` for root "Initial state" row) |
 
 ### Commands

@@ -184,29 +184,57 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
         for (var i = undoCount - 1; i >= 0; i--)
         {
             var cmd = undoCommands[i];
-            items.Add(new UndoRedoHistoryItem
-            {
-                Description = cmd.Description,
-                IsHighlighted = i == 0,
-                Command = cmd,
-                Image = cmd is IRichUndoCommand rich ? rich.Image as ImageSource : null,
-            });
+            items.Add(BuildHistoryItem(cmd, isRedo: false, isHighlighted: i == 0));
         }
 
         // Redo commands in stack order (most-recent-first = next to redo first)
         foreach (var cmd in redoCommands)
         {
-            items.Add(new UndoRedoHistoryItem
-            {
-                Description = cmd.Description,
-                IsRedo = true,
-                Command = cmd,
-                Image = cmd is IRichUndoCommand rich ? rich.Image as ImageSource : null,
-            });
+            items.Add(BuildHistoryItem(cmd, isRedo: true, isHighlighted: false));
         }
 
         var collection = new ObservableCollectionEx<UndoRedoHistoryItem>();
         collection.AddRange(items);
         HistoryItems = collection;
+    }
+
+    private static UndoRedoHistoryItem BuildHistoryItem(
+        IUndoCommand cmd,
+        bool isRedo,
+        bool isHighlighted)
+    {
+        var richCmd = cmd as IRichUndoCommand;
+        IReadOnlyList<UndoRedoHistoryItem>? children = null;
+
+        if (cmd is UndoCommandGroup group)
+        {
+            var childItems = new List<UndoRedoHistoryItem>(group.Commands.Count);
+            foreach (var child in group.Commands)
+            {
+                var richChild = child as IRichUndoCommand;
+                childItems.Add(new UndoRedoHistoryItem
+                {
+                    Description = child.Description,
+                    IsRedo = isRedo,
+                    IsHighlighted = isHighlighted,
+                    Command = child,
+                    Image = richChild?.Image as ImageSource,
+                    Timestamp = richChild?.Timestamp,
+                });
+            }
+
+            children = childItems;
+        }
+
+        return new UndoRedoHistoryItem
+        {
+            Description = cmd.Description,
+            IsRedo = isRedo,
+            IsHighlighted = isHighlighted,
+            Command = cmd,
+            Image = richCmd?.Image as ImageSource,
+            Timestamp = richCmd?.Timestamp,
+            Children = children,
+        };
     }
 }
