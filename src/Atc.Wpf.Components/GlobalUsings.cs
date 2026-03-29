@@ -30,6 +30,7 @@ global using Atc.Wpf.Components.Settings;
 global using Atc.Wpf.Components.ValueConverters;
 global using Atc.Wpf.Controls.Progressing;
 global using Atc.Wpf.Controls.Resources;
+global using Atc.Wpf.Controls.Zoom;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Dialogs;
 global using Atc.Wpf.DragDrop;

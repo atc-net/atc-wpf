@@ -1,0 +1,118 @@
+<UserControl
+    x:Class="Atc.Wpf.Components.Zoom.ZoomBrowserView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
+    xmlns:local="clr-namespace:Atc.Wpf.Components.Zoom"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <sys:Double x:Key="Zoom100Value">100</sys:Double>
+        <Style x:Key="ToolBarIconStyle" TargetType="Image">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Margin" Value="3" />
+        </Style>
+    </UserControl.Resources>
+
+    <atc:GridEx Rows="Auto,*,Auto">
+
+        <!--  Row 0: Toolbar  -->
+        <ToolBarTray
+            Grid.Row="0"
+            Visibility="{Binding Path=ShowToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}">
+            <ToolBar>
+
+                <Button
+                    Margin="3,0"
+                    Command="{Binding Path=ZoomContent.ZoomPercentCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
+                    CommandParameter="{StaticResource Zoom100Value}"
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                  Key=Zoom100Percent}">
+                    <Image
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.Percentage}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
+                        Style="{StaticResource ToolBarIconStyle}" />
+                </Button>
+
+                <Button
+                    Margin="3,0"
+                    Command="{Binding Path=ZoomContent.FillCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                  Key=ZoomToFill}">
+                    <Image
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.ExpandArrowsAlt}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
+                        Style="{StaticResource ToolBarIconStyle}" />
+                </Button>
+
+                <Button
+                    Margin="3,0"
+                    Command="{Binding Path=ZoomContent.FitCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                  Key=ZoomToFit}">
+                    <Image
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.Compress}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
+                        Style="{StaticResource ToolBarIconStyle}" />
+                </Button>
+
+                <Separator Margin="5,0" />
+
+                <Button
+                    Margin="3,0"
+                    Command="{Binding Path=ZoomContent.ZoomInCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                  Key=ZoomIn}">
+                    <Image
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.SearchPlus}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
+                        Style="{StaticResource ToolBarIconStyle}" />
+                </Button>
+
+                <Button
+                    Margin="3,0"
+                    Command="{Binding Path=ZoomContent.ZoomOutCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                  Key=ZoomOut}">
+                    <Image
+                        Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.SearchMinus}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
+                        Style="{StaticResource ToolBarIconStyle}" />
+                </Button>
+
+            </ToolBar>
+        </ToolBarTray>
+
+        <!--  Row 1: Content + MiniMap overlay  -->
+        <Grid Grid.Row="1">
+            <ContentPresenter Content="{Binding Path=ZoomContent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}" />
+
+            <Border
+                Width="200"
+                Height="150"
+                Margin="8"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
+                BorderThickness="1"
+                Visibility="{Binding Path=ShowMiniMap, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}">
+                <atc:ZoomMiniMap DataContext="{Binding Path=ZoomContent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}" />
+            </Border>
+        </Grid>
+
+        <!--  Row 2: Status bar  -->
+        <StatusBar
+            Grid.Row="2"
+            Visibility="{Binding Path=ShowStatusBar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Path=ZoomContent.ViewportZoom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}, StringFormat='{}{0:P0}'}" />
+            </StatusBarItem>
+        </StatusBar>
+
+    </atc:GridEx>
+
+</UserControl>
