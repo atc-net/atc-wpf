@@ -27,6 +27,7 @@ global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;
 global using Atc.Wpf.Components.Notifications.Messages;
 global using Atc.Wpf.Components.Settings;
+global using Atc.Wpf.Components.ValueConverters;
 global using Atc.Wpf.Controls.Progressing;
 global using Atc.Wpf.Controls.Resources;
 global using Atc.Wpf.Data;
