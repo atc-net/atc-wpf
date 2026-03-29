@@ -62,7 +62,7 @@
                             Canvas.Top="350"
                             FontSize="16"
                             Foreground="#FF666666"
-                            Text="Ctrl+Scroll to zoom, Ctrl+Drag to pan" />
+                            Text="Ctrl+Scroll to zoom, Ctrl+Drag or Space+Drag to pan, Shift+Scroll to pan horizontally" />
                         <Rectangle
                             Canvas.Left="50"
                             Canvas.Top="460"
