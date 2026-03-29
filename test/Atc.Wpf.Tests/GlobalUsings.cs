@@ -22,3 +22,5 @@ global using Atc.Wpf.Tests.XUnitTestTypes;
 global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XUnit;
+
+global using Microsoft.Extensions.Logging;
