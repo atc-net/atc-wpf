@@ -12,6 +12,8 @@ public partial class ZoomBox
     private Point zoomControlMouseDownPoint;
     private Point contentMouseDownPoint;
     private MouseButton mouseButtonDown;
+    private bool isSpacebarHeld;
+    private Cursor? cursorBeforeSpacebar;
 
     private RelayCommand? zoomFillCommand;
     private RelayCommand? zoomFitCommand;
@@ -19,6 +21,9 @@ public partial class ZoomBox
     private RelayCommand<double>? zoomRatioFromMinimumCommand;
     private RelayCommand? zoomOutCommand;
     private RelayCommand? zoomInCommand;
+    private RelayCommand<Rect>? zoomToSelectionCommand;
+    private RelayCommand? zoomToNextPresetCommand;
+    private RelayCommand? zoomToPreviousPresetCommand;
 
     /// <summary>
     /// Command to implement the zoom to fill.
@@ -111,90 +116,163 @@ public partial class ZoomBox
         () => InternalViewportZoom < MaximumZoom);
 
     /// <summary>
+    /// Command to zoom to a specified selection rectangle (in content coordinates).
+    /// Animates the viewport to frame the rectangle with a small padding margin.
+    /// </summary>
+    public ICommand ZoomToSelectionCommand
+        => zoomToSelectionCommand ??= new RelayCommand<Rect>(
+        rect =>
+        {
+            SaveZoom();
+            AnimatedZoomTo(rect);
+            RaiseCanExecuteChanged();
+        },
+        rect => rect is { Width: > 0, Height: > 0 });
+
+    /// <summary>
+    /// Command to zoom to the next higher preset level.
+    /// </summary>
+    public ICommand ZoomToNextPresetCommand
+        => zoomToNextPresetCommand ??= new RelayCommand(
+        () =>
+        {
+            var presets = EffectiveZoomPresets;
+            var next = presets.FirstOrDefault(p => p > InternalViewportZoom + 0.001);
+            if (next > 0)
+            {
+                SaveZoom();
+                AnimatedZoomTo(next);
+                RaiseCanExecuteChanged();
+            }
+        },
+        () => EffectiveZoomPresets.Any(p => p > InternalViewportZoom + 0.001));
+
+    /// <summary>
+    /// Command to zoom to the next lower preset level.
+    /// </summary>
+    public ICommand ZoomToPreviousPresetCommand
+        => zoomToPreviousPresetCommand ??= new RelayCommand(
+        () =>
+        {
+            var presets = EffectiveZoomPresets;
+            var prev = presets.LastOrDefault(p => p < InternalViewportZoom - 0.001);
+            if (prev > 0)
+            {
+                SaveZoom();
+                AnimatedZoomTo(prev);
+                RaiseCanExecuteChanged();
+            }
+        },
+        () => EffectiveZoomPresets.Any(p => p < InternalViewportZoom - 0.001));
+
+    /// <summary>
     /// Handles keyboard shortcuts internally. Uses PreviewKeyDown to catch Alt-modified keys
     /// before they are swallowed as system key events.
     /// </summary>
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
+        ArgumentNullException.ThrowIfNull(e);
+
         base.OnPreviewKeyDown(e);
         TryHandleKeyDown(e);
     }
 
+    protected override void OnPreviewKeyUp(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        base.OnPreviewKeyUp(e);
+        TryHandleKeyUp(e);
+    }
+
     /// <summary>
     /// Attempts to handle key down events and execute corresponding zoom commands.
+    /// Also handles spacebar for temporary pan mode.
     /// </summary>
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public bool TryHandleKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
 
-        if (KeyboardHelper.IsKeyDownCtrl() &&
-            e.Key is Key.Add or Key.OemPlus)
+        if (IsSpacebarPanEnabled && e.Key == Key.Space && !isSpacebarHeld)
         {
-            if (!ZoomInCommand.CanExecute(parameter: null))
-            {
-                return false;
-            }
-
-            ZoomInCommand.Execute(parameter: null);
+            isSpacebarHeld = true;
+            cursorBeforeSpacebar = Cursor;
+            Cursor = Cursors.Hand;
             return e.Handled = true;
-        }
-
-        if (KeyboardHelper.IsKeyDownCtrl() &&
-            e.Key is Key.Subtract or Key.OemMinus)
-        {
-            if (!ZoomOutCommand.CanExecute(parameter: null))
-            {
-                return false;
-            }
-
-            ZoomOutCommand.Execute(parameter: null);
-            return e.Handled = true;
-        }
-
-        if (!KeyboardHelper.IsKeyDownCtrl() || !KeyboardHelper.IsKeyDownAlt())
-        {
-            return false;
         }
 
         // When Alt is held, WPF reports Key.System; the actual key is in SystemKey.
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
+        var modifiers = Keyboard.Modifiers;
 
-        if (key is Key.D8)
+        foreach (var binding in EffectiveZoomKeyBindings)
         {
-            if (!ZoomFillCommand.CanExecute(parameter: null))
+            if (key != binding.Key || modifiers != binding.Modifiers)
+            {
+                continue;
+            }
+
+            var command = GetCommandForAction(binding.Action);
+            if (command is null)
+            {
+                continue;
+            }
+
+            var parameter = binding.Action == ZoomActionType.Zoom100Percent
+                ? (object)100.0
+                : null;
+
+            if (!command.CanExecute(parameter))
             {
                 return false;
             }
 
-            ZoomFillCommand.Execute(parameter: null);
-            return e.Handled = true;
-        }
-
-        if (key is Key.D9)
-        {
-            if (!ZoomFitCommand.CanExecute(parameter: null))
-            {
-                return false;
-            }
-
-            ZoomFitCommand.Execute(parameter: null);
-            return e.Handled = true;
-        }
-
-        if (key is Key.D0)
-        {
-            if (!ZoomPercentCommand.CanExecute(parameter: 100.0))
-            {
-                return false;
-            }
-
-            ZoomPercentCommand.Execute(parameter: 100.0);
+            command.Execute(parameter);
             return e.Handled = true;
         }
 
         return false;
     }
+
+    /// <summary>
+    /// Attempts to handle key up events. Releases spacebar pan mode.
+    /// </summary>
+    public bool TryHandleKeyUp(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        if (isSpacebarHeld && e.Key == Key.Space)
+        {
+            isSpacebarHeld = false;
+            Cursor = cursorBeforeSpacebar;
+            cursorBeforeSpacebar = null;
+
+            if (mouseHandlingMode == MouseHandlingModeType.Panning)
+            {
+                ReleaseMouseCapture();
+                mouseHandlingMode = MouseHandlingModeType.None;
+            }
+
+            return e.Handled = true;
+        }
+
+        return false;
+    }
+
+    private ICommand? GetCommandForAction(ZoomActionType action)
+        => action switch
+        {
+            ZoomActionType.ZoomIn => ZoomInCommand,
+            ZoomActionType.ZoomOut => ZoomOutCommand,
+            ZoomActionType.ZoomFill => ZoomFillCommand,
+            ZoomActionType.ZoomFit => ZoomFitCommand,
+            ZoomActionType.Zoom100Percent => ZoomPercentCommand,
+            ZoomActionType.ZoomToNextPreset => ZoomToNextPresetCommand,
+            ZoomActionType.ZoomToPreviousPreset => ZoomToPreviousPresetCommand,
+            ZoomActionType.UndoZoom => UndoZoomCommand,
+            ZoomActionType.RedoZoom => RedoZoomCommand,
+            _ => null,
+        };
 
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
@@ -220,7 +298,11 @@ public partial class ZoomBox
         zoomControlMouseDownPoint = e.GetPosition(this);
         contentMouseDownPoint = e.GetPosition(content);
 
-        if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None &&
+        if (isSpacebarHeld && mouseButtonDown == MouseButton.Left)
+        {
+            mouseHandlingMode = MouseHandlingModeType.Panning;
+        }
+        else if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None &&
             (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None &&
             e.ChangedButton is MouseButton.Left or MouseButton.Right)
         {
@@ -234,6 +316,15 @@ public partial class ZoomBox
 
         if (mouseHandlingMode != MouseHandlingModeType.None)
         {
+            if (mouseHandlingMode == MouseHandlingModeType.Panning)
+            {
+                Cursor = Cursors.Hand;
+            }
+            else if (mouseHandlingMode == MouseHandlingModeType.Zooming)
+            {
+                Cursor = Cursors.Cross;
+            }
+
             CaptureMouse();
         }
     }
@@ -269,6 +360,11 @@ public partial class ZoomBox
 
         ReleaseMouseCapture();
         mouseHandlingMode = MouseHandlingModeType.None;
+
+        if (!isSpacebarHeld)
+        {
+            Cursor = null;
+        }
     }
 
     protected override void OnMouseMove(MouseEventArgs e)
@@ -321,6 +417,18 @@ public partial class ZoomBox
 
         base.OnMouseWheel(e);
 
+        // Shift+Scroll → horizontal pan
+        if (IsShiftScrollHorizontalPanEnabled &&
+            (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None &&
+            (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.None)
+        {
+            var panAmount = ContentViewportWidth / 10;
+            ContentOffsetX += e.Delta > 0 ? -panAmount : panAmount;
+            e.Handled = true;
+            return;
+        }
+
+        // Ctrl+Scroll → zoom
         if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.None)
         {
             return;
@@ -587,5 +695,7 @@ public partial class ZoomBox
         zoomInCommand?.RaiseCanExecuteChanged();
         zoomFitCommand?.RaiseCanExecuteChanged();
         zoomFillCommand?.RaiseCanExecuteChanged();
+        zoomToNextPresetCommand?.RaiseCanExecuteChanged();
+        zoomToPreviousPresetCommand?.RaiseCanExecuteChanged();
     }
 }

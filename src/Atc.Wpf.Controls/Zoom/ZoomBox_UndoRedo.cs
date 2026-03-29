@@ -9,18 +9,39 @@ public partial class ZoomBox
     private KeepAliveTimer? timer750MilliSeconds;
     private KeepAliveTimer? timer1500MilliSeconds;
     private UndoRedoStackItem? viewportZoomCache;
+    private UndoRedoStackItem? serviceZoomSnapshot;
     private RelayCommand? redoZoomCommand;
     private RelayCommand? undoZoomCommand;
 
-    private bool CanUndoZoom => undoStack.Count != 0;
+    /// <summary>
+    /// Gets or sets an optional external undo/redo service.
+    /// When set, zoom state changes are recorded through the service
+    /// instead of the internal undo/redo stacks.
+    /// </summary>
+    [DependencyProperty]
+    private IUndoRedoService? undoRedoService;
 
-    private bool CanRedoZoom => redoStack.Count != 0;
+    private bool CanUndoZoom
+        => UndoRedoService is not null
+            ? UndoRedoService.CanUndo
+            : undoStack.Count != 0;
+
+    private bool CanRedoZoom
+        => UndoRedoService is not null
+            ? UndoRedoService.CanRedo
+            : redoStack.Count != 0;
 
     /// <summary>
     /// Record the previous zoom level, so that we can return to it.
     /// </summary>
     public void SaveZoom()
     {
+        if (UndoRedoService is not null)
+        {
+            SaveZoomToService();
+            return;
+        }
+
         viewportZoomCache = CreateUndoRedoStackItem();
         if (undoStack.Count != 0 &&
             viewportZoomCache.Equals(undoStack.Peek()))
@@ -47,6 +68,14 @@ public partial class ZoomBox
 
         if (viewportZoomCache is null)
         {
+            return;
+        }
+
+        if (UndoRedoService is not null)
+        {
+            (timer750MilliSeconds ??= new KeepAliveTimer(
+                TimeSpan.FromMilliseconds(740),
+                () => SaveZoomToService())).Nudge();
             return;
         }
 
@@ -81,6 +110,14 @@ public partial class ZoomBox
             return;
         }
 
+        if (UndoRedoService is not null)
+        {
+            (timer1500MilliSeconds ??= new KeepAliveTimer(
+                TimeSpan.FromMilliseconds(1500),
+                () => SaveZoomToService())).Nudge();
+            return;
+        }
+
         (timer1500MilliSeconds ??= new KeepAliveTimer(TimeSpan.FromMilliseconds(1500), () =>
         {
             if (undoStack.Count != 0 &&
@@ -104,8 +141,51 @@ public partial class ZoomBox
             ContentViewportHeight,
             InternalViewportZoom);
 
+    private void SaveZoomToService()
+    {
+        if (UndoRedoService is null)
+        {
+            return;
+        }
+
+        if (UndoRedoService.IsExecuting)
+        {
+            return;
+        }
+
+        var currentState = CreateUndoRedoStackItem();
+        var fromState = serviceZoomSnapshot ?? currentState;
+        serviceZoomSnapshot = currentState;
+
+        if (fromState.Equals(currentState))
+        {
+            return;
+        }
+
+        var command = new ZoomUndoCommand(
+            this,
+            fromState.Rect,
+            fromState.Zoom,
+            currentState.Rect,
+            currentState.Zoom);
+
+        UndoRedoService.Add(command);
+        undoZoomCommand?.RaiseCanExecuteChanged();
+        redoZoomCommand?.RaiseCanExecuteChanged();
+    }
+
     private void UndoZoom()
     {
+        if (UndoRedoService is not null)
+        {
+            serviceZoomSnapshot = null;
+            UndoRedoService.Undo();
+            SetScrollViewerFocus();
+            undoZoomCommand?.RaiseCanExecuteChanged();
+            redoZoomCommand?.RaiseCanExecuteChanged();
+            return;
+        }
+
         viewportZoomCache = CreateUndoRedoStackItem();
         if (undoStack.Count == 0 ||
             !viewportZoomCache.Equals(undoStack.Peek()))
@@ -122,6 +202,16 @@ public partial class ZoomBox
 
     private void RedoZoom()
     {
+        if (UndoRedoService is not null)
+        {
+            serviceZoomSnapshot = null;
+            UndoRedoService.Redo();
+            SetScrollViewerFocus();
+            undoZoomCommand?.RaiseCanExecuteChanged();
+            redoZoomCommand?.RaiseCanExecuteChanged();
+            return;
+        }
+
         viewportZoomCache = CreateUndoRedoStackItem();
         if (redoStack.Count == 0 ||
             !viewportZoomCache.Equals(redoStack.Peek()))
@@ -137,16 +227,26 @@ public partial class ZoomBox
     }
 
     /// <summary>
-    /// Command to implement Undo.
+    /// Command to undo the last zoom/pan change.
     /// </summary>
     public ICommand UndoZoomCommand
         => undoZoomCommand ??= new RelayCommand(UndoZoom, () => CanUndoZoom);
 
     /// <summary>
-    /// Command to implement Redo.
+    /// Command to redo the last undone zoom/pan change.
     /// </summary>
     public ICommand RedoZoomCommand
         => redoZoomCommand ??= new RelayCommand(RedoZoom, () => CanRedoZoom);
+
+    /// <summary>
+    /// Navigate to the previous viewport state (alias for <see cref="UndoZoomCommand"/>).
+    /// </summary>
+    public ICommand ZoomPreviousCommand => UndoZoomCommand;
+
+    /// <summary>
+    /// Navigate to the next viewport state (alias for <see cref="RedoZoomCommand"/>).
+    /// </summary>
+    public ICommand ZoomNextCommand => RedoZoomCommand;
 
     private void SetScrollViewerFocus()
     {

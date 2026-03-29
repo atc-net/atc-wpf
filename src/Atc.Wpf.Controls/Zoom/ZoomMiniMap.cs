@@ -16,6 +16,20 @@ public partial class ZoomMiniMap : ContentControl
     [DependencyProperty(PropertyChangedCallback = nameof(OnVisualElementChanged))]
     private FrameworkElement? visualElement;
 
+    /// <summary>
+    /// Gets or sets the brush used for the viewport indicator border.
+    /// When <see langword="null"/>, the default theme brush is used.
+    /// </summary>
+    [DependencyProperty]
+    private Brush? viewportBorderBrush;
+
+    /// <summary>
+    /// Gets or sets the thickness of the viewport indicator border.
+    /// When <see langword="null"/>, the default thickness is used.
+    /// </summary>
+    [DependencyProperty]
+    private double? viewportBorderThickness;
+
     static ZoomMiniMap()
     {
         DefaultStyleKeyProperty.OverrideMetadata(

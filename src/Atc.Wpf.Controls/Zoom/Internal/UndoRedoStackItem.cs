@@ -12,7 +12,7 @@ internal sealed class UndoRedoStackItem(
     public double Zoom { get; } = zoom;
 
     public override string ToString()
-        => $"Rectangle ({Rect.X},{Rect.X}), Zoom {Zoom}";
+        => $"Rectangle ({Rect.X},{Rect.Y}), Zoom {Zoom}";
 
     public override bool Equals(object? obj)
         => obj is UndoRedoStackItem item &&

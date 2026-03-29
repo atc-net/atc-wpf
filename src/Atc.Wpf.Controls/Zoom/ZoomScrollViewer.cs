@@ -58,6 +58,18 @@ public partial class ZoomScrollViewer : ScrollViewer
     [DependencyProperty(DefaultValue = ZoomInitialPositionType.Default)]
     private ZoomInitialPositionType zoomInitialPosition;
 
+    private RelayCommand? fillCommand;
+    private RelayCommand? fitCommand;
+    private RelayCommand<double>? zoomPercentCommand;
+    private RelayCommand<double>? zoomRatioFromMinimumCommand;
+    private RelayCommand? zoomOutCommand;
+    private RelayCommand? zoomInCommand;
+    private RelayCommand? undoZoomCommand;
+    private RelayCommand? redoZoomCommand;
+    private RelayCommand<Rect>? zoomToSelectionCommand;
+    private RelayCommand? zoomToNextPresetCommand;
+    private RelayCommand? zoomToPreviousPresetCommand;
+
     static ZoomScrollViewer()
     {
         DefaultStyleKeyProperty.OverrideMetadata(
@@ -81,61 +93,109 @@ public partial class ZoomScrollViewer : ScrollViewer
         ZoomContent?.TryHandleKeyDown(e);
     }
 
+    protected override void OnPreviewKeyUp(KeyEventArgs e)
+    {
+        base.OnPreviewKeyUp(e);
+        ZoomContent?.TryHandleKeyUp(e);
+    }
+
     /// <summary>
     /// Command to implement the zoom to fill.
     /// </summary>
-    public ICommand FillCommand => new RelayCommand(
-        () => ZoomContent?.ZoomFillCommand.Execute(parameter: null),
-        () => ZoomContent?.ZoomFillCommand.CanExecute(parameter: null) ?? true);
+    public ICommand FillCommand
+        => fillCommand ??= new RelayCommand(
+            () => ZoomContent?.ZoomFillCommand.Execute(parameter: null),
+            () => ZoomContent?.ZoomFillCommand.CanExecute(parameter: null) ?? true);
 
     /// <summary>
     /// Command to implement the zoom to fit.
     /// </summary>
-    public ICommand FitCommand => new RelayCommand(
+    public ICommand FitCommand
+        => fitCommand ??= new RelayCommand(
             () => ZoomContent?.ZoomFitCommand.Execute(parameter: null),
             () => ZoomContent?.ZoomFitCommand.CanExecute(parameter: null) ?? true);
 
     /// <summary>
     /// Command to implement the zoom to a percentage.
     /// </summary>
-    public ICommand ZoomPercentCommand => new RelayCommand<double>(
+    public ICommand ZoomPercentCommand
+        => zoomPercentCommand ??= new RelayCommand<double>(
             value => ZoomContent?.ZoomPercentCommand.Execute(value),
             value => ZoomContent?.ZoomPercentCommand.CanExecute(value) ?? true);
 
     /// <summary>
     /// Command to implement the zoom ratio from minimum.
     /// </summary>
-    public ICommand ZoomRatioFromMinimumCommand => new RelayCommand<double>(
+    public ICommand ZoomRatioFromMinimumCommand
+        => zoomRatioFromMinimumCommand ??= new RelayCommand<double>(
             value => ZoomContent?.ZoomRatioFromMinimumCommand.Execute(value),
             value => ZoomContent?.ZoomRatioFromMinimumCommand.CanExecute(value) ?? true);
 
     /// <summary>
     /// Command to implement the zoom out.
     /// </summary>
-    public ICommand ZoomOutCommand => new RelayCommand(
+    public ICommand ZoomOutCommand
+        => zoomOutCommand ??= new RelayCommand(
             () => ZoomContent?.ZoomOutCommand.Execute(parameter: null),
             () => ZoomContent?.ZoomOutCommand.CanExecute(parameter: null) ?? true);
 
     /// <summary>
     /// Command to implement the zoom in.
     /// </summary>
-    public ICommand ZoomInCommand => new RelayCommand(
+    public ICommand ZoomInCommand
+        => zoomInCommand ??= new RelayCommand(
             () => ZoomContent?.ZoomInCommand.Execute(parameter: null),
             () => ZoomContent?.ZoomInCommand.CanExecute(parameter: null) ?? true);
 
     /// <summary>
     /// Command to implement Undo.
     /// </summary>
-    public ICommand UndoZoomCommand => new RelayCommand(
+    public ICommand UndoZoomCommand
+        => undoZoomCommand ??= new RelayCommand(
             () => ZoomContent?.UndoZoomCommand.Execute(parameter: null),
             () => ZoomContent?.UndoZoomCommand.CanExecute(parameter: null) ?? true);
 
     /// <summary>
     /// Command to implement Redo.
     /// </summary>
-    public ICommand RedoZoomCommand => new RelayCommand(
+    public ICommand RedoZoomCommand
+        => redoZoomCommand ??= new RelayCommand(
             () => ZoomContent?.RedoZoomCommand.Execute(parameter: null),
             () => ZoomContent?.RedoZoomCommand.CanExecute(parameter: null) ?? true);
+
+    /// <summary>
+    /// Navigate to the previous viewport state (alias for <see cref="UndoZoomCommand"/>).
+    /// </summary>
+    public ICommand ZoomPreviousCommand => UndoZoomCommand;
+
+    /// <summary>
+    /// Navigate to the next viewport state (alias for <see cref="RedoZoomCommand"/>).
+    /// </summary>
+    public ICommand ZoomNextCommand => RedoZoomCommand;
+
+    /// <summary>
+    /// Command to zoom to a specified selection rectangle (in content coordinates).
+    /// </summary>
+    public ICommand ZoomToSelectionCommand
+        => zoomToSelectionCommand ??= new RelayCommand<Rect>(
+            rect => ZoomContent?.ZoomToSelectionCommand.Execute(rect),
+            rect => ZoomContent?.ZoomToSelectionCommand.CanExecute(rect) ?? false);
+
+    /// <summary>
+    /// Command to zoom to the next higher preset level.
+    /// </summary>
+    public ICommand ZoomToNextPresetCommand
+        => zoomToNextPresetCommand ??= new RelayCommand(
+            () => ZoomContent?.ZoomToNextPresetCommand.Execute(parameter: null),
+            () => ZoomContent?.ZoomToNextPresetCommand.CanExecute(parameter: null) ?? false);
+
+    /// <summary>
+    /// Command to zoom to the next lower preset level.
+    /// </summary>
+    public ICommand ZoomToPreviousPresetCommand
+        => zoomToPreviousPresetCommand ??= new RelayCommand(
+            () => ZoomContent?.ZoomToPreviousPresetCommand.Execute(parameter: null),
+            () => ZoomContent?.ZoomToPreviousPresetCommand.CanExecute(parameter: null) ?? false);
 
     private void RefreshProperties()
     {
@@ -147,5 +207,8 @@ public partial class ZoomScrollViewer : ScrollViewer
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ZoomOutCommand)));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UndoZoomCommand)));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RedoZoomCommand)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ZoomToSelectionCommand)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ZoomToNextPresetCommand)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ZoomToPreviousPresetCommand)));
     }
 }
