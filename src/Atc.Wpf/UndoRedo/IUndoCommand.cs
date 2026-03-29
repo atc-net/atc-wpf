@@ -19,4 +19,11 @@ public interface IUndoCommand
     /// Reverses the effect of <see cref="Execute"/>.
     /// </summary>
     void UnExecute();
+
+    /// <summary>
+    /// Gets a value indicating whether this command became obsolete after execution
+    /// (e.g., a no-op). Obsolete commands are discarded instead of being pushed
+    /// onto the undo stack.
+    /// </summary>
+    bool IsObsolete => false;
 }

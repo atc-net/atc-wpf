@@ -6,8 +6,6 @@ namespace Atc.Wpf.UndoRedo;
 /// </summary>
 public sealed class UndoCommandGroup : IUndoCommand
 {
-    private readonly IReadOnlyList<IUndoCommand> commands;
-
     public UndoCommandGroup(
         string description,
         IReadOnlyList<IUndoCommand> commands)
@@ -16,27 +14,32 @@ public sealed class UndoCommandGroup : IUndoCommand
         ArgumentNullException.ThrowIfNull(commands);
 
         Description = description;
-        this.commands = commands;
+        Commands = commands;
     }
 
     /// <inheritdoc />
     public string Description { get; }
 
+    /// <summary>
+    /// Gets the child commands that make up this group.
+    /// </summary>
+    public IReadOnlyList<IUndoCommand> Commands { get; }
+
     /// <inheritdoc />
     public void Execute()
     {
-        for (var i = 0; i < commands.Count; i++)
+        for (var i = 0; i < Commands.Count; i++)
         {
-            commands[i].Execute();
+            Commands[i].Execute();
         }
     }
 
     /// <inheritdoc />
     public void UnExecute()
     {
-        for (var i = commands.Count - 1; i >= 0; i--)
+        for (var i = Commands.Count - 1; i >= 0; i--)
         {
-            commands[i].UnExecute();
+            Commands[i].UnExecute();
         }
     }
 }
