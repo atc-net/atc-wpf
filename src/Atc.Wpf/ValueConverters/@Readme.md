@@ -111,6 +111,7 @@ Or by the ValueConverter's Instance:
 | Int -> TimeSpan           | IntegerToTimeSpanValueConverter                          | 100 -> TimeSpan.FromMilliseconds(100)   | TimeSpan -> int (milliseconds) ✅       |
 | LogCategoryType -> Brush  | LogCategoryTypeToBrushValueConverter                     | Information -> DodgerBlue               | Not supported                           |
 | LogCategoryType -> Color  | LogCategoryTypeToColorValueConverter                     | Information -> DodgerBlue               | Not supported                           |
+| LogCategoryType -> Image  | LogCategoryTypeToResourceImageValueConverter *(Components)* | Information -> BitmapImage           | Not supported                           |
 | LogLevel -> Brush         | LogLevelToBrushValueConverter                            | Information -> DodgerBlue               | Not supported                           |
 | LogLevel -> Color         | LogLevelToColorValueConverter                            | Information -> DodgerBlue               | Not supported                           |
 |                           | ObservableDictionaryToDictionaryOfStringsValueConverter  |                                         |                                         |

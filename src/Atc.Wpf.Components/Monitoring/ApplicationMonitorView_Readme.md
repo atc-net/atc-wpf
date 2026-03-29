@@ -35,6 +35,8 @@ using Atc.Wpf.Components.Monitoring;
 
 - Uses `Messenger.Default` to receive `ApplicationMonitorScrollEvent` messages
 - Auto-scroll keeps the latest entries visible
+- Each `ApplicationEventEntry` displays a distinct icon per `LogCategoryType` via `LogCategoryTypeToResourceImageValueConverter`
+- Supported log categories with unique icons: Critical, Error, Warning, Security, Audit, Service, UI, Information, Debug, Trace
 
 ## 🔗 Related Controls
 
