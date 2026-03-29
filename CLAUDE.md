@@ -9,7 +9,7 @@ ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
 - **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
 - **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation)
-- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings)
+- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, undo/redo history, zoom browser)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
 - **Atc.Wpf.Network** - Network scanning and discovery controls
@@ -80,7 +80,7 @@ src/
 ├── Atc.Wpf/                      # Core: MVVM, layouts, converters
 ├── Atc.Wpf.Controls/             # Atomic controls (base, buttons, colors)
 ├── Atc.Wpf.Forms/                # Form field controls (Label*)
-├── Atc.Wpf.Components/           # Composite components (dialogs, viewers)
+├── Atc.Wpf.Components/           # Composite components (dialogs, viewers, undo/redo, zoom)
 ├── Atc.Wpf.Controls.Sample/      # Sample app controls
 ├── Atc.Wpf.FontIcons/            # Font icon support
 ├── Atc.Wpf.Theming/              # Theme infrastructure
@@ -182,4 +182,4 @@ Place a `[ControlName]_Readme.md` file next to the control's `.cs` file. Follow 
 - Data display controls: `docs/DataDisplay/@Readme.md`
 - Form controls: `src/Atc.Wpf.Forms/` (LabelTextBox, LabelComboBox, etc.)
 - Base controls: `src/Atc.Wpf.Controls/BaseControls/` (NumericBox, IntegerBox, etc.)
-- Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications)
+- Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications, UndoRedo, Zoom)
