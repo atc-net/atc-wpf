@@ -35,6 +35,8 @@ public sealed partial class UndoRedoServiceViewModel : ViewModelBase
         undoRedoService.StateChanged += (_, _) => RefreshStacks();
     }
 
+    public IUndoRedoService UndoRedoService => undoRedoService;
+
     [RelayCommand]
     private void SetText()
     {

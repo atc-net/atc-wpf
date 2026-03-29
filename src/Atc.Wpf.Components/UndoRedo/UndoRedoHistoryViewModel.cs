@@ -57,9 +57,17 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
     private void UndoAll()
         => undoRedoService?.UndoAll();
 
+    [RelayCommand(CanExecute = nameof(CanUndo))]
+    private void UndoToLastUserAction()
+        => undoRedoService?.UndoToLastUserAction();
+
     [RelayCommand(CanExecute = nameof(CanRedo))]
     private void RedoAll()
         => undoRedoService?.RedoAll();
+
+    [RelayCommand(CanExecute = nameof(CanRedo))]
+    private void RedoToLastUserAction()
+        => undoRedoService?.RedoToLastUserAction();
 
     [RelayCommand(CanExecute = nameof(CanClear))]
     private void Clear()
@@ -141,7 +149,9 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
         UndoCommand.RaiseCanExecuteChanged();
         RedoCommand.RaiseCanExecuteChanged();
         UndoAllCommand.RaiseCanExecuteChanged();
+        UndoToLastUserActionCommand.RaiseCanExecuteChanged();
         RedoAllCommand.RaiseCanExecuteChanged();
+        RedoToLastUserActionCommand.RaiseCanExecuteChanged();
         ClearCommand.RaiseCanExecuteChanged();
         MarkSavedCommand.RaiseCanExecuteChanged();
         NavigateToCommand.RaiseCanExecuteChanged();
@@ -179,6 +189,7 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
                 Description = cmd.Description,
                 IsHighlighted = i == 0,
                 Command = cmd,
+                Image = cmd is IRichUndoCommand rich ? rich.Image as ImageSource : null,
             });
         }
 
@@ -190,6 +201,7 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
                 Description = cmd.Description,
                 IsRedo = true,
                 Command = cmd,
+                Image = cmd is IRichUndoCommand rich ? rich.Image as ImageSource : null,
             });
         }
 

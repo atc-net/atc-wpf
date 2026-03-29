@@ -33,6 +33,18 @@ public interface IUndoRedoService
     bool IsExecuting { get; }
 
     /// <summary>
+    /// Gets the type of action currently being performed.
+    /// Returns <see cref="UndoRedoActionType.None"/> when idle.
+    /// </summary>
+    UndoRedoActionType ExecutingAction { get; }
+
+    /// <summary>
+    /// Gets the command currently being executed, undone, or redone,
+    /// or <see langword="null"/> when idle.
+    /// </summary>
+    IUndoCommand? ExecutingCommand { get; }
+
+    /// <summary>
     /// Gets or sets the maximum number of commands retained in the undo history.
     /// Default is 100. Oldest commands are discarded when the limit is exceeded.
     /// </summary>
@@ -78,10 +90,24 @@ public interface IUndoRedoService
     bool Undo();
 
     /// <summary>
+    /// Undoes the specified number of commands.
+    /// </summary>
+    /// <param name="levels">The number of commands to undo. Must be greater than zero.</param>
+    /// <returns><see langword="true"/> if at least one command was undone; otherwise <see langword="false"/>.</returns>
+    bool Undo(int levels);
+
+    /// <summary>
     /// Redoes the most recently undone command.
     /// </summary>
     /// <returns><see langword="true"/> if a command was redone; otherwise <see langword="false"/>.</returns>
     bool Redo();
+
+    /// <summary>
+    /// Redoes the specified number of commands.
+    /// </summary>
+    /// <param name="levels">The number of commands to redo. Must be greater than zero.</param>
+    /// <returns><see langword="true"/> if at least one command was redone; otherwise <see langword="false"/>.</returns>
+    bool Redo(int levels);
 
     /// <summary>
     /// Undoes all commands in the undo stack.
@@ -92,6 +118,22 @@ public interface IUndoRedoService
     /// Redoes all commands in the redo stack.
     /// </summary>
     void RedoAll();
+
+    /// <summary>
+    /// Undoes commands until a command with <see cref="IRichUndoCommand.AllowUserAction"/>
+    /// set to <see langword="true"/> is reached (inclusive). Plain <see cref="IUndoCommand"/>
+    /// instances are treated as user actions.
+    /// </summary>
+    /// <returns><see langword="true"/> if at least one command was undone; otherwise <see langword="false"/>.</returns>
+    bool UndoToLastUserAction();
+
+    /// <summary>
+    /// Redoes commands until a command with <see cref="IRichUndoCommand.AllowUserAction"/>
+    /// set to <see langword="true"/> is reached (inclusive). Plain <see cref="IUndoCommand"/>
+    /// instances are treated as user actions.
+    /// </summary>
+    /// <returns><see langword="true"/> if at least one command was redone; otherwise <see langword="false"/>.</returns>
+    bool RedoToLastUserAction();
 
     /// <summary>
     /// Undoes commands until the specified command has been undone (inclusive).

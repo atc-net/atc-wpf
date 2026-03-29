@@ -6,6 +6,12 @@ namespace Atc.Wpf.Components.UndoRedo;
 public sealed class UndoRedoHistoryItem
 {
     /// <summary>
+    /// Gets an optional image for display in the history list.
+    /// Populated from <see cref="IRichUndoCommand.Image"/> when the command provides one.
+    /// </summary>
+    public ImageSource? Image { get; init; }
+
+    /// <summary>
     /// Gets the human-readable description for this history row.
     /// </summary>
     public required string Description { get; init; }

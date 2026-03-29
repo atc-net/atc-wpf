@@ -14,7 +14,8 @@ public sealed class UndoRedoService : IUndoRedoService
     private readonly LinkedList<IUndoCommand> redoStack = [];
 
     private UndoCommandGroupScope? activeScope;
-    private bool isExecuting;
+    private UndoRedoActionType executingAction;
+    private IUndoCommand? executingCommand;
     private IUndoCommand? savedCommand;
     private bool savedAtInitialState = true;
     private bool savedCommandTrimmed;
@@ -73,7 +74,29 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                return isExecuting;
+                return executingAction != UndoRedoActionType.None;
+            }
+        }
+    }
+
+    public UndoRedoActionType ExecutingAction
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                return executingAction;
+            }
+        }
+    }
+
+    public IUndoCommand? ExecutingCommand
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                return executingCommand;
             }
         }
     }
@@ -109,13 +132,14 @@ public sealed class UndoRedoService : IUndoRedoService
         bool useScope;
         lock (stackLock)
         {
-            if (isExecuting)
+            if (executingAction != UndoRedoActionType.None)
             {
                 return;
             }
 
             useScope = activeScope is not null;
-            isExecuting = true;
+            executingAction = UndoRedoActionType.Execute;
+            executingCommand = command;
         }
 
         if (useScope)
@@ -133,7 +157,7 @@ public sealed class UndoRedoService : IUndoRedoService
 
         lock (stackLock)
         {
-            if (isExecuting)
+            if (executingAction != UndoRedoActionType.None)
             {
                 return;
             }
@@ -158,14 +182,15 @@ public sealed class UndoRedoService : IUndoRedoService
 
         lock (stackLock)
         {
-            if (undoStack.Count == 0 || isExecuting)
+            if (undoStack.Count == 0 || executingAction != UndoRedoActionType.None)
             {
                 return false;
             }
 
             command = undoStack.First!.Value;
             undoStack.RemoveFirst();
-            isExecuting = true;
+            executingAction = UndoRedoActionType.Undo;
+            executingCommand = command;
         }
 
         try
@@ -176,7 +201,8 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                isExecuting = false;
+                executingAction = UndoRedoActionType.None;
+                executingCommand = null;
                 redoStack.AddFirst(command);
             }
         }
@@ -186,20 +212,39 @@ public sealed class UndoRedoService : IUndoRedoService
         return true;
     }
 
+    public bool Undo(int levels)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(levels);
+
+        var any = false;
+        for (var i = 0; i < levels; i++)
+        {
+            if (!Undo())
+            {
+                break;
+            }
+
+            any = true;
+        }
+
+        return any;
+    }
+
     public bool Redo()
     {
         IUndoCommand command;
 
         lock (stackLock)
         {
-            if (redoStack.Count == 0 || isExecuting)
+            if (redoStack.Count == 0 || executingAction != UndoRedoActionType.None)
             {
                 return false;
             }
 
             command = redoStack.First!.Value;
             redoStack.RemoveFirst();
-            isExecuting = true;
+            executingAction = UndoRedoActionType.Redo;
+            executingCommand = command;
         }
 
         try
@@ -210,7 +255,8 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                isExecuting = false;
+                executingAction = UndoRedoActionType.None;
+                executingCommand = null;
                 PushUndo(command);
             }
         }
@@ -218,6 +264,24 @@ public sealed class UndoRedoService : IUndoRedoService
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Redo, command));
         StateChanged?.Invoke(this, EventArgs.Empty);
         return true;
+    }
+
+    public bool Redo(int levels)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(levels);
+
+        var any = false;
+        for (var i = 0; i < levels; i++)
+        {
+            if (!Redo())
+            {
+                break;
+            }
+
+            any = true;
+        }
+
+        return any;
     }
 
     public void UndoAll()
@@ -234,6 +298,99 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             // Keep redoing until the stack is empty.
         }
+    }
+
+    public bool UndoToLastUserAction()
+    {
+        // First undo any non-user-action commands on top of the stack,
+        // then undo exactly one user-action command, then undo any
+        // trailing non-user-action commands below it.
+        // This treats [trailing-internals, user, leading-internals] as
+        // one atomic "user step" so the user lands on the previous
+        // user-action boundary.
+        var any = false;
+
+        // Phase 1: undo non-user-action commands on top
+        while (CanUndo)
+        {
+            lock (stackLock)
+            {
+                if (undoStack.Count == 0 || IsUserAction(undoStack.First!.Value))
+                {
+                    break;
+                }
+            }
+
+            if (!Undo())
+            {
+                break;
+            }
+
+            any = true;
+        }
+
+        // Phase 2: undo one user-action command
+        if (CanUndo && Undo())
+        {
+            any = true;
+        }
+
+        // Phase 3: undo trailing non-user-action commands
+        while (CanUndo)
+        {
+            lock (stackLock)
+            {
+                if (undoStack.Count == 0 || IsUserAction(undoStack.First!.Value))
+                {
+                    break;
+                }
+            }
+
+            if (!Undo())
+            {
+                break;
+            }
+        }
+
+        return any;
+    }
+
+    public bool RedoToLastUserAction()
+    {
+        // Mirror of UndoToLastUserAction: redo any non-user-action commands
+        // on top of the redo stack, then redo exactly one user-action command.
+        // Trailing non-user-action commands are left for the next call,
+        // where they will be grouped with the following user action.
+        // This ensures Undo/Redo round-trips land on the same user-action
+        // boundaries.
+        var any = false;
+
+        // Phase 1: redo non-user-action commands on top
+        while (CanRedo)
+        {
+            lock (stackLock)
+            {
+                if (redoStack.Count == 0 || IsUserAction(redoStack.First!.Value))
+                {
+                    break;
+                }
+            }
+
+            if (!Redo())
+            {
+                break;
+            }
+
+            any = true;
+        }
+
+        // Phase 2: redo one user-action command
+        if (CanRedo && Redo())
+        {
+            any = true;
+        }
+
+        return any;
     }
 
     public void UndoTo(IUndoCommand command)
@@ -350,6 +507,9 @@ public sealed class UndoRedoService : IUndoRedoService
         StateChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    private static bool IsUserAction(IUndoCommand command)
+        => command is not IRichUndoCommand rich || rich.AllowUserAction;
+
     private void ExecuteInScope(IUndoCommand command)
     {
         try
@@ -360,7 +520,8 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                isExecuting = false;
+                executingAction = UndoRedoActionType.None;
+                executingCommand = null;
                 activeScope!.AddCommand(command);
             }
         }
@@ -376,7 +537,8 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                isExecuting = false;
+                executingAction = UndoRedoActionType.None;
+                executingCommand = null;
                 PushUndo(command);
                 redoStack.Clear();
             }
