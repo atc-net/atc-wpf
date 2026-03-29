@@ -95,4 +95,30 @@ public sealed partial class UndoRedoHistoryViewSampleViewModel : ViewModelBase
     [RelayCommand]
     private void RedoToUserAction()
         => undoRedoService.RedoToLastUserAction();
+
+    [RelayCommand]
+    private void CreateSnapshot()
+    {
+        var name = $"Snapshot {undoRedoService.Snapshots.Count + 1}";
+        undoRedoService.CreateSnapshot(name);
+    }
+
+    [RelayCommand]
+    private void BatchImport()
+    {
+        using (undoRedoService.SuspendRecording())
+        {
+            for (var i = 0; i < 10; i++)
+            {
+                CurrentText = $"batch-{i}";
+            }
+        }
+
+        // Record a single summary command after the batch
+        var finalValue = CurrentText;
+        undoRedoService.Add(new RichUndoCommand(
+            "Batch import (10 items)",
+            () => CurrentText = finalValue,
+            () => CurrentText = "(empty)"));
+    }
 }

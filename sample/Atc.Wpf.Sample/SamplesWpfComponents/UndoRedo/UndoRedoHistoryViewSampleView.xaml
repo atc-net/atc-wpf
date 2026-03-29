@@ -42,6 +42,9 @@
                             <Separator Margin="0,4" />
                             <Button Command="{Binding UndoToUserActionCommand}" Content="Undo to User Action" />
                             <Button Command="{Binding RedoToUserActionCommand}" Content="Redo to User Action" />
+                            <Separator Margin="0,4" />
+                            <Button Command="{Binding CreateSnapshotCommand}" Content="Create Snapshot" />
+                            <Button Command="{Binding BatchImportCommand}" Content="Batch Import (suspended)" />
                         </atc:UniformSpacingPanel>
                         <TextBlock
                             Margin="0,10,0,0"
