@@ -28,9 +28,20 @@ public interface IRichUndoCommand : IUndoCommand
     object? Data { get; }
 
     /// <summary>
+    /// Gets the UTC timestamp indicating when this command was created.
+    /// </summary>
+    DateTimeOffset Timestamp { get; }
+
+    /// <summary>
     /// Gets a value indicating whether this command represents a user-initiated action.
     /// When <see langword="false"/>, the command is considered programmatic/internal
     /// and may be skipped by user-action navigation methods.
     /// </summary>
     bool AllowUserAction { get; }
+
+    /// <summary>
+    /// Gets the contexts (scopes) associated with this command.
+    /// Commands can be filtered by context during undo/redo operations.
+    /// </summary>
+    IReadOnlyList<UndoContext> Contexts { get; }
 }

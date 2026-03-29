@@ -12,11 +12,23 @@ public sealed class UndoRedoService : IUndoRedoService
     private readonly Lock stackLock = new();
     private readonly LinkedList<IUndoCommand> undoStack = [];
     private readonly LinkedList<IUndoCommand> redoStack = [];
+    private readonly List<IUndoOperationApprover> approvers = [];
+    private readonly List<UndoSnapshot> snapshots = [];
+    private readonly List<LinkedList<IUndoCommand>> redoBranches = [];
+
+    private bool allowNonLinearHistory;
+    private IReadOnlyList<IReadOnlyList<IUndoCommand>>? cachedRedoBranches;
+
+    private IReadOnlyList<IUndoCommand>? cachedUndoCommands;
+    private IReadOnlyList<IUndoCommand>? cachedRedoCommands;
 
     private UndoCommandGroupScope? activeScope;
     private UndoRedoActionType executingAction;
     private IUndoCommand? executingCommand;
     private IUndoCommand? savedCommand;
+    private int suspendCount;
+    private long maxHistoryMemory;
+    private long currentHistoryMemory;
     private bool savedAtInitialState = true;
     private bool savedCommandTrimmed;
 
@@ -30,7 +42,7 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                return undoStack.ToList().AsReadOnly();
+                return cachedUndoCommands ??= undoStack.ToArray();
             }
         }
     }
@@ -41,7 +53,7 @@ public sealed class UndoRedoService : IUndoRedoService
         {
             lock (stackLock)
             {
-                return redoStack.ToList().AsReadOnly();
+                return cachedRedoCommands ??= redoStack.ToArray();
             }
         }
     }
@@ -79,6 +91,8 @@ public sealed class UndoRedoService : IUndoRedoService
         }
     }
 
+    public bool IsRecordingSuspended => Volatile.Read(ref suspendCount) > 0;
+
     public UndoRedoActionType ExecutingAction
     {
         get
@@ -102,6 +116,92 @@ public sealed class UndoRedoService : IUndoRedoService
     }
 
     public int MaxHistorySize { get; set; } = DefaultMaxHistorySize;
+
+    public IUndoRedoAuditLogger? AuditLogger { get; set; }
+
+    public bool AllowNonLinearHistory
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                return allowNonLinearHistory;
+            }
+        }
+
+        set
+        {
+            lock (stackLock)
+            {
+                allowNonLinearHistory = value;
+            }
+        }
+    }
+
+    public IReadOnlyList<IReadOnlyList<IUndoCommand>> RedoBranches
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                return cachedRedoBranches ??= redoBranches
+                    .Select(branch => (IReadOnlyList<IUndoCommand>)branch.ToArray())
+                    .ToArray();
+            }
+        }
+    }
+
+    public void SwitchRedoBranch(int branchIndex)
+    {
+        lock (stackLock)
+        {
+            if (!allowNonLinearHistory)
+            {
+                throw new InvalidOperationException(
+                    "Non-linear history is not enabled. Set AllowNonLinearHistory to true.");
+            }
+
+            ArgumentOutOfRangeException.ThrowIfNegative(branchIndex);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(branchIndex, redoBranches.Count);
+
+            var selectedBranch = redoBranches[branchIndex];
+            redoBranches.RemoveAt(branchIndex);
+
+            if (redoStack.Count > 0)
+            {
+                var currentBranch = new LinkedList<IUndoCommand>(redoStack);
+                redoBranches.Add(currentBranch);
+            }
+
+            redoStack.Clear();
+            foreach (var command in selectedBranch)
+            {
+                redoStack.AddLast(command);
+            }
+
+            cachedRedoCommands = null;
+            cachedRedoBranches = null;
+        }
+
+        StateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public long MaxHistoryMemory
+    {
+        get => Interlocked.Read(ref maxHistoryMemory);
+        set => Interlocked.Exchange(ref maxHistoryMemory, value);
+    }
+
+    public long CurrentHistoryMemory
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                return currentHistoryMemory;
+            }
+        }
+    }
 
     public bool HasUnsavedChanges
     {
@@ -130,6 +230,7 @@ public sealed class UndoRedoService : IUndoRedoService
         ArgumentNullException.ThrowIfNull(command);
 
         bool useScope;
+        bool suspended;
         lock (stackLock)
         {
             if (executingAction != UndoRedoActionType.None)
@@ -137,9 +238,16 @@ public sealed class UndoRedoService : IUndoRedoService
                 return;
             }
 
-            useScope = activeScope is not null;
+            suspended = suspendCount > 0;
+            useScope = !suspended && activeScope is not null;
             executingAction = UndoRedoActionType.Execute;
             executingCommand = command;
+        }
+
+        if (suspended)
+        {
+            ExecuteSuspended(command);
+            return;
         }
 
         if (useScope)
@@ -162,18 +270,35 @@ public sealed class UndoRedoService : IUndoRedoService
                 return;
             }
 
+            if (suspendCount > 0)
+            {
+                return;
+            }
+
+            if (command.IsObsolete)
+            {
+                return;
+            }
+
             if (activeScope is not null)
             {
                 activeScope.AddCommand(command);
                 return;
             }
 
-            PushUndo(command);
+            if (!TryMergeIntoTop(command))
+            {
+                PushUndo(command);
+            }
+
+            SaveRedoBranchIfNonLinear();
             redoStack.Clear();
+            cachedRedoCommands = null;
         }
 
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Execute, command));
         StateChanged?.Invoke(this, EventArgs.Empty);
+        LogAudit(UndoRedoActionType.Execute, command.Description);
     }
 
     public bool Undo()
@@ -188,7 +313,15 @@ public sealed class UndoRedoService : IUndoRedoService
             }
 
             command = undoStack.First!.Value;
+
+            if (!IsApprovedForUndo(command))
+            {
+                return false;
+            }
+
             undoStack.RemoveFirst();
+            currentHistoryMemory -= GetCommandMemory(command);
+            cachedUndoCommands = null;
             executingAction = UndoRedoActionType.Undo;
             executingCommand = command;
         }
@@ -204,11 +337,13 @@ public sealed class UndoRedoService : IUndoRedoService
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
                 redoStack.AddFirst(command);
+                cachedRedoCommands = null;
             }
         }
 
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Undo, command));
         StateChanged?.Invoke(this, EventArgs.Empty);
+        LogAudit(UndoRedoActionType.Undo, command.Description);
         return true;
     }
 
@@ -230,6 +365,25 @@ public sealed class UndoRedoService : IUndoRedoService
         return any;
     }
 
+    public bool Undo(UndoContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+
+        IUndoCommand? target;
+        lock (stackLock)
+        {
+            target = FindFirstMatchingContext(undoStack, context);
+        }
+
+        if (target is null)
+        {
+            return false;
+        }
+
+        UndoTo(target);
+        return true;
+    }
+
     public bool Redo()
     {
         IUndoCommand command;
@@ -242,7 +396,14 @@ public sealed class UndoRedoService : IUndoRedoService
             }
 
             command = redoStack.First!.Value;
+
+            if (!IsApprovedForRedo(command))
+            {
+                return false;
+            }
+
             redoStack.RemoveFirst();
+            cachedRedoCommands = null;
             executingAction = UndoRedoActionType.Redo;
             executingCommand = command;
         }
@@ -263,6 +424,7 @@ public sealed class UndoRedoService : IUndoRedoService
 
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Redo, command));
         StateChanged?.Invoke(this, EventArgs.Empty);
+        LogAudit(UndoRedoActionType.Redo, command.Description);
         return true;
     }
 
@@ -282,6 +444,45 @@ public sealed class UndoRedoService : IUndoRedoService
         }
 
         return any;
+    }
+
+    public bool Redo(UndoContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+
+        IUndoCommand? target;
+        lock (stackLock)
+        {
+            target = FindFirstMatchingContext(redoStack, context);
+        }
+
+        if (target is null)
+        {
+            return false;
+        }
+
+        RedoTo(target);
+        return true;
+    }
+
+    public IReadOnlyList<IUndoCommand> FindUndoCommands(UndoContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+
+        lock (stackLock)
+        {
+            return FilterByContext(undoStack, context);
+        }
+    }
+
+    public IReadOnlyList<IUndoCommand> FindRedoCommands(UndoContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+
+        lock (stackLock)
+        {
+            return FilterByContext(redoStack, context);
+        }
     }
 
     public void UndoAll()
@@ -472,18 +673,51 @@ public sealed class UndoRedoService : IUndoRedoService
         }
     }
 
+    public IDisposable SuspendRecording()
+    {
+        Interlocked.Increment(ref suspendCount);
+        return new SuspendRecordingScope(this);
+    }
+
+    public void RegisterApprover(IUndoOperationApprover approver)
+    {
+        ArgumentNullException.ThrowIfNull(approver);
+
+        lock (stackLock)
+        {
+            approvers.Add(approver);
+        }
+    }
+
+    public void UnregisterApprover(IUndoOperationApprover approver)
+    {
+        ArgumentNullException.ThrowIfNull(approver);
+
+        lock (stackLock)
+        {
+            approvers.Remove(approver);
+        }
+    }
+
     public void Clear()
     {
         lock (stackLock)
         {
             undoStack.Clear();
             redoStack.Clear();
+            redoBranches.Clear();
+            snapshots.Clear();
+            cachedUndoCommands = null;
+            cachedRedoCommands = null;
+            cachedRedoBranches = null;
+            currentHistoryMemory = 0;
             savedCommand = null;
             savedAtInitialState = true;
             savedCommandTrimmed = false;
         }
 
         StateChanged?.Invoke(this, EventArgs.Empty);
+        LogAudit(UndoRedoActionType.None, "Clear");
     }
 
     public void MarkSaved()
@@ -507,8 +741,317 @@ public sealed class UndoRedoService : IUndoRedoService
         StateChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public IReadOnlyList<IUndoSnapshot> Snapshots
+    {
+        get
+        {
+            lock (stackLock)
+            {
+                return snapshots.ToArray();
+            }
+        }
+    }
+
+    public IUndoSnapshot CreateSnapshot(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        lock (stackLock)
+        {
+            var command = undoStack.First?.Value;
+            var snapshot = new UndoSnapshot(name, command);
+            snapshots.Add(snapshot);
+            return snapshot;
+        }
+    }
+
+    public void RestoreSnapshot(IUndoSnapshot snapshot)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+
+        if (snapshot is not UndoSnapshot typed)
+        {
+            throw new InvalidOperationException(
+                "Snapshot was not created by this service.");
+        }
+
+        if (typed.Command is null)
+        {
+            UndoAll();
+            return;
+        }
+
+        // Check if command is in the undo stack.
+        bool foundInUndo;
+        bool foundInRedo;
+        lock (stackLock)
+        {
+            foundInUndo = ContainsCommand(undoStack, typed.Command);
+            foundInRedo = ContainsCommand(redoStack, typed.Command);
+        }
+
+        if (foundInUndo)
+        {
+            // The snapshot command is in the undo stack; undo to it, then redo once
+            // so we land *after* the command (the position when the snapshot was taken).
+            UndoTo(typed.Command);
+            Redo();
+            return;
+        }
+
+        if (foundInRedo)
+        {
+            RedoTo(typed.Command);
+            return;
+        }
+
+        throw new InvalidOperationException(
+            "Snapshot command no longer in history.");
+    }
+
+    public void RemoveSnapshot(IUndoSnapshot snapshot)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+
+        if (snapshot is not UndoSnapshot typed)
+        {
+            return;
+        }
+
+        lock (stackLock)
+        {
+            snapshots.Remove(typed);
+        }
+    }
+
+    public void SaveHistory(Stream stream)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+
+        lock (stackLock)
+        {
+            using var writer = new BinaryWriter(stream, Encoding.UTF8, leaveOpen: true);
+
+            // Version
+            writer.Write(1);
+
+            // Undo stack (oldest to newest = last to first in LinkedList)
+            WriteCommandStack(writer, undoStack, reverseOrder: true);
+
+            // Redo stack (oldest to newest = last to first in LinkedList)
+            WriteCommandStack(writer, redoStack, reverseOrder: true);
+        }
+    }
+
+    public void LoadHistory(
+        Stream stream,
+        IUndoCommandDeserializer deserializer)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(deserializer);
+
+        lock (stackLock)
+        {
+            // Clear existing state
+            undoStack.Clear();
+            redoStack.Clear();
+            redoBranches.Clear();
+            snapshots.Clear();
+            cachedUndoCommands = null;
+            cachedRedoCommands = null;
+            cachedRedoBranches = null;
+            currentHistoryMemory = 0;
+            savedCommand = null;
+            savedAtInitialState = true;
+            savedCommandTrimmed = false;
+
+            using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
+
+            // Version
+            var version = reader.ReadInt32();
+            if (version != 1)
+            {
+                throw new InvalidOperationException(
+                    $"Unsupported history format version: {version}.");
+            }
+
+            // Undo stack (written oldest to newest, so append in order = AddLast,
+            // then they appear newest-first when read via First)
+            ReadCommandStack(reader, deserializer, undoStack);
+
+            // Redo stack
+            ReadCommandStack(reader, deserializer, redoStack);
+
+            // Recompute memory tracking for undo stack
+            for (var node = undoStack.First; node is not null; node = node.Next)
+            {
+                currentHistoryMemory += GetCommandMemory(node.Value);
+            }
+        }
+
+        StateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private static void WriteCommandStack(
+        BinaryWriter writer,
+        LinkedList<IUndoCommand> stack,
+        bool reverseOrder)
+    {
+        // Count serializable commands
+        var count = 0;
+        for (var node = stack.First; node is not null; node = node.Next)
+        {
+            if (node.Value is ISerializableUndoCommand)
+            {
+                count++;
+            }
+        }
+
+        writer.Write(count);
+
+        if (reverseOrder)
+        {
+            for (var node = stack.Last; node is not null; node = node.Previous)
+            {
+                WriteCommandEntry(writer, node.Value);
+            }
+        }
+        else
+        {
+            for (var node = stack.First; node is not null; node = node.Next)
+            {
+                WriteCommandEntry(writer, node.Value);
+            }
+        }
+    }
+
+    private static void WriteCommandEntry(
+        BinaryWriter writer,
+        IUndoCommand command)
+    {
+        if (command is not ISerializableUndoCommand serializable)
+        {
+            return;
+        }
+
+        var typeId = serializable.TypeId;
+        var data = serializable.Serialize();
+
+        writer.Write(typeId);
+        writer.Write(data.Length);
+        writer.Write(data);
+    }
+
+    private static void ReadCommandStack(
+        BinaryReader reader,
+        IUndoCommandDeserializer deserializer,
+        LinkedList<IUndoCommand> stack)
+    {
+        var count = reader.ReadInt32();
+
+        for (var i = 0; i < count; i++)
+        {
+            var typeId = reader.ReadString();
+            var dataLength = reader.ReadInt32();
+            var data = reader.ReadBytes(dataLength);
+
+            var command = deserializer.Deserialize(typeId, data);
+            if (command is not null)
+            {
+                // Commands are written oldest-to-newest, so AddFirst
+                // builds newest-first order (matching LinkedList convention).
+                stack.AddFirst(command);
+            }
+        }
+    }
+
+    private static bool HasContext(
+        IUndoCommand command,
+        UndoContext context)
+        => command is IRichUndoCommand rich && rich.Contexts.Contains(context);
+
+    private static IUndoCommand? FindFirstMatchingContext(
+        LinkedList<IUndoCommand> stack,
+        UndoContext context)
+    {
+        for (var node = stack.First; node is not null; node = node.Next)
+        {
+            if (HasContext(node.Value, context))
+            {
+                return node.Value;
+            }
+        }
+
+        return null;
+    }
+
+    private static IReadOnlyList<IUndoCommand> FilterByContext(
+        LinkedList<IUndoCommand> stack,
+        UndoContext context)
+    {
+        var result = new List<IUndoCommand>();
+        for (var node = stack.First; node is not null; node = node.Next)
+        {
+            if (HasContext(node.Value, context))
+            {
+                result.Add(node.Value);
+            }
+        }
+
+        return result;
+    }
+
+    private static bool ContainsCommand(
+        LinkedList<IUndoCommand> stack,
+        IUndoCommand command)
+    {
+        for (var node = stack.First; node is not null; node = node.Next)
+        {
+            if (ReferenceEquals(node.Value, command))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static bool IsUserAction(IUndoCommand command)
         => command is not IRichUndoCommand rich || rich.AllowUserAction;
+
+    /// <summary>
+    /// Returns <see langword="true"/> if all registered approvers allow the undo.
+    /// Caller must hold <see cref="stackLock"/>.
+    /// </summary>
+    private bool IsApprovedForUndo(IUndoCommand command)
+    {
+        for (var i = 0; i < approvers.Count; i++)
+        {
+            if (!approvers[i].ApproveUndo(command))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Returns <see langword="true"/> if all registered approvers allow the redo.
+    /// Caller must hold <see cref="stackLock"/>.
+    /// </summary>
+    private bool IsApprovedForRedo(IUndoCommand command)
+    {
+        for (var i = 0; i < approvers.Count; i++)
+        {
+            if (!approvers[i].ApproveRedo(command))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private void ExecuteInScope(IUndoCommand command)
     {
@@ -522,7 +1065,27 @@ public sealed class UndoRedoService : IUndoRedoService
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
-                activeScope!.AddCommand(command);
+
+                if (!command.IsObsolete)
+                {
+                    activeScope!.AddCommand(command);
+                }
+            }
+        }
+    }
+
+    private void ExecuteSuspended(IUndoCommand command)
+    {
+        try
+        {
+            command.Execute();
+        }
+        finally
+        {
+            lock (stackLock)
+            {
+                executingAction = UndoRedoActionType.None;
+                executingCommand = null;
             }
         }
     }
@@ -539,44 +1102,173 @@ public sealed class UndoRedoService : IUndoRedoService
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
-                PushUndo(command);
-                redoStack.Clear();
+
+                if (!command.IsObsolete)
+                {
+                    if (!TryMergeIntoTop(command))
+                    {
+                        PushUndo(command);
+                    }
+
+                    SaveRedoBranchIfNonLinear();
+                    redoStack.Clear();
+                    cachedRedoCommands = null;
+                }
             }
         }
 
-        ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Execute, command));
-        StateChanged?.Invoke(this, EventArgs.Empty);
+        if (!command.IsObsolete)
+        {
+            ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Execute, command));
+            StateChanged?.Invoke(this, EventArgs.Empty);
+            LogAudit(UndoRedoActionType.Execute, command.Description);
+        }
+    }
+
+    /// <summary>
+    /// If non-linear history is enabled and the redo stack is non-empty,
+    /// saves the current redo stack as a branch before it is cleared.
+    /// Caller must hold <see cref="stackLock"/>.
+    /// </summary>
+    private void SaveRedoBranchIfNonLinear()
+    {
+        if (!allowNonLinearHistory || redoStack.Count == 0)
+        {
+            return;
+        }
+
+        var branch = new LinkedList<IUndoCommand>(redoStack);
+        redoBranches.Add(branch);
+        cachedRedoBranches = null;
+    }
+
+    /// <summary>
+    /// Attempts to merge the incoming command into the top of the undo stack.
+    /// Both the incoming and the top command must implement <see cref="IMergeableUndoCommand"/>
+    /// with the same <see cref="IMergeableUndoCommand.MergeId"/>.
+    /// Caller must hold <see cref="stackLock"/>.
+    /// </summary>
+    private bool TryMergeIntoTop(IUndoCommand command)
+    {
+        if (command is not IMergeableUndoCommand incoming ||
+            undoStack.First?.Value is not IMergeableUndoCommand existing ||
+            existing.MergeId != incoming.MergeId)
+        {
+            return false;
+        }
+
+        if (!existing.TryMergeWith(command))
+        {
+            return false;
+        }
+
+        // The existing command absorbed the new one; invalidate the cached snapshot
+        // so consumers see the updated description.
+        cachedUndoCommands = null;
+        return true;
     }
 
     private void PushUndo(IUndoCommand command)
     {
         undoStack.AddFirst(command);
+        currentHistoryMemory += GetCommandMemory(command);
+        cachedUndoCommands = null;
         TrimUndoStack();
     }
 
     private void TrimUndoStack()
     {
+        // Count-based trim.
         while (undoStack.Count > MaxHistorySize)
         {
-            var removed = undoStack.Last!.Value;
-            undoStack.RemoveLast();
+            RemoveOldestUndoCommand();
+        }
 
-            if (!savedAtInitialState && ReferenceEquals(removed, savedCommand))
+        // Memory-based trim.
+        var memoryBudget = Interlocked.Read(ref maxHistoryMemory);
+        if (memoryBudget > 0)
+        {
+            while (currentHistoryMemory > memoryBudget && undoStack.Count > 0)
             {
-                savedCommandTrimmed = true;
+                RemoveOldestUndoCommand();
             }
         }
     }
+
+    /// <summary>
+    /// Removes the oldest (last) command from the undo stack, updating
+    /// memory tracking, saved-state bookkeeping, and snapshot references.
+    /// Caller must hold <see cref="stackLock"/>.
+    /// </summary>
+    private void RemoveOldestUndoCommand()
+    {
+        var removed = undoStack.Last!.Value;
+        undoStack.RemoveLast();
+        currentHistoryMemory -= GetCommandMemory(removed);
+
+        if (!savedAtInitialState && ReferenceEquals(removed, savedCommand))
+        {
+            savedCommandTrimmed = true;
+        }
+
+        // Remove any snapshots that reference the trimmed command.
+        for (var i = snapshots.Count - 1; i >= 0; i--)
+        {
+            if (ReferenceEquals(snapshots[i].Command, removed))
+            {
+                snapshots.RemoveAt(i);
+            }
+        }
+    }
+
+    private static long GetCommandMemory(IUndoCommand command)
+        => command is IMemoryAwareUndoCommand memoryAware
+            ? memoryAware.EstimatedMemoryBytes
+            : 0;
 
     private void CommitGroup(UndoCommandGroup group)
     {
         lock (stackLock)
         {
             PushUndo(group);
+            SaveRedoBranchIfNonLinear();
             redoStack.Clear();
+            cachedRedoCommands = null;
         }
 
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Execute, group));
         StateChanged?.Invoke(this, EventArgs.Empty);
+        LogAudit(UndoRedoActionType.Execute, group.Description);
+    }
+
+    private void LogAudit(
+        UndoRedoActionType actionType,
+        string description)
+    {
+        AuditLogger?.Log(
+            new UndoRedoAuditEntry(
+                actionType,
+                description,
+                DateTimeOffset.UtcNow));
+    }
+
+    private sealed class SuspendRecordingScope : IDisposable
+    {
+        private readonly UndoRedoService service;
+        private bool disposed;
+
+        public SuspendRecordingScope(UndoRedoService service)
+        {
+            this.service = service;
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                disposed = true;
+                Interlocked.Decrement(ref service.suspendCount);
+            }
+        }
     }
 }

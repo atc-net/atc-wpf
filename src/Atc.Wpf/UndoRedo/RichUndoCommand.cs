@@ -17,7 +17,8 @@ public sealed class RichUndoCommand : IRichUndoCommand
         object? image = null,
         object? parameter = null,
         object? data = null,
-        bool allowUserAction = true)
+        bool allowUserAction = true,
+        IReadOnlyList<UndoContext>? contexts = null)
     {
         ArgumentNullException.ThrowIfNull(description);
         ArgumentNullException.ThrowIfNull(execute);
@@ -31,6 +32,7 @@ public sealed class RichUndoCommand : IRichUndoCommand
         Parameter = parameter;
         Data = data;
         AllowUserAction = allowUserAction;
+        Contexts = contexts ?? [];
     }
 
     /// <inheritdoc />
@@ -49,7 +51,13 @@ public sealed class RichUndoCommand : IRichUndoCommand
     public object? Data { get; }
 
     /// <inheritdoc />
+    public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
+
+    /// <inheritdoc />
     public bool AllowUserAction { get; }
+
+    /// <inheritdoc />
+    public IReadOnlyList<UndoContext> Contexts { get; }
 
     /// <inheritdoc />
     public void Execute()

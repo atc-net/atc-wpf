@@ -33,6 +33,13 @@ public interface IUndoRedoService
     bool IsExecuting { get; }
 
     /// <summary>
+    /// Gets a value indicating whether undo recording is currently suspended.
+    /// When suspended, <see cref="Execute"/> still runs commands but does not
+    /// push them onto the undo stack, and <see cref="Add"/> is a no-op.
+    /// </summary>
+    bool IsRecordingSuspended { get; }
+
+    /// <summary>
     /// Gets the type of action currently being performed.
     /// Returns <see cref="UndoRedoActionType.None"/> when idle.
     /// </summary>
@@ -49,6 +56,20 @@ public interface IUndoRedoService
     /// Default is 100. Oldest commands are discarded when the limit is exceeded.
     /// </summary>
     int MaxHistorySize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum total estimated memory (in bytes) for commands
+    /// in the undo history. When exceeded, oldest commands are purged.
+    /// A value of 0 (the default) disables memory-based trimming.
+    /// </summary>
+    long MaxHistoryMemory { get; set; }
+
+    /// <summary>
+    /// Gets the current total estimated memory (in bytes) of all commands
+    /// in the undo stack that implement <see cref="IMemoryAwareUndoCommand"/>.
+    /// Commands that do not implement the interface contribute 0 bytes.
+    /// </summary>
+    long CurrentHistoryMemory { get; }
 
     /// <summary>
     /// Gets a value indicating whether the current state differs from the
@@ -97,6 +118,16 @@ public interface IUndoRedoService
     bool Undo(int levels);
 
     /// <summary>
+    /// Undoes the most recent command that belongs to the specified context.
+    /// Scans from the top of the undo stack for the first command matching the context,
+    /// then undoes all commands above it (inclusive), equivalent to calling
+    /// <see cref="UndoTo"/> on the matching command.
+    /// </summary>
+    /// <param name="context">The context to filter by.</param>
+    /// <returns><see langword="true"/> if at least one command was undone; otherwise <see langword="false"/>.</returns>
+    bool Undo(UndoContext context);
+
+    /// <summary>
     /// Redoes the most recently undone command.
     /// </summary>
     /// <returns><see langword="true"/> if a command was redone; otherwise <see langword="false"/>.</returns>
@@ -108,6 +139,34 @@ public interface IUndoRedoService
     /// <param name="levels">The number of commands to redo. Must be greater than zero.</param>
     /// <returns><see langword="true"/> if at least one command was redone; otherwise <see langword="false"/>.</returns>
     bool Redo(int levels);
+
+    /// <summary>
+    /// Redoes the most recent command that belongs to the specified context.
+    /// Scans from the top of the redo stack for the first command matching the context,
+    /// then redoes all commands above it (inclusive), equivalent to calling
+    /// <see cref="RedoTo"/> on the matching command.
+    /// </summary>
+    /// <param name="context">The context to filter by.</param>
+    /// <returns><see langword="true"/> if at least one command was redone; otherwise <see langword="false"/>.</returns>
+    bool Redo(UndoContext context);
+
+    /// <summary>
+    /// Finds the undo commands that belong to the specified context.
+    /// Only commands implementing <see cref="IRichUndoCommand"/> with the
+    /// given context in their <see cref="IRichUndoCommand.Contexts"/> list are returned.
+    /// </summary>
+    /// <param name="context">The context to filter by.</param>
+    /// <returns>A filtered list of undo commands matching the context.</returns>
+    IReadOnlyList<IUndoCommand> FindUndoCommands(UndoContext context);
+
+    /// <summary>
+    /// Finds the redo commands that belong to the specified context.
+    /// Only commands implementing <see cref="IRichUndoCommand"/> with the
+    /// given context in their <see cref="IRichUndoCommand.Contexts"/> list are returned.
+    /// </summary>
+    /// <param name="context">The context to filter by.</param>
+    /// <returns>A filtered list of redo commands matching the context.</returns>
+    IReadOnlyList<IUndoCommand> FindRedoCommands(UndoContext context);
 
     /// <summary>
     /// Undoes all commands in the undo stack.
@@ -157,6 +216,27 @@ public interface IUndoRedoService
     IDisposable BeginGroup(string description);
 
     /// <summary>
+    /// Temporarily suspends undo recording. While the returned scope is active,
+    /// <see cref="Execute"/> still runs commands but does not push them onto the
+    /// undo stack or fire events, and <see cref="Add"/> is a no-op.
+    /// Supports nesting: recording resumes only when all scopes are disposed.
+    /// </summary>
+    /// <returns>An <see cref="IDisposable"/> scope; dispose to resume recording.</returns>
+    IDisposable SuspendRecording();
+
+    /// <summary>
+    /// Registers an approver that can veto undo/redo operations.
+    /// </summary>
+    /// <param name="approver">The approver to register.</param>
+    void RegisterApprover(IUndoOperationApprover approver);
+
+    /// <summary>
+    /// Removes a previously registered approver.
+    /// </summary>
+    /// <param name="approver">The approver to remove.</param>
+    void UnregisterApprover(IUndoOperationApprover approver);
+
+    /// <summary>
     /// Clears both the undo and redo stacks.
     /// </summary>
     void Clear();
@@ -167,4 +247,86 @@ public interface IUndoRedoService
     /// from this point.
     /// </summary>
     void MarkSaved();
+
+    /// <summary>
+    /// Gets or sets a value indicating whether non-linear history (branching) is enabled.
+    /// When <see langword="true"/>, executing a new command after an undo preserves
+    /// the current redo stack as a branch instead of discarding it.
+    /// Default is <see langword="false"/> (standard linear behavior).
+    /// </summary>
+    bool AllowNonLinearHistory { get; set; }
+
+    /// <summary>
+    /// Gets the saved redo branches. Each branch is a read-only list of commands
+    /// representing a previously saved redo path. Only populated when
+    /// <see cref="AllowNonLinearHistory"/> is <see langword="true"/>.
+    /// </summary>
+    IReadOnlyList<IReadOnlyList<IUndoCommand>> RedoBranches { get; }
+
+    /// <summary>
+    /// Switches the current redo stack with the branch at the specified index.
+    /// The current redo stack (if non-empty) is saved as a new branch, and
+    /// the selected branch becomes the active redo stack.
+    /// </summary>
+    /// <param name="branchIndex">The zero-based index of the branch to restore.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="branchIndex"/> is outside the valid range.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when <see cref="AllowNonLinearHistory"/> is <see langword="false"/>.
+    /// </exception>
+    void SwitchRedoBranch(int branchIndex);
+
+    /// <summary>
+    /// Gets or sets an optional audit logger that records every
+    /// execute, undo, redo, and clear operation with timestamps.
+    /// </summary>
+    IUndoRedoAuditLogger? AuditLogger { get; set; }
+
+    /// <summary>
+    /// Gets the list of snapshots that have been created.
+    /// </summary>
+    IReadOnlyList<IUndoSnapshot> Snapshots { get; }
+
+    /// <summary>
+    /// Creates a named snapshot capturing the current undo stack position.
+    /// </summary>
+    /// <param name="name">A descriptive name for the snapshot.</param>
+    /// <returns>The created snapshot.</returns>
+    IUndoSnapshot CreateSnapshot(string name);
+
+    /// <summary>
+    /// Restores the undo/redo state to the position captured by the specified snapshot.
+    /// Navigates (undo/redo) to reach the snapshot position.
+    /// </summary>
+    /// <param name="snapshot">The snapshot to restore.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the snapshot's command has been trimmed from history.
+    /// </exception>
+    void RestoreSnapshot(IUndoSnapshot snapshot);
+
+    /// <summary>
+    /// Removes a previously created snapshot.
+    /// </summary>
+    /// <param name="snapshot">The snapshot to remove.</param>
+    void RemoveSnapshot(IUndoSnapshot snapshot);
+
+    /// <summary>
+    /// Saves the current undo and redo history to a stream in a binary format.
+    /// Only commands implementing <see cref="ISerializableUndoCommand"/> are persisted;
+    /// non-serializable commands are skipped.
+    /// </summary>
+    /// <param name="stream">The stream to write to.</param>
+    void SaveHistory(Stream stream);
+
+    /// <summary>
+    /// Loads undo and redo history from a stream, replacing the current state.
+    /// Commands are reconstructed via the provided <paramref name="deserializer"/>.
+    /// Entries that cannot be deserialized (returning <see langword="null"/>) are skipped.
+    /// </summary>
+    /// <param name="stream">The stream to read from.</param>
+    /// <param name="deserializer">The deserializer used to reconstruct commands.</param>
+    void LoadHistory(
+        Stream stream,
+        IUndoCommandDeserializer deserializer);
 }
