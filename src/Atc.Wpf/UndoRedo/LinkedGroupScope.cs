@@ -24,7 +24,7 @@ internal sealed class LinkedGroupScope : IDisposable
 
         for (var i = 0; i < stacks.Count; i++)
         {
-            stacks[i].ActionPerformed += OnActionPerformed;
+            ActionPerformedEventManager.AddHandler(stacks[i], OnActionPerformed);
         }
     }
 
@@ -39,7 +39,7 @@ internal sealed class LinkedGroupScope : IDisposable
 
         for (var i = 0; i < stacks.Count; i++)
         {
-            stacks[i].ActionPerformed -= OnActionPerformed;
+            ActionPerformedEventManager.RemoveHandler(stacks[i], OnActionPerformed);
         }
 
         if (collected.Count < 2)

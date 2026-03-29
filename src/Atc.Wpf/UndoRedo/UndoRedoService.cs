@@ -9,7 +9,7 @@ public sealed class UndoRedoService : IUndoRedoService
 {
     private const int DefaultMaxHistorySize = 100;
 
-    private readonly Lock stackLock = new();
+    private readonly ReaderWriterLockSlim rwLock = new();
     private readonly LinkedList<IUndoCommand> undoStack = [];
     private readonly LinkedList<IUndoCommand> redoStack = [];
     private readonly List<IUndoOperationApprover> approvers = [];
@@ -40,9 +40,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 return cachedUndoCommands ??= undoStack.ToArray();
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }
@@ -51,9 +56,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 return cachedRedoCommands ??= redoStack.ToArray();
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }
@@ -62,9 +72,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return undoStack.Count > 0;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -73,9 +88,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return redoStack.Count > 0;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -84,9 +104,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return executingAction != UndoRedoActionType.None;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -97,9 +122,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return executingAction;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -108,9 +138,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return executingCommand;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -123,17 +158,27 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return allowNonLinearHistory;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
 
         set
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 allowNonLinearHistory = value;
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }
@@ -142,18 +187,24 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 return cachedRedoBranches ??= redoBranches
                     .Select(branch => (IReadOnlyList<IUndoCommand>)branch.ToArray())
                     .ToArray();
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }
 
     public void SwitchRedoBranch(int branchIndex)
     {
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             if (!allowNonLinearHistory)
             {
@@ -182,6 +233,10 @@ public sealed class UndoRedoService : IUndoRedoService
             cachedRedoCommands = null;
             cachedRedoBranches = null;
         }
+        finally
+        {
+            rwLock.ExitWriteLock();
+        }
 
         StateChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -196,9 +251,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return currentHistoryMemory;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -207,7 +267,8 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 if (savedCommandTrimmed)
                 {
@@ -222,6 +283,10 @@ public sealed class UndoRedoService : IUndoRedoService
                 return undoStack.First is null ||
                        !ReferenceEquals(undoStack.First.Value, savedCommand);
             }
+            finally
+            {
+                rwLock.ExitReadLock();
+            }
         }
     }
 
@@ -231,7 +296,8 @@ public sealed class UndoRedoService : IUndoRedoService
 
         bool useScope;
         bool suspended;
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             if (executingAction != UndoRedoActionType.None)
             {
@@ -242,6 +308,10 @@ public sealed class UndoRedoService : IUndoRedoService
             useScope = !suspended && activeScope is not null;
             executingAction = UndoRedoActionType.Execute;
             executingCommand = command;
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
 
         if (suspended)
@@ -263,7 +333,8 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             if (executingAction != UndoRedoActionType.None)
             {
@@ -295,6 +366,10 @@ public sealed class UndoRedoService : IUndoRedoService
             redoStack.Clear();
             cachedRedoCommands = null;
         }
+        finally
+        {
+            rwLock.ExitWriteLock();
+        }
 
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Execute, command));
         StateChanged?.Invoke(this, EventArgs.Empty);
@@ -305,7 +380,8 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         IUndoCommand command;
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             if (undoStack.Count == 0 || executingAction != UndoRedoActionType.None)
             {
@@ -325,6 +401,10 @@ public sealed class UndoRedoService : IUndoRedoService
             executingAction = UndoRedoActionType.Undo;
             executingCommand = command;
         }
+        finally
+        {
+            rwLock.ExitWriteLock();
+        }
 
         try
         {
@@ -332,12 +412,17 @@ public sealed class UndoRedoService : IUndoRedoService
         }
         finally
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
                 redoStack.AddFirst(command);
                 cachedRedoCommands = null;
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
 
@@ -370,9 +455,14 @@ public sealed class UndoRedoService : IUndoRedoService
         ArgumentNullException.ThrowIfNull(context);
 
         IUndoCommand? target;
-        lock (stackLock)
+        rwLock.EnterReadLock();
+        try
         {
             target = FindFirstMatchingContext(undoStack, context);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
         }
 
         if (target is null)
@@ -388,7 +478,8 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         IUndoCommand command;
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             if (redoStack.Count == 0 || executingAction != UndoRedoActionType.None)
             {
@@ -407,6 +498,10 @@ public sealed class UndoRedoService : IUndoRedoService
             executingAction = UndoRedoActionType.Redo;
             executingCommand = command;
         }
+        finally
+        {
+            rwLock.ExitWriteLock();
+        }
 
         try
         {
@@ -414,11 +509,16 @@ public sealed class UndoRedoService : IUndoRedoService
         }
         finally
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
                 PushUndo(command);
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
 
@@ -451,9 +551,14 @@ public sealed class UndoRedoService : IUndoRedoService
         ArgumentNullException.ThrowIfNull(context);
 
         IUndoCommand? target;
-        lock (stackLock)
+        rwLock.EnterReadLock();
+        try
         {
             target = FindFirstMatchingContext(redoStack, context);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
         }
 
         if (target is null)
@@ -469,9 +574,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(context);
 
-        lock (stackLock)
+        rwLock.EnterReadLock();
+        try
         {
             return FilterByContext(undoStack, context);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
         }
     }
 
@@ -479,9 +589,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(context);
 
-        lock (stackLock)
+        rwLock.EnterReadLock();
+        try
         {
             return FilterByContext(redoStack, context);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
         }
     }
 
@@ -512,23 +627,7 @@ public sealed class UndoRedoService : IUndoRedoService
         var any = false;
 
         // Phase 1: undo non-user-action commands on top
-        while (CanUndo)
-        {
-            lock (stackLock)
-            {
-                if (undoStack.Count == 0 || IsUserAction(undoStack.First!.Value))
-                {
-                    break;
-                }
-            }
-
-            if (!Undo())
-            {
-                break;
-            }
-
-            any = true;
-        }
+        any |= UndoWhileNonUserAction();
 
         // Phase 2: undo one user-action command
         if (CanUndo && Undo())
@@ -537,21 +636,7 @@ public sealed class UndoRedoService : IUndoRedoService
         }
 
         // Phase 3: undo trailing non-user-action commands
-        while (CanUndo)
-        {
-            lock (stackLock)
-            {
-                if (undoStack.Count == 0 || IsUserAction(undoStack.First!.Value))
-                {
-                    break;
-                }
-            }
-
-            if (!Undo())
-            {
-                break;
-            }
-        }
+        UndoWhileNonUserAction();
 
         return any;
     }
@@ -564,26 +649,7 @@ public sealed class UndoRedoService : IUndoRedoService
         // where they will be grouped with the following user action.
         // This ensures Undo/Redo round-trips land on the same user-action
         // boundaries.
-        var any = false;
-
-        // Phase 1: redo non-user-action commands on top
-        while (CanRedo)
-        {
-            lock (stackLock)
-            {
-                if (redoStack.Count == 0 || IsUserAction(redoStack.First!.Value))
-                {
-                    break;
-                }
-            }
-
-            if (!Redo())
-            {
-                break;
-            }
-
-            any = true;
-        }
+        var any = RedoWhileNonUserAction();
 
         // Phase 2: redo one user-action command
         if (CanRedo && Redo())
@@ -601,7 +667,8 @@ public sealed class UndoRedoService : IUndoRedoService
         while (CanUndo)
         {
             IUndoCommand current;
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 if (undoStack.Count == 0)
                 {
@@ -609,6 +676,10 @@ public sealed class UndoRedoService : IUndoRedoService
                 }
 
                 current = undoStack.First!.Value;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
 
             Undo();
@@ -627,7 +698,8 @@ public sealed class UndoRedoService : IUndoRedoService
         while (CanRedo)
         {
             IUndoCommand current;
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 if (redoStack.Count == 0)
                 {
@@ -635,6 +707,10 @@ public sealed class UndoRedoService : IUndoRedoService
                 }
 
                 current = redoStack.First!.Value;
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
 
             Redo();
@@ -650,7 +726,8 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(description);
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             if (activeScope is not null)
             {
@@ -663,13 +740,22 @@ public sealed class UndoRedoService : IUndoRedoService
                 CommitGroup,
                 () =>
                 {
-                    lock (stackLock)
+                    rwLock.EnterWriteLock();
+                    try
                     {
                         activeScope = null;
+                    }
+                    finally
+                    {
+                        rwLock.ExitWriteLock();
                     }
                 });
 
             return activeScope;
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
     }
 
@@ -683,9 +769,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(approver);
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             approvers.Add(approver);
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
     }
 
@@ -693,15 +784,21 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(approver);
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             approvers.Remove(approver);
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
     }
 
     public void Clear()
     {
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             undoStack.Clear();
             redoStack.Clear();
@@ -715,6 +812,10 @@ public sealed class UndoRedoService : IUndoRedoService
             savedAtInitialState = true;
             savedCommandTrimmed = false;
         }
+        finally
+        {
+            rwLock.ExitWriteLock();
+        }
 
         StateChanged?.Invoke(this, EventArgs.Empty);
         LogAudit(UndoRedoActionType.None, "Clear");
@@ -722,7 +823,8 @@ public sealed class UndoRedoService : IUndoRedoService
 
     public void MarkSaved()
     {
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             savedCommandTrimmed = false;
 
@@ -737,6 +839,10 @@ public sealed class UndoRedoService : IUndoRedoService
                 savedAtInitialState = false;
             }
         }
+        finally
+        {
+            rwLock.ExitWriteLock();
+        }
 
         StateChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -745,9 +851,14 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         get
         {
-            lock (stackLock)
+            rwLock.EnterReadLock();
+            try
             {
                 return snapshots.ToArray();
+            }
+            finally
+            {
+                rwLock.ExitReadLock();
             }
         }
     }
@@ -756,12 +867,17 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             var command = undoStack.First?.Value;
             var snapshot = new UndoSnapshot(name, command);
             snapshots.Add(snapshot);
             return snapshot;
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
     }
 
@@ -784,10 +900,15 @@ public sealed class UndoRedoService : IUndoRedoService
         // Check if command is in the undo stack.
         bool foundInUndo;
         bool foundInRedo;
-        lock (stackLock)
+        rwLock.EnterReadLock();
+        try
         {
             foundInUndo = ContainsCommand(undoStack, typed.Command);
             foundInRedo = ContainsCommand(redoStack, typed.Command);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
         }
 
         if (foundInUndo)
@@ -818,9 +939,14 @@ public sealed class UndoRedoService : IUndoRedoService
             return;
         }
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             snapshots.Remove(typed);
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
     }
 
@@ -828,7 +954,8 @@ public sealed class UndoRedoService : IUndoRedoService
     {
         ArgumentNullException.ThrowIfNull(stream);
 
-        lock (stackLock)
+        rwLock.EnterReadLock();
+        try
         {
             using var writer = new BinaryWriter(stream, Encoding.UTF8, leaveOpen: true);
 
@@ -841,6 +968,10 @@ public sealed class UndoRedoService : IUndoRedoService
             // Redo stack (oldest to newest = last to first in LinkedList)
             WriteCommandStack(writer, redoStack, reverseOrder: true);
         }
+        finally
+        {
+            rwLock.ExitReadLock();
+        }
     }
 
     public void LoadHistory(
@@ -850,7 +981,8 @@ public sealed class UndoRedoService : IUndoRedoService
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(deserializer);
 
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             // Clear existing state
             undoStack.Clear();
@@ -887,6 +1019,10 @@ public sealed class UndoRedoService : IUndoRedoService
             {
                 currentHistoryMemory += GetCommandMemory(node.Value);
             }
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
 
         StateChanged?.Invoke(this, EventArgs.Empty);
@@ -1016,12 +1152,70 @@ public sealed class UndoRedoService : IUndoRedoService
         return false;
     }
 
+    private bool IsTopCommandNonUserAction()
+    {
+        rwLock.EnterReadLock();
+        try
+        {
+            return undoStack.Count > 0 && !IsUserAction(undoStack.First!.Value);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
+        }
+    }
+
+    private bool UndoWhileNonUserAction()
+    {
+        var any = false;
+        while (CanUndo && IsTopCommandNonUserAction())
+        {
+            if (!Undo())
+            {
+                break;
+            }
+
+            any = true;
+        }
+
+        return any;
+    }
+
+    private bool IsTopRedoCommandNonUserAction()
+    {
+        rwLock.EnterReadLock();
+        try
+        {
+            return redoStack.Count > 0 && !IsUserAction(redoStack.First!.Value);
+        }
+        finally
+        {
+            rwLock.ExitReadLock();
+        }
+    }
+
+    private bool RedoWhileNonUserAction()
+    {
+        var any = false;
+        while (CanRedo && IsTopRedoCommandNonUserAction())
+        {
+            if (!Redo())
+            {
+                break;
+            }
+
+            any = true;
+        }
+
+        return any;
+    }
+
     private static bool IsUserAction(IUndoCommand command)
         => command is not IRichUndoCommand rich || rich.AllowUserAction;
 
     /// <summary>
     /// Returns <see langword="true"/> if all registered approvers allow the undo.
-    /// Caller must hold <see cref="stackLock"/>.
+    /// Caller must hold <see cref="rwLock"/>.
     /// </summary>
     private bool IsApprovedForUndo(IUndoCommand command)
     {
@@ -1038,7 +1232,7 @@ public sealed class UndoRedoService : IUndoRedoService
 
     /// <summary>
     /// Returns <see langword="true"/> if all registered approvers allow the redo.
-    /// Caller must hold <see cref="stackLock"/>.
+    /// Caller must hold <see cref="rwLock"/>.
     /// </summary>
     private bool IsApprovedForRedo(IUndoCommand command)
     {
@@ -1061,7 +1255,8 @@ public sealed class UndoRedoService : IUndoRedoService
         }
         finally
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
@@ -1070,6 +1265,10 @@ public sealed class UndoRedoService : IUndoRedoService
                 {
                     activeScope!.AddCommand(command);
                 }
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }
@@ -1082,10 +1281,15 @@ public sealed class UndoRedoService : IUndoRedoService
         }
         finally
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }
@@ -1098,7 +1302,8 @@ public sealed class UndoRedoService : IUndoRedoService
         }
         finally
         {
-            lock (stackLock)
+            rwLock.EnterWriteLock();
+            try
             {
                 executingAction = UndoRedoActionType.None;
                 executingCommand = null;
@@ -1115,6 +1320,10 @@ public sealed class UndoRedoService : IUndoRedoService
                     cachedRedoCommands = null;
                 }
             }
+            finally
+            {
+                rwLock.ExitWriteLock();
+            }
         }
 
         if (!command.IsObsolete)
@@ -1128,7 +1337,7 @@ public sealed class UndoRedoService : IUndoRedoService
     /// <summary>
     /// If non-linear history is enabled and the redo stack is non-empty,
     /// saves the current redo stack as a branch before it is cleared.
-    /// Caller must hold <see cref="stackLock"/>.
+    /// Caller must hold <see cref="rwLock"/>.
     /// </summary>
     private void SaveRedoBranchIfNonLinear()
     {
@@ -1146,7 +1355,7 @@ public sealed class UndoRedoService : IUndoRedoService
     /// Attempts to merge the incoming command into the top of the undo stack.
     /// Both the incoming and the top command must implement <see cref="IMergeableUndoCommand"/>
     /// with the same <see cref="IMergeableUndoCommand.MergeId"/>.
-    /// Caller must hold <see cref="stackLock"/>.
+    /// Caller must hold <see cref="rwLock"/>.
     /// </summary>
     private bool TryMergeIntoTop(IUndoCommand command)
     {
@@ -1198,7 +1407,7 @@ public sealed class UndoRedoService : IUndoRedoService
     /// <summary>
     /// Removes the oldest (last) command from the undo stack, updating
     /// memory tracking, saved-state bookkeeping, and snapshot references.
-    /// Caller must hold <see cref="stackLock"/>.
+    /// Caller must hold <see cref="rwLock"/>.
     /// </summary>
     private void RemoveOldestUndoCommand()
     {
@@ -1228,12 +1437,17 @@ public sealed class UndoRedoService : IUndoRedoService
 
     private void CommitGroup(UndoCommandGroup group)
     {
-        lock (stackLock)
+        rwLock.EnterWriteLock();
+        try
         {
             PushUndo(group);
             SaveRedoBranchIfNonLinear();
             redoStack.Clear();
             cachedRedoCommands = null;
+        }
+        finally
+        {
+            rwLock.ExitWriteLock();
         }
 
         ActionPerformed?.Invoke(this, new UndoRedoEventArgs(UndoRedoActionType.Execute, group));

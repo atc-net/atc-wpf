@@ -42,14 +42,14 @@ public sealed class UndoRedoGroup : IUndoRedoGroup, INotifyPropertyChanged
 
             if (activeStack is not null)
             {
-                activeStack.StateChanged -= OnActiveStackStateChanged;
+                StateChangedEventManager.RemoveHandler(activeStack, OnActiveStackStateChanged);
             }
 
             activeStack = value;
 
             if (activeStack is not null)
             {
-                activeStack.StateChanged += OnActiveStackStateChanged;
+                StateChangedEventManager.AddHandler(activeStack, OnActiveStackStateChanged);
             }
 
             ActiveStackChanged?.Invoke(this, EventArgs.Empty);
@@ -71,7 +71,7 @@ public sealed class UndoRedoGroup : IUndoRedoGroup, INotifyPropertyChanged
         stacks.Add((stack, name));
         cachedStacks = null;
 
-        stack.ActionPerformed += OnAnyStackActionPerformed;
+        ActionPerformedEventManager.AddHandler(stack, OnAnyStackActionPerformed);
     }
 
     public void RemoveStack(IUndoRedoService stack)
@@ -84,7 +84,7 @@ public sealed class UndoRedoGroup : IUndoRedoGroup, INotifyPropertyChanged
             return;
         }
 
-        stack.ActionPerformed -= OnAnyStackActionPerformed;
+        ActionPerformedEventManager.RemoveHandler(stack, OnAnyStackActionPerformed);
         stacks.RemoveAt(index);
         cachedStacks = null;
 
