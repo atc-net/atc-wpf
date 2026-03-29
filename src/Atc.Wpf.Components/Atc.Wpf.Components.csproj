@@ -16,18 +16,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\audit.png" />
+    <None Remove="Resources\Images\debug.png" />
     <None Remove="Resources\Images\eraser.png" />
     <None Remove="Resources\Images\error.png" />
     <None Remove="Resources\Images\information.png" />
     <None Remove="Resources\Images\scrollrefresh.png" />
+    <None Remove="Resources\Images\security.png" />
+    <None Remove="Resources\Images\service.png" />
+    <None Remove="Resources\Images\trace.png" />
+    <None Remove="Resources\Images\ui.png" />
     <None Remove="Resources\Images\warning.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\audit.png" />
+    <Resource Include="Resources\Images\debug.png" />
     <Resource Include="Resources\Images\eraser.png" />
     <Resource Include="Resources\Images\error.png" />
     <Resource Include="Resources\Images\information.png" />
     <Resource Include="Resources\Images\scrollrefresh.png" />
+    <Resource Include="Resources\Images\security.png" />
+    <Resource Include="Resources\Images\service.png" />
+    <Resource Include="Resources\Images\trace.png" />
+    <Resource Include="Resources\Images\ui.png" />
     <Resource Include="Resources\Images\warning.png" />
   </ItemGroup>
 
