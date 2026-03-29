@@ -30,6 +30,8 @@ public sealed partial class UndoRedoHistoryViewSampleViewModel : ViewModelBase
         };
     }
 
+    public IUndoRedoService UndoRedoService => undoRedoService;
+
     public UndoRedoHistoryViewModel HistoryViewModel { get; }
 
     [RelayCommand]
@@ -72,4 +74,25 @@ public sealed partial class UndoRedoHistoryViewSampleViewModel : ViewModelBase
                 "B"));
         }
     }
+
+    [RelayCommand]
+    private void InternalChange()
+    {
+        var oldValue = CurrentText;
+        var newValue = $"[auto-{DateTime.Now:ss}]";
+
+        undoRedoService.Execute(new RichUndoCommand(
+            $"Internal: \"{newValue}\"",
+            () => CurrentText = newValue,
+            () => CurrentText = oldValue,
+            allowUserAction: false));
+    }
+
+    [RelayCommand]
+    private void UndoToUserAction()
+        => undoRedoService.UndoToLastUserAction();
+
+    [RelayCommand]
+    private void RedoToUserAction()
+        => undoRedoService.RedoToLastUserAction();
 }

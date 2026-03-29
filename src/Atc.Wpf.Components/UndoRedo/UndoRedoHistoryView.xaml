@@ -140,21 +140,38 @@
             SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="local:UndoRedoHistoryItem">
-                    <TextBlock Text="{Binding Path=Description}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=IsRedo}" Value="True">
-                                        <Setter Property="FontStyle" Value="Italic" />
-                                        <Setter Property="Opacity" Value="0.6" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="True">
-                                        <Setter Property="FontWeight" Value="Bold" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="0,0,4,0"
+                            Source="{Binding Path=Image}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Image}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Text="{Binding Path=Description}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsRedo}" Value="True">
+                                            <Setter Property="FontStyle" Value="Italic" />
+                                            <Setter Property="Opacity" Value="0.6" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>

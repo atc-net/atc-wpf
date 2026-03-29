@@ -3,15 +3,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcBehaviors="clr-namespace:Atc.Wpf.Behaviors;assembly=Atc.Wpf"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:undoRedo="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.UndoRedo"
     d:DataContext="{d:DesignInstance Type=undoRedo:UndoRedoServiceViewModel}"
     d:DesignHeight="900"
     d:DesignWidth="900"
+    Focusable="True"
     mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <atcBehaviors:UndoRedoKeyBindingBehavior UndoRedoService="{Binding UndoRedoService}" />
+    </i:Interaction.Behaviors>
 
     <UserControl.DataContext>
         <undoRedo:UndoRedoServiceViewModel />
