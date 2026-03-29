@@ -509,5 +509,50 @@ namespace Atc.Wpf.Controls.Resources {
                 return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom In.
+        /// </summary>
+        public static string ZoomIn {
+            get {
+                return ResourceManager.GetString("ZoomIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom Out.
+        /// </summary>
+        public static string ZoomOut {
+            get {
+                return ResourceManager.GetString("ZoomOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom {0}%.
+        /// </summary>
+        public static string ZoomPercentFormat1 {
+            get {
+                return ResourceManager.GetString("ZoomPercentFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom to Fill.
+        /// </summary>
+        public static string ZoomToFill {
+            get {
+                return ResourceManager.GetString("ZoomToFill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom to Fit.
+        /// </summary>
+        public static string ZoomToFit {
+            get {
+                return ResourceManager.GetString("ZoomToFit", resourceCulture);
+            }
+        }
     }
 }
