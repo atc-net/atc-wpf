@@ -82,6 +82,121 @@ public partial class ZoomBox
     }
 
     /// <summary>
+    /// Gets the current viewport state (zoom and scroll position) for serialization.
+    /// </summary>
+    public ViewportState CurrentViewportState
+        => new(InternalViewportZoom, ContentOffsetX, ContentOffsetY);
+
+    /// <summary>
+    /// Restores a previously captured viewport state.
+    /// </summary>
+    /// <param name="state">The state to restore.</param>
+    /// <param name="animate">Whether to animate the transition.</param>
+    public void RestoreViewportState(
+        ViewportState state,
+        bool animate = true)
+    {
+        ArgumentNullException.ThrowIfNull(state);
+
+        if (animate && UseAnimations)
+        {
+            AnimatedZoomAboutPoint(
+                state.Zoom,
+                new Point(
+                    state.OffsetX + (ContentViewportWidth / 2),
+                    state.OffsetY + (ContentViewportHeight / 2)));
+        }
+        else
+        {
+            InternalViewportZoom = state.Zoom;
+            ContentOffsetX = state.OffsetX;
+            ContentOffsetY = state.OffsetY;
+        }
+    }
+
+    /// <summary>
+    /// Scrolls the minimum distance to make the specified rectangle visible in the viewport
+    /// without changing the zoom level. If the rectangle is already fully visible, no scrolling occurs.
+    /// </summary>
+    /// <param name="contentRect">The rectangle to make visible, in content coordinates.</param>
+    /// <param name="marginX">Horizontal margin in content coordinates to keep around the rectangle.</param>
+    /// <param name="marginY">Vertical margin in content coordinates to keep around the rectangle.</param>
+    public void EnsureVisible(
+        Rect contentRect,
+        double marginX = 50,
+        double marginY = 50)
+    {
+        var expandedRect = new Rect(
+            contentRect.X - marginX,
+            contentRect.Y - marginY,
+            contentRect.Width + (2 * marginX),
+            contentRect.Height + (2 * marginY));
+
+        var newOffsetX = ContentOffsetX;
+        var newOffsetY = ContentOffsetY;
+
+        if (expandedRect.Left < ContentOffsetX)
+        {
+            newOffsetX = expandedRect.Left;
+        }
+        else if (expandedRect.Right > ContentOffsetX + ContentViewportWidth)
+        {
+            newOffsetX = expandedRect.Right - ContentViewportWidth;
+        }
+
+        if (expandedRect.Top < ContentOffsetY)
+        {
+            newOffsetY = expandedRect.Top;
+        }
+        else if (expandedRect.Bottom > ContentOffsetY + ContentViewportHeight)
+        {
+            newOffsetY = expandedRect.Bottom - ContentViewportHeight;
+        }
+
+        SnapContentOffsetTo(new Point(newOffsetX, newOffsetY));
+    }
+
+    /// <summary>
+    /// Animated version of <see cref="EnsureVisible"/>. Scrolls the minimum distance
+    /// to make the specified rectangle visible without changing the zoom level.
+    /// </summary>
+    public void AnimatedEnsureVisible(
+        Rect contentRect,
+        double marginX = 50,
+        double marginY = 50)
+    {
+        var expandedRect = new Rect(
+            contentRect.X - marginX,
+            contentRect.Y - marginY,
+            contentRect.Width + (2 * marginX),
+            contentRect.Height + (2 * marginY));
+
+        var newOffsetX = ContentOffsetX;
+        var newOffsetY = ContentOffsetY;
+
+        if (expandedRect.Left < ContentOffsetX)
+        {
+            newOffsetX = expandedRect.Left;
+        }
+        else if (expandedRect.Right > ContentOffsetX + ContentViewportWidth)
+        {
+            newOffsetX = expandedRect.Right - ContentViewportWidth;
+        }
+
+        if (expandedRect.Top < ContentOffsetY)
+        {
+            newOffsetY = expandedRect.Top;
+        }
+        else if (expandedRect.Bottom > ContentOffsetY + ContentViewportHeight)
+        {
+            newOffsetY = expandedRect.Bottom - ContentViewportHeight;
+        }
+
+        AnimationHelper.StartAnimation(this, ContentOffsetXProperty, newOffsetX, AnimationDuration, UseAnimations);
+        AnimationHelper.StartAnimation(this, ContentOffsetYProperty, newOffsetY, AnimationDuration, UseAnimations);
+    }
+
+    /// <summary>
     /// Use animation to center the view on the specified point (in content coordinates).
     /// </summary>
     public void AnimatedSnapTo(Point contentPoint)

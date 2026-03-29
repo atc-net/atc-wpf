@@ -186,6 +186,94 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(IsTouchEnabledProperty, BooleanBoxes.Box(value));
     }
 
+    public static readonly DependencyProperty IsSpacebarPanEnabledProperty = DependencyProperty.Register(
+        nameof(IsSpacebarPanEnabled),
+        typeof(bool),
+        typeof(ZoomBox),
+        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether holding the spacebar enables temporary pan mode.
+    /// When enabled, holding Space and dragging pans the content with a hand cursor.
+    /// </summary>
+    public bool IsSpacebarPanEnabled
+    {
+        get => (bool)GetValue(IsSpacebarPanEnabledProperty);
+        set => SetValue(IsSpacebarPanEnabledProperty, BooleanBoxes.Box(value));
+    }
+
+    public static readonly DependencyProperty IsShiftScrollHorizontalPanEnabledProperty = DependencyProperty.Register(
+        nameof(IsShiftScrollHorizontalPanEnabled),
+        typeof(bool),
+        typeof(ZoomBox),
+        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether Shift+MouseWheel pans horizontally.
+    /// </summary>
+    public bool IsShiftScrollHorizontalPanEnabled
+    {
+        get => (bool)GetValue(IsShiftScrollHorizontalPanEnabledProperty);
+        set => SetValue(IsShiftScrollHorizontalPanEnabledProperty, BooleanBoxes.Box(value));
+    }
+
+    private static readonly double[] DefaultZoomPresets = [0.1, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 10.0];
+
+    public static readonly DependencyProperty ZoomPresetsProperty = DependencyProperty.Register(
+        nameof(ZoomPresets),
+        typeof(IList<double>),
+        typeof(ZoomBox),
+        new FrameworkPropertyMetadata(defaultValue: null));
+
+    /// <summary>
+    /// Gets or sets the list of preset zoom levels used by
+    /// <see cref="ZoomToNextPresetCommand"/> and <see cref="ZoomToPreviousPresetCommand"/>.
+    /// When <see langword="null"/>, a default set is used (10% to 1000%).
+    /// Values represent zoom ratios where 1.0 = 100%.
+    /// </summary>
+    public IList<double>? ZoomPresets
+    {
+        get => (IList<double>?)GetValue(ZoomPresetsProperty);
+        set => SetValue(ZoomPresetsProperty, value);
+    }
+
+    internal IList<double> EffectiveZoomPresets
+        => ZoomPresets ?? DefaultZoomPresets;
+
+    public static readonly DependencyProperty ConstraintModeProperty = DependencyProperty.Register(
+        nameof(ConstraintMode),
+        typeof(ZoomConstraintMode),
+        typeof(ZoomBox),
+        new FrameworkPropertyMetadata(ZoomConstraintMode.Inside));
+
+    /// <summary>
+    /// Gets or sets how the viewport is constrained relative to the content bounds.
+    /// </summary>
+    public ZoomConstraintMode ConstraintMode
+    {
+        get => (ZoomConstraintMode)GetValue(ConstraintModeProperty);
+        set => SetValue(ConstraintModeProperty, value);
+    }
+
+    public static readonly DependencyProperty ZoomKeyBindingsProperty = DependencyProperty.Register(
+        nameof(ZoomKeyBindings),
+        typeof(IList<ZoomKeyBinding>),
+        typeof(ZoomBox),
+        new FrameworkPropertyMetadata(defaultValue: null));
+
+    /// <summary>
+    /// Gets or sets custom keyboard bindings for zoom actions.
+    /// When <see langword="null"/>, the default bindings are used.
+    /// </summary>
+    public IList<ZoomKeyBinding>? ZoomKeyBindings
+    {
+        get => (IList<ZoomKeyBinding>?)GetValue(ZoomKeyBindingsProperty);
+        set => SetValue(ZoomKeyBindingsProperty, value);
+    }
+
+    internal IList<ZoomKeyBinding> EffectiveZoomKeyBindings
+        => ZoomKeyBindings ?? ZoomKeyBinding.CreateDefaults();
+
     private static readonly DependencyProperty InternalViewportZoomProperty = DependencyProperty.Register(
         nameof(InternalViewportZoom),
         typeof(double),
@@ -249,6 +337,12 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     /// Event raised when the ViewportZoom property has changed.
     /// </summary>
     public event EventHandler? ContentZoomChanged;
+
+    /// <summary>
+    /// Raised when the zoom level changes, providing old/new zoom values
+    /// and a normalized <see cref="ZoomLevelChangedEventArgs.LevelOfDetail"/>.
+    /// </summary>
+    public event EventHandler<ZoomLevelChangedEventArgs>? ZoomLevelChanged;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -411,6 +505,16 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         }
 
         c.ContentZoomChanged?.Invoke(c, EventArgs.Empty);
+
+        if (c.ZoomLevelChanged is not null)
+        {
+            var oldZoom = (double)e.OldValue;
+            var newZoom = (double)e.NewValue;
+            c.ZoomLevelChanged.Invoke(
+                c,
+                new ZoomLevelChangedEventArgs(oldZoom, newZoom, c.MinimumZoomClamped, c.MaximumZoom));
+        }
+
         c.ViewportZoom = c.InternalViewportZoom;
         c.OnPropertyChanged(
             new DependencyPropertyChangedEventArgs(
@@ -475,9 +579,14 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     {
         var c = (ZoomBox)d;
         var value = (double)baseValue;
-        var minOffsetX = 0.0;
-        var maxOffsetX = System.Math.Max(0.0, c.unScaledExtent.Width - c.constrainedContentViewportWidth);
-        value = System.Math.Min(System.Math.Max(value, minOffsetX), maxOffsetX);
+
+        if (c.ConstraintMode != ZoomConstraintMode.Free)
+        {
+            var minOffsetX = 0.0;
+            var maxOffsetX = System.Math.Max(0.0, c.unScaledExtent.Width - c.constrainedContentViewportWidth);
+            value = System.Math.Min(System.Math.Max(value, minOffsetX), maxOffsetX);
+        }
+
         return value;
     }
 
@@ -509,9 +618,14 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     {
         var c = (ZoomBox)d;
         var value = (double)baseValue;
-        var minOffsetY = 0.0;
-        var maxOffsetY = System.Math.Max(0.0, c.unScaledExtent.Height - c.constrainedContentViewportHeight);
-        value = System.Math.Min(System.Math.Max(value, minOffsetY), maxOffsetY);
+
+        if (c.ConstraintMode != ZoomConstraintMode.Free)
+        {
+            var minOffsetY = 0.0;
+            var maxOffsetY = System.Math.Max(0.0, c.unScaledExtent.Height - c.constrainedContentViewportHeight);
+            value = System.Math.Min(System.Math.Max(value, minOffsetY), maxOffsetY);
+        }
+
         return value;
     }
 
