@@ -91,4 +91,11 @@
             SamplePath="Viewers.TerminalViewerView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Zoom">
+        <sample:SampleTreeViewItem
+            Header="ZoomBrowserView"
+            IsExpanded="True"
+            SamplePath="Zoom.ZoomBrowserViewSampleView" />
+    </TreeViewItem>
+
 </TreeView>

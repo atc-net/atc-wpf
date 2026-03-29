@@ -11,3 +11,4 @@
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Viewers")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Flyouts")]
 [assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Selectors")]
+[assembly: XmlnsDefinition("https://github.com/atc-net/atc-wpf/tree/main/schemas", "Atc.Wpf.Components.Zoom")]
