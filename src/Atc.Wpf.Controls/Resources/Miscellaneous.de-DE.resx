@@ -267,6 +267,12 @@
   <data name="NoItemsFound" xml:space="preserve">
     <value>Keine Elemente gefunden</value>
   </data>
+  <data name="MarkSaved" xml:space="preserve">
+    <value>Als gespeichert markieren</value>
+  </data>
+  <data name="Zoom100Percent" xml:space="preserve">
+    <value>Zoom 100%</value>
+  </data>
   <data name="ZoomIn" xml:space="preserve">
     <value>Vergrößern</value>
   </data>

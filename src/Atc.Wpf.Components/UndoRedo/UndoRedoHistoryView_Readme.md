@@ -72,6 +72,17 @@ Clicking any row navigates the undo/redo service to that position.
 | `HistoryItems` | `ObservableCollectionEx<UndoRedoHistoryItem>` | Generated list of history rows |
 | `SelectedItem` | `UndoRedoHistoryItem?` | Currently selected row |
 
+### UndoRedoHistoryItem
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `Description` | `string` | Human-readable description for the row |
+| `IsRedo` | `bool` | Whether this item is in the redo portion |
+| `IsHighlighted` | `bool` | Whether this item is the current position |
+| `IsSavePoint` | `bool` | Whether this item represents the save point |
+| `Image` | `ImageSource?` | Optional icon from `IRichUndoCommand.Image` metadata |
+| `Command` | `IUndoCommand?` | The underlying command (`null` for root "Initial state" row) |
+
 ### Commands
 
 | Command | Description |
@@ -80,6 +91,8 @@ Clicking any row navigates the undo/redo service to that position.
 | `RedoCommand` | Redo the most recently undone command |
 | `UndoAllCommand` | Undo all commands |
 | `RedoAllCommand` | Redo all commands |
+| `UndoToLastUserActionCommand` | Undo to the next user-action boundary (skips programmatic commands) |
+| `RedoToLastUserActionCommand` | Redo to the next user-action boundary (skips programmatic commands) |
 | `ClearCommand` | Clear the entire history |
 | `MarkSavedCommand` | Mark the current position as saved (disabled when no unsaved changes) |
 | `NavigateToCommand` | Navigate to a specific history item |

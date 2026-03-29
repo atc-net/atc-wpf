@@ -103,7 +103,8 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=MarkSavedCommand}"
-                    ToolTip="Mark Saved"
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                  Key=MarkSaved}"
                     Visibility="{Binding Path=ShowMarkSaved, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UndoRedoHistoryView}}}">
                     <Image
                         Width="16"
