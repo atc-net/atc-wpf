@@ -52,6 +52,23 @@
                     </StackPanel>
                 </atc:GridEx>
 
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
+
+                        <atc:LabelTextInfo
+                            EnableCopyToClipboard="True"
+                            LabelText="With Copy (has text)"
+                            Orientation="Horizontal"
+                            Text="Right-click to copy" />
+
+                        <atc:LabelTextInfo
+                            EnableCopyToClipboard="True"
+                            LabelText="With Copy (empty)"
+                            Orientation="Horizontal" />
+
+                    </StackPanel>
+                </atc:GridEx>
+
             </atc:UniformSpacingPanel>
         </ScrollViewer>
         <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
