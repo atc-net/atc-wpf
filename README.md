@@ -31,6 +31,7 @@ This framework provides a rich collection of reusable controls, theming support,
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Font-based icon rendering                           | <ul><li>Atc.Wpf</li></ul>                                      |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Light & Dark mode theming infrastructure            | <ul><li>Atc.Wpf</li><li>ControlzEx</li><li>Microsoft.Windows.CsWin32</li></ul>                                      |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Network.svg?label=Atc.Wpf.Network&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Network)                         | Network scanning and discovery controls             | <ul><li>Atc.Network</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li></ul>                                             |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.UndoRedo.svg?label=Atc.Wpf.UndoRedo&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.UndoRedo)                      | Undo/redo history view and keyboard behavior        | <ul><li>Atc.UndoRedo</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li></ul>                |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for building sample applications           | <ul><li>Atc.Wpf.Components</li><li>MdXaml</li></ul> |
 
 ## 🔎 Demonstration Application
@@ -303,7 +304,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | Service | Description | Documentation |
 |---------|-------------|---------------|
 | **IClipboardService** | MVVM-friendly clipboard operations with history | [Readme](src/Atc.Wpf/Clipboard/ClipboardService_Readme.md) |
-| **IUndoRedoService** | Undo/redo with command grouping and history limits | [Readme](src/Atc.Wpf/UndoRedo/UndoRedoService_Readme.md) |
+| **IUndoRedoService** | Undo/redo with command grouping and history limits (external `Atc.UndoRedo` package) | [Repo](https://github.com/atc-net/atc-undoredo) |
 | **IHotkeyService** | Global and local keyboard shortcut management | - |
 | **INavigationService** | View navigation with guards and history | - |
 | **IPrintService** | Print and print-preview service interface | [Readme](src/Atc.Wpf.Components/Printing/PrintService_Readme.md) |

@@ -33,6 +33,7 @@ public partial class MainWindow
             StvSampleWpfForms,
             StvSampleWpfComponents,
             StvSampleWpfNetwork,
+            StvSampleWpfUndoRedo,
             StvSamplesWpfSourceGenerators,
             StvSampleWpfFontIcons,
             StvSampleWpfTheming,
@@ -49,6 +50,7 @@ public partial class MainWindow
         treeViewToTabItem[StvSampleWpfForms] = TabWpfForms;
         treeViewToTabItem[StvSampleWpfComponents] = TabWpfComponents;
         treeViewToTabItem[StvSampleWpfNetwork] = TabWpfNetwork;
+        treeViewToTabItem[StvSampleWpfUndoRedo] = TabWpfUndoRedo;
         treeViewToTabItem[StvSampleWpfTheming] = TabWpfTheming;
         treeViewToTabItem[StvSamplesWpfSourceGenerators] = TabWpfSourceGenerators;
         treeViewToTabItem[StvSampleWpfFontIcons] = TabWpfFontIcons;
@@ -59,6 +61,7 @@ public partial class MainWindow
         treeViewToBadge[StvSampleWpfForms] = BadgeWpfForms;
         treeViewToBadge[StvSampleWpfComponents] = BadgeWpfComponents;
         treeViewToBadge[StvSampleWpfNetwork] = BadgeWpfNetwork;
+        treeViewToBadge[StvSampleWpfUndoRedo] = BadgeWpfUndoRedo;
         treeViewToBadge[StvSampleWpfTheming] = BadgeWpfTheming;
         treeViewToBadge[StvSamplesWpfSourceGenerators] = BadgeWpfSourceGenerators;
         treeViewToBadge[StvSampleWpfFontIcons] = BadgeWpfFontIcons;

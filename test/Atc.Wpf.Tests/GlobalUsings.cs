@@ -1,5 +1,4 @@
 global using System.Collections.ObjectModel;
-global using System.ComponentModel;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Reflection;
@@ -20,7 +19,6 @@ global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Tests.Navigation.Models;
 global using Atc.Wpf.Tests.XUnitTestTypes;
-global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XUnit;
 

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.UndoRedo</Title>
+    <PackageId>Atc.Wpf.UndoRedo</PackageId>
+    <PackageTags>wpf;undo;redo;history;mvvm</PackageTags>
+    <Description>WPF undo/redo UI components (history view, keyboard behavior) on top of the Atc.UndoRedo service.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="3.0.18" />
+    <PackageReference Include="Atc.UndoRedo" Version="1.1.5" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.0.18" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+</Project>

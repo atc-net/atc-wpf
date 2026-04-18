@@ -13,6 +13,7 @@
     <Project Path="src/Atc.Wpf.Forms/Atc.Wpf.Forms.csproj" Id="4a140a02-e1e9-4104-bf37-99ea7b62b74b" />
     <Project Path="src/Atc.Wpf.Network/Atc.Wpf.Network.csproj" />
     <Project Path="src/Atc.Wpf.Theming/Atc.Wpf.Theming.csproj" />
+    <Project Path="src/Atc.Wpf.UndoRedo/Atc.Wpf.UndoRedo.csproj" />
     <Project Path="src/Atc.Wpf/Atc.Wpf.csproj" />
   </Folder>
   <Folder Name="/test/">
@@ -22,6 +23,7 @@
     <Project Path="test/Atc.Wpf.Network.Tests/Atc.Wpf.Network.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Tests/Atc.Wpf.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Theming.Tests/Atc.Wpf.Theming.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.UndoRedo.Tests/Atc.Wpf.UndoRedo.Tests.csproj" />
   </Folder>
   <Folder Name="/tool/">
     <Project Path="tool/Atc.Wpf.Generator.FontIconResources/Atc.Wpf.Generator.FontIconResources.csproj" />
