@@ -24,6 +24,9 @@ global using System.Windows.Threading;
 
 global using Atc.Data.Models;
 global using Atc.Serialization.JsonConverters;
+global using Atc.UndoRedo.Commands;
+global using Atc.UndoRedo.Interfaces;
+global using Atc.UndoRedo.Services;
 global using Atc.Wpf.Animation;
 global using Atc.Wpf.Capture;
 global using Atc.Wpf.Clipboard;
@@ -38,7 +41,6 @@ global using Atc.Wpf.Components.Printing;
 global using Atc.Wpf.Components.Progressing;
 global using Atc.Wpf.Components.Selectors;
 global using Atc.Wpf.Components.Settings;
-global using Atc.Wpf.Components.UndoRedo;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.Layouts;

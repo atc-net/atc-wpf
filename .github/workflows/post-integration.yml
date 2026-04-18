@@ -70,3 +70,4 @@ jobs:
           dotnet nuget push Atc.Wpf.Forms.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
           dotnet nuget push Atc.Wpf.Network.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
           dotnet nuget push Atc.Wpf.Theming.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate
+          dotnet nuget push Atc.Wpf.UndoRedo.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate

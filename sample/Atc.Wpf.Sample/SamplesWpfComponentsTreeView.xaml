@@ -55,17 +55,6 @@
             SamplePath="Printing.PrintServiceView" />
     </TreeViewItem>
 
-    <TreeViewItem Header="History">
-        <sample:SampleTreeViewItem
-            Header="UndoRedoService"
-            IsExpanded="True"
-            SamplePath="UndoRedo.UndoRedoServiceView" />
-        <sample:SampleTreeViewItem
-            Header="UndoRedoHistoryView"
-            IsExpanded="True"
-            SamplePath="UndoRedo.UndoRedoHistoryViewSampleView" />
-    </TreeViewItem>
-
     <TreeViewItem Header="Progressing">
         <sample:SampleTreeViewItem
             Header="BusyIndicatorService"

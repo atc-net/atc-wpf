@@ -58,7 +58,6 @@ global using Atc.Wpf.Factories;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Resolvers;
 global using Atc.Wpf.Resources;
-global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.ValueConverters;
 global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.Wpf.WindowsNative.Structs;

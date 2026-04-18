@@ -9,10 +9,11 @@ ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
 - **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
 - **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation)
-- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, undo/redo history, zoom browser)
+- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
-- **Atc.Wpf.Network** - Network scanning and discovery controls
+- **Atc.Wpf.Network** - Network scanning and discovery controls (wraps external `Atc.Network`)
+- **Atc.Wpf.UndoRedo** - Undo/redo history view and keyboard behavior (wraps external `Atc.UndoRedo`)
 - **Atc.Wpf.Controls.Sample** - Controls for building sample applications
 
 ## Build Commands
@@ -80,11 +81,12 @@ src/
 ├── Atc.Wpf/                      # Core: MVVM, layouts, converters
 ├── Atc.Wpf.Controls/             # Atomic controls (base, buttons, colors)
 ├── Atc.Wpf.Forms/                # Form field controls (Label*)
-├── Atc.Wpf.Components/           # Composite components (dialogs, viewers, undo/redo, zoom)
+├── Atc.Wpf.Components/           # Composite components (dialogs, viewers, zoom)
 ├── Atc.Wpf.Controls.Sample/      # Sample app controls
 ├── Atc.Wpf.FontIcons/            # Font icon support
 ├── Atc.Wpf.Theming/              # Theme infrastructure
-└── Atc.Wpf.Network/              # Network scanning controls
+├── Atc.Wpf.Network/              # Network scanning controls
+└── Atc.Wpf.UndoRedo/             # Undo/redo UI (HistoryView, keyboard behavior)
 test/                             # XUnit test projects
 sample/Atc.Wpf.Sample/            # Demo application
 ```
@@ -112,6 +114,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.Forms.Tests` | Form controls (Extractors, Factories, Helpers) | 8 test files |
 | `Atc.Wpf.Network.Tests` | Network ViewModels | 5 test files |
 | `Atc.Wpf.Theming.Tests` | Theme infrastructure (code compliance) | 1 test file |
+| `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel tests, compliance) | 2 test files |
 
 ### Running Tests
 
@@ -182,4 +185,5 @@ Place a `[ControlName]_Readme.md` file next to the control's `.cs` file. Follow 
 - Data display controls: `docs/DataDisplay/@Readme.md`
 - Form controls: `src/Atc.Wpf.Forms/` (LabelTextBox, LabelComboBox, etc.)
 - Base controls: `src/Atc.Wpf.Controls/BaseControls/` (NumericBox, IntegerBox, etc.)
-- Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications, UndoRedo, Zoom)
+- Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications, Zoom)
+- Undo/redo UI: `src/Atc.Wpf.UndoRedo/` (history view, keyboard behavior) — wraps external `Atc.UndoRedo` NuGet

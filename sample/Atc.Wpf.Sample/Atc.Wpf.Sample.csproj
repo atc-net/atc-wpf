@@ -70,6 +70,7 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Forms\Atc.Wpf.Forms.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Network\Atc.Wpf.Network.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+    <ProjectReference Include="..\..\src\Atc.Wpf.UndoRedo\Atc.Wpf.UndoRedo.csproj" />
   </ItemGroup>
 
 </Project>
