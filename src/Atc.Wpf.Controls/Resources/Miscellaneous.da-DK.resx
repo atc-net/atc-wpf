@@ -153,6 +153,9 @@
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Kopier til udklipsholder</value>
   </data>
+  <data name="RightClickToCopyToClipboard" xml:space="preserve">
+    <value>Højreklik for at kopiere til udklipsholder</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Land</value>
   </data>

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labelControls="clr-namespace:Atc.Wpf.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:Atc.Wpf.Controls.Resources;assembly=Atc.Wpf.Controls"
     mc:Ignorable="d">
 
     <labelControls:LabelContent
@@ -18,10 +19,29 @@
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         Orientation="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Orientation}">
 
-        <TextBlock
-            Height="26"
-            Padding="0,5,0,0"
-            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextInfo}}, Path=Text, FallbackValue=Text}" />
+        <Border>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextInfo}}, Path=EnableCopyToClipboard}" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="ToolTip" Value="{x:Static resources:Miscellaneous.RightClickToCopyToClipboard}" />
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextInfo}}, Path=EnableCopyToClipboard}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <TextBlock
+                Height="26"
+                Padding="0,5,0,0"
+                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelTextInfo}}, Path=Text, FallbackValue=Text}" />
+        </Border>
 
     </labelControls:LabelContent>
 
