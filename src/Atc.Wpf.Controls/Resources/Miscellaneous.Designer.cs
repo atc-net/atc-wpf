@@ -167,7 +167,7 @@ namespace Atc.Wpf.Controls.Resources {
                 return ResourceManager.GetString("CopyToClipboard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Country.
         /// </summary>
@@ -273,6 +273,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark Saved.
+        /// </summary>
+        public static string MarkSaved {
+            get {
+                return ResourceManager.GetString("MarkSaved", resourceCulture);
             }
         }
         
@@ -439,6 +448,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Right-click to copy to clipboard.
+        /// </summary>
+        public static string RightClickToCopyToClipboard {
+            get {
+                return ResourceManager.GetString("RightClickToCopyToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a directory.
         /// </summary>
         public static string SelectDirectory {
@@ -507,6 +525,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Yes {
             get {
                 return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom 100%.
+        /// </summary>
+        public static string Zoom100Percent {
+            get {
+                return ResourceManager.GetString("Zoom100Percent", resourceCulture);
             }
         }
         

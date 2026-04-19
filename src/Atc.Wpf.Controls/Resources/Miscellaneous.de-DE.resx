@@ -153,6 +153,9 @@
   <data name="CopyToClipboard" xml:space="preserve">
     <value>In die Zwischenablage kopieren</value>
   </data>
+  <data name="RightClickToCopyToClipboard" xml:space="preserve">
+    <value>Rechtsklick zum Kopieren in die Zwischenablage</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Land</value>
   </data>

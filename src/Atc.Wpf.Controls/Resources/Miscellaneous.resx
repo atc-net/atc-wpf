@@ -153,6 +153,9 @@
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Copy to Clipboard</value>
   </data>
+  <data name="RightClickToCopyToClipboard" xml:space="preserve">
+    <value>Right-click to copy to clipboard</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Country</value>
   </data>
