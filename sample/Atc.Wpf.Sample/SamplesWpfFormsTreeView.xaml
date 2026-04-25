@@ -65,6 +65,10 @@
                 Header="LabelColorPicker"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelColorPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelFontPicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelFontPickerView" />
         </TreeViewItem>
         <sample:SampleTreeViewItem
             Header="LabelCheckBox"

@@ -63,6 +63,10 @@
             IsExpanded="True"
             SamplePath="Inputs.ColorPickerView" />
         <sample:SampleTreeViewItem
+            Header="FontPicker"
+            IsExpanded="True"
+            SamplePath="Inputs.FontPickerView" />
+        <sample:SampleTreeViewItem
             Header="RichTextBoxEx"
             IsExpanded="True"
             SamplePath="Inputs.RichTextBoxExView" />
@@ -108,6 +112,13 @@
             Header="WellKnownColorPicker"
             IsExpanded="True"
             SamplePath="ColorEditing.WellKnownColorPickerView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Font Editing">
+        <sample:SampleTreeViewItem
+            Header="AdvancedFontPicker"
+            IsExpanded="True"
+            SamplePath="FontEditing.AdvancedFontPickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Data Display">
