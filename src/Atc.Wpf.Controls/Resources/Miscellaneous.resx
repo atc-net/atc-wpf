@@ -129,6 +129,12 @@
   <data name="AvailableColors" xml:space="preserve">
     <value>Available Colors</value>
   </data>
+  <data name="Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="Bold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -143,6 +149,9 @@
   </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
+  </data>
+  <data name="ContrastWarning" xml:space="preserve">
+    <value>Foreground and background colors have low contrast — text may be hard to read.</value>
   </data>
   <data name="ColorBeforeAndAfter" xml:space="preserve">
     <value>Color before and after</value>
@@ -171,8 +180,35 @@
   <data name="Font" xml:space="preserve">
     <value>Font</value>
   </data>
+  <data name="Foreground" xml:space="preserve">
+    <value>Foreground</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>Font Family</value>
+  </data>
+  <data name="FontPicker" xml:space="preserve">
+    <value>Font Picker</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="FontStretch" xml:space="preserve">
+    <value>Font Stretch</value>
+  </data>
+  <data name="FontStyle" xml:space="preserve">
+    <value>Font Style</value>
+  </data>
+  <data name="FontWeight" xml:space="preserve">
+    <value>Font Weight</value>
+  </data>
   <data name="Hour" xml:space="preserve">
     <value>Hour</value>
+  </data>
+  <data name="Italic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Locked</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
@@ -204,6 +240,9 @@
   <data name="PleaseWait3Dots" xml:space="preserve">
     <value>Please wait...</value>
   </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
   <data name="Redo" xml:space="preserve">
     <value>Redo</value>
   </data>
@@ -219,8 +258,14 @@
   <data name="StandardColors" xml:space="preserve">
     <value>Standard Colors</value>
   </data>
+  <data name="Strikethrough" xml:space="preserve">
+    <value>Strikethrough</value>
+  </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Timestamp</value>
+  </data>
+  <data name="Underline" xml:space="preserve">
+    <value>Underline</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Undo</value>
