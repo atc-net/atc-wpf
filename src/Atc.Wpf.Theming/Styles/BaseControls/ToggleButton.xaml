@@ -1,10 +1,555 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas">
 
-    <!--  Base  -->
-    <Style x:Key="AtcApps.Styles.Button" TargetType="{x:Type Button}" />
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
-    <!--  Light  -->
+    <!--
+        Base ToggleButton style. Inherits the full Button visual template (which targets
+        ButtonBase) and adds an IsChecked trigger that swaps Background/BorderBrush to the
+        existing Pressed brushes — so checked state has the same depressed look as the
+        IsPressed state and uses the same colour vocabulary every Bootstrap-style variant
+        already defines via atc:ControlsHelper.Pressed*Brush.
+    -->
+    <Style
+        x:Key="AtcApps.Styles.ToggleButton"
+        BasedOn="{StaticResource AtcApps.Styles.Button}"
+        TargetType="{x:Type ToggleButton}">
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ControlsHelper.PressedBackgroundBrush)}" />
+                <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:ControlsHelper.PressedBorderBrush)}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
-    <!--  Dark  -->
+    <Style
+        x:Key="AtcApps.Styles.ToggleButton.Small"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.ToggleButton.Large"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButton.Small"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton.Small}"
+        TargetType="{x:Type ToggleButton}" />
+
+    <Style
+        x:Key="ToggleButton.Large"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton.Large}"
+        TargetType="{x:Type ToggleButton}" />
+
+    <!--  Chromeless  -->
+    <Style
+        x:Key="AtcApps.Styles.ToggleButton.Chromeless"
+        BasedOn="{StaticResource AtcApps.Styles.Button.Chromeless}"
+        TargetType="{x:Type ToggleButton}">
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="AtcApps.Styles.ToggleButton.Chromeless.Small"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton.Chromeless}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonChromeless"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton.Chromeless}"
+        TargetType="{x:Type ToggleButton}" />
+
+    <Style
+        x:Key="ToggleButtonChromeless.Small"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton.Chromeless.Small}"
+        TargetType="{x:Type ToggleButton}" />
+
+    <!--  Bootstrap: Default  -->
+    <Style
+        x:Key="ToggleButtonDefault"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDefault.Small"
+        BasedOn="{StaticResource ToggleButtonDefault}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDefault.Large"
+        BasedOn="{StaticResource ToggleButtonDefault}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDefault.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDefault.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonDefault.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDefault.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonDefault.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <!--  Bootstrap: Primary  -->
+    <Style
+        x:Key="ToggleButtonPrimary"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonPrimary.Small"
+        BasedOn="{StaticResource ToggleButtonPrimary}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonPrimary.Large"
+        BasedOn="{StaticResource ToggleButtonPrimary}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonPrimary.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Blue700}" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonPrimary.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonPrimary.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonPrimary.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonPrimary.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <!--  Bootstrap: Secondary  -->
+    <Style
+        x:Key="ToggleButtonSecondary"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSecondary.Small"
+        BasedOn="{StaticResource ToggleButtonSecondary}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSecondary.Large"
+        BasedOn="{StaticResource ToggleButtonSecondary}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSecondary.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Gray700}" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSecondary.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonSecondary.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSecondary.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonSecondary.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <!--  Bootstrap: Success  -->
+    <Style
+        x:Key="ToggleButtonSuccess"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSuccess.Small"
+        BasedOn="{StaticResource ToggleButtonSuccess}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSuccess.Large"
+        BasedOn="{StaticResource ToggleButtonSuccess}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSuccess.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Green700}" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSuccess.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonSuccess.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonSuccess.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonSuccess.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <!--  Bootstrap: Danger  -->
+    <Style
+        x:Key="ToggleButtonDanger"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDanger.Small"
+        BasedOn="{StaticResource ToggleButtonDanger}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDanger.Large"
+        BasedOn="{StaticResource ToggleButtonDanger}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDanger.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Red700}" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDanger.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonDanger.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonDanger.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonDanger.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <!--  Bootstrap: Warning  -->
+    <Style
+        x:Key="ToggleButtonWarning"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonWarning.Small"
+        BasedOn="{StaticResource ToggleButtonWarning}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonWarning.Large"
+        BasedOn="{StaticResource ToggleButtonWarning}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonWarning.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Yellow700}" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonWarning.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonWarning.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonWarning.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonWarning.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <!--  Bootstrap: Info  -->
+    <Style
+        x:Key="ToggleButtonInfo"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan600}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonInfo.Small"
+        BasedOn="{StaticResource ToggleButtonInfo}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonInfo.Large"
+        BasedOn="{StaticResource ToggleButtonInfo}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonInfo.Outline"
+        BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="atc:ControlsHelper.FocusBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan500}" />
+        <Setter Property="atc:ControlsHelper.MouseOverForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+        <Setter Property="atc:ControlsHelper.PressedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+        <Setter Property="atc:ControlsHelper.PressedBorderBrush" Value="{DynamicResource AtcApps.Brushes.Bootstrap.Cyan700}" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Bootstrap.White}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonInfo.Outline.Small"
+        BasedOn="{StaticResource ToggleButtonInfo.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Padding" Value="2,0" />
+    </Style>
+
+    <Style
+        x:Key="ToggleButtonInfo.Outline.Large"
+        BasedOn="{StaticResource ToggleButtonInfo.Outline}"
+        TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontSize" Value="{StaticResource AtcApps.Font.Size.Button.Large}" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
 
 </ResourceDictionary>
