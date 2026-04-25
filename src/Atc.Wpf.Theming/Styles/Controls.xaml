@@ -31,6 +31,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TabControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToggleButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolBarTray.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/BaseControls/ToolTip.xaml" />
@@ -80,6 +81,7 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.TextBox}" TargetType="{x:Type TextBox}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TabControl}" TargetType="{x:Type TabControl}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TabItem}" TargetType="{x:Type TabItem}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.ToggleButton}" TargetType="{x:Type ToggleButton}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToolBar}" TargetType="{x:Type ToolBar}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToolBarTray}" TargetType="{x:Type ToolBarTray}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.ToolTip}" TargetType="{x:Type ToolTip}" />
