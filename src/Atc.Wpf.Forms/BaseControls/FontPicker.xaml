@@ -1,0 +1,59 @@
+<UserControl
+    x:Class="Atc.Wpf.Forms.BaseControls.FontPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons"
+    xmlns:local="clr-namespace:Atc.Wpf.Forms.BaseControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="UcFontPicker"
+    d:DataContext="{d:DesignInstance Type=local:FontPicker}"
+    mc:Ignorable="d">
+
+    <atc:GridEx Columns="*,10,Auto">
+
+        <Border
+            Grid.Column="0"
+            Padding="6,2"
+            BorderBrush="{DynamicResource AtcApps.Brushes.Gray7}"
+            BorderThickness="1">
+            <atc:GridEx Columns="Auto,8,*">
+                <!--  Sample glyph rendered in the selected font (legible regardless of family).  -->
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontFamily="{Binding ElementName=UcFontPicker, Path=SelectedFontFamily}"
+                    FontStretch="{Binding ElementName=UcFontPicker, Path=SelectedFontStretch}"
+                    FontStyle="{Binding ElementName=UcFontPicker, Path=SelectedFontStyle}"
+                    FontWeight="{Binding ElementName=UcFontPicker, Path=SelectedFontWeight}"
+                    Text="Aa" />
+                <!--  Family + size label rendered in the host's default UI font so the name is always readable.  -->
+                <TextBlock
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Text="{Binding ElementName=UcFontPicker, Path=DisplayText, FallbackValue='Segoe UI 12pt'}"
+                    TextTrimming="CharacterEllipsis" />
+            </atc:GridEx>
+        </Border>
+
+        <Button
+            Grid.Column="2"
+            Padding="4"
+            AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                            Key=FontPicker}"
+            Click="OnEditClick"
+            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                            Key=FontPicker}">
+            <Image
+                Width="16"
+                Height="16"
+                IsHitTestVisible="False"
+                Source="{Binding Source={x:Static fontIcons:FontMaterialDesignType.FormatFont}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.ThemeForeground}}" />
+        </Button>
+
+    </atc:GridEx>
+
+</UserControl>
