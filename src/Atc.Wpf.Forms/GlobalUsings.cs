@@ -41,6 +41,8 @@ global using Atc.Wpf.Forms.BaseControls;
 global using Atc.Wpf.Forms.BaseControls.Internal;
 global using Atc.Wpf.Forms.Dialogs;
 global using Atc.Wpf.Forms.Factories;
+global using Atc.Wpf.Forms.FontEditing;
+global using Atc.Wpf.Forms.FontEditing.Internal;
 global using Atc.Wpf.Forms.Internal.Helpers;
 global using Atc.Wpf.Forms.Resources;
 global using Atc.Wpf.Forms.Writers;
