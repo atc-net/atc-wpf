@@ -129,6 +129,12 @@
   <data name="AvailableColors" xml:space="preserve">
     <value>Tilgængelige farver</value>
   </data>
+  <data name="Background" xml:space="preserve">
+    <value>Baggrund</value>
+  </data>
+  <data name="Bold" xml:space="preserve">
+    <value>Fed</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Fortryd</value>
   </data>
@@ -143,6 +149,9 @@
   </data>
   <data name="Color" xml:space="preserve">
     <value>Farve</value>
+  </data>
+  <data name="ContrastWarning" xml:space="preserve">
+    <value>Forgrund og baggrund har lav kontrast — teksten kan være svær at læse.</value>
   </data>
   <data name="ColorBeforeAndAfter" xml:space="preserve">
     <value>Farve før og efter</value>
@@ -171,8 +180,35 @@
   <data name="Font" xml:space="preserve">
     <value>Font</value>
   </data>
+  <data name="Foreground" xml:space="preserve">
+    <value>Forgrund</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>Skrifttype</value>
+  </data>
+  <data name="FontPicker" xml:space="preserve">
+    <value>Skrifttypevælger</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Skriftstørrelse</value>
+  </data>
+  <data name="FontStretch" xml:space="preserve">
+    <value>Skriftbredde</value>
+  </data>
+  <data name="FontStyle" xml:space="preserve">
+    <value>Skriftstil</value>
+  </data>
+  <data name="FontWeight" xml:space="preserve">
+    <value>Skrifttykkelse</value>
+  </data>
   <data name="Hour" xml:space="preserve">
     <value>Time</value>
+  </data>
+  <data name="Italic" xml:space="preserve">
+    <value>Kursiv</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Låst</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
@@ -204,6 +240,9 @@
   <data name="PleaseWait3Dots" xml:space="preserve">
     <value>Vent venligst...</value>
   </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Forhåndsvisning</value>
+  </data>
   <data name="Redo" xml:space="preserve">
     <value>Annuller fortryd</value>
   </data>
@@ -219,8 +258,14 @@
   <data name="StandardColors" xml:space="preserve">
     <value>Standard farver</value>
   </data>
+  <data name="Strikethrough" xml:space="preserve">
+    <value>Gennemstreget</value>
+  </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Tidsstempel</value>
+  </data>
+  <data name="Underline" xml:space="preserve">
+    <value>Understreget</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Fortryd</value>

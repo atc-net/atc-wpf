@@ -97,6 +97,24 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Background.
+        /// </summary>
+        public static string Background {
+            get {
+                return ResourceManager.GetString("Background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bold.
+        /// </summary>
+        public static string Bold {
+            get {
+                return ResourceManager.GetString("Bold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -160,6 +178,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Foreground and background colors have low contrast — text may be hard to read..
+        /// </summary>
+        public static string ContrastWarning {
+            get {
+                return ResourceManager.GetString("ContrastWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy to Clipboard.
         /// </summary>
         public static string CopyToClipboard {
@@ -167,7 +194,7 @@ namespace Atc.Wpf.Controls.Resources {
                 return ResourceManager.GetString("CopyToClipboard", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Country.
         /// </summary>
@@ -223,6 +250,69 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Font Family.
+        /// </summary>
+        public static string FontFamily {
+            get {
+                return ResourceManager.GetString("FontFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Picker.
+        /// </summary>
+        public static string FontPicker {
+            get {
+                return ResourceManager.GetString("FontPicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Size.
+        /// </summary>
+        public static string FontSize {
+            get {
+                return ResourceManager.GetString("FontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Stretch.
+        /// </summary>
+        public static string FontStretch {
+            get {
+                return ResourceManager.GetString("FontStretch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Style.
+        /// </summary>
+        public static string FontStyle {
+            get {
+                return ResourceManager.GetString("FontStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Weight.
+        /// </summary>
+        public static string FontWeight {
+            get {
+                return ResourceManager.GetString("FontWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foreground.
+        /// </summary>
+        public static string Foreground {
+            get {
+                return ResourceManager.GetString("Foreground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hour.
         /// </summary>
         public static string Hour {
@@ -250,6 +340,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Italic.
+        /// </summary>
+        public static string Italic {
+            get {
+                return ResourceManager.GetString("Italic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} of {1}.
         /// </summary>
         public static string ItemCountFilteredFormat2 {
@@ -273,6 +372,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked.
+        /// </summary>
+        public static string Locked {
+            get {
+                return ResourceManager.GetString("Locked", resourceCulture);
             }
         }
         
@@ -430,6 +538,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Redo.
         /// </summary>
         public static string Redo {
@@ -484,11 +601,29 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Strikethrough.
+        /// </summary>
+        public static string Strikethrough {
+            get {
+                return ResourceManager.GetString("Strikethrough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Timestamp.
         /// </summary>
         public static string Timestamp {
             get {
                 return ResourceManager.GetString("Timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Underline.
+        /// </summary>
+        public static string Underline {
+            get {
+                return ResourceManager.GetString("Underline", resourceCulture);
             }
         }
         
