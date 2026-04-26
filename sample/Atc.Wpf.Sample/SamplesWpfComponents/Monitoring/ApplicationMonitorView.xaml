@@ -14,18 +14,14 @@
 
     <atc:GridEx Columns="*,400">
 
-        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
-
-                <atc:ApplicationMonitorView
-                    DataContext="{Binding Path=ApplicationMonitorViewModel}"
-                    ShowAutoScrollInToolbar="{Binding DataContext.ShowAutoScrollInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                    ShowClearInToolbar="{Binding DataContext.ShowClearInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                    ShowSearchInToolbar="{Binding DataContext.ShowSearchInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                    ShowToolbar="{Binding DataContext.ShowToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-
-            </atc:UniformSpacingPanel>
-        </ScrollViewer>
+        <atc:ApplicationMonitorView
+            Grid.Column="0"
+            Margin="10"
+            DataContext="{Binding Path=ApplicationMonitorViewModel}"
+            ShowAutoScrollInToolbar="{Binding DataContext.ShowAutoScrollInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            ShowClearInToolbar="{Binding DataContext.ShowClearInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            ShowSearchInToolbar="{Binding DataContext.ShowSearchInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            ShowToolbar="{Binding DataContext.ShowToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
         <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
             <sample:SampleSidePanel.ActionsContent>

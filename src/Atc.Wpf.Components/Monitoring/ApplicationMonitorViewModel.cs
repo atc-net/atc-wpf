@@ -1,8 +1,10 @@
 // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
 namespace Atc.Wpf.Components.Monitoring;
 
-public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
+public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 {
+    private const string ClipboardFieldSeparator = " | ";
+
     private static readonly object SyncLock = new();
     private readonly ICollectionView view;
     private ApplicationFilterViewModel filter;
@@ -15,6 +17,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
     public ApplicationMonitorViewModel()
     {
         Entries = [];
+        SelectedEntries = [];
         filter = new ApplicationFilterViewModel();
         BindingOperations.EnableCollectionSynchronization(
             Entries,
@@ -26,7 +29,9 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
         ShowColumnArea = true;
         ListenOnToastNotificationMessage = true;
 
-        FilterChangeCommandHandler();
+        Entries.CollectionChanged += (_, _) => CopyAllCommand.RaiseCanExecuteChanged();
+
+        FilterChange();
 
         MessengerInstance.Register<ApplicationEventEntry>(
             this,
@@ -37,11 +42,6 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
             Entries.AddRange(DesignModeHelper.CreateApplicationEventEntryList());
         }
     }
-
-    public IRelayCommand ClearCommand => new RelayCommand(ClearCommandHandler);
-
-    public IRelayCommand FilterChangeCommand
-        => new RelayCommand(FilterChangeCommandHandler);
 
     public ApplicationFilterViewModel Filter
     {
@@ -94,6 +94,8 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 
     public ObservableCollectionEx<ApplicationEventEntry> Entries { get; }
 
+    public ObservableCollectionEx<ApplicationEventEntry> SelectedEntries { get; }
+
     public bool ShowColumnArea
     {
         get => showColumnArea;
@@ -143,7 +145,7 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
             filter.MatchOnTextInData = value;
             RaisePropertyChanged();
 
-            FilterChangeCommandHandler();
+            FilterChange();
         }
     }
 
@@ -200,6 +202,29 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
         }
     }
 
+    /// <summary>
+    /// Replaces <see cref="SelectedEntries"/> with the supplied entries and
+    /// re-evaluates the per-selection copy commands' CanExecute. Call this from
+    /// the host control whenever its multi-selection state changes (WPF's
+    /// ListView.SelectedItems is not directly bindable to a collection property).
+    /// </summary>
+    public void SetSelectedEntries(IEnumerable<ApplicationEventEntry> entries)
+    {
+        ArgumentNullException.ThrowIfNull(entries);
+
+        SelectedEntries.SuppressOnChangedNotification = true;
+        SelectedEntries.Clear();
+        foreach (var entry in entries)
+        {
+            SelectedEntries.Add(entry);
+        }
+
+        SelectedEntries.SuppressOnChangedNotification = false;
+
+        CopySelectedCommand.RaiseCanExecuteChanged();
+        CopyAllCommand.RaiseCanExecuteChanged();
+    }
+
     public void Dispose()
     {
         MessengerInstance.UnRegister<ApplicationEventEntry>(
@@ -224,16 +249,58 @@ public sealed class ApplicationMonitorViewModel : ViewModelBase, IDisposable
         AddEntry(message.ToApplicationEventEntry());
     }
 
-    private void ClearCommandHandler()
+    [RelayCommand]
+    private void Clear()
     {
         lock (SyncLock)
         {
             SelectedEntry = null;
+            SelectedEntries.Clear();
             Entries.Clear();
+        }
+
+        CopySelectedCommand.RaiseCanExecuteChanged();
+        CopyAllCommand.RaiseCanExecuteChanged();
+    }
+
+    private bool CanCopySelected()
+        => SelectedEntries.Count > 0;
+
+    [RelayCommand(CanExecute = nameof(CanCopySelected))]
+    private void CopySelected()
+        => CopyEntriesToClipboard(SelectedEntries);
+
+    private bool CanCopyAll()
+        => Entries.Count > 0 &&
+           Entries.Count > SelectedEntries.Count;
+
+    [RelayCommand(CanExecute = nameof(CanCopyAll))]
+    private void CopyAll()
+        => CopyEntriesToClipboard(view.OfType<ApplicationEventEntry>());
+
+    private static void CopyEntriesToClipboard(
+        IEnumerable<ApplicationEventEntry> entries)
+    {
+        var sb = new StringBuilder();
+        foreach (var entry in entries)
+        {
+            sb.Append(entry.Timestamp.ToString("yyyy-MM-dd HH:mm:ss", GlobalizationConstants.EnglishCultureInfo));
+            sb.Append(ClipboardFieldSeparator);
+            sb.Append(entry.LogCategoryType.ToShortNameBracketed());
+            sb.Append(ClipboardFieldSeparator);
+            sb.Append(entry.Area);
+            sb.Append(ClipboardFieldSeparator);
+            sb.AppendLine(entry.Message);
+        }
+
+        if (sb.Length > 0)
+        {
+            System.Windows.Clipboard.SetText(sb.ToString());
         }
     }
 
-    private void FilterChangeCommandHandler()
+    [RelayCommand]
+    private void FilterChange()
     {
         view.Filter = null;
         view.Filter = o =>

@@ -159,6 +159,12 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Farvevælger</value>
   </data>
+  <data name="CopyAllToClipboard" xml:space="preserve">
+    <value>Kopier alt til udklipsholder</value>
+  </data>
+  <data name="CopySelectedToClipboard" xml:space="preserve">
+    <value>Kopier markerede til udklipsholder</value>
+  </data>
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Kopier til udklipsholder</value>
   </data>

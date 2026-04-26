@@ -159,6 +159,12 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Color Picker</value>
   </data>
+  <data name="CopyAllToClipboard" xml:space="preserve">
+    <value>Copy All to Clipboard</value>
+  </data>
+  <data name="CopySelectedToClipboard" xml:space="preserve">
+    <value>Copy Selected to Clipboard</value>
+  </data>
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Copy to Clipboard</value>
   </data>
