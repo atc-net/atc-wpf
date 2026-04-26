@@ -1,8 +1,37 @@
 - name: Home
   href: index.md
-- name: Documentation
-  href: docs/
-  homepage: docs/Mvvm/@Readme.md
+- name: MVVM
+  items:
+  - name: Overview
+    href: docs/Mvvm/@Readme.md
+  - name: Migration guide
+    href: docs/Mvvm/Migration.md
+- name: Source generators
+  items:
+  - name: ViewModel
+    href: docs/SourceGenerators/ViewModel.md
+  - name: DependencyProperty
+    href: docs/SourceGenerators/DependencyProperty.md
+  - name: AttachedProperty
+    href: docs/SourceGenerators/AttachedProperty.md
+- name: Layouts
+  href: docs/Layouts/@Readme.md
+- name: Theming
+  href: docs/Theming/@Readme.md
+- name: Font icons
+  href: docs/FontIcons/@Readme.md
+- name: Forms
+  href: docs/Forms/@Readme.md
+- name: Components
+  href: docs/Components/@Readme.md
+- name: Data display
+  href: docs/DataDisplay/@Readme.md
+- name: Hotkeys
+  href: docs/Hotkeys/@Readme.md
+- name: Navigation
+  href: docs/Navigation/@Readme.md
+- name: Sample app
+  href: docs/sample-app.md
 - name: API Reference
   href: docs/api/
 - name: GitHub
