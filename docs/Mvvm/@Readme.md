@@ -21,6 +21,8 @@ The MVVM infrastructure is provided by the **Atc.XamlToolkit** and **Atc.XamlToo
 
 📖 For detailed information about source generators and commands, refer to the [ViewModel Source Generation documentation](../SourceGenerators/ViewModel.md).
 
+🔁 Migrating an existing project from hand-rolled `INotifyPropertyChanged` / `RelayCommand` boilerplate? See the [Migration guide](Migration.md).
+
 📦 For more information about the MVVM infrastructure, see the [Atc.XamlToolkit repository](https://github.com/atc-net/atc-xaml-toolkit).
 
 ---

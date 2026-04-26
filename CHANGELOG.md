@@ -98,6 +98,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Documentation / API Reference / GitHub; `docs/toc.yml` orders the left nav
   by category. `_site/` and `docs/api/` are gitignored. Local preview:
   `dotnet tool install -g docfx && docfx docfx.json --serve`.
+- **Architecture diagram** added to `README.md` under the "🎯 Four-Tier Architecture"
+  section. Mermaid graph (renders natively on GitHub, no PNG/SVG asset to maintain)
+  showing `Atc.Wpf` (core) → `Controls` → `Forms` → `Components` spine plus
+  `Theming` / `FontIcons` / `Network` / `UndoRedo` side packages and the upstream
+  `Atc` + `Atc.XamlToolkit` deps. Color-coded by role.
+- **MVVM migration guide** added at `docs/Mvvm/Migration.md`. Covers all four
+  generator attributes (`[ObservableProperty]`, `[RelayCommand]`,
+  `[DependencyProperty]`, `[AttachedProperty]`) with before/after snippets, a
+  quick-reference cookbook, a pre-flight checklist, and notes on known
+  limitations (e.g. the DP generator's missing XML-doc forwarding). Linked from
+  `docs/Mvvm/@Readme.md` and added to `docs/toc.yml`.
 
 ### Removed
 
