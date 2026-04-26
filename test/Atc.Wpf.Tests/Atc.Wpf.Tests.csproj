@@ -7,17 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="3.0.18" />
-    <PackageReference Include="Atc.XUnit" Version="3.0.18" />
+    <PackageReference Include="Atc" Version="3.0.67" />
+    <PackageReference Include="Atc.XUnit" Version="3.0.67" />
     <PackageReference Include="Xunit.StaFact" Version="3.0.13" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Atc.Wpf\Atc.Wpf.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Atc.Test" Version="2.0.17" />
   </ItemGroup>
 
 </Project>
