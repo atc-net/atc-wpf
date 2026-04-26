@@ -26,7 +26,7 @@
 | [🧭 Navigation](docs/Navigation/@Readme.md) | Frame / page navigation primitives |
 | [🎈 Sample app](docs/sample-app.md) | Search / TreeView / TabControl interaction model |
 
-The full **API reference** (auto-generated from XML docs) lives under [API browser](api/).
+The full **API reference** (auto-generated from XML docs) is in the **API Reference** tab in the top nav.
 
 ## Installation
 
@@ -50,6 +50,10 @@ docfx docfx.json --serve
 ```
 
 Then open <http://localhost:8080>.
+
+> **If you see `IOException: ... _site\toc.html ... being used by another process`** — that's a previous `docfx --serve` still holding files. Stop it (close the previous terminal or `Ctrl+C`), delete the `_site/` directory, and re-run.
+>
+> **If you see `FailedToLoadAnalyzer: Atc.XamlToolkit.SourceGenerators ... ReferencesNewerCompiler`** — that's expected. DocFX's bundled Roslyn is older than what the source generators target, so generated members (`[ObservableProperty]`, `[DependencyProperty]`, etc.) are missing from API metadata. The site still builds because `docfx.json` sets `allowCompilationErrors: true`. Will resolve when DocFX upgrades its bundled Roslyn.
 
 ## Contributing
 

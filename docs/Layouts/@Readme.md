@@ -217,7 +217,7 @@ dockPanel.LoadLayout(layout);
 dockPanel.ResetLayout();
 ```
 
-**See Also:** [Full DockPanelPro Documentation](DockPanelPro_Readme.md)
+**See Also:** [Full DockPanelPro Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md)
 
 ---
 
@@ -306,7 +306,7 @@ dockPanel.ResetLayout();
 </layouts:FlexPanel>
 ```
 
-**See Also:** [Full FlexPanel Documentation](../src/Atc.Wpf.Controls/Layouts/FlexPanel_Readme.md)
+**See Also:** [Full FlexPanel Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/FlexPanel_Readme.md)
 
 ---
 
@@ -552,7 +552,7 @@ public class SimpleOverlayPanel : Panel
 </layouts:ResponsivePanel>
 ```
 
-**See Also:** [Full ResponsivePanel Documentation](../src/Atc.Wpf.Controls/Layouts/ResponsivePanel_Readme.md)
+**See Also:** [Full ResponsivePanel Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/ResponsivePanel_Readme.md)
 
 ---
 
@@ -635,7 +635,7 @@ public class SimpleOverlayPanel : Panel
 </ItemsControl>
 ```
 
-**See Also:** [Full StaggeredPanel Documentation](../src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)
+**See Also:** [Full StaggeredPanel Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md)
 
 ---
 
@@ -723,7 +723,7 @@ public class SimpleOverlayPanel : Panel
 </layouts:UniformSpacingPanel>
 ```
 
-**See Also:** [Full UniformSpacingPanel Documentation](../src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)
+**See Also:** [Full UniformSpacingPanel Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md)
 
 ---
 
@@ -848,7 +848,7 @@ public class SimpleOverlayPanel : Panel
 </layouts:AutoGrid>
 ```
 
-**See Also:** [Full AutoGrid Documentation](../src/Atc.Wpf.Controls/Layouts/AutoGrid_Readme.md)
+**See Also:** [Full AutoGrid Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/AutoGrid_Readme.md)
 
 ---
 
@@ -935,7 +935,7 @@ public class SimpleOverlayPanel : Panel
 </layouts:GridEx>
 ```
 
-**See Also:** [Full GridEx Documentation](../src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)
+**See Also:** [Full GridEx Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf/Controls/Layouts/GridEx_Readme.md)
 
 ---
 

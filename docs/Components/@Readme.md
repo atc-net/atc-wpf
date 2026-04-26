@@ -12,15 +12,15 @@ using Atc.Wpf.Components;
 
 | Category | Highlights | Path |
 |---|---|---|
-| **Dialogs** | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox` | [`Dialogs/`](../../src/Atc.Wpf.Components/Dialogs) |
-| **Viewers** | `JsonViewer`, `TerminalViewer`, `MarkdownViewer` | [`Viewers/`](../../src/Atc.Wpf.Components/Viewers) |
-| **Monitoring** | `ApplicationMonitorView` (memory, CPU, GC counters with copy-to-clipboard context menu) | [`Monitoring/`](../../src/Atc.Wpf.Components/Monitoring) |
-| **Notifications** | `ToastNotification` system + manager | [`Notifications/`](../../src/Atc.Wpf.Components/Notifications) |
-| **Progressing** | `BusyIndicatorService`, `BusyIndicatorManager` | [`Progressing/`](../../src/Atc.Wpf.Components/Progressing) |
-| **Printing** | `VisualPaginator` for paginated print output | [`Printing/`](../../src/Atc.Wpf.Components/Printing) |
-| **Settings** | Reusable settings panels | [`Settings/`](../../src/Atc.Wpf.Components/Settings) |
-| **Zoom** | `ZoomBrowser` (multi-zoom orchestration around `ZoomBox`) | [`Zoom/`](../../src/Atc.Wpf.Components/Zoom) |
-| **Flyouts** | `Flyout` controls | [`Flyouts/`](../../src/Atc.Wpf.Components/Flyouts) |
+| **Dialogs** | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox` | [`Dialogs/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Dialogs) |
+| **Viewers** | `JsonViewer`, `TerminalViewer`, `MarkdownViewer` | [`Viewers/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Viewers) |
+| **Monitoring** | `ApplicationMonitorView` (memory, CPU, GC counters with copy-to-clipboard context menu) | [`Monitoring/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Monitoring) |
+| **Notifications** | `ToastNotification` system + manager | [`Notifications/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Notifications) |
+| **Progressing** | `BusyIndicatorService`, `BusyIndicatorManager` | [`Progressing/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Progressing) |
+| **Printing** | `VisualPaginator` for paginated print output | [`Printing/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Printing) |
+| **Settings** | Reusable settings panels | [`Settings/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Settings) |
+| **Zoom** | `ZoomBrowser` (multi-zoom orchestration around `ZoomBox`) | [`Zoom/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Zoom) |
+| **Flyouts** | `Flyout` controls | [`Flyouts/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Flyouts) |
 
 ## 🚀 Common patterns
 
@@ -62,6 +62,6 @@ Several components subscribe to `Atc.XamlToolkit.Messaging.Messenger` and/or hol
 
 ## 📚 See also
 
-- Per-component readme files live next to the source: e.g. [`InputDialogBox_Readme.md`](../../src/Atc.Wpf.Components/Dialogs/InputDialogBox_Readme.md), [`ApplicationMonitorView_Readme.md`](../../src/Atc.Wpf.Components/Monitoring/ApplicationMonitorView_Readme.md), [`ToastNotification_Readme.md`](../../src/Atc.Wpf.Components/Notifications/ToastNotification_Readme.md).
+- Per-component readme files live next to the source: e.g. [`InputDialogBox_Readme.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Components/Dialogs/InputDialogBox_Readme.md), [`ApplicationMonitorView_Readme.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Components/Monitoring/ApplicationMonitorView_Readme.md), [`ToastNotification_Readme.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Components/Notifications/ToastNotification_Readme.md).
 - Underlying form fields: [`docs/Forms/@Readme.md`](../Forms/@Readme.md)
-- Underlying primitives: [`src/Atc.Wpf.Controls/`](../../src/Atc.Wpf.Controls)
+- Underlying primitives: [`src/Atc.Wpf.Controls/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Controls)

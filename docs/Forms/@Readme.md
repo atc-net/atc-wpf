@@ -30,7 +30,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | Network | `LabelEndpointBox` |
 | Information display | `LabelContent`, `LabelTextInfo` |
 
-The full per-control reference (features, properties, examples) lives in [`src/Atc.Wpf.Forms/README.md`](../../src/Atc.Wpf.Forms/README.md).
+The full per-control reference (features, properties, examples) lives in [`src/Atc.Wpf.Forms/README.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Forms/README.md).
 
 ## 🧱 Common shape
 
@@ -72,6 +72,6 @@ Form controls use **deferred validation**: error messages are not shown until th
 
 ## 📚 See also
 
-- Per-control reference: [`src/Atc.Wpf.Forms/README.md`](../../src/Atc.Wpf.Forms/README.md)
-- Underlying primitives: [`src/Atc.Wpf.Controls/`](../../src/Atc.Wpf.Controls)
-- Composite dialogs that use these forms: [`src/Atc.Wpf.Components/Dialogs/`](../../src/Atc.Wpf.Components/Dialogs)
+- Per-control reference: [`src/Atc.Wpf.Forms/README.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Forms/README.md)
+- Underlying primitives: [`src/Atc.Wpf.Controls/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Controls)
+- Composite dialogs that use these forms: [`src/Atc.Wpf.Components/Dialogs/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Dialogs)

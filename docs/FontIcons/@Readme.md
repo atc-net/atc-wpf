@@ -148,7 +148,7 @@ Font controls inherit `Foreground` from `TextBlock`.
 
 ## 🔗 Related
 
-- **[ValueConverters](../../src/Atc.Wpf.FontIcons/ValueConverters/@Readme.md)** — `FontIconImageSourceValueConverter`, `FontIconDrawingImageValueConverter`
+- **[ValueConverters](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.FontIcons/ValueConverters/%40Readme.md)** — `FontIconImageSourceValueConverter`, `FontIconDrawingImageValueConverter`
 - **FontIcon / PathIcon** — Lower-level icon controls in `Atc.Wpf.Theming`
 
 ## 🎮 Sample Application
