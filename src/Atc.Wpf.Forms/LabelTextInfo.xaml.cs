@@ -2,6 +2,8 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelTextInfo : ILabelTextInfo
 {
+    private ContextMenu? cachedCopyContextMenu;
+
     [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnEnableCopyToClipboardChanged))]
     private bool enableCopyToClipboard;
 
@@ -20,35 +22,40 @@ public partial class LabelTextInfo : ILabelTextInfo
         var control = (LabelTextInfo)d;
         if (control.EnableCopyToClipboard)
         {
-            var copyMenuItem = new MenuItem
-            {
-                Header = Miscellaneous.CopyToClipboard,
-                Icon = new SvgImage
-                {
-                    Width = 16,
-                    Height = 16,
-                    Source = "/Atc.Wpf.Controls;component/Resources/Icons/clipboard.svg",
-                },
-            };
-
-            copyMenuItem.SetBinding(
-                MenuItem.IsEnabledProperty,
-                new Binding(nameof(Text))
-                {
-                    Source = control,
-                    Converter = StringNullOrEmptyToInverseBoolValueConverter.Instance,
-                });
-
-            copyMenuItem.Click += control.OnCopyToClipboardClick;
-
-            var contextMenu = new ContextMenu();
-            contextMenu.Items.Add(copyMenuItem);
-            control.ContextMenu = contextMenu;
+            control.ContextMenu = control.cachedCopyContextMenu ??= control.BuildCopyContextMenu();
         }
         else
         {
             control.ContextMenu = null;
         }
+    }
+
+    private ContextMenu BuildCopyContextMenu()
+    {
+        var copyMenuItem = new MenuItem
+        {
+            Header = Miscellaneous.CopyToClipboard,
+            Icon = new SvgImage
+            {
+                Width = 16,
+                Height = 16,
+                Source = "/Atc.Wpf.Controls;component/Resources/Icons/clipboard.svg",
+            },
+        };
+
+        copyMenuItem.SetBinding(
+            MenuItem.IsEnabledProperty,
+            new Binding(nameof(Text))
+            {
+                Source = this,
+                Converter = StringNullOrEmptyToInverseBoolValueConverter.Instance,
+            });
+
+        copyMenuItem.Click += OnCopyToClipboardClick;
+
+        var contextMenu = new ContextMenu();
+        contextMenu.Items.Add(copyMenuItem);
+        return contextMenu;
     }
 
     private void OnCopyToClipboardClick(
