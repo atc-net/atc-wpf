@@ -34,7 +34,6 @@ public sealed class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueCo
         Type targetType,
         object? parameter,
         CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+        => throw new NotSupportedException(
+            $"{nameof(RenderFlagIndicatorTypeToVisibilityValueConverter)} is one-way only.");
 }

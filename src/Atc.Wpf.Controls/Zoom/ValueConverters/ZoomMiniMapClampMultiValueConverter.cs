@@ -43,7 +43,6 @@ public class ZoomMiniMapClampMultiValueConverter : MarkupExtension, IMultiValueC
         Type[] targetTypes,
         object parameter,
         CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+        => throw new NotSupportedException(
+            $"{nameof(ZoomMiniMapClampMultiValueConverter)} is one-way only.");
 }

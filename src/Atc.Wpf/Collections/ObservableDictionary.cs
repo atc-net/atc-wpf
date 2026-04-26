@@ -148,7 +148,21 @@ public sealed class ObservableDictionary<TKey, TValue>
     public void CopyTo(
         KeyValuePair<TKey, TValue>[] array,
         int arrayIndex)
-        => throw new NotImplementedException();
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+        if (array.Length - arrayIndex < Count)
+        {
+            throw new ArgumentException(
+                "The destination array has insufficient space.",
+                nameof(array));
+        }
+
+        foreach (var pair in ThisAsCollection())
+        {
+            array[arrayIndex++] = new KeyValuePair<TKey, TValue>(pair.Key, pair.Value);
+        }
+    }
 
     public bool IsReadOnly => false;
 
