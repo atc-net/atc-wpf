@@ -106,5 +106,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Atc.Wpf.Forms.Tests` but had no consumers in `Controls.Tests`. Deleted them
   and the now-empty folder; also dropped two `System.ComponentModel*` global
   usings that became unused.
+- **`Atc.Wpf.Theming.Tests` upgraded from compliance-only to functional**
+  (1 → 43 tests). New value-converter test files: `CornerRadiusBindingValueConverterTests`,
+  `CornerRadiusFilterValueConverterTests`, `LeftRightCornerRadiusValueConverterTests`,
+  `ColorToNameValueConverterTests`, `RenderColorIndicatorTypeToVisibilityValueConverterTests`.
+  Together they cover the per-corner / per-side / single-corner switch logic,
+  `IgnoreRadius` / `Filter` property fallbacks, invalid-input fallbacks
+  (`Binding.DoNothing`, `default(CornerRadius)`, `Colors.Pink`),
+  `ConvertBack` semantics (`DependencyProperty.UnsetValue` for one-ways,
+  `NotSupportedException` for multi-binding back-conversion), and
+  `Visibility` mapping for `RenderColorIndicatorType`.
 
 [Unreleased]: https://github.com/atc-net/atc-wpf/compare/HEAD
