@@ -107,27 +107,31 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 ### Test Projects Structure
 
-| Test Project | Focus Area | Coverage |
-|--------------|------------|----------|
-| `Atc.Wpf.Tests` | Core library (Helpers, ValueConverters, Serialization) | 42 test files |
-| `Atc.Wpf.Controls.Tests` | Controls library (code compliance) | 1 test file |
-| `Atc.Wpf.Forms.Tests` | Form controls (Extractors, Factories, Helpers) | 8 test files |
-| `Atc.Wpf.Network.Tests` | Network ViewModels | 5 test files |
-| `Atc.Wpf.Theming.Tests` | Theme infrastructure (code compliance) | 1 test file |
-| `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel tests, compliance) | 2 test files |
+| Test Project | Focus Area | Test Files |
+|--------------|------------|-----------:|
+| `Atc.Wpf.Tests` | Core library (Helpers, ValueConverters, Serialization) | 89 |
+| `Atc.Wpf.Controls.Tests` | Controls library (layouts, zoom utilities, compliance) | 33 |
+| `Atc.Wpf.Forms.Tests` | Form controls (Extractors, Factories, Helpers) | 25 |
+| `Atc.Wpf.Components.Tests` | Composite components (Flyouts, Zoom browser, value converters) | 20 |
+| `Atc.Wpf.Network.Tests` | Network ViewModels and value converters | 18 |
+| `Atc.Wpf.Theming.Tests` | Theme infrastructure (compliance only) | 12 |
+| `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 13 |
+
+> Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 817 tests across 89 files).
+> No test project exists yet for `Atc.Wpf.FontIcons` or `Atc.Wpf.SourceGenerators` (the latter directory is empty).
 
 ### Running Tests
 
 ```bash
-# Run all tests (719 tests)
+# Run all tests
 dotnet test
 
-# Run specific test project
-dotnet test test/Atc.Wpf.Tests
-dotnet test test/Atc.Wpf.Forms.Tests
+# Run a specific test project (Microsoft Testing Platform — use `dotnet run`)
+dotnet run --project test/Atc.Wpf.Tests -c Release --no-build
+dotnet run --project test/Atc.Wpf.Forms.Tests -c Release --no-build
 
-# Run single test by name
-dotnet test --filter "FullyQualifiedName~TestMethodName"
+# Run single test by name (filter via xUnit)
+dotnet run --project test/Atc.Wpf.Tests -c Release --no-build -- --filter-method "*MethodName*"
 ```
 
 ## Sample Application
