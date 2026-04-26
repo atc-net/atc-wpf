@@ -114,7 +114,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.Forms.Tests` | Form controls (Extractors, Factories, Helpers) | 25 |
 | `Atc.Wpf.Components.Tests` | Composite components (Flyouts, Zoom browser, value converters) | 20 |
 | `Atc.Wpf.Network.Tests` | Network ViewModels and value converters | 18 |
-| `Atc.Wpf.Theming.Tests` | Theme infrastructure (compliance only) | 12 |
+| `Atc.Wpf.Theming.Tests` | Compliance + value-converter functional tests | 7 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 13 |
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 2 |
 
