@@ -100,5 +100,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exposes more than just `None` — catches generator regressions across all
   ten icon sets (FontAwesome 5/7 solid/regular/brand, Bootstrap, Material,
   Weather, IcoFont). 21 tests pass.
+- **Removed dead test-fixture duplicates from `Atc.Wpf.Controls.Tests`.** Five
+  files under `XUnitTestTypes/` (`Account` / `Address` / `DriveItem` / `Person` /
+  `PrimitiveTypesModel`) were byte-identical copies of the same files in
+  `Atc.Wpf.Forms.Tests` but had no consumers in `Controls.Tests`. Deleted them
+  and the now-empty folder; also dropped two `System.ComponentModel*` global
+  usings that became unused.
 
 [Unreleased]: https://github.com/atc-net/atc-wpf/compare/HEAD
