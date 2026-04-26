@@ -24,6 +24,7 @@
     <Project Path="test/Atc.Wpf.Network.Tests/Atc.Wpf.Network.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Tests/Atc.Wpf.Tests.csproj" />
     <Project Path="test/Atc.Wpf.Theming.Tests/Atc.Wpf.Theming.Tests.csproj" />
+    <Project Path="test/Atc.Wpf.UiTests/Atc.Wpf.UiTests.csproj" />
     <Project Path="test/Atc.Wpf.UndoRedo.Tests/Atc.Wpf.UndoRedo.Tests.csproj" />
   </Folder>
   <Folder Name="/tool/">
