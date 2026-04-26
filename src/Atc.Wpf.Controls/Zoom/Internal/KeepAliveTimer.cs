@@ -25,23 +25,21 @@ internal sealed class KeepAliveTimer
 
     public bool Running { get; private set; }
 
+    // Both Nudge() and TimerExpired run on the UI thread (DispatcherTimer raises
+    // Tick on its dispatcher), so no synchronization is needed.
     public void Nudge()
     {
-        lock (dispatcherTimer)
+        if (!Running)
         {
-            if (!Running)
-            {
-                startTime = DateTime.UtcNow;
-                runTime = null;
-                dispatcherTimer.Start();
-                Running = true;
-            }
-            else
-            {
-                // Reset the timer
-                dispatcherTimer.Stop();
-                dispatcherTimer.Start();
-            }
+            startTime = DateTime.UtcNow;
+            runTime = null;
+            dispatcherTimer.Start();
+            Running = true;
+        }
+        else
+        {
+            dispatcherTimer.Stop();
+            dispatcherTimer.Start();
         }
     }
 
@@ -52,12 +50,9 @@ internal sealed class KeepAliveTimer
         object? sender,
         EventArgs e)
     {
-        lock (dispatcherTimer)
-        {
-            Running = false;
-            dispatcherTimer.Stop();
-            runTime = DateTime.UtcNow.Subtract(startTime);
-            Action();
-        }
+        Running = false;
+        dispatcherTimer.Stop();
+        runTime = DateTime.UtcNow.Subtract(startTime);
+        Action();
     }
 }

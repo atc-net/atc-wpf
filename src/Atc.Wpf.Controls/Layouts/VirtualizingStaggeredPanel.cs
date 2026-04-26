@@ -626,7 +626,15 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             columnHeights[columnIndex] += child.DesiredSize.Height + VerticalSpacing;
         }
 
-        var maxHeight = columnHeights.Count > 0 ? columnHeights.Max() : 0;
+        var maxHeight = 0d;
+        for (var i = 0; i < columnHeights.Count; i++)
+        {
+            if (columnHeights[i] > maxHeight)
+            {
+                maxHeight = columnHeights[i];
+            }
+        }
+
         if (maxHeight > VerticalSpacing)
         {
             maxHeight -= VerticalSpacing;
