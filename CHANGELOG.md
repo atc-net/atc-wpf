@@ -149,7 +149,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `NotSupportedException` on `ConvertBack`),
   `ObservableDictionaryToDictionaryOfStringsValueConverterTests` (string-key,
   int-key supported variants + null → empty + unsupported-type throws +
-  `NotSupportedException` on `ConvertBack`).
+  `NotSupportedException` on `ConvertBack`). JSON-tree batch (+20 tests, 907
+  → 927): `JsonArrayLengthConverterTests` (`[N]` for array nodes vs `[ N ]`
+  padded form for properties holding an array, empty string for non-array
+  property + unsupported input), `JsonNodeChildrenConverterTests` (object
+  property children, array item children, empty for value nodes, null for
+  unsupported input), `JsonValueDisplayConverterTests` (returns `DisplayValue`
+  for string + numeric value nodes, passes non-`JsonValueNode` input through
+  unchanged). With this batch, every previously-untested **public** value
+  converter in `Atc.Wpf` now has functional tests.
 - **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
   tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
   promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot
