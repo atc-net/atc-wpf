@@ -18,8 +18,33 @@ namespace System.Windows.Threading;
 public sealed class DebounceDispatcher
 {
     private DispatcherTimer? timer;
+    private Action<object?>? pendingAction;
+    private object? pendingParam;
+    private DispatcherPriority cachedPriority;
+    private Dispatcher? cachedDispatcher;
 
     private DateTime TimerStarted { get; set; } = DateTime.UtcNow.AddYears(-1);
+
+    private void OnTimerTick(
+        object? sender,
+        EventArgs e)
+    {
+        timer?.Stop();
+
+        var action = pendingAction;
+        var param = pendingParam;
+        pendingAction = null;
+        pendingParam = null;
+
+        action?.Invoke(param);
+    }
+
+    private bool TryReuseTimer(
+        DispatcherPriority priority,
+        Dispatcher dispatcher)
+        => timer is not null
+            && cachedPriority == priority
+            && ReferenceEquals(cachedDispatcher, dispatcher);
 
     /// <summary>
     /// Debounce an event by resetting the event timeout every time the event is
@@ -44,31 +69,30 @@ public sealed class DebounceDispatcher
         DispatcherPriority priority = DispatcherPriority.ApplicationIdle,
         Dispatcher? dispatcher = null)
     {
-        // Kill pending timer and pending ticks
-        timer?.Stop();
-        timer = null;
-
         dispatcher ??= Dispatcher.CurrentDispatcher;
 
-        // Timer is recreated for each event and effectively
-        // resets the timeout. Action only fires after timeout has fully
-        // elapsed without other events firing in between
-        timer = new DispatcherTimer(
-            TimeSpan.FromMilliseconds(interval),
-            priority,
-            (_, _) =>
-            {
-                if (timer is null)
-                {
-                    return;
-                }
+        // Stop any pending tick; reuse the timer when priority + dispatcher match,
+        // otherwise rebuild (DispatcherTimer locks priority/dispatcher at construction).
+        timer?.Stop();
 
-                timer?.Stop();
-                timer = null;
-                action.Invoke(param);
-            },
-            dispatcher);
+        if (TryReuseTimer(priority, dispatcher))
+        {
+            timer!.Interval = TimeSpan.FromMilliseconds(interval);
+        }
+        else
+        {
+            timer = new DispatcherTimer(
+                TimeSpan.FromMilliseconds(interval),
+                priority,
+                OnTimerTick,
+                dispatcher);
+            cachedPriority = priority;
+            cachedDispatcher = dispatcher;
+        }
 
+        // Latest call wins — debounce semantics are "only the last event fires".
+        pendingAction = action;
+        pendingParam = param;
         timer.Start();
     }
 
@@ -91,37 +115,35 @@ public sealed class DebounceDispatcher
         DispatcherPriority priority = DispatcherPriority.ApplicationIdle,
         Dispatcher? dispatcher = null)
     {
-        // Kill pending timer and pending ticks
-        timer?.Stop();
-        timer = null;
-
         dispatcher ??= Dispatcher.CurrentDispatcher;
 
         var currentTime = DateTime.UtcNow;
 
-        // If timeout is not up yet - adjust timeout to fire
-        // with potentially new Action parameters
+        // If timeout is not up yet - adjust timeout to fire with the latest action+param
         if (currentTime.Subtract(TimerStarted).TotalMilliseconds < interval)
         {
             interval -= (int)currentTime.Subtract(TimerStarted).TotalMilliseconds;
         }
 
-        timer = new DispatcherTimer(
-            TimeSpan.FromMilliseconds(interval),
-            priority,
-            (_, _) =>
-            {
-                if (timer is null)
-                {
-                    return;
-                }
+        timer?.Stop();
 
-                timer?.Stop();
-                timer = null;
-                action.Invoke(param);
-            },
-            dispatcher);
+        if (TryReuseTimer(priority, dispatcher))
+        {
+            timer!.Interval = TimeSpan.FromMilliseconds(interval);
+        }
+        else
+        {
+            timer = new DispatcherTimer(
+                TimeSpan.FromMilliseconds(interval),
+                priority,
+                OnTimerTick,
+                dispatcher);
+            cachedPriority = priority;
+            cachedDispatcher = dispatcher;
+        }
 
+        pendingAction = action;
+        pendingParam = param;
         timer.Start();
         TimerStarted = currentTime;
     }

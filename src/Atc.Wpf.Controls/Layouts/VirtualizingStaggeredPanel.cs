@@ -43,6 +43,7 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
 
     private readonly Dictionary<int, double> itemHeightCache = [];
     private readonly List<double> columnHeights = [];
+    private readonly HashSet<int> visibleIndicesScratch = [];
 
     private double itemWidth;
     private int columnCount;
@@ -249,9 +250,13 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             generator,
             positions,
             availableSize);
-        CleanupUnusedContainers(positions
-            .Select(p => p.Index)
-            .ToHashSet());
+        visibleIndicesScratch.Clear();
+        foreach (var (index, _, _) in positions)
+        {
+            visibleIndicesScratch.Add(index);
+        }
+
+        CleanupUnusedContainers(visibleIndicesScratch);
 
         var extentSize = new Size(
             availableSize.Width,
@@ -312,7 +317,16 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
 
     private void UpdateTotalHeight()
     {
-        totalHeight = columnHeights.Count > 0 ? columnHeights.Max() : 0;
+        var max = 0d;
+        for (var i = 0; i < columnHeights.Count; i++)
+        {
+            if (columnHeights[i] > max)
+            {
+                max = columnHeights[i];
+            }
+        }
+
+        totalHeight = max;
         if (totalHeight > VerticalSpacing)
         {
             totalHeight -= VerticalSpacing;
