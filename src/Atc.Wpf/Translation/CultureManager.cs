@@ -11,6 +11,9 @@ namespace Atc.Wpf.Translation;
 /// </remarks>
 public static class CultureManager
 {
+    private static readonly Lock HandlerLock = new();
+    private static readonly List<WeakSubscription> HandlerSubscriptions = [];
+
     /// <summary>
     /// Current UICulture of the application.
     /// </summary>
@@ -22,7 +25,76 @@ public static class CultureManager
     /// </summary>
     private static bool synchronizeThreadCulture = true;
 
-    public static event EventHandler<UiCultureEventArgs>? UiCultureChanged;
+    /// <summary>
+    /// Raised when the UI culture changes. Subscribers are stored as weak references
+    /// so that long-lived static subscriptions do not root WPF controls — there is no
+    /// need to call <c>-=</c> in a control's <c>Unloaded</c> handler. Lambda subscribers
+    /// with closures must keep the delegate referenced themselves, since the closure
+    /// is the delegate's only strong root in the standard <c>+=</c> pattern.
+    /// </summary>
+    public static event EventHandler<UiCultureEventArgs>? UiCultureChanged
+    {
+        add
+        {
+            if (value is null)
+            {
+                return;
+            }
+
+            lock (HandlerLock)
+            {
+                HandlerSubscriptions.RemoveAll(static s => !s.IsAlive);
+                HandlerSubscriptions.Add(new WeakSubscription(value));
+            }
+        }
+
+        remove
+        {
+            if (value is null)
+            {
+                return;
+            }
+
+            lock (HandlerLock)
+            {
+                for (var i = HandlerSubscriptions.Count - 1; i >= 0; i--)
+                {
+                    if (HandlerSubscriptions[i].Matches(value))
+                    {
+                        HandlerSubscriptions.RemoveAt(i);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void RaiseUiCultureChanged(UiCultureEventArgs args)
+    {
+        WeakSubscription[] snapshot;
+        lock (HandlerLock)
+        {
+            var live = new List<WeakSubscription>(HandlerSubscriptions.Count);
+            for (var i = HandlerSubscriptions.Count - 1; i >= 0; i--)
+            {
+                if (HandlerSubscriptions[i].IsAlive)
+                {
+                    live.Add(HandlerSubscriptions[i]);
+                }
+                else
+                {
+                    HandlerSubscriptions.RemoveAt(i);
+                }
+            }
+
+            snapshot = [.. live];
+        }
+
+        foreach (var subscription in snapshot)
+        {
+            subscription.Invoke(sender: null, args);
+        }
+    }
 
     /// <summary>
     /// Gets or sets the UI culture.
@@ -54,8 +126,7 @@ public static class CultureManager
             UiCultureExtension.UpdateAllTargets();
             ResxExtension.UpdateAllTargets();
 
-            UiCultureChanged?.Invoke(
-                sender: null,
+            RaiseUiCultureChanged(
                 new UiCultureEventArgs(
                     oldUiCulture,
                     value));
