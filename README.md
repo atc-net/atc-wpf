@@ -164,6 +164,57 @@ Understanding the package hierarchy and when to use each:
 - Use **Base Controls** (`Atc.Wpf.Controls`) when you need custom layouts or are building composite controls
 - Use **Components** (`Atc.Wpf.Components`) for dialogs, viewers, and settings panels
 
+### Package dependency graph
+
+```mermaid
+graph TD
+    Atc[Atc<br/><sub>upstream NuGet</sub>]
+    XamlToolkit[Atc.XamlToolkit<br/><sub>MVVM + source generators</sub>]
+
+    AtcWpf[Atc.Wpf<br/><b>Core</b>]
+    Theming[Atc.Wpf.Theming]
+    FontIcons[Atc.Wpf.FontIcons]
+    Controls[Atc.Wpf.Controls]
+    Forms[Atc.Wpf.Forms]
+    Components[Atc.Wpf.Components]
+
+    Network[Atc.Wpf.Network]
+    UndoRedo[Atc.Wpf.UndoRedo]
+
+    Atc --> AtcWpf
+    XamlToolkit --> AtcWpf
+
+    AtcWpf --> Theming
+    AtcWpf --> FontIcons
+    AtcWpf --> Controls
+    Theming --> Controls
+    FontIcons --> Controls
+
+    Controls --> Forms
+    Theming --> Forms
+
+    Forms --> Components
+    FontIcons --> Components
+
+    Controls --> Network
+    Forms --> Network
+
+    Controls --> UndoRedo
+    Theming --> UndoRedo
+    FontIcons --> UndoRedo
+
+    classDef core fill:#1e88e5,stroke:#0d47a1,color:#fff
+    classDef tier fill:#43a047,stroke:#1b5e20,color:#fff
+    classDef side fill:#fb8c00,stroke:#e65100,color:#fff
+    classDef ext fill:#757575,stroke:#212121,color:#fff
+    class AtcWpf core
+    class Controls,Forms,Components tier
+    class Theming,FontIcons,Network,UndoRedo side
+    class Atc,XamlToolkit ext
+```
+
+The four-tier core (blue → green) is the spine; theming/font-icons/network/undo-redo (orange) plug into it. Upstream NuGet dependencies (gray) are shown for context.
+
 ## 📋 Control Catalog at a Glance
 
 A quick reference of all controls organized by category:

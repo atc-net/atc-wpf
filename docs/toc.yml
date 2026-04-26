@@ -1,5 +1,9 @@
 - name: MVVM
-  href: Mvvm/@Readme.md
+  items:
+  - name: Overview
+    href: Mvvm/@Readme.md
+  - name: Migration guide
+    href: Mvvm/Migration.md
 - name: Source generators
   items:
   - name: ViewModel
