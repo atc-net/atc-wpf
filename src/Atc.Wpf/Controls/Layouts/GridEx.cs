@@ -172,6 +172,8 @@ public sealed class GridEx : Grid
         }
     }
 
+    private static readonly GridLengthConverter SharedGridLengthConverter = new();
+
     /// <summary>
     /// Turns a string of lengths, such as "3*,Auto,2000" into a set of gridLength.
     /// </summary>
@@ -192,13 +194,10 @@ public sealed class GridEx : Grid
         // Split the string by comma.
         var sa = lengths.Split(',');
 
-        // Create a grid length converter.
-        var gridLengthConverter = new GridLengthConverter();
-
-        // Use the grid length converter to set each length.
+        // Use the cached grid length converter to set each length.
         gridLengths.AddRange(sa.Select(length =>
         {
-            var convertFromString = gridLengthConverter.ConvertFromString(length);
+            var convertFromString = SharedGridLengthConverter.ConvertFromString(length);
             if (convertFromString is GridLength gridLength)
             {
                 return gridLength;

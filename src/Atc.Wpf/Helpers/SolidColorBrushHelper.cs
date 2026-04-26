@@ -10,6 +10,7 @@ public static class SolidColorBrushHelper
 {
     private static readonly ConcurrentDictionary<string, SolidColorBrush> BaseBrushes = new(StringComparer.Ordinal);
     private static readonly ConcurrentDictionary<int, Dictionary<SolidColorBrush, string>> BrushNames = new();
+    private static readonly ConcurrentDictionary<int, Dictionary<string, SolidColorBrush>> BrushNamesReverse = new();
 
     public static void InitializeWithSupportedLanguages()
     {
@@ -91,17 +92,14 @@ public static class SolidColorBrushHelper
 
         EnsureBrushNamesForCulture(culture);
 
-        if (!BrushNames.TryGetValue(GetBrushKeyFromCulture(culture), out var brushDict))
+        if (!BrushNamesReverse.TryGetValue(GetBrushKeyFromCulture(culture), out var nameToBrush))
         {
             return default;
         }
 
-        return brushDict
-            .FirstOrDefault(x => string.Equals(
-                x.Value,
-                value,
-                StringComparison.OrdinalIgnoreCase))
-            .Key;
+        return nameToBrush.TryGetValue(value, out var brush)
+            ? brush
+            : null;
     }
 
     public static SolidColorBrush? GetBrushFromName(string brushName)
@@ -337,6 +335,7 @@ public static class SolidColorBrushHelper
         }
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - building two parallel lookups in one pass keeps the resource enumeration cost down.")]
     private static void EnsureBrushNamesForCulture(CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(culture);
@@ -348,6 +347,7 @@ public static class SolidColorBrushHelper
         }
 
         var dictionary = new Dictionary<SolidColorBrush, string>();
+        var reverse = new Dictionary<string, SolidColorBrush>(StringComparer.OrdinalIgnoreCase);
 
         var rm = new ResourceManager(typeof(ColorNames));
         var resourceSet = rm.GetResourceSet(
@@ -383,9 +383,13 @@ public static class SolidColorBrushHelper
                     var brush = new SolidColorBrush(color);
                     brush.Freeze();
 
+                    var localizedName = entry.Value!.ToString()!;
                     dictionary.TryAdd(
                         brush,
-                        entry.Value!.ToString()!);
+                        localizedName);
+                    reverse.TryAdd(
+                        localizedName,
+                        brush);
                 }
             }
             catch (FormatException)
@@ -397,6 +401,9 @@ public static class SolidColorBrushHelper
         BrushNames.TryAdd(
             brushKey,
             dictionary);
+        BrushNamesReverse.TryAdd(
+            brushKey,
+            reverse);
     }
 
     private static int GetBrushKeyFromCulture(CultureInfo culture)

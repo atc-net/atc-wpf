@@ -9,15 +9,25 @@ public static class BitmapImageFactory
     {
         ArgumentNullException.ThrowIfNull(uriLocation);
 
-        var bitmapImage = new BitmapImage(
-            new Uri(
-                uriLocation,
-                uriKind));
+        var uri = new Uri(uriLocation, uriKind);
 
-        return uriKind is UriKind.Absolute
-            ? bitmapImage
-            : bitmapImage
-                .EnsureRelativeUriLocation()
-                .ToBitmapImage();
+        if (uriKind is UriKind.Absolute)
+        {
+            // Load synchronously and freeze so the bitmap is thread-safe
+            // and avoids per-access copy-on-write costs.
+            var absoluteImage = new BitmapImage();
+            absoluteImage.BeginInit();
+            absoluteImage.UriSource = uri;
+            absoluteImage.CacheOption = BitmapCacheOption.OnLoad;
+            absoluteImage.EndInit();
+            absoluteImage.Freeze();
+            return absoluteImage;
+        }
+
+        // Relative path: ToBitmapImage() re-encodes through a MemoryStream
+        // and freezes the result, so no extra Freeze call is needed here.
+        return new BitmapImage(uri)
+            .EnsureRelativeUriLocation()
+            .ToBitmapImage();
     }
 }
