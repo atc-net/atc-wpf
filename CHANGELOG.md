@@ -122,6 +122,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (POCO defaults + `ToString`), `DualListSelectorItemsReorderedEventArgsTests`,
   `DualListSelectorItemsTransferredEventArgsTests` (both directions + empty-items
   case), `TerminalReceivedDataEventArgsTests` (line-array exposure + `ToString`).
+- **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
+  tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
+  promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot
+  isolation between reads and later writes), `FontPickerStorageTests` (default
+  `Current` is `InMemoryFontPickerStorage`, null-guard on setter, custom
+  storage replaces the singleton), `LabelControlDataTests` (POCO defaults +
+  round-trip + `ToString`), `LabelInputFormPanelSettingsTests` (defaults +
+  round-trip + `ToString`).
 - **`Atc.Wpf.Controls.Tests` extended with value-converter and event-arg
   coverage** (387 → 438 tests, +51). New test files:
   `IntegerToDoubleValueConverterTests` (pinning the per-arm boxing semantics —
