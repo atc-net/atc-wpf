@@ -122,6 +122,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (POCO defaults + `ToString`), `DualListSelectorItemsReorderedEventArgsTests`,
   `DualListSelectorItemsTransferredEventArgsTests` (both directions + empty-items
   case), `TerminalReceivedDataEventArgsTests` (line-array exposure + `ToString`).
+- **`Atc.Wpf.Tests` extended with core value-converter coverage** (818 → 869
+  tests, +51). New test files: `ThicknessBindingValueConverterTests` (per-side
+  zero-out + `IgnoreThicknessSide` property fallback + invalid-input default),
+  `ThicknessFilterValueConverterTests` (per-side keep-only + `Filter` property
+  fallback + `Binding.DoNothing`), `MathValueConverterTests` (single-binding
+  `value`/`parameter` operands across +/-/×/÷, multi-binding first-two-values
+  operands, divide-by-non-positive guard, null-operand fallback, non-numeric
+  fallback, `ConvertBack` semantics for both the single and multi shapes),
+  `RectangleCircularValueConverterTests` (half-of-min-dimension + zero-dimension
+  + wrong-length + non-double + `NotSupportedException` on `ConvertBack`),
+  `ColorHexToColorValueConverterTests` (Color → `AARRGGBB`, hex → Color
+  including without `#` prefix and 7-char form, null + invalid-length →
+  `Binding.DoNothing`, round-trip).
 - **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
   tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
   promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot
