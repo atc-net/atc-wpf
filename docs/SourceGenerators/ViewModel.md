@@ -417,7 +417,12 @@ public partial class PersonViewModel : ViewModelBase
         InvertCanExecute = true)]
     public void ShowData()
     {
-        // TODO: Implement ShowData - it could be a dialog box
+        var dialogBox = new InfoDialogBox(
+            Application.Current.MainWindow!,
+            new DialogBoxSettings(DialogBoxType.Ok),
+            $"{FullName} (age {Age}) — {Email}");
+
+        dialogBox.Show();
     }
 
     [RelayCommand(CanExecute = nameof(CanSaveHandler))]
@@ -432,10 +437,9 @@ public partial class PersonViewModel : ViewModelBase
     }
 
     public bool CanSaveHandler()
-    {
-        // TODO: Implement validation
-        return true;
-    }
+        => !string.IsNullOrWhiteSpace(FirstName)
+            && !string.IsNullOrWhiteSpace(LastName)
+            && Age > 0;
 }
 ```
 
