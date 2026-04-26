@@ -187,6 +187,24 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy All to Clipboard.
+        /// </summary>
+        public static string CopyAllToClipboard {
+            get {
+                return ResourceManager.GetString("CopyAllToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Selected to Clipboard.
+        /// </summary>
+        public static string CopySelectedToClipboard {
+            get {
+                return ResourceManager.GetString("CopySelectedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy to Clipboard.
         /// </summary>
         public static string CopyToClipboard {

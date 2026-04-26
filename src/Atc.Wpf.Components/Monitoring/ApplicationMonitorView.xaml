@@ -84,7 +84,16 @@
                 x:Name="LvEntries"
                 ItemsSource="{Binding Path=Entries}"
                 SelectedItem="{Binding Path=SelectedEntry, Mode=TwoWay}"
-                SelectionMode="Single">
+                SelectionChanged="OnEntriesSelectionChanged"
+                SelectionMode="Extended">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+                        <MenuItem Command="{Binding Path=PlacementTarget.DataContext.CopySelectedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CopySelectedToClipboard}" />
+                        <MenuItem Command="{Binding Path=PlacementTarget.DataContext.CopyAllCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CopyAllToClipboard}" />
+                        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.View>
                     <GridView>
 

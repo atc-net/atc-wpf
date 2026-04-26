@@ -159,6 +159,12 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Farbwähler</value>
   </data>
+  <data name="CopyAllToClipboard" xml:space="preserve">
+    <value>Alles in die Zwischenablage kopieren</value>
+  </data>
+  <data name="CopySelectedToClipboard" xml:space="preserve">
+    <value>Auswahl in die Zwischenablage kopieren</value>
+  </data>
   <data name="CopyToClipboard" xml:space="preserve">
     <value>In die Zwischenablage kopieren</value>
   </data>
