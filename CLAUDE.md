@@ -116,9 +116,10 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.Network.Tests` | Network ViewModels and value converters | 18 |
 | `Atc.Wpf.Theming.Tests` | Theme infrastructure (compliance only) | 12 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 13 |
+| `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 2 |
 
-> Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 817 tests across 89 files).
-> No test project exists yet for `Atc.Wpf.FontIcons` or `Atc.Wpf.SourceGenerators` (the latter directory is empty).
+> Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 818 tests across 89 files).
+> No test project exists yet for `Atc.Wpf.SourceGenerators` (the directory is empty).
 
 ### Running Tests
 
