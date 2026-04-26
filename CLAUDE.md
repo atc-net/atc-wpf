@@ -119,7 +119,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 2 |
 
 > Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 1012 tests across 104 files).
-> No test project exists yet for `Atc.Wpf.SourceGenerators` (the directory is empty).
+> Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
 
 ### Running Tests
 
