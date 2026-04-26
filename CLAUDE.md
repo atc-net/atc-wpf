@@ -111,7 +111,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 |--------------|------------|-----------:|
 | `Atc.Wpf.Tests` | Core library (Helpers, ValueConverters, Serialization) | 89 |
 | `Atc.Wpf.Controls.Tests` | Layouts, zoom utilities, value converters, event args, control unit tests | 24 |
-| `Atc.Wpf.Forms.Tests` | Form controls (Extractors, Factories, Helpers) | 25 |
+| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs | 19 |
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, Terminal events, Zoom browser, value converters | 15 |
 | `Atc.Wpf.Network.Tests` | Network ViewModels and value converters | 18 |
 | `Atc.Wpf.Theming.Tests` | Compliance + value-converter functional tests | 7 |
