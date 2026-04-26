@@ -122,5 +122,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (POCO defaults + `ToString`), `DualListSelectorItemsReorderedEventArgsTests`,
   `DualListSelectorItemsTransferredEventArgsTests` (both directions + empty-items
   case), `TerminalReceivedDataEventArgsTests` (line-array exposure + `ToString`).
+- **`Atc.Wpf.Controls.Tests` extended with value-converter and event-arg
+  coverage** (387 → 438 tests, +51). New test files:
+  `IntegerToDoubleValueConverterTests` (pinning the per-arm boxing semantics —
+  `int i => i` keeps `int` because there's no common numeric type across
+  `int` / `decimal` / `double` arms; `ConvertBack`'s `_ => 0` is implicitly
+  promoted to `0d` because the sibling arm is `double`),
+  `NetworkProtocolToStringValueConverterTests` (all 8 protocols + 7 schemes
+  round-trip, whitespace trimming, blank/null fallbacks, `Binding.DoNothing`
+  for unsupported input), `RenderFlagIndicatorTypeToVisibilityValueConverterTests`
+  (Visible/Collapsed mapping + `ArgumentNullException` + wrong-type/wrong-parameter
+  guards + `NotSupportedException` on `ConvertBack`),
+  `StepperStepChangedEventArgsTests`, `StepperStepChangingEventArgsTests`
+  (`Cancel` defaults to false + setter), `SegmentedSelectionChangedEventArgsTests`
+  (null items allowed + index pair).
 
 [Unreleased]: https://github.com/atc-net/atc-wpf/compare/HEAD
