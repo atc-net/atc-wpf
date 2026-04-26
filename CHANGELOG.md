@@ -58,8 +58,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- **Project READMEs** added for the previously-bare projects: `Atc.Wpf`,
+  `Atc.Wpf.Controls`, `Atc.Wpf.Components`, `Atc.Wpf.Theming`, `Atc.Wpf.FontIcons`.
+  Each gives a short orientation, a "what lives here" map, an install snippet,
+  and links into `docs/`.
+- **Top-level doc indexes** added: `docs/Forms/@Readme.md` and
+  `docs/Components/@Readme.md` — conceptual overviews that cover the deferred
+  validation pattern, dispose / Loaded / Unloaded conventions, and pointers to
+  per-control readmes.
+- **Sample app README** added at `sample/Atc.Wpf.Sample/Readme.md` — quick-start,
+  TreeView category map, search syntax, theme-switching tips, and a how-to for
+  contributing a new sample.
+- **`docs/SourceGenerators/ViewModel.md` TODOs** resolved — `ShowData` opens an
+  `InfoDialogBox` with formatted person info; `CanSaveHandler` validates
+  first/last/age non-empty.
 - **`CLAUDE.md`** test counts and Microsoft Testing Platform invocation refreshed
   (`dotnet run --project ...` instead of `dotnet test <dir>`); the `Components`
-  test row was added; gaps for `FontIcons` and `SourceGenerators` are noted.
+  and `FontIcons` test rows were added.
+
+### Tests
+
+- **`Atc.Wpf.FontIcons.Tests`** project added (referenced from `Atc.Wpf.slnx`).
+  Adds an `IAssemblyMarkerAtcWpfFontIcons` to the source assembly and a small
+  enum smoke-test suite that asserts every icon set defines `None = 0` and
+  exposes more than just `None` — catches generator regressions across all
+  ten icon sets (FontAwesome 5/7 solid/regular/brand, Bootstrap, Material,
+  Weather, IcoFont). 21 tests pass.
 
 [Unreleased]: https://github.com/atc-net/atc-wpf/compare/HEAD
