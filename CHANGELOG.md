@@ -157,7 +157,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   unsupported input), `JsonValueDisplayConverterTests` (returns `DisplayValue`
   for string + numeric value nodes, passes non-`JsonValueNode` input through
   unchanged). With this batch, every previously-untested **public** value
-  converter in `Atc.Wpf` now has functional tests.
+  converter in `Atc.Wpf` now has functional tests. Extensions / Collections
+  batch (+44 tests, 927 → 971): `CornerRadiusExtensionsTests` (`IsValid` matrix
+  across negative / NaN / ±∞ flags, `IsZero`, `IsUniform`),
+  `ThicknessExtensionsTests` (same shape + `CollapseThickness` width/height
+  sum), `RectExtensionsTests` (`Deflate` shrink + clamp-to-zero when thickness
+  exceeds size, `Inflate` expansion), `ColorExtensionsTests` (`Lerp` at 0 / 0.5
+  / 1, HSB `GetHue` for pure red/green/blue, `GetBrightness` for black / white),
+  `ObservableDictionaryTests` (Add / `ContainsKey` / Remove / `TryGetValue` /
+  indexer / `Keys` / `Values` / duplicate-key throw, plus the `CopyTo`
+  implementation added earlier this session — null array, negative `arrayIndex`,
+  insufficient destination size guards).
 - **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
   tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
   promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot
