@@ -116,5 +116,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ConvertBack` semantics (`DependencyProperty.UnsetValue` for one-ways,
   `NotSupportedException` for multi-binding back-conversion), and
   `Visibility` mapping for `RenderColorIndicatorType`.
+- **`Atc.Wpf.Components.Tests` extended with pure-logic coverage** (164 → 177
+  tests). New test files: `FlyoutFormResultFactoryTests` (Success / Cancelled /
+  ValidationFailed semantics on the non-generic factory), `DualListSelectorItemTests`
+  (POCO defaults + `ToString`), `DualListSelectorItemsReorderedEventArgsTests`,
+  `DualListSelectorItemsTransferredEventArgsTests` (both directions + empty-items
+  case), `TerminalReceivedDataEventArgsTests` (line-array exposure + `ToString`).
 
 [Unreleased]: https://github.com/atc-net/atc-wpf/compare/HEAD
