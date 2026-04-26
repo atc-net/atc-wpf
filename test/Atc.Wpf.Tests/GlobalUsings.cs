@@ -1,4 +1,5 @@
 global using System.Collections.ObjectModel;
+global using System.Collections.Specialized;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Reflection;
@@ -15,6 +16,7 @@ global using System.Windows.Media.Imaging;
 global using Atc.Serialization;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Controls.Layouts;
+global using Atc.Wpf.Extensions;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Hotkeys;
 global using Atc.Wpf.Navigation;

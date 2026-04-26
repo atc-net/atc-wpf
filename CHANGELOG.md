@@ -177,7 +177,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   direct `OnPropertyChanged` invocation), `ObservableDictionaryExtensionsTests`
   (all three `ToDictionaryOfStrings` overloads — string keys passed through,
   int keys via invariant `ToString`, Guid keys via default Guid format —
-  plus null-input guards on each).
+  plus null-input guards on each). Follow-up batch (+23 tests, 989 → 1012):
+  `ObservableCollectionExTests` (`AddRange` raises a single `Add` event for the
+  whole batch, `Refresh` raises a single `Reset`, toggling
+  `SuppressOnChangedNotification` to the same value is a no-op, toggling
+  off after suppressed mutations raises a `Reset`, individual `Add` outside
+  `AddRange` still raises one event per call, null-input throws),
+  `BrushExtensionsTests` (`IsOpaqueSolidColorBrush` true/false matrix on
+  `SolidColorBrush` alpha + non-solid types, `IsEqualTo` symmetric / different-
+  type / matching solid / different-color / different-opacity / matching linear-
+  gradient / different-stop-count linear / different-radius radial / null-
+  guard), `DrawingGroupExtensionsTests` (`ApplyTransform` assigns directly on
+  no-existing-transform, appends to existing `TransformGroup`, wraps existing
+  non-group transform into a new `TransformGroup`, throws on null drawing).
 - **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
   tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
   promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot
