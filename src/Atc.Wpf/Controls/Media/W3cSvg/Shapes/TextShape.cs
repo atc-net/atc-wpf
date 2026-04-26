@@ -71,8 +71,9 @@ internal sealed class TextShape : Shape
                 tSpanText,
                 this);
         }
-        catch
+        catch (Exception ex)
         {
+            Trace.TraceError(ex.ToString());
             return null;
         }
     }

@@ -35,6 +35,8 @@ internal sealed class VisualPaginator : DocumentPaginator
 
     public override Size PageSize { get; set; }
 
+    // This paginator wraps a Visual rather than a document source; the WPF print
+    // pipeline does not require a non-null Source for visual-only pagination.
     public override IDocumentPaginatorSource Source => null!;
 
     public override DocumentPage GetPage(int pageNumber)
