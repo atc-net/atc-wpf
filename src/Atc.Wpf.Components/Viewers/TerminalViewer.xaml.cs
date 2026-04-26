@@ -76,22 +76,26 @@ public sealed partial class TerminalViewer : IDisposable
 
     public void Dispose()
     {
+        Messenger.Default.UnRegister<TerminalReceivedDataEventArgs>(this, TerminalReceivedDataHandle);
+        Messenger.Default.UnRegister<TerminalClearEventArgs>(this, TerminalClearEventArgsHandle);
+
+        receivedDataChannel.Writer.TryComplete();
         cts.Cancel();
 
-        try
+        // Dispose the CTS only after the background loop has actually exited,
+        // to avoid blocking the UI thread while the loop is mid-Dispatcher.InvokeAsync.
+        if (queueProcessingTask is null)
         {
-            queueProcessingTask?.Wait(TimeSpan.FromSeconds(1));
-        }
-        catch (AggregateException)
-        {
-            // Expected when task is cancelled
-        }
-        catch (OperationCanceledException)
-        {
-            // Expected when task is cancelled
+            cts.Dispose();
+            return;
         }
 
-        cts.Dispose();
+        _ = queueProcessingTask.ContinueWith(
+            static (_, state) => ((CancellationTokenSource)state!).Dispose(),
+            cts,
+            CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously,
+            TaskScheduler.Default);
     }
 
     private bool CanExecuteHasItems()
@@ -124,10 +128,17 @@ public sealed partial class TerminalViewer : IDisposable
             // Skip, just clear receivedDataChannel
         }
 
-        ListViewTerminal.Dispatcher.Invoke(
-            () => ListViewTerminal.Items.Clear(),
-            DispatcherPriority.Render,
-            CancellationToken.None);
+        var dispatcher = ListViewTerminal.Dispatcher;
+        if (dispatcher.CheckAccess())
+        {
+            ListViewTerminal.Items.Clear();
+        }
+        else
+        {
+            _ = dispatcher.InvokeAsync(
+                () => ListViewTerminal.Items.Clear(),
+                DispatcherPriority.Render);
+        }
     }
 
     private async Task ProcessQueueContinuously(CancellationToken token)

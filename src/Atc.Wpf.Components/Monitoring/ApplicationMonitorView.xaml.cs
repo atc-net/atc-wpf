@@ -28,8 +28,19 @@ public partial class ApplicationMonitorView
         defaultContextMenu = LvEntries.ContextMenu;
         ApplyContextMenuState();
 
-        Messenger.Default.Register<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
+        Loaded += OnApplicationMonitorViewLoaded;
+        Unloaded += OnApplicationMonitorViewUnloaded;
     }
+
+    private void OnApplicationMonitorViewLoaded(
+        object sender,
+        RoutedEventArgs e)
+        => Messenger.Default.Register<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
+
+    private void OnApplicationMonitorViewUnloaded(
+        object sender,
+        RoutedEventArgs e)
+        => Messenger.Default.UnRegister<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
 
     private static void OnEnableContextMenuChanged(
         DependencyObject d,

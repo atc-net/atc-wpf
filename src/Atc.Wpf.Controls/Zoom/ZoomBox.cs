@@ -315,8 +315,19 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     {
         Focusable = true;
         IsManipulationEnabled = true;
-        Messenger.Default.Register<ZoomCommandMessage>(this, OnZoomCommandMessageHandler);
+        Loaded += OnZoomBoxLoaded;
+        Unloaded += OnZoomBoxUnloaded;
     }
+
+    private void OnZoomBoxLoaded(
+        object sender,
+        RoutedEventArgs e)
+        => Messenger.Default.Register<ZoomCommandMessage>(this, OnZoomCommandMessageHandler);
+
+    private void OnZoomBoxUnloaded(
+        object sender,
+        RoutedEventArgs e)
+        => Messenger.Default.UnRegister<ZoomCommandMessage>(this, OnZoomCommandMessageHandler);
 
     public double FitZoomValue => ViewportHelpers.FitZoom(
         ActualWidth,
