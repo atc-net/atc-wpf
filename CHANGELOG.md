@@ -134,7 +134,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   + wrong-length + non-double + `NotSupportedException` on `ConvertBack`),
   `ColorHexToColorValueConverterTests` (Color → `AARRGGBB`, hex → Color
   including without `#` prefix and 7-char form, null + invalid-length →
-  `Binding.DoNothing`, round-trip).
+  `Binding.DoNothing`, round-trip). Follow-up batch (+38 tests, 869 → 907):
+  `ColorToSolidColorValueConverterTests` (alpha-to-255 normalisation + DeepPink
+  null fallback + wrong-type guard + `NotSupportedException` on `ConvertBack`),
+  `BackgroundToForegroundValueConverterTests` (ideal text colour against dark
+  vs light background, frozen brush invariant, multi-binding explicit-title
+  passthrough + multi-binding `ConvertBack` returns one `UnsetValue` per
+  `targetType`), `WindowResizeModeMinMaxButtonVisibilityMultiValueConverterTests`
+  (full Min/Max/Close × NoResize/CanMinimize/CanResize/CanResizeWithGrip
+  matrix, `useNoneWindowStyle` and `showButton` precedence, null-values and
+  wrong-parameter safe fallbacks), `MethodToValueConverterTests` (parameterless
+  method invocation via reflection cache, instance-state preservation across
+  calls, missing-method / wrong-parameter / null-value safe fallbacks,
+  `NotSupportedException` on `ConvertBack`),
+  `ObservableDictionaryToDictionaryOfStringsValueConverterTests` (string-key,
+  int-key supported variants + null → empty + unsupported-type throws +
+  `NotSupportedException` on `ConvertBack`).
 - **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
   tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
   promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot
