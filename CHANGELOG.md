@@ -167,7 +167,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ObservableDictionaryTests` (Add / `ContainsKey` / Remove / `TryGetValue` /
   indexer / `Keys` / `Values` / duplicate-key throw, plus the `CopyTo`
   implementation added earlier this session — null array, negative `arrayIndex`,
-  insufficient destination size guards).
+  insufficient destination size guards). Follow-up batch (+18 tests, 971 →
+  989): `GradientStopCollectionExtensionsTests` (`GetColorAtOffset` clamps
+  below 0 and above 1, returns first/last stop at the boundaries, interpolates
+  to the truncated mid-grey at 0.5 — note that `(255 * 0.5) + 0 = 127.5` casts
+  to byte 127, not 128 — interpolates within a single segment of a three-stop
+  gradient, and sorts unsorted stops internally), `ObservableKeyValuePairTests`
+  (`INotifyPropertyChanged` for both `Key` and `Value`, multiple-event capture,
+  direct `OnPropertyChanged` invocation), `ObservableDictionaryExtensionsTests`
+  (all three `ToDictionaryOfStrings` overloads — string keys passed through,
+  int keys via invariant `ToString`, Guid keys via default Guid format —
+  plus null-input guards on each).
 - **`Atc.Wpf.Forms.Tests` extended with pure-logic coverage** (148 → 166
   tests, +18). New test files: `InMemoryFontPickerStorageTests` (LRU
   promote-on-rerecord, blank-input ignore, `MaxRecentItems` cap, snapshot

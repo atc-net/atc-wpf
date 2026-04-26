@@ -109,7 +109,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
-| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree) | 98 |
+| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree) | 101 |
 | `Atc.Wpf.Controls.Tests` | Layouts, zoom utilities, value converters, event args, control unit tests | 24 |
 | `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs | 19 |
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, Terminal events, Zoom browser, value converters | 15 |
@@ -118,7 +118,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 13 |
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 2 |
 
-> Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 971 tests across 98 files).
+> Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 989 tests across 101 files).
 > No test project exists yet for `Atc.Wpf.SourceGenerators` (the directory is empty).
 
 ### Running Tests
