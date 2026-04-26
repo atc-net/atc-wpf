@@ -83,6 +83,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   layout, routed events).
 - **`ThicknessBox_Readme.md`** added — short reference for the four-up
   `Thickness` editor.
+- **`CONTRIBUTING.md`** added at the repo root — covers build / test / PR
+  checklist, project structure, and links to the ATC umbrella guidelines.
+- **`CODE_OF_CONDUCT.md`** added — adopts Contributor Covenant 2.1 by reference.
+- **`SECURITY.md`** added — documents private vulnerability reporting via the
+  GitHub Security tab and the supported-version policy.
 - **`CLAUDE.md`** test counts and Microsoft Testing Platform invocation refreshed
   (`dotnet run --project ...` instead of `dotnet test <dir>`); the `Components`
   and `FontIcons` test rows were added.
