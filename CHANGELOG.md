@@ -55,6 +55,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   interactions.
 - **`LabelTextInfo.EnableCopyToClipboard`** caches the copy `ContextMenu` and
   swaps it in/out, instead of allocating a fresh menu + bindings on every flip.
+- **`ClipBorder`** caches the combined "border ring" geometry across renders.
+  The two `StreamGeometry`s were already cached in `ArrangeOverride`, but the
+  `Geometry.Combine(...)` call in `OnRender` (3 code paths) was rebuilding the
+  ring on every render. The new `borderRingGeometryCache` field is invalidated
+  alongside the inputs and rebuilt lazily; brush-only changes (which trigger
+  `OnRender` but not `ArrangeOverride`) now reuse the cached ring.
 
 ### Documentation
 
@@ -72,6 +78,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`docs/SourceGenerators/ViewModel.md` TODOs** resolved — `ShowData` opens an
   `InfoDialogBox` with formatted person info; `CanSaveHandler` validates
   first/last/age non-empty.
+- **`NumericBox_Readme.md`** added — full reference for the base numeric input
+  class (value/range/interval, formatting/culture, input behaviour, spin-button
+  layout, routed events).
+- **`ThicknessBox_Readme.md`** added — short reference for the four-up
+  `Thickness` editor.
 - **`CLAUDE.md`** test counts and Microsoft Testing Platform invocation refreshed
   (`dotnet run --project ...` instead of `dotnet test <dir>`); the `Components`
   and `FontIcons` test rows were added.
