@@ -1,0 +1,9 @@
+- name: Home
+  href: index.md
+- name: Documentation
+  href: docs/
+  homepage: docs/Mvvm/@Readme.md
+- name: API Reference
+  href: docs/api/
+- name: GitHub
+  href: https://github.com/atc-net/atc-wpf

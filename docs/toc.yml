@@ -1,0 +1,28 @@
+- name: MVVM
+  href: Mvvm/@Readme.md
+- name: Source generators
+  items:
+  - name: ViewModel
+    href: SourceGenerators/ViewModel.md
+  - name: DependencyProperty
+    href: SourceGenerators/DependencyProperty.md
+  - name: AttachedProperty
+    href: SourceGenerators/AttachedProperty.md
+- name: Layouts
+  href: Layouts/@Readme.md
+- name: Theming
+  href: Theming/@Readme.md
+- name: Font icons
+  href: FontIcons/@Readme.md
+- name: Forms
+  href: Forms/@Readme.md
+- name: Components
+  href: Components/@Readme.md
+- name: Data display
+  href: DataDisplay/@Readme.md
+- name: Hotkeys
+  href: Hotkeys/@Readme.md
+- name: Navigation
+  href: Navigation/@Readme.md
+- name: Sample app
+  href: sample-app.md

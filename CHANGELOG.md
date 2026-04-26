@@ -91,9 +91,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`CLAUDE.md`** test counts and Microsoft Testing Platform invocation refreshed
   (`dotnet run --project ...` instead of `dotnet test <dir>`); the `Components`
   and `FontIcons` test rows were added.
+- **DocFX docs site scaffold** added — `docfx.json` at the repo root pulls API
+  metadata from all 8 source projects, drops the generated reference under
+  `docs/api/`, and builds the existing `docs/` markdown plus a new `index.md`
+  landing page with a curated section index. `toc.yml` (root) wires Home /
+  Documentation / API Reference / GitHub; `docs/toc.yml` orders the left nav
+  by category. `_site/` and `docs/api/` are gitignored. Local preview:
+  `dotnet tool install -g docfx && docfx docfx.json --serve`.
+
+### Removed
+
+- **Empty `src/Atc.Wpf.SourceGenerators/` and `test/Atc.Wpf.SourceGenerators.Tests/`
+  directories** — both contained zero files, were not referenced from
+  `Atc.Wpf.slnx`, and would have implied a generator project that doesn't exist
+  here (the actual generators ship via `Atc.XamlToolkit` / `Atc.XamlToolkit.Wpf`
+  NuGet packages). `CLAUDE.md` caveat updated accordingly.
 
 ### Tests
 
+- **`Atc.Wpf.UiTests`** project added (referenced from `Atc.Wpf.slnx`) — pilot
+  visual / UI regression harness on **FlaUI 5.0.0** (`FlaUI.Core` + `FlaUI.UIA3`).
+  `SampleAppPath.Resolve()` walks up to the repo root to find the sample exe.
+  `SampleAppSmokeTests.Sample_app_launches_and_shows_main_window` launches the
+  app, asserts the main window appears with a non-empty title, captures a
+  screenshot via `mainWindow.CaptureToFile(...)` to `bin/<Config>/net10.0-windows/Snapshots/`,
+  then closes the process. The test is `[Trait("Category","UI")]` + skipped by
+  default so it stays opt-in for headless CI; running locally just removes the
+  `Skip` argument. Pattern + future-expansion notes documented in
+  `test/Atc.Wpf.UiTests/Readme.md`.
 - **`Atc.Wpf.FontIcons.Tests`** project added (referenced from `Atc.Wpf.slnx`).
   Adds an `IAssemblyMarkerAtcWpfFontIcons` to the source assembly and a small
   enum smoke-test suite that asserts every icon set defines `None = 0` and
