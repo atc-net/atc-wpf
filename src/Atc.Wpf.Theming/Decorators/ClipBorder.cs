@@ -10,6 +10,12 @@ public sealed class ClipBorder : Decorator
     private StreamGeometry? backgroundGeometryCache;
     private StreamGeometry? borderGeometryCache;
 
+    // The "ring" geometry is borderGeometry XOR backgroundGeometry — i.e. the
+    // visible border outline. It depends only on the two geometries above (which
+    // are recomputed in ArrangeOverride when size/border/padding/corner-radius
+    // changes), so it's safe to cache here and invalidate alongside them.
+    private Geometry? borderRingGeometryCache;
+
     public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
         nameof(BorderThickness),
         typeof(Thickness),
@@ -144,6 +150,10 @@ public sealed class ClipBorder : Decorator
         var padding = Padding;
         var childRect = innerRect.Deflate(padding);
 
+        // Geometries are about to be regenerated; the cached ring depends on
+        // them and must be invalidated so OnRender rebuilds it lazily.
+        borderRingGeometryCache = null;
+
         if (!boundRect.Width.IsZero() && !boundRect.Height.IsZero())
         {
             var outerBorderInfo = new BorderInfo(corners, borders, new Thickness(0), isOuterBorder: true);
@@ -231,30 +241,22 @@ public sealed class ClipBorder : Decorator
             }
             else if (borderBrush.IsOpaqueSolidColorBrush())
             {
-                if (borderGeometry is null ||
-                    backgroundGeometry is null)
+                var borderOutlineGeometry = GetOrBuildBorderRingGeometry(borderGeometry, backgroundGeometry);
+                if (borderOutlineGeometry is null)
                 {
                     return;
                 }
-
-                var borderOutlinePath = borderGeometry.GetOutlinedPathGeometry();
-                var backgroundOutlinePath = backgroundGeometry.GetOutlinedPathGeometry();
-                var borderOutlineGeometry = Geometry.Combine(borderOutlinePath, backgroundOutlinePath, GeometryCombineMode.Exclude, transform: null);
 
                 drawingContext.DrawGeometry(bgBrush, pen: null, borderGeometry);
                 drawingContext.DrawGeometry(borderBrush, pen: null, borderOutlineGeometry);
             }
             else
             {
-                if (borderGeometry is null ||
-                    backgroundGeometry is null)
+                var borderOutlineGeometry = GetOrBuildBorderRingGeometry(borderGeometry, backgroundGeometry);
+                if (borderOutlineGeometry is null)
                 {
                     return;
                 }
-
-                var borderOutlinePath = borderGeometry.GetOutlinedPathGeometry();
-                var backgroundOutlinePath = backgroundGeometry.GetOutlinedPathGeometry();
-                var borderOutlineGeometry = Geometry.Combine(borderOutlinePath, backgroundOutlinePath, GeometryCombineMode.Exclude, transform: null);
 
                 drawingContext.DrawGeometry(borderBrush, pen: null, borderOutlineGeometry);
                 drawingContext.DrawGeometry(bgBrush, pen: null, backgroundGeometry);
@@ -269,10 +271,7 @@ public sealed class ClipBorder : Decorator
             if (borderGeometry is not null &&
                 backgroundGeometry is not null)
             {
-                var borderOutlinePath = borderGeometry.GetOutlinedPathGeometry();
-                var backgroundOutlinePath = backgroundGeometry.GetOutlinedPathGeometry();
-                var borderOutlineGeometry = Geometry.Combine(borderOutlinePath, backgroundOutlinePath, GeometryCombineMode.Exclude, transform: null);
-
+                var borderOutlineGeometry = GetOrBuildBorderRingGeometry(borderGeometry, backgroundGeometry);
                 drawingContext.DrawGeometry(borderBrush, pen: null, borderOutlineGeometry);
             }
             else
@@ -285,6 +284,33 @@ public sealed class ClipBorder : Decorator
         {
             drawingContext.DrawGeometry(bgBrush, pen: null, backgroundGeometry);
         }
+    }
+
+    private Geometry? GetOrBuildBorderRingGeometry(
+        StreamGeometry? borderGeometry,
+        StreamGeometry? backgroundGeometry)
+    {
+        if (borderGeometry is null || backgroundGeometry is null)
+        {
+            return null;
+        }
+
+        if (borderRingGeometryCache is not null)
+        {
+            return borderRingGeometryCache;
+        }
+
+        var borderOutlinePath = borderGeometry.GetOutlinedPathGeometry();
+        var backgroundOutlinePath = backgroundGeometry.GetOutlinedPathGeometry();
+        var ring = Geometry.Combine(
+            borderOutlinePath,
+            backgroundOutlinePath,
+            GeometryCombineMode.Exclude,
+            transform: null);
+
+        ring.Freeze();
+        borderRingGeometryCache = ring;
+        return ring;
     }
 
     private static bool OnValidateThickness(object? value)
