@@ -30,4 +30,7 @@
   <Folder Name="/tool/">
     <Project Path="tool/Atc.Wpf.Generator.FontIconResources/Atc.Wpf.Generator.FontIconResources.csproj" />
   </Folder>
+  <Folder Name="/benchmark/">
+    <Project Path="benchmark/Atc.Wpf.Benchmarks/Atc.Wpf.Benchmarks.csproj" />
+  </Folder>
 </Solution>

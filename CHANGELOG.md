@@ -120,6 +120,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Tests
 
+- **`Atc.Wpf.Benchmarks`** project added (referenced from `Atc.Wpf.slnx` under
+  a new `/benchmark/` solution folder) — BenchmarkDotNet 0.13.4 pilot. Lives
+  outside `test/` so `dotnet test` never picks it up, but is part of the
+  solution so a plain `dotnet build` keeps it from rotting. First benchmark
+  (`SolidColorBrushHelperBenchmarks`, `[MemoryDiagnoser]`, parameterised on
+  four colour names) pins the post-fix O(1) reverse lookup in
+  `SolidColorBrushHelper.GetBrushFromString` so future regressions surface
+  immediately. Verified locally: ~10–12 ns/op with **0 allocations** per call
+  on a 12th-gen i9. `BenchmarkConfig.Create()` overrides the BDN toolchain to
+  `net10.0-windows` (the auto-generated boilerplate project otherwise defaults
+  to plain `net10.0` and fails to restore against our WPF-targeted assembly
+  with NU1201). `benchmark/Directory.Build.props` relaxes the strict analyser
+  set (CA1707/CA1304/CA1822/SA1623/CA1812/MA0051) because BenchmarkDotNet
+  conventions clash with them. `benchmark/Atc.Wpf.Benchmarks/Readme.md`
+  documents how to run (`dotnet run -c Release --project benchmark/Atc.Wpf.Benchmarks -- --filter '*'`),
+  filtering, the WPF/toolchain gotcha (CLI `--job short` adds a *second* job
+  with the default toolchain that breaks; use job attributes or
+  `--iterationCount`/`--launchCount`/`--warmupCount` instead), and the
+  convention to add a benchmark whenever a measurable hot-path fix lands.
 - **`Atc.Wpf.UiTests`** project added (referenced from `Atc.Wpf.slnx`) — pilot
   visual / UI regression harness on **FlaUI 5.0.0** (`FlaUI.Core` + `FlaUI.UIA3`).
   `SampleAppPath.Resolve()` walks up to the repo root to find the sample exe.

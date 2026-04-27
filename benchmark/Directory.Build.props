@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+    Override the parent Directory.Build.props for benchmark projects.
+    Benchmarks need the Release-style strict analyzer settings off so that
+    BenchmarkDotNet's own conventions (snake_case method names, public
+    benchmark methods that take no arguments, calls into culture-sensitive
+    APIs by design, etc.) don't trip CA1707 / CA1304 / CA1822 / SA1623 /
+    similar.
+  -->
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., Directory.Build.props))\Directory.Build.props" />
+
+  <PropertyGroup>
+    <Nullable>annotations</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1707;CA1304;CA1822;SA1623;CA1812;MA0051</NoWarn>
+  </PropertyGroup>
+
+</Project>
