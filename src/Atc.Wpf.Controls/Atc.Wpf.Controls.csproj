@@ -42,8 +42,8 @@
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.67" />
     <PackageReference Include="Atc.UndoRedo" Version="1.1.5" />
-    <PackageReference Include="Atc.XamlToolkit" Version="3.0.18" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.0.18" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.1.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
