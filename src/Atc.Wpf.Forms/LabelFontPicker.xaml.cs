@@ -71,6 +71,9 @@ public partial class LabelFontPicker : ILabelFontPicker
     [DependencyProperty(DefaultValue = true)]
     private bool isTextDecorationsEnabled;
 
+    [DependencyProperty(DefaultValue = FontColorEditorMode.WellKnownColorSelector)]
+    private FontColorEditorMode colorEditorMode;
+
     [DependencyProperty(DefaultValue = "Black")]
     private SolidColorBrush? selectedForegroundBrush;
 

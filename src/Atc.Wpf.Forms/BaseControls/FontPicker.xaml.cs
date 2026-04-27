@@ -75,6 +75,9 @@ public partial class FontPicker
     [DependencyProperty(DefaultValue = true)]
     private bool isTextDecorationsEnabled;
 
+    [DependencyProperty(DefaultValue = FontColorEditorMode.WellKnownColorSelector)]
+    private FontColorEditorMode colorEditorMode;
+
     [DependencyProperty(DefaultValue = "Black")]
     private SolidColorBrush? selectedForegroundBrush;
 
@@ -217,6 +220,7 @@ public partial class FontPicker
             IsForegroundColorEnabled = IsForegroundColorEnabled,
             IsBackgroundColorEnabled = IsBackgroundColorEnabled,
             IsTextDecorationsEnabled = IsTextDecorationsEnabled,
+            ColorEditorMode = ColorEditorMode,
             SelectedForegroundBrush = SelectedForegroundBrush,
             SelectedBackgroundBrush = SelectedBackgroundBrush,
             SelectedTextDecorations = SelectedTextDecorations,
