@@ -66,6 +66,9 @@ public partial class AdvancedFontPicker
     [DependencyProperty(DefaultValue = true)]
     private bool isTextDecorationsEnabled;
 
+    [DependencyProperty(DefaultValue = FontColorEditorMode.ColorPicker)]
+    private FontColorEditorMode colorEditorMode;
+
     [DependencyProperty(
         DefaultValue = "The quick brown fox jumps over the lazy dog 0123456789")]
     private string previewText;

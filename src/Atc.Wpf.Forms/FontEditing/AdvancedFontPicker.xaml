@@ -269,7 +269,24 @@
                     HideAreas="All"
                     IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsForegroundColorEnabled}"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
-                                                    Key=Foreground}" />
+                                                    Key=Foreground}"
+                    Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.ColorPicker}}" />
+
+                <!--
+                    DropDownFirstItemType=Blank: when the bound brush has no matching well-known
+                    color (e.g. a theme brush), the selector falls back to the blank entry instead
+                    of force-selecting the first real color and silently overwriting the brush.
+                -->
+                <forms:LabelWellKnownColorSelector
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                                    Key=Foreground}"
+                    DropDownFirstItemType="Blank"
+                    HideAreas="All"
+                    IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsForegroundColorEnabled}"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                    Key=Foreground}"
+                    SelectedKey="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedForegroundBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={x:Static atcValueConverters:BrushToColorNameValueConverter.Instance}}"
+                    Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.WellKnownColorSelector}}" />
             </atc:GridEx>
 
             <atc:GridEx
@@ -284,7 +301,19 @@
                     HideAreas="All"
                     IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsBackgroundColorEnabled}"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
-                                                    Key=Background}" />
+                                                    Key=Background}"
+                    Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.ColorPicker}}" />
+
+                <forms:LabelWellKnownColorSelector
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                                    Key=Background}"
+                    DropDownFirstItemType="Blank"
+                    HideAreas="All"
+                    IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsBackgroundColorEnabled}"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                    Key=Background}"
+                    SelectedKey="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedBackgroundBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={x:Static atcValueConverters:BrushToColorNameValueConverter.Instance}}"
+                    Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.WellKnownColorSelector}}" />
             </atc:GridEx>
 
         </atc:GridEx>

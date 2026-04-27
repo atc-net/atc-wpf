@@ -61,6 +61,7 @@
         <fontEditing:AdvancedFontPicker
             x:Name="UcAdvancedFontPicker"
             Margin="10"
+            ColorEditorMode="{Binding Path=ColorEditorMode}"
             IsBackgroundColorEnabled="{Binding Path=IsBackgroundColorEnabled}"
             IsFontFamilyEnabled="{Binding Path=IsFontFamilyEnabled}"
             IsFontSizeEnabled="{Binding Path=IsFontSizeEnabled}"

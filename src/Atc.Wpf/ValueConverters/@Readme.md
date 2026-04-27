@@ -100,6 +100,7 @@ Or by the ValueConverter's Instance:
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
 |                           | BackgroundToForegroundValueConverter                     |                                         |                                         |
 | Brush -> Color            | BrushToColorValueConverter                               | Brushs.Green -> Colors.Green            | Colors.Green -> Brushs.Green            |
+| Brush -> Color-Name       | BrushToColorNameValueConverter                           | Brushs.Red -> "Red"                     | "Red" -> Brushs.Red                     |
 | byte[] -> ImageSource     | ByteArrayToImageSourceValueConverter                     | byte[] -> BitmapImage                   | BitmapSource -> byte[] (PNG)            |
 | Color -> Brush            | ColorToBrushValueConverter                               | Colors.Green -> Brushs.Green            | Brushs.Green -> Colors.Green            |
 | Color -> SolidColor       | ColorToSolidColorValueConverter                          | Colors.Green -> Colors.Green            | Not supported                           |
@@ -118,7 +119,7 @@ Or by the ValueConverter's Instance:
 |                           | ThicknessBindingValueConverter                           |                                         | DependencyProperty.UnsetValue           |
 |                           | ThicknessFilterValueConverter                            |                                         | DependencyProperty.UnsetValue           |
 | Thickness -> Double       | ThicknessToDoubleValueConverter                          | Thickness.Left -> double                | double -> Thickness (single side) ✅    |
-| DateTime (UTC) -> DateTime (Local) | UtcToLocalDateTimeValueConverter                  | UTC -> Local                            | Local -> UTC ✅                         |
+| DateTime (UTC) -> DateTime (Local) | UtcToLocalDateTimeValueConverter                | UTC -> Local                            | Local -> UTC ✅                         |
 | String -> Bool (Regex)    | RegexValidationValueConverter                            | "test@example.com" + pattern -> True    | Not supported                           |
 | Errors -> String          | ValidationErrorsToFirstValidationErrorContentValueConverter |                                      | Not supported                           |
 | Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |

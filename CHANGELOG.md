@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`ColorEditorMode` on the FontPicker family** — new `FontColorEditorMode`
+  enum (`WellKnownColorSelector` / `ColorPicker`) lets consumers pick between
+  an inline named-color dropdown and the dialog-based color picker for the
+  Foreground / Background fields inside `AdvancedFontPicker`. `LabelFontPicker`,
+  `FontPicker`, and `FontPickerDialogBox` default to `WellKnownColorSelector`
+  so opening a font picker no longer cascades into a *second* modal dialog when
+  the user edits a colour; standalone `AdvancedFontPicker` keeps the dialog
+  variant by default. Each level exposes the property as a DP so consumers can
+  override (e.g. set `ColorEditorMode="ColorPicker"` if nested dialogs are
+  desired). Backed by a new two-way `BrushToColorNameValueConverter` in
+  `Atc.Wpf.ValueConverters` that maps between `SolidColorBrush` and the
+  English-invariant well-known colour key. The hidden well-known selector uses
+  `DropDownFirstItemType="Blank"` so theme-default brushes whose colour does
+  not match any named entry don't get silently rewritten on load.
 - **FontPicker control family** in `Atc.Wpf.Forms` — a four-tier font selection
   stack mirroring the existing ColorPicker trinity:
   - `FontPicker` (compact): `"Aa"` sample rendered in the selected font + family

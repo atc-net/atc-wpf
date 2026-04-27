@@ -20,6 +20,7 @@
 
                 <fontEditing:AdvancedFontPicker
                     x:Name="AdvancedFontPickerControl"
+                    ColorEditorMode="{Binding Path=ColorEditorMode}"
                     IsBackgroundColorEnabled="{Binding Path=IsBackgroundColorEnabled}"
                     IsFontFamilyEnabled="{Binding Path=IsFontFamilyEnabled}"
                     IsFontSizeEnabled="{Binding Path=IsFontSizeEnabled}"

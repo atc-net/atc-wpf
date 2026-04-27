@@ -74,7 +74,11 @@ public partial class AdvancedFontPickerDemoViewModel : ViewModelBase
     [ObservableProperty]
     private bool isTextDecorationsEnabled = true;
 
-    [PropertyDisplay("Preview Text", "Other", 1)]
+    [PropertyDisplay("Color Editor", "Other", 1)]
+    [ObservableProperty]
+    private FontColorEditorMode colorEditorMode = FontColorEditorMode.ColorPicker;
+
+    [PropertyDisplay("Preview Text", "Other", 2)]
     [ObservableProperty]
     private string previewText = "The quick brown fox jumps over the lazy dog 0123456789";
 }
