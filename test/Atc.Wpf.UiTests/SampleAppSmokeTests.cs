@@ -46,8 +46,21 @@ public sealed class SampleAppSmokeTests
         }
         finally
         {
-            application.Close();
-            application.WaitWhileMainHandleIsMissing(TimeSpan.FromSeconds(5));
+            // Best-effort cleanup. WaitWhileMainHandleIsMissing throws a wrapped
+            // System.Exception if the process exits before it can find the pid (a
+            // race that wins on fast machines). The `using` on application calls
+            // Dispose, so this catch only suppresses noise, it doesn't leak.
+#pragma warning disable CA1031
+            try
+            {
+                application.Close();
+                application.WaitWhileMainHandleIsMissing(TimeSpan.FromSeconds(5));
+            }
+            catch (Exception)
+            {
+                // Process already gone — fine.
+            }
+#pragma warning restore CA1031
         }
     }
 }
