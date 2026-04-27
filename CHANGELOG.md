@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **FontPicker control family** in `Atc.Wpf.Forms` — a four-tier font selection
+  stack mirroring the existing ColorPicker trinity:
+  - `FontPicker` (compact): `"Aa"` sample rendered in the selected font + family
+    name + size in the host UI font + an edit button that opens the dialog.
+  - `FontPickerDialogBox`: `NiceDialogBox` wrapper around `AdvancedFontPicker`
+    with OK / Cancel and full TwoWay round-trip of the selection.
+  - `AdvancedFontPicker`: full editor with a responsive star-column layout —
+    family list with type-ahead search, recently-used items, virtualised
+    all-fonts view; Weight / Style / Stretch lists derived dynamically from
+    `family.FamilyTypefaces` (only valid combinations) with snap-to-closest
+    when switching families; size as `IntegerBox` + preset list with custom
+    sizes auto-inserted; Foreground / Background `LabelColorPicker`s with
+    inline swatch; Bold / Italic / Underline / Strikethrough quick toggles
+    bound bidirectionally; editable preview text + multi-sample preview area
+    with theme-aware default colours and a WCAG contrast-warning glyph.
+  - `LabelFontPicker`: form-tier wrapper mirroring `LabelColorPicker`.
+  - `FontDescription` value type bundles all appearance properties (Family,
+    Size, Weight, Style, Stretch, Foreground, Background, TextDecorations)
+    with `ApplyTo` / `FromControl` helpers so a picker round-trips cleanly
+    against any `Control`.
+  - Granular `Show*` / `IsEnabled*` DPs per section, plus a 🔒 indicator on
+    disabled `GroupBox`es. Full `AutomationProperties.Name` + ToolTips +
+    keyboard navigation (Tab / arrow / type-ahead).
+  - Recents persisted via the new `IFontPickerStorage` abstraction (default:
+    in-memory, capped at 8); apps wanting cross-restart persistence assign
+    their own implementation to `FontPickerStorage.Current`.
+  - Translation keys added in `en` / `da` / `de` for `FontPicker`, `FontFamily`,
+    `FontSize`, `FontWeight`, `FontStyle`, `FontStretch`, `Preview`,
+    `Foreground`, `Background`, `Bold`, `Italic`, `Underline`, `Strikethrough`,
+    `Locked`, `ContrastWarning`.
+- **`ToggleButton` theme styles** in `Atc.Wpf.Theming`, mirroring the existing
+  `Button.xaml` style hierarchy. `AtcApps.Styles.ToggleButton` (+ `.Small` /
+  `.Large`) carries an `IsChecked` trigger that swaps Background / BorderBrush
+  to the existing Pressed brushes; chromeless variants apply a subtle background
+  on checked. Seven Bootstrap colours (Default / Primary / Secondary / Success /
+  Danger / Warning / Info) ship in solid + outline flavours and three sizes —
+  outline variants additionally swap Foreground to white when checked for
+  legibility. The implicit `TargetType="ToggleButton"` style is registered in
+  `Controls.xaml`, so any unstyled `ToggleButton` in a consuming app picks it up
+  automatically. New "Theming → Input - Button → ToggleButton" sample page
+  replaces a previously-disabled placeholder.
+- **`ApplicationMonitorView` context menu** with Copy / Copy Selected / Copy All
+  commands. New `EnableContextMenu` DP gates the menu; `[RelayCommand]` handlers
+  carry `CanExecute` predicates so redundant items hide rather than grey out.
+  The `ListView` switches to `SelectionMode="Extended"` with a `SelectionChanged`
+  shim that bridges multi-selection into the VM. `CopyAllToClipboard` /
+  `CopySelectedToClipboard` resource strings added in `en` / `da` / `de`.
+
 ### Fixed
 
 - **`CultureManager.UiCultureChanged` is now a weak event.** Long-lived static
