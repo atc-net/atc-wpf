@@ -142,13 +142,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`Atc.Wpf.UiTests`** project added (referenced from `Atc.Wpf.slnx`) — pilot
   visual / UI regression harness on **FlaUI 5.0.0** (`FlaUI.Core` + `FlaUI.UIA3`).
   `SampleAppPath.Resolve()` walks up to the repo root to find the sample exe.
-  `SampleAppSmokeTests.Sample_app_launches_and_shows_main_window` launches the
-  app, asserts the main window appears with a non-empty title, captures a
-  screenshot via `mainWindow.CaptureToFile(...)` to `bin/<Config>/net10.0-windows/Snapshots/`,
-  then closes the process. The test is `[Trait("Category","UI")]` + skipped by
-  default so it stays opt-in for headless CI; running locally just removes the
-  `Skip` argument. Pattern + future-expansion notes documented in
-  `test/Atc.Wpf.UiTests/Readme.md`.
+  Two opt-in tests (`[Trait("Category","UI")]` + `[Fact(Skip="...")]` so they
+  stay out of headless CI by default):
+  - `SampleAppSmokeTests.Sample_app_launches_and_shows_main_window` — launches
+    the sample, asserts a non-empty title, captures the main window to
+    `bin/<Config>/net10.0-windows/Snapshots/sample-app-main-window.png`.
+  - `NiceWindowSnapshotTests.NiceWindow_chrome_is_active_and_titlebar_strip_can_be_snapshotted` —
+    asserts `mainWindow.ClassName == "NiceWindow"` (proves the custom themed
+    chrome is in play, not a fallback `Window`), maximizes the window so it's
+    deterministically on top, captures the full window plus a cropped 40-px
+    title-bar strip — the highest-risk theming surface (accent colors, system
+    buttons, title text), isolated for low-noise future image diffs.
+  Teardown was hardened in both tests: `WaitWhileMainHandleIsMissing` races
+  with `Close()` on fast machines and FlaUI throws a wrapped `System.Exception`,
+  so cleanup is now wrapped in a broad try/catch. The Readme documents the
+  Z-order trap (`Capture()` clips to element bounds but reads from the screen
+  as backing store, so the window must be foregrounded; `SetForeground()`
+  alone is blocked by Windows for non-foreground processes — maximize via the
+  Window pattern is the workaround), the `Bitmap.Clone` overload trap, and the
+  pattern for new tests.
 - **`Atc.Wpf.FontIcons.Tests`** project added (referenced from `Atc.Wpf.slnx`).
   Adds an `IAssemblyMarkerAtcWpfFontIcons` to the source assembly and a small
   enum smoke-test suite that asserts every icon set defines `None = 0` and
