@@ -21,6 +21,12 @@ public partial class ApplicationMonitorView
         PropertyChangedCallback = nameof(OnEnableContextMenuChanged))]
     private bool enableContextMenu;
 
+    [DependencyProperty(DefaultValue = 150d)]
+    private double areaColumnWidth;
+
+    [DependencyProperty(DefaultValue = 400d)]
+    private double messageColumnWidth;
+
     public ApplicationMonitorView()
     {
         InitializeComponent();
