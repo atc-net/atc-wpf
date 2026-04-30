@@ -17,7 +17,9 @@
         <atc:ApplicationMonitorView
             Grid.Column="0"
             Margin="10"
+            AreaColumnWidth="{Binding DataContext.AreaColumnWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
             DataContext="{Binding Path=ApplicationMonitorViewModel}"
+            MessageColumnWidth="{Binding DataContext.MessageColumnWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowAutoScrollInToolbar="{Binding DataContext.ShowAutoScrollInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowClearInToolbar="{Binding DataContext.ShowClearInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowSearchInToolbar="{Binding DataContext.ShowSearchInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"

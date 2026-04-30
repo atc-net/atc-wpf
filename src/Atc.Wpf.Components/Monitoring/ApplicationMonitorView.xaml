@@ -120,7 +120,13 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Width="{Binding Path=ShowColumnArea, Converter={x:Static atcValueConverters:BoolToWidthValueConverter.Instance}, ConverterParameter=150}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Area}">
+                        <GridViewColumn Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Area}">
+                            <GridViewColumn.Width>
+                                <MultiBinding Converter="{x:Static atcValueConverters:BoolAndDoubleToDoubleMultiValueConverter.Instance}">
+                                    <Binding Path="ShowColumnArea" />
+                                    <Binding Path="AreaColumnWidth" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}" />
+                                </MultiBinding>
+                            </GridViewColumn.Width>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Area}" />
@@ -128,7 +134,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Width="400" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Message}">
+                        <GridViewColumn Width="{Binding Path=MessageColumnWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Message}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Message}" />

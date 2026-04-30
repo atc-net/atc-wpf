@@ -34,6 +34,14 @@ public partial class ApplicationMonitorDemoViewModel : ViewModelBase, IDisposabl
     [ObservableProperty]
     private bool showSearchInToolbar = true;
 
+    [PropertyDisplay("Area Column Width", "Columns", 1)]
+    [ObservableProperty]
+    private double areaColumnWidth = 150d;
+
+    [PropertyDisplay("Message Column Width", "Columns", 2)]
+    [ObservableProperty]
+    private double messageColumnWidth = 400d;
+
     private bool enableTimer;
 
     [PropertyDisplay("Enable Timer", "Behavior", 1)]

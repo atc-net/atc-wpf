@@ -19,7 +19,9 @@ using Atc.Wpf.Components.Monitoring;
     ShowToolbar="True"
     ShowClearInToolbar="True"
     ShowAutoScrollInToolbar="True"
-    ShowSearchInToolbar="True" />
+    ShowSearchInToolbar="True"
+    AreaColumnWidth="200"
+    MessageColumnWidth="800" />
 ```
 
 ## ⚙️ Properties
@@ -30,6 +32,8 @@ using Atc.Wpf.Components.Monitoring;
 | `ShowClearInToolbar` | `bool` | `true` | Show clear button |
 | `ShowAutoScrollInToolbar` | `bool` | `true` | Show auto-scroll toggle |
 | `ShowSearchInToolbar` | `bool` | `true` | Show search box |
+| `AreaColumnWidth` | `double` | `150` | Width of the **Area** column (in DIPs). Combined at runtime with the VM's `ShowColumnArea` flag — when that flag is `false` the column collapses to `0` regardless of this value. Set to `double.NaN` to auto-size to content. |
+| `MessageColumnWidth` | `double` | `400` | Width of the **Message** column (in DIPs). Increase for wider log lines. Set to `double.NaN` to auto-size to content. |
 
 ## 📝 Notes
 

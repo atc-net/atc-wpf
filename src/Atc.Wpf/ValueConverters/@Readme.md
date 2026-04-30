@@ -35,6 +35,7 @@ Or by the ValueConverter's Instance:
 | Bool -> With              | BoolToWidthValueConverter                                | true<br/>10 -> 10<br/>true<br/>"Auto" -> * | Not supported                        |
 | Bool[] -> Bool            | MultiBoolToBoolValueConverter                            | All-True -> True                        | Not supported                           |
 | Bool[] -> Visibility      | MultiBoolToVisibilityVisibleValueConverter               | All-True -> Visible                     | Not supported                           |
+| (Bool, Double) -> Double  | BoolAndDoubleToDoubleMultiValueConverter                 | (true, 150) -> 150<br/>(false, 150) -> 0 | Not supported                          |
 
 ## #️⃣ ValueConverters - String to [...]
 
