@@ -82,6 +82,12 @@
   <data name="BluetoothDevice" xml:space="preserve">
     <value>Bluetooth-enhed</value>
   </data>
+  <data name="Process" xml:space="preserve">
+    <value>Proces</value>
+  </data>
+  <data name="Window" xml:space="preserve">
+    <value>Vindue</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Vælg seriel port…</value>
   </data>
@@ -105,6 +111,12 @@
   </data>
   <data name="SelectBluetoothDevice" xml:space="preserve">
     <value>Vælg Bluetooth-enhed…</value>
+  </data>
+  <data name="SelectProcess" xml:space="preserve">
+    <value>Vælg proces…</value>
+  </data>
+  <data name="SelectWindow" xml:space="preserve">
+    <value>Vælg vindue…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Opdater</value>
