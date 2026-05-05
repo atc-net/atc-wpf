@@ -64,6 +64,8 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     private long fadeSamples;
     private long perSegmentSamples;
     private CancellationTokenSource? autoStopCts;
+    private int quantumCount;
+    private int addFrameCount;
     private bool isPlaying;
     private bool startInProgress;
     private bool disposed;
@@ -225,6 +227,11 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         sampleRate = encoding.SampleRate;
         channelCount = encoding.ChannelCount;
 
+        Debug.WriteLine(
+            $"[LiveAudioOutputTester] graph encoding: subtype={encoding.Subtype} " +
+            $"sampleRate={encoding.SampleRate} channels={encoding.ChannelCount} " +
+            $"bitsPerSample={encoding.BitsPerSample} bitrate={encoding.Bitrate}");
+
         perSegmentSamples = sampleRate * SegmentMilliseconds / 1000;
         totalSamples = perSegmentSamples * 3;
         fadeSamples = sampleRate * FadeMilliseconds / 1000;
@@ -232,7 +239,15 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
         frameInputNode = graph.CreateFrameInputNode(encoding);
         frameInputNode.AddOutgoingConnection(outputNode);
+        frameInputNode.OutgoingGain = 1.0;
+        outputNode.OutgoingGain = 1.0;
         frameInputNode.QuantumStarted += OnFrameInputQuantumStarted;
+        frameInputNode.Start();
+
+        Debug.WriteLine(
+            $"[LiveAudioOutputTester] frameInputNode.OutgoingGain={frameInputNode.OutgoingGain} " +
+            $"outputNode.OutgoingGain={outputNode.OutgoingGain} " +
+            $"primaryDevice={graph.PrimaryRenderDevice?.Name ?? "<null>"}");
 
         return true;
     }
@@ -259,6 +274,11 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         renderTimer.Stop();
         isPlaying = false;
         inflightFrames.Clear();
+
+        Debug.WriteLine(
+            $"[LiveAudioOutputTester] stopping: quanta={quantumCount} frames={addFrameCount}");
+        quantumCount = 0;
+        addFrameCount = 0;
 
         var existingCts = autoStopCts;
         autoStopCts = null;
@@ -320,6 +340,15 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         try
         {
             var requiredSamples = args.RequiredSamples;
+            quantumCount++;
+
+            if (quantumCount <= 5 || quantumCount % 50 == 0)
+            {
+                Debug.WriteLine(
+                    $"[LiveAudioOutputTester] quantum #{quantumCount} required={requiredSamples} " +
+                    $"samplePosition={samplePosition}/{totalSamples} added={addFrameCount}");
+            }
+
             if (requiredSamples <= 0)
             {
                 return;
@@ -345,6 +374,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
             var frame = new Windows.Media.AudioFrame(bufferBytes);
             AudioBufferAccess.WriteFloatSamples(frame, samples);
             sender.AddFrame(frame);
+            addFrameCount++;
 
             // Hold a managed reference to the most recent N frames so the GC doesn't
             // dispose them via finalizer before the audio engine reads the queued buffer.
@@ -354,9 +384,9 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
                 inflightFrames.Dequeue();
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Skip this quantum.
+            Debug.WriteLine($"[LiveAudioOutputTester] quantum exception: {ex}");
         }
     }
 
