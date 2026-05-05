@@ -383,8 +383,8 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 | `NetworkAdapterPicker` | Choose NIC for binding | `NetworkInterface.GetAllNetworkInterfaces()` | ⬜ |
 | `DrivePicker` / `VolumePicker` | Choose disk/volume | `System.IO.DriveInfo.GetDrives()` + 2 s polling for hot-plug | ✅ |
 | `DisplayPicker` / `MonitorPicker` | Choose display | `Screen.AllScreens` / `MonitorEnumProc` | ⬜ |
-| `ProcessPicker` | Choose running process (e.g., for attach/capture) | `Process.GetProcesses()` | ⬜ |
-| `WindowPicker` | Choose top-level window (capture targets) | `EnumWindows` | ⬜ |
+| `ProcessPicker` | Choose running process (e.g., for attach/capture) | `Process.GetProcesses()` + 2 s polling, `OnlyWithMainWindow` toggle | ✅ |
+| `WindowPicker` | Choose top-level window (capture targets) | `EnumWindows` P/Invoke + 2 s polling, `OnlyVisibleWithTitle` toggle | ✅ |
 | `TimeZonePicker` | Choose IANA / Windows time zone | `TimeZoneInfo.GetSystemTimeZones()` | ✅ |
 | `CulturePicker` / `LanguagePicker` | Already partly covered by `LabelLanguageSelector` — verify gap | 🔵 |
 
