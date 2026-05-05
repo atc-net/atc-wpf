@@ -193,6 +193,24 @@
                             </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
+                    <TabItem x:Name="TabWpfHardware" Tag="WpfHardware">
+                        <TabItem.Header>
+                            <atc:GridEx
+                                Columns="*,Auto"
+                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                                <TextBlock Grid.Column="0" Text="Wpf.Hardware" />
+                                <dataDisplay:Badge
+                                    x:Name="BadgeWpfHardware"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    BadgePlacementMode="Right" />
+                            </atc:GridEx>
+                        </TabItem.Header>
+                    </TabItem>
                     <TabItem x:Name="TabWpfUndoRedo" Tag="WpfUndoRedo">
                         <TabItem.Header>
                             <atc:GridEx
@@ -295,6 +313,10 @@
                                 SelectedItemChanged="TreeViewOnSelectionChanged" />
                             <sample:SamplesWpfNetworkTreeView
                                 x:Name="StvSampleWpfNetwork"
+                                BorderThickness="0"
+                                SelectedItemChanged="TreeViewOnSelectionChanged" />
+                            <sample:SamplesWpfHardwareTreeView
+                                x:Name="StvSampleWpfHardware"
                                 BorderThickness="0"
                                 SelectedItemChanged="TreeViewOnSelectionChanged" />
                             <sample:SamplesWpfUndoRedoTreeView
