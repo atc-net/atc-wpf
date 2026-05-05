@@ -88,6 +88,15 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bluetooth Device.
+        /// </summary>
+        public static string BluetoothDevice {
+            get {
+                return ResourceManager.GetString("BluetoothDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Device disconnected.
         /// </summary>
         public static string DeviceDisconnected {
@@ -183,6 +192,15 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string SelectAudioOutput {
             get {
                 return ResourceManager.GetString("SelectAudioOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Bluetooth device….
+        /// </summary>
+        public static string SelectBluetoothDevice {
+            get {
+                return ResourceManager.GetString("SelectBluetoothDevice", resourceCulture);
             }
         }
         
