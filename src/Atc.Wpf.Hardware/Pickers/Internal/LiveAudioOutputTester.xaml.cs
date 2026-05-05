@@ -9,6 +9,8 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     private const int FadeMilliseconds = 30;
     private const int SegmentMilliseconds = 1000;
     private const int FrameKeepAliveDepth = 32;
+    private const int MaxQuantumMilliseconds = 100;
+    private const int DrainMilliseconds = 500;
 
     public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
         nameof(DeviceId),
@@ -61,6 +63,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     private long totalSamples;
     private long fadeSamples;
     private long perSegmentSamples;
+    private CancellationTokenSource? autoStopCts;
     private bool isPlaying;
     private bool startInProgress;
     private bool disposed;
@@ -161,58 +164,92 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         {
             ClearError();
 
-            var deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceId);
-
-            var settings = new Windows.Media.Audio.AudioGraphSettings(
-                Windows.Media.Render.AudioRenderCategory.Media)
+            if (!await TryBuildGraphAsync(deviceId))
             {
-                PrimaryRenderDevice = deviceInfo,
-            };
-
-            var graphResult = await Windows.Media.Audio.AudioGraph.CreateAsync(settings);
-            if (graphResult.Status is not Windows.Media.Audio.AudioGraphCreationStatus.Success ||
-                graphResult.Graph is null)
-            {
-                ShowError(Miscellaneous.AudioPreviewUnavailable);
                 return;
             }
 
-            graph = graphResult.Graph;
-
-            var outputResult = await graph.CreateDeviceOutputNodeAsync();
-            if (outputResult.Status is not Windows.Media.Audio.AudioDeviceNodeCreationStatus.Success ||
-                outputResult.DeviceOutputNode is null)
-            {
-                ShowError(Miscellaneous.AudioPreviewUnavailable);
-                await StopAsync();
-                return;
-            }
-
-            outputNode = outputResult.DeviceOutputNode;
-
-            var encoding = graph.EncodingProperties;
-            sampleRate = encoding.SampleRate;
-            channelCount = encoding.ChannelCount;
-
-            perSegmentSamples = sampleRate * SegmentMilliseconds / 1000;
-            totalSamples = perSegmentSamples * 3;
-            fadeSamples = sampleRate * FadeMilliseconds / 1000;
-            samplePosition = 0;
-
-            frameInputNode = graph.CreateFrameInputNode(encoding);
-            frameInputNode.AddOutgoingConnection(outputNode);
-            frameInputNode.QuantumStarted += OnFrameInputQuantumStarted;
-
-            graph.Start();
+            graph!.Start();
             renderTimer.Start();
 
             isPlaying = true;
             UpdateButtonLabel();
+
+            // Wall-clock auto-stop. Stopping based on samplePosition inside the
+            // quantum handler would dispose the graph before the engine has finished
+            // playing the queued frames — symptom: a single click then silence.
+            // Wait the full tone duration plus a drain margin instead.
+            var totalMs = (totalSamples * 1000 / (long)sampleRate) + DrainMilliseconds;
+            autoStopCts = new CancellationTokenSource();
+            _ = ScheduleAutoStopAsync(totalMs, autoStopCts.Token);
         }
         catch (Exception)
         {
             ShowError(Miscellaneous.AudioPreviewUnavailable);
             await StopAsync();
+        }
+    }
+
+    private async Task<bool> TryBuildGraphAsync(string deviceId)
+    {
+        var deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceId);
+
+        var settings = new Windows.Media.Audio.AudioGraphSettings(
+            Windows.Media.Render.AudioRenderCategory.Media)
+        {
+            PrimaryRenderDevice = deviceInfo,
+        };
+
+        var graphResult = await Windows.Media.Audio.AudioGraph.CreateAsync(settings);
+        if (graphResult.Status is not Windows.Media.Audio.AudioGraphCreationStatus.Success ||
+            graphResult.Graph is null)
+        {
+            ShowError(Miscellaneous.AudioPreviewUnavailable);
+            return false;
+        }
+
+        graph = graphResult.Graph;
+
+        var outputResult = await graph.CreateDeviceOutputNodeAsync();
+        if (outputResult.Status is not Windows.Media.Audio.AudioDeviceNodeCreationStatus.Success ||
+            outputResult.DeviceOutputNode is null)
+        {
+            ShowError(Miscellaneous.AudioPreviewUnavailable);
+            await StopAsync();
+            return false;
+        }
+
+        outputNode = outputResult.DeviceOutputNode;
+
+        var encoding = graph.EncodingProperties;
+        sampleRate = encoding.SampleRate;
+        channelCount = encoding.ChannelCount;
+
+        perSegmentSamples = sampleRate * SegmentMilliseconds / 1000;
+        totalSamples = perSegmentSamples * 3;
+        fadeSamples = sampleRate * FadeMilliseconds / 1000;
+        samplePosition = 0;
+
+        frameInputNode = graph.CreateFrameInputNode(encoding);
+        frameInputNode.AddOutgoingConnection(outputNode);
+        frameInputNode.QuantumStarted += OnFrameInputQuantumStarted;
+
+        return true;
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Auto-stop must not bubble exceptions to the caller.")]
+    private async Task ScheduleAutoStopAsync(
+        long delayMilliseconds,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(delayMilliseconds), cancellationToken);
+            await Dispatcher.InvokeAsync(() => _ = StopAsync());
+        }
+        catch (Exception)
+        {
+            // Cancelled (user clicked Stop) or shutdown.
         }
     }
 
@@ -222,6 +259,21 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         renderTimer.Stop();
         isPlaying = false;
         inflightFrames.Clear();
+
+        var existingCts = autoStopCts;
+        autoStopCts = null;
+        if (existingCts is not null)
+        {
+            try
+            {
+                await existingCts.CancelAsync();
+                existingCts.Dispose();
+            }
+            catch (Exception)
+            {
+                // Ignore.
+            }
+        }
 
         var existingGraph = graph;
         graph = null;
@@ -275,37 +327,22 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
             if (samplePosition >= totalSamples)
             {
-                _ = Dispatcher.BeginInvoke(new Action(() => _ = StopAsync()));
+                // Tone is fully queued. Don't stop the graph here — the wall-clock
+                // auto-stop scheduled in StartInternalAsync waits for the engine to
+                // finish playing the buffered frames before disposing.
                 return;
             }
 
-            var floatCount = requiredSamples * (int)channelCount;
-            var bufferBytes = (uint)(floatCount * sizeof(float));
-            var frame = new Windows.Media.AudioFrame(bufferBytes);
+            var samplesThisCall = ClampSamplesPerQuantum(requiredSamples);
+            var floatCount = samplesThisCall * (int)channelCount;
 
             Span<float> samples = stackalloc float[floatCount];
             FillToneSamples(samples);
 
-            // Push the mono peak into the visualisation ring.
-            var peak = 0f;
-            for (var i = 0; i < floatCount; i++)
-            {
-                var v = samples[i];
-                if (v < 0)
-                {
-                    v = -v;
-                }
+            UpdateVisualisationRing(samples);
 
-                if (v > peak)
-                {
-                    peak = v;
-                }
-            }
-
-            ring[ringHead] = peak;
-            ringHead = (ringHead + 1) % RingCapacity;
-            currentPeak = peak;
-
+            var bufferBytes = (uint)(floatCount * sizeof(float));
+            var frame = new Windows.Media.AudioFrame(bufferBytes);
             AudioBufferAccess.WriteFloatSamples(frame, samples);
             sender.AddFrame(frame);
 
@@ -321,6 +358,44 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         {
             // Skip this quantum.
         }
+    }
+
+    private int ClampSamplesPerQuantum(int requiredSamples)
+    {
+        // Cap the quantum size so a large warmup `RequiredSamples` doesn't try to
+        // consume the entire 3-second tone in one frame.
+        var maxQuantum = (int)(sampleRate * MaxQuantumMilliseconds / 1000);
+        var samplesThisCall = System.Math.Min(requiredSamples, maxQuantum);
+
+        var remainingTone = (int)(totalSamples - samplePosition);
+        if (samplesThisCall > remainingTone)
+        {
+            samplesThisCall = remainingTone;
+        }
+
+        return samplesThisCall;
+    }
+
+    private void UpdateVisualisationRing(ReadOnlySpan<float> samples)
+    {
+        var peak = 0f;
+        for (var i = 0; i < samples.Length; i++)
+        {
+            var v = samples[i];
+            if (v < 0)
+            {
+                v = -v;
+            }
+
+            if (v > peak)
+            {
+                peak = v;
+            }
+        }
+
+        ring[ringHead] = peak;
+        ringHead = (ringHead + 1) % RingCapacity;
+        currentPeak = peak;
     }
 
     private void FillToneSamples(Span<float> destination)
