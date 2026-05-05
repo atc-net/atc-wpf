@@ -169,6 +169,15 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Process.
+        /// </summary>
+        public static string Process {
+            get {
+                return ResourceManager.GetString("Process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string Refresh {
@@ -223,6 +232,15 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select process….
+        /// </summary>
+        public static string SelectProcess {
+            get {
+                return ResourceManager.GetString("SelectProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select serial port….
         /// </summary>
         public static string SelectSerialPort {
@@ -246,6 +264,15 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string SelectUsbDevice {
             get {
                 return ResourceManager.GetString("SelectUsbDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select window….
+        /// </summary>
+        public static string SelectWindow {
+            get {
+                return ResourceManager.GetString("SelectWindow", resourceCulture);
             }
         }
         
@@ -291,6 +318,15 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string UsbDevice {
             get {
                 return ResourceManager.GetString("UsbDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window.
+        /// </summary>
+        public static string Window {
+            get {
+                return ResourceManager.GetString("Window", resourceCulture);
             }
         }
     }
