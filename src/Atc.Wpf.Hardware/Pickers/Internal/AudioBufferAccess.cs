@@ -36,7 +36,11 @@ internal static class AudioBufferAccess
     }
 
     /// <summary>
-    /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer.
+    /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer
+    /// and sets <c>AudioBuffer.Length</c> to the byte count actually written. The Length
+    /// must be set explicitly under CsWinRT — its default value of 0 makes the audio
+    /// engine read "0 bytes of valid data" per frame and play silence even when the
+    /// buffer is fully populated.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Audio buffer access must not crash the tester on transient errors.")]
     public static void WriteFloatSamples(
@@ -47,7 +51,8 @@ internal static class AudioBufferAccess
         {
             using var buffer = frame.LockBuffer(Windows.Media.AudioBufferAccessMode.Write);
             using var reference = buffer.CreateReference();
-            WriteBytes(reference, source);
+            var floatsWritten = WriteBytes(reference, source);
+            buffer.Length = (uint)(floatsWritten * sizeof(float));
         }
         catch (Exception)
         {
@@ -75,13 +80,13 @@ internal static class AudioBufferAccess
         return floatCount;
     }
 
-    private static unsafe void WriteBytes(
+    private static unsafe int WriteBytes(
         Windows.Foundation.IMemoryBufferReference reference,
         ReadOnlySpan<float> source)
     {
         if (!TryGetBufferPointer(reference, out var dataInBytes, out var capacity))
         {
-            return;
+            return 0;
         }
 
         var maxFloats = (int)(capacity / sizeof(float));
@@ -93,6 +98,7 @@ internal static class AudioBufferAccess
 
         var dest = new Span<float>(dataInBytes, count);
         source[..count].CopyTo(dest);
+        return count;
     }
 
     /// <summary>
