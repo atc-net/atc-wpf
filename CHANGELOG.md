@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`UsbCameraPicker.ShowLivePreview`** + companion `PreviewHeight` DP.
+  When `ShowLivePreview="True"` and a camera is selected, the picker
+  renders a live preview pane below the dropdown driven by an internal
+  `LiveCameraPreview` control. The preview opens the camera via WinRT
+  `MediaCapture` + `MediaFrameReader`, normalises each frame to BGRA8
+  premultiplied, and copies pixel bytes into a recycled `WriteableBitmap`
+  on the UI thread (no `AllowUnsafeBlocks`, no per-frame BMP encode).
+  The first activation triggers Windows' webcam-permission prompt; if
+  the user denies access or another process holds the device, the pane
+  shows a localized inline message (`PreviewPermissionDenied` /
+  `PreviewUnavailable`) rather than crashing the picker. Preview
+  lifecycle restarts on `Value` changes and stops cleanly on `Unloaded`
+  / `ShowLivePreview="False"` / `Dispose`. Forwarded through
+  `LabelUsbCameraPicker`. Strings localised for `en-US` / `da-DK` /
+  `de-DE`. The separate `PreferredFormat` DP for picking a specific
+  resolution/FPS remains parked v2.
 - **Runtime culture smoke tests** for `Atc.Wpf.Hardware` resources.
   Flips `Miscellaneous.Culture` and `Validations.Culture` between
   invariant / `da-DK` / `de-DE` and asserts representative keys come

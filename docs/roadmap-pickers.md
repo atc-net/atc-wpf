@@ -219,7 +219,8 @@ Atc.Wpf.Hardware/
 | `Pickers/UsbCameraPicker.xaml` (ComboBox + Refresh button + status dot DataTemplate + inline state-warning row) | ✅ |
 | `Pickers/UsbCameraPicker.xaml.cs` with DPs: `Value`, `WatermarkText`, `ShowRefreshButton`, `AutoRefreshOnDeviceChange`, `ClearValueOnDisconnect`, `AutoRebindOnReconnect`, `AutoSelectFirstAvailable`, `ItemTemplate` | ✅ |
 | `RoutedEvent` `ValueChanged` + `DeviceLost` + `DeviceReconnected` | ✅ |
-| Live-preview popout / `ShowLivePreview` / `PreferredFormat` DPs — **deferred to v2** per §7.6 | ⏸️ |
+| Live preview pane (`ShowLivePreview` / `PreviewHeight` DPs, internal `LiveCameraPreview` control using `MediaCapture` + `MediaFrameReader` → `WriteableBitmap`, no `AllowUnsafeBlocks`); permission-denied + "in use by another app" surfaced as localized inline messages | ✅ |
+| `PreferredFormat` DP for picking a specific resolution/FPS | ⏸️ *parked v2* |
 | `Internal/UsbCameraPickerAutomationPeer.cs` | ✅ |
 | `Pickers/UsbCameraPicker_Readme.md` | ✅ |
 
