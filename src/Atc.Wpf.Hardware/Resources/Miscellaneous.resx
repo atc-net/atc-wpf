@@ -73,6 +73,12 @@
   <data name="AudioOutput" xml:space="preserve">
     <value>Audio Output</value>
   </data>
+  <data name="Drive" xml:space="preserve">
+    <value>Drive</value>
+  </data>
+  <data name="TimeZone" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Select serial port…</value>
   </data>
@@ -87,6 +93,12 @@
   </data>
   <data name="SelectAudioOutput" xml:space="preserve">
     <value>Select audio output…</value>
+  </data>
+  <data name="SelectDrive" xml:space="preserve">
+    <value>Select drive…</value>
+  </data>
+  <data name="SelectTimeZone" xml:space="preserve">
+    <value>Select time zone…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
