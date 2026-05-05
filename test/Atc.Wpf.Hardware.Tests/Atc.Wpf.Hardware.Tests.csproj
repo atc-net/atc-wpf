@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="3.0.67" />
+    <PackageReference Include="Atc.XUnit" Version="3.0.67" />
+    <PackageReference Include="Xunit.StaFact" Version="3.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Atc.Wpf.Hardware\Atc.Wpf.Hardware.csproj" />
+  </ItemGroup>
+
+</Project>
