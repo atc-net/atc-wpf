@@ -151,6 +151,15 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network Adapter.
+        /// </summary>
+        public static string NetworkAdapter {
+            get {
+                return ResourceManager.GetString("NetworkAdapter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string New {
@@ -165,6 +174,15 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string NoDevicesFound {
             get {
                 return ResourceManager.GetString("NoDevicesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Printer.
+        /// </summary>
+        public static string Printer {
+            get {
+                return ResourceManager.GetString("Printer", resourceCulture);
             }
         }
         
@@ -228,6 +246,24 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string SelectDrive {
             get {
                 return ResourceManager.GetString("SelectDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select network adapter….
+        /// </summary>
+        public static string SelectNetworkAdapter {
+            get {
+                return ResourceManager.GetString("SelectNetworkAdapter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select printer….
+        /// </summary>
+        public static string SelectPrinter {
+            get {
+                return ResourceManager.GetString("SelectPrinter", resourceCulture);
             }
         }
         
