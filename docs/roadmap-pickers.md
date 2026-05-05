@@ -382,7 +382,7 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 | `BluetoothDevicePicker` | Choose paired/discovered BT device | `BluetoothDevice.GetDeviceSelectorFromPairingState(true)` via `Windows.Devices.Enumeration` (paired classic only for v1) | ✅ |
 | `NetworkAdapterPicker` | Choose NIC for binding | `NetworkInterface.GetAllNetworkInterfaces()` + 2 s polling, `IncludeLoopback` toggle, reactive `OperationalStatus` | ✅ |
 | `DrivePicker` / `VolumePicker` | Choose disk/volume | `System.IO.DriveInfo.GetDrives()` + 2 s polling for hot-plug | ✅ |
-| `DisplayPicker` / `MonitorPicker` | Choose display | `Screen.AllScreens` / `MonitorEnumProc` | ⬜ |
+| `DisplayPicker` / `MonitorPicker` | Choose display | `EnumDisplayMonitors` + `GetMonitorInfo` P/Invoke + 2 s polling | ✅ |
 | `ProcessPicker` | Choose running process (e.g., for attach/capture) | `Process.GetProcesses()` + 2 s polling, `OnlyWithMainWindow` toggle | ✅ |
 | `WindowPicker` | Choose top-level window (capture targets) | `EnumWindows` P/Invoke + 2 s polling, `OnlyVisibleWithTitle` toggle | ✅ |
 | `TimeZonePicker` | Choose IANA / Windows time zone | `TimeZoneInfo.GetSystemTimeZones()` | ✅ |

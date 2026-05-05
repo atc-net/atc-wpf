@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`DisplayPicker`** in `Atc.Wpf.Hardware` — picker for connected
+  monitors/displays. Uses Win32 `EnumDisplayMonitors` + `GetMonitorInfo`
+  (P/Invoked from user32.dll, with the same DllImport pattern as
+  WindowPicker) to capture each monitor's `DeviceName`, full
+  `Bounds`, `WorkingArea`, and the system-primary flag. Polls every
+  2 s for hot-plug. The system primary monitor is rendered with a ★
+  followed by its resolution (e.g. `\\.\DISPLAY1 ★ (1920×1080)`).
+  Strings localised for `en-US` / `da-DK` / `de-DE`. Four new model
+  tests cover constructor, primary/non-primary `ToString` formatting,
+  and INPC.
 - **`NetworkAdapterPicker` / `PrinterPicker`** in `Atc.Wpf.Hardware` —
   two more polling-based system pickers. `NetworkAdapterPicker`
   enumerates `NetworkInterface.GetAllNetworkInterfaces()` (with
