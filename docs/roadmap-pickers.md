@@ -414,3 +414,83 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 5. `UsbCameraPicker` (§3) — adds media capabilities and the on-demand "Test camera" probe.
 6. Cross-cutting polish (§5) — docs, theming, localization triplets.
 7. Promote one or two from §6 if scope allows.
+
+---
+
+## 9. Audio live preview (v2 follow-up)
+
+> v2 follow-up to the §6 audio pickers. Adds a microphone-input visualisation to `AudioInputPicker` and a speaker-output tester (test-tone playback + visualisation) to `AudioOutputPicker`, both gated by a `ShowLivePreview` DP mirroring `UsbCameraPicker`'s pattern.
+
+### 9.1 Shared design
+
+| Concern | Decision |
+|---------|----------|
+| Visualisation | Scrolling waveform line + peak-level bar (not FFT). Sufficient for "is the device working?" without rolling our own FFT |
+| Audio engine | `Windows.Media.Audio.AudioGraph` (no NuGet dependency, consistent with the existing WinRT `MediaCapture` use in `LiveCameraPreview`) |
+| DP names | `ShowLivePreview` (`bool`, default `false`) + `PreviewHeight` (`double`, default `120`) on both pickers, forwarded through the `Label*` wrappers |
+| Error fallbacks | Localised inline messages for permission denied / device unavailable, mirroring `LiveCameraPreview` |
+| TFM | Existing `net10.0-windows10.0.19041.0` is sufficient (`AudioGraph` is Windows 10 1607+) |
+
+### 9.2 LiveAudioInputMeter (microphone)
+
+| Task | Status |
+|------|--------|
+| `Pickers/Internal/LiveAudioInputMeter.xaml(.cs)` — `UserControl` with `DeviceId` / `IsActive` DPs | ⬜ |
+| Capture pipeline: `AudioGraph` + `AudioDeviceInputNode` (selected device) + `AudioFrameOutputNode` | ⬜ |
+| Sample extraction: read float samples per quantum (~10 ms), maintain ring buffer for waveform display | ⬜ |
+| Visual: scrolling polyline waveform + horizontal peak-level bar (RMS over recent samples) updated at 30 fps | ⬜ |
+| Lifecycle: start on `Loaded` + `DeviceId` change + `IsActive=true`; stop on `Unloaded` + `IsActive=false` + `Dispose` | ⬜ |
+| Error fallbacks: `UnauthorizedAccessException` → "Microphone access denied"; other errors → "Audio preview unavailable" | ⬜ |
+
+### 9.3 LiveAudioOutputTester (speakers)
+
+| Task | Status |
+|------|--------|
+| `Pickers/Internal/LiveAudioOutputTester.xaml(.cs)` — `UserControl` with `DeviceId` / `IsActive` DPs + `Test ▶` / `Stop` button | ⬜ |
+| Render pipeline: `AudioGraph` (`PrimaryRenderDevice` = selected output) + `AudioFrameInputNode` (we feed samples) + `AudioDeviceOutputNode` | ⬜ |
+| Test tone generator: 1 kHz sine, 1 s per channel (Left → Right → Both stereo), 30 ms fade in/out to avoid clicks; total ~3 s | ⬜ |
+| Visual: same waveform + peak bar, fed from the same buffer we're sending to the output node (no WASAPI loopback) | ⬜ |
+| `Stop` button replaces `Test ▶` while playing; auto-resets to `Test ▶` on completion | ⬜ |
+| Lifecycle: same as input | ⬜ |
+| Error fallbacks: "Audio preview unavailable" (output rendering doesn't need user permission) | ⬜ |
+
+### 9.4 Picker wiring
+
+| Task | Status |
+|------|--------|
+| `AudioInputPicker`: `ShowLivePreview` + `PreviewHeight` DPs, preview row in XAML, lifecycle bound to `Value.DeviceId` | ⬜ |
+| `AudioOutputPicker`: same DPs + tester row | ⬜ |
+| `LabelAudioInputPicker` / `LabelAudioOutputPicker`: forward both DPs | ⬜ |
+| `ILabelAudioInputPicker` / `ILabelAudioOutputPicker`: surface added | ⬜ |
+
+### 9.5 Sample app
+
+| Task | Status |
+|------|--------|
+| `AudioInputPickerDemoViewModel`: add `ShowLivePreview` / `PreviewHeight` `[PropertyDisplay]` toggles | ⬜ |
+| `AudioOutputPickerDemoViewModel`: same | ⬜ |
+| Sample views bind the new DPs | ⬜ |
+
+### 9.6 Localisation
+
+| Task | Status |
+|------|--------|
+| `Test` (button label) — invariant + `da-DK` + `de-DE` | ⬜ |
+| `Stop` (button label) — invariant + `da-DK` + `de-DE` | ⬜ |
+| `AudioPreviewUnavailable` — invariant + `da-DK` + `de-DE` | ⬜ |
+| `AudioPermissionDenied` — invariant + `da-DK` + `de-DE` | ⬜ |
+| `Miscellaneous.Designer.cs` regenerate or manually update | ⬜ |
+
+### 9.7 Tests
+
+| Task | Status |
+|------|--------|
+| Sine-tone generator helper unit test (correct frequency, amplitude bounds, fade in/out) | ⬜ |
+| Service-level / `AudioGraph` mock harness — deferred (would mirror the WinRT mock harness pattern from §1.5/§2.5/§3.5/§4.8) | — |
+| Live runtime tests deferred (require real audio hardware) | — |
+
+### 9.8 Open questions
+
+1. **Test sound shape** — generated 1 kHz sine (chosen) vs embedded WAV chime vs user-supplied path. Default = generated, no extra resource files.
+2. **Output visualisation source** — render the generated tone we just sent (chosen, simple) vs WASAPI loopback of actual speaker output (complex, only meaningful for the test tone anyway). Default = generated tone.
+3. **FFT spectrum** as an opt-in alternative to the waveform — deferred to v3 if requested.
