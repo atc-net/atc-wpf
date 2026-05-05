@@ -31,8 +31,11 @@ internal static class AudioBufferAccess
     }
 
     /// <summary>
-    /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer and updates
-    /// <c>AudioBuffer.Length</c> to the byte length of those floats.
+    /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer.
+    /// Mirrors the official Microsoft AudioCreation Scenario3_FrameInputNode pattern:
+    /// the buffer is written via the COM byte access and committed when the lock is
+    /// released. <c>AudioBuffer.Length</c> is not set explicitly — the WinRT engine
+    /// uses the AudioFrame's allocation capacity as the data length when in Write mode.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Audio buffer access must not crash the tester on transient errors.")]
     public static void WriteFloatSamples(
@@ -43,8 +46,7 @@ internal static class AudioBufferAccess
         {
             using var buffer = frame.LockBuffer(Windows.Media.AudioBufferAccessMode.Write);
             using var reference = buffer.CreateReference();
-            var bytesWritten = WriteBytes(reference, source);
-            buffer.Length = (uint)bytesWritten;
+            WriteBytes(reference, source);
         }
         catch (Exception)
         {

@@ -155,7 +155,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
             var deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceId);
 
             var settings = new Windows.Media.Audio.AudioGraphSettings(
-                Windows.Media.Render.AudioRenderCategory.Other)
+                Windows.Media.Render.AudioRenderCategory.Media)
             {
                 PrimaryRenderDevice = deviceInfo,
             };
