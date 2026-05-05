@@ -43,6 +43,7 @@ The left panel consists of:
 | Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Form controls: Label*, Selectors, Pickers |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Composite: Dialogs, Viewers, Monitoring, Notifications |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | Network: NetworkScanner |
+| Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | Hardware pickers: SerialPort, USB, USB Camera |
 | Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
 | Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demonstrations |
 | Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |
