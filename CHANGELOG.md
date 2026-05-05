@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`Atc.Wpf.Hardware` package** — new assembly providing three hardware
+  picker controls (`SerialPortPicker`, `UsbPortPicker`, `UsbCameraPicker`)
+  and their labeled wrappers (`LabelSerialPortPicker`, `LabelUsbPortPicker`,
+  `LabelUsbCameraPicker`) with **live device-state detection**. Connect /
+  disconnect / in-use are reflected in the dropdown via colour-coded status
+  dots (green / amber / red) — the user never has to click *Refresh* and
+  never picks a device that's silently unusable. When a *bound* `Value`
+  device disconnects, the picker raises `DeviceLost`, shows an inline
+  warning, and preserves the selection so reconnect rebinds silently
+  (`AutoRebindOnReconnect` default-on); auto-clear is opt-in via
+  `ClearValueOnDisconnect`. Hot-plug detection is shared infrastructure
+  via `Windows.Devices.Enumeration.DeviceWatcher` (no `WM_DEVICECHANGE`
+  plumbing). User-visible strings localised for `en-US` / `da-DK` /
+  `de-DE`. Targets `net10.0-windows10.0.19041.0` (Windows 10 May 2020 / 2004
+  and later, all Windows 11). See `docs/Hardware/@Readme.md` and
+  `docs/roadmap-pickers.md`.
 - **`ColorEditorMode` on the FontPicker family** — new `FontColorEditorMode`
   enum (`WellKnownColorSelector` / `ColorPicker`) lets consumers pick between
   an inline named-color dropdown and the dialog-based color picker for the
