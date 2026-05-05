@@ -37,10 +37,11 @@ internal static class AudioBufferAccess
 
     /// <summary>
     /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer
-    /// and sets <c>AudioBuffer.Length</c> to the byte count actually written. The Length
-    /// must be set explicitly under CsWinRT — its default value of 0 makes the audio
-    /// engine read "0 bytes of valid data" per frame and play silence even when the
-    /// buffer is fully populated.
+    /// and sets <c>AudioBuffer.Length</c> to the byte count written. The Length must be
+    /// set explicitly under CsWinRT — its default value of 0 makes <c>AddFrame</c>
+    /// throw <c>ArgumentException("Length must be greater than zero")</c> — and it must
+    /// be set <em>before</em> the <c>IMemoryBufferReference</c> is opened, otherwise
+    /// the property setter doesn't propagate back to the underlying WinRT buffer.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Audio buffer access must not crash the tester on transient errors.")]
     public static void WriteFloatSamples(
@@ -50,9 +51,20 @@ internal static class AudioBufferAccess
         try
         {
             using var buffer = frame.LockBuffer(Windows.Media.AudioBufferAccessMode.Write);
+
+            var capacity = buffer.Capacity;
+            var bytesToWrite = (uint)(source.Length * sizeof(float));
+            if (bytesToWrite > capacity)
+            {
+                bytesToWrite = capacity;
+            }
+
+            // Set Length BEFORE creating the IMemoryBufferReference. The order matters
+            // under CsWinRT: setting Length while a reference is open is a no-op.
+            buffer.Length = bytesToWrite;
+
             using var reference = buffer.CreateReference();
-            var floatsWritten = WriteBytes(reference, source);
-            buffer.Length = (uint)(floatsWritten * sizeof(float));
+            WriteBytes(reference, source);
         }
         catch (Exception)
         {
@@ -80,13 +92,13 @@ internal static class AudioBufferAccess
         return floatCount;
     }
 
-    private static unsafe int WriteBytes(
+    private static unsafe void WriteBytes(
         Windows.Foundation.IMemoryBufferReference reference,
         ReadOnlySpan<float> source)
     {
         if (!TryGetBufferPointer(reference, out var dataInBytes, out var capacity))
         {
-            return 0;
+            return;
         }
 
         var maxFloats = (int)(capacity / sizeof(float));
@@ -98,7 +110,6 @@ internal static class AudioBufferAccess
 
         var dest = new Span<float>(dataInBytes, count);
         source[..count].CopyTo(dest);
-        return count;
     }
 
     /// <summary>
