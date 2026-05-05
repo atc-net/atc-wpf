@@ -376,8 +376,8 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 
 | Picker | Use case | Source API | Status |
 |--------|----------|------------|--------|
-| `AudioInputPicker` (mic) | Choose recording device | `MMDeviceEnumerator` (NAudio / `Windows.Devices.Enumeration`) | ⬜ |
-| `AudioOutputPicker` (speakers / headset) | Choose playback device | `MMDeviceEnumerator` | ⬜ |
+| `AudioInputPicker` (mic) | Choose recording device | `DeviceClass.AudioCapture` via `Windows.Devices.Enumeration` | ✅ |
+| `AudioOutputPicker` (speakers / headset) | Choose playback device | `DeviceClass.AudioRender` via `Windows.Devices.Enumeration` | ✅ |
 | `PrinterPicker` | Choose installed printer | `PrinterSettings.InstalledPrinters` / `PrintQueue` | ⬜ |
 | `BluetoothDevicePicker` | Choose paired/discovered BT device | `Windows.Devices.Bluetooth` | ⬜ |
 | `NetworkAdapterPicker` | Choose NIC for binding | `NetworkInterface.GetAllNetworkInterfaces()` | ⬜ |

@@ -1,6 +1,6 @@
 # Hardware Pickers
 
-Hardware picker controls for selecting connected serial ports, USB devices and USB cameras with **live device-state detection** (connect, disconnect, in-use).
+Hardware picker controls for selecting connected serial ports, USB devices, USB cameras and audio endpoints with **live device-state detection** (connect, disconnect, in-use).
 
 ## Table of Contents
 
@@ -13,21 +13,25 @@ Hardware picker controls for selecting connected serial ports, USB devices and U
 
 ## Overview
 
-`Atc.Wpf.Hardware` provides three picker controls, each with a labeled variant:
+`Atc.Wpf.Hardware` provides five picker controls, each with a labeled variant:
 
 - `SerialPortPicker` / `LabelSerialPortPicker` — select a serial / COM port
 - `UsbPortPicker` / `LabelUsbPortPicker` — select a connected USB device
 - `UsbCameraPicker` / `LabelUsbCameraPicker` — select a video-capture device
+- `AudioInputPicker` / `LabelAudioInputPicker` — select a microphone / capture endpoint
+- `AudioOutputPicker` / `LabelAudioOutputPicker` — select speakers / a render endpoint
 
-All three are built on shared infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. Hot-plug, disconnect and in-use changes update the picker live — the user never has to click *Refresh* and never picks a device that's silently unusable.
+All five are built on shared infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. Hot-plug, disconnect and in-use changes update the picker live — the user never has to click *Refresh* and never picks a device that's silently unusable.
 
 ## Quick Reference
 
 | Control | Selected Value Type | Source API |
 |---------|--------------------|------------|
 | `SerialPortPicker` | `SerialPortInfo?` | `Windows.Devices.SerialCommunication.SerialDevice` |
-| `UsbPortPicker` | `UsbDeviceInfo?` | `DeviceInformation` filtered by USB device interface class |
+| `UsbPortPicker` | `UsbDeviceInfo?` | `DeviceInformation` filtered by USB device interface class (or `UsbDeviceClassFilter` flags → AQS) |
 | `UsbCameraPicker` | `UsbCameraInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.VideoCapture)` |
+| `AudioInputPicker` | `AudioDeviceInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.AudioCapture)` |
+| `AudioOutputPicker` | `AudioDeviceInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.AudioRender)` |
 
 ## Device-State UX
 

@@ -25,6 +25,12 @@
             <sample:SampleTreeViewItem
                 Header="UsbCameraPicker"
                 SamplePath="SamplesWpfHardware.Pickers.UsbCameraPickerView" />
+            <sample:SampleTreeViewItem
+                Header="AudioInputPicker"
+                SamplePath="SamplesWpfHardware.Pickers.AudioInputPickerView" />
+            <sample:SampleTreeViewItem
+                Header="AudioOutputPicker"
+                SamplePath="SamplesWpfHardware.Pickers.AudioOutputPickerView" />
         </TreeViewItem>
         <TreeViewItem Header="LabelControls">
             <sample:SampleTreeViewItem
@@ -36,6 +42,12 @@
             <sample:SampleTreeViewItem
                 Header="LabelUsbCameraPicker"
                 SamplePath="SamplesWpfHardware.LabelControls.LabelUsbCameraPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelAudioInputPicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelAudioInputPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelAudioOutputPicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelAudioOutputPickerView" />
         </TreeViewItem>
     </TreeViewItem>
 
