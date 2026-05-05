@@ -2,12 +2,12 @@ namespace Atc.Wpf.Hardware.Services;
 
 public sealed class UsbDeviceService : IUsbDeviceService
 {
-    private const string UsbDeviceInterfaceAqs =
-        "System.Devices.InterfaceClassGuid:=\"{a5dcbf10-6530-11d2-901f-00c04fb951ed}\"";
-
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
-    private readonly DeviceWatcherHost watcher;
+    private readonly System.Threading.Lock sync = new();
+    private DeviceWatcherHost watcher;
+    private string aqs;
+    private UsbDeviceClassFilter classFilter = UsbDeviceClassFilter.None;
     private bool started;
     private bool initialEnumerationCompleted;
     private bool disposed;
@@ -16,17 +16,26 @@ public sealed class UsbDeviceService : IUsbDeviceService
     {
         Devices = new ObservableCollection<UsbDeviceInfo>();
 
-        watcher = new DeviceWatcherHost(UsbDeviceInterfaceAqs);
-
-        watcher.Added += OnAdded;
-        watcher.Removed += OnRemoved;
-        watcher.Updated += OnUpdated;
-        watcher.EnumerationCompleted += OnEnumerationCompleted;
+        aqs = UsbDeviceClassFilterResolver.ToAqs(classFilter);
+        watcher = CreateWatcher(aqs);
     }
 
     public ObservableCollection<UsbDeviceInfo> Devices { get; }
 
-    public UsbDeviceClassFilter ClassFilter { get; set; } = UsbDeviceClassFilter.None;
+    public UsbDeviceClassFilter ClassFilter
+    {
+        get => classFilter;
+        set
+        {
+            if (classFilter == value)
+            {
+                return;
+            }
+
+            classFilter = value;
+            ApplyClassFilter();
+        }
+    }
 
     public void StartWatching()
     {
@@ -52,7 +61,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
 
     public async Task RefreshAsync()
     {
-        var found = await DeviceInformation.FindAllAsync(UsbDeviceInterfaceAqs);
+        var found = await DeviceInformation.FindAllAsync(aqs);
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -80,11 +89,58 @@ public sealed class UsbDeviceService : IUsbDeviceService
 
         disposed = true;
 
-        watcher.Added -= OnAdded;
-        watcher.Removed -= OnRemoved;
-        watcher.Updated -= OnUpdated;
-        watcher.EnumerationCompleted -= OnEnumerationCompleted;
+        DetachWatcher(watcher);
         watcher.Dispose();
+    }
+
+    private DeviceWatcherHost CreateWatcher(string aqsFilter)
+    {
+        var host = new DeviceWatcherHost(aqsFilter);
+        host.Added += OnAdded;
+        host.Removed += OnRemoved;
+        host.Updated += OnUpdated;
+        host.EnumerationCompleted += OnEnumerationCompleted;
+        return host;
+    }
+
+    private void DetachWatcher(DeviceWatcherHost host)
+    {
+        host.Added -= OnAdded;
+        host.Removed -= OnRemoved;
+        host.Updated -= OnUpdated;
+        host.EnumerationCompleted -= OnEnumerationCompleted;
+    }
+
+    private void ApplyClassFilter()
+    {
+        lock (sync)
+        {
+            var newAqs = UsbDeviceClassFilterResolver.ToAqs(classFilter);
+            if (string.Equals(newAqs, aqs, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            var wasStarted = started;
+            if (wasStarted)
+            {
+                watcher.StopWatching();
+            }
+
+            DetachWatcher(watcher);
+            watcher.Dispose();
+
+            aqs = newAqs;
+            initialEnumerationCompleted = false;
+            Devices.Clear();
+
+            watcher = CreateWatcher(aqs);
+
+            if (wasStarted)
+            {
+                watcher.StartWatching();
+            }
+        }
     }
 
     private void OnAdded(
