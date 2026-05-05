@@ -73,6 +73,12 @@
   <data name="AudioOutput" xml:space="preserve">
     <value>Lydudgang</value>
   </data>
+  <data name="Drive" xml:space="preserve">
+    <value>Drev</value>
+  </data>
+  <data name="TimeZone" xml:space="preserve">
+    <value>Tidszone</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Vælg seriel port…</value>
   </data>
@@ -87,6 +93,12 @@
   </data>
   <data name="SelectAudioOutput" xml:space="preserve">
     <value>Vælg lydudgang…</value>
+  </data>
+  <data name="SelectDrive" xml:space="preserve">
+    <value>Vælg drev…</value>
+  </data>
+  <data name="SelectTimeZone" xml:space="preserve">
+    <value>Vælg tidszone…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Opdater</value>
