@@ -11,24 +11,26 @@ public sealed class SerialPortService : ISerialPortService
         PortNamePropertyKey,
     };
 
-    private readonly DeviceWatcherHost watcher;
+    private readonly IDeviceWatcherHost watcher;
     private readonly System.Threading.Lock syncRoot = new();
     private bool started;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
     public SerialPortService()
+        : this(new DeviceWatcherHost(SerialDevice.GetDeviceSelector(), RequestedProperties))
     {
+    }
+
+    internal SerialPortService(IDeviceWatcherHost watcher)
+    {
+        this.watcher = watcher ?? throw new ArgumentNullException(nameof(watcher));
         Ports = new ObservableCollection<SerialPortInfo>();
 
-        watcher = new DeviceWatcherHost(
-            SerialDevice.GetDeviceSelector(),
-            RequestedProperties);
-
-        watcher.Added += OnAdded;
-        watcher.Removed += OnRemoved;
-        watcher.Updated += OnUpdated;
-        watcher.EnumerationCompleted += OnEnumerationCompleted;
+        this.watcher.Added += OnAdded;
+        this.watcher.Removed += OnRemoved;
+        this.watcher.Updated += OnUpdated;
+        this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
     public ObservableCollection<SerialPortInfo> Ports { get; }
@@ -57,15 +59,14 @@ public sealed class SerialPortService : ISerialPortService
 
     public async Task RefreshAsync()
     {
-        var found = await DeviceInformation
-            .FindAllAsync(SerialDevice.GetDeviceSelector(), RequestedProperties);
+        var found = await watcher.FindAllAsync();
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var info in found)
+        foreach (var snapshot in found)
         {
-            foundIds.Add(info.Id);
-            UpsertFromInfo(info, isInitialEnumeration: true);
+            foundIds.Add(snapshot.Id);
+            UpsertFromSnapshot(snapshot, isInitialEnumeration: true);
         }
 
         for (var i = Ports.Count - 1; i >= 0; i--)
@@ -110,14 +111,14 @@ public sealed class SerialPortService : ISerialPortService
 
     private void OnAdded(
         object? sender,
-        DeviceArrivedEventArgs e)
-        => UpsertFromInfo(e.Device, isInitialEnumeration: !initialEnumerationCompleted);
+        DeviceSnapshotEventArgs e)
+        => UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
 
     private void OnRemoved(
         object? sender,
         DeviceRemovedEventArgs e)
     {
-        var existing = FindByDeviceId(e.Update.Id);
+        var existing = FindByDeviceId(e.DeviceId);
         if (existing is not null)
         {
             existing.State = DeviceState.Disconnected;
@@ -126,7 +127,7 @@ public sealed class SerialPortService : ISerialPortService
 
     private static void OnUpdated(
         object? sender,
-        DeviceUpdatedEventArgs e)
+        DeviceSnapshotEventArgs e)
     {
         // Property updates (rare for serial). No-op today.
     }
@@ -138,11 +139,11 @@ public sealed class SerialPortService : ISerialPortService
         initialEnumerationCompleted = true;
     }
 
-    private void UpsertFromInfo(
-        DeviceInformation info,
+    private void UpsertFromSnapshot(
+        DeviceSnapshot snapshot,
         bool isInitialEnumeration)
     {
-        var existing = FindByDeviceId(info.Id);
+        var existing = FindByDeviceId(snapshot.Id);
 
         if (existing is not null)
         {
@@ -154,17 +155,14 @@ public sealed class SerialPortService : ISerialPortService
             return;
         }
 
-        var portName = info.Properties.TryGetValue(PortNamePropertyKey, out var raw)
-            && raw is string s
-                ? s
-                : info.Name;
+        var portName = snapshot.PortName ?? snapshot.Name;
 
-        var (vid, pid) = UsbIdParser.Parse(info.Id);
+        var (vid, pid) = UsbIdParser.Parse(snapshot.Id);
 
         var newInfo = new SerialPortInfo(
-            deviceId: info.Id,
+            deviceId: snapshot.Id,
             portName: portName,
-            friendlyName: info.Name,
+            friendlyName: snapshot.Name,
             vendorId: vid,
             productId: pid)
         {

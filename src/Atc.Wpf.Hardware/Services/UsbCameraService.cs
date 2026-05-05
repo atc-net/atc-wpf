@@ -4,22 +4,26 @@ public sealed class UsbCameraService : IUsbCameraService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
-    private readonly DeviceWatcherHost watcher;
+    private readonly IDeviceWatcherHost watcher;
     private bool started;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
     public UsbCameraService()
+        : this(new DeviceWatcherHost(
+            DeviceInformation.GetAqsFilterFromDeviceClass(DeviceClass.VideoCapture)))
     {
+    }
+
+    internal UsbCameraService(IDeviceWatcherHost watcher)
+    {
+        this.watcher = watcher ?? throw new ArgumentNullException(nameof(watcher));
         Cameras = new ObservableCollection<UsbCameraInfo>();
 
-        watcher = new DeviceWatcherHost(
-            DeviceInformation.GetAqsFilterFromDeviceClass(DeviceClass.VideoCapture));
-
-        watcher.Added += OnAdded;
-        watcher.Removed += OnRemoved;
-        watcher.Updated += OnUpdated;
-        watcher.EnumerationCompleted += OnEnumerationCompleted;
+        this.watcher.Added += OnAdded;
+        this.watcher.Removed += OnRemoved;
+        this.watcher.Updated += OnUpdated;
+        this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
     public ObservableCollection<UsbCameraInfo> Cameras { get; }
@@ -48,15 +52,14 @@ public sealed class UsbCameraService : IUsbCameraService
 
     public async Task RefreshAsync()
     {
-        var found = await DeviceInformation.FindAllAsync(
-            DeviceClass.VideoCapture);
+        var found = await watcher.FindAllAsync();
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var info in found)
+        foreach (var snapshot in found)
         {
-            foundIds.Add(info.Id);
-            UpsertFromInfo(info, isInitialEnumeration: true);
+            foundIds.Add(snapshot.Id);
+            UpsertFromSnapshot(snapshot, isInitialEnumeration: true);
         }
 
         for (var i = Cameras.Count - 1; i >= 0; i--)
@@ -86,14 +89,14 @@ public sealed class UsbCameraService : IUsbCameraService
 
     private void OnAdded(
         object? sender,
-        DeviceArrivedEventArgs e)
-        => UpsertFromInfo(e.Device, isInitialEnumeration: !initialEnumerationCompleted);
+        DeviceSnapshotEventArgs e)
+        => UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
 
     private void OnRemoved(
         object? sender,
         DeviceRemovedEventArgs e)
     {
-        var existing = FindByDeviceId(e.Update.Id);
+        var existing = FindByDeviceId(e.DeviceId);
         if (existing is not null)
         {
             existing.State = DeviceState.Disconnected;
@@ -102,7 +105,7 @@ public sealed class UsbCameraService : IUsbCameraService
 
     private static void OnUpdated(
         object? sender,
-        DeviceUpdatedEventArgs e)
+        DeviceSnapshotEventArgs e)
     {
         // No-op for camera enumeration changes today.
     }
@@ -114,11 +117,11 @@ public sealed class UsbCameraService : IUsbCameraService
         initialEnumerationCompleted = true;
     }
 
-    private void UpsertFromInfo(
-        DeviceInformation info,
+    private void UpsertFromSnapshot(
+        DeviceSnapshot snapshot,
         bool isInitialEnumeration)
     {
-        var existing = FindByDeviceId(info.Id);
+        var existing = FindByDeviceId(snapshot.Id);
 
         if (existing is not null)
         {
@@ -130,15 +133,13 @@ public sealed class UsbCameraService : IUsbCameraService
             return;
         }
 
-        var panel = TryReadPanel(info);
-
         var newInfo = new UsbCameraInfo(
-            deviceId: info.Id,
-            friendlyName: info.Name,
-            panel: panel,
-            isEnabled: info.IsEnabled)
+            deviceId: snapshot.Id,
+            friendlyName: snapshot.Name,
+            panel: snapshot.Panel ?? CameraPanel.Unknown,
+            isEnabled: snapshot.IsEnabled)
         {
-            State = !info.IsEnabled
+            State = !snapshot.IsEnabled
                 ? DeviceState.InUse
                 : isInitialEnumeration
                     ? DeviceState.Available
@@ -153,25 +154,6 @@ public sealed class UsbCameraService : IUsbCameraService
                 state => newInfo.State = state,
                 JustConnectedDuration);
         }
-    }
-
-    private static CameraPanel TryReadPanel(DeviceInformation info)
-    {
-        if (info.EnclosureLocation is null)
-        {
-            return CameraPanel.Unknown;
-        }
-
-        return info.EnclosureLocation.Panel switch
-        {
-            Windows.Devices.Enumeration.Panel.Front => CameraPanel.Front,
-            Windows.Devices.Enumeration.Panel.Back => CameraPanel.Back,
-            Windows.Devices.Enumeration.Panel.Top => CameraPanel.Top,
-            Windows.Devices.Enumeration.Panel.Bottom => CameraPanel.Bottom,
-            Windows.Devices.Enumeration.Panel.Left => CameraPanel.Left,
-            Windows.Devices.Enumeration.Panel.Right => CameraPanel.Right,
-            _ => CameraPanel.External,
-        };
     }
 
     private UsbCameraInfo? FindByDeviceId(string deviceId)
