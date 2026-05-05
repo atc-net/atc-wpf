@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`BluetoothDevicePicker`** in `Atc.Wpf.Hardware` — paired-classic
+  Bluetooth picker built on the same `DeviceWatcherHost` plumbing as the
+  serial/USB/audio pickers, using `BluetoothDevice.GetDeviceSelectorFromPairingState(true)`
+  as the AQS selector. Surfaces `IsConnected` and `IsPaired` on the
+  `BluetoothDeviceInfo` model and renders connected entries with a ●
+  bullet in the dropdown. Strings localised for `en-US` / `da-DK` /
+  `de-DE`. BLE-only and unpaired-discovery scenarios are deferred to v2
+  (require additional capability declarations).
 - **`DrivePicker` / `TimeZonePicker`** in `Atc.Wpf.Hardware` — round out
   the picker family with two pure-managed pickers. `DrivePicker` enumerates
   `System.IO.DriveInfo.GetDrives()` (Fixed / Removable / Network / CDRom /

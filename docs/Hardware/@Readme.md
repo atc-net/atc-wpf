@@ -13,17 +13,18 @@ Hardware picker controls for selecting connected serial ports, USB devices, USB 
 
 ## Overview
 
-`Atc.Wpf.Hardware` provides seven picker controls, each with a labeled variant:
+`Atc.Wpf.Hardware` provides eight picker controls, each with a labeled variant:
 
 - `SerialPortPicker` / `LabelSerialPortPicker` — select a serial / COM port
 - `UsbPortPicker` / `LabelUsbPortPicker` — select a connected USB device
 - `UsbCameraPicker` / `LabelUsbCameraPicker` — select a video-capture device
 - `AudioInputPicker` / `LabelAudioInputPicker` — select a microphone / capture endpoint
 - `AudioOutputPicker` / `LabelAudioOutputPicker` — select speakers / a render endpoint
+- `BluetoothDevicePicker` / `LabelBluetoothDevicePicker` — select a paired Bluetooth device
 - `DrivePicker` / `LabelDrivePicker` — select a logical drive (fixed / removable / network / CD)
 - `TimeZonePicker` / `LabelTimeZonePicker` — select a system time zone (no hot-plug)
 
-The five hardware-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker` polls `System.IO.DriveInfo.GetDrives()` for hot-plug. `TimeZonePicker` is a static list. Hot-plug, disconnect and in-use changes update the picker live — the user never has to click *Refresh* and never picks a device that's silently unusable.
+The six hardware-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker` polls `System.IO.DriveInfo.GetDrives()` for hot-plug. `TimeZonePicker` is a static list. Hot-plug, disconnect and in-use changes update the picker live — the user never has to click *Refresh* and never picks a device that's silently unusable.
 
 ## Quick Reference
 
@@ -34,6 +35,7 @@ The five hardware-backed pickers share infrastructure (`DeviceWatcherHost`) usin
 | `UsbCameraPicker` | `UsbCameraInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.VideoCapture)` |
 | `AudioInputPicker` | `AudioDeviceInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.AudioCapture)` |
 | `AudioOutputPicker` | `AudioDeviceInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.AudioRender)` |
+| `BluetoothDevicePicker` | `BluetoothDeviceInfo?` | `BluetoothDevice.GetDeviceSelectorFromPairingState(true)` (paired classic) |
 | `DrivePicker` | `DiskDriveInfo?` | `System.IO.DriveInfo.GetDrives()` + 2 s polling |
 | `TimeZonePicker` | `TimeZoneInfo?` | `TimeZoneInfo.GetSystemTimeZones()` (static) |
 
