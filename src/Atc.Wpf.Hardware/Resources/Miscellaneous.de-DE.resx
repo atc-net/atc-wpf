@@ -88,6 +88,12 @@
   <data name="Window" xml:space="preserve">
     <value>Fenster</value>
   </data>
+  <data name="NetworkAdapter" xml:space="preserve">
+    <value>Netzwerkadapter</value>
+  </data>
+  <data name="Printer" xml:space="preserve">
+    <value>Drucker</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Seriellen Anschluss auswählen…</value>
   </data>
@@ -117,6 +123,12 @@
   </data>
   <data name="SelectWindow" xml:space="preserve">
     <value>Fenster auswählen…</value>
+  </data>
+  <data name="SelectNetworkAdapter" xml:space="preserve">
+    <value>Netzwerkadapter auswählen…</value>
+  </data>
+  <data name="SelectPrinter" xml:space="preserve">
+    <value>Drucker auswählen…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Aktualisieren</value>

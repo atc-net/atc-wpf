@@ -88,6 +88,12 @@
   <data name="Window" xml:space="preserve">
     <value>Window</value>
   </data>
+  <data name="NetworkAdapter" xml:space="preserve">
+    <value>Network Adapter</value>
+  </data>
+  <data name="Printer" xml:space="preserve">
+    <value>Printer</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Select serial port…</value>
   </data>
@@ -117,6 +123,12 @@
   </data>
   <data name="SelectWindow" xml:space="preserve">
     <value>Select window…</value>
+  </data>
+  <data name="SelectNetworkAdapter" xml:space="preserve">
+    <value>Select network adapter…</value>
+  </data>
+  <data name="SelectPrinter" xml:space="preserve">
+    <value>Select printer…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
