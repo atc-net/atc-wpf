@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`UsbCameraPicker.PreferredFormat`** + lazy supported-format
+  enumeration. `UsbCameraFormat` is a new record (Width / Height /
+  FrameRate / Subtype) and `UsbCameraInfo.SupportedFormats` is an
+  `[ObservableProperty]` populated lazily once `LiveCameraPreview`
+  opens the camera and reads `MediaFrameSource.SupportedFormats`. The
+  picker subscribes to a new `LiveCameraPreview.FormatsAvailable`
+  event and forwards the list (sorted descending by resolution then
+  FPS, deduplicated) onto the bound `UsbCameraInfo`. The
+  `PreferredFormat` DP is a culture-invariant hint: when set, the
+  preview calls `MediaFrameSource.SetFormatAsync` for the matching
+  format before starting the reader; if no exact match, the preview
+  falls back silently to the device default. Forwarded through
+  `LabelUsbCameraPicker`. Sample app shows a `ComboBox` bound to
+  `Value.SupportedFormats` ↔ `PreferredFormat` to demonstrate the
+  end-to-end flow. Closes the §3.1 / §3.2 v2 items in the picker
+  roadmap.
 - **`UsbCameraPicker.ShowLivePreview`** + companion `PreviewHeight` DP.
   When `ShowLivePreview="True"` and a camera is selected, the picker
   renders a live preview pane below the dropdown driven by an internal

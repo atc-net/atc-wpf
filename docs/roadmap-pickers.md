@@ -210,7 +210,7 @@ Atc.Wpf.Hardware/
 | `Services/UsbCameraService.cs` — **MediaFoundation via WinRT** `DeviceInformation.FindAllAsync(DeviceClass.VideoCapture)` + shared `DeviceWatcherHost`; reads `EnclosureLocation.Panel` for orientation | ✅ |
 | Round-trips cleanly: persisted `DeviceId` can be passed straight to `MediaCaptureInitializationSettings.VideoDeviceId` by consumers | ✅ |
 | **In-use detection** — passive via `InterfaceEnabled=false` → `DeviceState.InUse`; active "Test camera" probe deferred to v2 (opening MediaCapture is heavyweight) | 🟡 |
-| Format enumeration (`MediaCapture.VideoDeviceController`) — lazy, deferred to v2 | ⬜ |
+| Format enumeration — `Models/UsbCameraFormat.cs` (Width/Height/FrameRate/Subtype record); `UsbCameraInfo.SupportedFormats` populated lazily from `MediaFrameSource.SupportedFormats` after the live preview opens (sorted desc by resolution then FPS); surfaces via `LiveCameraPreview.FormatsAvailable` event | ✅ |
 
 ### 3.2 Control: `UsbCameraPicker`
 
@@ -220,7 +220,7 @@ Atc.Wpf.Hardware/
 | `Pickers/UsbCameraPicker.xaml.cs` with DPs: `Value`, `WatermarkText`, `ShowRefreshButton`, `AutoRefreshOnDeviceChange`, `ClearValueOnDisconnect`, `AutoRebindOnReconnect`, `AutoSelectFirstAvailable`, `ItemTemplate` | ✅ |
 | `RoutedEvent` `ValueChanged` + `DeviceLost` + `DeviceReconnected` | ✅ |
 | Live preview pane (`ShowLivePreview` / `PreviewHeight` DPs, internal `LiveCameraPreview` control using `MediaCapture` + `MediaFrameReader` → `WriteableBitmap`, no `AllowUnsafeBlocks`); permission-denied + "in use by another app" surfaced as localized inline messages | ✅ |
-| `PreferredFormat` DP for picking a specific resolution/FPS | ⏸️ *parked v2* |
+| `PreferredFormat` DP (`UsbCameraFormat?`) — flowed into `MediaFrameSource.SetFormatAsync` when the preview opens; falls back to device default if no exact match. Forwarded through `LabelUsbCameraPicker`. Sample exposes a resolution `ComboBox` bound to `Value.SupportedFormats` ↔ `PreferredFormat` | ✅ |
 | `Internal/UsbCameraPickerAutomationPeer.cs` | ✅ |
 | `Pickers/UsbCameraPicker_Readme.md` | ✅ |
 

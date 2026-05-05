@@ -33,4 +33,10 @@ public partial class UsbCameraPickerDemoViewModel : ViewModelBase
     [PropertyDisplay("Preview height", "Preview", 2)]
     [ObservableProperty]
     private double previewHeight = 240;
+
+    [ObservableProperty]
+    private UsbCameraInfo? selectedCamera;
+
+    [ObservableProperty]
+    private UsbCameraFormat? preferredFormat;
 }

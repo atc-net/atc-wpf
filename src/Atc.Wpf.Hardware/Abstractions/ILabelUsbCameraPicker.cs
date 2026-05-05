@@ -18,5 +18,7 @@ public interface ILabelUsbCameraPicker : ILabelControl
 
     double PreviewHeight { get; set; }
 
+    UsbCameraFormat? PreferredFormat { get; set; }
+
     string WatermarkText { get; set; }
 }

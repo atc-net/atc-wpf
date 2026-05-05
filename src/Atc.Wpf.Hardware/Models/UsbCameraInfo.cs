@@ -25,6 +25,9 @@ public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
     [ObservableProperty]
     private DeviceState state = DeviceState.Unknown;
 
+    [ObservableProperty]
+    private IReadOnlyList<UsbCameraFormat>? supportedFormats;
+
     public override string ToString()
         => Panel is CameraPanel.Unknown
             ? FriendlyName

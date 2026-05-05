@@ -31,6 +31,20 @@ public partial class LabelUsbCameraPicker : ILabelUsbCameraPicker
     [DependencyProperty(DefaultValue = 240.0)]
     private double previewHeight;
 
+    public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
+        nameof(PreferredFormat),
+        typeof(UsbCameraFormat),
+        typeof(LabelUsbCameraPicker),
+        new FrameworkPropertyMetadata(
+            defaultValue: null,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public UsbCameraFormat? PreferredFormat
+    {
+        get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
+        set => SetValue(PreferredFormatProperty, value);
+    }
+
     public event EventHandler<ValueChangedEventArgs<UsbCameraInfo?>>? LostFocusValid;
 
     public event EventHandler<ValueChangedEventArgs<UsbCameraInfo?>>? LostFocusInvalid;
