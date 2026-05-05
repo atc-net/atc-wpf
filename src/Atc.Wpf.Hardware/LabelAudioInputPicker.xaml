@@ -33,6 +33,8 @@
             AutoRefreshOnDeviceChange="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=AutoRefreshOnDeviceChange}"
             AutoSelectFirstAvailable="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=AutoSelectFirstAvailable}"
             ClearValueOnDisconnect="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=ClearValueOnDisconnect}"
+            PreviewHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=PreviewHeight}"
+            ShowLivePreview="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=ShowLivePreview}"
             ShowRefreshButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=ShowRefreshButton}"
             ValueChanged="OnValueChanged"
             WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelAudioInputPicker}}, Path=WatermarkText}"

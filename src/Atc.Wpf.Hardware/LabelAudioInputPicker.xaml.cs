@@ -25,6 +25,12 @@ public partial class LabelAudioInputPicker : ILabelAudioInputPicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    [DependencyProperty(DefaultValue = false)]
+    private bool showLivePreview;
+
+    [DependencyProperty(DefaultValue = 120.0)]
+    private double previewHeight;
+
     public event EventHandler<ValueChangedEventArgs<AudioDeviceInfo?>>? LostFocusValid;
 
     public event EventHandler<ValueChangedEventArgs<AudioDeviceInfo?>>? LostFocusInvalid;

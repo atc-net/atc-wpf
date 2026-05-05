@@ -172,4 +172,16 @@
   <data name="PreviewPermissionDenied" xml:space="preserve">
     <value>Adgang til kamera nægtet</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="AudioPreviewUnavailable" xml:space="preserve">
+    <value>Lydforhåndsvisning er ikke tilgængelig</value>
+  </data>
+  <data name="AudioPermissionDenied" xml:space="preserve">
+    <value>Adgang til mikrofon nægtet</value>
+  </data>
 </root>

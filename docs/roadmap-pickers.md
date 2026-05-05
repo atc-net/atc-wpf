@@ -435,12 +435,12 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 
 | Task | Status |
 |------|--------|
-| `Pickers/Internal/LiveAudioInputMeter.xaml(.cs)` — `UserControl` with `DeviceId` / `IsActive` DPs | ⬜ |
-| Capture pipeline: `AudioGraph` + `AudioDeviceInputNode` (selected device) + `AudioFrameOutputNode` | ⬜ |
-| Sample extraction: read float samples per quantum (~10 ms), maintain ring buffer for waveform display | ⬜ |
-| Visual: scrolling polyline waveform + horizontal peak-level bar (RMS over recent samples) updated at 30 fps | ⬜ |
-| Lifecycle: start on `Loaded` + `DeviceId` change + `IsActive=true`; stop on `Unloaded` + `IsActive=false` + `Dispose` | ⬜ |
-| Error fallbacks: `UnauthorizedAccessException` → "Microphone access denied"; other errors → "Audio preview unavailable" | ⬜ |
+| `Pickers/Internal/LiveAudioInputMeter.xaml(.cs)` — `UserControl` with `DeviceId` / `IsActive` DPs | ✅ |
+| Capture pipeline: `AudioGraph` + `AudioDeviceInputNode` (selected device) + `AudioFrameOutputNode` | ✅ |
+| Sample extraction: shared `AudioBufferAccess` helper bridges `IMemoryBufferByteAccess` to a managed `Span<float>`; per-quantum peak pushed into a 200-slot ring buffer | ✅ |
+| Visual: mirrored scrolling polylines (top + bottom of midline) + side peak-level bar updated at ~30 fps via `DispatcherTimer` | ✅ |
+| Lifecycle: start on `Loaded` + `DeviceId` change + `IsActive=true`; stop on `Unloaded` + `IsActive=false` + `Dispose` | ✅ |
+| Error fallbacks: `UnauthorizedAccessException` → "Microphone access denied"; other errors → "Audio preview unavailable" | ✅ |
 
 ### 9.3 LiveAudioOutputTester (speakers)
 
@@ -458,28 +458,30 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 
 | Task | Status |
 |------|--------|
-| `AudioInputPicker`: `ShowLivePreview` + `PreviewHeight` DPs, preview row in XAML, lifecycle bound to `Value.DeviceId` | ⬜ |
+| `AudioInputPicker`: `ShowLivePreview` + `PreviewHeight` DPs, preview row in XAML, lifecycle bound to `Value.DeviceId` | ✅ |
 | `AudioOutputPicker`: same DPs + tester row | ⬜ |
-| `LabelAudioInputPicker` / `LabelAudioOutputPicker`: forward both DPs | ⬜ |
-| `ILabelAudioInputPicker` / `ILabelAudioOutputPicker`: surface added | ⬜ |
+| `LabelAudioInputPicker` forwards both DPs | ✅ |
+| `LabelAudioOutputPicker` forwards both DPs | ⬜ |
+| `ILabelAudioInputPicker` surface added | ✅ |
+| `ILabelAudioOutputPicker` surface added | ⬜ |
 
 ### 9.5 Sample app
 
 | Task | Status |
 |------|--------|
-| `AudioInputPickerDemoViewModel`: add `ShowLivePreview` / `PreviewHeight` `[PropertyDisplay]` toggles | ⬜ |
+| `AudioInputPickerDemoViewModel`: add `ShowLivePreview` / `PreviewHeight` `[PropertyDisplay]` toggles | ✅ |
 | `AudioOutputPickerDemoViewModel`: same | ⬜ |
-| Sample views bind the new DPs | ⬜ |
+| Sample views bind the new DPs (input ✅, output ⬜) | 🟡 |
 
 ### 9.6 Localisation
 
 | Task | Status |
 |------|--------|
-| `Test` (button label) — invariant + `da-DK` + `de-DE` | ⬜ |
-| `Stop` (button label) — invariant + `da-DK` + `de-DE` | ⬜ |
-| `AudioPreviewUnavailable` — invariant + `da-DK` + `de-DE` | ⬜ |
-| `AudioPermissionDenied` — invariant + `da-DK` + `de-DE` | ⬜ |
-| `Miscellaneous.Designer.cs` regenerate or manually update | ⬜ |
+| `Test` (button label) — invariant + `da-DK` + `de-DE` | ✅ |
+| `Stop` (button label) — invariant + `da-DK` + `de-DE` | ✅ |
+| `AudioPreviewUnavailable` — invariant + `da-DK` + `de-DE` | ✅ |
+| `AudioPermissionDenied` — invariant + `da-DK` + `de-DE` | ✅ |
+| `Miscellaneous.Designer.cs` regenerated | ✅ |
 
 ### 9.7 Tests
 
