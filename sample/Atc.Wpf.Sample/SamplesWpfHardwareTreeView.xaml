@@ -52,6 +52,9 @@
             <sample:SampleTreeViewItem
                 Header="PrinterPicker"
                 SamplePath="SamplesWpfHardware.Pickers.PrinterPickerView" />
+            <sample:SampleTreeViewItem
+                Header="DisplayPicker"
+                SamplePath="SamplesWpfHardware.Pickers.DisplayPickerView" />
         </TreeViewItem>
         <TreeViewItem Header="LabelControls">
             <sample:SampleTreeViewItem
@@ -90,6 +93,9 @@
             <sample:SampleTreeViewItem
                 Header="LabelPrinterPicker"
                 SamplePath="SamplesWpfHardware.LabelControls.LabelPrinterPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelDisplayPicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelDisplayPickerView" />
         </TreeViewItem>
     </TreeViewItem>
 

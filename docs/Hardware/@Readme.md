@@ -13,7 +13,7 @@ Hardware picker controls for selecting connected serial ports, USB devices, USB 
 
 ## Overview
 
-`Atc.Wpf.Hardware` provides twelve picker controls, each with a labeled variant:
+`Atc.Wpf.Hardware` provides thirteen picker controls, each with a labeled variant:
 
 - `SerialPortPicker` / `LabelSerialPortPicker` — select a serial / COM port
 - `UsbPortPicker` / `LabelUsbPortPicker` — select a connected USB device
@@ -27,8 +27,9 @@ Hardware picker controls for selecting connected serial ports, USB devices, USB 
 - `WindowPicker` / `LabelWindowPicker` — inspection picker for top-level OS windows
 - `NetworkAdapterPicker` / `LabelNetworkAdapterPicker` — select a NIC / Wi-Fi / VPN / loopback adapter
 - `PrinterPicker` / `LabelPrinterPicker` — select an installed printer / print queue
+- `DisplayPicker` / `LabelDisplayPicker` — select a connected display / monitor
 
-The six WinRT-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker`, `ProcessPicker`, `WindowPicker`, `NetworkAdapterPicker`, and `PrinterPicker` use a `DispatcherTimer` poll (default 2 s, configurable). `TimeZonePicker` is a static list. The consuming app reads the same `DeviceState` shape regardless of source — hot-plug, disconnect and in-use changes update the picker live so the user never has to click *Refresh* and never picks a device that's silently unusable.
+The six WinRT-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker`, `ProcessPicker`, `WindowPicker`, `NetworkAdapterPicker`, `PrinterPicker`, and `DisplayPicker` use a `DispatcherTimer` poll (default 2 s, configurable). `TimeZonePicker` is a static list. The consuming app reads the same `DeviceState` shape regardless of source — hot-plug, disconnect and in-use changes update the picker live so the user never has to click *Refresh* and never picks a device that's silently unusable.
 
 ## Quick Reference
 
@@ -46,6 +47,7 @@ The six WinRT-backed pickers share infrastructure (`DeviceWatcherHost`) using `W
 | `WindowPicker` | `TopLevelWindowInfo?` | `EnumWindows` P/Invoke + 2 s polling |
 | `NetworkAdapterPicker` | `NetworkAdapterInfo?` | `NetworkInterface.GetAllNetworkInterfaces()` + 2 s polling |
 | `PrinterPicker` | `PrinterInfo?` | `LocalPrintServer.GetPrintQueues()` + 2 s polling |
+| `DisplayPicker` | `DisplayInfo?` | `EnumDisplayMonitors` + `GetMonitorInfo` P/Invoke + 2 s polling |
 
 ## Device-State UX
 
