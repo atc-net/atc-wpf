@@ -137,7 +137,7 @@ Atc.Wpf.Hardware/
 
 | Task | Status |
 |------|--------|
-| `SerialPortServiceTests` (with stubbed `DeviceWatcher` — WinRT-shaped) | ⬜ *deferred — needs WinRT mock harness* |
+| `SerialPortServiceTests` — driven via `FakeDeviceWatcherHost` (Added/Removed/EnumerationCompleted, RefreshAsync, idempotent Start/Stop, Dispose) | ✅ |
 | `SerialPortInfoTests` (POCO, INPC) | ✅ |
 | `UsbIdParserTests` (VID/PID extraction) | ✅ |
 
@@ -190,7 +190,7 @@ Atc.Wpf.Hardware/
 
 | Task | Status |
 |------|--------|
-| `UsbDeviceServiceTests` (filter logic with mocked DeviceInformation) | ⬜ *deferred — needs WinRT mock harness* |
+| `UsbDeviceServiceTests` — driven via `FakeDeviceWatcherHost` factory; covers ClassFilter rebuild, started-state preservation, RefreshAsync, IsEnabled→InUse mapping | ✅ |
 | `UsbDeviceInfoTests` (POCO, INPC, ToString) | ✅ |
 
 ---
@@ -243,7 +243,7 @@ Atc.Wpf.Hardware/
 
 | Task | Status |
 |------|--------|
-| `UsbCameraServiceTests` (with mocked `DeviceInformation`) | ⬜ *deferred — needs WinRT mock harness* |
+| `UsbCameraServiceTests` — driven via `FakeDeviceWatcherHost`; covers Panel mapping (incl. null → Unknown), JustConnected vs Available, RefreshAsync | ✅ |
 | `UsbCameraInfoTests` (POCO, INPC, ToString) | ✅ |
 
 ---
@@ -348,7 +348,7 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 | Wire up `DeviceStateChanged` on all three pickers | ✅ |
 | Wire up the seven new DPs on all three pickers | ✅ |
 | Sample app: dedicated demo view "Hot-plug & in-use" with two USB-serial dongles or a camera to demonstrate state transitions visually | ✅ |
-| Tests: simulate connect/disconnect/in-use sequences against the stubbed services and assert event firing + visual state | ⬜ |
+| Tests: simulate connect/disconnect/in-use sequences via `FakeDeviceWatcherHost`; covers Available → Disconnected → Available rebinding and IsEnabled→InUse for serial / USB / camera / audio / Bluetooth services (34 tests) | ✅ |
 
 ---
 
