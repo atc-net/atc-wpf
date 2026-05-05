@@ -158,7 +158,7 @@ Atc.Wpf.Hardware/
 | `Services/UsbDeviceService.cs` — `DeviceWatcher` with USB device-interface AQS (`InterfaceClassGuid={a5dcbf10-...}`); requests `System.Devices.ClassGuid` and `System.Devices.InterfaceEnabled` | ✅ |
 | Hot-plug via shared `DeviceWatcherHost` (no `WM_DEVICECHANGE` plumbing) | ✅ |
 | **In-use detection** — passive: maps `InterfaceEnabled=false` → `DeviceState.InUse`; active probe via `UsbDevice.FromIdAsync` deferred (different driver classes need different selectors) | 🟡 |
-| Filter DSL → AQS translation (currently filter is exposed but not translated to AQS — client-side filtering only for v1) | 🟡 |
+| Filter DSL → AQS translation (`UsbDeviceClassFilter` → `System.Devices.InterfaceClassGuid:="{guid}" OR …`; rebuilds the watcher when filter changes) | ✅ |
 
 ### 2.2 Control: `UsbPortPicker`
 
