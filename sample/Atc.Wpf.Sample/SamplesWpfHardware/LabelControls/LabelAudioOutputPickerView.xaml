@@ -1,0 +1,29 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfHardware.LabelControls.LabelAudioOutputPickerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="700"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
+
+                <atc:LabelAudioOutputPicker
+                    LabelText="Speakers"
+                    WatermarkText="Select audio output…" />
+
+                <atc:LabelAudioOutputPicker
+                    IsMandatory="True"
+                    LabelText="Mandatory speakers"
+                    ShowAsteriskOnMandatory="True" />
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
+</UserControl>

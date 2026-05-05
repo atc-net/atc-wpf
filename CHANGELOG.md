@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`AudioInputPicker` / `AudioOutputPicker`** in `Atc.Wpf.Hardware` —
+  microphone and speaker pickers built on the same `DeviceWatcherHost`
+  plumbing as the existing pickers, using `DeviceClass.AudioCapture` and
+  `DeviceClass.AudioRender`. Both surface live state (Available / InUse /
+  Disconnected / JustConnected), raise `ValueChanged` / `DeviceLost` /
+  `DeviceReconnected` / `DeviceStateChanged`, and ship labeled wrappers
+  (`LabelAudioInputPicker`, `LabelAudioOutputPicker`) with mandatory +
+  disconnected-device validation. The system default endpoint is rendered
+  with a ★ in the dropdown. New `AudioDeviceInfo` model and `AudioDeviceKind`
+  enum. Strings localised for `en-US` / `da-DK` / `de-DE`.
+- **USB `ClassFilter` → AQS translation** in `Atc.Wpf.Hardware` —
+  `UsbDeviceClassFilter` flags (Hid / Imaging / Audio / Printer / MassStorage
+  / Communication) now translate to a real `System.Devices.InterfaceClassGuid`
+  AQS query OR-joining the relevant device interface GUIDs, and the
+  `DeviceWatcher` rebuilds when the filter changes. Previously the filter
+  was stored but never applied — narrowing happens at the OS level now.
 - **`Atc.Wpf.Hardware` package** — new assembly providing three hardware
   picker controls (`SerialPortPicker`, `UsbPortPicker`, `UsbCameraPicker`)
   and their labeled wrappers (`LabelSerialPortPicker`, `LabelUsbPortPicker`,

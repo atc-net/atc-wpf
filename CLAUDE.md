@@ -13,7 +13,7 @@ ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM 
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
 - **Atc.Wpf.Network** - Network scanning and discovery controls (wraps external `Atc.Network`)
-- **Atc.Wpf.Hardware** - Hardware pickers (SerialPortPicker, UsbPortPicker, UsbCameraPicker) with live device-state detection. TFM `net10.0-windows10.0.19041.0` (uses `Windows.Devices.Enumeration.DeviceWatcher`)
+- **Atc.Wpf.Hardware** - Hardware pickers (SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker) with live device-state detection. TFM `net10.0-windows10.0.19041.0` (uses `Windows.Devices.Enumeration.DeviceWatcher`)
 - **Atc.Wpf.UndoRedo** - Undo/redo history view and keyboard behavior (wraps external `Atc.UndoRedo`)
 - **Atc.Wpf.Controls.Sample** - Controls for building sample applications
 
@@ -148,7 +148,7 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 | Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls, Selectors, Pickers |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications, Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
-| Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker |
+| Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker |
 | Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
 | Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demos |
 | Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |
