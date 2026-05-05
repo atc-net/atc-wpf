@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **WinRT-free `IDeviceWatcherHost` abstraction + `FakeDeviceWatcherHost`
+  test harness** for `Atc.Wpf.Hardware`. The concrete `DeviceWatcherHost`
+  now implements `IDeviceWatcherHost` and maps WinRT `DeviceInformation`
+  to a `DeviceSnapshot` POCO before raising `Added` / `Updated` /
+  `Removed` / `EnumerationCompleted`. Each WinRT-backed service
+  (Serial / USB / UsbCamera / Audio / Bluetooth) accepts the host (or a
+  `Func<string, IDeviceWatcherHost>` factory for `UsbDeviceService` to
+  support its filter-rebuild flow) via an internal constructor. The
+  test project ships a `FakeDeviceWatcherHost` that drives event
+  scenarios deterministically — retires the four "deferred — needs
+  WinRT mock harness" items in the roadmap (§1.5, §2.5, §3.5, §4.8).
+  Adds 34 service tests (95 total in `Atc.Wpf.Hardware.Tests`, up from
+  61) covering Added / Removed / RefreshAsync / Dispose / idempotent
+  Start/Stop / Available↔Disconnected rebinding / IsEnabled→InUse
+  mapping. No public API change.
 - **`DisplayPicker`** in `Atc.Wpf.Hardware` — picker for connected
   monitors/displays. Uses Win32 `EnumDisplayMonitors` + `GetMonitorInfo`
   (P/Invoked from user32.dll, with the same DllImport pattern as
