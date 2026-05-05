@@ -37,6 +37,9 @@
             <sample:SampleTreeViewItem
                 Header="TimeZonePicker"
                 SamplePath="SamplesWpfHardware.Pickers.TimeZonePickerView" />
+            <sample:SampleTreeViewItem
+                Header="BluetoothDevicePicker"
+                SamplePath="SamplesWpfHardware.Pickers.BluetoothDevicePickerView" />
         </TreeViewItem>
         <TreeViewItem Header="LabelControls">
             <sample:SampleTreeViewItem
@@ -60,6 +63,9 @@
             <sample:SampleTreeViewItem
                 Header="LabelTimeZonePicker"
                 SamplePath="SamplesWpfHardware.LabelControls.LabelTimeZonePickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelBluetoothDevicePicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelBluetoothDevicePickerView" />
         </TreeViewItem>
     </TreeViewItem>
 
