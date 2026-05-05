@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`AudioInputPicker.ShowLivePreview`** + **`AudioOutputPicker.ShowLivePreview`**
+  with a shared `PreviewHeight` DP. When enabled and a device is selected,
+  the picker shows a small live pane below the dropdown — a scrolling
+  waveform + side peak-level bar. Both backed by WinRT `AudioGraph` (no
+  NAudio dependency).
+
+  `AudioInputPicker` opens the selected microphone via
+  `AudioDeviceInputNode` + `AudioFrameOutputNode`; per-quantum peaks
+  are pushed into a 200-slot ring buffer rendered at ~30 fps as
+  mirrored top/bottom polylines. Permission denial and "device held
+  by another app" surface as localized inline messages
+  (`MicrophonePermissionDenied` / `AudioPreviewUnavailable`).
+
+  `AudioOutputPicker` adds a `Test` / `Stop` button next to the
+  waveform: clicking `Test` opens the selected speakers via
+  `AudioGraph.PrimaryRenderDevice` + `AudioFrameInputNode` and feeds
+  a 1 kHz sine for ~3 s — Left → Right → Both stereo, with a 30 ms
+  linear fade in/out per segment to suppress click artefacts. The
+  same buffer drives the visualisation, so the picker shows exactly
+  what's being rendered. The fade-envelope math lives in
+  `SineToneEnvelope` so it stays unit-tested independently of the
+  `AudioGraph` runtime.
+
+  Both DPs are forwarded through `LabelAudioInputPicker` and
+  `LabelAudioOutputPicker`. `Test`, `Stop`, `AudioPreviewUnavailable`,
+  and `AudioPermissionDenied` localised across en-US / da-DK / de-DE.
+
+  Buffer access uses the WinRT `IMemoryBufferByteAccess` COM interface
+  (the only safe path to the raw audio bytes — `AudioBuffer` has no
+  `CopyToBuffer(IBuffer)` overload like `SoftwareBitmap` does), so
+  `<AllowUnsafeBlocks>` is now enabled at the project level. `unsafe`
+  is confined to `IMemoryBufferByteAccess.cs` and `AudioBufferAccess.cs`;
+  the rest of the assembly stays in safe code.
+
+  Closes the §9 audio live preview roadmap. 8 new unit tests for the
+  sine-tone envelope (segment boundaries, fade-in/out linearity,
+  past-end silence, edge cases).
 - **`UsbCameraPicker.PreferredFormat`** + lazy supported-format
   enumeration. `UsbCameraFormat` is a new record (Width / Height /
   FrameRate / Subtype) and `UsbCameraInfo.SupportedFormats` is an

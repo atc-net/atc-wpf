@@ -14,5 +14,9 @@ public interface ILabelAudioOutputPicker : ILabelControl
 
     bool AutoSelectFirstAvailable { get; set; }
 
+    bool ShowLivePreview { get; set; }
+
+    double PreviewHeight { get; set; }
+
     string WatermarkText { get; set; }
 }
