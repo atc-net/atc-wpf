@@ -67,6 +67,12 @@
   <data name="UsbCamera" xml:space="preserve">
     <value>USB-kamera</value>
   </data>
+  <data name="AudioInput" xml:space="preserve">
+    <value>Lydindgang</value>
+  </data>
+  <data name="AudioOutput" xml:space="preserve">
+    <value>Lydudgang</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Vælg seriel port…</value>
   </data>
@@ -75,6 +81,12 @@
   </data>
   <data name="SelectCamera" xml:space="preserve">
     <value>Vælg kamera…</value>
+  </data>
+  <data name="SelectAudioInput" xml:space="preserve">
+    <value>Vælg lydindgang…</value>
+  </data>
+  <data name="SelectAudioOutput" xml:space="preserve">
+    <value>Vælg lydudgang…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Opdater</value>
@@ -106,4 +118,4 @@
   <data name="TestCamera" xml:space="preserve">
     <value>Test kamera</value>
   </data>
-</root>
+</root>

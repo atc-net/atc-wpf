@@ -78,6 +78,18 @@ namespace Atc.Wpf.Hardware.Resources {
             }
         }
 
+        public static string AudioInput {
+            get {
+                return ResourceManager.GetString("AudioInput", resourceCulture);
+            }
+        }
+
+        public static string AudioOutput {
+            get {
+                return ResourceManager.GetString("AudioOutput", resourceCulture);
+            }
+        }
+
         public static string SelectSerialPort {
             get {
                 return ResourceManager.GetString("SelectSerialPort", resourceCulture);
@@ -93,6 +105,18 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string SelectCamera {
             get {
                 return ResourceManager.GetString("SelectCamera", resourceCulture);
+            }
+        }
+
+        public static string SelectAudioInput {
+            get {
+                return ResourceManager.GetString("SelectAudioInput", resourceCulture);
+            }
+        }
+
+        public static string SelectAudioOutput {
+            get {
+                return ResourceManager.GetString("SelectAudioOutput", resourceCulture);
             }
         }
 

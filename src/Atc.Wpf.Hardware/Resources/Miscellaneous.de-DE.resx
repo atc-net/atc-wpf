@@ -67,6 +67,12 @@
   <data name="UsbCamera" xml:space="preserve">
     <value>USB-Kamera</value>
   </data>
+  <data name="AudioInput" xml:space="preserve">
+    <value>Audioeingang</value>
+  </data>
+  <data name="AudioOutput" xml:space="preserve">
+    <value>Audioausgang</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Seriellen Anschluss auswählen…</value>
   </data>
@@ -75,6 +81,12 @@
   </data>
   <data name="SelectCamera" xml:space="preserve">
     <value>Kamera auswählen…</value>
+  </data>
+  <data name="SelectAudioInput" xml:space="preserve">
+    <value>Audioeingang auswählen…</value>
+  </data>
+  <data name="SelectAudioOutput" xml:space="preserve">
+    <value>Audioausgang auswählen…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Aktualisieren</value>
@@ -106,4 +118,4 @@
   <data name="TestCamera" xml:space="preserve">
     <value>Kamera testen</value>
   </data>
-</root>
+</root>
