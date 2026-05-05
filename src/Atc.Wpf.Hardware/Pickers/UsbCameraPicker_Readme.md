@@ -36,6 +36,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first camera on first appear |
 | `ShowLivePreview` | `bool` | `false` | Show a live preview pane below the dropdown for the selected camera |
 | `PreviewHeight` | `double` | `240` | Height of the preview pane in DIPs (only meaningful when `ShowLivePreview="True"`) |
+| `PreferredFormat` | `UsbCameraFormat?` | `null` | Hint a specific resolution/FPS; applied via `MediaFrameSource.SetFormatAsync` when the preview opens. Silently falls back to the device default if no exact match exists |
 | `ItemTemplate` | `DataTemplate?` | default | Override default item visuals |
 
 ## Routed Events
@@ -51,7 +52,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 - `Value.Panel` reports physical orientation (Front / Back / External) when the OS provides it.
 - `Value.DeviceId` is the WinRT device ID — pass to `MediaCaptureInitializationSettings.VideoDeviceId` to open the camera.
 - **Live preview** (`ShowLivePreview="True"`) opens the selected camera via `MediaCapture` + `MediaFrameReader` and renders frames into a `WriteableBitmap` (no `AllowUnsafeBlocks` required). The first activation triggers the OS webcam-permission prompt; if the user denies access or the camera is held by another process, the preview pane shows a localized error ("Camera access denied" / "Camera preview unavailable") instead of crashing the picker. The preview restarts when `Value` changes and stops on `Unloaded` / `ShowLivePreview="False"` / `Dispose`.
-- Resolution/FPS pickers and an explicit active "Test camera" probe remain v2 — opening `MediaCapture` at a non-default format is its own design discussion.
+- **Supported formats** are populated lazily on `Value.SupportedFormats` after the live preview opens the camera (the picker subscribes to the preview's `FormatsAvailable` event). The list is sorted descending by resolution then FPS. Bind a separate `ComboBox` to `Value.SupportedFormats` and to `PreferredFormat` to let users pick a resolution.
+- An explicit active "Test camera" probe remains v2 — for now, opening live preview is itself the test.
 
 ## Related Controls
 

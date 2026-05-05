@@ -64,6 +64,20 @@ public partial class UsbCameraPicker
     [DependencyProperty(DefaultValue = 240.0)]
     private double previewHeight;
 
+    public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
+        nameof(PreferredFormat),
+        typeof(UsbCameraFormat),
+        typeof(UsbCameraPicker),
+        new FrameworkPropertyMetadata(
+            defaultValue: null,
+            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public UsbCameraFormat? PreferredFormat
+    {
+        get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
+        set => SetValue(PreferredFormatProperty, value);
+    }
+
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),
@@ -127,6 +141,8 @@ public partial class UsbCameraPicker
 
         InitializeComponent();
 
+        PartLivePreview.FormatsAvailable += OnPreviewFormatsAvailable;
+
         Cameras = service.Cameras;
         ApplyResolvedItemTemplate();
 
@@ -186,6 +202,16 @@ public partial class UsbCameraPicker
 
     protected override AutomationPeer OnCreateAutomationPeer()
         => new UsbCameraPickerAutomationPeer(this);
+
+    private void OnPreviewFormatsAvailable(
+        object? sender,
+        CameraFormatsAvailableEventArgs e)
+    {
+        if (Value is not null)
+        {
+            Value.SupportedFormats = e.Formats;
+        }
+    }
 
     private static void OnItemTemplateChanged(
         DependencyObject d,

@@ -27,6 +27,20 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
         set => SetValue(IsActiveProperty, value);
     }
 
+    public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
+        nameof(PreferredFormat),
+        typeof(UsbCameraFormat),
+        typeof(LiveCameraPreview),
+        new PropertyMetadata(defaultValue: null, OnPreferredFormatChanged));
+
+    public UsbCameraFormat? PreferredFormat
+    {
+        get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
+        set => SetValue(PreferredFormatProperty, value);
+    }
+
+    public event EventHandler<CameraFormatsAvailableEventArgs>? FormatsAvailable;
+
     private Windows.Media.Capture.MediaCapture? mediaCapture;
     private Windows.Media.Capture.Frames.MediaFrameReader? frameReader;
     private WriteableBitmap? renderTarget;
@@ -62,6 +76,16 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
     }
 
     private static void OnIsActiveChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is LiveCameraPreview p)
+        {
+            _ = p.RestartAsync();
+        }
+    }
+
+    private static void OnPreferredFormatChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
@@ -134,6 +158,14 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
                 ShowError(Miscellaneous.PreviewUnavailable);
                 return;
             }
+
+            var formats = ToCameraFormats(colorSource.SupportedFormats);
+            if (formats.Count > 0)
+            {
+                FormatsAvailable?.Invoke(this, new CameraFormatsAvailableEventArgs(formats));
+            }
+
+            await TryApplyPreferredFormatAsync(colorSource);
 
             var reader = await capture.CreateFrameReaderAsync(colorSource);
             reader.FrameArrived += OnFrameArrived;
@@ -318,4 +350,74 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
             PartError.Text = text;
             PartError.Visibility = Visibility.Visible;
         });
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Format enumeration must not crash the preview on transient errors.")]
+    private static IReadOnlyList<UsbCameraFormat> ToCameraFormats(
+        IReadOnlyList<Windows.Media.Capture.Frames.MediaFrameFormat> source)
+    {
+        var formats = new List<UsbCameraFormat>(source.Count);
+        foreach (var format in source)
+        {
+            try
+            {
+                if (format.VideoFormat is null)
+                {
+                    continue;
+                }
+
+                var fps = format.FrameRate.Denominator == 0
+                    ? 0
+                    : format.FrameRate.Numerator / (double)format.FrameRate.Denominator;
+
+                formats.Add(new UsbCameraFormat(
+                    Width: format.VideoFormat.Width,
+                    Height: format.VideoFormat.Height,
+                    FrameRate: fps,
+                    Subtype: format.Subtype ?? string.Empty));
+            }
+            catch (Exception)
+            {
+                // Skip malformed format entries.
+            }
+        }
+
+        return formats
+            .Distinct()
+            .OrderByDescending(f => f.Width)
+            .ThenByDescending(f => f.Height)
+            .ThenByDescending(f => f.FrameRate)
+            .ToArray();
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "SetFormatAsync may legitimately fail; the picker should keep working at the device default.")]
+    private async Task TryApplyPreferredFormatAsync(
+        Windows.Media.Capture.Frames.MediaFrameSource colorSource)
+    {
+        var preferred = PreferredFormat;
+        if (preferred is null)
+        {
+            return;
+        }
+
+        var match = colorSource.SupportedFormats.FirstOrDefault(f =>
+            f.VideoFormat is not null &&
+            f.VideoFormat.Width == preferred.Width &&
+            f.VideoFormat.Height == preferred.Height &&
+            f.FrameRate.Denominator != 0 &&
+            System.Math.Abs((f.FrameRate.Numerator / (double)f.FrameRate.Denominator) - preferred.FrameRate) < 0.5);
+
+        if (match is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await colorSource.SetFormatAsync(match);
+        }
+        catch (Exception)
+        {
+            // Falling back to the device default is acceptable.
+        }
+    }
 }

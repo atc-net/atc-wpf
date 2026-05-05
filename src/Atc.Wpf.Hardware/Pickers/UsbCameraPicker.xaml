@@ -121,7 +121,8 @@
             <internal:LiveCameraPreview
                 x:Name="PartLivePreview"
                 DeviceId="{Binding RelativeSource={RelativeSource AncestorType=local:UsbCameraPicker}, Path=Value.DeviceId}"
-                IsActive="{Binding RelativeSource={RelativeSource AncestorType=local:UsbCameraPicker}, Path=ShowLivePreview}" />
+                IsActive="{Binding RelativeSource={RelativeSource AncestorType=local:UsbCameraPicker}, Path=ShowLivePreview}"
+                PreferredFormat="{Binding RelativeSource={RelativeSource AncestorType=local:UsbCameraPicker}, Path=PreferredFormat}" />
         </Border>
     </atc:GridEx>
 </UserControl>

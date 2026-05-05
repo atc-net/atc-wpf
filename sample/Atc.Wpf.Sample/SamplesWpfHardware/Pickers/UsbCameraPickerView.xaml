@@ -18,10 +18,18 @@
                     AutoRefreshOnDeviceChange="{Binding AutoRefreshOnDeviceChange}"
                     AutoSelectFirstAvailable="{Binding AutoSelectFirstAvailable}"
                     ClearValueOnDisconnect="{Binding ClearValueOnDisconnect}"
+                    PreferredFormat="{Binding PreferredFormat, Mode=TwoWay}"
                     PreviewHeight="{Binding PreviewHeight}"
                     ShowLivePreview="{Binding ShowLivePreview}"
                     ShowRefreshButton="{Binding ShowRefreshButton}"
+                    Value="{Binding SelectedCamera, Mode=TwoWay}"
                     WatermarkText="{Binding WatermarkText}" />
+
+                <ComboBox
+                    DisplayMemberPath="."
+                    ItemsSource="{Binding SelectedCamera.SupportedFormats}"
+                    SelectedItem="{Binding PreferredFormat, Mode=TwoWay}"
+                    ToolTip="Resolution / FPS — populated lazily once live preview opens the camera" />
 
                 <atc:UsbCameraPicker />
 

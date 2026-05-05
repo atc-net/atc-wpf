@@ -35,4 +35,33 @@ public sealed class UsbCameraInfoTests
 
         Assert.Equal(expected, info.ToString());
     }
+
+    [Fact]
+    public void SupportedFormats_DefaultsToNullAndRaisesPropertyChanged()
+    {
+        var info = new UsbCameraInfo(
+            deviceId: "id",
+            friendlyName: "Cam",
+            panel: CameraPanel.Front,
+            isEnabled: true);
+
+        Assert.Null(info.SupportedFormats);
+
+        var raised = false;
+        info.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(UsbCameraInfo.SupportedFormats))
+            {
+                raised = true;
+            }
+        };
+
+        info.SupportedFormats = new[]
+        {
+            new UsbCameraFormat(1920, 1080, 30, "NV12"),
+        };
+
+        Assert.True(raised);
+        Assert.Single(info.SupportedFormats);
+    }
 }
