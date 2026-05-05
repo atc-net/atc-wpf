@@ -8,9 +8,10 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     private const int SineFrequencyHz = 1000;
     private const int FadeMilliseconds = 30;
     private const int SegmentMilliseconds = 1000;
-    private const int FrameKeepAliveDepth = 32;
-    private const int MaxQuantumMilliseconds = 100;
     private const int DrainMilliseconds = 500;
+    private const int InputSampleRate = 48000;
+    private const int InputChannelCount = 2;
+    private const int InputBitsPerSample = 32;
 
     public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
         nameof(DeviceId),
@@ -38,13 +39,6 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
     private readonly float[] ring = new float[RingCapacity];
     private readonly DispatcherTimer renderTimer;
-
-    // Holds the most recent FrameKeepAliveDepth AudioFrame instances so the GC doesn't
-    // collect their C# wrappers (and via the finalizer release the underlying COM objects)
-    // before the audio engine has consumed the queued buffer. Cleared on stop. Symptom
-    // of letting GC reclaim too eagerly: a single "click" from the very first frame,
-    // then silence.
-    private readonly Queue<Windows.Media.AudioFrame> inflightFrames = new(FrameKeepAliveDepth);
 
     private int ringHead;
     private float currentPeak;
@@ -223,33 +217,49 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
         outputNode = outputResult.DeviceOutputNode;
 
-        var encoding = graph.EncodingProperties;
-        sampleRate = encoding.SampleRate;
-        channelCount = encoding.ChannelCount;
+        var inputEncoding = BuildStereoFloatEncoding();
+
+        sampleRate = inputEncoding.SampleRate;
+        channelCount = inputEncoding.ChannelCount;
 
         Debug.WriteLine(
-            $"[LiveAudioOutputTester] graph encoding: subtype={encoding.Subtype} " +
-            $"sampleRate={encoding.SampleRate} channels={encoding.ChannelCount} " +
-            $"bitsPerSample={encoding.BitsPerSample} bitrate={encoding.Bitrate}");
+            $"[LiveAudioOutputTester] device encoding: subtype={graph.EncodingProperties.Subtype} " +
+            $"sampleRate={graph.EncodingProperties.SampleRate} " +
+            $"channels={graph.EncodingProperties.ChannelCount} | " +
+            $"input encoding: subtype={inputEncoding.Subtype} sampleRate={inputEncoding.SampleRate} " +
+            $"channels={inputEncoding.ChannelCount} bitsPerSample={inputEncoding.BitsPerSample}");
 
         perSegmentSamples = sampleRate * SegmentMilliseconds / 1000;
         totalSamples = perSegmentSamples * 3;
         fadeSamples = sampleRate * FadeMilliseconds / 1000;
         samplePosition = 0;
 
-        frameInputNode = graph.CreateFrameInputNode(encoding);
+        frameInputNode = graph.CreateFrameInputNode(inputEncoding);
         frameInputNode.AddOutgoingConnection(outputNode);
-        frameInputNode.OutgoingGain = 1.0;
-        outputNode.OutgoingGain = 1.0;
         frameInputNode.QuantumStarted += OnFrameInputQuantumStarted;
         frameInputNode.Start();
 
         Debug.WriteLine(
-            $"[LiveAudioOutputTester] frameInputNode.OutgoingGain={frameInputNode.OutgoingGain} " +
-            $"outputNode.OutgoingGain={outputNode.OutgoingGain} " +
-            $"primaryDevice={graph.PrimaryRenderDevice?.Name ?? "<null>"}");
+            $"[LiveAudioOutputTester] primaryDevice={graph.PrimaryRenderDevice?.Name ?? "<null>"}");
 
         return true;
+    }
+
+    /// <summary>
+    /// Use explicit stereo float encoding for the FrameInputNode regardless of the
+    /// device's native format. <c>graph.EncodingProperties</c> on multichannel hardware
+    /// (e.g. 7.1 Realtek) reports 8 channels, but writing Left=ch0/Right=ch1 with a
+    /// 7.1 channel mask routes those to the rear/side speakers — silent on stereo
+    /// setups. Stereo input lets the engine handle the up-mix correctly.
+    /// </summary>
+    private static Windows.Media.MediaProperties.AudioEncodingProperties BuildStereoFloatEncoding()
+    {
+        var encoding = Windows.Media.MediaProperties.AudioEncodingProperties.CreatePcm(
+            sampleRate: InputSampleRate,
+            channelCount: InputChannelCount,
+            bitsPerSample: InputBitsPerSample);
+        encoding.Subtype = Windows.Media.MediaProperties.MediaEncodingSubtypes.Float;
+        return encoding;
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Auto-stop must not bubble exceptions to the caller.")]
@@ -273,7 +283,6 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     {
         renderTimer.Stop();
         isPlaying = false;
-        inflightFrames.Clear();
 
         Debug.WriteLine(
             $"[LiveAudioOutputTester] stopping: quanta={quantumCount} frames={addFrameCount}");
@@ -332,7 +341,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Quantum-tick handler must not crash the audio graph.")]
-    [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "AudioFrameInputNode.AddFrame queues the frame for asynchronous playback. Disposing the AudioFrame synchronously inside the quantum handler invalidates its buffer before the audio engine reads it, which produces silent output. The GC reclaims the frame after the engine has consumed it.")]
+    [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "AddFrame queues the frame asynchronously; the engine takes ownership via the WinRT ABI. The canonical Windows-universal-samples / WPFAudioGraph pattern lets the local go out of scope without disposal.")]
     private void OnFrameInputQuantumStarted(
         Windows.Media.Audio.AudioFrameInputNode sender,
         Windows.Media.Audio.FrameInputNodeQuantumStartedEventArgs args)
@@ -362,8 +371,10 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
                 return;
             }
 
-            var samplesThisCall = ClampSamplesPerQuantum(requiredSamples);
-            var floatCount = samplesThisCall * (int)channelCount;
+            // Allocate the AudioFrame at exactly the byte size we'll write — that
+            // allocation size IS the buffer length the engine reads. Setting
+            // AudioBuffer.Length after-the-fact is unreliable under CsWinRT.
+            var floatCount = requiredSamples * (int)channelCount;
 
             Span<float> samples = stackalloc float[floatCount];
             FillToneSamples(samples);
@@ -375,35 +386,11 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
             AudioBufferAccess.WriteFloatSamples(frame, samples);
             sender.AddFrame(frame);
             addFrameCount++;
-
-            // Hold a managed reference to the most recent N frames so the GC doesn't
-            // dispose them via finalizer before the audio engine reads the queued buffer.
-            inflightFrames.Enqueue(frame);
-            while (inflightFrames.Count > FrameKeepAliveDepth)
-            {
-                inflightFrames.Dequeue();
-            }
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"[LiveAudioOutputTester] quantum exception: {ex}");
         }
-    }
-
-    private int ClampSamplesPerQuantum(int requiredSamples)
-    {
-        // Cap the quantum size so a large warmup `RequiredSamples` doesn't try to
-        // consume the entire 3-second tone in one frame.
-        var maxQuantum = (int)(sampleRate * MaxQuantumMilliseconds / 1000);
-        var samplesThisCall = System.Math.Min(requiredSamples, maxQuantum);
-
-        var remainingTone = (int)(totalSamples - samplePosition);
-        if (samplesThisCall > remainingTone)
-        {
-            samplesThisCall = remainingTone;
-        }
-
-        return samplesThisCall;
     }
 
     private void UpdateVisualisationRing(ReadOnlySpan<float> samples)

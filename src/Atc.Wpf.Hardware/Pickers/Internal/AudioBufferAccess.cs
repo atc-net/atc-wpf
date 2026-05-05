@@ -36,12 +36,12 @@ internal static class AudioBufferAccess
     }
 
     /// <summary>
-    /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer
-    /// and sets <c>AudioBuffer.Length</c> to the byte count written. The Length must be
-    /// set explicitly under CsWinRT — its default value of 0 makes <c>AddFrame</c>
-    /// throw <c>ArgumentException("Length must be greater than zero")</c> — and it must
-    /// be set <em>before</em> the <c>IMemoryBufferReference</c> is opened, otherwise
-    /// the property setter doesn't propagate back to the underlying WinRT buffer.
+    /// Writes <paramref name="source"/> floats into <paramref name="frame"/>'s buffer.
+    /// The <see cref="Windows.Media.AudioFrame"/> must be allocated at exactly
+    /// <c>source.Length * sizeof(float)</c> bytes — that allocation size <em>is</em>
+    /// the buffer length the audio engine will read. Do NOT set
+    /// <c>AudioBuffer.Length</c> after the fact; the setter is unreliable under
+    /// CsWinRT and the canonical UWP sample never touches it.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Audio buffer access must not crash the tester on transient errors.")]
     public static void WriteFloatSamples(
@@ -51,18 +51,6 @@ internal static class AudioBufferAccess
         try
         {
             using var buffer = frame.LockBuffer(Windows.Media.AudioBufferAccessMode.Write);
-
-            var capacity = buffer.Capacity;
-            var bytesToWrite = (uint)(source.Length * sizeof(float));
-            if (bytesToWrite > capacity)
-            {
-                bytesToWrite = capacity;
-            }
-
-            // Set Length BEFORE creating the IMemoryBufferReference. The order matters
-            // under CsWinRT: setting Length while a reference is open is a no-op.
-            buffer.Length = bytesToWrite;
-
             using var reference = buffer.CreateReference();
             WriteBytes(reference, source);
         }
