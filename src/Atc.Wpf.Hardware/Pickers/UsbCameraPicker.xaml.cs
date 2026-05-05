@@ -58,6 +58,12 @@ public partial class UsbCameraPicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    [DependencyProperty(DefaultValue = false)]
+    private bool showLivePreview;
+
+    [DependencyProperty(DefaultValue = 240.0)]
+    private double previewHeight;
+
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),

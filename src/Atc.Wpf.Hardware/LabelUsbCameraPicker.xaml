@@ -33,6 +33,8 @@
             AutoRefreshOnDeviceChange="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=AutoRefreshOnDeviceChange}"
             AutoSelectFirstAvailable="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=AutoSelectFirstAvailable}"
             ClearValueOnDisconnect="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=ClearValueOnDisconnect}"
+            PreviewHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=PreviewHeight}"
+            ShowLivePreview="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=ShowLivePreview}"
             ShowRefreshButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=ShowRefreshButton}"
             ValueChanged="OnValueChanged"
             WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelUsbCameraPicker}}, Path=WatermarkText}"

@@ -187,6 +187,24 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Camera access denied.
+        /// </summary>
+        public static string PreviewPermissionDenied {
+            get {
+                return ResourceManager.GetString("PreviewPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Camera preview unavailable.
+        /// </summary>
+        public static string PreviewUnavailable {
+            get {
+                return ResourceManager.GetString("PreviewUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Printer.
         /// </summary>
         public static string Printer {

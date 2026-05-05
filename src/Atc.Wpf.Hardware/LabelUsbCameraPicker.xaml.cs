@@ -25,6 +25,12 @@ public partial class LabelUsbCameraPicker : ILabelUsbCameraPicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    [DependencyProperty(DefaultValue = false)]
+    private bool showLivePreview;
+
+    [DependencyProperty(DefaultValue = 240.0)]
+    private double previewHeight;
+
     public event EventHandler<ValueChangedEventArgs<UsbCameraInfo?>>? LostFocusValid;
 
     public event EventHandler<ValueChangedEventArgs<UsbCameraInfo?>>? LostFocusInvalid;

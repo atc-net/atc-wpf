@@ -34,6 +34,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when camera unplugs |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach on reconnect by `DeviceId` |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first camera on first appear |
+| `ShowLivePreview` | `bool` | `false` | Show a live preview pane below the dropdown for the selected camera |
+| `PreviewHeight` | `double` | `240` | Height of the preview pane in DIPs (only meaningful when `ShowLivePreview="True"`) |
 | `ItemTemplate` | `DataTemplate?` | default | Override default item visuals |
 
 ## Routed Events
@@ -48,7 +50,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 
 - `Value.Panel` reports physical orientation (Front / Back / External) when the OS provides it.
 - `Value.DeviceId` is the WinRT device ID — pass to `MediaCaptureInitializationSettings.VideoDeviceId` to open the camera.
-- Live preview, resolution/FPS pickers, and active "Test camera" probing are deferred to v2 — opening `MediaCapture` is heavyweight and only worth doing on user request.
+- **Live preview** (`ShowLivePreview="True"`) opens the selected camera via `MediaCapture` + `MediaFrameReader` and renders frames into a `WriteableBitmap` (no `AllowUnsafeBlocks` required). The first activation triggers the OS webcam-permission prompt; if the user denies access or the camera is held by another process, the preview pane shows a localized error ("Camera access denied" / "Camera preview unavailable") instead of crashing the picker. The preview restarts when `Value` changes and stops on `Unloaded` / `ShowLivePreview="False"` / `Dispose`.
+- Resolution/FPS pickers and an explicit active "Test camera" probe remain v2 — opening `MediaCapture` at a non-default format is its own design discussion.
 
 ## Related Controls
 

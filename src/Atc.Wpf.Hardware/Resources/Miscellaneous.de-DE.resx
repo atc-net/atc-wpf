@@ -166,4 +166,10 @@
   <data name="TestCamera" xml:space="preserve">
     <value>Kamera testen</value>
   </data>
+  <data name="PreviewUnavailable" xml:space="preserve">
+    <value>Kameravorschau nicht verfügbar</value>
+  </data>
+  <data name="PreviewPermissionDenied" xml:space="preserve">
+    <value>Kamerazugriff verweigert</value>
+  </data>
 </root>
