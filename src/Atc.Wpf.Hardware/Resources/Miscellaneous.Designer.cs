@@ -79,6 +79,24 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Microphone access denied.
+        /// </summary>
+        public static string AudioPermissionDenied {
+            get {
+                return ResourceManager.GetString("AudioPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio preview unavailable.
+        /// </summary>
+        public static string AudioPreviewUnavailable {
+            get {
+                return ResourceManager.GetString("AudioPreviewUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available.
         /// </summary>
         public static string Available {
@@ -354,6 +372,24 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string SerialPort {
             get {
                 return ResourceManager.GetString("SerialPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
             }
         }
         

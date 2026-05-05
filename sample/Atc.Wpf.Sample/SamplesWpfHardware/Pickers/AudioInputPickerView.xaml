@@ -18,6 +18,8 @@
                     AutoRefreshOnDeviceChange="{Binding AutoRefreshOnDeviceChange}"
                     AutoSelectFirstAvailable="{Binding AutoSelectFirstAvailable}"
                     ClearValueOnDisconnect="{Binding ClearValueOnDisconnect}"
+                    PreviewHeight="{Binding PreviewHeight}"
+                    ShowLivePreview="{Binding ShowLivePreview}"
                     ShowRefreshButton="{Binding ShowRefreshButton}"
                     WatermarkText="{Binding WatermarkText}" />
 
