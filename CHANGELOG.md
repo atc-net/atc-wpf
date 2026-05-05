@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`NetworkAdapterPicker` / `PrinterPicker`** in `Atc.Wpf.Hardware` —
+  two more polling-based system pickers. `NetworkAdapterPicker`
+  enumerates `NetworkInterface.GetAllNetworkInterfaces()` (with
+  `IncludeLoopback=false` by default to hide loopback adapters) and
+  exposes a *reactive* `OperationalStatus` so consumers can bind live
+  up/down state without re-selecting. `PrinterPicker` enumerates
+  `LocalPrintServer.GetPrintQueues(Local | Connections)`, including
+  the system default printer (rendered with a ★ in the dropdown) and
+  the queue's `IsShared` / `IsLocal` / `QueueStatus`. Both poll every
+  2 s and route through the same `DeviceState` plumbing as the rest
+  of the family. Strings localised for `en-US` / `da-DK` / `de-DE`.
+  Eight new model tests cover both POCOs.
 - **`ProcessPicker` / `WindowPicker`** in `Atc.Wpf.Hardware` —
   inspection-style pickers for hooking debuggers, automation, capture
   targets, or "attach to existing" flows. `ProcessPicker` enumerates

@@ -378,9 +378,9 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 |--------|----------|------------|--------|
 | `AudioInputPicker` (mic) | Choose recording device | `DeviceClass.AudioCapture` via `Windows.Devices.Enumeration` | ✅ |
 | `AudioOutputPicker` (speakers / headset) | Choose playback device | `DeviceClass.AudioRender` via `Windows.Devices.Enumeration` | ✅ |
-| `PrinterPicker` | Choose installed printer | `PrinterSettings.InstalledPrinters` / `PrintQueue` | ⬜ |
+| `PrinterPicker` | Choose installed printer | `System.Printing.LocalPrintServer.GetPrintQueues()` (Local + Connections) + 2 s polling | ✅ |
 | `BluetoothDevicePicker` | Choose paired/discovered BT device | `BluetoothDevice.GetDeviceSelectorFromPairingState(true)` via `Windows.Devices.Enumeration` (paired classic only for v1) | ✅ |
-| `NetworkAdapterPicker` | Choose NIC for binding | `NetworkInterface.GetAllNetworkInterfaces()` | ⬜ |
+| `NetworkAdapterPicker` | Choose NIC for binding | `NetworkInterface.GetAllNetworkInterfaces()` + 2 s polling, `IncludeLoopback` toggle, reactive `OperationalStatus` | ✅ |
 | `DrivePicker` / `VolumePicker` | Choose disk/volume | `System.IO.DriveInfo.GetDrives()` + 2 s polling for hot-plug | ✅ |
 | `DisplayPicker` / `MonitorPicker` | Choose display | `Screen.AllScreens` / `MonitorEnumProc` | ⬜ |
 | `ProcessPicker` | Choose running process (e.g., for attach/capture) | `Process.GetProcesses()` + 2 s polling, `OnlyWithMainWindow` toggle | ✅ |
