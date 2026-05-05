@@ -250,6 +250,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Quantum-tick handler must not crash the audio graph.")]
+    [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "AudioFrameInputNode.AddFrame queues the frame for asynchronous playback. Disposing the AudioFrame synchronously inside the quantum handler invalidates its buffer before the audio engine reads it, which produces silent output. The GC reclaims the frame after the engine has consumed it.")]
     private void OnFrameInputQuantumStarted(
         Windows.Media.Audio.AudioFrameInputNode sender,
         Windows.Media.Audio.FrameInputNodeQuantumStartedEventArgs args)
@@ -270,7 +271,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
             var floatCount = requiredSamples * (int)channelCount;
             var bufferBytes = (uint)(floatCount * sizeof(float));
-            using var frame = new Windows.Media.AudioFrame(bufferBytes);
+            var frame = new Windows.Media.AudioFrame(bufferBytes);
 
             Span<float> samples = stackalloc float[floatCount];
             FillToneSamples(samples);
