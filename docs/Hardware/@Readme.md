@@ -13,7 +13,7 @@ Hardware picker controls for selecting connected serial ports, USB devices, USB 
 
 ## Overview
 
-`Atc.Wpf.Hardware` provides eight picker controls, each with a labeled variant:
+`Atc.Wpf.Hardware` provides ten picker controls, each with a labeled variant:
 
 - `SerialPortPicker` / `LabelSerialPortPicker` — select a serial / COM port
 - `UsbPortPicker` / `LabelUsbPortPicker` — select a connected USB device
@@ -23,8 +23,10 @@ Hardware picker controls for selecting connected serial ports, USB devices, USB 
 - `BluetoothDevicePicker` / `LabelBluetoothDevicePicker` — select a paired Bluetooth device
 - `DrivePicker` / `LabelDrivePicker` — select a logical drive (fixed / removable / network / CD)
 - `TimeZonePicker` / `LabelTimeZonePicker` — select a system time zone (no hot-plug)
+- `ProcessPicker` / `LabelProcessPicker` — inspection picker for running OS processes
+- `WindowPicker` / `LabelWindowPicker` — inspection picker for top-level OS windows
 
-The six hardware-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker` polls `System.IO.DriveInfo.GetDrives()` for hot-plug. `TimeZonePicker` is a static list. Hot-plug, disconnect and in-use changes update the picker live — the user never has to click *Refresh* and never picks a device that's silently unusable.
+The six hardware-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker` polls `System.IO.DriveInfo.GetDrives()` for hot-plug. `ProcessPicker` polls `Process.GetProcesses()`; `WindowPicker` polls `EnumWindows` (P/Invoke). `TimeZonePicker` is a static list. Hot-plug, disconnect and in-use changes update the picker live — the user never has to click *Refresh* and never picks a device that's silently unusable.
 
 ## Quick Reference
 
@@ -38,6 +40,8 @@ The six hardware-backed pickers share infrastructure (`DeviceWatcherHost`) using
 | `BluetoothDevicePicker` | `BluetoothDeviceInfo?` | `BluetoothDevice.GetDeviceSelectorFromPairingState(true)` (paired classic) |
 | `DrivePicker` | `DiskDriveInfo?` | `System.IO.DriveInfo.GetDrives()` + 2 s polling |
 | `TimeZonePicker` | `TimeZoneInfo?` | `TimeZoneInfo.GetSystemTimeZones()` (static) |
+| `ProcessPicker` | `RunningProcessInfo?` | `Process.GetProcesses()` + 2 s polling |
+| `WindowPicker` | `TopLevelWindowInfo?` | `EnumWindows` P/Invoke + 2 s polling |
 
 ## Device-State UX
 

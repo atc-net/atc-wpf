@@ -40,6 +40,12 @@
             <sample:SampleTreeViewItem
                 Header="BluetoothDevicePicker"
                 SamplePath="SamplesWpfHardware.Pickers.BluetoothDevicePickerView" />
+            <sample:SampleTreeViewItem
+                Header="ProcessPicker"
+                SamplePath="SamplesWpfHardware.Pickers.ProcessPickerView" />
+            <sample:SampleTreeViewItem
+                Header="WindowPicker"
+                SamplePath="SamplesWpfHardware.Pickers.WindowPickerView" />
         </TreeViewItem>
         <TreeViewItem Header="LabelControls">
             <sample:SampleTreeViewItem
@@ -66,6 +72,12 @@
             <sample:SampleTreeViewItem
                 Header="LabelBluetoothDevicePicker"
                 SamplePath="SamplesWpfHardware.LabelControls.LabelBluetoothDevicePickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelProcessPicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelProcessPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelWindowPicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelWindowPickerView" />
         </TreeViewItem>
     </TreeViewItem>
 

@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`ProcessPicker` / `WindowPicker`** in `Atc.Wpf.Hardware` —
+  inspection-style pickers for hooking debuggers, automation, capture
+  targets, or "attach to existing" flows. `ProcessPicker` enumerates
+  `Process.GetProcesses()` (with `OnlyWithMainWindow=true` by default to
+  hide background services); `WindowPicker` enumerates top-level windows
+  via `EnumWindows` P/Invoked from `user32.dll` (with
+  `OnlyVisibleWithTitle=true` by default). Both poll every 2 s instead of
+  using DeviceWatcher (no OS hot-plug API for these). Same `DeviceState`
+  surface as the hardware pickers — when a tracked process exits or
+  window is destroyed, `DeviceLost` fires and the bound `Value` flips to
+  `Disconnected`. `RunningProcessInfo` and `TopLevelWindowInfo` POCOs
+  expose typed metadata (PID, MainWindowTitle, MainModulePath, HWND,
+  ClassName, owning process). Strings localised for `en-US` / `da-DK`
+  / `de-DE`. Eight new model tests cover both POCOs.
 - **`BluetoothDevicePicker`** in `Atc.Wpf.Hardware` — paired-classic
   Bluetooth picker built on the same `DeviceWatcherHost` plumbing as the
   serial/USB/audio pickers, using `BluetoothDevice.GetDeviceSelectorFromPairingState(true)`
