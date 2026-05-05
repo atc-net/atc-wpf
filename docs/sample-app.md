@@ -28,13 +28,14 @@ The left panel consists of:
 │   Wpf.Forms          │           ├─ FormsTreeView   │
 │   Wpf.Components     │           ├─ ComponentsTreeView│
 │   Wpf.Network...     │           ├─ NetworkTreeView │
+│   Wpf.Hardware       │           ├─ HardwareTreeView│
 │   Wpf.Theming        │           ├─ ThemingTreeView │
 │   Wpf.SourceGen      │           ├─ SourceGenTreeView│
 │   Wpf.FontIcons      │           └─ FontIconsTreeView│
 └──────────────────────┴──────────────────────────────┘
 ```
 
-### Categories (8 total)
+### Categories (9 total)
 
 | Category | TreeView File | Description |
 |----------|---------------|-------------|
@@ -197,6 +198,7 @@ The left panel consists of:
         <TabItem Tag="Wpf.Forms">...</TabItem>
         <TabItem Tag="Wpf.Components">...</TabItem>
         <TabItem Tag="Wpf.Network">...</TabItem>
+        <TabItem Tag="Wpf.Hardware">...</TabItem>
         <TabItem Tag="Wpf.Theming">...</TabItem>
         <TabItem Tag="Wpf.SourceGenerators">...</TabItem>
         <TabItem Tag="Wpf.FontIcons">...</TabItem>
@@ -211,6 +213,7 @@ The left panel consists of:
                 <sample:SamplesWpfFormsTreeView />
                 <sample:SamplesWpfComponentsTreeView />
                 <sample:SamplesWpfNetworkTreeView />
+                <sample:SamplesWpfHardwareTreeView />
                 <sample:SamplesWpfThemingTreeView />
                 <sample:SamplesWpfSourceGeneratorsTreeView />
                 <sample:SamplesWpfFontIconsTreeView />
