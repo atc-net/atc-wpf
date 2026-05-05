@@ -8,6 +8,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     private const int SineFrequencyHz = 1000;
     private const int FadeMilliseconds = 30;
     private const int SegmentMilliseconds = 1000;
+    private const int FrameKeepAliveDepth = 32;
 
     public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
         nameof(DeviceId),
@@ -35,6 +36,14 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
     private readonly float[] ring = new float[RingCapacity];
     private readonly DispatcherTimer renderTimer;
+
+    // Holds the most recent FrameKeepAliveDepth AudioFrame instances so the GC doesn't
+    // collect their C# wrappers (and via the finalizer release the underlying COM objects)
+    // before the audio engine has consumed the queued buffer. Cleared on stop. Symptom
+    // of letting GC reclaim too eagerly: a single "click" from the very first frame,
+    // then silence.
+    private readonly Queue<Windows.Media.AudioFrame> inflightFrames = new(FrameKeepAliveDepth);
+
     private int ringHead;
     private float currentPeak;
 
@@ -212,6 +221,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     {
         renderTimer.Stop();
         isPlaying = false;
+        inflightFrames.Clear();
 
         var existingGraph = graph;
         graph = null;
@@ -298,6 +308,14 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
 
             AudioBufferAccess.WriteFloatSamples(frame, samples);
             sender.AddFrame(frame);
+
+            // Hold a managed reference to the most recent N frames so the GC doesn't
+            // dispose them via finalizer before the audio engine reads the queued buffer.
+            inflightFrames.Enqueue(frame);
+            while (inflightFrames.Count > FrameKeepAliveDepth)
+            {
+                inflightFrames.Dequeue();
+            }
         }
         catch (Exception)
         {
