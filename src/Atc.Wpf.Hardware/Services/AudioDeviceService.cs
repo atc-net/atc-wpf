@@ -4,28 +4,29 @@ public sealed class AudioDeviceService : IAudioDeviceService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
-    private readonly DeviceClass deviceClass;
-    private readonly DeviceWatcherHost watcher;
+    private readonly IDeviceWatcherHost watcher;
     private bool started;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
     public AudioDeviceService(AudioDeviceKind kind)
+        : this(kind, new DeviceWatcherHost(DeviceInformation.GetAqsFilterFromDeviceClass(
+            kind is AudioDeviceKind.Input ? DeviceClass.AudioCapture : DeviceClass.AudioRender)))
     {
-        Kind = kind;
-        deviceClass = kind is AudioDeviceKind.Input
-            ? DeviceClass.AudioCapture
-            : DeviceClass.AudioRender;
+    }
 
+    internal AudioDeviceService(
+        AudioDeviceKind kind,
+        IDeviceWatcherHost watcher)
+    {
+        this.watcher = watcher ?? throw new ArgumentNullException(nameof(watcher));
+        Kind = kind;
         Devices = new ObservableCollection<AudioDeviceInfo>();
 
-        watcher = new DeviceWatcherHost(
-            DeviceInformation.GetAqsFilterFromDeviceClass(deviceClass));
-
-        watcher.Added += OnAdded;
-        watcher.Removed += OnRemoved;
-        watcher.Updated += OnUpdated;
-        watcher.EnumerationCompleted += OnEnumerationCompleted;
+        this.watcher.Added += OnAdded;
+        this.watcher.Removed += OnRemoved;
+        this.watcher.Updated += OnUpdated;
+        this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
     public ObservableCollection<AudioDeviceInfo> Devices { get; }
@@ -56,14 +57,14 @@ public sealed class AudioDeviceService : IAudioDeviceService
 
     public async Task RefreshAsync()
     {
-        var found = await DeviceInformation.FindAllAsync(deviceClass);
+        var found = await watcher.FindAllAsync();
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var info in found)
+        foreach (var snapshot in found)
         {
-            foundIds.Add(info.Id);
-            UpsertFromInfo(info, isInitialEnumeration: true);
+            foundIds.Add(snapshot.Id);
+            UpsertFromSnapshot(snapshot, isInitialEnumeration: true);
         }
 
         for (var i = Devices.Count - 1; i >= 0; i--)
@@ -93,14 +94,14 @@ public sealed class AudioDeviceService : IAudioDeviceService
 
     private void OnAdded(
         object? sender,
-        DeviceArrivedEventArgs e)
-        => UpsertFromInfo(e.Device, isInitialEnumeration: !initialEnumerationCompleted);
+        DeviceSnapshotEventArgs e)
+        => UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
 
     private void OnRemoved(
         object? sender,
         DeviceRemovedEventArgs e)
     {
-        var existing = FindByDeviceId(e.Update.Id);
+        var existing = FindByDeviceId(e.DeviceId);
         if (existing is not null)
         {
             existing.State = DeviceState.Disconnected;
@@ -109,7 +110,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
 
     private static void OnUpdated(
         object? sender,
-        DeviceUpdatedEventArgs e)
+        DeviceSnapshotEventArgs e)
     {
         // No-op for audio enumeration changes today.
     }
@@ -121,11 +122,11 @@ public sealed class AudioDeviceService : IAudioDeviceService
         initialEnumerationCompleted = true;
     }
 
-    private void UpsertFromInfo(
-        DeviceInformation info,
+    private void UpsertFromSnapshot(
+        DeviceSnapshot snapshot,
         bool isInitialEnumeration)
     {
-        var existing = FindByDeviceId(info.Id);
+        var existing = FindByDeviceId(snapshot.Id);
 
         if (existing is not null)
         {
@@ -138,13 +139,13 @@ public sealed class AudioDeviceService : IAudioDeviceService
         }
 
         var newInfo = new AudioDeviceInfo(
-            deviceId: info.Id,
-            friendlyName: info.Name,
+            deviceId: snapshot.Id,
+            friendlyName: snapshot.Name,
             kind: Kind,
-            isEnabled: info.IsEnabled,
-            isDefault: info.IsDefault)
+            isEnabled: snapshot.IsEnabled,
+            isDefault: snapshot.IsDefault)
         {
-            State = !info.IsEnabled
+            State = !snapshot.IsEnabled
                 ? DeviceState.InUse
                 : isInitialEnumeration
                     ? DeviceState.Available

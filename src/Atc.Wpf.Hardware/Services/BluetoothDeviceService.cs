@@ -4,24 +4,26 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
-    private readonly DeviceWatcherHost watcher;
-    private readonly string aqs;
+    private readonly IDeviceWatcherHost watcher;
     private bool started;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
     public BluetoothDeviceService()
+        : this(new DeviceWatcherHost(
+            Windows.Devices.Bluetooth.BluetoothDevice.GetDeviceSelectorFromPairingState(true)))
     {
+    }
+
+    internal BluetoothDeviceService(IDeviceWatcherHost watcher)
+    {
+        this.watcher = watcher ?? throw new ArgumentNullException(nameof(watcher));
         Devices = new ObservableCollection<BluetoothDeviceInfo>();
 
-        aqs = Windows.Devices.Bluetooth.BluetoothDevice.GetDeviceSelectorFromPairingState(true);
-
-        watcher = new DeviceWatcherHost(aqs);
-
-        watcher.Added += OnAdded;
-        watcher.Removed += OnRemoved;
-        watcher.Updated += OnUpdated;
-        watcher.EnumerationCompleted += OnEnumerationCompleted;
+        this.watcher.Added += OnAdded;
+        this.watcher.Removed += OnRemoved;
+        this.watcher.Updated += OnUpdated;
+        this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
     public ObservableCollection<BluetoothDeviceInfo> Devices { get; }
@@ -50,14 +52,14 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
 
     public async Task RefreshAsync()
     {
-        var found = await DeviceInformation.FindAllAsync(aqs);
+        var found = await watcher.FindAllAsync();
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var info in found)
+        foreach (var snapshot in found)
         {
-            foundIds.Add(info.Id);
-            UpsertFromInfo(info, isInitialEnumeration: true);
+            foundIds.Add(snapshot.Id);
+            UpsertFromSnapshot(snapshot, isInitialEnumeration: true);
         }
 
         for (var i = Devices.Count - 1; i >= 0; i--)
@@ -87,14 +89,14 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
 
     private void OnAdded(
         object? sender,
-        DeviceArrivedEventArgs e)
-        => UpsertFromInfo(e.Device, isInitialEnumeration: !initialEnumerationCompleted);
+        DeviceSnapshotEventArgs e)
+        => UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
 
     private void OnRemoved(
         object? sender,
         DeviceRemovedEventArgs e)
     {
-        var existing = FindByDeviceId(e.Update.Id);
+        var existing = FindByDeviceId(e.DeviceId);
         if (existing is not null)
         {
             existing.State = DeviceState.Disconnected;
@@ -103,7 +105,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
 
     private static void OnUpdated(
         object? sender,
-        DeviceUpdatedEventArgs e)
+        DeviceSnapshotEventArgs e)
     {
         // No-op for Bluetooth; rely on Added/Removed for v1 connection signalling.
     }
@@ -115,11 +117,11 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
         initialEnumerationCompleted = true;
     }
 
-    private void UpsertFromInfo(
-        DeviceInformation info,
+    private void UpsertFromSnapshot(
+        DeviceSnapshot snapshot,
         bool isInitialEnumeration)
     {
-        var existing = FindByDeviceId(info.Id);
+        var existing = FindByDeviceId(snapshot.Id);
 
         if (existing is not null)
         {
@@ -128,15 +130,15 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
                 existing.State = DeviceState.Available;
             }
 
-            existing.IsConnected = info.IsEnabled;
+            existing.IsConnected = snapshot.IsEnabled;
             return;
         }
 
         var newInfo = new BluetoothDeviceInfo(
-            deviceId: info.Id,
-            friendlyName: info.Name,
-            isPaired: info.Pairing?.IsPaired ?? true,
-            isConnected: info.IsEnabled)
+            deviceId: snapshot.Id,
+            friendlyName: snapshot.Name,
+            isPaired: snapshot.IsPaired ?? true,
+            isConnected: snapshot.IsEnabled)
         {
             State = isInitialEnumeration
                 ? DeviceState.Available

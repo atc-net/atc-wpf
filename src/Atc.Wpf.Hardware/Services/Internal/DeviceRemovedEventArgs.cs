@@ -1,6 +1,6 @@
 namespace Atc.Wpf.Hardware.Services.Internal;
 
-internal sealed class DeviceRemovedEventArgs(DeviceInformationUpdate update) : EventArgs
+internal sealed class DeviceRemovedEventArgs(string deviceId) : EventArgs
 {
-    public DeviceInformationUpdate Update { get; } = update;
+    public string DeviceId { get; } = deviceId;
 }

@@ -5,7 +5,8 @@ public sealed class UsbDeviceService : IUsbDeviceService
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
     private readonly System.Threading.Lock sync = new();
-    private DeviceWatcherHost watcher;
+    private readonly Func<string, IDeviceWatcherHost> watcherFactory;
+    private IDeviceWatcherHost watcher;
     private string aqs;
     private UsbDeviceClassFilter classFilter = UsbDeviceClassFilter.None;
     private bool started;
@@ -13,7 +14,13 @@ public sealed class UsbDeviceService : IUsbDeviceService
     private bool disposed;
 
     public UsbDeviceService()
+        : this(static aqs => new DeviceWatcherHost(aqs))
     {
+    }
+
+    internal UsbDeviceService(Func<string, IDeviceWatcherHost> watcherFactory)
+    {
+        this.watcherFactory = watcherFactory ?? throw new ArgumentNullException(nameof(watcherFactory));
         Devices = new ObservableCollection<UsbDeviceInfo>();
 
         aqs = UsbDeviceClassFilterResolver.ToAqs(classFilter);
@@ -61,14 +68,14 @@ public sealed class UsbDeviceService : IUsbDeviceService
 
     public async Task RefreshAsync()
     {
-        var found = await DeviceInformation.FindAllAsync(aqs);
+        var found = await watcher.FindAllAsync();
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var info in found)
+        foreach (var snapshot in found)
         {
-            foundIds.Add(info.Id);
-            UpsertFromInfo(info, isInitialEnumeration: true);
+            foundIds.Add(snapshot.Id);
+            UpsertFromSnapshot(snapshot, isInitialEnumeration: true);
         }
 
         for (var i = Devices.Count - 1; i >= 0; i--)
@@ -93,9 +100,9 @@ public sealed class UsbDeviceService : IUsbDeviceService
         watcher.Dispose();
     }
 
-    private DeviceWatcherHost CreateWatcher(string aqsFilter)
+    private IDeviceWatcherHost CreateWatcher(string aqsFilter)
     {
-        var host = new DeviceWatcherHost(aqsFilter);
+        var host = watcherFactory(aqsFilter);
         host.Added += OnAdded;
         host.Removed += OnRemoved;
         host.Updated += OnUpdated;
@@ -103,7 +110,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
         return host;
     }
 
-    private void DetachWatcher(DeviceWatcherHost host)
+    private void DetachWatcher(IDeviceWatcherHost host)
     {
         host.Added -= OnAdded;
         host.Removed -= OnRemoved;
@@ -145,14 +152,14 @@ public sealed class UsbDeviceService : IUsbDeviceService
 
     private void OnAdded(
         object? sender,
-        DeviceArrivedEventArgs e)
-        => UpsertFromInfo(e.Device, isInitialEnumeration: !initialEnumerationCompleted);
+        DeviceSnapshotEventArgs e)
+        => UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
 
     private void OnRemoved(
         object? sender,
         DeviceRemovedEventArgs e)
     {
-        var existing = FindByDeviceId(e.Update.Id);
+        var existing = FindByDeviceId(e.DeviceId);
         if (existing is not null)
         {
             existing.State = DeviceState.Disconnected;
@@ -161,7 +168,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
 
     private static void OnUpdated(
         object? sender,
-        DeviceUpdatedEventArgs e)
+        DeviceSnapshotEventArgs e)
     {
         // No-op for USB. Property updates are rare.
     }
@@ -173,11 +180,11 @@ public sealed class UsbDeviceService : IUsbDeviceService
         initialEnumerationCompleted = true;
     }
 
-    private void UpsertFromInfo(
-        DeviceInformation info,
+    private void UpsertFromSnapshot(
+        DeviceSnapshot snapshot,
         bool isInitialEnumeration)
     {
-        var existing = FindByDeviceId(info.Id);
+        var existing = FindByDeviceId(snapshot.Id);
 
         if (existing is not null)
         {
@@ -189,17 +196,17 @@ public sealed class UsbDeviceService : IUsbDeviceService
             return;
         }
 
-        var (vid, pid) = UsbIdParser.Parse(info.Id);
+        var (vid, pid) = UsbIdParser.Parse(snapshot.Id);
 
         var newInfo = new UsbDeviceInfo(
-            deviceId: info.Id,
-            friendlyName: info.Name,
+            deviceId: snapshot.Id,
+            friendlyName: snapshot.Name,
             vendorId: vid,
             productId: pid,
             pnpClass: null,
-            interfaceEnabled: info.IsEnabled)
+            interfaceEnabled: snapshot.IsEnabled)
         {
-            State = !info.IsEnabled
+            State = !snapshot.IsEnabled
                 ? DeviceState.InUse
                 : isInitialEnumeration
                     ? DeviceState.Available
