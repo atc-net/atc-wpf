@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Runtime culture smoke tests** for `Atc.Wpf.Hardware` resources.
+  Flips `Miscellaneous.Culture` and `Validations.Culture` between
+  invariant / `da-DK` / `de-DE` and asserts representative keys come
+  back in the right language; 34 cases across 11 keys (8 picker /
+  state strings in `Miscellaneous`, 3 messages in `Validations`).
+  Tests use xUnit `[Collection("Localization")]` so the static
+  resource-culture flips don't race in parallel runs. Retires §5 last
+  ⬜ deferral on the picker roadmap.
 - **WinRT-free `IDeviceWatcherHost` abstraction + `FakeDeviceWatcherHost`
   test harness** for `Atc.Wpf.Hardware`. The concrete `DeviceWatcherHost`
   now implements `IDeviceWatcherHost` and maps WinRT `DeviceInformation`

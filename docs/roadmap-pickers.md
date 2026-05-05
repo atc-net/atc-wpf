@@ -365,7 +365,7 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 | &nbsp;&nbsp;• `Resources/Miscellaneous.resx` (+ `.da-DK` / `.de-DE`) — Watermarks, "Refresh", "No devices found", "Select serial port…", "Select USB device…", "Select camera…", state strings ("Available", "In use", "Disconnected", "New", "In use by {0}", "Test camera") | ✅ |
 | &nbsp;&nbsp;• `Resources/Validations.resx` (+ `.da-DK` / `.de-DE`) — "Device is required", "Device is no longer available", "Device is currently in use" | ✅ |
 | &nbsp;&nbsp;• No literal strings in XAML/C# — all user-visible strings go through resx | ✅ |
-| &nbsp;&nbsp;• Runtime smoke-test for `da-DK` / `de-DE` cultures | ⬜ *deferred — requires UI test harness* |
+| &nbsp;&nbsp;• Runtime smoke-test for `da-DK` / `de-DE` cultures — flips `Miscellaneous.Culture` / `Validations.Culture` and asserts representative strings (`Refresh`, `Available`, `InUse`, `Disconnected`, `DeviceDisconnected`, `SelectSerialPort`, `AudioInput`, `BluetoothDevice`, `DeviceIsRequired`, `DeviceNoLongerAvailable`, `DeviceCurrentlyInUse`); 34 cases serialized via xUnit `[Collection]` | ✅ |
 | `CHANGELOG.md` entry under `[Unreleased] / Added` | ✅ |
 
 ---
