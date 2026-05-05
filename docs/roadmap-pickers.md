@@ -381,11 +381,11 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 | `PrinterPicker` | Choose installed printer | `PrinterSettings.InstalledPrinters` / `PrintQueue` | ⬜ |
 | `BluetoothDevicePicker` | Choose paired/discovered BT device | `Windows.Devices.Bluetooth` | ⬜ |
 | `NetworkAdapterPicker` | Choose NIC for binding | `NetworkInterface.GetAllNetworkInterfaces()` | ⬜ |
-| `DrivePicker` / `VolumePicker` | Choose disk/volume | `DriveInfo.GetDrives()` | ⬜ |
+| `DrivePicker` / `VolumePicker` | Choose disk/volume | `System.IO.DriveInfo.GetDrives()` + 2 s polling for hot-plug | ✅ |
 | `DisplayPicker` / `MonitorPicker` | Choose display | `Screen.AllScreens` / `MonitorEnumProc` | ⬜ |
 | `ProcessPicker` | Choose running process (e.g., for attach/capture) | `Process.GetProcesses()` | ⬜ |
 | `WindowPicker` | Choose top-level window (capture targets) | `EnumWindows` | ⬜ |
-| `TimeZonePicker` | Choose IANA / Windows time zone | `TimeZoneInfo.GetSystemTimeZones()` | ⬜ |
+| `TimeZonePicker` | Choose IANA / Windows time zone | `TimeZoneInfo.GetSystemTimeZones()` | ✅ |
 | `CulturePicker` / `LanguagePicker` | Already partly covered by `LabelLanguageSelector` — verify gap | 🔵 |
 
 ---

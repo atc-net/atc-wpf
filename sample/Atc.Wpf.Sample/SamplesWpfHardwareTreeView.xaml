@@ -31,6 +31,12 @@
             <sample:SampleTreeViewItem
                 Header="AudioOutputPicker"
                 SamplePath="SamplesWpfHardware.Pickers.AudioOutputPickerView" />
+            <sample:SampleTreeViewItem
+                Header="DrivePicker"
+                SamplePath="SamplesWpfHardware.Pickers.DrivePickerView" />
+            <sample:SampleTreeViewItem
+                Header="TimeZonePicker"
+                SamplePath="SamplesWpfHardware.Pickers.TimeZonePickerView" />
         </TreeViewItem>
         <TreeViewItem Header="LabelControls">
             <sample:SampleTreeViewItem
@@ -48,6 +54,12 @@
             <sample:SampleTreeViewItem
                 Header="LabelAudioOutputPicker"
                 SamplePath="SamplesWpfHardware.LabelControls.LabelAudioOutputPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelDrivePicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelDrivePickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelTimeZonePicker"
+                SamplePath="SamplesWpfHardware.LabelControls.LabelTimeZonePickerView" />
         </TreeViewItem>
     </TreeViewItem>
 
