@@ -94,6 +94,9 @@
   <data name="Printer" xml:space="preserve">
     <value>Printer</value>
   </data>
+  <data name="Display" xml:space="preserve">
+    <value>Display</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Select serial port…</value>
   </data>
@@ -129,6 +132,9 @@
   </data>
   <data name="SelectPrinter" xml:space="preserve">
     <value>Select printer…</value>
+  </data>
+  <data name="SelectDisplay" xml:space="preserve">
+    <value>Select display…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>

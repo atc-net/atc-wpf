@@ -133,6 +133,15 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display.
+        /// </summary>
+        public static string Display {
+            get {
+                return ResourceManager.GetString("Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drive.
         /// </summary>
         public static string Drive {
@@ -237,6 +246,15 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string SelectCamera {
             get {
                 return ResourceManager.GetString("SelectCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select display….
+        /// </summary>
+        public static string SelectDisplay {
+            get {
+                return ResourceManager.GetString("SelectDisplay", resourceCulture);
             }
         }
         
