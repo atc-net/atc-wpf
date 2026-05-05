@@ -34,6 +34,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when device unplugs |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach on reconnect by `DeviceId` |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first device on first appear |
+| `ShowLivePreview` | `bool` | `false` | Show a Test/Stop button + waveform pane below the dropdown for the selected speakers |
+| `PreviewHeight` | `double` | `120` | Height of the preview pane in DIPs (only meaningful when `ShowLivePreview="True"`) |
 | `ItemTemplate` | `DataTemplate?` | default | Override default item visuals |
 
 ## Routed Events
@@ -50,6 +52,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 - `Value.IsDefault` reflects the system's current default render endpoint when the OS marks it so; the default is rendered with a ★ in the dropdown's `ToString()`.
 - `Value.DeviceId` is the WASAPI endpoint id — pass to `MediaPlayer.AudioDeviceOutput`, `AudioGraphSettings.PrimaryRenderDevice`, or look up via `MMDeviceEnumerator` if you're using NAudio.
 - Active in-use probing is not performed for audio (would require opening the endpoint, which is intrusive). Passive detection still maps a disabled interface (`IsEnabled == false`) to `DeviceState.InUse`.
+- **Live preview** (`ShowLivePreview="True"`) shows a `Test` / `Stop` button next to a waveform pane. Pressing `Test` opens the selected speakers via `AudioGraph` (`PrimaryRenderDevice` set to the selected device) and feeds a 1 kHz sine through `AudioFrameInputNode` for ~3 seconds — 1 second on the left channel, 1 second on the right, 1 second stereo, with a 30 ms fade in/out at every segment boundary to suppress click artefacts. The same buffer feeds the waveform display, so the picker visualises exactly what's being sent to the device. Errors (device held by another process, format mismatch, etc.) surface as a localized inline "Audio preview unavailable" message; output rendering doesn't trigger a permission prompt.
 
 ## Related Controls
 

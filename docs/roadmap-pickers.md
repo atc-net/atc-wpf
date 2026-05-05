@@ -446,32 +446,32 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 
 | Task | Status |
 |------|--------|
-| `Pickers/Internal/LiveAudioOutputTester.xaml(.cs)` — `UserControl` with `DeviceId` / `IsActive` DPs + `Test ▶` / `Stop` button | ⬜ |
-| Render pipeline: `AudioGraph` (`PrimaryRenderDevice` = selected output) + `AudioFrameInputNode` (we feed samples) + `AudioDeviceOutputNode` | ⬜ |
-| Test tone generator: 1 kHz sine, 1 s per channel (Left → Right → Both stereo), 30 ms fade in/out to avoid clicks; total ~3 s | ⬜ |
-| Visual: same waveform + peak bar, fed from the same buffer we're sending to the output node (no WASAPI loopback) | ⬜ |
-| `Stop` button replaces `Test ▶` while playing; auto-resets to `Test ▶` on completion | ⬜ |
-| Lifecycle: same as input | ⬜ |
-| Error fallbacks: "Audio preview unavailable" (output rendering doesn't need user permission) | ⬜ |
+| `Pickers/Internal/LiveAudioOutputTester.xaml(.cs)` — `UserControl` with `DeviceId` / `IsActive` DPs + `Test` / `Stop` button | ✅ |
+| Render pipeline: `AudioGraph` (`PrimaryRenderDevice` = selected output `DeviceInformation`) + `AudioFrameInputNode` (we feed samples) + `AudioDeviceOutputNode` | ✅ |
+| Test tone generator: 1 kHz sine, 1 s per channel (Left → Right → Both stereo), 30 ms fade in/out to avoid clicks; total ~3 s. Envelope math extracted to `SineToneEnvelope` and unit-tested | ✅ |
+| Visual: same waveform + peak bar, fed from the same buffer we're sending to the output node (no WASAPI loopback) | ✅ |
+| `Stop` button replaces `Test` while playing; auto-resets to `Test` on completion | ✅ |
+| Lifecycle: same as input | ✅ |
+| Error fallbacks: "Audio preview unavailable" (output rendering doesn't need user permission) | ✅ |
 
 ### 9.4 Picker wiring
 
 | Task | Status |
 |------|--------|
 | `AudioInputPicker`: `ShowLivePreview` + `PreviewHeight` DPs, preview row in XAML, lifecycle bound to `Value.DeviceId` | ✅ |
-| `AudioOutputPicker`: same DPs + tester row | ⬜ |
+| `AudioOutputPicker`: same DPs + tester row | ✅ |
 | `LabelAudioInputPicker` forwards both DPs | ✅ |
-| `LabelAudioOutputPicker` forwards both DPs | ⬜ |
+| `LabelAudioOutputPicker` forwards both DPs | ✅ |
 | `ILabelAudioInputPicker` surface added | ✅ |
-| `ILabelAudioOutputPicker` surface added | ⬜ |
+| `ILabelAudioOutputPicker` surface added | ✅ |
 
 ### 9.5 Sample app
 
 | Task | Status |
 |------|--------|
 | `AudioInputPickerDemoViewModel`: add `ShowLivePreview` / `PreviewHeight` `[PropertyDisplay]` toggles | ✅ |
-| `AudioOutputPickerDemoViewModel`: same | ⬜ |
-| Sample views bind the new DPs (input ✅, output ⬜) | 🟡 |
+| `AudioOutputPickerDemoViewModel`: same | ✅ |
+| Sample views bind the new DPs | ✅ |
 
 ### 9.6 Localisation
 
@@ -487,7 +487,7 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 
 | Task | Status |
 |------|--------|
-| Sine-tone generator helper unit test (correct frequency, amplitude bounds, fade in/out) | ⬜ |
+| Sine-tone envelope helper unit tests (`SineToneEnvelope`): segment boundaries, mid-segment target, linear fade-in / fade-out, past-end silence, negative position guard, zero-segment passthrough — 8 tests | ✅ |
 | Service-level / `AudioGraph` mock harness — deferred (would mirror the WinRT mock harness pattern from §1.5/§2.5/§3.5/§4.8) | — |
 | Live runtime tests deferred (require real audio hardware) | — |
 

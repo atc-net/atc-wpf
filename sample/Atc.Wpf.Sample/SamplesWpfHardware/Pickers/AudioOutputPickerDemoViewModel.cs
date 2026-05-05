@@ -25,4 +25,12 @@ public partial class AudioOutputPickerDemoViewModel : ViewModelBase
     [PropertyDisplay("Auto-select first available", "Behavior", 5)]
     [ObservableProperty]
     private bool autoSelectFirstAvailable;
+
+    [PropertyDisplay("Show live preview", "Preview", 1)]
+    [ObservableProperty]
+    private bool showLivePreview;
+
+    [PropertyDisplay("Preview height", "Preview", 2)]
+    [ObservableProperty]
+    private double previewHeight = 120;
 }
