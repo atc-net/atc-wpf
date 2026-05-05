@@ -1,0 +1,110 @@
+<UserControl
+    x:Class="Atc.Wpf.Hardware.Pickers.BluetoothDevicePicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcValueConverters="clr-namespace:Atc.Wpf.ValueConverters;assembly=Atc.Wpf"
+    xmlns:converters="clr-namespace:Atc.Wpf.Hardware.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Hardware.Pickers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Atc.Wpf.Hardware.Models"
+    xmlns:resources="clr-namespace:Atc.Wpf.Hardware.Resources"
+    d:DataContext="{d:DesignInstance Type=local:BluetoothDevicePicker}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="DefaultItemTemplate" DataType="{x:Type models:BluetoothDeviceInfo}">
+            <atc:GridEx Columns="Auto,8,*,8,Auto" VerticalAlignment="Center">
+                <Ellipse
+                    x:Name="StatusDot"
+                    Grid.Column="0"
+                    Width="10"
+                    Height="10"
+                    VerticalAlignment="Center"
+                    Fill="{Binding State, Converter={x:Static converters:DeviceStateToBrushConverter.Instance}}"
+                    RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                        <ScaleTransform x:Name="StatusDotScale" ScaleX="1" ScaleY="1" />
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <TextBlock
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Text="{Binding}" />
+                <TextBlock
+                    Grid.Column="4"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Foreground="{DynamicResource AtcApps.Brushes.Gray5}"
+                    Text="{Binding State, Converter={x:Static converters:DeviceStateToTextConverter.Instance}}" />
+            </atc:GridEx>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding State}" Value="{x:Static models:DeviceState.JustConnected}">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Name="JustConnectedPulse">
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation
+                                    Storyboard.TargetName="StatusDot"
+                                    Storyboard.TargetProperty="Opacity"
+                                    AutoReverse="True"
+                                    Duration="0:0:0.5"
+                                    From="1.0"
+                                    To="0.3" />
+                                <DoubleAnimation
+                                    Storyboard.TargetName="StatusDotScale"
+                                    Storyboard.TargetProperty="ScaleX"
+                                    AutoReverse="True"
+                                    Duration="0:0:0.5"
+                                    From="1.0"
+                                    To="1.4" />
+                                <DoubleAnimation
+                                    Storyboard.TargetName="StatusDotScale"
+                                    Storyboard.TargetProperty="ScaleY"
+                                    AutoReverse="True"
+                                    Duration="0:0:0.5"
+                                    From="1.0"
+                                    To="1.4" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="JustConnectedPulse" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <atc:GridEx Rows="Auto,Auto" Columns="*,4,Auto">
+        <ComboBox
+            x:Name="PartComboBox"
+            Grid.Row="0"
+            Grid.Column="0"
+            atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=WatermarkText}"
+            ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=ResolvedItemTemplate}"
+            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=Devices}"
+            SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=Value, Mode=TwoWay}" />
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="2"
+            Padding="6,2"
+            VerticalAlignment="Stretch"
+            Click="OnRefreshClick"
+            ToolTip="{x:Static resources:Miscellaneous.Refresh}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=ShowRefreshButton, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
+            <TextBlock FontSize="14" Text="&#x27F3;" />
+        </Button>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,4,0,0"
+            FontStyle="Italic"
+            Foreground="{DynamicResource AtcApps.Brushes.Accent}"
+            Text="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=SelectedStateMessage}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=HasSelectedStateMessage, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+    </atc:GridEx>
+</UserControl>

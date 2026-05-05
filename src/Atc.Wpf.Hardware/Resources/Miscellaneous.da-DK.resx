@@ -79,6 +79,9 @@
   <data name="TimeZone" xml:space="preserve">
     <value>Tidszone</value>
   </data>
+  <data name="BluetoothDevice" xml:space="preserve">
+    <value>Bluetooth-enhed</value>
+  </data>
   <data name="SelectSerialPort" xml:space="preserve">
     <value>Vælg seriel port…</value>
   </data>
@@ -99,6 +102,9 @@
   </data>
   <data name="SelectTimeZone" xml:space="preserve">
     <value>Vælg tidszone…</value>
+  </data>
+  <data name="SelectBluetoothDevice" xml:space="preserve">
+    <value>Vælg Bluetooth-enhed…</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Opdater</value>
