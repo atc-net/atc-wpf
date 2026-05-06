@@ -43,7 +43,11 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         ShowColumnArea = true;
         ListenOnToastNotificationMessage = true;
 
-        Entries.CollectionChanged += (_, _) => CopyAllCommand.RaiseCanExecuteChanged();
+        Entries.CollectionChanged += (_, _) =>
+        {
+            CopyAllCommand.RaiseCanExecuteChanged();
+            ExportCommand.RaiseCanExecuteChanged();
+        };
 
         FilterChange();
 
@@ -471,6 +475,50 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
 
         AddEntry(message.ToApplicationEventEntry());
+    }
+
+    private bool CanExport()
+        => Entries.Count > 0;
+
+    /// <summary>
+    /// Opens a Save File dialog and writes the currently visible (filtered)
+    /// entries to the chosen file in the format inferred from its extension
+    /// (CSV / JSON / TXT). No-op when there are no entries.
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanExport))]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Export failures must surface to the user, not crash the picker.")]
+    private void Export()
+    {
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            Filter = "CSV (*.csv)|*.csv|JSON (*.json)|*.json|Text (*.txt)|*.txt",
+            FilterIndex = 1,
+            FileName = "log-" + DateTime.Now.ToString("yyyyMMdd-HHmmss", GlobalizationConstants.EnglishCultureInfo) + ".csv",
+            AddExtension = true,
+            Title = "Export log",
+        };
+
+        if (dialog.ShowDialog() != true)
+        {
+            return;
+        }
+
+        try
+        {
+            var format = Internal.ApplicationMonitorExportService.InferFormat(dialog.FileName);
+            Internal.ApplicationMonitorExportService.Export(
+                view.OfType<ApplicationEventEntry>(),
+                dialog.FileName,
+                format);
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(
+                "Could not export log:" + Environment.NewLine + ex.Message,
+                "Export failed",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
+        }
     }
 
     [RelayCommand]

@@ -28,6 +28,9 @@ public partial class ApplicationMonitorView
     [DependencyProperty(DefaultValue = true)]
     private bool showPauseInToolbar;
 
+    [DependencyProperty(DefaultValue = true)]
+    private bool showExportInToolbar;
+
     [DependencyProperty(
         DefaultValue = false,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
