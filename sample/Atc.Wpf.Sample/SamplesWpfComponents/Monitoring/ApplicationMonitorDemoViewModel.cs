@@ -30,9 +30,17 @@ public partial class ApplicationMonitorDemoViewModel : ViewModelBase, IDisposabl
     [ObservableProperty]
     private bool showAutoScrollInToolbar = true;
 
-    [PropertyDisplay("Show Search In Toolbar", "Toolbar", 4)]
+    [PropertyDisplay("Show Pause In Toolbar", "Toolbar", 4)]
+    [ObservableProperty]
+    private bool showPauseInToolbar = true;
+
+    [PropertyDisplay("Show Search In Toolbar", "Toolbar", 5)]
     [ObservableProperty]
     private bool showSearchInToolbar = true;
+
+    [PropertyDisplay("Show Export In Toolbar", "Toolbar", 6)]
+    [ObservableProperty]
+    private bool showExportInToolbar;
 
     [PropertyDisplay("Area Column Width", "Columns", 1)]
     [ObservableProperty]
@@ -42,9 +50,21 @@ public partial class ApplicationMonitorDemoViewModel : ViewModelBase, IDisposabl
     [ObservableProperty]
     private double messageColumnWidth = 400d;
 
+    [PropertyDisplay("Auto Scroll", "Behavior", 1)]
+    [ObservableProperty]
+    private bool autoScroll = true;
+
+    [PropertyDisplay("Is Paused", "Behavior", 2)]
+    [ObservableProperty]
+    private bool isPaused;
+
+    [PropertyDisplay("Max Entries (0 = unbounded)", "Behavior", 3)]
+    [ObservableProperty]
+    private int maxEntries = 10000;
+
     private bool enableTimer;
 
-    [PropertyDisplay("Enable Timer", "Behavior", 1)]
+    [PropertyDisplay("Enable Timer", "Behavior", 4)]
     public bool EnableTimer
     {
         get => enableTimer;

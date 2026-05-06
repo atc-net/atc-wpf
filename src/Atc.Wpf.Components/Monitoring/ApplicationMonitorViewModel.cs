@@ -1,4 +1,3 @@
-// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
 namespace Atc.Wpf.Components.Monitoring;
 
 public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDisposable
@@ -7,14 +6,31 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
     private static readonly object SyncLock = new();
     private readonly ICollectionView view;
-    private ApplicationFilterViewModel filter;
-    private bool autoScroll;
-    private ApplicationEventEntry? selectedEntry;
-    private bool showColumnArea;
     private ListSortDirection sortDirection;
-    private bool listenOnToastNotificationMessage;
     private int maxEntries = 10000;
+
+    [ObservableProperty]
+    private ApplicationFilterViewModel filter = new();
+
+    [ObservableProperty(DependentPropertyNames = [nameof(IsScrollingUp), nameof(IsScrollingDown)])]
+    private bool autoScroll = true;
+
+    [ObservableProperty]
+    private ApplicationEventEntry? selectedEntry;
+
+    [ObservableProperty]
+    private bool showColumnArea = true;
+
+    /// <summary>
+    /// When <c>true</c>, the drain loop stops dispatching incoming entries to
+    /// <see cref="Entries"/> while continuing to buffer them in the channel.
+    /// <see cref="BufferedCount"/> reflects the held-but-not-shown count.
+    /// </summary>
+    [ObservableProperty(DependentPropertyNames = [nameof(BufferedCount)])]
     private bool isPaused;
+
+    [ObservableProperty(AfterChangedCallback = nameof(OnListenOnToastNotificationMessageChanged))]
+    private bool listenOnToastNotificationMessage;
 
     private readonly Channel<ApplicationEventEntry> entryChannel =
         Channel.CreateUnbounded<ApplicationEventEntry>(
@@ -32,15 +48,15 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     {
         Entries = [];
         SelectedEntries = [];
-        filter = new ApplicationFilterViewModel();
         BindingOperations.EnableCollectionSynchronization(
             Entries,
             SyncLock);
         view = CollectionViewSource.GetDefaultView(Entries);
         view.SortDescriptions.Clear();
-        AutoScroll = true;
         SortDirection = ListSortDirection.Ascending;
-        ShowColumnArea = true;
+
+        // Field default is false; this assignment transitions to true and so
+        // fires the AfterChangedCallback that registers the messenger handler.
         ListenOnToastNotificationMessage = true;
 
         Entries.CollectionChanged += (_, _) =>
@@ -66,58 +82,9 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             cts.Token);
     }
 
-    public ApplicationFilterViewModel Filter
-    {
-        get => filter;
-        set
-        {
-            if (Equals(
-                    value,
-                    filter))
-            {
-                return;
-            }
+    public ObservableCollectionEx<ApplicationEventEntry> Entries { get; }
 
-            filter = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public bool AutoScroll
-    {
-        get => autoScroll;
-        set
-        {
-            if (value == autoScroll)
-            {
-                return;
-            }
-
-            autoScroll = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// When <c>true</c>, the drain loop stops dispatching incoming entries to
-    /// <see cref="Entries"/> while continuing to buffer them in the channel.
-    /// <see cref="BufferedCount"/> reflects the held-but-not-shown count.
-    /// </summary>
-    public bool IsPaused
-    {
-        get => isPaused;
-        set
-        {
-            if (value == isPaused)
-            {
-                return;
-            }
-
-            isPaused = value;
-            RaisePropertyChanged();
-            RaisePropertyChanged(nameof(BufferedCount));
-        }
-    }
+    public ObservableCollectionEx<ApplicationEventEntry> SelectedEntries { get; }
 
     /// <summary>
     /// Number of entries currently sitting in the ingest channel waiting to be
@@ -130,7 +97,9 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     /// <summary>
     /// Caps the number of entries kept in <see cref="Entries"/>. When new
     /// entries push the count past this value, the oldest entries (by
-    /// insertion order) are dropped. <c>0</c> disables the cap.
+    /// insertion order) are dropped. <c>0</c> disables the cap. Negative
+    /// values are clamped to <c>0</c>, which is why this stays a hand-rolled
+    /// setter rather than an <c>[ObservableProperty]</c>.
     /// </summary>
     public int MaxEntries
     {
@@ -156,42 +125,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
     }
 
-    public ApplicationEventEntry? SelectedEntry
-    {
-        get => selectedEntry;
-        set
-        {
-            if (Equals(
-                    value,
-                    selectedEntry))
-            {
-                return;
-            }
-
-            selectedEntry = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public ObservableCollectionEx<ApplicationEventEntry> Entries { get; }
-
-    public ObservableCollectionEx<ApplicationEventEntry> SelectedEntries { get; }
-
-    public bool ShowColumnArea
-    {
-        get => showColumnArea;
-        set
-        {
-            if (value == showColumnArea)
-            {
-                return;
-            }
-
-            showColumnArea = value;
-            RaisePropertyChanged();
-        }
-    }
-
+    /// <summary>
+    /// Sort direction applied to the underlying <see cref="ICollectionView"/>.
+    /// Hand-rolled because the setter has to rebuild
+    /// <see cref="ICollectionView.SortDescriptions"/> and refresh the view —
+    /// not a pure value-store.
+    /// </summary>
     public ListSortDirection SortDirection
     {
         get => sortDirection;
@@ -217,6 +156,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     public bool IsScrollingDown
         => AutoScroll && SortDirection == ListSortDirection.Descending;
 
+    /// <summary>
+    /// Free-text filter applied to the visible entries. The getter / setter
+    /// delegate to <see cref="ApplicationFilterViewModel.MatchOnTextInData"/>
+    /// (no backing field of our own), so this can't be an
+    /// <c>[ObservableProperty]</c>.
+    /// </summary>
     public string MatchOnText
     {
         get => filter.MatchOnTextInData;
@@ -230,31 +175,19 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
     }
 
-    public bool ListenOnToastNotificationMessage
+    private void OnListenOnToastNotificationMessageChanged()
     {
-        get => listenOnToastNotificationMessage;
-        set
+        if (listenOnToastNotificationMessage)
         {
-            if (value == listenOnToastNotificationMessage)
-            {
-                return;
-            }
-
-            listenOnToastNotificationMessage = value;
-            RaisePropertyChanged();
-
-            if (listenOnToastNotificationMessage)
-            {
-                MessengerInstance.Register<ToastNotificationMessage>(
-                    this,
-                    OnToastNotificationMessageHandler);
-            }
-            else
-            {
-                MessengerInstance.UnRegister<ToastNotificationMessage>(
-                    this,
-                    OnToastNotificationMessageHandler);
-            }
+            MessengerInstance.Register<ToastNotificationMessage>(
+                this,
+                OnToastNotificationMessageHandler);
+        }
+        else
+        {
+            MessengerInstance.UnRegister<ToastNotificationMessage>(
+                this,
+                OnToastNotificationMessageHandler);
         }
     }
 
@@ -483,7 +416,8 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     /// <summary>
     /// Opens a Save File dialog and writes the currently visible (filtered)
     /// entries to the chosen file in the format inferred from its extension
-    /// (CSV / JSON / TXT). No-op when there are no entries.
+    /// (CSV / JSON / TXT). Disabled (button greyed out) while there are no
+    /// entries to export.
     /// </summary>
     [RelayCommand(CanExecute = nameof(CanExport))]
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Export failures must surface to the user, not crash the picker.")]
@@ -495,7 +429,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             FilterIndex = 1,
             FileName = "log-" + DateTime.Now.ToString("yyyyMMdd-HHmmss", GlobalizationConstants.EnglishCultureInfo) + ".csv",
             AddExtension = true,
-            Title = "Export log",
+            Title = Miscellaneous.ExportLog,
         };
 
         if (dialog.ShowDialog() != true)
@@ -513,12 +447,30 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
         catch (Exception ex)
         {
-            System.Windows.MessageBox.Show(
-                "Could not export log:" + Environment.NewLine + ex.Message,
-                "Export failed",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Error);
+            ShowExportFailureDialog(ex);
         }
+    }
+
+    private static void ShowExportFailureDialog(Exception ex)
+    {
+        var owner = Application.Current?.MainWindow;
+        if (owner is null)
+        {
+            return;
+        }
+
+        var settings = new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
+        {
+            TitleBarText = Miscellaneous.ExportFailed,
+        };
+
+        var message = string.Format(
+            CultureInfo.CurrentCulture,
+            Miscellaneous.CouldNotExportLogFormat1,
+            ex.Message);
+
+        var dialog = new InfoDialogBox(owner, settings, message);
+        dialog.ShowDialog();
     }
 
     [RelayCommand]

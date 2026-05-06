@@ -40,16 +40,20 @@
 
                     <ToggleButton
                         IsChecked="{Binding Path=IsPaused, Mode=TwoWay}"
-                        ToolTip="Pause / resume incoming entries"
+                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                      Key=PauseResumeIncomingEntriesTooltip}"
                         Visibility="{Binding Path=ShowPauseInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                MinWidth="16"
-                                Margin="1,0,0,0"
-                                VerticalAlignment="Center"
-                                FontSize="13"
-                                Text="{Binding Path=IsPaused, Converter={x:Static local:PausedToGlyphValueConverter.Instance}}"
-                                TextAlignment="Center" />
+                            <Grid
+                                Width="16"
+                                Height="16"
+                                Margin="1,1,0,0">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="13"
+                                    Text="{Binding Path=IsPaused, Converter={x:Static local:PausedToGlyphValueConverter.Instance}}" />
+                            </Grid>
                             <Border
                                 Margin="4,0,0,0"
                                 Padding="4,0"
@@ -111,14 +115,19 @@
 
                     <Button
                         Command="{Binding Path=ExportCommand}"
-                        ToolTip="Export visible entries to CSV / JSON / TXT (Ctrl+S)"
+                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                      Key=ExportVisibleEntriesTooltip}"
                         Visibility="{Binding Path=ShowExportInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
-                        <TextBlock
-                            MinWidth="16"
-                            VerticalAlignment="Center"
-                            FontSize="14"
-                            Text="⤓"
-                            TextAlignment="Center" />
+                        <Grid
+                            Width="16"
+                            Height="16"
+                            Margin="1,1,0,0">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="⤓" />
+                        </Grid>
                     </Button>
                 </ToolBar>
             </ToolBarTray>
@@ -204,13 +213,15 @@
                 Background="{DynamicResource AtcApps.Brushes.Accent}"
                 Click="OnJumpToLiveClick"
                 Foreground="White"
-                ToolTip="Resume tail mode (Ctrl+G)"
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                              Key=ResumeTailModeTooltip}"
                 Visibility="{Binding Path=IsDetachedFromTail, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
                         VerticalAlignment="Center"
                         FontWeight="SemiBold"
-                        Text="↓ Jump to live" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                                                   Key=JumpToLive}" />
                     <Border
                         Margin="6,0,0,0"
                         Padding="4,0"

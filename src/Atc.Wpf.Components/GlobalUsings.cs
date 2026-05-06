@@ -23,6 +23,7 @@ global using System.Windows.Threading;
 global using Atc.Serialization;
 global using Atc.Wpf.Capture;
 global using Atc.Wpf.Collections;
+global using Atc.Wpf.Components.Dialogs;
 global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;
 global using Atc.Wpf.Components.Notifications.Messages;

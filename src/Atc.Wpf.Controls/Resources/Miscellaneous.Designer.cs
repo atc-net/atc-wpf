@@ -752,5 +752,68 @@ namespace Atc.Wpf.Controls.Resources {
                 return ResourceManager.GetString("ZoomToFit", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Export log.
+        /// </summary>
+        public static string ExportLog {
+            get {
+                return ResourceManager.GetString("ExportLog", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Export failed.
+        /// </summary>
+        public static string ExportFailed {
+            get {
+                return ResourceManager.GetString("ExportFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not export log:{newline}{0}.
+        /// </summary>
+        public static string CouldNotExportLogFormat1 {
+            get {
+                return ResourceManager.GetString("CouldNotExportLogFormat1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Export visible entries to CSV / JSON / TXT (Ctrl+S).
+        /// </summary>
+        public static string ExportVisibleEntriesTooltip {
+            get {
+                return ResourceManager.GetString("ExportVisibleEntriesTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pause / resume incoming entries.
+        /// </summary>
+        public static string PauseResumeIncomingEntriesTooltip {
+            get {
+                return ResourceManager.GetString("PauseResumeIncomingEntriesTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ↓ Jump to live.
+        /// </summary>
+        public static string JumpToLive {
+            get {
+                return ResourceManager.GetString("JumpToLive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Resume tail mode (Ctrl+G).
+        /// </summary>
+        public static string ResumeTailModeTooltip {
+            get {
+                return ResourceManager.GetString("ResumeTailModeTooltip", resourceCulture);
+            }
+        }
     }
 }
