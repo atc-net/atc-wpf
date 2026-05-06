@@ -34,6 +34,7 @@
             AutoSelectFirstAvailable="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelNetworkAdapterPicker}}, Path=AutoSelectFirstAvailable}"
             ClearValueOnDisconnect="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelNetworkAdapterPicker}}, Path=ClearValueOnDisconnect}"
             ShowRefreshButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelNetworkAdapterPicker}}, Path=ShowRefreshButton}"
+            ShowSelectedStateMessage="False"
             ValueChanged="OnValueChanged"
             WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelNetworkAdapterPicker}}, Path=WatermarkText}"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelNetworkAdapterPicker}}, Path=Value, Mode=TwoWay}" />

@@ -51,7 +51,39 @@ public partial class LabelSerialPortPicker : ILabelSerialPortPicker
         object sender,
         RoutedPropertyChangedEventArgs<SerialPortInfo?> e)
     {
+        if (e.OldValue is not null)
+        {
+            e.OldValue.PropertyChanged -= OnValueStatePropertyChanged;
+        }
+
+        if (e.NewValue is not null)
+        {
+            e.NewValue.PropertyChanged += OnValueStatePropertyChanged;
+        }
+
         Validate(this, e, raiseEvents: true);
+    }
+
+    /// <summary>
+    /// Re-validates when the selected device's <see cref="DeviceState"/> changes
+    /// (e.g. it transitions to <see cref="DeviceState.InUse"/> after an in-use probe,
+    /// or to <see cref="DeviceState.Disconnected"/> when the device is unplugged).
+    /// Without this hook, the validation text only refreshes when a different
+    /// device is selected.
+    /// </summary>
+    private void OnValueStatePropertyChanged(
+        object? sender,
+        PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(SerialPortInfo.State))
+        {
+            return;
+        }
+
+        Validate(
+            this,
+            new RoutedPropertyChangedEventArgs<SerialPortInfo?>(Value, Value),
+            raiseEvents: false);
     }
 
     private static void Validate(
@@ -80,6 +112,15 @@ public partial class LabelSerialPortPicker : ILabelSerialPortPicker
                 OnLostFocusFireInvalidEvent(control, e);
             }
 
+            return;
+        }
+
+        if (control.Value is { State: DeviceState.InUse })
+        {
+            // Informational, not a hard validation failure — surface via the
+            // validation slot so it stays inline (no layout shift) but don't
+            // fire LostFocusInvalid.
+            control.ValidationText = Miscellaneous.DeviceInUse;
             return;
         }
 

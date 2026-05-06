@@ -112,6 +112,25 @@ public partial class UsbPortPicker
         private set => SetValue(HasSelectedStateMessageProperty, value);
     }
 
+    /// <summary>
+    /// When <c>true</c> (default) the selected device's state ("In use", "Disconnected")
+    /// is shown inline below the ComboBox. Set to <c>false</c> when the picker is hosted
+    /// inside a labelled wrapper that surfaces the message via <c>ValidationText</c> —
+    /// otherwise the inline message grows the picker's height and pushes neighbouring
+    /// controls down.
+    /// </summary>
+    public static readonly DependencyProperty ShowSelectedStateMessageProperty = DependencyProperty.Register(
+        nameof(ShowSelectedStateMessage),
+        typeof(bool),
+        typeof(UsbPortPicker),
+        new PropertyMetadata(defaultValue: true));
+
+    public bool ShowSelectedStateMessage
+    {
+        get => (bool)GetValue(ShowSelectedStateMessageProperty);
+        set => SetValue(ShowSelectedStateMessageProperty, value);
+    }
+
     private readonly IUsbDeviceService service;
     private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
     private string? lostDeviceId;

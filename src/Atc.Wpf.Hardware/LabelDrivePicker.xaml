@@ -34,6 +34,7 @@
             AutoSelectFirstAvailable="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelDrivePicker}}, Path=AutoSelectFirstAvailable}"
             ClearValueOnDisconnect="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelDrivePicker}}, Path=ClearValueOnDisconnect}"
             ShowRefreshButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelDrivePicker}}, Path=ShowRefreshButton}"
+            ShowSelectedStateMessage="False"
             ValueChanged="OnValueChanged"
             WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelDrivePicker}}, Path=WatermarkText}"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelDrivePicker}}, Path=Value, Mode=TwoWay}" />
