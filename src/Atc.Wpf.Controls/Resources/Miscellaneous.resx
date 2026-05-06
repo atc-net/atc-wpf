@@ -348,4 +348,26 @@
   <data name="ZoomPercentFormat1" xml:space="preserve">
     <value>Zoom {0}%</value>
   </data>
+  <data name="ExportLog" xml:space="preserve">
+    <value>Export log</value>
+  </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Export failed</value>
+  </data>
+  <data name="CouldNotExportLogFormat1" xml:space="preserve">
+    <value>Could not export log:
+{0}</value>
+  </data>
+  <data name="ExportVisibleEntriesTooltip" xml:space="preserve">
+    <value>Export visible entries to CSV / JSON / TXT (Ctrl+S)</value>
+  </data>
+  <data name="PauseResumeIncomingEntriesTooltip" xml:space="preserve">
+    <value>Pause / resume incoming entries</value>
+  </data>
+  <data name="JumpToLive" xml:space="preserve">
+    <value>↓ Jump to live</value>
+  </data>
+  <data name="ResumeTailModeTooltip" xml:space="preserve">
+    <value>Resume tail mode (Ctrl+G)</value>
+  </data>
 </root>

@@ -7,6 +7,10 @@ public partial class ApplicationMonitorView
     private readonly ContextMenu? defaultContextMenu;
     private bool isAtTail = true;
 
+    // ---------------------------------------------------------------------
+    // Toolbar visibility DPs
+    // ---------------------------------------------------------------------
+
     [DependencyProperty(DefaultValue = true)]
     private bool showToolbar;
 
@@ -16,26 +20,46 @@ public partial class ApplicationMonitorView
     [DependencyProperty(DefaultValue = true)]
     private bool showAutoScrollInToolbar;
 
+    [DependencyProperty(DefaultValue = true)]
+    private bool showPauseInToolbar;
+
+    [DependencyProperty(DefaultValue = true)]
+    private bool showSearchInToolbar;
+
+    [DependencyProperty(DefaultValue = false)]
+    private bool showExportInToolbar;
+
+    // ---------------------------------------------------------------------
+    // VM-bridged behaviour DPs (two-way; synced via DataContextChanged +
+    // OnViewModelPropertyChanged below)
+    // ---------------------------------------------------------------------
+
     [DependencyProperty(
         DefaultValue = true,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
         PropertyChangedCallback = nameof(OnAutoScrollChanged))]
     private bool autoScroll;
 
-    [DependencyProperty(DefaultValue = true)]
-    private bool showSearchInToolbar;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool showPauseInToolbar;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool showExportInToolbar;
-
     [DependencyProperty(
         DefaultValue = false,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
         PropertyChangedCallback = nameof(OnIsPausedChanged))]
     private bool isPaused;
+
+    /// <summary>
+    /// Maximum number of entries kept in the buffer. When exceeded, the oldest
+    /// entries are dropped (ring-buffer semantics). Set to <c>0</c> for no cap
+    /// (unbounded — only safe for short-running apps). Default <c>10000</c>.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = 10000,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnMaxEntriesChanged))]
+    private int maxEntries;
+
+    // ---------------------------------------------------------------------
+    // Read-only state DPs surfaced for the Jump-to-live overlay
+    // ---------------------------------------------------------------------
 
     /// <summary>
     /// <c>true</c> while the user has manually scrolled away from the tail of
@@ -53,10 +77,9 @@ public partial class ApplicationMonitorView
     [DependencyProperty(DefaultValue = 0)]
     private int newSinceDetached;
 
-    [DependencyProperty(
-        DefaultValue = true,
-        PropertyChangedCallback = nameof(OnEnableContextMenuChanged))]
-    private bool enableContextMenu;
+    // ---------------------------------------------------------------------
+    // Layout DPs
+    // ---------------------------------------------------------------------
 
     [DependencyProperty(DefaultValue = 150d)]
     private double areaColumnWidth;
@@ -64,16 +87,14 @@ public partial class ApplicationMonitorView
     [DependencyProperty(DefaultValue = 400d)]
     private double messageColumnWidth;
 
-    /// <summary>
-    /// Maximum number of entries kept in the buffer. When exceeded, the oldest
-    /// entries are dropped (ring-buffer semantics). Set to <c>0</c> for no cap
-    /// (unbounded — only safe for short-running apps). Default <c>10000</c>.
-    /// </summary>
+    // ---------------------------------------------------------------------
+    // Misc
+    // ---------------------------------------------------------------------
+
     [DependencyProperty(
-        DefaultValue = 10000,
-        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-        PropertyChangedCallback = nameof(OnMaxEntriesChanged))]
-    private int maxEntries;
+        DefaultValue = true,
+        PropertyChangedCallback = nameof(OnEnableContextMenuChanged))]
+    private bool enableContextMenu;
 
     public ApplicationMonitorView()
     {
@@ -87,6 +108,34 @@ public partial class ApplicationMonitorView
         DataContextChanged += OnApplicationMonitorViewDataContextChanged;
     }
 
+    /// <summary>
+    /// Programmatically scrolls to the tail of the list (bottom for ascending
+    /// sort, top for descending) and resets the detached state. Safe to call
+    /// when there are no entries.
+    /// </summary>
+    public void JumpToLive()
+    {
+        if (LvEntries.Items.Count <= 0)
+        {
+            return;
+        }
+
+        var direction = (DataContext as ApplicationMonitorViewModel)?.SortDirection
+                        ?? ListSortDirection.Ascending;
+
+        LvEntries.ScrollIntoView(
+            direction == ListSortDirection.Ascending
+                ? LvEntries.Items[^1]!
+                : LvEntries.Items[0]!);
+
+        IsDetachedFromTail = false;
+        NewSinceDetached = 0;
+    }
+
+    // ---------------------------------------------------------------------
+    // Lifetime
+    // ---------------------------------------------------------------------
+
     private void OnApplicationMonitorViewLoaded(
         object sender,
         RoutedEventArgs e)
@@ -97,46 +146,10 @@ public partial class ApplicationMonitorView
         RoutedEventArgs e)
         => Messenger.Default.UnRegister<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
 
-    private static void OnEnableContextMenuChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ApplicationMonitorView)d).ApplyContextMenuState();
-
-    private static void OnAutoScrollChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        if (d is ApplicationMonitorView view &&
-            view.DataContext is ApplicationMonitorViewModel vm &&
-            vm.AutoScroll != (bool)e.NewValue)
-        {
-            vm.AutoScroll = (bool)e.NewValue;
-        }
-    }
-
-    private static void OnMaxEntriesChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        if (d is ApplicationMonitorView view &&
-            view.DataContext is ApplicationMonitorViewModel vm &&
-            vm.MaxEntries != (int)e.NewValue)
-        {
-            vm.MaxEntries = (int)e.NewValue;
-        }
-    }
-
-    private static void OnIsPausedChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        if (d is ApplicationMonitorView view &&
-            view.DataContext is ApplicationMonitorViewModel vm &&
-            vm.IsPaused != (bool)e.NewValue)
-        {
-            vm.IsPaused = (bool)e.NewValue;
-        }
-    }
+    // ---------------------------------------------------------------------
+    // VM bridge — push View DPs into the VM when DataContext attaches, and
+    // mirror back any VM-driven changes so toolbar toggles stay in sync.
+    // ---------------------------------------------------------------------
 
     private void OnApplicationMonitorViewDataContextChanged(
         object sender,
@@ -184,10 +197,59 @@ public partial class ApplicationMonitorView
         }
     }
 
+    // ---------------------------------------------------------------------
+    // DP changed callbacks (View → VM push)
+    // ---------------------------------------------------------------------
+
+    private static void OnAutoScrollChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is ApplicationMonitorView view &&
+            view.DataContext is ApplicationMonitorViewModel vm &&
+            vm.AutoScroll != (bool)e.NewValue)
+        {
+            vm.AutoScroll = (bool)e.NewValue;
+        }
+    }
+
+    private static void OnMaxEntriesChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is ApplicationMonitorView view &&
+            view.DataContext is ApplicationMonitorViewModel vm &&
+            vm.MaxEntries != (int)e.NewValue)
+        {
+            vm.MaxEntries = (int)e.NewValue;
+        }
+    }
+
+    private static void OnIsPausedChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is ApplicationMonitorView view &&
+            view.DataContext is ApplicationMonitorViewModel vm &&
+            vm.IsPaused != (bool)e.NewValue)
+        {
+            vm.IsPaused = (bool)e.NewValue;
+        }
+    }
+
+    private static void OnEnableContextMenuChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((ApplicationMonitorView)d).ApplyContextMenuState();
+
     private void ApplyContextMenuState()
         => LvEntries.ContextMenu = EnableContextMenu
             ? defaultContextMenu
             : null;
+
+    // ---------------------------------------------------------------------
+    // ListView interaction (selection, scrolling, jump-to-live)
+    // ---------------------------------------------------------------------
 
     /// <summary>
     /// Pushes the ListView's multi-selection into the ViewModel so its copy
@@ -203,29 +265,6 @@ public partial class ApplicationMonitorView
         {
             viewModel.SetSelectedEntries(LvEntries.SelectedItems.OfType<ApplicationEventEntry>());
         }
-    }
-
-    private void OnApplicationMonitorScrollEvent(
-        ApplicationMonitorScrollEvent obj)
-    {
-        _ = Dispatcher.CurrentDispatcher.BeginInvokeIfRequired(() =>
-        {
-            if (LvEntries.Items.Count <= 0)
-            {
-                return;
-            }
-
-            if (!isAtTail)
-            {
-                NewSinceDetached++;
-                return;
-            }
-
-            LvEntries.ScrollIntoView(
-                obj.Direction == ListSortDirection.Ascending
-                    ? LvEntries.Items[^1]!
-                    : LvEntries.Items[0]!);
-        });
     }
 
     /// <summary>
@@ -266,32 +305,31 @@ public partial class ApplicationMonitorView
         }
     }
 
+    private void OnApplicationMonitorScrollEvent(
+        ApplicationMonitorScrollEvent obj)
+    {
+        _ = Dispatcher.CurrentDispatcher.BeginInvokeIfRequired(() =>
+        {
+            if (LvEntries.Items.Count <= 0)
+            {
+                return;
+            }
+
+            if (!isAtTail)
+            {
+                NewSinceDetached++;
+                return;
+            }
+
+            LvEntries.ScrollIntoView(
+                obj.Direction == ListSortDirection.Ascending
+                    ? LvEntries.Items[^1]!
+                    : LvEntries.Items[0]!);
+        });
+    }
+
     private void OnJumpToLiveClick(
         object sender,
         RoutedEventArgs e)
         => JumpToLive();
-
-    /// <summary>
-    /// Programmatically scrolls to the tail of the list (bottom for
-    /// ascending sort, top for descending) and resets the detached state.
-    /// Safe to call when there are no entries.
-    /// </summary>
-    public void JumpToLive()
-    {
-        if (LvEntries.Items.Count <= 0)
-        {
-            return;
-        }
-
-        var direction = (DataContext as ApplicationMonitorViewModel)?.SortDirection
-                        ?? ListSortDirection.Ascending;
-
-        LvEntries.ScrollIntoView(
-            direction == ListSortDirection.Ascending
-                ? LvEntries.Items[^1]!
-                : LvEntries.Items[0]!);
-
-        IsDetachedFromTail = false;
-        NewSinceDetached = 0;
-    }
 }

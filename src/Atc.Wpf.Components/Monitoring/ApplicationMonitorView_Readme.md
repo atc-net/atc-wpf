@@ -35,7 +35,7 @@ using Atc.Wpf.Components.Monitoring;
 | `MaxEntries` | `int` | `10000` | Ring-buffer cap on the in-memory entry buffer. When new entries push the count past this value, the oldest entries (by insertion order) are dropped. Set to `0` for no cap (only safe for short-running apps). Two-way bindable and bridged to the VM. |
 | `IsPaused` | `bool` | `false` | When `true`, suspends dispatch of incoming entries to the visible buffer while the ingest channel keeps capturing. The toolbar Pause button shows a badge with the buffered count. Resuming flushes the held entries. Two-way bindable and bridged to the VM. |
 | `ShowPauseInToolbar` | `bool` | `true` | Show the Pause/Resume toggle in the toolbar. |
-| `ShowExportInToolbar` | `bool` | `true` | Show the Export button (CSV / JSON / TXT) in the toolbar. |
+| `ShowExportInToolbar` | `bool` | `false` | Show the Export button (CSV / JSON / TXT) in the toolbar. Off by default — opt in with `ShowExportInToolbar="True"`. |
 | `IsDetachedFromTail` | `bool` | `false` | (Read-only intent.) `true` while the user has manually scrolled away from the tail of the list. Auto-scroll is suppressed while detached; the `Jump to live` overlay is bound to this. |
 | `NewSinceDetached` | `int` | `0` | (Read-only intent.) Count of entries received since detachment. Reset to `0` on tail re-attach or when `JumpToLive()` is called. |
 | `ShowSearchInToolbar` | `bool` | `true` | Show search box |

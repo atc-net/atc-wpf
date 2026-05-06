@@ -18,10 +18,15 @@
             Grid.Column="0"
             Margin="10"
             AreaColumnWidth="{Binding DataContext.AreaColumnWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            AutoScroll="{Binding DataContext.AutoScroll, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
             DataContext="{Binding Path=ApplicationMonitorViewModel}"
+            IsPaused="{Binding DataContext.IsPaused, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            MaxEntries="{Binding DataContext.MaxEntries, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
             MessageColumnWidth="{Binding DataContext.MessageColumnWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowAutoScrollInToolbar="{Binding DataContext.ShowAutoScrollInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowClearInToolbar="{Binding DataContext.ShowClearInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            ShowExportInToolbar="{Binding DataContext.ShowExportInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            ShowPauseInToolbar="{Binding DataContext.ShowPauseInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowSearchInToolbar="{Binding DataContext.ShowSearchInToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}"
             ShowToolbar="{Binding DataContext.ShowToolbar, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 

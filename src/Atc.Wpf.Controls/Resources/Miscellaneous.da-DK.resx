@@ -348,4 +348,26 @@
   <data name="ZoomPercentFormat1" xml:space="preserve">
     <value>Zoom {0}%</value>
   </data>
+  <data name="ExportLog" xml:space="preserve">
+    <value>Eksportér log</value>
+  </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Eksport mislykkedes</value>
+  </data>
+  <data name="CouldNotExportLogFormat1" xml:space="preserve">
+    <value>Kunne ikke eksportere log:
+{0}</value>
+  </data>
+  <data name="ExportVisibleEntriesTooltip" xml:space="preserve">
+    <value>Eksportér synlige poster til CSV / JSON / TXT (Ctrl+S)</value>
+  </data>
+  <data name="PauseResumeIncomingEntriesTooltip" xml:space="preserve">
+    <value>Pause / genoptag indkommende poster</value>
+  </data>
+  <data name="JumpToLive" xml:space="preserve">
+    <value>↓ Hop til live</value>
+  </data>
+  <data name="ResumeTailModeTooltip" xml:space="preserve">
+    <value>Genoptag tail-tilstand (Ctrl+G)</value>
+  </data>
 </root>
