@@ -14,13 +14,14 @@ internal static class SampleAppPath
     {
         var testDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-        var candidate = Path.Combine(testDir, SampleExeName);
-        if (File.Exists(candidate))
-        {
-            return candidate;
-        }
-
-        // Walk up to the repo root (looking for the .slnx) and probe the sample bin folder.
+        // PREFER the sample's own bin/ folder over the copy MSBuild dropped
+        // alongside the test exe. The sample's view-loader walks up from the
+        // running exe until it finds a "bin" folder, then takes its parent as
+        // the project root and searches there for sample XAML files. From the
+        // test's bin/ that root would be the test project (which has no
+        // sample sources) — every leaf would fail with "Can't find sample by
+        // invalid location". Running the source-tree exe puts that root at
+        // the sample project, where the XAMLs live.
         var dir = new DirectoryInfo(testDir);
         while (dir is not null && dir.GetFiles("Atc.Wpf.slnx").Length == 0)
         {
@@ -32,19 +33,27 @@ internal static class SampleAppPath
             var configuration = testDir.Contains("Release", StringComparison.OrdinalIgnoreCase)
                 ? "Release"
                 : "Debug";
-            var sampleBin = Path.Combine(
-                dir.FullName,
-                "sample",
-                "Atc.Wpf.Sample",
-                "bin",
-                configuration,
-                "net10.0-windows",
-                SampleExeName);
+            var sampleBinRoot = Path.Combine(dir.FullName, "sample", "Atc.Wpf.Sample", "bin", configuration);
 
-            if (File.Exists(sampleBin))
+            if (Directory.Exists(sampleBinRoot))
             {
-                return sampleBin;
+                var sourceExe = Directory
+                    .EnumerateFiles(sampleBinRoot, SampleExeName, SearchOption.AllDirectories)
+                    .FirstOrDefault();
+                if (sourceExe is not null)
+                {
+                    return sourceExe;
+                }
             }
+        }
+
+        // Fallback: the copy alongside the test exe. Sample loading from this
+        // path can fail (see comment above), but it's better than nothing for
+        // smoke tests that don't navigate into samples.
+        var candidate = Path.Combine(testDir, SampleExeName);
+        if (File.Exists(candidate))
+        {
+            return candidate;
         }
 
         throw new FileNotFoundException(
