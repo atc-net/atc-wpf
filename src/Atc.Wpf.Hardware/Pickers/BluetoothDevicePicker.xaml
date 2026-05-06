@@ -104,7 +104,13 @@
             Margin="0,4,0,0"
             FontStyle="Italic"
             Foreground="{DynamicResource AtcApps.Brushes.Accent}"
-            Text="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=SelectedStateMessage}"
-            Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=HasSelectedStateMessage, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+            Text="{Binding RelativeSource={RelativeSource AncestorType=local:BluetoothDevicePicker}, Path=SelectedStateMessage}">
+            <TextBlock.Visibility>
+                <MultiBinding Converter="{x:Static atcValueConverters:MultiBoolToVisibilityVisibleValueConverter.Instance}">
+                    <Binding Path="HasSelectedStateMessage" RelativeSource="{RelativeSource AncestorType=local:BluetoothDevicePicker}" />
+                    <Binding Path="ShowSelectedStateMessage" RelativeSource="{RelativeSource AncestorType=local:BluetoothDevicePicker}" />
+                </MultiBinding>
+            </TextBlock.Visibility>
+        </TextBlock>
     </atc:GridEx>
 </UserControl>

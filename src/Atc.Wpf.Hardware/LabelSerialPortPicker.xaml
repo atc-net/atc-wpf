@@ -35,6 +35,7 @@
             ClearValueOnDisconnect="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelSerialPortPicker}}, Path=ClearValueOnDisconnect}"
             DetectInUseState="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelSerialPortPicker}}, Path=DetectInUseState}"
             ShowRefreshButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelSerialPortPicker}}, Path=ShowRefreshButton}"
+            ShowSelectedStateMessage="False"
             ValueChanged="OnValueChanged"
             WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelSerialPortPicker}}, Path=WatermarkText}"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelSerialPortPicker}}, Path=Value, Mode=TwoWay}" />

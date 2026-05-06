@@ -105,8 +105,14 @@
             Margin="0,4,0,0"
             FontStyle="Italic"
             Foreground="{DynamicResource AtcApps.Brushes.Accent}"
-            Text="{Binding RelativeSource={RelativeSource AncestorType=local:AudioInputPicker}, Path=SelectedStateMessage}"
-            Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:AudioInputPicker}, Path=HasSelectedStateMessage, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+            Text="{Binding RelativeSource={RelativeSource AncestorType=local:AudioInputPicker}, Path=SelectedStateMessage}">
+            <TextBlock.Visibility>
+                <MultiBinding Converter="{x:Static atcValueConverters:MultiBoolToVisibilityVisibleValueConverter.Instance}">
+                    <Binding Path="HasSelectedStateMessage" RelativeSource="{RelativeSource AncestorType=local:AudioInputPicker}" />
+                    <Binding Path="ShowSelectedStateMessage" RelativeSource="{RelativeSource AncestorType=local:AudioInputPicker}" />
+                </MultiBinding>
+            </TextBlock.Visibility>
+        </TextBlock>
 
         <Border
             Grid.Row="2"
