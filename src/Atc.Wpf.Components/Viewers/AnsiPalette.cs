@@ -29,7 +29,8 @@ public static class AnsiPalette
         Color.FromRgb(0xF2, 0xF2, 0xF2), // bright white
     ]);
 
-    private static IReadOnlyList<Brush> CreateBrushes(IReadOnlyList<Color> colors)
+    private static IReadOnlyList<Brush> CreateBrushes(
+        IReadOnlyList<Color> colors)
     {
         var result = new Brush[colors.Count];
         for (var i = 0; i < colors.Count; i++)

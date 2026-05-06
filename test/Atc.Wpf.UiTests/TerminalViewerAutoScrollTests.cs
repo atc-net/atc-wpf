@@ -1,9 +1,3 @@
-using System.Threading;
-using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Conditions;
-using FlaUI.Core.Definitions;
-using FlaUI.Core.Tools;
-
 namespace Atc.Wpf.UiTests;
 
 /// <summary>
@@ -29,6 +23,8 @@ public sealed class TerminalViewerAutoScrollTests : IDisposable
 
     [Trait("Category", "UI")]
     [Fact]
+    [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "FlaUI E2E tests must yield real wall time for the WPF UI thread to render between actions.")]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Best-effort screenshot capture must not fail the test on transient I/O errors.")]
     public void TerminalViewer_auto_scrolls_to_tail_when_burst_arrives()
     {
         AutoScrollTestHelpers.NavigateToSample(
@@ -81,7 +77,14 @@ public sealed class TerminalViewerAutoScrollTests : IDisposable
 
         // Best-effort screenshot for diagnostics.
         var snapshotPath = Path.Combine(snapshotDir, "terminal-after-burst.png");
-        try { mainWindow.CaptureToFile(snapshotPath); } catch { /* ignore */ }
+        try
+        {
+            mainWindow.CaptureToFile(snapshotPath);
+        }
+        catch
+        {
+            // ignore
+        }
 
         // Under WPF virtualization the only ListItems exposed to UIA are the
         // ones currently realized in the viewport. If auto-scroll worked, the
@@ -105,11 +108,10 @@ public sealed class TerminalViewerAutoScrollTests : IDisposable
             .DefaultIfEmpty(0)
             .Max();
 
-        Assert.True(
-            maxLineNumber >= totalLines - 30,
-            $"Auto-scroll should leave the tail in view. Highest realized burst-line was {maxLineNumber} (expected near {totalLines}). " +
+        var failureMessage = $"Auto-scroll should leave the tail in view. Highest realized burst-line was {maxLineNumber} (expected near {totalLines}). " +
             $"Realized 'burst' lines: {allTexts.Count}, sample names: [{string.Join(", ", allTexts.Take(5))}]. " +
-            $"Screenshot: {snapshotPath}");
+            $"Screenshot: {snapshotPath}";
+        Assert.True(maxLineNumber >= totalLines - 30, failureMessage);
     }
 
     private static int ExtractBurstNumber(string? text)

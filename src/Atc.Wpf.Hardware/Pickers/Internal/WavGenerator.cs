@@ -1,6 +1,3 @@
-using System.IO;
-using System.Text;
-
 namespace Atc.Wpf.Hardware.Pickers.Internal;
 
 /// <summary>
@@ -10,6 +7,12 @@ namespace Atc.Wpf.Hardware.Pickers.Internal;
 /// </summary>
 internal static class WavGenerator
 {
+    private const int ChannelCount = 2;
+    private const int BitsPerSample = 16;
+    private const int BytesPerSample = BitsPerSample / 8;
+    private const int BlockAlign = ChannelCount * BytesPerSample;
+    private const int RiffHeaderBytes = 44;
+
     public static byte[] CreateStereoTestTone(
         int sampleRate,
         int frequencyHz,
@@ -17,21 +20,28 @@ internal static class WavGenerator
         int fadeMilliseconds,
         double amplitude)
     {
-        const int channelCount = 2;
-        const int bitsPerSample = 16;
-        const int bytesPerSample = bitsPerSample / 8;
-        const int blockAlign = channelCount * bytesPerSample;
-        var byteRate = sampleRate * blockAlign;
-
         var samplesPerSegment = sampleRate * segmentMilliseconds / 1000;
         var totalSamples = samplesPerSegment * 3;
         var fadeSamples = sampleRate * fadeMilliseconds / 1000;
-        var dataBytes = totalSamples * blockAlign;
-        var fileBytes = 44 + dataBytes;
+        var dataBytes = totalSamples * BlockAlign;
 
-        var buffer = new byte[fileBytes];
+        var buffer = new byte[RiffHeaderBytes + dataBytes];
         using var stream = new MemoryStream(buffer);
         using var writer = new BinaryWriter(stream);
+
+        WriteRiffHeader(writer, sampleRate, dataBytes);
+        WriteSamples(writer, sampleRate, frequencyHz, samplesPerSegment, totalSamples, fadeSamples, amplitude);
+
+        return buffer;
+    }
+
+    private static void WriteRiffHeader(
+        BinaryWriter writer,
+        int sampleRate,
+        int dataBytes)
+    {
+        var byteRate = sampleRate * BlockAlign;
+        var fileBytes = RiffHeaderBytes + dataBytes;
 
         // RIFF header.
         writer.Write(Encoding.ASCII.GetBytes("RIFF"));
@@ -42,16 +52,26 @@ internal static class WavGenerator
         writer.Write(Encoding.ASCII.GetBytes("fmt "));
         writer.Write(16);
         writer.Write((short)1);  // PCM
-        writer.Write((short)channelCount);
+        writer.Write((short)ChannelCount);
         writer.Write(sampleRate);
         writer.Write(byteRate);
-        writer.Write((short)blockAlign);
-        writer.Write((short)bitsPerSample);
+        writer.Write((short)BlockAlign);
+        writer.Write((short)BitsPerSample);
 
         // data chunk.
         writer.Write(Encoding.ASCII.GetBytes("data"));
         writer.Write(dataBytes);
+    }
 
+    private static void WriteSamples(
+        BinaryWriter writer,
+        int sampleRate,
+        int frequencyHz,
+        int samplesPerSegment,
+        int totalSamples,
+        int fadeSamples,
+        double amplitude)
+    {
         var omega = 2.0 * global::System.Math.PI * frequencyHz / sampleRate;
 
         for (var i = 0; i < totalSamples; i++)
@@ -79,8 +99,6 @@ internal static class WavGenerator
             writer.Write(left);
             writer.Write(right);
         }
-
-        return buffer;
     }
 
     private static double ComputeEnvelope(

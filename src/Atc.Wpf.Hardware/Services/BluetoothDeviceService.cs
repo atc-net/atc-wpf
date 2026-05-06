@@ -52,7 +52,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
 
     public async Task RefreshAsync()
     {
-        var found = await watcher.FindAllAsync();
+        var found = await watcher.FindAllAsync().ConfigureAwait(false);
 
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 

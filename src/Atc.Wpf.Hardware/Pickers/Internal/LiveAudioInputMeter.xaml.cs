@@ -133,64 +133,19 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
         {
             ClearError();
 
-            var settings = new Windows.Media.Audio.AudioGraphSettings(
-                Windows.Media.Render.AudioRenderCategory.Speech)
+            if (!await TryCreateGraphAsync().ConfigureAwait(true))
             {
-                // We're not actually rendering — but AudioGraph still requires
-                // a render category. Speech minimises latency and is a sensible
-                // pairing for a microphone capture graph.
-                DesiredSamplesPerQuantum = 480,
-                QuantumSizeSelectionMode =
-                    Windows.Media.Audio.QuantumSizeSelectionMode.ClosestToDesired,
-            };
-
-            var graphResult = await Windows.Media.Audio.AudioGraph.CreateAsync(settings);
-            if (graphResult.Status is not Windows.Media.Audio.AudioGraphCreationStatus.Success ||
-                graphResult.Graph is null)
-            {
-                Debug.WriteLine($"[LiveAudioInputMeter] AudioGraph.CreateAsync failed: {graphResult.Status}");
-                ShowError(Miscellaneous.AudioPreviewUnavailable);
                 return;
             }
 
-            graph = graphResult.Graph;
+            var captureEncoding = CreateStereoFloatEncoding();
 
-            // Force the frame output node to deliver float stereo at 48 kHz —
-            // independent of whatever multichannel format the graph picks for
-            // the render side. This is the same fix that unstuck
-            // AudioOutputPicker on multichannel hardware: without it, the
-            // frame buffers come out in the device's native multichannel
-            // layout and the Span<float> reinterpret is mis-aligned.
-            var captureEncoding = Windows.Media.MediaProperties.AudioEncodingProperties.CreatePcm(
-                sampleRate: 48000,
-                channelCount: 2,
-                bitsPerSample: 32);
-            captureEncoding.Subtype =
-                Windows.Media.MediaProperties.MediaEncodingSubtypes.Float;
-
-            var deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceId);
-
-            var inputResult = await graph.CreateDeviceInputNodeAsync(
-                Windows.Media.Capture.MediaCategory.Speech,
-                captureEncoding,
-                deviceInfo);
-            if (inputResult.Status is not Windows.Media.Audio.AudioDeviceNodeCreationStatus.Success ||
-                inputResult.DeviceInputNode is null)
+            if (!await TryCreateNodesAsync(deviceId, captureEncoding).ConfigureAwait(true))
             {
-                Debug.WriteLine(
-                    $"[LiveAudioInputMeter] CreateDeviceInputNodeAsync failed: " +
-                    $"status={inputResult.Status} hr=0x{inputResult.ExtendedError?.HResult:X8}");
-                ShowError(Miscellaneous.AudioPreviewUnavailable);
-                await StopAsync();
                 return;
             }
 
-            inputNode = inputResult.DeviceInputNode;
-
-            frameOutputNode = graph.CreateFrameOutputNode(captureEncoding);
-            inputNode.AddOutgoingConnection(frameOutputNode);
-
-            graph.QuantumStarted += OnQuantumStarted;
+            graph!.QuantumStarted += OnQuantumStarted;
             graph.Start();
 
             renderTimer.Start();
@@ -198,14 +153,84 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
         catch (UnauthorizedAccessException)
         {
             ShowError(Miscellaneous.AudioPermissionDenied);
-            await StopAsync();
+            await StopAsync().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"[LiveAudioInputMeter] start failed: {ex}");
             ShowError(Miscellaneous.AudioPreviewUnavailable);
-            await StopAsync();
+            await StopAsync().ConfigureAwait(false);
         }
+    }
+
+    private async Task<bool> TryCreateGraphAsync()
+    {
+        var settings = new Windows.Media.Audio.AudioGraphSettings(
+            Windows.Media.Render.AudioRenderCategory.Speech)
+        {
+            // We're not actually rendering — but AudioGraph still requires
+            // a render category. Speech minimises latency and is a sensible
+            // pairing for a microphone capture graph.
+            DesiredSamplesPerQuantum = 480,
+            QuantumSizeSelectionMode =
+                Windows.Media.Audio.QuantumSizeSelectionMode.ClosestToDesired,
+        };
+
+        var graphResult = await Windows.Media.Audio.AudioGraph.CreateAsync(settings);
+        if (graphResult.Status is not Windows.Media.Audio.AudioGraphCreationStatus.Success ||
+            graphResult.Graph is null)
+        {
+            Debug.WriteLine($"[LiveAudioInputMeter] AudioGraph.CreateAsync failed: {graphResult.Status}");
+            ShowError(Miscellaneous.AudioPreviewUnavailable);
+            return false;
+        }
+
+        graph = graphResult.Graph;
+        return true;
+    }
+
+    /// <summary>
+    /// Force the frame output node to deliver float stereo at 48 kHz —
+    /// independent of whatever multichannel format the graph picks for the
+    /// render side. Without this the frame buffers come out in the device's
+    /// native multichannel layout and the <c>Span&lt;float&gt;</c> reinterpret
+    /// is mis-aligned.
+    /// </summary>
+    private static Windows.Media.MediaProperties.AudioEncodingProperties CreateStereoFloatEncoding()
+    {
+        var encoding = Windows.Media.MediaProperties.AudioEncodingProperties.CreatePcm(
+            sampleRate: 48000,
+            channelCount: 2,
+            bitsPerSample: 32);
+        encoding.Subtype = Windows.Media.MediaProperties.MediaEncodingSubtypes.Float;
+        return encoding;
+    }
+
+    private async Task<bool> TryCreateNodesAsync(
+        string deviceId,
+        Windows.Media.MediaProperties.AudioEncodingProperties captureEncoding)
+    {
+        var deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceId);
+
+        var inputResult = await graph!.CreateDeviceInputNodeAsync(
+            Windows.Media.Capture.MediaCategory.Speech,
+            captureEncoding,
+            deviceInfo);
+        if (inputResult.Status is not Windows.Media.Audio.AudioDeviceNodeCreationStatus.Success ||
+            inputResult.DeviceInputNode is null)
+        {
+            Debug.WriteLine(
+                $"[LiveAudioInputMeter] CreateDeviceInputNodeAsync failed: " +
+                $"status={inputResult.Status} hr=0x{inputResult.ExtendedError?.HResult:X8}");
+            ShowError(Miscellaneous.AudioPreviewUnavailable);
+            await StopAsync();
+            return false;
+        }
+
+        inputNode = inputResult.DeviceInputNode;
+        frameOutputNode = graph.CreateFrameOutputNode(captureEncoding);
+        inputNode.AddOutgoingConnection(frameOutputNode);
+        return true;
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Stop must not throw on shutdown.")]

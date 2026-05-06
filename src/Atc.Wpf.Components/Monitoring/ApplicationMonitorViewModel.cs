@@ -5,7 +5,20 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     private const string ClipboardFieldSeparator = " | ";
 
     private static readonly object SyncLock = new();
+
     private readonly ICollectionView view;
+    private readonly Channel<ApplicationEventEntry> entryChannel =
+        Channel.CreateUnbounded<ApplicationEventEntry>(
+            new UnboundedChannelOptions
+            {
+                SingleReader = true,
+                SingleWriter = false,
+                AllowSynchronousContinuations = false,
+            });
+
+    private readonly CancellationTokenSource cts = new();
+    private readonly Task? queueProcessingTask;
+
     private ListSortDirection sortDirection;
     private int maxEntries = 10000;
 
@@ -31,18 +44,6 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
     [ObservableProperty(AfterChangedCallback = nameof(OnListenOnToastNotificationMessageChanged))]
     private bool listenOnToastNotificationMessage;
-
-    private readonly Channel<ApplicationEventEntry> entryChannel =
-        Channel.CreateUnbounded<ApplicationEventEntry>(
-            new UnboundedChannelOptions
-            {
-                SingleReader = true,
-                SingleWriter = false,
-                AllowSynchronousContinuations = false,
-            });
-
-    private readonly CancellationTokenSource cts = new();
-    private readonly Task? queueProcessingTask;
 
     public ApplicationMonitorViewModel()
     {
@@ -220,7 +221,6 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     /// <see cref="AutoScroll"/> is on. Loops until the channel completes or
     /// <paramref name="token"/> is cancelled.
     /// </summary>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
     private async Task ProcessQueueContinuouslyAsync(CancellationToken token)
     {
         var reader = entryChannel.Reader;
@@ -241,61 +241,8 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
                     return;
                 }
 
-                if (isPaused)
+                if (!await DrainAndDispatchBatchAsync(reader, token).ConfigureAwait(false))
                 {
-                    continue;
-                }
-
-                var batch = new List<ApplicationEventEntry>(capacity: 32);
-
-                while (reader.TryRead(out var entry))
-                {
-                    batch.Add(entry);
-                }
-
-                if (batch.Count == 0)
-                {
-                    continue;
-                }
-
-                var app = Application.Current;
-                if (app is null)
-                {
-                    return;
-                }
-
-                try
-                {
-                    await app.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            lock (SyncLock)
-                            {
-                                foreach (var entry in batch)
-                                {
-                                    Entries.Add(entry);
-                                }
-
-                                TrimToCap();
-                            }
-
-                            if (AutoScroll)
-                            {
-                                MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection));
-                            }
-                        },
-                        DispatcherPriority.Background,
-                        token);
-
-                    NotifyBufferedCountChanged();
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-                catch (Exception)
-                {
-                    // Application is tearing down; give up cleanly rather than spinning the loop.
                     return;
                 }
             }
@@ -303,6 +250,78 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         catch (OperationCanceledException)
         {
             // Expected on shutdown.
+        }
+    }
+
+    /// <summary>
+    /// Drains everything currently in the channel, dispatches it as a single
+    /// batch on the UI thread, and emits one scroll event for the batch when
+    /// auto-scroll is on. Returns <c>false</c> when the loop should exit
+    /// (Application is tearing down or token was cancelled mid-dispatch).
+    /// </summary>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
+    private async Task<bool> DrainAndDispatchBatchAsync(
+        ChannelReader<ApplicationEventEntry> reader,
+        CancellationToken token)
+    {
+        if (isPaused)
+        {
+            return true;
+        }
+
+        var batch = new List<ApplicationEventEntry>(capacity: 32);
+        while (reader.TryRead(out var entry))
+        {
+            batch.Add(entry);
+        }
+
+        if (batch.Count == 0)
+        {
+            return true;
+        }
+
+        var app = Application.Current;
+        if (app is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            await app.Dispatcher.InvokeAsync(
+                () => CommitBatchOnUiThread(batch),
+                DispatcherPriority.Background,
+                token);
+
+            NotifyBufferedCountChanged();
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
+        catch (Exception)
+        {
+            // Application is tearing down; give up cleanly rather than spinning the loop.
+            return false;
+        }
+    }
+
+    private void CommitBatchOnUiThread(List<ApplicationEventEntry> batch)
+    {
+        lock (SyncLock)
+        {
+            foreach (var entry in batch)
+            {
+                Entries.Add(entry);
+            }
+
+            TrimToCap();
+        }
+
+        if (AutoScroll)
+        {
+            MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection));
         }
     }
 

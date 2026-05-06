@@ -1,9 +1,3 @@
-using System.Threading;
-using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Conditions;
-using FlaUI.Core.Definitions;
-using FlaUI.Core.Tools;
-
 namespace Atc.Wpf.UiTests;
 
 /// <summary>
@@ -14,7 +8,10 @@ internal static class AutoScrollTestHelpers
 {
     public const int LaunchTimeoutMilliseconds = 30_000;
 
-    public static Application LaunchSample(out UIA3Automation automation, out Window mainWindow)
+    [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "FlaUI E2E tests must yield real wall time for the WPF UI thread to render between actions.")]
+    public static Application LaunchSample(
+        out UIA3Automation automation,
+        out Window mainWindow)
     {
         var exePath = SampleAppPath.Resolve();
         var startInfo = new ProcessStartInfo(exePath)
@@ -44,9 +41,11 @@ internal static class AutoScrollTestHelpers
         return application;
     }
 
-    public static void CleanupApplication(Application application, UIA3Automation automation)
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Best-effort cleanup; process may already be gone, transient FlaUI navigation errors must not mask the test outcome.")]
+    public static void CleanupApplication(
+        Application application,
+        UIA3Automation automation)
     {
-#pragma warning disable CA1031
         try
         {
             application.Close();
@@ -56,20 +55,12 @@ internal static class AutoScrollTestHelpers
         {
             // Best-effort cleanup; process may already be gone.
         }
-#pragma warning restore CA1031
 
         automation.Dispose();
         application.Dispose();
     }
 
-    /// <summary>
-    /// Routes navigation through the sample app's filter textbox: typing the
-    /// leaf name into <c>TbSampleFilter</c> hides everything else, after which
-    /// the lone surviving <see cref="ControlType.TreeItem"/> match is reliably
-    /// hit-tested by a real mouse click. This avoids the WPF tree-view's
-    /// virtualization corner-cases that prevent clicks against off-screen
-    /// items.
-    /// </summary>
+    [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "FlaUI E2E tests must yield real wall time for the WPF UI thread to render between actions.")]
     public static void NavigateToSample(
         Window mainWindow,
         string tabAutomationId,
@@ -115,13 +106,7 @@ internal static class AutoScrollTestHelpers
         Thread.Sleep(2000);
     }
 
-    /// <summary>
-    /// Resolves an <see cref="FlaUI.Core.Patterns.IScrollPattern"/> on the
-    /// supplied list-view, or on the first scrollable descendant if the
-    /// list-view itself doesn't expose one (depends on the WPF list's content
-    /// overflowing — the pattern only surfaces when there's actually something
-    /// to scroll). Captures a screenshot for diagnostics.
-    /// </summary>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Best-effort screenshot capture must not fail the test on transient I/O errors.")]
     public static double ReadVerticalScrollPercent(
         Window mainWindow,
         AutomationElement listView,

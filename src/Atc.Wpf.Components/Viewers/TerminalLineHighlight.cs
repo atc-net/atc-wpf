@@ -1,5 +1,3 @@
-
-
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Components.Viewers;
 
@@ -90,41 +88,159 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: null, OnAnyChanged));
 
-    public static string? GetSourceText(DependencyObject d) => (string?)d.GetValue(SourceTextProperty);
-    public static void SetSourceText(DependencyObject d, string? value) => d.SetValue(SourceTextProperty, value);
+    public static string? GetSourceText(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (string?)obj.GetValue(SourceTextProperty);
+    }
 
-    public static string? GetSearchPattern(DependencyObject d) => (string?)d.GetValue(SearchPatternProperty);
-    public static void SetSearchPattern(DependencyObject d, string? value) => d.SetValue(SearchPatternProperty, value);
+    public static void SetSourceText(
+        DependencyObject obj,
+        string? value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(SourceTextProperty, value);
+    }
 
-    public static bool GetUseRegex(DependencyObject d) => (bool)d.GetValue(UseRegexProperty);
-    public static void SetUseRegex(DependencyObject d, bool value) => d.SetValue(UseRegexProperty, value);
+    public static string? GetSearchPattern(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (string?)obj.GetValue(SearchPatternProperty);
+    }
 
-    public static Brush GetHighlightBackground(DependencyObject d) => (Brush)d.GetValue(HighlightBackgroundProperty);
-    public static void SetHighlightBackground(DependencyObject d, Brush value) => d.SetValue(HighlightBackgroundProperty, value);
+    public static void SetSearchPattern(
+        DependencyObject obj,
+        string? value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(SearchPatternProperty, value);
+    }
 
-    public static bool GetShowTimestamp(DependencyObject d) => (bool)d.GetValue(ShowTimestampProperty);
-    public static void SetShowTimestamp(DependencyObject d, bool value) => d.SetValue(ShowTimestampProperty, value);
+    public static bool GetUseRegex(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (bool)obj.GetValue(UseRegexProperty);
+    }
 
-    public static DateTimeOffset GetTimestamp(DependencyObject d) => (DateTimeOffset)d.GetValue(TimestampProperty);
-    public static void SetTimestamp(DependencyObject d, DateTimeOffset value) => d.SetValue(TimestampProperty, value);
+    public static void SetUseRegex(
+        DependencyObject obj,
+        bool value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(UseRegexProperty, value);
+    }
 
-    public static bool GetShowLineNumber(DependencyObject d) => (bool)d.GetValue(ShowLineNumberProperty);
-    public static void SetShowLineNumber(DependencyObject d, bool value) => d.SetValue(ShowLineNumberProperty, value);
+    public static Brush GetHighlightBackground(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (Brush)obj.GetValue(HighlightBackgroundProperty);
+    }
 
-    public static int GetLineNumber(DependencyObject d) => (int)d.GetValue(LineNumberProperty);
-    public static void SetLineNumber(DependencyObject d, int value) => d.SetValue(LineNumberProperty, value);
+    public static void SetHighlightBackground(
+        DependencyObject obj,
+        Brush value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(HighlightBackgroundProperty, value);
+    }
 
-    public static bool GetIsPinned(DependencyObject d) => (bool)d.GetValue(IsPinnedProperty);
-    public static void SetIsPinned(DependencyObject d, bool value) => d.SetValue(IsPinnedProperty, value);
+    public static bool GetShowTimestamp(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (bool)obj.GetValue(ShowTimestampProperty);
+    }
 
-    public static Brush GetMutedBrush(DependencyObject d) => (Brush)d.GetValue(MutedBrushProperty);
-    public static void SetMutedBrush(DependencyObject d, Brush value) => d.SetValue(MutedBrushProperty, value);
+    public static void SetShowTimestamp(
+        DependencyObject obj,
+        bool value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(ShowTimestampProperty, value);
+    }
 
-    public static IReadOnlyList<TerminalRun>? GetRuns(DependencyObject d)
-        => (IReadOnlyList<TerminalRun>?)d.GetValue(RunsProperty);
+    public static DateTimeOffset GetTimestamp(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (DateTimeOffset)obj.GetValue(TimestampProperty);
+    }
 
-    public static void SetRuns(DependencyObject d, IReadOnlyList<TerminalRun>? value)
-        => d.SetValue(RunsProperty, value);
+    public static void SetTimestamp(
+        DependencyObject obj,
+        DateTimeOffset value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(TimestampProperty, value);
+    }
+
+    public static bool GetShowLineNumber(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (bool)obj.GetValue(ShowLineNumberProperty);
+    }
+
+    public static void SetShowLineNumber(
+        DependencyObject obj,
+        bool value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(ShowLineNumberProperty, value);
+    }
+
+    public static int GetLineNumber(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (int)obj.GetValue(LineNumberProperty);
+    }
+
+    public static void SetLineNumber(
+        DependencyObject obj,
+        int value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(LineNumberProperty, value);
+    }
+
+    public static bool GetIsPinned(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (bool)obj.GetValue(IsPinnedProperty);
+    }
+
+    public static void SetIsPinned(
+        DependencyObject obj,
+        bool value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(IsPinnedProperty, value);
+    }
+
+    public static Brush GetMutedBrush(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (Brush)obj.GetValue(MutedBrushProperty);
+    }
+
+    public static void SetMutedBrush(
+        DependencyObject obj,
+        Brush value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(MutedBrushProperty, value);
+    }
+
+    public static IReadOnlyList<TerminalRun>? GetRuns(DependencyObject obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        return (IReadOnlyList<TerminalRun>?)obj.GetValue(RunsProperty);
+    }
+
+    public static void SetRuns(
+        DependencyObject obj,
+        IReadOnlyList<TerminalRun>? value)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.SetValue(RunsProperty, value);
+    }
 
     private static void OnAnyChanged(
         DependencyObject d,
@@ -145,50 +261,8 @@ public static class TerminalLineHighlight
 
         AppendPrefixes(tb);
 
-        // ANSI-parsed multi-run rendering takes precedence — the runs already
-        // encode foreground / background / bold / italic / underline. Search
-        // highlight is skipped when runs are present (composing the two would
-        // need a per-run search-and-split pass that's not worth the complexity
-        // for v1 of ANSI support).
-        var runs = GetRuns(tb);
-        if (runs is { Count: > 0 })
+        if (TryAppendAnsiRuns(tb))
         {
-            foreach (var r in runs)
-            {
-                if (r.Text.Length == 0)
-                {
-                    continue;
-                }
-
-                var inline = new Run(r.Text);
-                if (r.Foreground is not null)
-                {
-                    inline.Foreground = r.Foreground;
-                }
-
-                if (r.Background is not null)
-                {
-                    inline.Background = r.Background;
-                }
-
-                if (r.Bold)
-                {
-                    inline.FontWeight = System.Windows.FontWeights.Bold;
-                }
-
-                if (r.Italic)
-                {
-                    inline.FontStyle = System.Windows.FontStyles.Italic;
-                }
-
-                if (r.Underline)
-                {
-                    inline.TextDecorations = System.Windows.TextDecorations.Underline;
-                }
-
-                tb.Inlines.Add(inline);
-            }
-
             return;
         }
 
@@ -219,9 +293,63 @@ public static class TerminalLineHighlight
         }
         catch (Exception)
         {
-            // Bad regex / unexpected — render plain text body (prefixes stay as already appended).
+            // Bad regex / unexpected — render plain text body.
             tb.Inlines.Add(new Run(text));
         }
+    }
+
+    /// <summary>
+    /// ANSI-parsed multi-run rendering takes precedence — the runs already
+    /// encode foreground / background / bold / italic / underline. Search
+    /// highlight is skipped when runs are present (composing the two would
+    /// need a per-run search-and-split pass that's not worth the complexity
+    /// for v1 of ANSI support).
+    /// </summary>
+    private static bool TryAppendAnsiRuns(TextBlock tb)
+    {
+        var runs = GetRuns(tb);
+        if (runs is not { Count: > 0 })
+        {
+            return false;
+        }
+
+        foreach (var r in runs)
+        {
+            if (r.Text.Length == 0)
+            {
+                continue;
+            }
+
+            var inline = new Run(r.Text);
+            if (r.Foreground is not null)
+            {
+                inline.Foreground = r.Foreground;
+            }
+
+            if (r.Background is not null)
+            {
+                inline.Background = r.Background;
+            }
+
+            if (r.Bold)
+            {
+                inline.FontWeight = System.Windows.FontWeights.Bold;
+            }
+
+            if (r.Italic)
+            {
+                inline.FontStyle = System.Windows.FontStyles.Italic;
+            }
+
+            if (r.Underline)
+            {
+                inline.TextDecorations = System.Windows.TextDecorations.Underline;
+            }
+
+            tb.Inlines.Add(inline);
+        }
+
+        return true;
     }
 
     private static void AppendPrefixes(TextBlock tb)

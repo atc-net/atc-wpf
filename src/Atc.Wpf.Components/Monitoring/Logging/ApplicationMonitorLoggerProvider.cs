@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging;
-
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Components.Monitoring.Logging;
 
@@ -11,8 +9,8 @@ namespace Atc.Wpf.Components.Monitoring.Logging;
 [ProviderAlias("AtcWpfApplicationMonitor")]
 public sealed class ApplicationMonitorLoggerProvider : ILoggerProvider
 {
-    private readonly System.Collections.Concurrent.ConcurrentDictionary<string, ApplicationMonitorLogger> loggers
-        = new();
+    private readonly ConcurrentDictionary<string, ApplicationMonitorLogger> loggers
+        = new(StringComparer.Ordinal);
 
     private readonly IMessenger messenger;
     private readonly Func<LogLevel, bool>? filter;

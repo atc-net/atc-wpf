@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace Atc.Wpf.Hardware.Pickers.Internal;
 
 /// <summary>
@@ -20,5 +18,7 @@ namespace Atc.Wpf.Hardware.Pickers.Internal;
 [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 internal unsafe interface IMemoryBufferByteAccess
 {
-    void GetBuffer(out byte* buffer, out uint capacity);
+    void GetBuffer(
+        out byte* buffer,
+        out uint capacity);
 }
