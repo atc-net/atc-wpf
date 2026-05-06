@@ -134,27 +134,52 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
             ClearError();
 
             var settings = new Windows.Media.Audio.AudioGraphSettings(
-                Windows.Media.Render.AudioRenderCategory.Other);
+                Windows.Media.Render.AudioRenderCategory.Speech)
+            {
+                // We're not actually rendering — but AudioGraph still requires
+                // a render category. Speech minimises latency and is a sensible
+                // pairing for a microphone capture graph.
+                DesiredSamplesPerQuantum = 480,
+                QuantumSizeSelectionMode =
+                    Windows.Media.Audio.QuantumSizeSelectionMode.ClosestToDesired,
+            };
 
             var graphResult = await Windows.Media.Audio.AudioGraph.CreateAsync(settings);
             if (graphResult.Status is not Windows.Media.Audio.AudioGraphCreationStatus.Success ||
                 graphResult.Graph is null)
             {
+                Debug.WriteLine($"[LiveAudioInputMeter] AudioGraph.CreateAsync failed: {graphResult.Status}");
                 ShowError(Miscellaneous.AudioPreviewUnavailable);
                 return;
             }
 
             graph = graphResult.Graph;
 
+            // Force the frame output node to deliver float stereo at 48 kHz —
+            // independent of whatever multichannel format the graph picks for
+            // the render side. This is the same fix that unstuck
+            // AudioOutputPicker on multichannel hardware: without it, the
+            // frame buffers come out in the device's native multichannel
+            // layout and the Span<float> reinterpret is mis-aligned.
+            var captureEncoding = Windows.Media.MediaProperties.AudioEncodingProperties.CreatePcm(
+                sampleRate: 48000,
+                channelCount: 2,
+                bitsPerSample: 32);
+            captureEncoding.Subtype =
+                Windows.Media.MediaProperties.MediaEncodingSubtypes.Float;
+
             var deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceId);
 
             var inputResult = await graph.CreateDeviceInputNodeAsync(
-                Windows.Media.Capture.MediaCategory.Other,
-                graph.EncodingProperties,
+                Windows.Media.Capture.MediaCategory.Speech,
+                captureEncoding,
                 deviceInfo);
             if (inputResult.Status is not Windows.Media.Audio.AudioDeviceNodeCreationStatus.Success ||
                 inputResult.DeviceInputNode is null)
             {
+                Debug.WriteLine(
+                    $"[LiveAudioInputMeter] CreateDeviceInputNodeAsync failed: " +
+                    $"status={inputResult.Status} hr=0x{inputResult.ExtendedError?.HResult:X8}");
                 ShowError(Miscellaneous.AudioPreviewUnavailable);
                 await StopAsync();
                 return;
@@ -162,7 +187,7 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
 
             inputNode = inputResult.DeviceInputNode;
 
-            frameOutputNode = graph.CreateFrameOutputNode(graph.EncodingProperties);
+            frameOutputNode = graph.CreateFrameOutputNode(captureEncoding);
             inputNode.AddOutgoingConnection(frameOutputNode);
 
             graph.QuantumStarted += OnQuantumStarted;
@@ -175,8 +200,9 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
             ShowError(Miscellaneous.AudioPermissionDenied);
             await StopAsync();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Debug.WriteLine($"[LiveAudioInputMeter] start failed: {ex}");
             ShowError(Miscellaneous.AudioPreviewUnavailable);
             await StopAsync();
         }
@@ -257,14 +283,13 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
                 }
             }
 
-            // Push onto ring buffer (circular).
             ring[ringHead] = peak;
             ringHead = (ringHead + 1) % RingCapacity;
             currentPeak = peak;
         }
         catch (Exception)
         {
-            // Skip this quantum.
+            // Best-effort; skip this quantum.
         }
     }
 
