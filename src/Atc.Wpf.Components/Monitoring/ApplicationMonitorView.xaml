@@ -104,6 +104,22 @@
                         Width="150"
                         Text="{Binding Path=MatchOnText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{Binding Path=ShowSearchInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" />
+
+                    <Separator
+                        Margin="5,0"
+                        Visibility="{Binding Path=ShowExportInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" />
+
+                    <Button
+                        Command="{Binding Path=ExportCommand}"
+                        ToolTip="Export visible entries to CSV / JSON / TXT (Ctrl+S)"
+                        Visibility="{Binding Path=ShowExportInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+                        <TextBlock
+                            MinWidth="16"
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            Text="⤓"
+                            TextAlignment="Center" />
+                    </Button>
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>

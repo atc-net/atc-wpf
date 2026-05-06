@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`ApplicationMonitorView` upgrades** in `Atc.Wpf.Components.Monitoring`:
+  - **Virtualization** — `VirtualizingPanel.IsVirtualizing="True"` with
+    `VirtualizationMode="Recycling"` and pixel scroll. Tens of thousands of
+    rows scroll smoothly.
+  - **Channel-based batched ingestion** — entries flow through an unbounded
+    `Channel<ApplicationEventEntry>`; a background drain loop dispatches
+    batches to the UI thread under a single `InvokeAsync(Background)` and
+    sends one `ApplicationMonitorScrollEvent` per batch. The TerminalViewer
+    pattern, applied to the monitor.
+  - **`MaxEntries`** DP (default `10000`, `0` = unbounded) — ring-buffer
+    cap; oldest entries (by insertion order) drop when exceeded. Two-way
+    bindable, bridged to the VM.
+  - **`IsPaused`** DP + `ShowPauseInToolbar` DP — Pause/Resume toolbar
+    toggle freezes display while the channel keeps capturing; the button
+    shows a badge with the buffered-but-not-shown count
+    (`BufferedCount` on the VM, exposed via `ChannelReader.Count`).
+  - **Smart auto-scroll ("tail mode")** — `ScrollChanged` hook detects
+    when the user moves away from the tail; auto-scroll suppresses and a
+    floating **"↓ Jump to live (N)"** overlay appears with a count of new
+    entries since detachment. Click (or call `JumpToLive()` from code) to
+    re-attach. New `IsDetachedFromTail` and `NewSinceDetached` DPs back
+    the overlay binding. Direction-aware (works for ascending and
+    descending sort).
+  - **`ExportCommand`** + `ShowExportInToolbar` DP — toolbar Export button
+    opens a `SaveFileDialog` (CSV / JSON / TXT) and writes the currently
+    *visible* (filtered) entries via the new internal
+    `ApplicationMonitorExportService`. Format inferred from the chosen
+    extension; error path surfaces a `MessageBox`.
+  - **`ApplicationMonitorLoggerProvider`** in
+    `Atc.Wpf.Components.Monitoring.Logging` — drop-in
+    `Microsoft.Extensions.Logging` provider. `builder.Logging.AddAtcWpfApplicationMonitor()`
+    routes every `ILogger<T>` call into the live picker via `Messenger.Default`
+    (`LogLevel` → `LogCategoryType` mapping, `categoryName` → `Area`).
+    Optional level filter overload. `ProviderAlias("AtcWpfApplicationMonitor")`
+    so it can be addressed by name from `appsettings.json` filters.
+
 - **`AudioInputPicker.ShowLivePreview`** + **`AudioOutputPicker.ShowLivePreview`**
   with a shared `PreviewHeight` DP. When enabled and a device is selected,
   the picker shows a small live pane below the dropdown — a scrolling
