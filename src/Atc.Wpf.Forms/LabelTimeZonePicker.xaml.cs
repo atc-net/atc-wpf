@@ -1,5 +1,5 @@
 // ReSharper disable InvertIf
-namespace Atc.Wpf.Hardware;
+namespace Atc.Wpf.Forms;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 public partial class LabelTimeZonePicker : ILabelTimeZonePicker
@@ -45,7 +45,7 @@ public partial class LabelTimeZonePicker : ILabelTimeZonePicker
 
         if (control is { IsMandatory: true, Value: null })
         {
-            control.ValidationText = Validations.DeviceIsRequired;
+            control.ValidationText = Validations.FieldIsRequired;
             if (raiseEvents)
             {
                 OnLostFocusFireInvalidEvent(control, e);

@@ -76,9 +76,6 @@
   <data name="Drive" xml:space="preserve">
     <value>Drev</value>
   </data>
-  <data name="TimeZone" xml:space="preserve">
-    <value>Tidszone</value>
-  </data>
   <data name="BluetoothDevice" xml:space="preserve">
     <value>Bluetooth-enhed</value>
   </data>
@@ -114,9 +111,6 @@
   </data>
   <data name="SelectDrive" xml:space="preserve">
     <value>Vælg drev…</value>
-  </data>
-  <data name="SelectTimeZone" xml:space="preserve">
-    <value>Vælg tidszone…</value>
   </data>
   <data name="SelectBluetoothDevice" xml:space="preserve">
     <value>Vælg Bluetooth-enhed…</value>

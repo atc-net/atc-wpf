@@ -49,4 +49,4 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 
 ## Sample Application Path
 
-`SamplesWpfHardware → Pickers → TimeZonePicker`
+`SamplesWpfForms → Pickers → TimeZonePicker`

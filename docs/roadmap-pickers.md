@@ -386,7 +386,7 @@ This is the part most pickers get wrong — what happens to a *bound* `Value` wh
 | `DisplayPicker` / `MonitorPicker` | Choose display | `EnumDisplayMonitors` + `GetMonitorInfo` P/Invoke + 2 s polling | ✅ |
 | `ProcessPicker` | Choose running process (e.g., for attach/capture) | `Process.GetProcesses()` + 2 s polling, `OnlyWithMainWindow` toggle | ✅ |
 | `WindowPicker` | Choose top-level window (capture targets) | `EnumWindows` P/Invoke + 2 s polling, `OnlyVisibleWithTitle` toggle | ✅ |
-| `TimeZonePicker` | Choose IANA / Windows time zone | `TimeZoneInfo.GetSystemTimeZones()` | ✅ |
+| `TimeZonePicker` | Choose IANA / Windows time zone | `TimeZoneInfo.GetSystemTimeZones()` | ✅ — ships in `Atc.Wpf.Forms` (no hardware involvement) |
 | `CulturePicker` / `LanguagePicker` | Already partly covered by `LabelLanguageSelector` — verify gap | 🔵 |
 
 ---

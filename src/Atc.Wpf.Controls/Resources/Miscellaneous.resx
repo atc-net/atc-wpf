@@ -261,6 +261,9 @@
   <data name="SelectFile" xml:space="preserve">
     <value>Select a file</value>
   </data>
+  <data name="SelectTimeZone" xml:space="preserve">
+    <value>Select time zone…</value>
+  </data>
   <data name="StandardColors" xml:space="preserve">
     <value>Standard Colors</value>
   </data>
@@ -269,6 +272,9 @@
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Timestamp</value>
+  </data>
+  <data name="TimeZone" xml:space="preserve">
+    <value>Time Zone</value>
   </data>
   <data name="Underline" xml:space="preserve">
     <value>Underline</value>

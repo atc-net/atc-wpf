@@ -55,7 +55,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 
 - `LabelDrivePicker` — labeled wrapper with validation
 - `UsbPortPicker` — generic USB device picker (firmware-level)
-- `TimeZonePicker` — sibling system-metadata picker
+- `TimeZonePicker` (in `Atc.Wpf.Forms`) — sibling system-metadata picker
 
 ## Sample Application Path
 

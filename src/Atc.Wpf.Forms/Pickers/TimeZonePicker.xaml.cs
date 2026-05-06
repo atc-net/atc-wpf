@@ -1,5 +1,5 @@
 // ReSharper disable UnusedParameter.Local
-namespace Atc.Wpf.Hardware.Pickers;
+namespace Atc.Wpf.Forms.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 public partial class TimeZonePicker

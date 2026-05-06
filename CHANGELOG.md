@@ -145,17 +145,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   bullet in the dropdown. Strings localised for `en-US` / `da-DK` /
   `de-DE`. BLE-only and unpaired-discovery scenarios are deferred to v2
   (require additional capability declarations).
-- **`DrivePicker` / `TimeZonePicker`** in `Atc.Wpf.Hardware` — round out
-  the picker family with two pure-managed pickers. `DrivePicker` enumerates
+- **`DrivePicker`** in `Atc.Wpf.Hardware` and **`TimeZonePicker`** in
+  `Atc.Wpf.Forms` — two pure-managed pickers. `DrivePicker` enumerates
   `System.IO.DriveInfo.GetDrives()` (Fixed / Removable / Network / CDRom /
   Ram) and polls every 2 s for hot-plug — same `DeviceState` UX, same
   `ValueChanged` / `DeviceLost` / `DeviceReconnected` / `DeviceStateChanged`
   routed events, same Label* wrapper pattern. `TimeZonePicker` is the slim
   variant — `TimeZoneInfo.GetSystemTimeZones()` bound directly, no service,
   no hot-plug, no state, just a clean ComboBox with offset + display name.
-  `LabelTimeZonePicker` adds mandatory validation. Strings localised for
-  `en-US` / `da-DK` / `de-DE`. New `DiskDriveInfo` model (named to avoid
-  the clash with `System.IO.DriveInfo`).
+  Lives in `Atc.Wpf.Forms` (alongside the other labeled pickers) since it
+  has no hardware involvement. `LabelTimeZonePicker` adds mandatory
+  validation. `TimeZone` / `SelectTimeZone` strings live in the shared
+  `Atc.Wpf.Controls.Resources.Miscellaneous` (`en-US` / `da-DK` / `de-DE`).
+  New `DiskDriveInfo` model (named to avoid the clash with `System.IO.DriveInfo`).
 - **`AudioInputPicker` / `AudioOutputPicker`** in `Atc.Wpf.Hardware` —
   microphone and speaker pickers built on the same `DeviceWatcherHost`
   plumbing as the existing pickers, using `DeviceClass.AudioCapture` and

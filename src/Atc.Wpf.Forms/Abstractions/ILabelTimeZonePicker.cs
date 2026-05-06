@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Hardware.Abstractions;
+namespace Atc.Wpf.Forms.Abstractions;
 
 public interface ILabelTimeZonePicker : ILabelControl
 {

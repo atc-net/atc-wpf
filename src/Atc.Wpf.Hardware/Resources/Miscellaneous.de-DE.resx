@@ -76,9 +76,6 @@
   <data name="Drive" xml:space="preserve">
     <value>Laufwerk</value>
   </data>
-  <data name="TimeZone" xml:space="preserve">
-    <value>Zeitzone</value>
-  </data>
   <data name="BluetoothDevice" xml:space="preserve">
     <value>Bluetooth-Gerät</value>
   </data>
@@ -114,9 +111,6 @@
   </data>
   <data name="SelectDrive" xml:space="preserve">
     <value>Laufwerk auswählen…</value>
-  </data>
-  <data name="SelectTimeZone" xml:space="preserve">
-    <value>Zeitzone auswählen…</value>
   </data>
   <data name="SelectBluetoothDevice" xml:space="preserve">
     <value>Bluetooth-Gerät auswählen…</value>

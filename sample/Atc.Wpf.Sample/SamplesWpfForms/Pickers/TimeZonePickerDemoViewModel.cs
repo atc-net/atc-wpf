@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfHardware.Pickers;
+namespace Atc.Wpf.Sample.SamplesWpfForms.Pickers;
 
 public partial class TimeZonePickerDemoViewModel : ViewModelBase
 {

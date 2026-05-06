@@ -69,6 +69,10 @@
                 Header="LabelFontPicker"
                 IsExpanded="True"
                 SamplePath="LabelControls.LabelFontPickerView" />
+            <sample:SampleTreeViewItem
+                Header="LabelTimeZonePicker"
+                IsExpanded="True"
+                SamplePath="LabelControls.LabelTimeZonePickerView" />
         </TreeViewItem>
         <sample:SampleTreeViewItem
             Header="LabelCheckBox"
@@ -146,6 +150,13 @@
             Header="Label-InputFormPanel"
             IsExpanded="True"
             SamplePath="LabelControls.LabelInputFormPanelView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Pickers">
+        <sample:SampleTreeViewItem
+            Header="TimeZonePicker"
+            IsExpanded="True"
+            SamplePath="SamplesWpfForms.Pickers.TimeZonePickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="PropertyEditing">

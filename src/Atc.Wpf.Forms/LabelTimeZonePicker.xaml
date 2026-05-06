@@ -1,13 +1,13 @@
 <labelControls:LabelControl
-    x:Class="Atc.Wpf.Hardware.LabelTimeZonePicker"
+    x:Class="Atc.Wpf.Forms.LabelTimeZonePicker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:hardware="clr-namespace:Atc.Wpf.Hardware"
-    xmlns:labelControls="clr-namespace:Atc.Wpf.Forms;assembly=Atc.Wpf.Forms"
+    xmlns:forms="clr-namespace:Atc.Wpf.Forms"
+    xmlns:labelControls="clr-namespace:Atc.Wpf.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:pickers="clr-namespace:Atc.Wpf.Hardware.Pickers"
-    xmlns:resources="clr-namespace:Atc.Wpf.Hardware.Resources"
+    xmlns:pickers="clr-namespace:Atc.Wpf.Forms.Pickers"
+    xmlns:resources="clr-namespace:Atc.Wpf.Controls.Resources;assembly=Atc.Wpf.Controls"
     IsTabStop="False"
     mc:Ignorable="d">
 
@@ -19,7 +19,7 @@
         IsMandatory="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMandatory}"
         IsTabStop="False"
         LabelPosition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelPosition}"
-        LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelTimeZonePicker}}, Path=LabelText, FallbackValue={x:Static resources:Miscellaneous.TimeZone}}"
+        LabelText="{Binding RelativeSource={RelativeSource AncestorType={x:Type forms:LabelTimeZonePicker}}, Path=LabelText, FallbackValue={x:Static resources:Miscellaneous.TimeZone}}"
         LabelWidthNumber="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthNumber}"
         LabelWidthSizeDefinition="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelWidthSizeDefinition}"
         MandatoryColor="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MandatoryColor}"
@@ -30,8 +30,8 @@
 
         <pickers:TimeZonePicker
             ValueChanged="OnValueChanged"
-            WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelTimeZonePicker}}, Path=WatermarkText}"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type hardware:LabelTimeZonePicker}}, Path=Value, Mode=TwoWay}" />
+            WatermarkText="{Binding RelativeSource={RelativeSource AncestorType={x:Type forms:LabelTimeZonePicker}}, Path=WatermarkText}"
+            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type forms:LabelTimeZonePicker}}, Path=Value, Mode=TwoWay}" />
 
     </labelControls:LabelContent>
 

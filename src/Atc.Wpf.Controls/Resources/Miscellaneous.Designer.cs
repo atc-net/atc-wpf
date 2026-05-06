@@ -610,6 +610,15 @@ namespace Atc.Wpf.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select time zone….
+        /// </summary>
+        public static string SelectTimeZone {
+            get {
+                return ResourceManager.GetString("SelectTimeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard Colors.
         /// </summary>
         public static string StandardColors {
@@ -633,6 +642,15 @@ namespace Atc.Wpf.Controls.Resources {
         public static string Timestamp {
             get {
                 return ResourceManager.GetString("Timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Zone.
+        /// </summary>
+        public static string TimeZone {
+            get {
+                return ResourceManager.GetString("TimeZone", resourceCulture);
             }
         }
         

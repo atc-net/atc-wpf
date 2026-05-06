@@ -261,6 +261,9 @@
   <data name="SelectFile" xml:space="preserve">
     <value>Wählen Sie eine Datei aus</value>
   </data>
+  <data name="SelectTimeZone" xml:space="preserve">
+    <value>Zeitzone auswählen…</value>
+  </data>
   <data name="StandardColors" xml:space="preserve">
     <value>Standardfarben</value>
   </data>
@@ -269,6 +272,9 @@
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Zeitstempel</value>
+  </data>
+  <data name="TimeZone" xml:space="preserve">
+    <value>Zeitzone</value>
   </data>
   <data name="Underline" xml:space="preserve">
     <value>Unterstrichen</value>

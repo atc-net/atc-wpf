@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Hardware.Pickers.Internal;
+namespace Atc.Wpf.Forms.Pickers.Internal;
 
 public class TimeZonePickerAutomationPeer : UserControlAutomationPeer, IValueProvider
 {

@@ -53,4 +53,4 @@ Time zones don't transition state, so there is no "no longer available" check.
 
 ## Sample Application Path
 
-`SamplesWpfHardware → LabelControls → LabelTimeZonePicker`
+`SamplesWpfForms → Label Controls → Pickers → LabelTimeZonePicker`
