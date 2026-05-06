@@ -31,6 +31,12 @@ using Atc.Wpf.Components.Monitoring;
 | `ShowToolbar` | `bool` | `true` | Show the toolbar |
 | `ShowClearInToolbar` | `bool` | `true` | Show clear button |
 | `ShowAutoScrollInToolbar` | `bool` | `true` | Show auto-scroll toggle |
+| `AutoScroll` | `bool` | `true` | Whether new entries scroll into view automatically. Two-way bindable; bridges to the underlying `ApplicationMonitorViewModel.AutoScroll`, so the toolbar toggle and this DP stay in sync. |
+| `MaxEntries` | `int` | `10000` | Ring-buffer cap on the in-memory entry buffer. When new entries push the count past this value, the oldest entries (by insertion order) are dropped. Set to `0` for no cap (only safe for short-running apps). Two-way bindable and bridged to the VM. |
+| `IsPaused` | `bool` | `false` | When `true`, suspends dispatch of incoming entries to the visible buffer while the ingest channel keeps capturing. The toolbar Pause button shows a badge with the buffered count. Resuming flushes the held entries. Two-way bindable and bridged to the VM. |
+| `ShowPauseInToolbar` | `bool` | `true` | Show the Pause/Resume toggle in the toolbar. |
+| `IsDetachedFromTail` | `bool` | `false` | (Read-only intent.) `true` while the user has manually scrolled away from the tail of the list. Auto-scroll is suppressed while detached; the `Jump to live` overlay is bound to this. |
+| `NewSinceDetached` | `int` | `0` | (Read-only intent.) Count of entries received since detachment. Reset to `0` on tail re-attach or when `JumpToLive()` is called. |
 | `ShowSearchInToolbar` | `bool` | `true` | Show search box |
 | `AreaColumnWidth` | `double` | `150` | Width of the **Area** column (in DIPs). Combined at runtime with the VM's `ShowColumnArea` flag — when that flag is `false` the column collapses to `0` regardless of this value. Set to `double.NaN` to auto-size to content. |
 | `MessageColumnWidth` | `double` | `400` | Width of the **Message** column (in DIPs). Increase for wider log lines. Set to `double.NaN` to auto-size to content. |
