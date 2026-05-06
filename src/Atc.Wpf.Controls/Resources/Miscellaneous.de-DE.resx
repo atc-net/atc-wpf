@@ -370,4 +370,11 @@
   <data name="ResumeTailModeTooltip" xml:space="preserve">
     <value>Tail-Modus fortsetzen (Strg+G)</value>
   </data>
+  <data name="ExportTerminalOutput" xml:space="preserve">
+    <value>Terminal-Ausgabe exportieren</value>
+  </data>
+  <data name="CouldNotExportTerminalOutputFormat1" xml:space="preserve">
+    <value>Terminal-Ausgabe konnte nicht exportiert werden:
+{0}</value>
+  </data>
 </root>

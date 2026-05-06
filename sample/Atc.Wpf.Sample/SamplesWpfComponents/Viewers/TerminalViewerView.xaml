@@ -7,42 +7,57 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    xmlns:viewers="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Viewers"
+    d:DataContext="{d:DesignInstance Type=viewers:TerminalViewerDemoViewModel}"
     d:DesignHeight="900"
     d:DesignWidth="900"
     mc:Ignorable="d">
 
     <atc:GridEx Columns="*,400">
 
-        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
-            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
-
-                <atc:TerminalViewer
-                    x:Name="UcTerminalViewer"
-                    MinHeight="300"
-                    DefaultTextColor="Teal"
-                    ErrorTextColor="Red"
-                    SuccessfulTextColor="LimeGreen"
-                    Terms1="{Binding Source='+', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
-                    Terms1TextColor="Chocolate"
-                    Terms2="{Binding Source='[sudo]', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
-                    Terms2TextColor="DarkOrange"
-                    Terms3="{Binding Source='upgraded;installed;connected;disconnected', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
-                    Terms3TextColor="CornflowerBlue"
-                    TermsError="{Binding Source='error', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
-                    TermsSuccessful="{Binding Source='Done;100%', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}" />
-
-            </atc:UniformSpacingPanel>
-        </ScrollViewer>
+        <atc:TerminalViewer
+            x:Name="UcTerminalViewer"
+            Grid.Column="0"
+            Margin="10"
+            AutoScroll="{Binding AutoScroll, Mode=TwoWay}"
+            DefaultTextColor="Teal"
+            EnableAnsiParsing="{Binding EnableAnsiParsing, Mode=TwoWay}"
+            ErrorTextColor="Red"
+            IsPaused="{Binding IsPaused, Mode=TwoWay}"
+            MaxLines="{Binding MaxLines, Mode=TwoWay}"
+            ShowAutoScrollInToolbar="{Binding ShowAutoScrollInToolbar}"
+            ShowClearInToolbar="{Binding ShowClearInToolbar}"
+            ShowCopyInToolbar="{Binding ShowCopyInToolbar}"
+            ShowExportInToolbar="{Binding ShowExportInToolbar}"
+            ShowLineNumbers="{Binding ShowLineNumbers, Mode=TwoWay}"
+            ShowPauseInToolbar="{Binding ShowPauseInToolbar}"
+            ShowSearchInToolbar="{Binding ShowSearchInToolbar}"
+            ShowTimestamps="{Binding ShowTimestamps, Mode=TwoWay}"
+            ShowToolbar="{Binding ShowToolbar}"
+            ShowWrapInToolbar="{Binding ShowWrapInToolbar}"
+            SuccessfulTextColor="LimeGreen"
+            TerminalFontSize="{Binding TerminalFontSize, Mode=TwoWay}"
+            Terms1="{Binding Source='+', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
+            Terms1TextColor="Chocolate"
+            Terms2="{Binding Source='[sudo]', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
+            Terms2TextColor="DarkOrange"
+            Terms3="{Binding Source='upgraded;installed;connected;disconnected', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
+            Terms3TextColor="CornflowerBlue"
+            TermsError="{Binding Source='error', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
+            TermsSuccessful="{Binding Source='Done;100%', Converter={x:Static atcValueConverters:StringToSplitStringListValueConverter.Instance}}"
+            WordWrap="{Binding WordWrap, Mode=TwoWay}" />
 
         <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}">
             <sample:SampleSidePanel.ActionsContent>
                 <atc:UniformSpacingPanel Orientation="Vertical" Spacing="5">
                     <Button Click="SendLineOnClick" Content="Send Line" />
-                    <Button Click="SendLineWithErrorOnClick" Content="Send Line of with Error" />
-                    <Button Click="SendLineWithSuccessfulOnClick" Content="Send Line of with Successful" />
-                    <Button Click="SendLineWithOneOfTerms1OnClick" Content="Send Line of with Terms1" />
-                    <Button Click="SendLineWithOneOfTerms2OnClick" Content="Send Line of with Terms2" />
-                    <Button Click="SendLineWithOneOfTerms3OnClick" Content="Send Line of with Terms3" />
+                    <Button Click="SendLineWithErrorOnClick" Content="Send Line with Error" />
+                    <Button Click="SendLineWithSuccessfulOnClick" Content="Send Line with Successful" />
+                    <Button Click="SendLineWithOneOfTerms1OnClick" Content="Send Line with Terms1" />
+                    <Button Click="SendLineWithOneOfTerms2OnClick" Content="Send Line with Terms2" />
+                    <Button Click="SendLineWithOneOfTerms3OnClick" Content="Send Line with Terms3" />
+                    <Button Click="SendAnsiOnClick" Content="Send ANSI-coloured sample" />
+                    <Button Click="SendBurstOnClick" Content="Send burst (100 lines)" />
                 </atc:UniformSpacingPanel>
             </sample:SampleSidePanel.ActionsContent>
         </sample:SampleSidePanel>
