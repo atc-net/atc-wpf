@@ -13,9 +13,7 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <atc:LabelUsbPortPicker
-                    LabelText="USB device"
-                    WatermarkText="Select USB device…" />
+                <atc:LabelUsbPortPicker LabelText="USB device" WatermarkText="Select USB device…" />
 
                 <atc:LabelUsbPortPicker
                     IsMandatory="True"

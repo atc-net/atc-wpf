@@ -44,7 +44,6 @@ global using Atc.Wpf.Forms.Factories;
 global using Atc.Wpf.Forms.FontEditing;
 global using Atc.Wpf.Forms.FontEditing.Internal;
 global using Atc.Wpf.Forms.Internal.Helpers;
-global using Atc.Wpf.Forms.Pickers;
 global using Atc.Wpf.Forms.Pickers.Internal;
 global using Atc.Wpf.Forms.Resources;
 global using Atc.Wpf.Forms.Writers;
