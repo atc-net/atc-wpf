@@ -54,3 +54,6 @@ global using Atc.XamlToolkit.Messaging;
 global using Atc.XamlToolkit.Mvvm;
 
 global using ControlzEx.Theming;
+
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;

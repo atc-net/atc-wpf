@@ -9,19 +9,6 @@ public sealed partial class TerminalViewer : IDisposable
     private const double FontSizeStep = 1d;
     private const double DefaultFontSizeValue = 12d;
 
-    private Regex? compiledSearchRegex;
-    private int nextLineNumber = 1;
-    private AnsiSgrState ansiState = AnsiSgrState.Default;
-
-    // Snapshot fields read by the background drain loop. Reading DP-backed
-    // properties from a non-UI thread throws InvalidOperationException
-    // ("calling thread cannot access this DispatcherObject"), which would
-    // kill the drain task and silently strand all subsequent input. The
-    // PropertyChangedCallbacks below keep these snapshots in sync.
-    private volatile bool isPausedSnapshot;
-    private volatile bool autoScrollSnapshot = true;
-    private volatile bool enableAnsiParsingSnapshot = true;
-
     private readonly Channel<TerminalReceivedDataEventArgs> receivedDataChannel =
         Channel.CreateUnbounded<TerminalReceivedDataEventArgs>(
             new UnboundedChannelOptions
@@ -33,7 +20,20 @@ public sealed partial class TerminalViewer : IDisposable
 
     private readonly CancellationTokenSource cts = new();
     private readonly Task? queueProcessingTask;
+
+    private Regex? compiledSearchRegex;
+    private int nextLineNumber = 1;
+    private AnsiSgrState ansiState = AnsiSgrState.Default;
     private ScrollViewer? cachedScrollViewer;
+
+    // Snapshot fields read by the background drain loop. Reading DP-backed
+    // properties from a non-UI thread throws InvalidOperationException
+    // ("calling thread cannot access this DispatcherObject"), which would
+    // kill the drain task and silently strand all subsequent input. The
+    // PropertyChangedCallbacks below keep these snapshots in sync.
+    private volatile bool isPausedSnapshot;
+    private volatile bool autoScrollSnapshot = true;
+    private volatile bool enableAnsiParsingSnapshot = true;
 
     // True when the user has manually scrolled away from the tail. Only a
     // user-driven scroll (ScrollChangedEventArgs.VerticalChange != 0) flips
@@ -61,7 +61,6 @@ public sealed partial class TerminalViewer : IDisposable
         // All internal bindings inside the XAML reference the control via
         // RelativeSource AncestorType=UserControl (or the ListView's Tag for
         // the ContextMenu), so they don't depend on DataContext being self.
-
         Messenger.Default.Register<TerminalReceivedDataEventArgs>(
             this,
             TerminalReceivedDataHandle);
@@ -73,10 +72,6 @@ public sealed partial class TerminalViewer : IDisposable
             () => ProcessQueueContinuously(cts.Token),
             cts.Token);
     }
-
-    // ---------------------------------------------------------------------
-    // Appearance DPs
-    // ---------------------------------------------------------------------
 
     [DependencyProperty(DefaultValue = "Black")]
     private Brush terminalBackground;
@@ -120,10 +115,6 @@ public sealed partial class TerminalViewer : IDisposable
     [DependencyProperty]
     private IList<string>? terms3;
 
-    // ---------------------------------------------------------------------
-    // Toolbar visibility DPs
-    // ---------------------------------------------------------------------
-
     [DependencyProperty(DefaultValue = true)]
     private bool showToolbar;
 
@@ -147,10 +138,6 @@ public sealed partial class TerminalViewer : IDisposable
 
     [DependencyProperty(DefaultValue = true)]
     private bool showWrapInToolbar;
-
-    // ---------------------------------------------------------------------
-    // Behaviour DPs
-    // ---------------------------------------------------------------------
 
     /// <summary>
     /// When <c>true</c>, new lines auto-scroll into view as long as the user
@@ -280,10 +267,6 @@ public sealed partial class TerminalViewer : IDisposable
         }
     }
 
-    // ---------------------------------------------------------------------
-    // Read-only state DPs surfaced for the Jump-to-live overlay
-    // ---------------------------------------------------------------------
-
     [DependencyProperty(DefaultValue = false)]
     private bool isDetachedFromTail;
 
@@ -336,10 +319,6 @@ public sealed partial class TerminalViewer : IDisposable
         NewSinceDetached = 0;
         isUserDetachedSnapshot = false;
     }
-
-    // ---------------------------------------------------------------------
-    // Search / filter / match navigation
-    // ---------------------------------------------------------------------
 
     private static void OnSearchInputChanged(
         DependencyObject d,
@@ -458,7 +437,7 @@ public sealed partial class TerminalViewer : IDisposable
         {
             var probe = forward
                 ? (startIndex + step) % count
-                : ((startIndex - step) % count + count) % count;
+                : (((startIndex - step) % count) + count) % count;
 
             if (ListViewTerminal.Items[probe] is TerminalLineItem line && LineMatches(line.Text))
             {
@@ -476,10 +455,6 @@ public sealed partial class TerminalViewer : IDisposable
     [RelayCommand]
     private void JumpToLiveCommandHandler()
         => JumpToLive();
-
-    // ---------------------------------------------------------------------
-    // Export
-    // ---------------------------------------------------------------------
 
     private bool CanExport()
         => ListViewTerminal.Items.Count > 0;
@@ -549,10 +524,6 @@ public sealed partial class TerminalViewer : IDisposable
         dialog.ShowDialog();
     }
 
-    // ---------------------------------------------------------------------
-    // Existing copy/clear commands
-    // ---------------------------------------------------------------------
-
     private bool CanExecuteHasItems()
         => ListViewTerminal.Items.Count > 0;
 
@@ -618,10 +589,6 @@ public sealed partial class TerminalViewer : IDisposable
         ApplyFilterAndCountMatches();
     }
 
-    // ---------------------------------------------------------------------
-    // Pin / unpin
-    // ---------------------------------------------------------------------
-
     [RelayCommand]
     private void TogglePinSelected()
     {
@@ -645,10 +612,6 @@ public sealed partial class TerminalViewer : IDisposable
             }
         }
     }
-
-    // ---------------------------------------------------------------------
-    // Zoom (font-size ±)
-    // ---------------------------------------------------------------------
 
     [RelayCommand]
     private void ZoomIn()
@@ -703,7 +666,6 @@ public sealed partial class TerminalViewer : IDisposable
         }
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
     private async Task ProcessQueueContinuously(CancellationToken token)
     {
         var reader = receivedDataChannel.Reader;
@@ -724,93 +686,8 @@ public sealed partial class TerminalViewer : IDisposable
                     return;
                 }
 
-                if (isPausedSnapshot)
+                if (!await DrainAndDispatchBatchAsync(reader, token).ConfigureAwait(false))
                 {
-                    continue;
-                }
-
-                var batch = new List<TerminalReceivedDataEventArgs>(capacity: 16);
-
-                while (reader.TryRead(out var data))
-                {
-                    batch.Add(data);
-                }
-
-                if (batch.Count == 0)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    await ListViewTerminal.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            var addedCount = 0;
-                            foreach (var line in batch.SelectMany(e => e.Lines))
-                            {
-                                IReadOnlyList<TerminalRun>? runs = null;
-                                if (enableAnsiParsingSnapshot && AnsiSequenceParser.ContainsEscapeSequence(line))
-                                {
-                                    var (parsedRuns, newState) = AnsiSequenceParser.Parse(line, ansiState);
-                                    ansiState = newState;
-                                    runs = parsedRuns;
-                                }
-
-                                var item = new TerminalLineItem(
-                                    line,
-                                    GetColorForLine(line))
-                                {
-                                    Timestamp = DateTimeOffset.Now,
-                                    LineNumber = nextLineNumber++,
-                                    Runs = runs,
-                                };
-                                ListViewTerminal.Items.Add(item);
-                                addedCount++;
-                            }
-
-                            TrimToCap();
-
-                            if (isUserDetachedSnapshot && addedCount > 0)
-                            {
-                                NewSinceDetached += addedCount;
-                            }
-
-                            // Recount matches whenever new lines arrive (or
-                            // get trimmed) so the toolbar badge stays live.
-                            if (!string.IsNullOrEmpty(SearchText))
-                            {
-                                ApplyFilterAndCountMatches();
-                            }
-
-                            CopyToClipboardCommand.RaiseCanExecuteChanged();
-                            ClearScreenCommand.RaiseCanExecuteChanged();
-                            ExportCommand.RaiseCanExecuteChanged();
-                            NextMatchCommand.RaiseCanExecuteChanged();
-                            PreviousMatchCommand.RaiseCanExecuteChanged();
-
-                            ListViewTerminal.UpdateLayout();
-                        },
-                        DispatcherPriority.Render,
-                        token);
-
-                    UpdateBufferedCount();
-
-                    if (autoScrollSnapshot && !isUserDetachedSnapshot)
-                    {
-                        await ListViewTerminal.Dispatcher.InvokeAsync(
-                            ScrollToTail,
-                            DispatcherPriority.Background,
-                            token);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-                catch (Exception)
-                {
-                    // App tearing down; give up cleanly.
                     return;
                 }
             }
@@ -819,6 +696,111 @@ public sealed partial class TerminalViewer : IDisposable
         {
             // Expected on shutdown.
         }
+    }
+
+    /// <summary>
+    /// Drains everything currently in the channel, dispatches it as a single
+    /// batch on the UI thread, and (when auto-scroll is on) issues one tail
+    /// scroll for the batch. Returns <c>false</c> when the loop should exit.
+    /// </summary>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
+    private async Task<bool> DrainAndDispatchBatchAsync(
+        ChannelReader<TerminalReceivedDataEventArgs> reader,
+        CancellationToken token)
+    {
+        if (isPausedSnapshot)
+        {
+            return true;
+        }
+
+        var batch = new List<TerminalReceivedDataEventArgs>(capacity: 16);
+        while (reader.TryRead(out var data))
+        {
+            batch.Add(data);
+        }
+
+        if (batch.Count == 0)
+        {
+            return true;
+        }
+
+        try
+        {
+            await ListViewTerminal.Dispatcher.InvokeAsync(
+                () => CommitBatchOnUiThread(batch),
+                DispatcherPriority.Render,
+                token);
+
+            UpdateBufferedCount();
+
+            if (autoScrollSnapshot && !isUserDetachedSnapshot)
+            {
+                await ListViewTerminal.Dispatcher.InvokeAsync(
+                    ScrollToTail,
+                    DispatcherPriority.Background,
+                    token);
+            }
+
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
+        catch (Exception)
+        {
+            // App tearing down; give up cleanly.
+            return false;
+        }
+    }
+
+    private void CommitBatchOnUiThread(
+        List<TerminalReceivedDataEventArgs> batch)
+    {
+        var addedCount = 0;
+        foreach (var line in batch.SelectMany(e => e.Lines))
+        {
+            IReadOnlyList<TerminalRun>? runs = null;
+            if (enableAnsiParsingSnapshot && AnsiSequenceParser.ContainsEscapeSequence(line))
+            {
+                var (parsedRuns, newState) = AnsiSequenceParser.Parse(line, ansiState);
+                ansiState = newState;
+                runs = parsedRuns;
+            }
+
+            var item = new TerminalLineItem(
+                line,
+                GetColorForLine(line))
+            {
+                Timestamp = DateTimeOffset.Now,
+                LineNumber = nextLineNumber++,
+                Runs = runs,
+            };
+            ListViewTerminal.Items.Add(item);
+            addedCount++;
+        }
+
+        TrimToCap();
+
+        if (isUserDetachedSnapshot && addedCount > 0)
+        {
+            NewSinceDetached += addedCount;
+        }
+
+        // Recount matches whenever new lines arrive (or get trimmed) so the
+        // toolbar badge stays live.
+        if (!string.IsNullOrEmpty(SearchText))
+        {
+            ApplyFilterAndCountMatches();
+        }
+
+        CopyToClipboardCommand.RaiseCanExecuteChanged();
+        ClearScreenCommand.RaiseCanExecuteChanged();
+        ExportCommand.RaiseCanExecuteChanged();
+        NextMatchCommand.RaiseCanExecuteChanged();
+        PreviousMatchCommand.RaiseCanExecuteChanged();
+
+        ListViewTerminal.UpdateLayout();
     }
 
     private void TrimToCap()
@@ -888,7 +870,7 @@ public sealed partial class TerminalViewer : IDisposable
             // ScrollChanged events we just provoked. ScrollChanged fires at
             // ContextIdle when the layout pass completes; resetting at
             // ApplicationIdle guarantees the handler has already returned.
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 new Action(() => isPerformingProgrammaticScroll = false),
                 DispatcherPriority.ApplicationIdle);
         }
@@ -911,7 +893,7 @@ public sealed partial class TerminalViewer : IDisposable
             return;
         }
 
-        if (e.VerticalChange == 0)
+        if (System.Math.Abs(e.VerticalChange) < double.Epsilon)
         {
             // Pure layout change (extent grew / shrank, viewport resized).
             // Leave the detached state alone — a user who hasn't moved has

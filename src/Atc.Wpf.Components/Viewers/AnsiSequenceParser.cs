@@ -1,5 +1,3 @@
-
-
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Components.Viewers;
 
@@ -27,7 +25,7 @@ public static class AnsiSequenceParser
     /// plain-text lines.
     /// </summary>
     public static bool ContainsEscapeSequence(string text)
-        => !string.IsNullOrEmpty(text) && text.Contains(Esc);
+        => !string.IsNullOrEmpty(text) && text.Contains(Esc, StringComparison.Ordinal);
 
     /// <summary>
     /// Splits <paramref name="text"/> into runs and returns the SGR state
@@ -38,6 +36,9 @@ public static class AnsiSequenceParser
         string text,
         AnsiSgrState state)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(state);
+
         var runs = new List<TerminalRun>();
         var pos = 0;
 
@@ -52,8 +53,8 @@ public static class AnsiSequenceParser
             {
                 state = ApplySgr(state, match.Groups[1].Value);
             }
-            // else: non-SGR sequence (cursor movement etc.) — strip silently.
 
+            // else: non-SGR sequence (cursor movement etc.) — strip silently.
             pos = match.Index + match.Length;
         }
 
@@ -65,7 +66,9 @@ public static class AnsiSequenceParser
         return (runs, state);
     }
 
-    private static TerminalRun BuildRun(string text, AnsiSgrState state)
+    private static TerminalRun BuildRun(
+        string text,
+        AnsiSgrState state)
         => new(
             text,
             state.Foreground,
@@ -74,7 +77,9 @@ public static class AnsiSequenceParser
             state.Italic,
             state.Underline);
 
-    private static AnsiSgrState ApplySgr(AnsiSgrState state, string paramsCsv)
+    private static AnsiSgrState ApplySgr(
+        AnsiSgrState state,
+        string paramsCsv)
     {
         var parts = ParseParams(paramsCsv);
 

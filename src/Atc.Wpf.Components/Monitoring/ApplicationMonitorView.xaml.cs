@@ -14,10 +14,6 @@ public partial class ApplicationMonitorView
     private bool isUserDetached;
     private bool isPerformingProgrammaticScroll;
 
-    // ---------------------------------------------------------------------
-    // Toolbar visibility DPs
-    // ---------------------------------------------------------------------
-
     [DependencyProperty(DefaultValue = true)]
     private bool showToolbar;
 
@@ -40,7 +36,6 @@ public partial class ApplicationMonitorView
     // VM-bridged behaviour DPs (two-way; synced via DataContextChanged +
     // OnViewModelPropertyChanged below)
     // ---------------------------------------------------------------------
-
     [DependencyProperty(
         DefaultValue = true,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
@@ -64,10 +59,6 @@ public partial class ApplicationMonitorView
         PropertyChangedCallback = nameof(OnMaxEntriesChanged))]
     private int maxEntries;
 
-    // ---------------------------------------------------------------------
-    // Read-only state DPs surfaced for the Jump-to-live overlay
-    // ---------------------------------------------------------------------
-
     /// <summary>
     /// <c>true</c> while the user has manually scrolled away from the tail of
     /// the list. Auto-scroll is suppressed while this is <c>true</c>; the
@@ -84,19 +75,11 @@ public partial class ApplicationMonitorView
     [DependencyProperty(DefaultValue = 0)]
     private int newSinceDetached;
 
-    // ---------------------------------------------------------------------
-    // Layout DPs
-    // ---------------------------------------------------------------------
-
     [DependencyProperty(DefaultValue = 150d)]
     private double areaColumnWidth;
 
     [DependencyProperty(DefaultValue = 400d)]
     private double messageColumnWidth;
-
-    // ---------------------------------------------------------------------
-    // Misc
-    // ---------------------------------------------------------------------
 
     [DependencyProperty(
         DefaultValue = true,
@@ -137,10 +120,6 @@ public partial class ApplicationMonitorView
         isUserDetached = false;
     }
 
-    // ---------------------------------------------------------------------
-    // Lifetime
-    // ---------------------------------------------------------------------
-
     private void OnApplicationMonitorViewLoaded(
         object sender,
         RoutedEventArgs e)
@@ -155,7 +134,6 @@ public partial class ApplicationMonitorView
     // VM bridge — push View DPs into the VM when DataContext attaches, and
     // mirror back any VM-driven changes so toolbar toggles stay in sync.
     // ---------------------------------------------------------------------
-
     private void OnApplicationMonitorViewDataContextChanged(
         object sender,
         DependencyPropertyChangedEventArgs e)
@@ -201,10 +179,6 @@ public partial class ApplicationMonitorView
                 break;
         }
     }
-
-    // ---------------------------------------------------------------------
-    // DP changed callbacks (View → VM push)
-    // ---------------------------------------------------------------------
 
     private static void OnAutoScrollChanged(
         DependencyObject d,
@@ -252,10 +226,6 @@ public partial class ApplicationMonitorView
             ? defaultContextMenu
             : null;
 
-    // ---------------------------------------------------------------------
-    // ListView interaction (selection, scrolling, jump-to-live)
-    // ---------------------------------------------------------------------
-
     /// <summary>
     /// Pushes the ListView's multi-selection into the ViewModel so its copy
     /// commands' CanExecute can react. WPF's ListView.SelectedItems is not
@@ -287,7 +257,7 @@ public partial class ApplicationMonitorView
             return;
         }
 
-        if (e.VerticalChange == 0)
+        if (System.Math.Abs(e.VerticalChange) < double.Epsilon)
         {
             // Pure layout change — content overflowed or viewport resized but
             // the user didn't move. Don't latch detached state.
@@ -368,7 +338,7 @@ public partial class ApplicationMonitorView
         {
             // Defer reset until after pending ScrollChanged events (which
             // fire at ContextIdle when layout completes) have run.
-            Dispatcher.BeginInvoke(
+            _ = Dispatcher.BeginInvoke(
                 new Action(() => isPerformingProgrammaticScroll = false),
                 DispatcherPriority.ApplicationIdle);
         }

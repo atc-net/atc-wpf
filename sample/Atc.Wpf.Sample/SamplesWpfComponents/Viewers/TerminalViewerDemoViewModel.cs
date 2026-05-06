@@ -76,10 +76,10 @@ public partial class TerminalViewerDemoViewModel : ViewModelBase
         {
             if (Set(ref enableTimer, value))
             {
-                EnableTimerChanged?.Invoke(this, value);
+                EnableTimerChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
-    public event EventHandler<bool>? EnableTimerChanged;
+    public event EventHandler? EnableTimerChanged;
 }

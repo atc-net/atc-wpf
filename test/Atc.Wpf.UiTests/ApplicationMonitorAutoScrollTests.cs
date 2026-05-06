@@ -1,10 +1,3 @@
-using System.Globalization;
-using System.Threading;
-using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Conditions;
-using FlaUI.Core.Definitions;
-using FlaUI.Core.Tools;
-
 namespace Atc.Wpf.UiTests;
 
 /// <summary>
@@ -29,6 +22,8 @@ public sealed class ApplicationMonitorAutoScrollTests : IDisposable
 
     [Trait("Category", "UI")]
     [Fact]
+    [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "FlaUI E2E tests must yield real wall time for the WPF UI thread to render between actions.")]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Best-effort screenshot capture must not fail the test on transient I/O errors.")]
     public void ApplicationMonitor_auto_scrolls_to_tail_when_many_entries_added()
     {
         AutoScrollTestHelpers.NavigateToSample(
@@ -61,7 +56,14 @@ public sealed class ApplicationMonitorAutoScrollTests : IDisposable
             "Snapshots");
         Directory.CreateDirectory(snapshotDir);
         var snapshotPath = Path.Combine(snapshotDir, "application-monitor-after-burst.png");
-        try { mainWindow.CaptureToFile(snapshotPath); } catch { /* best-effort */ }
+        try
+        {
+            mainWindow.CaptureToFile(snapshotPath);
+        }
+        catch
+        {
+            // best-effort
+        }
 
         // Read the timestamps in column 1 — only realized rows surface in UIA
         // under WPF virtualization. With Ascending sort + auto-scroll engaged,
@@ -70,7 +72,7 @@ public sealed class ApplicationMonitorAutoScrollTests : IDisposable
         var timestamps = listView
             .FindAllDescendants(cf => cf.ByControlType(ControlType.Text))
             .Select(t => t.Name ?? string.Empty)
-            .Where(s => System.Text.RegularExpressions.Regex.IsMatch(s, @"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$"))
+            .Where(s => System.Text.RegularExpressions.Regex.IsMatch(s, @"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$", System.Text.RegularExpressions.RegexOptions.None, TimeSpan.FromSeconds(1)))
             .ToList();
 
         Assert.NotEmpty(timestamps);

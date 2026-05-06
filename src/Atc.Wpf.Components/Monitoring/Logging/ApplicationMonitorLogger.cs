@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging;
-
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Components.Monitoring.Logging;
 

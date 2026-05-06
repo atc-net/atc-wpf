@@ -1,6 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Components.Monitoring.Logging;
 
@@ -22,7 +19,8 @@ public static class ApplicationMonitorLoggingBuilderExtensions
     /// <see cref="ILoggerProvider"/> on the supplied <paramref name="builder"/>.
     /// Uses the default <see cref="Messenger"/> instance.
     /// </summary>
-    public static ILoggingBuilder AddAtcWpfApplicationMonitor(this ILoggingBuilder builder)
+    public static ILoggingBuilder AddAtcWpfApplicationMonitor(
+        this ILoggingBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 

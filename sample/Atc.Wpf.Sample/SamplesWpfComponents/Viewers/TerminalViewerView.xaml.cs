@@ -4,9 +4,9 @@ public partial class TerminalViewerView
 {
     private static readonly string[] AnsiSampleLines =
     [
-        "[31mAn ANSI red error line[0m",
-        "[1;32mBold green success[0m mixed with [33myellow[0m and [36mcyan[0m",
-        "[4;35mUnderlined magenta[0m, [1mbold default[22m, [3mitalic default[0m",
+        "\u001B[31mAn ANSI red error line\u001B[0m",
+        "\u001B[1;32mBold green success\u001B[0m mixed with \u001B[33myellow\u001B[0m and \u001B[36mcyan\u001B[0m",
+        "\u001B[4;35mUnderlined magenta\u001B[0m, \u001B[1mbold default\u001B[22m, \u001B[3mitalic default\u001B[0m",
         "Plain default-coloured line",
     ];
 
@@ -32,9 +32,9 @@ public partial class TerminalViewerView
 
     private void OnEnableTimerChanged(
         object? sender,
-        bool enabled)
+        EventArgs e)
     {
-        if (enabled)
+        if (viewModel.EnableTimer)
         {
             dispatcherTimer.Start();
         }
