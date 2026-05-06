@@ -340,15 +340,6 @@ namespace Atc.Wpf.Hardware.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select time zone….
-        /// </summary>
-        public static string SelectTimeZone {
-            get {
-                return ResourceManager.GetString("SelectTimeZone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select USB device….
         /// </summary>
         public static string SelectUsbDevice {
@@ -399,15 +390,6 @@ namespace Atc.Wpf.Hardware.Resources {
         public static string TestCamera {
             get {
                 return ResourceManager.GetString("TestCamera", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time Zone.
-        /// </summary>
-        public static string TimeZone {
-            get {
-                return ResourceManager.GetString("TimeZone", resourceCulture);
             }
         }
         

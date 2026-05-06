@@ -8,12 +8,12 @@ ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM 
 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
 - **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
-- **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation)
+- **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation) plus the bare `TimeZonePicker` / `LabelTimeZonePicker` (system-locale picker, no hardware involvement)
 - **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
 - **Atc.Wpf.Network** - Network scanning and discovery controls (wraps external `Atc.Network`)
-- **Atc.Wpf.Hardware** - Hardware / system / inspection pickers (SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, TimeZonePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker) with live device-state detection. TFM `net10.0-windows10.0.19041.0` (uses `Windows.Devices.Enumeration.DeviceWatcher` for the WinRT-backed pickers; polling for the rest)
+- **Atc.Wpf.Hardware** - Hardware / system / inspection pickers (SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker) with live device-state detection. TFM `net10.0-windows10.0.19041.0` (uses `Windows.Devices.Enumeration.DeviceWatcher` for the WinRT-backed pickers; polling for the rest)
 - **Atc.Wpf.UndoRedo** - Undo/redo history view and keyboard behavior (wraps external `Atc.UndoRedo`)
 - **Atc.Wpf.Controls.Sample** - Controls for building sample applications
 
@@ -145,10 +145,10 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 |----------|----------|---------|
 | Wpf | `SamplesWpfTreeView.xaml` | Commands, Layouts, Media, Markup, etc. |
 | Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts |
-| Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls, Selectors, Pickers |
+| Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls, Selectors, Pickers (incl. TimeZonePicker / LabelTimeZonePicker) |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications, Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
-| Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, TimeZonePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker |
+| Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker |
 | Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
 | Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demos |
 | Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |

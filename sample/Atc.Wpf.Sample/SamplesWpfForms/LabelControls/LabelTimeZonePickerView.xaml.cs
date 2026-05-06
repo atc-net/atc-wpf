@@ -1,4 +1,4 @@
-namespace Atc.Wpf.Sample.SamplesWpfHardware.LabelControls;
+namespace Atc.Wpf.Sample.SamplesWpfForms.LabelControls;
 
 public partial class LabelTimeZonePickerView
 {
