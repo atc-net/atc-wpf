@@ -1,5 +1,3 @@
-// Global using directives
-
 global using System.Collections.ObjectModel;
 global using System.ComponentModel;
 global using System.Diagnostics;
