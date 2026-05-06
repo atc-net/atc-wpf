@@ -38,6 +38,34 @@
                                                           Key=Auto}" />
                     </ToggleButton>
 
+                    <ToggleButton
+                        IsChecked="{Binding Path=IsPaused, Mode=TwoWay}"
+                        ToolTip="Pause / resume incoming entries"
+                        Visibility="{Binding Path=ShowPauseInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="16"
+                                Margin="1,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="13"
+                                Text="{Binding Path=IsPaused, Converter={x:Static local:PausedToGlyphValueConverter.Instance}}"
+                                TextAlignment="Center" />
+                            <Border
+                                Margin="4,0,0,0"
+                                Padding="4,0"
+                                VerticalAlignment="Center"
+                                Background="{DynamicResource AtcApps.Brushes.Accent}"
+                                CornerRadius="6"
+                                Visibility="{Binding Path=BufferedCount, Converter={x:Static atcValueConverters:IntegerGreaterThenZeroToVisibilityVisibleValueConverter.Instance}}">
+                                <TextBlock
+                                    FontSize="10"
+                                    FontWeight="SemiBold"
+                                    Foreground="White"
+                                    Text="{Binding Path=BufferedCount}" />
+                            </Border>
+                        </StackPanel>
+                    </ToggleButton>
+
                     <Separator Margin="5,0" />
 
                     <ToggleButton Command="{Binding Path=FilterChangeCommand}" IsChecked="{Binding Path=Filter.SeverityError, Mode=TwoWay}">
@@ -79,13 +107,19 @@
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
-        <DockPanel Grid.Row="1">
+        <Grid Grid.Row="1">
             <ListView
                 x:Name="LvEntries"
                 ItemsSource="{Binding Path=Entries}"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.IsDeferredScrollingEnabled="False"
+                ScrollViewer.ScrollChanged="OnListViewScrollChanged"
                 SelectedItem="{Binding Path=SelectedEntry, Mode=TwoWay}"
                 SelectionChanged="OnEntriesSelectionChanged"
-                SelectionMode="Extended">
+                SelectionMode="Extended"
+                VirtualizingPanel.IsVirtualizing="True"
+                VirtualizingPanel.ScrollUnit="Pixel"
+                VirtualizingPanel.VirtualizationMode="Recycling">
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
@@ -145,7 +179,38 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        </DockPanel>
+
+            <Button
+                Margin="0,0,16,16"
+                Padding="10,4"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="{DynamicResource AtcApps.Brushes.Accent}"
+                Click="OnJumpToLiveClick"
+                Foreground="White"
+                ToolTip="Resume tail mode (Ctrl+G)"
+                Visibility="{Binding Path=IsDetachedFromTail, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="↓ Jump to live" />
+                    <Border
+                        Margin="6,0,0,0"
+                        Padding="4,0"
+                        VerticalAlignment="Center"
+                        Background="White"
+                        CornerRadius="6"
+                        Visibility="{Binding Path=NewSinceDetached, Converter={x:Static atcValueConverters:IntegerGreaterThenZeroToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
+                        <TextBlock
+                            FontSize="10"
+                            FontWeight="Bold"
+                            Foreground="{DynamicResource AtcApps.Brushes.Accent}"
+                            Text="{Binding Path=NewSinceDetached, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" />
+                    </Border>
+                </StackPanel>
+            </Button>
+        </Grid>
     </atc:GridEx>
 
 </UserControl>

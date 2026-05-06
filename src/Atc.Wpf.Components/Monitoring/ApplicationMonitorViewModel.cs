@@ -13,6 +13,20 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     private bool showColumnArea;
     private ListSortDirection sortDirection;
     private bool listenOnToastNotificationMessage;
+    private int maxEntries = 10000;
+    private bool isPaused;
+
+    private readonly Channel<ApplicationEventEntry> entryChannel =
+        Channel.CreateUnbounded<ApplicationEventEntry>(
+            new UnboundedChannelOptions
+            {
+                SingleReader = true,
+                SingleWriter = false,
+                AllowSynchronousContinuations = false,
+            });
+
+    private readonly CancellationTokenSource cts = new();
+    private readonly Task? queueProcessingTask;
 
     public ApplicationMonitorViewModel()
     {
@@ -40,7 +54,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         if (XamlToolkit.Helpers.DesignModeHelper.IsInDesignMode)
         {
             Entries.AddRange(DesignModeHelper.CreateApplicationEventEntryList());
+            return;
         }
+
+        queueProcessingTask = Task.Run(
+            () => ProcessQueueContinuouslyAsync(cts.Token),
+            cts.Token);
     }
 
     public ApplicationFilterViewModel Filter
@@ -72,6 +91,64 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
             autoScroll = value;
             RaisePropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// When <c>true</c>, the drain loop stops dispatching incoming entries to
+    /// <see cref="Entries"/> while continuing to buffer them in the channel.
+    /// <see cref="BufferedCount"/> reflects the held-but-not-shown count.
+    /// </summary>
+    public bool IsPaused
+    {
+        get => isPaused;
+        set
+        {
+            if (value == isPaused)
+            {
+                return;
+            }
+
+            isPaused = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(BufferedCount));
+        }
+    }
+
+    /// <summary>
+    /// Number of entries currently sitting in the ingest channel waiting to be
+    /// dispatched to <see cref="Entries"/>. Non-zero only while
+    /// <see cref="IsPaused"/> is <c>true</c> or under sustained burst load.
+    /// </summary>
+    public int BufferedCount
+        => entryChannel.Reader.CanCount ? entryChannel.Reader.Count : 0;
+
+    /// <summary>
+    /// Caps the number of entries kept in <see cref="Entries"/>. When new
+    /// entries push the count past this value, the oldest entries (by
+    /// insertion order) are dropped. <c>0</c> disables the cap.
+    /// </summary>
+    public int MaxEntries
+    {
+        get => maxEntries;
+        set
+        {
+            if (value < 0)
+            {
+                value = 0;
+            }
+
+            if (value == maxEntries)
+            {
+                return;
+            }
+
+            maxEntries = value;
+            RaisePropertyChanged();
+            lock (SyncLock)
+            {
+                TrimToCap();
+            }
         }
     }
 
@@ -177,28 +254,157 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
     }
 
+    /// <summary>
+    /// Enqueues <paramref name="entry"/> for batched UI dispatch. Thread-safe;
+    /// callers can produce from any thread without taking <see cref="SyncLock"/>.
+    /// In design mode the entry is added directly to <see cref="Entries"/>
+    /// since the drain loop is not started.
+    /// </summary>
     public void AddEntry(ApplicationEventEntry entry)
     {
-        lock (SyncLock)
+        if (XamlToolkit.Helpers.DesignModeHelper.IsInDesignMode)
         {
-            if (Application.Current.Dispatcher.CheckAccess())
+            lock (SyncLock)
             {
                 Entries.Add(entry);
-
-                if (AutoScroll)
-                {
-                    MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection));
-                }
+                TrimToCap();
             }
-            else
+
+            return;
+        }
+
+        entryChannel.Writer.TryWrite(entry);
+    }
+
+    /// <summary>
+    /// Drains queued entries in batches, dispatches each batch to the UI thread
+    /// in a single <see cref="Application.Current"/>.<see cref="Dispatcher.InvokeAsync(Action)"/> call,
+    /// and emits one <see cref="ApplicationMonitorScrollEvent"/> per batch when
+    /// <see cref="AutoScroll"/> is on. Loops until the channel completes or
+    /// <paramref name="token"/> is cancelled.
+    /// </summary>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
+    private async Task ProcessQueueContinuouslyAsync(CancellationToken token)
+    {
+        var reader = entryChannel.Reader;
+
+        try
+        {
+            while (!token.IsCancellationRequested)
             {
-                _ = Application.Current.Dispatcher.BeginInvoke(() => Entries.Add(entry));
-
-                if (AutoScroll)
+                if (isPaused)
                 {
-                    MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection));
+                    await Task.Delay(100, token).ConfigureAwait(false);
+                    NotifyBufferedCountChanged();
+                    continue;
+                }
+
+                if (!await reader.WaitToReadAsync(token).ConfigureAwait(false))
+                {
+                    return;
+                }
+
+                if (isPaused)
+                {
+                    continue;
+                }
+
+                var batch = new List<ApplicationEventEntry>(capacity: 32);
+
+                while (reader.TryRead(out var entry))
+                {
+                    batch.Add(entry);
+                }
+
+                if (batch.Count == 0)
+                {
+                    continue;
+                }
+
+                var app = Application.Current;
+                if (app is null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    await app.Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            lock (SyncLock)
+                            {
+                                foreach (var entry in batch)
+                                {
+                                    Entries.Add(entry);
+                                }
+
+                                TrimToCap();
+                            }
+
+                            if (AutoScroll)
+                            {
+                                MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection));
+                            }
+                        },
+                        DispatcherPriority.Background,
+                        token);
+
+                    NotifyBufferedCountChanged();
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+                catch (Exception)
+                {
+                    // Application is tearing down; give up cleanly rather than spinning the loop.
+                    return;
                 }
             }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected on shutdown.
+        }
+    }
+
+    private void NotifyBufferedCountChanged()
+    {
+        var app = Application.Current;
+        if (app is null)
+        {
+            return;
+        }
+
+        if (app.Dispatcher.CheckAccess())
+        {
+            RaisePropertyChanged(nameof(BufferedCount));
+        }
+        else
+        {
+            _ = app.Dispatcher.BeginInvoke(
+                () => RaisePropertyChanged(nameof(BufferedCount)),
+                DispatcherPriority.Background);
+        }
+    }
+
+    /// <summary>
+    /// Drops the oldest entries (by insertion order) until <see cref="Entries"/>
+    /// is at or below <see cref="MaxEntries"/>. No-op when the cap is <c>0</c>
+    /// or the count is already within the cap. Caller must hold
+    /// <see cref="SyncLock"/>.
+    /// </summary>
+    private void TrimToCap()
+    {
+        if (maxEntries <= 0)
+        {
+            return;
+        }
+
+        while (Entries.Count > maxEntries)
+        {
+            Entries.RemoveAt(0);
         }
     }
 
@@ -233,6 +439,24 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         MessengerInstance.UnRegister<ToastNotificationMessage>(
             this,
             OnToastNotificationMessageHandler);
+
+        entryChannel.Writer.TryComplete();
+        cts.Cancel();
+
+        // Dispose the CTS only after the drain loop has actually exited, to avoid
+        // racing the loop's mid-dispatch InvokeAsync against CTS disposal.
+        if (queueProcessingTask is null)
+        {
+            cts.Dispose();
+            return;
+        }
+
+        _ = queueProcessingTask.ContinueWith(
+            static (_, state) => ((CancellationTokenSource)state!).Dispose(),
+            cts,
+            CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously,
+            TaskScheduler.Default);
     }
 
     private void OnApplicationEventEntryHandler(ApplicationEventEntry entry)
