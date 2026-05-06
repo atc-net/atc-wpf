@@ -5,7 +5,14 @@ public partial class ApplicationMonitorView
     private const double TailDetectionThresholdPixels = 2d;
 
     private readonly ContextMenu? defaultContextMenu;
-    private bool isAtTail = true;
+
+    // True only when the user has manually scrolled away from the tail. The
+    // scroll-changed handler ignores layout-induced events (VerticalChange == 0)
+    // and our own programmatic scrolls — without those guards a single layout
+    // overflow or our own ScrollIntoView would falsely latch this true and
+    // disable auto-scroll for the rest of the session.
+    private bool isUserDetached;
+    private bool isPerformingProgrammaticScroll;
 
     // ---------------------------------------------------------------------
     // Toolbar visibility DPs
@@ -123,13 +130,11 @@ public partial class ApplicationMonitorView
         var direction = (DataContext as ApplicationMonitorViewModel)?.SortDirection
                         ?? ListSortDirection.Ascending;
 
-        LvEntries.ScrollIntoView(
-            direction == ListSortDirection.Ascending
-                ? LvEntries.Items[^1]!
-                : LvEntries.Items[0]!);
+        ScrollToTail(direction);
 
         IsDetachedFromTail = false;
         NewSinceDetached = 0;
+        isUserDetached = false;
     }
 
     // ---------------------------------------------------------------------
@@ -282,6 +287,19 @@ public partial class ApplicationMonitorView
             return;
         }
 
+        if (e.VerticalChange == 0)
+        {
+            // Pure layout change — content overflowed or viewport resized but
+            // the user didn't move. Don't latch detached state.
+            return;
+        }
+
+        if (isPerformingProgrammaticScroll)
+        {
+            // Our own ScrollIntoView; don't misread it as user detachment.
+            return;
+        }
+
         var direction = (DataContext as ApplicationMonitorViewModel)?.SortDirection
                         ?? ListSortDirection.Ascending;
 
@@ -291,17 +309,22 @@ public partial class ApplicationMonitorView
             ? sv.VerticalOffset >= sv.ScrollableHeight - TailDetectionThresholdPixels
             : sv.VerticalOffset <= TailDetectionThresholdPixels;
 
-        var wasAtTail = isAtTail;
-        isAtTail = atTail;
-
-        if (atTail && !wasAtTail)
+        if (atTail)
         {
-            IsDetachedFromTail = false;
-            NewSinceDetached = 0;
+            isUserDetached = false;
+            if (IsDetachedFromTail)
+            {
+                IsDetachedFromTail = false;
+                NewSinceDetached = 0;
+            }
         }
-        else if (!atTail && wasAtTail)
+        else
         {
-            IsDetachedFromTail = true;
+            isUserDetached = true;
+            if (!IsDetachedFromTail)
+            {
+                IsDetachedFromTail = true;
+            }
         }
     }
 
@@ -315,17 +338,40 @@ public partial class ApplicationMonitorView
                 return;
             }
 
-            if (!isAtTail)
+            if (isUserDetached)
             {
                 NewSinceDetached++;
                 return;
             }
 
-            LvEntries.ScrollIntoView(
-                obj.Direction == ListSortDirection.Ascending
-                    ? LvEntries.Items[^1]!
-                    : LvEntries.Items[0]!);
+            ScrollToTail(obj.Direction);
         });
+    }
+
+    private void ScrollToTail(ListSortDirection direction)
+    {
+        var count = LvEntries.Items.Count;
+        if (count <= 0)
+        {
+            return;
+        }
+
+        isPerformingProgrammaticScroll = true;
+        try
+        {
+            LvEntries.ScrollIntoView(
+                direction == ListSortDirection.Ascending
+                    ? LvEntries.Items[count - 1]!
+                    : LvEntries.Items[0]!);
+        }
+        finally
+        {
+            // Defer reset until after pending ScrollChanged events (which
+            // fire at ContextIdle when layout completes) have run.
+            Dispatcher.BeginInvoke(
+                new Action(() => isPerformingProgrammaticScroll = false),
+                DispatcherPriority.ApplicationIdle);
+        }
     }
 
     private void OnJumpToLiveClick(
