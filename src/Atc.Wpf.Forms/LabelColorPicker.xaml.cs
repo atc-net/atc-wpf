@@ -21,8 +21,6 @@ public partial class LabelColorPicker : ILabelColorPicker
     {
         InitializeComponent();
 
-        DataContext = this;
-
         var colorPickers = this
             .FindChildren<ColorPicker>()
             .ToList();
