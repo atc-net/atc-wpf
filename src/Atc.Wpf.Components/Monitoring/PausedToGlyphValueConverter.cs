@@ -7,7 +7,7 @@ namespace Atc.Wpf.Components.Monitoring;
 /// running (so the button reads "press to pause").
 /// </summary>
 [ValueConversion(typeof(bool), typeof(string))]
-internal sealed class PausedToGlyphValueConverter : IValueConverter
+public sealed class PausedToGlyphValueConverter : IValueConverter
 {
     private const string PauseGlyph = "⏸"; // ⏸
     private const string PlayGlyph = "⏵";  // ⏵

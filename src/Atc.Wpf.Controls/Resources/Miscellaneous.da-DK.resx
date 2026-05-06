@@ -370,4 +370,11 @@
   <data name="ResumeTailModeTooltip" xml:space="preserve">
     <value>Genoptag tail-tilstand (Ctrl+G)</value>
   </data>
+  <data name="ExportTerminalOutput" xml:space="preserve">
+    <value>Eksportér terminal-output</value>
+  </data>
+  <data name="CouldNotExportTerminalOutputFormat1" xml:space="preserve">
+    <value>Kunne ikke eksportere terminal-output:
+{0}</value>
+  </data>
 </root>
