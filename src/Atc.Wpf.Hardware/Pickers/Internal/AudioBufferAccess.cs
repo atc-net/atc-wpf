@@ -2,16 +2,15 @@ namespace Atc.Wpf.Hardware.Pickers.Internal;
 
 /// <summary>
 /// Bridges WinRT <c>AudioFrame</c> data buffers to managed <c>Span&lt;float&gt;</c>.
-/// Uses manual <c>QueryInterface</c> + vtable invocation against
-/// <c>IMemoryBufferByteAccess</c> instead of a managed <c>[ComImport]</c> cast — the
-/// cast pattern that works in UWP throws <see cref="InvalidCastException"/> under the
-/// CsWinRT projection used by .NET 5+ / WPF.
+/// Uses <c>WinRT.CastExtensions.As&lt;IMemoryBufferByteAccess&gt;()</c> from CsWinRT —
+/// the direct <c>(IMemoryBufferByteAccess)reference</c> cast that's documented in the
+/// UWP samples throws <see cref="InvalidCastException"/> under the CsWinRT projection
+/// used by .NET 5+ / WPF, and a manual <c>QueryInterface</c> on the CCW returned by
+/// <c>Marshal.GetIUnknownForObject</c> cannot reach the underlying ABI object on
+/// read-side frames.
 /// </summary>
 internal static class AudioBufferAccess
 {
-    private static readonly Guid IidMemoryBufferByteAccess
-        = new("5B0D3235-4DBA-4D44-865E-8F1D0E4FD04D");
-
     /// <summary>
     /// Copies the float-encoded samples from <paramref name="frame"/> into <paramref name="destination"/>
     /// and returns the number of floats actually copied (capped at the destination length).
@@ -101,10 +100,11 @@ internal static class AudioBufferAccess
     }
 
     /// <summary>
-    /// Manually <c>QueryInterface</c>s the WinRT memory-buffer reference for the
-    /// <c>IMemoryBufferByteAccess</c> COM interface and invokes <c>GetBuffer</c>
-    /// through the vtable. The naive <c>(IMemoryBufferByteAccess)reference</c> cast
-    /// throws <see cref="InvalidCastException"/> under CsWinRT.
+    /// Casts the WinRT memory-buffer reference to <see cref="IMemoryBufferByteAccess"/>
+    /// via <see cref="WinRT.CastExtensions.As{TInterface}"/> and invokes <c>GetBuffer</c>.
+    /// CsWinRT routes the call through the underlying ABI object, which the naive
+    /// managed cast and the <c>Marshal.GetIUnknownForObject</c> + <c>QueryInterface</c>
+    /// route cannot reach for read-mode frames.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Buffer access must not crash on transient COM failures.")]
     private static unsafe bool TryGetBufferPointer(
@@ -115,56 +115,17 @@ internal static class AudioBufferAccess
         dataInBytes = null;
         capacity = 0;
 
-        var unkPtr = Marshal.GetIUnknownForObject(reference);
-        if (unkPtr == IntPtr.Zero)
-        {
-            return false;
-        }
-
         try
         {
-            var iid = IidMemoryBufferByteAccess;
-            var hr = Marshal.QueryInterface(unkPtr, in iid, out var byteAccessPtr);
-            if (hr < 0 || byteAccessPtr == IntPtr.Zero)
-            {
-                return false;
-            }
-
-            try
-            {
-                // Vtable layout (inherits IUnknown):
-                //  [0] QueryInterface
-                //  [1] AddRef
-                //  [2] Release
-                //  [3] GetBuffer(out byte** buffer, out uint* capacity)  -> HRESULT
-                var vtable = *(IntPtr**)byteAccessPtr;
-                var getBufferFn =
-                    (delegate* unmanaged[Stdcall]<IntPtr, byte**, uint*, int>)vtable[3];
-
-                byte* outBuffer;
-                uint outCapacity;
-                var callHr = getBufferFn(byteAccessPtr, &outBuffer, &outCapacity);
-                if (callHr < 0)
-                {
-                    return false;
-                }
-
-                dataInBytes = outBuffer;
-                capacity = outCapacity;
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            finally
-            {
-                Marshal.Release(byteAccessPtr);
-            }
+            var byteAccess = WinRT.CastExtensions.As<IMemoryBufferByteAccess>(reference);
+            byteAccess.GetBuffer(out var outBuffer, out var outCapacity);
+            dataInBytes = outBuffer;
+            capacity = outCapacity;
+            return true;
         }
-        finally
+        catch (Exception)
         {
-            Marshal.Release(unkPtr);
+            return false;
         }
     }
 }
