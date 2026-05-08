@@ -1,3 +1,5 @@
+using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Forms;
 
 public partial class LabelTextInfo : ILabelTextInfo
@@ -34,7 +36,7 @@ public partial class LabelTextInfo : ILabelTextInfo
     {
         var copyMenuItem = new MenuItem
         {
-            Header = Miscellaneous.CopyToClipboard,
+            Header = SharedMisc.CopyToClipboard,
             Icon = new SvgImage
             {
                 Width = 16,

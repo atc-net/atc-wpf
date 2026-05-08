@@ -1,3 +1,5 @@
+using FormsMiscellaneous = Atc.Wpf.Forms.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Forms.Dialogs;
 
 public partial class FontPickerDialogBox
@@ -145,7 +147,7 @@ public partial class FontPickerDialogBox
         var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
         settings.Width = 925;
         settings.Height = 720;
-        settings.TitleBarText = Miscellaneous.FontPicker;
+        settings.TitleBarText = FormsMiscellaneous.FontPicker;
         return settings;
     }
 }

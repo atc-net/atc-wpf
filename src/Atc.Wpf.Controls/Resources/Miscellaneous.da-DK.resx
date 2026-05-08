@@ -117,38 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationSettings" xml:space="preserve">
-    <value>Applikationsindstillinger</value>
-  </data>
-  <data name="Area" xml:space="preserve">
-    <value>Område</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>Auto</value>
-  </data>
   <data name="AvailableColors" xml:space="preserve">
     <value>Tilgængelige farver</value>
-  </data>
-  <data name="Background" xml:space="preserve">
-    <value>Baggrund</value>
-  </data>
-  <data name="Bold" xml:space="preserve">
-    <value>Fed</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Fortryd</value>
-  </data>
-  <data name="ClearAll" xml:space="preserve">
-    <value>Slet alt</value>
-  </data>
-  <data name="ClearHistory" xml:space="preserve">
-    <value>Ryd historik</value>
-  </data>
-  <data name="CollapseAll" xml:space="preserve">
-    <value>Skjul alle</value>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Farve</value>
   </data>
   <data name="ContrastWarning" xml:space="preserve">
     <value>Forgrund og baggrund har lav kontrast — teksten kan være svær at læse.</value>
@@ -159,222 +129,25 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Farvevælger</value>
   </data>
-  <data name="CopyAllToClipboard" xml:space="preserve">
-    <value>Kopier alt til udklipsholder</value>
-  </data>
-  <data name="CopySelectedToClipboard" xml:space="preserve">
-    <value>Kopier markerede til udklipsholder</value>
-  </data>
-  <data name="CopyToClipboard" xml:space="preserve">
-    <value>Kopier til udklipsholder</value>
-  </data>
-  <data name="RightClickToCopyToClipboard" xml:space="preserve">
-    <value>Højreklik for at kopiere til udklipsholder</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Land</value>
-  </data>
-  <data name="Errors" xml:space="preserve">
-    <value>Fejl</value>
-  </data>
-  <data name="ExpandAll" xml:space="preserve">
-    <value>Udvid alle</value>
-  </data>
-  <data name="FieldIsRequired" xml:space="preserve">
-    <value>Feltet er påkrævet</value>
-  </data>
-  <data name="Font" xml:space="preserve">
-    <value>Font</value>
-  </data>
-  <data name="Foreground" xml:space="preserve">
-    <value>Forgrund</value>
-  </data>
-  <data name="FontFamily" xml:space="preserve">
-    <value>Skrifttype</value>
-  </data>
-  <data name="FontPicker" xml:space="preserve">
-    <value>Skrifttypevælger</value>
-  </data>
-  <data name="FontSize" xml:space="preserve">
-    <value>Skriftstørrelse</value>
-  </data>
-  <data name="FontStretch" xml:space="preserve">
-    <value>Skriftbredde</value>
-  </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>Skriftstil</value>
-  </data>
-  <data name="FontWeight" xml:space="preserve">
-    <value>Skrifttykkelse</value>
-  </data>
-  <data name="Hour" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="Italic" xml:space="preserve">
-    <value>Kursiv</value>
-  </data>
-  <data name="Locked" xml:space="preserve">
-    <value>Låst</value>
-  </data>
-  <data name="Information" xml:space="preserve">
-    <value>Information</value>
-  </data>
-  <data name="InitialState" xml:space="preserve">
-    <value>Starttilstand</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Sprog</value>
-  </data>
-  <data name="Message" xml:space="preserve">
-    <value>Besked</value>
-  </data>
-  <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Nej</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="OpenRecentFileOnStartup" xml:space="preserve">
-    <value>Åbn den seneste fil ved opstart</value>
-  </data>
-  <data name="PleaseWait" xml:space="preserve">
-    <value>Vent venligst</value>
-  </data>
-  <data name="PleaseWait3Dots" xml:space="preserve">
-    <value>Vent venligst...</value>
-  </data>
-  <data name="Preview" xml:space="preserve">
-    <value>Forhåndsvisning</value>
-  </data>
-  <data name="Redo" xml:space="preserve">
-    <value>Annuller fortryd</value>
-  </data>
-  <data name="RedoAll" xml:space="preserve">
-    <value>Annuller fortryd alle</value>
-  </data>
-  <data name="SelectDirectory" xml:space="preserve">
-    <value>Vælg en mappe</value>
-  </data>
-  <data name="SelectFile" xml:space="preserve">
-    <value>Vælg en fil</value>
-  </data>
-  <data name="SelectTimeZone" xml:space="preserve">
-    <value>Vælg tidszone…</value>
-  </data>
   <data name="StandardColors" xml:space="preserve">
     <value>Standard farver</value>
   </data>
-  <data name="Strikethrough" xml:space="preserve">
-    <value>Gennemstreget</value>
+  <data name="PixelWidth" xml:space="preserve">
+    <value>B:</value>
   </data>
-  <data name="Timestamp" xml:space="preserve">
-    <value>Tidsstempel</value>
+  <data name="PixelHeight" xml:space="preserve">
+    <value>H:</value>
   </data>
-  <data name="TimeZone" xml:space="preserve">
-    <value>Tidszone</value>
+  <data name="ThicknessLeft" xml:space="preserve">
+    <value>V:</value>
   </data>
-  <data name="Underline" xml:space="preserve">
-    <value>Understreget</value>
+  <data name="ThicknessTop" xml:space="preserve">
+    <value>T:</value>
   </data>
-  <data name="Undo" xml:space="preserve">
-    <value>Fortryd</value>
+  <data name="ThicknessRight" xml:space="preserve">
+    <value>H:</value>
   </data>
-  <data name="UndoAll" xml:space="preserve">
-    <value>Fortryd alle</value>
-  </data>
-  <data name="Warnings" xml:space="preserve">
-    <value>Advarsler</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="MoveToSelected" xml:space="preserve">
-    <value>Flyt til valgt</value>
-  </data>
-  <data name="MoveAllToSelected" xml:space="preserve">
-    <value>Flyt alle til valgt</value>
-  </data>
-  <data name="MoveToAvailable" xml:space="preserve">
-    <value>Flyt til tilgængelig</value>
-  </data>
-  <data name="MoveAllToAvailable" xml:space="preserve">
-    <value>Flyt alle til tilgængelig</value>
-  </data>
-  <data name="MoveToTop" xml:space="preserve">
-    <value>Flyt til toppen</value>
-  </data>
-  <data name="MoveUp" xml:space="preserve">
-    <value>Flyt op</value>
-  </data>
-  <data name="MoveDown" xml:space="preserve">
-    <value>Flyt ned</value>
-  </data>
-  <data name="MoveToBottom" xml:space="preserve">
-    <value>Flyt til bunden</value>
-  </data>
-  <data name="FilterPlaceholder" xml:space="preserve">
-    <value>Søg...</value>
-  </data>
-  <data name="ItemCountFormat1" xml:space="preserve">
-    <value>{0} elementer</value>
-  </data>
-  <data name="ItemCountFilteredFormat2" xml:space="preserve">
-    <value>{0} af {1}</value>
-  </data>
-  <data name="NoItemsFound" xml:space="preserve">
-    <value>Ingen elementer fundet</value>
-  </data>
-  <data name="MarkSaved" xml:space="preserve">
-    <value>Markér gemt</value>
-  </data>
-  <data name="Zoom100Percent" xml:space="preserve">
-    <value>Zoom 100%</value>
-  </data>
-  <data name="ZoomIn" xml:space="preserve">
-    <value>Zoom ind</value>
-  </data>
-  <data name="ZoomOut" xml:space="preserve">
-    <value>Zoom ud</value>
-  </data>
-  <data name="ZoomToFit" xml:space="preserve">
-    <value>Zoom til tilpasning</value>
-  </data>
-  <data name="ZoomToFill" xml:space="preserve">
-    <value>Zoom til udfyldning</value>
-  </data>
-  <data name="ZoomPercentFormat1" xml:space="preserve">
-    <value>Zoom {0}%</value>
-  </data>
-  <data name="ExportLog" xml:space="preserve">
-    <value>Eksportér log</value>
-  </data>
-  <data name="ExportFailed" xml:space="preserve">
-    <value>Eksport mislykkedes</value>
-  </data>
-  <data name="CouldNotExportLogFormat1" xml:space="preserve">
-    <value>Kunne ikke eksportere log:
-{0}</value>
-  </data>
-  <data name="ExportVisibleEntriesTooltip" xml:space="preserve">
-    <value>Eksportér synlige poster til CSV / JSON / TXT (Ctrl+S)</value>
-  </data>
-  <data name="PauseResumeIncomingEntriesTooltip" xml:space="preserve">
-    <value>Pause / genoptag indkommende poster</value>
-  </data>
-  <data name="JumpToLive" xml:space="preserve">
-    <value>↓ Hop til live</value>
-  </data>
-  <data name="ResumeTailModeTooltip" xml:space="preserve">
-    <value>Genoptag tail-tilstand (Ctrl+G)</value>
-  </data>
-  <data name="ExportTerminalOutput" xml:space="preserve">
-    <value>Eksportér terminal-output</value>
-  </data>
-  <data name="CouldNotExportTerminalOutputFormat1" xml:space="preserve">
-    <value>Kunne ikke eksportere terminal-output:
-{0}</value>
+  <data name="ThicknessBottom" xml:space="preserve">
+    <value>B:</value>
   </data>
 </root>

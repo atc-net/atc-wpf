@@ -42,10 +42,10 @@
         <Button
             Grid.Column="2"
             Padding="4"
-            AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+            AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                             Key=FontPicker}"
             Click="OnEditClick"
-            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                             Key=FontPicker}">
             <Image
                 Width="16"

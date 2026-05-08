@@ -1,5 +1,7 @@
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable InconsistentNaming
+using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Controls.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
@@ -159,7 +161,7 @@ public partial class DirectoryPicker
         {
             Multiselect = false,
             Title = string.IsNullOrEmpty(Title)
-                ? Miscellaneous.SelectDirectory
+                ? SharedMisc.SelectDirectory
                 : Title,
             DefaultDirectory = DefaultDirectory,
             InitialDirectory = resolvedInitialDirectory,

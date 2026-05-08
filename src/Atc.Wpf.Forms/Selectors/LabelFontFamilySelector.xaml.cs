@@ -25,7 +25,7 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
 
         if (string.IsNullOrEmpty(LabelText))
         {
-            LabelText = Miscellaneous.Font;
+            LabelText = Word.Font;
         }
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;
@@ -35,10 +35,10 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
         object? sender,
         UiCultureEventArgs e)
     {
-        var oldTranslation = Miscellaneous.ResourceManager.GetString(nameof(Miscellaneous.Font), e.OldCulture);
+        var oldTranslation = Word.ResourceManager.GetString(nameof(Word.Font), e.OldCulture);
         if (oldTranslation is not null && oldTranslation.Equals(LabelText, StringComparison.Ordinal))
         {
-            LabelText = Miscellaneous.Font;
+            LabelText = Word.Font;
         }
     }
 
@@ -83,7 +83,7 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
                 control.ValidationText = string.Format(
                     CultureInfo.CurrentUICulture,
                     Validations.PleaseSelect1,
-                    Miscellaneous.Font.ToLower(Thread.CurrentThread.CurrentUICulture));
+                    Word.Font.ToLower(Thread.CurrentThread.CurrentUICulture));
 
                 if (raiseEvents)
                 {

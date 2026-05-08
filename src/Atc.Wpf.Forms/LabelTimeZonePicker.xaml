@@ -7,7 +7,7 @@
     xmlns:labelControls="clr-namespace:Atc.Wpf.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pickers="clr-namespace:Atc.Wpf.Forms.Pickers"
-    xmlns:resources="clr-namespace:Atc.Wpf.Controls.Resources;assembly=Atc.Wpf.Controls"
+    xmlns:resources="clr-namespace:Atc.Wpf.Forms.Resources"
     IsTabStop="False"
     mc:Ignorable="d">
 

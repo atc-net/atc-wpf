@@ -255,4 +255,13 @@
   <data name="VncPassword" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="StartIpExample" xml:space="preserve">
+    <value>e.g. 192.168.1.1</value>
+  </data>
+  <data name="EndIpExample" xml:space="preserve">
+    <value>e.g. 192.168.1.254</value>
+  </data>
+  <data name="PortsExample" xml:space="preserve">
+    <value>e.g. 22, 80, 443</value>
+  </data>
 </root>

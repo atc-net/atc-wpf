@@ -34,7 +34,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
 
         if (string.IsNullOrEmpty(LabelText))
         {
-            LabelText = Miscellaneous.Country;
+            LabelText = Word.Country;
         }
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;
@@ -44,10 +44,10 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         object? sender,
         UiCultureEventArgs e)
     {
-        var oldTranslation = Miscellaneous.ResourceManager.GetString(nameof(Miscellaneous.Country), e.OldCulture);
+        var oldTranslation = Word.ResourceManager.GetString(nameof(Word.Country), e.OldCulture);
         if (oldTranslation is not null && oldTranslation.Equals(LabelText, StringComparison.Ordinal))
         {
-            LabelText = Miscellaneous.Country;
+            LabelText = Word.Country;
         }
     }
 

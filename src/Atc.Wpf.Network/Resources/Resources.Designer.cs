@@ -178,6 +178,15 @@ namespace Atc.Wpf.Network.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e.g. 192.168.1.254.
+        /// </summary>
+        public static string EndIpExample {
+            get {
+                return ResourceManager.GetString("EndIpExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entries.
         /// </summary>
         public static string Entries {
@@ -277,6 +286,15 @@ namespace Atc.Wpf.Network.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e.g. 22, 80, 443.
+        /// </summary>
+        public static string PortsExample {
+            get {
+                return ResourceManager.GetString("PortsExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan.
         /// </summary>
         public static string Scan {
@@ -327,6 +345,15 @@ namespace Atc.Wpf.Network.Resources {
         public static string StartIp {
             get {
                 return ResourceManager.GetString("StartIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 192.168.1.1.
+        /// </summary>
+        public static string StartIpExample {
+            get {
+                return ResourceManager.GetString("StartIpExample", resourceCulture);
             }
         }
         

@@ -23,14 +23,14 @@
             Orientation="Vertical">
             <local:LabelComboBox
                 Items="{Binding Path=Hours}"
-                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                 Key=Hour}"
                 LabelWidthNumber="50"
                 LabelWidthSizeDefinition="Pixel"
                 SelectedKey="{Binding Path=SelectedKeyHour}" />
             <local:LabelComboBox
                 Items="{Binding Path=Minutes}"
-                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                 Key=Minute}"
                 LabelWidthNumber="50"
                 LabelWidthSizeDefinition="Pixel"

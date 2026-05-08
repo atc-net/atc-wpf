@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AutoScrollToTail" xml:space="preserve">
+    <value>Auto-scroll to tail</value>
+  </data>
+  <data name="ClearTooltip" xml:space="preserve">
+    <value>Clear (Ctrl+L)</value>
+  </data>
+  <data name="CopySelected" xml:space="preserve">
+    <value>Copy selected</value>
+  </data>
+  <data name="CouldNotExportTerminalOutputFormat1" xml:space="preserve">
+    <value>Could not export terminal output:
+{0}</value>
+  </data>
+  <data name="ExportTerminalOutput" xml:space="preserve">
+    <value>Export terminal output</value>
+  </data>
+  <data name="ExportToTxtOrLogTooltip" xml:space="preserve">
+    <value>Export to .txt / .log (Ctrl+S)</value>
+  </data>
+  <data name="HideNonMatchingLines" xml:space="preserve">
+    <value>Hide non-matching lines</value>
+  </data>
+  <data name="JumpToLiveTooltip" xml:space="preserve">
+    <value>Jump to live (Ctrl+G)</value>
+  </data>
+  <data name="MatchCount" xml:space="preserve">
+    <value>Match count</value>
+  </data>
+  <data name="MatchesFormat1" xml:space="preserve">
+    <value>{0} matches</value>
+  </data>
+  <data name="PauseResumeIncomingLinesTooltip" xml:space="preserve">
+    <value>Pause / resume incoming lines (Ctrl+P)</value>
+  </data>
+  <data name="PinUnpinSelected" xml:space="preserve">
+    <value>Pin / unpin selected</value>
+  </data>
+  <data name="ResetZoom" xml:space="preserve">
+    <value>Reset zoom</value>
+  </data>
+  <data name="SearchWatermark" xml:space="preserve">
+    <value>Search… (Ctrl+F)</value>
+  </data>
+  <data name="UseRegexTooltip" xml:space="preserve">
+    <value>Treat search as regular expression</value>
+  </data>
+  <data name="WrapLongLines" xml:space="preserve">
+    <value>Wrap long lines</value>
+  </data>
+  <data name="Zoom100Percent" xml:space="preserve">
+    <value>Zoom 100%</value>
+  </data>
+  <data name="ZoomIn" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+  <data name="ZoomOut" xml:space="preserve">
+    <value>Zoom Out</value>
+  </data>
+  <data name="ZoomPercentFormat1" xml:space="preserve">
+    <value>Zoom {0}%</value>
+  </data>
+  <data name="ZoomToFill" xml:space="preserve">
+    <value>Zoom to Fill</value>
+  </data>
+  <data name="ZoomToFit" xml:space="preserve">
+    <value>Zoom to Fit</value>
+  </data>
+</root>

@@ -1,6 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:flyouts="clr-namespace:Atc.Wpf.Components.Flyouts">
 
     <!--  Pin button style  -->
@@ -13,7 +14,7 @@
         <Setter Property="Height" Value="32" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="ToolTip" Value="Pin (keep open)" />
+        <Setter Property="ToolTip" Value="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.Miscellaneous, Key=PinKeepOpen}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Width" Value="32" />
         <Setter Property="Template">
@@ -51,7 +52,7 @@
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="PinIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
-                            <Setter Property="ToolTip" Value="Unpin" />
+                            <Setter Property="ToolTip" Value="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.Miscellaneous, Key=Unpin}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="PinIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
@@ -263,7 +264,7 @@
                                             <Button
                                                 x:Name="PART_CloseButton"
                                                 Style="{StaticResource AtcApps.Styles.Flyout.CloseButton}"
-                                                ToolTip="Close" />
+                                                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Close}" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>

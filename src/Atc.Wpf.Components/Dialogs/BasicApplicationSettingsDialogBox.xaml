@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs;assembly=Atc.Wpf.Theming"
@@ -51,7 +52,7 @@
                     Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                     Command="{Binding Path=OkCommand}"
                     CommandParameter="{Binding ElementName=DialogApplicationSettings}"
-                    Content="OK"
+                    Content="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Ok}"
                     Foreground="{DynamicResource AtcApps.Brushes.Text}"
                     IsDefault="True" />
                 <Button
@@ -60,7 +61,7 @@
                     Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                     Command="{Binding Path=CancelCommand}"
                     CommandParameter="{Binding ElementName=DialogApplicationSettings}"
-                    Content="Cancel"
+                    Content="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Cancel}"
                     Foreground="{DynamicResource AtcApps.Brushes.Text}"
                     IsCancel="True" />
             </atc:UniformSpacingPanel>

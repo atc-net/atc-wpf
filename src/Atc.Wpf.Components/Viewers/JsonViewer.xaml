@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="Atc.Wpf.Components.Viewers.JsonViewer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -40,7 +40,7 @@
                     Background="#a40000"
                     Foreground="WhiteSmoke"
                     Opacity="0.4"
-                    Text="array" />
+                    Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeArray}" />
                 <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JsonArrayLengthConverter.Instance}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
@@ -60,7 +60,7 @@
                     Background="#a40000"
                     Foreground="WhiteSmoke"
                     Opacity="0.4"
-                    Text="array" />
+                    Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeArray}" />
                 <TextBlock Foreground="#a40000" Text="{Binding Converter={x:Static valueConverters:JsonArrayLengthConverter.Instance}}" />
             </StackPanel>
         </HierarchicalDataTemplate>
@@ -136,14 +136,14 @@
                 Orientation="Horizontal"
                 Spacing="10"
                 Visibility="{Binding Path=ShowActionAndInformationBar, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
-                <Button Click="ExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
+                <Button Click="ExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=ExpandAll}">
                     <atc:SvgImage
                         Width="16"
                         Height="16"
                         OverrideColor="DarkOrange"
                         Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
                 </Button>
-                <Button Click="CollapseAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CollapseAll}">
+                <Button Click="CollapseAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CollapseAll}">
                     <atc:SvgImage
                         Width="16"
                         Height="16"
@@ -160,7 +160,7 @@
                         VerticalAlignment="Center"
                         Background="{x:Static colorSchemas:JsonColorSchema.StringBrush}"
                         Foreground="WhiteSmoke"
-                        Text="String" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeString}" />
                 </Border>
                 <Border
                     Background="{x:Static colorSchemas:JsonColorSchema.FloatBrush}"
@@ -171,7 +171,7 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="WhiteSmoke"
-                        Text="Number" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeNumber}" />
                 </Border>
                 <Border
                     Background="{x:Static colorSchemas:JsonColorSchema.BooleanBrush}"
@@ -182,7 +182,7 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="WhiteSmoke"
-                        Text="Boolean" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeBoolean}" />
                 </Border>
                 <Border
                     Background="{x:Static colorSchemas:JsonColorSchema.DateBrush}"
@@ -193,7 +193,7 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="WhiteSmoke"
-                        Text="Date" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeDate}" />
                 </Border>
                 <Border
                     Background="{x:Static colorSchemas:JsonColorSchema.GuidBrush}"
@@ -204,7 +204,7 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="WhiteSmoke"
-                        Text="Guid" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeGuid}" />
                 </Border>
                 <Border
                     Background="{x:Static colorSchemas:JsonColorSchema.UriBrush}"
@@ -215,7 +215,7 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="WhiteSmoke"
-                        Text="Uri" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeUri}" />
                 </Border>
                 <Border
                     Background="{x:Static colorSchemas:JsonColorSchema.NullBrush}"
@@ -226,7 +226,7 @@
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="WhiteSmoke"
-                        Text="Null" />
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.JsonViewer, Key=JsonTypeNull}" />
                 </Border>
             </atc:UniformSpacingPanel>
         </StackPanel>
@@ -240,7 +240,7 @@
             ItemTemplateSelector="{StaticResource JsonPropertyTemplateSelector}">
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Click="ExpandAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
+                    <MenuItem Click="ExpandAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=ExpandAll}">
                         <MenuItem.Icon>
                             <atc:SvgImage
                                 Width="16"
@@ -249,7 +249,7 @@
                                 Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Click="CollapseAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CollapseAll}">
+                    <MenuItem Click="CollapseAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CollapseAll}">
                         <MenuItem.Icon>
                             <atc:SvgImage
                                 Width="16"
@@ -259,7 +259,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem Click="CopyToClipboard" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CopyToClipboard}">
+                    <MenuItem Click="CopyToClipboard" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CopyToClipboard}">
                         <MenuItem.Icon>
                             <atc:SvgImage
                                 Width="16"

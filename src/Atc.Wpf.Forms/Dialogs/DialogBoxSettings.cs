@@ -26,20 +26,20 @@ public sealed class DialogBoxSettings
                 break;
             case DialogBoxType.Ok:
                 SetContentSvgImage();
-                AffirmativeButtonText = Miscellaneous.Ok;
+                AffirmativeButtonText = Word.Ok;
                 NegativeButtonText = string.Empty;
                 ShowNegativeButton = false;
                 break;
             case DialogBoxType.OkCancel:
                 SetContentSvgImage();
-                AffirmativeButtonText = Miscellaneous.Ok;
-                NegativeButtonText = Miscellaneous.Cancel;
+                AffirmativeButtonText = Word.Ok;
+                NegativeButtonText = Word.Cancel;
                 ShowNegativeButton = true;
                 break;
             case DialogBoxType.YesNo:
                 SetContentSvgImage();
-                AffirmativeButtonText = Miscellaneous.Yes;
-                NegativeButtonText = Miscellaneous.No;
+                AffirmativeButtonText = Word.Yes;
+                NegativeButtonText = Word.No;
                 ShowNegativeButton = true;
                 break;
             default:
