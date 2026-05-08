@@ -23,7 +23,7 @@
                 LabelWidthSizeDefinition="Percentage"
                 Text="{Binding Path=StartIpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ValidationFormat="IPv4Address"
-                WatermarkText="e.g. 192.168.1.1" />
+                WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=StartIpExample}" />
             <atcForms:LabelTextBox
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
                                                 Key=EndIp}"
@@ -31,7 +31,7 @@
                 LabelWidthSizeDefinition="Percentage"
                 Text="{Binding Path=EndIpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ValidationFormat="IPv4Address"
-                WatermarkText="e.g. 192.168.1.254" />
+                WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=EndIpExample}" />
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <atcForms:LabelTextBox
@@ -40,7 +40,7 @@
                 LabelWidthNumber="40"
                 LabelWidthSizeDefinition="Percentage"
                 Text="{Binding Path=PortsNumbersText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                WatermarkText="e.g. 22, 80, 443" />
+                WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=PortsExample}" />
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <atcForms:LabelCheckBox

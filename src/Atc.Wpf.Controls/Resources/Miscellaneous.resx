@@ -117,38 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationSettings" xml:space="preserve">
-    <value>Application Settings</value>
-  </data>
-  <data name="Area" xml:space="preserve">
-    <value>Area</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>Auto</value>
-  </data>
   <data name="AvailableColors" xml:space="preserve">
     <value>Available Colors</value>
-  </data>
-  <data name="Background" xml:space="preserve">
-    <value>Background</value>
-  </data>
-  <data name="Bold" xml:space="preserve">
-    <value>Bold</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="ClearAll" xml:space="preserve">
-    <value>Clear All</value>
-  </data>
-  <data name="ClearHistory" xml:space="preserve">
-    <value>Clear History</value>
-  </data>
-  <data name="CollapseAll" xml:space="preserve">
-    <value>Collapse All</value>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Color</value>
   </data>
   <data name="ContrastWarning" xml:space="preserve">
     <value>Foreground and background colors have low contrast — text may be hard to read.</value>
@@ -159,222 +129,25 @@
   <data name="ColorPicker" xml:space="preserve">
     <value>Color Picker</value>
   </data>
-  <data name="CopyAllToClipboard" xml:space="preserve">
-    <value>Copy All to Clipboard</value>
-  </data>
-  <data name="CopySelectedToClipboard" xml:space="preserve">
-    <value>Copy Selected to Clipboard</value>
-  </data>
-  <data name="CopyToClipboard" xml:space="preserve">
-    <value>Copy to Clipboard</value>
-  </data>
-  <data name="RightClickToCopyToClipboard" xml:space="preserve">
-    <value>Right-click to copy to clipboard</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
-  </data>
-  <data name="Errors" xml:space="preserve">
-    <value>Errors</value>
-  </data>
-  <data name="ExpandAll" xml:space="preserve">
-    <value>Expand All</value>
-  </data>
-  <data name="FieldIsRequired" xml:space="preserve">
-    <value>Field is required</value>
-  </data>
-  <data name="Font" xml:space="preserve">
-    <value>Font</value>
-  </data>
-  <data name="Foreground" xml:space="preserve">
-    <value>Foreground</value>
-  </data>
-  <data name="FontFamily" xml:space="preserve">
-    <value>Font Family</value>
-  </data>
-  <data name="FontPicker" xml:space="preserve">
-    <value>Font Picker</value>
-  </data>
-  <data name="FontSize" xml:space="preserve">
-    <value>Font Size</value>
-  </data>
-  <data name="FontStretch" xml:space="preserve">
-    <value>Font Stretch</value>
-  </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>Font Style</value>
-  </data>
-  <data name="FontWeight" xml:space="preserve">
-    <value>Font Weight</value>
-  </data>
-  <data name="Hour" xml:space="preserve">
-    <value>Hour</value>
-  </data>
-  <data name="Italic" xml:space="preserve">
-    <value>Italic</value>
-  </data>
-  <data name="Locked" xml:space="preserve">
-    <value>Locked</value>
-  </data>
-  <data name="Information" xml:space="preserve">
-    <value>Information</value>
-  </data>
-  <data name="InitialState" xml:space="preserve">
-    <value>Initial state</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Message" xml:space="preserve">
-    <value>Message</value>
-  </data>
-  <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="OpenRecentFileOnStartup" xml:space="preserve">
-    <value>Open recent file on startup</value>
-  </data>
-  <data name="PleaseWait" xml:space="preserve">
-    <value>Please wait</value>
-  </data>
-  <data name="PleaseWait3Dots" xml:space="preserve">
-    <value>Please wait...</value>
-  </data>
-  <data name="Preview" xml:space="preserve">
-    <value>Preview</value>
-  </data>
-  <data name="Redo" xml:space="preserve">
-    <value>Redo</value>
-  </data>
-  <data name="RedoAll" xml:space="preserve">
-    <value>Redo All</value>
-  </data>
-  <data name="SelectDirectory" xml:space="preserve">
-    <value>Select a directory</value>
-  </data>
-  <data name="SelectFile" xml:space="preserve">
-    <value>Select a file</value>
-  </data>
-  <data name="SelectTimeZone" xml:space="preserve">
-    <value>Select time zone…</value>
-  </data>
   <data name="StandardColors" xml:space="preserve">
     <value>Standard Colors</value>
   </data>
-  <data name="Strikethrough" xml:space="preserve">
-    <value>Strikethrough</value>
+  <data name="PixelWidth" xml:space="preserve">
+    <value>W:</value>
   </data>
-  <data name="Timestamp" xml:space="preserve">
-    <value>Timestamp</value>
+  <data name="PixelHeight" xml:space="preserve">
+    <value>H:</value>
   </data>
-  <data name="TimeZone" xml:space="preserve">
-    <value>Time Zone</value>
+  <data name="ThicknessLeft" xml:space="preserve">
+    <value>L:</value>
   </data>
-  <data name="Underline" xml:space="preserve">
-    <value>Underline</value>
+  <data name="ThicknessTop" xml:space="preserve">
+    <value>T:</value>
   </data>
-  <data name="Undo" xml:space="preserve">
-    <value>Undo</value>
+  <data name="ThicknessRight" xml:space="preserve">
+    <value>R:</value>
   </data>
-  <data name="UndoAll" xml:space="preserve">
-    <value>Undo All</value>
-  </data>
-  <data name="Warnings" xml:space="preserve">
-    <value>Warnings</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="MoveToSelected" xml:space="preserve">
-    <value>Move to selected</value>
-  </data>
-  <data name="MoveAllToSelected" xml:space="preserve">
-    <value>Move all to selected</value>
-  </data>
-  <data name="MoveToAvailable" xml:space="preserve">
-    <value>Move to available</value>
-  </data>
-  <data name="MoveAllToAvailable" xml:space="preserve">
-    <value>Move all to available</value>
-  </data>
-  <data name="MoveToTop" xml:space="preserve">
-    <value>Move to top</value>
-  </data>
-  <data name="MoveUp" xml:space="preserve">
-    <value>Move up</value>
-  </data>
-  <data name="MoveDown" xml:space="preserve">
-    <value>Move down</value>
-  </data>
-  <data name="MoveToBottom" xml:space="preserve">
-    <value>Move to bottom</value>
-  </data>
-  <data name="FilterPlaceholder" xml:space="preserve">
-    <value>Search...</value>
-  </data>
-  <data name="ItemCountFormat1" xml:space="preserve">
-    <value>{0} items</value>
-  </data>
-  <data name="ItemCountFilteredFormat2" xml:space="preserve">
-    <value>{0} of {1}</value>
-  </data>
-  <data name="NoItemsFound" xml:space="preserve">
-    <value>No items found</value>
-  </data>
-  <data name="MarkSaved" xml:space="preserve">
-    <value>Mark Saved</value>
-  </data>
-  <data name="Zoom100Percent" xml:space="preserve">
-    <value>Zoom 100%</value>
-  </data>
-  <data name="ZoomIn" xml:space="preserve">
-    <value>Zoom In</value>
-  </data>
-  <data name="ZoomOut" xml:space="preserve">
-    <value>Zoom Out</value>
-  </data>
-  <data name="ZoomToFit" xml:space="preserve">
-    <value>Zoom to Fit</value>
-  </data>
-  <data name="ZoomToFill" xml:space="preserve">
-    <value>Zoom to Fill</value>
-  </data>
-  <data name="ZoomPercentFormat1" xml:space="preserve">
-    <value>Zoom {0}%</value>
-  </data>
-  <data name="ExportLog" xml:space="preserve">
-    <value>Export log</value>
-  </data>
-  <data name="ExportFailed" xml:space="preserve">
-    <value>Export failed</value>
-  </data>
-  <data name="CouldNotExportLogFormat1" xml:space="preserve">
-    <value>Could not export log:
-{0}</value>
-  </data>
-  <data name="ExportVisibleEntriesTooltip" xml:space="preserve">
-    <value>Export visible entries to CSV / JSON / TXT (Ctrl+S)</value>
-  </data>
-  <data name="PauseResumeIncomingEntriesTooltip" xml:space="preserve">
-    <value>Pause / resume incoming entries</value>
-  </data>
-  <data name="JumpToLive" xml:space="preserve">
-    <value>↓ Jump to live</value>
-  </data>
-  <data name="ResumeTailModeTooltip" xml:space="preserve">
-    <value>Resume tail mode (Ctrl+G)</value>
-  </data>
-  <data name="ExportTerminalOutput" xml:space="preserve">
-    <value>Export terminal output</value>
-  </data>
-  <data name="CouldNotExportTerminalOutputFormat1" xml:space="preserve">
-    <value>Could not export terminal output:
-{0}</value>
+  <data name="ThicknessBottom" xml:space="preserve">
+    <value>B:</value>
   </data>
 </root>

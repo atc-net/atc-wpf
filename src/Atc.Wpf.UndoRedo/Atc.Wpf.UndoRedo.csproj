@@ -29,4 +29,27 @@
     <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\Miscellaneous.Designer.cs">
+      <DependentUpon>Miscellaneous.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Miscellaneous.da-DK.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Miscellaneous.de-DE.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Miscellaneous.resx">
+      <LastGenOutput>Miscellaneous.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

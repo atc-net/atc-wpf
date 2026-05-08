@@ -26,7 +26,7 @@
         <forms:LabelCheckBox
             HideAreas="InformationAndValidation"
             IsChecked="{Binding Path=OpenRecentFileOnStartup}"
-            LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+            LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous,
                                             Key=OpenRecentFileOnStartup}"
             LabelWidthNumber="210"
             Visibility="{Binding Path=ShowOpenRecentFileOnStartup, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />

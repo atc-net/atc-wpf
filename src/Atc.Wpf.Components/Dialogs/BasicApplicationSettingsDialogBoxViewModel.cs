@@ -1,3 +1,5 @@
+using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Components.Dialogs;
 
 public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
@@ -19,7 +21,7 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
         ApplicationSettings = basicApplicationSettingsViewModel.Clone();
         applicationSettingsBackup = basicApplicationSettingsViewModel.Clone();
 
-        TitleBarText = Miscellaneous.ApplicationSettings;
+        TitleBarText = SharedMisc.ApplicationSettings;
 
         ThemeManager.Current.ThemeChanged += OnThemeChanged;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
@@ -49,7 +51,7 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
             VerticalAlignment = VerticalAlignment.Center,
             Content = new TextBlock
             {
-                Text = Miscellaneous.ApplicationSettings,
+                Text = SharedMisc.ApplicationSettings,
                 FontSize = 24,
             },
         };

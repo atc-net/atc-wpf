@@ -1,3 +1,6 @@
+using ComponentsMisc = Atc.Wpf.Components.Resources.Miscellaneous;
+using TerminalViewerStrings = Atc.Wpf.Components.Resources.TerminalViewer;
+
 namespace Atc.Wpf.Components.Viewers;
 
 public sealed partial class TerminalViewer : IDisposable
@@ -469,7 +472,7 @@ public sealed partial class TerminalViewer : IDisposable
             FilterIndex = 1,
             FileName = "terminal-" + DateTime.Now.ToString("yyyyMMdd-HHmmss", GlobalizationConstants.EnglishCultureInfo) + ".txt",
             AddExtension = true,
-            Title = Miscellaneous.ExportTerminalOutput,
+            Title = TerminalViewerStrings.ExportTerminalOutput,
         };
 
         if (dialog.ShowDialog() != true)
@@ -512,12 +515,12 @@ public sealed partial class TerminalViewer : IDisposable
 
         var settings = new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
         {
-            TitleBarText = Miscellaneous.ExportFailed,
+            TitleBarText = ComponentsMisc.ExportFailed,
         };
 
         var message = string.Format(
             CultureInfo.CurrentCulture,
-            Miscellaneous.CouldNotExportTerminalOutputFormat1,
+            TerminalViewerStrings.CouldNotExportTerminalOutputFormat1,
             ex.Message);
 
         var dialog = new InfoDialogBox(owner, settings, message);

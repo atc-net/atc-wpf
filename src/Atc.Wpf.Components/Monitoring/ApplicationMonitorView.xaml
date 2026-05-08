@@ -24,7 +24,7 @@
                             Height="16"
                             Margin="1,1,0,0"
                             Source="pack://application:,,,/Atc.Wpf.Components;component/Resources/Images/eraser.png"
-                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous,
                                                           Key=ClearAll}" />
                     </Button>
 
@@ -34,13 +34,13 @@
                             Height="16"
                             Margin="1,1,0,0"
                             Source="pack://application:,,,/Atc.Wpf.Components;component/Resources/Images/scrollrefresh.png"
-                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                           Key=Auto}" />
                     </ToggleButton>
 
                     <ToggleButton
                         IsChecked="{Binding Path=IsPaused, Mode=TwoWay}"
-                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.Miscellaneous,
                                                       Key=PauseResumeIncomingEntriesTooltip}"
                         Visibility="{Binding Path=ShowPauseInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                         <StackPanel Orientation="Horizontal">
@@ -78,7 +78,7 @@
                             Height="16"
                             Margin="1,1,0,0"
                             Source="pack://application:,,,/Atc.Wpf.Components;component/Resources/Images/error.png"
-                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                           Key=Errors}" />
                     </ToggleButton>
 
@@ -88,7 +88,7 @@
                             Height="16"
                             Margin="1,1,0,0"
                             Source="pack://application:,,,/Atc.Wpf.Components;component/Resources/Images/warning.png"
-                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                           Key=Warnings}" />
                     </ToggleButton>
 
@@ -98,7 +98,7 @@
                             Height="16"
                             Margin="1,1,0,0"
                             Source="pack://application:,,,/Atc.Wpf.Components;component/Resources/Images/information.png"
-                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                            ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                           Key=Information}" />
                     </ToggleButton>
 
@@ -115,7 +115,7 @@
 
                     <Button
                         Command="{Binding Path=ExportCommand}"
-                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.Miscellaneous,
                                                       Key=ExportVisibleEntriesTooltip}"
                         Visibility="{Binding Path=ShowExportInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                         <Grid
@@ -148,15 +148,15 @@
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
-                        <MenuItem Command="{Binding Path=PlacementTarget.DataContext.CopySelectedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CopySelectedToClipboard}" />
-                        <MenuItem Command="{Binding Path=PlacementTarget.DataContext.CopyAllCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CopyAllToClipboard}" />
+                        <MenuItem Command="{Binding Path=PlacementTarget.DataContext.CopySelectedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CopySelectedToClipboard}" />
+                        <MenuItem Command="{Binding Path=PlacementTarget.DataContext.CopyAllCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CopyAllToClipboard}" />
                         <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.View>
                     <GridView>
 
-                        <GridViewColumn Width="120" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Timestamp}">
+                        <GridViewColumn Width="120" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Timestamp}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Timestamp, StringFormat=yyyy-MM-dd HH:mm:ss}" />
@@ -179,7 +179,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Area}">
+                        <GridViewColumn Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Area}">
                             <GridViewColumn.Width>
                                 <MultiBinding Converter="{x:Static atcValueConverters:BoolAndDoubleToDoubleMultiValueConverter.Instance}">
                                     <Binding Path="ShowColumnArea" />
@@ -193,7 +193,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Width="{Binding Path=MessageColumnWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Message}">
+                        <GridViewColumn Width="{Binding Path=MessageColumnWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Message}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="local:ApplicationEventEntry">
                                     <TextBlock Text="{Binding Path=Message}" />
@@ -213,14 +213,14 @@
                 Background="{DynamicResource AtcApps.Brushes.Accent}"
                 Click="OnJumpToLiveClick"
                 Foreground="White"
-                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.Miscellaneous,
                                               Key=ResumeTailModeTooltip}"
                 Visibility="{Binding Path=IsDetachedFromTail, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ApplicationMonitorView}}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
                         VerticalAlignment="Center"
                         FontWeight="SemiBold"
-                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        Text="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.Miscellaneous,
                                                    Key=JumpToLive}" />
                     <Border
                         Margin="6,0,0,0"

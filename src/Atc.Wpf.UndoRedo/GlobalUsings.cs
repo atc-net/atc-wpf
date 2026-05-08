@@ -10,7 +10,6 @@ global using System.Windows.Media;
 global using Atc.UndoRedo.Commands;
 global using Atc.UndoRedo.Interfaces;
 global using Atc.Wpf.Collections;
-global using Atc.Wpf.Controls.Resources;
 global using Atc.XamlToolkit.Command;
 global using Atc.XamlToolkit.Controls.Attributes;
 global using Atc.XamlToolkit.Mvvm;

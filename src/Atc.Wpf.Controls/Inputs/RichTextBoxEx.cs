@@ -1,3 +1,5 @@
+using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Controls.Inputs;
 
 /// <summary>
@@ -47,7 +49,7 @@ public partial class RichTextBoxEx : RichTextBox
         var contextMenu = new ContextMenu();
         var copyMenuItem = new MenuItem
         {
-            Header = Miscellaneous.CopyToClipboard,
+            Header = SharedMisc.CopyToClipboard,
             Icon = new SvgImage
             {
                 Width = 16,

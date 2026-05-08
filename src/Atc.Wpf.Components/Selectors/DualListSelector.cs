@@ -2,6 +2,8 @@
 // ReSharper disable InvertIf
 // ReSharper disable UnusedMember.Local
 #pragma warning disable IDE0051
+using DualListSelectorStrings = Atc.Wpf.Components.Resources.DualListSelector;
+
 namespace Atc.Wpf.Components.Selectors;
 
 /// <summary>
@@ -1104,7 +1106,7 @@ public sealed partial class DualListSelector : Control
                 var filteredCount = view.Cast<object>().Count();
                 availableItemCount.Text = string.Format(
                     CultureInfo.CurrentCulture,
-                    Miscellaneous.ItemCountFilteredFormat2,
+                    DualListSelectorStrings.ItemCountFilteredFormat2,
                     filteredCount,
                     AvailableItems.Count);
             }
@@ -1112,7 +1114,7 @@ public sealed partial class DualListSelector : Control
             {
                 availableItemCount.Text = string.Format(
                     CultureInfo.CurrentCulture,
-                    Miscellaneous.ItemCountFormat1,
+                    DualListSelectorStrings.ItemCountFormat1,
                     AvailableItems.Count);
             }
         }
@@ -1125,7 +1127,7 @@ public sealed partial class DualListSelector : Control
                 var filteredCount = view.Cast<object>().Count();
                 selectedItemCount.Text = string.Format(
                     CultureInfo.CurrentCulture,
-                    Miscellaneous.ItemCountFilteredFormat2,
+                    DualListSelectorStrings.ItemCountFilteredFormat2,
                     filteredCount,
                     SelectedItems.Count);
             }
@@ -1133,7 +1135,7 @@ public sealed partial class DualListSelector : Control
             {
                 selectedItemCount.Text = string.Format(
                     CultureInfo.CurrentCulture,
-                    Miscellaneous.ItemCountFormat1,
+                    DualListSelectorStrings.ItemCountFormat1,
                     SelectedItems.Count);
             }
         }

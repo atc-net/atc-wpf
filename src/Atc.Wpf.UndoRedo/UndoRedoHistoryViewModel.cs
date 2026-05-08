@@ -1,3 +1,5 @@
+using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
+
 namespace Atc.Wpf.UndoRedo;
 
 /// <summary>
@@ -174,7 +176,7 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
             // Root row: "Initial state"
             new()
             {
-                Description = Miscellaneous.InitialState,
+                Description = SharedMisc.InitialState,
                 IsHighlighted = undoCount == 0,
                 Command = null,
             },

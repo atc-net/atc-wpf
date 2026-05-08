@@ -1,10 +1,10 @@
-﻿<ResourceDictionary
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:internal="clr-namespace:Atc.Wpf.Controls.Progressing.Internal"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing"
-    xmlns:resources="clr-namespace:Atc.Wpf.Controls.Resources"
+    xmlns:resources="clr-namespace:Atc.Wpf.Resources;assembly=Atc.Wpf"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <ResourceDictionary.MergedDictionaries>

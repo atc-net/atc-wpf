@@ -1,3 +1,5 @@
+using ComponentsMisc = Atc.Wpf.Components.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Components.Monitoring;
 
 public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDisposable
@@ -448,7 +450,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             FilterIndex = 1,
             FileName = "log-" + DateTime.Now.ToString("yyyyMMdd-HHmmss", GlobalizationConstants.EnglishCultureInfo) + ".csv",
             AddExtension = true,
-            Title = Miscellaneous.ExportLog,
+            Title = ComponentsMisc.ExportLog,
         };
 
         if (dialog.ShowDialog() != true)
@@ -480,12 +482,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
         var settings = new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
         {
-            TitleBarText = Miscellaneous.ExportFailed,
+            TitleBarText = ComponentsMisc.ExportFailed,
         };
 
         var message = string.Format(
             CultureInfo.CurrentCulture,
-            Miscellaneous.CouldNotExportLogFormat1,
+            ComponentsMisc.CouldNotExportLogFormat1,
             ex.Message);
 
         var dialog = new InfoDialogBox(owner, settings, message);

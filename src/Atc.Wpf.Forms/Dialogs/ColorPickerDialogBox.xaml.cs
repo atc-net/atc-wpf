@@ -1,3 +1,5 @@
+using ControlsMiscellaneous = Atc.Wpf.Controls.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Forms.Dialogs;
 
 public partial class ColorPickerDialogBox
@@ -70,7 +72,7 @@ public partial class ColorPickerDialogBox
         var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
         settings.Width = 770;
         settings.Height = 700;
-        settings.TitleBarText = Miscellaneous.ColorPicker;
+        settings.TitleBarText = ControlsMiscellaneous.ColorPicker;
         return settings;
     }
 }

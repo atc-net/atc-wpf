@@ -52,7 +52,7 @@
 
                 <Button Margin="3,0" Command="{Binding Path=UndoAllCommand}">
                     <Button.ToolTip>
-                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=UndoAll}" ContentStringFormat="{}{0} (Ctrl+Shift+Z)" />
+                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.UndoRedo.Resources.Miscellaneous, Key=UndoAll}" ContentStringFormat="{}{0} (Ctrl+Shift+Z)" />
                     </Button.ToolTip>
                     <Image
                         Width="16"
@@ -64,7 +64,7 @@
 
                 <Button Margin="3,0" Command="{Binding Path=UndoCommand}">
                     <Button.ToolTip>
-                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Undo}" ContentStringFormat="{}{0} (Ctrl+Z)" />
+                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Undo}" ContentStringFormat="{}{0} (Ctrl+Z)" />
                     </Button.ToolTip>
                     <Image
                         Width="16"
@@ -76,7 +76,7 @@
 
                 <Button Margin="3,0" Command="{Binding Path=RedoCommand}">
                     <Button.ToolTip>
-                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=Redo}" ContentStringFormat="{}{0} (Ctrl+Y)" />
+                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word, Key=Redo}" ContentStringFormat="{}{0} (Ctrl+Y)" />
                     </Button.ToolTip>
                     <Image
                         Width="16"
@@ -88,7 +88,7 @@
 
                 <Button Margin="3,0" Command="{Binding Path=RedoAllCommand}">
                     <Button.ToolTip>
-                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=RedoAll}" ContentStringFormat="{}{0} (Ctrl+Shift+Y)" />
+                        <ToolTip Content="{atcTranslation:Resx ResxName=Atc.Wpf.UndoRedo.Resources.Miscellaneous, Key=RedoAll}" ContentStringFormat="{}{0} (Ctrl+Shift+Y)" />
                     </Button.ToolTip>
                     <Image
                         Width="16"
@@ -103,7 +103,7 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=MarkSavedCommand}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.UndoRedo.Resources.Miscellaneous,
                                                   Key=MarkSaved}"
                     Visibility="{Binding Path=ShowMarkSaved, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UndoRedoHistoryView}}}">
                     <Image
@@ -119,7 +119,7 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=ClearCommand}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.UndoRedo.Resources.Miscellaneous,
                                                   Key=ClearHistory}"
                     Visibility="{Binding Path=ShowClear, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UndoRedoHistoryView}}}">
                     <Image

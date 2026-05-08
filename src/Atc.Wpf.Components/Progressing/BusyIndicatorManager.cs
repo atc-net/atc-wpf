@@ -251,7 +251,7 @@ public static class BusyIndicatorManager
             {
                 var cancelButton = new Button
                 {
-                    Content = Miscellaneous.Cancel,
+                    Content = Word.Cancel,
                     MinWidth = 80,
                     Margin = new Thickness(0, 8, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Center,

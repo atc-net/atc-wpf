@@ -55,12 +55,12 @@
 
             <ToggleButton
                 x:Name="BoldToggle"
-                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Bold}"
                 Click="OnBoldToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontWeightEnabled}"
                 Style="{StaticResource QuickToggleStyle}"
-                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Bold}">
                 <TextBlock
                     FontSize="14"
@@ -70,12 +70,12 @@
 
             <ToggleButton
                 x:Name="ItalicToggle"
-                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Italic}"
                 Click="OnItalicToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontStyleEnabled}"
                 Style="{StaticResource QuickToggleStyle}"
-                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Italic}">
                 <TextBlock
                     FontSize="14"
@@ -85,12 +85,12 @@
 
             <ToggleButton
                 x:Name="UnderlineToggle"
-                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Underline}"
                 Click="OnUnderlineToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsTextDecorationsEnabled}"
                 Style="{StaticResource QuickToggleStyle}"
-                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Underline}">
                 <TextBlock
                     FontSize="14"
@@ -100,12 +100,12 @@
 
             <ToggleButton
                 x:Name="StrikethroughToggle"
-                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Strikethrough}"
                 Click="OnStrikethroughToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsTextDecorationsEnabled}"
                 Style="{StaticResource QuickToggleStyle}"
-                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Strikethrough}">
                 <TextBlock
                     FontSize="14"
@@ -121,17 +121,17 @@
             <!--  Family with search and recents  -->
             <GroupBox
                 Grid.Column="0"
-                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                              Key=FontFamily}"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontFamilyEnabled}"
                 Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ShowFontFamily, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
                 <atc:GridEx Columns="*" Rows="Auto,4,Auto,4,*">
                     <TextBox
                         Grid.Row="0"
-                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.DualListSelector,
                                                                         Key=FilterPlaceholder}"
                         Text="{Binding ElementName=UcAdvancedFontPicker, Path=FamilyFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.DualListSelector,
                                                       Key=FilterPlaceholder}" />
 
                     <!--  Recents (collapsed when empty). OneWay binding + SelectionChanged so the filter-clearing the visible item does NOT push null back to SelectedFontFamily.  -->
@@ -162,7 +162,7 @@
 
                     <ListBox
                         Grid.Row="4"
-                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                                         Key=FontFamily}"
                         ItemsSource="{Binding ElementName=UcAdvancedFontPicker, Path=AvailableFontFamilies}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -184,12 +184,12 @@
             <!--  Weight  -->
             <GroupBox
                 Grid.Column="2"
-                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                              Key=FontWeight}"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontWeightEnabled}"
                 Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ShowFontWeight, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
                 <ListBox
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                                     Key=FontWeight}"
                     ItemsSource="{Binding ElementName=UcAdvancedFontPicker, Path=AvailableFontWeights}"
                     SelectedItem="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedFontWeight, Mode=OneWay}"
@@ -199,12 +199,12 @@
             <!--  Style  -->
             <GroupBox
                 Grid.Column="4"
-                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                              Key=FontStyle}"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontStyleEnabled}"
                 Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ShowFontStyle, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
                 <ListBox
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                                     Key=FontStyle}"
                     ItemsSource="{Binding ElementName=UcAdvancedFontPicker, Path=AvailableFontStyles}"
                     SelectedItem="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedFontStyle, Mode=OneWay}"
@@ -214,12 +214,12 @@
             <!--  Stretch  -->
             <GroupBox
                 Grid.Column="6"
-                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                              Key=FontStretch}"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontStretchEnabled}"
                 Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ShowFontStretch, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
                 <ListBox
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                                     Key=FontStretch}"
                     ItemsSource="{Binding ElementName=UcAdvancedFontPicker, Path=AvailableFontStretches}"
                     SelectedItem="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedFontStretch, Mode=OneWay}"
@@ -229,7 +229,7 @@
             <!--  Size  -->
             <GroupBox
                 Grid.Column="8"
-                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                              Key=FontSize}"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontSizeEnabled}"
                 KeyboardNavigation.TabNavigation="Once"
@@ -238,14 +238,14 @@
                     <atc:IntegerBox
                         Grid.Row="0"
                         HorizontalAlignment="Stretch"
-                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                                         Key=FontSize}"
                         Maximum="200"
                         Minimum="1"
                         Value="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedFontSize, Mode=TwoWay}" />
                     <ListBox
                         Grid.Row="2"
-                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                        AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Forms.Resources.Miscellaneous,
                                                                         Key=FontSize}"
                         ItemsSource="{Binding ElementName=UcAdvancedFontPicker, Path=AvailableFontSizes}"
                         SelectedItem="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedFontSize, Mode=TwoWay}" />
@@ -263,12 +263,12 @@
                 Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ShowForegroundColor, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
 
                 <forms:LabelColorPicker
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                     Key=Foreground}"
                     BrushValue="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedForegroundBrush, Mode=TwoWay}"
                     HideAreas="All"
                     IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsForegroundColorEnabled}"
-                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                     Key=Foreground}"
                     Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.ColorPicker}}" />
 
@@ -278,12 +278,12 @@
                     of force-selecting the first real color and silently overwriting the brush.
                 -->
                 <forms:LabelWellKnownColorSelector
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                     Key=Foreground}"
                     DropDownFirstItemType="Blank"
                     HideAreas="All"
                     IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsForegroundColorEnabled}"
-                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                     Key=Foreground}"
                     SelectedKey="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedForegroundBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={x:Static atcValueConverters:BrushToColorNameValueConverter.Instance}}"
                     Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.WellKnownColorSelector}}" />
@@ -295,22 +295,22 @@
                 Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ShowBackgroundColor, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
 
                 <forms:LabelColorPicker
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                     Key=Background}"
                     BrushValue="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedBackgroundBrush, Mode=TwoWay}"
                     HideAreas="All"
                     IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsBackgroundColorEnabled}"
-                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                     Key=Background}"
                     Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.ColorPicker}}" />
 
                 <forms:LabelWellKnownColorSelector
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                     Key=Background}"
                     DropDownFirstItemType="Blank"
                     HideAreas="All"
                     IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsBackgroundColorEnabled}"
-                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                     Key=Background}"
                     SelectedKey="{Binding ElementName=UcAdvancedFontPicker, Path=SelectedBackgroundBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={x:Static atcValueConverters:BrushToColorNameValueConverter.Instance}}"
                     Visibility="{Binding ElementName=UcAdvancedFontPicker, Path=ColorEditorMode, Converter={x:Static atcValueConverters:EnumToVisibilityVisibleValueConverter.Instance}, ConverterParameter={x:Static local:FontColorEditorMode.WellKnownColorSelector}}" />
@@ -328,10 +328,10 @@
             <atc:GridEx Grid.Row="0" Columns="*,Auto">
                 <TextBox
                     Grid.Column="0"
-                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                     Key=Preview}"
                     Text="{Binding ElementName=UcAdvancedFontPicker, Path=PreviewText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                   Key=Preview}" />
                 <TextBlock
                     Grid.Column="1"

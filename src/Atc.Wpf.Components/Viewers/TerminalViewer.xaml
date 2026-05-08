@@ -9,6 +9,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Atc.Wpf.Components.Viewers"
     xmlns:monitoring="clr-namespace:Atc.Wpf.Components.Monitoring"
+    xmlns:controlsRes="clr-namespace:Atc.Wpf.Controls.Resources;assembly=Atc.Wpf.Controls"
+    xmlns:wpfRes="clr-namespace:Atc.Wpf.Resources;assembly=Atc.Wpf"
+    xmlns:resources="clr-namespace:Atc.Wpf.Components.Resources"
     xmlns:viewers="clr-namespace:Atc.Wpf.Components.Viewers"
     x:Name="UcTerminalViewer"
     d:DesignHeight="450"
@@ -40,7 +43,7 @@
 
                     <Button
                         Command="{Binding ClearScreenCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Clear (Ctrl+L)"
+                        ToolTip="{x:Static resources:TerminalViewer.ClearTooltip}"
                         Visibility="{Binding ShowClearInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Image
                             Width="16"
@@ -51,7 +54,7 @@
 
                     <Button
                         Command="{Binding CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Copy all to clipboard"
+                        ToolTip="{x:Static wpfRes:Miscellaneous.CopyAllToClipboard}"
                         Visibility="{Binding ShowCopyInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Image
                             Width="16"
@@ -64,7 +67,7 @@
 
                     <ToggleButton
                         IsChecked="{Binding AutoScroll, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Auto-scroll to tail"
+                        ToolTip="{x:Static resources:TerminalViewer.AutoScrollToTail}"
                         Visibility="{Binding ShowAutoScrollInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Image
                             Width="16"
@@ -75,7 +78,7 @@
 
                     <ToggleButton
                         IsChecked="{Binding IsPaused, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Pause / resume incoming lines (Ctrl+P)"
+                        ToolTip="{x:Static resources:TerminalViewer.PauseResumeIncomingLinesTooltip}"
                         Visibility="{Binding ShowPauseInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <StackPanel Orientation="Horizontal">
                             <Grid
@@ -112,13 +115,13 @@
                         x:Name="PartSearchTextBox"
                         Width="160"
                         VerticalContentAlignment="Center"
-                        atc:TextBoxHelper.Watermark="Search… (Ctrl+F)"
+                        atc:TextBoxHelper.Watermark="{x:Static resources:TerminalViewer.SearchWatermark}"
                         Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         Visibility="{Binding ShowSearchInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
                     <ToggleButton
                         IsChecked="{Binding UseRegex, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Treat search as regular expression"
+                        ToolTip="{x:Static resources:TerminalViewer.UseRegexTooltip}"
                         Visibility="{Binding ShowSearchInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Grid
                             Width="16"
@@ -136,7 +139,7 @@
 
                     <ToggleButton
                         IsChecked="{Binding HideNonMatching, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Hide non-matching lines"
+                        ToolTip="{x:Static resources:TerminalViewer.HideNonMatchingLines}"
                         Visibility="{Binding ShowSearchInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Image
                             Width="16"
@@ -151,12 +154,12 @@
                         VerticalAlignment="Center"
                         Background="{DynamicResource AtcApps.Brushes.Gray10}"
                         CornerRadius="6"
-                        ToolTip="Match count"
+                        ToolTip="{x:Static resources:TerminalViewer.MatchCount}"
                         Visibility="{Binding SearchText, Converter={x:Static atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <TextBlock
                             FontSize="11"
                             FontWeight="SemiBold"
-                            Text="{Binding MatchCount, StringFormat='{}{0} matches', RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            Text="{Binding MatchCount, StringFormat={x:Static resources:TerminalViewer.MatchesFormat1}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                     </Border>
 
                     <Separator
@@ -165,7 +168,7 @@
 
                     <Button
                         Command="{Binding ExportCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Export to .txt / .log (Ctrl+S)"
+                        ToolTip="{x:Static resources:TerminalViewer.ExportToTxtOrLogTooltip}"
                         Visibility="{Binding ShowExportInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Image
                             Width="16"
@@ -180,7 +183,7 @@
 
                     <ToggleButton
                         IsChecked="{Binding WordWrap, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        ToolTip="Wrap long lines"
+                        ToolTip="{x:Static resources:TerminalViewer.WrapLongLines}"
                         Visibility="{Binding ShowWrapInToolbar, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                         <Grid
                             Width="16"
@@ -218,14 +221,14 @@
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
-                        <MenuItem Command="{Binding PlacementTarget.Tag.CopySelectedToClipboardCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Copy selected">
+                        <MenuItem Command="{Binding PlacementTarget.Tag.CopySelectedToClipboardCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static resources:TerminalViewer.CopySelected}">
                             <MenuItem.Icon>
                                 <Image Source="{Binding Source={x:Static fontIcons:FontAwesomeRegularType.Clipboard}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.ThemeForeground}}" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Command="{Binding PlacementTarget.Tag.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Copy all to clipboard" />
+                        <MenuItem Command="{Binding PlacementTarget.Tag.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static wpfRes:Miscellaneous.CopyAllToClipboard}" />
                         <Separator />
-                        <MenuItem Command="{Binding PlacementTarget.Tag.TogglePinSelectedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Pin / unpin selected">
+                        <MenuItem Command="{Binding PlacementTarget.Tag.TogglePinSelectedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static resources:TerminalViewer.PinUnpinSelected}">
                             <MenuItem.Icon>
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -236,11 +239,11 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Command="{Binding PlacementTarget.Tag.ZoomInCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Zoom in" />
-                        <MenuItem Command="{Binding PlacementTarget.Tag.ZoomOutCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Zoom out" />
-                        <MenuItem Command="{Binding PlacementTarget.Tag.ZoomResetCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Reset zoom" />
+                        <MenuItem Command="{Binding PlacementTarget.Tag.ZoomInCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static resources:TerminalViewer.ZoomIn}" />
+                        <MenuItem Command="{Binding PlacementTarget.Tag.ZoomOutCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static resources:TerminalViewer.ZoomOut}" />
+                        <MenuItem Command="{Binding PlacementTarget.Tag.ZoomResetCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static resources:TerminalViewer.ResetZoom}" />
                         <Separator />
-                        <MenuItem Command="{Binding PlacementTarget.Tag.ClearScreenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="Clear">
+                        <MenuItem Command="{Binding PlacementTarget.Tag.ClearScreenCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{x:Static wpfRes:Miscellaneous.Clear}">
                             <MenuItem.Icon>
                                 <Image Source="{Binding Source={x:Static fontIcons:FontBootstrapType.Remove}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.ThemeForeground}}" />
                             </MenuItem.Icon>
@@ -292,13 +295,13 @@
                 Background="{DynamicResource AtcApps.Brushes.Accent}"
                 Click="OnJumpToLiveClick"
                 Foreground="White"
-                ToolTip="Jump to live (Ctrl+G)"
+                ToolTip="{x:Static resources:TerminalViewer.JumpToLiveTooltip}"
                 Visibility="{Binding IsDetachedFromTail, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}, RelativeSource={RelativeSource AncestorType=UserControl}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
                         VerticalAlignment="Center"
                         FontWeight="SemiBold"
-                        Text="↓ Jump to live" />
+                        Text="{x:Static resources:Miscellaneous.JumpToLive}" />
                     <Border
                         Margin="6,0,0,0"
                         Padding="4,0"

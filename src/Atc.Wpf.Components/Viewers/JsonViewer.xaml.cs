@@ -1,3 +1,5 @@
+using JsonViewerStrings = Atc.Wpf.Components.Resources.JsonViewer;
+
 namespace Atc.Wpf.Components.Viewers;
 
 public partial class JsonViewer
@@ -49,7 +51,7 @@ public partial class JsonViewer
         {
             if (!SuppressErrorMessages)
             {
-                MessageBox.Show("Invalid JSON format.");
+                MessageBox.Show(JsonViewerStrings.InvalidJsonFormat);
             }
 
             return;
@@ -66,7 +68,10 @@ public partial class JsonViewer
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Could not open the JSON string:\r\n" + ex.Message);
+            MessageBox.Show(string.Format(
+                CultureInfo.CurrentCulture,
+                JsonViewerStrings.CouldNotOpenJsonStringFormat1,
+                ex.Message));
         }
     }
 

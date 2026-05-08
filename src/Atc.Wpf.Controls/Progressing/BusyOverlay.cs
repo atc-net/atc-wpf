@@ -1,4 +1,6 @@
 // ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
+using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
+
 namespace Atc.Wpf.Controls.Progressing;
 
 [TemplateVisualState(Name = Internal.VisualStates.StateIdle, GroupName = Internal.VisualStates.GroupBusyStatus)]
@@ -66,7 +68,7 @@ public partial class BusyOverlay : ContentControl
     {
         if (BusyContent is string)
         {
-            BusyContent = $"{Miscellaneous.PleaseWait}...";
+            BusyContent = $"{SharedMisc.PleaseWait}...";
         }
     }
 

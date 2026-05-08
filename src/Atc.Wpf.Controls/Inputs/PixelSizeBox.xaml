@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Atc.Wpf.Controls.Inputs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,7 +17,7 @@
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             Minimum="0"
-            PrefixText="W:"
+            PrefixText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=PixelWidth}"
             SuffixText="px"
             ValueChanged="OnValueWidthChanged"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueWidth, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />
@@ -26,7 +27,7 @@
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=HideUpDownButtons}"
             Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=Maximum, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}}"
             Minimum="0"
-            PrefixText="H:"
+            PrefixText="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=PixelHeight}"
             SuffixText="px"
             ValueChanged="OnValueHeightChanged"
             Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PixelSizeBox}}, Path=ValueHeight, Converter={x:Static valueConverters:IntegerToDoubleValueConverter.Instance}, FallbackValue=42}" />

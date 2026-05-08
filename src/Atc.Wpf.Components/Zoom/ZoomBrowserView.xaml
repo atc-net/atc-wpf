@@ -35,7 +35,7 @@
                     Margin="3,0"
                     Command="{Binding Path=ZoomContent.ZoomPercentCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
                     CommandParameter="{StaticResource Zoom100Value}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.TerminalViewer,
                                                   Key=Zoom100Percent}">
                     <Image
                         Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.Percentage}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
@@ -45,7 +45,7 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=ZoomContent.FillCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.TerminalViewer,
                                                   Key=ZoomToFill}">
                     <Image
                         Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.ExpandArrowsAlt}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
@@ -55,7 +55,7 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=ZoomContent.FitCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.TerminalViewer,
                                                   Key=ZoomToFit}">
                     <Image
                         Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.Compress}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
@@ -67,7 +67,7 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=ZoomContent.ZoomInCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.TerminalViewer,
                                                   Key=ZoomIn}">
                     <Image
                         Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.SearchPlus}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
@@ -77,7 +77,7 @@
                 <Button
                     Margin="3,0"
                     Command="{Binding Path=ZoomContent.ZoomOutCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ZoomBrowserView}}}"
-                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous,
+                    ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Components.Resources.TerminalViewer,
                                                   Key=ZoomOut}">
                     <Image
                         Source="{Binding Source={x:Static fontIcons:FontAwesomeSolidType.SearchMinus}, Converter={x:Static atcValueConverters:FontIconImageSourceValueConverter.Instance}, ConverterParameter={StaticResource AtcApps.Brushes.Accent}}"
