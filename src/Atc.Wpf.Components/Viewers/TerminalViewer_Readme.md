@@ -73,6 +73,26 @@ terminalViewer.Terms3 = new List<string> { "TRACE", "VERBOSE" };
 | `CopyToClipboardCommand` | Copy all terminal content to clipboard |
 | `ClearScreenCommand` | Clear all terminal output |
 
+## ⌨️ Keyboard Shortcuts
+
+Shortcuts fire when the `TerminalViewer` (or any of its descendants) has keyboard focus. They are wired via `UserControl.InputBindings` in the control's XAML, so they require no setup by the host.
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+F` | Focus the search box |
+| `Ctrl+L` | Clear the screen |
+| `Ctrl+S` | Export visible content to `.txt` / `.log` |
+| `Ctrl+G` | Jump back to the live tail (when detached) |
+| `Ctrl+P` | Pause / resume incoming lines |
+| `F3` | Jump to next search match |
+| `Shift+F3` | Jump to previous search match |
+| `Esc` | Clear the current search |
+| `Ctrl++` / `Ctrl+=` | Zoom in (font size) |
+| `Ctrl+-` | Zoom out (font size) |
+| `Ctrl+0` | Reset zoom to default |
+
+The zoom shortcuts accept both the main keyboard row and the numeric keypad (`Ctrl+NumPad +`, `Ctrl+NumPad -`, `Ctrl+NumPad 0`).
+
 ## 📝 Notes
 
 - Data arrives via messenger events (`TerminalReceivedDataEventArgs`)
