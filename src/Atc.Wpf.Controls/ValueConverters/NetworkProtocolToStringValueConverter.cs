@@ -1,5 +1,10 @@
 namespace Atc.Wpf.Controls.ValueConverters;
 
+/// <summary>
+/// ValueConverter: <see cref="NetworkProtocolType"/> ↔ URL-scheme string
+/// (e.g. <see cref="NetworkProtocolType"/>.<c>Https</c> ↔ <c>"https"</c>).
+/// Supports two-way binding via <see cref="NetworkProtocolHelper"/>.
+/// </summary>
 [ValueConversion(typeof(NetworkProtocolType), typeof(string))]
 public sealed class NetworkProtocolToStringValueConverter : IValueConverter
 {

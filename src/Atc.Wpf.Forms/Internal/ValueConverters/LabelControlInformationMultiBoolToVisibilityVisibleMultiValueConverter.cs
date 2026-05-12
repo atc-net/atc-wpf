@@ -1,5 +1,10 @@
 namespace Atc.Wpf.Forms.Internal.ValueConverters;
 
+/// <summary>
+/// Internal multi-binding converter used by labelled form controls to drive the visibility of the
+/// information icon. Combines several bool flags (e.g. <c>HasInfoText</c>, <c>IsLabelHidden</c>)
+/// and returns <see cref="Visibility.Visible"/> only when the composite predicate is true.
+/// </summary>
 internal class LabelControlInformationMultiBoolToVisibilityVisibleMultiValueConverter : IMultiValueConverter
 {
     public static readonly LabelControlInformationMultiBoolToVisibilityVisibleMultiValueConverter Instance = new();

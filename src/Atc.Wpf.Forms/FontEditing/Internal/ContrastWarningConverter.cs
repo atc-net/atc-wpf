@@ -46,7 +46,7 @@ internal sealed class ContrastWarningConverter : IMultiValueConverter
         Type[] targetTypes,
         object parameter,
         CultureInfo culture)
-        => throw new NotSupportedException();
+        => throw new NotSupportedException("This is a OneWay converter.");
 
     private static double ComputeContrastRatio(
         Color a,

@@ -1,5 +1,11 @@
 namespace Atc.Wpf.Theming.ValueConverters;
 
+/// <summary>
+/// ValueConverter: <see cref="TreeViewItem"/> → left-indent <see cref="Thickness"/> proportional
+/// to the item's depth in the tree. Multiplies depth by <see cref="Length"/> to compute the left
+/// margin; top/right/bottom remain zero. Non-<see cref="TreeViewItem"/> values return
+/// <see cref="Thickness"/> zero.
+/// </summary>
 [ValueConversion(typeof(TreeViewItem), typeof(Thickness))]
 public sealed class TreeViewMarginValueConverter : IValueConverter
 {

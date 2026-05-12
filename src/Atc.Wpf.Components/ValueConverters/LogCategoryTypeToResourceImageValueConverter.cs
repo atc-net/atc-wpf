@@ -61,7 +61,7 @@ public class LogCategoryTypeToResourceImageValueConverter : IValueConverter
         Type targetType,
         object? parameter,
         CultureInfo culture)
-        => throw new NotSupportedException();
+        => throw new NotSupportedException("This is a OneWay converter.");
 
     private static BitmapImage CreateFrozenBitmapImage(string fileName)
     {

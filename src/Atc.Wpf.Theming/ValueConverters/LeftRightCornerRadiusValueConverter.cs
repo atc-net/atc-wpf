@@ -1,5 +1,10 @@
 namespace Atc.Wpf.Theming.ValueConverters;
 
+/// <summary>
+/// ValueConverter: converts a uniform <see cref="CornerRadius"/> to one with rounded right
+/// corners and square left corners (e.g. for the trailing half of a split button or pill).
+/// Reads only <see cref="CornerRadius.TopLeft"/> from the input as the radius source.
+/// </summary>
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
 public sealed class LeftRightCornerRadiusValueConverter : IValueConverter
 {

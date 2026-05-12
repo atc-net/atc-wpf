@@ -41,5 +41,5 @@ public sealed class DeviceStateToBrushConverter : IValueConverter
         Type targetType,
         object? parameter,
         CultureInfo culture)
-        => throw new NotSupportedException();
+        => throw new NotSupportedException("This is a OneWay converter.");
 }
