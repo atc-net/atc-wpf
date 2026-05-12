@@ -89,6 +89,17 @@
     </TreeViewItem>
 
     <TreeViewItem Header="ValueConverters">
-        <sample:SampleTreeViewItem Header="List value converters" SamplePath="ValueConverters.ValueConvertersView" />
+        <sample:SampleTreeViewItem
+            Header="LogLevelToColor"
+            SamplePath="ValueConverters.LogLevelToColorValueConverterSampleView" />
+        <sample:SampleTreeViewItem
+            Header="LogLevelToBrush"
+            SamplePath="ValueConverters.LogLevelToBrushValueConverterSampleView" />
+        <sample:SampleTreeViewItem
+            Header="LogCategoryTypeToColor"
+            SamplePath="ValueConverters.LogCategoryTypeToColorValueConverterSampleView" />
+        <sample:SampleTreeViewItem
+            Header="LogCategoryTypeToBrush"
+            SamplePath="ValueConverters.LogCategoryTypeToBrushValueConverterSampleView" />
     </TreeViewItem>
 </TreeView>
