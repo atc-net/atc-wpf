@@ -1,5 +1,10 @@
 namespace Atc.Wpf.Theming.ValueConverters;
 
+/// <summary>
+/// ValueConverter: zeroes the selected side(s) of a <see cref="CornerRadius"/> and passes the
+/// remaining corners through. The side is picked via <c>ConverterParameter</c>
+/// (a <see cref="RadiusType"/>) or the <see cref="IgnoreRadius"/> property.
+/// </summary>
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
 public sealed class CornerRadiusBindingValueConverter : IValueConverter
 {

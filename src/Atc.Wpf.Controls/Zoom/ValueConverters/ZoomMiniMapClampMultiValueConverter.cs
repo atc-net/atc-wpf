@@ -1,5 +1,14 @@
 namespace Atc.Wpf.Controls.Zoom.ValueConverters;
 
+/// <summary>
+/// MultiValueConverter used by the ZoomBox mini-map to clamp the visible viewport indicator's
+/// width or height so it never exceeds the actual mini-map extent.
+/// </summary>
+/// <remarks>
+/// Expects four binding values: <c>[0] size</c>, <c>[1] offset</c>, <c>[2] zoom</c>,
+/// <c>[3] ZoomBox</c>. <c>ConverterParameter</c> selects the dimension — <c>"width"</c>
+/// (case-insensitive) for width, anything else for height.
+/// </remarks>
 public class ZoomMiniMapClampMultiValueConverter : MarkupExtension, IMultiValueConverter
 {
     public override object ProvideValue(IServiceProvider serviceProvider)
