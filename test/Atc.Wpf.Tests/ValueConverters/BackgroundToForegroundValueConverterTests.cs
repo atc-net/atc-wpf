@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class BackgroundToForegroundValueConverterTests
 {
     [Fact]
@@ -124,5 +125,106 @@ public sealed class BackgroundToForegroundValueConverterTests
 
         Assert.NotNull(actual);
         Assert.Empty(actual);
+    }
+
+    [Fact]
+    public void Defaults_Match_BuiltInValues()
+    {
+        try
+        {
+            BackgroundToForegroundValueConverter.ResetToDefaults();
+
+            Assert.Equal(86, BackgroundToForegroundValueConverter.LuminanceThreshold);
+            Assert.Equal(Colors.Black, BackgroundToForegroundValueConverter.DarkForegroundColor);
+            Assert.Equal(Colors.White, BackgroundToForegroundValueConverter.LightForegroundColor);
+        }
+        finally
+        {
+            BackgroundToForegroundValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void Convert_RespectsOverriddenDarkForeground()
+    {
+        try
+        {
+            BackgroundToForegroundValueConverter.DarkForegroundColor = Colors.DarkBlue;
+
+            var result = (SolidColorBrush)BackgroundToForegroundValueConverter.Instance.Convert(
+                new SolidColorBrush(Colors.White),
+                typeof(SolidColorBrush),
+                parameter: null,
+                CultureInfo.InvariantCulture)!;
+
+            Assert.Equal(Colors.DarkBlue, result.Color);
+        }
+        finally
+        {
+            BackgroundToForegroundValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void Convert_RespectsOverriddenLightForeground()
+    {
+        try
+        {
+            BackgroundToForegroundValueConverter.LightForegroundColor = Colors.LightYellow;
+
+            var result = (SolidColorBrush)BackgroundToForegroundValueConverter.Instance.Convert(
+                new SolidColorBrush(Colors.Black),
+                typeof(SolidColorBrush),
+                parameter: null,
+                CultureInfo.InvariantCulture)!;
+
+            Assert.Equal(Colors.LightYellow, result.Color);
+        }
+        finally
+        {
+            BackgroundToForegroundValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void Convert_RespectsOverriddenLuminanceThreshold()
+    {
+        var midGrey = new SolidColorBrush(Color.FromRgb(150, 150, 150));
+        try
+        {
+            BackgroundToForegroundValueConverter.ResetToDefaults();
+            var defaultThresholdResult = (SolidColorBrush)BackgroundToForegroundValueConverter.Instance.Convert(
+                midGrey,
+                typeof(SolidColorBrush),
+                parameter: null,
+                CultureInfo.InvariantCulture)!;
+
+            BackgroundToForegroundValueConverter.LuminanceThreshold = 200;
+            var raisedThresholdResult = (SolidColorBrush)BackgroundToForegroundValueConverter.Instance.Convert(
+                midGrey,
+                typeof(SolidColorBrush),
+                parameter: null,
+                CultureInfo.InvariantCulture)!;
+
+            Assert.NotEqual(defaultThresholdResult.Color, raisedThresholdResult.Color);
+        }
+        finally
+        {
+            BackgroundToForegroundValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void ResetToDefaults_RestoresBuiltInValues()
+    {
+        BackgroundToForegroundValueConverter.LuminanceThreshold = 200;
+        BackgroundToForegroundValueConverter.DarkForegroundColor = Colors.Red;
+        BackgroundToForegroundValueConverter.LightForegroundColor = Colors.Green;
+
+        BackgroundToForegroundValueConverter.ResetToDefaults();
+
+        Assert.Equal(BackgroundToForegroundValueConverter.DefaultLuminanceThreshold, BackgroundToForegroundValueConverter.LuminanceThreshold);
+        Assert.Equal(BackgroundToForegroundValueConverter.DefaultDarkForegroundColor, BackgroundToForegroundValueConverter.DarkForegroundColor);
+        Assert.Equal(BackgroundToForegroundValueConverter.DefaultLightForegroundColor, BackgroundToForegroundValueConverter.LightForegroundColor);
     }
 }

@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class ColorNameToColorValueConverterTests
 {
     private readonly IValueConverter converter = new ColorNameToColorValueConverter();
