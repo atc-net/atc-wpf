@@ -2,8 +2,14 @@
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>
-/// ValueConverter: Bool To Width.
+/// ValueConverter: Bool To Width — returns the specified width (default <c>double.NaN</c>, i.e.
+/// <c>Auto</c>) when the bound bool is <see langword="true"/>, otherwise <c>0</c>.
 /// </summary>
+/// <remarks>
+/// <c>ConverterParameter</c> accepts <c>"Auto"</c> (case-insensitive) for <c>double.NaN</c> or
+/// any WPF length string parsed by <see cref="LengthConverter"/>. Null/non-bool values return
+/// <c>0</c> (collapsed-width fallback) rather than throwing.
+/// </remarks>
 [ValueConversion(typeof(bool), typeof(LengthConverter))]
 public sealed class BoolToWidthValueConverter : IValueConverter
 {
@@ -16,11 +22,9 @@ public sealed class BoolToWidthValueConverter : IValueConverter
         object? parameter,
         CultureInfo culture)
     {
-        ArgumentNullException.ThrowIfNull(value);
-
         if (value is not bool boolValue)
         {
-            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(bool)");
+            return 0;
         }
 
         var width = double.NaN;

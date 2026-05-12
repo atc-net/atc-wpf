@@ -17,9 +17,6 @@ public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
 
     private static readonly ConcurrentDictionary<LogCategoryType, SolidColorBrush> Cache = new();
 
-    private static SolidColorBrush? fallbackBrushCache;
-    private static Color fallbackBrushCachedColor;
-
     /// <summary>
     /// Gets a frozen <see cref="SolidColorBrush"/> for the given <paramref name="category"/>.
     /// Brushes are cached and rebuilt automatically when their underlying color changes.
@@ -43,7 +40,7 @@ public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
         CultureInfo culture)
         => value is LogCategoryType category
             ? GetBrush(category)
-            : GetFallbackBrush();
+            : BindingFallbacks.Brush;
 
     /// <inheritdoc />
     public object ConvertBack(
@@ -52,19 +49,6 @@ public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
         object? parameter,
         CultureInfo culture)
         => throw new NotSupportedException("This is a OneWay converter.");
-
-    private static SolidColorBrush GetFallbackBrush()
-    {
-        var color = LogCategoryTypeToColorValueConverter.FallbackColor;
-        if (fallbackBrushCache is null ||
-            fallbackBrushCachedColor != color)
-        {
-            fallbackBrushCache = CreateFrozen(color);
-            fallbackBrushCachedColor = color;
-        }
-
-        return fallbackBrushCache;
-    }
 
     private static SolidColorBrush CreateFrozen(Color color)
     {

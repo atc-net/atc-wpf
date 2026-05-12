@@ -1,6 +1,11 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.ValueConverters;
 
+/// <summary>
+/// ValueConverter: multi-binding <c>(width, height)</c> → corner radius for an inscribed circle
+/// (<c>min(width, height) / 2</c>). Use to make a rectangular control fully rounded into a pill or
+/// circle that adapts to size changes.
+/// </summary>
 public sealed class RectangleCircularValueConverter : IMultiValueConverter
 {
     public static readonly RectangleCircularValueConverter Instance = new();
@@ -33,5 +38,5 @@ public sealed class RectangleCircularValueConverter : IMultiValueConverter
         Type[] targetTypes,
         object parameter,
         CultureInfo culture)
-        => throw new NotSupportedException();
+        => throw new NotSupportedException("This is a OneWay converter.");
 }

@@ -1,8 +1,24 @@
 namespace Atc.Wpf.ValueConverters;
 
 /// <summary>
-/// ValueConverter: Background To Foreground.
+/// ValueConverter: Background brush → ideal foreground brush (Black or White) for readable
+/// contrast, computed from perceptual luminance of the background.
 /// </summary>
+/// <remarks>
+/// Algorithm:
+/// <c>luminance = round(R·0.299 + G·0.587 + B·0.114)</c>; if
+/// <c>(255 − luminance) &lt; <see cref="LuminanceThreshold"/></c>, returns
+/// <see cref="DarkForegroundColor"/>, otherwise <see cref="LightForegroundColor"/>.
+/// <para>
+/// Threshold and the two foreground colors are mutable static properties so consumers can
+/// retheme this library-wide. Defaults: threshold <c>86</c>, dark <c>Colors.Black</c>,
+/// light <c>Colors.White</c>. Call <see cref="ResetToDefaults"/> to restore the built-ins.
+/// </para>
+/// <para>
+/// Source: <a href="http://www.codeproject.com/KB/GDI-plus/IdealTextColor.aspx">Determining
+/// Ideal Text Color Based on Specified Background Color</a>.
+/// </para>
+/// </remarks>
 [ValueConversion(typeof(SolidColorBrush), typeof(SolidColorBrush))]
 public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMultiValueConverter
 {
@@ -11,20 +27,41 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
     /// </summary>
     public static readonly BackgroundToForegroundValueConverter Instance = new();
 
+    /// <summary>The built-in default luminance threshold (<c>86</c>).</summary>
+    public static readonly int DefaultLuminanceThreshold = 86;
+
+    /// <summary>The built-in default dark foreground (<see cref="Colors.Black"/>).</summary>
+    public static readonly Color DefaultDarkForegroundColor = Colors.Black;
+
+    /// <summary>The built-in default light foreground (<see cref="Colors.White"/>).</summary>
+    public static readonly Color DefaultLightForegroundColor = Colors.White;
+
     /// <summary>
-    /// Determining Ideal Text Color Based on Specified Background Color
-    /// http://www.codeproject.com/KB/GDI-plus/IdealTextColor.aspx
+    /// Luminance threshold used to decide between <see cref="DarkForegroundColor"/> and
+    /// <see cref="LightForegroundColor"/>. Higher values bias toward the light foreground.
     /// </summary>
-    /// <param name = "background">The background color.</param>
+    public static int LuminanceThreshold { get; set; } = DefaultLuminanceThreshold;
+
+    /// <summary>Foreground color returned for light backgrounds. Defaults to <see cref="Colors.Black"/>.</summary>
+    public static Color DarkForegroundColor { get; set; } = DefaultDarkForegroundColor;
+
+    /// <summary>Foreground color returned for dark backgrounds. Defaults to <see cref="Colors.White"/>.</summary>
+    public static Color LightForegroundColor { get; set; } = DefaultLightForegroundColor;
+
+    /// <summary>Restores <see cref="LuminanceThreshold"/>, <see cref="DarkForegroundColor"/>, and <see cref="LightForegroundColor"/> to their built-in defaults.</summary>
+    public static void ResetToDefaults()
+    {
+        LuminanceThreshold = DefaultLuminanceThreshold;
+        DarkForegroundColor = DefaultDarkForegroundColor;
+        LightForegroundColor = DefaultLightForegroundColor;
+    }
+
     private static Color IdealTextColor(Color background)
     {
-        const int nThreshold = 86;
         var backgroundDelta = System.Convert.ToInt32((background.R * 0.299) + (background.G * 0.587) + (background.B * 0.114));
-        var foregroundColor = (255 - backgroundDelta < nThreshold)
-            ? Colors.Black
-            : Colors.White;
-
-        return foregroundColor;
+        return (255 - backgroundDelta < LuminanceThreshold)
+            ? DarkForegroundColor
+            : LightForegroundColor;
     }
 
     public object? Convert(

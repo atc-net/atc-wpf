@@ -18,7 +18,7 @@ public sealed class ColorNameToColorValueConverter : IValueConverter
     {
         if (value is null)
         {
-            return Colors.DeepPink;
+            return BindingFallbacks.Color;
         }
 
         if (value is not string stringValue)

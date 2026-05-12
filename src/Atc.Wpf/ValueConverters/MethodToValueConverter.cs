@@ -1,5 +1,14 @@
 namespace Atc.Wpf.ValueConverters;
 
+/// <summary>
+/// ValueConverter: invokes a parameterless instance method on the bound value via reflection.
+/// </summary>
+/// <remarks>
+/// <c>ConverterParameter</c> is the method name to invoke (string). The method must be parameterless
+/// and public on the bound value's type. Returns the method's return value, or <see langword="null"/>
+/// if the input is null, the parameter is missing, or no matching method is found. Method lookups
+/// are cached per <c>(Type, methodName)</c> for performance.
+/// </remarks>
 public sealed class MethodToValueConverter : IValueConverter
 {
     public static readonly MethodToValueConverter Instance = new();
