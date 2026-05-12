@@ -62,6 +62,7 @@ jobs:
           dotnet nuget push Atc.Wpf.Controls.Sample.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.FontIcons.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.Forms.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
+          dotnet nuget push Atc.Wpf.Hardware.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.Network.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.Theming.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
           dotnet nuget push Atc.Wpf.UndoRedo.${{ env.NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
