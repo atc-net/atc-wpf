@@ -17,4 +17,13 @@
         <sample:SampleTreeViewItem Header="VncViewer" SamplePath="Vnc.VncViewerSampleView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="ValueConverters">
+        <sample:SampleTreeViewItem
+            Header="ConnectionStateToColor"
+            SamplePath="ValueConverters.ConnectionStateToColorValueConverterSampleView" />
+        <sample:SampleTreeViewItem
+            Header="ConnectionStateToBrush"
+            SamplePath="ValueConverters.ConnectionStateToBrushValueConverterSampleView" />
+    </TreeViewItem>
+
 </TreeView>

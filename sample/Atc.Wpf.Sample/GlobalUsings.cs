@@ -64,6 +64,7 @@ global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Hotkeys;
 global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Network.Scanner;
+global using Atc.Wpf.Network.ValueConverters;
 global using Atc.Wpf.Network.Vnc;
 global using Atc.Wpf.Notifications;
 global using Atc.Wpf.Options;
