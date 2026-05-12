@@ -72,4 +72,74 @@ public sealed class EnumToVisibilityCollapsedValueConverterTests
                 targetType: null,
                 parameter: null,
                 culture: null));
+
+    [Theory]
+    [InlineData(Visibility.Collapsed, DayOfWeek.Monday, "Monday,Tuesday")]
+    [InlineData(Visibility.Collapsed, DayOfWeek.Tuesday, "Monday,Tuesday")]
+    [InlineData(Visibility.Visible, DayOfWeek.Wednesday, "Monday,Tuesday")]
+    [InlineData(Visibility.Collapsed, DayOfWeek.Tuesday, "Monday, Tuesday")]
+    [InlineData(Visibility.Collapsed, DayOfWeek.Monday, " Monday , Tuesday ")]
+    [InlineData(Visibility.Collapsed, DayOfWeek.Monday, "monday,TUESDAY")]
+    [InlineData(Visibility.Visible, DayOfWeek.Wednesday, "monday,TUESDAY")]
+    public void Convert_WithCommaSeparatedString(
+        Visibility expected,
+        DayOfWeek input,
+        string parameter)
+        => Assert.Equal(
+            expected,
+            converter.Convert(
+                input,
+                targetType: null,
+                parameter: parameter,
+                culture: null));
+
+    [Fact]
+    public void Convert_WithDayOfWeekArray_MatchReturnsCollapsed()
+        => Assert.Equal(
+            Visibility.Collapsed,
+            converter.Convert(
+                value: DayOfWeek.Monday,
+                targetType: null,
+                parameter: new[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                culture: null));
+
+    [Fact]
+    public void Convert_WithDayOfWeekArray_NoMatchReturnsVisible()
+        => Assert.Equal(
+            Visibility.Visible,
+            converter.Convert(
+                value: DayOfWeek.Wednesday,
+                targetType: null,
+                parameter: new[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                culture: null));
+
+    [Fact]
+    public void Convert_WithBoxedEnumArray_MatchReturnsCollapsed()
+        => Assert.Equal(
+            Visibility.Collapsed,
+            converter.Convert(
+                value: DayOfWeek.Tuesday,
+                targetType: null,
+                parameter: new Enum[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                culture: null));
+
+    [Fact]
+    public void Convert_WithStringArray_MatchesByName()
+        => Assert.Equal(
+            Visibility.Collapsed,
+            converter.Convert(
+                value: DayOfWeek.Tuesday,
+                targetType: null,
+                parameter: new[] { "monday", "Tuesday" },
+                culture: null));
+
+    [Fact]
+    public void Convert_WithEmptyEnumerable_ReturnsVisible()
+        => Assert.Equal(
+            Visibility.Visible,
+            converter.Convert(
+                value: DayOfWeek.Monday,
+                targetType: null,
+                parameter: Array.Empty<DayOfWeek>(),
+                culture: null));
 }

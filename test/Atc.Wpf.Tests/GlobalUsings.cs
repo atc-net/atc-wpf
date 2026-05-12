@@ -19,6 +19,7 @@ global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Extensions;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Hotkeys;
+global using Atc.Wpf.MarkupExtensions;
 global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Tests.Navigation.Models;
