@@ -71,4 +71,73 @@ public sealed class LogCategoryTypeToColorValueConverterTests
         Assert.IsType<NotSupportedException>(exception);
         Assert.Equal("This is a OneWay converter.", exception.Message);
     }
+
+    [Fact]
+    public void Instance_Is_Not_Null()
+        => Assert.NotNull(LogCategoryTypeToColorValueConverter.Instance);
+
+    [Fact]
+    public void SetColor_OverridesGetColor()
+    {
+        try
+        {
+            LogCategoryTypeToColorValueConverter.SetColor(LogCategoryType.Security, Colors.Teal);
+            Assert.Equal(Colors.Teal, LogCategoryTypeToColorValueConverter.GetColor(LogCategoryType.Security));
+        }
+        finally
+        {
+            LogCategoryTypeToColorValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void OverrideProperty_PropagatesToConvert()
+    {
+        try
+        {
+            LogCategoryTypeToColorValueConverter.SecurityColor = Colors.Teal;
+
+            var actual = converter.Convert(
+                LogCategoryType.Security,
+                targetType: null,
+                parameter: null,
+                culture: null);
+
+            Assert.Equal(Colors.Teal, actual);
+        }
+        finally
+        {
+            LogCategoryTypeToColorValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void OverrideColor_PropagatesToBrushConverter()
+    {
+        try
+        {
+            LogCategoryTypeToColorValueConverter.SecurityColor = Colors.Teal;
+
+            var brush = LogCategoryTypeToBrushValueConverter.GetBrush(LogCategoryType.Security);
+
+            Assert.Equal(Colors.Teal, brush.Color);
+            Assert.True(brush.IsFrozen);
+        }
+        finally
+        {
+            LogCategoryTypeToColorValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void ResetToDefaults_RestoresOriginalPalette()
+    {
+        LogCategoryTypeToColorValueConverter.SecurityColor = Colors.Teal;
+        LogCategoryTypeToColorValueConverter.UIColor = Colors.Black;
+
+        LogCategoryTypeToColorValueConverter.ResetToDefaults();
+
+        Assert.Equal(LogCategoryTypeToColorValueConverter.DefaultSecurityColor, LogCategoryTypeToColorValueConverter.SecurityColor);
+        Assert.Equal(LogCategoryTypeToColorValueConverter.DefaultUIColor, LogCategoryTypeToColorValueConverter.UIColor);
+    }
 }

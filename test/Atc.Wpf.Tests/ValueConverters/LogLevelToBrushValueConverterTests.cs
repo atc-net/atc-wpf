@@ -62,4 +62,62 @@ public sealed class LogLevelToBrushValueConverterTests
         Assert.IsType<NotSupportedException>(exception);
         Assert.Equal("This is a OneWay converter.", exception.Message);
     }
+
+    [Fact]
+    public void Instance_Is_Not_Null()
+        => Assert.NotNull(LogLevelToBrushValueConverter.Instance);
+
+    [Theory]
+    [InlineData(LogLevel.Trace)]
+    [InlineData(LogLevel.Debug)]
+    [InlineData(LogLevel.Information)]
+    [InlineData(LogLevel.Warning)]
+    [InlineData(LogLevel.Error)]
+    [InlineData(LogLevel.Critical)]
+    public void GetBrush_ReturnsFrozenBrush(LogLevel level)
+    {
+        var brush = LogLevelToBrushValueConverter.GetBrush(level);
+        Assert.True(brush.IsFrozen);
+    }
+
+    [Fact]
+    public void BrushConverter_RebuildsAfterColorOverride()
+    {
+        var before = LogLevelToBrushValueConverter.GetBrush(LogLevel.Warning);
+        try
+        {
+            LogLevelToColorValueConverter.WarningColor = Colors.Orange;
+
+            var after = LogLevelToBrushValueConverter.GetBrush(LogLevel.Warning);
+
+            Assert.NotEqual(before.Color, after.Color);
+            Assert.Equal(Colors.Orange, after.Color);
+        }
+        finally
+        {
+            LogLevelToColorValueConverter.ResetToDefaults();
+        }
+    }
+
+    [Fact]
+    public void BrushConverter_NullValue_UsesFallbackColor()
+    {
+        try
+        {
+            LogLevelToColorValueConverter.FallbackColor = Colors.Magenta;
+
+            var actual = converter.Convert(
+                value: null,
+                targetType: null,
+                parameter: null,
+                culture: null);
+
+            var brush = Assert.IsType<SolidColorBrush>(actual);
+            Assert.Equal(Colors.Magenta, brush.Color);
+        }
+        finally
+        {
+            LogLevelToColorValueConverter.ResetToDefaults();
+        }
+    }
 }

@@ -66,4 +66,44 @@ public sealed class LogCategoryTypeToBrushValueConverterTests
         Assert.IsType<NotSupportedException>(exception);
         Assert.Equal("This is a OneWay converter.", exception.Message);
     }
+
+    [Fact]
+    public void Instance_Is_Not_Null()
+        => Assert.NotNull(LogCategoryTypeToBrushValueConverter.Instance);
+
+    [Theory]
+    [InlineData(LogCategoryType.Critical)]
+    [InlineData(LogCategoryType.Error)]
+    [InlineData(LogCategoryType.Warning)]
+    [InlineData(LogCategoryType.Security)]
+    [InlineData(LogCategoryType.Audit)]
+    [InlineData(LogCategoryType.Service)]
+    [InlineData(LogCategoryType.UI)]
+    [InlineData(LogCategoryType.Information)]
+    [InlineData(LogCategoryType.Debug)]
+    [InlineData(LogCategoryType.Trace)]
+    public void GetBrush_ReturnsFrozenBrush(LogCategoryType category)
+    {
+        var brush = LogCategoryTypeToBrushValueConverter.GetBrush(category);
+        Assert.True(brush.IsFrozen);
+    }
+
+    [Fact]
+    public void BrushConverter_RebuildsAfterColorOverride()
+    {
+        var before = LogCategoryTypeToBrushValueConverter.GetBrush(LogCategoryType.Security);
+        try
+        {
+            LogCategoryTypeToColorValueConverter.SecurityColor = Colors.Teal;
+
+            var after = LogCategoryTypeToBrushValueConverter.GetBrush(LogCategoryType.Security);
+
+            Assert.NotEqual(before.Color, after.Color);
+            Assert.Equal(Colors.Teal, after.Color);
+        }
+        finally
+        {
+            LogCategoryTypeToColorValueConverter.ResetToDefaults();
+        }
+    }
 }
