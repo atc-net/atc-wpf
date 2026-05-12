@@ -1,17 +1,28 @@
 namespace Atc.Wpf.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class ColorToSolidColorValueConverterTests
 {
     [Fact]
-    public void Convert_returns_DeepPink_brush_for_null_input()
+    public void Convert_returns_DeepPink_color_for_null_input()
     {
-        var actual = ColorToSolidColorValueConverter.Instance.Convert(
-            value: null,
-            typeof(Color),
-            parameter: null,
-            CultureInfo.InvariantCulture);
+        try
+        {
+            BindingFallbacks.Reset();
 
-        Assert.Same(Brushes.DeepPink, actual);
+            var actual = ColorToSolidColorValueConverter.Instance.Convert(
+                value: null,
+                typeof(Color),
+                parameter: null,
+                CultureInfo.InvariantCulture);
+
+            var color = Assert.IsType<Color>(actual);
+            Assert.Equal(Colors.DeepPink, color);
+        }
+        finally
+        {
+            BindingFallbacks.Reset();
+        }
     }
 
     [Fact]

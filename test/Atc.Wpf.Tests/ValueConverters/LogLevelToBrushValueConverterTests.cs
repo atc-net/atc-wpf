@@ -1,6 +1,7 @@
 // ReSharper disable PossibleNullReferenceException
 namespace Atc.Wpf.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class LogLevelToBrushValueConverterTests
 {
     private readonly IValueConverter converter = new LogLevelToBrushValueConverter();

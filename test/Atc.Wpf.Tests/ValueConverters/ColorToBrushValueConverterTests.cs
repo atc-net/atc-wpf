@@ -1,6 +1,7 @@
 // ReSharper disable PossibleNullReferenceException
 namespace Atc.Wpf.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class ColorToBrushValueConverterTests
 {
     private readonly IValueConverter converter = new ColorToBrushValueConverter();
@@ -59,5 +60,49 @@ public sealed class ColorToBrushValueConverterTests
         Assert.NotNull(actual);
         Assert.IsType<Color>(actual);
         Assert.Equal(expectedHex, actual.ToString());
+    }
+
+    [Fact]
+    public void Convert_NonColorValue_ReturnsBindingFallbacksBrush()
+    {
+        try
+        {
+            BindingFallbacks.Reset();
+
+            var actual = converter.Convert(
+                value: "not a color",
+                targetType: null,
+                parameter: null,
+                culture: null);
+
+            var brush = Assert.IsType<SolidColorBrush>(actual);
+            Assert.Equal(BindingFallbacks.Color, brush.Color);
+        }
+        finally
+        {
+            BindingFallbacks.Reset();
+        }
+    }
+
+    [Fact]
+    public void ConvertBack_NonBrushValue_ReturnsBindingFallbacksColor()
+    {
+        try
+        {
+            BindingFallbacks.Reset();
+
+            var actual = converter.ConvertBack(
+                value: "not a brush",
+                targetType: null,
+                parameter: null,
+                culture: null);
+
+            var color = Assert.IsType<Color>(actual);
+            Assert.Equal(BindingFallbacks.Color, color);
+        }
+        finally
+        {
+            BindingFallbacks.Reset();
+        }
     }
 }

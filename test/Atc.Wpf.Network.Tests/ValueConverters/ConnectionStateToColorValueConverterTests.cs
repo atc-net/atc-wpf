@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Network.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class ConnectionStateToColorValueConverterTests
 {
     private readonly IValueConverter converter = new ConnectionStateToColorValueConverter();

@@ -2,6 +2,7 @@
 // ReSharper disable once CheckNamespace
 namespace Atc.Wpf.Tests.ValueConverters;
 
+[Collection("Sequential")]
 public sealed class BrushToColorValueConverterTests
 {
     private readonly IValueConverter converter = new BrushToColorValueConverter();

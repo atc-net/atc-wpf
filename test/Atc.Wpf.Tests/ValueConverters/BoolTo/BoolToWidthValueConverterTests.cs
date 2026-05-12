@@ -37,4 +37,24 @@ public sealed class BoolToWidthValueConverterTests
         Assert.IsType<NotSupportedException>(exception);
         Assert.Equal("This is a OneWay converter.", exception.Message);
     }
+
+    [Fact]
+    public void Convert_NullValue_ReturnsZero()
+        => Assert.Equal(
+            0,
+            converter.Convert(
+                value: null,
+                targetType: null,
+                parameter: null,
+                culture: null));
+
+    [Fact]
+    public void Convert_NonBoolValue_ReturnsZero()
+        => Assert.Equal(
+            0,
+            converter.Convert(
+                value: "NotABool",
+                targetType: null,
+                parameter: null,
+                culture: null));
 }
