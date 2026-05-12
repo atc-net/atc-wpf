@@ -20,14 +20,9 @@ public sealed class ColorToBrushValueConverter : IValueConverter
         object? parameter,
         CultureInfo culture)
     {
-        if (value is null)
-        {
-            return Brushes.DeepPink;
-        }
-
         if (value is not Color color)
         {
-            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(Color)");
+            return BindingFallbacks.Brush;
         }
 
         var brush = new SolidColorBrush(color);
@@ -43,14 +38,9 @@ public sealed class ColorToBrushValueConverter : IValueConverter
         object? parameter,
         CultureInfo culture)
     {
-        if (value is null)
-        {
-            return Colors.DeepPink;
-        }
-
         if (value is not SolidColorBrush brush)
         {
-            throw new UnexpectedTypeException($"Type {value.GetType().FullName} is not typeof(SolidColorBrush)");
+            return BindingFallbacks.Color;
         }
 
         return brush.Color;

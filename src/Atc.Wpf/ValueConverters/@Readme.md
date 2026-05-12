@@ -11,6 +11,8 @@
   - [#️⃣ ValueConverters - Object to \[...\]](#️⃣-valueconverters---object-to-)
   - [#️⃣ ValueConverters - Markup to \[...\]](#️⃣-valueconverters---markup-to-)
   - [#️⃣ ValueConverters - Enum to \[...\]](#️⃣-valueconverters---enum-to-)
+  - [#️⃣ ValueConverters - Number to \[...\]](#️⃣-valueconverters---number-to-)
+  - [#️⃣ ValueConverters - Time to \[...\]](#️⃣-valueconverters---time-to-)
   - [#️⃣ ValueConverters - Others to \[...\]](#️⃣-valueconverters---others-to-)
   - [#️⃣ ValueConverters - Math](#️⃣-valueconverters---math)
   - [#️⃣ ValueConverters - JSON](#️⃣-valueconverters---json)
@@ -57,6 +59,9 @@ Or by the ValueConverter's Instance:
 | Bool -> Bool              | BoolToInverseBoolValueConverter                          | True -> False<br/>False -> True         | False -> True<br/>False -> False        |
 | Bool -> Visibility        | BoolToVisibilityCollapsedValueConverter                  | True -> Collapsed<br/>False -> Visible  | Collapsed -> True<br/>Visible -> False  |
 | Bool -> Visibility        | BoolToVisibilityVisibleValueConverter                    | True -> Visible<br/>False -> Collapsed  | Visible -> True<br/>Collapsed -> False  |
+| Bool -> Opacity           | BoolToOpacityValueConverter                              | True -> 1.0<br/>False -> 0.0            | Not supported                           |
+| Bool -> Opacity           | BoolToInverseOpacityValueConverter                       | True -> 0.0<br/>False -> 1.0            | Not supported                           |
+| Bool -> Object *(stateful)* | BoolToObjectValueConverter                             | True -&gt; TrueValue<br/>False -&gt; FalseValue<br/>*(set both via XAML resource)* | Not supported                           |
 | Bool -> With              | BoolToWidthValueConverter                                | true<br/>10 -> 10<br/>true<br/>"Auto" -> * | Not supported                        |
 | Bool[] -> Bool            | MultiBoolToBoolValueConverter                            | All-True -> True                        | Not supported                           |
 | Bool[] -> Visibility      | MultiBoolToVisibilityVisibleValueConverter               | All-True -> Visible                     | Not supported                           |
@@ -75,6 +80,8 @@ Or by the ValueConverter's Instance:
 | String -> Visibility      | StringNullOrEmptyToVisibilityVisibleValueConverter       | NULL or empty -> Visible                | Not supported                           |
 | String -> Visibility      | StringToVisibilityVisibleValueConverter                  | "Active" + param "Active" -> Visible    | Not supported                           |
 | String -> Visibility      | StringToVisibilityCollapsedValueConverter                | "Active" + param "Active" -> Collapsed  | Not supported                           |
+| String -> Bool            | StringEqualsToBoolValueConverter                         | "Active" + param "Active" -> True<br/>"Active" + param "active" -> True (case-insensitive)<br/>"Active" + param "Inactive" -> False | Not supported                           |
+| String -> String          | PathToFilenameValueConverter                             | "C:\foo\bar.txt" -> "bar.txt"<br/>"C:\foo\bar.txt" + param "WithoutExtension" -> "bar" | Not supported                           |
 | String -> List<String>    | StringToSplitStringListValueConverter                    | String -> List<String>                  | Not supported                           |
 | String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 | String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
@@ -103,6 +110,7 @@ Or by the ValueConverter's Instance:
 | Object -> Visibility      | ObjectNullToVisibilityVisibleValueConverter              | NULL -> Visible                         | Not supported                           |
 | Object[] -> Visibility    | MultiObjectNullToVisibilityCollapsedValueConverter       | All-NULL -> Collapsed                   | Not supported                           |
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
+| Object -> String          | ObjectToTypeNameValueConverter                                     | "hello" -> "String"<br/>42 -> "Int32"<br/>"hello" + param "Full" -> "System.String" | Not supported                           |
 
 ## #️⃣ ValueConverters - Markup to [...]
 
@@ -117,8 +125,29 @@ Or by the ValueConverter's Instance:
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
 | Enum -> String            | EnumDescriptionToStringValueConverter                    | DayOfWeek.Monday -> Monday              | Not supported                           |
+| Enum -> Bool              | EnumToBoolValueConverter                                 | DayOfWeek.Monday + param "Monday" -> True<br/>DayOfWeek.Tuesday + param "Monday,Tuesday" -> True<br/>DayOfWeek.Wednesday + param "Monday,Tuesday" -> False | Not supported                           |
+| Enum -> Bool              | EnumToInverseBoolValueConverter                          | DayOfWeek.Monday + param "Monday" -> False<br/>DayOfWeek.Wednesday + param "Monday,Tuesday" -> True | Not supported                           |
+| Enum -> Bool *(flags)*    | EnumFlagsToBoolValueConverter                            | (Read \| Write) + param Read -> True<br/>Read + param (Read \| Write) -> False<br/>Permissions + param "Read,Write" -> True (if both set) | Not supported                           |
 | Enum -> Visibility        | EnumToVisibilityVisibleValueConverter                    | Status.Active + param "Active" -> Visible<br/>DayOfWeek.Tuesday + param "Monday,Tuesday" -> Visible<br/>DayOfWeek.Wednesday + param "Monday,Tuesday" -> Collapsed | Not supported                         |
 | Enum -> Visibility        | EnumToVisibilityCollapsedValueConverter                  | Status.Active + param "Active" -> Collapsed<br/>DayOfWeek.Tuesday + param "Monday,Tuesday" -> Collapsed<br/>DayOfWeek.Wednesday + param "Monday,Tuesday" -> Visible | Not supported                       |
+| Enum -> Visibility *(flags)* | EnumFlagsToVisibilityVisibleValueConverter            | (Read \| Write) + param Read -> Visible<br/>Read + param Admin -> Collapsed | Not supported                           |
+| Enum -> Visibility *(flags)* | EnumFlagsToVisibilityCollapsedValueConverter          | (Read \| Write) + param Read -> Collapsed<br/>Read + param Admin -> Visible | Not supported                           |
+
+## #️⃣ ValueConverters - Number to [...]
+
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| Number -> File size       | NumberToFileSizeStringValueConverter                     | 1024 -> "1 KB"<br/>1572864 -> "1.5 MB"<br/>1073741824 -> "1 GB" | Not supported                           |
+| Number -> Visibility      | NumericComparisonToVisibilityVisibleValueConverter              | 10 + param "&gt;=5" -&gt; Visible<br/>3 + param "between:1,10" -&gt; Visible<br/>0 + param "&gt;5" -&gt; Collapsed | Not supported                           |
+| Number -> Visibility      | NumericComparisonToVisibilityCollapsedValueConverter            | 10 + param "&gt;=5" -&gt; Collapsed<br/>0 + param "&gt;5" -&gt; Visible | Not supported                           |
+| Number -> String *(two-way)* | NumberToPercentStringValueConverter                                    | 0.42 -> "42 %"<br/>0.1234 + param 2 -> "12.34 %" | "42%" -> 0.42<br/>"42 %" -> 0.42        |
+
+## #️⃣ ValueConverters - Time to [...]
+
+| Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| TimeSpan -> String        | TimeSpanToHumanReadableStringValueConverter              | TimeSpan.FromMinutes(75) -> "1h 15m"<br/>TimeSpan.FromSeconds(90) -> "1m 30s" | Not supported                           |
+| DateTime -> String        | DateTimeToRelativeStringValueConverter                   | DateTime.UtcNow.AddMinutes(-5) -> "5 minutes ago"<br/>DateTime.UtcNow.AddHours(2) -> "in 2 hours" | Not supported                           |
 
 ## #️⃣ ValueConverters - Others to [...]
 

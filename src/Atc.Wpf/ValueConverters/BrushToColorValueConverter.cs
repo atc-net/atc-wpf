@@ -22,7 +22,7 @@ public sealed class BrushToColorValueConverter : IValueConverter
     {
         if (value is null)
         {
-            return Colors.DeepPink;
+            return BindingFallbacks.Color;
         }
 
         if (value is not SolidColorBrush brush)
@@ -42,7 +42,7 @@ public sealed class BrushToColorValueConverter : IValueConverter
     {
         if (value is null)
         {
-            return Brushes.DeepPink;
+            return BindingFallbacks.Brush;
         }
 
         if (value is not Color color)

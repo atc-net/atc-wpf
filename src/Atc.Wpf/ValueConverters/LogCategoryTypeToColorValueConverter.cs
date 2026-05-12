@@ -24,7 +24,7 @@ public sealed class LogCategoryTypeToColorValueConverter : IValueConverter
 {
     public static readonly LogCategoryTypeToColorValueConverter Instance = new();
 
-    public static readonly Color DefaultFallbackColor = Colors.DeepPink;
+    public static readonly Color DefaultFallbackColor = BindingFallbacks.DefaultColor;
     public static readonly Color DefaultCriticalColor = Colors.Red;
     public static readonly Color DefaultErrorColor = Colors.Crimson;
     public static readonly Color DefaultWarningColor = Colors.Goldenrod;
@@ -39,8 +39,13 @@ public sealed class LogCategoryTypeToColorValueConverter : IValueConverter
     /// <summary>
     /// Returned when the bound value is null, not a <see cref="LogCategoryType"/>,
     /// or an enum value not explicitly mapped.
+    /// Delegates to <see cref="BindingFallbacks.Color"/> so the library-wide fallback stays in sync.
     /// </summary>
-    public static Color FallbackColor { get; set; } = DefaultFallbackColor;
+    public static Color FallbackColor
+    {
+        get => BindingFallbacks.Color;
+        set => BindingFallbacks.Color = value;
+    }
 
     public static Color CriticalColor { get; set; } = DefaultCriticalColor;
 

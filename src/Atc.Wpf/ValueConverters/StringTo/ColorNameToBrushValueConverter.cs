@@ -18,7 +18,7 @@ public sealed class ColorNameToBrushValueConverter : IValueConverter
     {
         if (value is null)
         {
-            return Brushes.DeepPink;
+            return BindingFallbacks.Brush;
         }
 
         if (value is not string stringValue)

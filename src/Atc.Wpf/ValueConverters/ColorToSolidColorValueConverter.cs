@@ -20,7 +20,7 @@ public sealed class ColorToSolidColorValueConverter : IValueConverter
     {
         if (value is null)
         {
-            return Brushes.DeepPink;
+            return BindingFallbacks.Color;
         }
 
         if (value is not Color color)
