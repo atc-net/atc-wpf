@@ -51,13 +51,25 @@ internal static class TextBoxValidationHelper
                 ValidateHexArgb(value, ref isValid, ref errorMessage);
                 break;
             case TextBoxValidationRuleType.IPAddress:
-                ValidateIpAddress(value, ref isValid, ref errorMessage, allowV4: true, allowV6: true);
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: true, allowV6: true, allowHostname: false);
                 break;
             case TextBoxValidationRuleType.IPv4Address:
-                ValidateIpAddress(value, ref isValid, ref errorMessage, allowV4: true, allowV6: false);
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: true, allowV6: false, allowHostname: false);
                 break;
             case TextBoxValidationRuleType.IPv6Address:
-                ValidateIpAddress(value, ref isValid, ref errorMessage, allowV4: false, allowV6: true);
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: false, allowV6: true, allowHostname: false);
+                break;
+            case TextBoxValidationRuleType.Hostname:
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: false, allowV6: false, allowHostname: true);
+                break;
+            case TextBoxValidationRuleType.IPv4AddressOrHostname:
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: true, allowV6: false, allowHostname: true);
+                break;
+            case TextBoxValidationRuleType.IPv6AddressOrHostname:
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: false, allowV6: true, allowHostname: true);
+                break;
+            case TextBoxValidationRuleType.IPAddressOrHostname:
+                ValidateHostOrIp(value, ref isValid, ref errorMessage, allowV4: true, allowV6: true, allowHostname: true);
                 break;
             case TextBoxValidationRuleType.OpcTcp:
                 ValidateOpcTcp(value, ref isValid, ref errorMessage);
@@ -176,33 +188,49 @@ internal static class TextBoxValidationHelper
         errorMessage = Validations.InvalidHexArgb;
     }
 
-    private static void ValidateIpAddress(
+    private static void ValidateHostOrIp(
         string? value,
         ref bool isValid,
         ref string errorMessage,
         bool allowV4,
-        bool allowV6)
+        bool allowV6,
+        bool allowHostname)
     {
-        if (IPAddress.TryParse(value, out var ipAddress))
+        if (!string.IsNullOrEmpty(value))
         {
-            if (allowV4 && allowV6)
+            if (allowV4 && value.IsIPv4Address())
             {
                 return;
             }
 
-            if (allowV4 && ipAddress.AddressFamily == AddressFamily.InterNetwork)
+            if (allowV6 && value.IsIPv6Address())
             {
                 return;
             }
 
-            if (allowV6 && ipAddress.AddressFamily == AddressFamily.InterNetworkV6)
+            // A dotted-numeric string (e.g. "192.168.0.27") is syntactically a valid
+            // host name, so an IP address is explicitly excluded here; IP input is only
+            // accepted via the allowV4/allowV6 branches above.
+            if (allowHostname && value.IsHostName() && !value.IsIPAddress())
             {
                 return;
             }
         }
 
         isValid = false;
-        errorMessage = Validations.InvalidIpAddres;
+
+        if (!allowHostname)
+        {
+            errorMessage = Validations.InvalidIpAddres;
+        }
+        else if (allowV4 || allowV6)
+        {
+            errorMessage = Validations.InvalidHostnameOrIpAddress;
+        }
+        else
+        {
+            errorMessage = Validations.InvalidHostname;
+        }
     }
 
     private static void ValidateOpcTcp(

@@ -160,6 +160,24 @@ namespace Atc.Wpf.Forms.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid host name.
+        /// </summary>
+        public static string InvalidHostname {
+            get {
+                return ResourceManager.GetString("InvalidHostname", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid host name or IP address.
+        /// </summary>
+        public static string InvalidHostnameOrIpAddress {
+            get {
+                return ResourceManager.GetString("InvalidHostnameOrIpAddress", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Invalid IP address.
         /// </summary>
         public static string InvalidIpAddres {

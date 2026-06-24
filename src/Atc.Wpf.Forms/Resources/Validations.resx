@@ -150,6 +150,12 @@
   <data name="InvalidHttpUrl" xml:space="preserve">
     <value>Invalid HTTP url</value>
   </data>
+  <data name="InvalidHostname" xml:space="preserve">
+    <value>Invalid host name</value>
+  </data>
+  <data name="InvalidHostnameOrIpAddress" xml:space="preserve">
+    <value>Invalid host name or IP address</value>
+  </data>
   <data name="InvalidIpAddres" xml:space="preserve">
     <value>Invalid IP address</value>
   </data>

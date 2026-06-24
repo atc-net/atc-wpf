@@ -82,7 +82,42 @@
                         Grid.Column="1"
                         Margin="10"
                         Orientation="Vertical"
-                        Spacing="10" />
+                        Spacing="10">
+
+                        <atc:LabelEndpointBox
+                            x:Name="EndpointBox6"
+                            Host="opcua.demo-this.com"
+                            IsMandatory="True"
+                            LabelText="Endpoint 6"
+                            NetworkProtocol="OpcTcp"
+                            NetworkValidation="Hostname"
+                            Port="51210"
+                            ShowClearTextButton="True"
+                            WatermarkText="opcua.demo-this.com" />
+
+                        <atc:LabelEndpointBox
+                            x:Name="EndpointBox7"
+                            Host="opcua.demo-this.com"
+                            IsMandatory="True"
+                            LabelText="Endpoint 7"
+                            NetworkProtocol="OpcTcp"
+                            NetworkValidation="IPv4AddressOrHostname"
+                            Port="51210"
+                            ShowClearTextButton="True"
+                            WatermarkText="192.168.0.27 or opcua.demo-this.com" />
+
+                        <atc:LabelEndpointBox
+                            x:Name="EndpointBox8"
+                            Host="192.168.0.27"
+                            IsMandatory="True"
+                            LabelText="Endpoint 8"
+                            NetworkProtocol="OpcTcp"
+                            NetworkValidation="IPAddressOrHostname"
+                            Port="51210"
+                            ShowClearTextButton="True"
+                            WatermarkText="192.168.0.27 or opcua.demo-this.com" />
+
+                    </atc:UniformSpacingPanel>
 
                 </atc:GridEx>
 

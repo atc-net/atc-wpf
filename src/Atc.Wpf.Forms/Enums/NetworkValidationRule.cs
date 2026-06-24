@@ -8,4 +8,8 @@ public enum NetworkValidationRule
     IPAddress,
     IPv4Address,
     IPv6Address,
+    Hostname,
+    IPv4AddressOrHostname,
+    IPv6AddressOrHostname,
+    IPAddressOrHostname,
 }

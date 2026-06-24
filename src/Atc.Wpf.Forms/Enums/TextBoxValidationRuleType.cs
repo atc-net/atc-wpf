@@ -73,6 +73,26 @@ public enum TextBoxValidationRuleType
     IPv6Address,
 
     /// <summary>
+    /// Validates DNS host name format only (RFC 1123).
+    /// </summary>
+    Hostname,
+
+    /// <summary>
+    /// Validates IPv4 address or DNS host name format.
+    /// </summary>
+    IPv4AddressOrHostname,
+
+    /// <summary>
+    /// Validates IPv6 address or DNS host name format.
+    /// </summary>
+    IPv6AddressOrHostname,
+
+    /// <summary>
+    /// Validates IPv4/IPv6 address or DNS host name format.
+    /// </summary>
+    IPAddressOrHostname,
+
+    /// <summary>
     /// Validates OPC TCP URL format.
     /// </summary>
     OpcTcp,
