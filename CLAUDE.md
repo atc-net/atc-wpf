@@ -104,8 +104,8 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 - Framework: XUnit 3 with Microsoft Testing Platform
 - WPF-specific testing: Xunit.StaFact (for STA thread tests)
-- Test utilities: Atc.XUnit, AutoFixture, FluentAssertions, NSubstitute
-- Global usings for test projects include: AutoFixture, FluentAssertions, NSubstitute, Xunit
+- Test utilities: Atc.XUnit, AutoFixture, AwesomeAssertions, NSubstitute
+- Global usings for test projects include: AutoFixture, AwesomeAssertions, NSubstitute, Xunit
 
 ### Test Projects Structure
 
