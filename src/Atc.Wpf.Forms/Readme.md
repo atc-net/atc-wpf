@@ -846,7 +846,7 @@ A labeled control for entering network endpoints (protocol + host + port) with v
 | `WatermarkText` | `string` | `"localhost"` | Placeholder text for the host field |
 | `ShowClearTextButton` | `bool` | `true` | Show/hide the clear button in host field |
 | `HideUpDownButtons` | `bool` | `true` | Show/hide increment/decrement buttons for port |
-| `NetworkValidation` | `NetworkValidationRule` | `None` | Additional validation rule for host (IPv4Address, IPv6Address, etc.) |
+| `NetworkValidation` | `NetworkValidationRule` | `None` | Additional validation rule for host. One of: `None`, `IPAddress`, `IPv4Address`, `IPv6Address`, `Hostname`, `IPv4AddressOrHostname`, `IPv6AddressOrHostname`, `IPAddressOrHostname` |
 | `MinimumPort` | `int` | `1` | Minimum allowed port number |
 | `MaximumPort` | `int` | `65535` | Maximum allowed port number |
 
@@ -869,6 +869,17 @@ A labeled control for entering network endpoints (protocol + host + port) with v
     Port="4840"
     IsMandatory="True"
     WatermarkText="192.168.1.1" />
+
+<!-- OPC TCP endpoint accepting an IPv4 address OR a DNS host name
+     (e.g. opc.tcp://opcua.demo-this.com:51210/UA/SampleServer) -->
+<atc:LabelEndpointBox
+    LabelText="OPC Server"
+    NetworkProtocol="OpcTcp"
+    NetworkValidation="IPv4AddressOrHostname"
+    Host="opcua.demo-this.com"
+    Port="51210"
+    IsMandatory="True"
+    WatermarkText="192.168.0.27" />
 
 <!-- Binding to a Uri property in ViewModel -->
 <atc:LabelEndpointBox

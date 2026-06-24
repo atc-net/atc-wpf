@@ -24,6 +24,10 @@ internal static class EndpointBoxValidationHelper
             NetworkValidationRule.IPAddress => TextBoxValidationRuleType.IPAddress,
             NetworkValidationRule.IPv4Address => TextBoxValidationRuleType.IPv4Address,
             NetworkValidationRule.IPv6Address => TextBoxValidationRuleType.IPv6Address,
+            NetworkValidationRule.Hostname => TextBoxValidationRuleType.Hostname,
+            NetworkValidationRule.IPv4AddressOrHostname => TextBoxValidationRuleType.IPv4AddressOrHostname,
+            NetworkValidationRule.IPv6AddressOrHostname => TextBoxValidationRuleType.IPv6AddressOrHostname,
+            NetworkValidationRule.IPAddressOrHostname => TextBoxValidationRuleType.IPAddressOrHostname,
             _ => TextBoxValidationRuleType.None,
         };
 

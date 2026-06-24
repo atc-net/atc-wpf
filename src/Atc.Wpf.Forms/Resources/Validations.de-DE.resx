@@ -129,6 +129,12 @@
   <data name="InvalidHttpUrl" xml:space="preserve">
     <value>Ungültige HTTP-URL</value>
   </data>
+  <data name="InvalidHostname" xml:space="preserve">
+    <value>Ungültiger Hostname</value>
+  </data>
+  <data name="InvalidHostnameOrIpAddress" xml:space="preserve">
+    <value>Ungültiger Hostname oder IP-Adresse</value>
+  </data>
   <data name="InvalidIpAddres" xml:space="preserve">
     <value>Ungültige IP-Adresse</value>
   </data>
