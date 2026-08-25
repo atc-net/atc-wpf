@@ -156,7 +156,7 @@ public sealed class FontDescription : IEquatable<FontDescription>
         }
 
         return string.Equals(Family.Source, other.Family.Source, StringComparison.Ordinal) &&
-               Size.Equals(other.Size) &&
+               Size.IsEqual(other.Size) &&
                Weight.Equals(other.Weight) &&
                Style.Equals(other.Style) &&
                Stretch.Equals(other.Stretch) &&

@@ -71,7 +71,7 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         get => hue;
         set
         {
-            if (value.Equals(hue))
+            if (value.IsEqual(hue))
             {
                 return;
             }
@@ -92,7 +92,7 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         get => saturation;
         set
         {
-            if (value.Equals(saturation))
+            if (value.IsEqual(saturation))
             {
                 return;
             }
@@ -113,7 +113,7 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         get => brightness;
         set
         {
-            if (value.Equals(brightness))
+            if (value.IsEqual(brightness))
             {
                 return;
             }
