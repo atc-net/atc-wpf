@@ -677,7 +677,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
 
         Messenger.Default.Send(new ZoomInformationMessage(newZoom * 100));
 
-        if (c.InternalViewportZoom.Equals(newZoom))
+        if (c.InternalViewportZoom.IsEqual(newZoom))
         {
             return;
         }

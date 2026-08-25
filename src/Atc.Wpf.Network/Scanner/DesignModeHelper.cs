@@ -3,6 +3,7 @@ namespace Atc.Wpf.Network.Scanner;
 /// <summary>
 /// Provides design-time sample data for the network scanner controls.
 /// </summary>
+[SuppressMessage("Security", "S1313:Do not hardcode IP addresses", Justification = "OK - Design-time sample data only.")]
 public static class DesignModeHelper
 {
     /// <summary>

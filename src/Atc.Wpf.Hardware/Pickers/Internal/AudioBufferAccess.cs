@@ -9,6 +9,7 @@ namespace Atc.Wpf.Hardware.Pickers.Internal;
 /// <c>Marshal.GetIUnknownForObject</c> cannot reach the underlying ABI object on
 /// read-side frames.
 /// </summary>
+[SuppressMessage("Security", "S6640:Make sure that using \"unsafe\" is safe here", Justification = "OK - By design, required for WinRT buffer interop.")]
 internal static class AudioBufferAccess
 {
     /// <summary>

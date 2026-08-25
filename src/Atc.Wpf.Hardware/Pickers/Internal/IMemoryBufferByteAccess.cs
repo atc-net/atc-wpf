@@ -16,6 +16,7 @@ namespace Atc.Wpf.Hardware.Pickers.Internal;
 [ComImport]
 [Guid("5B0D3235-4DBA-4D44-865E-8F1D0E4FD04D")]
 [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+[SuppressMessage("Security", "S6640:Make sure that using \"unsafe\" is safe here", Justification = "OK - By design, required for WinRT buffer interop.")]
 internal unsafe interface IMemoryBufferByteAccess
 {
     void GetBuffer(
