@@ -79,8 +79,8 @@ public struct PanelUvSize : IEquatable<PanelUvSize>
         => !(left == right);
 
     public readonly bool Equals(PanelUvSize other)
-        => U.Equals(other.U) &&
-           V.Equals(other.V);
+        => U.IsEqual(other.U) &&
+           V.IsEqual(other.V);
 
     public override readonly bool Equals(object? obj)
         => obj is PanelUvSize x && Equals(x);
