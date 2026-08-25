@@ -105,7 +105,7 @@ internal abstract class GradientColorPaintServer : PaintServer
                 continue;
             }
 
-            if (!stopOpacity.Equals(1))
+            if (!stopOpacity.IsEqual(1))
             {
                 color = Color.FromArgb(
                     (byte)(stopOpacity * 255),
