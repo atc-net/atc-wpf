@@ -652,7 +652,8 @@ public sealed partial class TerminalViewer : IDisposable
                     ListViewTerminal.Items.Clear();
                     ResetTailState();
                 },
-                DispatcherPriority.Render);
+                DispatcherPriority.Render,
+                CancellationToken.None);
         }
     }
 

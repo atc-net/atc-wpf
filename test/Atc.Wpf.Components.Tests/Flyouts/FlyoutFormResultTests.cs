@@ -182,7 +182,7 @@ public sealed class FlyoutFormResultTests
         Assert.False(result.IsSuccess);
         Assert.False(result.IsCancelled);
         Assert.Equal(2, result.ValidationErrors.Count);
-        Assert.Contains("Name is required", result.ValidationErrors);
-        Assert.Contains("Age must be positive", result.ValidationErrors);
+        Assert.Contains("Name is required", result.ValidationErrors, StringComparer.Ordinal);
+        Assert.Contains("Age must be positive", result.ValidationErrors, StringComparer.Ordinal);
     }
 }

@@ -43,8 +43,8 @@ public sealed class ObservableKeyValuePairTests
     public void Setting_each_property_raises_one_event_per_assignment()
     {
         var sut = new ObservableKeyValuePair<string, int>();
-        var captured = new List<string?>();
-        sut.PropertyChanged += (_, e) => captured.Add(e.PropertyName);
+        var captured = new List<string>();
+        sut.PropertyChanged += (_, e) => captured.Add(e.PropertyName!);
 
         sut.Key = "a";
         sut.Value = 1;
@@ -52,7 +52,8 @@ public sealed class ObservableKeyValuePairTests
 
         Assert.Equal(
             new[] { "Key", "Value", "Key" },
-            captured);
+            captured,
+            StringComparer.Ordinal);
     }
 
     [Fact]

@@ -3,6 +3,7 @@ namespace Atc.Wpf.Theming.Behaviors;
 
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 [SuppressMessage("Design", "MA0150:Do not call the default object.ToString explicitly", Justification = "OK.")]
+[SuppressMessage("Security", "S6640:Make sure that using \"unsafe\" is safe here", Justification = "OK - By design.")]
 public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
 {
     /// <inheritdoc />
