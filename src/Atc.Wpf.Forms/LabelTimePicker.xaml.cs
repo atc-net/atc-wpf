@@ -112,6 +112,12 @@ public partial class LabelTimePicker : ILabelTimePicker
     {
         var control = (LabelTimePicker)d;
 
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<string>(
+                e.OldValue as string ?? string.Empty,
+                e.NewValue as string ?? string.Empty,
+                TextChangedEvent));
+
         if (StackTraceHelper.ContainsPropertyName(nameof(OnSelectedTimeChanged)))
         {
             return;

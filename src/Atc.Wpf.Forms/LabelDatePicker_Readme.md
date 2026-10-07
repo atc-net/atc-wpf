@@ -86,7 +86,7 @@ Inherits the common label properties from `LabelControlBase` (`LabelText`, `Labe
 |-------|------|-------------|
 | `LostFocusValid` | `EventHandler<ValueChangedEventArgs<DateTime?>>` | Raised when the text is committed and valid |
 | `LostFocusInvalid` | `EventHandler<ValueChangedEventArgs<DateTime?>>` | Raised when the text is committed and invalid |
-| `TextChanged` | Routed event (`Bubble`), `RoutedPropertyChangedEventHandler<string>` | Routed event identifier declared on the control |
+| `TextChanged` | Routed event (`Bubble`), `RoutedPropertyChangedEventHandler<string>` | Raised when `Text` changes |
 
 ## 📝 Notes
 
@@ -95,7 +95,7 @@ Inherits the common label properties from `LabelControlBase` (`LabelText`, `Labe
 - With `IsMandatory="True"`, empty text gives a "field is required" validation message; otherwise empty text clears `SelectedDate`
 - Invalid text sets `SelectedDate` to `null`
 - The calendar icon is re-colored with the accent color when the theme changes
-- The `TextChanged` routed event is declared but is not raised by the control's own code
+- `TextChanged` is raised on every change of `Text` (old and new text), including when the control re-formats a parsed value
 
 ## 🔗 Related Controls
 
