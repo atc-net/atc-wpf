@@ -14,8 +14,11 @@ public static class AnsiSequenceParser
 {
     private const char Esc = (char)0x1B;
 
+    // CSI sequence: ESC [ <optional private-mode prefix ? > = <> <params> <final letter>.
+    // Private-mode sequences (e.g. cursor hide "?25l", bracketed paste "?2004h") are recognised so they
+    // are stripped instead of leaking into the visible text.
     private static readonly Regex EscapeSequenceRegex = new(
-        Esc + @"\[([0-9;]*)([A-Za-z])",
+        Esc + @"\[([?>=<]?)([0-9;]*)([A-Za-z])",
         RegexOptions.Compiled,
         TimeSpan.FromMilliseconds(50));
 
@@ -49,9 +52,10 @@ public static class AnsiSequenceParser
                 runs.Add(BuildRun(text[pos..match.Index], state));
             }
 
-            if (match.Groups[2].Value == "m")
+            if (match.Groups[1].Length == 0 &&
+                match.Groups[3].Value == "m")
             {
-                state = ApplySgr(state, match.Groups[1].Value);
+                state = ApplySgr(state, match.Groups[2].Value);
             }
 
             // else: non-SGR sequence (cursor movement etc.) — strip silently.
@@ -148,6 +152,7 @@ public static class AnsiSequenceParser
         }
 
         var mode = parts[i + 1];
+        var lastIndex = parts.Count - 1;
 
         if (mode == 5 && i + 2 < parts.Count)
         {
@@ -165,6 +170,13 @@ public static class AnsiSequenceParser
             return state;
         }
 
+        if (mode == 5)
+        {
+            // Truncated "5;<index>": consume the rest so it is not read as attributes.
+            i = lastIndex;
+            return state;
+        }
+
         if (mode == 2 && i + 4 < parts.Count)
         {
             var r = (byte)global::System.Math.Clamp(parts[i + 2], 0, 255);
@@ -177,6 +189,12 @@ public static class AnsiSequenceParser
             return foreground
                 ? state with { Foreground = brush }
                 : state with { Background = brush };
+        }
+
+        if (mode == 2)
+        {
+            // Truncated "2;r;g;b": consume the rest so the components are not read as attributes.
+            i = lastIndex;
         }
 
         return state;
