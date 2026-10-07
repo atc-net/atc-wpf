@@ -4,7 +4,7 @@ public sealed class PrinterServiceTests
 {
     private IReadOnlyList<PrinterSnapshot> snapshots = [];
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_PrinterRemoved_MarksEntryDisconnected()
     {
         using var service = CreateService();
@@ -18,7 +18,7 @@ public sealed class PrinterServiceTests
         Assert.Equal(DeviceState.Disconnected, service.Printers[0].State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_DefaultPrinterAndQueueStatusChanged_UpdatesTheEntryInPlace()
     {
         using var service = CreateService();
@@ -32,6 +32,26 @@ public sealed class PrinterServiceTests
         Assert.Same(entry, Assert.Single(service.Printers));
         Assert.False(entry.IsDefault);
         Assert.Equal("Printing", entry.QueueStatus);
+    }
+
+    [WpfFact]
+    public async Task RefreshAsync_QueriesTheSpoolerOffTheUiThread_AndAppliesOnIt()
+    {
+        var uiThreadId = Environment.CurrentManagedThreadId;
+        int? enumerateThreadId = null;
+        int? collectionChangedThreadId = null;
+        using var service = new PrinterService(enumerate: () =>
+        {
+            enumerateThreadId = Environment.CurrentManagedThreadId;
+            return [Office(isDefault: true, queueStatus: "None")];
+        });
+        service.Printers.CollectionChanged += (_, _) => collectionChangedThreadId = Environment.CurrentManagedThreadId;
+
+        await service.RefreshAsync();
+
+        Assert.NotEqual(uiThreadId, enumerateThreadId);
+        Assert.Equal(uiThreadId, collectionChangedThreadId);
+        Assert.Single(service.Printers);
     }
 
     private static PrinterSnapshot Office(

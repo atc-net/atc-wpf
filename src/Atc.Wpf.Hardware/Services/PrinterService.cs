@@ -4,6 +4,7 @@ public sealed class PrinterService : IPrinterService
 {
     private readonly Func<IReadOnlyList<PrinterSnapshot>> enumerate;
     private readonly DispatcherTimer pollTimer;
+    private Task? inFlightPoll;
     private bool started;
     private bool disposed;
 
@@ -53,10 +54,19 @@ public sealed class PrinterService : IPrinterService
         pollTimer.Stop();
     }
 
+    /// <summary>
+    /// Enumerates on a background thread and applies the result on the calling (UI) thread.
+    /// A refresh requested while a poll is in flight shares that poll.
+    /// </summary>
     public Task RefreshAsync()
     {
-        EnumerateAndSync();
-        return Task.CompletedTask;
+        if (inFlightPoll is { IsCompleted: false })
+        {
+            return inFlightPoll;
+        }
+
+        inFlightPoll = PollAsync();
+        return inFlightPoll;
     }
 
     public void Dispose()
@@ -72,14 +82,17 @@ public sealed class PrinterService : IPrinterService
         pollTimer.Stop();
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient print spooler errors.")]
     private void OnPollTick(
         object? sender,
         EventArgs e)
+        => _ = PollFromTimerAsync();
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient print spooler errors.")]
+    private async Task PollFromTimerAsync()
     {
         try
         {
-            EnumerateAndSync();
+            await RefreshAsync().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
@@ -138,11 +151,18 @@ public sealed class PrinterService : IPrinterService
         return snapshots;
     }
 
-    private void EnumerateAndSync()
+    private async Task PollAsync()
     {
+        // The spooler query can block for seconds when a network print server is offline.
+        var snapshots = await Task.Run(enumerate).ConfigureAwait(true);
+        if (disposed)
+        {
+            return;
+        }
+
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var snapshot in enumerate())
+        foreach (var snapshot in snapshots)
         {
             foundIds.Add(snapshot.FullName);
             Upsert(snapshot);
