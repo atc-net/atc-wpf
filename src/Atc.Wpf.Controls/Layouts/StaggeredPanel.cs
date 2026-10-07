@@ -120,32 +120,33 @@ public sealed class StaggeredPanel : Panel
             return new Size(0, 0);
         }
 
-        var availableWidth = availableSize.Width - Padding.Left - Padding.Right;
-        var availableHeight = availableSize.Height - Padding.Top - Padding.Bottom;
+        var horizontalPadding = Padding.Left + Padding.Right;
+        var verticalPadding = Padding.Top + Padding.Bottom;
+        var availableWidth = availableSize.Width - horizontalPadding;
+        var availableHeight = availableSize.Height - verticalPadding;
+        var spacing = HorizontalSpacing;
 
-        itemWidth = System.Math.Min(DesiredItemWidth, availableWidth);
-        var numColumns = System.Math.Max(1, (int)System.Math.Floor(availableWidth / (itemWidth + HorizontalSpacing)));
-
-        var totalWidth = itemWidth + ((numColumns - 1) * (itemWidth + HorizontalSpacing));
-        if (totalWidth > availableWidth)
+        int numColumns;
+        double contentWidth;
+        if (double.IsInfinity(availableWidth))
         {
-            numColumns--;
+            // Unconstrained width: give every child its own column.
+            itemWidth = DesiredItemWidth;
+            numColumns = Children.Count;
+            contentWidth = (numColumns * itemWidth) + ((numColumns - 1) * spacing);
         }
-        else if (double.IsInfinity(availableWidth))
+        else
         {
-            availableWidth = totalWidth;
-        }
+            itemWidth = System.Math.Min(DesiredItemWidth, availableWidth);
 
-        if (HorizontalAlignment == HorizontalAlignment.Stretch)
-        {
-            var occupiedSpacing = (numColumns - 1) * HorizontalSpacing;
-            if (availableWidth < occupiedSpacing)
+            // Same column count as ArrangeOverride: n columns need n * itemWidth + (n - 1) * spacing.
+            numColumns = GetColumnCount(availableWidth, itemWidth, spacing);
+            contentWidth = availableWidth;
+
+            if (HorizontalAlignment == HorizontalAlignment.Stretch)
             {
-                occupiedSpacing = availableWidth;
+                itemWidth = System.Math.Max(0, (availableWidth - ((numColumns - 1) * spacing)) / numColumns);
             }
-
-            availableWidth -= occupiedSpacing;
-            itemWidth = availableWidth / numColumns;
         }
 
         var columnHeights = new double[numColumns];
@@ -164,7 +165,7 @@ public sealed class StaggeredPanel : Panel
 
         var desiredHeight = columnHeights.Length > 0 ? columnHeights.Max() : 0;
 
-        return new Size(availableWidth, desiredHeight);
+        return new Size(contentWidth + horizontalPadding, desiredHeight + verticalPadding);
     }
 
     /// <inheritdoc />
@@ -177,22 +178,17 @@ public sealed class StaggeredPanel : Panel
 
         var horizontalOffset = Padding.Left;
         var verticalOffset = Padding.Top;
-        var numColumns = System.Math.Max(1, (int)System.Math.Floor((finalSize.Width + HorizontalSpacing) / (itemWidth + HorizontalSpacing)));
-
+        var contentWidth = finalSize.Width - Padding.Left - Padding.Right;
+        var numColumns = GetColumnCount(contentWidth, itemWidth, HorizontalSpacing);
         var totalWidth = itemWidth + ((numColumns - 1) * (itemWidth + HorizontalSpacing));
-        if (totalWidth > finalSize.Width)
-        {
-            numColumns--;
-            totalWidth = itemWidth + ((numColumns - 1) * (itemWidth + HorizontalSpacing));
-        }
 
         switch (HorizontalAlignment)
         {
             case HorizontalAlignment.Right:
-                horizontalOffset += finalSize.Width - totalWidth;
+                horizontalOffset += contentWidth - totalWidth;
                 break;
             case HorizontalAlignment.Center:
-                horizontalOffset += (finalSize.Width - totalWidth) / 2;
+                horizontalOffset += (contentWidth - totalWidth) / 2;
                 break;
         }
 
@@ -230,6 +226,24 @@ public sealed class StaggeredPanel : Panel
         }
 
         panel.InvalidateMeasure();
+    }
+
+    /// <summary>
+    /// The number of columns of <paramref name="itemWidth"/> that fit in <paramref name="width"/> with
+    /// <paramref name="spacing"/> between them (n * itemWidth + (n - 1) * spacing &lt;= width); at least one.
+    /// </summary>
+    private static int GetColumnCount(
+        double width,
+        double itemWidth,
+        double spacing)
+    {
+        var slot = itemWidth + spacing;
+        if (slot <= 0 || double.IsInfinity(width))
+        {
+            return 1;
+        }
+
+        return System.Math.Max(1, (int)System.Math.Floor((width + spacing) / slot));
     }
 
     private static int GetShortestColumnIndex(
