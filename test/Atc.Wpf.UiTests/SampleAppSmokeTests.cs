@@ -16,7 +16,7 @@ public sealed class SampleAppSmokeTests
     private const int LaunchTimeoutMilliseconds = 20_000;
 
     [Trait("Category", "UI")]
-    [Fact(Skip = "Manual UI smoke test — opt in by removing the Skip attribute or running with --filter Category=UI.")]
+    [Fact(Skip = "Manual UI smoke test — opt in by removing the Skip argument locally (see test/Atc.Wpf.UiTests/Readme.md).")]
     public void Sample_app_launches_and_shows_main_window()
     {
         var exePath = SampleAppPath.Resolve();

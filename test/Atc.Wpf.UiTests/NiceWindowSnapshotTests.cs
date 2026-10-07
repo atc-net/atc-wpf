@@ -39,7 +39,7 @@ public sealed class NiceWindowSnapshotTests
     private const int TitleBarStripHeight = 40;
 
     [Trait("Category", "UI")]
-    [Fact(Skip = "Manual UI snapshot test — opt in by removing the Skip attribute or running with --filter Category=UI.")]
+    [Fact(Skip = "Manual UI snapshot test — opt in by removing the Skip argument locally (see test/Atc.Wpf.UiTests/Readme.md).")]
     public void NiceWindow_chrome_is_active_and_titlebar_strip_can_be_snapshotted()
     {
         var exePath = SampleAppPath.Resolve();
