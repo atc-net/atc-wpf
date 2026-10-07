@@ -5,6 +5,10 @@ public sealed class DevicePickerControllerTests
     private readonly ObservableCollection<RunningProcessInfo> items = [];
     private readonly FakeHost host = new();
     private readonly List<string> serviceCalls = [];
+
+    // The controller subscribes weakly (as in production, where the picker holds it). Keep the controllers
+    // under test reachable, otherwise a Release-mode GC can collect them mid-test.
+    private readonly List<DevicePickerController<RunningProcessInfo>> keepAlive = [];
     private Func<Task> refresh = () => Task.CompletedTask;
 
     [Fact]
@@ -242,7 +246,8 @@ public sealed class DevicePickerControllerTests
     }
 
     private DevicePickerController<RunningProcessInfo> CreateSut()
-        => new(
+    {
+        var controller = new DevicePickerController<RunningProcessInfo>(
             host,
             items,
             startWatching: () => serviceCalls.Add("start"),
@@ -252,6 +257,10 @@ public sealed class DevicePickerControllerTests
                 serviceCalls.Add("refresh");
                 return refresh();
             });
+
+        keepAlive.Add(controller);
+        return controller;
+    }
 
     private sealed class FakeHost : IDevicePickerHost<RunningProcessInfo>
     {
