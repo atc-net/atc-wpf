@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 150+ controls, and source generators. The project follows a four-tier architecture:
+ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 160+ controls, and source generators. The project follows a four-tier architecture:
 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
 - **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
@@ -61,7 +61,7 @@ Source generators are provided by the `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf
 
 ### Control Architecture (Four-Tier)
 
-**Base Controls** (`src/Atc.Wpf.Controls/BaseControls/`): Atomic/primitive controls - single-purpose building blocks like NumericBox, IntegerBox, ToggleSwitch.
+**Base Controls** (`src/Atc.Wpf.Controls/Inputs/` and sibling folders): Atomic/primitive controls - single-purpose building blocks like NumericBox, IntegerBox, ToggleSwitch.
 
 **Form Controls** (`src/Atc.Wpf.Forms/`): Labeled form field controls with validation display and mandatory indicators. Use for building data entry forms. Examples: LabelTextBox, LabelComboBox, LabelDatePicker.
 
@@ -87,7 +87,7 @@ src/
 ├── Atc.Wpf.FontIcons/            # Font icon support
 ├── Atc.Wpf.Theming/              # Theme infrastructure
 ├── Atc.Wpf.Network/              # Network scanning controls
-├── Atc.Wpf.Hardware/             # Hardware pickers (SerialPort, USB, USB Camera)
+├── Atc.Wpf.Hardware/             # Hardware / system pickers (12 pickers + Label* wrappers)
 └── Atc.Wpf.UndoRedo/             # Undo/redo UI (HistoryView, keyboard behavior)
 test/                             # XUnit test projects
 sample/Atc.Wpf.Sample/            # Demo application
@@ -111,16 +111,18 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
-| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree) | 104 |
-| `Atc.Wpf.Controls.Tests` | Layouts, zoom utilities, value converters, event args, control unit tests | 24 |
-| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs | 19 |
-| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, Terminal events, Zoom browser, value converters | 15 |
-| `Atc.Wpf.Network.Tests` | Network ViewModels and value converters | 18 |
+| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage) | 123 |
+| `Atc.Wpf.Controls.Tests` | Layouts, zoom (grid overlay, ruler), value converters, event args, theme-subscription leak tests | 28 |
+| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls | 17 |
+| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, value converters | 20 |
+| `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |
+| `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, VNC connection service, value converters | 12 |
 | `Atc.Wpf.Theming.Tests` | Compliance + value-converter functional tests | 7 |
-| `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 13 |
-| `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 2 |
+| `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 2 |
+| `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 4 |
+| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 5 |
 
-> Counts are test-file counts; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs 1012 tests across 104 files).
+> Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,340 tests).
 > Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
 
 ### Running Tests
@@ -186,12 +188,12 @@ Place a `[ControlName]_Readme.md` file next to the control's `.cs` file. Follow 
 
 - MVVM guide: `docs/Mvvm/@Readme.md`
 - Source generators: `docs/SourceGenerators/ViewModel.md`
-- Restructuring plan: `docs/RESTRUCTURING_PLAN.md`
 - Theming controls: `docs/Theming/@Readme.md`
 - Font icons: `docs/FontIcons/@Readme.md`
 - Layout controls: `docs/Layouts/@Readme.md`
 - Data display controls: `docs/DataDisplay/@Readme.md`
+- Hardware pickers: `docs/Hardware/@Readme.md`, `src/Atc.Wpf.Hardware/Readme.md`
 - Form controls: `src/Atc.Wpf.Forms/` (LabelTextBox, LabelComboBox, etc.)
-- Base controls: `src/Atc.Wpf.Controls/BaseControls/` (NumericBox, IntegerBox, etc.)
+- Base controls: `src/Atc.Wpf.Controls/Inputs/` (NumericBox, IntegerBox, etc.)
 - Composite components: `src/Atc.Wpf.Components/` (Dialogs, Viewers, Monitoring, Notifications, Zoom)
 - Undo/redo UI: `src/Atc.Wpf.UndoRedo/` (history view, keyboard behavior) — wraps external `Atc.UndoRedo` NuGet
