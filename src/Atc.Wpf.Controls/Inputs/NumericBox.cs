@@ -978,6 +978,14 @@ public partial class NumericBox : Control
             match.Success ? match.Groups["format"].Value : format);
     }
 
+    /// <summary>
+    /// The standard percent specifier is case-insensitive ("p", "p0", "p2", ...).
+    /// </summary>
+    private static bool IsLowerCasePercentSpecifier(string format)
+        => format.Length > 0 &&
+           format[0] == 'p' &&
+           format.Skip(1).All(char.IsAsciiDigit);
+
     private static double ConvertStringFormatValue(
         double value,
         string format)
@@ -987,7 +995,8 @@ public partial class NumericBox : Control
             StringComparison.Ordinal) ||
             format.Contains(
                 '%',
-                StringComparison.Ordinal))
+                StringComparison.Ordinal) ||
+            IsLowerCasePercentSpecifier(format))
         {
             value /= 100d;
         }
@@ -1380,7 +1389,9 @@ public partial class NumericBox : Control
             return false;
         }
 
-        if (text.Any(char.IsLetter))
+        // Hexadecimal input legitimately contains the letters A-F; any other letter is invalid.
+        var allowsHexLetters = ParsingNumberStyle.HasFlag(NumberStyles.AllowHexSpecifier);
+        if (text.Any(c => char.IsLetter(c) && !(allowsHexLetters && char.IsAsciiHexDigit(c))))
         {
             return false;
         }

@@ -390,7 +390,7 @@ public sealed class NumericBoxTests : IDisposable
         Assert.Equal(0.25d, numericBox.Value);
     }
 
-    [StaFact(Skip = "Bug: NumericBox.ConvertStringFormatValue only recognizes an upper-case P percent specifier, so p0 input is not divided by 100.")]
+    [StaFact]
     public void StringFormat_LowercasePercent_TypedNumberIsDividedByHundred()
     {
         // Arrange
@@ -431,7 +431,7 @@ public sealed class NumericBoxTests : IDisposable
         Assert.Equal(16d, numericBox.Value);
     }
 
-    [StaFact(Skip = "Bug: NumericBox.ValidateText rejects any letter before the hexadecimal branch, so A-F cannot be typed with a hex StringFormat.")]
+    [StaFact]
     public void StringFormat_Hexadecimal_TypedHexLettersAreAccepted()
     {
         // Arrange
@@ -443,6 +443,20 @@ public sealed class NumericBoxTests : IDisposable
 
         // Assert
         Assert.Equal(26d, numericBox.Value);
+    }
+
+    [StaFact]
+    public void StringFormat_Hexadecimal_NonHexLettersAreStillRejected()
+    {
+        // Arrange
+        var (numericBox, textBox, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.StringFormat = "X2";
+
+        // Act
+        var handled = RaisePreviewTextInput(textBox, "1G");
+
+        // Assert
+        Assert.True(handled);
     }
 
     [StaFact]
