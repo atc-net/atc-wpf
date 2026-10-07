@@ -5,6 +5,7 @@ public sealed class WindowService : IWindowService
     private readonly Func<bool, IReadOnlyList<WindowSnapshot>> enumerate;
     private readonly Func<int, string> resolveProcessName;
     private readonly DispatcherTimer pollTimer;
+    private Task? inFlightPoll;
     private bool started;
     private bool disposed;
 
@@ -59,10 +60,19 @@ public sealed class WindowService : IWindowService
         pollTimer.Stop();
     }
 
+    /// <summary>
+    /// Enumerates on a background thread and applies the result on the calling (UI) thread.
+    /// A refresh requested while a poll is in flight shares that poll.
+    /// </summary>
     public Task RefreshAsync()
     {
-        EnumerateAndSync();
-        return Task.CompletedTask;
+        if (inFlightPoll is { IsCompleted: false })
+        {
+            return inFlightPoll;
+        }
+
+        inFlightPoll = PollAsync();
+        return inFlightPoll;
     }
 
     public void Dispose()
@@ -78,14 +88,17 @@ public sealed class WindowService : IWindowService
         pollTimer.Stop();
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on enumeration errors.")]
     private void OnPollTick(
         object? sender,
         EventArgs e)
+        => _ = PollFromTimerAsync();
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on enumeration errors.")]
+    private async Task PollFromTimerAsync()
     {
         try
         {
-            EnumerateAndSync();
+            await RefreshAsync().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
@@ -147,58 +160,91 @@ public sealed class WindowService : IWindowService
         }
     }
 
-    private void EnumerateAndSync()
+    private async Task PollAsync()
     {
-        var foundHandles = new HashSet<IntPtr>();
-
-        foreach (var snapshot in enumerate(OnlyVisibleWithTitle))
+        var onlyVisibleWithTitle = OnlyVisibleWithTitle;
+        var snapshots = await Task.Run(() => enumerate(onlyVisibleWithTitle)).ConfigureAwait(true);
+        if (disposed)
         {
-            foundHandles.Add(snapshot.Handle);
-            Upsert(snapshot);
+            return;
         }
 
+        var foundHandles = new HashSet<IntPtr>();
+        var newcomers = new List<(WindowSnapshot Snapshot, TopLevelWindowInfo? Stale)>();
+
+        foreach (var snapshot in snapshots)
+        {
+            foundHandles.Add(snapshot.Handle);
+
+            var existing = FindByHandle(snapshot.Handle);
+            if (existing is not null &&
+                existing.ProcessId == snapshot.ProcessId &&
+                string.Equals(existing.ClassName, snapshot.ClassName, StringComparison.Ordinal))
+            {
+                if (existing.State is DeviceState.Disconnected)
+                {
+                    existing.State = DeviceState.Available;
+                }
+
+                existing.Title = snapshot.Title;
+            }
+            else
+            {
+                // New window, or the handle was reused by another window (the old one is gone).
+                newcomers.Add((snapshot, existing));
+            }
+        }
+
+        if (newcomers.Count > 0)
+        {
+            var processNames = await Task
+                .Run(() => newcomers.Select(n => resolveProcessName(n.Snapshot.ProcessId)).ToList())
+                .ConfigureAwait(true);
+            if (disposed)
+            {
+                return;
+            }
+
+            for (var i = 0; i < newcomers.Count; i++)
+            {
+                AddNewcomer(newcomers[i].Snapshot, processNames[i], newcomers[i].Stale);
+            }
+        }
+
+        MarkMissingAsDisconnected(foundHandles);
+    }
+
+    private void MarkMissingAsDisconnected(HashSet<IntPtr> found)
+    {
         for (var i = Windows.Count - 1; i >= 0; i--)
         {
-            if (!foundHandles.Contains(Windows[i].Handle))
+            if (!found.Contains(Windows[i].Handle))
             {
                 Windows[i].State = DeviceState.Disconnected;
             }
         }
     }
 
-    private void Upsert(WindowSnapshot snapshot)
+    private void AddNewcomer(
+        WindowSnapshot snapshot,
+        string processName,
+        TopLevelWindowInfo? stale)
     {
-        var existing = FindByHandle(snapshot.Handle);
-
-        if (existing is not null &&
-            existing.ProcessId == snapshot.ProcessId &&
-            string.Equals(existing.ClassName, snapshot.ClassName, StringComparison.Ordinal))
-        {
-            if (existing.State is DeviceState.Disconnected)
-            {
-                existing.State = DeviceState.Available;
-            }
-
-            existing.Title = snapshot.Title;
-            return;
-        }
-
         var info = new TopLevelWindowInfo(
             handle: snapshot.Handle,
             title: snapshot.Title,
             className: snapshot.ClassName,
             processId: snapshot.ProcessId,
-            processName: resolveProcessName(snapshot.ProcessId))
+            processName: processName)
         {
             State = DeviceState.Available,
         };
 
         Windows.Add(info);
 
-        // The window handle was reused by another window: the old window is gone.
-        if (existing is not null)
+        if (stale is not null)
         {
-            RemoveStale(existing);
+            RemoveStale(stale);
         }
     }
 
