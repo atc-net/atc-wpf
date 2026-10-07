@@ -50,8 +50,10 @@ jobs:
       - name: 🛠️ Build solution
         run: dotnet build Atc.Wpf.slnx -c Release --no-restore /p:UseSourceLink=true
 
+      # Desktop UI tests (Category=UI) launch the real sample app and are timing-sensitive;
+      # they are not run in CI - run them locally (see test/Atc.Wpf.UiTests/Readme.md).
       - name: 🧪 Run unit tests with code coverage
-        run: dotnet test --solution Atc.Wpf.slnx -c Release --no-build --coverage --coverage-output-format cobertura
+        run: dotnet test --solution Atc.Wpf.slnx -c Release --no-build --coverage --coverage-output-format cobertura --filter-not-trait "Category=UI"
 
       - name: 📤 Upload coverage reports as workflow artifacts
         if: ${{ !cancelled() }}
