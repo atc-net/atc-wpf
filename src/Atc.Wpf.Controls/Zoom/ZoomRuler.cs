@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.Zoom;
 /// </summary>
 public sealed partial class ZoomRuler : FrameworkElement
 {
+    private static readonly Typeface LabelTypeface = new("Segoe UI");
+
     public static readonly DependencyProperty ZoomBoxProperty = DependencyProperty.Register(
         nameof(ZoomBox),
         typeof(ZoomBox),
@@ -28,7 +30,8 @@ public sealed partial class ZoomRuler : FrameworkElement
         typeof(ZoomRuler),
         new FrameworkPropertyMetadata(
             Brushes.Gray,
-            FrameworkPropertyMetadataOptions.AffectsRender));
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            OnTickBrushChanged));
 
     public static readonly DependencyProperty LabelBrushProperty = DependencyProperty.Register(
         nameof(LabelBrush),
@@ -40,6 +43,9 @@ public sealed partial class ZoomRuler : FrameworkElement
 
     [DependencyProperty(DefaultValue = 8.0)]
     private double fontSize;
+
+    // Rendered on every pan/zoom frame: the pen is rebuilt only when TickBrush changes.
+    private Pen? cachedTickPen;
 
     /// <summary>
     /// Gets or sets the <see cref="ZoomBox"/> this ruler tracks.
@@ -94,19 +100,21 @@ public sealed partial class ZoomRuler : FrameworkElement
             return;
         }
 
+        var pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
         if (Orientation == ZoomRulerOrientation.Horizontal)
         {
-            RenderHorizontal(drawingContext, zoom);
+            RenderHorizontal(drawingContext, zoom, pixelsPerDip);
         }
         else
         {
-            RenderVertical(drawingContext, zoom);
+            RenderVertical(drawingContext, zoom, pixelsPerDip);
         }
     }
 
     private void RenderHorizontal(
         DrawingContext dc,
-        double zoom)
+        double zoom,
+        double pixelsPerDip)
     {
         var offset = ZoomBox!.ContentOffsetX;
         var extent = ActualWidth;
@@ -133,7 +141,7 @@ public sealed partial class ZoomRuler : FrameworkElement
 
                 if (isMajor)
                 {
-                    DrawLabel(dc, pos, new Point(screenPos + 2, 1));
+                    dc.DrawText(FormatLabel(pos, pixelsPerDip), new Point(screenPos + 2, 1));
                 }
             }
 
@@ -144,7 +152,8 @@ public sealed partial class ZoomRuler : FrameworkElement
 
     private void RenderVertical(
         DrawingContext dc,
-        double zoom)
+        double zoom,
+        double pixelsPerDip)
     {
         var offset = ZoomBox!.ContentOffsetY;
         var extent = ActualHeight;
@@ -171,7 +180,7 @@ public sealed partial class ZoomRuler : FrameworkElement
 
                 if (isMajor)
                 {
-                    var text = FormatLabel(pos);
+                    var text = FormatLabel(pos, pixelsPerDip);
                     var rotateTransform = new RotateTransform(-90, 2, screenPos + 2);
                     dc.PushTransform(rotateTransform);
                     dc.DrawText(text, new Point(2, screenPos + 2));
@@ -184,23 +193,26 @@ public sealed partial class ZoomRuler : FrameworkElement
         }
     }
 
+    private static void OnTickBrushChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((ZoomRuler)d).cachedTickPen = null;
+
     private Pen CreateTickPen()
     {
-        var pen = new Pen(TickBrush, 0.5);
-        pen.Freeze();
-        return pen;
+        if (cachedTickPen is null)
+        {
+            var pen = new Pen(TickBrush, 0.5);
+            pen.Freeze();
+            cachedTickPen = pen;
+        }
+
+        return cachedTickPen;
     }
 
-    private void DrawLabel(
-        DrawingContext dc,
+    private FormattedText FormatLabel(
         double value,
-        Point position)
-    {
-        var text = FormatLabel(value);
-        dc.DrawText(text, position);
-    }
-
-    private FormattedText FormatLabel(double value)
+        double pixelsPerDip)
     {
         var label = System.Math.Abs(value) < 0.01
             ? "0"
@@ -210,10 +222,10 @@ public sealed partial class ZoomRuler : FrameworkElement
             label,
             CultureInfo.InvariantCulture,
             FlowDirection.LeftToRight,
-            new Typeface("Segoe UI"),
+            LabelTypeface,
             10.0,
             LabelBrush,
-            VisualTreeHelper.GetDpi(this).PixelsPerDip);
+            pixelsPerDip);
     }
 
     private static double CalculateTickSpacing(double zoom)
