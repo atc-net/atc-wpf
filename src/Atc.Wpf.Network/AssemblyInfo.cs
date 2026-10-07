@@ -1,0 +1,1 @@
+[assembly: InternalsVisibleTo("Atc.Wpf.Network.Tests")]
