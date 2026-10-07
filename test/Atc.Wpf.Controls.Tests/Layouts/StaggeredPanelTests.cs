@@ -132,7 +132,7 @@ public sealed class StaggeredPanelTests : IDisposable
         AssertSlot(panel.Children[2], 120, 35, 110, 40);
     }
 
-    [StaFact(Skip = "Bug: StaggeredPanel.MeasureOverride subtracts the inter-column spacing from the returned DesiredSize width in Stretch mode.")]
+    [StaFact]
     public void Layout_StretchAlignment_ArrangedAtDesiredSize_KeepsColumnCount()
     {
         // Arrange
@@ -184,7 +184,7 @@ public sealed class StaggeredPanelTests : IDisposable
         AssertSlot(panel.Children[0], 10, 10, 100, 50);
     }
 
-    [StaFact(Skip = "Bug: StaggeredPanel.MeasureOverride excludes Padding from DesiredSize.")]
+    [StaFact]
     public void Measure_Padding_IsIncludedInDesiredSize()
     {
         // Arrange
@@ -199,7 +199,7 @@ public sealed class StaggeredPanelTests : IDisposable
         Assert.Equal(new Size(120, 70), panel.DesiredSize);
     }
 
-    [StaFact(Skip = "Bug: StaggeredPanel.MeasureOverride computes columns as width / (itemWidth + spacing), dropping a column that fits exactly.")]
+    [StaFact]
     public void Layout_ColumnsThatFitExactlyWithSpacing_AreAllUsed()
     {
         // Arrange
@@ -216,7 +216,7 @@ public sealed class StaggeredPanelTests : IDisposable
         AssertSlot(panel.Children[1], 110, 0, 100, 30);
     }
 
-    [StaFact(Skip = "Bug: StaggeredPanel.MeasureOverride allocates int.MaxValue columns for an infinite available width and throws OutOfMemoryException.")]
+    [StaFact]
     public void Measure_InfiniteWidth_DoesNotThrow()
     {
         // Arrange
