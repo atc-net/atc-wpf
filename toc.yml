@@ -26,6 +26,8 @@
   href: docs/Components/@Readme.md
 - name: Data display
   href: docs/DataDisplay/@Readme.md
+- name: Hardware
+  href: docs/Hardware/@Readme.md
 - name: Hotkeys
   href: docs/Hotkeys/@Readme.md
 - name: Navigation

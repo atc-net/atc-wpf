@@ -1,0 +1,64 @@
+name: "Documentation site"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'src/**'
+      - 'index.md'
+      - 'toc.yml'
+      - 'docfx.json'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+# Only one deployment at a time; a newer push supersedes a queued one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-docs:
+    # docfx compiles the WPF projects to generate the API reference, so it needs a Windows runner.
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 🧰 Install docfx
+        run: dotnet tool install --global docfx --version 2.81.0
+
+      - name: 📚 Build documentation site
+        run: docfx docfx.json
+
+      - name: ⚙️ Configure GitHub Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: 📤 Upload site artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs: build-docs
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
