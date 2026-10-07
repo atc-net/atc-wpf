@@ -2,12 +2,23 @@ namespace Atc.Wpf.Hardware.Services;
 
 public sealed class ProcessService : IProcessService
 {
+    private readonly Func<IReadOnlyList<ProcessSnapshot>> enumerate;
+    private readonly Func<int, string?> resolveModulePath;
     private readonly DispatcherTimer pollTimer;
     private bool started;
     private bool disposed;
 
     public ProcessService()
+        : this(EnumerateProcesses, ResolveModulePath)
     {
+    }
+
+    internal ProcessService(
+        Func<IReadOnlyList<ProcessSnapshot>> enumerate,
+        Func<int, string?> resolveModulePath)
+    {
+        this.enumerate = enumerate;
+        this.resolveModulePath = resolveModulePath;
         Processes = new ObservableCollection<RunningProcessInfo>();
         pollTimer = new DispatcherTimer
         {
@@ -83,23 +94,20 @@ public sealed class ProcessService : IProcessService
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Process metadata access can throw for protected processes.")]
-    private void EnumerateAndSync()
+    private static IReadOnlyList<ProcessSnapshot> EnumerateProcesses()
     {
-        var processes = System.Diagnostics.Process.GetProcesses();
-        var foundIds = new HashSet<int>();
+        var snapshots = new List<ProcessSnapshot>();
 
-        foreach (var p in processes)
+        foreach (var p in System.Diagnostics.Process.GetProcesses())
         {
             try
             {
                 var hasWindow = p.MainWindowHandle != IntPtr.Zero;
-                if (OnlyWithMainWindow && !hasWindow)
-                {
-                    continue;
-                }
-
-                foundIds.Add(p.Id);
-                UpsertFromProcess(p);
+                snapshots.Add(new ProcessSnapshot(
+                    p.Id,
+                    p.ProcessName,
+                    hasWindow ? p.MainWindowTitle : string.Empty,
+                    hasWindow));
             }
             catch (Exception)
             {
@@ -111,6 +119,39 @@ public sealed class ProcessService : IProcessService
             }
         }
 
+        return snapshots;
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Module access can throw for protected processes.")]
+    private static string? ResolveModulePath(int processId)
+    {
+        try
+        {
+            using var process = System.Diagnostics.Process.GetProcessById(processId);
+            return process.MainModule?.FileName;
+        }
+        catch (Exception)
+        {
+            // Access denied or already exited — leave path null.
+            return null;
+        }
+    }
+
+    private void EnumerateAndSync()
+    {
+        var foundIds = new HashSet<int>();
+
+        foreach (var snapshot in enumerate())
+        {
+            if (OnlyWithMainWindow && !snapshot.HasMainWindow)
+            {
+                continue;
+            }
+
+            foundIds.Add(snapshot.ProcessId);
+            Upsert(snapshot);
+        }
+
         for (var i = Processes.Count - 1; i >= 0; i--)
         {
             if (!foundIds.Contains(Processes[i].ProcessId))
@@ -120,41 +161,49 @@ public sealed class ProcessService : IProcessService
         }
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Module access can throw for protected processes.")]
-    private void UpsertFromProcess(System.Diagnostics.Process process)
+    private void Upsert(ProcessSnapshot snapshot)
     {
-        var existing = FindByProcessId(process.Id);
+        var existing = FindByProcessId(snapshot.ProcessId);
 
-        if (existing is not null)
+        if (existing is not null &&
+            string.Equals(existing.ProcessName, snapshot.ProcessName, StringComparison.OrdinalIgnoreCase))
         {
             if (existing.State is DeviceState.Disconnected)
             {
                 existing.State = DeviceState.Available;
             }
 
+            existing.MainWindowTitle = snapshot.MainWindowTitle;
             return;
         }
 
-        string? modulePath = null;
-        try
-        {
-            modulePath = process.MainModule?.FileName;
-        }
-        catch (Exception)
-        {
-            // Access denied — leave path null.
-        }
-
         var info = new RunningProcessInfo(
-            processId: process.Id,
-            processName: process.ProcessName,
-            mainWindowTitle: process.MainWindowTitle,
-            mainModulePath: modulePath)
+            processId: snapshot.ProcessId,
+            processName: snapshot.ProcessName,
+            mainWindowTitle: snapshot.MainWindowTitle,
+            mainModulePath: resolveModulePath(snapshot.ProcessId))
         {
             State = DeviceState.Available,
         };
 
         Processes.Add(info);
+
+        // The PID was reused by another process: the old process is gone.
+        if (existing is not null)
+        {
+            RemoveStale(existing);
+        }
+    }
+
+    /// <summary>
+    /// Retires an entry whose id now belongs to something else. Called after the fresh entry has been added,
+    /// so a picker that still has the stale entry selected sees it disconnect and leave - and does not
+    /// auto-rebind to the newcomer just because it reuses the same id.
+    /// </summary>
+    private void RemoveStale(RunningProcessInfo stale)
+    {
+        stale.State = DeviceState.Disconnected;
+        Processes.Remove(stale);
     }
 
     private RunningProcessInfo? FindByProcessId(int processId)

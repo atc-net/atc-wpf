@@ -4,13 +4,24 @@ public sealed class DriveService : IDriveService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
+    private readonly Func<IReadOnlyList<(string Name, System.IO.DriveType DriveType)>> listDrives;
+    private readonly Func<string, System.IO.DriveType, DriveSnapshot> readVolume;
     private readonly DispatcherTimer pollTimer;
     private bool started;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
     public DriveService()
+        : this(ListDrives, ReadVolume)
     {
+    }
+
+    internal DriveService(
+        Func<IReadOnlyList<(string Name, System.IO.DriveType DriveType)>> listDrives,
+        Func<string, System.IO.DriveType, DriveSnapshot> readVolume)
+    {
+        this.listDrives = listDrives;
+        this.readVolume = readVolume;
         Drives = new ObservableCollection<DiskDriveInfo>();
         pollTimer = new DispatcherTimer
         {
@@ -85,15 +96,40 @@ public sealed class DriveService : IDriveService
         }
     }
 
+    private static IReadOnlyList<(string Name, System.IO.DriveType DriveType)> ListDrives()
+        => System.IO.DriveInfo
+            .GetDrives()
+            .Select(d => (d.Name, d.DriveType))
+            .ToList();
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Removable drives without media throw on metadata access.")]
+    private static DriveSnapshot ReadVolume(
+        string name,
+        System.IO.DriveType driveType)
+    {
+        var drive = new System.IO.DriveInfo(name);
+
+        try
+        {
+            var isReady = drive.IsReady;
+            return isReady
+                ? new DriveSnapshot(name, drive.VolumeLabel, driveType, IsReady: true, drive.TotalSize, drive.AvailableFreeSpace)
+                : new DriveSnapshot(name, name, driveType, IsReady: false, TotalSize: null, AvailableFreeSpace: null);
+        }
+        catch (Exception)
+        {
+            return new DriveSnapshot(name, name, driveType, IsReady: false, TotalSize: null, AvailableFreeSpace: null);
+        }
+    }
+
     private void EnumerateAndSync(bool isInitialEnumeration)
     {
-        var found = System.IO.DriveInfo.GetDrives();
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var drive in found)
+        foreach (var (name, driveType) in listDrives())
         {
-            foundIds.Add(drive.Name);
-            UpsertFromDrive(drive, isInitialEnumeration);
+            foundIds.Add(name);
+            Upsert(name, driveType, isInitialEnumeration);
         }
 
         for (var i = Drives.Count - 1; i >= 0; i--)
@@ -105,52 +141,67 @@ public sealed class DriveService : IDriveService
         }
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Removable drives without media throw on metadata access.")]
-    private void UpsertFromDrive(
-        System.IO.DriveInfo drive,
+    private void Upsert(
+        string name,
+        System.IO.DriveType driveType,
         bool isInitialEnumeration)
     {
-        var existing = FindByDeviceId(drive.Name);
+        var existing = FindByDeviceId(name);
 
-        if (existing is not null)
+        if (existing is null)
         {
-            if (existing.State is DeviceState.Disconnected)
-            {
-                existing.State = DeviceState.Available;
-            }
-
+            AddNew(readVolume(name, driveType), isInitialEnumeration);
             return;
         }
 
-        string label;
-        bool isReady;
-        long? totalSize = null;
-        long? availableFreeSpace = null;
-
-        try
+        // Volume metadata of an offline network share or a spinning-up optical drive can block for seconds,
+        // so known drives of those kinds are not re-read on every poll.
+        if (driveType is System.IO.DriveType.Network or System.IO.DriveType.CDRom)
         {
-            isReady = drive.IsReady;
-            label = isReady ? drive.VolumeLabel : drive.Name;
-
-            if (isReady)
-            {
-                totalSize = drive.TotalSize;
-                availableFreeSpace = drive.AvailableFreeSpace;
-            }
-        }
-        catch (Exception)
-        {
-            isReady = false;
-            label = drive.Name;
+            MarkAvailable(existing);
+            return;
         }
 
+        var snapshot = readVolume(name, driveType);
+        if (IsSameVolume(existing, snapshot))
+        {
+            MarkAvailable(existing);
+            existing.AvailableFreeSpace = snapshot.AvailableFreeSpace;
+            return;
+        }
+
+        // Another volume is now mounted on this drive letter (e.g. a different USB stick).
+        AddNew(snapshot, isInitialEnumeration);
+        RemoveStale(existing);
+    }
+
+    private static void MarkAvailable(DiskDriveInfo drive)
+    {
+        if (drive.State is DeviceState.Disconnected)
+        {
+            drive.State = DeviceState.Available;
+        }
+    }
+
+    private static bool IsSameVolume(
+        DiskDriveInfo existing,
+        DriveSnapshot snapshot)
+        => existing.DriveType == snapshot.DriveType &&
+           existing.IsReady == snapshot.IsReady &&
+           existing.TotalSize == snapshot.TotalSize &&
+           string.Equals(existing.FriendlyName, snapshot.Label, StringComparison.Ordinal);
+
+    private void AddNew(
+        DriveSnapshot snapshot,
+        bool isInitialEnumeration)
+    {
         var newInfo = new DiskDriveInfo(
-            deviceId: drive.Name,
-            friendlyName: label,
-            driveType: drive.DriveType,
-            isReady: isReady,
-            totalSize: totalSize,
-            availableFreeSpace: availableFreeSpace)
+            deviceId: snapshot.Name,
+            friendlyName: snapshot.Label,
+            driveType: snapshot.DriveType,
+            isReady: snapshot.IsReady,
+            totalSize: snapshot.TotalSize,
+            availableFreeSpace: snapshot.AvailableFreeSpace)
         {
             State = isInitialEnumeration
                 ? DeviceState.Available
@@ -166,6 +217,17 @@ public sealed class DriveService : IDriveService
                 state => newInfo.State = state,
                 JustConnectedDuration);
         }
+    }
+
+    /// <summary>
+    /// Retires an entry whose id now belongs to something else. Called after the fresh entry has been added,
+    /// so a picker that still has the stale entry selected sees it disconnect and leave - and does not
+    /// auto-rebind to the newcomer just because it reuses the same id.
+    /// </summary>
+    private void RemoveStale(DiskDriveInfo stale)
+    {
+        stale.State = DeviceState.Disconnected;
+        Drives.Remove(stale);
     }
 
     private DiskDriveInfo? FindByDeviceId(string deviceId)
