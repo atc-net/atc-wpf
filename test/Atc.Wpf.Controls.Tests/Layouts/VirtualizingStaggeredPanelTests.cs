@@ -147,7 +147,7 @@ public sealed class VirtualizingStaggeredPanelTests : IDisposable
         Assert.Equal(0d, panel.ExtentHeight);
     }
 
-    [StaFact(Skip = "Bug: VirtualizingStaggeredPanel.MeasureOverride reads ItemContainerGenerator before InternalChildren, so the generator is null on the first pass and nothing is realized.")]
+    [StaFact]
     public void Measure_Hosted_FirstPass_RealizesItems()
     {
         // Arrange
@@ -231,7 +231,7 @@ public sealed class VirtualizingStaggeredPanelTests : IDisposable
         AssertSlot((UIElement)itemsControl.Items[2], 110, 35, 100, 40);
     }
 
-    [StaFact(Skip = "Bug: VirtualizingStaggeredPanel.MeasureOverride returns availableSize, so an infinite height makes WPF throw InvalidOperationException.")]
+    [StaFact]
     public void Measure_Hosted_InfiniteHeight_DoesNotThrow()
     {
         // Arrange
@@ -248,6 +248,36 @@ public sealed class VirtualizingStaggeredPanelTests : IDisposable
 
         // Assert
         Assert.Null(exception);
+    }
+
+    [StaFact]
+    public void Measure_Standalone_InfiniteWidth_GivesEachChildAColumn()
+    {
+        // Arrange
+        var panel = CreateStandalonePanel(HorizontalAlignment.Left, 50, 30);
+        panel.DesiredItemWidth = 100;
+        panel.HorizontalSpacing = 10;
+
+        // Act
+        panel.Measure(new Size(double.PositiveInfinity, 300));
+
+        // Assert
+        Assert.Equal(new Size(210, 50), panel.DesiredSize);
+    }
+
+    [StaFact]
+    public void Measure_Hosted_InfiniteWidth_DoesNotThrow()
+    {
+        // Arrange
+        var (itemsControl, panel) = CreateHosted(50, 30);
+        panel.DesiredItemWidth = 100;
+
+        // Act
+        var exception = Record.Exception(() => itemsControl.Measure(new Size(double.PositiveInfinity, 300)));
+
+        // Assert
+        Assert.Null(exception);
+        Assert.False(double.IsInfinity(panel.DesiredSize.Width));
     }
 
     #endregion
