@@ -18,27 +18,31 @@ public sealed class ZoomGridOverlay : Adorner
         nameof(MinorLineBrush),
         typeof(Brush),
         typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(CreateFrozenBrush(40), FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(CreateFrozenBrush(40), FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
     public static readonly DependencyProperty MajorLineBrushProperty = DependencyProperty.Register(
         nameof(MajorLineBrush),
         typeof(Brush),
         typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(CreateFrozenBrush(80), FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(CreateFrozenBrush(80), FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
     public static readonly DependencyProperty MinorLineThicknessProperty = DependencyProperty.Register(
         nameof(MinorLineThickness),
         typeof(double),
         typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
     public static readonly DependencyProperty MajorLineThicknessProperty = DependencyProperty.Register(
         nameof(MajorLineThickness),
         typeof(double),
         typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
     private readonly ZoomBox zoomBox;
+
+    // Rendered on every pan/zoom frame: pens are rebuilt only when a brush or thickness changes.
+    private Pen? minorPen;
+    private Pen? majorPen;
 
     public ZoomGridOverlay(ZoomBox adornedElement)
         : base(adornedElement)
@@ -130,10 +134,8 @@ public sealed class ZoomGridOverlay : Adorner
         var width = ActualWidth;
         var height = ActualHeight;
 
-        var minorPen = new Pen(MinorLineBrush, MinorLineThickness);
-        var majorPen = new Pen(MajorLineBrush, MajorLineThickness);
-        minorPen.Freeze();
-        majorPen.Freeze();
+        minorPen ??= CreateFrozenPen(MinorLineBrush, MinorLineThickness);
+        majorPen ??= CreateFrozenPen(MajorLineBrush, MajorLineThickness);
 
         var startX = System.Math.Floor(offsetX / spacing) * spacing;
         var startY = System.Math.Floor(offsetY / spacing) * spacing;
@@ -202,6 +204,24 @@ public sealed class ZoomGridOverlay : Adorner
 
     private static bool IsValidGridSpacing(object value)
         => value is double spacing && double.IsFinite(spacing) && spacing > 0;
+
+    private static void OnPenPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var overlay = (ZoomGridOverlay)d;
+        overlay.minorPen = null;
+        overlay.majorPen = null;
+    }
+
+    private static Pen CreateFrozenPen(
+        Brush brush,
+        double thickness)
+    {
+        var pen = new Pen(brush, thickness);
+        pen.Freeze();
+        return pen;
+    }
 
     private static SolidColorBrush CreateFrozenBrush(byte alpha)
     {
