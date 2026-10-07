@@ -8,4 +8,8 @@
 
   <!-- Place any common sample properties here -->
 
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
 </Project>

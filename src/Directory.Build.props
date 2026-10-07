@@ -35,8 +35,6 @@
     <DebugType>embedded</DebugType>
     <!-- Will generate nuget packages for each project -->
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <!-- Web projects aren't packable by default. To override the default behavior, add the following -->
-    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <!--

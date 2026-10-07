@@ -4,6 +4,7 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.Network</Title>
+    <IsPackable>true</IsPackable>
     <PackageId>Atc.Wpf.Network</PackageId>
     <PackageTags>wpf;network;scanner;ip-scanner</PackageTags>
     <Description>WPF network controls library providing network scanning and discovery components.</Description>

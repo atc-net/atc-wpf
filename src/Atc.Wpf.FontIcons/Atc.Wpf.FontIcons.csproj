@@ -4,6 +4,7 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.FontIcons</Title>
+    <IsPackable>true</IsPackable>
     <PackageId>Atc.Wpf.FontIcons</PackageId>
     <PackageTags>wpf;fonticons;fontawesome;materialdesign;icons</PackageTags>
     <Description>WPF font icon library providing Font Awesome, Material Design, and other icon fonts.</Description>
