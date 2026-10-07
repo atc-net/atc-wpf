@@ -40,6 +40,8 @@ public sealed class HotkeyService : IHotkeyService
 
     public event EventHandler<HotkeyConflictEventArgs>? ConflictDetected;
 
+    public event EventHandler<HotkeyRegistrationFailedEventArgs>? RegistrationFailed;
+
     public IReadOnlyList<IHotkeyRegistration> Registrations
     {
         get
@@ -428,7 +430,13 @@ public sealed class HotkeyService : IHotkeyService
         var vk = (uint)KeyInterop.VirtualKeyFromKey(registration.Key);
         var mods = GetWin32Modifiers(registration.Modifiers);
 
-        NativeMethods.RegisterHotKey(hwndSource.Handle, registration.Id, mods, vk);
+        if (!NativeMethods.RegisterHotKey(hwndSource.Handle, registration.Id, mods, vk))
+        {
+            // Typically ERROR_HOTKEY_ALREADY_REGISTERED: another application owns this combination.
+            RegistrationFailed?.Invoke(
+                this,
+                new HotkeyRegistrationFailedEventArgs(registration, Marshal.GetLastWin32Error()));
+        }
     }
 
     private void UnregisterGlobalHotkey(HotkeyRegistration registration)
