@@ -2,6 +2,8 @@ namespace Atc.Wpf.Hardware.Models;
 
 public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
 {
+    private string title;
+
     public TopLevelWindowInfo(
         IntPtr handle,
         string title,
@@ -10,7 +12,7 @@ public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
         string processName)
     {
         Handle = handle;
-        Title = title;
+        this.title = title;
         ClassName = className;
         ProcessId = processId;
         ProcessName = processName;
@@ -18,7 +20,21 @@ public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
 
     public IntPtr Handle { get; }
 
-    public string Title { get; }
+    public string Title
+    {
+        get => title;
+        internal set
+        {
+            if (string.Equals(value, title, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            title = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(FriendlyName));
+        }
+    }
 
     public string ClassName { get; }
 

@@ -2,6 +2,8 @@ namespace Atc.Wpf.Hardware.Models;
 
 public sealed partial class RunningProcessInfo : ObservableObject, IDeviceInfo
 {
+    private string mainWindowTitle;
+
     public RunningProcessInfo(
         int processId,
         string processName,
@@ -10,7 +12,7 @@ public sealed partial class RunningProcessInfo : ObservableObject, IDeviceInfo
     {
         ProcessId = processId;
         ProcessName = processName;
-        MainWindowTitle = mainWindowTitle;
+        this.mainWindowTitle = mainWindowTitle;
         MainModulePath = mainModulePath;
     }
 
@@ -18,7 +20,21 @@ public sealed partial class RunningProcessInfo : ObservableObject, IDeviceInfo
 
     public string ProcessName { get; }
 
-    public string MainWindowTitle { get; }
+    public string MainWindowTitle
+    {
+        get => mainWindowTitle;
+        internal set
+        {
+            if (string.Equals(value, mainWindowTitle, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            mainWindowTitle = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(FriendlyName));
+        }
+    }
 
     public string? MainModulePath { get; }
 

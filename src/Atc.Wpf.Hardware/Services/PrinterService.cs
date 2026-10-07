@@ -2,12 +2,19 @@ namespace Atc.Wpf.Hardware.Services;
 
 public sealed class PrinterService : IPrinterService
 {
+    private readonly Func<IReadOnlyList<PrinterSnapshot>> enumerate;
     private readonly DispatcherTimer pollTimer;
     private bool started;
     private bool disposed;
 
     public PrinterService()
+        : this(EnumeratePrinters)
     {
+    }
+
+    internal PrinterService(Func<IReadOnlyList<PrinterSnapshot>> enumerate)
+    {
+        this.enumerate = enumerate;
         Printers = new ObservableCollection<PrinterInfo>();
         pollTimer = new DispatcherTimer
         {
@@ -80,8 +87,8 @@ public sealed class PrinterService : IPrinterService
         }
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "PrintQueue access can throw transiently.")]
-    private void EnumerateAndSync()
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Print queue metadata access can throw.")]
+    private static IReadOnlyList<PrinterSnapshot> EnumeratePrinters()
     {
         using var server = new System.Printing.LocalPrintServer();
 
@@ -101,14 +108,22 @@ public sealed class PrinterService : IPrinterService
             System.Printing.EnumeratedPrintQueueTypes.Connections,
         });
 
-        var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var snapshots = new List<PrinterSnapshot>();
 
         foreach (var queue in queues)
         {
             try
             {
-                foundIds.Add(queue.FullName);
-                UpsertFromQueue(queue, defaultName);
+                var isDefault = !string.IsNullOrEmpty(defaultName) &&
+                    string.Equals(queue.FullName, defaultName, StringComparison.OrdinalIgnoreCase);
+
+                snapshots.Add(new PrinterSnapshot(
+                    queue.Name,
+                    queue.FullName,
+                    IsLocal: !queue.IsShared || queue.HostingPrintServer.Name is null,
+                    queue.IsShared,
+                    isDefault,
+                    queue.QueueStatus.ToString()));
             }
             catch (Exception)
             {
@@ -120,6 +135,19 @@ public sealed class PrinterService : IPrinterService
             }
         }
 
+        return snapshots;
+    }
+
+    private void EnumerateAndSync()
+    {
+        var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var snapshot in enumerate())
+        {
+            foundIds.Add(snapshot.FullName);
+            Upsert(snapshot);
+        }
+
         for (var i = Printers.Count - 1; i >= 0; i--)
         {
             if (!foundIds.Contains(Printers[i].DeviceId))
@@ -129,11 +157,9 @@ public sealed class PrinterService : IPrinterService
         }
     }
 
-    private void UpsertFromQueue(
-        System.Printing.PrintQueue queue,
-        string? defaultName)
+    private void Upsert(PrinterSnapshot snapshot)
     {
-        var existing = FindByDeviceId(queue.FullName);
+        var existing = FindByDeviceId(snapshot.FullName);
 
         if (existing is not null)
         {
@@ -142,19 +168,18 @@ public sealed class PrinterService : IPrinterService
                 existing.State = DeviceState.Available;
             }
 
+            existing.IsDefault = snapshot.IsDefault;
+            existing.QueueStatus = snapshot.QueueStatus;
             return;
         }
 
-        var isDefault = !string.IsNullOrEmpty(defaultName) &&
-            string.Equals(queue.FullName, defaultName, StringComparison.OrdinalIgnoreCase);
-
         var info = new PrinterInfo(
-            name: queue.Name,
-            fullName: queue.FullName,
-            isLocal: !queue.IsShared || queue.HostingPrintServer.Name is null,
-            isShared: queue.IsShared,
-            isDefault: isDefault,
-            queueStatus: queue.QueueStatus.ToString())
+            name: snapshot.Name,
+            fullName: snapshot.FullName,
+            isLocal: snapshot.IsLocal,
+            isShared: snapshot.IsShared,
+            isDefault: snapshot.IsDefault,
+            queueStatus: snapshot.QueueStatus)
         {
             State = DeviceState.Available,
         };

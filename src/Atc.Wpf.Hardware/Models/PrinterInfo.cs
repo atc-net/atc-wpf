@@ -2,6 +2,9 @@ namespace Atc.Wpf.Hardware.Models;
 
 public sealed partial class PrinterInfo : ObservableObject, IDeviceInfo
 {
+    private bool isDefault;
+    private string queueStatus;
+
     public PrinterInfo(
         string name,
         string fullName,
@@ -14,8 +17,8 @@ public sealed partial class PrinterInfo : ObservableObject, IDeviceInfo
         FullName = fullName;
         IsLocal = isLocal;
         IsShared = isShared;
-        IsDefault = isDefault;
-        QueueStatus = queueStatus;
+        this.isDefault = isDefault;
+        this.queueStatus = queueStatus;
     }
 
     public string Name { get; }
@@ -26,9 +29,35 @@ public sealed partial class PrinterInfo : ObservableObject, IDeviceInfo
 
     public bool IsShared { get; }
 
-    public bool IsDefault { get; }
+    public bool IsDefault
+    {
+        get => isDefault;
+        internal set
+        {
+            if (value == isDefault)
+            {
+                return;
+            }
 
-    public string QueueStatus { get; }
+            isDefault = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public string QueueStatus
+    {
+        get => queueStatus;
+        internal set
+        {
+            if (string.Equals(value, queueStatus, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            queueStatus = value;
+            RaisePropertyChanged();
+        }
+    }
 
     public string DeviceId
         => FullName;

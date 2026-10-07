@@ -2,12 +2,23 @@ namespace Atc.Wpf.Hardware.Services;
 
 public sealed class WindowService : IWindowService
 {
+    private readonly Func<bool, IReadOnlyList<WindowSnapshot>> enumerate;
+    private readonly Func<int, string> resolveProcessName;
     private readonly DispatcherTimer pollTimer;
     private bool started;
     private bool disposed;
 
     public WindowService()
+        : this(EnumerateWindows, ResolveProcessName)
     {
+    }
+
+    internal WindowService(
+        Func<bool, IReadOnlyList<WindowSnapshot>> enumerate,
+        Func<int, string> resolveProcessName)
+    {
+        this.enumerate = enumerate;
+        this.resolveProcessName = resolveProcessName;
         Windows = new ObservableCollection<TopLevelWindowInfo>();
         pollTimer = new DispatcherTimer
         {
@@ -82,14 +93,15 @@ public sealed class WindowService : IWindowService
         }
     }
 
-    private void EnumerateAndSync()
+    private static IReadOnlyList<WindowSnapshot> EnumerateWindows(
+        bool onlyVisibleWithTitle)
     {
-        var foundHandles = new HashSet<IntPtr>();
+        var snapshots = new List<WindowSnapshot>();
 
         NativeWindowMethods.EnumWindows(
             (hWnd, _) =>
             {
-                if (OnlyVisibleWithTitle)
+                if (onlyVisibleWithTitle)
                 {
                     if (!NativeWindowMethods.IsWindowVisible(hWnd))
                     {
@@ -102,11 +114,48 @@ public sealed class WindowService : IWindowService
                     }
                 }
 
-                foundHandles.Add(hWnd);
-                UpsertFromHandle(hWnd);
+                snapshots.Add(new WindowSnapshot(
+                    hWnd,
+                    NativeWindowMethods.ReadWindowTitle(hWnd),
+                    NativeWindowMethods.ReadClassName(hWnd),
+                    ReadProcessId(hWnd)));
                 return true;
             },
             lParam: IntPtr.Zero);
+
+        return snapshots;
+    }
+
+    private static int ReadProcessId(IntPtr hWnd)
+    {
+        _ = NativeWindowMethods.GetWindowThreadProcessId(hWnd, out var pid);
+        return (int)pid;
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Process metadata access can throw.")]
+    private static string ResolveProcessName(int processId)
+    {
+        try
+        {
+            using var p = System.Diagnostics.Process.GetProcessById(processId);
+            return p.ProcessName;
+        }
+        catch (Exception)
+        {
+            // Process may have exited between EnumWindows and lookup.
+            return "(unknown)";
+        }
+    }
+
+    private void EnumerateAndSync()
+    {
+        var foundHandles = new HashSet<IntPtr>();
+
+        foreach (var snapshot in enumerate(OnlyVisibleWithTitle))
+        {
+            foundHandles.Add(snapshot.Handle);
+            Upsert(snapshot);
+        }
 
         for (var i = Windows.Count - 1; i >= 0; i--)
         {
@@ -117,48 +166,51 @@ public sealed class WindowService : IWindowService
         }
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Process metadata access can throw.")]
-    private void UpsertFromHandle(IntPtr hWnd)
+    private void Upsert(WindowSnapshot snapshot)
     {
-        var existing = FindByHandle(hWnd);
+        var existing = FindByHandle(snapshot.Handle);
 
-        if (existing is not null)
+        if (existing is not null &&
+            existing.ProcessId == snapshot.ProcessId &&
+            string.Equals(existing.ClassName, snapshot.ClassName, StringComparison.Ordinal))
         {
             if (existing.State is DeviceState.Disconnected)
             {
                 existing.State = DeviceState.Available;
             }
 
+            existing.Title = snapshot.Title;
             return;
         }
 
-        var title = NativeWindowMethods.ReadWindowTitle(hWnd);
-        var className = NativeWindowMethods.ReadClassName(hWnd);
-
-        _ = NativeWindowMethods.GetWindowThreadProcessId(hWnd, out var pid);
-
-        var processName = "(unknown)";
-        try
-        {
-            using var p = System.Diagnostics.Process.GetProcessById((int)pid);
-            processName = p.ProcessName;
-        }
-        catch (Exception)
-        {
-            // Process may have exited between EnumWindows and lookup.
-        }
-
         var info = new TopLevelWindowInfo(
-            handle: hWnd,
-            title: title,
-            className: className,
-            processId: (int)pid,
-            processName: processName)
+            handle: snapshot.Handle,
+            title: snapshot.Title,
+            className: snapshot.ClassName,
+            processId: snapshot.ProcessId,
+            processName: resolveProcessName(snapshot.ProcessId))
         {
             State = DeviceState.Available,
         };
 
         Windows.Add(info);
+
+        // The window handle was reused by another window: the old window is gone.
+        if (existing is not null)
+        {
+            RemoveStale(existing);
+        }
+    }
+
+    /// <summary>
+    /// Retires an entry whose id now belongs to something else. Called after the fresh entry has been added,
+    /// so a picker that still has the stale entry selected sees it disconnect and leave - and does not
+    /// auto-rebind to the newcomer just because it reuses the same id.
+    /// </summary>
+    private void RemoveStale(TopLevelWindowInfo stale)
+    {
+        stale.State = DeviceState.Disconnected;
+        Windows.Remove(stale);
     }
 
     private TopLevelWindowInfo? FindByHandle(IntPtr handle)

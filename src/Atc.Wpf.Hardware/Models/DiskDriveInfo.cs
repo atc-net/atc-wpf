@@ -2,6 +2,8 @@ namespace Atc.Wpf.Hardware.Models;
 
 public sealed partial class DiskDriveInfo : ObservableObject, IDeviceInfo
 {
+    private long? availableFreeSpace;
+
     public DiskDriveInfo(
         string deviceId,
         string friendlyName,
@@ -15,7 +17,7 @@ public sealed partial class DiskDriveInfo : ObservableObject, IDeviceInfo
         DriveType = driveType;
         IsReady = isReady;
         TotalSize = totalSize;
-        AvailableFreeSpace = availableFreeSpace;
+        this.availableFreeSpace = availableFreeSpace;
     }
 
     public string DeviceId { get; }
@@ -28,7 +30,20 @@ public sealed partial class DiskDriveInfo : ObservableObject, IDeviceInfo
 
     public long? TotalSize { get; }
 
-    public long? AvailableFreeSpace { get; }
+    public long? AvailableFreeSpace
+    {
+        get => availableFreeSpace;
+        internal set
+        {
+            if (value == availableFreeSpace)
+            {
+                return;
+            }
+
+            availableFreeSpace = value;
+            RaisePropertyChanged();
+        }
+    }
 
     [ObservableProperty]
     private DeviceState state = DeviceState.Unknown;
