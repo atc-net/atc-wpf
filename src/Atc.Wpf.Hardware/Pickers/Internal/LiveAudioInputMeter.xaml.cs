@@ -32,6 +32,7 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
 
     private readonly float[] ring = new float[RingCapacity];
     private readonly DispatcherTimer renderTimer;
+    private readonly DeviceSessionCoordinator session;
     private int ringHead;
     private float currentPeak;
 
@@ -42,7 +43,7 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
 
     [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "AudioGraph.Dispose disposes its child nodes transitively.")]
     private Windows.Media.Audio.AudioFrameOutputNode? frameOutputNode;
-    private bool startInProgress;
+    private bool isInVisualTree;
     private bool disposed;
 
     public LiveAudioInputMeter()
@@ -53,6 +54,7 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
             Interval = TimeSpan.FromMilliseconds(RenderIntervalMilliseconds),
         };
         renderTimer.Tick += OnRenderTick;
+        session = new DeviceSessionCoordinator(StartInternalAsync, StopAsync, GetDesiredDeviceId);
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
     }
@@ -91,40 +93,30 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
-        => _ = RestartAsync();
+    {
+        isInVisualTree = true;
+        _ = RestartAsync();
+    }
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-        => _ = StopAsync();
-
-    private async Task RestartAsync()
     {
-        await StopAsync();
-
-        if (!IsActive ||
-            string.IsNullOrEmpty(DeviceId) ||
-            !IsLoaded ||
-            disposed)
-        {
-            return;
-        }
-
-        if (startInProgress)
-        {
-            return;
-        }
-
-        startInProgress = true;
-        try
-        {
-            await StartInternalAsync(DeviceId);
-        }
-        finally
-        {
-            startInProgress = false;
-        }
+        isInVisualTree = false;
+        _ = RestartAsync();
     }
+
+    /// <summary>
+    /// Re-evaluates whether the microphone should run. Routed through <see cref="DeviceSessionCoordinator"/> so an
+    /// unload or device change that happens while the audio graph is still being created is not lost.
+    /// </summary>
+    private Task RestartAsync()
+        => session.SyncAsync();
+
+    private string? GetDesiredDeviceId()
+        => IsActive && !string.IsNullOrEmpty(DeviceId) && isInVisualTree && !disposed
+            ? DeviceId
+            : null;
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Preview must not crash the picker on permission / device errors.")]
     private async Task StartInternalAsync(string deviceId)
