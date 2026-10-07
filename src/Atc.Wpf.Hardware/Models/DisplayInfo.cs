@@ -2,6 +2,10 @@ namespace Atc.Wpf.Hardware.Models;
 
 public sealed partial class DisplayInfo : ObservableObject, IDeviceInfo
 {
+    private Rect bounds;
+    private Rect workingArea;
+    private bool isPrimary;
+
     public DisplayInfo(
         IntPtr handle,
         string deviceName,
@@ -11,20 +15,59 @@ public sealed partial class DisplayInfo : ObservableObject, IDeviceInfo
     {
         Handle = handle;
         DeviceName = deviceName;
-        Bounds = bounds;
-        WorkingArea = workingArea;
-        IsPrimary = isPrimary;
+        this.bounds = bounds;
+        this.workingArea = workingArea;
+        this.isPrimary = isPrimary;
     }
 
     public IntPtr Handle { get; }
 
     public string DeviceName { get; }
 
-    public Rect Bounds { get; }
+    public Rect Bounds
+    {
+        get => bounds;
+        internal set
+        {
+            if (value == bounds)
+            {
+                return;
+            }
 
-    public Rect WorkingArea { get; }
+            bounds = value;
+            RaisePropertyChanged();
+        }
+    }
 
-    public bool IsPrimary { get; }
+    public Rect WorkingArea
+    {
+        get => workingArea;
+        internal set
+        {
+            if (value == workingArea)
+            {
+                return;
+            }
+
+            workingArea = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public bool IsPrimary
+    {
+        get => isPrimary;
+        internal set
+        {
+            if (value == isPrimary)
+            {
+                return;
+            }
+
+            isPrimary = value;
+            RaisePropertyChanged();
+        }
+    }
 
     public string DeviceId
         => DeviceName;

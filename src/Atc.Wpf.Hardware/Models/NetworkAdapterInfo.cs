@@ -2,6 +2,9 @@ namespace Atc.Wpf.Hardware.Models;
 
 public sealed partial class NetworkAdapterInfo : ObservableObject, IDeviceInfo
 {
+    private string name;
+    private long? speed;
+
     public NetworkAdapterInfo(
         string adapterId,
         string name,
@@ -12,17 +15,31 @@ public sealed partial class NetworkAdapterInfo : ObservableObject, IDeviceInfo
         bool isLoopback)
     {
         DeviceId = adapterId;
-        Name = name;
+        this.name = name;
         Description = description;
         AdapterType = adapterType;
         MacAddress = macAddress;
-        Speed = speed;
+        this.speed = speed;
         IsLoopback = isLoopback;
     }
 
     public string DeviceId { get; }
 
-    public string Name { get; }
+    public string Name
+    {
+        get => name;
+        internal set
+        {
+            if (string.Equals(value, name, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            name = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(FriendlyName));
+        }
+    }
 
     public string Description { get; }
 
@@ -33,7 +50,20 @@ public sealed partial class NetworkAdapterInfo : ObservableObject, IDeviceInfo
 
     public string MacAddress { get; }
 
-    public long? Speed { get; }
+    public long? Speed
+    {
+        get => speed;
+        internal set
+        {
+            if (value == speed)
+            {
+                return;
+            }
+
+            speed = value;
+            RaisePropertyChanged();
+        }
+    }
 
     public bool IsLoopback { get; }
 
