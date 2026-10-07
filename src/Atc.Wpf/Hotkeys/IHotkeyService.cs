@@ -70,6 +70,13 @@ public interface IHotkeyService : IDisposable
     event EventHandler<HotkeyConflictEventArgs>? ConflictDetected;
 
     /// <summary>
+    /// Raised when the operating system refuses a global hotkey, typically because another
+    /// application already owns the same key combination. The registration stays in
+    /// <see cref="Registrations"/> but does not fire.
+    /// </summary>
+    event EventHandler<HotkeyRegistrationFailedEventArgs>? RegistrationFailed;
+
+    /// <summary>
     /// Saves all current hotkey bindings to a JSON file.
     /// </summary>
     /// <param name="filePath">The file path to write the JSON to.</param>

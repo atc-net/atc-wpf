@@ -75,6 +75,19 @@ hotkeyService.ConflictDetected += (sender, args) =>
 };
 ```
 
+`ConflictDetected` covers clashes inside your own application. A **global** hotkey can also be
+refused by Windows when another application already owns the same combination; the registration
+then stays in `Registrations` but never fires, and `RegistrationFailed` is raised:
+
+```csharp
+hotkeyService.RegistrationFailed += (sender, args) =>
+{
+    // args.ErrorCode 1409 = ERROR_HOTKEY_ALREADY_REGISTERED
+    Debug.WriteLine(
+        $"'{args.Registration.Description}' could not be registered (Win32 error {args.ErrorCode})");
+};
+```
+
 ### Event Monitoring
 
 ```csharp
