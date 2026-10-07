@@ -44,9 +44,9 @@ public class ColorPickerAutomationPeer : UserControlAutomationPeer, IValueProvid
             var color = (Color)ColorConverter.ConvertFromString(value);
             ColorPicker.SetCurrentValue(ColorPicker.ColorValueProperty, color);
         }
-        catch (FormatException)
+        catch (FormatException ex)
         {
-            throw new ArgumentException($"Invalid color value: {value}", nameof(value));
+            throw new ArgumentException($"Invalid color value: {value}", nameof(value), ex);
         }
     }
 }
