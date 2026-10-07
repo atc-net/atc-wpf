@@ -12,6 +12,7 @@
             "src/Atc.Wpf.FontIcons/Atc.Wpf.FontIcons.csproj",
             "src/Atc.Wpf.Theming/Atc.Wpf.Theming.csproj",
             "src/Atc.Wpf.Network/Atc.Wpf.Network.csproj",
+            "src/Atc.Wpf.Hardware/Atc.Wpf.Hardware.csproj",
             "src/Atc.Wpf.UndoRedo/Atc.Wpf.UndoRedo.csproj"
           ],
           "src": "."
