@@ -41,6 +41,8 @@ public partial class RichTextBoxEx : RichTextBox
         Flags = FrameworkPropertyMetadataOptions.None)]
     private ITextFormatter textFormatter;
 
+    private string? themeNameWhenUnloaded;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="RichTextBoxEx" /> class.
     /// </summary>
@@ -68,7 +70,8 @@ public partial class RichTextBoxEx : RichTextBox
             ThemeMode = themeModeValue;
         }
 
-        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+        Loaded += OnLoadedSubscribeToThemeChanges;
+        Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
     }
 
     /// <summary>
@@ -149,11 +152,42 @@ public partial class RichTextBoxEx : RichTextBox
         RoutedEventArgs e)
         => System.Windows.Clipboard.SetText(Text);
 
+    private void OnLoadedSubscribeToThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+
+        // Catch up on a theme change that happened while this control was unloaded (e.g. in a hidden tab).
+        var currentTheme = ThemeManager.Current.DetectTheme();
+        if (themeNameWhenUnloaded is not null &&
+            currentTheme is not null &&
+            !string.Equals(currentTheme.Name, themeNameWhenUnloaded, StringComparison.Ordinal))
+        {
+            ApplyTheme(currentTheme);
+        }
+
+        themeNameWhenUnloaded = null;
+    }
+
+    private void OnUnloadedUnsubscribeFromThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+    {
+        themeNameWhenUnloaded = ThemeManager.Current.DetectTheme()?.Name;
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+    }
+
     private void OnThemeChanged(
         object? sender,
         ThemeChangedEventArgs e)
+        => ApplyTheme(e.NewTheme);
+
+    private void ApplyTheme(Theme theme)
     {
-        if (Enum<ThemeMode>.TryParse(e.NewTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
+        if (Enum<ThemeMode>.TryParse(theme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
         {
             ThemeMode = themeModeValue;
         }
