@@ -42,7 +42,10 @@ public partial class LabelSlider : ILabelSlider
 
     public override bool IsValid()
     {
-        ValidateValue(default, this, raiseEvents: false);
+        ValidateValue(
+            new DependencyPropertyChangedEventArgs(ValueProperty, Value, Value),
+            this,
+            raiseEvents: false);
         return string.IsNullOrEmpty(ValidationText);
     }
 
@@ -65,6 +68,8 @@ public partial class LabelSlider : ILabelSlider
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
+
+        control.ValidationText = string.Empty;
 
         if (e.OldValue is not int oldValue)
         {
