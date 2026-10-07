@@ -19,6 +19,7 @@ public partial class AttachedPropertyView
             !isCurrentlyDraggable);
     }
 
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - sample source code as a raw string literal.")]
     public string CSharpCodeForDragBehavior
         => """
            //
