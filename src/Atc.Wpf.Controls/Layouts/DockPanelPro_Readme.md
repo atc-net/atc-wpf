@@ -285,8 +285,8 @@ Current limitations (may be addressed in future versions):
 ## 🔗 Related Controls
 
 - **[FlexPanel](FlexPanel_Readme.md)** - CSS Flexbox-inspired layout
-- **[Card](../Card_Readme.md)** - Content container with elevation
-- **[GroupBoxExpander](../GroupBoxExpander_Readme.md)** - Collapsible grouped content
+- **[Card](../DataDisplay/Card_Readme.md)** - Content container with elevation
+- **[GroupBoxExpander](GroupBoxExpander_Readme.md)** - Collapsible grouped content
 
 ## 🎮 Sample Application
 
