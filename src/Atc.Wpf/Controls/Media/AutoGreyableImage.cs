@@ -5,10 +5,17 @@ namespace Atc.Wpf.Controls.Media;
 /// <summary>
 /// Auto Greyable Image.
 /// </summary>
+/// <remarks>
+/// When disabled, the image shows a greyscale version of its source. Greyscale versions are cached per source
+/// instance (shared by every image using that source, reused on every toggle) and are released together with
+/// the source.
+/// </remarks>
 public sealed class AutoGreyableImage : Image
 {
-    private static readonly ConcurrentDictionary<int, FormatConvertedBitmap> CacheFormatConvertedBitmap = new();
-    private static readonly ConcurrentDictionary<int, ImageBrush> CacheImageBrush = new();
+    private static readonly ConditionalWeakTable<ImageSource, GreyVersion> GreyVersions = new();
+
+    private ImageSource? originalSource;
+    private bool isSwappingSource;
 
     /// <summary>
     /// Initializes static members of the <see cref="AutoGreyableImage"/> class.
@@ -37,14 +44,18 @@ public sealed class AutoGreyableImage : Image
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var autoGreyableImage = d as AutoGreyableImage;
-        if (autoGreyableImage?.Source is null ||
-            autoGreyableImage.Source is FormatConvertedBitmap)
+        if (d is not AutoGreyableImage autoGreyableImage ||
+            autoGreyableImage.isSwappingSource)
         {
             return;
         }
 
-        HandleAutoGreyableImage(autoGreyableImage, autoGreyableImage.IsEnabled);
+        // A source set by the consumer becomes the original to restore when the image is enabled again.
+        autoGreyableImage.originalSource = autoGreyableImage.Source;
+        if (autoGreyableImage.Source is not null)
+        {
+            HandleAutoGreyableImage(autoGreyableImage, autoGreyableImage.IsEnabled);
+        }
     }
 
     /// <summary>
@@ -72,31 +83,68 @@ public sealed class AutoGreyableImage : Image
         AutoGreyableImage autoGreyableImage,
         bool isEnable)
     {
+        var original = autoGreyableImage.originalSource;
+        if (original is null)
+        {
+            return;
+        }
+
         if (isEnable)
         {
-            // Set the Source property to the original value.
-            if (autoGreyableImage is not { Source: FormatConvertedBitmap formatConvertedBitmap })
-            {
-                return;
-            }
-
-            autoGreyableImage.Source = formatConvertedBitmap.Source;
+            autoGreyableImage.SwapSource(original);
 
             // Reset the Opacity Mask
             autoGreyableImage.OpacityMask = null;
         }
         else
         {
-            var bitmapImage = autoGreyableImage.ToBitmapImage();
-            var bitmapImageHashCode = bitmapImage.GetHashCode();
+            var grey = GreyVersions.GetValue(original, CreateGreyVersion);
 
-            // Convert it to Gray
-            autoGreyableImage.Source = CacheFormatConvertedBitmap.GetOrAdd(
-                bitmapImageHashCode,
-                bitmapImage.ToFormatConvertedBitmapAsGray32());
+            autoGreyableImage.SwapSource(grey.Bitmap);
 
-            // Create Opacity Mask for greyscale image as FormatConvertedBitmap does not keep transparency info
-            autoGreyableImage.OpacityMask = CacheImageBrush.GetOrAdd(bitmapImageHashCode, new ImageBrush(bitmapImage));
+            // Opacity mask for the greyscale image, as FormatConvertedBitmap does not keep transparency info.
+            autoGreyableImage.OpacityMask = grey.OpacityMask;
         }
     }
+
+    private static GreyVersion CreateGreyVersion(ImageSource source)
+    {
+        var bitmapImage = new Image { Source = source }.ToBitmapImage();
+
+        var bitmap = bitmapImage.ToFormatConvertedBitmapAsGray32();
+        if (bitmap.CanFreeze)
+        {
+            bitmap.Freeze();
+        }
+
+        var opacityMask = new ImageBrush(bitmapImage);
+        if (opacityMask.CanFreeze)
+        {
+            opacityMask.Freeze();
+        }
+
+        return new GreyVersion(bitmap, opacityMask);
+    }
+
+    private void SwapSource(ImageSource source)
+    {
+        if (ReferenceEquals(Source, source))
+        {
+            return;
+        }
+
+        isSwappingSource = true;
+        try
+        {
+            Source = source;
+        }
+        finally
+        {
+            isSwappingSource = false;
+        }
+    }
+
+    private sealed record GreyVersion(
+        FormatConvertedBitmap Bitmap,
+        ImageBrush OpacityMask);
 }
