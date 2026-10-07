@@ -14,6 +14,13 @@
     <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 
+  <PropertyGroup Label="Versioning">
+    <!-- The 'x-release-please-' comments are used to inform the release-please action that it should update the semver version here -->
+    <!-- x-release-please-start-version -->
+    <Version>4.0.215</Version>
+    <!-- x-release-please-end -->
+  </PropertyGroup>
+
   <PropertyGroup>
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
