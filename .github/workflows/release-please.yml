@@ -1,0 +1,57 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-please:
+    # WPF targets Windows, so the packages must be built on a Windows runner.
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: release-please
+        id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_PAT }}
+
+      - name: 🛒 Checkout repository
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.release.outputs.tag_name }}
+
+      - name: ⚙️ Setup .NET
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 🧹 Clean
+        if: ${{ steps.release.outputs.release_created }}
+        run: dotnet clean Atc.Wpf.slnx -c Release && dotnet nuget locals all --clear
+
+      - name: 🔁 Restore packages
+        if: ${{ steps.release.outputs.release_created }}
+        run: dotnet restore Atc.Wpf.slnx
+
+      - name: 🛠️ Build solution
+        if: ${{ steps.release.outputs.release_created }}
+        run: dotnet build Atc.Wpf.slnx -c Release --no-restore /p:UseSourceLink=true
+
+      # All packages share a single <Version> in Directory.Build.props, so they are
+      # always packed and published together from one release-please tag.
+      # Only projects with IsPackable=true (the ten src libraries) produce a package.
+      # On Windows, dotnet nuget push only expands the wildcard in a path that uses backslashes.
+      - name: 🗳️ Creating library packages for release
+        if: ${{ steps.release.outputs.release_created }}
+        run: dotnet pack Atc.Wpf.slnx -c Release --no-restore -o "${{ github.workspace }}\packages"
+
+      - name: 📦 Push packages to NuGet
+        if: ${{ steps.release.outputs.release_created }}
+        run: dotnet nuget push "${{ github.workspace }}\packages\*.nupkg" -k "${{ secrets.NUGET_KEY }}" -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
