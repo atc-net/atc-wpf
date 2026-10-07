@@ -41,15 +41,17 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
 
     public event EventHandler<CameraFormatsAvailableEventArgs>? FormatsAvailable;
 
+    private readonly DeviceSessionCoordinator session;
     private Windows.Media.Capture.MediaCapture? mediaCapture;
     private Windows.Media.Capture.Frames.MediaFrameReader? frameReader;
     private WriteableBitmap? renderTarget;
-    private bool startInProgress;
+    private bool isInVisualTree;
     private bool disposed;
 
     public LiveCameraPreview()
     {
         InitializeComponent();
+        session = new DeviceSessionCoordinator(StartInternalAsync, StopAsync, GetDesiredDeviceId);
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
     }
@@ -98,40 +100,30 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
-        => _ = RestartAsync();
+    {
+        isInVisualTree = true;
+        _ = RestartAsync();
+    }
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-        => _ = StopAsync();
-
-    private async Task RestartAsync()
     {
-        await StopAsync();
-
-        if (!IsActive ||
-            string.IsNullOrEmpty(DeviceId) ||
-            !IsLoaded ||
-            disposed)
-        {
-            return;
-        }
-
-        if (startInProgress)
-        {
-            return;
-        }
-
-        startInProgress = true;
-        try
-        {
-            await StartInternalAsync(DeviceId);
-        }
-        finally
-        {
-            startInProgress = false;
-        }
+        isInVisualTree = false;
+        _ = RestartAsync();
     }
+
+    /// <summary>
+    /// Re-evaluates whether the camera should run. Routed through <see cref="DeviceSessionCoordinator"/> so an
+    /// unload or device change that happens while the camera is still initializing is not lost.
+    /// </summary>
+    private Task RestartAsync()
+        => session.SyncAsync();
+
+    private string? GetDesiredDeviceId()
+        => IsActive && !string.IsNullOrEmpty(DeviceId) && isInVisualTree && !disposed
+            ? DeviceId
+            : null;
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Preview must not crash the picker on permission / device errors.")]
     private async Task StartInternalAsync(string deviceId)
