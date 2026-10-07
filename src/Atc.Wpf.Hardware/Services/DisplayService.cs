@@ -2,12 +2,19 @@ namespace Atc.Wpf.Hardware.Services;
 
 public sealed class DisplayService : IDisplayService
 {
+    private readonly Func<IReadOnlyList<DisplaySnapshot>> enumerate;
     private readonly DispatcherTimer pollTimer;
     private bool started;
     private bool disposed;
 
     public DisplayService()
+        : this(EnumerateDisplays)
     {
+    }
+
+    internal DisplayService(Func<IReadOnlyList<DisplaySnapshot>> enumerate)
+    {
+        this.enumerate = enumerate;
         Displays = new ObservableCollection<DisplayInfo>();
         pollTimer = new DispatcherTimer
         {
@@ -80,9 +87,9 @@ public sealed class DisplayService : IDisplayService
         }
     }
 
-    private void EnumerateAndSync()
+    private static IReadOnlyList<DisplaySnapshot> EnumerateDisplays()
     {
-        var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var snapshots = new List<DisplaySnapshot>();
 
         NativeMonitorMethods.EnumDisplayMonitors(
             hdc: IntPtr.Zero,
@@ -90,17 +97,32 @@ public sealed class DisplayService : IDisplayService
             lpfnEnum: (IntPtr hMonitor, IntPtr _, ref NativeMonitorMethods.NativeRect _, IntPtr _) =>
             {
                 var info = NativeMonitorMethods.MonitorInfoEx.Default();
-                if (!NativeMonitorMethods.GetMonitorInfo(hMonitor, ref info))
+                if (NativeMonitorMethods.GetMonitorInfo(hMonitor, ref info))
                 {
-                    return true;
+                    snapshots.Add(new DisplaySnapshot(
+                        hMonitor,
+                        info.szDevice,
+                        ToRect(info.rcMonitor),
+                        ToRect(info.rcWork),
+                        IsPrimary: (info.dwFlags & NativeMonitorMethods.MONITORINFOF_PRIMARY) != 0));
                 }
 
-                var deviceName = info.szDevice;
-                foundIds.Add(deviceName);
-                UpsertFromMonitor(hMonitor, info);
                 return true;
             },
             dwData: IntPtr.Zero);
+
+        return snapshots;
+    }
+
+    private void EnumerateAndSync()
+    {
+        var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var snapshot in enumerate())
+        {
+            foundIds.Add(snapshot.DeviceName);
+            Upsert(snapshot);
+        }
 
         for (var i = Displays.Count - 1; i >= 0; i--)
         {
@@ -111,11 +133,9 @@ public sealed class DisplayService : IDisplayService
         }
     }
 
-    private void UpsertFromMonitor(
-        IntPtr hMonitor,
-        NativeMonitorMethods.MonitorInfoEx info)
+    private void Upsert(DisplaySnapshot snapshot)
     {
-        var existing = FindByDeviceName(info.szDevice);
+        var existing = FindByDeviceName(snapshot.DeviceName);
 
         if (existing is not null)
         {
@@ -124,19 +144,19 @@ public sealed class DisplayService : IDisplayService
                 existing.State = DeviceState.Available;
             }
 
+            // Resolution, arrangement and the primary display can change while the monitor stays connected.
+            existing.Bounds = snapshot.Bounds;
+            existing.WorkingArea = snapshot.WorkingArea;
+            existing.IsPrimary = snapshot.IsPrimary;
             return;
         }
 
-        var bounds = ToRect(info.rcMonitor);
-        var workingArea = ToRect(info.rcWork);
-        var isPrimary = (info.dwFlags & NativeMonitorMethods.MONITORINFOF_PRIMARY) != 0;
-
         var display = new DisplayInfo(
-            handle: hMonitor,
-            deviceName: info.szDevice,
-            bounds: bounds,
-            workingArea: workingArea,
-            isPrimary: isPrimary)
+            handle: snapshot.Handle,
+            deviceName: snapshot.DeviceName,
+            bounds: snapshot.Bounds,
+            workingArea: snapshot.WorkingArea,
+            isPrimary: snapshot.IsPrimary)
         {
             State = DeviceState.Available,
         };

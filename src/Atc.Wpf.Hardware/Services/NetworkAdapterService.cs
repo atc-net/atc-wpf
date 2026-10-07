@@ -2,12 +2,20 @@ namespace Atc.Wpf.Hardware.Services;
 
 public sealed class NetworkAdapterService : INetworkAdapterService
 {
+    private readonly Func<IReadOnlyList<NetworkAdapterSnapshot>> enumerate;
     private readonly DispatcherTimer pollTimer;
     private bool started;
     private bool disposed;
 
     public NetworkAdapterService()
+        : this(EnumerateAdapters)
     {
+    }
+
+    internal NetworkAdapterService(
+        Func<IReadOnlyList<NetworkAdapterSnapshot>> enumerate)
+    {
+        this.enumerate = enumerate;
         Adapters = new ObservableCollection<NetworkAdapterInfo>();
         pollTimer = new DispatcherTimer
         {
@@ -82,21 +90,71 @@ public sealed class NetworkAdapterService : INetworkAdapterService
         }
     }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Adapter property access can throw on transient device state changes.")]
+    private static IReadOnlyList<NetworkAdapterSnapshot> EnumerateAdapters()
+    {
+        var snapshots = new List<NetworkAdapterSnapshot>();
+
+        foreach (var ni in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+        {
+            var mac = string.Empty;
+            long? speed = null;
+            var status = System.Net.NetworkInformation.OperationalStatus.Unknown;
+
+            try
+            {
+                mac = ni.GetPhysicalAddress().ToString();
+            }
+            catch (Exception)
+            {
+                // Some adapters don't expose a MAC.
+            }
+
+            try
+            {
+                speed = ni.Speed;
+            }
+            catch (Exception)
+            {
+                // Speed read can fail on virtual adapters.
+            }
+
+            try
+            {
+                status = ni.OperationalStatus;
+            }
+            catch (Exception)
+            {
+                // Status read can throw transiently.
+            }
+
+            snapshots.Add(new NetworkAdapterSnapshot(
+                ni.Id,
+                ni.Name,
+                ni.Description,
+                ni.NetworkInterfaceType,
+                mac,
+                speed,
+                status));
+        }
+
+        return snapshots;
+    }
+
     private void EnumerateAndSync()
     {
-        var found = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var ni in found)
+        foreach (var snapshot in enumerate())
         {
             if (!IncludeLoopback &&
-                ni.NetworkInterfaceType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback)
+                snapshot.AdapterType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback)
             {
                 continue;
             }
 
-            foundIds.Add(ni.Id);
-            UpsertFromAdapter(ni);
+            foundIds.Add(snapshot.Id);
+            Upsert(snapshot);
         }
 
         for (var i = Adapters.Count - 1; i >= 0; i--)
@@ -108,22 +166,17 @@ public sealed class NetworkAdapterService : INetworkAdapterService
         }
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Adapter property access can throw on transient device state changes.")]
-    private void UpsertFromAdapter(
-        System.Net.NetworkInformation.NetworkInterface ni)
+    private void Upsert(NetworkAdapterSnapshot snapshot)
     {
-        var existing = FindByDeviceId(ni.Id);
+        var existing = FindByDeviceId(snapshot.Id);
 
         if (existing is not null)
         {
-            try
-            {
-                existing.OperationalStatus = ni.OperationalStatus;
-            }
-            catch (Exception)
-            {
-                // Status read can throw transiently; skip this tick.
-            }
+            existing.OperationalStatus = snapshot.OperationalStatus;
+
+            // Link speed (e.g. Wi-Fi) and the user-chosen adapter name can change while the adapter stays present.
+            existing.Speed = snapshot.Speed;
+            existing.Name = snapshot.Name;
 
             if (existing.State is DeviceState.Disconnected)
             {
@@ -133,37 +186,16 @@ public sealed class NetworkAdapterService : INetworkAdapterService
             return;
         }
 
-        string mac = string.Empty;
-        long? speed = null;
-
-        try
-        {
-            mac = ni.GetPhysicalAddress().ToString();
-        }
-        catch (Exception)
-        {
-            // Some adapters don't expose a MAC.
-        }
-
-        try
-        {
-            speed = ni.Speed;
-        }
-        catch (Exception)
-        {
-            // Speed read can fail on virtual adapters.
-        }
-
         var info = new NetworkAdapterInfo(
-            adapterId: ni.Id,
-            name: ni.Name,
-            description: ni.Description,
-            adapterType: ni.NetworkInterfaceType,
-            macAddress: mac,
-            speed: speed,
-            isLoopback: ni.NetworkInterfaceType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback)
+            adapterId: snapshot.Id,
+            name: snapshot.Name,
+            description: snapshot.Description,
+            adapterType: snapshot.AdapterType,
+            macAddress: snapshot.MacAddress,
+            speed: snapshot.Speed,
+            isLoopback: snapshot.AdapterType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback)
         {
-            OperationalStatus = ni.OperationalStatus,
+            OperationalStatus = snapshot.OperationalStatus,
             State = DeviceState.Available,
         };
 
