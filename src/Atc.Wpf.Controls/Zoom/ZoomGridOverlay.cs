@@ -7,8 +7,38 @@ namespace Atc.Wpf.Controls.Zoom;
 /// </summary>
 public sealed class ZoomGridOverlay : Adorner
 {
+    public static readonly DependencyProperty BaseGridSpacingProperty = DependencyProperty.Register(
+        nameof(BaseGridSpacing),
+        typeof(double),
+        typeof(ZoomGridOverlay),
+        new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender),
+        IsValidGridSpacing);
+
+    public static readonly DependencyProperty MinorLineBrushProperty = DependencyProperty.Register(
+        nameof(MinorLineBrush),
+        typeof(Brush),
+        typeof(ZoomGridOverlay),
+        new FrameworkPropertyMetadata(CreateFrozenBrush(40), FrameworkPropertyMetadataOptions.AffectsRender));
+
+    public static readonly DependencyProperty MajorLineBrushProperty = DependencyProperty.Register(
+        nameof(MajorLineBrush),
+        typeof(Brush),
+        typeof(ZoomGridOverlay),
+        new FrameworkPropertyMetadata(CreateFrozenBrush(80), FrameworkPropertyMetadataOptions.AffectsRender));
+
+    public static readonly DependencyProperty MinorLineThicknessProperty = DependencyProperty.Register(
+        nameof(MinorLineThickness),
+        typeof(double),
+        typeof(ZoomGridOverlay),
+        new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.AffectsRender));
+
+    public static readonly DependencyProperty MajorLineThicknessProperty = DependencyProperty.Register(
+        nameof(MajorLineThickness),
+        typeof(double),
+        typeof(ZoomGridOverlay),
+        new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
     private readonly ZoomBox zoomBox;
-    private double baseGridSpacing = 50.0;
 
     public ZoomGridOverlay(ZoomBox adornedElement)
         : base(adornedElement)
@@ -16,9 +46,9 @@ public sealed class ZoomGridOverlay : Adorner
         zoomBox = adornedElement;
         IsHitTestVisible = false;
 
-        zoomBox.ContentZoomChanged += (_, _) => InvalidateVisual();
-        zoomBox.ContentOffsetXChanged += (_, _) => InvalidateVisual();
-        zoomBox.ContentOffsetYChanged += (_, _) => InvalidateVisual();
+        zoomBox.ContentZoomChanged += OnZoomBoxViewChanged;
+        zoomBox.ContentOffsetXChanged += OnZoomBoxViewChanged;
+        zoomBox.ContentOffsetYChanged += OnZoomBoxViewChanged;
     }
 
     /// <summary>
@@ -29,37 +59,53 @@ public sealed class ZoomGridOverlay : Adorner
     /// <exception cref="ArgumentOutOfRangeException">The value is zero, negative, NaN or infinite.</exception>
     public double BaseGridSpacing
     {
-        get => baseGridSpacing;
+        get => (double)GetValue(BaseGridSpacingProperty);
         set
         {
-            if (!double.IsFinite(value) || value <= 0)
+            if (!IsValidGridSpacing(value))
             {
                 throw new ArgumentOutOfRangeException(nameof(value), value, "BaseGridSpacing must be a positive, finite number.");
             }
 
-            baseGridSpacing = value;
+            SetValue(BaseGridSpacingProperty, value);
         }
     }
 
     /// <summary>
     /// Gets or sets the brush used for minor grid lines.
     /// </summary>
-    public Brush MinorLineBrush { get; set; } = new SolidColorBrush(Color.FromArgb(40, 128, 128, 128));
+    public Brush MinorLineBrush
+    {
+        get => (Brush)GetValue(MinorLineBrushProperty);
+        set => SetValue(MinorLineBrushProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets the brush used for major grid lines (every 5th line).
     /// </summary>
-    public Brush MajorLineBrush { get; set; } = new SolidColorBrush(Color.FromArgb(80, 128, 128, 128));
+    public Brush MajorLineBrush
+    {
+        get => (Brush)GetValue(MajorLineBrushProperty);
+        set => SetValue(MajorLineBrushProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets the thickness of minor grid lines.
     /// </summary>
-    public double MinorLineThickness { get; set; } = 0.5;
+    public double MinorLineThickness
+    {
+        get => (double)GetValue(MinorLineThicknessProperty);
+        set => SetValue(MinorLineThicknessProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets the thickness of major grid lines.
     /// </summary>
-    public double MajorLineThickness { get; set; } = 1.0;
+    public double MajorLineThickness
+    {
+        get => (double)GetValue(MajorLineThicknessProperty);
+        set => SetValue(MajorLineThicknessProperty, value);
+    }
 
     protected override void OnRender(DrawingContext drawingContext)
     {
@@ -154,6 +200,21 @@ public sealed class ZoomGridOverlay : Adorner
         return baseSpacing;
     }
 
+    private static bool IsValidGridSpacing(object value)
+        => value is double spacing && double.IsFinite(spacing) && spacing > 0;
+
+    private static SolidColorBrush CreateFrozenBrush(byte alpha)
+    {
+        var brush = new SolidColorBrush(Color.FromArgb(alpha, 128, 128, 128));
+        brush.Freeze();
+        return brush;
+    }
+
+    private void OnZoomBoxViewChanged(
+        object? sender,
+        EventArgs e)
+        => InvalidateVisual();
+
     /// <summary>
     /// Adds a grid overlay adorner to the specified <see cref="ZoomBox"/>.
     /// </summary>
@@ -172,6 +233,10 @@ public sealed class ZoomGridOverlay : Adorner
     /// </summary>
     public void Detach()
     {
+        zoomBox.ContentZoomChanged -= OnZoomBoxViewChanged;
+        zoomBox.ContentOffsetXChanged -= OnZoomBoxViewChanged;
+        zoomBox.ContentOffsetYChanged -= OnZoomBoxViewChanged;
+
         var adornerLayer = AdornerLayer.GetAdornerLayer(zoomBox);
         adornerLayer?.Remove(this);
     }
