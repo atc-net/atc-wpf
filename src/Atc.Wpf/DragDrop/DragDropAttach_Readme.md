@@ -100,7 +100,7 @@ public class MyViewModel : ViewModelBase, IDropHandler
 
 ## Related Controls
 
-- [DualListSelector](../Selectors/DualListSelector_Readme.md) — Specialized dual-list control with built-in drag-drop
+- [DualListSelector](../../Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) — Specialized dual-list control with built-in drag-drop
 
 ## Sample Application
 

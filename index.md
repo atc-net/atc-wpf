@@ -2,7 +2,7 @@
 
 > A comprehensive set of modern, enterprise-ready WPF libraries for building professional desktop applications with the MVVM design pattern.
 
-`Atc.Wpf` is a four-tier WPF control library: **Atc.Wpf** (core) → **Atc.Wpf.Controls** (atomic controls) → **Atc.Wpf.Forms** (labelled form fields) → **Atc.Wpf.Components** (composite components). Plus dedicated packages for theming, font icons, network scanning, and undo/redo.
+`Atc.Wpf` is a four-tier WPF control library: **Atc.Wpf** (core) → **Atc.Wpf.Controls** (atomic controls) → **Atc.Wpf.Forms** (labelled form fields) → **Atc.Wpf.Components** (composite components). Plus dedicated packages for theming, font icons, hardware/system pickers, network scanning, and undo/redo.
 
 ## Get started
 
@@ -22,8 +22,9 @@
 | [📝 Forms](docs/Forms/@Readme.md) | 25+ labelled form field controls with deferred validation |
 | [🧩 Components](docs/Components/@Readme.md) | Dialogs, viewers, monitoring, notifications, settings panels, zoom browser |
 | [📊 Data display](docs/DataDisplay/@Readme.md) | `Avatar`, `Badge`, `Breadcrumb`, `Card`, `Carousel`, `Chip`, `Divider`, `Popover`, `Segmented`, `Timeline` |
-| [⌨️ Hotkeys](docs/Hotkeys/@Readme.md) | `HotkeyManager`, `KeyboardHook` |
+| [⌨️ Hotkeys](docs/Hotkeys/@Readme.md) | `IHotkeyService` / `HotkeyService`: local, global and chord hotkeys |
 | [🧭 Navigation](docs/Navigation/@Readme.md) | Frame / page navigation primitives |
+| [🔌 Hardware](docs/Hardware/@Readme.md) | Serial, USB, camera, audio, Bluetooth, drive, display, printer, network-adapter, process and window pickers with live device state |
 | [🎈 Sample app](docs/sample-app.md) | Search / TreeView / TabControl interaction model |
 
 The full **API reference** (auto-generated from XML docs) is in the **API Reference** tab in the top nav.
@@ -32,11 +33,11 @@ The full **API reference** (auto-generated from XML docs) is in the **API Refere
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Atc.Wpf" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.Theming" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.Forms" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.Components" Version="2.*" />
-  <PackageReference Include="Atc.Wpf.FontIcons" Version="2.*" />
+  <PackageReference Include="Atc.Wpf" Version="4.*" />
+  <PackageReference Include="Atc.Wpf.Theming" Version="4.*" />
+  <PackageReference Include="Atc.Wpf.Forms" Version="4.*" />
+  <PackageReference Include="Atc.Wpf.Components" Version="4.*" />
+  <PackageReference Include="Atc.Wpf.FontIcons" Version="4.*" />
 </ItemGroup>
 ```
 

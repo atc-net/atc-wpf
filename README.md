@@ -18,7 +18,7 @@ This framework provides a rich collection of reusable controls, theming support,
 ## Requirements
 
 - [.NET 10 - Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
-- Windows 10 or later
+- Windows 10 or later (`Atc.Wpf.Hardware` requires Windows 10 version 2004 / build 19041 or later)
 
 ## NuGet Packages Provided in this Repository
 
@@ -31,6 +31,7 @@ This framework provides a rich collection of reusable controls, theming support,
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Font-based icon rendering                           | <ul><li>Atc.Wpf</li></ul>                                      |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Light & Dark mode theming infrastructure            | <ul><li>Atc.Wpf</li><li>ControlzEx</li><li>Microsoft.Windows.CsWin32</li></ul>                                      |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Network.svg?label=Atc.Wpf.Network&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Network)                         | Network scanning and discovery controls             | <ul><li>Atc.Network</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li></ul>                                             |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Hardware.svg?label=Atc.Wpf.Hardware&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Hardware)                      | Hardware, system and inspection pickers (serial, USB, camera, audio, Bluetooth, drives, displays, printers, network adapters, processes, windows) | <ul><li>Atc.Wpf.Components</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li></ul> |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.UndoRedo.svg?label=Atc.Wpf.UndoRedo&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.UndoRedo)                      | Undo/redo history view and keyboard behavior        | <ul><li>Atc.UndoRedo</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li></ul>                |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for building sample applications           | <ul><li>Atc.Wpf.Components</li><li>MdXaml</li></ul> |
 
@@ -84,6 +85,15 @@ Add the NuGet packages to your `.csproj` file:
 
   <!-- Optional: Font icons -->
   <PackageReference Include="Atc.Wpf.FontIcons" Version="4.*" />
+
+  <!-- Optional: hardware / system pickers (serial, USB, camera, audio, drives, displays, ...) -->
+  <PackageReference Include="Atc.Wpf.Hardware" Version="4.*" />
+
+  <!-- Optional: network scanning controls -->
+  <PackageReference Include="Atc.Wpf.Network" Version="4.*" />
+
+  <!-- Optional: undo/redo history view -->
+  <PackageReference Include="Atc.Wpf.UndoRedo" Version="4.*" />
 </ItemGroup>
 ```
 
@@ -179,6 +189,7 @@ graph TD
     Components[Atc.Wpf.Components]
 
     Network[Atc.Wpf.Network]
+    Hardware[Atc.Wpf.Hardware]
     UndoRedo[Atc.Wpf.UndoRedo]
 
     Atc --> AtcWpf
@@ -199,6 +210,10 @@ graph TD
     Controls --> Network
     Forms --> Network
 
+    Controls --> Hardware
+    Forms --> Hardware
+    Components --> Hardware
+
     Controls --> UndoRedo
     Theming --> UndoRedo
     FontIcons --> UndoRedo
@@ -209,11 +224,11 @@ graph TD
     classDef ext fill:#757575,stroke:#212121,color:#fff
     class AtcWpf core
     class Controls,Forms,Components tier
-    class Theming,FontIcons,Network,UndoRedo side
+    class Theming,FontIcons,Network,Hardware,UndoRedo side
     class Atc,XamlToolkit ext
 ```
 
-The four-tier core (blue → green) is the spine; theming/font-icons/network/undo-redo (orange) plug into it. Upstream NuGet dependencies (gray) are shown for context.
+The four-tier core (blue → green) is the spine; theming/font-icons/network/hardware/undo-redo (orange) plug into it. Upstream NuGet dependencies (gray) are shown for context.
 
 ## 📋 Control Catalog at a Glance
 
@@ -236,7 +251,7 @@ A quick reference of all controls organized by category:
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
 | **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |
-| **Undo/Redo** | IUndoRedoService, UndoRedoService, UndoRedoHistoryView | Atc.Wpf / Atc.Wpf.Components |
+| **Undo/Redo** | IUndoRedoService, UndoRedoService (from the Atc.UndoRedo NuGet), UndoRedoHistoryView | Atc.Wpf.UndoRedo |
 | **Animation** | AnimationExtensions, AnimateAttach, AnimationParameters | Atc.Wpf |
 | **Clipboard** | IClipboardService, ClipboardService | Atc.Wpf |
 | **Hotkeys** | IHotkeyService, HotkeyService | Atc.Wpf |
@@ -246,6 +261,7 @@ A quick reference of all controls organized by category:
 | **Theming** | NiceWindow, ThemeSelector, AccentColorSelector, TransitioningContentControl | Atc.Wpf.Theming |
 | **Font Icons** | FontAwesome 5 (3 variants), FontAwesome 7 (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
 | **Network** | NetworkScannerView | Atc.Wpf.Network |
+| **Hardware** | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, BluetoothDevicePicker, DrivePicker, DisplayPicker, PrinterPicker, NetworkAdapterPicker, ProcessPicker, WindowPicker (+ Label* wrappers) | Atc.Wpf.Hardware |
 
 ## 💝 MVVM Made Easy
 
@@ -563,7 +579,7 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **UndoRedoHistoryView** | Unified history view for navigating undo/redo stacks | [Readme](src/Atc.Wpf.Components/UndoRedo/UndoRedoHistoryView_Readme.md) |
+| **UndoRedoHistoryView** | Unified history view for navigating undo/redo stacks | [Readme](src/Atc.Wpf.UndoRedo/UndoRedoHistoryView_Readme.md) |
 
 ### Busy Indicator
 
@@ -683,6 +699,32 @@ viewModel.EntrySelected += (sender, args) =>
 - `NetworkHostViewModel` - Represents a discovered network host
 - `NetworkScannerColumnsViewModel` - Controls column visibility
 - `NetworkScannerFilterViewModel` - Controls result filtering
+
+---
+
+## 💟 Atc.Wpf.Hardware - Hardware, System and Inspection Pickers
+
+Pickers for devices and system resources with live device-state detection (available, just connected,
+in use, disconnected) and lost/reconnect handling. WinRT-backed pickers use `DeviceWatcher`; the others poll.
+Requires Windows 10 version 2004 (build 19041) or later.
+
+| Picker | Selects | Documentation |
+|--------|---------|---------------|
+| **SerialPortPicker** | Serial (COM) ports | [Readme](src/Atc.Wpf.Hardware/Pickers/SerialPortPicker_Readme.md) |
+| **UsbPortPicker** | USB devices | [Readme](src/Atc.Wpf.Hardware/Pickers/UsbPortPicker_Readme.md) |
+| **UsbCameraPicker** | Cameras, with optional live preview | [Readme](src/Atc.Wpf.Hardware/Pickers/UsbCameraPicker_Readme.md) |
+| **AudioInputPicker** | Microphones, with optional level meter | [Readme](src/Atc.Wpf.Hardware/Pickers/AudioInputPicker_Readme.md) |
+| **AudioOutputPicker** | Speakers, with optional test tone | [Readme](src/Atc.Wpf.Hardware/Pickers/AudioOutputPicker_Readme.md) |
+| **BluetoothDevicePicker** | Bluetooth devices | [Readme](src/Atc.Wpf.Hardware/Pickers/BluetoothDevicePicker_Readme.md) |
+| **DrivePicker** | Drives | [Readme](src/Atc.Wpf.Hardware/Pickers/DrivePicker_Readme.md) |
+| **DisplayPicker** | Monitors | [Readme](src/Atc.Wpf.Hardware/Pickers/DisplayPicker_Readme.md) |
+| **PrinterPicker** | Print queues | [Readme](src/Atc.Wpf.Hardware/Pickers/PrinterPicker_Readme.md) |
+| **NetworkAdapterPicker** | Network adapters | [Readme](src/Atc.Wpf.Hardware/Pickers/NetworkAdapterPicker_Readme.md) |
+| **ProcessPicker** | Running processes | [Readme](src/Atc.Wpf.Hardware/Pickers/ProcessPicker_Readme.md) |
+| **WindowPicker** | Top-level windows | [Readme](src/Atc.Wpf.Hardware/Pickers/WindowPicker_Readme.md) |
+
+Every picker has a `Label*` wrapper (e.g. `LabelSerialPortPicker`) for forms. See the
+**[Hardware guide](docs/Hardware/@Readme.md)** for the shared properties and device-state behaviour.
 
 ---
 
