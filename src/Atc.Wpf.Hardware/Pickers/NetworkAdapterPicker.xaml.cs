@@ -3,7 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
-public partial class NetworkAdapterPicker
+public partial class NetworkAdapterPicker : IDevicePickerHost<NetworkAdapterInfo>
 {
     [RoutedEvent(
         RoutingStrategy.Bubble,
@@ -46,7 +46,7 @@ public partial class NetworkAdapterPicker
     [DependencyProperty(DefaultValue = true)]
     private bool showRefreshButton;
 
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
     private bool autoRefreshOnDeviceChange;
 
     [DependencyProperty(DefaultValue = false)]
@@ -57,6 +57,20 @@ public partial class NetworkAdapterPicker
 
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
+
+    /// <summary>
+    /// Gets or sets how often the adapter list is polled. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
+    private TimeSpan? pollingInterval;
+
+    /// <summary>
+    /// Gets or sets whether loopback adapters are listed. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnIncludeLoopbackChanged))]
+    private bool? includeLoopback;
 
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
@@ -126,71 +140,38 @@ public partial class NetworkAdapterPicker
     }
 
     private readonly INetworkAdapterService service;
-    private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
-    private string? lostDeviceId;
+    private readonly DevicePickerController<NetworkAdapterInfo> controller;
 
     public NetworkAdapterPicker()
         : this(new NetworkAdapterService())
     {
     }
 
-    internal NetworkAdapterPicker(INetworkAdapterService service)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NetworkAdapterPicker"/> class on an existing service,
+    /// e.g. to share one device watcher between several pickers or to supply a test double.
+    /// The picker does not dispose the service.
+    /// </summary>
+    public NetworkAdapterPicker(INetworkAdapterService service)
     {
         this.service = service ?? throw new ArgumentNullException(nameof(service));
+
+        // Created before InitializeComponent: a style setter applied during initialization can already
+        // raise property-changed callbacks that use the controller.
+        controller = new DevicePickerController<NetworkAdapterInfo>(
+            this,
+            service.Adapters,
+            service.StartWatching,
+            service.StopWatching,
+            service.RefreshAsync);
 
         InitializeComponent();
 
         Adapters = service.Adapters;
         ApplyResolvedItemTemplate();
 
-        foreach (var adapter in Adapters)
-        {
-            HookItem(adapter);
-        }
-
-        Adapters.CollectionChanged += OnAdaptersCollectionChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    private void HookItem(NetworkAdapterInfo adapter)
-    {
-        lastKnownStates[adapter.DeviceId] = adapter.State;
-        adapter.PropertyChanged += OnAdapterStatePropertyChanged;
-    }
-
-    private void UnhookItem(NetworkAdapterInfo adapter)
-    {
-        adapter.PropertyChanged -= OnAdapterStatePropertyChanged;
-        lastKnownStates.Remove(adapter.DeviceId);
-    }
-
-    private void OnAdapterStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(NetworkAdapterInfo.State) ||
-            sender is not NetworkAdapterInfo adapter)
-        {
-            return;
-        }
-
-        var oldState = lastKnownStates.TryGetValue(adapter.DeviceId, out var prev)
-            ? prev
-            : DeviceState.Unknown;
-
-        if (oldState == adapter.State)
-        {
-            return;
-        }
-
-        lastKnownStates[adapter.DeviceId] = adapter.State;
-
-        RaiseEvent(new DeviceStateChangedRoutedEventArgs(
-            DeviceStateChangedEvent,
-            adapter.DeviceId,
-            oldState,
-            adapter.State));
     }
 
     public ObservableCollection<NetworkAdapterInfo> Adapters { get; }
@@ -210,52 +191,48 @@ public partial class NetworkAdapterPicker
         }
     }
 
+    private static void OnAutoRefreshOnDeviceChangeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((NetworkAdapterPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
+    private static void OnPollingIntervalChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is TimeSpan value)
+        {
+            ((NetworkAdapterPicker)d).service.PollingInterval = value;
+        }
+    }
+
+    private static void OnIncludeLoopbackChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is bool value)
+        {
+            ((NetworkAdapterPicker)d).service.IncludeLoopback = value;
+        }
+    }
+
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "UI initialisation must not crash on hardware probe failure.")]
     private async void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        if (AutoRefreshOnDeviceChange)
-        {
-            service.StartWatching();
-        }
-
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"NetworkAdapterPicker initial refresh failed: {ex.Message}");
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => await controller.LoadedAsync();
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-    {
-        service.StopWatching();
-    }
+        => controller.Unloaded();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-initiated refresh must not crash on hardware probe failure.")]
     private async void OnRefreshClick(
         object sender,
         RoutedEventArgs e)
-    {
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"NetworkAdapterPicker refresh failed: {ex.Message}");
-        }
-    }
+        => await controller.RefreshAsync();
 
     private static void OnValuePropertyChanged(
         DependencyObject d,
@@ -272,33 +249,7 @@ public partial class NetworkAdapterPicker
     private void OnValueChanged(
         NetworkAdapterInfo? oldValue,
         NetworkAdapterInfo? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.PropertyChanged -= OnValueStatePropertyChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.PropertyChanged += OnValueStatePropertyChanged;
-            lostDeviceId = null;
-        }
-
-        UpdateSelectedStateMessage();
-        RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkAdapterInfo?>(oldValue, newValue, ValueChangedEvent));
-    }
-
-    private void OnValueStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(NetworkAdapterInfo.State))
-        {
-            return;
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => controller.ValueChanged(oldValue, newValue);
 
     private static void OnSelectedStateMessageChanged(
         DependencyObject d,
@@ -310,91 +261,26 @@ public partial class NetworkAdapterPicker
         }
     }
 
-    private void UpdateSelectedStateMessage()
-    {
-        if (Value is null)
-        {
-            SelectedStateMessage = string.Empty;
-            return;
-        }
+    void IDevicePickerHost<NetworkAdapterInfo>.SetSelectedStateMessage(
+        string message)
+        => SelectedStateMessage = message;
 
-        SelectedStateMessage = Value.State switch
-        {
-            DeviceState.Disconnected => Miscellaneous.DeviceDisconnected,
-            DeviceState.InUse => Miscellaneous.DeviceInUse,
-            _ => string.Empty,
-        };
-    }
+    void IDevicePickerHost<NetworkAdapterInfo>.RaiseValueChanged(
+        NetworkAdapterInfo? oldValue,
+        NetworkAdapterInfo? newValue)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkAdapterInfo?>(oldValue, newValue, ValueChangedEvent));
 
-    private void OnAdaptersCollectionChanged(
-        object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var item in e.OldItems)
-            {
-                if (item is NetworkAdapterInfo removed)
-                {
-                    UnhookItem(removed);
-                }
-            }
-        }
+    void IDevicePickerHost<NetworkAdapterInfo>.RaiseDeviceLost(
+        NetworkAdapterInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkAdapterInfo?>(device, device, DeviceLostEvent));
 
-        if (e.Action is System.Collections.Specialized.NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
-        {
-            foreach (var item in e.NewItems)
-            {
-                if (item is not NetworkAdapterInfo info)
-                {
-                    continue;
-                }
+    void IDevicePickerHost<NetworkAdapterInfo>.RaiseDeviceReconnected(
+        NetworkAdapterInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkAdapterInfo?>(oldValue: null, device, DeviceReconnectedEvent));
 
-                HookItem(info);
-
-                if (AutoRebindOnReconnect &&
-                    Value is null &&
-                    !string.IsNullOrEmpty(lostDeviceId) &&
-                    string.Equals(info.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = info;
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkAdapterInfo?>(null, info, DeviceReconnectedEvent));
-                    lostDeviceId = null;
-                }
-                else if (AutoSelectFirstAvailable &&
-                    Value is null &&
-                    info.State is DeviceState.Available or DeviceState.JustConnected)
-                {
-                    Value = info;
-                }
-            }
-        }
-
-        if (Value is not null && Value.State is DeviceState.Disconnected)
-        {
-            HandleSelectedDeviceLost();
-        }
-    }
-
-    private void HandleSelectedDeviceLost()
-    {
-        var lost = Value;
-        if (lost is null)
-        {
-            return;
-        }
-
-        lostDeviceId = lost.DeviceId;
-        RaiseEvent(new RoutedPropertyChangedEventArgs<NetworkAdapterInfo?>(lost, lost, DeviceLostEvent));
-
-        if (ClearValueOnDisconnect)
-        {
-            Value = null;
-        }
-        else
-        {
-            UpdateSelectedStateMessage();
-        }
-    }
+    void IDevicePickerHost<NetworkAdapterInfo>.RaiseDeviceStateChanged(
+        string deviceId,
+        DeviceState oldState,
+        DeviceState newState)
+        => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
 }

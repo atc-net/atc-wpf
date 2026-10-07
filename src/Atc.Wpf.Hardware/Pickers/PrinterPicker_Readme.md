@@ -27,6 +27,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
 | `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `PollingInterval` | `TimeSpan?` | `null` | How often the printer list is polled; `null` keeps the service setting (2 s) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when queue removed |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach by queue full name |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first printer |

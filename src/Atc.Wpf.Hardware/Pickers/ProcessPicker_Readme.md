@@ -28,6 +28,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
 | `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `PollingInterval` | `TimeSpan?` | `null` | How often the process list is polled; `null` keeps the service setting (2 s) |
+| `OnlyWithMainWindow` | `bool?` | `null` | List only processes with a main window; `null` keeps the service setting (`true`) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when the process exits |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach by PID (rare; PIDs aren't reused immediately) |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first process |

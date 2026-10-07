@@ -3,7 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
-public partial class UsbPortPicker
+public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
 {
     [RoutedEvent(
         RoutingStrategy.Bubble,
@@ -46,7 +46,7 @@ public partial class UsbPortPicker
     [DependencyProperty(DefaultValue = true)]
     private bool showRefreshButton;
 
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
     private bool autoRefreshOnDeviceChange;
 
     [DependencyProperty(DefaultValue = false)]
@@ -132,71 +132,38 @@ public partial class UsbPortPicker
     }
 
     private readonly IUsbDeviceService service;
-    private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
-    private string? lostDeviceId;
+    private readonly DevicePickerController<UsbDeviceInfo> controller;
 
     public UsbPortPicker()
         : this(new UsbDeviceService())
     {
     }
 
-    internal UsbPortPicker(IUsbDeviceService service)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsbPortPicker"/> class on an existing service,
+    /// e.g. to share one device watcher between several pickers or to supply a test double.
+    /// The picker does not dispose the service.
+    /// </summary>
+    public UsbPortPicker(IUsbDeviceService service)
     {
         this.service = service ?? throw new ArgumentNullException(nameof(service));
+
+        // Created before InitializeComponent: a style setter applied during initialization can already
+        // raise property-changed callbacks that use the controller.
+        controller = new DevicePickerController<UsbDeviceInfo>(
+            this,
+            service.Devices,
+            service.StartWatching,
+            service.StopWatching,
+            service.RefreshAsync);
 
         InitializeComponent();
 
         Devices = service.Devices;
         ApplyResolvedItemTemplate();
 
-        foreach (var device in Devices)
-        {
-            HookItem(device);
-        }
-
-        Devices.CollectionChanged += OnDevicesCollectionChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    private void HookItem(UsbDeviceInfo device)
-    {
-        lastKnownStates[device.DeviceId] = device.State;
-        device.PropertyChanged += OnDeviceStatePropertyChanged;
-    }
-
-    private void UnhookItem(UsbDeviceInfo device)
-    {
-        device.PropertyChanged -= OnDeviceStatePropertyChanged;
-        lastKnownStates.Remove(device.DeviceId);
-    }
-
-    private void OnDeviceStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(UsbDeviceInfo.State) ||
-            sender is not UsbDeviceInfo device)
-        {
-            return;
-        }
-
-        var oldState = lastKnownStates.TryGetValue(device.DeviceId, out var prev)
-            ? prev
-            : DeviceState.Unknown;
-
-        if (oldState == device.State)
-        {
-            return;
-        }
-
-        lastKnownStates[device.DeviceId] = device.State;
-
-        RaiseEvent(new DeviceStateChangedRoutedEventArgs(
-            DeviceStateChangedEvent,
-            device.DeviceId,
-            oldState,
-            device.State));
     }
 
     public ObservableCollection<UsbDeviceInfo> Devices { get; }
@@ -216,54 +183,32 @@ public partial class UsbPortPicker
         }
     }
 
+    private static void OnAutoRefreshOnDeviceChangeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((UsbPortPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "UI initialisation must not crash on hardware probe failure.")]
     private async void OnLoaded(
         object sender,
         RoutedEventArgs e)
     {
         service.ClassFilter = ClassFilter;
 
-        if (AutoRefreshOnDeviceChange)
-        {
-            service.StartWatching();
-        }
-
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"UsbPortPicker initial refresh failed: {ex.Message}");
-        }
-
-        UpdateSelectedStateMessage();
+        await controller.LoadedAsync();
     }
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-    {
-        service.StopWatching();
-    }
+        => controller.Unloaded();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-initiated refresh must not crash on hardware probe failure.")]
     private async void OnRefreshClick(
         object sender,
         RoutedEventArgs e)
-    {
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"UsbPortPicker refresh failed: {ex.Message}");
-        }
-    }
+        => await controller.RefreshAsync();
 
     private static void OnValuePropertyChanged(
         DependencyObject d,
@@ -280,33 +225,7 @@ public partial class UsbPortPicker
     private void OnValueChanged(
         UsbDeviceInfo? oldValue,
         UsbDeviceInfo? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.PropertyChanged -= OnValueStatePropertyChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.PropertyChanged += OnValueStatePropertyChanged;
-            lostDeviceId = null;
-        }
-
-        UpdateSelectedStateMessage();
-        RaiseEvent(new RoutedPropertyChangedEventArgs<UsbDeviceInfo?>(oldValue, newValue, ValueChangedEvent));
-    }
-
-    private void OnValueStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(UsbDeviceInfo.State))
-        {
-            return;
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => controller.ValueChanged(oldValue, newValue);
 
     private static void OnSelectedStateMessageChanged(
         DependencyObject d,
@@ -318,91 +237,25 @@ public partial class UsbPortPicker
         }
     }
 
-    private void UpdateSelectedStateMessage()
-    {
-        if (Value is null)
-        {
-            SelectedStateMessage = string.Empty;
-            return;
-        }
+    void IDevicePickerHost<UsbDeviceInfo>.SetSelectedStateMessage(
+        string message)
+        => SelectedStateMessage = message;
 
-        SelectedStateMessage = Value.State switch
-        {
-            DeviceState.Disconnected => Miscellaneous.DeviceDisconnected,
-            DeviceState.InUse => Miscellaneous.DeviceInUse,
-            _ => string.Empty,
-        };
-    }
+    void IDevicePickerHost<UsbDeviceInfo>.RaiseValueChanged(
+        UsbDeviceInfo? oldValue,
+        UsbDeviceInfo? newValue)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<UsbDeviceInfo?>(oldValue, newValue, ValueChangedEvent));
 
-    private void OnDevicesCollectionChanged(
-        object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var item in e.OldItems)
-            {
-                if (item is UsbDeviceInfo removed)
-                {
-                    UnhookItem(removed);
-                }
-            }
-        }
+    void IDevicePickerHost<UsbDeviceInfo>.RaiseDeviceLost(UsbDeviceInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<UsbDeviceInfo?>(device, device, DeviceLostEvent));
 
-        if (e.Action is System.Collections.Specialized.NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
-        {
-            foreach (var item in e.NewItems)
-            {
-                if (item is not UsbDeviceInfo info)
-                {
-                    continue;
-                }
+    void IDevicePickerHost<UsbDeviceInfo>.RaiseDeviceReconnected(
+        UsbDeviceInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<UsbDeviceInfo?>(oldValue: null, device, DeviceReconnectedEvent));
 
-                HookItem(info);
-
-                if (AutoRebindOnReconnect &&
-                    Value is null &&
-                    !string.IsNullOrEmpty(lostDeviceId) &&
-                    string.Equals(info.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = info;
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<UsbDeviceInfo?>(null, info, DeviceReconnectedEvent));
-                    lostDeviceId = null;
-                }
-                else if (AutoSelectFirstAvailable &&
-                    Value is null &&
-                    info.State is DeviceState.Available or DeviceState.JustConnected)
-                {
-                    Value = info;
-                }
-            }
-        }
-
-        if (Value is not null && Value.State is DeviceState.Disconnected)
-        {
-            HandleSelectedDeviceLost();
-        }
-    }
-
-    private void HandleSelectedDeviceLost()
-    {
-        var lost = Value;
-        if (lost is null)
-        {
-            return;
-        }
-
-        lostDeviceId = lost.DeviceId;
-        RaiseEvent(new RoutedPropertyChangedEventArgs<UsbDeviceInfo?>(lost, lost, DeviceLostEvent));
-
-        if (ClearValueOnDisconnect)
-        {
-            Value = null;
-        }
-        else
-        {
-            UpdateSelectedStateMessage();
-        }
-    }
+    void IDevicePickerHost<UsbDeviceInfo>.RaiseDeviceStateChanged(
+        string deviceId,
+        DeviceState oldState,
+        DeviceState newState)
+        => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
 }

@@ -27,6 +27,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
 | `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `PollingInterval` | `TimeSpan?` | `null` | How often the adapter list is polled; `null` keeps the service setting |
+| `IncludeLoopback` | `bool?` | `null` | Also list loopback adapters; `null` keeps the service setting |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when adapter disappears |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach on reconnect by adapter id |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first adapter |

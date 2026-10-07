@@ -3,7 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
-public partial class WindowPicker
+public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
 {
     [RoutedEvent(
         RoutingStrategy.Bubble,
@@ -46,7 +46,7 @@ public partial class WindowPicker
     [DependencyProperty(DefaultValue = true)]
     private bool showRefreshButton;
 
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
     private bool autoRefreshOnDeviceChange;
 
     [DependencyProperty(DefaultValue = false)]
@@ -57,6 +57,20 @@ public partial class WindowPicker
 
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
+
+    /// <summary>
+    /// Gets or sets how often the window list is polled. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
+    private TimeSpan? pollingInterval;
+
+    /// <summary>
+    /// Gets or sets whether only visible windows with a title are listed. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnOnlyVisibleWithTitleChanged))]
+    private bool? onlyVisibleWithTitle;
 
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
@@ -126,71 +140,38 @@ public partial class WindowPicker
     }
 
     private readonly IWindowService service;
-    private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
-    private string? lostDeviceId;
+    private readonly DevicePickerController<TopLevelWindowInfo> controller;
 
     public WindowPicker()
         : this(new WindowService())
     {
     }
 
-    internal WindowPicker(IWindowService service)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WindowPicker"/> class on an existing service,
+    /// e.g. to share one device watcher between several pickers or to supply a test double.
+    /// The picker does not dispose the service.
+    /// </summary>
+    public WindowPicker(IWindowService service)
     {
         this.service = service ?? throw new ArgumentNullException(nameof(service));
+
+        // Created before InitializeComponent: a style setter applied during initialization can already
+        // raise property-changed callbacks that use the controller.
+        controller = new DevicePickerController<TopLevelWindowInfo>(
+            this,
+            service.Windows,
+            service.StartWatching,
+            service.StopWatching,
+            service.RefreshAsync);
 
         InitializeComponent();
 
         Windows = service.Windows;
         ApplyResolvedItemTemplate();
 
-        foreach (var window in Windows)
-        {
-            HookItem(window);
-        }
-
-        Windows.CollectionChanged += OnWindowsCollectionChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    private void HookItem(TopLevelWindowInfo window)
-    {
-        lastKnownStates[window.DeviceId] = window.State;
-        window.PropertyChanged += OnWindowStatePropertyChanged;
-    }
-
-    private void UnhookItem(TopLevelWindowInfo window)
-    {
-        window.PropertyChanged -= OnWindowStatePropertyChanged;
-        lastKnownStates.Remove(window.DeviceId);
-    }
-
-    private void OnWindowStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(TopLevelWindowInfo.State) ||
-            sender is not TopLevelWindowInfo window)
-        {
-            return;
-        }
-
-        var oldState = lastKnownStates.TryGetValue(window.DeviceId, out var prev)
-            ? prev
-            : DeviceState.Unknown;
-
-        if (oldState == window.State)
-        {
-            return;
-        }
-
-        lastKnownStates[window.DeviceId] = window.State;
-
-        RaiseEvent(new DeviceStateChangedRoutedEventArgs(
-            DeviceStateChangedEvent,
-            window.DeviceId,
-            oldState,
-            window.State));
     }
 
     public ObservableCollection<TopLevelWindowInfo> Windows { get; }
@@ -210,52 +191,48 @@ public partial class WindowPicker
         }
     }
 
+    private static void OnAutoRefreshOnDeviceChangeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((WindowPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
+    private static void OnPollingIntervalChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is TimeSpan value)
+        {
+            ((WindowPicker)d).service.PollingInterval = value;
+        }
+    }
+
+    private static void OnOnlyVisibleWithTitleChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is bool value)
+        {
+            ((WindowPicker)d).service.OnlyVisibleWithTitle = value;
+        }
+    }
+
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "UI initialisation must not crash on hardware probe failure.")]
     private async void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        if (AutoRefreshOnDeviceChange)
-        {
-            service.StartWatching();
-        }
-
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"WindowPicker initial refresh failed: {ex.Message}");
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => await controller.LoadedAsync();
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-    {
-        service.StopWatching();
-    }
+        => controller.Unloaded();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-initiated refresh must not crash on hardware probe failure.")]
     private async void OnRefreshClick(
         object sender,
         RoutedEventArgs e)
-    {
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"WindowPicker refresh failed: {ex.Message}");
-        }
-    }
+        => await controller.RefreshAsync();
 
     private static void OnValuePropertyChanged(
         DependencyObject d,
@@ -272,33 +249,7 @@ public partial class WindowPicker
     private void OnValueChanged(
         TopLevelWindowInfo? oldValue,
         TopLevelWindowInfo? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.PropertyChanged -= OnValueStatePropertyChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.PropertyChanged += OnValueStatePropertyChanged;
-            lostDeviceId = null;
-        }
-
-        UpdateSelectedStateMessage();
-        RaiseEvent(new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(oldValue, newValue, ValueChangedEvent));
-    }
-
-    private void OnValueStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(TopLevelWindowInfo.State))
-        {
-            return;
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => controller.ValueChanged(oldValue, newValue);
 
     private static void OnSelectedStateMessageChanged(
         DependencyObject d,
@@ -310,91 +261,26 @@ public partial class WindowPicker
         }
     }
 
-    private void UpdateSelectedStateMessage()
-    {
-        if (Value is null)
-        {
-            SelectedStateMessage = string.Empty;
-            return;
-        }
+    void IDevicePickerHost<TopLevelWindowInfo>.SetSelectedStateMessage(
+        string message)
+        => SelectedStateMessage = message;
 
-        SelectedStateMessage = Value.State switch
-        {
-            DeviceState.Disconnected => Miscellaneous.DeviceDisconnected,
-            DeviceState.InUse => Miscellaneous.DeviceInUse,
-            _ => string.Empty,
-        };
-    }
+    void IDevicePickerHost<TopLevelWindowInfo>.RaiseValueChanged(
+        TopLevelWindowInfo? oldValue,
+        TopLevelWindowInfo? newValue)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(oldValue, newValue, ValueChangedEvent));
 
-    private void OnWindowsCollectionChanged(
-        object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var item in e.OldItems)
-            {
-                if (item is TopLevelWindowInfo removed)
-                {
-                    UnhookItem(removed);
-                }
-            }
-        }
+    void IDevicePickerHost<TopLevelWindowInfo>.RaiseDeviceLost(
+        TopLevelWindowInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(device, device, DeviceLostEvent));
 
-        if (e.Action is System.Collections.Specialized.NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
-        {
-            foreach (var item in e.NewItems)
-            {
-                if (item is not TopLevelWindowInfo info)
-                {
-                    continue;
-                }
+    void IDevicePickerHost<TopLevelWindowInfo>.RaiseDeviceReconnected(
+        TopLevelWindowInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(oldValue: null, device, DeviceReconnectedEvent));
 
-                HookItem(info);
-
-                if (AutoRebindOnReconnect &&
-                    Value is null &&
-                    !string.IsNullOrEmpty(lostDeviceId) &&
-                    string.Equals(info.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = info;
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(null, info, DeviceReconnectedEvent));
-                    lostDeviceId = null;
-                }
-                else if (AutoSelectFirstAvailable &&
-                    Value is null &&
-                    info.State is DeviceState.Available or DeviceState.JustConnected)
-                {
-                    Value = info;
-                }
-            }
-        }
-
-        if (Value is not null && Value.State is DeviceState.Disconnected)
-        {
-            HandleSelectedDeviceLost();
-        }
-    }
-
-    private void HandleSelectedDeviceLost()
-    {
-        var lost = Value;
-        if (lost is null)
-        {
-            return;
-        }
-
-        lostDeviceId = lost.DeviceId;
-        RaiseEvent(new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(lost, lost, DeviceLostEvent));
-
-        if (ClearValueOnDisconnect)
-        {
-            Value = null;
-        }
-        else
-        {
-            UpdateSelectedStateMessage();
-        }
-    }
+    void IDevicePickerHost<TopLevelWindowInfo>.RaiseDeviceStateChanged(
+        string deviceId,
+        DeviceState oldState,
+        DeviceState newState)
+        => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
 }

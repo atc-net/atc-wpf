@@ -31,6 +31,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
 | `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `PollingInterval` | `TimeSpan?` | `null` | How often the drive list is polled; `null` keeps the service setting (2 s) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when drive unplugs |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach on reconnect by drive root |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first drive on first appear |

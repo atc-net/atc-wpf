@@ -69,19 +69,31 @@ When a *bound* `Value` device disconnects:
 
 ## Common Properties
 
-These properties exist on all three pickers (and their `Label*` wrappers):
+These properties exist on every hardware picker (and their `Label*` wrappers):
 
 | Property | Type | Default | Notes |
 |----------|------|---------|-------|
 | `Value` | `T?` | `null` | The selected device (TwoWay) |
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Always-visible 🔄 button |
-| `AutoRefreshOnDeviceChange` | `bool` | `true` | Subscribe to `DeviceWatcher` events |
+| `AutoRefreshOnDeviceChange` | `bool` | `true` | Watch for device changes (`DeviceWatcher` or polling); can be toggled at runtime |
 | `DetectInUseState` | `bool` | `false` | Opt-in active probe (Serial / USB only) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Preserve user intent by default |
 | `AutoRebindOnReconnect` | `bool` | `true` | Match by `DeviceId` |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Avoid surprise rebinding |
-| `ItemTemplate` | `DataTemplate?` | default | Override status dot + name layout |
+| `ItemTemplate` | `DataTemplate?` | default | Override status dot + name layout (picker only, not on the `Label*` wrappers) |
+
+The polling pickers (`ProcessPicker`, `WindowPicker`, `DrivePicker`, `PrinterPicker`, `DisplayPicker`,
+`NetworkAdapterPicker`) also expose their service tuning — `PollingInterval`, and `OnlyWithMainWindow`,
+`OnlyVisibleWithTitle` or `IncludeLoopback` where relevant. These are nullable: `null` (default) keeps
+the service's own setting, a value is pushed to the service immediately. The `Label*` wrappers do not
+forward these tuning properties yet.
+
+### Sharing or injecting a service
+
+Every picker has a public constructor that takes its service interface (for example
+`new ProcessPicker(IProcessService service)`). Use it to share one watcher between several pickers or to
+supply a test double. The picker does not dispose a service passed in this way.
 
 ## Localization
 

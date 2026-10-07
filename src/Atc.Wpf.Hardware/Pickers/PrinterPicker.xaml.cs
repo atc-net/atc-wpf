@@ -3,7 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
-public partial class PrinterPicker
+public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
 {
     [RoutedEvent(
         RoutingStrategy.Bubble,
@@ -46,7 +46,7 @@ public partial class PrinterPicker
     [DependencyProperty(DefaultValue = true)]
     private bool showRefreshButton;
 
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
     private bool autoRefreshOnDeviceChange;
 
     [DependencyProperty(DefaultValue = false)]
@@ -57,6 +57,13 @@ public partial class PrinterPicker
 
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
+
+    /// <summary>
+    /// Gets or sets how often the printer list is polled. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
+    private TimeSpan? pollingInterval;
 
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
@@ -126,71 +133,38 @@ public partial class PrinterPicker
     }
 
     private readonly IPrinterService service;
-    private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
-    private string? lostDeviceId;
+    private readonly DevicePickerController<PrinterInfo> controller;
 
     public PrinterPicker()
         : this(new PrinterService())
     {
     }
 
-    internal PrinterPicker(IPrinterService service)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrinterPicker"/> class on an existing service,
+    /// e.g. to share one device watcher between several pickers or to supply a test double.
+    /// The picker does not dispose the service.
+    /// </summary>
+    public PrinterPicker(IPrinterService service)
     {
         this.service = service ?? throw new ArgumentNullException(nameof(service));
+
+        // Created before InitializeComponent: a style setter applied during initialization can already
+        // raise property-changed callbacks that use the controller.
+        controller = new DevicePickerController<PrinterInfo>(
+            this,
+            service.Printers,
+            service.StartWatching,
+            service.StopWatching,
+            service.RefreshAsync);
 
         InitializeComponent();
 
         Printers = service.Printers;
         ApplyResolvedItemTemplate();
 
-        foreach (var printer in Printers)
-        {
-            HookItem(printer);
-        }
-
-        Printers.CollectionChanged += OnPrintersCollectionChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    private void HookItem(PrinterInfo printer)
-    {
-        lastKnownStates[printer.DeviceId] = printer.State;
-        printer.PropertyChanged += OnPrinterStatePropertyChanged;
-    }
-
-    private void UnhookItem(PrinterInfo printer)
-    {
-        printer.PropertyChanged -= OnPrinterStatePropertyChanged;
-        lastKnownStates.Remove(printer.DeviceId);
-    }
-
-    private void OnPrinterStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(PrinterInfo.State) ||
-            sender is not PrinterInfo printer)
-        {
-            return;
-        }
-
-        var oldState = lastKnownStates.TryGetValue(printer.DeviceId, out var prev)
-            ? prev
-            : DeviceState.Unknown;
-
-        if (oldState == printer.State)
-        {
-            return;
-        }
-
-        lastKnownStates[printer.DeviceId] = printer.State;
-
-        RaiseEvent(new DeviceStateChangedRoutedEventArgs(
-            DeviceStateChangedEvent,
-            printer.DeviceId,
-            oldState,
-            printer.State));
     }
 
     public ObservableCollection<PrinterInfo> Printers { get; }
@@ -210,52 +184,38 @@ public partial class PrinterPicker
         }
     }
 
+    private static void OnAutoRefreshOnDeviceChangeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((PrinterPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
+    private static void OnPollingIntervalChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is TimeSpan value)
+        {
+            ((PrinterPicker)d).service.PollingInterval = value;
+        }
+    }
+
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "UI initialisation must not crash on hardware probe failure.")]
     private async void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        if (AutoRefreshOnDeviceChange)
-        {
-            service.StartWatching();
-        }
-
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"PrinterPicker initial refresh failed: {ex.Message}");
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => await controller.LoadedAsync();
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-    {
-        service.StopWatching();
-    }
+        => controller.Unloaded();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-initiated refresh must not crash on hardware probe failure.")]
     private async void OnRefreshClick(
         object sender,
         RoutedEventArgs e)
-    {
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"PrinterPicker refresh failed: {ex.Message}");
-        }
-    }
+        => await controller.RefreshAsync();
 
     private static void OnValuePropertyChanged(
         DependencyObject d,
@@ -272,33 +232,7 @@ public partial class PrinterPicker
     private void OnValueChanged(
         PrinterInfo? oldValue,
         PrinterInfo? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.PropertyChanged -= OnValueStatePropertyChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.PropertyChanged += OnValueStatePropertyChanged;
-            lostDeviceId = null;
-        }
-
-        UpdateSelectedStateMessage();
-        RaiseEvent(new RoutedPropertyChangedEventArgs<PrinterInfo?>(oldValue, newValue, ValueChangedEvent));
-    }
-
-    private void OnValueStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(PrinterInfo.State))
-        {
-            return;
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => controller.ValueChanged(oldValue, newValue);
 
     private static void OnSelectedStateMessageChanged(
         DependencyObject d,
@@ -310,91 +244,24 @@ public partial class PrinterPicker
         }
     }
 
-    private void UpdateSelectedStateMessage()
-    {
-        if (Value is null)
-        {
-            SelectedStateMessage = string.Empty;
-            return;
-        }
+    void IDevicePickerHost<PrinterInfo>.SetSelectedStateMessage(string message)
+        => SelectedStateMessage = message;
 
-        SelectedStateMessage = Value.State switch
-        {
-            DeviceState.Disconnected => Miscellaneous.DeviceDisconnected,
-            DeviceState.InUse => Miscellaneous.DeviceInUse,
-            _ => string.Empty,
-        };
-    }
+    void IDevicePickerHost<PrinterInfo>.RaiseValueChanged(
+        PrinterInfo? oldValue,
+        PrinterInfo? newValue)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<PrinterInfo?>(oldValue, newValue, ValueChangedEvent));
 
-    private void OnPrintersCollectionChanged(
-        object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var item in e.OldItems)
-            {
-                if (item is PrinterInfo removed)
-                {
-                    UnhookItem(removed);
-                }
-            }
-        }
+    void IDevicePickerHost<PrinterInfo>.RaiseDeviceLost(PrinterInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<PrinterInfo?>(device, device, DeviceLostEvent));
 
-        if (e.Action is System.Collections.Specialized.NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
-        {
-            foreach (var item in e.NewItems)
-            {
-                if (item is not PrinterInfo info)
-                {
-                    continue;
-                }
+    void IDevicePickerHost<PrinterInfo>.RaiseDeviceReconnected(
+        PrinterInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<PrinterInfo?>(oldValue: null, device, DeviceReconnectedEvent));
 
-                HookItem(info);
-
-                if (AutoRebindOnReconnect &&
-                    Value is null &&
-                    !string.IsNullOrEmpty(lostDeviceId) &&
-                    string.Equals(info.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = info;
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<PrinterInfo?>(null, info, DeviceReconnectedEvent));
-                    lostDeviceId = null;
-                }
-                else if (AutoSelectFirstAvailable &&
-                    Value is null &&
-                    info.State is DeviceState.Available or DeviceState.JustConnected)
-                {
-                    Value = info;
-                }
-            }
-        }
-
-        if (Value is not null && Value.State is DeviceState.Disconnected)
-        {
-            HandleSelectedDeviceLost();
-        }
-    }
-
-    private void HandleSelectedDeviceLost()
-    {
-        var lost = Value;
-        if (lost is null)
-        {
-            return;
-        }
-
-        lostDeviceId = lost.DeviceId;
-        RaiseEvent(new RoutedPropertyChangedEventArgs<PrinterInfo?>(lost, lost, DeviceLostEvent));
-
-        if (ClearValueOnDisconnect)
-        {
-            Value = null;
-        }
-        else
-        {
-            UpdateSelectedStateMessage();
-        }
-    }
+    void IDevicePickerHost<PrinterInfo>.RaiseDeviceStateChanged(
+        string deviceId,
+        DeviceState oldState,
+        DeviceState newState)
+        => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
 }
