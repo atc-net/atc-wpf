@@ -5,8 +5,10 @@ global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using System.Windows;
 global using System.Windows.Controls;
+global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;
 global using System.Windows.Input;
+global using System.Windows.Markup;
 global using System.Windows.Media;
 global using System.Windows.Threading;
 
