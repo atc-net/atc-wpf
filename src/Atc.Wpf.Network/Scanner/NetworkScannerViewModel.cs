@@ -7,6 +7,7 @@ namespace Atc.Wpf.Network.Scanner;
 public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
 {
     private readonly ICollectionView view;
+    private readonly Dictionary<IPAddress, NetworkHostViewModel> entriesByIp = [];
     private GridViewColumnHeader? lastHeaderClicked;
     private ListSortDirection lastDirection = ListSortDirection.Ascending;
     private DispatcherTimer? elapsedTimer;
@@ -102,6 +103,19 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
         filter = new NetworkScannerFilterViewModel();
         filter.PropertyChanged += OnFilterPropertyChanged;
         view = CollectionViewSource.GetDefaultView(Entries);
+        view.Filter = IsEntryVisible;
+
+        // Re-evaluate the filter for a single entry when the properties it depends on change,
+        // instead of resetting the whole view on every scanner progress report.
+        if (view is ICollectionViewLiveShaping { CanChangeLiveFiltering: true } liveShaping)
+        {
+            liveShaping.LiveFilteringProperties.Add(nameof(NetworkHostViewModel.PingStatus));
+            liveShaping.LiveFilteringProperties.Add(nameof(NetworkHostViewModel.OpenPortNumbers));
+            liveShaping.IsLiveFiltering = true;
+        }
+
+        // Live filtering applies its changes asynchronously; keep the visible count in step with the view.
+        ((INotifyCollectionChanged)view).CollectionChanged += (_, _) => UpdateEntryCountInfo();
 
         if (XamlToolkit.Helpers.DesignModeHelper.IsInDesignMode)
         {
@@ -151,28 +165,25 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     private void FilterChange()
     {
-        view.Filter = o =>
-        {
-            if (o is NetworkHostViewModel entry)
-            {
-                if (filter.ShowOnlySuccess &&
-                    entry.PingStatus?.Status != IPStatus.Success)
-                {
-                    return false;
-                }
-
-                if (filter.ShowOnlyWithOpenPorts &&
-                    !entry.OpenPortNumbers.Any())
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        };
-
         view.Refresh();
         UpdateEntryCountInfo();
+    }
+
+    private bool IsEntryVisible(object item)
+    {
+        if (item is not NetworkHostViewModel entry)
+        {
+            return true;
+        }
+
+        if (filter.ShowOnlySuccess &&
+            entry.PingStatus?.Status != IPStatus.Success)
+        {
+            return false;
+        }
+
+        return !filter.ShowOnlyWithOpenPorts ||
+               entry.OpenPortNumbers.Any();
     }
 
     [RelayCommand]
@@ -180,6 +191,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         SelectedEntry = null;
         Entries.Clear();
+        entriesByIp.Clear();
         totalIpCount = 0;
         UpdateEntryCountInfo();
     }
@@ -268,6 +280,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
         ErrorMessage = null;
         SelectedEntry = null;
         Entries.Clear();
+        entriesByIp.Clear();
 
         var startIp = IPAddress.Parse(StartIpAddress!);
         var endIp = IPAddress.Parse(EndIpAddress!);
@@ -389,46 +402,54 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
         var tasksToProcess = e.TasksToProcessCount;
         var tasksProcessed = e.TasksProcessedCount;
         var percentageCompleted = e.PercentageCompleted;
-        var isCompleted = e.LatestUpdate.IsCompleted;
 
-        _ = Application.Current.Dispatcher.BeginInvoke(() =>
+        _ = Application.Current.Dispatcher.BeginInvoke(
+            () => ApplyProgress(latestUpdate, tasksToProcess, tasksProcessed, percentageCompleted));
+    }
+
+    /// <summary>
+    /// Applies one scanner progress report. Runs on the UI thread.
+    /// </summary>
+    internal void ApplyProgress(
+        IPScanResult latestUpdate,
+        int tasksToProcess,
+        int tasksProcessed,
+        double percentageCompleted)
+    {
+        var isCompleted = latestUpdate.IsCompleted;
+
+        BusyIndicatorMaximumValue = tasksToProcess;
+        BusyIndicatorCurrentValue = tasksProcessed;
+        BusyIndicatorPercentageValue = $"{percentageCompleted:0.00} %";
+
+        if (!entriesByIp.TryGetValue(latestUpdate.IPAddress, out var vm))
         {
-            BusyIndicatorMaximumValue = tasksToProcess;
-            BusyIndicatorCurrentValue = tasksProcessed;
-            BusyIndicatorPercentageValue = $"{percentageCompleted:0.00} %";
+            var entry = new NetworkHostViewModel(latestUpdate);
+            entriesByIp[latestUpdate.IPAddress] = entry;
+            Entries.Add(entry);
+            return;
+        }
 
-            var vm = Entries.FirstOrDefault(x => x.IpAddress.Equals(latestUpdate.IPAddress));
+        if (latestUpdate.PingStatus is not null)
+        {
+            vm.PingStatus = latestUpdate.PingStatus;
+            vm.PingQualityCategoryToolTip = string.Create(
+                GlobalizationConstants.EnglishCultureInfo,
+                $"{latestUpdate.PingStatus.QualityCategory.GetDescription()} - {latestUpdate.PingStatus.PingInMs}ms");
+        }
+        else
+        {
+            vm.PingStatus = new PingStatusResult(latestUpdate.IPAddress, IPStatus.Unknown, 0);
+        }
 
-            if (vm is null)
-            {
-                Entries.Add(new NetworkHostViewModel(latestUpdate));
-                FilterChange();
-                return;
-            }
-
-            if (latestUpdate.PingStatus is not null)
-            {
-                vm.PingStatus = latestUpdate.PingStatus;
-                vm.PingQualityCategoryToolTip = string.Create(
-                    GlobalizationConstants.EnglishCultureInfo,
-                    $"{latestUpdate.PingStatus.QualityCategory.GetDescription()} - {latestUpdate.PingStatus.PingInMs}ms");
-            }
-            else
-            {
-                vm.PingStatus = new PingStatusResult(latestUpdate.IPAddress, IPStatus.Unknown, 0);
-            }
-
-            vm.Hostname = latestUpdate.Hostname;
-            vm.MacAddress = latestUpdate.MacAddress;
-            vm.MacVendor = latestUpdate.MacVendor;
-            vm.OpenPortNumbers = latestUpdate.OpenPortNumbers;
-            if (isCompleted)
-            {
-                vm.TimeDiff = latestUpdate.TimeDiff;
-            }
-
-            FilterChange();
-        });
+        vm.Hostname = latestUpdate.Hostname;
+        vm.MacAddress = latestUpdate.MacAddress;
+        vm.MacVendor = latestUpdate.MacVendor;
+        vm.OpenPortNumbers = latestUpdate.OpenPortNumbers;
+        if (isCompleted)
+        {
+            vm.TimeDiff = latestUpdate.TimeDiff;
+        }
     }
 
     private void StartElapsedTimer()
@@ -454,9 +475,9 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
 
     private void UpdateEntryCountInfo()
     {
-        var filteredCount = view
-            .Cast<object>()
-            .Count();
+        var filteredCount = view is CollectionView collectionView
+            ? collectionView.Count
+            : view.Cast<object>().Count();
 
         EntryCountInfo = $"{filteredCount} / {totalIpCount}";
     }
