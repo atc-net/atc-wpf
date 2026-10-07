@@ -218,6 +218,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
         if (newInfo.State is DeviceState.JustConnected)
         {
             JustConnectedTimer.TransitionToAvailableAfter(
+                () => newInfo.State,
                 state => newInfo.State = state,
                 JustConnectedDuration);
         }

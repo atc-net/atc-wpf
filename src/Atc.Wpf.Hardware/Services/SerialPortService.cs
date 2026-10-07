@@ -179,6 +179,7 @@ public sealed class SerialPortService : ISerialPortService
         if (newInfo.State is DeviceState.JustConnected)
         {
             JustConnectedTimer.TransitionToAvailableAfter(
+                () => newInfo.State,
                 state => newInfo.State = state,
                 JustConnectedDuration);
         }
