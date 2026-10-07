@@ -42,6 +42,7 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
     public event EventHandler<CameraFormatsAvailableEventArgs>? FormatsAvailable;
 
     private readonly DeviceSessionCoordinator session;
+    private readonly LatestFrameSlot frameSlot = new();
     private Windows.Media.Capture.MediaCapture? mediaCapture;
     private Windows.Media.Capture.Frames.MediaFrameReader? frameReader;
     private WriteableBitmap? renderTarget;
@@ -256,12 +257,16 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
             {
                 var width = converted.PixelWidth;
                 var height = converted.PixelHeight;
-                var bytes = new byte[width * height * 4];
+                var bytes = frameSlot.RentWriteBuffer(width * height * 4);
 
                 converted.CopyToBuffer(System.Runtime.InteropServices.WindowsRuntime
                     .WindowsRuntimeBufferExtensions.AsBuffer(bytes));
 
-                _ = Dispatcher.BeginInvoke(new Action(() => RenderFrame(bytes, width, height)));
+                // Only one render is queued at a time; frames arriving meanwhile replace the pending one.
+                if (frameSlot.Publish(bytes, width, height))
+                {
+                    _ = Dispatcher.BeginInvoke(new Action(RenderLatestFrame));
+                }
             }
             finally
             {
@@ -290,6 +295,23 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
             source,
             Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8,
             Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied);
+    }
+
+    private void RenderLatestFrame()
+    {
+        if (!frameSlot.TryTake(out var frame))
+        {
+            return;
+        }
+
+        try
+        {
+            RenderFrame(frame.Buffer, frame.Width, frame.Height);
+        }
+        finally
+        {
+            frameSlot.Return(frame.Buffer);
+        }
     }
 
     private void RenderFrame(
