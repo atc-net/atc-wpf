@@ -173,6 +173,12 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         var control = (LabelDatePicker)d;
 
+        control.RaiseEvent(
+            new RoutedPropertyChangedEventArgs<string>(
+                e.OldValue as string ?? string.Empty,
+                e.NewValue as string ?? string.Empty,
+                TextChangedEvent));
+
         if (StackTraceHelper.ContainsPropertyName(nameof(OnSelectedDateChanged)))
         {
             return;
