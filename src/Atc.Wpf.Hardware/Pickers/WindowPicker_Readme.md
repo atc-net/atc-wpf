@@ -28,6 +28,8 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
 | `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `PollingInterval` | `TimeSpan?` | `null` | How often the window list is polled; `null` keeps the service setting (2 s) |
+| `OnlyVisibleWithTitle` | `bool?` | `null` | List only visible windows with a title; `null` keeps the service setting (`true`) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when the window is destroyed |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach by HWND (rare; HWNDs aren't stable) |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first window |

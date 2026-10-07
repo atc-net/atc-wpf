@@ -27,6 +27,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
 | `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `PollingInterval` | `TimeSpan?` | `null` | How often the display list is polled; `null` keeps the service setting |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when display unplugs |
 | `AutoRebindOnReconnect` | `bool` | `true` | Re-attach by device name |
 | `AutoSelectFirstAvailable` | `bool` | `false` | Auto-select first display |

@@ -3,7 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
-public partial class ProcessPicker
+public partial class ProcessPicker : IDevicePickerHost<RunningProcessInfo>
 {
     [RoutedEvent(
         RoutingStrategy.Bubble,
@@ -46,7 +46,7 @@ public partial class ProcessPicker
     [DependencyProperty(DefaultValue = true)]
     private bool showRefreshButton;
 
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
     private bool autoRefreshOnDeviceChange;
 
     [DependencyProperty(DefaultValue = false)]
@@ -57,6 +57,20 @@ public partial class ProcessPicker
 
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
+
+    /// <summary>
+    /// Gets or sets how often the process list is polled. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
+    private TimeSpan? pollingInterval;
+
+    /// <summary>
+    /// Gets or sets whether only processes with a main window are listed. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnOnlyWithMainWindowChanged))]
+    private bool? onlyWithMainWindow;
 
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
@@ -126,71 +140,38 @@ public partial class ProcessPicker
     }
 
     private readonly IProcessService service;
-    private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
-    private string? lostDeviceId;
+    private readonly DevicePickerController<RunningProcessInfo> controller;
 
     public ProcessPicker()
         : this(new ProcessService())
     {
     }
 
-    internal ProcessPicker(IProcessService service)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProcessPicker"/> class on an existing service,
+    /// e.g. to share one device watcher between several pickers or to supply a test double.
+    /// The picker does not dispose the service.
+    /// </summary>
+    public ProcessPicker(IProcessService service)
     {
         this.service = service ?? throw new ArgumentNullException(nameof(service));
+
+        // Created before InitializeComponent: a style setter applied during initialization can already
+        // raise property-changed callbacks that use the controller.
+        controller = new DevicePickerController<RunningProcessInfo>(
+            this,
+            service.Processes,
+            service.StartWatching,
+            service.StopWatching,
+            service.RefreshAsync);
 
         InitializeComponent();
 
         Processes = service.Processes;
         ApplyResolvedItemTemplate();
 
-        foreach (var process in Processes)
-        {
-            HookItem(process);
-        }
-
-        Processes.CollectionChanged += OnProcessesCollectionChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    private void HookItem(RunningProcessInfo process)
-    {
-        lastKnownStates[process.DeviceId] = process.State;
-        process.PropertyChanged += OnProcessStatePropertyChanged;
-    }
-
-    private void UnhookItem(RunningProcessInfo process)
-    {
-        process.PropertyChanged -= OnProcessStatePropertyChanged;
-        lastKnownStates.Remove(process.DeviceId);
-    }
-
-    private void OnProcessStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(RunningProcessInfo.State) ||
-            sender is not RunningProcessInfo process)
-        {
-            return;
-        }
-
-        var oldState = lastKnownStates.TryGetValue(process.DeviceId, out var prev)
-            ? prev
-            : DeviceState.Unknown;
-
-        if (oldState == process.State)
-        {
-            return;
-        }
-
-        lastKnownStates[process.DeviceId] = process.State;
-
-        RaiseEvent(new DeviceStateChangedRoutedEventArgs(
-            DeviceStateChangedEvent,
-            process.DeviceId,
-            oldState,
-            process.State));
     }
 
     public ObservableCollection<RunningProcessInfo> Processes { get; }
@@ -210,52 +191,48 @@ public partial class ProcessPicker
         }
     }
 
+    private static void OnAutoRefreshOnDeviceChangeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((ProcessPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
+    private static void OnPollingIntervalChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is TimeSpan value)
+        {
+            ((ProcessPicker)d).service.PollingInterval = value;
+        }
+    }
+
+    private static void OnOnlyWithMainWindowChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is bool value)
+        {
+            ((ProcessPicker)d).service.OnlyWithMainWindow = value;
+        }
+    }
+
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "UI initialisation must not crash on hardware probe failure.")]
     private async void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        if (AutoRefreshOnDeviceChange)
-        {
-            service.StartWatching();
-        }
-
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"ProcessPicker initial refresh failed: {ex.Message}");
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => await controller.LoadedAsync();
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-    {
-        service.StopWatching();
-    }
+        => controller.Unloaded();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-initiated refresh must not crash on hardware probe failure.")]
     private async void OnRefreshClick(
         object sender,
         RoutedEventArgs e)
-    {
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"ProcessPicker refresh failed: {ex.Message}");
-        }
-    }
+        => await controller.RefreshAsync();
 
     private static void OnValuePropertyChanged(
         DependencyObject d,
@@ -272,33 +249,7 @@ public partial class ProcessPicker
     private void OnValueChanged(
         RunningProcessInfo? oldValue,
         RunningProcessInfo? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.PropertyChanged -= OnValueStatePropertyChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.PropertyChanged += OnValueStatePropertyChanged;
-            lostDeviceId = null;
-        }
-
-        UpdateSelectedStateMessage();
-        RaiseEvent(new RoutedPropertyChangedEventArgs<RunningProcessInfo?>(oldValue, newValue, ValueChangedEvent));
-    }
-
-    private void OnValueStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(RunningProcessInfo.State))
-        {
-            return;
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => controller.ValueChanged(oldValue, newValue);
 
     private static void OnSelectedStateMessageChanged(
         DependencyObject d,
@@ -310,91 +261,26 @@ public partial class ProcessPicker
         }
     }
 
-    private void UpdateSelectedStateMessage()
-    {
-        if (Value is null)
-        {
-            SelectedStateMessage = string.Empty;
-            return;
-        }
+    void IDevicePickerHost<RunningProcessInfo>.SetSelectedStateMessage(
+        string message)
+        => SelectedStateMessage = message;
 
-        SelectedStateMessage = Value.State switch
-        {
-            DeviceState.Disconnected => Miscellaneous.DeviceDisconnected,
-            DeviceState.InUse => Miscellaneous.DeviceInUse,
-            _ => string.Empty,
-        };
-    }
+    void IDevicePickerHost<RunningProcessInfo>.RaiseValueChanged(
+        RunningProcessInfo? oldValue,
+        RunningProcessInfo? newValue)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<RunningProcessInfo?>(oldValue, newValue, ValueChangedEvent));
 
-    private void OnProcessesCollectionChanged(
-        object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var item in e.OldItems)
-            {
-                if (item is RunningProcessInfo removed)
-                {
-                    UnhookItem(removed);
-                }
-            }
-        }
+    void IDevicePickerHost<RunningProcessInfo>.RaiseDeviceLost(
+        RunningProcessInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<RunningProcessInfo?>(device, device, DeviceLostEvent));
 
-        if (e.Action is System.Collections.Specialized.NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
-        {
-            foreach (var item in e.NewItems)
-            {
-                if (item is not RunningProcessInfo info)
-                {
-                    continue;
-                }
+    void IDevicePickerHost<RunningProcessInfo>.RaiseDeviceReconnected(
+        RunningProcessInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<RunningProcessInfo?>(oldValue: null, device, DeviceReconnectedEvent));
 
-                HookItem(info);
-
-                if (AutoRebindOnReconnect &&
-                    Value is null &&
-                    !string.IsNullOrEmpty(lostDeviceId) &&
-                    string.Equals(info.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = info;
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<RunningProcessInfo?>(null, info, DeviceReconnectedEvent));
-                    lostDeviceId = null;
-                }
-                else if (AutoSelectFirstAvailable &&
-                    Value is null &&
-                    info.State is DeviceState.Available or DeviceState.JustConnected)
-                {
-                    Value = info;
-                }
-            }
-        }
-
-        if (Value is not null && Value.State is DeviceState.Disconnected)
-        {
-            HandleSelectedDeviceLost();
-        }
-    }
-
-    private void HandleSelectedDeviceLost()
-    {
-        var lost = Value;
-        if (lost is null)
-        {
-            return;
-        }
-
-        lostDeviceId = lost.DeviceId;
-        RaiseEvent(new RoutedPropertyChangedEventArgs<RunningProcessInfo?>(lost, lost, DeviceLostEvent));
-
-        if (ClearValueOnDisconnect)
-        {
-            Value = null;
-        }
-        else
-        {
-            UpdateSelectedStateMessage();
-        }
-    }
+    void IDevicePickerHost<RunningProcessInfo>.RaiseDeviceStateChanged(
+        string deviceId,
+        DeviceState oldState,
+        DeviceState newState)
+        => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
 }

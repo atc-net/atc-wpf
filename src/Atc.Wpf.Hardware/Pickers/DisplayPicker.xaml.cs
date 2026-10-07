@@ -3,7 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
-public partial class DisplayPicker
+public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
 {
     [RoutedEvent(
         RoutingStrategy.Bubble,
@@ -46,7 +46,7 @@ public partial class DisplayPicker
     [DependencyProperty(DefaultValue = true)]
     private bool showRefreshButton;
 
-    [DependencyProperty(DefaultValue = true)]
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
     private bool autoRefreshOnDeviceChange;
 
     [DependencyProperty(DefaultValue = false)]
@@ -57,6 +57,13 @@ public partial class DisplayPicker
 
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
+
+    /// <summary>
+    /// Gets or sets how often the display list is polled. <see langword="null"/> (default) keeps the service's own setting;
+    /// a value is pushed to the service immediately.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
+    private TimeSpan? pollingInterval;
 
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
@@ -126,71 +133,38 @@ public partial class DisplayPicker
     }
 
     private readonly IDisplayService service;
-    private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
-    private string? lostDeviceId;
+    private readonly DevicePickerController<DisplayInfo> controller;
 
     public DisplayPicker()
         : this(new DisplayService())
     {
     }
 
-    internal DisplayPicker(IDisplayService service)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DisplayPicker"/> class on an existing service,
+    /// e.g. to share one device watcher between several pickers or to supply a test double.
+    /// The picker does not dispose the service.
+    /// </summary>
+    public DisplayPicker(IDisplayService service)
     {
         this.service = service ?? throw new ArgumentNullException(nameof(service));
+
+        // Created before InitializeComponent: a style setter applied during initialization can already
+        // raise property-changed callbacks that use the controller.
+        controller = new DevicePickerController<DisplayInfo>(
+            this,
+            service.Displays,
+            service.StartWatching,
+            service.StopWatching,
+            service.RefreshAsync);
 
         InitializeComponent();
 
         Displays = service.Displays;
         ApplyResolvedItemTemplate();
 
-        foreach (var display in Displays)
-        {
-            HookItem(display);
-        }
-
-        Displays.CollectionChanged += OnDisplaysCollectionChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    private void HookItem(DisplayInfo display)
-    {
-        lastKnownStates[display.DeviceId] = display.State;
-        display.PropertyChanged += OnDisplayStatePropertyChanged;
-    }
-
-    private void UnhookItem(DisplayInfo display)
-    {
-        display.PropertyChanged -= OnDisplayStatePropertyChanged;
-        lastKnownStates.Remove(display.DeviceId);
-    }
-
-    private void OnDisplayStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(DisplayInfo.State) ||
-            sender is not DisplayInfo display)
-        {
-            return;
-        }
-
-        var oldState = lastKnownStates.TryGetValue(display.DeviceId, out var prev)
-            ? prev
-            : DeviceState.Unknown;
-
-        if (oldState == display.State)
-        {
-            return;
-        }
-
-        lastKnownStates[display.DeviceId] = display.State;
-
-        RaiseEvent(new DeviceStateChangedRoutedEventArgs(
-            DeviceStateChangedEvent,
-            display.DeviceId,
-            oldState,
-            display.State));
     }
 
     public ObservableCollection<DisplayInfo> Displays { get; }
@@ -210,52 +184,38 @@ public partial class DisplayPicker
         }
     }
 
+    private static void OnAutoRefreshOnDeviceChangeChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((DisplayPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
+    private static void OnPollingIntervalChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is TimeSpan value)
+        {
+            ((DisplayPicker)d).service.PollingInterval = value;
+        }
+    }
+
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "UI initialisation must not crash on hardware probe failure.")]
     private async void OnLoaded(
         object sender,
         RoutedEventArgs e)
-    {
-        if (AutoRefreshOnDeviceChange)
-        {
-            service.StartWatching();
-        }
-
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"DisplayPicker initial refresh failed: {ex.Message}");
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => await controller.LoadedAsync();
 
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
-    {
-        service.StopWatching();
-    }
+        => controller.Unloaded();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-initiated refresh must not crash on hardware probe failure.")]
     private async void OnRefreshClick(
         object sender,
         RoutedEventArgs e)
-    {
-        try
-        {
-            await service.RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"DisplayPicker refresh failed: {ex.Message}");
-        }
-    }
+        => await controller.RefreshAsync();
 
     private static void OnValuePropertyChanged(
         DependencyObject d,
@@ -272,33 +232,7 @@ public partial class DisplayPicker
     private void OnValueChanged(
         DisplayInfo? oldValue,
         DisplayInfo? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.PropertyChanged -= OnValueStatePropertyChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.PropertyChanged += OnValueStatePropertyChanged;
-            lostDeviceId = null;
-        }
-
-        UpdateSelectedStateMessage();
-        RaiseEvent(new RoutedPropertyChangedEventArgs<DisplayInfo?>(oldValue, newValue, ValueChangedEvent));
-    }
-
-    private void OnValueStatePropertyChanged(
-        object? sender,
-        PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(DisplayInfo.State))
-        {
-            return;
-        }
-
-        UpdateSelectedStateMessage();
-    }
+        => controller.ValueChanged(oldValue, newValue);
 
     private static void OnSelectedStateMessageChanged(
         DependencyObject d,
@@ -310,91 +244,24 @@ public partial class DisplayPicker
         }
     }
 
-    private void UpdateSelectedStateMessage()
-    {
-        if (Value is null)
-        {
-            SelectedStateMessage = string.Empty;
-            return;
-        }
+    void IDevicePickerHost<DisplayInfo>.SetSelectedStateMessage(string message)
+        => SelectedStateMessage = message;
 
-        SelectedStateMessage = Value.State switch
-        {
-            DeviceState.Disconnected => Miscellaneous.DeviceDisconnected,
-            DeviceState.InUse => Miscellaneous.DeviceInUse,
-            _ => string.Empty,
-        };
-    }
+    void IDevicePickerHost<DisplayInfo>.RaiseValueChanged(
+        DisplayInfo? oldValue,
+        DisplayInfo? newValue)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<DisplayInfo?>(oldValue, newValue, ValueChangedEvent));
 
-    private void OnDisplaysCollectionChanged(
-        object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var item in e.OldItems)
-            {
-                if (item is DisplayInfo removed)
-                {
-                    UnhookItem(removed);
-                }
-            }
-        }
+    void IDevicePickerHost<DisplayInfo>.RaiseDeviceLost(DisplayInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<DisplayInfo?>(device, device, DeviceLostEvent));
 
-        if (e.Action is System.Collections.Specialized.NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
-        {
-            foreach (var item in e.NewItems)
-            {
-                if (item is not DisplayInfo info)
-                {
-                    continue;
-                }
+    void IDevicePickerHost<DisplayInfo>.RaiseDeviceReconnected(
+        DisplayInfo device)
+        => RaiseEvent(new RoutedPropertyChangedEventArgs<DisplayInfo?>(oldValue: null, device, DeviceReconnectedEvent));
 
-                HookItem(info);
-
-                if (AutoRebindOnReconnect &&
-                    Value is null &&
-                    !string.IsNullOrEmpty(lostDeviceId) &&
-                    string.Equals(info.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = info;
-                    RaiseEvent(new RoutedPropertyChangedEventArgs<DisplayInfo?>(null, info, DeviceReconnectedEvent));
-                    lostDeviceId = null;
-                }
-                else if (AutoSelectFirstAvailable &&
-                    Value is null &&
-                    info.State is DeviceState.Available or DeviceState.JustConnected)
-                {
-                    Value = info;
-                }
-            }
-        }
-
-        if (Value is not null && Value.State is DeviceState.Disconnected)
-        {
-            HandleSelectedDeviceLost();
-        }
-    }
-
-    private void HandleSelectedDeviceLost()
-    {
-        var lost = Value;
-        if (lost is null)
-        {
-            return;
-        }
-
-        lostDeviceId = lost.DeviceId;
-        RaiseEvent(new RoutedPropertyChangedEventArgs<DisplayInfo?>(lost, lost, DeviceLostEvent));
-
-        if (ClearValueOnDisconnect)
-        {
-            Value = null;
-        }
-        else
-        {
-            UpdateSelectedStateMessage();
-        }
-    }
+    void IDevicePickerHost<DisplayInfo>.RaiseDeviceStateChanged(
+        string deviceId,
+        DeviceState oldState,
+        DeviceState newState)
+        => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
 }
