@@ -1,0 +1,63 @@
+name: "Build and test"
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dotnet-build:
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 🔁 Restore packages
+        run: dotnet restore Atc.Wpf.slnx
+
+      - name: 🛠️ Build solution
+        run: dotnet build Atc.Wpf.slnx -c Release --no-restore
+
+  dotnet-test:
+    runs-on: windows-latest
+    needs: dotnet-build
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 🔁 Restore packages
+        run: dotnet restore Atc.Wpf.slnx
+
+      - name: 🛠️ Build solution
+        run: dotnet build Atc.Wpf.slnx -c Release --no-restore /p:UseSourceLink=true
+
+      - name: 🧪 Run unit tests with code coverage
+        run: dotnet test --solution Atc.Wpf.slnx -c Release --no-build --coverage --coverage-output-format cobertura
+
+      - name: 📤 Upload coverage reports as workflow artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coverage-cobertura
+          path: '**/TestResults/**/*.cobertura.xml'
+          if-no-files-found: warn
+          retention-days: 14
