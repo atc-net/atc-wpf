@@ -37,6 +37,7 @@ public sealed partial class TerminalViewer : IDisposable
     private volatile bool isPausedSnapshot;
     private volatile bool autoScrollSnapshot = true;
     private volatile bool enableAnsiParsingSnapshot = true;
+    private volatile string? terminalIdSnapshot;
 
     // True when the user has manually scrolled away from the tail. Only a
     // user-driven scroll (ScrollChangedEventArgs.VerticalChange != 0) flips
@@ -75,6 +76,13 @@ public sealed partial class TerminalViewer : IDisposable
             () => ProcessQueueContinuously(cts.Token),
             cts.Token);
     }
+
+    /// <summary>
+    /// Identifies this viewer for messages that carry a <c>TerminalId</c>. Messages without an id are a
+    /// broadcast and are shown by every viewer; messages with an id only reach the viewer with that id.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnTerminalIdChanged))]
+    private string? terminalId;
 
     [DependencyProperty(DefaultValue = "Black")]
     private Brush terminalBackground;
@@ -239,6 +247,16 @@ public sealed partial class TerminalViewer : IDisposable
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
         PropertyChangedCallback = nameof(OnEnableAnsiParsingChanged))]
     private bool enableAnsiParsing;
+
+    private static void OnTerminalIdChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is TerminalViewer tv)
+        {
+            tv.terminalIdSnapshot = e.NewValue as string;
+        }
+    }
 
     private static void OnAutoScrollChanged(
         DependencyObject d,
@@ -629,10 +647,22 @@ public sealed partial class TerminalViewer : IDisposable
         => TerminalFontSize = DefaultFontSizeValue;
 
     private void TerminalReceivedDataHandle(TerminalReceivedDataEventArgs obj)
-        => receivedDataChannel.Writer.TryWrite(obj);
+    {
+        if (!TerminalMessageRouting.Accepts(obj.TerminalId, terminalIdSnapshot))
+        {
+            return;
+        }
+
+        receivedDataChannel.Writer.TryWrite(obj);
+    }
 
     private void TerminalClearEventArgsHandle(TerminalClearEventArgs obj)
     {
+        if (!TerminalMessageRouting.Accepts(obj.TerminalId, terminalIdSnapshot))
+        {
+            return;
+        }
+
         while (receivedDataChannel.Reader.TryRead(out _))
         {
             // Drain whatever was buffered so the cleared screen stays clear.

@@ -47,10 +47,35 @@ terminalViewer.Terms2 = new List<string> { "INFO", "DEBUG" };
 terminalViewer.Terms3 = new List<string> { "TRACE", "VERBOSE" };
 ```
 
+### Sending Output
+
+Output and clear requests arrive through the messenger:
+
+```csharp
+Messenger.Default.Send(new TerminalReceivedDataEventArgs(["build started"]));
+Messenger.Default.Send(new TerminalClearEventArgs());
+```
+
+### Several Terminals on One Screen
+
+Messages without a `TerminalId` are a broadcast and are shown by every `TerminalViewer`.
+Give each viewer a `TerminalId` and address messages to it to keep their output apart:
+
+```xml
+<viewers:TerminalViewer TerminalId="build" />
+<viewers:TerminalViewer TerminalId="tests" />
+```
+
+```csharp
+Messenger.Default.Send(new TerminalReceivedDataEventArgs(["compiling..."]) { TerminalId = "build" });
+Messenger.Default.Send(new TerminalClearEventArgs { TerminalId = "tests" });
+```
+
 ## ⚙️ Properties
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| `TerminalId` | `string?` | `null` | Identifies this viewer for addressed messages (see *Several terminals on one screen*) |
 | `TerminalBackground` | `Brush` | Black | Terminal background color |
 | `TerminalFontFamily` | `FontFamily` | Consolas | Font family for terminal text |
 | `TerminalFontSize` | `double` | `12.0` | Font size |
@@ -95,7 +120,7 @@ The zoom shortcuts accept both the main keyboard row and the numeric keypad (`Ct
 
 ## 📝 Notes
 
-- Data arrives via messenger events (`TerminalReceivedDataEventArgs`)
+- Data arrives via messenger events (`TerminalReceivedDataEventArgs`); set `TerminalId` on the message to address a single viewer
 - Processing uses `System.Threading.Channels` for async queuing
 - Term matching is word-boundary-aware (matches whole words, not substrings)
 - The control implements `IDisposable` — dispose when no longer needed
