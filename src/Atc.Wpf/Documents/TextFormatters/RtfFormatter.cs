@@ -49,9 +49,9 @@ public sealed class RtfFormatter : ITextFormatter
                 tr.Load(memoryStream, DataFormats.Rtf);
             }
         }
-        catch
+        catch (Exception ex)
         {
-            throw new InvalidDataException("Data provided is not in the correct RTF format.");
+            throw new InvalidDataException("Data provided is not in the correct RTF format.", ex);
         }
     }
 }
