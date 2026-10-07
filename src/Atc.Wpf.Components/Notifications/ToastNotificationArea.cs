@@ -99,25 +99,21 @@ public sealed partial class ToastNotificationArea : Control
             return;
         }
 
-        ToastNotification? toastNotificationToClose = null;
+        IReadOnlyList<ToastNotification> toastNotificationsToClose;
 
         lock (itemsLock)
         {
             items ??= new List<ToastNotification>();
             items.Add(toastNotification);
 
-            var notifications = items
+            var openNotifications = items
                 .OfType<ToastNotification>()
                 .Where(i => !i.IsClosing)
-                .Skip(MaxItems)
                 .ToArray();
-            if (notifications.Length > 0)
-            {
-                toastNotificationToClose = notifications[0];
-            }
+            toastNotificationsToClose = SelectOverflow(openNotifications, MaxItems);
         }
 
-        if (toastNotificationToClose is not null)
+        foreach (var toastNotificationToClose in toastNotificationsToClose)
         {
             await toastNotificationToClose
                 .CloseAsync()
@@ -136,6 +132,17 @@ public sealed partial class ToastNotificationArea : Control
             .CloseAsync()
             .ConfigureAwait(true);
     }
+
+    /// <summary>
+    /// The notifications to close so that at most <paramref name="maxItems"/> stay open.
+    /// </summary>
+    /// <param name="openOldestFirst">The open notifications, oldest first.</param>
+    internal static IReadOnlyList<T> SelectOverflow<T>(
+        IReadOnlyList<T> openOldestFirst,
+        int maxItems)
+        => openOldestFirst
+            .Take(System.Math.Max(0, openOldestFirst.Count - maxItems))
+            .ToList();
 
     private void OnNotificationClosed(
         object sender,
