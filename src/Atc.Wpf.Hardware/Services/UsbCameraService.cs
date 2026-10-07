@@ -151,6 +151,7 @@ public sealed class UsbCameraService : IUsbCameraService
         if (newInfo.State is DeviceState.JustConnected)
         {
             JustConnectedTimer.TransitionToAvailableAfter(
+                () => newInfo.State,
                 state => newInfo.State = state,
                 JustConnectedDuration);
         }

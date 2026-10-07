@@ -157,6 +157,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
         if (newInfo.State is DeviceState.JustConnected)
         {
             JustConnectedTimer.TransitionToAvailableAfter(
+                () => newInfo.State,
                 state => newInfo.State = state,
                 JustConnectedDuration);
         }

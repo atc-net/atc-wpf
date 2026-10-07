@@ -1,4 +1,5 @@
 global using System.Globalization;
+global using System.Windows.Threading;
 
 global using Atc.Wpf.Hardware.Models;
 global using Atc.Wpf.Hardware.Pickers.Internal;

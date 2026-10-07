@@ -3,6 +3,7 @@ namespace Atc.Wpf.Hardware.Services.Internal;
 internal static class JustConnectedTimer
 {
     public static void TransitionToAvailableAfter(
+        Func<DeviceState> stateGetter,
         Action<DeviceState> stateSetter,
         TimeSpan duration)
     {
@@ -26,7 +27,12 @@ internal static class JustConnectedTimer
         {
             timer.Tick -= OnTick;
             timer.Stop();
-            stateSetter(DeviceState.Available);
+
+            // The device may have been unplugged (or otherwise changed state) while the timer ran.
+            if (stateGetter() is DeviceState.JustConnected)
+            {
+                stateSetter(DeviceState.Available);
+            }
         }
     }
 }
