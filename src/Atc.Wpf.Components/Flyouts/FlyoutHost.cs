@@ -105,9 +105,10 @@ public partial class FlyoutHost : ItemsControl
     /// </summary>
     public void CloseAllFlyouts()
     {
-        while (openFlyouts.Count > 0)
+        // Close a snapshot (top first). A flyout with a close animation only leaves the stack when its
+        // Closed event fires after the animation, so waiting for the stack to empty here would never end.
+        foreach (var flyout in openFlyouts.ToArray())
         {
-            var flyout = openFlyouts.Peek();
             flyout.IsOpen = false;
         }
     }
