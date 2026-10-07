@@ -10,6 +10,7 @@ global using System.Windows.Threading;
 global using Atc.Wpf.Components.Dialogs;
 global using Atc.Wpf.Components.Flyouts;
 global using Atc.Wpf.Components.Monitoring;
+global using Atc.Wpf.Components.Notifications;
 global using Atc.Wpf.Components.Selectors;
 global using Atc.Wpf.Components.Tests.TestSupport;
 global using Atc.Wpf.Components.ValueConverters;

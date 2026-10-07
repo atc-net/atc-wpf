@@ -81,7 +81,7 @@ await WindowArea.ShowAsync(content, TimeSpan.MaxValue, onClick: null, onClose: n
 - The area registers itself with `ToastNotificationManager` in its constructor; the manager routes a notification to the area(s) whose `Name` matches the requested area name, and falls back to all non-desktop areas when no name matches
 - When `useDesktop` is requested, notifications go to a full-screen overlay window that hosts an area named `DesktopArea`
 - Clicking a toast invokes `onClick` (when provided) and closes it; `onClose` is invoked when the toast closes
-- When more than `MaxItems` notifications are open, a notification beyond the limit is closed automatically
+- When more than `MaxItems` notifications are open, the oldest ones are closed automatically
 - Nothing is shown until the area is loaded and attached to a window
 - The default template uses a `ReversibleStackPanel` named `PART_Items`; bottom positions reverse the stacking order
 - The `ToastNotificationManager` default expiration time is 5 seconds
