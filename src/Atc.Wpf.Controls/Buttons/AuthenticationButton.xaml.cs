@@ -64,7 +64,8 @@ public partial class AuthenticationButton
 
         SetCurrentValue(ImageLocationProperty, Controls.ImageLocation.Left);
 
-        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+        Loaded += OnLoadedSubscribeToThemeChanges;
+        Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
     }
 
     protected override void OnInitialized(EventArgs e)
@@ -84,7 +85,7 @@ public partial class AuthenticationButton
         if (LoginImageSource is null &&
             string.IsNullOrWhiteSpace(LoginSvgImageSource))
         {
-            var fgBrush = Application.Current.TryFindResource("AtcApps.Brushes.ThemeForeground");
+            var fgBrush = Application.Current?.TryFindResource("AtcApps.Brushes.ThemeForeground");
 
             var img = (ImageSource?)FontIconImageSourceValueConverter.Instance
                 .Convert(
@@ -102,7 +103,7 @@ public partial class AuthenticationButton
         if (LogoutImageSource is null &&
             string.IsNullOrWhiteSpace(LogoutSvgImageSource))
         {
-            var accentBrush = Application.Current.TryFindResource("AtcApps.Brushes.Accent");
+            var accentBrush = Application.Current?.TryFindResource("AtcApps.Brushes.Accent");
 
             var img = (ImageSource?)FontIconImageSourceValueConverter.Instance
                 .Convert(
@@ -117,6 +118,20 @@ public partial class AuthenticationButton
             }
         }
     }
+
+    private void OnLoadedSubscribeToThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+    }
+
+    private void OnUnloadedUnsubscribeFromThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+        => ThemeManager.Current.ThemeChanged -= OnThemeChanged;
 
     private void OnThemeChanged(
         object? sender,

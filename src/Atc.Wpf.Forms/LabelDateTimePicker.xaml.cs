@@ -70,19 +70,46 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusInvalid;
 
+    private string? themeNameWhenUnloaded;
+
     public LabelDateTimePicker()
     {
         InitializeComponent();
 
         Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
-        ThemeManager.Current.ThemeChanged += OnThemeChanged;
     }
 
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
-        => SetDefaultWatermarkIfNeeded(CustomCulture ?? Thread.CurrentThread.CurrentUICulture);
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+
+        // Catch up on a theme change that happened while this control was unloaded (e.g. in a hidden tab).
+        var currentTheme = ThemeManager.Current.DetectTheme();
+        if (themeNameWhenUnloaded is not null &&
+            currentTheme is not null &&
+            !string.Equals(currentTheme.Name, themeNameWhenUnloaded, StringComparison.Ordinal))
+        {
+            ApplyAccentColorToIcons();
+        }
+
+        themeNameWhenUnloaded = null;
+
+        SetDefaultWatermarkIfNeeded(CustomCulture ?? Thread.CurrentThread.CurrentUICulture);
+    }
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        themeNameWhenUnloaded = ThemeManager.Current.DetectTheme()?.Name;
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+    }
 
     private void OnUiCultureChanged(
         object? sender,
@@ -115,6 +142,9 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     private void OnThemeChanged(
         object? sender,
         ThemeChangedEventArgs e)
+        => ApplyAccentColorToIcons();
+
+    private void ApplyAccentColorToIcons()
     {
         var datePickerImages = this.FindChildren<SvgImage>();
         foreach (var datePickerImage in datePickerImages)

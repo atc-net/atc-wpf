@@ -64,7 +64,8 @@ public partial class ConnectivityButton
 
         SetCurrentValue(ImageLocationProperty, Controls.ImageLocation.Left);
 
-        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+        Loaded += OnLoadedSubscribeToThemeChanges;
+        Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
     }
 
     protected override void OnInitialized(EventArgs e)
@@ -84,7 +85,7 @@ public partial class ConnectivityButton
         if (ConnectImageSource is null &&
             string.IsNullOrWhiteSpace(ConnectSvgImageSource))
         {
-            var fgBrush = Application.Current.TryFindResource("AtcApps.Brushes.ThemeForeground");
+            var fgBrush = Application.Current?.TryFindResource("AtcApps.Brushes.ThemeForeground");
 
             var img = (ImageSource?)FontIconImageSourceValueConverter.Instance
                 .Convert(
@@ -102,7 +103,7 @@ public partial class ConnectivityButton
         if (DisconnectImageSource is null &&
             string.IsNullOrWhiteSpace(DisconnectSvgImageSource))
         {
-            var accentBrush = Application.Current.TryFindResource("AtcApps.Brushes.Accent");
+            var accentBrush = Application.Current?.TryFindResource("AtcApps.Brushes.Accent");
 
             var img = (ImageSource?)FontIconImageSourceValueConverter.Instance
                 .Convert(
@@ -117,6 +118,20 @@ public partial class ConnectivityButton
             }
         }
     }
+
+    private void OnLoadedSubscribeToThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+    }
+
+    private void OnUnloadedUnsubscribeFromThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+        => ThemeManager.Current.ThemeChanged -= OnThemeChanged;
 
     private void OnThemeChanged(
         object? sender,

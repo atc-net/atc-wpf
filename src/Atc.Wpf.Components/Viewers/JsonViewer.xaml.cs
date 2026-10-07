@@ -22,6 +22,8 @@ public partial class JsonViewer
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private ThemeMode themeMode;
 
+    private string? themeNameWhenUnloaded;
+
     public JsonViewer()
     {
         InitializeComponent();
@@ -33,7 +35,8 @@ public partial class JsonViewer
             ThemeMode = themeModeValue;
         }
 
-        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
@@ -75,11 +78,42 @@ public partial class JsonViewer
         }
     }
 
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+
+        // Catch up on a theme change that happened while this control was unloaded (e.g. in a hidden tab).
+        var currentTheme = ThemeManager.Current.DetectTheme();
+        if (themeNameWhenUnloaded is not null &&
+            currentTheme is not null &&
+            !string.Equals(currentTheme.Name, themeNameWhenUnloaded, StringComparison.Ordinal))
+        {
+            ApplyTheme(currentTheme);
+        }
+
+        themeNameWhenUnloaded = null;
+    }
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        themeNameWhenUnloaded = ThemeManager.Current.DetectTheme()?.Name;
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+    }
+
     private void OnThemeChanged(
         object? sender,
         ThemeChangedEventArgs e)
+        => ApplyTheme(e.NewTheme);
+
+    private void ApplyTheme(Theme theme)
     {
-        if (Enum<ThemeMode>.TryParse(e.NewTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
+        if (Enum<ThemeMode>.TryParse(theme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
         {
             ThemeMode = themeModeValue;
         }
