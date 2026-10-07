@@ -4,6 +4,7 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Title>Atc.Wpf.Controls</Title>
+    <IsPackable>true</IsPackable>
     <PackageId>Atc.Wpf.Controls</PackageId>
     <PackageTags>wpf;controls;input;picker;layout;progress</PackageTags>
     <Description>WPF control library providing atomic UI controls including input controls, pickers, layouts, and progress indicators.</Description>
