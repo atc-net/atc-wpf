@@ -8,6 +8,7 @@ namespace Atc.Wpf.Controls.Zoom;
 public sealed class ZoomGridOverlay : Adorner
 {
     private readonly ZoomBox zoomBox;
+    private double baseGridSpacing = 50.0;
 
     public ZoomGridOverlay(ZoomBox adornedElement)
         : base(adornedElement)
@@ -23,9 +24,22 @@ public sealed class ZoomGridOverlay : Adorner
     /// <summary>
     /// Gets or sets the base grid spacing in content coordinates.
     /// The visible spacing is multiplied or divided by 2/5/10 depending on zoom.
-    /// Default is 50.
+    /// Default is 50. Must be a positive, finite number.
     /// </summary>
-    public double BaseGridSpacing { get; set; } = 50.0;
+    /// <exception cref="ArgumentOutOfRangeException">The value is zero, negative, NaN or infinite.</exception>
+    public double BaseGridSpacing
+    {
+        get => baseGridSpacing;
+        set
+        {
+            if (!double.IsFinite(value) || value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), value, "BaseGridSpacing must be a positive, finite number.");
+            }
+
+            baseGridSpacing = value;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the brush used for minor grid lines.
