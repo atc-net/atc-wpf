@@ -358,3 +358,7 @@ MigrationBackup/
 .ionide/
 .claude/settings.local.json
 nul
+
+# Local working notes
+issues/
+plans/
