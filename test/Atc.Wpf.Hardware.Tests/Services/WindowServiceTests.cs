@@ -12,7 +12,7 @@ public sealed class WindowServiceTests
 
     private IReadOnlyList<WindowSnapshot> snapshots = [];
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_WindowClosed_MarksEntryDisconnected()
     {
         using var service = CreateService();
@@ -26,7 +26,7 @@ public sealed class WindowServiceTests
         Assert.Equal(DeviceState.Disconnected, service.Windows[0].State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_HandleReusedByAnotherProcess_ReplacesTheStaleEntry()
     {
         using var service = CreateService();
@@ -45,7 +45,7 @@ public sealed class WindowServiceTests
         Assert.Equal(DeviceState.Disconnected, stale.State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_SameWindowWithNewTitle_UpdatesTheEntryInPlace()
     {
         using var service = CreateService();
@@ -62,6 +62,34 @@ public sealed class WindowServiceTests
         Assert.Equal("*a.txt - Notepad", entry.Title);
         Assert.Contains(nameof(TopLevelWindowInfo.Title), changed, StringComparer.Ordinal);
         Assert.Contains(nameof(TopLevelWindowInfo.FriendlyName), changed, StringComparer.Ordinal);
+    }
+
+    [WpfFact]
+    public async Task RefreshAsync_EnumeratesAndResolvesOffTheUiThread_AndAppliesOnIt()
+    {
+        var uiThreadId = Environment.CurrentManagedThreadId;
+        int? enumerateThreadId = null;
+        int? resolveThreadId = null;
+        int? collectionChangedThreadId = null;
+        using var service = new WindowService(
+            enumerate: _ =>
+            {
+                enumerateThreadId = Environment.CurrentManagedThreadId;
+                return [new WindowSnapshot(Handle, "a.txt - Notepad", "Notepad", ProcessId: 10)];
+            },
+            resolveProcessName: _ =>
+            {
+                resolveThreadId = Environment.CurrentManagedThreadId;
+                return "notepad";
+            });
+        service.Windows.CollectionChanged += (_, _) => collectionChangedThreadId = Environment.CurrentManagedThreadId;
+
+        await service.RefreshAsync();
+
+        Assert.NotEqual(uiThreadId, enumerateThreadId);
+        Assert.NotEqual(uiThreadId, resolveThreadId);
+        Assert.Equal(uiThreadId, collectionChangedThreadId);
+        Assert.Equal("notepad", Assert.Single(service.Windows).ProcessName);
     }
 
     private WindowService CreateService()

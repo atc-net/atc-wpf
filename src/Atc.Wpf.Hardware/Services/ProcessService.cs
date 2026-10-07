@@ -5,6 +5,7 @@ public sealed class ProcessService : IProcessService
     private readonly Func<IReadOnlyList<ProcessSnapshot>> enumerate;
     private readonly Func<int, string?> resolveModulePath;
     private readonly DispatcherTimer pollTimer;
+    private Task? inFlightPoll;
     private bool started;
     private bool disposed;
 
@@ -59,10 +60,19 @@ public sealed class ProcessService : IProcessService
         pollTimer.Stop();
     }
 
+    /// <summary>
+    /// Enumerates on a background thread and applies the result on the calling (UI) thread.
+    /// A refresh requested while a poll is in flight shares that poll.
+    /// </summary>
     public Task RefreshAsync()
     {
-        EnumerateAndSync();
-        return Task.CompletedTask;
+        if (inFlightPoll is { IsCompleted: false })
+        {
+            return inFlightPoll;
+        }
+
+        inFlightPoll = PollAsync();
+        return inFlightPoll;
     }
 
     public void Dispose()
@@ -78,14 +88,17 @@ public sealed class ProcessService : IProcessService
         pollTimer.Stop();
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient process enumeration errors.")]
     private void OnPollTick(
         object? sender,
         EventArgs e)
+        => _ = PollFromTimerAsync();
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient process enumeration errors.")]
+    private async Task PollFromTimerAsync()
     {
         try
         {
-            EnumerateAndSync();
+            await RefreshAsync().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
@@ -137,11 +150,18 @@ public sealed class ProcessService : IProcessService
         }
     }
 
-    private void EnumerateAndSync()
+    private async Task PollAsync()
     {
-        var foundIds = new HashSet<int>();
+        var snapshots = await Task.Run(enumerate).ConfigureAwait(true);
+        if (disposed)
+        {
+            return;
+        }
 
-        foreach (var snapshot in enumerate())
+        var foundIds = new HashSet<int>();
+        var newcomers = new List<(ProcessSnapshot Snapshot, RunningProcessInfo? Stale)>();
+
+        foreach (var snapshot in snapshots)
         {
             if (OnlyWithMainWindow && !snapshot.HasMainWindow)
             {
@@ -149,49 +169,75 @@ public sealed class ProcessService : IProcessService
             }
 
             foundIds.Add(snapshot.ProcessId);
-            Upsert(snapshot);
+
+            var existing = FindByProcessId(snapshot.ProcessId);
+            if (existing is not null &&
+                string.Equals(existing.ProcessName, snapshot.ProcessName, StringComparison.OrdinalIgnoreCase))
+            {
+                if (existing.State is DeviceState.Disconnected)
+                {
+                    existing.State = DeviceState.Available;
+                }
+
+                existing.MainWindowTitle = snapshot.MainWindowTitle;
+            }
+            else
+            {
+                // New process, or the PID was reused by another process (the old one is gone).
+                newcomers.Add((snapshot, existing));
+            }
         }
 
+        if (newcomers.Count > 0)
+        {
+            // MainModule access is slow (and can throw for protected processes): resolve off the UI thread.
+            var modulePaths = await Task
+                .Run(() => newcomers.Select(n => resolveModulePath(n.Snapshot.ProcessId)).ToList())
+                .ConfigureAwait(true);
+            if (disposed)
+            {
+                return;
+            }
+
+            for (var i = 0; i < newcomers.Count; i++)
+            {
+                AddNewcomer(newcomers[i].Snapshot, modulePaths[i], newcomers[i].Stale);
+            }
+        }
+
+        MarkMissingAsDisconnected(foundIds);
+    }
+
+    private void MarkMissingAsDisconnected(HashSet<int> found)
+    {
         for (var i = Processes.Count - 1; i >= 0; i--)
         {
-            if (!foundIds.Contains(Processes[i].ProcessId))
+            if (!found.Contains(Processes[i].ProcessId))
             {
                 Processes[i].State = DeviceState.Disconnected;
             }
         }
     }
 
-    private void Upsert(ProcessSnapshot snapshot)
+    private void AddNewcomer(
+        ProcessSnapshot snapshot,
+        string? modulePath,
+        RunningProcessInfo? stale)
     {
-        var existing = FindByProcessId(snapshot.ProcessId);
-
-        if (existing is not null &&
-            string.Equals(existing.ProcessName, snapshot.ProcessName, StringComparison.OrdinalIgnoreCase))
-        {
-            if (existing.State is DeviceState.Disconnected)
-            {
-                existing.State = DeviceState.Available;
-            }
-
-            existing.MainWindowTitle = snapshot.MainWindowTitle;
-            return;
-        }
-
         var info = new RunningProcessInfo(
             processId: snapshot.ProcessId,
             processName: snapshot.ProcessName,
             mainWindowTitle: snapshot.MainWindowTitle,
-            mainModulePath: resolveModulePath(snapshot.ProcessId))
+            mainModulePath: modulePath)
         {
             State = DeviceState.Available,
         };
 
         Processes.Add(info);
 
-        // The PID was reused by another process: the old process is gone.
-        if (existing is not null)
+        if (stale is not null)
         {
-            RemoveStale(existing);
+            RemoveStale(stale);
         }
     }
 

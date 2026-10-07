@@ -5,7 +5,7 @@ public sealed class DriveServiceTests
     private readonly List<string> volumeReads = [];
     private IReadOnlyList<DriveSnapshot> snapshots = [];
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_DriveRemoved_MarksEntryDisconnected()
     {
         using var service = CreateService();
@@ -19,7 +19,7 @@ public sealed class DriveServiceTests
         Assert.Equal(DeviceState.Disconnected, service.Drives[0].State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_OtherVolumeOnTheSameDriveLetter_ReplacesTheStaleEntry()
     {
         using var service = CreateService();
@@ -37,7 +37,7 @@ public sealed class DriveServiceTests
         Assert.Equal(DeviceState.Disconnected, stale.State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_SameVolumeWithLessFreeSpace_UpdatesTheEntryInPlace()
     {
         using var service = CreateService();
@@ -53,7 +53,7 @@ public sealed class DriveServiceTests
         Assert.Equal(DeviceState.Available, entry.State);
     }
 
-    [StaTheory]
+    [WpfTheory]
     [InlineData(DriveType.Network)]
     [InlineData(DriveType.CDRom)]
     public async Task RefreshAsync_KnownSlowDrive_IsNotReReadOnEveryPoll(

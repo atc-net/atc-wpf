@@ -4,7 +4,7 @@ public sealed class ProcessPickerTests
 {
     private IReadOnlyList<ProcessSnapshot> snapshots = [];
 
-    [StaFact]
+    [WpfFact]
     public async Task SelectedProcessExits_AndItsPidIsReused_DoesNotRebindToTheNewProcess()
     {
         using var service = new ProcessService(() => snapshots, _ => null);
@@ -24,7 +24,7 @@ public sealed class ProcessPickerTests
         Assert.Null(picker.Value);
     }
 
-    [StaFact]
+    [WpfFact]
     [SuppressMessage("Major Code Smell", "S1215:\"GC.Collect\" should not be called", Justification = "Forcing a collection is how the leak is detected.")]
     public async Task PickerOnASharedService_IsCollectedOnceDropped()
     {
@@ -33,6 +33,9 @@ public sealed class ProcessPickerTests
         await sharedService.RefreshAsync();
 
         var reference = CreateSelectLoadAndUnloadPicker(sharedService);
+
+        // Let the poll started by Loaded finish, so only a real subscription leak can keep the picker alive.
+        await sharedService.RefreshAsync();
         Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
         GC.Collect();
         GC.WaitForPendingFinalizers();
