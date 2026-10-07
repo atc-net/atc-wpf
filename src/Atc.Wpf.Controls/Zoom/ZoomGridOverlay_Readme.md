@@ -23,6 +23,9 @@ grid.BaseGridSpacing = 100;
 grid.MinorLineBrush = Brushes.LightGray;
 grid.MajorLineBrush = Brushes.DarkGray;
 
+// Follow the theme (all styling properties are dependency properties)
+grid.SetResourceReference(ZoomGridOverlay.MajorLineBrushProperty, "AtcApps.Brushes.Gray5");
+
 // Remove when no longer needed
 grid.Detach();
 ```
@@ -31,7 +34,7 @@ grid.Detach();
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `BaseGridSpacing` | `double` | `50.0` | Base spacing in content coordinates |
+| `BaseGridSpacing` | `double` | `50.0` | Base spacing in content coordinates; must be positive and finite |
 | `MinorLineBrush` | `Brush` | Semi-transparent gray | Brush for minor grid lines |
 | `MajorLineBrush` | `Brush` | Semi-transparent gray (darker) | Brush for major grid lines (every 5th) |
 | `MinorLineThickness` | `double` | `0.5` | Thickness of minor lines |
@@ -42,7 +45,9 @@ grid.Detach();
 - The grid automatically adapts spacing: multiplies/divides by 5 to keep screen-space spacing between 20–200 pixels
 - Grid lines below 4 pixels screen spacing are hidden for performance
 - The overlay is non-hit-testable — mouse events pass through to the ZoomBox
-- Use `Attach`/`Detach` for programmatic control, or manage the `AdornerLayer` directly
+- Use `Attach`/`Detach` for programmatic control, or manage the `AdornerLayer` directly; `Detach` also stops listening to the `ZoomBox`, so a detached overlay can be garbage-collected
+- The default brushes are frozen and shared; assign a new brush instead of mutating the default one
+- All styling properties are dependency properties: they can be bound, styled or set with `SetResourceReference`, and changing them repaints the grid
 
 ## 🔗 Related Controls
 
