@@ -89,7 +89,7 @@ public sealed class ReversibleStackPanelTests : IDisposable
         AssertSlot(panel.Children[0], 50, 0, 10, 40);
     }
 
-    [StaFact(Skip = "Bug: ReversibleStackPanel.ReverseOrderProperty uses plain PropertyMetadata without AffectsArrange.")]
+    [StaFact]
     public void ReverseOrder_ChangedAfterLayout_InvalidatesArrange()
     {
         // Arrange

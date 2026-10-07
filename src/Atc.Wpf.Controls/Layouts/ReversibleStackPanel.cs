@@ -6,7 +6,9 @@ public sealed class ReversibleStackPanel : StackPanel
         nameof(ReverseOrder),
         typeof(bool),
         typeof(ReversibleStackPanel),
-        new PropertyMetadata(default(bool)));
+        new FrameworkPropertyMetadata(
+            defaultValue: false,
+            FrameworkPropertyMetadataOptions.AffectsArrange));
 
     public bool ReverseOrder
     {
