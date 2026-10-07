@@ -186,7 +186,7 @@ public sealed class UniformSpacingPanelTests : IDisposable
         AssertSlot(panel.Children[1], 55, 0, 50, 20);
     }
 
-    [StaFact(Skip = "Bug: UniformSpacingPanel.MeasureOverride (Wrap) adds spacing to the very first child and wraps it onto a phantom line.")]
+    [StaFact]
     public void Layout_Wrap_FirstChildNearlyFillingWidth_DoesNotAddSpacingToHeight()
     {
         // Arrange
@@ -202,7 +202,7 @@ public sealed class UniformSpacingPanelTests : IDisposable
         AssertSlot(panel.Children[0], 0, 0, 95, 20);
     }
 
-    [StaFact(Skip = "Bug: UniformSpacingPanel.MeasureOverride adds spacing for zero-size children while ArrangeLine skips them.")]
+    [StaFact]
     public void Measure_NoWrap_CollapsedChild_DoesNotContributeSpacing()
     {
         // Arrange

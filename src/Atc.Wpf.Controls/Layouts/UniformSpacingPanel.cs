@@ -256,7 +256,8 @@ public sealed class UniformSpacingPanel : Panel
                     itemWidthSet ? ItemWidth : child.DesiredSize.Width,
                     itemHeightSet ? ItemHeight : child.DesiredSize.Height);
 
-                if (GreaterThan(curLineSize.U + sz.U + spacingSize.U, uvConstraint.U))
+                // Same rule as ArrangeOverride: the very first item gets no leading spacing.
+                if (GreaterThan(curLineSize.U + (isFirst ? sz.U : sz.U + spacingSize.U), uvConstraint.U))
                 {
                     panelSize.U = System.Math.Max(curLineSize.U, panelSize.U);
                     panelSize.V += curLineSize.V + spacingSize.V;
@@ -315,6 +316,13 @@ public sealed class UniformSpacingPanel : Panel
                     orientation,
                     itemWidthSet ? ItemWidth : child.DesiredSize.Width,
                     itemHeightSet ? ItemHeight : child.DesiredSize.Height);
+
+                // Same rule as ArrangeLine: zero-size (e.g. collapsed) children take no slot and no spacing.
+                if (sz.U <= 0)
+                {
+                    curLineSize.V = System.Math.Max(sz.V, curLineSize.V);
+                    continue;
+                }
 
                 curLineSize.U += isFirst ? sz.U : sz.U + spacingSize.U;
                 curLineSize.V = System.Math.Max(sz.V, curLineSize.V);
