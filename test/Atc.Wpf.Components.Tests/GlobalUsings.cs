@@ -6,6 +6,7 @@ global using System.Windows.Controls;
 global using System.Windows.Data;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Components.Dialogs;
 global using Atc.Wpf.Components.Flyouts;
 global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Selectors;
