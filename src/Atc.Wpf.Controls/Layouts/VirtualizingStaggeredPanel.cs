@@ -233,13 +233,17 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             return new Size(0, 0);
         }
 
+        // Touching InternalChildren connects the panel to its ItemContainerGenerator; without it the
+        // generator is still null on the first measure pass and no items are realized.
+        _ = InternalChildren;
+
         var generator = ItemContainerGenerator;
         if (generator is null)
         {
             return MeasureNonVirtualized(availableSize);
         }
 
-        CalculateLayout(availableSize);
+        CalculateLayout(availableSize, itemCount);
         ResetColumnHeights();
 
         var positions = CalculateVisibleItemPositions(
@@ -266,7 +270,10 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             availableSize,
             extentSize);
 
-        return availableSize;
+        // Never report an infinite desired size (WPF throws); fall back to the content extent.
+        return new Size(
+            double.IsInfinity(availableSize.Width) ? GetContentWidth() + Padding.Left + Padding.Right : availableSize.Width,
+            double.IsInfinity(availableSize.Height) ? extentSize.Height : availableSize.Height);
     }
 
     private void ResetColumnHeights()
@@ -398,7 +405,7 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             return finalSize;
         }
 
-        CalculateLayout(finalSize);
+        CalculateLayout(finalSize, itemCount);
         ResetColumnHeights();
 
         var horizontalOffset = CalculateHorizontalOffset(finalSize.Width);
@@ -498,9 +505,19 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
         }
     }
 
-    private void CalculateLayout(Size availableSize)
+    private void CalculateLayout(
+        Size availableSize,
+        int itemCount)
     {
         var availableWidth = availableSize.Width - Padding.Left - Padding.Right;
+
+        if (double.IsInfinity(availableWidth))
+        {
+            // Unconstrained width: give every item its own column instead of saturating to int.MaxValue.
+            itemWidth = DesiredItemWidth;
+            columnCount = Math.Max(1, itemCount);
+            return;
+        }
 
         itemWidth = Math.Min(
             DesiredItemWidth,
@@ -609,7 +626,7 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             return new Size(0, 0);
         }
 
-        CalculateLayout(availableSize);
+        CalculateLayout(availableSize, InternalChildren.Count);
 
         columnHeights.Clear();
         for (var i = 0; i < columnCount; i++)
@@ -641,13 +658,16 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
         }
 
         return new Size(
-            availableSize.Width,
+            double.IsInfinity(availableSize.Width) ? GetContentWidth() + Padding.Left + Padding.Right : availableSize.Width,
             maxHeight + Padding.Top + Padding.Bottom);
     }
 
+    private double GetContentWidth()
+        => (columnCount * itemWidth) + ((columnCount - 1) * HorizontalSpacing);
+
     private Size ArrangeNonVirtualized(Size finalSize)
     {
-        CalculateLayout(finalSize);
+        CalculateLayout(finalSize, InternalChildren.Count);
 
         columnHeights.Clear();
         for (var i = 0; i < columnCount; i++)
