@@ -2,8 +2,21 @@ namespace Atc.Wpf.Network.Vnc;
 
 public sealed class VncConnectionService : IDisposable
 {
-    private VncClient? vnc;
+    private readonly Func<string, int, IVncClient> clientFactory;
+    private readonly Dispatcher dispatcher;
+    private IVncClient? vnc;
     private WriteableBitmap? framebuffer;
+
+    public VncConnectionService()
+        : this((hostname, port) => new VncClient(hostname, port, new VncClientConfig()))
+    {
+    }
+
+    internal VncConnectionService(Func<string, int, IVncClient> clientFactory)
+    {
+        this.clientFactory = clientFactory;
+        dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+    }
 
     public bool IsConnected { get; private set; }
 
@@ -31,8 +44,7 @@ public sealed class VncConnectionService : IDisposable
 
         try
         {
-            var config = new VncClientConfig();
-            vnc = new VncClient(hostname, port, config);
+            vnc = clientFactory(hostname, port);
             vnc.ConnectionLost += OnConnectionLost;
             vnc.FramebufferUpdated += OnVncFramebufferUpdated;
 
@@ -56,7 +68,7 @@ public sealed class VncConnectionService : IDisposable
 
             var fb = vnc.Framebuffer!;
 
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            await dispatcher.InvokeAsync(() =>
             {
                 framebuffer = new WriteableBitmap(
                     fb.Width,
@@ -95,6 +107,7 @@ public sealed class VncConnectionService : IDisposable
         Disconnected?.Invoke(this, EventArgs.Empty);
     }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A failed send is reported as a lost connection.")]
     public async Task SendPointerEventAsync(
         byte buttonMask,
         int x,
@@ -105,9 +118,19 @@ public sealed class VncConnectionService : IDisposable
             return;
         }
 
-        await vnc.SendPointerEvent(buttonMask, x, y).ConfigureAwait(false);
+        try
+        {
+            await vnc.SendPointerEvent(buttonMask, x, y).ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            // Input is sent from fire-and-forget UI handlers; a dropped socket must surface as a
+            // disconnect, not as an exception that reaches the dispatcher unhandled.
+            OnConnectionLost();
+        }
     }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A failed send is reported as a lost connection.")]
     public async Task SendKeyEventAsync(
         uint keySym,
         bool pressed)
@@ -117,7 +140,16 @@ public sealed class VncConnectionService : IDisposable
             return;
         }
 
-        await vnc.SendKeyEvent(keySym, pressed).ConfigureAwait(false);
+        try
+        {
+            await vnc.SendKeyEvent(keySym, pressed).ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            // Input is sent from fire-and-forget UI handlers; a dropped socket must surface as a
+            // disconnect, not as an exception that reaches the dispatcher unhandled.
+            OnConnectionLost();
+        }
     }
 
     public void Dispose()
@@ -138,7 +170,7 @@ public sealed class VncConnectionService : IDisposable
             var fb = e.Framebuffer;
             var rect = e.Rectangle;
 
-            _ = Application.Current.Dispatcher.BeginInvoke(() =>
+            _ = dispatcher.BeginInvoke(() =>
             {
                 try
                 {
@@ -181,6 +213,12 @@ public sealed class VncConnectionService : IDisposable
 
     private void OnConnectionLost()
     {
+        // Both a failed send and the client's own ConnectionLost event end up here; report the loss once.
+        if (!IsConnected)
+        {
+            return;
+        }
+
         IsConnected = false;
         Disconnected?.Invoke(this, EventArgs.Empty);
     }
