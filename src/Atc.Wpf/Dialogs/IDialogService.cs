@@ -10,7 +10,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="title">The dialog title.</param>
     /// <param name="message">The message to display.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>True if the user clicked OK.</returns>
     Task<bool> ShowInformation(
         string title,
@@ -22,7 +22,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="title">The dialog title.</param>
     /// <param name="message">The message to display.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>True if the user clicked OK.</returns>
     Task<bool> ShowWarning(
         string title,
@@ -34,7 +34,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="title">The dialog title.</param>
     /// <param name="message">The message to display.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>True if the user clicked OK.</returns>
     Task<bool> ShowError(
         string title,
@@ -46,7 +46,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="title">The dialog title.</param>
     /// <param name="message">The question to display.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>True if the user clicked Yes, false if No.</returns>
     Task<bool> ShowConfirmation(
         string title,
@@ -58,7 +58,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="title">The dialog title.</param>
     /// <param name="message">The message to display.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>True if the user clicked OK, false if Cancel.</returns>
     Task<bool> ShowOkCancel(
         string title,
@@ -71,7 +71,7 @@ public interface IDialogService
     /// <param name="title">The dialog title.</param>
     /// <param name="label">The label for the input field.</param>
     /// <param name="defaultValue">The default value for the input field.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>The entered text, or null if cancelled.</returns>
     Task<string?> ShowInput(
         string title,
@@ -84,7 +84,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="title">The dialog title.</param>
     /// <param name="initialColor">The initial color to display.</param>
-    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
     /// <returns>The selected color, or null if cancelled.</returns>
     Task<Color?> ShowColorPicker(
         string title,
