@@ -16,6 +16,7 @@ global using System.Windows.Media.Imaging;
 global using Atc.Serialization;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Controls.Layouts;
+global using Atc.Wpf.Controls.Media.W3cSvg.FileLoaders;
 global using Atc.Wpf.Extensions;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Hotkeys;
