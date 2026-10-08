@@ -4,7 +4,8 @@
     xmlns:flyouts="clr-namespace:Atc.Wpf.Components.Flyouts">
 
     <Style x:Key="AtcApps.Styles.FlyoutHost" TargetType="{x:Type flyouts:FlyoutHost}">
-        <Setter Property="Background" Value="Transparent" />
+        <!--  No background: the host covers the page, and its empty area must let clicks through to the content below  -->
+        <Setter Property="Background" Value="{x:Null}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
