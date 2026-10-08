@@ -236,6 +236,7 @@
             BorderBrush="#FF828790"
             BorderThickness="1"
             DockPanel.Dock="Bottom"
+            FlowDirection="LeftToRight"
             IsTextSearchEnabled="True"
             ItemTemplateSelector="{StaticResource JsonPropertyTemplateSelector}">
             <TreeView.ContextMenu>
