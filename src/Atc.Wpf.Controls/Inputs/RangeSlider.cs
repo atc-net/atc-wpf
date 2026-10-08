@@ -185,7 +185,7 @@ public sealed partial class RangeSlider : Control
             delta *= 10;
         }
 
-        switch (e.Key)
+        switch (FlowDirectionKeyHelper.ToLayoutKey(e.Key, FlowDirection))
         {
             case Key.Left:
             case Key.Down:

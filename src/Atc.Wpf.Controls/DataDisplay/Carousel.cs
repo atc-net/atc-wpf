@@ -291,7 +291,7 @@ public sealed partial class Carousel : Selector
             return;
         }
 
-        switch (e.Key)
+        switch (FlowDirectionKeyHelper.ToLayoutKey(e.Key, FlowDirection))
         {
             case Key.Left:
                 Previous();

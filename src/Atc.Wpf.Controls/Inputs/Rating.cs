@@ -208,7 +208,7 @@ public partial class Rating : Control
         var increment = AllowHalfStars ? 0.5 : 1.0;
         var handled = true;
 
-        switch (e.Key)
+        switch (FlowDirectionKeyHelper.ToLayoutKey(e.Key, FlowDirection))
         {
             case Key.Left:
             case Key.Down:
