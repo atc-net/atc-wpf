@@ -16,6 +16,8 @@ public sealed class WindowsThemeSyncTests : IDisposable
     [InlineData(WindowsThemeSyncMode.AppMode, ThemeSyncMode.SyncWithAppMode)]
     [InlineData(WindowsThemeSyncMode.Accent, ThemeSyncMode.SyncWithAccent)]
     [InlineData(WindowsThemeSyncMode.AppModeAndAccent, ThemeSyncMode.SyncWithAppMode | ThemeSyncMode.SyncWithAccent)]
+    [InlineData(WindowsThemeSyncMode.HighContrast, ThemeSyncMode.SyncWithHighContrast)]
+    [InlineData(WindowsThemeSyncMode.All, ThemeSyncMode.SyncAll)]
     public void ToThemeSyncMode_MapsEachMode(
         WindowsThemeSyncMode mode,
         ThemeSyncMode expected)
@@ -25,9 +27,10 @@ public sealed class WindowsThemeSyncTests : IDisposable
     [InlineData(ThemeSyncMode.DoNotSync, WindowsThemeSyncMode.None)]
     [InlineData(ThemeSyncMode.SyncWithAppMode, WindowsThemeSyncMode.AppMode)]
     [InlineData(ThemeSyncMode.SyncWithAccent, WindowsThemeSyncMode.Accent)]
-    [InlineData(ThemeSyncMode.SyncAll, WindowsThemeSyncMode.AppModeAndAccent)]
-    [InlineData(ThemeSyncMode.SyncWithHighContrast, WindowsThemeSyncMode.None)]
-    public void FromThemeSyncMode_MapsEachModeAndIgnoresHighContrast(
+    [InlineData(ThemeSyncMode.SyncWithAppMode | ThemeSyncMode.SyncWithAccent, WindowsThemeSyncMode.AppModeAndAccent)]
+    [InlineData(ThemeSyncMode.SyncWithHighContrast, WindowsThemeSyncMode.HighContrast)]
+    [InlineData(ThemeSyncMode.SyncAll, WindowsThemeSyncMode.All)]
+    public void FromThemeSyncMode_MapsEachMode(
         ThemeSyncMode mode,
         WindowsThemeSyncMode expected)
         => Assert.Equal(expected, WindowsThemeSync.FromThemeSyncMode(mode));

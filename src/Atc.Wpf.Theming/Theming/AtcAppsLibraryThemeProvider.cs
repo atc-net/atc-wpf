@@ -5,7 +5,12 @@ public sealed class AtcAppsLibraryThemeProvider : LibraryThemeProvider
     public static readonly AtcAppsLibraryThemeProvider Instance = new();
 
     public AtcAppsLibraryThemeProvider()
-        : base(registerAtThemeManager: true)
+        : this(registerAtThemeManager: true)
+    {
+    }
+
+    internal AtcAppsLibraryThemeProvider(bool registerAtThemeManager)
+        : base(registerAtThemeManager)
     {
     }
 
@@ -24,5 +29,31 @@ public sealed class AtcAppsLibraryThemeProvider : LibraryThemeProvider
 
         values.Add("AtcApps.Colors.Highlight", colorValues.HighlightColor.ToString(GlobalizationConstants.EnglishCultureInfo));
         values.Add("AtcApps.Colors.IdealForeground", colorValues.IdealForegroundColor.ToString(GlobalizationConstants.EnglishCultureInfo));
+
+        // These values are applied before the base color scheme's, so the high-contrast colors win.
+        if (colorValues.Options.IsHighContrast &&
+            colorValues.Options.BaseColorScheme is not null)
+        {
+            HighContrastColorScheme.Fill(
+                values,
+                colorValues.Options.BaseColorScheme.Values,
+                HighContrastPalette.FromSystemColors());
+        }
+    }
+
+    public override void PrepareRuntimeThemeResourceDictionary(
+        RuntimeThemeGenerator runtimeThemeGenerator,
+        ResourceDictionary resourceDictionary,
+        RuntimeThemeColorValues runtimeThemeColorValues)
+    {
+        ArgumentNullException.ThrowIfNull(resourceDictionary);
+        ArgumentNullException.ThrowIfNull(runtimeThemeColorValues);
+
+        base.PrepareRuntimeThemeResourceDictionary(runtimeThemeGenerator, resourceDictionary, runtimeThemeColorValues);
+
+        if (runtimeThemeColorValues.Options.IsHighContrast)
+        {
+            HighContrastColorScheme.MakeBordersVisible(resourceDictionary, HighContrastPalette.FromSystemColors());
+        }
     }
 }

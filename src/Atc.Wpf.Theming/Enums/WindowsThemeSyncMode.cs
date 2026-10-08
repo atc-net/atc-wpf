@@ -26,4 +26,14 @@ public enum WindowsThemeSyncMode
     /// Follow both the Windows app mode and accent color.
     /// </summary>
     AppModeAndAccent = AppMode | Accent,
+
+    /// <summary>
+    /// Switch to a high-contrast theme built from the Windows system colors while Windows high contrast is on.
+    /// </summary>
+    HighContrast = 4,
+
+    /// <summary>
+    /// Follow the Windows app mode, accent color and high contrast.
+    /// </summary>
+    All = AppMode | Accent | HighContrast,
 }

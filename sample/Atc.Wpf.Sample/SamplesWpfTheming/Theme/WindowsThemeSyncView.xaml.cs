@@ -25,6 +25,12 @@ public partial class WindowsThemeSyncView : INotifyPropertyChanged
         set => SetSyncPart(WindowsThemeSyncMode.Accent, value);
     }
 
+    public bool FollowHighContrast
+    {
+        get => WindowsThemeSync.Mode.HasFlag(WindowsThemeSyncMode.HighContrast);
+        set => SetSyncPart(WindowsThemeSyncMode.HighContrast, value);
+    }
+
     public string WindowsAppMode
         => WindowsThemeSync.IsWindowsAppModeLight
             ? "Light"
@@ -38,8 +44,17 @@ public partial class WindowsThemeSyncView : INotifyPropertyChanged
             ? new SolidColorBrush(color)
             : Brushes.Transparent;
 
+    public string WindowsHighContrast
+        => WindowsThemeSync.IsWindowsHighContrast
+            ? "On"
+            : "Off";
+
     public string CurrentTheme
-        => ThemeManager.Current.DetectTheme(Application.Current)?.Name ?? string.Empty;
+        => ThemeManager.Current.DetectTheme(Application.Current) is { } theme
+            ? theme.IsHighContrast
+                ? $"{theme.Name} (high contrast)"
+                : theme.Name
+            : string.Empty;
 
     private static void SetSyncPart(
         WindowsThemeSyncMode part,
@@ -54,6 +69,7 @@ public partial class WindowsThemeSyncView : INotifyPropertyChanged
     {
         WindowsThemeSync.ModeChanged += OnModeChanged;
         ThemeManager.Current.ThemeChanged += OnThemeChanged;
+        SystemParameters.StaticPropertyChanged += OnSystemParametersChanged;
         RaiseAll();
     }
 
@@ -63,6 +79,7 @@ public partial class WindowsThemeSyncView : INotifyPropertyChanged
     {
         WindowsThemeSync.ModeChanged -= OnModeChanged;
         ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        SystemParameters.StaticPropertyChanged -= OnSystemParametersChanged;
     }
 
     private void OnModeChanged(
@@ -75,10 +92,22 @@ public partial class WindowsThemeSyncView : INotifyPropertyChanged
         ThemeChangedEventArgs e)
         => RaiseAll();
 
+    private void OnSystemParametersChanged(
+        object? sender,
+        PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SystemParameters.HighContrast))
+        {
+            RaiseAll();
+        }
+    }
+
     private void RaiseAll()
     {
         OnPropertyChanged(nameof(FollowAppMode));
         OnPropertyChanged(nameof(FollowAccent));
+        OnPropertyChanged(nameof(FollowHighContrast));
+        OnPropertyChanged(nameof(WindowsHighContrast));
         OnPropertyChanged(nameof(WindowsAppMode));
         OnPropertyChanged(nameof(WindowsAccent));
         OnPropertyChanged(nameof(WindowsAccentBrush));
