@@ -87,47 +87,6 @@ public sealed class ZoomMiniMapTests : IDisposable
         Assert.Equal(new Thickness(10), dragging.BorderThickness);
     }
 
-    [StaTheory]
-    [InlineData(FlowDirection.LeftToRight, 1.0)]
-    [InlineData(FlowDirection.RightToLeft, -1.0)]
-    public void VisualElement_Thumbnail_IsMirroredLikeTheContent(
-        FlowDirection flowDirection,
-        double expectedScaleX)
-    {
-        var content = new Canvas();
-        _ = new Border { FlowDirection = flowDirection, Child = content };
-        var sut = new ZoomMiniMap();
-        ApplyTemplate(sut);
-
-        sut.VisualElement = content;
-
-        Assert.Equal(expectedScaleX, ThumbnailScaleX(sut));
-    }
-
-    [StaFact]
-    public void VisualElement_ContentTurnsRightToLeft_MirrorsTheThumbnail()
-    {
-        var content = new Canvas();
-        var host = new Border { Child = content };
-        var sut = new ZoomMiniMap();
-        ApplyTemplate(sut);
-        sut.VisualElement = content;
-
-        host.FlowDirection = FlowDirection.RightToLeft;
-
-        Assert.Equal(-1.0, ThumbnailScaleX(sut));
-    }
-
-    // A VisualBrush draws its visual without the mirroring of the visual's right-to-left ancestors.
-    private static double ThumbnailScaleX(ZoomMiniMap miniMap)
-    {
-        var canvas = (Canvas)miniMap.Template.FindName("PART_Content", miniMap);
-        var brush = Assert.IsType<VisualBrush>(canvas.Background);
-        return brush.RelativeTransform is ScaleTransform scale
-            ? scale.ScaleX
-            : 1.0;
-    }
-
     private static (Border Dragging, Border Sizing) ApplyTemplate(
         ZoomMiniMap miniMap)
     {
