@@ -151,6 +151,10 @@
             IsExpanded="True"
             SamplePath="Window.NiceWindowView" />
         <sample:SampleTreeViewItem
+            Header="NiceWindow backdrop"
+            IsExpanded="True"
+            SamplePath="Window.NiceWindowBackdropView" />
+        <sample:SampleTreeViewItem
             Header="NiceWindow with Flyout"
             IsExpanded="True"
             SamplePath="Window.NiceWindowWithFlyoutView" />

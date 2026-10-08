@@ -103,6 +103,18 @@ var window = new NiceWindow
 };
 ```
 
+### Windows 11 Backdrop (Mica, Acrylic, Tabbed)
+
+```xml
+<atc:NiceWindow
+    xmlns:controlzEx="clr-namespace:ControlzEx.Theming;assembly=ControlzEx"
+    BackdropType="{x:Static controlzEx:WindowBackdropType.Mica}">
+    <!-- Leave the content background unset (transparent) so the backdrop shows through -->
+</atc:NiceWindow>
+```
+
+While Windows applies the backdrop, `IsBackdropActive` is `true` and the default style makes the window background and title bar transparent, switches the title and window buttons to `AtcApps.Brushes.ThemeForeground`, and extends the frame into the client area (`GlassFrameThickness = -1`). Values you set locally on these properties win over the style.
+
 ## ⚙️ Properties
 
 ### Title Bar
@@ -166,6 +178,13 @@ var window = new NiceWindow
 | `ShowDialogsOverTitleBar` | `bool` | `true` | Whether hosted dialogs cover the title bar |
 | `IsAnyDialogOpen` | `bool` | `false` | Indicates a dialog is open; access keys are suppressed while `true` |
 
+### Backdrop
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `BackdropType` | `WindowBackdropType` (ControlzEx) | `None` | System backdrop drawn behind the window: `None`, `Auto`, `Mica`, `Acrylic` or `Tabbed` |
+| `IsBackdropActive` | `bool` (read-only) | `false` | `true` while Windows has applied `BackdropType` to the window |
+
 ### Window Placement and Transitions
 
 | Property | Type | Default | Description |
@@ -199,6 +218,9 @@ var window = new NiceWindow
 - The window's `DataContext` is passed on to `LeftWindowCommands`, `RightWindowCommands` and `WindowButtonCommands`
 - `SaveWindowPosition` is handled by the `WindowsSettingBehavior` that is attached in the constructor
 - Many brush and template defaults are set by the default style; the defaults listed first are the dependency property defaults
+- `BackdropType` needs Windows 11 22H2 or later; on older Windows, with `AllowsTransparency="True"`, or when Windows refuses it, `IsBackdropActive` stays `false` and the window keeps its theme background. In high contrast the window also stays opaque
+- Works with .NET's `Application.ThemeMode` (Fluent): WPF merges its Fluent dictionary ahead of the application's dictionaries, so the ATC control styles still win, and NiceWindow removes the Fluent `Window` style that WPF assigns to windows without a style (it would replace the NiceWindow template), also when the theme mode changes while the window is open. Keep `ThemeMode` and the ATC theme on the same light/dark: WPF sets the window's dark mode from `ThemeMode`, so a Dark `ThemeMode` with a Light ATC theme tints the backdrop dark under dark text
+- The backdrop only shows where nothing opaque is drawn, so content with its own background (panels using `AtcApps.Brushes.ThemeBackground`, for example) covers it. Windows draws backdrops only while the window is active
 
 ## 🔗 Related Controls
 
@@ -209,4 +231,4 @@ var window = new NiceWindow
 
 ## 🎮 Sample Application
 
-See the NiceWindow samples in the Atc.Wpf.Sample application under **Wpf.Theming > Window > NiceWindow** and **Wpf.Theming > Window > NiceWindow with Flyout** for interactive examples.
+See the NiceWindow samples in the Atc.Wpf.Sample application under **Wpf.Theming > Window > NiceWindow**, **Wpf.Theming > Window > NiceWindow backdrop** and **Wpf.Theming > Window > NiceWindow with Flyout** for interactive examples.
