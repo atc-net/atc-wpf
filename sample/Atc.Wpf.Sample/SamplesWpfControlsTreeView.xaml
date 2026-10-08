@@ -219,6 +219,13 @@
             SamplePath="Layouts.VirtualizingStaggeredPanelView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Navigation">
+        <sample:SampleTreeViewItem
+            Header="NavigationView"
+            IsExpanded="True"
+            SamplePath="Navigation.NavigationViewView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Pickers">
         <sample:SampleTreeViewItem
             Header="DirectoryPicker"

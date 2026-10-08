@@ -1,0 +1,101 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.Navigation.NavigationViewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfControls.Navigation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:Atc.Wpf.Sample.SamplesWpf.Navigation"
+    d:DataContext="{d:DesignInstance Type=local:NavigationViewView}"
+    d:DesignHeight="600"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  The view shows the current ViewModel as Content; DataTemplates map each ViewModel to its view.  -->
+        <DataTemplate DataType="{x:Type pages:HomeViewModel}">
+            <pages:HomeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type pages:SettingsViewModel}">
+            <pages:SettingsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type pages:DetailsViewModel}">
+            <pages:DetailsView />
+        </DataTemplate>
+
+        <Style x:Key="NavigationGlyphStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*,Auto">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <TextBlock TextWrapping="Wrap">
+                NavigationView is an application shell bound to INavigationService: invoking an item navigates to its TargetViewModelType, the current ViewModel is shown through DataTemplates,
+                Back and code navigation select the matching item, and a navigation guard keeps the selection. Change something on the Settings page, then try to leave it.
+                The hamburger button switches between the open and the compact pane.
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <atc:NavigationView
+                x:Name="ShellNavigationView"
+                Height="480"
+                VerticalAlignment="Top"
+                ItemInvoked="OnItemInvoked"
+                NavigationService="{Binding Path=NavigationService}"
+                PaneTitle="My application">
+                <atc:NavigationViewItem
+                    x:Name="NavHome"
+                    Content="Home"
+                    TargetViewModelType="{x:Type pages:HomeViewModel}">
+                    <atc:NavigationViewItem.Icon>
+                        <TextBlock Style="{StaticResource NavigationGlyphStyle}" Text="&#xE80F;" />
+                    </atc:NavigationViewItem.Icon>
+                </atc:NavigationViewItem>
+                <atc:NavigationViewItem
+                    x:Name="NavDetails"
+                    Content="Details"
+                    NavigationParameters="{Binding Path=DetailsParameters}"
+                    TargetViewModelType="{x:Type pages:DetailsViewModel}">
+                    <atc:NavigationViewItem.Icon>
+                        <TextBlock Style="{StaticResource NavigationGlyphStyle}" Text="&#xE8A5;" />
+                    </atc:NavigationViewItem.Icon>
+                </atc:NavigationViewItem>
+                <atc:NavigationView.FooterMenuItems>
+                    <atc:NavigationViewItem
+                        x:Name="NavAbout"
+                        Content="About"
+                        SelectsOnInvoked="False">
+                        <atc:NavigationViewItem.Icon>
+                            <TextBlock Style="{StaticResource NavigationGlyphStyle}" Text="&#xE946;" />
+                        </atc:NavigationViewItem.Icon>
+                    </atc:NavigationViewItem>
+                    <atc:NavigationViewItem
+                        x:Name="NavSettings"
+                        Content="Settings"
+                        TargetViewModelType="{x:Type pages:SettingsViewModel}">
+                        <atc:NavigationViewItem.Icon>
+                            <TextBlock Style="{StaticResource NavigationGlyphStyle}" Text="&#xE713;" />
+                        </atc:NavigationViewItem.Icon>
+                    </atc:NavigationViewItem>
+                </atc:NavigationView.FooterMenuItems>
+            </atc:NavigationView>
+        </GroupBox>
+
+        <TextBlock
+            x:Name="TbNavigationStatus"
+            Margin="0,8,0,0"
+            Text="{Binding Path=Status}" />
+
+    </atc:AutoGrid>
+
+</UserControl>

@@ -55,6 +55,7 @@ global using Atc.Wpf.Documents.TextFormatters;
 global using Atc.Wpf.FontIcons;
 global using Atc.Wpf.FontIcons.ValueConverters;
 global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Options;
 global using Atc.Wpf.Resources;
 global using Atc.Wpf.Theming.Helpers;
