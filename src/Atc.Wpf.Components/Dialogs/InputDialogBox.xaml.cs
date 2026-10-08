@@ -39,6 +39,11 @@ public partial class InputDialogBox
         ILabelControlBase labelControl)
     {
         OwningWindow = owningWindow;
+        if (owningWindow is not null)
+        {
+            FlowDirection = owningWindow.FlowDirection;
+        }
+
         Settings = settings;
         Width = Settings.Width;
         Height = Settings.Height;

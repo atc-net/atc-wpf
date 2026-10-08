@@ -48,6 +48,11 @@ public partial class InputFormDialogBox
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
         OwningWindow = owningWindow;
+        if (owningWindow is not null)
+        {
+            FlowDirection = owningWindow.FlowDirection;
+        }
+
         Settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
         Width = Settings.Width;
         Height = Settings.Height;
@@ -64,6 +69,11 @@ public partial class InputFormDialogBox
         ArgumentNullException.ThrowIfNull(labelControlsForm);
 
         OwningWindow = owningWindow;
+        if (owningWindow is not null)
+        {
+            FlowDirection = owningWindow.FlowDirection;
+        }
+
         Settings = settings;
         Width = Settings.Width;
         Height = Settings.Height;

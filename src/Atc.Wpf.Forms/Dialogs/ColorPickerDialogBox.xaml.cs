@@ -24,6 +24,11 @@ public partial class ColorPickerDialogBox
         Color color)
     {
         OwningWindow = owningWindow;
+        if (owningWindow is not null)
+        {
+            FlowDirection = owningWindow.FlowDirection;
+        }
+
         Settings = settings;
         Color = color;
         Width = Settings.Width;
