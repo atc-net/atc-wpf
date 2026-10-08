@@ -11,7 +11,9 @@ global using System.Windows.Controls;
 global using System.Windows.Media;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Controls;
 global using Atc.Wpf.Forms.Abstractions;
+global using Atc.Wpf.Forms.BaseControls;
 global using Atc.Wpf.Forms.Extractors;
 global using Atc.Wpf.Forms.Factories;
 global using Atc.Wpf.Forms.FontEditing;

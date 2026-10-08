@@ -105,16 +105,16 @@ private void OnEndpointValueChanged(
 
 | Event | Type | Description |
 |-------|------|-------------|
-| `NetworkProtocolLostFocus` | `EventHandler<ValueChangedEventArgs<NetworkProtocolType?>>` | Raised together with `NetworkProtocolChanged` |
-| `HostLostFocus` | `EventHandler<ValueChangedEventArgs<string?>>` | Raised together with `HostChanged` |
-| `PortLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised together with `PortChanged` |
-| `ValueLostFocus` | `EventHandler<ValueChangedEventArgs<Uri?>>` | Raised together with `ValueChanged` |
+| `NetworkProtocolLostFocus` | `EventHandler<ValueChangedEventArgs<NetworkProtocolType?>>` | Raised when the host or port editor loses focus and `NetworkProtocol` changed while it had focus |
+| `HostLostFocus` | `EventHandler<ValueChangedEventArgs<string?>>` | Raised when the host editor loses focus and `Host` changed while it had focus |
+| `PortLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised when the port editor loses focus and `Port` changed while it had focus |
+| `ValueLostFocus` | `EventHandler<ValueChangedEventArgs<Uri?>>` | Raised when the host or port editor loses focus and `Value` changed while it had focus |
 
 ## 📝 Notes
 
 - `Value` becomes `null` when the host is empty, fails protocol validation, fails `NetworkValidation`, or cannot be turned into a `Uri`
 - Setting `Value` updates `Host`, `Port` and `NetworkProtocol` from the `Uri`
-- The `*LostFocus` events are raised from the property-changed callbacks, so despite their names they fire on every change, not only when focus leaves the control
+- The routed `*Changed` events fire on every change; the `*LostFocus` events fire once per edit, when the editor loses focus, with the value from when it got focus as `OldValue`. Values set from code do not raise them
 - `Value` is recalculated when the control is loaded and when `NetworkValidation` changes
 
 ## 🔗 Related Controls

@@ -911,10 +911,10 @@ The control provides multiple levels of validation:
 
 | Event | Type | Description |
 |-------|------|-------------|
-| `NetworkProtocolLostFocus` | `EventHandler<ValueChangedEventArgs<NetworkProtocolType?>>` | Fired when network protocol changes |
-| `HostLostFocus` | `EventHandler<ValueChangedEventArgs<string?>>` | Fired when host value changes |
-| `PortLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Fired when port value changes |
-| `ValueLostFocus` | `EventHandler<ValueChangedEventArgs<Uri?>>` | Fired when the complete URI value changes |
+| `NetworkProtocolLostFocus` | `EventHandler<ValueChangedEventArgs<NetworkProtocolType?>>` | Fired when an editor loses focus and the network protocol changed while it had focus |
+| `HostLostFocus` | `EventHandler<ValueChangedEventArgs<string?>>` | Fired when the host editor loses focus after the host was changed |
+| `PortLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Fired when the port editor loses focus after the port was changed |
+| `ValueLostFocus` | `EventHandler<ValueChangedEventArgs<Uri?>>` | Fired when an editor loses focus and the complete URI changed while it had focus |
 
 ## Information Display Controls
 

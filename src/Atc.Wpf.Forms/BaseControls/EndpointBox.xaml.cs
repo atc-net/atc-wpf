@@ -3,6 +3,11 @@ namespace Atc.Wpf.Forms.BaseControls;
 
 public partial class EndpointBox
 {
+    private string hostOnFocus = string.Empty;
+    private int portOnFocus;
+    private NetworkProtocolType networkProtocolOnFocus;
+    private Uri? valueOnFocus;
+
     public bool IsDirty { get; private set; }
 
     [RoutedEvent(
@@ -84,6 +89,8 @@ public partial class EndpointBox
     {
         InitializeComponent();
         Loaded += OnLoaded;
+        AddHandler(GotFocusEvent, new RoutedEventHandler(OnEditorGotFocus), handledEventsToo: true);
+        AddHandler(LostFocusEvent, new RoutedEventHandler(OnEditorLostFocus), handledEventsToo: true);
     }
 
     protected override AutomationPeer OnCreateAutomationPeer()
@@ -116,13 +123,6 @@ public partial class EndpointBox
                 newValue,
                 NetworkProtocolChangedEvent));
 
-        control.NetworkProtocolLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<NetworkProtocolType?>(
-                nameof(NetworkProtocol),
-                oldValue,
-                newValue));
-
         control.UpdateValue();
     }
 
@@ -150,13 +150,6 @@ public partial class EndpointBox
                 newValue,
                 HostChangedEvent));
 
-        control.HostLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<string?>(
-                nameof(Host),
-                oldValue,
-                newValue));
-
         control.UpdateValue();
     }
 
@@ -181,13 +174,6 @@ public partial class EndpointBox
                 oldValue,
                 newValue,
                 PortChangedEvent));
-
-        control.PortLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                nameof(Port),
-                oldValue,
-                newValue));
 
         control.UpdateValue();
     }
@@ -219,14 +205,66 @@ public partial class EndpointBox
                 oldUri,
                 newUri,
                 ValueChangedEvent));
-
-        control.ValueLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<Uri?>(
-                nameof(Value),
-                oldUri,
-                newUri));
     }
+
+    private void OnEditorGotFocus(
+        object sender,
+        RoutedEventArgs e)
+        => CaptureFocusSnapshot();
+
+    /// <summary>
+    /// Raises the *LostFocus events for the values that changed while the editor had focus.
+    /// </summary>
+    private void OnEditorLostFocus(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (IsWithin(HostTextBox, e.OriginalSource) &&
+            !string.Equals(hostOnFocus, Host, StringComparison.Ordinal))
+        {
+            HostLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<string?>(nameof(Host), hostOnFocus, Host));
+        }
+
+        if (IsWithin(PortIntegerBox, e.OriginalSource) &&
+            portOnFocus != Port)
+        {
+            PortLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(nameof(Port), portOnFocus, Port));
+        }
+
+        if (networkProtocolOnFocus != NetworkProtocol)
+        {
+            NetworkProtocolLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<NetworkProtocolType?>(nameof(NetworkProtocol), networkProtocolOnFocus, NetworkProtocol));
+        }
+
+        if (valueOnFocus != Value)
+        {
+            ValueLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<Uri?>(nameof(Value), valueOnFocus, Value));
+        }
+
+        CaptureFocusSnapshot();
+    }
+
+    private void CaptureFocusSnapshot()
+    {
+        hostOnFocus = Host;
+        portOnFocus = Port;
+        networkProtocolOnFocus = NetworkProtocol;
+        valueOnFocus = Value;
+    }
+
+    private static bool IsWithin(
+        Visual editor,
+        object? source)
+        => source is Visual visual &&
+           (ReferenceEquals(editor, visual) || editor.IsAncestorOf(visual));
 
     private void UpdateValue()
     {
