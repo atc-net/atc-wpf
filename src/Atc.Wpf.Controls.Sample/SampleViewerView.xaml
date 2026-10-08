@@ -40,7 +40,17 @@
                     Background="Transparent"
                     Content="{Binding Path=SampleContent}"
                     Foreground="{Binding ElementName=UcSampleViewerView, Path=Foreground}"
-                    ScrollViewer.CanContentScroll="True" />
+                    ScrollViewer.CanContentScroll="True">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=UcSampleViewerView, Path=IsSampleRightToLeft}" Value="True">
+                                    <Setter Property="FlowDirection" Value="RightToLeft" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
             </TabItem>
             <TabItem Header="XAML" IsEnabled="{Binding Path=HasXamlCode}">
                 <atc:RichTextBoxEx
