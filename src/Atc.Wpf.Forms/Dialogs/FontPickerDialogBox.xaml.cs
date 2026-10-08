@@ -95,6 +95,11 @@ public partial class FontPickerDialogBox
         ArgumentNullException.ThrowIfNull(fontDescription);
 
         OwningWindow = owningWindow;
+        if (owningWindow is not null)
+        {
+            FlowDirection = owningWindow.FlowDirection;
+        }
+
         Settings = settings;
         SelectedFontDescription = fontDescription;
         Width = Settings.Width;
