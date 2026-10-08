@@ -1,0 +1,122 @@
+﻿<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfComponents.Notifications.TrayIconView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfComponents.Notifications"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:TrayIconView}"
+    d:DesignHeight="600"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <DrawingImage x:Key="TrayImage">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="#FF0078D4">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry
+                                Center="16,16"
+                                RadiusX="16"
+                                RadiusY="16" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="White" Geometry="M16,6 C12,6 10,9 10,13 L10,18 L7,22 L25,22 L22,18 L22,13 C22,9 20,6 16,6 Z M13,24 C13,26 14.5,27 16,27 C17.5,27 19,26 19,24 Z" />
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </UserControl.Resources>
+
+    <atc:AutoGrid Columns="*" Rows="Auto,Auto,Auto">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <TextBlock TextWrapping="Wrap">
+                TrayIcon shows an icon in the Windows notification area while this page is open. Click or double-click the icon,
+                or right-click it for the context menu. The notification buttons raise a desktop toast through the toast notification service.
+                Leaving the page removes the icon.
+                Windows 11 puts a new icon in the hidden overflow: open the ^ arrow next to the clock to see it, or turn it on under
+                Settings &gt; Personalization &gt; Taskbar &gt; Other system tray icons.
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Usage">
+            <atc:UniformSpacingPanel Orientation="Vertical" Spacing="8">
+
+                <atc:TrayIcon
+                    x:Name="SampleTrayIcon"
+                    Click="OnTrayIconClick"
+                    DoubleClick="OnTrayIconDoubleClick"
+                    IconSource="{StaticResource TrayImage}"
+                    ToolTipText="{Binding ElementName=TbToolTip, Path=Text}"
+                    Visibility="{Binding ElementName=CbShowIcon, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <atc:TrayIcon.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="OnShowNotificationClick" Header="Show notification" />
+                            <MenuItem Click="OnBringToFrontClick" Header="Bring window to front" />
+                            <Separator />
+                            <MenuItem Click="OnHideIconClick" Header="Hide icon" />
+                        </ContextMenu>
+                    </atc:TrayIcon.ContextMenu>
+                </atc:TrayIcon>
+
+                <CheckBox
+                    x:Name="CbShowIcon"
+                    Content="Show icon"
+                    IsChecked="True" />
+
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock VerticalAlignment="Center" Text="Tooltip" />
+                    <TextBox
+                        x:Name="TbToolTip"
+                        Width="300"
+                        Text="ATC.Net WPF sample" />
+                </atc:UniformSpacingPanel>
+
+                <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="8">
+                    <Button
+                        x:Name="BtnNotifyInformation"
+                        Click="OnNotifyClick"
+                        Content="Information"
+                        Style="{StaticResource ButtonInfo}"
+                        Tag="{x:Static atc:ToastNotificationType.Information}" />
+                    <Button
+                        Click="OnNotifyClick"
+                        Content="Success"
+                        Style="{StaticResource ButtonSuccess}"
+                        Tag="{x:Static atc:ToastNotificationType.Success}" />
+                    <Button
+                        Click="OnNotifyClick"
+                        Content="Warning"
+                        Style="{StaticResource ButtonWarning}"
+                        Tag="{x:Static atc:ToastNotificationType.Warning}" />
+                    <Button
+                        Click="OnNotifyClick"
+                        Content="Error"
+                        Style="{StaticResource ButtonDanger}"
+                        Tag="{x:Static atc:ToastNotificationType.Error}" />
+                </atc:UniformSpacingPanel>
+
+            </atc:UniformSpacingPanel>
+        </GroupBox>
+
+        <StackPanel>
+            <TextBlock x:Name="TbTrayIconCreated" Text="{Binding ElementName=SampleTrayIcon, Path=IsCreated, StringFormat='Icon in the notification area: {0}'}" />
+            <TextBlock
+                x:Name="TbTrayIconStatus"
+                Margin="0,4,0,0"
+                Text="{Binding Path=Status}" />
+        </StackPanel>
+
+    </atc:AutoGrid>
+
+</UserControl>

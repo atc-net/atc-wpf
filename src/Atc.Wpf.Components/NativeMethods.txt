@@ -1,0 +1,10 @@
+CreateBitmap
+CreateIconIndirect
+DeleteObject
+DestroyIcon
+GetSystemMetrics
+IDI_APPLICATION
+LoadIcon
+RegisterWindowMessage
+SetForegroundWindow
+WM_APP

@@ -39,6 +39,10 @@
             Header="ToastNotificationService"
             IsExpanded="True"
             SamplePath="Notifications.ToastNotificationServiceView" />
+        <sample:SampleTreeViewItem
+            Header="TrayIcon"
+            IsExpanded="True"
+            SamplePath="Notifications.TrayIconView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Capture">

@@ -148,6 +148,7 @@ All methods accept optional parameters: `areaName`, `expirationTime` (default 5s
 
 - **InfoDialogBox** - Modal information dialog for important messages
 - **BusyOverlay** - Loading overlay for async operations
+- **TrayIcon** - Notification area icon; its `ShowNotification` shows desktop toasts
 
 ## 🎮 Sample Application
 
