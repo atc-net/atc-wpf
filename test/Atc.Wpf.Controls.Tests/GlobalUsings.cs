@@ -17,6 +17,7 @@ global using System.Windows.Media;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Controls.DataDisplay;
+global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Navigation;

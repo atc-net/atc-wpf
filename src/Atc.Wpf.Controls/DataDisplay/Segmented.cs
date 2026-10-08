@@ -110,7 +110,7 @@ public sealed partial class Segmented : Control
             return;
         }
 
-        switch (e.Key)
+        switch (FlowDirectionKeyHelper.ToLayoutKey(e.Key, FlowDirection))
         {
             case Key.Left:
                 MoveSelection(-1);
