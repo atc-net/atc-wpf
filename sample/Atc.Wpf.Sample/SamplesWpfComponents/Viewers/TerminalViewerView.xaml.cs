@@ -8,6 +8,8 @@ public partial class TerminalViewerView
         "\u001B[1;32mBold green success\u001B[0m mixed with \u001B[33myellow\u001B[0m and \u001B[36mcyan\u001B[0m",
         "\u001B[4;35mUnderlined magenta\u001B[0m, \u001B[1mbold default\u001B[22m, \u001B[3mitalic default\u001B[0m",
         "Plain default-coloured line",
+        "256-colour: \u001B[38;5;208morange\u001B[0m, \u001B[38;5;110msteel blue\u001B[0m, \u001B[38;5;201mpink\u001B[0m, \u001B[48;5;22;38;5;231m white on dark green \u001B[0m",
+        "256-colour greys: \u001B[38;5;236m236 \u001B[38;5;242m242 \u001B[38;5;248m248 \u001B[38;5;254m254\u001B[0m",
     ];
 
     private readonly DispatcherTimer dispatcherTimer;

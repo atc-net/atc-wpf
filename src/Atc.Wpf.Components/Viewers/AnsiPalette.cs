@@ -29,6 +29,31 @@ public static class AnsiPalette
         Color.FromRgb(0xF2, 0xF2, 0xF2), // bright white
     ]);
 
+    /// <summary>
+    /// The xterm 256-colour palette used by SGR <c>38;5;n</c> / <c>48;5;n</c>:
+    /// 0–15 are <see cref="Colors16"/>, 16–231 a 6×6×6 colour cube and 232–255 a grey ramp.
+    /// </summary>
+    public static readonly IReadOnlyList<Brush> Colors256 = CreateColors256();
+
+    private static IReadOnlyList<Brush> CreateColors256()
+    {
+        // A local, not a field: static fields initialize in declaration order, after Colors256 would need it.
+        byte[] cubeLevels = [0, 95, 135, 175, 215, 255];
+        var extended = new List<Color>(240);
+        for (var i = 0; i < 216; i++)
+        {
+            extended.Add(Color.FromRgb(cubeLevels[i / 36], cubeLevels[(i / 6) % 6], cubeLevels[i % 6]));
+        }
+
+        for (var i = 0; i < 24; i++)
+        {
+            var level = (byte)(8 + (i * 10));
+            extended.Add(Color.FromRgb(level, level, level));
+        }
+
+        return [.. Colors16, .. CreateBrushes(extended)];
+    }
+
     private static IReadOnlyList<Brush> CreateBrushes(
         IReadOnlyList<Color> colors)
     {

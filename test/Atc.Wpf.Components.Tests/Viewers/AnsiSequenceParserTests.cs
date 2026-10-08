@@ -340,6 +340,53 @@ public sealed class AnsiSequenceParserTests
         Assert.False(newState.Underline);
     }
 
+    // xterm 256-colour palette: 16–231 is a 6x6x6 cube with levels 0, 95, 135, 175, 215, 255; 232–255 is a grey ramp.
+    [Theory]
+    [InlineData(16, 0x00, 0x00, 0x00)]
+    [InlineData(21, 0x00, 0x00, 0xFF)]
+    [InlineData(46, 0x00, 0xFF, 0x00)]
+    [InlineData(110, 0x87, 0xAF, 0xD7)]
+    [InlineData(196, 0xFF, 0x00, 0x00)]
+    [InlineData(231, 0xFF, 0xFF, 0xFF)]
+    [InlineData(232, 0x08, 0x08, 0x08)]
+    [InlineData(244, 0x80, 0x80, 0x80)]
+    [InlineData(255, 0xEE, 0xEE, 0xEE)]
+    public void Parse_256ColorForegroundExtendedIndex_UsesTheXtermPalette(
+        int index,
+        byte r,
+        byte g,
+        byte b)
+    {
+        var (runs, _) = AnsiSequenceParser.Parse(Esc + $"[38;5;{index}mx", AnsiSgrState.Default);
+
+        AssertColor(Assert.Single(runs).Foreground, r, g, b);
+    }
+
+    [Fact]
+    public void Parse_256ColorBackgroundExtendedIndex_UsesTheXtermPalette()
+    {
+        var (runs, _) = AnsiSequenceParser.Parse(Esc + "[48;5;208mx", AnsiSgrState.Default);
+
+        var run = Assert.Single(runs);
+        AssertColor(run.Background, 0xFF, 0x87, 0x00);
+        Assert.Null(run.Foreground);
+    }
+
+    [Fact]
+    public void Parse_256ColorIndexOutOfRange_LeavesColorUnchanged()
+    {
+        var (runs, _) = AnsiSequenceParser.Parse(Esc + "[38;5;256mx", AnsiSgrState.Default);
+
+        Assert.Null(Assert.Single(runs).Foreground);
+    }
+
+    [Fact]
+    public void Colors256_StartsWithThe16ColorPalette()
+    {
+        Assert.Equal(256, AnsiPalette.Colors256.Count);
+        Assert.Equal(AnsiPalette.Colors16, AnsiPalette.Colors256.Take(16));
+    }
+
     [Fact]
     public void Parse_TrueColorForeground_SetsExactRgb()
     {
