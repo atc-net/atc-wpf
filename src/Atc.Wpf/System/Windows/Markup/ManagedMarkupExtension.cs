@@ -128,8 +128,9 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             }
             else if (targetProperty is PropertyInfo info)
             {
+                // A style setter cannot change once its style is in use (sealed), so it keeps the value it got.
                 var target = reference.Target;
-                if (target is not null)
+                if (target is not null and not SetterBase { IsSealed: true })
                 {
                     info.SetValue(target, GetValue(), index: null);
                 }
