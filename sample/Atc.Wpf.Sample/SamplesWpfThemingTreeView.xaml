@@ -9,6 +9,13 @@
     d:DesignWidth="230"
     mc:Ignorable="d">
 
+    <TreeViewItem Header="Theme">
+        <sample:SampleTreeViewItem
+            Header="Windows theme sync"
+            IsExpanded="True"
+            SamplePath="Theme.WindowsThemeSyncView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Resources">
         <sample:SampleTreeViewItem
             Header="Colors"

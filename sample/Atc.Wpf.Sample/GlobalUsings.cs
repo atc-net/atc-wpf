@@ -73,6 +73,7 @@ global using Atc.Wpf.Progressing;
 global using Atc.Wpf.Sample.Models;
 global using Atc.Wpf.Sample.ScreenshotGeneration;
 global using Atc.Wpf.Serialization.JsonConverters;
+global using Atc.Wpf.Theming;
 global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Helpers;
 global using Atc.Wpf.Theming.Themes.Dialogs;

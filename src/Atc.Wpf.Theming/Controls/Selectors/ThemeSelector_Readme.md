@@ -48,6 +48,7 @@ using Atc.Wpf.Theming.Controls.Selectors;
 - Theme display names are translated through the `ColorNames` resources; untranslated names are shown as `#{Name}`
 - The list is re-populated (and the selection kept) when `CultureManager.UiCultureChanged` fires
 - The change is applied to `Application.Current`, not only to the containing window
+- Picking a theme stops `WindowsThemeSync` from following the Windows app mode; while loaded, the control also shows theme changes made elsewhere, such as by the sync
 
 ## 🔗 Related Controls
 

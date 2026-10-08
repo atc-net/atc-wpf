@@ -159,6 +159,21 @@ Dropdown selector for switching accent colors.
 
 ---
 
+## 🪟 Follow the Windows theme
+
+`WindowsThemeSync` makes the application follow the Windows light/dark app mode and accent color, and keeps following them while the app runs.
+
+```csharp
+using Atc.Wpf.Theming;
+using Atc.Wpf.Theming.Helpers;
+
+WindowsThemeSync.Mode = WindowsThemeSyncMode.AppModeAndAccent;
+```
+
+Picking a theme in `ThemeSelector` or an accent in `AccentColorSelector` stops following that part. See `WindowsThemeSync_Readme.md` for details.
+
+---
+
 ## 🎨 WellKnownColorSelector
 
 ComboBox with the full WPF named color palette. Supports basic or extended colors.

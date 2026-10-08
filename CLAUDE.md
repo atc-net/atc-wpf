@@ -112,15 +112,15 @@ sample/Atc.Wpf.Sample/            # Demo application
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
 | `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage) | 123 |
-| `Atc.Wpf.Controls.Tests` | Layouts, zoom (grid overlay, ruler), value converters, event args, theme-subscription leak tests | 28 |
-| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls | 17 |
+| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), value converters, event args, theme-subscription leak tests | 35 |
+| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls, EndpointBox, ColorPicker | 20 |
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, value converters | 20 |
 | `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |
 | `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, VNC connection service, value converters | 12 |
-| `Atc.Wpf.Theming.Tests` | Compliance + value-converter functional tests | 7 |
+| `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync | 8 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 2 |
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 4 |
-| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 5 |
+| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 6 |
 
 > Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,340 tests).
 > Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
