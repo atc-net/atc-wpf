@@ -258,6 +258,7 @@ public partial class ZoomMiniMap : ContentControl
             ViewportUnits = BrushMappingMode.RelativeToBoundingBox,
             TileMode = TileMode.None,
             Stretch = Stretch.Fill,
+            RelativeTransform = CreateMirrorTransform(frameworkElement),
         };
 
         if (viewportCanvas is not null)
@@ -276,6 +277,29 @@ public partial class ZoomMiniMap : ContentControl
                 viewportCanvas.Background = visualBrush;
             }
         };
+    }
+
+    // A VisualBrush draws its visual without the mirroring of the visual's right-to-left ancestors,
+    // so mirror the thumbnail while the content is right-to-left.
+    private static ScaleTransform CreateMirrorTransform(
+        FrameworkElement frameworkElement)
+    {
+        var transform = new ScaleTransform
+        {
+            CenterX = 0.5,
+            CenterY = 0.5,
+        };
+
+        BindingOperations.SetBinding(
+            transform,
+            ScaleTransform.ScaleXProperty,
+            new Binding(nameof(FlowDirection))
+            {
+                Source = frameworkElement,
+                Converter = FlowDirectionToMirrorScaleValueConverter.Instance,
+            });
+
+        return transform;
     }
 
     private static void OnDataContextChangedCallback(
