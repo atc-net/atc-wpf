@@ -10,6 +10,7 @@ public partial class ZoomMiniMap : ContentControl
     private Border? dragBorder;
     private Border? sizingBorder;
     private Canvas? viewportCanvas;
+    private FrameworkElement? deferredVisualElement;
     private MouseHandlingModeType mouseHandlingMode;
     private Point contentMouseDownPoint;
 
@@ -251,6 +252,15 @@ public partial class ZoomMiniMap : ContentControl
             return;
         }
 
+        // A VisualBrush lays out a visual that has no parent yet on its own. For right-to-left content
+        // that layout mirrors it against the missing (left-to-right) parent, and the mirror stays once
+        // the content is attached, so wait until the content is in the visual tree.
+        if (VisualTreeHelper.GetParent(frameworkElement) is null)
+        {
+            DeferSetBackgroundUntilLoaded(frameworkElement);
+            return;
+        }
+
         var visualBrush = new VisualBrush
         {
             Visual = frameworkElement,
@@ -258,7 +268,6 @@ public partial class ZoomMiniMap : ContentControl
             ViewportUnits = BrushMappingMode.RelativeToBoundingBox,
             TileMode = TileMode.None,
             Stretch = Stretch.Fill,
-            RelativeTransform = CreateMirrorTransform(frameworkElement),
         };
 
         if (viewportCanvas is not null)
@@ -279,27 +288,31 @@ public partial class ZoomMiniMap : ContentControl
         };
     }
 
-    // A VisualBrush draws its visual without the mirroring of the visual's right-to-left ancestors,
-    // so mirror the thumbnail while the content is right-to-left.
-    private static ScaleTransform CreateMirrorTransform(
+    private void DeferSetBackgroundUntilLoaded(
         FrameworkElement frameworkElement)
     {
-        var transform = new ScaleTransform
+        if (ReferenceEquals(deferredVisualElement, frameworkElement))
         {
-            CenterX = 0.5,
-            CenterY = 0.5,
-        };
+            return;
+        }
 
-        BindingOperations.SetBinding(
-            transform,
-            ScaleTransform.ScaleXProperty,
-            new Binding(nameof(FlowDirection))
-            {
-                Source = frameworkElement,
-                Converter = FlowDirectionToMirrorScaleValueConverter.Instance,
-            });
+        if (deferredVisualElement is not null)
+        {
+            deferredVisualElement.Loaded -= OnDeferredVisualElementLoaded;
+        }
 
-        return transform;
+        deferredVisualElement = frameworkElement;
+        frameworkElement.Loaded += OnDeferredVisualElementLoaded;
+    }
+
+    private void OnDeferredVisualElementLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        var frameworkElement = (FrameworkElement)sender;
+        frameworkElement.Loaded -= OnDeferredVisualElementLoaded;
+        deferredVisualElement = null;
+        SetBackground(frameworkElement);
     }
 
     private static void OnDataContextChangedCallback(
