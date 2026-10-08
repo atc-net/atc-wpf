@@ -1,7 +1,10 @@
 namespace Atc.Wpf.Forms.Tests.Controls;
 
-public sealed class LabelPickerAndSliderTests
+public sealed class LabelPickerAndSliderTests : IDisposable
 {
+    public void Dispose()
+        => Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+
     [StaFact]
     public void LabelSlider_IsValid_WithAValidValue_IsValid()
     {

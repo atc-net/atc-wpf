@@ -1,7 +1,10 @@
 namespace Atc.Wpf.Forms.Tests.Controls;
 
-public sealed class LabelIntegerBoxTests
+public sealed class LabelIntegerBoxTests : IDisposable
 {
+    public void Dispose()
+        => Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+
     [StaFact]
     public void Value_Changed_RaisesValueLostFocusWithOldAndNewValue()
     {

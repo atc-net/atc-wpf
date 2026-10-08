@@ -1,7 +1,10 @@
 namespace Atc.Wpf.Forms.Tests.Controls;
 
-public sealed class LabelTextBoxTests
+public sealed class LabelTextBoxTests : IDisposable
 {
+    public void Dispose()
+        => Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+
     [StaFact]
     public void IsValid_MandatoryAndEmpty_ReportsFieldIsRequired()
     {

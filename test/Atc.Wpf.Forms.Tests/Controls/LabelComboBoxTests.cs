@@ -1,7 +1,10 @@
 namespace Atc.Wpf.Forms.Tests.Controls;
 
-public sealed class LabelComboBoxTests
+public sealed class LabelComboBoxTests : IDisposable
 {
+    public void Dispose()
+        => Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+
     [StaFact]
     public void IsValid_MandatoryWithoutSelection_ReportsFieldIsRequired()
     {
