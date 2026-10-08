@@ -17,7 +17,7 @@ using Atc.Wpf.Controls.Pickers;
 ### Basic Example
 
 ```xml
-<atc:FilePicker Value="{Binding DataContext.SelectedFile, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+<atc:FilePicker Value="{Binding SelectedFile}" />
 ```
 
 ### Title and Watermark
@@ -33,7 +33,7 @@ using Atc.Wpf.Controls.Pickers;
 
 ```xml
 <atc:FilePicker
-    Value="{Binding DataContext.ConfigFile, RelativeSource={RelativeSource AncestorType=Window}}"
+    Value="{Binding ConfigFile}"
     Filter="JSON files (*.json)|*.json|All files (*.*)|*.*"
     InitialDirectory="C:\Config"
     AllowOnlyExisting="True" />
@@ -80,7 +80,7 @@ private void OnFileChanged(object sender, RoutedPropertyChangedEventArgs<FileInf
 
 - The dialog is opened with `Multiselect = false`; only one file can be selected
 - Clearing the text sets `Value` to `null`
-- The constructor sets `DataContext = this` so the internal XAML can bind to the control's own properties. A plain `{Binding X}` set on the picker therefore resolves against the picker itself, not your view model - use `RelativeSource`, `ElementName` or `Source` (as `LabelFilePicker` does) when binding from outside
+- The picker keeps the `DataContext` it inherits, so a plain `{Binding X}` set on it resolves against your view model; its internal layout binds to the picker's own properties
 - Includes a dedicated automation peer (`FilePickerAutomationPeer`) for UI automation
 
 ## 🔗 Related Controls

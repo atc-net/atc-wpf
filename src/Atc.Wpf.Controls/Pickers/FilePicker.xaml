@@ -9,7 +9,7 @@
     d:DataContext="{d:DesignInstance Type=local:FilePicker}"
     mc:Ignorable="d">
 
-    <atc:GridEx Columns="*,10,Auto">
+    <atc:GridEx x:Name="LayoutRoot" Columns="*,10,Auto">
         <TextBox
             Grid.Column="0"
             atc:TextBoxHelper.ClearTextButton="{Binding Path=ShowClearTextButton}"
