@@ -347,6 +347,15 @@
             Grid.ColumnSpan="2"
             Margin="10">
             <atc:GridEx Columns="*,10,Auto,Auto" Rows="Auto,*">
+                <CheckBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    AutomationProperties.AutomationId="SampleRightToLeft"
+                    Content="Right to left"
+                    IsChecked="{Binding ElementName=SampleViewer, Path=IsSampleRightToLeft}"
+                    ToolTip="Show the sample in a right-to-left layout, as for Arabic or Hebrew" />
                 <atc:LabelLanguageSelector
                     Grid.Row="0"
                     Grid.Column="2"
