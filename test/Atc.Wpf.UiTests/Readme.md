@@ -28,6 +28,7 @@ dotnet run --project test/Atc.Wpf.UiTests -c Release \
 | Test | What it pins |
 |---|---|
 | `SampleAppSmokeTests.Sample_app_launches_and_shows_main_window` | App launches, main window has a non-empty title, full window screenshot can be captured. |
+| `NavigationViewTests.Invoking_items_navigates_and_back_selects_the_previous_item` | On **Wpf.Controls > Navigation > NavigationView**, invoking a pane item (UI Automation Invoke) navigates and selects it, and the back button selects the previous item. |
 | `WindowsThemeSyncTests.Following_app_mode_applies_windows_mode_and_a_manual_pick_stops_it` | On **Wpf.Theming > Theme > Windows theme sync**, following the Windows app mode applies the Windows light/dark setting, and picking a theme by hand stops following it. Reads the Windows mode from the page, so it works on any machine. |
 | `NiceWindowSnapshotTests.NiceWindow_chrome_is_active_and_titlebar_strip_can_be_snapshotted` | Custom `NiceWindow` chrome is in play (asserts `ClassName == "NiceWindow"` via `NiceWindowAutomationPeer`). Captures full window + cropped title bar strip — the latter isolates the highest-risk theming surface (caption colors, system buttons, title text) for low-noise image diffs. |
 

@@ -83,6 +83,10 @@ navigationService.Navigated += (sender, e) =>
 };
 ```
 
+## Navigation shell
+
+`NavigationView` (in `Atc.Wpf.Controls`) is a ready-made shell for the service: set its `NavigationService` and give each pane item a `TargetViewModelType`. It shows the current ViewModel through DataTemplates, selects the matching item after back/forward or code navigation, and keeps the selection when a guard blocks the navigation. See `NavigationView_Readme.md`.
+
 ## Sample Application
 
-See **Wpf > Navigation > NavigationService** in the sample application for a working demo that includes parameter passing, navigation guards with unsaved-change detection, and back/forward history.
+See **Wpf > Navigation > NavigationService** in the sample application for a working demo that includes parameter passing, navigation guards with unsaved-change detection, and back/forward history, and **Wpf.Controls > Navigation > NavigationView** for the same pages in a NavigationView shell.

@@ -45,6 +45,7 @@ global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Media;
+global using Atc.Wpf.Controls.Navigation;
 global using Atc.Wpf.Controls.Sample;
 global using Atc.Wpf.Controls.Zoom;
 global using Atc.Wpf.Data;
