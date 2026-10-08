@@ -7,8 +7,8 @@ namespace Atc.Wpf.Components.Viewers;
 /// for the standard 16-colour palette plus bold / italic / underline. Other
 /// non-SGR sequences (cursor movement, screen clear, etc.) are stripped
 /// silently. 256-colour and 24-bit (true colour) extensions are recognised
-/// and rendered: 256-indices 0–15 map onto <see cref="AnsiPalette.Colors16"/>;
-/// indices 16+ are ignored until the extended palette is added.
+/// and rendered: 256-colour indices map onto the xterm palette in
+/// <see cref="AnsiPalette.Colors256"/>.
 /// </summary>
 public static class AnsiSequenceParser
 {
@@ -158,15 +158,15 @@ public static class AnsiSequenceParser
         {
             var index = parts[i + 2];
             i += 2;
-            if (index >= 0 && index < AnsiPalette.Colors16.Count)
+            if (index >= 0 && index < AnsiPalette.Colors256.Count)
             {
-                var brush = AnsiPalette.Colors16[index];
+                var brush = AnsiPalette.Colors256[index];
                 return foreground
                     ? state with { Foreground = brush }
                     : state with { Background = brush };
             }
 
-            // 256-colour cube / grayscale fallback: leave state unchanged.
+            // Index outside 0–255: leave state unchanged.
             return state;
         }
 
