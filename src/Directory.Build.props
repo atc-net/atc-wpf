@@ -22,10 +22,6 @@
 
   <PropertyGroup Label="Build instructions">
     <OutputType>Library</OutputType>
-    <!-- Creates a regular package and a symbols package -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <!-- Creates symbol package in the new .snupkg format -->
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <!--
       Instruct the build system to embed project source files that are not tracked by the source control
       or imported from a source package to the generated PDB.
