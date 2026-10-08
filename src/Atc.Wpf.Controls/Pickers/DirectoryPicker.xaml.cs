@@ -73,7 +73,8 @@ public partial class DirectoryPicker
     {
         InitializeComponent();
 
-        DataContext = this;
+        // Only the inner layout binds to the picker, so the picker itself keeps the DataContext it inherits.
+        LayoutRoot.DataContext = this;
     }
 
     protected override AutomationPeer OnCreateAutomationPeer()

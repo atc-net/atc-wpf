@@ -17,7 +17,7 @@ using Atc.Wpf.Controls.Pickers;
 ### Basic Example
 
 ```xml
-<atc:DirectoryPicker Value="{Binding DataContext.OutputFolder, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+<atc:DirectoryPicker Value="{Binding OutputFolder}" />
 ```
 
 ### Title and Watermark
@@ -75,7 +75,7 @@ private void OnDirectoryChanged(object sender, RoutedPropertyChangedEventArgs<Di
 
 - The dialog is opened with `Multiselect = false`; only one folder can be selected
 - Clearing the text sets `Value` to `null`
-- The constructor sets `DataContext = this` so the internal XAML can bind to the control's own properties. A plain `{Binding X}` set on the picker therefore resolves against the picker itself, not your view model - use `RelativeSource`, `ElementName` or `Source` (as `LabelDirectoryPicker` does) when binding from outside
+- The picker keeps the `DataContext` it inherits, so a plain `{Binding X}` set on it resolves against your view model; its internal layout binds to the picker's own properties
 - Includes a dedicated automation peer (`DirectoryPickerAutomationPeer`) for UI automation
 
 ## 🔗 Related Controls

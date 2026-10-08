@@ -25,6 +25,7 @@ global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Navigation;
+global using Atc.Wpf.Controls.Pickers;
 global using Atc.Wpf.Controls.Sample;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Controls.Tests.TestSupport;
@@ -32,6 +33,7 @@ global using Atc.Wpf.Controls.ValueConverters;
 global using Atc.Wpf.Controls.Zoom;
 global using Atc.Wpf.Controls.Zoom.Internal;
 global using Atc.Wpf.Controls.Zoom.ValueConverters;
+global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Navigation;
 global using Atc.XUnit;
 
