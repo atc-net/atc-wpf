@@ -161,13 +161,13 @@ Dropdown selector for switching accent colors.
 
 ## 🪟 Follow the Windows theme
 
-`WindowsThemeSync` makes the application follow the Windows light/dark app mode and accent color, and keeps following them while the app runs.
+`WindowsThemeSync` makes the application follow the Windows light/dark app mode, accent color and high contrast, and keeps following them while the app runs. While a Windows contrast theme is on, the application switches to a high-contrast theme built from the Windows system colors.
 
 ```csharp
 using Atc.Wpf.Theming;
 using Atc.Wpf.Theming.Helpers;
 
-WindowsThemeSync.Mode = WindowsThemeSyncMode.AppModeAndAccent;
+WindowsThemeSync.Mode = WindowsThemeSyncMode.All;
 ```
 
 Picking a theme in `ThemeSelector` or an accent in `AccentColorSelector` stops following that part. See `WindowsThemeSync_Readme.md` for details.

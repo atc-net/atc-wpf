@@ -25,8 +25,13 @@
                     IsChecked="{Binding Path=FollowAppMode}" />
                 <CheckBox
                     x:Name="CbFollowAccent"
+                    Margin="0,0,0,8"
                     Content="Follow Windows accent color"
                     IsChecked="{Binding Path=FollowAccent}" />
+                <CheckBox
+                    x:Name="CbFollowHighContrast"
+                    Content="Follow Windows high contrast"
+                    IsChecked="{Binding Path=FollowHighContrast}" />
             </StackPanel>
         </GroupBox>
 
@@ -37,12 +42,14 @@
                     <TextBlock Margin="0,0,0,16" TextWrapping="Wrap">
                         Turn on a toggle, then change the app mode or accent color in Windows Settings &gt; Personalization &gt; Colors: the application follows at once.
                         Picking a theme or an accent by hand below stops following that part.
+                        With high contrast followed, turning on a contrast theme in Windows Settings &gt; Accessibility &gt; Contrast themes switches to a theme built from its colors.
+                        Left Alt + Left Shift + Print Screen toggles it.
                     </TextBlock>
 
                     <atc:GridEx
                         Margin="0,0,0,16"
                         Columns="200,*"
-                        Rows="Auto,8,Auto,8,Auto">
+                        Rows="Auto,8,Auto,8,Auto,8,Auto">
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
@@ -72,10 +79,20 @@
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
+                            Text="Windows high contrast" />
+                        <TextBlock
+                            x:Name="TbWindowsHighContrast"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Text="{Binding Path=WindowsHighContrast}" />
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
                             Text="Current theme" />
                         <TextBlock
                             x:Name="TbCurrentTheme"
-                            Grid.Row="4"
+                            Grid.Row="6"
                             Grid.Column="1"
                             Text="{Binding Path=CurrentTheme}" />
                     </atc:GridEx>

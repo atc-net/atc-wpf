@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Theming.Helpers;
 
 /// <summary>
-/// Makes the application theme follow the Windows light/dark app mode and accent color.
+/// Makes the application theme follow the Windows light/dark app mode, accent color and high contrast.
 /// </summary>
 /// <remarks>
 /// Built on the ControlzEx <see cref="ThemeManager"/>, which listens for Windows personalization
@@ -52,6 +52,12 @@ public static class WindowsThemeSync
         => WindowsThemeHelper.AppsUseLightTheme();
 
     /// <summary>
+    /// Gets a value indicating whether Windows high contrast is on.
+    /// </summary>
+    public static bool IsWindowsHighContrast
+        => SystemParameters.HighContrast;
+
+    /// <summary>
     /// Gets the Windows accent color, or <see langword="null"/> when it cannot be read.
     /// </summary>
     public static Color? WindowsAccentColor
@@ -87,6 +93,11 @@ public static class WindowsThemeSync
             result |= ThemeSyncMode.SyncWithAccent;
         }
 
+        if (mode.HasFlag(WindowsThemeSyncMode.HighContrast))
+        {
+            result |= ThemeSyncMode.SyncWithHighContrast;
+        }
+
         return result;
     }
 
@@ -101,6 +112,11 @@ public static class WindowsThemeSync
         if (mode.HasFlag(ThemeSyncMode.SyncWithAccent))
         {
             result |= WindowsThemeSyncMode.Accent;
+        }
+
+        if (mode.HasFlag(ThemeSyncMode.SyncWithHighContrast))
+        {
+            result |= WindowsThemeSyncMode.HighContrast;
         }
 
         return result;
