@@ -18,6 +18,7 @@
             Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=NetworkProtocol, Converter={x:Static controlsValueConverters:NetworkProtocolToStringValueConverter.Instance}, StringFormat='{}{0}://', FallbackValue='opc.tcp://'}" />
 
         <TextBox
+            x:Name="HostTextBox"
             Grid.Column="2"
             atc:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=ShowClearTextButton}"
             atc:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=WatermarkText}"
@@ -30,6 +31,7 @@
             Text=":" />
 
         <controls:IntegerBox
+            x:Name="PortIntegerBox"
             Grid.Column="4"
             MinWidth="60"
             HideUpDownButtons="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:EndpointBox}}, Path=HideUpDownButtons}"

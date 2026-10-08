@@ -6,19 +6,19 @@ public partial class LabelEndpointBox : ILabelEndpointBox
 
     [DependencyProperty(
         DefaultValue = NetworkProtocolType.Https,
-        PropertyChangedCallback = nameof(OnNetworkProtocolLostFocus),
+        PropertyChangedCallback = nameof(OnNetworkProtocolChanged),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private NetworkProtocolType networkProtocol;
 
     [DependencyProperty(
         DefaultValue = "",
-        PropertyChangedCallback = nameof(OnHostLostFocus),
+        PropertyChangedCallback = nameof(OnHostChanged),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private string host;
 
     [DependencyProperty(
         DefaultValue = 80,
-        PropertyChangedCallback = nameof(OnPortLostFocus),
+        PropertyChangedCallback = nameof(OnPortChanged),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private int port;
 
@@ -47,7 +47,7 @@ public partial class LabelEndpointBox : ILabelEndpointBox
     private int maximumPort;
 
     [DependencyProperty(
-        PropertyChangedCallback = nameof(OnValueLostFocus),
+        PropertyChangedCallback = nameof(OnValueChanged),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private Uri? value;
 
@@ -62,7 +62,24 @@ public partial class LabelEndpointBox : ILabelEndpointBox
     public LabelEndpointBox()
     {
         InitializeComponent();
+        InnerEndpointBox = (EndpointBox)((LabelContent)Content).Content;
+
+        // The inner box raises these when one of its editors loses focus, not on every change.
+        InnerEndpointBox.NetworkProtocolLostFocus += (_, e) => NetworkProtocolLostFocus?.Invoke(
+            this,
+            new ValueChangedEventArgs<NetworkProtocolType?>(Identifier, e.OldValue, e.NewValue));
+        InnerEndpointBox.HostLostFocus += (_, e) => HostLostFocus?.Invoke(
+            this,
+            new ValueChangedEventArgs<string?>(Identifier, e.OldValue, e.NewValue));
+        InnerEndpointBox.PortLostFocus += (_, e) => PortLostFocus?.Invoke(
+            this,
+            new ValueChangedEventArgs<int?>(Identifier, e.OldValue, e.NewValue));
+        InnerEndpointBox.ValueLostFocus += (_, e) => ValueLostFocus?.Invoke(
+            this,
+            new ValueChangedEventArgs<Uri?>(Identifier, e.OldValue, e.NewValue));
     }
+
+    internal EndpointBox InnerEndpointBox { get; }
 
     public override bool IsValid()
     {
@@ -112,103 +129,62 @@ public partial class LabelEndpointBox : ILabelEndpointBox
         control.ValidateEndpoint();
     }
 
-    private static void OnNetworkProtocolLostFocus(
+    private static void OnNetworkProtocolChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelEndpointBox)d;
 
-        if (e.NewValue is not NetworkProtocolType newValue)
+        if (e.NewValue is not NetworkProtocolType ||
+            e.OldValue is not NetworkProtocolType)
         {
             return;
         }
-
-        if (e.OldValue is not NetworkProtocolType oldValue)
-        {
-            return;
-        }
-
-        control.NetworkProtocolLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<NetworkProtocolType?>(
-                control.Identifier,
-                oldValue,
-                newValue));
 
         control.ValidateEndpoint();
     }
 
-    private static void OnHostLostFocus(
+    private static void OnHostChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelEndpointBox)d;
 
-        if (e.NewValue is not string newValue)
-        {
-            return;
-        }
-
-        if (e.OldValue is not string oldValue)
+        if (e.NewValue is not string ||
+            e.OldValue is not string)
         {
             return;
         }
 
         control.IsDirty = true;
-
-        control.HostLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<string?>(
-                control.Identifier,
-                oldValue,
-                newValue));
-
         control.ValidateEndpoint();
     }
 
-    private static void OnPortLostFocus(
+    private static void OnPortChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelEndpointBox)d;
 
-        if (e.NewValue is not int newValue)
+        if (e.NewValue is not int)
         {
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
 
-        if (e.OldValue is not int oldValue)
+        if (e.OldValue is not int)
         {
             return;
         }
 
-        control.PortLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                control.Identifier,
-                oldValue,
-                newValue));
-
         control.ValidateEndpoint();
     }
 
-    private static void OnValueLostFocus(
+    private static void OnValueChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelEndpointBox)d;
-
-        var oldValue = e.OldValue as Uri;
-        var newValue = e.NewValue as Uri;
-
-        control.ValueLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<Uri?>(
-                control.Identifier,
-                oldValue,
-                newValue));
-
         control.ValidateEndpoint();
     }
 }
