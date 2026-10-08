@@ -80,6 +80,8 @@ public sealed class ToastNotificationManager : IToastNotificationManager
                 };
             }
 
+            // The desktop overlay has no owner, so it follows the main window's direction.
+            window.FlowDirection = Application.Current?.MainWindow?.FlowDirection ?? FlowDirection.LeftToRight;
             window.Show();
             areaName = "DesktopArea";
         }

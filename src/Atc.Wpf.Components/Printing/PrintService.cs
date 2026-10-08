@@ -220,9 +220,11 @@ public class PrintService : IPrintService
         DocumentPaginator paginator,
         PrintSettings settings)
     {
+        var owner = GetOwnerWindow();
         var previewWindow = new PrintPreviewWindow
         {
-            Owner = GetOwnerWindow(),
+            Owner = owner,
+            FlowDirection = owner.FlowDirection,
         };
 
         previewWindow.SetDocument(fixedDocument);
