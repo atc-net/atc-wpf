@@ -117,7 +117,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters, right-to-left viewers | 25 |
 | `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |
 | `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, VNC connection service, value converters | 12 |
-| `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync, high-contrast theme generation, DatePicker style | 11 |
+| `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync, high-contrast theme generation, DatePicker style, NiceWindow backdrop and ThemeMode | 12 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 2 |
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 4 |
 | `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 8 |
