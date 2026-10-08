@@ -205,6 +205,7 @@
             <ListView
                 x:Name="ListViewTerminal"
                 Background="{Binding TerminalBackground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                FlowDirection="LeftToRight"
                 FontFamily="{Binding TerminalFontFamily, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 FontSize="{Binding TerminalFontSize, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 ScrollViewer.CanContentScroll="True"
