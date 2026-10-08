@@ -14,10 +14,12 @@ public partial class ThemeSelector : INotifyPropertyChanged
         var detectTheme = ThemeManager.Current.DetectTheme(this);
         if (detectTheme is not null)
         {
-            SelectedKey = detectTheme.Name.Split('.')[0];
+            SelectedKey = detectTheme.BaseColorScheme;
         }
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;
+        Loaded += OnLoadedSubscribeToThemeChanges;
+        Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
 
         PopulateData();
     }
@@ -39,7 +41,15 @@ public partial class ThemeSelector : INotifyPropertyChanged
             selectedKey = value;
             OnPropertyChanged();
 
-            ThemeManager.Current.ChangeThemeBaseColor(Application.Current, SelectedKey);
+            var currentTheme = ThemeManager.Current.DetectTheme(Application.Current);
+            if (string.Equals(currentTheme?.BaseColorScheme, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            // A theme picked by hand wins over following the Windows app mode.
+            WindowsThemeSync.Stop(WindowsThemeSyncMode.AppMode);
+            ThemeManager.Current.ChangeThemeBaseColor(Application.Current, value);
         }
     }
 
@@ -81,6 +91,37 @@ public partial class ThemeSelector : INotifyPropertyChanged
         Items = Items
             .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
             .ToList();
+    }
+
+    private void OnLoadedSubscribeToThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+    }
+
+    private void OnUnloadedUnsubscribeFromThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+        => ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+
+    /// <summary>
+    /// Shows a theme applied from elsewhere, such as Windows theme sync, without applying it again.
+    /// </summary>
+    private void OnThemeChanged(
+        object? sender,
+        ThemeChangedEventArgs e)
+    {
+        if (e.Target is not Application ||
+            string.Equals(selectedKey, e.NewTheme.BaseColorScheme, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        selectedKey = e.NewTheme.BaseColorScheme;
+        OnPropertyChanged(nameof(SelectedKey));
     }
 
     private void OnUiCultureChanged(

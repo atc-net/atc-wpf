@@ -15,12 +15,12 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         var detectTheme = ThemeManager.Current.DetectTheme(this);
         if (detectTheme is not null)
         {
-            SelectedKey = detectTheme.Name
-                .Split('.')
-                .Last();
+            SelectedKey = detectTheme.ColorScheme;
         }
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;
+        Loaded += OnLoadedSubscribeToThemeChanges;
+        Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
 
         PopulateData();
     }
@@ -42,9 +42,17 @@ public partial class AccentColorSelector : INotifyPropertyChanged
             selectedKey = value;
             OnPropertyChanged();
 
+            var currentTheme = ThemeManager.Current.DetectTheme(Application.Current);
+            if (string.Equals(currentTheme?.ColorScheme, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            // An accent picked by hand wins over following the Windows accent color.
+            WindowsThemeSync.Stop(WindowsThemeSyncMode.Accent);
             ThemeManager.Current.ChangeThemeColorScheme(
                 Application.Current,
-                SelectedKey);
+                value);
         }
     }
 
@@ -97,6 +105,37 @@ public partial class AccentColorSelector : INotifyPropertyChanged
                 x => x.DisplayName,
                 StringComparer.Ordinal)
             .ToList();
+    }
+
+    private void OnLoadedSubscribeToThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // ThemeManager is process-wide: only listen while in the visual tree, otherwise it keeps this control alive.
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        ThemeManager.Current.ThemeChanged += OnThemeChanged;
+    }
+
+    private void OnUnloadedUnsubscribeFromThemeChanges(
+        object sender,
+        RoutedEventArgs e)
+        => ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+
+    /// <summary>
+    /// Shows an accent applied from elsewhere, such as Windows theme sync, without applying it again.
+    /// </summary>
+    private void OnThemeChanged(
+        object? sender,
+        ThemeChangedEventArgs e)
+    {
+        if (e.Target is not Application ||
+            string.Equals(selectedKey, e.NewTheme.ColorScheme, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        selectedKey = e.NewTheme.ColorScheme;
+        OnPropertyChanged(nameof(SelectedKey));
     }
 
     private void OnUiCultureChanged(

@@ -1,0 +1,98 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfTheming.Theme.WindowsThemeSyncView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfTheming.Theme"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:WindowsThemeSyncView}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <atc:AutoGrid Columns="*" Rows="Auto,*">
+
+        <GroupBox
+            Margin="0,0,0,10"
+            Padding="10"
+            Header="Features">
+            <StackPanel Orientation="Vertical">
+                <CheckBox
+                    x:Name="CbFollowAppMode"
+                    Margin="0,0,0,8"
+                    Content="Follow Windows light/dark mode"
+                    IsChecked="{Binding Path=FollowAppMode}" />
+                <CheckBox
+                    x:Name="CbFollowAccent"
+                    Content="Follow Windows accent color"
+                    IsChecked="{Binding Path=FollowAccent}" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Usage">
+            <ScrollViewer>
+                <StackPanel Margin="10" Orientation="Vertical">
+
+                    <TextBlock Margin="0,0,0,16" TextWrapping="Wrap">
+                        Turn on a toggle, then change the app mode or accent color in Windows Settings &gt; Personalization &gt; Colors: the application follows at once.
+                        Picking a theme or an accent by hand below stops following that part.
+                    </TextBlock>
+
+                    <atc:GridEx
+                        Margin="0,0,0,16"
+                        Columns="200,*"
+                        Rows="Auto,8,Auto,8,Auto">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Windows app mode" />
+                        <TextBlock
+                            x:Name="TbWindowsAppMode"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=WindowsAppMode}" />
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Windows accent color" />
+                        <StackPanel
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Orientation="Horizontal">
+                            <Rectangle
+                                Width="18"
+                                Height="18"
+                                Margin="0,0,8,0"
+                                Fill="{Binding Path=WindowsAccentBrush}" />
+                            <TextBlock x:Name="TbWindowsAccent" Text="{Binding Path=WindowsAccent}" />
+                        </StackPanel>
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Text="Current theme" />
+                        <TextBlock
+                            x:Name="TbCurrentTheme"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Text="{Binding Path=CurrentTheme}" />
+                    </atc:GridEx>
+
+                    <atc:GridEx Columns="200,*,10,*">
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Pick by hand" />
+                        <atc:ThemeSelector x:Name="PageThemeSelector" Grid.Column="1" />
+                        <atc:AccentColorSelector x:Name="PageAccentColorSelector" Grid.Column="3" />
+                    </atc:GridEx>
+
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+    </atc:AutoGrid>
+
+</UserControl>

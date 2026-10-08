@@ -51,6 +51,7 @@ using Atc.Wpf.Theming.Controls.Selectors;
 - Color names are translated through the `ColorNames` resources; untranslated names are shown as `#{Name}`
 - The list is re-populated (and the selection kept) when `CultureManager.UiCultureChanged` fires
 - The change is applied to `Application.Current`, not only to the containing window
+- Picking an accent stops `WindowsThemeSync` from following the Windows accent color; while loaded, the control also shows accent changes made elsewhere. A runtime accent from the sync is not in the list, so no entry is selected
 
 ## 🔗 Related Controls
 
