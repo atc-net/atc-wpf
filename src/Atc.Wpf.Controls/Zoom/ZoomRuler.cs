@@ -141,7 +141,7 @@ public sealed partial class ZoomRuler : FrameworkElement
 
                 if (isMajor)
                 {
-                    dc.DrawText(FormatLabel(pos, pixelsPerDip), new Point(screenPos + 2, 1));
+                    DrawLabel(dc, FormatLabel(pos, pixelsPerDip), new Point(screenPos + 2, 1));
                 }
             }
 
@@ -183,7 +183,7 @@ public sealed partial class ZoomRuler : FrameworkElement
                     var text = FormatLabel(pos, pixelsPerDip);
                     var rotateTransform = new RotateTransform(-90, 2, screenPos + 2);
                     dc.PushTransform(rotateTransform);
-                    dc.DrawText(text, new Point(2, screenPos + 2));
+                    DrawLabel(dc, text, new Point(2, screenPos + 2));
                     dc.Pop();
                 }
             }
@@ -191,6 +191,23 @@ public sealed partial class ZoomRuler : FrameworkElement
             pos += spacing;
             screenPos = (pos - offset) * zoom;
         }
+    }
+
+    // In a right-to-left layout the ruler is mirrored, so flip each label back around its own center.
+    private void DrawLabel(
+        DrawingContext dc,
+        FormattedText text,
+        Point origin)
+    {
+        if (FlowDirection != FlowDirection.RightToLeft)
+        {
+            dc.DrawText(text, origin);
+            return;
+        }
+
+        dc.PushTransform(new ScaleTransform(-1, 1, origin.X + (text.Width / 2), origin.Y));
+        dc.DrawText(text, origin);
+        dc.Pop();
     }
 
     private static void OnTickBrushChanged(
