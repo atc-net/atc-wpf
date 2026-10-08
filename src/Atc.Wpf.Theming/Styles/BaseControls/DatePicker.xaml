@@ -13,6 +13,7 @@
                             Width="20"
                             Height="20"
                             Margin="0,-2,0,0"
+                            FlowDirection="LeftToRight"
                             Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                             Cursor="Hand"
                             OverrideColor="{DynamicResource AtcApps.Colors.Accent}"
