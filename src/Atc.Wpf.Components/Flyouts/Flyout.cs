@@ -702,8 +702,10 @@ public sealed partial class Flyout : ContentControl
         // Store current focus
         previouslyFocusedElement = Keyboard.FocusedElement;
 
-        // Show and animate
+        // Show and animate. A flyout that has never been shown is collapsed and has no template yet,
+        // so apply it now: without its parts the first open would skip the animation.
         Visibility = Visibility.Visible;
+        ApplyTemplate();
         AnimateOpen();
     }
 
