@@ -1,6 +1,8 @@
 global using System.ComponentModel;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
+global using System.IO;
+global using System.Linq;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using System.Threading;
@@ -22,6 +24,7 @@ global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Navigation;
+global using Atc.Wpf.Controls.Sample;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Controls.Tests.TestSupport;
 global using Atc.Wpf.Controls.ValueConverters;

@@ -112,7 +112,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
 | `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage) | 123 |
-| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard and images | 41 |
+| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard and images, sample readme lookup | 42 |
 | `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls, EndpointBox, ColorPicker | 20 |
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters, right-to-left viewers | 25 |
 | `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |
@@ -167,7 +167,7 @@ Each control can have a `_Readme.md` file that is displayed in the sample app's 
 
 ### Sample App Readme Discovery
 
-The sample app auto-discovers readme files via `SampleViewerViewModel.LoadAndRenderMarkdownDocumentIfPossible()` in `src/Atc.Wpf.Controls.Sample/SampleViewerViewModel.cs`. It pre-caches all `*.md` files from the solution root and uses case-insensitive `EndsWith()` matching with this fallback chain:
+The sample app auto-discovers readme files via `SampleViewerViewModel.LoadAndRenderMarkdownDocumentIfPossible()` in `src/Atc.Wpf.Controls.Sample/SampleViewerViewModel.cs`. It pre-caches all `*.md` files from the solution root and matches the end of the path case-insensitively, starting at a folder boundary (`MarkdownFileLookup`, so `ScrollViewer_Readme.md` never matches `ZoomScrollViewer_Readme.md`), with this fallback chain:
 
 1. `docs/{section}/{className}@Readme.md` — section-based lookup
 2. `{className}_Readme.md` — control-specific readme next to source

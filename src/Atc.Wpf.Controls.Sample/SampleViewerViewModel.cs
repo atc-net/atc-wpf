@@ -390,18 +390,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
     }
 
     private FileInfo? FindMarkdownFile(string endPath)
-    {
-        if (!endPath.EndsWith(
-                ".md",
-                StringComparison.Ordinal))
-        {
-            endPath += ".md";
-        }
-
-        return markdownDocumentsFiles!.FirstOrDefault(x => x.FullName.EndsWith(
-            endPath,
-            StringComparison.OrdinalIgnoreCase));
-    }
+        => MarkdownFileLookup.Find(markdownDocumentsFiles!, endPath);
 
     private static Type? FindCustomTypeByName(string className)
     {
