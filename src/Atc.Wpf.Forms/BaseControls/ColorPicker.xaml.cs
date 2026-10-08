@@ -100,14 +100,24 @@ public partial class ColorPicker
             return;
         }
 
-        ColorValue = colorDialog.Color;
-        BrushValue = colorDialog.ColorAsBrush;
+        ApplyPickedColor(colorDialog.Color);
+    }
+
+    /// <summary>
+    /// Applies a color chosen in the dialog and raises <see cref="ColorChanged"/>.
+    /// SetCurrentValue keeps any binding on the values, such as the one from LabelColorPicker.
+    /// </summary>
+    internal void ApplyPickedColor(Color color)
+    {
+        var oldValue = ColorValue ?? Colors.Transparent;
+        SetCurrentValue(ColorValueProperty, color);
+        SetCurrentValue(BrushValueProperty, new SolidColorBrush(color));
 
         ColorChanged?.Invoke(
             this,
             new ValueChangedEventArgs<Color>(
                 ControlHelper.GetIdentifier(this),
-                oldValue: Colors.Transparent,
-                colorDialog.Color));
+                oldValue,
+                color));
     }
 }

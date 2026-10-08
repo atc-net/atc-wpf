@@ -69,7 +69,7 @@ myColorPicker.ColorChanged += (sender, e) =>
 
 - The color dialog is opened with `Application.Current.MainWindow` as owner
 - `ColorChanged` is only raised from the dialog flow, not when `ColorValue` or `BrushValue` is set from code or a binding
-- The `OldValue` of the `ColorChanged` event args is always `Colors.Transparent`; use your own state if you need the previous color
+- The `OldValue` of the `ColorChanged` event args is the color before the dialog was confirmed (`Colors.Transparent` when `ColorValue` was `null`)
 - `RenderColorIndicatorType="None"` hides the indicator and shows only the hex code and button
 - The control sets its own `DataContext` to itself; bind its properties from the outside as shown above
 

@@ -29,8 +29,11 @@ public partial class LabelColorPicker : ILabelColorPicker
             throw new UnexpectedTypeException($"{nameof(LabelColorPicker)} should only contains one {nameof(ColorPicker)}");
         }
 
-        colorPickers[0].ColorChanged += OnColorChanged;
+        InnerColorPicker = colorPickers[0];
+        InnerColorPicker.ColorChanged += OnColorChanged;
     }
+
+    internal ColorPicker InnerColorPicker { get; }
 
     private static void OnColorValueChanged(
         DependencyObject d,
@@ -76,6 +79,7 @@ public partial class LabelColorPicker : ILabelColorPicker
     {
         ArgumentNullException.ThrowIfNull(e);
 
+        var oldValue = ColorValue ?? Colors.Transparent;
         var solidColorBrush = SolidColorBrushHelper.GetBrushFromHex(e.NewValue.ToString(GlobalizationConstants.EnglishCultureInfo))!;
 
         SetCurrentValue(
@@ -88,8 +92,8 @@ public partial class LabelColorPicker : ILabelColorPicker
         ColorChanged?.Invoke(
             this,
             new ValueChangedEventArgs<Color>(
-                ControlHelper.GetIdentifier(this),
-                oldValue: default,
+                Identifier,
+                oldValue,
                 solidColorBrush.Color));
     }
 }
