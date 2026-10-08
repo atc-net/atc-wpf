@@ -112,7 +112,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
 | `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage) | 123 |
-| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests | 38 |
+| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard and images | 40 |
 | `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls, EndpointBox, ColorPicker | 20 |
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters | 23 |
 | `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |

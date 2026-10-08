@@ -25,6 +25,7 @@
                         Width="16"
                         Height="16"
                         Margin="0,1,5,0"
+                        FlowDirection="LeftToRight"
                         Source="{Binding Path=Image}">
                         <Image.Style>
                             <Style TargetType="Image">
