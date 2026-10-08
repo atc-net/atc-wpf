@@ -65,7 +65,7 @@ Source generators are provided by the `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf
 
 **Form Controls** (`src/Atc.Wpf.Forms/`): Labeled form field controls with validation display and mandatory indicators. Use for building data entry forms. Examples: LabelTextBox, LabelComboBox, LabelDatePicker.
 
-**Composite Components** (`src/Atc.Wpf.Components/`): Higher-level components combining multiple controls - dialogs (InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, BasicApplicationSettingsDialogBox), viewers (JsonViewer, TerminalViewer), monitoring (ApplicationMonitorView), notifications (ToastNotification system), and settings panels.
+**Composite Components** (`src/Atc.Wpf.Components/`): Higher-level components combining multiple controls - dialogs (InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, BasicApplicationSettingsDialogBox), viewers (JsonViewer, TerminalViewer), monitoring (ApplicationMonitorView), notifications (ToastNotification system, TrayIcon notification area icon), and settings panels.
 
 ### MVVM Base Classes
 
@@ -114,13 +114,13 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage) | 123 |
 | `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests | 38 |
 | `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls, EndpointBox, ColorPicker | 20 |
-| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, value converters | 20 |
+| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters | 23 |
 | `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |
 | `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, VNC connection service, value converters | 12 |
 | `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync | 8 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 2 |
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 4 |
-| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 7 |
+| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 8 |
 
 > Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,340 tests).
 > Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
@@ -148,7 +148,7 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 | Wpf | `SamplesWpfTreeView.xaml` | Commands, Layouts, Media, Markup, etc. |
 | Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts |
 | Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls, Selectors, Pickers (incl. TimeZonePicker / LabelTimeZonePicker) |
-| Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications, Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
+| Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications (incl. TrayIcon), Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
 | Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker |
 | Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |

@@ -6,6 +6,7 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
 global using System.Runtime.CompilerServices;
+global using System.Runtime.InteropServices;
 global using System.Text;
 global using System.Text.RegularExpressions;
 global using System.Threading.Channels;
@@ -15,6 +16,7 @@ global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;
 global using System.Windows.Documents;
 global using System.Windows.Input;
+global using System.Windows.Interop;
 global using System.Windows.Markup;
 global using System.Windows.Media;
 global using System.Windows.Media.Animation;
@@ -57,3 +59,7 @@ global using ControlzEx.Theming;
 
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
+
+global using Windows.Win32;
+global using Windows.Win32.Foundation;
+global using Windows.Win32.UI.WindowsAndMessaging;

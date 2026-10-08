@@ -3,6 +3,7 @@ global using System.Globalization;
 global using System.Runtime.CompilerServices;
 global using System.Windows;
 global using System.Windows.Controls;
+global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;
 global using System.Windows.Media;
 global using System.Windows.Threading;
@@ -16,5 +17,7 @@ global using Atc.Wpf.Components.Tests.TestSupport;
 global using Atc.Wpf.Components.ValueConverters;
 global using Atc.Wpf.Components.Viewers;
 global using Atc.Wpf.Components.Zoom;
+global using Atc.Wpf.Notifications;
+global using Atc.XamlToolkit.Command;
 
 global using Xunit;
