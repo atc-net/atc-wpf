@@ -20,14 +20,14 @@ public partial class ZoomMiniMap : ContentControl
     /// Gets or sets the brush used for the viewport indicator border.
     /// When <see langword="null"/>, the default theme brush is used.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnViewportBorderBrushChanged))]
     private Brush? viewportBorderBrush;
 
     /// <summary>
-    /// Gets or sets the thickness of the viewport indicator border.
-    /// When <see langword="null"/>, the default thickness is used.
+    /// Gets or sets the on-screen thickness of the viewport indicator border.
+    /// When <see langword="null"/>, <see cref="Control.BorderThickness"/> is used.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnViewportBorderThicknessChanged))]
     private double? viewportBorderThickness;
 
     static ZoomMiniMap()
@@ -47,28 +47,16 @@ public partial class ZoomMiniMap : ContentControl
         dragBorder = Template.FindName("PART_DraggingBorder", this) as Border;
         sizingBorder = Template.FindName("PART_SizingBorder", this) as Border;
         viewportCanvas = Template.FindName("PART_Content", this) as Canvas;
+        ApplyViewportBorderBrush(dragBorder);
+        ApplyViewportBorderBrush(sizingBorder);
+        UpdateViewportBorderThickness();
         SetBackground(VisualElement);
     }
 
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
-
-        if (viewportCanvas is null ||
-            sizingBorder is null ||
-            dragBorder is null)
-        {
-            return;
-        }
-
-        if (ActualWidth > 0)
-        {
-            sizingBorder.BorderThickness = dragBorder.BorderThickness = new Thickness(
-                viewportCanvas.ActualWidth / ActualWidth * BorderThickness.Left,
-                viewportCanvas.ActualWidth / ActualWidth * BorderThickness.Top,
-                viewportCanvas.ActualWidth / ActualWidth * BorderThickness.Right,
-                viewportCanvas.ActualWidth / ActualWidth * BorderThickness.Bottom);
-        }
+        UpdateViewportBorderThickness();
     }
 
     protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -193,6 +181,66 @@ public partial class ZoomMiniMap : ContentControl
     {
         var c = (ZoomMiniMap)d;
         c.SetBackground(e.NewValue as FrameworkElement);
+    }
+
+    private static void OnViewportBorderBrushChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var c = (ZoomMiniMap)d;
+        c.ApplyViewportBorderBrush(c.dragBorder);
+        c.ApplyViewportBorderBrush(c.sizingBorder);
+    }
+
+    private static void OnViewportBorderThicknessChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((ZoomMiniMap)d).UpdateViewportBorderThickness();
+
+    /// <summary>
+    /// Overrides the template's border brush; clearing the local value restores the template brush.
+    /// </summary>
+    private void ApplyViewportBorderBrush(Border? border)
+    {
+        if (border is null)
+        {
+            return;
+        }
+
+        if (ViewportBorderBrush is null)
+        {
+            border.ClearValue(Border.BorderBrushProperty);
+        }
+        else
+        {
+            border.BorderBrush = ViewportBorderBrush;
+        }
+    }
+
+    /// <summary>
+    /// The viewport borders live in content coordinates inside a Viewbox, so the on-screen
+    /// thickness (ViewportBorderThickness, or BorderThickness when not set) is scaled to content units.
+    /// </summary>
+    private void UpdateViewportBorderThickness()
+    {
+        if (viewportCanvas is null ||
+            sizingBorder is null ||
+            dragBorder is null ||
+            ActualWidth <= 0)
+        {
+            return;
+        }
+
+        var thickness = ViewportBorderThickness is { } uniform
+            ? new Thickness(uniform)
+            : BorderThickness;
+        var scale = viewportCanvas.ActualWidth / ActualWidth;
+
+        sizingBorder.BorderThickness = dragBorder.BorderThickness = new Thickness(
+            scale * thickness.Left,
+            scale * thickness.Top,
+            scale * thickness.Right,
+            scale * thickness.Bottom);
     }
 
     private void SetBackground(FrameworkElement? frameworkElement)
