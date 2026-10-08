@@ -47,8 +47,8 @@ By default the minimap paints the `Content` of the `ContentControl` set as `Data
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `VisualElement` | `FrameworkElement?` | `null` | Element rendered as the minimap background. When `null`, the `Content` of the `DataContext` (`ContentControl`) is used |
-| `ViewportBorderBrush` | `Brush?` | `null` | Brush for the viewport indicator border (`null` = theme default) |
-| `ViewportBorderThickness` | `double?` | `null` | Thickness of the viewport indicator border (`null` = default thickness) |
+| `ViewportBorderBrush` | `Brush?` | `null` | Brush for the viewport indicator borders (`null` = the template brush, `AtcApps.Brushes.Accent` by default) |
+| `ViewportBorderThickness` | `double?` | `null` | On-screen thickness of the viewport indicator borders (`null` = the control's `BorderThickness`) |
 
 ## 🖱️ Mouse Interaction
 
@@ -64,8 +64,8 @@ By default the minimap paints the `Content` of the `ContentControl` set as `Data
 - The zoom state is saved (`SaveZoom`) before each pan or drag-zoom, so minimap navigation participates in the zoom undo history
 - The minimap background is a `VisualBrush` of the content and follows its size changes
 - The default template is a `Viewbox` hosting a `Canvas` (`PART_Content`) with a dragging border (`PART_DraggingBorder`) and a hidden sizing border (`PART_SizingBorder`)
-- The default template draws the viewport indicator with the `AtcApps.Brushes.Accent` brush; `ViewportBorderBrush` and `ViewportBorderThickness` are not referenced by the default template
-- The control's `BorderThickness` is scaled to the content size and applied to the viewport indicator borders
+- The default template draws the viewport indicator with the `AtcApps.Brushes.Accent` brush; set `ViewportBorderBrush` to override it
+- The viewport indicator lives inside a `Viewbox`, so its thickness (`ViewportBorderThickness`, or the control's `BorderThickness` when not set) is scaled to the content size to keep a constant on-screen width
 
 ## 🔗 Related Controls
 
