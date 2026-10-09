@@ -20,6 +20,7 @@ global using Atc.Wpf.Components.ValueConverters;
 global using Atc.Wpf.Components.Viewers;
 global using Atc.Wpf.Components.Zoom;
 global using Atc.Wpf.Notifications;
+global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.XamlToolkit.Command;
 
 global using Xunit;
