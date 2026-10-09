@@ -84,6 +84,7 @@ public sealed class SvgImage : Control
     private Drawing? drawing;
     private SvgRender? svgRender;
     private Action<SvgRender>? loadImage;
+    private bool isExposingSvgBrushes;
 
     public new Brush? Background
     {
@@ -258,6 +259,9 @@ public sealed class SvgImage : Control
 
         loadImage(svgRender);
         loadImage = null;
+
+        // Expose the SVG's paint servers through CustomBrushes, keeping any brush the application set.
+        // The image was just rendered with exactly these brushes, so this must not render it again.
         var brushesFromSvg = new Dictionary<string, Brush>(StringComparer.Ordinal);
         if (svgRender.Svg is not null)
         {
@@ -271,7 +275,25 @@ public sealed class SvgImage : Control
             }
         }
 
-        CustomBrushes = brushesFromSvg;
+        if (CustomBrushes is not null)
+        {
+            foreach (var (key, value) in CustomBrushes)
+            {
+                brushesFromSvg[key] = value;
+            }
+        }
+
+        isExposingSvgBrushes = true;
+        try
+        {
+            // The renderer shares the dictionary, so editing CustomBrushes in place and calling ReRenderSvg works.
+            CustomBrushes = brushesFromSvg;
+            svgRender.CustomBrushes = brushesFromSvg;
+        }
+        finally
+        {
+            isExposingSvgBrushes = false;
+        }
     }
 
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -482,6 +504,7 @@ public sealed class SvgImage : Control
         DependencyPropertyChangedEventArgs e)
     {
         if (d is not SvgImage svgImage ||
+            svgImage.isExposingSvgBrushes ||
             e.NewValue is not Dictionary<string, Brush> newBrushes)
         {
             return;
