@@ -17,7 +17,8 @@
                     InformationText="{Binding InformationText}"
                     IsMandatory="{Binding IsMandatory}"
                     LabelText="{Binding LabelText}"
-                    Orientation="{Binding Orientation}" />
+                    Orientation="{Binding Orientation}"
+                    UpdateUiCultureOnChangeEvent="{Binding UpdateUiCultureOnChangeEvent}" />
 
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">

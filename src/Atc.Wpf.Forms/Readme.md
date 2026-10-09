@@ -601,13 +601,14 @@ A labeled control for selecting countries from a list.
 - Comprehensive country list
 - Country code support (ISO codes)
 - Flag display (if available)
+- `UpdateUiCultureOnChangeEvent` (default `false`): when true, selecting a country changes the application UI culture
 
 #### Usage Example
 
 ```xml
 <atc:LabelCountrySelector
     LabelText="Country"
-    SelectedCountry="{Binding UserCountry, Mode=TwoWay}"
+    SelectedKey="{Binding UserCountryLcid, Mode=TwoWay}"
     IsMandatory="True" />
 ```
 
@@ -638,13 +639,14 @@ A labeled control for selecting languages.
 - Supported language list
 - Culture code support
 - Localization integration
+- `UpdateUiCultureOnChangeEvent` (default `true`): when true, selecting a language changes the application UI culture
 
 #### Usage Example
 
 ```xml
 <atc:LabelLanguageSelector
     LabelText="Language"
-    SelectedLanguage="{Binding ApplicationLanguage, Mode=TwoWay}"
+    SelectedKey="{Binding ApplicationLanguageLcid, Mode=TwoWay}"
     IsMandatory="True" />
 ```
 

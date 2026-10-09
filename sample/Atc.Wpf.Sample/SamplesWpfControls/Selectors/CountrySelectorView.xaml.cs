@@ -5,6 +5,6 @@ public partial class CountrySelectorView
     public CountrySelectorView()
     {
         InitializeComponent();
-        DataContext = new SelectorDemoViewModel();
+        DataContext = new CultureSelectorDemoViewModel(updateUiCultureOnChangeEvent: false);
     }
 }

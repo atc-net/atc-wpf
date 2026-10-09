@@ -5,6 +5,6 @@ public partial class LanguageSelectorView
     public LanguageSelectorView()
     {
         InitializeComponent();
-        DataContext = new SelectorDemoViewModel();
+        DataContext = new CultureSelectorDemoViewModel(updateUiCultureOnChangeEvent: true);
     }
 }

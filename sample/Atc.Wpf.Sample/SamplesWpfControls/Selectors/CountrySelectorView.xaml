@@ -13,7 +13,10 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <atc:CountrySelector x:Name="InteractiveCountrySelector" IsEnabled="{Binding IsEnabled}" />
+                <atc:CountrySelector
+                    x:Name="InteractiveCountrySelector"
+                    IsEnabled="{Binding IsEnabled}"
+                    UpdateUiCultureOnChangeEvent="{Binding UpdateUiCultureOnChangeEvent}" />
 
                 <atc:CountrySelector />
 

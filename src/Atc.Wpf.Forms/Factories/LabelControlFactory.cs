@@ -897,7 +897,7 @@ public static class LabelControlFactory
     }
 
     /// <summary>
-    /// Creates a <see cref="LabelCountrySelector"/> listing all countries after a "please select" item, with the given label and default culture.
+    /// Creates a <see cref="LabelCountrySelector"/> listing all countries after a "please select" item, with the given label and default culture; it does not change the UI culture on selection.
     /// </summary>
     public static LabelCountrySelector CreateLabelCountrySelector(
         string groupIdentifier,
@@ -917,6 +917,7 @@ public static class LabelControlFactory
             DropDownFirstItemType = DropDownFirstItemType.PleaseSelect,
             DefaultCultureIdentifier = defaultCultureIdentifier ?? string.Empty,
             UseOnlySupportedCountries = false,
+            UpdateUiCultureOnChangeEvent = false,
         };
 
         return control;

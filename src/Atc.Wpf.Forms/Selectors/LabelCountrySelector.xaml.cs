@@ -24,6 +24,9 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string selectedKey;
 
+    [DependencyProperty(DefaultValue = false)]
+    private bool updateUiCultureOnChangeEvent;
+
     /// <summary>
     /// Occurs when the selected country changes and passes validation.
     /// </summary>

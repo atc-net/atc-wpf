@@ -31,6 +31,7 @@
             RenderFlagIndicatorType="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=RenderFlagIndicatorType}"
             SelectedKey="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=SelectedKey}"
             SelectorChanged="OnSelectorChanged"
+            UpdateUiCultureOnChangeEvent="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=UpdateUiCultureOnChangeEvent}"
             UseOnlySupportedCountries="{Binding RelativeSource={RelativeSource AncestorType={x:Type labelControls:LabelCountrySelector}}, Path=UseOnlySupportedCountries}" />
 
     </labelControls:LabelContent>
