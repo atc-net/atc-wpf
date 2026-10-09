@@ -11,7 +11,12 @@ public interface ILabelComboBoxBase : ILabelControlBase
     string SelectedKey { get; set; }
 
     /// <summary>
-    /// Occurs when the selected key changes.
+    /// Occurs when the selected key changes and passes validation.
     /// </summary>
-    static event EventHandler<ValueChangedEventArgs<string?>>? SelectedKeyChanged;
+    event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
+
+    /// <summary>
+    /// Occurs when the selected key changes and fails validation (a mandatory field with no selection).
+    /// </summary>
+    event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 }
