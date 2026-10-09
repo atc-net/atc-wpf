@@ -9,6 +9,7 @@ namespace Atc.Wpf.Translation;
 /// compiler-generated closures (lambda captures) the closure is held strongly,
 /// because the delegate's only strong root would otherwise be lost the moment
 /// the caller releases its local reference.
+/// A subscriber that belongs to another UI thread is called on that thread.
 /// </remarks>
 internal sealed class WeakSubscription
 {
@@ -56,6 +57,19 @@ internal sealed class WeakSubscription
         var target = isStatic ? null : (strongTarget ?? targetRef.Target);
         if (!isStatic && target is null)
         {
+            return;
+        }
+
+        // A control can only be used on the thread that owns it, so a subscriber owned by another
+        // UI thread is called on that thread; one whose thread has shut down is skipped.
+        if (target is DispatcherObject { Dispatcher: { } dispatcher } &&
+            !dispatcher.CheckAccess())
+        {
+            if (!dispatcher.HasShutdownStarted)
+            {
+                _ = dispatcher.BeginInvoke(() => method.Invoke(target, [sender, args]));
+            }
+
             return;
         }
 
