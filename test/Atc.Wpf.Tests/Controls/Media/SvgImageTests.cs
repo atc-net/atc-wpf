@@ -72,6 +72,15 @@ public sealed class SvgImageTests : IDisposable
         Assert.Equal(Colors.Red, CenterColor(sut));
     }
 
+    [StaFact]
+    public void FileSource_MissingFile_ThrowsFileNotFoundException()
+    {
+        var sut = new SvgImage();
+        var missingFile = Path.Combine(Path.GetTempPath(), $"atc-svgimage-missing-{Guid.NewGuid():N}.svg");
+
+        Assert.Throws<FileNotFoundException>(() => sut.FileSource = missingFile);
+    }
+
     // XAML sets the properties between BeginInit and EndInit, so the image loads in OnInitialized.
     private SvgImage LoadLikeXaml(Dictionary<string, Brush>? customBrushes)
     {

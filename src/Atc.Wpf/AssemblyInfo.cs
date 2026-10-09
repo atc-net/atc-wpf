@@ -1,5 +1,6 @@
 [assembly: InternalsVisibleTo("Atc.Wpf.Controls")]
 [assembly: InternalsVisibleTo("Atc.Wpf.Components")]
+[assembly: InternalsVisibleTo("Atc.Wpf.Tests")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
 [assembly: XmlnsPrefix("https://github.com/atc-net/atc-wpf/tree/main/schemas", "atc")]
