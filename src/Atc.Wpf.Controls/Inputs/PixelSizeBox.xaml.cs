@@ -23,27 +23,39 @@ public partial class PixelSizeBox
     private int maximum;
 
     [DependencyProperty(
-        PropertyChangedCallback = nameof(OnValueWidthLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
         IsAnimationProhibited = true)]
     private int valueWidth;
 
     [DependencyProperty(
-        PropertyChangedCallback = nameof(OnValueHeightLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
         IsAnimationProhibited = true)]
     private int valueHeight;
 
-    /// <summary>Occurs when the <see cref="ValueWidth"/> property changes, with the control identifier and the old and new values.</summary>
+    /// <summary>Occurs when an edit of <see cref="ValueWidth"/> ends: focus leaves the input box after the value changed. Carries the control identifier and the value from before and after the edit.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 
-    /// <summary>Occurs when the <see cref="ValueHeight"/> property changes, with the control identifier and the old and new values.</summary>
+    /// <summary>Occurs when an edit of <see cref="ValueHeight"/> ends: focus leaves the input box after the value changed. Carries the control identifier and the value from before and after the edit.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueHeightLostFocus;
 
     /// <summary>Initializes a new instance of the <see cref="PixelSizeBox"/> class.</summary>
     public PixelSizeBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueWidth,
+            (oldValue, newValue) => ValueWidthLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueHeight,
+            (oldValue, newValue) => ValueHeightLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
     }
 
     private void OnValueWidthChanged(
@@ -68,33 +80,5 @@ public partial class PixelSizeBox
         }
 
         RaiseEvent(new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, ValueHeightChangedEvent));
-    }
-
-    private static void OnValueWidthLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var control = (PixelSizeBox)d;
-
-        control.ValueWidthLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
-    }
-
-    private static void OnValueHeightLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var control = (PixelSizeBox)d;
-
-        control.ValueHeightLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
     }
 }

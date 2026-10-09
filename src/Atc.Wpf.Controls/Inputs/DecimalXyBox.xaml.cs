@@ -51,7 +51,6 @@ public partial class DecimalXyBox
     [DependencyProperty(
         DefaultValue = 0,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-        PropertyChangedCallback = nameof(OnValueXLostFocus),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private decimal valueX;
@@ -59,21 +58,34 @@ public partial class DecimalXyBox
     [DependencyProperty(
         DefaultValue = 0,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-        PropertyChangedCallback = nameof(OnValueYLostFocus),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private decimal valueY;
 
-    /// <summary>Occurs when the <see cref="ValueX"/> property changes, with the control identifier and the old and new values.</summary>
+    /// <summary>Occurs when an edit of <see cref="ValueX"/> ends: focus leaves the input box after the value changed. Carries the control identifier and the value from before and after the edit.</summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueXLostFocus;
 
-    /// <summary>Occurs when the <see cref="ValueY"/> property changes, with the control identifier and the old and new values.</summary>
+    /// <summary>Occurs when an edit of <see cref="ValueY"/> ends: focus leaves the input box after the value changed. Carries the control identifier and the value from before and after the edit.</summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueYLostFocus;
 
     /// <summary>Initializes a new instance of the <see cref="DecimalXyBox"/> class.</summary>
     public DecimalXyBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<decimal>(
+            this,
+            () => ValueX,
+            (oldValue, newValue) => ValueXLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<decimal?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
+
+        _ = new LostFocusValueTracker<decimal>(
+            this,
+            () => ValueY,
+            (oldValue, newValue) => ValueYLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<decimal?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
     }
 
     private void OnValueXChanged(
@@ -106,33 +118,5 @@ public partial class DecimalXyBox
                 (decimal)e.OldValue,
                 (decimal)e.NewValue,
                 ValueYChangedEvent));
-    }
-
-    private static void OnValueXLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var control = (DecimalXyBox)d;
-
-        control.ValueXLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<decimal?>(
-                ControlHelper.GetIdentifier(control),
-                (decimal)e.OldValue,
-                (decimal)e.NewValue));
-    }
-
-    private static void OnValueYLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var control = (DecimalXyBox)d;
-
-        control.ValueYLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<decimal?>(
-                ControlHelper.GetIdentifier(control),
-                (decimal)e.OldValue,
-                (decimal)e.NewValue));
     }
 }

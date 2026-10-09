@@ -35,27 +35,29 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueXLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValueXPropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueX;
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueYLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValueYPropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueY;
 
     /// <summary>
-    /// Occurs when the <c>ValueX</c> property changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>ValueX</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueXLostFocus;
 
     /// <summary>
-    /// Occurs when the <c>ValueY</c> property changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>ValueY</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueYLostFocus;
 
@@ -65,6 +67,20 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
     public LabelIntegerXyBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueX,
+            (oldValue, newValue) => ValueXLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueY,
+            (oldValue, newValue) => ValueYLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
     }
 
     /// <inheritdoc />
@@ -91,53 +107,29 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
             ValueYChangedEvent));
     }
 
-    private static void OnValueXLostFocus(
+    private static void OnValueXPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelIntegerXyBox)d;
 
-        if (e.NewValue is not int newValue)
+        if (e.NewValue is not int)
         {
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
-
-        if (e.OldValue is not int oldValue)
-        {
-            return;
-        }
-
-        control.ValueXLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
     }
 
-    private static void OnValueYLostFocus(
+    private static void OnValueYPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelIntegerXyBox)d;
 
-        if (e.NewValue is not int newValue)
+        if (e.NewValue is not int)
         {
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
-
-        if (e.OldValue is not int oldValue)
-        {
-            return;
-        }
-
-        control.ValueYLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
     }
 }

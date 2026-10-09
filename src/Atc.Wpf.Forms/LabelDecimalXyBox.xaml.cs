@@ -37,7 +37,7 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
     [DependencyProperty(
         DefaultValue = 0,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-        PropertyChangedCallback = nameof(OnValueXLostFocus),
+        PropertyChangedCallback = nameof(OnValueXPropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private decimal valueX;
@@ -45,18 +45,20 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
     [DependencyProperty(
         DefaultValue = 0,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-        PropertyChangedCallback = nameof(OnValueYLostFocus),
+        PropertyChangedCallback = nameof(OnValueYPropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private decimal valueY;
 
     /// <summary>
-    /// Occurs when the <c>ValueX</c> property changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>ValueX</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueXLostFocus;
 
     /// <summary>
-    /// Occurs when the <c>ValueY</c> property changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>ValueY</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueYLostFocus;
 
@@ -66,6 +68,20 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
     public LabelDecimalXyBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<decimal>(
+            this,
+            () => ValueX,
+            (oldValue, newValue) => ValueXLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<decimal?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
+
+        _ = new LostFocusValueTracker<decimal>(
+            this,
+            () => ValueY,
+            (oldValue, newValue) => ValueYLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<decimal?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
     }
 
     /// <inheritdoc />
@@ -92,53 +108,29 @@ public partial class LabelDecimalXyBox : ILabelDecimalXyBox
             ValueYChangedEvent));
     }
 
-    private static void OnValueXLostFocus(
+    private static void OnValueXPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelDecimalXyBox)d;
 
-        if (e.NewValue is not decimal newValue)
+        if (e.NewValue is not decimal)
         {
             control.ValidationText = Validations.ValueShouldBeADecimal;
             return;
         }
-
-        if (e.OldValue is not decimal oldValue)
-        {
-            return;
-        }
-
-        control.ValueXLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<decimal?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
     }
 
-    private static void OnValueYLostFocus(
+    private static void OnValueYPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelDecimalXyBox)d;
 
-        if (e.NewValue is not decimal newValue)
+        if (e.NewValue is not decimal)
         {
             control.ValidationText = Validations.ValueShouldBeADecimal;
             return;
         }
-
-        if (e.OldValue is not decimal oldValue)
-        {
-            return;
-        }
-
-        control.ValueYLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<decimal?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
     }
 }

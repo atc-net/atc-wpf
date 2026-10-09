@@ -44,7 +44,6 @@ public partial class IntegerXyBox
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueXLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
@@ -52,22 +51,35 @@ public partial class IntegerXyBox
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueYLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueY;
 
-    /// <summary>Occurs when the <see cref="ValueX"/> property changes, with the control identifier and the old and new values.</summary>
+    /// <summary>Occurs when an edit of <see cref="ValueX"/> ends: focus leaves the input box after the value changed. Carries the control identifier and the value from before and after the edit.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueXLostFocus;
 
-    /// <summary>Occurs when the <see cref="ValueY"/> property changes, with the control identifier and the old and new values.</summary>
+    /// <summary>Occurs when an edit of <see cref="ValueY"/> ends: focus leaves the input box after the value changed. Carries the control identifier and the value from before and after the edit.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueYLostFocus;
 
     /// <summary>Initializes a new instance of the <see cref="IntegerXyBox"/> class.</summary>
     public IntegerXyBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueX,
+            (oldValue, newValue) => ValueXLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueY,
+            (oldValue, newValue) => ValueYLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
     }
 
     private void OnValueXChanged(
@@ -92,33 +104,5 @@ public partial class IntegerXyBox
         }
 
         RaiseEvent(new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, ValueYChangedEvent));
-    }
-
-    private static void OnValueXLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var control = (IntegerXyBox)d;
-
-        control.ValueXLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
-    }
-
-    private static void OnValueYLostFocus(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        var control = (IntegerXyBox)d;
-
-        control.ValueYLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                (int)e.OldValue,
-                (int)e.NewValue));
     }
 }
