@@ -47,8 +47,8 @@ using Atc.Wpf.Controls.Inputs;
 |-------|------|-------------|
 | `ValueWidthChanged` | Routed (bubble), `RoutedPropertyChangedEventHandler<int>` | Raised when the width box value changes |
 | `ValueHeightChanged` | Routed (bubble), `RoutedPropertyChangedEventHandler<int>` | Raised when the height box value changes |
-| `ValueWidthLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised when the `ValueWidth` property changes |
-| `ValueHeightLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised when the `ValueHeight` property changes |
+| `ValueWidthLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised once per edit, when focus leaves the input box after `ValueWidth` changed |
+| `ValueHeightLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised once per edit, when focus leaves the input box after `ValueHeight` changed |
 
 ## 📝 Notes
 

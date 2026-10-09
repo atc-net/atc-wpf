@@ -23,14 +23,15 @@ public partial class LabelIntegerBox : ILabelIntegerBox
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValuePropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int value;
 
     /// <summary>
-    /// Occurs when the <c>Value</c> changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>Value</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueLostFocus;
 
@@ -40,34 +41,29 @@ public partial class LabelIntegerBox : ILabelIntegerBox
     public LabelIntegerBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => Value,
+            (oldValue, newValue) => ValueLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(Identifier, oldValue, newValue)));
     }
 
     /// <inheritdoc />
     public override bool IsValid()
         => string.IsNullOrEmpty(ValidationText);
 
-    private static void OnValueLostFocus(
+    private static void OnValuePropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelIntegerBox)d;
 
-        if (e.NewValue is not int newValue)
+        if (e.NewValue is not int)
         {
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
-
-        if (e.OldValue is not int oldValue)
-        {
-            return;
-        }
-
-        control.ValueLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                control.Identifier,
-                oldValue,
-                newValue));
     }
 }

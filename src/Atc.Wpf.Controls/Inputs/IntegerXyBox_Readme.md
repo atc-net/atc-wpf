@@ -63,14 +63,14 @@ using Atc.Wpf.Controls.Inputs;
 |-------|------|-------------|
 | `ValueXChanged` | Routed (bubble), `RoutedPropertyChangedEventHandler<int>` | Raised when the X box value changes |
 | `ValueYChanged` | Routed (bubble), `RoutedPropertyChangedEventHandler<int>` | Raised when the Y box value changes |
-| `ValueXLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised when the `ValueX` property changes (committed on lost focus) |
-| `ValueYLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised when the `ValueY` property changes (committed on lost focus) |
+| `ValueXLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised once per edit, when focus leaves the input box after `ValueX` changed |
+| `ValueYLostFocus` | `EventHandler<ValueChangedEventArgs<int?>>` | Raised once per edit, when focus leaves the input box after `ValueY` changed |
 
 ## 📝 Notes
 
 - The two inner `IntegerBox` controls are laid out in a `GridEx` with `Columns="*,10,*"`
 - `ValueXChanged` / `ValueYChanged` are not raised when the inner box value changes from or to `null`
-- `ValueXLostFocus` / `ValueYLostFocus` carry the control identifier (via `ControlHelper.GetIdentifier`) plus the old and new value
+- `ValueXLostFocus` / `ValueYLostFocus` carry the control identifier (via `ControlHelper.GetIdentifier`) plus the value from before and after the edit; setting the value from code raises nothing
 
 ## 🔗 Related Controls
 

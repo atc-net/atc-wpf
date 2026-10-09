@@ -20,27 +20,29 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueWidthLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValueWidthPropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueWidth;
 
     [DependencyProperty(
         DefaultValue = 0,
-        PropertyChangedCallback = nameof(OnValueHeightLostFocus),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
+        PropertyChangedCallback = nameof(OnValueHeightPropertyChanged),
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueHeight;
 
     /// <summary>
-    /// Occurs when the <c>ValueWidth</c> property changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>ValueWidth</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 
     /// <summary>
-    /// Occurs when the <c>ValueHeight</c> property changes (committed when the control loses focus by default).
+    /// Occurs when an edit of <c>ValueHeight</c> ends: focus leaves the input box after the value changed.
+    /// Carries the control identifier and the value from before and after the edit.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueHeightLostFocus;
 
@@ -50,6 +52,20 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
     public LabelPixelSizeBox()
     {
         InitializeComponent();
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueWidth,
+            (oldValue, newValue) => ValueWidthLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
+
+        _ = new LostFocusValueTracker<int>(
+            this,
+            () => ValueHeight,
+            (oldValue, newValue) => ValueHeightLostFocus?.Invoke(
+                this,
+                new ValueChangedEventArgs<int?>(ControlHelper.GetIdentifier(this), oldValue, newValue)));
     }
 
     /// <inheritdoc />
@@ -76,53 +92,29 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
             ValueHeightChangedEvent));
     }
 
-    private static void OnValueWidthLostFocus(
+    private static void OnValueWidthPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelPixelSizeBox)d;
 
-        if (e.NewValue is not int newValue)
+        if (e.NewValue is not int)
         {
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
-
-        if (e.OldValue is not int oldValue)
-        {
-            return;
-        }
-
-        control.ValueWidthLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
     }
 
-    private static void OnValueHeightLostFocus(
+    private static void OnValueHeightPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelPixelSizeBox)d;
 
-        if (e.NewValue is not int newValue)
+        if (e.NewValue is not int)
         {
             control.ValidationText = Validations.ValueShouldBeAInteger;
             return;
         }
-
-        if (e.OldValue is not int oldValue)
-        {
-            return;
-        }
-
-        control.ValueHeightLostFocus?.Invoke(
-            control,
-            new ValueChangedEventArgs<int?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue,
-                newValue));
     }
 }
