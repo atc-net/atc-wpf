@@ -45,6 +45,7 @@ the existing job rather than adding a new one.
 | Benchmark | Why it exists |
 |---|---|
 | `SolidColorBrushHelperBenchmarks` | Pins the post-fix `O(1)` reverse lookup in `SolidColorBrushHelper.GetBrushFromString`. The earlier implementation did an `O(n)` LINQ scan over the localized brush dictionary on every call. |
+| `SvgImageBenchmarks` | Pins the cost of loading an `SvgImage`. `Load_cold` always parses and renders; `Load_like_xaml` sets the source before initialization as XAML does, so a repeated icon comes from the frozen-drawing cache. Before the cache (and with a second render on every XAML load) this path cost about 576 µs and 53 KB per image; after, about 100 µs and 7 KB. |
 
 Add a benchmark whenever a measurable hot-path fix lands so the regression
 surface is captured before the next change.

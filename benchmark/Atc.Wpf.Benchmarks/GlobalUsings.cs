@@ -1,4 +1,7 @@
 global using System.Globalization;
+global using System.IO;
+global using System.Windows.Media;
+global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Helpers;
 global using BenchmarkDotNet.Attributes;
 global using BenchmarkDotNet.Configs;
