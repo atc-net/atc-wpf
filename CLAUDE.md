@@ -111,7 +111,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
-| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage, SvgImage brushes, managed markup extensions) | 125 |
+| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage, SvgImage brushes and drawing cache, managed markup extensions) | 126 |
 | `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard, images and zoom, picker DataContext, sample readme lookup | 44 |
 | `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls, EndpointBox, ColorPicker | 20 |
 | `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters, right-to-left viewers, flyout first open and host hit testing | 27 |

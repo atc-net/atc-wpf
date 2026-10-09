@@ -88,6 +88,8 @@ using Atc.Wpf.Controls.Media;
 - For embedded resources, set the SVG file's **Build Action** to `Resource`
 - SVG files are rendered as vector graphics, maintaining quality at any size
 - Color overrides apply to all matching elements in the SVG
+- Images loaded through `Source` or `FileSource` share one frozen drawing per source and render settings (`OverrideColor`, `OverrideStrokeColor`, `OverrideStrokeWidth`, `UseAnimations`), so an icon repeated in an item template is parsed and rendered once. Animated SVGs, images with `CustomBrushes` set by the application, and a custom `ExternalFileLoader` are not shared; `SetImage(...)` always loads its own copy. A file is identified by its full path, write time and size, so a changed file is loaded again
+- `CustomBrushes` exposes the SVG's paint servers after loading; brushes set before loading replace the matching paint servers. After changing an entry in place, call `ReRenderSvg()`
 
 ## 🔗 Related Controls
 

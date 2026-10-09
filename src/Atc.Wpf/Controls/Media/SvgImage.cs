@@ -85,6 +85,10 @@ public sealed class SvgImage : Control
     private SvgRender? svgRender;
     private Action<SvgRender>? loadImage;
     private bool isExposingSvgBrushes;
+    private SvgSource? source;
+    private bool loadSourceOnInitialized;
+    private bool isDrawingFromCache;
+    private bool hasApplicationCustomBrushes;
 
     public new Brush? Background
     {
@@ -173,19 +177,29 @@ public sealed class SvgImage : Control
 
     internal Svg? Svg => svgRender?.Svg;
 
+    internal Drawing? CurrentDrawing => drawing;
+
+    internal bool IsDrawingFromCache => isDrawingFromCache;
+
     public void ReRenderSvg()
     {
-        if (svgRender?.Svg is not null)
+        if (svgRender?.Svg is null)
         {
-            svgRender.OverrideColor = OverrideColor;
-            svgRender.OverrideStrokeColor = OverrideStrokeColor;
-            var svgDrawing = svgRender.CreateDrawing(svgRender.Svg);
-            SetImage(svgDrawing);
+            // A drawing shared from the cache has no parsed SVG of its own, so load one for this image.
+            if (isDrawingFromCache)
+            {
+                LoadAndRenderSource();
+            }
+
+            return;
         }
+
+        RenderWithCurrentSettings();
     }
 
     public void SetImage(string svgFileName)
     {
+        ClearSource();
         loadImage = render =>
         {
             SetImage(render.LoadDrawing(svgFileName));
@@ -209,6 +223,7 @@ public sealed class SvgImage : Control
 
     public void SetImage(Stream svgStream)
     {
+        ClearSource();
         loadImage = render =>
         {
             SetImage(render.LoadDrawing(svgStream));
@@ -232,6 +247,16 @@ public sealed class SvgImage : Control
 
     public void SetImage(Drawing svgDrawing)
     {
+        if (!ReferenceEquals(svgDrawing, drawing))
+        {
+            ClearSource();
+        }
+
+        ShowDrawing(svgDrawing);
+    }
+
+    private void ShowDrawing(Drawing svgDrawing)
+    {
         drawing = svgDrawing;
         InvalidateVisual();
         if (drawing is not null)
@@ -245,6 +270,13 @@ public sealed class SvgImage : Control
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
+        if (loadSourceOnInitialized)
+        {
+            loadSourceOnInitialized = false;
+            LoadSource();
+            return;
+        }
+
         if (loadImage is null)
         {
             return;
@@ -259,41 +291,7 @@ public sealed class SvgImage : Control
 
         loadImage(svgRender);
         loadImage = null;
-
-        // Expose the SVG's paint servers through CustomBrushes, keeping any brush the application set.
-        // The image was just rendered with exactly these brushes, so this must not render it again.
-        var brushesFromSvg = new Dictionary<string, Brush>(StringComparer.Ordinal);
-        if (svgRender.Svg is not null)
-        {
-            foreach (var (key, value) in svgRender.Svg.PaintServers.GetServers())
-            {
-                var brush = value.GetBrush();
-                if (brush is not null)
-                {
-                    brushesFromSvg[key] = brush;
-                }
-            }
-        }
-
-        if (CustomBrushes is not null)
-        {
-            foreach (var (key, value) in CustomBrushes)
-            {
-                brushesFromSvg[key] = value;
-            }
-        }
-
-        isExposingSvgBrushes = true;
-        try
-        {
-            // The renderer shares the dictionary, so editing CustomBrushes in place and calling ReRenderSvg works.
-            CustomBrushes = brushesFromSvg;
-            svgRender.CustomBrushes = brushesFromSvg;
-        }
-        finally
-        {
-            isExposingSvgBrushes = false;
-        }
+        ExposeSvgBrushes();
     }
 
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -415,11 +413,9 @@ public sealed class SvgImage : Control
             return;
         }
 
-        var resource = Application.GetResourceStream(new Uri(uri, UriKind.Relative));
-        if (resource is not null)
-        {
-            svgImage.SetImage(resource.Stream);
-        }
+        svgImage.SetSource(new SvgSource(
+            $"resource:{uri}",
+            () => Application.GetResourceStream(new Uri(uri, UriKind.Relative))?.Stream));
     }
 
     private static void OnFileSourceChanged(
@@ -437,9 +433,18 @@ public sealed class SvgImage : Control
             return;
         }
 
-        using var fileStream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        var memoryStream = (MemoryStream)fileStream.CopyToStream();
-        svgImage.SetImage(memoryStream);
+        var fileInfo = new FileInfo(uri);
+        if (!fileInfo.Exists)
+        {
+            throw new FileNotFoundException($"Could not find file '{fileInfo.FullName}'.", fileInfo.FullName);
+        }
+
+        // The file can change on disk, so its identity includes the write time and size. It is only opened when
+        // the image is not in the drawing cache.
+        var fullName = fileInfo.FullName;
+        svgImage.SetSource(new SvgSource(
+            $"file:{fullName.ToUpperInvariant()}|{fileInfo.LastWriteTimeUtc.Ticks}|{fileInfo.Length}",
+            () => new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)));
     }
 
     private static void OnImageSourceChanged(
@@ -461,26 +466,24 @@ public sealed class SvgImage : Control
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is not SvgImage svgImage ||
-            svgImage.svgRender is null)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
 
-        svgImage.ReRenderSvg();
+        svgImage.RefreshForOverrides();
     }
 
     private static void OverrideStrokeColorPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is not SvgImage svgImage ||
-            svgImage.svgRender is null)
+        if (d is not SvgImage svgImage)
         {
             return;
         }
 
-        svgImage.ReRenderSvg();
+        svgImage.RefreshForOverrides();
     }
 
     private static void OverrideStrokeWidthPropertyChanged(
@@ -488,15 +491,13 @@ public sealed class SvgImage : Control
         DependencyPropertyChangedEventArgs e)
     {
         if (d is not SvgImage svgImage ||
-            e.NewValue is not double newStrokeWidth ||
-            svgImage.svgRender is null)
+            e.NewValue is not double)
         {
             return;
         }
 
-        svgImage.svgRender.OverrideStrokeWidth = newStrokeWidth;
         svgImage.InvalidateVisual();
-        svgImage.ReRenderSvg();
+        svgImage.RefreshForOverrides();
     }
 
     private static void CustomBrushesPropertyChanged(
@@ -507,6 +508,14 @@ public sealed class SvgImage : Control
             svgImage.isExposingSvgBrushes ||
             e.NewValue is not Dictionary<string, Brush> newBrushes)
         {
+            return;
+        }
+
+        svgImage.hasApplicationCustomBrushes = newBrushes.Count > 0;
+        if (svgImage.svgRender is null && svgImage.isDrawingFromCache)
+        {
+            // A drawing shared from the cache: parse the source for this image, with the new brushes.
+            svgImage.LoadAndRenderSource();
             return;
         }
 
@@ -530,6 +539,183 @@ public sealed class SvgImage : Control
 
         svgImage.InvalidateVisual();
         svgImage.ReRenderSvg();
+    }
+
+    private bool CanUseDrawingCache
+        => source is not null &&
+           !hasApplicationCustomBrushes &&
+           ReferenceEquals(ExternalFileLoader, FileSystemLoader.Instance);
+
+    private SvgDrawingCache.Key CreateCacheKey()
+        => new(
+            source!.Identity,
+            OverrideColor,
+            OverrideStrokeColor,
+            OverrideStrokeWidth,
+            UseAnimations);
+
+    private void ClearSource()
+    {
+        source = null;
+        loadSourceOnInitialized = false;
+        isDrawingFromCache = false;
+    }
+
+    private void SetSource(SvgSource newSource)
+    {
+        source = newSource;
+        loadImage = null;
+
+        if (!IsInitialized &&
+            !DesignerProperties.GetIsInDesignMode(this))
+        {
+            loadSourceOnInitialized = true;
+            return;
+        }
+
+        LoadSource();
+    }
+
+    private void LoadSource()
+    {
+        if (CanUseDrawingCache &&
+            SvgDrawingCache.TryGet(CreateCacheKey(), out var entry))
+        {
+            ShowCachedDrawing(entry);
+            return;
+        }
+
+        LoadAndRenderSource();
+    }
+
+    private void LoadAndRenderSource()
+    {
+        if (source is null)
+        {
+            return;
+        }
+
+        using var stream = source.Open();
+        if (stream is null)
+        {
+            return;
+        }
+
+        var addToCache = CanUseDrawingCache;
+        InitializeSvgRender();
+        var svgDrawing = svgRender!.LoadDrawing(stream);
+        isDrawingFromCache = false;
+        ShowDrawing(svgDrawing);
+        var paintServerBrushes = ExposeSvgBrushes();
+
+        if (addToCache)
+        {
+            SvgDrawingCache.TryAdd(CreateCacheKey(), svgDrawing, paintServerBrushes);
+        }
+    }
+
+    private void ShowCachedDrawing(SvgDrawingCache.Entry entry)
+    {
+        svgRender = null;
+        isDrawingFromCache = true;
+        ShowDrawing(entry.Drawing);
+
+        // The cached brushes are frozen; the image gets its own copies so they can be changed.
+        var brushes = new Dictionary<string, Brush>(StringComparer.Ordinal);
+        foreach (var (key, brush) in entry.PaintServerBrushes)
+        {
+            brushes[key] = brush.Clone();
+        }
+
+        SetExposedCustomBrushes(brushes);
+    }
+
+    /// <summary>
+    /// An override changed after the image was loaded. A cached drawing for the new settings is reused (a theme
+    /// switch changes the same override on every icon), otherwise the image is rendered again.
+    /// </summary>
+    private void RefreshForOverrides()
+    {
+        var isLoadedFromSource = source is not null && (isDrawingFromCache || svgRender?.Svg is not null);
+        if (!isLoadedFromSource)
+        {
+            ReRenderSvg();
+            return;
+        }
+
+        if (CanUseDrawingCache &&
+            SvgDrawingCache.TryGet(CreateCacheKey(), out var entry))
+        {
+            ShowCachedDrawing(entry);
+            return;
+        }
+
+        if (svgRender?.Svg is null)
+        {
+            LoadAndRenderSource();
+            return;
+        }
+
+        RenderWithCurrentSettings();
+    }
+
+    private void RenderWithCurrentSettings()
+    {
+        svgRender!.OverrideColor = OverrideColor;
+        svgRender.OverrideStrokeColor = OverrideStrokeColor;
+        svgRender.OverrideStrokeWidth = OverrideStrokeWidth;
+        var svgDrawing = svgRender.CreateDrawing(svgRender.Svg!);
+        isDrawingFromCache = false;
+        ShowDrawing(svgDrawing);
+    }
+
+    /// <summary>
+    /// Exposes the SVG's paint servers through <see cref="CustomBrushes"/>, keeping any brush the application set.
+    /// The image was just rendered with exactly these brushes, so this does not render it again.
+    /// </summary>
+    private Dictionary<string, Brush> ExposeSvgBrushes()
+    {
+        var brushesFromSvg = new Dictionary<string, Brush>(StringComparer.Ordinal);
+        if (svgRender?.Svg is not null)
+        {
+            foreach (var (key, value) in svgRender.Svg.PaintServers.GetServers())
+            {
+                var brush = value.GetBrush();
+                if (brush is not null)
+                {
+                    brushesFromSvg[key] = brush;
+                }
+            }
+        }
+
+        if (CustomBrushes is not null)
+        {
+            foreach (var (key, value) in CustomBrushes)
+            {
+                brushesFromSvg[key] = value;
+            }
+        }
+
+        SetExposedCustomBrushes(brushesFromSvg);
+        return brushesFromSvg;
+    }
+
+    private void SetExposedCustomBrushes(Dictionary<string, Brush> brushes)
+    {
+        isExposingSvgBrushes = true;
+        try
+        {
+            // The renderer shares the dictionary, so editing CustomBrushes in place and calling ReRenderSvg works.
+            CustomBrushes = brushes;
+            if (svgRender is not null)
+            {
+                svgRender.CustomBrushes = brushes;
+            }
+        }
+        finally
+        {
+            isExposingSvgBrushes = false;
+        }
     }
 
     private void InitializeSvgRender() =>
@@ -665,4 +851,11 @@ public sealed class SvgImage : Control
             }
         }
     }
+
+    /// <summary>
+    /// Where the image was loaded from: an identity for the drawing cache, and a way to read the SVG again.
+    /// </summary>
+    private sealed record SvgSource(
+        string Identity,
+        Func<Stream?> Open);
 }
