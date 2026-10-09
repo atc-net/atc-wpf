@@ -6,7 +6,7 @@ namespace Atc.Wpf.Extensions;
 public static class BitmapImageExtensions
 {
     /// <summary>
-    /// Returns the image unchanged when enabled; otherwise attempts to return a grayscale version of it.
+    /// Returns the image unchanged when enabled; otherwise returns a grayscale copy of it that keeps its transparency.
     /// </summary>
     public static BitmapImage AutoGrey(
         this BitmapImage image,
@@ -19,17 +19,24 @@ public static class BitmapImageExtensions
             return image;
         }
 
-        var grayBitmapSource = new FormatConvertedBitmap();
-        grayBitmapSource.BeginInit();
-        grayBitmapSource.Source = image;
-        grayBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
-        grayBitmapSource.EndInit();
+        // Converted per pixel instead of with a grayscale pixel format, which would drop the transparency.
+        var bgra = new FormatConvertedBitmap(image, PixelFormats.Bgra32, destinationPalette: null, alphaThreshold: 0);
+        var stride = bgra.PixelWidth * 4;
+        var pixels = new byte[stride * bgra.PixelHeight];
+        bgra.CopyPixels(pixels, stride, 0);
 
-        var grayImage = new Image
+        for (var i = 0; i < pixels.Length; i += 4)
         {
-            Source = grayBitmapSource,
-        };
+            var grey = (byte)System.Math.Round(
+                (0.0722 * pixels[i]) + (0.7152 * pixels[i + 1]) + (0.2126 * pixels[i + 2]),
+                MidpointRounding.AwayFromZero);
+            pixels[i] = grey;
+            pixels[i + 1] = grey;
+            pixels[i + 2] = grey;
+        }
 
-        return (BitmapImage)grayImage.Source;
+        return BitmapSource
+            .Create(bgra.PixelWidth, bgra.PixelHeight, image.DpiX, image.DpiY, PixelFormats.Bgra32, palette: null, pixels, stride)
+            .ToBitmapImage();
     }
 }

@@ -6,6 +6,8 @@ namespace System.Windows.Controls;
 /// </summary>
 public static class ImageExtensions
 {
+    private static readonly ConditionalWeakTable<FormatConvertedBitmap, BitmapSource> OriginalSources = new();
+
     /// <summary>
     /// Gets a <see cref="BitmapImage"/> for the image's source.
     /// </summary>
@@ -42,6 +44,9 @@ public static class ImageExtensions
     /// <summary>
     /// Restores the original image when enabled, or shows a grayscale version with an opacity mask when disabled.
     /// </summary>
+    /// <remarks>
+    /// Only bitmap sources can be shown in grayscale; any other source is left unchanged.
+    /// </remarks>
     public static Image AutoGrey(
         this Image image,
         bool isEnabled)
@@ -50,14 +55,19 @@ public static class ImageExtensions
 
         if (isEnabled)
         {
-            var bitmapImage = image.Source is FormatConvertedBitmap
-                ? BitmapImageFactory.Create(image.Source.ToString(GlobalizationConstants.EnglishCultureInfo))
-                : ((FormatConvertedBitmap)image.Source).Source;
+            if (image.Source is not FormatConvertedBitmap greyBitmap)
+            {
+                return image;
+            }
+
+            var originalSource = OriginalSources.TryGetValue(greyBitmap, out var source)
+                ? source
+                : greyBitmap.Source;
 
             // Set the Source property to the original value.
             image.SetCurrentValue(
                 Image.SourceProperty,
-                bitmapImage);
+                originalSource);
 
             // Reset the Opacity Mask
             image.SetCurrentValue(
@@ -66,20 +76,24 @@ public static class ImageExtensions
         }
         else
         {
-            // Get the source bitmap
-            var bitmapImage = image.Source is FormatConvertedBitmap
-                ? BitmapImageFactory.Create(image.Source.ToString(GlobalizationConstants.EnglishCultureInfo))
-                : BitmapImageFactory.Create(((FormatConvertedBitmap)image.Source).Source.ToString(GlobalizationConstants.EnglishCultureInfo));
+            if (image.Source is FormatConvertedBitmap or not BitmapSource)
+            {
+                return image;
+            }
+
+            var bitmapSource = (BitmapSource)image.Source;
+            var grey = bitmapSource.ToFormatConvertedBitmapAsGray32();
+            OriginalSources.AddOrUpdate(grey, bitmapSource);
 
             // Convert it to Gray
             image.SetCurrentValue(
                 Image.SourceProperty,
-                bitmapImage.ToFormatConvertedBitmapAsGray32());
+                grey);
 
             // Create Opacity Mask for greyscale image as FormatConvertedBitmap does not keep transparency info
             image.SetCurrentValue(
                 UIElement.OpacityMaskProperty,
-                new ImageBrush(bitmapImage));
+                new ImageBrush(bitmapSource));
         }
 
         return image;
