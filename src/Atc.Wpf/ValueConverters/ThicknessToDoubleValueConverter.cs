@@ -11,6 +11,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(LeftTopRightBottomType))]
 public sealed class ThicknessToDoubleValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ThicknessToDoubleValueConverter"/>.
+    /// </summary>
     public static readonly ThicknessToDoubleValueConverter Instance = new();
 
     /// <summary>

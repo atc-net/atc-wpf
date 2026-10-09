@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Inputs;
 
+/// <summary>A numeric input box for decimal values with a configurable number of decimal places.</summary>
 public sealed partial class DecimalBox : NumericBox
 {
     private bool isUpdatingDecimalPlaces;
@@ -10,6 +11,7 @@ public sealed partial class DecimalBox : NumericBox
         CoerceValueCallback = nameof(CoerceDecimalPlaces))]
     private int decimalPlaces;
 
+    /// <summary>Initializes a new instance of the <see cref="DecimalBox"/> class.</summary>
     public DecimalBox()
     {
         Loaded += OnLoaded;

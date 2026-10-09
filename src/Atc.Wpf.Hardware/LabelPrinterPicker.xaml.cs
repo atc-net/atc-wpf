@@ -25,15 +25,25 @@ public partial class LabelPrinterPicker : ILabelPrinterPicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<PrinterInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<PrinterInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelPrinterPicker"/> class.
+    /// </summary>
     public LabelPrinterPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

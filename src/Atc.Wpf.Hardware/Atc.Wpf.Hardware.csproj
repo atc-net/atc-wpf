@@ -10,6 +10,8 @@
     <Description>WPF hardware, system and inspection pickers with live device-state detection: serial ports, USB devices, cameras, audio input/output, Bluetooth devices, drives, displays, printers, network adapters, processes and windows.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+    <!-- Every public member is documented: report missing XML comments. -->
+    <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
     <!-- Required for the WinRT IMemoryBufferByteAccess COM interface used by the audio capture/render
          pipeline in LiveAudioInputMeter / LiveAudioOutputTester. Confined to a single helper file. -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

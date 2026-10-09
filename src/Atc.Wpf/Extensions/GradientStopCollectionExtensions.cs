@@ -1,6 +1,9 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows.Media;
 
+/// <summary>
+/// Extension methods for <see cref="GradientStopCollection"/>.
+/// </summary>
 public static class GradientStopCollectionExtensions
 {
     /// <summary>

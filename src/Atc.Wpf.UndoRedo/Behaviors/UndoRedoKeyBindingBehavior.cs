@@ -15,6 +15,7 @@ namespace Atc.Wpf.UndoRedo.Behaviors;
 /// </remarks>
 public sealed class UndoRedoKeyBindingBehavior : Behavior<UIElement>
 {
+    /// <summary>Identifies the <see cref="UndoRedoService"/> dependency property.</summary>
     public static readonly DependencyProperty UndoRedoServiceProperty =
         DependencyProperty.Register(
             nameof(UndoRedoService),
@@ -22,18 +23,23 @@ public sealed class UndoRedoKeyBindingBehavior : Behavior<UIElement>
             typeof(UndoRedoKeyBindingBehavior),
             new PropertyMetadata(defaultValue: null));
 
+    /// <summary>
+    /// Gets or sets the undo/redo service that the keyboard shortcuts operate on; when <see langword="null"/>, shortcuts are ignored.
+    /// </summary>
     public IUndoRedoService? UndoRedoService
     {
         get => (IUndoRedoService?)GetValue(UndoRedoServiceProperty);
         set => SetValue(UndoRedoServiceProperty, value);
     }
 
+    /// <inheritdoc />
     protected override void OnAttached()
     {
         base.OnAttached();
         AssociatedObject.PreviewKeyDown += OnPreviewKeyDown;
     }
 
+    /// <inheritdoc />
     protected override void OnDetaching()
     {
         AssociatedObject.PreviewKeyDown -= OnPreviewKeyDown;

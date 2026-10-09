@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Components.Notifications;
 
+/// <summary>
+/// A named area that hosts and stacks toast notifications shown by <see cref="ToastNotificationManager"/>.
+/// </summary>
 public sealed partial class ToastNotificationArea : Control
 {
     private readonly Lock itemsLock = new();
@@ -11,6 +14,9 @@ public sealed partial class ToastNotificationArea : Control
     [DependencyProperty(DefaultValue = int.MaxValue)]
     private int maxItems;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ToastNotificationArea"/> class and registers it with the <see cref="ToastNotificationManager"/>.
+    /// </summary>
     public ToastNotificationArea()
     {
         ToastNotificationManager.AddArea(this);
@@ -23,6 +29,7 @@ public sealed partial class ToastNotificationArea : Control
             new FrameworkPropertyMetadata(typeof(ToastNotificationArea)));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

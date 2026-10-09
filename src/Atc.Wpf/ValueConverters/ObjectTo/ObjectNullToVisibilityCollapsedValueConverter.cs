@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(Visibility))]
 public sealed class ObjectNullToVisibilityCollapsedValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ObjectNullToVisibilityCollapsedValueConverter"/>.
+    /// </summary>
     public static readonly ObjectNullToVisibilityCollapsedValueConverter Instance = new();
 
     /// <inheritdoc />

@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(ICollection), typeof(bool))]
 public sealed class CollectionNullOrEmptyToInverseBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="CollectionNullOrEmptyToInverseBoolValueConverter"/>.
+    /// </summary>
     public static readonly CollectionNullOrEmptyToInverseBoolValueConverter Instance = new();
 
     /// <inheritdoc />

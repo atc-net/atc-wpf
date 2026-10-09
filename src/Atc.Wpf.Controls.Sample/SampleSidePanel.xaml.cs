@@ -8,6 +8,9 @@ public partial class SampleSidePanel
     [DependencyProperty(PropertyChangedCallback = nameof(OnSourceObjectChanged))]
     private object? sourceObject;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SampleSidePanel"/> class.
+    /// </summary>
     public SampleSidePanel()
     {
         InitializeComponent();

@@ -1,5 +1,9 @@
 namespace Atc.Wpf.Network.Vnc;
 
+/// <summary>
+/// View model for the <see cref="VncViewerView"/>, exposing connect/disconnect commands,
+/// connection status and the current remote screen frame.
+/// </summary>
 public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 {
     private readonly VncConnectionService connectionService = new();
@@ -10,6 +14,9 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
     [ObservableProperty]
     private string statusMessage = string.Empty;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VncViewerViewModel"/> class.
+    /// </summary>
     public VncViewerViewModel()
     {
         connectionService.Connected += OnServiceConnected;
@@ -21,21 +28,46 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         DisconnectCommand = new RelayCommandAsync(ExecuteDisconnectAsync, CanDisconnect);
     }
 
+    /// <summary>
+    /// Occurs when a region of <see cref="CurrentFrame"/> has been updated.
+    /// </summary>
     public event EventHandler? FramebufferUpdated;
 
+    /// <summary>
+    /// Gets the command that shows the connect dialog and connects to the entered VNC server.
+    /// </summary>
     public RelayCommandAsync ConnectCommand { get; }
 
+    /// <summary>
+    /// Gets the command that disconnects from the VNC server.
+    /// </summary>
     public RelayCommandAsync DisconnectCommand { get; }
 
+    /// <summary>
+    /// Gets the bitmap holding the current remote screen image, or <see langword="null"/> when not connected.
+    /// </summary>
     public WriteableBitmap? CurrentFrame
         => connectionService.CurrentFrame;
 
+    /// <summary>
+    /// Gets the width, in pixels, of the remote framebuffer, or 0 when not connected.
+    /// </summary>
     public int FramebufferWidth
         => connectionService.FramebufferWidth;
 
+    /// <summary>
+    /// Gets the height, in pixels, of the remote framebuffer, or 0 when not connected.
+    /// </summary>
     public int FramebufferHeight
         => connectionService.FramebufferHeight;
 
+    /// <summary>
+    /// Connects to a VNC server, marking the view model busy until the attempt completes.
+    /// </summary>
+    /// <param name="host">The host name or IP address of the VNC server.</param>
+    /// <param name="port">The TCP port of the VNC server.</param>
+    /// <param name="password">The optional password used for authentication.</param>
+    /// <returns>A task that completes when the connection attempt has finished.</returns>
     [SuppressMessage("AsyncUsage", "AsyncFixer01:Unnecessary async/await usage", Justification = "Properties must be set before the await.")]
     public async Task ConnectAsync(
         string host,
@@ -50,6 +82,10 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         await connectionService.ConnectAsync(host, port, password).ConfigureAwait(true);
     }
 
+    /// <summary>
+    /// Disconnects from the VNC server, marking the view model busy until it completes.
+    /// </summary>
+    /// <returns>A task that completes when the connection has been closed.</returns>
     [SuppressMessage("AsyncUsage", "AsyncFixer01:Unnecessary async/await usage", Justification = "Properties must be set before the await.")]
     public async Task DisconnectAsync()
     {
@@ -61,17 +97,31 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         await connectionService.DisconnectAsync().ConfigureAwait(true);
     }
 
+    /// <summary>
+    /// Sends a pointer (mouse) event to the VNC server.
+    /// </summary>
+    /// <param name="buttonMask">The pressed-buttons bit mask (1 = left, 2 = middle, 4 = right).</param>
+    /// <param name="x">The horizontal framebuffer coordinate.</param>
+    /// <param name="y">The vertical framebuffer coordinate.</param>
+    /// <returns>A task that completes when the event has been sent.</returns>
     public Task SendPointerEventAsync(
         byte buttonMask,
         int x,
         int y)
         => connectionService.SendPointerEventAsync(buttonMask, x, y);
 
+    /// <summary>
+    /// Sends a key press or release event to the VNC server.
+    /// </summary>
+    /// <param name="keySym">The X11 keysym of the key.</param>
+    /// <param name="pressed"><see langword="true"/> for a key press; <see langword="false"/> for a key release.</param>
+    /// <returns>A task that completes when the event has been sent.</returns>
     public Task SendKeyEventAsync(
         uint keySym,
         bool pressed)
         => connectionService.SendKeyEventAsync(keySym, pressed);
 
+    /// <inheritdoc />
     public void Dispose()
     {
         connectionService.Connected -= OnServiceConnected;

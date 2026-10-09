@@ -6,12 +6,16 @@ namespace Atc.Wpf.DependencyObjects;
 /// </summary>
 public sealed class PercentListener : DependencyObject
 {
+    /// <summary>Identifies the <see cref="Percent"/> dependency property.</summary>
     public static readonly DependencyProperty PercentProperty = DependencyProperty.Register(
         nameof(Percent),
         typeof(double),
         typeof(PercentListener),
         new PropertyMetadata(default(double)));
 
+    /// <summary>
+    /// Gets or sets the last received percent value (0-100).
+    /// </summary>
     public double Percent
     {
         get => (double)GetValue(PercentProperty);

@@ -1,8 +1,14 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows.Media.Imaging;
 
+/// <summary>
+/// Extension methods for <see cref="BitmapSource"/>.
+/// </summary>
 public static class BitmapSourceExtensions
 {
+    /// <summary>
+    /// Gets the number of bytes used per pixel by the bitmap's pixel format.
+    /// </summary>
     public static int GetBytesPerPixel(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
@@ -12,6 +18,9 @@ public static class BitmapSourceExtensions
         return (bitmapSource.Format.BitsPerPixel + 7) / 8;
     }
 
+    /// <summary>
+    /// Gets the stride (bytes per row, padded to a 4-byte boundary) of the bitmap.
+    /// </summary>
     public static int GetStride(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
@@ -22,6 +31,9 @@ public static class BitmapSourceExtensions
         return 4 * ((bytesForPixelWidth + 3) / 4);
     }
 
+    /// <summary>
+    /// Copies the raw pixel bytes of the bitmap into a new array.
+    /// </summary>
     public static byte[] GetBytes(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
@@ -35,6 +47,9 @@ public static class BitmapSourceExtensions
         return pixels;
     }
 
+    /// <summary>
+    /// Gets the RGB color of the pixel at the specified position.
+    /// </summary>
     public static Color GetPixelColor(
         this BitmapSource source,
         int x,
@@ -58,6 +73,9 @@ public static class BitmapSourceExtensions
         return Color.FromRgb(pixels[2], pixels[1], pixels[0]);
     }
 
+    /// <summary>
+    /// Gets the colors of all pixels as a [width, height] array, converting to Bgra32 first if needed.
+    /// </summary>
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
     public static PixelColor[,] GetPixelColors(this BitmapSource source)
     {
@@ -91,6 +109,9 @@ public static class BitmapSourceExtensions
         return pixels;
     }
 
+    /// <summary>
+    /// Reloads a bitmap whose source path starts with <c>..</c> using a resolved relative path; otherwise returns it unchanged.
+    /// </summary>
     public static BitmapSource EnsureRelativeUriLocation(
         this BitmapSource bitmapSource)
     {
@@ -113,6 +134,9 @@ public static class BitmapSourceExtensions
         return BitmapImageFactory.Create(path, UriKind.Relative);
     }
 
+    /// <summary>
+    /// Creates a new bitmap with every byte of each 4-byte pixel (including alpha) inverted.
+    /// </summary>
     public static BitmapSource InvertColors(this BitmapSource bitmapSource)
     {
         ArgumentNullException.ThrowIfNull(bitmapSource);
@@ -216,6 +240,9 @@ public static class BitmapSourceExtensions
         encoder.Save(stream);
     }
 
+    /// <summary>
+    /// Encodes the bitmap in the specified format and loads it into a frozen <see cref="BitmapImage"/>, optionally decoded to a new width.
+    /// </summary>
     public static BitmapImage ToBitmapImage(
         this BitmapSource bitmapSource,
         ImageFormatType imageFormatType = ImageFormatType.Png,
@@ -248,6 +275,9 @@ public static class BitmapSourceExtensions
         return bitmapImage;
     }
 
+    /// <summary>
+    /// Converts the bitmap to a PNG-encoded <see cref="BitmapImage"/> decoded to the specified width.
+    /// </summary>
     public static BitmapImage ToResizedBitmapImage(
         this BitmapSource bitmapSource,
         int newWidth)
@@ -259,6 +289,9 @@ public static class BitmapSourceExtensions
         return bitmapSource.ToBitmapImage(ImageFormatType.Png, newWidth);
     }
 
+    /// <summary>
+    /// Encodes the bitmap as a base64 <c>data:image/...</c> URI string.
+    /// </summary>
     public static string ToBase64DataImage(
         this BitmapSource bitmapSource,
         ImageFormatType imageFormatType = ImageFormatType.Png)
@@ -280,6 +313,9 @@ public static class BitmapSourceExtensions
         return $"data:image/{imageFormatType.ToStringLowerCase()};base64,{base64String}";
     }
 
+    /// <summary>
+    /// Converts the bitmap to a 32-bit float grayscale bitmap.
+    /// </summary>
     public static BitmapSource ToBitmapSourceAsGray32(
         this BitmapSource bitmapSource)
     {
@@ -290,6 +326,9 @@ public static class BitmapSourceExtensions
         return bitmapSource.ToFormatConvertedBitmapAsGray32();
     }
 
+    /// <summary>
+    /// Creates a <see cref="BitmapImage"/> from the bitmap with its pixels replaced by the specified colors.
+    /// </summary>
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
     [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
     public static BitmapImage ToBitmapImageWithPixelColors(
@@ -314,6 +353,9 @@ public static class BitmapSourceExtensions
         return writeableBitmap.ToBitmapImage();
     }
 
+    /// <summary>
+    /// Creates a <see cref="FormatConvertedBitmap"/> of the bitmap in the <c>Gray32Float</c> pixel format.
+    /// </summary>
     public static FormatConvertedBitmap ToFormatConvertedBitmapAsGray32(
         this BitmapSource bitmapSource)
     {
@@ -328,6 +370,9 @@ public static class BitmapSourceExtensions
             alphaThreshold: 0);
     }
 
+    /// <summary>
+    /// Creates a <see cref="WriteableBitmap"/> from the bitmap, converting to <c>Pbgra32</c> if needed.
+    /// </summary>
     public static WriteableBitmap ToWriteableBitmap(
         this BitmapSource bitmapSource)
     {
@@ -348,6 +393,9 @@ public static class BitmapSourceExtensions
         return new WriteableBitmap(formattedBitmapSource);
     }
 
+    /// <summary>
+    /// Creates a <see cref="WriteableBitmap"/> from the bitmap with its pixels replaced by the specified colors.
+    /// </summary>
     [SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "OK.")]
     [SuppressMessage("Blocker Code Smell", "S2368:Public methods should not have multidimensional array parameters", Justification = "OK.")]
     public static WriteableBitmap ToWriteableBitmapWithPixelColors(

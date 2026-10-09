@@ -29,24 +29,28 @@ namespace Atc.Wpf.Controls.Layouts;
 /// </example>
 public sealed class StaggeredPanel : Panel
 {
+    /// <summary>Identifies the <see cref="DesiredItemWidth"/> dependency property.</summary>
     public static readonly DependencyProperty DesiredItemWidthProperty = DependencyProperty.Register(
         nameof(DesiredItemWidth),
         typeof(double),
         typeof(StaggeredPanel),
         new PropertyMetadata(250d, OnInvalidateMeasure));
 
+    /// <summary>Identifies the <see cref="Padding"/> dependency property.</summary>
     public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
         nameof(Padding),
         typeof(Thickness),
         typeof(StaggeredPanel),
         new PropertyMetadata(default(Thickness), OnInvalidateMeasure));
 
+    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
         nameof(HorizontalSpacing),
         typeof(double),
         typeof(StaggeredPanel),
         new PropertyMetadata(0d, OnInvalidateMeasure));
 
+    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
         nameof(VerticalSpacing),
         typeof(double),

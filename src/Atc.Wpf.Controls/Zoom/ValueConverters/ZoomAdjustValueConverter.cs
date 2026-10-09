@@ -8,9 +8,11 @@ namespace Atc.Wpf.Controls.Zoom.ValueConverters;
 /// </summary>
 public class ZoomAdjustValueConverter : MarkupExtension, IValueConverter
 {
+    /// <inheritdoc />
     public override object ProvideValue(IServiceProvider serviceProvider)
         => this;
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -25,6 +27,7 @@ public class ZoomAdjustValueConverter : MarkupExtension, IValueConverter
         return null;
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

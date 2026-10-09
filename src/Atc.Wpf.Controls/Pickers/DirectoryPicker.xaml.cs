@@ -8,11 +8,13 @@ namespace Atc.Wpf.Controls.Pickers;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class DirectoryPicker
 {
+    /// <summary>Occurs when the selected directory changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<DirectoryInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
+    /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),
         typeof(DirectoryInfo),
@@ -23,12 +25,14 @@ public partial class DirectoryPicker
             OnValuePropertyChanged,
             (o, value) => CoerceValue(o, value).Item1));
 
+    /// <summary>Gets or sets the selected directory.</summary>
     public DirectoryInfo? Value
     {
         get => (DirectoryInfo?)GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="DisplayValue"/> dependency property.</summary>
     public static readonly DependencyProperty FullNameProperty = DependencyProperty.Register(
         nameof(DisplayValue),
         typeof(string),
@@ -39,6 +43,7 @@ public partial class DirectoryPicker
             OnDisplayValuePropertyChanged,
             (o, value) => CoerceDisplayValue(o, value).Item1));
 
+    /// <summary>Gets or sets the full path of the selected directory, as shown in the text box.</summary>
     public string? DisplayValue
     {
         get => (string?)GetValue(FullNameProperty);
@@ -69,6 +74,7 @@ public partial class DirectoryPicker
     [DependencyProperty(DefaultValue = "")]
     private string rootDirectory;
 
+    /// <summary>Initializes a new instance of the <see cref="DirectoryPicker"/> class.</summary>
     public DirectoryPicker()
     {
         InitializeComponent();
@@ -77,6 +83,7 @@ public partial class DirectoryPicker
         LayoutRoot.DataContext = this;
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new DirectoryPickerAutomationPeer(this);
 
@@ -101,6 +108,7 @@ public partial class DirectoryPicker
         (d as DirectoryPicker)?.OnValueChanged((DirectoryInfo?)e.OldValue, (DirectoryInfo?)e.NewValue);
     }
 
+    /// <summary>Called when the selected directory changes; updates <see cref="DisplayValue"/> and raises the value changed event.</summary>
     protected virtual void OnValueChanged(
         DirectoryInfo? oldValue,
         DirectoryInfo? newValue)

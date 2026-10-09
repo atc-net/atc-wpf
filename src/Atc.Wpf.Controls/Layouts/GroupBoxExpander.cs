@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Layouts;
 
+/// <summary>A group box with a header that can expand and collapse its content.</summary>
 [ContentProperty(nameof(Content))]
 public sealed partial class GroupBoxExpander : HeaderedContentControl
 {
@@ -24,8 +25,10 @@ public sealed partial class GroupBoxExpander : HeaderedContentControl
     [DependencyProperty(DefaultValue = "new Thickness(4)")]
     private Thickness headerPadding;
 
+    /// <summary>Occurs when the group box is expanded.</summary>
     public event RoutedEventHandler? Expanded;
 
+    /// <summary>Occurs when the group box is collapsed.</summary>
     public event RoutedEventHandler? Collapsed;
 
     static GroupBoxExpander()

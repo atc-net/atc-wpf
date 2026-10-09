@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls;
 
+/// <summary>Specifies which kind of numeric input is accepted.</summary>
 [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "OK.")]
 [SuppressMessage("Maintainability", "S2342:Enumeration types should comply with a naming convention", Justification = "OK.")]
 [Flags]

@@ -9,6 +9,9 @@ namespace Atc.Wpf.Components.Viewers;
 /// </summary>
 public static class AnsiPalette
 {
+    /// <summary>
+    /// The 16 frozen palette brushes, indexed 0–7 for the base colours and 8–15 for the bright variants.
+    /// </summary>
     public static readonly IReadOnlyList<Brush> Colors16 = CreateBrushes(
     [
         Color.FromRgb(0x00, 0x00, 0x00), // black

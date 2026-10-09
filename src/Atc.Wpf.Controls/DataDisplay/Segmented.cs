@@ -83,6 +83,7 @@ public sealed partial class Segmented : Control
             new FrameworkPropertyMetadata(typeof(Segmented)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="Segmented"/> class.</summary>
     public Segmented()
     {
         CornerRadius = new CornerRadius(4);

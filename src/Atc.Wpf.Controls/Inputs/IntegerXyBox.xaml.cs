@@ -2,11 +2,13 @@ namespace Atc.Wpf.Controls.Inputs;
 
 public partial class IntegerXyBox
 {
+    /// <summary>Occurs when the value in the X input box changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
     private static readonly RoutedEvent valueXChanged;
 
+    /// <summary>Occurs when the value in the Y input box changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
@@ -56,10 +58,13 @@ public partial class IntegerXyBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueY;
 
+    /// <summary>Occurs when the <see cref="ValueX"/> property changes, with the control identifier and the old and new values.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueXLostFocus;
 
+    /// <summary>Occurs when the <see cref="ValueY"/> property changes, with the control identifier and the old and new values.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueYLostFocus;
 
+    /// <summary>Initializes a new instance of the <see cref="IntegerXyBox"/> class.</summary>
     public IntegerXyBox()
     {
         InitializeComponent();

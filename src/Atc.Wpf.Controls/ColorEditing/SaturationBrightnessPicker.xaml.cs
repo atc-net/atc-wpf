@@ -25,6 +25,7 @@ public partial class SaturationBrightnessPicker
         DefaultValue = nameof(Colors.Black))]
     private Brush brushValue;
 
+    /// <summary>Initializes a new instance of the <see cref="SaturationBrightnessPicker"/> class.</summary>
     public SaturationBrightnessPicker()
     {
         InitializeComponent();
@@ -33,6 +34,7 @@ public partial class SaturationBrightnessPicker
         Loaded += OnLoaded;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -53,6 +55,7 @@ public partial class SaturationBrightnessPicker
         Update(pos);
     }
 
+    /// <inheritdoc />
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

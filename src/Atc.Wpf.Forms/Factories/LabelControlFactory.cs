@@ -1,8 +1,14 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.Forms.Factories;
 
+/// <summary>
+/// Creates label controls for form fields, either from a model property (using its name and data annotations) or from explicit values.
+/// </summary>
 public static class LabelControlFactory
 {
+    /// <summary>
+    /// Creates a <see cref="LabelComboBox"/> listing the values of the property's enum type, labeled with the property name and mandatory when it has a <c>[Required]</c> attribute.
+    /// </summary>
     public static LabelComboBox CreateLabelEnumPicker(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -20,6 +26,9 @@ public static class LabelControlFactory
             propertyInfo.PropertyType);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelComboBox"/> listing the values of an enum type after a "please select" item, skipping values named None, Unknown and Default.
+    /// </summary>
     public static LabelComboBox CreateLabelEnumPicker(
         string groupIdentifier,
         string labelText,
@@ -70,6 +79,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelCheckBox"/> labeled with the property name.
+    /// </summary>
     public static LabelCheckBox CreateLabelCheckBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -89,6 +101,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelCheckBox"/> with the given label and value.
+    /// </summary>
     public static LabelCheckBox CreateLabelCheckBox(
         string groupIdentifier,
         string labelText,
@@ -106,6 +121,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDecimalBox"/> for the property, using its name as label, its description as watermark, <c>[Required]</c> for mandatory and <c>[Range]</c> for minimum and maximum.
+    /// </summary>
     public static LabelDecimalBox CreateLabelDecimalBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -144,6 +162,9 @@ public static class LabelControlFactory
             maximum);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDecimalBox"/> with the given label, watermark, value and optional minimum and maximum.
+    /// </summary>
     public static LabelDecimalBox CreateLabelDecimalBox(
         string groupIdentifier,
         string labelText,
@@ -179,6 +200,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDecimalXyBox"/> for the property, using its name as label, <c>[Required]</c> for mandatory and <c>[Range]</c> for minimum and maximum.
+    /// </summary>
     public static LabelDecimalXyBox CreateLabelDecimalXyBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -218,6 +242,9 @@ public static class LabelControlFactory
             maximum);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDecimalXyBox"/> with the given label, X and Y values, and optional minimum and maximum.
+    /// </summary>
     public static LabelDecimalXyBox CreateLabelDecimalXyBox(
         string groupIdentifier,
         string labelText,
@@ -253,6 +280,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelIntegerBox"/> for the property, using its name as label, its description as watermark, <c>[Required]</c> for mandatory and <c>[Range]</c> for minimum and maximum.
+    /// </summary>
     public static LabelIntegerBox CreateLabelIntegerBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -291,6 +321,9 @@ public static class LabelControlFactory
             maximum);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelIntegerBox"/> with the given label, watermark, value and optional minimum and maximum.
+    /// </summary>
     public static LabelIntegerBox CreateLabelIntegerBox(
         string groupIdentifier,
         string labelText,
@@ -326,6 +359,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelPixelSizeBox"/> for the property, using its name as label, <c>[Required]</c> for mandatory and <c>[Range]</c> for minimum and maximum.
+    /// </summary>
     public static LabelPixelSizeBox CreateLabelPixelSizeBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -365,6 +401,9 @@ public static class LabelControlFactory
             maximum);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelPixelSizeBox"/> with the given label, width and height values, and optional minimum and maximum.
+    /// </summary>
     public static LabelPixelSizeBox CreateLabelPixelSizeBox(
         string groupIdentifier,
         string labelText,
@@ -402,6 +441,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelTextBox"/> for the property, using its name as label, its description as watermark, <c>[Required]</c> for mandatory, and <c>[MinLength]</c>, <c>[MaxLength]</c> and <c>[RegularExpression]</c> for validation.
+    /// </summary>
     public static LabelTextBox CreateLabelTextBox(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -453,6 +495,9 @@ public static class LabelControlFactory
             regexPattern);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelTextBox"/> with the given label, watermark, text and optional length and regular-expression validation.
+    /// </summary>
     public static LabelTextBox CreateLabelTextBox(
         string groupIdentifier,
         string labelText,
@@ -494,6 +539,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDateTimePicker"/> for the property, using its name as label, its description as watermark and <c>[Required]</c> for mandatory.
+    /// </summary>
     public static LabelDateTimePicker CreateLabelDateTimePicker(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -512,6 +560,9 @@ public static class LabelControlFactory
             value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDateTimePicker"/> with the given label, date watermark, value and optional selectable date range.
+    /// </summary>
     public static LabelDateTimePicker CreateLabelDateTimePicker(
         string groupIdentifier,
         string labelText,
@@ -548,6 +599,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDatePicker"/> for the property, using its name as label, its description as watermark and <c>[Required]</c> for mandatory.
+    /// </summary>
     public static LabelDatePicker CreateLabelDatePicker(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -566,6 +620,9 @@ public static class LabelControlFactory
             value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDatePicker"/> with the given label, watermark, value and optional selectable date range.
+    /// </summary>
     public static LabelDatePicker CreateLabelDatePicker(
         string groupIdentifier,
         string labelText,
@@ -624,6 +681,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelTimePicker"/> for the property, using its name as label, its description as watermark and <c>[Required]</c> for mandatory.
+    /// </summary>
     public static LabelTimePicker CreateLabelTimePicker(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -642,6 +702,9 @@ public static class LabelControlFactory
             value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelTimePicker"/> with the given label, watermark and value.
+    /// </summary>
     public static LabelTimePicker CreateLabelTimePicker(
         string groupIdentifier,
         string labelText,
@@ -674,6 +737,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDirectoryPicker"/> for the property, using its name as label, its description as watermark and <c>[Required]</c> for mandatory.
+    /// </summary>
     public static LabelDirectoryPicker CreateLabelDirectoryPicker(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -692,6 +758,9 @@ public static class LabelControlFactory
             value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelDirectoryPicker"/> with the given label, watermark and value.
+    /// </summary>
     public static LabelDirectoryPicker CreateLabelDirectoryPicker(
         string groupIdentifier,
         string labelText,
@@ -715,6 +784,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelFilePicker"/> for the property, using its name as label, its description as watermark and <c>[Required]</c> for mandatory.
+    /// </summary>
     public static LabelFilePicker CreateLabelFilePicker(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -733,6 +805,9 @@ public static class LabelControlFactory
             value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelFilePicker"/> with the given label, watermark and value.
+    /// </summary>
     public static LabelFilePicker CreateLabelFilePicker(
         string groupIdentifier,
         string labelText,
@@ -756,6 +831,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelWellKnownColorSelector"/> for the property, labeled with its name and mandatory when it has <c>[Required]</c> or is not nullable.
+    /// </summary>
     public static LabelWellKnownColorSelector CreateLabelWellKnownColorSelector(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -773,6 +851,9 @@ public static class LabelControlFactory
             defaultColorName);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelWellKnownColorSelector"/> with a "please select" first item and the given label and default color name.
+    /// </summary>
     public static LabelWellKnownColorSelector CreateLabelWellKnownColorSelector(
         string groupIdentifier,
         string labelText,
@@ -795,6 +876,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelCountrySelector"/> for the property, labeled with its name and mandatory when it has <c>[Required]</c> or is not nullable.
+    /// </summary>
     public static LabelCountrySelector CreateLabelCountrySelector(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -812,6 +896,9 @@ public static class LabelControlFactory
             defaultCultureIdentifier);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelCountrySelector"/> listing all countries after a "please select" item, with the given label and default culture.
+    /// </summary>
     public static LabelCountrySelector CreateLabelCountrySelector(
         string groupIdentifier,
         string labelText,
@@ -835,6 +922,9 @@ public static class LabelControlFactory
         return control;
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelLanguageSelector"/> for the property, labeled with its name and mandatory when it has <c>[Required]</c> or is not nullable.
+    /// </summary>
     public static LabelLanguageSelector CreateLabelLanguageSelector(
         PropertyInfo propertyInfo,
         string groupIdentifier,
@@ -852,6 +942,9 @@ public static class LabelControlFactory
             defaultCultureIdentifier);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LabelLanguageSelector"/> listing all languages after a "please select" item, with the given label and default culture; it does not change the UI culture on selection.
+    /// </summary>
     public static LabelLanguageSelector CreateLabelLanguageSelector(
         string groupIdentifier,
         string labelText,

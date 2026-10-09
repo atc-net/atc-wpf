@@ -1,6 +1,9 @@
 // ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Theming.Controls.Windows;
 
+/// <summary>
+/// A serializable snapshot of a window's placement (the Win32 <c>WINDOWPLACEMENT</c> structure).
+/// </summary>
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
 [SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "OK.")]
 [SuppressMessage("Design", "MA0048:File name must match type name", Justification = "OK.")]
@@ -10,9 +13,24 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [SuppressMessage("Minor Code Smell", "S1104:Fields should not have public accessibility", Justification = "OK.")]
 public sealed class WindowPlacementSetting
 {
+    /// <summary>
+    /// The window show state (a Win32 <c>SHOW_WINDOW_CMD</c> value).
+    /// </summary>
     public uint showCmd;
+
+    /// <summary>
+    /// The position of the window's upper-left corner when it is minimized.
+    /// </summary>
     public Point minPosition;
+
+    /// <summary>
+    /// The position of the window's upper-left corner when it is maximized.
+    /// </summary>
     public Point maxPosition;
+
+    /// <summary>
+    /// The window's bounds when it is in the restored (normal) state.
+    /// </summary>
     public Rect normalPosition;
 
     internal WINDOWPLACEMENT ToWindowPlacement()

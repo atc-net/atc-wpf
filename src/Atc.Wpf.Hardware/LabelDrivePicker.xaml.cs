@@ -25,15 +25,25 @@ public partial class LabelDrivePicker : ILabelDrivePicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DiskDriveInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DiskDriveInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelDrivePicker"/> class.
+    /// </summary>
     public LabelDrivePicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

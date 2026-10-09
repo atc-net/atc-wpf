@@ -3,6 +3,7 @@ namespace Atc.Wpf.Controls.Buttons;
 
 public partial class AuthenticationButton
 {
+    /// <summary>Occurs when the authenticated state of the button changes.</summary>
     public event RoutedEventHandler? IsAuthenticatedChanged;
 
     [DependencyProperty]
@@ -58,6 +59,7 @@ public partial class AuthenticationButton
     [DependencyProperty]
     private ICommand? logoutCommand;
 
+    /// <summary>Initializes a new instance of the <see cref="AuthenticationButton"/> class.</summary>
     public AuthenticationButton()
     {
         InitializeComponent();
@@ -68,6 +70,7 @@ public partial class AuthenticationButton
         Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);

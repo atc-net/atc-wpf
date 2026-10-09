@@ -11,6 +11,9 @@ public sealed record AnsiSgrState(
     bool Italic,
     bool Underline)
 {
+    /// <summary>
+    /// Gets the reset state: no foreground or background override and no bold, italic or underline.
+    /// </summary>
     public static AnsiSgrState Default { get; } = new(
         Foreground: null,
         Background: null,

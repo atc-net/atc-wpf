@@ -25,15 +25,25 @@ public partial class LabelProcessPicker : ILabelProcessPicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<RunningProcessInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<RunningProcessInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelProcessPicker"/> class.
+    /// </summary>
     public LabelProcessPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

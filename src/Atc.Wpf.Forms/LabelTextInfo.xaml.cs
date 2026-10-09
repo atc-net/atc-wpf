@@ -12,6 +12,9 @@ public partial class LabelTextInfo : ILabelTextInfo
     [DependencyProperty(DefaultValue = "")]
     private string text;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelTextInfo"/> class.
+    /// </summary>
     public LabelTextInfo()
     {
         InitializeComponent();

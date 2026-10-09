@@ -2,12 +2,14 @@ namespace Atc.Wpf.Controls.Selectors;
 
 public partial class FontFamilySelector
 {
+    /// <summary>Identifies the <see cref="DropDownFirstItemType"/> dependency property.</summary>
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
         typeof(DropDownFirstItemType),
         typeof(FontFamilySelector),
         new PropertyMetadata(DropDownFirstItemType.None));
 
+    /// <summary>Identifies the <see cref="SelectedKey"/> dependency property.</summary>
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
@@ -17,20 +19,24 @@ public partial class FontFamilySelector
     private readonly ObservableCollectionEx<FontFamilyItem> items = new();
     private string? lastKey;
 
+    /// <summary>Gets or sets the kind of first item shown in the drop-down (none, blank or "please select").</summary>
     public DropDownFirstItemType DropDownFirstItemType
     {
         get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
         set => SetValue(DropDownFirstItemTypeProperty, value);
     }
 
+    /// <summary>Gets or sets the key (the font family name) of the selected font family.</summary>
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);
         set => SetValue(SelectedKeyProperty, value);
     }
 
+    /// <summary>Occurs when the selected font family changes.</summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>Initializes a new instance of the <see cref="FontFamilySelector"/> class.</summary>
     public FontFamilySelector()
     {
         InitializeComponent();
@@ -40,6 +46,7 @@ public partial class FontFamilySelector
         Loaded += OnLoaded;
     }
 
+    /// <summary>Gets the font families listed in the selector.</summary>
     public ObservableCollectionEx<FontFamilyItem> Items => items;
 
     private void OnLoaded(

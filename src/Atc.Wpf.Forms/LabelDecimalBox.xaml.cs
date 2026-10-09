@@ -27,13 +27,20 @@ public partial class LabelDecimalBox : ILabelDecimalBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private decimal value;
 
+    /// <summary>
+    /// Occurs when the <c>Value</c> changes (committed when the control loses focus by default).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelDecimalBox"/> class.
+    /// </summary>
     public LabelDecimalBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateValue(default, this, raiseEvents: false);

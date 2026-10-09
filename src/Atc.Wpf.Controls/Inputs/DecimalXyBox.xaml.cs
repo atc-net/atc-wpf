@@ -3,11 +3,13 @@ namespace Atc.Wpf.Controls.Inputs;
 
 public partial class DecimalXyBox
 {
+    /// <summary>Occurs when the value in the X input box changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<decimal>))]
     private static readonly RoutedEvent valueXChanged;
 
+    /// <summary>Occurs when the value in the Y input box changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<decimal>))]
@@ -62,10 +64,13 @@ public partial class DecimalXyBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private decimal valueY;
 
+    /// <summary>Occurs when the <see cref="ValueX"/> property changes, with the control identifier and the old and new values.</summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueXLostFocus;
 
+    /// <summary>Occurs when the <see cref="ValueY"/> property changes, with the control identifier and the old and new values.</summary>
     public event EventHandler<ValueChangedEventArgs<decimal?>>? ValueYLostFocus;
 
+    /// <summary>Initializes a new instance of the <see cref="DecimalXyBox"/> class.</summary>
     public DecimalXyBox()
     {
         InitializeComponent();

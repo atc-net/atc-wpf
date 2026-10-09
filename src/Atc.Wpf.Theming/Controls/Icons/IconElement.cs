@@ -9,6 +9,9 @@ public abstract class IconElement : Control
 {
     private bool isForegroundPropertyDefaultOrInherited = true;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IconElement"/> class.
+    /// </summary>
     protected IconElement()
     {
         // Empty
@@ -24,6 +27,11 @@ public abstract class IconElement : Control
                 (sender, e) => ((IconElement)sender).OnForegroundPropertyChanged(e)));
     }
 
+    /// <summary>
+    /// Called when the <see cref="Control.Foreground"/> property changes; tracks whether the value is
+    /// default or inherited and updates <see cref="InheritsForegroundFromVisualParent"/>.
+    /// </summary>
+    /// <param name="e">The event data describing the property change.</param>
     protected void OnForegroundPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
@@ -36,6 +44,7 @@ public abstract class IconElement : Control
         UpdateInheritsForegroundFromVisualParent();
     }
 
+    /// <inheritdoc />
     protected override void OnVisualParentChanged(DependencyObject oldParent)
     {
         base.OnVisualParentChanged(oldParent);
@@ -74,6 +83,11 @@ public abstract class IconElement : Control
             BooleanBoxes.Box(value));
     }
 
+    /// <summary>
+    /// Called when <see cref="InheritsForegroundFromVisualParent"/> changes; binds or clears
+    /// <see cref="VisualParentForeground"/> to the visual parent's foreground.
+    /// </summary>
+    /// <param name="e">The event data describing the property change.</param>
     [SuppressMessage("Minor", "S1125:Boolean literals should not be redundant", Justification = "OK.")]
     protected virtual void OnInheritsForegroundFromVisualParentPropertyChanged(
         DependencyPropertyChangedEventArgs e)
@@ -108,17 +122,26 @@ public abstract class IconElement : Control
                 default(Brush),
                 (sender, e) => ((IconElement)sender).OnVisualParentForegroundPropertyChanged(e)));
 
+    /// <summary>
+    /// Gets or sets the foreground brush of the visual parent, bound while
+    /// <see cref="InheritsForegroundFromVisualParent"/> is <see langword="true"/>.
+    /// </summary>
     protected Brush? VisualParentForeground
     {
         get => (Brush?)GetValue(VisualParentForegroundProperty);
         set => SetValue(VisualParentForegroundProperty, value);
     }
 
+    /// <summary>
+    /// Called when <see cref="VisualParentForeground"/> changes.
+    /// </summary>
+    /// <param name="e">The event data describing the property change.</param>
     protected virtual void OnVisualParentForegroundPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
     }
 
+    /// <summary>Identifies the <c>Geometry</c> attached property.</summary>
     public static readonly DependencyProperty GeometryProperty =
         DependencyProperty.RegisterAttached(
             "Geometry",
@@ -126,6 +149,11 @@ public abstract class IconElement : Control
             typeof(IconElement),
             new PropertyMetadata(default(Geometry)));
 
+    /// <summary>
+    /// Sets the <c>Geometry</c> attached property on the specified element.
+    /// </summary>
+    /// <param name="element">The element to set the value on.</param>
+    /// <param name="value">The geometry to assign.</param>
     public static void SetGeometry(
         DependencyObject element,
         Geometry value)
@@ -133,6 +161,11 @@ public abstract class IconElement : Control
             GeometryProperty,
             value);
 
+    /// <summary>
+    /// Gets the <c>Geometry</c> attached property from the specified element.
+    /// </summary>
+    /// <param name="element">The element to read the value from.</param>
+    /// <returns>The assigned geometry.</returns>
     public static Geometry GetGeometry(DependencyObject element)
         => (Geometry)element.GetValue(GeometryProperty);
 }

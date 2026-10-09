@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Forms.Dialogs;
 
+/// <summary>
+/// Settings for a dialog box: size, title, icon, button texts and colors, and form layout.
+/// </summary>
 public sealed class DialogBoxSettings
 {
     private const string DefaultButtonBackgroundResourceKey = "AtcApps.Brushes.Gray10";
@@ -11,6 +14,12 @@ public sealed class DialogBoxSettings
     private bool usePrimaryAccentColor;
     private Color? contentSvgImageColor;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DialogBoxSettings"/> class.
+    /// </summary>
+    /// <param name="dialogBoxType">The dialog box type, which sets the buttons shown.</param>
+    /// <param name="iconShape">The log category that selects the icon; defaults to information.</param>
+    /// <param name="iconColor">The icon color; defaults to dodger blue.</param>
     public DialogBoxSettings(
         DialogBoxType dialogBoxType,
         LogCategoryType? iconShape = null,
@@ -49,6 +58,11 @@ public sealed class DialogBoxSettings
         Form = new LabelInputFormPanelSettings();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DialogBoxSettings"/> class with a custom icon color.
+    /// </summary>
+    /// <param name="dialogBoxType">The dialog box type, which sets the buttons shown.</param>
+    /// <param name="iconColor">The icon color.</param>
     public DialogBoxSettings(
         DialogBoxType dialogBoxType,
         Color iconColor)
@@ -59,6 +73,11 @@ public sealed class DialogBoxSettings
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DialogBoxSettings"/> class with an icon whose shape and color come from a log category.
+    /// </summary>
+    /// <param name="dialogBoxType">The dialog box type, which sets the buttons shown.</param>
+    /// <param name="iconShapeAndColor">The log category that selects both the icon and its color.</param>
     public DialogBoxSettings(
         DialogBoxType dialogBoxType,
         LogCategoryType iconShapeAndColor)
@@ -84,12 +103,24 @@ public sealed class DialogBoxSettings
             : (Color)o;
     }
 
+    /// <summary>
+    /// Gets or sets the dialog width.
+    /// </summary>
     public double Width { get; set; } = 350;
 
+    /// <summary>
+    /// Gets or sets the dialog height.
+    /// </summary>
     public double Height { get; set; } = 200;
 
+    /// <summary>
+    /// Gets or sets the text shown in the dialog title bar.
+    /// </summary>
     public string TitleBarText { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Gets or sets the color of the content icon; changing it rebuilds the icon.
+    /// </summary>
     public Color? ContentSvgImageColor
     {
         get => contentSvgImageColor;
@@ -103,8 +134,14 @@ public sealed class DialogBoxSettings
         }
     }
 
+    /// <summary>
+    /// Gets or sets the icon shown next to the dialog content.
+    /// </summary>
     public SvgImage? ContentSvgImage { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the affirmative button uses the theme's primary accent color.
+    /// </summary>
     public bool UsePrimaryAccentColor
     {
         get => usePrimaryAccentColor;
@@ -124,6 +161,9 @@ public sealed class DialogBoxSettings
         }
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the negative button is shown.
+    /// </summary>
     public bool ShowNegativeButton { get; private set; }
 
     /// <summary>
@@ -134,8 +174,14 @@ public sealed class DialogBoxSettings
     /// </example>
     public string AffirmativeButtonText { get; set; } = "? Negative ?";
 
+    /// <summary>
+    /// Gets or sets the background brush of the affirmative button.
+    /// </summary>
     public SolidColorBrush AffirmativeButtonBackground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonBackgroundResourceKey]!;
 
+    /// <summary>
+    /// Gets or sets the foreground brush of the affirmative button.
+    /// </summary>
     public SolidColorBrush AffirmativeButtonForeground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundResourceKey]!;
 
     /// <summary>
@@ -146,15 +192,30 @@ public sealed class DialogBoxSettings
     /// </example>
     public string NegativeButtonText { get; set; } = "? Affirmative ?";
 
+    /// <summary>
+    /// Gets or sets the background brush of the negative button.
+    /// </summary>
     public SolidColorBrush NegativeButtonBackground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonBackgroundResourceKey]!;
 
+    /// <summary>
+    /// Gets or sets the foreground brush of the negative button.
+    /// </summary>
     public SolidColorBrush NegativeButtonForeground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundResourceKey]!;
 
+    /// <summary>
+    /// Gets or sets the layout settings for a form shown in the dialog.
+    /// </summary>
     public LabelInputFormPanelSettings Form { get; set; }
 
+    /// <summary>
+    /// Creates settings for the given dialog box type with the default icon.
+    /// </summary>
+    /// <param name="dialogBoxType">The dialog box type.</param>
+    /// <returns>The new settings.</returns>
     public static DialogBoxSettings Create(DialogBoxType dialogBoxType)
         => new(dialogBoxType);
 
+    /// <inheritdoc />
     public override string ToString()
         => $"{nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(TitleBarText)}: {TitleBarText}, {nameof(Form)}: ({Form})";
 

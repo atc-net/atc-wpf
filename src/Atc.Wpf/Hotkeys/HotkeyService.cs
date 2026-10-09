@@ -29,6 +29,9 @@ public sealed class HotkeyService : IHotkeyService
     private HotkeyRegistration? pendingChordFirstStroke;
     private DispatcherTimer? chordTimer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HotkeyService"/> class.
+    /// </summary>
     public HotkeyService(Dispatcher? dispatcher = null)
     {
         this.dispatcher = dispatcher
@@ -36,12 +39,16 @@ public sealed class HotkeyService : IHotkeyService
             ?? Dispatcher.CurrentDispatcher;
     }
 
+    /// <inheritdoc />
     public event EventHandler<HotkeyPressedEventArgs>? HotkeyPressed;
 
+    /// <inheritdoc />
     public event EventHandler<HotkeyConflictEventArgs>? ConflictDetected;
 
+    /// <inheritdoc />
     public event EventHandler<HotkeyRegistrationFailedEventArgs>? RegistrationFailed;
 
+    /// <inheritdoc />
     public IReadOnlyList<IHotkeyRegistration> Registrations
     {
         get
@@ -53,8 +60,10 @@ public sealed class HotkeyService : IHotkeyService
         }
     }
 
+    /// <inheritdoc />
     public bool IsListening => hwndSource is not null;
 
+    /// <inheritdoc />
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Registration logic with conflict detection and scope handling.")]
     public IHotkeyRegistration Register(
         ModifierKeys modifiers,
@@ -105,6 +114,7 @@ public sealed class HotkeyService : IHotkeyService
         return registration;
     }
 
+    /// <inheritdoc />
     public IHotkeyRegistration RegisterChord(
         ModifierKeys firstModifiers,
         Key firstKey,
@@ -146,6 +156,7 @@ public sealed class HotkeyService : IHotkeyService
         return registration;
     }
 
+    /// <inheritdoc />
     public void Unregister(IHotkeyRegistration registration)
     {
         ArgumentNullException.ThrowIfNull(registration);
@@ -173,6 +184,7 @@ public sealed class HotkeyService : IHotkeyService
         }
     }
 
+    /// <inheritdoc />
     public void StartListening(Window window)
     {
         ArgumentNullException.ThrowIfNull(window);
@@ -194,6 +206,7 @@ public sealed class HotkeyService : IHotkeyService
         }
     }
 
+    /// <inheritdoc />
     public void StopListening()
     {
         if (hwndSource is null)
@@ -211,6 +224,7 @@ public sealed class HotkeyService : IHotkeyService
         }
     }
 
+    /// <inheritdoc />
     public void SaveBindings(string filePath)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath);
@@ -244,6 +258,7 @@ public sealed class HotkeyService : IHotkeyService
         File.WriteAllText(filePath, json);
     }
 
+    /// <inheritdoc />
     public void LoadBindings(string filePath)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath);
@@ -282,6 +297,7 @@ public sealed class HotkeyService : IHotkeyService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

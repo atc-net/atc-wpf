@@ -2,6 +2,7 @@ namespace Atc.Wpf.Controls.Buttons;
 
 public partial class ImageToggledButton
 {
+    /// <summary>Occurs when the toggled state of the button changes.</summary>
     public event RoutedEventHandler? IsToggledChanged;
 
     [DependencyProperty]
@@ -57,6 +58,7 @@ public partial class ImageToggledButton
     [DependencyProperty]
     private ICommand? offCommand;
 
+    /// <summary>Initializes a new instance of the <see cref="ImageToggledButton"/> class.</summary>
     public ImageToggledButton()
     {
         InitializeComponent();

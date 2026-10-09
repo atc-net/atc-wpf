@@ -2,11 +2,17 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelPixelSizeBox : ILabelPixelSizeBox
 {
+    /// <summary>
+    /// Occurs when the width value changes in the inner width input box.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
     private static readonly RoutedEvent valueWidthChanged;
 
+    /// <summary>
+    /// Occurs when the height value changes in the inner height input box.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
@@ -28,15 +34,25 @@ public partial class LabelPixelSizeBox : ILabelPixelSizeBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueHeight;
 
+    /// <summary>
+    /// Occurs when the <c>ValueWidth</c> property changes (committed when the control loses focus by default).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 
+    /// <summary>
+    /// Occurs when the <c>ValueHeight</c> property changes (committed when the control loses focus by default).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueHeightLostFocus;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelPixelSizeBox"/> class.
+    /// </summary>
     public LabelPixelSizeBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
         => string.IsNullOrEmpty(ValidationText);
 

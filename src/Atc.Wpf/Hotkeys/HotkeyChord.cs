@@ -5,6 +5,9 @@ namespace Atc.Wpf.Hotkeys;
 /// </summary>
 public sealed class HotkeyChord : IEquatable<HotkeyChord>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HotkeyChord"/> class.
+    /// </summary>
     public HotkeyChord(
         ModifierKeys firstModifiers,
         Key firstKey,
@@ -37,6 +40,7 @@ public sealed class HotkeyChord : IEquatable<HotkeyChord>
     /// </summary>
     public Key SecondKey { get; }
 
+    /// <inheritdoc />
     public bool Equals(HotkeyChord? other)
     {
         if (other is null)
@@ -55,12 +59,15 @@ public sealed class HotkeyChord : IEquatable<HotkeyChord>
                SecondKey == other.SecondKey;
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
         => Equals(obj as HotkeyChord);
 
+    /// <inheritdoc />
     public override int GetHashCode()
         => HashCode.Combine(FirstModifiers, FirstKey, SecondModifiers, SecondKey);
 
+    /// <inheritdoc />
     public override string ToString()
         => $"{FormatKeyCombo(FirstModifiers, FirstKey)}, {FormatKeyCombo(SecondModifiers, SecondKey)}";
 

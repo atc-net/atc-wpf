@@ -1,6 +1,9 @@
 // ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Theming.Controls.Windows;
 
+/// <summary>
+/// The item container used by <see cref="WindowCommands"/>, with an optional trailing separator.
+/// </summary>
 [TemplatePart(Name = PART_ContentPresenter, Type = typeof(UIElement))]
 [TemplatePart(Name = PART_Separator, Type = typeof(UIElement))]
 public sealed class WindowCommandsItem : ContentControl
@@ -10,6 +13,7 @@ public sealed class WindowCommandsItem : ContentControl
 
     internal PropertyChangeNotifier? VisibilityPropertyChangeNotifier { get; set; }
 
+    /// <summary>Identifies the <see cref="IsSeparatorVisible"/> dependency property.</summary>
     public static readonly DependencyProperty IsSeparatorVisibleProperty = DependencyProperty.Register(
         nameof(IsSeparatorVisible),
         typeof(bool),
@@ -33,8 +37,12 @@ public sealed class WindowCommandsItem : ContentControl
         typeof(WindowCommandsItem),
         new PropertyMetadata(propertyChangedCallback: null));
 
+    /// <summary>Identifies the <see cref="ParentWindowCommands"/> dependency property.</summary>
     public static readonly DependencyProperty ParentWindowCommandsProperty = ParentWindowCommandsPropertyKey.DependencyProperty;
 
+    /// <summary>
+    /// Gets or sets the <see cref="WindowCommands"/> that owns this item.
+    /// </summary>
     public WindowCommands? ParentWindowCommands
     {
         get => (WindowCommands?)GetValue(ParentWindowCommandsProperty);

@@ -7,8 +7,12 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(Color))]
 public sealed class ColorHexToColorValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ColorHexToColorValueConverter"/>.
+    /// </summary>
     public static readonly ColorHexToColorValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -16,6 +20,7 @@ public sealed class ColorHexToColorValueConverter : IValueConverter
         CultureInfo culture)
         => ConvertValue(value);
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

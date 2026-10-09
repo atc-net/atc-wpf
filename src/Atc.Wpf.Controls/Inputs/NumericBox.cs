@@ -4,6 +4,7 @@
 // ReSharper disable ConvertIfStatementToReturnStatement
 namespace Atc.Wpf.Controls.Inputs;
 
+/// <summary>The base numeric input control: a text box with up/down spin buttons, range clamping, formatting and keyboard/mouse-wheel input.</summary>
 [SuppressMessage("Performance", "MA0023:Add RegexOptions.ExplicitCapture", Justification = "OK.")]
 [TemplatePart(Name = PART_NumericUp, Type = typeof(RepeatButton))]
 [TemplatePart(Name = PART_NumericDown, Type = typeof(RepeatButton))]
@@ -45,21 +46,27 @@ public partial class NumericBox : Control
     private TextBox? valueTextBox;
     private ScrollViewer? scrollViewer;
 
+    /// <summary>Occurs when the value is incremented by a spin step.</summary>
     [RoutedEvent(HandlerType = typeof(NumericBoxChangedRoutedEventHandler))]
     private static readonly RoutedEvent valueIncremented;
 
+    /// <summary>Occurs when the value is decremented by a spin step.</summary>
     [RoutedEvent(HandlerType = typeof(NumericBoxChangedRoutedEventHandler))]
     private static readonly RoutedEvent valueDecremented;
 
+    /// <summary>Occurs when the <see cref="Delay"/> value changes.</summary>
     [RoutedEvent]
     private static readonly RoutedEvent delayChanged;
 
+    /// <summary>Occurs when the value reaches <see cref="Maximum"/>.</summary>
     [RoutedEvent]
     private static readonly RoutedEvent maximumReached;
 
+    /// <summary>Occurs when the value reaches <see cref="Minimum"/>.</summary>
     [RoutedEvent]
     private static readonly RoutedEvent minimumReached;
 
+    /// <summary>Occurs when the value changes.</summary>
     [RoutedEvent(HandlerType = typeof(RoutedPropertyChangedEventHandler<double?>))]
     private static readonly RoutedEvent valueChanged;
 
@@ -69,8 +76,10 @@ public partial class NumericBox : Control
         ValidateValueCallback = nameof(ValidateDefaultDelay))]
     private int delay;
 
+    /// <summary>Identifies the <see cref="TextAlignment"/> dependency property.</summary>
     public static readonly DependencyProperty TextAlignmentProperty = TextBox.TextAlignmentProperty.AddOwner(typeof(NumericBox));
 
+    /// <summary>Gets or sets the horizontal alignment of the text in the input box.</summary>
     public TextAlignment TextAlignment
     {
         get => (TextAlignment)GetValue(TextAlignmentProperty);
@@ -84,6 +93,7 @@ public partial class NumericBox : Control
         PropertyChangedCallback = nameof(OnSpeedupPropertyChanged))]
     private bool speedup;
 
+    /// <summary>Identifies the <see cref="IsReadOnly"/> dependency property.</summary>
     public static readonly DependencyProperty IsReadOnlyProperty = TextBoxBase.IsReadOnlyProperty.AddOwner(
         typeof(NumericBox),
         new FrameworkPropertyMetadata(
@@ -91,6 +101,7 @@ public partial class NumericBox : Control
             FrameworkPropertyMetadataOptions.Inherits,
             OnIsReadOnlyPropertyChanged));
 
+    /// <summary>Gets or sets a value indicating whether the value is read-only.</summary>
     public bool IsReadOnly
     {
         get => (bool)GetValue(IsReadOnlyProperty);
@@ -239,11 +250,13 @@ public partial class NumericBox : Control
             new RoutedEventHandler(OnGotFocus));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="NumericBox"/> class.</summary>
     public NumericBox()
     {
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new NumericBoxAutomationPeer(this);
 
@@ -591,6 +604,7 @@ public partial class NumericBox : Control
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -648,12 +662,14 @@ public partial class NumericBox : Control
         }
     }
 
+    /// <summary>Selects all text in the input box.</summary>
     public void SelectAll()
         => valueTextBox?.SelectAll();
 
     private void RaiseChangeDelay()
         => RaiseEvent(new RoutedEventArgs(DelayChangedEvent));
 
+    /// <summary>Called when the <see cref="Delay"/> value changes.</summary>
     protected virtual void OnDelayChanged(
         int oldDelay,
         int newDelay)
@@ -661,6 +677,7 @@ public partial class NumericBox : Control
         // Skip
     }
 
+    /// <summary>Called when the <see cref="Speedup"/> value changes.</summary>
     protected virtual void OnSpeedupChanged(
         bool oldSpeedup,
         bool newSpeedup)
@@ -668,6 +685,7 @@ public partial class NumericBox : Control
         // Skip
     }
 
+    /// <summary>Called when the <see cref="Maximum"/> value changes.</summary>
     protected virtual void OnMaximumChanged(
         double oldMaximum,
         double newMaximum)
@@ -675,6 +693,7 @@ public partial class NumericBox : Control
         // Skip
     }
 
+    /// <summary>Called when the <see cref="Minimum"/> value changes.</summary>
     protected virtual void OnMinimumChanged(
         double oldMinimum,
         double newMinimum)
@@ -682,6 +701,7 @@ public partial class NumericBox : Control
         // Skip
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -706,6 +726,7 @@ public partial class NumericBox : Control
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewKeyUp(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -718,6 +739,7 @@ public partial class NumericBox : Control
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -758,6 +780,7 @@ public partial class NumericBox : Control
         }
     }
 
+    /// <summary>Handles text input in the input box and rejects input that would not form a valid value.</summary>
     [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "OK.")]
     protected void OnPreviewTextInput(
         object sender,
@@ -802,6 +825,7 @@ public partial class NumericBox : Control
         manualChange = true;
     }
 
+    /// <summary>Called when the value changes; updates the displayed text and raises the value changed event.</summary>
     [SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected virtual void OnValueChanged(

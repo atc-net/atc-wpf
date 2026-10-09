@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates the logical drives and polls for changes on the dispatcher.
+/// </summary>
 public sealed class DriveService : IDriveService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
@@ -11,6 +14,9 @@ public sealed class DriveService : IDriveService
     private bool initialEnumerationCompleted;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DriveService"/> class.
+    /// </summary>
     public DriveService()
         : this(ListDrives, ReadVolume)
     {
@@ -30,14 +36,17 @@ public sealed class DriveService : IDriveService
         pollTimer.Tick += OnPollTick;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<DiskDriveInfo> Drives { get; }
 
+    /// <inheritdoc />
     public TimeSpan PollingInterval
     {
         get => pollTimer.Interval;
         set => pollTimer.Interval = value;
     }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -49,6 +58,7 @@ public sealed class DriveService : IDriveService
         pollTimer.Start();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -60,6 +70,7 @@ public sealed class DriveService : IDriveService
         pollTimer.Stop();
     }
 
+    /// <inheritdoc />
     [SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait", Justification = "WPF service ties to the dispatcher.")]
     public Task RefreshAsync()
     {
@@ -68,6 +79,7 @@ public sealed class DriveService : IDriveService
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

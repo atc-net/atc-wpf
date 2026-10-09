@@ -25,10 +25,17 @@ public class TransitioningContentControl : ContentControl
     private bool allowIsTransitioningPropertyWrite;
     private Storyboard? currentTransition;
 
+    /// <summary>
+    /// Occurs when a content transition has completed.
+    /// </summary>
     public event RoutedEventHandler? TransitionCompleted;
 
+    /// <summary>
+    /// The default transition type.
+    /// </summary>
     public const TransitionType DefaultTransitionState = TransitionType.Default;
 
+    /// <summary>Identifies the <see cref="IsTransitioning"/> dependency property.</summary>
     public static readonly DependencyProperty IsTransitioningProperty = DependencyProperty.Register(
         nameof(IsTransitioning),
         typeof(bool),
@@ -59,6 +66,7 @@ public class TransitioningContentControl : ContentControl
         }
     }
 
+    /// <summary>Identifies the <see cref="Transition"/> dependency property.</summary>
     public static readonly DependencyProperty TransitionProperty = DependencyProperty.Register(
         nameof(Transition),
         typeof(TransitionType),
@@ -79,6 +87,7 @@ public class TransitioningContentControl : ContentControl
             value);
     }
 
+    /// <summary>Identifies the <see cref="RestartTransitionOnContentChange"/> dependency property.</summary>
     public static readonly DependencyProperty RestartTransitionOnContentChangeProperty = DependencyProperty.Register(
         nameof(RestartTransitionOnContentChange),
         typeof(bool),
@@ -98,6 +107,7 @@ public class TransitioningContentControl : ContentControl
             BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="CustomVisualStates"/> dependency property.</summary>
     public static readonly DependencyProperty CustomVisualStatesProperty = DependencyProperty.Register(
         nameof(CustomVisualStates),
         typeof(ObservableCollection<VisualState>),
@@ -116,6 +126,7 @@ public class TransitioningContentControl : ContentControl
             value);
     }
 
+    /// <summary>Identifies the <see cref="CustomVisualStatesName"/> dependency property.</summary>
     public static readonly DependencyProperty CustomVisualStatesNameProperty = DependencyProperty.Register(
         nameof(CustomVisualStatesName),
         typeof(string),
@@ -211,18 +222,27 @@ public class TransitioningContentControl : ContentControl
             (bool)e.NewValue);
     }
 
+    /// <summary>
+    /// Called when <see cref="RestartTransitionOnContentChange"/> changes.
+    /// </summary>
+    /// <param name="oldValue">The previous value.</param>
+    /// <param name="newValue">The new value.</param>
     protected virtual void OnRestartTransitionOnContentChangeChanged(
         bool oldValue,
         bool newValue)
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TransitioningContentControl"/> class.
+    /// </summary>
     public TransitioningContentControl()
     {
         CustomVisualStates = new ObservableCollection<VisualState>();
         DefaultStyleKey = typeof(TransitioningContentControl);
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         if (IsTransitioning)
@@ -265,6 +285,7 @@ public class TransitioningContentControl : ContentControl
             false);
     }
 
+    /// <inheritdoc />
     protected override void OnContentChanged(
         object oldContent,
         object newContent)
@@ -377,6 +398,9 @@ public class TransitioningContentControl : ContentControl
         }
     }
 
+    /// <summary>
+    /// Aborts the running transition, returns to the hidden state and releases the previous content.
+    /// </summary>
     public void AbortTransition()
     {
         // go to normal state and release our hold on the old content.

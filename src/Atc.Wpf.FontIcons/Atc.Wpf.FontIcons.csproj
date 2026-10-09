@@ -10,6 +10,8 @@
     <Description>WPF font icon library providing Font Awesome, Material Design, and other icon fonts.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+    <!-- Every public member is documented: report missing XML comments. -->
+    <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

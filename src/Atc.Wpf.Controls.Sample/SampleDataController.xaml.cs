@@ -7,6 +7,9 @@ public partial class SampleDataController
     [DependencyProperty(PropertyChangedCallback = nameof(OnSourceObjectChanged))]
     private object? sourceObject;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SampleDataController"/> class.
+    /// </summary>
     public SampleDataController()
     {
         InitializeComponent();

@@ -68,6 +68,7 @@ public sealed partial class AvatarGroup : Control
         Loaded += OnLoaded;
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// A text block that renders a Font Awesome 7 Free (solid) icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class FontAwesomeSolid7 : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>

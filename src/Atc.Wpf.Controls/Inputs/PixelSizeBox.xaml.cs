@@ -2,11 +2,13 @@ namespace Atc.Wpf.Controls.Inputs;
 
 public partial class PixelSizeBox
 {
+    /// <summary>Occurs when the value in the width input box changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
     private static readonly RoutedEvent valueWidthChanged;
 
+    /// <summary>Occurs when the value in the height input box changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
@@ -32,10 +34,13 @@ public partial class PixelSizeBox
         IsAnimationProhibited = true)]
     private int valueHeight;
 
+    /// <summary>Occurs when the <see cref="ValueWidth"/> property changes, with the control identifier and the old and new values.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueWidthLostFocus;
 
+    /// <summary>Occurs when the <see cref="ValueHeight"/> property changes, with the control identifier and the old and new values.</summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueHeightLostFocus;
 
+    /// <summary>Initializes a new instance of the <see cref="PixelSizeBox"/> class.</summary>
     public PixelSizeBox()
     {
         InitializeComponent();

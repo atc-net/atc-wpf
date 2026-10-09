@@ -6,6 +6,9 @@ namespace Atc.Wpf.Network.ValueConverters;
 [ValueConversion(typeof(ConnectionState), typeof(string))]
 public sealed class ConnectionStateToTextValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static ConnectionStateToTextValueConverter Instance { get; } = new();
 
     /// <inheritdoc />

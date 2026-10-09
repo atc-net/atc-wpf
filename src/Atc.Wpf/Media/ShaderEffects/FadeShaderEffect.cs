@@ -1,12 +1,17 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
+/// <summary>
+/// A shader effect that fades the input toward a target color.
+/// </summary>
 public sealed class FadeShaderEffect : ShaderEffectBase
 {
+    /// <summary>Identifies the <see cref="Input"/> dependency property.</summary>
     public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty(
             "Input",
             typeof(FadeShaderEffect),
             0);
 
+    /// <summary>Identifies the <see cref="Strength"/> dependency property.</summary>
     public static readonly DependencyProperty StrengthProperty = DependencyProperty.Register(
             nameof(Strength),
             typeof(double),
@@ -15,6 +20,7 @@ public sealed class FadeShaderEffect : ShaderEffectBase
                 0d,
                 PixelShaderConstantCallback(0)));
 
+    /// <summary>Identifies the <see cref="ToColor"/> dependency property.</summary>
     public static readonly DependencyProperty ToColorProperty = DependencyProperty.Register(
         nameof(ToColor),
         typeof(Color),
@@ -23,8 +29,12 @@ public sealed class FadeShaderEffect : ShaderEffectBase
             MakeColor(255, 0, 0, 0),
             PixelShaderConstantCallback(2)));
 
+    /// <inheritdoc />
     public override string Name => "Fade";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FadeShaderEffect"/> class.
+    /// </summary>
     public FadeShaderEffect()
     {
         UpdateShaderValue(InputProperty);

@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates the display monitors and polls for changes on the dispatcher.
+/// </summary>
 public sealed class DisplayService : IDisplayService
 {
     private readonly Func<IReadOnlyList<DisplaySnapshot>> enumerate;
@@ -7,6 +10,9 @@ public sealed class DisplayService : IDisplayService
     private bool started;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DisplayService"/> class.
+    /// </summary>
     public DisplayService()
         : this(EnumerateDisplays)
     {
@@ -23,14 +29,17 @@ public sealed class DisplayService : IDisplayService
         pollTimer.Tick += OnPollTick;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<DisplayInfo> Displays { get; }
 
+    /// <inheritdoc />
     public TimeSpan PollingInterval
     {
         get => pollTimer.Interval;
         set => pollTimer.Interval = value;
     }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -42,6 +51,7 @@ public sealed class DisplayService : IDisplayService
         pollTimer.Start();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -53,12 +63,14 @@ public sealed class DisplayService : IDisplayService
         pollTimer.Stop();
     }
 
+    /// <inheritdoc />
     public Task RefreshAsync()
     {
         EnumerateAndSync();
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

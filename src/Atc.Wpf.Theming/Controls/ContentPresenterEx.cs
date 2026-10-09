@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Theming.Controls;
 
+/// <summary>
+/// A <see cref="ContentPresenter"/> that keeps input content hit-testable inside a window chrome.
+/// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public sealed class ContentPresenterEx : ContentPresenter
 {

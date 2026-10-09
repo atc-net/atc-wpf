@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Theming.Controls.Windows
 {
+    /// <summary>
+    /// Specifies which elements a window part overlays.
+    /// </summary>
     [Flags]
     [SuppressMessage("Design", "CA1008:Enums should have zero value", Justification = "OK.")]
     [SuppressMessage("Critical Code Smell", "S2346:Flags enumerations zero-value members should be named \"None\"", Justification = "OK.")]
@@ -21,6 +24,9 @@ namespace Atc.Wpf.Theming.Controls.Windows
         /// </summary>
         HiddenTitleBar = 1 << 1,
 
+        /// <summary>
+        /// Overlays both opened controls and a hidden TitleBar.
+        /// </summary>
         Always = ~(-1 << 2),
     }
 }

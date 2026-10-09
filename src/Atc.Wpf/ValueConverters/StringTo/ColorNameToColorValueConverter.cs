@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(Color))]
 public sealed class ColorNameToColorValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ColorNameToColorValueConverter"/>.
+    /// </summary>
     public static readonly ColorNameToColorValueConverter Instance = new();
 
     /// <inheritdoc />

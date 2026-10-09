@@ -1,9 +1,12 @@
 namespace Atc.Wpf.Controls.Progressing.Internal;
 
+/// <summary>Converts a content width and a minimum width to the larger of the two.</summary>
 public sealed class ProgressBarWidthMultiValueConverter : IMultiValueConverter
 {
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly ProgressBarWidthMultiValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object[]? values,
         Type targetType,
@@ -24,6 +27,7 @@ public sealed class ProgressBarWidthMultiValueConverter : IMultiValueConverter
         return System.Math.Max(contentWidth, parentMinWidth);
     }
 
+    /// <inheritdoc />
     public object[] ConvertBack(
         object value,
         Type[] targetTypes,

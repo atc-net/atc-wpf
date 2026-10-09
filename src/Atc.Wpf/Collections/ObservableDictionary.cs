@@ -1,8 +1,12 @@
 namespace Atc.Wpf.Collections;
 
+/// <summary>
+/// A dictionary backed by an observable collection of <see cref="ObservableKeyValuePair{TKey, TValue}"/> items that raises collection change notifications.
+/// </summary>
 public sealed class ObservableDictionary<TKey, TValue>
     : ObservableCollection<ObservableKeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>
 {
+    /// <inheritdoc />
     public void Add(
         TKey key,
         TValue value)
@@ -22,6 +26,7 @@ public sealed class ObservableDictionary<TKey, TValue>
                 pair));
     }
 
+    /// <inheritdoc />
     public bool ContainsKey(TKey key)
     {
         var r = ThisAsCollection()
@@ -35,6 +40,9 @@ public sealed class ObservableDictionary<TKey, TValue>
     }
 
 #pragma warning disable CS0693 // Type parameter has the same name as the type parameter from outer type
+    /// <summary>
+    /// Determines whether two keys are equal using the default equality comparer.
+    /// </summary>
     public bool Equals<TKey>(
         TKey a,
         TKey b)
@@ -46,9 +54,11 @@ public sealed class ObservableDictionary<TKey, TValue>
     private ObservableCollection<ObservableKeyValuePair<TKey, TValue>> ThisAsCollection()
         => this;
 
+    /// <inheritdoc />
     public ICollection<TKey> Keys
         => GetKeys();
 
+    /// <inheritdoc />
     public bool Remove(TKey key)
     {
         var pair = ThisAsCollection().FirstOrDefault(p => Equals(key, p.Key));
@@ -71,6 +81,7 @@ public sealed class ObservableDictionary<TKey, TValue>
         return true;
     }
 
+    /// <inheritdoc />
     public bool TryGetValue(
         TKey key,
         out TValue value)
@@ -92,9 +103,11 @@ public sealed class ObservableDictionary<TKey, TValue>
         => ThisAsCollection()
             .FirstOrDefault(i => i.Key is not null && i.Key.Equals(key));
 
+    /// <inheritdoc />
     public ICollection<TValue> Values
         => GetValues();
 
+    /// <inheritdoc />
     [SuppressMessage("Usage", "MA0015:Specify the parameter name in ArgumentException", Justification = "OK")]
     public TValue this[TKey key]
     {
@@ -125,11 +138,13 @@ public sealed class ObservableDictionary<TKey, TValue>
         }
     }
 
+    /// <inheritdoc />
     public void Add(KeyValuePair<TKey, TValue> item)
         => Add(
             item.Key,
             item.Value);
 
+    /// <inheritdoc />
     public bool Contains(KeyValuePair<TKey, TValue> item)
     {
         var r = GetKvpByTheKey(item.Key);
@@ -145,6 +160,7 @@ public sealed class ObservableDictionary<TKey, TValue>
             item.Value);
     }
 
+    /// <inheritdoc />
     public void CopyTo(
         KeyValuePair<TKey, TValue>[] array,
         int arrayIndex)
@@ -164,8 +180,10 @@ public sealed class ObservableDictionary<TKey, TValue>
         }
     }
 
+    /// <inheritdoc />
     public bool IsReadOnly => false;
 
+    /// <inheritdoc />
     public bool Remove(KeyValuePair<TKey, TValue> item)
     {
         var pair = GetKvpByTheKey(item.Key);
@@ -195,6 +213,9 @@ public sealed class ObservableDictionary<TKey, TValue>
         return true;
     }
 
+    /// <summary>
+    /// Replaces the entry with the same key as <paramref name="item"/>, keeping its position in the collection.
+    /// </summary>
     public void Update(KeyValuePair<TKey, TValue> item)
     {
         var index = 0;
@@ -221,6 +242,7 @@ public sealed class ObservableDictionary<TKey, TValue>
             });
     }
 
+    /// <inheritdoc />
     public new IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         => ThisAsCollection()
             .Select(i => new KeyValuePair<TKey, TValue>(i.Key, i.Value))

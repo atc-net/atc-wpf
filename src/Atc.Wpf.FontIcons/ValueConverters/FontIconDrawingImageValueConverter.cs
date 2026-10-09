@@ -12,6 +12,9 @@ namespace Atc.Wpf.FontIcons.ValueConverters;
 /// </remarks>
 public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="FontIconDrawingImageValueConverter"/>.
+    /// </summary>
     public static readonly FontIconDrawingImageValueConverter Instance = new();
 
     /// <summary>The built-in default foreground brush (<c>Brushes.Black</c>).</summary>
@@ -37,9 +40,11 @@ public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValue
         DefaultEmSize = BuiltInDefaultEmSize;
     }
 
+    /// <inheritdoc />
     public override object ProvideValue(IServiceProvider serviceProvider)
         => this;
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type? targetType,
@@ -94,6 +99,7 @@ public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValue
         };
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

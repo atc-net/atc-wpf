@@ -5,26 +5,41 @@ namespace Atc.Wpf.Hardware.Pickers;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
 {
+    /// <summary>
+    /// Occurs when the selected display changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<DisplayInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
+    /// <summary>
+    /// Occurs when the selected display is unplugged.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<DisplayInfo?>))]
     private static readonly RoutedEvent deviceLost;
 
+    /// <summary>
+    /// Occurs when a previously lost display reappears.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<DisplayInfo?>))]
     private static readonly RoutedEvent deviceReconnected;
 
+    /// <summary>
+    /// Occurs when the state of any tracked display changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(EventHandler<DeviceStateChangedRoutedEventArgs>))]
     private static readonly RoutedEvent deviceStateChanged;
 
+    /// <summary>
+    /// Identifies the <see cref="Value"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),
         typeof(DisplayInfo),
@@ -34,6 +49,9 @@ public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnValuePropertyChanged));
 
+    /// <summary>
+    /// Gets or sets the selected display.
+    /// </summary>
     public DisplayInfo? Value
     {
         get => (DisplayInfo?)GetValue(ValueProperty);
@@ -65,48 +83,72 @@ public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
     [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
     private TimeSpan? pollingInterval;
 
+    /// <summary>
+    /// Identifies the <see cref="ItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),
         typeof(DisplayPicker),
         new PropertyMetadata(defaultValue: null, OnItemTemplateChanged));
 
+    /// <summary>
+    /// Gets or sets the template used to render each display; when <see langword="null"/> the default template is used.
+    /// </summary>
     public DataTemplate? ItemTemplate
     {
         get => (DataTemplate?)GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="ResolvedItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ResolvedItemTemplateProperty = DependencyProperty.Register(
         nameof(ResolvedItemTemplate),
         typeof(DataTemplate),
         typeof(DisplayPicker),
         new PropertyMetadata(defaultValue: null));
 
+    /// <summary>
+    /// Gets the item template in effect: <see cref="ItemTemplate"/> when set, otherwise the default template.
+    /// </summary>
     public DataTemplate? ResolvedItemTemplate
     {
         get => (DataTemplate?)GetValue(ResolvedItemTemplateProperty);
         private set => SetValue(ResolvedItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="SelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty SelectedStateMessageProperty = DependencyProperty.Register(
         nameof(SelectedStateMessage),
         typeof(string),
         typeof(DisplayPicker),
         new PropertyMetadata(defaultValue: string.Empty, OnSelectedStateMessageChanged));
 
+    /// <summary>
+    /// Gets the state message for the selected display (for example "Disconnected"), or an empty string.
+    /// </summary>
     public string SelectedStateMessage
     {
         get => (string)GetValue(SelectedStateMessageProperty);
         private set => SetValue(SelectedStateMessageProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="HasSelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty HasSelectedStateMessageProperty = DependencyProperty.Register(
         nameof(HasSelectedStateMessage),
         typeof(bool),
         typeof(DisplayPicker),
         new PropertyMetadata(defaultValue: false));
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SelectedStateMessage"/> is not empty.
+    /// </summary>
     public bool HasSelectedStateMessage
     {
         get => (bool)GetValue(HasSelectedStateMessageProperty);
@@ -126,6 +168,9 @@ public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
         typeof(DisplayPicker),
         new PropertyMetadata(defaultValue: true));
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the selected display's state message is shown inline below the drop-down.
+    /// </summary>
     public bool ShowSelectedStateMessage
     {
         get => (bool)GetValue(ShowSelectedStateMessageProperty);
@@ -135,6 +180,9 @@ public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
     private readonly IDisplayService service;
     private readonly DevicePickerController<DisplayInfo> controller;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DisplayPicker"/> class.
+    /// </summary>
     public DisplayPicker()
         : this(new DisplayService())
     {
@@ -167,10 +215,17 @@ public partial class DisplayPicker : IDevicePickerHost<DisplayInfo>
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Gets the displays known to the picker's service.
+    /// </summary>
     public ObservableCollection<DisplayInfo> Displays { get; }
 
+    /// <summary>
+    /// Gets the service that enumerates and monitors the displays.
+    /// </summary>
     public IDisplayService Service => service;
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new DisplayPickerAutomationPeer(this);
 

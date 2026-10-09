@@ -34,6 +34,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Enum), typeof(bool))]
 public sealed class EnumToBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="EnumToBoolValueConverter"/>.
+    /// </summary>
     public static readonly EnumToBoolValueConverter Instance = new();
 
     /// <inheritdoc />

@@ -4,6 +4,9 @@ public partial class VncViewerView
 {
     private VncViewerViewModel? viewModel;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VncViewerView"/> class.
+    /// </summary>
     public VncViewerView()
     {
         InitializeComponent();

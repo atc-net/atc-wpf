@@ -12,8 +12,12 @@ public sealed class PausedToGlyphValueConverter : IValueConverter
     private const string PauseGlyph = "⏸"; // ⏸
     private const string PlayGlyph = "⏵";  // ⏵
 
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly PausedToGlyphValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -21,6 +25,7 @@ public sealed class PausedToGlyphValueConverter : IValueConverter
         CultureInfo culture)
         => value is true ? PlayGlyph : PauseGlyph;
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

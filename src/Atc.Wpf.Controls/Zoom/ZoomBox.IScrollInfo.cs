@@ -7,24 +7,34 @@ namespace Atc.Wpf.Controls.Zoom;
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:Partial elements should be documented", Justification = "OK - partial class")]
 public partial class ZoomBox
 {
+    /// <inheritdoc />
     public bool CanVerticallyScroll { get; set; }
 
+    /// <inheritdoc />
     public bool CanHorizontallyScroll { get; set; }
 
+    /// <inheritdoc />
     public double ExtentWidth => unScaledExtent.Width * InternalViewportZoom;
 
+    /// <inheritdoc />
     public double ExtentHeight => unScaledExtent.Height * InternalViewportZoom;
 
+    /// <inheritdoc />
     public double ViewportWidth => viewport.Width;
 
+    /// <inheritdoc />
     public double ViewportHeight => viewport.Height;
 
+    /// <inheritdoc />
     public ScrollViewer? ScrollOwner { get; set; }
 
+    /// <inheritdoc />
     public double HorizontalOffset => ContentOffsetX * InternalViewportZoom;
 
+    /// <inheritdoc />
     public double VerticalOffset => ContentOffsetY * InternalViewportZoom;
 
+    /// <inheritdoc />
     public void SetHorizontalOffset(double offset)
     {
         if (disableScrollOffsetSync)
@@ -44,6 +54,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     public void SetVerticalOffset(double offset)
     {
         if (disableScrollOffsetSync)
@@ -63,54 +74,63 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     public void LineUp()
     {
         DelayedSaveZoom750MilliSeconds();
         ContentOffsetY -= ContentViewportHeight / 10;
     }
 
+    /// <inheritdoc />
     public void LineDown()
     {
         DelayedSaveZoom750MilliSeconds();
         ContentOffsetY += ContentViewportHeight / 10;
     }
 
+    /// <inheritdoc />
     public void LineLeft()
     {
         DelayedSaveZoom750MilliSeconds();
         ContentOffsetX -= ContentViewportWidth / 10;
     }
 
+    /// <inheritdoc />
     public void LineRight()
     {
         DelayedSaveZoom750MilliSeconds();
         ContentOffsetX += ContentViewportWidth / 10;
     }
 
+    /// <inheritdoc />
     public void PageUp()
     {
         DelayedSaveZoom1500MilliSeconds();
         ContentOffsetY -= ContentViewportHeight;
     }
 
+    /// <inheritdoc />
     public void PageDown()
     {
         DelayedSaveZoom1500MilliSeconds();
         ContentOffsetY += ContentViewportHeight;
     }
 
+    /// <inheritdoc />
     public void PageLeft()
     {
         DelayedSaveZoom1500MilliSeconds();
         ContentOffsetX -= ContentViewportWidth;
     }
 
+    /// <inheritdoc />
     public void PageRight()
     {
         DelayedSaveZoom1500MilliSeconds();
         ContentOffsetX += ContentViewportWidth;
     }
 
+    /// <inheritdoc />
     public void MouseWheelDown()
     {
         if (IsMouseWheelScrollingEnabled)
@@ -119,6 +139,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     public void MouseWheelLeft()
     {
         if (IsMouseWheelScrollingEnabled)
@@ -127,6 +148,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     public void MouseWheelRight()
     {
         if (IsMouseWheelScrollingEnabled)
@@ -135,6 +157,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     public void MouseWheelUp()
     {
         if (IsMouseWheelScrollingEnabled)
@@ -143,6 +166,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     public Rect MakeVisible(
         Visual visual,
         Rect rectangle)

@@ -7,6 +7,7 @@ namespace Atc.Wpf.Theming.Controls.Icons;
 [TemplatePart(Name = nameof(PART_Glyph), Type = typeof(TextBlock))]
 public sealed class FontIcon : IconElement
 {
+    /// <summary>Identifies the <see cref="Glyph"/> dependency property.</summary>
     public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register(
         nameof(Glyph),
         typeof(string),
@@ -30,6 +31,7 @@ public sealed class FontIcon : IconElement
 
     private TextBlock? PART_Glyph { get; set; }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -42,6 +44,7 @@ public sealed class FontIcon : IconElement
         }
     }
 
+    /// <inheritdoc />
     protected override void OnInheritsForegroundFromVisualParentPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
@@ -60,6 +63,7 @@ public sealed class FontIcon : IconElement
         }
     }
 
+    /// <inheritdoc />
     protected override void OnVisualParentForegroundPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {

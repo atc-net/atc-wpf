@@ -1,21 +1,25 @@
 // ReSharper disable LocalVariableHidesMember
 namespace Atc.Wpf.Controls.Layouts;
 
+/// <summary>A panel that arranges its children with uniform spacing, horizontally or vertically, with optional wrapping.</summary>
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
 public sealed class UniformSpacingPanel : Panel
 {
+    /// <summary>Identifies the <see cref="Orientation"/> dependency property.</summary>
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),
         typeof(UniformSpacingPanel),
         new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsMeasure, OnOrientationChanged));
 
+    /// <summary>Identifies the <see cref="ChildWrapping"/> dependency property.</summary>
     public static readonly DependencyProperty ChildWrappingProperty = DependencyProperty.Register(
         nameof(ChildWrapping),
         typeof(VisualWrappingType),
         typeof(UniformSpacingPanel),
         new FrameworkPropertyMetadata(default(VisualWrappingType), FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="Spacing"/> dependency property.</summary>
     public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
         nameof(Spacing),
         typeof(double),
@@ -23,6 +27,7 @@ public sealed class UniformSpacingPanel : Panel
         new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
         IsSpacingValid);
 
+    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
         nameof(HorizontalSpacing),
         typeof(double),
@@ -30,6 +35,7 @@ public sealed class UniformSpacingPanel : Panel
         new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
         IsSpacingValid);
 
+    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
         nameof(VerticalSpacing),
         typeof(double),
@@ -37,6 +43,7 @@ public sealed class UniformSpacingPanel : Panel
         new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
         IsSpacingValid);
 
+    /// <summary>Identifies the <see cref="ItemWidth"/> dependency property.</summary>
     public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register(
         nameof(ItemWidth),
         typeof(double),
@@ -44,6 +51,7 @@ public sealed class UniformSpacingPanel : Panel
         new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
         IsWidthHeightValid);
 
+    /// <summary>Identifies the <see cref="ItemHeight"/> dependency property.</summary>
     public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register(
         nameof(ItemHeight),
         typeof(double),
@@ -51,12 +59,14 @@ public sealed class UniformSpacingPanel : Panel
         new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
         IsWidthHeightValid);
 
+    /// <summary>Identifies the <see cref="ItemHorizontalAlignment"/> dependency property.</summary>
     public static readonly DependencyProperty ItemHorizontalAlignmentProperty = DependencyProperty.Register(
         nameof(ItemHorizontalAlignment),
         typeof(HorizontalAlignment?),
         typeof(UniformSpacingPanel),
         new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="ItemVerticalAlignment"/> dependency property.</summary>
     public static readonly DependencyProperty ItemVerticalAlignmentProperty = DependencyProperty.Register(
         nameof(ItemVerticalAlignment),
         typeof(VerticalAlignment?),
@@ -65,54 +75,63 @@ public sealed class UniformSpacingPanel : Panel
 
     private Orientation orientation;
 
+    /// <summary>Gets or sets the layout direction.</summary>
     public Orientation Orientation
     {
         get => (Orientation)GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>Gets or sets how children wrap when they run out of space.</summary>
     public VisualWrappingType ChildWrapping
     {
         get => (VisualWrappingType)GetValue(ChildWrappingProperty);
         set => SetValue(ChildWrappingProperty, value);
     }
 
+    /// <summary>Gets or sets the uniform spacing between items; sets both the horizontal and vertical spacing.</summary>
     public double Spacing
     {
         get => (double)GetValue(SpacingProperty);
         set => SetValue(SpacingProperty, value);
     }
 
+    /// <summary>Gets or sets the horizontal gap between items.</summary>
     public double HorizontalSpacing
     {
         get => (double)GetValue(HorizontalSpacingProperty);
         set => SetValue(HorizontalSpacingProperty, value);
     }
 
+    /// <summary>Gets or sets the vertical gap between items.</summary>
     public double VerticalSpacing
     {
         get => (double)GetValue(VerticalSpacingProperty);
         set => SetValue(VerticalSpacingProperty, value);
     }
 
+    /// <summary>Gets or sets a fixed width for all items.</summary>
     public double ItemWidth
     {
         get => (double)GetValue(ItemWidthProperty);
         set => SetValue(ItemWidthProperty, value);
     }
 
+    /// <summary>Gets or sets a fixed height for all items.</summary>
     public double ItemHeight
     {
         get => (double)GetValue(ItemHeightProperty);
         set => SetValue(ItemHeightProperty, value);
     }
 
+    /// <summary>Gets or sets the horizontal alignment of the children.</summary>
     public HorizontalAlignment? ItemHorizontalAlignment
     {
         get => (HorizontalAlignment?)GetValue(ItemHorizontalAlignmentProperty);
         set => SetValue(ItemHorizontalAlignmentProperty, value);
     }
 
+    /// <summary>Gets or sets the vertical alignment of the children.</summary>
     public VerticalAlignment? ItemVerticalAlignment
     {
         get => (VerticalAlignment?)GetValue(ItemVerticalAlignmentProperty);
@@ -207,6 +226,7 @@ public sealed class UniformSpacingPanel : Panel
         }
     }
 
+    /// <inheritdoc />
     [SuppressMessage("", "MA0084:Local variable should not hide field", Justification = "OK.")]
     [SuppressMessage("", "S1117:Local variable should not hide field", Justification = "OK.")]
     protected override Size MeasureOverride(Size availableSize)
@@ -337,6 +357,7 @@ public sealed class UniformSpacingPanel : Panel
         return new Size(panelSize.Width, panelSize.Height);
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size finalSize)
     {
         var firstInLine = 0;

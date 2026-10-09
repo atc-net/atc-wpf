@@ -14,24 +14,28 @@ using Math = System.Math;
 /// </remarks>
 public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
 {
+    /// <summary>Identifies the <see cref="DesiredItemWidth"/> dependency property.</summary>
     public static readonly DependencyProperty DesiredItemWidthProperty = DependencyProperty.Register(
         nameof(DesiredItemWidth),
         typeof(double),
         typeof(VirtualizingStaggeredPanel),
         new PropertyMetadata(250d, OnLayoutPropertyChanged));
 
+    /// <summary>Identifies the <see cref="Padding"/> dependency property.</summary>
     public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
         nameof(Padding),
         typeof(Thickness),
         typeof(VirtualizingStaggeredPanel),
         new PropertyMetadata(default(Thickness), OnLayoutPropertyChanged));
 
+    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
         nameof(HorizontalSpacing),
         typeof(double),
         typeof(VirtualizingStaggeredPanel),
         new PropertyMetadata(0d, OnLayoutPropertyChanged));
 
+    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
         nameof(VerticalSpacing),
         typeof(double),
@@ -52,24 +56,28 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
     private Size viewport;
     private Point offset;
 
+    /// <summary>Gets or sets the target width of each column.</summary>
     public double DesiredItemWidth
     {
         get => (double)GetValue(DesiredItemWidthProperty);
         set => SetValue(DesiredItemWidthProperty, value);
     }
 
+    /// <summary>Gets or sets the padding around the panel content.</summary>
     public Thickness Padding
     {
         get => (Thickness)GetValue(PaddingProperty);
         set => SetValue(PaddingProperty, value);
     }
 
+    /// <summary>Gets or sets the horizontal gap between columns.</summary>
     public double HorizontalSpacing
     {
         get => (double)GetValue(HorizontalSpacingProperty);
         set => SetValue(HorizontalSpacingProperty, value);
     }
 
+    /// <summary>Gets or sets the vertical gap between items within a column.</summary>
     public double VerticalSpacing
     {
         get => (double)GetValue(VerticalSpacingProperty);

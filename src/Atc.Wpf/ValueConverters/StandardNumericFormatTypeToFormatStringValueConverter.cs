@@ -6,6 +6,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(StandardNumericFormatType), typeof(string))]
 public sealed class StandardNumericFormatTypeToFormatStringValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="StandardNumericFormatTypeToFormatStringValueConverter"/>.
+    /// </summary>
     public static readonly StandardNumericFormatTypeToFormatStringValueConverter Instance = new();
 
     /// <inheritdoc />

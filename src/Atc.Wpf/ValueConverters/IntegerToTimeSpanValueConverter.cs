@@ -11,6 +11,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(int), typeof(TimeSpan))]
 public sealed class IntegerToTimeSpanValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="IntegerToTimeSpanValueConverter"/>.
+    /// </summary>
     public static readonly IntegerToTimeSpanValueConverter Instance = new();
 
     /// <inheritdoc />

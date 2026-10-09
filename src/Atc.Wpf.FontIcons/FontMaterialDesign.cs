@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// A text block that renders a Material Design icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class FontMaterialDesign : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>

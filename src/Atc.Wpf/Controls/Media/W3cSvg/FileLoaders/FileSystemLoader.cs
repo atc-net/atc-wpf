@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Controls.Media.W3cSvg.FileLoaders;
 
+/// <summary>
+/// Loads files referenced by an SVG from the file system, restricted to the SVG file's directory.
+/// </summary>
 public sealed class FileSystemLoader : IExternalFileLoader
 {
     static FileSystemLoader()
@@ -7,8 +10,12 @@ public sealed class FileSystemLoader : IExternalFileLoader
         Instance = new FileSystemLoader();
     }
 
+    /// <summary>
+    /// Gets the shared <see cref="FileSystemLoader"/> instance.
+    /// </summary>
     public static FileSystemLoader Instance { get; }
 
+    /// <inheritdoc />
     public Stream? LoadFile(
         string hRef,
         string svgFilename)

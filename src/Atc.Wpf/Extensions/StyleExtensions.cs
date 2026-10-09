@@ -1,8 +1,14 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows;
 
+/// <summary>
+/// Extension methods for <see cref="Style"/>.
+/// </summary>
 public static class StyleExtensions
 {
+    /// <summary>
+    /// Merges the setters, triggers and resources of the second style (including its based-on styles) into the first style.
+    /// </summary>
     public static void Merge(
         this Style style1,
         Style style2)

@@ -2,9 +2,20 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Forms.Extractors;
 
+/// <summary>
+/// Creates label controls from the public properties of a model object.
+/// </summary>
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
 public static class ModelToLabelControlExtractor
 {
+    /// <summary>
+    /// Creates a label control for each supported public property of the model, including nested complex types.
+    /// </summary>
+    /// <typeparam name="T">The model type.</typeparam>
+    /// <param name="model">The model to read properties and values from.</param>
+    /// <param name="includeReadOnly">If <see langword="true"/>, properties without a setter are included as read-only controls; otherwise they are skipped.</param>
+    /// <param name="groupIdentifier">The group identifier assigned to the created controls.</param>
+    /// <returns>The created label controls.</returns>
     public static IList<ILabelControlBase> Extract<T>(
         [DisallowNull] T model,
         bool includeReadOnly = true,

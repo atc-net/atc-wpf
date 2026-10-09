@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Forms;
 
+/// <summary>
+/// Base class for labeled form controls that add mandatory indication and validation display.
+/// </summary>
 public partial class LabelControl : LabelControlBase, ILabelControl
 {
     [DependencyProperty(DefaultValue = true)]
@@ -17,5 +20,9 @@ public partial class LabelControl : LabelControlBase, ILabelControl
     [DependencyProperty(DefaultValue = "")]
     private string validationText;
 
+    /// <summary>
+    /// Validates the control's current value and returns whether it is valid.
+    /// </summary>
+    /// <returns><see langword="true"/> if the value is valid; otherwise, <see langword="false"/>. The base implementation always returns <see langword="true"/>.</returns>
     public virtual bool IsValid() => true;
 }

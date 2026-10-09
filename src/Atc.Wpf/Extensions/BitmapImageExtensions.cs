@@ -1,7 +1,13 @@
 namespace Atc.Wpf.Extensions;
 
+/// <summary>
+/// Extension methods for <see cref="BitmapImage"/>.
+/// </summary>
 public static class BitmapImageExtensions
 {
+    /// <summary>
+    /// Returns the image unchanged when enabled; otherwise attempts to return a grayscale version of it.
+    /// </summary>
     public static BitmapImage AutoGrey(
         this BitmapImage image,
         bool isEnabled)

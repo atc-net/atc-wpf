@@ -133,6 +133,7 @@ public partial class Rating : Control
             new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -143,6 +144,7 @@ public partial class Rating : Control
         UpdateVisualState();
     }
 
+    /// <inheritdoc />
     protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -164,6 +166,7 @@ public partial class Rating : Control
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseLeave(MouseEventArgs e)
     {
         base.OnMouseLeave(e);
@@ -175,6 +178,7 @@ public partial class Rating : Control
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -194,6 +198,7 @@ public partial class Rating : Control
         previewValue = -1;
     }
 
+    /// <inheritdoc />
     protected override void OnKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -232,9 +237,11 @@ public partial class Rating : Control
         e.Handled = handled;
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new RatingAutomationPeer(this);
 
+    /// <summary>Called when the rating value changes; raises the value changed event.</summary>
     protected virtual void OnValueChanged(
         double oldValue,
         double newValue)

@@ -1,7 +1,13 @@
 namespace Atc.Wpf.Theming.Controls.Windows;
 
+/// <summary>
+/// Defines persistent settings that store the placement of a window.
+/// </summary>
 public interface IWindowPlacementSettings
 {
+    /// <summary>
+    /// Gets or sets the stored window placement.
+    /// </summary>
     WindowPlacementSetting? Placement { get; set; }
 
     /// <summary>

@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// An image that renders a Bootstrap (GlyphIcons Halflings) icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
@@ -119,6 +122,9 @@ public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
         set => SetValue(FlipOrientationProperty, value);
     }
 
+    /// <summary>
+    /// Creates an image source that renders the specified Bootstrap (GlyphIcons Halflings) icon with the given foreground brush and em-size.
+    /// </summary>
     public static ImageSource CreateImageSource(
         FontBootstrapType fontIconType,
         Brush foregroundBrush,
@@ -128,6 +134,9 @@ public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
         return FontIconHelper.CreateImageSource(FontBootstrapTypeface, iconChar, foregroundBrush, emSize);
     }
 
+    /// <summary>
+    /// Creates a drawing image that renders the specified Bootstrap (GlyphIcons Halflings) icon with the given foreground brush and em-size.
+    /// </summary>
     public static DrawingImage CreateDrawingImage(
         FontBootstrapType fontIconType,
         Brush foregroundBrush,

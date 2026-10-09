@@ -20,8 +20,14 @@ public class LogCategoryTypeToResourceImageValueConverter : IValueConverter
     private static readonly Lazy<BitmapImage> DebugImage = new(() => CreateFrozenBitmapImage("debug.png"));
     private static readonly Lazy<BitmapImage> TraceImage = new(() => CreateFrozenBitmapImage("trace.png"));
 
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly LogCategoryTypeToResourceImageValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets the cached, frozen icon image for the given <see cref="LogCategoryType"/>.
+    /// </summary>
     public static BitmapImage GetImage(LogCategoryType logCategoryType)
         => logCategoryType switch
         {

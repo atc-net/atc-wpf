@@ -11,6 +11,9 @@ public partial class SampleViewerView
     [DependencyProperty]
     private bool isSampleRightToLeft;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SampleViewerView"/> class.
+    /// </summary>
     public SampleViewerView()
     {
         InitializeComponent();

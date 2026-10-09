@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Theming.Behaviors;
 
+/// <summary>
+/// Provides a bindable <c>Password</c> attached property for a <see cref="PasswordBox"/>.
+/// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
 {

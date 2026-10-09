@@ -1,8 +1,13 @@
 namespace Atc.Wpf.Theming.Controls;
 
+/// <summary>
+/// A <see cref="ContentControl"/> that adds content character casing and access-key support,
+/// and keeps input content hit-testable inside a window chrome.
+/// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public class ContentControlEx : ContentControl
 {
+    /// <summary>Identifies the <see cref="ContentCharacterCasing"/> dependency property.</summary>
     public static readonly DependencyProperty ContentCharacterCasingProperty = DependencyProperty.Register(
         nameof(ContentCharacterCasing),
         typeof(CharacterCasing),
@@ -42,6 +47,7 @@ public class ContentControlEx : ContentControl
             new FrameworkPropertyMetadata(typeof(ContentControlEx)));
     }
 
+    /// <inheritdoc />
     protected override void OnContentChanged(
         object oldContent,
         object newContent)

@@ -111,6 +111,7 @@ public partial class Overlay : ContentControl
             new FrameworkPropertyMetadata(typeof(Overlay)));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         if (dimmingRect is not null)

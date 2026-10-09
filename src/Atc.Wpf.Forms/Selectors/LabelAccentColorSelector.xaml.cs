@@ -8,6 +8,9 @@ public partial class LabelAccentColorSelector
     [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
     private RenderColorIndicatorType renderColorIndicatorType;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelAccentColorSelector"/> class.
+    /// </summary>
     public LabelAccentColorSelector()
     {
         InitializeComponent();

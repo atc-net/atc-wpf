@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// A text block that renders a Weather Icons icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class FontWeather : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>

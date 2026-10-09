@@ -8,23 +8,38 @@ public partial class EndpointBox
     private NetworkProtocolType networkProtocolOnFocus;
     private Uri? valueOnFocus;
 
+    /// <summary>
+    /// Gets a value indicating whether the host has been changed since the control was created.
+    /// </summary>
     public bool IsDirty { get; private set; }
 
+    /// <summary>
+    /// Occurs when the <c>NetworkProtocol</c> value changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<NetworkProtocolType>))]
     private static readonly RoutedEvent networkProtocolChanged;
 
+    /// <summary>
+    /// Occurs when the <c>Host</c> value changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
     private static readonly RoutedEvent hostChanged;
 
+    /// <summary>
+    /// Occurs when the <c>Port</c> value changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
     private static readonly RoutedEvent portChanged;
 
+    /// <summary>
+    /// Occurs when the composed endpoint <c>Value</c> changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<Uri?>))]
@@ -77,14 +92,29 @@ public partial class EndpointBox
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private Uri? value;
 
+    /// <summary>
+    /// Occurs when the host editor loses focus after the host was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? HostLostFocus;
 
+    /// <summary>
+    /// Occurs when the port editor loses focus after the port was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? PortLostFocus;
 
+    /// <summary>
+    /// Occurs when an editor loses focus after the network protocol was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<NetworkProtocolType?>>? NetworkProtocolLostFocus;
 
+    /// <summary>
+    /// Occurs when an editor loses focus after the composed endpoint <c>Value</c> was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<Uri?>>? ValueLostFocus;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EndpointBox"/> class.
+    /// </summary>
     public EndpointBox()
     {
         InitializeComponent();
@@ -93,6 +123,7 @@ public partial class EndpointBox
         AddHandler(LostFocusEvent, new RoutedEventHandler(OnEditorLostFocus), handledEventsToo: true);
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new EndpointBoxAutomationPeer(this);
 

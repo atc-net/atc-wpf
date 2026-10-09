@@ -5,8 +5,10 @@ namespace Atc.Wpf.Controls.ValueConverters;
 /// </summary>
 public sealed class JsonPropertyTypeToColorConverter : IValueConverter
 {
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly JsonPropertyTypeToColorConverter Instance = new();
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -32,6 +34,7 @@ public sealed class JsonPropertyTypeToColorConverter : IValueConverter
         };
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

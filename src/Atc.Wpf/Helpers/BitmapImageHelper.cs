@@ -1,9 +1,11 @@
 namespace Atc.Wpf.Helpers;
 
+/// <summary>Provides helper methods for converting <see cref="BitmapImage"/> instances to and from Base64.</summary>
 public static class BitmapImageHelper
 {
     private const string Base64Header = "base64,";
 
+    /// <summary>Creates a frozen <see cref="BitmapImage"/> from a Base64 string (an optional data URI prefix ending with <c>base64,</c> is ignored), or returns <see langword="null"/> if the value is empty or the image cannot be decoded.</summary>
     [SuppressMessage("X", "S1696:Do not catch NullReferenceException", Justification = "OK.")]
     public static BitmapImage? ConvertFromBase64(string base64Value)
     {
@@ -47,6 +49,7 @@ public static class BitmapImageHelper
         }
     }
 
+    /// <summary>Converts the image to a Base64 data image string in the specified format.</summary>
     public static string ConvertToBase64DataImage(
         BitmapImage image,
         ImageFormatType imageFormatType)

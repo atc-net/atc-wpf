@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(bool), typeof(bool))]
 public sealed class BoolToInverseBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="BoolToInverseBoolValueConverter"/>.
+    /// </summary>
     public static readonly BoolToInverseBoolValueConverter Instance = new();
 
     /// <inheritdoc />

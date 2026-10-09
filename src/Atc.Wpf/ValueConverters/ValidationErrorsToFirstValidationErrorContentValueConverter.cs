@@ -6,6 +6,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(ReadOnlyObservableCollection<ValidationError>), typeof(string))]
 public sealed class ValidationErrorsToFirstValidationErrorContentValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ValidationErrorsToFirstValidationErrorContentValueConverter"/>.
+    /// </summary>
     public static readonly ValidationErrorsToFirstValidationErrorContentValueConverter Instance = new();
 
     /// <inheritdoc />

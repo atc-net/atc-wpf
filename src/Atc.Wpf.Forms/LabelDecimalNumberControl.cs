@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Forms;
 
+/// <summary>
+/// Base class for labeled decimal input controls, adding the decimal places, minimum and maximum values.
+/// </summary>
 public partial class LabelDecimalNumberControl : LabelNumberControl, ILabelDecimalNumberControl
 {
     [DependencyProperty(

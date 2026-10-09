@@ -3,6 +3,7 @@ using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
 
 namespace Atc.Wpf.Controls.Progressing;
 
+/// <summary>A content control that dims its content and shows busy content while <see cref="IsBusy"/> is <see langword="true"/>.</summary>
 [TemplateVisualState(Name = Internal.VisualStates.StateIdle, GroupName = Internal.VisualStates.GroupBusyStatus)]
 [TemplateVisualState(Name = Internal.VisualStates.StateBusy, GroupName = Internal.VisualStates.GroupBusyStatus)]
 [TemplateVisualState(Name = Internal.VisualStates.StateVisible, GroupName = Internal.VisualStates.GroupVisibility)]
@@ -55,6 +56,7 @@ public partial class BusyOverlay : ContentControl
             new FrameworkPropertyMetadata(typeof(BusyOverlay)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="BusyOverlay"/> class.</summary>
     public BusyOverlay()
     {
         displayAfterTimer.Tick += DisplayAfterTimerElapsed;
@@ -72,8 +74,10 @@ public partial class BusyOverlay : ContentControl
         }
     }
 
+    /// <summary>Gets or sets a value indicating whether the busy content is currently shown.</summary>
     protected bool IsContentVisible { get; set; }
 
+    /// <summary>Called when <see cref="IsBusy"/> changes; shows or hides the busy content and updates the visual state.</summary>
     protected virtual void OnIsBusyChanged(DependencyPropertyChangedEventArgs e)
     {
         if (IsBusy)
@@ -101,6 +105,7 @@ public partial class BusyOverlay : ContentControl
         ChangeVisualState(useTransitions: true);
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -121,6 +126,7 @@ public partial class BusyOverlay : ContentControl
         ChangeVisualState(useTransitions: true);
     }
 
+    /// <summary>Moves the control to the visual states that match the current busy and visibility state.</summary>
     protected virtual void ChangeVisualState(bool useTransitions)
     {
         VisualStateManager.GoToState(

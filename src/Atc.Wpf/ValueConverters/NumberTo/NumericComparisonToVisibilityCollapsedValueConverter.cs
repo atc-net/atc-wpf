@@ -21,6 +21,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(double), typeof(Visibility))]
 public sealed class NumericComparisonToVisibilityCollapsedValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="NumericComparisonToVisibilityCollapsedValueConverter"/>.
+    /// </summary>
     public static readonly NumericComparisonToVisibilityCollapsedValueConverter Instance = new();
 
     /// <inheritdoc />

@@ -22,12 +22,18 @@ public static class BusyIndicatorManager
                 defaultValue: null,
                 propertyChangedCallback: OnRegionNameChanged));
 
+    /// <summary>
+    /// Gets the region name the specified <see cref="BusyOverlay"/> is registered under.
+    /// </summary>
     public static string? GetRegionName(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (string?)obj.GetValue(RegionNameProperty);
     }
 
+    /// <summary>
+    /// Sets the region name that registers the specified <see cref="BusyOverlay"/> as a named region.
+    /// </summary>
     public static void SetRegionName(
         DependencyObject obj,
         string? value)

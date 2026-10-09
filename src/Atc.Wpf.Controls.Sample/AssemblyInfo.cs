@@ -1,3 +1,4 @@
+[assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Atc.Wpf.Controls.Tests")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 

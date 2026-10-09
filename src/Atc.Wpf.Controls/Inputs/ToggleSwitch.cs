@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Inputs;
 
+/// <summary>A switch control that toggles between an on and an off state, with an optional header and on/off content.</summary>
 [ContentProperty(nameof(Content))]
 [TemplatePart(Name = nameof(HeaderContentPresenter), Type = typeof(ContentPresenter))]
 [TemplatePart(Name = nameof(ContentPresenter), Type = typeof(ContentPresenter))]
@@ -118,6 +119,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
     [DependencyProperty]
     private IInputElement? commandTarget;
 
+    /// <summary>Occurs when the switch is toggled.</summary>
     public event RoutedEventHandler? Toggled;
 
     static ToggleSwitch()
@@ -133,12 +135,14 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
             handledEventsToo: true);
     }
 
+    /// <summary>Initializes a new instance of the <see cref="ToggleSwitch"/> class.</summary>
     public ToggleSwitch()
     {
         IsEnabledChanged += OnIsEnabledChanged;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
@@ -154,21 +158,25 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         }
     }
 
+    /// <summary>Called when the on content changes.</summary>
     protected virtual void OnOnContentChanged(
         object oldContent,
         object newContent)
     {
     }
 
+    /// <summary>Called when the off content changes.</summary>
     protected virtual void OnOffContentChanged(
         object oldContent,
         object newContent)
     {
     }
 
+    /// <summary>Called when the switch is toggled; raises the <see cref="Toggled"/> event.</summary>
     protected virtual void OnToggled()
         => Toggled?.Invoke(this, new RoutedEventArgs());
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         if (SwitchKnobBounds != null && SwitchKnob != null && KnobTranslateTransform != null && SwitchThumb != null)
@@ -202,6 +210,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         UpdateVisualStates(useTransitions: false);
     }
 
+    /// <inheritdoc />
     protected override void OnKeyUp(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -215,6 +224,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         base.OnKeyUp(e);
     }
 
+    /// <inheritdoc />
     protected override void OnHeaderChanged(
         object oldHeader,
         object newHeader)
@@ -224,6 +234,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         UpdateHeaderContentPresenterVisibility();
     }
 
+    /// <inheritdoc />
     protected override void OnContentChanged(
         object oldContent,
         object newContent)
@@ -233,6 +244,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         UpdateContentPresenterVisibility();
     }
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
@@ -244,6 +256,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         }
     }
 
+    /// <inheritdoc />
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
@@ -254,9 +267,11 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         }
     }
 
+    /// <inheritdoc />
     protected override bool IsEnabledCore
         => base.IsEnabledCore && CanExecute;
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new ToggleSwitchAutomationPeer(this);
 

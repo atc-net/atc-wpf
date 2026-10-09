@@ -1,5 +1,10 @@
 namespace Atc.Wpf.Components.Viewers;
 
+/// <summary>
+/// A single line of output shown in the <see cref="TerminalViewer"/>.
+/// </summary>
+/// <param name="Text">The line text.</param>
+/// <param name="Foreground">The brush used to draw the line text.</param>
 public record TerminalLineItem(
     string Text,
     Brush Foreground)

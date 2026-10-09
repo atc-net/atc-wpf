@@ -24,10 +24,19 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string selectedKey;
 
+    /// <summary>
+    /// Occurs when the selected country changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>
+    /// Occurs when the selected country changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelCountrySelector"/> class.
+    /// </summary>
     public LabelCountrySelector()
     {
         InitializeComponent();
@@ -51,6 +60,10 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         }
     }
 
+    /// <summary>
+    /// Gets the selected key, falling back to the inner selector's key when <c>SelectedKey</c> is empty.
+    /// </summary>
+    /// <returns>The selected key, or an empty string when nothing is selected.</returns>
     public string GetKey()
     {
         var key = SelectedKey;
@@ -62,6 +75,7 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         return key;
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateValue(default, this, GetKey(), raiseEvents: false);

@@ -32,15 +32,27 @@ public partial class LabelTimePicker : ILabelTimePicker
     [DependencyProperty]
     private bool openClock;
 
+    /// <summary>
+    /// Occurs when the <c>Text</c> value changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
     private static readonly RoutedEvent textChanged;
 
+    /// <summary>
+    /// Occurs when the entered time is committed and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the entered time is committed and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelTimePicker"/> class.
+    /// </summary>
     public LabelTimePicker()
     {
         InitializeComponent();

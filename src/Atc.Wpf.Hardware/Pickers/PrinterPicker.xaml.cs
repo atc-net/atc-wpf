@@ -5,26 +5,41 @@ namespace Atc.Wpf.Hardware.Pickers;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
 {
+    /// <summary>
+    /// Occurs when the selected printer changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<PrinterInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
+    /// <summary>
+    /// Occurs when the selected print queue is removed.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<PrinterInfo?>))]
     private static readonly RoutedEvent deviceLost;
 
+    /// <summary>
+    /// Occurs when a previously removed print queue reappears.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<PrinterInfo?>))]
     private static readonly RoutedEvent deviceReconnected;
 
+    /// <summary>
+    /// Occurs when the state of any tracked printer changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(EventHandler<DeviceStateChangedRoutedEventArgs>))]
     private static readonly RoutedEvent deviceStateChanged;
 
+    /// <summary>
+    /// Identifies the <see cref="Value"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),
         typeof(PrinterInfo),
@@ -34,6 +49,9 @@ public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnValuePropertyChanged));
 
+    /// <summary>
+    /// Gets or sets the selected printer.
+    /// </summary>
     public PrinterInfo? Value
     {
         get => (PrinterInfo?)GetValue(ValueProperty);
@@ -65,48 +83,72 @@ public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
     [DependencyProperty(PropertyChangedCallback = nameof(OnPollingIntervalChanged))]
     private TimeSpan? pollingInterval;
 
+    /// <summary>
+    /// Identifies the <see cref="ItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),
         typeof(PrinterPicker),
         new PropertyMetadata(defaultValue: null, OnItemTemplateChanged));
 
+    /// <summary>
+    /// Gets or sets the template used to display each printer; when <see langword="null"/> the default template is used.
+    /// </summary>
     public DataTemplate? ItemTemplate
     {
         get => (DataTemplate?)GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="ResolvedItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ResolvedItemTemplateProperty = DependencyProperty.Register(
         nameof(ResolvedItemTemplate),
         typeof(DataTemplate),
         typeof(PrinterPicker),
         new PropertyMetadata(defaultValue: null));
 
+    /// <summary>
+    /// Gets the item template in effect: <see cref="ItemTemplate"/> when set, otherwise the default template.
+    /// </summary>
     public DataTemplate? ResolvedItemTemplate
     {
         get => (DataTemplate?)GetValue(ResolvedItemTemplateProperty);
         private set => SetValue(ResolvedItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="SelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty SelectedStateMessageProperty = DependencyProperty.Register(
         nameof(SelectedStateMessage),
         typeof(string),
         typeof(PrinterPicker),
         new PropertyMetadata(defaultValue: string.Empty, OnSelectedStateMessageChanged));
 
+    /// <summary>
+    /// Gets the state message for the selected printer (for example "In use" or "Disconnected"), or an empty string.
+    /// </summary>
     public string SelectedStateMessage
     {
         get => (string)GetValue(SelectedStateMessageProperty);
         private set => SetValue(SelectedStateMessageProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="HasSelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty HasSelectedStateMessageProperty = DependencyProperty.Register(
         nameof(HasSelectedStateMessage),
         typeof(bool),
         typeof(PrinterPicker),
         new PropertyMetadata(defaultValue: false));
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SelectedStateMessage"/> is not empty.
+    /// </summary>
     public bool HasSelectedStateMessage
     {
         get => (bool)GetValue(HasSelectedStateMessageProperty);
@@ -126,6 +168,9 @@ public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
         typeof(PrinterPicker),
         new PropertyMetadata(defaultValue: true));
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the selected printer's state message is shown inline below the drop-down.
+    /// </summary>
     public bool ShowSelectedStateMessage
     {
         get => (bool)GetValue(ShowSelectedStateMessageProperty);
@@ -135,6 +180,9 @@ public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
     private readonly IPrinterService service;
     private readonly DevicePickerController<PrinterInfo> controller;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrinterPicker"/> class.
+    /// </summary>
     public PrinterPicker()
         : this(new PrinterService())
     {
@@ -167,10 +215,17 @@ public partial class PrinterPicker : IDevicePickerHost<PrinterInfo>
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Gets the installed printers known to the picker's service.
+    /// </summary>
     public ObservableCollection<PrinterInfo> Printers { get; }
 
+    /// <summary>
+    /// Gets the service that enumerates and monitors the installed printers.
+    /// </summary>
     public IPrinterService Service => service;
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new PrinterPickerAutomationPeer(this);
 

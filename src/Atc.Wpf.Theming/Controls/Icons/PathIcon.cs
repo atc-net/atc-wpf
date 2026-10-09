@@ -9,6 +9,7 @@ public sealed class PathIcon : IconElement
 {
     private Path? PART_Path { get; set; }
 
+    /// <summary>Identifies the <see cref="Data"/> dependency property.</summary>
     public static readonly DependencyProperty DataProperty = Path.DataProperty.AddOwner(
         typeof(PathIcon),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
@@ -28,6 +29,7 @@ public sealed class PathIcon : IconElement
         FocusableProperty.OverrideMetadata(typeof(PathIcon), new FrameworkPropertyMetadata(false));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -40,6 +42,7 @@ public sealed class PathIcon : IconElement
         }
     }
 
+    /// <inheritdoc />
     protected override void OnInheritsForegroundFromVisualParentPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {
@@ -58,6 +61,7 @@ public sealed class PathIcon : IconElement
         }
     }
 
+    /// <inheritdoc />
     protected override void OnVisualParentForegroundPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {

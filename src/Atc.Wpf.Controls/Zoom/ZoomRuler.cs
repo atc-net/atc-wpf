@@ -8,6 +8,7 @@ public sealed partial class ZoomRuler : FrameworkElement
 {
     private static readonly Typeface LabelTypeface = new("Segoe UI");
 
+    /// <summary>Identifies the <see cref="ZoomRuler.ZoomBox"/> dependency property.</summary>
     public static readonly DependencyProperty ZoomBoxProperty = DependencyProperty.Register(
         nameof(ZoomBox),
         typeof(ZoomBox),
@@ -16,6 +17,7 @@ public sealed partial class ZoomRuler : FrameworkElement
             defaultValue: null,
             OnZoomBoxChanged));
 
+    /// <summary>Identifies the <see cref="Orientation"/> dependency property.</summary>
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(ZoomRulerOrientation),
@@ -24,6 +26,7 @@ public sealed partial class ZoomRuler : FrameworkElement
             ZoomRulerOrientation.Horizontal,
             FrameworkPropertyMetadataOptions.AffectsRender));
 
+    /// <summary>Identifies the <see cref="TickBrush"/> dependency property.</summary>
     public static readonly DependencyProperty TickBrushProperty = DependencyProperty.Register(
         nameof(TickBrush),
         typeof(Brush),
@@ -33,6 +36,7 @@ public sealed partial class ZoomRuler : FrameworkElement
             FrameworkPropertyMetadataOptions.AffectsRender,
             OnTickBrushChanged));
 
+    /// <summary>Identifies the <see cref="LabelBrush"/> dependency property.</summary>
     public static readonly DependencyProperty LabelBrushProperty = DependencyProperty.Register(
         nameof(LabelBrush),
         typeof(Brush),
@@ -83,6 +87,7 @@ public sealed partial class ZoomRuler : FrameworkElement
         set => SetValue(LabelBrushProperty, value);
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);

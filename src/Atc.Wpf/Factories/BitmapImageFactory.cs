@@ -1,7 +1,13 @@
 namespace Atc.Wpf.Factories;
 
+/// <summary>
+/// Factory for creating <see cref="BitmapImage"/> instances.
+/// </summary>
 public static class BitmapImageFactory
 {
+    /// <summary>
+    /// Creates a frozen <see cref="BitmapImage"/> from the specified URI location.
+    /// </summary>
     [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "OK.")]
     public static BitmapImage Create(
         string uriLocation,

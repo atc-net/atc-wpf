@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Buttons;
 
+/// <summary>A button that displays an image icon alongside its content, with configurable image placement.</summary>
 public partial class ImageButton : Button
 {
     [DependencyProperty(
@@ -47,6 +48,7 @@ public partial class ImageButton : Button
             new FrameworkPropertyMetadata(typeof(ImageButton)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="ImageButton"/> class.</summary>
     public ImageButton()
     {
         SetCurrentValue(ImageLocationProperty, Controls.ImageLocation.Left);

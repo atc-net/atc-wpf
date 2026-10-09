@@ -1,7 +1,9 @@
 namespace Atc.Wpf.Controls.Factories;
 
+/// <summary>Factory methods for creating <see cref="MenuItem"/> instances.</summary>
 public static class MenuItemFactory
 {
+    /// <summary>Creates a menu item with the specified header text.</summary>
     public static MenuItem Create(string labelText)
     {
         ArgumentException.ThrowIfNullOrEmpty(labelText);
@@ -17,6 +19,7 @@ public static class MenuItemFactory
         return menuItem;
     }
 
+    /// <summary>Creates a menu item with the specified header text and icon.</summary>
     public static MenuItem Create(
         string labelText,
         ImageSource icon)
@@ -35,6 +38,7 @@ public static class MenuItemFactory
         return menuItem;
     }
 
+    /// <summary>Creates a menu item with the specified header text and command.</summary>
     public static MenuItem Create(
         string labelText,
         ICommand command)
@@ -47,6 +51,7 @@ public static class MenuItemFactory
         return menuItem;
     }
 
+    /// <summary>Creates a menu item with the specified header text, icon and command.</summary>
     public static MenuItem Create(
         string labelText,
         ImageSource icon,
@@ -63,6 +68,7 @@ public static class MenuItemFactory
         return menuItem;
     }
 
+    /// <summary>Creates a menu item with the specified header text, icon, command and command parameter.</summary>
     public static MenuItem Create(
         string labelText,
         ImageSource icon,
@@ -82,6 +88,7 @@ public static class MenuItemFactory
         return menuItem;
     }
 
+    /// <summary>Creates a menu item with the specified header text, icon, command and input gesture text.</summary>
     public static MenuItem Create(
         string labelText,
         ImageSource icon,
@@ -101,6 +108,7 @@ public static class MenuItemFactory
         return menuItem;
     }
 
+    /// <summary>Creates a menu item with the specified header text, icon, command, command parameter and input gesture text.</summary>
     public static MenuItem Create(
         string labelText,
         ImageSource icon,

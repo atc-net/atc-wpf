@@ -1,6 +1,9 @@
 // ReSharper disable once CheckNamespace
 namespace Atc.Wpf.Theming;
 
+/// <summary>
+/// Specifies whether window commands overlay a hidden title bar.
+/// </summary>
 [Flags]
 [SuppressMessage("Design", "CA1008:Enums should have zero value", Justification = "OK.")]
 [SuppressMessage("Critical Code Smell", "S2346:Flags enumerations zero-value members should be named \"None\"", Justification = "OK.")]

@@ -2,6 +2,7 @@
 // ReSharper disable UnusedMember.Local
 namespace Atc.Wpf.Controls.DataDisplay;
 
+/// <summary>A visual separator line for dividing content sections, with optional inline content.</summary>
 [ContentProperty(nameof(Content))]
 public sealed partial class Divider : Control
 {

@@ -13,6 +13,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(LogCategoryType), typeof(SolidColorBrush))]
 public sealed class LogCategoryTypeToBrushValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="LogCategoryTypeToBrushValueConverter"/>.
+    /// </summary>
     public static readonly LogCategoryTypeToBrushValueConverter Instance = new();
 
     private static readonly ConcurrentDictionary<LogCategoryType, SolidColorBrush> Cache = new();

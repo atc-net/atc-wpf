@@ -18,6 +18,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(Visibility))]
 public sealed class StringToVisibilityVisibleValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="StringToVisibilityVisibleValueConverter"/>.
+    /// </summary>
     public static readonly StringToVisibilityVisibleValueConverter Instance = new();
 
     /// <inheritdoc />

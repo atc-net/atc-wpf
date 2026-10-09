@@ -8,8 +8,12 @@ namespace Atc.Wpf.ValueConverters;
 [MarkupExtensionReturnType(typeof(MathDivideValueConverter))]
 public sealed class MathDivideValueConverter : MarkupMultiValueConverterBase
 {
+    /// <summary>
+    /// Gets the shared <see cref="MathValueConverter"/> configured for the <see cref="MathOperation.Divide"/> operation.
+    /// </summary>
     public static readonly MathValueConverter Instance = new() { Operation = MathOperation.Divide };
 
+    /// <inheritdoc />
     public override object? Convert(
         object[]? values,
         Type targetType,
@@ -17,6 +21,7 @@ public sealed class MathDivideValueConverter : MarkupMultiValueConverterBase
         CultureInfo culture)
         => Instance.Convert(values, targetType, parameter, culture);
 
+    /// <inheritdoc />
     public override object? Convert(
         object? value,
         Type targetType,
@@ -24,6 +29,7 @@ public sealed class MathDivideValueConverter : MarkupMultiValueConverterBase
         CultureInfo culture)
         => Instance.Convert(value, targetType, parameter, culture);
 
+    /// <inheritdoc />
     public override object[] ConvertBack(
         object? value,
         Type[] targetTypes,
@@ -31,6 +37,7 @@ public sealed class MathDivideValueConverter : MarkupMultiValueConverterBase
         CultureInfo culture)
         => Instance.ConvertBack(value, targetTypes, parameter, culture);
 
+    /// <inheritdoc />
     public override object? ConvertBack(
         object? value,
         Type targetType,

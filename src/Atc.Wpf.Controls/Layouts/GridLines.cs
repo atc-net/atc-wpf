@@ -1,19 +1,23 @@
 namespace Atc.Wpf.Controls.Layouts;
 
+/// <summary>A content control that draws a grid of horizontal and vertical lines on top of its content.</summary>
 public sealed class GridLines : ContentControl
 {
+    /// <summary>Identifies the <see cref="HorizontalStep"/> dependency property.</summary>
     public static readonly DependencyProperty HorizontalStepProperty = DependencyProperty.Register(
         nameof(HorizontalStep),
         typeof(double),
         typeof(GridLines),
         new PropertyMetadata(20d, OnReDrawGridLines));
 
+    /// <summary>Identifies the <see cref="VerticalStep"/> dependency property.</summary>
     public static readonly DependencyProperty VerticalStepProperty = DependencyProperty.Register(
         nameof(VerticalStep),
         typeof(double),
         typeof(GridLines),
         new PropertyMetadata(20d, OnReDrawGridLines));
 
+    /// <summary>Identifies the <see cref="LineBrush"/> dependency property.</summary>
     public static readonly DependencyProperty LineBrushProperty = DependencyProperty.Register(
         nameof(LineBrush),
         typeof(Brush),
@@ -22,6 +26,7 @@ public sealed class GridLines : ContentControl
 
     private readonly Canvas containerCanvas = new();
 
+    /// <summary>Gets or sets the spacing between the horizontal lines.</summary>
     [Category("Layout")]
     [Description("The horizontal step property")]
     public double HorizontalStep
@@ -30,6 +35,7 @@ public sealed class GridLines : ContentControl
         set => SetValue(HorizontalStepProperty, value);
     }
 
+    /// <summary>Gets or sets the spacing between the vertical lines.</summary>
     [Category("Layout")]
     [Description("The vertical step property")]
     public double VerticalStep
@@ -38,6 +44,7 @@ public sealed class GridLines : ContentControl
         set => SetValue(VerticalStepProperty, value);
     }
 
+    /// <summary>Gets or sets the brush used to draw the grid lines.</summary>
     [Category("Layout")]
     [Description("The line brush property")]
     public Brush LineBrush
@@ -46,6 +53,7 @@ public sealed class GridLines : ContentControl
         set => SetValue(LineBrushProperty, value);
     }
 
+    /// <summary>Initializes a new instance of the <see cref="GridLines"/> class.</summary>
     public GridLines()
     {
         IsHitTestVisible = false;

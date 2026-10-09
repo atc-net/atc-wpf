@@ -1,9 +1,20 @@
 namespace Atc.Wpf.Theming.Theming;
 
+/// <summary>
+/// The library theme provider that supplies the Atc.Wpf.Theming themes and runtime color scheme values
+/// (accent, highlight, ideal foreground and high-contrast colors) to the theme manager.
+/// </summary>
 public sealed class AtcAppsLibraryThemeProvider : LibraryThemeProvider
 {
+    /// <summary>
+    /// Gets the shared instance of the provider.
+    /// </summary>
     public static readonly AtcAppsLibraryThemeProvider Instance = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AtcAppsLibraryThemeProvider"/> class
+    /// and registers it with the theme manager.
+    /// </summary>
     public AtcAppsLibraryThemeProvider()
         : this(registerAtThemeManager: true)
     {
@@ -14,6 +25,7 @@ public sealed class AtcAppsLibraryThemeProvider : LibraryThemeProvider
     {
     }
 
+    /// <inheritdoc />
     public override void FillColorSchemeValues(
         Dictionary<string, string> values,
         RuntimeThemeColorValues colorValues)
@@ -41,6 +53,7 @@ public sealed class AtcAppsLibraryThemeProvider : LibraryThemeProvider
         }
     }
 
+    /// <inheritdoc />
     public override void PrepareRuntimeThemeResourceDictionary(
         RuntimeThemeGenerator runtimeThemeGenerator,
         ResourceDictionary resourceDictionary,

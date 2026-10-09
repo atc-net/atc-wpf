@@ -13,66 +13,77 @@ namespace Atc.Wpf.Controls.Media;
 [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "OK.")]
 public sealed class SvgImage : Control
 {
+    /// <summary>Identifies the <see cref="Background"/> dependency property.</summary>
     public static new readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
         nameof(Background),
         typeof(Brush),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnBackgroundChanged));
 
+    /// <summary>Identifies the <see cref="ControlSizeType"/> dependency property.</summary>
     public static readonly DependencyProperty ControlSizeTypeProperty = DependencyProperty.Register(
         nameof(ControlSizeType),
         typeof(ControlSizeType),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(ControlSizeType.ContentToSizeNoStretch, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnControlSizeTypeChanged));
 
+    /// <summary>Identifies the <see cref="Source"/> dependency property.</summary>
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
         nameof(Source),
         typeof(string),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnSourceChanged));
 
+    /// <summary>Identifies the <see cref="FileSource"/> dependency property.</summary>
     public static readonly DependencyProperty FileSourceProperty = DependencyProperty.Register(
         nameof(FileSource),
         typeof(string),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnFileSourceChanged));
 
+    /// <summary>Identifies the <see cref="ImageSource"/> dependency property.</summary>
     public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
         nameof(ImageSource),
         typeof(Drawing),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnImageSourceChanged));
 
+    /// <summary>Identifies the <see cref="UseAnimations"/> dependency property.</summary>
     public static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
         nameof(UseAnimations),
         typeof(bool),
         typeof(SvgImage),
         new PropertyMetadata(true));
 
+    /// <summary>Identifies the <see cref="OverrideColor"/> dependency property.</summary>
     public static readonly DependencyProperty OverrideColorProperty = DependencyProperty.Register(
         nameof(OverrideColor),
         typeof(Color?),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(default(Color?), FrameworkPropertyMetadataOptions.AffectsRender, OverrideColorPropertyChanged));
 
+    /// <summary>Identifies the <see cref="OverrideStrokeColor"/> dependency property.</summary>
     public static readonly DependencyProperty OverrideStrokeColorProperty = DependencyProperty.Register(
         nameof(OverrideStrokeColor),
         typeof(Color?),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(default(Color?), FrameworkPropertyMetadataOptions.AffectsRender, OverrideStrokeColorPropertyChanged));
 
+    /// <summary>Identifies the <see cref="OverrideStrokeWidth"/> dependency property.</summary>
     public static readonly DependencyProperty OverrideStrokeWidthProperty = DependencyProperty.Register(
         nameof(OverrideStrokeWidth),
         typeof(double?),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OverrideStrokeWidthPropertyChanged));
 
+    /// <summary>Identifies the <see cref="CustomBrushes"/> dependency property.</summary>
     public static readonly DependencyProperty CustomBrushesProperty = DependencyProperty.Register(
         nameof(CustomBrushes),
         typeof(Dictionary<string, Brush>),
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, CustomBrushesPropertyChanged));
 
+    /// <summary>Identifies the <see cref="ExternalFileLoader"/> dependency property.</summary>
     public static readonly DependencyProperty ExternalFileLoaderProperty = DependencyProperty.Register(
         nameof(ExternalFileLoader),
         typeof(IExternalFileLoader),
@@ -90,66 +101,99 @@ public sealed class SvgImage : Control
     private bool isDrawingFromCache;
     private bool hasApplicationCustomBrushes;
 
+    /// <summary>
+    /// Gets or sets the brush drawn behind the SVG image.
+    /// </summary>
     public new Brush? Background
     {
         get => (Brush?)GetValue(BackgroundProperty);
         set => SetValue(BackgroundProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets how the SVG drawing is sized relative to the control.
+    /// </summary>
     public ControlSizeType ControlSizeType
     {
         get => (ControlSizeType)GetValue(ControlSizeTypeProperty);
         set => SetValue(ControlSizeTypeProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the relative URI of an application resource containing the SVG image.
+    /// </summary>
     public string Source
     {
         get => (string)GetValue(SourceProperty);
         set => SetValue(SourceProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the path of an SVG file on disk to display.
+    /// </summary>
     public string FileSource
     {
         get => (string)GetValue(FileSourceProperty);
         set => SetValue(FileSourceProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets a pre-rendered <see cref="Drawing"/> to display.
+    /// </summary>
     public Drawing ImageSource
     {
         get => (Drawing)GetValue(ImageSourceProperty);
         set => SetValue(ImageSourceProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether SVG animations are rendered.
+    /// </summary>
     public bool UseAnimations
     {
         get => (bool)GetValue(UseAnimationsProperty);
         set => SetValue(UseAnimationsProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets an optional color that replaces the fill (and, unless <see cref="OverrideStrokeColor"/> is set, stroke) colors of the SVG.
+    /// </summary>
     public Color? OverrideColor
     {
         get => (Color?)GetValue(OverrideColorProperty);
         set => SetValue(OverrideColorProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets an optional color that replaces the stroke colors of the SVG.
+    /// </summary>
     public Color? OverrideStrokeColor
     {
         get => (Color?)GetValue(OverrideStrokeColorProperty);
         set => SetValue(OverrideStrokeColorProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets an optional width that replaces the stroke widths of the SVG.
+    /// </summary>
     public double? OverrideStrokeWidth
     {
         get => (double?)GetValue(OverrideStrokeWidthProperty);
         set => SetValue(OverrideStrokeWidthProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets named brushes that replace the matching brushes used by the SVG.
+    /// </summary>
     public Dictionary<string, Brush> CustomBrushes
     {
         get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);
         set => SetValue(CustomBrushesProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the loader used to resolve external files referenced by the SVG.
+    /// </summary>
     public IExternalFileLoader ExternalFileLoader
     {
         get => (IExternalFileLoader)GetValue(ExternalFileLoaderProperty);
@@ -169,6 +213,9 @@ public sealed class SvgImage : Control
             new FrameworkPropertyMetadata(defaultValue: true));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SvgImage"/> class.
+    /// </summary>
     public SvgImage()
     {
         ClipToBounds = true;
@@ -181,6 +228,9 @@ public sealed class SvgImage : Control
 
     internal bool IsDrawingFromCache => isDrawingFromCache;
 
+    /// <summary>
+    /// Renders the current SVG again using the current override and brush settings.
+    /// </summary>
     public void ReRenderSvg()
     {
         if (svgRender?.Svg is null)
@@ -197,6 +247,10 @@ public sealed class SvgImage : Control
         RenderWithCurrentSettings();
     }
 
+    /// <summary>
+    /// Loads and displays the SVG image from the specified file.
+    /// </summary>
+    /// <param name="svgFileName">The path of the SVG file to load.</param>
     public void SetImage(string svgFileName)
     {
         ClearSource();
@@ -221,6 +275,10 @@ public sealed class SvgImage : Control
         loadImage = null;
     }
 
+    /// <summary>
+    /// Loads and displays the SVG image from the specified stream.
+    /// </summary>
+    /// <param name="svgStream">The stream containing the SVG content.</param>
     public void SetImage(Stream svgStream)
     {
         ClearSource();
@@ -245,6 +303,10 @@ public sealed class SvgImage : Control
         loadImage = null;
     }
 
+    /// <summary>
+    /// Displays the specified drawing, which may be shared between multiple controls.
+    /// </summary>
+    /// <param name="svgDrawing">The drawing to display.</param>
     public void SetImage(Drawing svgDrawing)
     {
         if (!ReferenceEquals(svgDrawing, drawing))
@@ -267,6 +329,7 @@ public sealed class SvgImage : Control
         ReCalculateImageSize();
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
@@ -294,6 +357,7 @@ public sealed class SvgImage : Control
         ExposeSvgBrushes();
     }
 
+    /// <inheritdoc />
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
@@ -301,6 +365,7 @@ public sealed class SvgImage : Control
         InvalidateVisual();
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);
@@ -328,6 +393,7 @@ public sealed class SvgImage : Control
         drawingContext.Pop();
     }
 
+    /// <inheritdoc />
     protected override Size MeasureOverride(Size constraint)
     {
         var size = base.MeasureOverride(constraint);
@@ -351,6 +417,7 @@ public sealed class SvgImage : Control
         return size;
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size arrangeBounds)
     {
         var size = base.ArrangeOverride(arrangeBounds);

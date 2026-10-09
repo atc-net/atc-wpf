@@ -11,10 +11,14 @@ namespace Atc.Wpf.ValueConverters;
 /// </remarks>
 public sealed class MethodToValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="MethodToValueConverter"/>.
+    /// </summary>
     public static readonly MethodToValueConverter Instance = new();
 
     private static readonly ConcurrentDictionary<(Type, string), MethodInfo?> MethodCache = new();
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -34,6 +38,7 @@ public sealed class MethodToValueConverter : IValueConverter
         return methodInfo?.Invoke(value, []);
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

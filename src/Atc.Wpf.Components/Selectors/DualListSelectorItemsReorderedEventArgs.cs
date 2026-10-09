@@ -5,6 +5,12 @@ namespace Atc.Wpf.Components.Selectors;
 /// </summary>
 public sealed class DualListSelectorItemsReorderedEventArgs : EventArgs
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DualListSelectorItemsReorderedEventArgs"/> class.
+    /// </summary>
+    /// <param name="item">The item that was reordered.</param>
+    /// <param name="oldIndex">The previous index of the item.</param>
+    /// <param name="newIndex">The new index of the item.</param>
     public DualListSelectorItemsReorderedEventArgs(
         DualListSelectorItem item,
         int oldIndex,

@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// A text block that renders an IcoFont icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class IcoFont : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>

@@ -9,8 +9,12 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class HexBrushToBrushKeyValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="HexBrushToBrushKeyValueConverter"/>.
+    /// </summary>
     public static readonly HexBrushToBrushKeyValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -28,6 +32,7 @@ public sealed class HexBrushToBrushKeyValueConverter : IValueConverter
         return SolidColorBrushHelper.GetBrushKeyFromHex(str);
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

@@ -1,6 +1,7 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Controls;
 
+/// <summary>Specifies how the decimal-point key is corrected while typing in a numeric input.</summary>
 public enum DecimalPointCorrectionMode
 {
     /// <summary>

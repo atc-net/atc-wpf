@@ -2,6 +2,10 @@ using ComponentsMisc = Atc.Wpf.Components.Resources.Miscellaneous;
 
 namespace Atc.Wpf.Components.Monitoring;
 
+/// <summary>
+/// View model for the <see cref="ApplicationMonitorView"/>, collecting <see cref="ApplicationEventEntry"/>
+/// messages and exposing filtering, sorting, pausing, copy and export.
+/// </summary>
 public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 {
     private const string ClipboardFieldSeparator = " | ";
@@ -47,6 +51,10 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     [ObservableProperty(AfterChangedCallback = nameof(OnListenOnToastNotificationMessageChanged))]
     private bool listenOnToastNotificationMessage;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ApplicationMonitorViewModel"/> class and starts
+    /// listening for <see cref="ApplicationEventEntry"/> messages.
+    /// </summary>
     public ApplicationMonitorViewModel()
     {
         Entries = [];
@@ -85,8 +93,14 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             cts.Token);
     }
 
+    /// <summary>
+    /// Gets the collected event entries.
+    /// </summary>
     public ObservableCollectionEx<ApplicationEventEntry> Entries { get; }
 
+    /// <summary>
+    /// Gets the entries currently selected in the view.
+    /// </summary>
     public ObservableCollectionEx<ApplicationEventEntry> SelectedEntries { get; }
 
     /// <summary>
@@ -153,9 +167,15 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
     }
 
+    /// <summary>
+    /// Gets a value indicating whether auto-scroll is on and entries are sorted ascending.
+    /// </summary>
     public bool IsScrollingUp
         => AutoScroll && SortDirection == ListSortDirection.Ascending;
 
+    /// <summary>
+    /// Gets a value indicating whether auto-scroll is on and entries are sorted descending.
+    /// </summary>
     public bool IsScrollingDown
         => AutoScroll && SortDirection == ListSortDirection.Descending;
 
@@ -389,6 +409,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         CopyAllCommand.RaiseCanExecuteChanged();
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         MessengerInstance.UnRegister<ApplicationEventEntry>(

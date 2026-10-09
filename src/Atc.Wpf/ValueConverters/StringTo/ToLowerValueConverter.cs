@@ -9,6 +9,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class ToLowerValueConverter : MarkupValueConverterBase
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ToLowerValueConverter"/>.
+    /// </summary>
     public static readonly ToLowerValueConverter Instance = new();
 
     /// <inheritdoc />

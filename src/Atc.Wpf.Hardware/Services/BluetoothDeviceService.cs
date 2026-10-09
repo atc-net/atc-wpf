@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates and watches the paired Bluetooth devices through a WinRT device watcher.
+/// </summary>
 public sealed class BluetoothDeviceService : IBluetoothDeviceService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
@@ -9,6 +12,9 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
     private bool initialEnumerationCompleted;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BluetoothDeviceService"/> class.
+    /// </summary>
     public BluetoothDeviceService()
         : this(new DeviceWatcherHost(
             Windows.Devices.Bluetooth.BluetoothDevice.GetDeviceSelectorFromPairingState(true)))
@@ -26,8 +32,10 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
         this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<BluetoothDeviceInfo> Devices { get; }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -39,6 +47,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
         watcher.StartWatching();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -50,6 +59,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
         watcher.StopWatching();
     }
 
+    /// <inheritdoc />
     public async Task RefreshAsync()
     {
         var found = await watcher.FindAllAsync().ConfigureAwait(false);
@@ -71,6 +81,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

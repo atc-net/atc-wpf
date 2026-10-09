@@ -31,15 +31,25 @@ public partial class LabelUsbPortPicker : ILabelUsbPortPicker
     [DependencyProperty(DefaultValue = UsbDeviceClassFilter.None)]
     private UsbDeviceClassFilter classFilter;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<UsbDeviceInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<UsbDeviceInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelUsbPortPicker"/> class.
+    /// </summary>
     public LabelUsbPortPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

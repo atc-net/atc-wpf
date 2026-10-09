@@ -39,6 +39,11 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
         uriConverter = new UriTypeConverter();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SvgIconConverterExtension"/>
+    /// class with the specified base URI.
+    /// </summary>
+    /// <param name="baseUri">The base URI used to resolve relative SVG sources.</param>
     public SvgIconConverterExtension(Uri baseUri)
         : this()
     {
@@ -69,6 +74,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
         return this;
     }
 
+    /// <inheritdoc />
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public object? Convert(
         object? value,
@@ -118,6 +124,7 @@ public sealed class SvgIconConverterExtension : SvgIconBase, IValueConverter
         return null;
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

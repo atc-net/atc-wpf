@@ -84,6 +84,7 @@ public sealed partial class Timeline : Control
             new FrameworkPropertyMetadata(typeof(Timeline)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="Timeline"/> class.</summary>
     public Timeline()
     {
         Items.CollectionChanged += OnItemsCollectionChanged;

@@ -89,6 +89,7 @@ public sealed class ZoomViewportLink : IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

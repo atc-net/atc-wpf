@@ -11,6 +11,9 @@ namespace Atc.Wpf.Network.Scanner;
 /// </remarks>
 public partial class NetworkScannerSettingsView
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NetworkScannerSettingsView"/> class.
+    /// </summary>
     public NetworkScannerSettingsView()
         => InitializeComponent();
 }

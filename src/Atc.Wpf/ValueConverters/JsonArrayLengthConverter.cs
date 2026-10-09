@@ -5,8 +5,12 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 public sealed class JsonArrayLengthConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="JsonArrayLengthConverter"/>.
+    /// </summary>
     public static readonly JsonArrayLengthConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -19,6 +23,7 @@ public sealed class JsonArrayLengthConverter : IValueConverter
             _ => string.Empty,
         };
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

@@ -15,6 +15,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object[]), typeof(double))]
 public sealed class BoolAndDoubleToDoubleMultiValueConverter : IMultiValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="BoolAndDoubleToDoubleMultiValueConverter"/>.
+    /// </summary>
     public static readonly BoolAndDoubleToDoubleMultiValueConverter Instance = new();
 
     /// <inheritdoc />

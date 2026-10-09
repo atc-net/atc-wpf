@@ -1,13 +1,18 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
+/// <summary>
+/// A shader effect that adjusts the brightness and contrast of the input.
+/// </summary>
 public sealed class ContrastAdjustShaderEffect : ShaderEffectBase
 {
+    /// <summary>Identifies the <see cref="Input"/> dependency property.</summary>
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty(
             "Input",
             typeof(ContrastAdjustShaderEffect),
             0);
 
+    /// <summary>Identifies the <see cref="Brightness"/> dependency property.</summary>
     public static readonly DependencyProperty BrightnessProperty =
         DependencyProperty.Register(
             nameof(Brightness),
@@ -17,6 +22,7 @@ public sealed class ContrastAdjustShaderEffect : ShaderEffectBase
                 defaultValue: 0d,
                 PixelShaderConstantCallback(0)));
 
+    /// <summary>Identifies the <see cref="Contrast"/> dependency property.</summary>
     public static readonly DependencyProperty ContrastProperty =
         DependencyProperty.Register(
             nameof(Contrast),
@@ -26,8 +32,12 @@ public sealed class ContrastAdjustShaderEffect : ShaderEffectBase
                 defaultValue: 0d,
                 PixelShaderConstantCallback(1)));
 
+    /// <inheritdoc />
     public override string Name => "ContrastAdjust";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ContrastAdjustShaderEffect"/> class.
+    /// </summary>
     public ContrastAdjustShaderEffect()
     {
         UpdateShaderValue(InputProperty);

@@ -11,6 +11,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(SolidColorBrush), typeof(Color))]
 public sealed class BrushToColorValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="BrushToColorValueConverter"/>.
+    /// </summary>
     public static readonly BrushToColorValueConverter Instance = new();
 
     /// <inheritdoc />

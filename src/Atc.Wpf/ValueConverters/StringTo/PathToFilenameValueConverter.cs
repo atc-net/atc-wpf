@@ -18,6 +18,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class PathToFilenameValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="PathToFilenameValueConverter"/>.
+    /// </summary>
     public static readonly PathToFilenameValueConverter Instance = new();
 
     /// <inheritdoc />

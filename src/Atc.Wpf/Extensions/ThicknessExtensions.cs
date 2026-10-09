@@ -1,6 +1,9 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows;
 
+/// <summary>
+/// Extension methods for <see cref="Thickness"/>.
+/// </summary>
 public static class ThicknessExtensions
 {
     /// <summary>

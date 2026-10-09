@@ -66,12 +66,21 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     [DependencyProperty(DefaultValue = false)]
     private bool openClock;
 
+    /// <summary>
+    /// Occurs when the entered date and time is committed and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the entered date and time is committed and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusInvalid;
 
     private string? themeNameWhenUnloaded;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelDateTimePicker"/> class.
+    /// </summary>
     public LabelDateTimePicker()
     {
         InitializeComponent();

@@ -31,15 +31,25 @@ public partial class LabelAudioOutputPicker : ILabelAudioOutputPicker
     [DependencyProperty(DefaultValue = 120.0)]
     private double previewHeight;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<AudioDeviceInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<AudioDeviceInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelAudioOutputPicker"/> class.
+    /// </summary>
     public LabelAudioOutputPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

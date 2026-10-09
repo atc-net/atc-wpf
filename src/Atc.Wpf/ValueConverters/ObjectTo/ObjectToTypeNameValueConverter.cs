@@ -18,6 +18,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(string))]
 public sealed class ObjectToTypeNameValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ObjectToTypeNameValueConverter"/>.
+    /// </summary>
     public static readonly ObjectToTypeNameValueConverter Instance = new();
 
     /// <inheritdoc />

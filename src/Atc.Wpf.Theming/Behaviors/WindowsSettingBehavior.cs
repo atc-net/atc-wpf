@@ -1,6 +1,9 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Theming.Behaviors;
 
+/// <summary>
+/// Saves and restores the placement and state of a <see cref="NiceWindow"/>.
+/// </summary>
 [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
 [SuppressMessage("Design", "MA0150:Do not call the default object.ToString explicitly", Justification = "OK.")]
 [SuppressMessage("Security", "S6640:Make sure that using \"unsafe\" is safe here", Justification = "OK - By design.")]

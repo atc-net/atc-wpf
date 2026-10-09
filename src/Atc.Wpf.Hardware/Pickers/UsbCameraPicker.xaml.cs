@@ -5,26 +5,41 @@ namespace Atc.Wpf.Hardware.Pickers;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
 {
+    /// <summary>
+    /// Occurs when the selected camera changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<UsbCameraInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
+    /// <summary>
+    /// Occurs when the selected camera is disconnected.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<UsbCameraInfo?>))]
     private static readonly RoutedEvent deviceLost;
 
+    /// <summary>
+    /// Occurs when a previously lost camera reappears.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<UsbCameraInfo?>))]
     private static readonly RoutedEvent deviceReconnected;
 
+    /// <summary>
+    /// Occurs when the state of any tracked camera changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(EventHandler<DeviceStateChangedRoutedEventArgs>))]
     private static readonly RoutedEvent deviceStateChanged;
 
+    /// <summary>
+    /// Identifies the <see cref="Value"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),
         typeof(UsbCameraInfo),
@@ -34,6 +49,9 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnValuePropertyChanged));
 
+    /// <summary>
+    /// Gets or sets the selected camera.
+    /// </summary>
     public UsbCameraInfo? Value
     {
         get => (UsbCameraInfo?)GetValue(ValueProperty);
@@ -64,6 +82,9 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
     [DependencyProperty(DefaultValue = 240.0)]
     private double previewHeight;
 
+    /// <summary>
+    /// Identifies the <see cref="PreferredFormat"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
         nameof(PreferredFormat),
         typeof(UsbCameraFormat),
@@ -72,54 +93,81 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
             defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    /// <summary>
+    /// Gets or sets the preferred resolution and frame rate for the live preview; when no exact match exists the device default is used.
+    /// </summary>
     public UsbCameraFormat? PreferredFormat
     {
         get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
         set => SetValue(PreferredFormatProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="ItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),
         typeof(UsbCameraPicker),
         new PropertyMetadata(defaultValue: null, OnItemTemplateChanged));
 
+    /// <summary>
+    /// Gets or sets the template used to display each camera; when <see langword="null"/> the default template is used.
+    /// </summary>
     public DataTemplate? ItemTemplate
     {
         get => (DataTemplate?)GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="ResolvedItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ResolvedItemTemplateProperty = DependencyProperty.Register(
         nameof(ResolvedItemTemplate),
         typeof(DataTemplate),
         typeof(UsbCameraPicker),
         new PropertyMetadata(defaultValue: null));
 
+    /// <summary>
+    /// Gets the item template in effect: <see cref="ItemTemplate"/> when set, otherwise the default template.
+    /// </summary>
     public DataTemplate? ResolvedItemTemplate
     {
         get => (DataTemplate?)GetValue(ResolvedItemTemplateProperty);
         private set => SetValue(ResolvedItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="SelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty SelectedStateMessageProperty = DependencyProperty.Register(
         nameof(SelectedStateMessage),
         typeof(string),
         typeof(UsbCameraPicker),
         new PropertyMetadata(defaultValue: string.Empty, OnSelectedStateMessageChanged));
 
+    /// <summary>
+    /// Gets the state message for the selected camera (for example "In use" or "Disconnected"), or an empty string.
+    /// </summary>
     public string SelectedStateMessage
     {
         get => (string)GetValue(SelectedStateMessageProperty);
         private set => SetValue(SelectedStateMessageProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="HasSelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty HasSelectedStateMessageProperty = DependencyProperty.Register(
         nameof(HasSelectedStateMessage),
         typeof(bool),
         typeof(UsbCameraPicker),
         new PropertyMetadata(defaultValue: false));
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SelectedStateMessage"/> is not empty.
+    /// </summary>
     public bool HasSelectedStateMessage
     {
         get => (bool)GetValue(HasSelectedStateMessageProperty);
@@ -139,6 +187,9 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
         typeof(UsbCameraPicker),
         new PropertyMetadata(defaultValue: true));
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the selected camera's state message is shown inline below the drop-down.
+    /// </summary>
     public bool ShowSelectedStateMessage
     {
         get => (bool)GetValue(ShowSelectedStateMessageProperty);
@@ -148,6 +199,9 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
     private readonly IUsbCameraService service;
     private readonly DevicePickerController<UsbCameraInfo> controller;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsbCameraPicker"/> class.
+    /// </summary>
     public UsbCameraPicker()
         : this(new UsbCameraService())
     {
@@ -182,10 +236,17 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Gets the cameras known to the picker's service.
+    /// </summary>
     public ObservableCollection<UsbCameraInfo> Cameras { get; }
 
+    /// <summary>
+    /// Gets the service that enumerates and watches the cameras.
+    /// </summary>
     public IUsbCameraService Service => service;
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new UsbCameraPickerAutomationPeer(this);
 

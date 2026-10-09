@@ -13,6 +13,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(bool), typeof(LengthConverter))]
 public sealed class BoolToWidthValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="BoolToWidthValueConverter"/>.
+    /// </summary>
     public static readonly BoolToWidthValueConverter Instance = new();
 
     /// <inheritdoc />

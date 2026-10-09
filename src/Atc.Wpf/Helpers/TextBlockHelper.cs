@@ -2,9 +2,11 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.Helpers;
 
+/// <summary>Provides attached properties for a <see cref="TextBlock"/>, such as a bindable collection of inline runs.</summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class TextBlockHelper
 {
+    /// <summary>Identifies the Inlines attached property.</summary>
     public static readonly DependencyProperty InlinesProperty = DependencyProperty.RegisterAttached(
         "Inlines",
         typeof(ObservableCollection<Run>),
@@ -13,9 +15,11 @@ public static class TextBlockHelper
             defaultValue: null,
             OnInlinesChanged));
 
+    /// <summary>Gets the value of the Inlines attached property.</summary>
     public static ObservableCollection<Run> GetInlines(DependencyObject d)
         => (ObservableCollection<Run>)d.GetValue(InlinesProperty);
 
+    /// <summary>Sets the value of the Inlines attached property.</summary>
     public static void SetInlines(
         DependencyObject d,
         ObservableCollection<Run> value)

@@ -10,15 +10,25 @@ public partial class LabelTimeZonePicker : ILabelTimeZonePicker
     [DependencyProperty(DefaultValue = "")]
     private string watermarkText;
 
+    /// <summary>
+    /// Occurs when the selected time zone changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<TimeZoneInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selected time zone changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<TimeZoneInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelTimeZonePicker"/> class.
+    /// </summary>
     public LabelTimeZonePicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

@@ -21,6 +21,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(bool))]
 public sealed class StringEqualsToBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="StringEqualsToBoolValueConverter"/>.
+    /// </summary>
     public static readonly StringEqualsToBoolValueConverter Instance = new();
 
     /// <inheritdoc />

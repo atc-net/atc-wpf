@@ -1,7 +1,11 @@
 namespace Atc.Wpf.Serialization.JsonConverters;
 
+/// <summary>
+/// JSON converter that serializes a <see cref="SolidColorBrush"/> as a hex color string and back.
+/// </summary>
 public sealed class SolidColorBrushToHexJsonConverter : JsonConverter<SolidColorBrush?>
 {
+    /// <inheritdoc />
     public override SolidColorBrush? Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -13,6 +17,7 @@ public sealed class SolidColorBrushToHexJsonConverter : JsonConverter<SolidColor
             : SolidColorBrushHelper.GetBrushFromHex(hexaColor);
     }
 
+    /// <inheritdoc />
     public override void Write(
         Utf8JsonWriter writer,
         SolidColorBrush? value,

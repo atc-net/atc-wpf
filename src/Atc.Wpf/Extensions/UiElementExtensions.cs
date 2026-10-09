@@ -2,13 +2,22 @@
 // ReSharper disable ConvertIfStatementToSwitchStatement
 namespace System.Windows;
 
+/// <summary>
+/// Extension methods for <see cref="UIElement"/>.
+/// </summary>
 public static class UiElementExtensions
 {
+    /// <summary>
+    /// Renders the element to a bitmap using the same zoom factor for both axes.
+    /// </summary>
     public static BitmapSource SnapShotToBitmap(
         this UIElement uiElement,
         double zoomFactor = 1)
         => uiElement.SnapShotToBitmap(zoomFactor, zoomFactor);
 
+    /// <summary>
+    /// Renders the element to a bitmap using separate horizontal and vertical zoom factors.
+    /// </summary>
     public static BitmapSource SnapShotToBitmap(
         this UIElement uiElement,
         double zoomFactorX,

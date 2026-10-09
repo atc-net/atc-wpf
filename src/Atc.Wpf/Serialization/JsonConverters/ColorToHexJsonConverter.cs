@@ -1,7 +1,11 @@
 namespace Atc.Wpf.Serialization.JsonConverters;
 
+/// <summary>
+/// JSON converter that serializes a <see cref="Color"/> as a hex string (for example <c>#FF0000FF</c>) and back.
+/// </summary>
 public sealed class ColorToHexJsonConverter : JsonConverter<Color?>
 {
+    /// <inheritdoc />
     public override Color? Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -13,6 +17,7 @@ public sealed class ColorToHexJsonConverter : JsonConverter<Color?>
             : ColorHelper.GetColorFromHex(hexaColor);
     }
 
+    /// <inheritdoc />
     public override void Write(
         Utf8JsonWriter writer,
         Color? value,

@@ -9,6 +9,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class ToUpperValueConverter : MarkupValueConverterBase
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ToUpperValueConverter"/>.
+    /// </summary>
     public static readonly ToUpperValueConverter Instance = new();
 
     /// <inheritdoc />

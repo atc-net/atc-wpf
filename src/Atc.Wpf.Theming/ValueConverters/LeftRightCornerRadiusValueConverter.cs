@@ -8,8 +8,12 @@ namespace Atc.Wpf.Theming.ValueConverters;
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
 public sealed class LeftRightCornerRadiusValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly LeftRightCornerRadiusValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -29,6 +33,7 @@ public sealed class LeftRightCornerRadiusValueConverter : IValueConverter
             0);
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

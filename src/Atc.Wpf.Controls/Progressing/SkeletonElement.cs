@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Progressing;
 
+/// <summary>An animated placeholder shape used to build skeleton loading screens.</summary>
 public sealed partial class SkeletonElement : Control
 {
     [DependencyProperty(DefaultValue = SkeletonShape.Rectangle)]

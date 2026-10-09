@@ -6,12 +6,16 @@ namespace Atc.Wpf.DependencyObjects;
 /// </summary>
 public sealed class MessageListener : DependencyObject
 {
+    /// <summary>Identifies the <see cref="Message"/> dependency property.</summary>
     public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(
         nameof(Message),
         typeof(string),
         typeof(MessageListener),
         new PropertyMetadata(default(string)));
 
+    /// <summary>
+    /// Gets or sets the last received message.
+    /// </summary>
     public string Message
     {
         get => (string)GetValue(MessageProperty);

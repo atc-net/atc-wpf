@@ -15,8 +15,14 @@ public partial class LabelColorPicker : ILabelColorPicker
         PropertyChangedCallback = nameof(OnBrushValueChanged))]
     private SolidColorBrush? brushValue;
 
+    /// <summary>
+    /// Occurs when a color is picked in the inner color picker.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<Color>>? ColorChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelColorPicker"/> class.
+    /// </summary>
     public LabelColorPicker()
     {
         InitializeComponent();

@@ -8,6 +8,9 @@ namespace Atc.Wpf.Forms;
 [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
 public partial class LabelTextBox : ILabelTextBox
 {
+    /// <summary>
+    /// Occurs when the <c>Text</c> value changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
@@ -55,15 +58,25 @@ public partial class LabelTextBox : ILabelTextBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged)]
     private string text;
 
+    /// <summary>
+    /// Occurs when the control loses focus and the text passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusValid;
 
+    /// <summary>
+    /// Occurs when the control loses focus and the text fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelTextBox"/> class.
+    /// </summary>
     public LabelTextBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateText(

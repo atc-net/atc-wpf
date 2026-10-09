@@ -10,8 +10,10 @@ namespace Atc.Wpf.Controls.ValueConverters;
 [ValueConversion(typeof(bool), typeof(DataDisplay.PopoverTriggerMode))]
 public sealed class BoolToPopoverTriggerModeValueConverter : IValueConverter
 {
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly BoolToPopoverTriggerModeValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -21,6 +23,7 @@ public sealed class BoolToPopoverTriggerModeValueConverter : IValueConverter
             ? DataDisplay.PopoverTriggerMode.Hover
             : DataDisplay.PopoverTriggerMode.Manual;
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

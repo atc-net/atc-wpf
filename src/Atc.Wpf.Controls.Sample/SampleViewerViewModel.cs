@@ -1,10 +1,16 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Controls.Sample;
 
+/// <summary>
+/// View model for the sample viewer, which shows the selected sample together with its XAML, code-behind, view model code and readme.
+/// </summary>
 public sealed class SampleViewerViewModel : ViewModelBase
 {
     private const string Error = "Error";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SampleViewerViewModel"/> class and subscribes to <see cref="SampleItemMessage"/>.
+    /// </summary>
     public SampleViewerViewModel()
     {
         Messenger.Default.Register<SampleItemMessage>(
@@ -22,6 +28,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
     private string? markdownDocument;
     private bool startOnMarkdownDocument;
 
+    /// <summary>
+    /// Gets or sets the index of the selected tab in the sample viewer.
+    /// </summary>
     public int TabSelectedIndex
     {
         get => tabSelectedIndex;
@@ -37,16 +46,34 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SampleContent"/> is set.
+    /// </summary>
     public bool HasSampleContent => SampleContent is not null;
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="XamlCode"/> is set.
+    /// </summary>
     public bool HasXamlCode => XamlCode is not null;
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="CodeBehindCode"/> is set.
+    /// </summary>
     public bool HasCodeBehindCode => CodeBehindCode is not null;
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="ViewModelCode"/> is set.
+    /// </summary>
     public bool HasViewModelCode => ViewModelCode is not null;
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="MarkdownDocument"/> is set.
+    /// </summary>
     public bool HasMarkdownDocument => MarkdownDocument is not null;
 
+    /// <summary>
+    /// Gets or sets the header of the selected sample.
+    /// </summary>
     public string? Header
     {
         get => header;
@@ -62,6 +89,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the instance of the selected sample view.
+    /// </summary>
     public UserControl? SampleContent
     {
         get => sampleContent;
@@ -78,6 +108,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the XAML source of the selected sample.
+    /// </summary>
     public string? XamlCode
     {
         get => xamlCode;
@@ -94,6 +127,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the code-behind source of the selected sample.
+    /// </summary>
     public string? CodeBehindCode
     {
         get => codeBehindCode;
@@ -110,6 +146,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the view model source of the selected sample.
+    /// </summary>
     public string? ViewModelCode
     {
         get => viewModelCode;
@@ -126,6 +165,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the markdown content of the readme found for the selected sample.
+    /// </summary>
     public string? MarkdownDocument
     {
         get => markdownDocument;
@@ -142,6 +184,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the readme tab is selected when the sample is shown.
+    /// </summary>
     public bool StartOnMarkdownDocument
     {
         get => startOnMarkdownDocument;
@@ -445,6 +490,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         return baseLocation;
     }
 
+    /// <summary>
+    /// Scans the solution folder for markdown files and caches them for readme lookup.
+    /// </summary>
     public void PrepareReadmeReferences()
     {
         var basePath = GetBasePath();

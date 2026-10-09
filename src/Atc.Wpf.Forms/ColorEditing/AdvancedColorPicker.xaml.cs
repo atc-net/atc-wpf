@@ -49,8 +49,12 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         PropertyChangedCallback = nameof(OnColorChanged))]
     private Color color;
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AdvancedColorPicker"/> class.
+    /// </summary>
     public AdvancedColorPicker()
     {
         InitializeComponent();
@@ -64,8 +68,14 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets a new <see cref="SolidColorBrush"/> for the current color.
+    /// </summary>
     public SolidColorBrush ColorAsBrush => new(Color);
 
+    /// <summary>
+    /// Gets or sets the hue component of the current color; setting it updates the color.
+    /// </summary>
     public double Hue
     {
         get => hue;
@@ -87,6 +97,9 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the saturation component of the current color; setting it updates the color.
+    /// </summary>
     public double Saturation
     {
         get => saturation;
@@ -108,6 +121,9 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the brightness component of the current color; setting it updates the color.
+    /// </summary>
     public double Brightness
     {
         get => brightness;
@@ -129,6 +145,9 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the red channel of the current color; setting it updates the color.
+    /// </summary>
     public byte Red
     {
         get => red;
@@ -149,6 +168,9 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the green channel of the current color; setting it updates the color.
+    /// </summary>
     public byte Green
     {
         get => green;
@@ -169,6 +191,9 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the blue channel of the current color; setting it updates the color.
+    /// </summary>
     public byte Blue
     {
         get => blue;
@@ -189,6 +214,9 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the alpha (opacity) channel of the current color; setting it updates the color.
+    /// </summary>
     public byte Alpha
     {
         get => alpha;
@@ -209,6 +237,10 @@ public partial class AdvancedColorPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {

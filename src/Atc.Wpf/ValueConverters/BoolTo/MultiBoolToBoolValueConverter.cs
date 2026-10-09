@@ -8,8 +8,14 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(List<bool>), typeof(bool))]
 public sealed class MultiBoolToBoolValueConverter : IMultiValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="MultiBoolToBoolValueConverter"/>.
+    /// </summary>
     public static readonly MultiBoolToBoolValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the boolean operator used to combine the values when no operator is passed as the converter parameter.
+    /// </summary>
     public BooleanOperatorType DefaultOperator { get; set; } = BooleanOperatorType.AND;
 
     /// <inheritdoc />

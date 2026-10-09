@@ -1,6 +1,9 @@
 // ReSharper disable once CheckNamespace
 namespace Atc.Wpf;
 
+/// <summary>
+/// Specifies the unit used to define a size.
+/// </summary>
 public enum SizeDefinitionType
 {
     /// <summary>

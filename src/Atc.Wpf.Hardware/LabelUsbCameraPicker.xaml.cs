@@ -31,6 +31,9 @@ public partial class LabelUsbCameraPicker : ILabelUsbCameraPicker
     [DependencyProperty(DefaultValue = 240.0)]
     private double previewHeight;
 
+    /// <summary>
+    /// Identifies the <see cref="PreferredFormat"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
         nameof(PreferredFormat),
         typeof(UsbCameraFormat),
@@ -39,21 +42,34 @@ public partial class LabelUsbCameraPicker : ILabelUsbCameraPicker
             defaultValue: null,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    /// <summary>
+    /// Gets or sets the preferred resolution and frame rate for the live preview; the device default is used when no exact match exists.
+    /// </summary>
     public UsbCameraFormat? PreferredFormat
     {
         get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
         set => SetValue(PreferredFormatProperty, value);
     }
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<UsbCameraInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<UsbCameraInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelUsbCameraPicker"/> class.
+    /// </summary>
     public LabelUsbCameraPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

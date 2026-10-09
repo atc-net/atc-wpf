@@ -1,5 +1,9 @@
 namespace Atc.Wpf.Network.Vnc;
 
+/// <summary>
+/// Manages a VNC client connection: connecting and authenticating, rendering framebuffer
+/// updates into a <see cref="WriteableBitmap"/>, and forwarding pointer and key input.
+/// </summary>
 public sealed class VncConnectionService : IDisposable
 {
     private readonly Func<string, int, IVncClient> clientFactory;
@@ -7,6 +11,9 @@ public sealed class VncConnectionService : IDisposable
     private IVncClient? vnc;
     private WriteableBitmap? framebuffer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VncConnectionService"/> class.
+    /// </summary>
     public VncConnectionService()
         : this((hostname, port) => new VncClient(hostname, port, new VncClientConfig()))
     {
@@ -18,22 +25,54 @@ public sealed class VncConnectionService : IDisposable
         dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether a VNC session is currently connected.
+    /// </summary>
     public bool IsConnected { get; private set; }
 
+    /// <summary>
+    /// Gets the width, in pixels, of the remote framebuffer, or 0 when not connected.
+    /// </summary>
     public int FramebufferWidth => framebuffer?.PixelWidth ?? 0;
 
+    /// <summary>
+    /// Gets the height, in pixels, of the remote framebuffer, or 0 when not connected.
+    /// </summary>
     public int FramebufferHeight => framebuffer?.PixelHeight ?? 0;
 
+    /// <summary>
+    /// Gets the bitmap holding the current remote screen image, or <see langword="null"/> when not connected.
+    /// </summary>
     public WriteableBitmap? CurrentFrame => framebuffer;
 
+    /// <summary>
+    /// Occurs when the connection has been established and screen updates have started.
+    /// </summary>
     public event EventHandler? Connected;
 
+    /// <summary>
+    /// Occurs when the connection is closed or lost.
+    /// </summary>
     public event EventHandler? Disconnected;
 
+    /// <summary>
+    /// Occurs when connecting or authenticating fails.
+    /// </summary>
     public event EventHandler<VncConnectionFailedEventArgs>? ConnectionFailed;
 
+    /// <summary>
+    /// Occurs when a region of <see cref="CurrentFrame"/> has been updated.
+    /// </summary>
     public event EventHandler? FramebufferUpdated;
 
+    /// <summary>
+    /// Connects to and authenticates with a VNC server, then starts receiving screen updates.
+    /// Failures are reported through <see cref="ConnectionFailed"/> rather than thrown.
+    /// </summary>
+    /// <param name="hostname">The host name or IP address of the VNC server.</param>
+    /// <param name="port">The TCP port of the VNC server.</param>
+    /// <param name="password">The optional password used for authentication.</param>
+    /// <returns>A task that completes when the connection attempt has finished.</returns>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "VNC connection errors should be reported, not thrown.")]
     public async Task ConnectAsync(
         string hostname,
@@ -95,6 +134,10 @@ public sealed class VncConnectionService : IDisposable
         }
     }
 
+    /// <summary>
+    /// Disconnects from the VNC server and raises <see cref="Disconnected"/>.
+    /// </summary>
+    /// <returns>A task that completes when the connection has been closed.</returns>
     public async Task DisconnectAsync()
     {
         if (vnc is not null)
@@ -107,6 +150,14 @@ public sealed class VncConnectionService : IDisposable
         Disconnected?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Sends a pointer (mouse) event to the VNC server; does nothing when not connected.
+    /// A failed send is reported as a lost connection.
+    /// </summary>
+    /// <param name="buttonMask">The pressed-buttons bit mask (1 = left, 2 = middle, 4 = right).</param>
+    /// <param name="x">The horizontal framebuffer coordinate.</param>
+    /// <param name="y">The vertical framebuffer coordinate.</param>
+    /// <returns>A task that completes when the event has been sent.</returns>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A failed send is reported as a lost connection.")]
     public async Task SendPointerEventAsync(
         byte buttonMask,
@@ -130,6 +181,13 @@ public sealed class VncConnectionService : IDisposable
         }
     }
 
+    /// <summary>
+    /// Sends a key press or release event to the VNC server; does nothing when not connected.
+    /// A failed send is reported as a lost connection.
+    /// </summary>
+    /// <param name="keySym">The X11 keysym of the key.</param>
+    /// <param name="pressed"><see langword="true"/> for a key press; <see langword="false"/> for a key release.</param>
+    /// <returns>A task that completes when the event has been sent.</returns>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A failed send is reported as a lost connection.")]
     public async Task SendKeyEventAsync(
         uint keySym,
@@ -152,6 +210,7 @@ public sealed class VncConnectionService : IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
         => Cleanup();
 

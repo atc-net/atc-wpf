@@ -8,10 +8,17 @@ namespace Atc.Wpf.Theming.ValueConverters;
 [ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
 public sealed class CornerRadiusBindingValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly CornerRadiusBindingValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the side(s) to zero when no <see cref="RadiusType"/> converter parameter is given.
+    /// </summary>
     public RadiusType IgnoreRadius { get; set; } = RadiusType.None;
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -43,6 +50,7 @@ public sealed class CornerRadiusBindingValueConverter : IValueConverter
         };
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

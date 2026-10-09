@@ -22,6 +22,9 @@ namespace Atc.Wpf.Documents.TextFormatters.SourceCode.Format;
 /// </remarks>
 public abstract class Source
 {
+    /// <summary>
+    /// The placeholder inserted in place of a formatted match, used to split the source into chunks.
+    /// </summary>
     public const string FormattingMarker = "::::::";
 
     /// <summary>

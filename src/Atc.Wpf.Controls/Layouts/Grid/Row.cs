@@ -1,11 +1,13 @@
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
+/// <summary>A Bootstrap-style 24-cell row panel that lays out <see cref="Col"/> children, wrapping when the cells of a line are used up.</summary>
 public sealed class Row : Panel
 {
     private ColLayoutType layoutStatus;
     private double maxChildDesiredHeight;
     private double totalAutoWidth;
 
+    /// <summary>Identifies the <see cref="Gutter"/> dependency property.</summary>
     public static readonly DependencyProperty GutterProperty = DependencyProperty.Register(
         nameof(Gutter),
         typeof(double),
@@ -23,12 +25,14 @@ public sealed class Row : Panel
             ? baseValue
             : 0.0;
 
+    /// <summary>Gets or sets the spacing between columns; each column gets a uniform margin of half the gutter.</summary>
     public double Gutter
     {
         get => (double)GetValue(GutterProperty);
         set => SetValue(GutterProperty, value);
     }
 
+    /// <inheritdoc />
     protected override Size MeasureOverride(Size availableSize)
     {
         var totalCellCount = 0;
@@ -65,6 +69,7 @@ public sealed class Row : Panel
         return new Size(0, (maxChildDesiredHeight * totalRowCount) - Gutter);
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size finalSize)
     {
         var totalCellCount = 0;

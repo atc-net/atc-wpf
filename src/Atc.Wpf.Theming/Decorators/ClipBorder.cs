@@ -16,6 +16,7 @@ public sealed class ClipBorder : Decorator
     // changes), so it's safe to cache here and invalidate alongside them.
     private Geometry? borderRingGeometryCache;
 
+    /// <summary>Identifies the <see cref="BorderThickness"/> dependency property.</summary>
     public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
         nameof(BorderThickness),
         typeof(Thickness),
@@ -25,12 +26,16 @@ public sealed class ClipBorder : Decorator
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
         OnValidateThickness);
 
+    /// <summary>
+    /// Gets or sets the thickness of the border.
+    /// </summary>
     public Thickness BorderThickness
     {
         get => (Thickness)GetValue(BorderThicknessProperty);
         set => SetValue(BorderThicknessProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Padding"/> dependency property.</summary>
     public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
         nameof(Padding),
         typeof(Thickness),
@@ -40,12 +45,16 @@ public sealed class ClipBorder : Decorator
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
         OnValidateThickness);
 
+    /// <summary>
+    /// Gets or sets the space between the border and the child.
+    /// </summary>
     public Thickness Padding
     {
         get => (Thickness)GetValue(PaddingProperty);
         set => SetValue(PaddingProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="CornerRadius"/> dependency property.</summary>
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius),
         typeof(CornerRadius),
@@ -55,12 +64,16 @@ public sealed class ClipBorder : Decorator
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
         OnValidateCornerRadius);
 
+    /// <summary>
+    /// Gets or sets the radius of the corners; the child is clipped to the matching inner shape.
+    /// </summary>
     public CornerRadius CornerRadius
     {
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="BorderBrush"/> dependency property.</summary>
     public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
         nameof(BorderBrush),
         typeof(Brush),
@@ -69,12 +82,16 @@ public sealed class ClipBorder : Decorator
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender));
 
+    /// <summary>
+    /// Gets or sets the brush used to draw the border.
+    /// </summary>
     public Brush? BorderBrush
     {
         get => (Brush?)GetValue(BorderBrushProperty);
         set => SetValue(BorderBrushProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Background"/> dependency property.</summary>
     public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
         nameof(Background),
         typeof(Brush),
@@ -83,12 +100,16 @@ public sealed class ClipBorder : Decorator
             defaultValue: null,
             FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender));
 
+    /// <summary>
+    /// Gets or sets the brush used to fill the area inside the border.
+    /// </summary>
     public Brush? Background
     {
         get => (Brush?)GetValue(BackgroundProperty);
         set => SetValue(BackgroundProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="OptimizeClipRendering"/> dependency property.</summary>
     public static readonly DependencyProperty OptimizeClipRenderingProperty = DependencyProperty.Register(
         nameof(OptimizeClipRendering),
         typeof(bool),
@@ -97,12 +118,17 @@ public sealed class ClipBorder : Decorator
             BooleanBoxes.FalseBox,
             FrameworkPropertyMetadataOptions.AffectsRender));
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the whole border area is filled with <see cref="BorderBrush"/> only,
+    /// without drawing the background separately.
+    /// </summary>
     public bool OptimizeClipRendering
     {
         get => (bool)GetValue(OptimizeClipRenderingProperty);
         set => SetValue(OptimizeClipRenderingProperty, BooleanBoxes.Box(value));
     }
 
+    /// <inheritdoc />
     protected override Size MeasureOverride(Size constraint)
     {
         var child = Child;
@@ -141,6 +167,7 @@ public sealed class ClipBorder : Decorator
         return desiredSize;
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size arrangeSize)
     {
         var borders = BorderThickness;
@@ -209,6 +236,7 @@ public sealed class ClipBorder : Decorator
         return arrangeSize;
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);

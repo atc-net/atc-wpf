@@ -1,6 +1,7 @@
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
+/// <summary>A column element for the <see cref="Row"/> panel, spanning a fixed or responsive number of the row's 24 cells.</summary>
 public sealed partial class Col : ContentControl
 {
     [DependencyProperty]

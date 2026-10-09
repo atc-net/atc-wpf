@@ -12,6 +12,7 @@ public static class SolidColorBrushHelper
     private static readonly ConcurrentDictionary<int, Dictionary<SolidColorBrush, string>> BrushNames = new();
     private static readonly ConcurrentDictionary<int, Dictionary<string, SolidColorBrush>> BrushNamesReverse = new();
 
+    /// <summary>Preloads the known brushes and the localized brush names for the supported languages (en-US, en-GB, da-DK and de-DE).</summary>
     public static void InitializeWithSupportedLanguages()
     {
         EnsureBaseBrushes();
@@ -21,6 +22,7 @@ public static class SolidColorBrushHelper
         EnsureBrushNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Germany));
     }
 
+    /// <summary>Gets all known brushes.</summary>
     public static SolidColorBrush[] GetBrushes()
     {
         EnsureBaseBrushes();
@@ -30,6 +32,7 @@ public static class SolidColorBrushHelper
             .ToArray();
     }
 
+    /// <summary>Gets the basic brushes.</summary>
     public static SolidColorBrush[] GetBasicBrushes()
     {
         EnsureBaseBrushes();
@@ -49,9 +52,11 @@ public static class SolidColorBrushHelper
         return [.. brushes];
     }
 
+    /// <summary>Gets a brush from a hex value or a color name in the current UI culture.</summary>
     public static SolidColorBrush? GetBrushFromString(string value)
         => GetBrushFromString(value, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets a brush from a hex value or a color name in the specified culture.</summary>
     public static SolidColorBrush? GetBrushFromString(
         string value,
         CultureInfo culture)
@@ -102,9 +107,11 @@ public static class SolidColorBrushHelper
             : null;
     }
 
+    /// <summary>Gets a brush from a color name in the current UI culture.</summary>
     public static SolidColorBrush? GetBrushFromName(string brushName)
         => GetBrushFromString(brushName, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets a brush from a color name in the specified culture.</summary>
     public static SolidColorBrush? GetBrushFromName(
         string brushName,
         CultureInfo culture)
@@ -124,6 +131,7 @@ public static class SolidColorBrushHelper
             culture);
     }
 
+    /// <summary>Gets a brush from a hex value in the format #RGB, #RRGGBB or #AARRGGBB.</summary>
     public static SolidColorBrush? GetBrushFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
@@ -147,12 +155,15 @@ public static class SolidColorBrushHelper
             CultureInfo.InvariantCulture);
     }
 
+    /// <summary>Gets all localized brush names for the current UI culture, sorted.</summary>
     public static IList<string> GetAllBrushNames()
         => GetAllBrushNames(CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets all localized brush names for the specified culture, sorted.</summary>
     public static IList<string> GetAllBrushNames(CultureInfo culture)
         => ColorHelper.GetAllColorNames(culture);
 
+    /// <summary>Gets the keys of all known brushes.</summary>
     public static IList<string> GetBrushKeys()
     {
         EnsureBaseBrushes();
@@ -162,9 +173,11 @@ public static class SolidColorBrushHelper
             .ToList();
     }
 
+    /// <summary>Gets the keys of the basic brushes, sorted.</summary>
     public static IList<string> GetBasicBrushKeys()
         => ColorHelper.GetBasicColorKeys();
 
+    /// <summary>Gets the key of the known brush whose color matches the brush, or <see langword="null"/> if there is none.</summary>
     public static string? GetBrushKeyFromBrush(SolidColorBrush brush)
     {
         EnsureBaseBrushes();
@@ -177,9 +190,11 @@ public static class SolidColorBrushHelper
             .Key;
     }
 
+    /// <summary>Gets the localized name of the brush in the current UI culture.</summary>
     public static string? GetBrushNameFromBrush(SolidColorBrush brush)
         => GetBrushNameFromBrush(brush, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets the localized name of the brush in the specified culture, optionally followed by its hex value.</summary>
     public static string? GetBrushNameFromBrush(
         SolidColorBrush brush,
         CultureInfo culture,
@@ -210,6 +225,7 @@ public static class SolidColorBrushHelper
         return $"{brushName} ({colorHex})";
     }
 
+    /// <summary>Gets the key of the known brush that matches a hex value starting with # or 0x, or <see langword="null"/> if there is none.</summary>
     public static string? GetBrushKeyFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
@@ -253,9 +269,11 @@ public static class SolidColorBrushHelper
             .Key;
     }
 
+    /// <summary>Gets the localized name of the brush for a hex value in the current UI culture.</summary>
     public static string? GetBrushNameFromHex(string hexValue)
         => GetBrushNameFromHex(hexValue, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets the localized name of the brush for a hex value in the specified culture, optionally followed by its hex value.</summary>
     public static string? GetBrushNameFromHex(
         string hexValue,
         CultureInfo culture,
@@ -272,6 +290,7 @@ public static class SolidColorBrushHelper
                 useAlphaChannel);
     }
 
+    /// <summary>Gets the localized name of the brush with the given key in the specified culture.</summary>
     public static string? GetBrushNameFromKey(
         string brushKey,
         CultureInfo culture)

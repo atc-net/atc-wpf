@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(bool))]
 public sealed class StringNullOrEmptyToBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="StringNullOrEmptyToBoolValueConverter"/>.
+    /// </summary>
     public static readonly StringNullOrEmptyToBoolValueConverter Instance = new();
 
     /// <inheritdoc />

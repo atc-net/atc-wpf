@@ -8,11 +8,15 @@ namespace Atc.Wpf.Forms.FontEditing;
 /// </summary>
 public sealed class InMemoryFontPickerStorage : IFontPickerStorage
 {
+    /// <summary>
+    /// The maximum number of recent font family names kept.
+    /// </summary>
     public const int MaxRecentItems = 8;
 
     private readonly System.Threading.Lock syncRoot = new();
     private readonly LinkedList<string> recent = new();
 
+    /// <inheritdoc />
     public IReadOnlyList<string> GetRecentFontFamilies()
     {
         lock (syncRoot)
@@ -21,6 +25,7 @@ public sealed class InMemoryFontPickerStorage : IFontPickerStorage
         }
     }
 
+    /// <inheritdoc />
     public void RecordRecentFontFamily(string fontFamilySource)
     {
         if (string.IsNullOrWhiteSpace(fontFamilySource))

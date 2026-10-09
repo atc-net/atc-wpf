@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(bool), typeof(Visibility))]
 public sealed class BoolToVisibilityCollapsedValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="BoolToVisibilityCollapsedValueConverter"/>.
+    /// </summary>
     public static readonly BoolToVisibilityCollapsedValueConverter Instance = new();
 
     /// <inheritdoc />

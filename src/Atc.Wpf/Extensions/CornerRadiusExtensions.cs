@@ -1,6 +1,9 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows;
 
+/// <summary>
+/// Extension methods for <see cref="CornerRadius"/>.
+/// </summary>
 public static class CornerRadiusExtensions
 {
     /// <summary>

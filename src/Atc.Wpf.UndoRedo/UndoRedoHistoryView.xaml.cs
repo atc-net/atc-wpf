@@ -11,6 +11,9 @@ public partial class UndoRedoHistoryView
     [DependencyProperty(DefaultValue = false)]
     private bool showMarkSaved;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UndoRedoHistoryView"/> class.
+    /// </summary>
     public UndoRedoHistoryView()
     {
         InitializeComponent();

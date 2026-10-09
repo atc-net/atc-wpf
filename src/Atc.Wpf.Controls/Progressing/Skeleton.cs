@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Progressing;
 
+/// <summary>A content wrapper that shows placeholder loading content while data is loading.</summary>
 [ContentProperty(nameof(Content))]
 public sealed partial class Skeleton : ContentControl
 {

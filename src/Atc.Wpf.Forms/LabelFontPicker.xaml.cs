@@ -87,8 +87,14 @@ public partial class LabelFontPicker : ILabelFontPicker
         DefaultValue = "The quick brown fox jumps over the lazy dog 0123456789")]
     private string previewText;
 
+    /// <summary>
+    /// Occurs when a font is picked in the inner font picker.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<FontDescription>>? FontChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelFontPicker"/> class.
+    /// </summary>
     public LabelFontPicker()
     {
         SetCurrentValue(SelectedFontWeightProperty, FontWeights.Normal);

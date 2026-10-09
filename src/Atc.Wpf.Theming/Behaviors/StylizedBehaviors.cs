@@ -1,9 +1,14 @@
 // ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
 namespace Atc.Wpf.Theming.Behaviors;
 
+/// <summary>
+/// Provides the <c>Behaviors</c> attached property, which lets behaviors be set from a style;
+/// each behavior is cloned and attached to the target element.
+/// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class StylizedBehaviors
 {
+    /// <summary>Identifies the <c>Behaviors</c> attached property.</summary>
     public static readonly DependencyProperty BehaviorsProperty
         = DependencyProperty.RegisterAttached(
             "Behaviors",
@@ -13,9 +18,19 @@ public static class StylizedBehaviors
                 defaultValue: null,
                 OnPropertyChanged));
 
+    /// <summary>
+    /// Gets the behaviors assigned to the specified element.
+    /// </summary>
+    /// <param name="d">The element to read the value from.</param>
+    /// <returns>The assigned behavior collection, or <see langword="null"/>.</returns>
     public static StylizedBehaviorCollection? GetBehaviors(DependencyObject d)
         => (StylizedBehaviorCollection?)d.GetValue(BehaviorsProperty);
 
+    /// <summary>
+    /// Sets the behaviors to attach to the specified element.
+    /// </summary>
+    /// <param name="d">The element to set the value on.</param>
+    /// <param name="value">The behavior collection to attach.</param>
     public static void SetBehaviors(
         DependencyObject d,
         StylizedBehaviorCollection? value)

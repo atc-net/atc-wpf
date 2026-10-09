@@ -17,6 +17,9 @@ public class NetworkQualityCategoryTypeToResourceImageValueConverter : IValueCon
     private static readonly Lazy<BitmapImage> ExcellentImage = new(() => CreateFrozenBitmapImage("5_excellent.png"));
     private static readonly Lazy<BitmapImage> PerfectImage = new(() => CreateFrozenBitmapImage("6_perfect.png"));
 
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly NetworkQualityCategoryTypeToResourceImageValueConverter Instance = new();
 
     /// <inheritdoc />

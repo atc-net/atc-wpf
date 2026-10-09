@@ -8,8 +8,12 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
     private string? selectedKeyHour;
     private string? selectedKeyMinute;
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// Occurs when the selected hour or minute changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Direct,
         HandlerType = typeof(EventHandler<RoutedEventArgs>))]
@@ -18,6 +22,9 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
     [DependencyProperty]
     private DateTime? selectedDateTime;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ClockPanelPicker"/> class.
+    /// </summary>
     public ClockPanelPicker()
     {
         InitializeComponent();
@@ -37,12 +44,19 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
         SelectedKeyMinute = "0";
     }
 
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <summary>
+    /// Gets or sets the hour items (0-23) shown in the hour drop-down, keyed by value.
+    /// </summary>
     public IDictionary<string, string> Hours
     {
         get => hours;
@@ -53,6 +67,9 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the minute items (0-59) shown in the minute drop-down, keyed by value.
+    /// </summary>
     public IDictionary<string, string> Minutes
     {
         get => minutes;
@@ -63,6 +80,9 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the key of the selected hour; setting it updates <c>SelectedDateTime</c>.
+    /// </summary>
     public string? SelectedKeyHour
     {
         get => selectedKeyHour;
@@ -75,6 +95,9 @@ public partial class ClockPanelPicker : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Gets or sets the key of the selected minute; setting it updates <c>SelectedDateTime</c>.
+    /// </summary>
     public string? SelectedKeyMinute
     {
         get => selectedKeyMinute;

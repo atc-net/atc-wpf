@@ -6,8 +6,10 @@ namespace Atc.Wpf.Controls.Selectors;
 [ValueConversion(typeof(RenderFlagIndicatorType), typeof(Visibility))]
 public sealed class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueConverter
 {
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly RenderFlagIndicatorTypeToVisibilityValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -31,6 +33,7 @@ public sealed class RenderFlagIndicatorTypeToVisibilityValueConverter : IValueCo
             : Visibility.Collapsed;
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

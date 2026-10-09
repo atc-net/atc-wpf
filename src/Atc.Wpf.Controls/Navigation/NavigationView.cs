@@ -105,6 +105,7 @@ public partial class NavigationView : Control
             new FrameworkPropertyMetadata(typeof(NavigationView)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="NavigationView"/> class.</summary>
     public NavigationView()
     {
         MenuItems.CollectionChanged += OnItemsCollectionChanged;

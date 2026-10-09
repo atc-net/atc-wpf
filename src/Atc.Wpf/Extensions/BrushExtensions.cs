@@ -1,6 +1,9 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows.Media;
 
+/// <summary>
+/// Extension methods for <see cref="Brush"/>.
+/// </summary>
 public static class BrushExtensions
 {
     /// <summary>

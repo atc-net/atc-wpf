@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates and watches the USB device interfaces of the system through a WinRT device watcher.
+/// </summary>
 public sealed class UsbDeviceService : IUsbDeviceService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
@@ -13,6 +16,9 @@ public sealed class UsbDeviceService : IUsbDeviceService
     private bool initialEnumerationCompleted;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsbDeviceService"/> class.
+    /// </summary>
     public UsbDeviceService()
         : this(static aqs => new DeviceWatcherHost(aqs))
     {
@@ -27,8 +33,10 @@ public sealed class UsbDeviceService : IUsbDeviceService
         watcher = CreateWatcher(aqs);
     }
 
+    /// <inheritdoc />
     public ObservableCollection<UsbDeviceInfo> Devices { get; }
 
+    /// <inheritdoc />
     public UsbDeviceClassFilter ClassFilter
     {
         get => classFilter;
@@ -44,6 +52,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
         }
     }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -55,6 +64,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
         watcher.StartWatching();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -66,6 +76,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
         watcher.StopWatching();
     }
 
+    /// <inheritdoc />
     public async Task RefreshAsync()
     {
         var found = await watcher.FindAllAsync().ConfigureAwait(false);
@@ -87,6 +98,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

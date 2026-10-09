@@ -1,18 +1,23 @@
 namespace Atc.Wpf.Controls.Inputs.Internal;
 
+/// <summary>Exposes <see cref="ToggleSwitch"/> to UI Automation with the toggle pattern.</summary>
 public class ToggleSwitchAutomationPeer : FrameworkElementAutomationPeer, IToggleProvider
 {
+    /// <summary>Initializes a new instance of the <see cref="ToggleSwitchAutomationPeer"/> class.</summary>
     public ToggleSwitchAutomationPeer(ToggleSwitch owner)
         : base(owner)
     {
     }
 
+    /// <inheritdoc />
     protected override string GetClassNameCore()
         => "ToggleSwitch";
 
+    /// <inheritdoc />
     protected override AutomationControlType GetAutomationControlTypeCore()
         => AutomationControlType.Button;
 
+    /// <inheritdoc />
     public override object? GetPattern(PatternInterface patternInterface)
         => patternInterface == PatternInterface.Toggle
             ? this
@@ -40,9 +45,11 @@ public class ToggleSwitchAutomationPeer : FrameworkElementAutomationPeer, IToggl
             ? ToggleState.On
             : ToggleState.Off;
 
+    /// <inheritdoc />
     public ToggleState ToggleState
         => ConvertToToggleState(((ToggleSwitch)Owner).IsOn);
 
+    /// <inheritdoc />
     public void Toggle()
     {
         if (IsEnabled())

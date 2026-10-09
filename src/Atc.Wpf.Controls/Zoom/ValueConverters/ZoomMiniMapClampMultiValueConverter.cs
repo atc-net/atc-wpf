@@ -11,9 +11,11 @@ namespace Atc.Wpf.Controls.Zoom.ValueConverters;
 /// </remarks>
 public class ZoomMiniMapClampMultiValueConverter : MarkupExtension, IMultiValueConverter
 {
+    /// <inheritdoc />
     public override object ProvideValue(IServiceProvider serviceProvider)
         => this;
 
+    /// <inheritdoc />
     public object Convert(
         object[] values,
         Type targetType,
@@ -47,6 +49,7 @@ public class ZoomMiniMapClampMultiValueConverter : MarkupExtension, IMultiValueC
             0);
     }
 
+    /// <inheritdoc />
     public object[] ConvertBack(
         object value,
         Type[] targetTypes,
