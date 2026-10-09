@@ -17,12 +17,18 @@
 
                 <!--  Interactive demo  -->
                 <atc:PixelSizeBox
+                    x:Name="InteractiveBox"
                     Width="300"
                     HorizontalAlignment="Left"
                     HideUpDownButtons="{Binding HideUpDownButtons}"
                     Maximum="{Binding Maximum}"
                     ValueHeight="{Binding ValueHeight}"
                     ValueWidth="{Binding ValueWidth}" />
+
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" Text="Edit events (raised once per edit, when focus leaves the input box after a change):" />
+                    <TextBlock x:Name="LostFocusLog" />
+                </StackPanel>
 
                 <!--  Showcase: HideUpDownButtons  -->
                 <atc:UniformSpacingPanel

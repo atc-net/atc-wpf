@@ -17,6 +17,7 @@
 
                 <!--  Interactive demo  -->
                 <atc:DecimalXyBox
+                    x:Name="InteractiveBox"
                     Width="300"
                     HorizontalAlignment="Left"
                     DecimalPlaces="{Binding DecimalPlaces}"
@@ -24,6 +25,11 @@
                     PrefixTextX="{Binding PrefixTextX}"
                     PrefixTextY="{Binding PrefixTextY}"
                     SuffixText="{Binding SuffixText}" />
+
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" Text="Edit events (raised once per edit, when focus leaves the input box after a change):" />
+                    <TextBlock x:Name="LostFocusLog" />
+                </StackPanel>
 
                 <!--  Showcase: DecimalPlaces  -->
                 <atc:UniformSpacingPanel
