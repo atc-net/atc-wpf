@@ -6,34 +6,34 @@ namespace Atc.Wpf.Components.Notifications;
 public static class ToastNotificationMessageFactory
 {
     /// <summary>
-    /// Creates an information toast message; <c>area</c> is used as the title.
+    /// Creates an information toast message.
     /// </summary>
     public static ToastNotificationMessage CreateInformation(
-        string area,
+        string title,
         string message)
-        => new(ToastNotificationType.Information, area, message);
+        => new(ToastNotificationType.Information, title, message);
 
     /// <summary>
-    /// Creates a success toast message; <c>area</c> is used as the title.
+    /// Creates a success toast message.
     /// </summary>
     public static ToastNotificationMessage CreateSuccess(
-        string area,
+        string title,
         string message)
-        => new(ToastNotificationType.Success, area, message);
+        => new(ToastNotificationType.Success, title, message);
 
     /// <summary>
-    /// Creates a warning toast message; <c>area</c> is used as the title.
+    /// Creates a warning toast message.
     /// </summary>
     public static ToastNotificationMessage CreateWarning(
-        string area,
+        string title,
         string message)
-        => new(ToastNotificationType.Warning, area, message);
+        => new(ToastNotificationType.Warning, title, message);
 
     /// <summary>
-    /// Creates an error toast message; <c>area</c> is used as the title.
+    /// Creates an error toast message.
     /// </summary>
     public static ToastNotificationMessage CreateError(
-        string area,
+        string title,
         string message)
-        => new(ToastNotificationType.Error, area, message);
+        => new(ToastNotificationType.Error, title, message);
 }
