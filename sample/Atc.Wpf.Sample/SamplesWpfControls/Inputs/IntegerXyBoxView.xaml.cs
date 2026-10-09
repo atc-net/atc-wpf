@@ -6,5 +6,8 @@ public partial class IntegerXyBoxView
     {
         InitializeComponent();
         DataContext = new IntegerXyBoxDemoViewModel();
+
+        InteractiveBox.ValueXLostFocus += LostFocusEventLog.Writer<int?>(LostFocusLog, nameof(InteractiveBox.ValueXLostFocus));
+        InteractiveBox.ValueYLostFocus += LostFocusEventLog.Writer<int?>(LostFocusLog, nameof(InteractiveBox.ValueYLostFocus));
     }
 }

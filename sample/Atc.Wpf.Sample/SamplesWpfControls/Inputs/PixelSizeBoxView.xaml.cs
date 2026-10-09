@@ -6,5 +6,8 @@ public partial class PixelSizeBoxView
     {
         InitializeComponent();
         DataContext = new PixelSizeBoxDemoViewModel();
+
+        InteractiveBox.ValueWidthLostFocus += LostFocusEventLog.Writer<int?>(LostFocusLog, nameof(InteractiveBox.ValueWidthLostFocus));
+        InteractiveBox.ValueHeightLostFocus += LostFocusEventLog.Writer<int?>(LostFocusLog, nameof(InteractiveBox.ValueHeightLostFocus));
     }
 }

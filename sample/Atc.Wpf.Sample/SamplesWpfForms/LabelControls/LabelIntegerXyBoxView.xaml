@@ -14,10 +14,16 @@
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
                 <atc:LabelIntegerXyBox
+                    x:Name="InteractiveBox"
                     InformationText="{Binding InformationText}"
                     IsMandatory="{Binding IsMandatory}"
                     LabelText="{Binding LabelText}"
                     Orientation="{Binding Orientation}" />
+
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" Text="Edit events (raised once per edit, when focus leaves the input box after a change):" />
+                    <TextBlock x:Name="LostFocusLog" />
+                </StackPanel>
 
                 <atc:GridEx Columns="*,*" ShowGridLines="True">
                     <StackPanel Grid.Column="0" Margin="10">

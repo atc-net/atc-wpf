@@ -6,5 +6,7 @@ public partial class LabelIntegerBoxView
     {
         InitializeComponent();
         DataContext = new LabelControlDemoViewModel();
+
+        InteractiveBox.ValueLostFocus += LostFocusEventLog.Writer<int?>(LostFocusLog, nameof(InteractiveBox.ValueLostFocus));
     }
 }

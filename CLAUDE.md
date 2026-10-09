@@ -121,7 +121,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync, high-contrast theme generation, DatePicker style, NiceWindow backdrop and ThemeMode | 12 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 2 |
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 4 |
-| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 8 |
+| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 9 |
 
 > Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,370 tests).
 > Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
