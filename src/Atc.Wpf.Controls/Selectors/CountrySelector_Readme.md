@@ -30,7 +30,7 @@ using Atc.Wpf.Controls.Selectors;
 | `RenderFlagIndicatorType` | `RenderFlagIndicatorType` | `Flat16` | Flag icon style |
 | `DropDownFirstItemType` | `DropDownFirstItemType` | `None` | First item type (None, Blank, PleaseSelect) |
 | `DefaultCultureIdentifier` | `string` | `null` | Default culture for selection |
-| `UpdateUiCultureOnChangeEvent` | `bool` | `true` | Update UI culture on selection change |
+| `UpdateUiCultureOnChangeEvent` | `bool` | `false` | When true, selecting a country changes the application UI culture to that country's culture |
 
 ## 📡 Events
 

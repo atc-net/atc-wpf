@@ -48,7 +48,7 @@ public partial class CountrySelector
         nameof(UpdateUiCultureOnChangeEvent),
         typeof(bool),
         typeof(CountrySelector),
-        new PropertyMetadata(true));
+        new PropertyMetadata(defaultValue: false));
 
     private readonly ObservableCollectionEx<CountryItem> items = new();
     private int? lastLcid;
@@ -91,7 +91,7 @@ public partial class CountrySelector
         set => SetValue(SelectedKeyProperty, value);
     }
 
-    /// <summary>Gets or sets a value indicating whether the UI culture is updated when the selection changes.</summary>
+    /// <summary>Gets or sets a value indicating whether selecting a country changes the application UI culture to that country's culture. Off by default.</summary>
     public bool UpdateUiCultureOnChangeEvent
     {
         get => (bool)GetValue(UpdateUiCultureOnChangeEventProperty);
@@ -368,6 +368,14 @@ public partial class CountrySelector
         var countrySelector = (CountrySelector)d;
 
         countrySelector.SetSelectedIndexBySelectedKey();
+
+        if (countrySelector is { processingUiCultureChanged: false, UpdateUiCultureOnChangeEvent: true } &&
+            int.TryParse(countrySelector.SelectedKey, NumberStyles.None, GlobalizationConstants.EnglishCultureInfo, out var lcid) &&
+            lcid > 0 &&
+            CultureManager.UiCulture.LCID != lcid)
+        {
+            CultureManager.UiCulture = new CultureInfo(lcid);
+        }
     }
 
     private void OnSelectionChanged(
