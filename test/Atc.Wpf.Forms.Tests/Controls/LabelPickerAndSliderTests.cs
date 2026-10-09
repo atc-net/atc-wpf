@@ -35,16 +35,20 @@ public sealed class LabelPickerAndSliderTests : IDisposable
     [StaFact]
     public void LabelTimePicker_Text_Changed_RaisesTextChangedWithOldAndNewValue()
     {
+        // en-US re-formats "09:30" to "9:30 AM", so the run doesn't depend on the machine's culture.
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
         var sut = new LabelTimePicker { Text = "08:00" };
-        RoutedPropertyChangedEventArgs<string>? raised = null;
+        var textBefore = sut.Text;
+        var raised = new List<RoutedPropertyChangedEventArgs<string>>();
         sut.AddHandler(
             LabelTimePicker.TextChangedEvent,
-            new RoutedPropertyChangedEventHandler<string>((_, e) => raised = e));
+            new RoutedPropertyChangedEventHandler<string>((_, e) => raised.Add(e)));
 
         sut.Text = "09:30";
 
-        Assert.NotNull(raised);
-        Assert.Equal("08:00", raised.OldValue);
-        Assert.Equal("09:30", raised.NewValue);
+        // The picker re-formats the parsed time in the UI culture afterwards, which is a further (legitimate) text change.
+        Assert.NotEmpty(raised);
+        Assert.Equal(textBefore, raised[0].OldValue);
+        Assert.Equal("09:30", raised[0].NewValue);
     }
 }
