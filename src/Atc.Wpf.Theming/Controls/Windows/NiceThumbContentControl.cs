@@ -1,5 +1,9 @@
 namespace Atc.Wpf.Theming.Controls.Windows;
 
+/// <summary>
+/// A content control that behaves like a thumb, raising drag events when the user drags it
+/// with the mouse or touch.
+/// </summary>
 public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
 {
     private TouchDevice? currentDevice;
@@ -21,18 +25,21 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
             new MouseEventHandler(OnLostMouseCapture));
     }
 
+    /// <summary>Identifies the <see cref="DragStarted"/> routed event.</summary>
     public static readonly RoutedEvent DragStartedEvent = EventManager.RegisterRoutedEvent(
         nameof(DragStarted),
         RoutingStrategy.Bubble,
         typeof(DragStartedEventHandler),
         typeof(NiceThumbContentControl));
 
+    /// <summary>Identifies the <see cref="DragDelta"/> routed event.</summary>
     public static readonly RoutedEvent DragDeltaEvent = EventManager.RegisterRoutedEvent(
         nameof(DragDelta),
         RoutingStrategy.Bubble,
         typeof(DragDeltaEventHandler),
         typeof(NiceThumbContentControl));
 
+    /// <summary>Identifies the <see cref="DragCompleted"/> routed event.</summary>
     public static readonly RoutedEvent DragCompletedEvent = EventManager.RegisterRoutedEvent(
         nameof(DragCompleted),
         RoutingStrategy.Bubble,
@@ -72,14 +79,21 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         typeof(NiceThumbContentControl),
         new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
 
+    /// <summary>Identifies the <see cref="IsDragging"/> dependency property.</summary>
     public static readonly DependencyProperty IsDraggingProperty = IsDraggingPropertyKey.DependencyProperty;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the control is currently being dragged.
+    /// </summary>
     public bool IsDragging
     {
         get => (bool)GetValue(IsDraggingProperty);
         set => SetValue(IsDraggingPropertyKey, BooleanBoxes.Box(value));
     }
 
+    /// <summary>
+    /// Cancels the current drag operation, if any, and raises <see cref="DragCompleted"/> with the canceled flag set.
+    /// </summary>
     public void CancelDragAction()
     {
         if (!IsDragging)
@@ -98,6 +112,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         RaiseEvent(new NiceThumbContentControlDragCompletedEventArgs(horizontalChange, verticalChange, canceled: true));
     }
 
+    /// <inheritdoc />
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
@@ -125,6 +140,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         base.OnMouseLeftButtonDown(e);
     }
 
+    /// <inheritdoc />
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -155,6 +171,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -194,6 +211,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         }
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewTouchDown(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -202,9 +220,11 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         CaptureCurrentDevice(e);
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewTouchUp(TouchEventArgs e)
         => ReleaseCurrentDevice();
 
+    /// <inheritdoc />
     protected override void OnLostTouchCapture(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -238,6 +258,7 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
         }
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new NiceThumbContentControlAutomationPeer(this);
 }

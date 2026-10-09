@@ -1,10 +1,20 @@
 namespace Atc.Wpf.MarkupExtensions;
 
+/// <summary>
+/// A markup extension that merges multiple styles, identified by space-separated resource keys, into a single <see cref="Style"/>.
+/// </summary>
+/// <remarks>
+/// A key of <c>.</c> refers to the default style of the target object's type.
+/// </remarks>
 [MarkupExtensionReturnType(typeof(Style))]
 public sealed class MultiStyleExtension : MarkupExtension
 {
     private readonly string[] resourceKeys;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MultiStyleExtension"/> class.
+    /// </summary>
+    /// <param name="inputResourceKeys">The space-separated resource keys of the styles to merge.</param>
     public MultiStyleExtension(string inputResourceKeys)
     {
         if (string.IsNullOrWhiteSpace(inputResourceKeys))
@@ -20,6 +30,7 @@ public sealed class MultiStyleExtension : MarkupExtension
         }
     }
 
+    /// <inheritdoc />
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);

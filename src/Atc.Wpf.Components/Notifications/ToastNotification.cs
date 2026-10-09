@@ -1,16 +1,25 @@
 namespace Atc.Wpf.Components.Notifications;
 
+/// <summary>
+/// A single toast notification shown in a <see cref="ToastNotificationArea"/>, which closes with an animation.
+/// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
 public sealed partial class ToastNotification : ContentControl
 {
     private TimeSpan closingAnimationTime = TimeSpan.Zero;
 
+    /// <summary>
+    /// Occurs when closing of the notification starts, before the closing animation runs.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedEventHandler))]
     private static readonly RoutedEvent notificationCloseInvoked;
 
+    /// <summary>
+    /// Occurs when the notification has closed, after the closing animation has finished.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedEventHandler))]
@@ -21,6 +30,9 @@ public sealed partial class ToastNotification : ContentControl
         PropertyChangedCallback = nameof(CloseOnClickChanged))]
     private bool closeOnClick;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the notification is closing.
+    /// </summary>
     public bool IsClosing { get; set; }
 
     static ToastNotification()
@@ -30,6 +42,7 @@ public sealed partial class ToastNotification : ContentControl
             new FrameworkPropertyMetadata(typeof(ToastNotification)));
     }
 
+    /// <inheritdoc />
     [SuppressMessage("", "SA1118:The parameter spans multiple lines", Justification = "OK")]
     public override void OnApplyTemplate()
     {

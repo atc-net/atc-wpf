@@ -7,8 +7,12 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 public sealed class JsonNodeChildrenConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="JsonNodeChildrenConverter"/>.
+    /// </summary>
     public static readonly JsonNodeChildrenConverter Instance = new();
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -23,6 +27,7 @@ public sealed class JsonNodeChildrenConverter : IValueConverter
         return node.Children();
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

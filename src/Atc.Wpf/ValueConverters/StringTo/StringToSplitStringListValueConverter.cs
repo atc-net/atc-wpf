@@ -7,10 +7,17 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(List<string>))]
 public sealed class StringToSplitStringListValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="StringToSplitStringListValueConverter"/>.
+    /// </summary>
     public static readonly StringToSplitStringListValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the character used to split the string and to join the list back.
+    /// </summary>
     public char Separator { get; set; } = ';';
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -23,6 +30,7 @@ public sealed class StringToSplitStringListValueConverter : IValueConverter
                 .ToList()
             : value;
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

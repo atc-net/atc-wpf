@@ -24,6 +24,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(double), typeof(GridLength))]
 public sealed class DoubleToGridLengthValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="DoubleToGridLengthValueConverter"/>.
+    /// </summary>
     public static readonly DoubleToGridLengthValueConverter Instance = new();
 
     /// <inheritdoc />

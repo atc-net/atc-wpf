@@ -1,9 +1,13 @@
 namespace Atc.Wpf.Theming.Controls;
 
+/// <summary>
+/// A <see cref="Thumb"/> that captures the touch device while it is being dragged.
+/// </summary>
 public sealed class AtcThumb : Thumb, IAtcThumb
 {
     private TouchDevice? currentDevice;
 
+    /// <inheritdoc />
     protected override void OnPreviewTouchDown(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -14,6 +18,7 @@ public sealed class AtcThumb : Thumb, IAtcThumb
         CaptureCurrentDevice(e);
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewTouchUp(TouchEventArgs e)
     {
         base.OnPreviewTouchUp(e);
@@ -21,6 +26,7 @@ public sealed class AtcThumb : Thumb, IAtcThumb
         ReleaseCurrentDevice();
     }
 
+    /// <inheritdoc />
     protected override void OnLostTouchCapture(TouchEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

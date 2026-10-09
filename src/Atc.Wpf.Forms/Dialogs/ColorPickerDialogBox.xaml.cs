@@ -8,6 +8,11 @@ public partial class ColorPickerDialogBox
         DefaultValue = nameof(Brushes.Black))]
     private Color color;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ColorPickerDialogBox"/> class with default OK/Cancel settings.
+    /// </summary>
+    /// <param name="owningWindow">The window that owns the dialog.</param>
+    /// <param name="color">The initial color.</param>
     public ColorPickerDialogBox(
         Window owningWindow,
         Color color)
@@ -18,6 +23,12 @@ public partial class ColorPickerDialogBox
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ColorPickerDialogBox"/> class.
+    /// </summary>
+    /// <param name="owningWindow">The window that owns the dialog.</param>
+    /// <param name="settings">The dialog settings, such as size, title and button texts.</param>
+    /// <param name="color">The initial color.</param>
     public ColorPickerDialogBox(
         Window owningWindow,
         DialogBoxSettings settings,
@@ -37,12 +48,24 @@ public partial class ColorPickerDialogBox
         InitializeDialogBox();
     }
 
+    /// <summary>
+    /// Gets the window that owns the dialog.
+    /// </summary>
     public Window OwningWindow { get; private set; }
 
+    /// <summary>
+    /// Gets the dialog settings.
+    /// </summary>
     public DialogBoxSettings Settings { get; }
 
+    /// <summary>
+    /// Gets or sets an optional control shown in the dialog header.
+    /// </summary>
     public ContentControl? HeaderControl { get; set; }
 
+    /// <summary>
+    /// Gets a new <see cref="SolidColorBrush"/> for the current color.
+    /// </summary>
     public SolidColorBrush ColorAsBrush => new(Color);
 
     private void InitializeDialogBox()

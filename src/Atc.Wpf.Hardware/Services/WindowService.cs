@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates the top-level windows and polls for changes.
+/// </summary>
 public sealed class WindowService : IWindowService
 {
     private readonly Func<bool, IReadOnlyList<WindowSnapshot>> enumerate;
@@ -9,6 +12,9 @@ public sealed class WindowService : IWindowService
     private bool started;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WindowService"/> class.
+    /// </summary>
     public WindowService()
         : this(EnumerateWindows, ResolveProcessName)
     {
@@ -28,16 +34,20 @@ public sealed class WindowService : IWindowService
         pollTimer.Tick += OnPollTick;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<TopLevelWindowInfo> Windows { get; }
 
+    /// <inheritdoc />
     public TimeSpan PollingInterval
     {
         get => pollTimer.Interval;
         set => pollTimer.Interval = value;
     }
 
+    /// <inheritdoc />
     public bool OnlyVisibleWithTitle { get; set; } = true;
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -49,6 +59,7 @@ public sealed class WindowService : IWindowService
         pollTimer.Start();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -75,6 +86,7 @@ public sealed class WindowService : IWindowService
         return inFlightPoll;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

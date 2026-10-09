@@ -11,6 +11,7 @@ public static class TerminalLineHighlight
     private const string TimestampFormat = "HH:mm:ss.fff";
     private const string PinGlyph = "★ ";
 
+    /// <summary>Identifies the <c>SourceText</c> attached property: the line text to render.</summary>
     public static readonly DependencyProperty SourceTextProperty =
         DependencyProperty.RegisterAttached(
             "SourceText",
@@ -18,6 +19,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: null, OnAnyChanged));
 
+    /// <summary>Identifies the <c>SearchPattern</c> attached property: the text or regular expression whose matches are highlighted.</summary>
     public static readonly DependencyProperty SearchPatternProperty =
         DependencyProperty.RegisterAttached(
             "SearchPattern",
@@ -25,6 +27,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: null, OnAnyChanged));
 
+    /// <summary>Identifies the <c>UseRegex</c> attached property: whether the search pattern is a regular expression.</summary>
     public static readonly DependencyProperty UseRegexProperty =
         DependencyProperty.RegisterAttached(
             "UseRegex",
@@ -32,6 +35,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: false, OnAnyChanged));
 
+    /// <summary>Identifies the <c>HighlightBackground</c> attached property: the background brush of search matches.</summary>
     public static readonly DependencyProperty HighlightBackgroundProperty =
         DependencyProperty.RegisterAttached(
             "HighlightBackground",
@@ -39,6 +43,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(System.Windows.Media.Brushes.Gold, OnAnyChanged));
 
+    /// <summary>Identifies the <c>ShowTimestamp</c> attached property: whether the timestamp prefix is shown.</summary>
     public static readonly DependencyProperty ShowTimestampProperty =
         DependencyProperty.RegisterAttached(
             "ShowTimestamp",
@@ -46,6 +51,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: false, OnAnyChanged));
 
+    /// <summary>Identifies the <c>Timestamp</c> attached property: the time shown in the timestamp prefix.</summary>
     public static readonly DependencyProperty TimestampProperty =
         DependencyProperty.RegisterAttached(
             "Timestamp",
@@ -53,6 +59,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(default(DateTimeOffset), OnAnyChanged));
 
+    /// <summary>Identifies the <c>ShowLineNumber</c> attached property: whether the line-number prefix is shown.</summary>
     public static readonly DependencyProperty ShowLineNumberProperty =
         DependencyProperty.RegisterAttached(
             "ShowLineNumber",
@@ -60,6 +67,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: false, OnAnyChanged));
 
+    /// <summary>Identifies the <c>LineNumber</c> attached property: the number shown in the line-number prefix.</summary>
     public static readonly DependencyProperty LineNumberProperty =
         DependencyProperty.RegisterAttached(
             "LineNumber",
@@ -67,6 +75,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: 0, OnAnyChanged));
 
+    /// <summary>Identifies the <c>IsPinned</c> attached property: whether a pin glyph prefix is shown.</summary>
     public static readonly DependencyProperty IsPinnedProperty =
         DependencyProperty.RegisterAttached(
             "IsPinned",
@@ -74,6 +83,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: false, OnAnyChanged));
 
+    /// <summary>Identifies the <c>MutedBrush</c> attached property: the foreground brush of the timestamp and line-number prefixes.</summary>
     public static readonly DependencyProperty MutedBrushProperty =
         DependencyProperty.RegisterAttached(
             "MutedBrush",
@@ -81,6 +91,7 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(System.Windows.Media.Brushes.Gray, OnAnyChanged));
 
+    /// <summary>Identifies the <c>Runs</c> attached property: optional pre-parsed ANSI styled runs rendered instead of the source text.</summary>
     public static readonly DependencyProperty RunsProperty =
         DependencyProperty.RegisterAttached(
             "Runs",
@@ -88,12 +99,14 @@ public static class TerminalLineHighlight
             typeof(TerminalLineHighlight),
             new PropertyMetadata(defaultValue: null, OnAnyChanged));
 
+    /// <summary>Gets the line text to render.</summary>
     public static string? GetSourceText(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (string?)obj.GetValue(SourceTextProperty);
     }
 
+    /// <summary>Sets the line text to render.</summary>
     public static void SetSourceText(
         DependencyObject obj,
         string? value)
@@ -102,12 +115,14 @@ public static class TerminalLineHighlight
         obj.SetValue(SourceTextProperty, value);
     }
 
+    /// <summary>Gets the text or regular expression whose matches are highlighted.</summary>
     public static string? GetSearchPattern(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (string?)obj.GetValue(SearchPatternProperty);
     }
 
+    /// <summary>Sets the text or regular expression whose matches are highlighted.</summary>
     public static void SetSearchPattern(
         DependencyObject obj,
         string? value)
@@ -116,12 +131,14 @@ public static class TerminalLineHighlight
         obj.SetValue(SearchPatternProperty, value);
     }
 
+    /// <summary>Gets a value indicating whether the search pattern is a regular expression.</summary>
     public static bool GetUseRegex(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (bool)obj.GetValue(UseRegexProperty);
     }
 
+    /// <summary>Sets a value indicating whether the search pattern is a regular expression.</summary>
     public static void SetUseRegex(
         DependencyObject obj,
         bool value)
@@ -130,12 +147,14 @@ public static class TerminalLineHighlight
         obj.SetValue(UseRegexProperty, value);
     }
 
+    /// <summary>Gets the background brush of search matches.</summary>
     public static Brush GetHighlightBackground(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (Brush)obj.GetValue(HighlightBackgroundProperty);
     }
 
+    /// <summary>Sets the background brush of search matches.</summary>
     public static void SetHighlightBackground(
         DependencyObject obj,
         Brush value)
@@ -144,12 +163,14 @@ public static class TerminalLineHighlight
         obj.SetValue(HighlightBackgroundProperty, value);
     }
 
+    /// <summary>Gets a value indicating whether the timestamp prefix is shown.</summary>
     public static bool GetShowTimestamp(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (bool)obj.GetValue(ShowTimestampProperty);
     }
 
+    /// <summary>Sets a value indicating whether the timestamp prefix is shown.</summary>
     public static void SetShowTimestamp(
         DependencyObject obj,
         bool value)
@@ -158,12 +179,14 @@ public static class TerminalLineHighlight
         obj.SetValue(ShowTimestampProperty, value);
     }
 
+    /// <summary>Gets the time shown in the timestamp prefix.</summary>
     public static DateTimeOffset GetTimestamp(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (DateTimeOffset)obj.GetValue(TimestampProperty);
     }
 
+    /// <summary>Sets the time shown in the timestamp prefix.</summary>
     public static void SetTimestamp(
         DependencyObject obj,
         DateTimeOffset value)
@@ -172,12 +195,14 @@ public static class TerminalLineHighlight
         obj.SetValue(TimestampProperty, value);
     }
 
+    /// <summary>Gets a value indicating whether the line-number prefix is shown.</summary>
     public static bool GetShowLineNumber(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (bool)obj.GetValue(ShowLineNumberProperty);
     }
 
+    /// <summary>Sets a value indicating whether the line-number prefix is shown.</summary>
     public static void SetShowLineNumber(
         DependencyObject obj,
         bool value)
@@ -186,12 +211,14 @@ public static class TerminalLineHighlight
         obj.SetValue(ShowLineNumberProperty, value);
     }
 
+    /// <summary>Gets the number shown in the line-number prefix.</summary>
     public static int GetLineNumber(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (int)obj.GetValue(LineNumberProperty);
     }
 
+    /// <summary>Sets the number shown in the line-number prefix.</summary>
     public static void SetLineNumber(
         DependencyObject obj,
         int value)
@@ -200,12 +227,14 @@ public static class TerminalLineHighlight
         obj.SetValue(LineNumberProperty, value);
     }
 
+    /// <summary>Gets a value indicating whether a pin glyph prefix is shown.</summary>
     public static bool GetIsPinned(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (bool)obj.GetValue(IsPinnedProperty);
     }
 
+    /// <summary>Sets a value indicating whether a pin glyph prefix is shown.</summary>
     public static void SetIsPinned(
         DependencyObject obj,
         bool value)
@@ -214,12 +243,14 @@ public static class TerminalLineHighlight
         obj.SetValue(IsPinnedProperty, value);
     }
 
+    /// <summary>Gets the foreground brush of the timestamp and line-number prefixes.</summary>
     public static Brush GetMutedBrush(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (Brush)obj.GetValue(MutedBrushProperty);
     }
 
+    /// <summary>Sets the foreground brush of the timestamp and line-number prefixes.</summary>
     public static void SetMutedBrush(
         DependencyObject obj,
         Brush value)
@@ -228,12 +259,14 @@ public static class TerminalLineHighlight
         obj.SetValue(MutedBrushProperty, value);
     }
 
+    /// <summary>Gets the optional pre-parsed ANSI styled runs rendered instead of the source text.</summary>
     public static IReadOnlyList<TerminalRun>? GetRuns(DependencyObject obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return (IReadOnlyList<TerminalRun>?)obj.GetValue(RunsProperty);
     }
 
+    /// <summary>Sets the optional pre-parsed ANSI styled runs rendered instead of the source text.</summary>
     public static void SetRuns(
         DependencyObject obj,
         IReadOnlyList<TerminalRun>? value)

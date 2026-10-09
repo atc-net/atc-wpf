@@ -1,14 +1,26 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows.Media;
 
+/// <summary>
+/// Extension methods for <see cref="Color"/>.
+/// </summary>
 public static class ColorExtensions
 {
+    /// <summary>
+    /// Gets the brush resource key that matches the color, if any.
+    /// </summary>
     public static string? GetBrushKey(this Color color)
         => ColorHelper.GetColorKeyFromColor(color);
 
+    /// <summary>
+    /// Gets the known name of the color, if any.
+    /// </summary>
     public static string? GetColorName(this Color color)
         => ColorHelper.GetColorNameFromColor(color);
 
+    /// <summary>
+    /// Gets the localized known name of the color, optionally including its hex value.
+    /// </summary>
     public static string? GetColorName(
         this Color color,
         CultureInfo culture,

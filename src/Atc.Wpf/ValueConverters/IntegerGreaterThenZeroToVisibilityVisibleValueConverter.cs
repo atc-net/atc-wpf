@@ -6,6 +6,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(int), typeof(Visibility))]
 public sealed class IntegerGreaterThenZeroToVisibilityVisibleValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="IntegerGreaterThenZeroToVisibilityVisibleValueConverter"/>.
+    /// </summary>
     public static readonly IntegerGreaterThenZeroToVisibilityVisibleValueConverter Instance = new();
 
     /// <inheritdoc />

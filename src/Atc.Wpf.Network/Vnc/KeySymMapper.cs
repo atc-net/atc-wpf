@@ -127,6 +127,12 @@ public static class KeySymMapper
         { Key.OemTilde, 0x0060 },
     };
 
+    /// <summary>
+    /// Tries to map a WPF <see cref="Key"/> to its X11 keysym value used by the VNC protocol.
+    /// </summary>
+    /// <param name="key">The WPF key to map.</param>
+    /// <param name="keySym">When this method returns <see langword="true"/>, the matching keysym; otherwise zero.</param>
+    /// <returns><see langword="true"/> if the key has a keysym mapping; otherwise <see langword="false"/>.</returns>
     public static bool TryGetKeySym(
         Key key,
         out uint keySym)

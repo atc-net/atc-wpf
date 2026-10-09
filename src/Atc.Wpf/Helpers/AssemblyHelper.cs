@@ -1,7 +1,9 @@
 namespace Atc.Wpf.Helpers;
 
+/// <summary>Provides helper methods for locating assemblies.</summary>
 public static class AssemblyHelper
 {
+    /// <summary>Finds the assembly that contains an embedded resx resource with the given name, searching the entry assembly first and then the non-framework assemblies loaded in the current application domain.</summary>
     public static Assembly? FindResourceAssembly(string resxName)
     {
         ArgumentNullException.ThrowIfNull(resxName);

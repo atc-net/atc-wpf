@@ -9,72 +9,84 @@ namespace Atc.Wpf.Controls.Layouts;
 /// </summary>
 public sealed class AutoGrid : System.Windows.Controls.Grid
 {
+    /// <summary>Identifies the <see cref="ChildHorizontalAlignment"/> dependency property.</summary>
     public static readonly DependencyProperty ChildHorizontalAlignmentProperty = DependencyProperty.Register(
         nameof(ChildHorizontalAlignment),
         typeof(HorizontalAlignment?),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, OnChildHorizontalAlignmentChanged));
 
+    /// <summary>Identifies the <see cref="ChildMargin"/> dependency property.</summary>
     public static readonly DependencyProperty ChildMarginProperty = DependencyProperty.Register(
         nameof(ChildMargin),
         typeof(Thickness?),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, OnChildMarginChanged));
 
+    /// <summary>Identifies the <see cref="ChildVerticalAlignment"/> dependency property.</summary>
     public static readonly DependencyProperty ChildVerticalAlignmentProperty = DependencyProperty.Register(
         nameof(ChildVerticalAlignment),
         typeof(VerticalAlignment?),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, OnChildVerticalAlignmentChanged));
 
+    /// <summary>Identifies the <see cref="ColumnCount"/> dependency property.</summary>
     public static readonly DependencyProperty ColumnCountProperty = DependencyProperty.Register(
         nameof(ColumnCount),
         typeof(int),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsMeasure, ColumnCountChanged));
 
+    /// <summary>Identifies the <see cref="Columns"/> dependency property.</summary>
     public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
         nameof(Columns),
         typeof(string),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure, ColumnsChanged));
 
+    /// <summary>Identifies the <see cref="ColumnWidth"/> dependency property.</summary>
     public static readonly DependencyProperty ColumnWidthProperty = DependencyProperty.Register(
         nameof(ColumnWidth),
         typeof(GridLength),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(GridLength.Auto, FrameworkPropertyMetadataOptions.AffectsMeasure, FixedColumnWidthChanged));
 
+    /// <summary>Identifies the <see cref="IsAutoIndexing"/> dependency property.</summary>
     public static readonly DependencyProperty IsAutoIndexingProperty = DependencyProperty.Register(
         nameof(IsAutoIndexing),
         typeof(bool),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="Orientation"/> dependency property.</summary>
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
         typeof(Orientation),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="RowCount"/> dependency property.</summary>
     public static readonly DependencyProperty RowCountProperty = DependencyProperty.Register(
         nameof(RowCount),
         typeof(int),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.AffectsMeasure, RowCountChanged));
 
+    /// <summary>Identifies the <see cref="RowHeight"/> dependency property.</summary>
     public static readonly DependencyProperty RowHeightProperty = DependencyProperty.Register(
         nameof(RowHeight),
         typeof(GridLength),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(GridLength.Auto, FrameworkPropertyMetadataOptions.AffectsMeasure, FixedRowHeightChanged));
 
+    /// <summary>Identifies the <see cref="Rows"/> dependency property.</summary>
     public static readonly DependencyProperty RowsProperty = DependencyProperty.Register(
         nameof(Rows),
         typeof(string),
         typeof(AutoGrid),
         new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure, RowsChanged));
 
+    /// <summary>Identifies the <see cref="Spacing"/> dependency property.</summary>
     public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
         nameof(Spacing),
         typeof(double),
@@ -83,6 +95,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
             double.NaN,
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
         nameof(HorizontalSpacing),
         typeof(double),
@@ -91,6 +104,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
             double.NaN,
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
         nameof(VerticalSpacing),
         typeof(double),
@@ -99,6 +113,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
             double.NaN,
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Gets or sets the default horizontal alignment applied to all children.</summary>
     [Category("Layout")]
     [Description("Presets the horizontal alignment of all child controls")]
     public HorizontalAlignment? ChildHorizontalAlignment
@@ -107,6 +122,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(ChildHorizontalAlignmentProperty, value);
     }
 
+    /// <summary>Gets or sets the default margin applied to all children.</summary>
     [Category("Layout")]
     [Description("Presets the margin of all child controls")]
     public Thickness? ChildMargin
@@ -115,6 +131,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(ChildMarginProperty, value);
     }
 
+    /// <summary>Gets or sets the default vertical alignment applied to all children.</summary>
     [Category("Layout")]
     [Description("Presets the vertical alignment of all child controls")]
     public VerticalAlignment? ChildVerticalAlignment
@@ -123,6 +140,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(ChildVerticalAlignmentProperty, value);
     }
 
+    /// <summary>Gets or sets the number of columns, used when <see cref="Columns"/> is not set.</summary>
     [Category("Layout")]
     [Description("Defines a set number of columns")]
     public int ColumnCount
@@ -131,6 +149,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(ColumnCountProperty, value);
     }
 
+    /// <summary>Gets or sets the column widths as a comma-separated list (for example <c>"Auto,*,200"</c>).</summary>
     [Category("Layout")]
     [Description("Defines all columns using comma separated grid length notation")]
     public string Columns
@@ -139,6 +158,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(ColumnsProperty, value);
     }
 
+    /// <summary>Gets or sets the default width of columns created through <see cref="ColumnCount"/>.</summary>
     [Category("Layout")]
     [Description("Presets the width of all columns set using the ColumnCount property")]
     public GridLength ColumnWidth
@@ -147,6 +167,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(ColumnWidthProperty, value);
     }
 
+    /// <summary>Gets or sets a value indicating whether children are automatically positioned in the grid cells.</summary>
     [Category("Layout")]
     [Description("Set to false to disable the auto layout functionality")]
     public bool IsAutoIndexing
@@ -155,6 +176,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(IsAutoIndexingProperty, value);
     }
 
+    /// <summary>Gets or sets the auto-indexing direction (row-first or column-first).</summary>
     [Category("Layout")]
     [Description("Defines the directionality of the auto-layout. Use vertical for a column first layout, horizontal for a row first layout.")]
     public Orientation Orientation
@@ -163,6 +185,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>Gets or sets the number of rows, used when <see cref="Rows"/> is not set.</summary>
     [Category("Layout")]
     [Description("Defines a set number of rows")]
     public int RowCount
@@ -171,6 +194,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(RowCountProperty, value);
     }
 
+    /// <summary>Gets or sets the default height of rows created through <see cref="RowCount"/>.</summary>
     [Category("Layout")]
     [Description("Presets the height of all rows set using the RowCount property")]
     public GridLength RowHeight
@@ -179,6 +203,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(RowHeightProperty, value);
     }
 
+    /// <summary>Gets or sets the row heights as a comma-separated list (for example <c>"Auto,*"</c>).</summary>
     [Category("Layout")]
     [Description("Defines all rows using comma separated grid length notation")]
     public string Rows
@@ -187,6 +212,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(RowsProperty, value);
     }
 
+    /// <summary>Gets or sets the uniform spacing between cells; sets both the horizontal and vertical spacing.</summary>
     [Category("Layout")]
     [Description("Sets uniform spacing between grid cells (sets both horizontal and vertical)")]
     public double Spacing
@@ -195,6 +221,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(SpacingProperty, value);
     }
 
+    /// <summary>Gets or sets the horizontal gap between columns.</summary>
     [Category("Layout")]
     [Description("Sets horizontal spacing between grid columns")]
     public double HorizontalSpacing
@@ -203,6 +230,7 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         set => SetValue(HorizontalSpacingProperty, value);
     }
 
+    /// <summary>Gets or sets the vertical gap between rows.</summary>
     [Category("Layout")]
     [Description("Sets vertical spacing between grid rows")]
     public double VerticalSpacing

@@ -22,18 +22,42 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(LogCategoryType), typeof(Color))]
 public sealed class LogCategoryTypeToColorValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="LogCategoryTypeToColorValueConverter"/>.
+    /// </summary>
     public static readonly LogCategoryTypeToColorValueConverter Instance = new();
 
+    /// <summary>The built-in default fallback color, used when a value cannot be mapped.</summary>
     public static readonly Color DefaultFallbackColor = BindingFallbacks.DefaultColor;
+
+    /// <summary>The built-in default color for the <c>Critical</c> log category type.</summary>
     public static readonly Color DefaultCriticalColor = Colors.Red;
+
+    /// <summary>The built-in default color for the <c>Error</c> log category type.</summary>
     public static readonly Color DefaultErrorColor = Colors.Crimson;
+
+    /// <summary>The built-in default color for the <c>Warning</c> log category type.</summary>
     public static readonly Color DefaultWarningColor = Colors.Goldenrod;
+
+    /// <summary>The built-in default color for the <c>Security</c> log category type.</summary>
     public static readonly Color DefaultSecurityColor = Colors.LightCyan;
+
+    /// <summary>The built-in default color for the <c>Audit</c> log category type.</summary>
     public static readonly Color DefaultAuditColor = Colors.AntiqueWhite;
+
+    /// <summary>The built-in default color for the <c>Service</c> log category type.</summary>
     public static readonly Color DefaultServiceColor = Colors.BurlyWood;
+
+    /// <summary>The built-in default color for the <c>UI</c> log category type.</summary>
     public static readonly Color DefaultUIColor = Colors.Aquamarine;
+
+    /// <summary>The built-in default color for the <c>Information</c> log category type.</summary>
     public static readonly Color DefaultInformationColor = Colors.DodgerBlue;
+
+    /// <summary>The built-in default color for the <c>Debug</c> log category type.</summary>
     public static readonly Color DefaultDebugColor = Colors.CadetBlue;
+
+    /// <summary>The built-in default color for the <c>Trace</c> log category type.</summary>
     public static readonly Color DefaultTraceColor = Colors.Gray;
 
     /// <summary>
@@ -47,24 +71,34 @@ public sealed class LogCategoryTypeToColorValueConverter : IValueConverter
         set => BindingFallbacks.Color = value;
     }
 
+    /// <summary>Gets or sets the color used for the <c>Critical</c> log category type.</summary>
     public static Color CriticalColor { get; set; } = DefaultCriticalColor;
 
+    /// <summary>Gets or sets the color used for the <c>Error</c> log category type.</summary>
     public static Color ErrorColor { get; set; } = DefaultErrorColor;
 
+    /// <summary>Gets or sets the color used for the <c>Warning</c> log category type.</summary>
     public static Color WarningColor { get; set; } = DefaultWarningColor;
 
+    /// <summary>Gets or sets the color used for the <c>Security</c> log category type.</summary>
     public static Color SecurityColor { get; set; } = DefaultSecurityColor;
 
+    /// <summary>Gets or sets the color used for the <c>Audit</c> log category type.</summary>
     public static Color AuditColor { get; set; } = DefaultAuditColor;
 
+    /// <summary>Gets or sets the color used for the <c>Service</c> log category type.</summary>
     public static Color ServiceColor { get; set; } = DefaultServiceColor;
 
+    /// <summary>Gets or sets the color used for the <c>UI</c> log category type.</summary>
     public static Color UIColor { get; set; } = DefaultUIColor;
 
+    /// <summary>Gets or sets the color used for the <c>Information</c> log category type.</summary>
     public static Color InformationColor { get; set; } = DefaultInformationColor;
 
+    /// <summary>Gets or sets the color used for the <c>Debug</c> log category type.</summary>
     public static Color DebugColor { get; set; } = DefaultDebugColor;
 
+    /// <summary>Gets or sets the color used for the <c>Trace</c> log category type.</summary>
     public static Color TraceColor { get; set; } = DefaultTraceColor;
 
     /// <summary>

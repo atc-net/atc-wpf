@@ -1,8 +1,14 @@
 // ReSharper disable SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
 namespace Atc.Wpf.Factories;
 
+/// <summary>
+/// Factory for creating <see cref="BitmapEncoder"/> instances.
+/// </summary>
 public static class BitmapEncoderFactory
 {
+    /// <summary>
+    /// Creates a <see cref="BitmapEncoder"/> for the specified image format.
+    /// </summary>
     public static BitmapEncoder Create(ImageFormatType imageFormatType)
         => imageFormatType switch
         {

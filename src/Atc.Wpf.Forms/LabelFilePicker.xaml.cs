@@ -37,15 +37,25 @@ public partial class LabelFilePicker : ILabelFilePicker
     [DependencyProperty(DefaultValue = TextTrimming.None)]
     private TextTrimming watermarkTrimming;
 
+    /// <summary>
+    /// Occurs when the selected file changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<FileInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selected file changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<FileInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelFilePicker"/> class.
+    /// </summary>
     public LabelFilePicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

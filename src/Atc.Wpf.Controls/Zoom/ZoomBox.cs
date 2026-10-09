@@ -21,6 +21,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     private bool disableScrollOffsetSync;
     private CurrentZoomType currentZoomType;
 
+    /// <summary>Identifies the <see cref="UseAnimations"/> dependency property.</summary>
     public static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
         nameof(UseAnimations),
         typeof(bool),
@@ -56,6 +57,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty(DefaultValue = ZoomInitialPositionType.Default)]
     private ZoomInitialPositionType zoomInitialPosition;
 
+    /// <summary>Identifies the <see cref="ContentOffsetX"/> dependency property.</summary>
     public static readonly DependencyProperty ContentOffsetXProperty = DependencyProperty.Register(
         nameof(ContentOffsetX),
         typeof(double),
@@ -74,6 +76,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(ContentOffsetXProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="ContentOffsetY"/> dependency property.</summary>
     public static readonly DependencyProperty ContentOffsetYProperty = DependencyProperty.Register(
         nameof(ContentOffsetY),
         typeof(double),
@@ -104,6 +107,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty]
     private double contentZoomFocusY;
 
+    /// <summary>Identifies the <see cref="IsMouseWheelScrollingEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsMouseWheelScrollingEnabledProperty = DependencyProperty.Register(
         nameof(IsMouseWheelScrollingEnabled),
         typeof(bool),
@@ -119,6 +123,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(IsMouseWheelScrollingEnabledProperty, BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="MaximumZoom"/> dependency property.</summary>
     public static readonly DependencyProperty MaximumZoomProperty = DependencyProperty.Register(
         nameof(MaximumZoom),
         typeof(double),
@@ -140,6 +145,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty(DefaultValue = ZoomMinimumType.MinimumZoom)]
     private ZoomMinimumType minimumZoomType;
 
+    /// <summary>Identifies the <see cref="MinimumZoom"/> dependency property.</summary>
     public static readonly DependencyProperty MinimumZoomProperty = DependencyProperty.Register(
         nameof(MinimumZoom),
         typeof(double),
@@ -160,6 +166,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty]
     private Point? mousePosition;
 
+    /// <summary>Identifies the <see cref="ViewportZoom"/> dependency property.</summary>
     public static readonly DependencyProperty ViewportZoomProperty = DependencyProperty.Register(
         nameof(ViewportZoom),
         typeof(double),
@@ -186,6 +193,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty(DefaultValue = 10.0)]
     private double dragZoomThreshold;
 
+    /// <summary>Identifies the <see cref="IsTouchEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsTouchEnabledProperty = DependencyProperty.Register(
         nameof(IsTouchEnabled),
         typeof(bool),
@@ -201,6 +209,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(IsTouchEnabledProperty, BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="IsSpacebarPanEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsSpacebarPanEnabledProperty = DependencyProperty.Register(
         nameof(IsSpacebarPanEnabled),
         typeof(bool),
@@ -217,6 +226,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(IsSpacebarPanEnabledProperty, BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="IsShiftScrollHorizontalPanEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsShiftScrollHorizontalPanEnabledProperty = DependencyProperty.Register(
         nameof(IsShiftScrollHorizontalPanEnabled),
         typeof(bool),
@@ -234,6 +244,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
 
     private static readonly double[] DefaultZoomPresets = [0.1, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 10.0];
 
+    /// <summary>Identifies the <see cref="ZoomPresets"/> dependency property.</summary>
     public static readonly DependencyProperty ZoomPresetsProperty = DependencyProperty.Register(
         nameof(ZoomPresets),
         typeof(IList<double>),
@@ -255,6 +266,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     internal IList<double> EffectiveZoomPresets
         => ZoomPresets ?? DefaultZoomPresets;
 
+    /// <summary>Identifies the <see cref="ConstraintMode"/> dependency property.</summary>
     public static readonly DependencyProperty ConstraintModeProperty = DependencyProperty.Register(
         nameof(ConstraintMode),
         typeof(ZoomConstraintMode),
@@ -270,6 +282,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(ConstraintModeProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="ZoomKeyBindings"/> dependency property.</summary>
     public static readonly DependencyProperty ZoomKeyBindingsProperty = DependencyProperty.Register(
         nameof(ZoomKeyBindings),
         typeof(IList<ZoomKeyBinding>),
@@ -311,6 +324,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
             new FrameworkPropertyMetadata(typeof(ZoomBox)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="ZoomBox"/> class.</summary>
     public ZoomBox()
     {
         Focusable = true;
@@ -329,18 +343,21 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         RoutedEventArgs e)
         => Messenger.Default.UnRegister<ZoomCommandMessage>(this, OnZoomCommandMessageHandler);
 
+    /// <summary>Gets the zoom level at which the content fits inside the viewport.</summary>
     public double FitZoomValue => ViewportHelpers.FitZoom(
         ActualWidth,
         ActualHeight,
         content?.ActualWidth,
         content?.ActualHeight);
 
+    /// <summary>Gets the zoom level at which the content fills the viewport.</summary>
     public double FillZoomValue => ViewportHelpers.FillZoom(
         ActualWidth,
         ActualHeight,
         content?.ActualWidth,
         content?.ActualHeight);
 
+    /// <summary>Gets the effective minimum zoom level, determined by <see cref="MinimumZoomType"/>.</summary>
     public double MinimumZoomClamped
         => (MinimumZoomType switch
         {
@@ -370,6 +387,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     /// </summary>
     public event EventHandler<ZoomLevelChangedEventArgs>? ZoomLevelChanged;
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
@@ -377,6 +395,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     /// </summary>
     public ZoomBox ZoomContent => this;
 
+    /// <inheritdoc />
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         ArgumentNullException.ThrowIfNull(sizeInfo);
@@ -414,6 +433,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         OnPropertyChanged(nameof(FitZoomValue));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -439,6 +459,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         partDragZoomCanvas = Template.FindName("PART_DragZoomCanvas", this) as Canvas;
     }
 
+    /// <inheritdoc />
     protected override Size MeasureOverride(Size constraint)
     {
         var infiniteSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
@@ -470,6 +491,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         return new Size(width, height);
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size arrangeBounds)
     {
         var size = base.ArrangeOverride(DesiredSize);
@@ -486,6 +508,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         return size;
     }
 
+    /// <summary>Raises the <see cref="PropertyChanged"/> event for the specified property.</summary>
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
         => PropertyChanged?.Invoke(

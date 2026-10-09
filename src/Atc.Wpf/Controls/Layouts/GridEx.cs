@@ -25,18 +25,21 @@ namespace Atc.Wpf.Controls.Layouts;
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public sealed class GridEx : Grid
 {
+    /// <summary>Identifies the <see cref="Rows"/> dependency property.</summary>
     public static readonly DependencyProperty RowsProperty = DependencyProperty.Register(
         nameof(Rows),
         typeof(string),
         typeof(GridEx),
         new PropertyMetadata(default(string), OnRowsChanged));
 
+    /// <summary>Identifies the <see cref="Columns"/> dependency property.</summary>
     public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
         nameof(Columns),
         typeof(string),
         typeof(GridEx),
         new PropertyMetadata(default(string), OnColumnsChanged));
 
+    /// <summary>Identifies the <see cref="Spacing"/> dependency property.</summary>
     public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
         nameof(Spacing),
         typeof(double),
@@ -45,6 +48,7 @@ public sealed class GridEx : Grid
             double.NaN,
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
         nameof(HorizontalSpacing),
         typeof(double),
@@ -53,6 +57,7 @@ public sealed class GridEx : Grid
             double.NaN,
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
         nameof(VerticalSpacing),
         typeof(double),
@@ -61,6 +66,9 @@ public sealed class GridEx : Grid
             double.NaN,
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>
+    /// Gets or sets the row definitions as a comma-separated list of sizes (for example <c>2*,Auto,*,66</c>).
+    /// </summary>
     [Category("Layout")]
     [Description("The rows property")]
     public string Rows
@@ -69,6 +77,9 @@ public sealed class GridEx : Grid
         set => SetValue(RowsProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the column definitions as a comma-separated list of sizes (for example <c>2*,*,Auto</c>).
+    /// </summary>
     [Category("Layout")]
     [Description("The columns property")]
     public string Columns
@@ -77,6 +88,9 @@ public sealed class GridEx : Grid
         set => SetValue(ColumnsProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the uniform spacing between grid cells, applied both horizontally and vertically.
+    /// </summary>
     [Category("Layout")]
     [Description("Sets uniform spacing between grid cells (sets both horizontal and vertical)")]
     public double Spacing
@@ -85,6 +99,9 @@ public sealed class GridEx : Grid
         set => SetValue(SpacingProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the horizontal spacing between grid columns.
+    /// </summary>
     [Category("Layout")]
     [Description("Sets horizontal spacing between grid columns")]
     public double HorizontalSpacing
@@ -93,6 +110,9 @@ public sealed class GridEx : Grid
         set => SetValue(HorizontalSpacingProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the vertical spacing between grid rows.
+    /// </summary>
     [Category("Layout")]
     [Description("Sets vertical spacing between grid rows")]
     public double VerticalSpacing

@@ -29,13 +29,20 @@ public partial class LabelIntegerBox : ILabelIntegerBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int value;
 
+    /// <summary>
+    /// Occurs when the <c>Value</c> changes (committed when the control loses focus by default).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueLostFocus;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelIntegerBox"/> class.
+    /// </summary>
     public LabelIntegerBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
         => string.IsNullOrEmpty(ValidationText);
 

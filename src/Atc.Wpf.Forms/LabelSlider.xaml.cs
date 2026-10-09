@@ -33,13 +33,20 @@ public partial class LabelSlider : ILabelSlider
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged)]
     private int value;
 
+    /// <summary>
+    /// Occurs when the slider <c>Value</c> changes.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelSlider"/> class.
+    /// </summary>
     public LabelSlider()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateValue(

@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 namespace Atc.Wpf.Controls.Progressing;
 
+/// <summary>An animated indicator that signals an ongoing operation, in one of several visual styles.</summary>
 [TemplatePart(Name = TemplateBorderName, Type = typeof(Border))]
 public sealed partial class LoadingIndicator : Control
 {
@@ -35,6 +36,7 @@ public sealed partial class LoadingIndicator : Control
             new FrameworkPropertyMetadata(typeof(LoadingIndicator)));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

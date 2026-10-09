@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Forms;
 
+/// <summary>
+/// Base class for labeled integer input controls, adding the minimum and maximum values.
+/// </summary>
 public partial class LabelIntegerNumberControl : LabelNumberControl, ILabelIntegerNumberControl
 {
     [DependencyProperty(

@@ -31,6 +31,7 @@ public partial class NiceWindow
     /// </summary>
     public bool IsBackdropActive => (bool)GetValue(IsBackdropActiveProperty);
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(
         DependencyPropertyChangedEventArgs e)
     {

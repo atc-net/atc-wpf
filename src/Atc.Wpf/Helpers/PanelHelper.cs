@@ -32,6 +32,7 @@ public static class PanelHelper
 {
     private static readonly Thickness ZeroThickness = new(0);
 
+    /// <summary>Identifies the Spacing attached property.</summary>
     public static readonly DependencyProperty SpacingProperty = DependencyProperty.RegisterAttached(
         "Spacing",
         typeof(double),
@@ -40,14 +41,17 @@ public static class PanelHelper
             defaultValue: 0d,
             OnSpacingChanged));
 
+    /// <summary>Gets the value of the Spacing attached property.</summary>
     public static double GetSpacing(DependencyObject obj)
         => (double)obj.GetValue(SpacingProperty);
 
+    /// <summary>Sets the value of the Spacing attached property.</summary>
     public static void SetSpacing(
         DependencyObject obj,
         double space)
         => obj.SetValue(SpacingProperty, space);
 
+    /// <summary>Identifies the HorizontalSpacing attached property.</summary>
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.RegisterAttached(
         "HorizontalSpacing",
         typeof(double),
@@ -56,14 +60,17 @@ public static class PanelHelper
             defaultValue: 0d,
             OnHorizontalSpacingChanged));
 
+    /// <summary>Gets the value of the HorizontalSpacing attached property.</summary>
     public static double GetHorizontalSpacing(DependencyObject obj)
         => (double)obj.GetValue(HorizontalSpacingProperty);
 
+    /// <summary>Sets the value of the HorizontalSpacing attached property.</summary>
     public static void SetHorizontalSpacing(
         DependencyObject obj,
         double space)
         => obj.SetValue(HorizontalSpacingProperty, space);
 
+    /// <summary>Identifies the VerticalSpacing attached property.</summary>
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.RegisterAttached(
         "VerticalSpacing",
         typeof(double),
@@ -72,14 +79,17 @@ public static class PanelHelper
             defaultValue: 0d,
             OnVerticalSpacingChanged));
 
+    /// <summary>Gets the value of the VerticalSpacing attached property.</summary>
     public static double GetVerticalSpacing(DependencyObject obj)
         => (double)obj.GetValue(VerticalSpacingProperty);
 
+    /// <summary>Sets the value of the VerticalSpacing attached property.</summary>
     public static void SetVerticalSpacing(
         DependencyObject obj,
         double value)
         => obj.SetValue(VerticalSpacingProperty, value);
 
+    /// <summary>Identifies the ItemMargin attached property.</summary>
     public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.RegisterAttached(
         "ItemMargin",
         typeof(Thickness),
@@ -88,6 +98,7 @@ public static class PanelHelper
             new Thickness(0),
             OnItemMarginChanged));
 
+    /// <summary>Gets the value of the ItemMargin attached property.</summary>
     public static Thickness GetItemMargin(DependencyObject obj)
         => (Thickness)obj.GetValue(ItemMarginProperty);
 
@@ -96,6 +107,7 @@ public static class PanelHelper
         Thickness value)
         => obj.SetValue(ItemMarginProperty, value);
 
+    /// <summary>Identifies the LastItemMargin attached property.</summary>
     public static readonly DependencyProperty LastItemMarginProperty = DependencyProperty.RegisterAttached(
         "LastItemMargin",
         typeof(Thickness),
@@ -104,6 +116,7 @@ public static class PanelHelper
             new Thickness(0),
             OnItemMarginChanged));
 
+    /// <summary>Gets the value of the LastItemMargin attached property.</summary>
     public static Thickness GetLastItemMargin(DependencyObject obj)
         => (Thickness)obj.GetValue(LastItemMarginProperty);
 

@@ -1,8 +1,10 @@
 namespace Atc.Wpf.Helpers;
 
+/// <summary>Provides attached properties for a <see cref="PasswordBox"/>, such as a bindable password, a caps lock warning and a reveal-text button.</summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public static class PasswordBoxHelper
 {
+    /// <summary>Identifies the BoundPassword attached property.</summary>
     public static readonly DependencyProperty BoundPasswordProperty = DependencyProperty.RegisterAttached(
         "BoundPassword",
         typeof(string),
@@ -11,9 +13,11 @@ public static class PasswordBoxHelper
             string.Empty,
             OnBoundPasswordChanged));
 
+    /// <summary>Gets the value of the BoundPassword attached property.</summary>
     public static string GetBoundPassword(DependencyObject obj)
         => (string)obj.GetValue(BoundPasswordProperty);
 
+    /// <summary>Sets the value of the BoundPassword attached property.</summary>
     public static void SetBoundPassword(
         DependencyObject obj,
         string value)
@@ -21,6 +25,7 @@ public static class PasswordBoxHelper
             BoundPasswordProperty,
             value);
 
+    /// <summary>Identifies the CapsLockIcon attached property.</summary>
     public static readonly DependencyProperty CapsLockIconProperty = DependencyProperty.RegisterAttached(
         "CapsLockIcon",
         typeof(object),
@@ -29,9 +34,11 @@ public static class PasswordBoxHelper
             "!",
             OnCapsLockIconPropertyChanged));
 
+    /// <summary>Gets the value of the CapsLockIcon attached property.</summary>
     public static object GetCapsLockIcon(PasswordBox element)
         => element.GetValue(CapsLockIconProperty);
 
+    /// <summary>Sets the value of the CapsLockIcon attached property.</summary>
     public static void SetCapsLockIcon(
         PasswordBox element,
         object value)
@@ -39,15 +46,18 @@ public static class PasswordBoxHelper
             CapsLockIconProperty,
             value);
 
+    /// <summary>Identifies the CapsLockWarningToolTip attached property.</summary>
     public static readonly DependencyProperty CapsLockWarningToolTipProperty = DependencyProperty.RegisterAttached(
         "CapsLockWarningToolTip",
         typeof(object),
         typeof(PasswordBoxHelper),
         new PropertyMetadata("Caps lock is on"));
 
+    /// <summary>Gets the value of the CapsLockWarningToolTip attached property.</summary>
     public static object GetCapsLockWarningToolTip(PasswordBox element)
         => element.GetValue(CapsLockWarningToolTipProperty);
 
+    /// <summary>Sets the value of the CapsLockWarningToolTip attached property.</summary>
     public static void SetCapsLockWarningToolTip(
         PasswordBox element,
         object value)
@@ -55,15 +65,18 @@ public static class PasswordBoxHelper
             CapsLockWarningToolTipProperty,
             value);
 
+    /// <summary>Identifies the RevealTextButtonContent attached property.</summary>
     public static readonly DependencyProperty RevealTextButtonContentProperty = DependencyProperty.RegisterAttached(
         "RevealTextButtonContent",
         typeof(object),
         typeof(PasswordBoxHelper),
         new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
+    /// <summary>Gets the value of the RevealTextButtonContent attached property.</summary>
     public static object? GetRevealTextButtonContent(DependencyObject d)
         => (object?)d.GetValue(RevealTextButtonContentProperty);
 
+    /// <summary>Sets the value of the RevealTextButtonContent attached property.</summary>
     public static void SetRevealTextButtonContent(
         DependencyObject obj,
         object? value)
@@ -71,16 +84,19 @@ public static class PasswordBoxHelper
             RevealTextButtonContentProperty,
             value);
 
+    /// <summary>Identifies the RevealTextButtonContentTemplate attached property.</summary>
     public static readonly DependencyProperty RevealTextButtonContentTemplateProperty = DependencyProperty.RegisterAttached(
             "RevealTextButtonContentTemplate",
             typeof(DataTemplate),
             typeof(PasswordBoxHelper),
             new FrameworkPropertyMetadata(propertyChangedCallback: null));
 
+    /// <summary>Gets the value of the RevealTextButtonContentTemplate attached property.</summary>
     public static DataTemplate? GetRevealTextButtonContentTemplate(
         DependencyObject d)
         => (DataTemplate?)d.GetValue(RevealTextButtonContentTemplateProperty);
 
+    /// <summary>Sets the value of the RevealTextButtonContentTemplate attached property.</summary>
     public static void SetRevealTextButtonContentTemplate(
         DependencyObject obj,
         DataTemplate? value)

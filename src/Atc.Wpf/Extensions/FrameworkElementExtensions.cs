@@ -2,6 +2,9 @@
 // ReSharper disable ConvertIfStatementToSwitchStatement
 namespace System.Windows;
 
+/// <summary>
+/// Extension methods for <see cref="FrameworkElement"/>.
+/// </summary>
 public static class FrameworkElementExtensions
 {
     /// <summary>

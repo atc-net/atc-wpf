@@ -11,10 +11,17 @@ namespace Atc.Wpf.Theming.ValueConverters;
 [ValueConversion(typeof(CornerRadius), typeof(double), ParameterType = typeof(RadiusType))]
 public sealed class CornerRadiusFilterValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly CornerRadiusFilterValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the side(s) to keep when no <see cref="RadiusType"/> converter parameter is given.
+    /// </summary>
     public RadiusType Filter { get; set; } = RadiusType.None;
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -46,6 +53,7 @@ public sealed class CornerRadiusFilterValueConverter : IValueConverter
         };
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

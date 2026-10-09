@@ -7,6 +7,7 @@ namespace Atc.Wpf.Controls.Zoom;
 /// </summary>
 public sealed class ZoomGridOverlay : Adorner
 {
+    /// <summary>Identifies the <see cref="BaseGridSpacing"/> dependency property.</summary>
     public static readonly DependencyProperty BaseGridSpacingProperty = DependencyProperty.Register(
         nameof(BaseGridSpacing),
         typeof(double),
@@ -14,24 +15,28 @@ public sealed class ZoomGridOverlay : Adorner
         new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender),
         IsValidGridSpacing);
 
+    /// <summary>Identifies the <see cref="MinorLineBrush"/> dependency property.</summary>
     public static readonly DependencyProperty MinorLineBrushProperty = DependencyProperty.Register(
         nameof(MinorLineBrush),
         typeof(Brush),
         typeof(ZoomGridOverlay),
         new FrameworkPropertyMetadata(CreateFrozenBrush(40), FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
+    /// <summary>Identifies the <see cref="MajorLineBrush"/> dependency property.</summary>
     public static readonly DependencyProperty MajorLineBrushProperty = DependencyProperty.Register(
         nameof(MajorLineBrush),
         typeof(Brush),
         typeof(ZoomGridOverlay),
         new FrameworkPropertyMetadata(CreateFrozenBrush(80), FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
+    /// <summary>Identifies the <see cref="MinorLineThickness"/> dependency property.</summary>
     public static readonly DependencyProperty MinorLineThicknessProperty = DependencyProperty.Register(
         nameof(MinorLineThickness),
         typeof(double),
         typeof(ZoomGridOverlay),
         new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
 
+    /// <summary>Identifies the <see cref="MajorLineThickness"/> dependency property.</summary>
     public static readonly DependencyProperty MajorLineThicknessProperty = DependencyProperty.Register(
         nameof(MajorLineThickness),
         typeof(double),
@@ -44,6 +49,7 @@ public sealed class ZoomGridOverlay : Adorner
     private Pen? minorPen;
     private Pen? majorPen;
 
+    /// <summary>Initializes a new instance of the <see cref="ZoomGridOverlay"/> class for the specified zoom box.</summary>
     public ZoomGridOverlay(ZoomBox adornedElement)
         : base(adornedElement)
     {
@@ -111,6 +117,7 @@ public sealed class ZoomGridOverlay : Adorner
         set => SetValue(MajorLineThicknessProperty, value);
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);

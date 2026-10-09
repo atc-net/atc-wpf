@@ -1,8 +1,12 @@
 namespace Atc.Wpf.Controls.Layouts;
 
+/// <summary>
+/// A panel that stacks all its children on top of each other, sizing itself to the largest child.
+/// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 public sealed class PanelEx : Panel
 {
+    /// <inheritdoc />
     protected override Size MeasureOverride(Size availableSize)
     {
         var maxSize = default(Size);
@@ -22,6 +26,7 @@ public sealed class PanelEx : Panel
         return maxSize;
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size finalSize)
     {
         foreach (UIElement child in InternalChildren)

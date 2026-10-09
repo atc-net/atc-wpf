@@ -42,6 +42,7 @@ public partial class ZoomMiniMap : ContentControl
             new FrameworkPropertyMetadata(OnDataContextChangedCallback));
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -54,12 +55,14 @@ public partial class ZoomMiniMap : ContentControl
         SetBackground(VisualElement);
     }
 
+    /// <inheritdoc />
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
         UpdateViewportBorderThickness();
     }
 
+    /// <inheritdoc />
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -96,6 +99,7 @@ public partial class ZoomMiniMap : ContentControl
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -128,6 +132,7 @@ public partial class ZoomMiniMap : ContentControl
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -160,6 +165,7 @@ public partial class ZoomMiniMap : ContentControl
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

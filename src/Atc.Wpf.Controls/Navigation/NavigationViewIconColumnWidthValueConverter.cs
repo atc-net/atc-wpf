@@ -13,8 +13,10 @@ public sealed class NavigationViewIconColumnWidthValueConverter : IValueConverte
     /// </summary>
     public const double ItemMargin = 4;
 
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly NavigationViewIconColumnWidthValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -29,6 +31,7 @@ public sealed class NavigationViewIconColumnWidthValueConverter : IValueConverte
             : width;
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

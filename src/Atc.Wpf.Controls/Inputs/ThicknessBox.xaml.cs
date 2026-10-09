@@ -7,6 +7,7 @@ namespace Atc.Wpf.Controls.Inputs;
 /// </summary>
 public partial class ThicknessBox
 {
+    /// <summary>Occurs when the <see cref="Thickness"/> value changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<double?>))]

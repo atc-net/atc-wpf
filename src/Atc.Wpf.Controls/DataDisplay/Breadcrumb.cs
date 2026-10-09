@@ -56,6 +56,7 @@ public sealed partial class Breadcrumb : Control
             new FrameworkPropertyMetadata(typeof(Breadcrumb)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="Breadcrumb"/> class.</summary>
     public Breadcrumb()
     {
         Separator = "/";

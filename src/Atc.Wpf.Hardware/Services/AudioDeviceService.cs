@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates and watches the audio input or output endpoints of the system through a WinRT device watcher.
+/// </summary>
 public sealed class AudioDeviceService : IAudioDeviceService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
@@ -9,6 +12,10 @@ public sealed class AudioDeviceService : IAudioDeviceService
     private bool initialEnumerationCompleted;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AudioDeviceService"/> class.
+    /// </summary>
+    /// <param name="kind">Whether to enumerate capture (input) or render (output) endpoints.</param>
     public AudioDeviceService(AudioDeviceKind kind)
         : this(kind, new DeviceWatcherHost(DeviceInformation.GetAqsFilterFromDeviceClass(
             kind is AudioDeviceKind.Input ? DeviceClass.AudioCapture : DeviceClass.AudioRender)))
@@ -29,10 +36,13 @@ public sealed class AudioDeviceService : IAudioDeviceService
         this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<AudioDeviceInfo> Devices { get; }
 
+    /// <inheritdoc />
     public AudioDeviceKind Kind { get; }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -44,6 +54,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
         watcher.StartWatching();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -55,6 +66,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
         watcher.StopWatching();
     }
 
+    /// <inheritdoc />
     public async Task RefreshAsync()
     {
         var found = await watcher.FindAllAsync().ConfigureAwait(false);
@@ -76,6 +88,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

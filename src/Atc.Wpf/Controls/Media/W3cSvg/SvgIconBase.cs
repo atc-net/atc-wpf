@@ -22,8 +22,14 @@ public abstract class SvgIconBase : MarkupExtension
         GetAppName();
     }
 
+    /// <summary>
+    /// Gets or sets an optional color that replaces the fill colors of the SVG.
+    /// </summary>
     public Color? OverrideColor { get; set; }
 
+    /// <summary>
+    /// Gets or sets an optional color that replaces the stroke colors of the SVG.
+    /// </summary>
     public Color? OverrideStrokeColor { get; set; }
 
     /// <summary>
@@ -255,6 +261,9 @@ public abstract class SvgIconBase : MarkupExtension
             : new DrawingImage(drawGroup);
     }
 
+    /// <summary>
+    /// Resolves the application name from the entry assembly.
+    /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     protected void GetAppName()
     {
@@ -272,6 +281,10 @@ public abstract class SvgIconBase : MarkupExtension
         }
     }
 
+    /// <summary>
+    /// Gets the entry assembly of the application, ignoring the WPF designer process.
+    /// </summary>
+    /// <returns>The entry assembly, or <see langword="null"/> if it could not be determined.</returns>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     protected static Assembly? GetEntryAssembly()
@@ -348,6 +361,10 @@ public abstract class SvgIconBase : MarkupExtension
         return asm;
     }
 
+    /// <summary>
+    /// Gets the executing assembly, falling back to the entry assembly.
+    /// </summary>
+    /// <returns>The executing assembly, or the entry assembly if it could not be determined.</returns>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     protected static Assembly? GetExecutingAssembly()
     {

@@ -1,0 +1,1 @@
+[assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]

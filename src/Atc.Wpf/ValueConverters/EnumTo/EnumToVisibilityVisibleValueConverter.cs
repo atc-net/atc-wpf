@@ -34,6 +34,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Enum), typeof(Visibility))]
 public sealed class EnumToVisibilityVisibleValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="EnumToVisibilityVisibleValueConverter"/>.
+    /// </summary>
     public static readonly EnumToVisibilityVisibleValueConverter Instance = new();
 
     /// <inheritdoc />

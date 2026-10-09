@@ -108,6 +108,9 @@ public partial class AdvancedFontPicker
 
     private ICollectionView? familyView;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AdvancedFontPicker"/> class.
+    /// </summary>
     public AdvancedFontPicker()
     {
         AvailableFontFamilies = new ObservableCollection<FontFamily>(SortedSystemFontFamilies);
@@ -133,16 +136,34 @@ public partial class AdvancedFontPicker
         Loaded += OnLoaded;
     }
 
+    /// <summary>
+    /// Gets the installed system font families, sorted by name.
+    /// </summary>
     public ObservableCollection<FontFamily> AvailableFontFamilies { get; }
 
+    /// <summary>
+    /// Gets the font sizes offered for selection.
+    /// </summary>
     public ObservableCollection<double> AvailableFontSizes { get; }
 
+    /// <summary>
+    /// Gets the font weights available for the selected font family.
+    /// </summary>
     public ObservableCollection<FontWeight> AvailableFontWeights { get; }
 
+    /// <summary>
+    /// Gets the font styles available for the selected font family.
+    /// </summary>
     public ObservableCollection<FontStyle> AvailableFontStyles { get; }
 
+    /// <summary>
+    /// Gets the font stretches available for the selected font family.
+    /// </summary>
     public ObservableCollection<FontStretch> AvailableFontStretches { get; }
 
+    /// <summary>
+    /// Gets the recently used font families from the configured <see cref="IFontPickerStorage"/>.
+    /// </summary>
     public ObservableCollection<FontFamily> RecentFontFamilies { get; }
 
     /// <summary>
@@ -184,6 +205,10 @@ public partial class AdvancedFontPicker
         }
     }
 
+    /// <summary>
+    /// Creates a <see cref="FontDescription"/> from the current selections.
+    /// </summary>
+    /// <returns>A new font description.</returns>
     [SuppressMessage("Performance", "CA1024:Use properties where appropriate", Justification = "Returns a new instance per call.")]
     public FontDescription GetFontDescription()
         => new(
@@ -196,6 +221,10 @@ public partial class AdvancedFontPicker
             SelectedBackgroundBrush,
             SelectedTextDecorations);
 
+    /// <summary>
+    /// Sets the current selections from a <see cref="FontDescription"/>.
+    /// </summary>
+    /// <param name="fontDescription">The font description to apply.</param>
     public void SetFontDescription(FontDescription fontDescription)
     {
         ArgumentNullException.ThrowIfNull(fontDescription);

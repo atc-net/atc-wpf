@@ -8,6 +8,9 @@ public partial class AccentColorSelector : INotifyPropertyChanged
     [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
     private RenderColorIndicatorType renderColorIndicatorType;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AccentColorSelector"/> class.
+    /// </summary>
     public AccentColorSelector()
     {
         InitializeComponent();
@@ -25,10 +28,18 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         PopulateData();
     }
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// Gets or sets the available accent colors, sorted by display name.
+    /// </summary>
     public IList<ColorItem> Items { get; set; } = new List<ColorItem>();
 
+    /// <summary>
+    /// Gets or sets the name of the selected color scheme. Setting it changes the application accent;
+    /// empty values are ignored.
+    /// </summary>
     public string SelectedKey
     {
         get => selectedKey;
@@ -56,6 +67,10 @@ public partial class AccentColorSelector : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {

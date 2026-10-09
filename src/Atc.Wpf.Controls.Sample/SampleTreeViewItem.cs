@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Controls.Sample;
 
+/// <summary>
+/// A tree view item in the sample tree that refers to a sample by its <see cref="SamplePath"/>.
+/// </summary>
 public sealed class SampleTreeViewItem : TreeViewItem
 {
     /// <summary>

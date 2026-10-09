@@ -2,11 +2,17 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelIntegerXyBox : ILabelIntegerXyBox
 {
+    /// <summary>
+    /// Occurs when the X value changes in the inner X input box.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
     private static readonly RoutedEvent valueXChanged;
 
+    /// <summary>
+    /// Occurs when the Y value changes in the inner Y input box.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<int>))]
@@ -43,15 +49,25 @@ public partial class LabelIntegerXyBox : ILabelIntegerXyBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private int valueY;
 
+    /// <summary>
+    /// Occurs when the <c>ValueX</c> property changes (committed when the control loses focus by default).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueXLostFocus;
 
+    /// <summary>
+    /// Occurs when the <c>ValueY</c> property changes (committed when the control loses focus by default).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? ValueYLostFocus;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelIntegerXyBox"/> class.
+    /// </summary>
     public LabelIntegerXyBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
         => string.IsNullOrEmpty(ValidationText);
 

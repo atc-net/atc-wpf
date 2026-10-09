@@ -1,7 +1,13 @@
 namespace Atc.Wpf.Components.Monitoring;
 
+/// <summary>
+/// Provides sample data for the application monitor at design time.
+/// </summary>
 public static class DesignModeHelper
 {
+    /// <summary>
+    /// Creates a small list of sample <see cref="ApplicationEventEntry"/> items.
+    /// </summary>
     public static IEnumerable<ApplicationEventEntry> CreateApplicationEventEntryList()
     {
         var list = new List<ApplicationEventEntry>

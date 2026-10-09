@@ -11,8 +11,12 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(object))]
 public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
 {
+    /// <summary>
+    /// Gets or sets the math operation applied to the two operands.
+    /// </summary>
     public MathOperation Operation { get; set; }
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -23,6 +27,7 @@ public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
             parameter,
             Operation);
 
+    /// <inheritdoc />
     public object? Convert(
         object[]? values,
         Type targetType,
@@ -35,6 +40,7 @@ public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
                 values.ElementAtOrDefault(1),
                 Operation);
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,
@@ -42,6 +48,7 @@ public sealed class MathValueConverter : IValueConverter, IMultiValueConverter
         CultureInfo culture)
         => DependencyProperty.UnsetValue;
 
+    /// <inheritdoc />
     public object[] ConvertBack(
         object? value,
         Type[] targetTypes,

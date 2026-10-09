@@ -5,6 +5,9 @@ public partial class InputFormDialogBox
 {
     private const int ScrollBarSize = 20;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with OK/Cancel buttons and the given form.
+    /// </summary>
     public InputFormDialogBox(
         Window owningWindow,
         ILabelControlsForm labelControlsForm)
@@ -15,6 +18,9 @@ public partial class InputFormDialogBox
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with OK/Cancel buttons, a title bar text and the given form.
+    /// </summary>
     public InputFormDialogBox(
         Window owningWindow,
         string titleBarText,
@@ -25,6 +31,9 @@ public partial class InputFormDialogBox
             labelControlsForm)
         => Settings.TitleBarText = titleBarText;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with OK/Cancel buttons, a title bar text, a header text and the given form.
+    /// </summary>
     public InputFormDialogBox(
         Window owningWindow,
         string titleBarText,
@@ -40,6 +49,9 @@ public partial class InputFormDialogBox
         UpdateWidthAndHeight();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with OK/Cancel buttons, the given form panel settings and form.
+    /// </summary>
     public InputFormDialogBox(
         Window owningWindow,
         LabelInputFormPanelSettings formPanelSettings,
@@ -61,6 +73,9 @@ public partial class InputFormDialogBox
         InitializeDialogBox(labelControlsForm);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with the given dialog settings and form.
+    /// </summary>
     public InputFormDialogBox(
         Window owningWindow,
         DialogBoxSettings settings,
@@ -82,16 +97,34 @@ public partial class InputFormDialogBox
         InitializeDialogBox(labelControlsForm);
     }
 
+    /// <summary>
+    /// Gets the window that owns the dialog box.
+    /// </summary>
     public Window OwningWindow { get; private set; }
 
+    /// <summary>
+    /// Gets the settings that control the dialog box appearance and buttons.
+    /// </summary>
     public DialogBoxSettings Settings { get; }
 
+    /// <summary>
+    /// Gets or sets the optional header control shown above the form.
+    /// </summary>
     public ContentControl? HeaderControl { get; set; }
 
+    /// <summary>
+    /// Gets the panel that renders the form.
+    /// </summary>
     public LabelInputFormPanel LabelInputFormPanel { get; } = new();
 
+    /// <summary>
+    /// Gets the form whose values the user edits.
+    /// </summary>
     public ILabelControlsForm Data => LabelInputFormPanel.Data;
 
+    /// <summary>
+    /// Re-renders the form panel and recalculates the dialog width and height.
+    /// </summary>
     public void ReRender()
     {
         LabelInputFormPanel.ReRender();

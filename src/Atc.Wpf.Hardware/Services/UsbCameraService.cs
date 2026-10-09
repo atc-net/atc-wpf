@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates and watches the video capture devices (cameras) of the system through a WinRT device watcher.
+/// </summary>
 public sealed class UsbCameraService : IUsbCameraService
 {
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
@@ -9,6 +12,9 @@ public sealed class UsbCameraService : IUsbCameraService
     private bool initialEnumerationCompleted;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsbCameraService"/> class.
+    /// </summary>
     public UsbCameraService()
         : this(new DeviceWatcherHost(
             DeviceInformation.GetAqsFilterFromDeviceClass(DeviceClass.VideoCapture)))
@@ -26,8 +32,10 @@ public sealed class UsbCameraService : IUsbCameraService
         this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<UsbCameraInfo> Cameras { get; }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -39,6 +47,7 @@ public sealed class UsbCameraService : IUsbCameraService
         watcher.StartWatching();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -50,6 +59,7 @@ public sealed class UsbCameraService : IUsbCameraService
         watcher.StopWatching();
     }
 
+    /// <inheritdoc />
     public async Task RefreshAsync()
     {
         var found = await watcher.FindAllAsync().ConfigureAwait(false);
@@ -71,6 +81,7 @@ public sealed class UsbCameraService : IUsbCameraService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

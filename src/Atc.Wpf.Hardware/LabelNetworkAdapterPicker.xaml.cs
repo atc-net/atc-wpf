@@ -25,15 +25,25 @@ public partial class LabelNetworkAdapterPicker : ILabelNetworkAdapterPicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<NetworkAdapterInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<NetworkAdapterInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelNetworkAdapterPicker"/> class.
+    /// </summary>
     public LabelNetworkAdapterPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

@@ -1,8 +1,14 @@
 // ReSharper disable once CheckNamespace
 namespace System.Windows.Controls;
 
+/// <summary>
+/// Extension methods for <see cref="Image"/>.
+/// </summary>
 public static class ImageExtensions
 {
+    /// <summary>
+    /// Gets a <see cref="BitmapImage"/> for the image's source.
+    /// </summary>
     public static BitmapImage ToBitmapImage(this Image image)
     {
         ArgumentNullException.ThrowIfNull(image);
@@ -33,6 +39,9 @@ public static class ImageExtensions
         throw new FormatException("image.Source");
     }
 
+    /// <summary>
+    /// Restores the original image when enabled, or shows a grayscale version with an opacity mask when disabled.
+    /// </summary>
     public static Image AutoGrey(
         this Image image,
         bool isEnabled)

@@ -12,6 +12,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(DateTimeOffset), typeof(DateTime))]
 public sealed class UtcToLocalDateTimeValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="UtcToLocalDateTimeValueConverter"/>.
+    /// </summary>
     public static readonly UtcToLocalDateTimeValueConverter Instance = new();
 
     /// <inheritdoc />

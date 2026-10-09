@@ -1,6 +1,9 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Theming;
 
+/// <summary>
+/// Specifies which corner radii of a <see cref="CornerRadius"/> to ignore.
+/// </summary>
 public enum RadiusType
 {
     /// <summary>

@@ -5,12 +5,25 @@ namespace Atc.Wpf.Components.Viewers;
 /// </summary>
 public sealed class JsonPropertyTemplateSelector : DataTemplateSelector
 {
+    /// <summary>
+    /// Gets or sets the data template for property nodes with an object value.
+    /// Note: template selection currently resolves the <c>ObjectPropertyTemplate</c> resource key instead of this property.
+    /// </summary>
     public DataTemplate? ObjectPropertyTemplate { get; set; }
 
+    /// <summary>
+    /// Gets or sets the data template for property nodes with an array value.
+    /// Note: template selection currently resolves the <c>ArrayPropertyTemplate</c> resource key instead of this property.
+    /// </summary>
     public DataTemplate? ArrayPropertyTemplate { get; set; }
 
+    /// <summary>
+    /// Gets or sets the data template for property nodes with a primitive value.
+    /// Note: template selection currently resolves the <c>PrimitivePropertyTemplate</c> resource key instead of this property.
+    /// </summary>
     public DataTemplate? PrimitivePropertyTemplate { get; set; }
 
+    /// <inheritdoc />
     public override DataTemplate? SelectTemplate(
         object? item,
         DependencyObject container)

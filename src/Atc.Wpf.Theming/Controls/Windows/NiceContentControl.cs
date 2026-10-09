@@ -13,11 +13,17 @@ public sealed partial class NiceContentControl : ContentControl
     private Storyboard? afterLoadedReverseStoryboard;
     private bool transitionLoaded;
 
+    /// <summary>
+    /// Occurs when the content transition starts.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedEventHandler))]
     private static readonly RoutedEvent transitionStarted;
 
+    /// <summary>
+    /// Occurs when the content transition has completed.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedEventHandler))]
@@ -35,6 +41,9 @@ public sealed partial class NiceContentControl : ContentControl
     [DependencyProperty]
     private bool isTransitioning;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NiceContentControl"/> class.
+    /// </summary>
     public NiceContentControl()
     {
         DefaultStyleKey = typeof(NiceContentControl);

@@ -24,6 +24,9 @@ public partial class JsonViewer
 
     private string? themeNameWhenUnloaded;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JsonViewer"/> class, matching its theme mode to the current application theme.
+    /// </summary>
     public JsonViewer()
     {
         InitializeComponent();
@@ -39,6 +42,11 @@ public partial class JsonViewer
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Parses the JSON text and shows it in the tree view. Empty input is ignored; invalid JSON
+    /// is reported in a message box (the invalid-format message is skipped when
+    /// <c>SuppressErrorMessages</c> is set).
+    /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public void Load(string json)
     {

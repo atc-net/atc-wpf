@@ -6,8 +6,14 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(LeftTopRightBottomType))]
 public sealed class ThicknessFilterValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ThicknessFilterValueConverter"/>.
+    /// </summary>
     public static readonly ThicknessFilterValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the side whose thickness is kept (all other sides become zero) when no side is passed as the converter parameter.
+    /// </summary>
     public LeftTopRightBottomType Filter { get; set; } = LeftTopRightBottomType.None;
 
     /// <inheritdoc />

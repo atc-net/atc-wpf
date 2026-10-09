@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// An image that renders a Material Design icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
@@ -119,6 +122,9 @@ public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippab
         set => SetValue(FlipOrientationProperty, value);
     }
 
+    /// <summary>
+    /// Creates an image source that renders the specified Material Design icon with the given foreground brush and em-size.
+    /// </summary>
     public static ImageSource CreateImageSource(
         FontMaterialDesignType fontIconType,
         Brush foregroundBrush,
@@ -128,6 +134,9 @@ public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippab
         return FontIconHelper.CreateImageSource(FontMaterialDesignTypeface, iconChar, foregroundBrush, emSize);
     }
 
+    /// <summary>
+    /// Creates a drawing image that renders the specified Material Design icon with the given foreground brush and em-size.
+    /// </summary>
     public static DrawingImage CreateDrawingImage(
         FontMaterialDesignType fontIconType,
         Brush foregroundBrush,

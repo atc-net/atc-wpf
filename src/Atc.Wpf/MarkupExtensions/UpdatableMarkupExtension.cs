@@ -2,12 +2,22 @@
 // ReSharper disable InvertIf
 namespace Atc.Wpf.MarkupExtensions;
 
+/// <summary>
+/// Base class for markup extensions that can update the provided value on the target after it was first provided.
+/// </summary>
 public abstract class UpdatableMarkupExtension : MarkupExtension
 {
+    /// <summary>
+    /// Gets the object the markup extension is applied to.
+    /// </summary>
     protected object? TargetObject { get; private set; }
 
+    /// <summary>
+    /// Gets the property the markup extension is applied to.
+    /// </summary>
     protected object? TargetProperty { get; private set; }
 
+    /// <inheritdoc />
     public sealed override object ProvideValue(IServiceProvider serviceProvider)
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);
@@ -21,6 +31,10 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
         return ProvideValueInternal(serviceProvider);
     }
 
+    /// <summary>
+    /// Sets the specified value on the target property of the target object.
+    /// </summary>
+    /// <param name="value">The new value.</param>
     protected void UpdateValue(object value)
     {
         if (TargetObject is null)
@@ -59,6 +73,11 @@ public abstract class UpdatableMarkupExtension : MarkupExtension
         }
     }
 
+    /// <summary>
+    /// When implemented in a derived class, returns the value to set on the target property.
+    /// </summary>
+    /// <param name="serviceProvider">A service provider helper that can provide services for the markup extension.</param>
+    /// <returns>The value to set on the target property.</returns>
     protected abstract object ProvideValueInternal(
         IServiceProvider serviceProvider);
 

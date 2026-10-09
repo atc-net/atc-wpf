@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates the printers (print queues) and polls for changes.
+/// </summary>
 public sealed class PrinterService : IPrinterService
 {
     private readonly Func<IReadOnlyList<PrinterSnapshot>> enumerate;
@@ -8,6 +11,9 @@ public sealed class PrinterService : IPrinterService
     private bool started;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrinterService"/> class.
+    /// </summary>
     public PrinterService()
         : this(EnumeratePrinters)
     {
@@ -24,14 +30,17 @@ public sealed class PrinterService : IPrinterService
         pollTimer.Tick += OnPollTick;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<PrinterInfo> Printers { get; }
 
+    /// <inheritdoc />
     public TimeSpan PollingInterval
     {
         get => pollTimer.Interval;
         set => pollTimer.Interval = value;
     }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -43,6 +52,7 @@ public sealed class PrinterService : IPrinterService
         pollTimer.Start();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -69,6 +79,7 @@ public sealed class PrinterService : IPrinterService
         return inFlightPoll;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

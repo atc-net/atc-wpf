@@ -28,10 +28,19 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
     [DependencyProperty(DefaultValue = true)]
     private bool updateUiCultureOnChangeEvent;
 
+    /// <summary>
+    /// Occurs when the selected language changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>
+    /// Occurs when the selected language changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelLanguageSelector"/> class.
+    /// </summary>
     public LabelLanguageSelector()
     {
         InitializeComponent();
@@ -55,6 +64,10 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         }
     }
 
+    /// <summary>
+    /// Gets the selected key, falling back to the inner selector's key when <c>SelectedKey</c> is empty.
+    /// </summary>
+    /// <returns>The selected key, or an empty string when nothing is selected.</returns>
     public string GetKey()
     {
         var key = SelectedKey;
@@ -66,6 +79,7 @@ public partial class LabelLanguageSelector : ILabelLanguageSelector
         return key;
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateValue(default, this, GetKey(), raiseEvents: false);

@@ -142,12 +142,14 @@ public sealed partial class Popover : Control
             new FrameworkPropertyMetadata(typeof(Popover)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="Popover"/> class.</summary>
     public Popover()
     {
         MaxPopoverWidth = double.PositiveInfinity;
         MaxPopoverHeight = double.PositiveInfinity;
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -166,6 +168,7 @@ public sealed partial class Popover : Control
         WireEvents();
     }
 
+    /// <inheritdoc />
     protected override void OnKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

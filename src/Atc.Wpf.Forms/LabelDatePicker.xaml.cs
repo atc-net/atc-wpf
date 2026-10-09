@@ -5,6 +5,9 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelDatePicker : ILabelDatePicker
 {
+    /// <summary>
+    /// Occurs when the <c>Text</c> value changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
@@ -57,12 +60,21 @@ public partial class LabelDatePicker : ILabelDatePicker
     [DependencyProperty(DefaultValue = false)]
     private bool openCalender;
 
+    /// <summary>
+    /// Occurs when the entered date is committed and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the entered date is committed and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusInvalid;
 
     private string? themeNameWhenUnloaded;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelDatePicker"/> class.
+    /// </summary>
     public LabelDatePicker()
     {
         InitializeComponent();

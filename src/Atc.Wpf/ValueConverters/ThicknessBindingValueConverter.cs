@@ -6,8 +6,14 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Thickness), typeof(Thickness), ParameterType = typeof(LeftTopRightBottomType))]
 public sealed class ThicknessBindingValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ThicknessBindingValueConverter"/>.
+    /// </summary>
     public static readonly ThicknessBindingValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the side whose thickness is set to zero when no side is passed as the converter parameter.
+    /// </summary>
     public LeftTopRightBottomType IgnoreThicknessSide { get; set; } = LeftTopRightBottomType.None;
 
     /// <inheritdoc />

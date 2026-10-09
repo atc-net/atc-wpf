@@ -5,26 +5,41 @@ namespace Atc.Wpf.Hardware.Pickers;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
 {
+    /// <summary>
+    /// Occurs when the selected window changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<TopLevelWindowInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
+    /// <summary>
+    /// Occurs when the selected window is destroyed.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<TopLevelWindowInfo?>))]
     private static readonly RoutedEvent deviceLost;
 
+    /// <summary>
+    /// Occurs when a lost window reappears with the same window handle.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<TopLevelWindowInfo?>))]
     private static readonly RoutedEvent deviceReconnected;
 
+    /// <summary>
+    /// Occurs when the state of any tracked window changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(EventHandler<DeviceStateChangedRoutedEventArgs>))]
     private static readonly RoutedEvent deviceStateChanged;
 
+    /// <summary>
+    /// Identifies the <see cref="Value"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),
         typeof(TopLevelWindowInfo),
@@ -34,6 +49,9 @@ public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
             OnValuePropertyChanged));
 
+    /// <summary>
+    /// Gets or sets the selected window.
+    /// </summary>
     public TopLevelWindowInfo? Value
     {
         get => (TopLevelWindowInfo?)GetValue(ValueProperty);
@@ -72,48 +90,72 @@ public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
     [DependencyProperty(PropertyChangedCallback = nameof(OnOnlyVisibleWithTitleChanged))]
     private bool? onlyVisibleWithTitle;
 
+    /// <summary>
+    /// Identifies the <see cref="ItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
         nameof(ItemTemplate),
         typeof(DataTemplate),
         typeof(WindowPicker),
         new PropertyMetadata(defaultValue: null, OnItemTemplateChanged));
 
+    /// <summary>
+    /// Gets or sets the template used to display each window; when <see langword="null"/> the default template is used.
+    /// </summary>
     public DataTemplate? ItemTemplate
     {
         get => (DataTemplate?)GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="ResolvedItemTemplate"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty ResolvedItemTemplateProperty = DependencyProperty.Register(
         nameof(ResolvedItemTemplate),
         typeof(DataTemplate),
         typeof(WindowPicker),
         new PropertyMetadata(defaultValue: null));
 
+    /// <summary>
+    /// Gets the item template in effect: <see cref="ItemTemplate"/> when set, otherwise the default template.
+    /// </summary>
     public DataTemplate? ResolvedItemTemplate
     {
         get => (DataTemplate?)GetValue(ResolvedItemTemplateProperty);
         private set => SetValue(ResolvedItemTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="SelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty SelectedStateMessageProperty = DependencyProperty.Register(
         nameof(SelectedStateMessage),
         typeof(string),
         typeof(WindowPicker),
         new PropertyMetadata(defaultValue: string.Empty, OnSelectedStateMessageChanged));
 
+    /// <summary>
+    /// Gets the state message for the selected window, or an empty string when there is none.
+    /// </summary>
     public string SelectedStateMessage
     {
         get => (string)GetValue(SelectedStateMessageProperty);
         private set => SetValue(SelectedStateMessageProperty, value);
     }
 
+    /// <summary>
+    /// Identifies the <see cref="HasSelectedStateMessage"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty HasSelectedStateMessageProperty = DependencyProperty.Register(
         nameof(HasSelectedStateMessage),
         typeof(bool),
         typeof(WindowPicker),
         new PropertyMetadata(defaultValue: false));
 
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SelectedStateMessage"/> is not empty.
+    /// </summary>
     public bool HasSelectedStateMessage
     {
         get => (bool)GetValue(HasSelectedStateMessageProperty);
@@ -133,6 +175,9 @@ public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
         typeof(WindowPicker),
         new PropertyMetadata(defaultValue: true));
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the selected window's state message is shown inline below the drop-down.
+    /// </summary>
     public bool ShowSelectedStateMessage
     {
         get => (bool)GetValue(ShowSelectedStateMessageProperty);
@@ -142,6 +187,9 @@ public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
     private readonly IWindowService service;
     private readonly DevicePickerController<TopLevelWindowInfo> controller;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WindowPicker"/> class.
+    /// </summary>
     public WindowPicker()
         : this(new WindowService())
     {
@@ -174,10 +222,17 @@ public partial class WindowPicker : IDevicePickerHost<TopLevelWindowInfo>
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Gets the top-level windows known to the picker's service.
+    /// </summary>
     public ObservableCollection<TopLevelWindowInfo> Windows { get; }
 
+    /// <summary>
+    /// Gets the service that enumerates and monitors the top-level windows.
+    /// </summary>
     public IWindowService Service => service;
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new WindowPickerAutomationPeer(this);
 

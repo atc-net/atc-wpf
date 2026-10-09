@@ -16,6 +16,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(byte[]), typeof(ImageSource))]
 public sealed class ByteArrayToImageSourceValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ByteArrayToImageSourceValueConverter"/>.
+    /// </summary>
     public static readonly ByteArrayToImageSourceValueConverter Instance = new();
 
     /// <inheritdoc />

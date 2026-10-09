@@ -1,7 +1,12 @@
 namespace Atc.Wpf.Theming.Controls.Images;
 
+/// <summary>
+/// An <see cref="Image"/> that renders the best-fitting frame of a multi-frame source (for example an icon file)
+/// for the current render size.
+/// </summary>
 public sealed class MultiFrameImage : Image
 {
+    /// <summary>Identifies the <see cref="MultiFrameImageMode"/> dependency property.</summary>
     public static readonly DependencyProperty MultiFrameImageModeProperty = DependencyProperty.Register(
         nameof(MultiFrameImageMode),
         typeof(MultiFrameImageMode),
@@ -55,6 +60,7 @@ public sealed class MultiFrameImage : Image
                 .First()));
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext dc)
     {
         ArgumentNullException.ThrowIfNull(dc);

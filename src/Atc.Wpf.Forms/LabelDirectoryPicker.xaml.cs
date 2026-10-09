@@ -31,15 +31,25 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
     [DependencyProperty(DefaultValue = TextTrimming.None)]
     private TextTrimming watermarkTrimming;
 
+    /// <summary>
+    /// Occurs when the selected directory changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DirectoryInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selected directory changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<DirectoryInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelDirectoryPicker"/> class.
+    /// </summary>
     public LabelDirectoryPicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

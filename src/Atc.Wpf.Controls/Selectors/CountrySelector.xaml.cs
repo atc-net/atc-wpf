@@ -8,36 +8,42 @@ namespace Atc.Wpf.Controls.Selectors;
 
 public partial class CountrySelector
 {
+    /// <summary>Identifies the <see cref="DropDownFirstItemType"/> dependency property.</summary>
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
         typeof(DropDownFirstItemType),
         typeof(CountrySelector),
         new PropertyMetadata(DropDownFirstItemType.None));
 
+    /// <summary>Identifies the <see cref="RenderFlagIndicatorType"/> dependency property.</summary>
     public static readonly DependencyProperty RenderFlagIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderFlagIndicatorType),
         typeof(RenderFlagIndicatorType),
         typeof(CountrySelector),
         new PropertyMetadata(RenderFlagIndicatorType.Flat16));
 
+    /// <summary>Identifies the <see cref="UseOnlySupportedCountries"/> dependency property.</summary>
     public static readonly DependencyProperty UseOnlySupportedCountriesProperty = DependencyProperty.Register(
         nameof(UseOnlySupportedCountries),
         typeof(bool),
         typeof(CountrySelector),
         new PropertyMetadata(true));
 
+    /// <summary>Identifies the <see cref="DefaultCultureIdentifier"/> dependency property.</summary>
     public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
         nameof(DefaultCultureIdentifier),
         typeof(string),
         typeof(CountrySelector),
         new PropertyMetadata(default(string)));
 
+    /// <summary>Identifies the <see cref="SelectedKey"/> dependency property.</summary>
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
         typeof(CountrySelector),
         new PropertyMetadata(string.Empty, OnSelectedKeyChanged));
 
+    /// <summary>Identifies the <see cref="UpdateUiCultureOnChangeEvent"/> dependency property.</summary>
     public static readonly DependencyProperty UpdateUiCultureOnChangeEventProperty = DependencyProperty.Register(
         nameof(UpdateUiCultureOnChangeEvent),
         typeof(bool),
@@ -48,12 +54,14 @@ public partial class CountrySelector
     private int? lastLcid;
     private bool processingUiCultureChanged;
 
+    /// <summary>Gets or sets the kind of first item shown in the drop-down (none, blank or "please select").</summary>
     public DropDownFirstItemType DropDownFirstItemType
     {
         get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
         set => SetValue(DropDownFirstItemTypeProperty, value);
     }
 
+    /// <summary>Gets or sets the style of the flag icons.</summary>
     public RenderFlagIndicatorType RenderFlagIndicatorType
     {
         get
@@ -62,32 +70,38 @@ public partial class CountrySelector
             => SetValue(RenderFlagIndicatorTypeProperty, value);
     }
 
+    /// <summary>Gets or sets a value indicating whether only the countries supported by the application are listed.</summary>
     public bool UseOnlySupportedCountries
     {
         get => (bool)GetValue(UseOnlySupportedCountriesProperty);
         set => SetValue(UseOnlySupportedCountriesProperty, value);
     }
 
+    /// <summary>Gets or sets the culture (LCID or culture name) selected by default.</summary>
     public string DefaultCultureIdentifier
     {
         get => (string)GetValue(DefaultCultureIdentifierProperty);
         set => SetValue(DefaultCultureIdentifierProperty, value);
     }
 
+    /// <summary>Gets or sets the key (the culture LCID) of the selected country.</summary>
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);
         set => SetValue(SelectedKeyProperty, value);
     }
 
+    /// <summary>Gets or sets a value indicating whether the UI culture is updated when the selection changes.</summary>
     public bool UpdateUiCultureOnChangeEvent
     {
         get => (bool)GetValue(UpdateUiCultureOnChangeEventProperty);
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
+    /// <summary>Occurs when the selected country changes.</summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>Initializes a new instance of the <see cref="CountrySelector"/> class.</summary>
     public CountrySelector()
     {
         InitializeComponent();
@@ -98,6 +112,7 @@ public partial class CountrySelector
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <summary>Gets the countries listed in the selector.</summary>
     public ObservableCollectionEx<CountryItem> Items => items;
 
     private void OnLoaded(

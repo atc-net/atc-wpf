@@ -6,6 +6,9 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 public sealed class EnumDescriptionToStringValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="EnumDescriptionToStringValueConverter"/>.
+    /// </summary>
     public static readonly EnumDescriptionToStringValueConverter Instance = new();
 
     /// <summary>

@@ -9,6 +9,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Color), typeof(Color))]
 public sealed class ColorToSolidColorValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ColorToSolidColorValueConverter"/>.
+    /// </summary>
     public static readonly ColorToSolidColorValueConverter Instance = new();
 
     /// <inheritdoc />

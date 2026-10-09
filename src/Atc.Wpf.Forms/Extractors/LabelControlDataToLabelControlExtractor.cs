@@ -2,8 +2,17 @@
 // ReSharper disable RedundantJumpStatement
 namespace Atc.Wpf.Forms.Extractors;
 
+/// <summary>
+/// Creates label controls from a list of <see cref="LabelControlData"/> descriptions.
+/// </summary>
 public static class LabelControlDataToLabelControlExtractor
 {
+    /// <summary>
+    /// Creates a label control for each data entry, choosing the control type from its data type.
+    /// </summary>
+    /// <param name="data">The control descriptions.</param>
+    /// <param name="groupIdentifier">The group identifier assigned to the created controls.</param>
+    /// <returns>The created label controls.</returns>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static IList<ILabelControlBase> Extract(
         IReadOnlyList<LabelControlData> data,

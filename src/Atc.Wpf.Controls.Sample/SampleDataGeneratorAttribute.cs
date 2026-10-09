@@ -8,8 +8,15 @@ namespace Atc.Wpf.Controls.Sample;
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class SampleDataGeneratorAttribute : Attribute
 {
+    /// <summary>
+    /// Gets the type of the <see cref="ISampleDataGenerator"/> implementation to instantiate.
+    /// </summary>
     public Type GeneratorType { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SampleDataGeneratorAttribute"/> class.
+    /// </summary>
+    /// <param name="generatorType">The generator type; must implement <see cref="ISampleDataGenerator"/>.</param>
     public SampleDataGeneratorAttribute(Type generatorType)
     {
         ArgumentNullException.ThrowIfNull(generatorType);

@@ -1,13 +1,18 @@
 namespace Atc.Wpf.Media.ShaderEffects;
 
+/// <summary>
+/// A shader effect that desaturates the colors of the input.
+/// </summary>
 public sealed class DesaturateShaderEffect : ShaderEffectBase
 {
+    /// <summary>Identifies the <see cref="Input"/> dependency property.</summary>
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty(
             "Input",
             typeof(DesaturateShaderEffect),
             0);
 
+    /// <summary>Identifies the <see cref="Strength"/> dependency property.</summary>
     public static readonly DependencyProperty StrengthProperty =
         DependencyProperty.Register(
             nameof(Strength),
@@ -17,8 +22,12 @@ public sealed class DesaturateShaderEffect : ShaderEffectBase
                 0d,
                 PixelShaderConstantCallback(0)));
 
+    /// <inheritdoc />
     public override string Name => "Desaturate";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DesaturateShaderEffect"/> class.
+    /// </summary>
     public DesaturateShaderEffect()
     {
         UpdateShaderValue(InputProperty);

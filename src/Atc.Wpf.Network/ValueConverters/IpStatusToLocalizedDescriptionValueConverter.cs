@@ -7,8 +7,12 @@ namespace Atc.Wpf.Network.ValueConverters;
 [ValueConversion(typeof(IPStatus), typeof(string))]
 public class IpStatusToLocalizedDescriptionValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly IpStatusToLocalizedDescriptionValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -30,6 +34,7 @@ public class IpStatusToLocalizedDescriptionValueConverter : IValueConverter
         }
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

@@ -1,7 +1,9 @@
 namespace Atc.Wpf.Controls.Zoom;
 
+/// <summary>A scroll viewer that hosts a <see cref="ZoomBox"/> and exposes its zoom properties and commands.</summary>
 public partial class ZoomScrollViewer : ScrollViewer
 {
+    /// <summary>Identifies the <see cref="ZoomContent"/> dependency property.</summary>
     public static readonly DependencyProperty ZoomContentProperty = DependencyProperty.Register(
         nameof(ZoomContent),
         typeof(ZoomBox),
@@ -23,6 +25,7 @@ public partial class ZoomScrollViewer : ScrollViewer
     [DependencyProperty]
     private Point? mousePosition;
 
+    /// <summary>Identifies the <see cref="UseAnimations"/> dependency property.</summary>
     public static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
         nameof(UseAnimations),
         typeof(bool),
@@ -38,6 +41,7 @@ public partial class ZoomScrollViewer : ScrollViewer
         set => SetValue(UseAnimationsProperty, BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="ViewportZoom"/> dependency property.</summary>
     public static readonly DependencyProperty ViewportZoomProperty = DependencyProperty.Register(
         nameof(ViewportZoom),
         typeof(double),
@@ -77,8 +81,10 @@ public partial class ZoomScrollViewer : ScrollViewer
             new FrameworkPropertyMetadata(typeof(ZoomScrollViewer)));
     }
 
+    /// <summary>Occurs when a property value changes.</summary>
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -87,12 +93,14 @@ public partial class ZoomScrollViewer : ScrollViewer
         RefreshProperties();
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         base.OnPreviewKeyDown(e);
         ZoomContent?.TryHandleKeyDown(e);
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewKeyUp(KeyEventArgs e)
     {
         base.OnPreviewKeyUp(e);

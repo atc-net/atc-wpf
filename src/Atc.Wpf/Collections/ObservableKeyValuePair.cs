@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Collections;
 
+/// <summary>
+/// A mutable key/value pair that raises <see cref="PropertyChanged"/> when its key or value changes.
+/// </summary>
 public sealed class ObservableKeyValuePair<TKey, TValue> : INotifyPropertyChanged
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -7,6 +10,9 @@ public sealed class ObservableKeyValuePair<TKey, TValue> : INotifyPropertyChange
     private TValue value;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+    /// <summary>
+    /// Gets or sets the key.
+    /// </summary>
     public TKey Key
     {
         get => key;
@@ -17,6 +23,9 @@ public sealed class ObservableKeyValuePair<TKey, TValue> : INotifyPropertyChange
         }
     }
 
+    /// <summary>
+    /// Gets or sets the value.
+    /// </summary>
     public TValue Value
     {
         get => value;
@@ -27,8 +36,12 @@ public sealed class ObservableKeyValuePair<TKey, TValue> : INotifyPropertyChange
         }
     }
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event for the specified property name.
+    /// </summary>
     public void OnPropertyChanged(string name)
     {
         var handler = PropertyChanged;

@@ -7,8 +7,14 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(Visibility), ParameterType = typeof(Visibility))]
 public sealed class ObjectNotNullToVisibilityVisibleValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ObjectNotNullToVisibilityVisibleValueConverter"/>.
+    /// </summary>
     public static readonly ObjectNotNullToVisibilityVisibleValueConverter Instance = new();
 
+    /// <summary>
+    /// Gets or sets the visibility returned when the value is <see langword="null"/>; can be overridden by passing <see cref="Visibility.Collapsed"/> or <see cref="Visibility.Hidden"/> as the converter parameter.
+    /// </summary>
     public Visibility NonVisibility { get; set; } = Visibility.Collapsed;
 
     /// <inheritdoc />

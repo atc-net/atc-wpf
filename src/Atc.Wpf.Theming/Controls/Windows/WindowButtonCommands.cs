@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Theming.Controls.Windows;
 
+/// <summary>
+/// The minimize, maximize/restore and close buttons shown in the title bar of a window.
+/// </summary>
 [TemplatePart(
     Name = "PART_Min",
     Type = typeof(Button))]
@@ -29,14 +32,23 @@ namespace Atc.Wpf.Theming.Controls.Windows;
     StyleTargetType = typeof(Button))]
 public sealed class WindowButtonCommands : ContentControl
 {
+    /// <summary>
+    /// Occurs when the close button is used, before the window is closed; the handler can cancel closing.
+    /// </summary>
     public event ClosingWindowEventHandler? ClosingWindow;
 
+    /// <summary>
+    /// Represents the method that handles the <see cref="ClosingWindow"/> event.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data, which allows cancelling the close.</param>
     [SuppressMessage("Design", "CA1003:Use generic event handler instances", Justification = "OK.")]
     [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
     public delegate void ClosingWindowEventHandler(
         object sender,
         ClosingWindowEventArgs e);
 
+    /// <summary>Identifies the <see cref="LightMinButtonStyle"/> dependency property.</summary>
     public static readonly DependencyProperty LightMinButtonStyleProperty = DependencyProperty.Register(
         nameof(LightMinButtonStyle),
         typeof(Style),
@@ -52,6 +64,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(LightMinButtonStyleProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="LightMaxButtonStyle"/> dependency property.</summary>
     public static readonly DependencyProperty LightMaxButtonStyleProperty = DependencyProperty.Register(
         nameof(LightMaxButtonStyle),
         typeof(Style),
@@ -67,6 +80,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(LightMaxButtonStyleProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="LightCloseButtonStyle"/> dependency property.</summary>
     public static readonly DependencyProperty LightCloseButtonStyleProperty = DependencyProperty.Register(
         nameof(LightCloseButtonStyle),
         typeof(Style),
@@ -82,6 +96,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(LightCloseButtonStyleProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="DarkMinButtonStyle"/> dependency property.</summary>
     public static readonly DependencyProperty DarkMinButtonStyleProperty = DependencyProperty.Register(
         nameof(DarkMinButtonStyle),
         typeof(Style),
@@ -97,6 +112,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(DarkMinButtonStyleProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="DarkMaxButtonStyle"/> dependency property.</summary>
     public static readonly DependencyProperty DarkMaxButtonStyleProperty = DependencyProperty.Register(
         nameof(DarkMaxButtonStyle),
         typeof(Style),
@@ -112,6 +128,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(DarkMaxButtonStyleProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="DarkCloseButtonStyle"/> dependency property.</summary>
     public static readonly DependencyProperty DarkCloseButtonStyleProperty = DependencyProperty.Register(
         nameof(DarkCloseButtonStyle),
         typeof(Style),
@@ -127,6 +144,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(DarkCloseButtonStyleProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Theme"/> dependency property.</summary>
     public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
         nameof(Theme),
         typeof(string),
@@ -142,6 +160,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(ThemeProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Minimize"/> dependency property.</summary>
     public static readonly DependencyProperty MinimizeProperty = DependencyProperty.Register(
         nameof(Minimize),
         typeof(string),
@@ -157,6 +176,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(MinimizeProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Maximize"/> dependency property.</summary>
     public static readonly DependencyProperty MaximizeProperty = DependencyProperty.Register(
         nameof(Maximize),
         typeof(string),
@@ -172,6 +192,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(MaximizeProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Close"/> dependency property.</summary>
     public static readonly DependencyProperty CloseProperty = DependencyProperty.Register(
         nameof(Close),
         typeof(string),
@@ -187,6 +208,7 @@ public sealed class WindowButtonCommands : ContentControl
         set => SetValue(CloseProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="Restore"/> dependency property.</summary>
     public static readonly DependencyProperty RestoreProperty = DependencyProperty.Register(
         nameof(Restore),
         typeof(string),
@@ -227,6 +249,9 @@ public sealed class WindowButtonCommands : ContentControl
             new FrameworkPropertyMetadata(typeof(WindowButtonCommands)));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WindowButtonCommands"/> class.
+    /// </summary>
     public WindowButtonCommands()
     {
         CommandBindings.Add(new CommandBinding(

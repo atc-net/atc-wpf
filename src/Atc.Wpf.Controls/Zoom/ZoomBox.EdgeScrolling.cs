@@ -6,6 +6,7 @@ public partial class ZoomBox
 {
     private DispatcherTimer? edgeScrollTimer;
 
+    /// <summary>Identifies the <see cref="IsEdgeScrollingEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsEdgeScrollingEnabledProperty = DependencyProperty.Register(
         nameof(IsEdgeScrollingEnabled),
         typeof(bool),

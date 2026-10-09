@@ -6,6 +6,9 @@ namespace Atc.Wpf.Components.Printing;
 /// </summary>
 public partial class PrintPreviewWindow
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrintPreviewWindow"/> class.
+    /// </summary>
     public PrintPreviewWindow()
     {
         InitializeComponent();

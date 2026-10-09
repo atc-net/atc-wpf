@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(ObservableDictionary<object, string>), typeof(Dictionary<string, string>))]
 public sealed class ObservableDictionaryToDictionaryOfStringsValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ObservableDictionaryToDictionaryOfStringsValueConverter"/>.
+    /// </summary>
     public static readonly ObservableDictionaryToDictionaryOfStringsValueConverter Instance = new();
 
     /// <inheritdoc />

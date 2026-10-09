@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates the running processes and polls for changes.
+/// </summary>
 public sealed class ProcessService : IProcessService
 {
     private readonly Func<IReadOnlyList<ProcessSnapshot>> enumerate;
@@ -9,6 +12,9 @@ public sealed class ProcessService : IProcessService
     private bool started;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProcessService"/> class.
+    /// </summary>
     public ProcessService()
         : this(EnumerateProcesses, ResolveModulePath)
     {
@@ -28,16 +34,20 @@ public sealed class ProcessService : IProcessService
         pollTimer.Tick += OnPollTick;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<RunningProcessInfo> Processes { get; }
 
+    /// <inheritdoc />
     public TimeSpan PollingInterval
     {
         get => pollTimer.Interval;
         set => pollTimer.Interval = value;
     }
 
+    /// <inheritdoc />
     public bool OnlyWithMainWindow { get; set; } = true;
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -49,6 +59,7 @@ public sealed class ProcessService : IProcessService
         pollTimer.Start();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -75,6 +86,7 @@ public sealed class ProcessService : IProcessService
         return inFlightPoll;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

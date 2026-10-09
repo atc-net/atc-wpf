@@ -32,8 +32,14 @@ public partial class WellKnownColorSelector
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string selectedKey;
 
+    /// <summary>
+    /// Occurs when the user selects a different color; the new value is the color key.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WellKnownColorSelector"/> class.
+    /// </summary>
     public WellKnownColorSelector()
     {
         InitializeComponent();
@@ -44,6 +50,9 @@ public partial class WellKnownColorSelector
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <summary>
+    /// Gets the listed colors.
+    /// </summary>
     public ObservableCollectionEx<ColorItem> Items { get; } = new();
 
     private void OnLoaded(

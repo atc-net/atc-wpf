@@ -62,6 +62,7 @@ public sealed class ZoomQuickOverlay : Adorner
         adornerLayer?.Remove(this);
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);
@@ -101,6 +102,7 @@ public sealed class ZoomQuickOverlay : Adorner
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -112,6 +114,7 @@ public sealed class ZoomQuickOverlay : Adorner
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -127,6 +130,7 @@ public sealed class ZoomQuickOverlay : Adorner
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -165,6 +169,7 @@ public sealed class ZoomQuickOverlay : Adorner
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

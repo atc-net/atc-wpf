@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Inputs;
 
+/// <summary>A locale-aware currency input box with currency formatting and a configurable number of decimal places.</summary>
 public sealed partial class CurrencyBox : NumericBox
 {
     private bool isUpdatingDecimalPlaces;
@@ -10,6 +11,7 @@ public sealed partial class CurrencyBox : NumericBox
         CoerceValueCallback = nameof(CoerceDecimalPlaces))]
     private int decimalPlaces;
 
+    /// <summary>Initializes a new instance of the <see cref="CurrencyBox"/> class.</summary>
     public CurrencyBox()
     {
         Loaded += OnLoaded;

@@ -29,6 +29,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(double), typeof(string))]
 public sealed class NumberToPercentStringValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="NumberToPercentStringValueConverter"/>.
+    /// </summary>
     public static readonly NumberToPercentStringValueConverter Instance = new();
 
     /// <inheritdoc />

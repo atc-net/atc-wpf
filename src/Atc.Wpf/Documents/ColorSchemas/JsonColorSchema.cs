@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Documents.ColorSchemas;
 
+/// <summary>
+/// Provides the brushes used for JSON syntax highlighting in light and dark theme modes.
+/// </summary>
 public static class JsonColorSchema
 {
     // Light Theme Colors
@@ -30,61 +33,98 @@ public static class JsonColorSchema
 
     private static ThemeMode mode = ThemeMode.Light;
 
+    /// <summary>
+    /// Gets the default brush for the current theme mode.
+    /// </summary>
     public static SolidColorBrush DefaultBrush
         => mode == ThemeMode.Light
             ? LightDefaultBrush
             : DarkDefaultBrush;
 
+    /// <summary>
+    /// Gets the brush for property keys for the current theme mode.
+    /// </summary>
     public static SolidColorBrush KeyBrush
         => mode == ThemeMode.Light
             ? LightKeyBrush
             : DarkKeyBrush;
 
+    /// <summary>
+    /// Gets the brush for string values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush StringBrush
         => mode == ThemeMode.Light
             ? LightStringBrush
             : DarkStringBrush;
 
+    /// <summary>
+    /// Gets the brush for number values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush NumberBrush
         => mode == ThemeMode.Light
             ? LightNumberBrush
             : DarkNumberBrush;
 
+    /// <summary>
+    /// Gets the brush for integer values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush IntegerBrush
         => mode == ThemeMode.Light
             ? LightIntegerBrush
             : DarkIntegerBrush;
 
+    /// <summary>
+    /// Gets the brush for floating-point values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush FloatBrush
         => mode == ThemeMode.Light
             ? LightFloatBrush
             : DarkFloatBrush;
 
+    /// <summary>
+    /// Gets the brush for boolean values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush BooleanBrush
         => mode == ThemeMode.Light
             ? LightBooleanBrush
             : DarkBooleanBrush;
 
+    /// <summary>
+    /// Gets the brush for GUID values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush GuidBrush
         => mode == ThemeMode.Light
             ? LightGuidBrush
             : DarkGuidBrush;
 
+    /// <summary>
+    /// Gets the brush for date values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush DateBrush
         => mode == ThemeMode.Light
             ? LightDateBrush
             : DarkDateBrush;
 
+    /// <summary>
+    /// Gets the brush for URI values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush UriBrush
         => mode == ThemeMode.Light
             ? LightUriBrush
             : DarkUriBrush;
 
+    /// <summary>
+    /// Gets the brush for null values for the current theme mode.
+    /// </summary>
     public static SolidColorBrush NullBrush
         => mode == ThemeMode.Light
             ? LightNullBrush
             : DarkNullBrush;
 
+    /// <summary>
+    /// Sets the theme mode that determines which brushes are returned.
+    /// </summary>
+    /// <param name="themeMode">The theme mode.</param>
     public static void SetThemeMode(ThemeMode themeMode)
     {
         if (Equals(mode, themeMode))

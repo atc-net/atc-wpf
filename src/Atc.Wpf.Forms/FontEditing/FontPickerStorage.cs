@@ -9,6 +9,9 @@ public static class FontPickerStorage
 {
     private static IFontPickerStorage current = new InMemoryFontPickerStorage();
 
+    /// <summary>
+    /// Gets or sets the shared storage; defaults to an <see cref="InMemoryFontPickerStorage"/> and cannot be set to <see langword="null"/>.
+    /// </summary>
     public static IFontPickerStorage Current
     {
         get => current;

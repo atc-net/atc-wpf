@@ -20,6 +20,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(bool))]
 public sealed class RegexValidationValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="RegexValidationValueConverter"/>.
+    /// </summary>
     public static readonly RegexValidationValueConverter Instance = new();
 
     /// <inheritdoc />

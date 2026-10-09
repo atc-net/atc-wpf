@@ -1,7 +1,9 @@
 namespace Atc.Wpf.Controls.Helpers;
 
+/// <summary>Helper methods for loading and saving the list of recently opened files.</summary>
 public static class RecentOpenFileHelper
 {
+    /// <summary>Loads the recently opened files stored in the application data directory, newest first, skipping files that no longer exist.</summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK")]
     public static IList<RecentOpenFileViewModel> Load(
         DirectoryInfo applicationDataDirectory)
@@ -44,6 +46,7 @@ public static class RecentOpenFileHelper
         return recentFiles;
     }
 
+    /// <summary>Saves the recently opened files to the application data directory.</summary>
     public static void Save(
         DirectoryInfo applicationDataDirectory,
         ObservableCollectionEx<RecentOpenFileViewModel> recentOpenFiles)

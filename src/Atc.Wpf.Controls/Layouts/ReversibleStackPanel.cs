@@ -1,7 +1,9 @@
 namespace Atc.Wpf.Controls.Layouts;
 
+/// <summary>A <see cref="StackPanel"/> that can arrange its children in reverse order.</summary>
 public sealed class ReversibleStackPanel : StackPanel
 {
+    /// <summary>Identifies the <see cref="ReverseOrder"/> dependency property.</summary>
     public static readonly DependencyProperty ReverseOrderProperty = DependencyProperty.Register(
         nameof(ReverseOrder),
         typeof(bool),
@@ -10,12 +12,14 @@ public sealed class ReversibleStackPanel : StackPanel
             defaultValue: false,
             FrameworkPropertyMetadataOptions.AffectsArrange));
 
+    /// <summary>Gets or sets a value indicating whether the children are arranged in reverse order.</summary>
     public bool ReverseOrder
     {
         get => (bool)GetValue(ReverseOrderProperty);
         set => SetValue(ReverseOrderProperty, value);
     }
 
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size arrangeSize)
     {
         double x = 0;

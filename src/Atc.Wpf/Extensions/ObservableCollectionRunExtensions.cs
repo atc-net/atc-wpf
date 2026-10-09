@@ -1,7 +1,13 @@
 namespace Atc.Wpf.Extensions;
 
+/// <summary>
+/// Extension methods for collections of <see cref="Run"/> elements.
+/// </summary>
 public static class ObservableCollectionRunExtensions
 {
+    /// <summary>
+    /// Fills the collection with runs for the text, highlighting case-insensitive matches with the brush and optionally bold.
+    /// </summary>
     public static void HighlightText(
         this ObservableCollection<Run> collection,
         string? text,
@@ -22,6 +28,9 @@ public static class ObservableCollectionRunExtensions
             fontWeight);
     }
 
+    /// <summary>
+    /// Fills the collection with runs for the text, highlighting case-insensitive matches with the brush and font weight.
+    /// </summary>
     public static void HighlightText(
         this ObservableCollection<Run> collection,
         string? text,

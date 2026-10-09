@@ -314,6 +314,9 @@ public static class DependencyObjectExtensions
         }
     }
 
+    /// <summary>
+    /// Determines whether the node is the reference itself or one of its descendants, walking up through visual/logical parents and popups.
+    /// </summary>
     public static bool IsDescendantOf(
         this DependencyObject node,
         DependencyObject reference)

@@ -18,6 +18,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(bool), typeof(double))]
 public sealed class BoolToOpacityValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="BoolToOpacityValueConverter"/>.
+    /// </summary>
     public static readonly BoolToOpacityValueConverter Instance = new();
 
     /// <inheritdoc />

@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates and watches the serial (COM) ports of the system through a WinRT device watcher.
+/// </summary>
 public sealed class SerialPortService : ISerialPortService
 {
     private const string PortNamePropertyKey = "System.DeviceInterface.Serial.PortName";
@@ -17,6 +20,9 @@ public sealed class SerialPortService : ISerialPortService
     private bool initialEnumerationCompleted;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SerialPortService"/> class.
+    /// </summary>
     public SerialPortService()
         : this(new DeviceWatcherHost(SerialDevice.GetDeviceSelector(), RequestedProperties))
     {
@@ -33,8 +39,10 @@ public sealed class SerialPortService : ISerialPortService
         this.watcher.EnumerationCompleted += OnEnumerationCompleted;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<SerialPortInfo> Ports { get; }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -46,6 +54,7 @@ public sealed class SerialPortService : ISerialPortService
         watcher.StartWatching();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -57,6 +66,7 @@ public sealed class SerialPortService : ISerialPortService
         watcher.StopWatching();
     }
 
+    /// <inheritdoc />
     public async Task RefreshAsync()
     {
         var found = await watcher.FindAllAsync().ConfigureAwait(false);
@@ -78,6 +88,7 @@ public sealed class SerialPortService : ISerialPortService
         }
     }
 
+    /// <inheritdoc />
     public async Task<bool> ProbeInUseAsync(SerialPortInfo port)
     {
         ArgumentNullException.ThrowIfNull(port);
@@ -93,6 +104,7 @@ public sealed class SerialPortService : ISerialPortService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

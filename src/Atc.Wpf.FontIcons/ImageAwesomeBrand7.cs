@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// An image that renders a Font Awesome 7 Brands icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class ImageAwesomeBrand7 : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
@@ -119,6 +122,9 @@ public sealed class ImageAwesomeBrand7 : Image, ISpinable, IRotatable, IFlippabl
         set => SetValue(FlipOrientationProperty, value);
     }
 
+    /// <summary>
+    /// Creates an image source that renders the specified Font Awesome 7 Brands icon with the given foreground brush and em-size.
+    /// </summary>
     public static ImageSource CreateImageSource(
         FontAwesomeBrand7Type fontIconType,
         Brush foregroundBrush,
@@ -128,6 +134,9 @@ public sealed class ImageAwesomeBrand7 : Image, ISpinable, IRotatable, IFlippabl
         return FontIconHelper.CreateImageSource(FontAwesomeBrand7Typeface, iconChar, foregroundBrush, emSize);
     }
 
+    /// <summary>
+    /// Creates a drawing image that renders the specified Font Awesome 7 Brands icon with the given foreground brush and em-size.
+    /// </summary>
     public static DrawingImage CreateDrawingImage(
         FontAwesomeBrand7Type fontIconType,
         Brush foregroundBrush,

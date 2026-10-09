@@ -2,6 +2,9 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelEndpointBox : ILabelEndpointBox
 {
+    /// <summary>
+    /// Gets a value indicating whether the host has been changed since the control was created.
+    /// </summary>
     public bool IsDirty { get; private set; }
 
     [DependencyProperty(
@@ -51,14 +54,29 @@ public partial class LabelEndpointBox : ILabelEndpointBox
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal)]
     private Uri? value;
 
+    /// <summary>
+    /// Occurs when an editor loses focus after the network protocol was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<NetworkProtocolType?>>? NetworkProtocolLostFocus;
 
+    /// <summary>
+    /// Occurs when the host editor loses focus after the host was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? HostLostFocus;
 
+    /// <summary>
+    /// Occurs when the port editor loses focus after the port was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<int?>>? PortLostFocus;
 
+    /// <summary>
+    /// Occurs when an editor loses focus after the composed endpoint <c>Value</c> was changed.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<Uri?>>? ValueLostFocus;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelEndpointBox"/> class.
+    /// </summary>
     public LabelEndpointBox()
     {
         InitializeComponent();
@@ -81,6 +99,7 @@ public partial class LabelEndpointBox : ILabelEndpointBox
 
     internal EndpointBox InnerEndpointBox { get; }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateEndpoint();

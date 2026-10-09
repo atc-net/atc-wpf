@@ -17,6 +17,9 @@ public sealed class ClipboardService : IClipboardService
     private HwndSource? hwndSource;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ClipboardService"/> class.
+    /// </summary>
     public ClipboardService(Dispatcher? dispatcher = null)
     {
         this.dispatcher = dispatcher
@@ -24,8 +27,10 @@ public sealed class ClipboardService : IClipboardService
             ?? Dispatcher.CurrentDispatcher;
     }
 
+    /// <inheritdoc />
     public event EventHandler<ClipboardChangedEventArgs>? ClipboardChanged;
 
+    /// <inheritdoc />
     public IReadOnlyList<ClipboardEntry> History
     {
         get
@@ -37,10 +42,13 @@ public sealed class ClipboardService : IClipboardService
         }
     }
 
+    /// <inheritdoc />
     public int MaxHistorySize { get; set; } = DefaultMaxHistorySize;
 
+    /// <inheritdoc />
     public bool IsMonitoring => hwndSource is not null;
 
+    /// <inheritdoc />
     public void SetText(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -49,12 +57,15 @@ public sealed class ClipboardService : IClipboardService
         AddHistoryEntry(ClipboardDataType.Text, text, TruncateText(text));
     }
 
+    /// <inheritdoc />
     public string? GetText()
         => ExecuteClipboardOperation(System.Windows.Clipboard.GetText);
 
+    /// <inheritdoc />
     public bool ContainsText()
         => ExecuteClipboardOperation(System.Windows.Clipboard.ContainsText);
 
+    /// <inheritdoc />
     public void SetImage(BitmapSource image)
     {
         ArgumentNullException.ThrowIfNull(image);
@@ -65,12 +76,15 @@ public sealed class ClipboardService : IClipboardService
         AddHistoryEntry(ClipboardDataType.Image, image, summary);
     }
 
+    /// <inheritdoc />
     public BitmapSource? GetImage()
         => ExecuteClipboardOperation(System.Windows.Clipboard.GetImage);
 
+    /// <inheritdoc />
     public bool ContainsImage()
         => ExecuteClipboardOperation(System.Windows.Clipboard.ContainsImage);
 
+    /// <inheritdoc />
     public void SetFileDropList(StringCollection fileDropList)
     {
         ArgumentNullException.ThrowIfNull(fileDropList);
@@ -81,12 +95,15 @@ public sealed class ClipboardService : IClipboardService
         AddHistoryEntry(ClipboardDataType.FileDropList, fileDropList, summary);
     }
 
+    /// <inheritdoc />
     public StringCollection? GetFileDropList()
         => ExecuteClipboardOperation(System.Windows.Clipboard.GetFileDropList);
 
+    /// <inheritdoc />
     public bool ContainsFileDropList()
         => ExecuteClipboardOperation(System.Windows.Clipboard.ContainsFileDropList);
 
+    /// <inheritdoc />
     public void SetData(
         string format,
         object data)
@@ -98,21 +115,25 @@ public sealed class ClipboardService : IClipboardService
         AddHistoryEntry(ClipboardDataType.Other, data, $"Format: {format}");
     }
 
+    /// <inheritdoc />
     public object? GetData(string format)
     {
         ArgumentNullException.ThrowIfNull(format);
         return ExecuteClipboardOperation(() => System.Windows.Clipboard.GetData(format));
     }
 
+    /// <inheritdoc />
     public bool ContainsData(string format)
     {
         ArgumentNullException.ThrowIfNull(format);
         return ExecuteClipboardOperation(() => System.Windows.Clipboard.ContainsData(format));
     }
 
+    /// <inheritdoc />
     public void Clear()
         => ExecuteClipboardOperation(System.Windows.Clipboard.Clear);
 
+    /// <inheritdoc />
     public void ClearHistory()
     {
         lock (historyLock)
@@ -121,6 +142,7 @@ public sealed class ClipboardService : IClipboardService
         }
     }
 
+    /// <inheritdoc />
     public void StartMonitoring()
     {
         if (hwndSource is not null)
@@ -138,6 +160,7 @@ public sealed class ClipboardService : IClipboardService
         }
     }
 
+    /// <inheritdoc />
     public void StopMonitoring()
     {
         if (hwndSource is null)
@@ -155,6 +178,7 @@ public sealed class ClipboardService : IClipboardService
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

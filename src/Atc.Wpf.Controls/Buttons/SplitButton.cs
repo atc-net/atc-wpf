@@ -1,10 +1,12 @@
 namespace Atc.Wpf.Controls.Buttons;
 
+/// <summary>A button with a primary action and a dropdown arrow that opens a popup with secondary content.</summary>
 [TemplatePart(Name = "PART_ActionButton", Type = typeof(Button))]
 [TemplatePart(Name = "PART_DropdownButton", Type = typeof(Button))]
 [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
 public partial class SplitButton : ContentControl
 {
+    /// <summary>Identifies the <see cref="Click"/> routed event.</summary>
     public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
         nameof(Click),
         RoutingStrategy.Bubble,
@@ -40,12 +42,14 @@ public partial class SplitButton : ContentControl
             new FrameworkPropertyMetadata(typeof(SplitButton)));
     }
 
+    /// <summary>Occurs when the primary action part of the button is clicked.</summary>
     public event RoutedEventHandler Click
     {
         add => AddHandler(ClickEvent, value);
         remove => RemoveHandler(ClickEvent, value);
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -85,6 +89,7 @@ public partial class SplitButton : ContentControl
         }
     }
 
+    /// <inheritdoc />
     protected override void OnKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

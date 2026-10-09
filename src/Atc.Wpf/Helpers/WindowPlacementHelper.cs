@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Helpers;
 
+/// <summary>Provides helper methods for saving and restoring a window's placement as XML.</summary>
 public static class WindowPlacementHelper
 {
     private const int ShowNormal = 1;
@@ -7,6 +8,7 @@ public static class WindowPlacementHelper
     private static readonly Encoding Encoding = new UTF8Encoding();
     private static readonly XmlSerializer Serializer = new(typeof(WINDOWPLACEMENT));
 
+    /// <summary>Restores the placement of the window from XML produced by <see cref="GetPlacement"/>; a minimized placement is restored as normal, and invalid XML is ignored.</summary>
     public static void SetPlacement(
         IntPtr windowHandle,
         string placementXml)
@@ -47,6 +49,7 @@ public static class WindowPlacementHelper
         }
     }
 
+    /// <summary>Gets the current placement of the window serialized as XML.</summary>
     public static string GetPlacement(IntPtr windowHandle)
     {
         NativeMethods.GetWindowPlacement(

@@ -22,6 +22,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(DateTime), typeof(string))]
 public sealed class DateTimeToRelativeStringValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="DateTimeToRelativeStringValueConverter"/>.
+    /// </summary>
     public static readonly DateTimeToRelativeStringValueConverter Instance = new();
 
     /// <summary>Default decimal precision used when no <c>ConverterParameter</c> is provided.</summary>

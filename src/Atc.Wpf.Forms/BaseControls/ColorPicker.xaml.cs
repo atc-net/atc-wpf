@@ -16,6 +16,9 @@ public partial class ColorPicker
         PropertyChangedCallback = nameof(OnBrushValueChanged))]
     private SolidColorBrush? brushValue;
 
+    /// <summary>
+    /// Identifies the <see cref="DisplayHexCode"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty DisplayHexCodeProperty = DependencyProperty.Register(
         nameof(DisplayHexCode),
         typeof(string),
@@ -24,14 +27,23 @@ public partial class ColorPicker
             Brushes.Black.Color.ToString(GlobalizationConstants.EnglishCultureInfo),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    /// <summary>
+    /// Gets or sets the hex code of the selected color as shown in the picker.
+    /// </summary>
     public string? DisplayHexCode
     {
         get => (string?)GetValue(DisplayHexCodeProperty);
         set => SetValue(DisplayHexCodeProperty, value);
     }
 
+    /// <summary>
+    /// Occurs when a color is chosen in the color picker dialog.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<Color>>? ColorChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ColorPicker"/> class.
+    /// </summary>
     public ColorPicker()
     {
         InitializeComponent();
@@ -39,6 +51,7 @@ public partial class ColorPicker
         DataContext = this;
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new ColorPickerAutomationPeer(this);
 

@@ -12,6 +12,7 @@ public partial class TransparencySlider
         PropertyChangedCallback = nameof(OnAlphaChanged))]
     private byte alpha;
 
+    /// <summary>Initializes a new instance of the <see cref="TransparencySlider"/> class.</summary>
     public TransparencySlider()
     {
         InitializeComponent();
@@ -28,6 +29,7 @@ public partial class TransparencySlider
         control.AdornerVerticalPercent = (byte)e.NewValue / 255D;
     }
 
+    /// <inheritdoc />
     protected override void OnAdornerPositionChanged(double verticalPercent)
     {
         Alpha = (byte)(verticalPercent * 255);

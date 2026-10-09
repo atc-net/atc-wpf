@@ -5,6 +5,7 @@ namespace Atc.Wpf.Controls.Zoom;
 /// </summary>
 public sealed class ZoomLevelChangedEventArgs : EventArgs
 {
+    /// <summary>Initializes a new instance of the <see cref="ZoomLevelChangedEventArgs"/> class.</summary>
     public ZoomLevelChangedEventArgs(
         double oldZoom,
         double newZoom,

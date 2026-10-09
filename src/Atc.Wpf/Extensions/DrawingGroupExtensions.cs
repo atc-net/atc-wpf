@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Extensions;
 
+/// <summary>
+/// Extension methods for <see cref="DrawingGroup"/>.
+/// </summary>
 public static class DrawingGroupExtensions
 {
     /// <summary>

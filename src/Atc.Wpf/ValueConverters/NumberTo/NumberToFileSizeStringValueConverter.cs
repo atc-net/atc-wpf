@@ -25,6 +25,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(long), typeof(string))]
 public sealed class NumberToFileSizeStringValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="NumberToFileSizeStringValueConverter"/>.
+    /// </summary>
     public static readonly NumberToFileSizeStringValueConverter Instance = new();
 
     /// <summary>

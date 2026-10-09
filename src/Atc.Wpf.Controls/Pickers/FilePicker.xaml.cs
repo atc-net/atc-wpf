@@ -7,11 +7,13 @@ namespace Atc.Wpf.Controls.Pickers;
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
 public partial class FilePicker
 {
+    /// <summary>Occurs when the selected file changes.</summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<FileInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
+    /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         nameof(Value),
         typeof(FileInfo),
@@ -22,12 +24,14 @@ public partial class FilePicker
             OnValuePropertyChanged,
             (o, value) => CoerceValue(o, value).Item1));
 
+    /// <summary>Gets or sets the selected file.</summary>
     public FileInfo? Value
     {
         get => (FileInfo?)GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="DisplayValue"/> dependency property.</summary>
     public static readonly DependencyProperty FullNameProperty = DependencyProperty.Register(
         nameof(DisplayValue),
         typeof(string),
@@ -38,6 +42,7 @@ public partial class FilePicker
             OnDisplayValuePropertyChanged,
             (o, value) => CoerceDisplayValue(o, value).Item1));
 
+    /// <summary>Gets or sets the full path of the selected file, as shown in the text box.</summary>
     public string? DisplayValue
     {
         get => (string?)GetValue(FullNameProperty);
@@ -76,6 +81,8 @@ public partial class FilePicker
 
     [DependencyProperty(DefaultValue = "")]
     private string rootDirectory;
+
+    /// <summary>Initializes a new instance of the <see cref="FilePicker"/> class.</summary>
     public FilePicker()
     {
         InitializeComponent();
@@ -84,6 +91,7 @@ public partial class FilePicker
         LayoutRoot.DataContext = this;
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new FilePickerAutomationPeer(this);
 
@@ -108,6 +116,7 @@ public partial class FilePicker
         (d as FilePicker)?.OnValueChanged((FileInfo?)e.OldValue, (FileInfo?)e.NewValue);
     }
 
+    /// <summary>Called when the selected file changes; updates <see cref="DisplayValue"/> and raises the value changed event.</summary>
     protected virtual void OnValueChanged(
         FileInfo? oldValue,
         FileInfo? newValue)

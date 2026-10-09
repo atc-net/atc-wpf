@@ -91,6 +91,9 @@ public partial class FontPicker
         DefaultValue = "The quick brown fox jumps over the lazy dog 0123456789")]
     private string previewText;
 
+    /// <summary>
+    /// Identifies the <see cref="DisplayText"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty DisplayTextProperty = DependencyProperty.Register(
         nameof(DisplayText),
         typeof(string),
@@ -99,14 +102,23 @@ public partial class FontPicker
             string.Empty,
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    /// <summary>
+    /// Gets or sets the summary text shown in the picker, such as the font family and size in points.
+    /// </summary>
     public string? DisplayText
     {
         get => (string?)GetValue(DisplayTextProperty);
         set => SetValue(DisplayTextProperty, value);
     }
 
+    /// <summary>
+    /// Occurs when a font is chosen in the font picker dialog.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<FontDescription>>? FontChanged;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FontPicker"/> class.
+    /// </summary>
     public FontPicker()
     {
         SetCurrentValue(SelectedFontWeightProperty, FontWeights.Normal);
@@ -118,6 +130,10 @@ public partial class FontPicker
         Loaded += OnLoaded;
     }
 
+    /// <summary>
+    /// Creates a <see cref="FontDescription"/> from the currently selected font settings.
+    /// </summary>
+    /// <returns>A new <see cref="FontDescription"/> describing the selected font.</returns>
     [SuppressMessage("Performance", "CA1024:Use properties where appropriate", Justification = "Returns a new instance per call.")]
     public FontDescription GetFontDescription()
         => new(
@@ -130,6 +146,10 @@ public partial class FontPicker
             SelectedBackgroundBrush,
             SelectedTextDecorations);
 
+    /// <summary>
+    /// Applies the settings of a <see cref="FontDescription"/> to the selected font properties.
+    /// </summary>
+    /// <param name="fontDescription">The font description to apply.</param>
     public void SetFontDescription(FontDescription fontDescription)
     {
         ArgumentNullException.ThrowIfNull(fontDescription);

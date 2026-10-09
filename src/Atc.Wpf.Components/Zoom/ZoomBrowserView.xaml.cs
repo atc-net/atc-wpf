@@ -18,6 +18,9 @@ public partial class ZoomBrowserView
     [DependencyProperty]
     private ZoomScrollViewer? zoomContent;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ZoomBrowserView"/> class.
+    /// </summary>
     public ZoomBrowserView()
     {
         InitializeComponent();

@@ -19,6 +19,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(TimeSpan), typeof(string))]
 public sealed class TimeSpanToHumanReadableStringValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="TimeSpanToHumanReadableStringValueConverter"/>.
+    /// </summary>
     public static readonly TimeSpanToHumanReadableStringValueConverter Instance = new();
 
     /// <summary>Default decimal precision used when no <c>ConverterParameter</c> is provided.</summary>

@@ -7,8 +7,12 @@ namespace Atc.Wpf.Components.Viewers;
 [ValueConversion(typeof(bool), typeof(TextWrapping))]
 public sealed class BoolToTextWrappingValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly BoolToTextWrappingValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -16,6 +20,7 @@ public sealed class BoolToTextWrappingValueConverter : IValueConverter
         CultureInfo culture)
         => value is true ? TextWrapping.Wrap : TextWrapping.NoWrap;
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

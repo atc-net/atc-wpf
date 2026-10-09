@@ -177,6 +177,7 @@ public partial class ZoomBox
         TryHandleKeyDown(e);
     }
 
+    /// <inheritdoc />
     protected override void OnPreviewKeyUp(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -274,6 +275,7 @@ public partial class ZoomBox
             _ => null,
         };
 
+    /// <inheritdoc />
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -329,6 +331,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -367,6 +370,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseMove(MouseEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -413,6 +417,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -450,6 +455,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -463,6 +469,7 @@ public partial class ZoomBox
         }
     }
 
+    /// <inheritdoc />
     protected override void OnContentChanged(
         object oldContent,
         object newContent)

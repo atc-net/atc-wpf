@@ -16,6 +16,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(bool))]
 public sealed class IsNullValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="IsNullValueConverter"/>.
+    /// </summary>
     public static readonly IsNullValueConverter Instance = new();
 
     /// <inheritdoc />

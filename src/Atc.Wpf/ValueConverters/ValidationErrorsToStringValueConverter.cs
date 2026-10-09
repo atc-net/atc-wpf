@@ -6,6 +6,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(ICollection<ValidationError>), typeof(string))]
 public sealed class ValidationErrorsToStringValueConverter : MarkupExtension, IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ValidationErrorsToStringValueConverter"/>.
+    /// </summary>
     public static readonly ValidationErrorsToStringValueConverter Instance = new();
 
     /// <summary>

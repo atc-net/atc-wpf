@@ -7,11 +7,13 @@ public partial class HueSlider
         PropertyChangedCallback = nameof(OnHueChanged))]
     private double hue;
 
+    /// <summary>Initializes a new instance of the <see cref="HueSlider"/> class.</summary>
     public HueSlider()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     protected override void OnAdornerPositionChanged(double verticalPercent)
     {
         var color = hueGradients.GradientStops.GetColorAtOffset(verticalPercent);

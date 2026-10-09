@@ -5,8 +5,12 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 public sealed class JsonValueDisplayConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="JsonValueDisplayConverter"/>.
+    /// </summary>
     public static readonly JsonValueDisplayConverter Instance = new();
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -21,6 +25,7 @@ public sealed class JsonValueDisplayConverter : IValueConverter
         return jsonValue.DisplayValue;
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

@@ -30,10 +30,19 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string selectedKey;
 
+    /// <summary>
+    /// Occurs when the selected color changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>
+    /// Occurs when the selected color changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelWellKnownColorSelector"/> class.
+    /// </summary>
     public LabelWellKnownColorSelector()
     {
         InitializeComponent();
@@ -47,6 +56,7 @@ public partial class LabelWellKnownColorSelector : ILabelWellKnownColorSelector
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         var validateKey = SelectedKey;

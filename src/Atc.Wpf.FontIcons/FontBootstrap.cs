@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// A text block that renders a Bootstrap (GlyphIcons Halflings) icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class FontBootstrap : TextBlock, ISpinable, IRotatable, IFlippable
 {
     /// <summary>

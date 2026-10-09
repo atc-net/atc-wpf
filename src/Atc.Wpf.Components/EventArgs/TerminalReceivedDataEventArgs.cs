@@ -6,6 +6,9 @@ namespace Atc.Wpf.Components;
 /// </summary>
 public sealed class TerminalReceivedDataEventArgs(string[] lines) : EventArgs
 {
+    /// <summary>
+    /// Gets the received lines of terminal output.
+    /// </summary>
     public IReadOnlyList<string> Lines { get; } = lines;
 
     /// <summary>
@@ -14,6 +17,7 @@ public sealed class TerminalReceivedDataEventArgs(string[] lines) : EventArgs
     /// </summary>
     public string? TerminalId { get; init; }
 
+    /// <inheritdoc />
     public override string ToString()
         => $"{nameof(Lines)}.Count: {Lines.Count}";
 }

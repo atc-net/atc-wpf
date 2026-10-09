@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Behaviors;
 
+/// <summary>
+/// Provides attached properties that execute commands on left/right mouse clicks and double-clicks of a <see cref="UIElement"/>.
+/// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
 {
@@ -12,6 +15,9 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
             typeof(MouseEventToCommandBehavior),
             new PropertyMetadata(DateTime.MinValue));
 
+    /// <summary>
+    /// Identifies the CommandParameter attached property.
+    /// </summary>
     public static readonly DependencyProperty CommandParameterProperty =
         DependencyProperty.RegisterAttached(
             "CommandParameter",
@@ -19,14 +25,23 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
             typeof(MouseEventToCommandBehavior),
             new PropertyMetadata(propertyChangedCallback: null));
 
+    /// <summary>
+    /// Sets the value of the CommandParameter attached property.
+    /// </summary>
     public static void SetCommandParameter(
         DependencyObject element,
         object value)
         => element.SetValue(CommandParameterProperty, value);
 
+    /// <summary>
+    /// Gets the value of the CommandParameter attached property.
+    /// </summary>
     public static object GetCommandParameter(DependencyObject element)
         => element.GetValue(CommandParameterProperty);
 
+    /// <summary>
+    /// Identifies the LeftClickCommand attached property.
+    /// </summary>
     public static readonly DependencyProperty LeftClickCommandProperty =
         DependencyProperty.RegisterAttached(
             "LeftClickCommand",
@@ -36,14 +51,23 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
                 defaultValue: null,
                 OnLeftClickCommandChanged));
 
+    /// <summary>
+    /// Sets the value of the LeftClickCommand attached property.
+    /// </summary>
     public static void SetLeftClickCommand(
         DependencyObject element,
         ICommand value)
         => element.SetValue(LeftClickCommandProperty, value);
 
+    /// <summary>
+    /// Gets the value of the LeftClickCommand attached property.
+    /// </summary>
     public static ICommand GetLeftClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(LeftClickCommandProperty);
 
+    /// <summary>
+    /// Identifies the LeftDoubleClickCommand attached property.
+    /// </summary>
     public static readonly DependencyProperty LeftDoubleClickCommandProperty =
         DependencyProperty.RegisterAttached(
             "LeftDoubleClickCommand",
@@ -53,14 +77,23 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
                 defaultValue: null,
                 OnLeftDoubleClickCommandChanged));
 
+    /// <summary>
+    /// Sets the value of the LeftDoubleClickCommand attached property.
+    /// </summary>
     public static void SetLeftDoubleClickCommand(
         DependencyObject element,
         ICommand value)
         => element.SetValue(LeftDoubleClickCommandProperty, value);
 
+    /// <summary>
+    /// Gets the value of the LeftDoubleClickCommand attached property.
+    /// </summary>
     public static ICommand GetLeftDoubleClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(LeftDoubleClickCommandProperty);
 
+    /// <summary>
+    /// Identifies the RightClickCommand attached property.
+    /// </summary>
     public static readonly DependencyProperty RightClickCommandProperty =
         DependencyProperty.RegisterAttached(
             "RightClickCommand",
@@ -70,14 +103,23 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
                 defaultValue: null,
                 OnRightClickCommandChanged));
 
+    /// <summary>
+    /// Sets the value of the RightClickCommand attached property.
+    /// </summary>
     public static void SetRightClickCommand(
         DependencyObject element,
         ICommand value)
         => element.SetValue(RightClickCommandProperty, value);
 
+    /// <summary>
+    /// Gets the value of the RightClickCommand attached property.
+    /// </summary>
     public static ICommand GetRightClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(RightClickCommandProperty);
 
+    /// <summary>
+    /// Identifies the RightDoubleClickCommand attached property.
+    /// </summary>
     public static readonly DependencyProperty RightDoubleClickCommandProperty =
         DependencyProperty.RegisterAttached(
             "RightDoubleClickCommand",
@@ -87,11 +129,17 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
                 defaultValue: null,
                 OnRightDoubleClickCommandChanged));
 
+    /// <summary>
+    /// Sets the value of the RightDoubleClickCommand attached property.
+    /// </summary>
     public static void SetRightDoubleClickCommand(
         DependencyObject element,
         ICommand value)
         => element.SetValue(RightDoubleClickCommandProperty, value);
 
+    /// <summary>
+    /// Gets the value of the RightDoubleClickCommand attached property.
+    /// </summary>
     public static ICommand GetRightDoubleClickCommand(DependencyObject element)
         => (ICommand)element.GetValue(RightDoubleClickCommandProperty);
 

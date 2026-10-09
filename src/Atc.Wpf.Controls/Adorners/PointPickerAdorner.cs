@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Adorners;
 
+/// <summary>An adorner that draws a circular point marker at <see cref="Position"/> on top of the adorned element.</summary>
 public sealed partial class PointPickerAdorner : Adorner
 {
     private static readonly Brush FillBrush = Brushes.Transparent;
@@ -10,6 +11,7 @@ public sealed partial class PointPickerAdorner : Adorner
         Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
     private Point position;
 
+    /// <summary>Initializes a new instance of the <see cref="PointPickerAdorner"/> class.</summary>
     public PointPickerAdorner(UIElement adornedElement)
         : base(adornedElement)
     {
@@ -20,6 +22,7 @@ public sealed partial class PointPickerAdorner : Adorner
         IsHitTestVisible = false;
     }
 
+    /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
     {
         ArgumentNullException.ThrowIfNull(drawingContext);

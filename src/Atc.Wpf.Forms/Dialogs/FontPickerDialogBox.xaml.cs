@@ -77,6 +77,11 @@ public partial class FontPickerDialogBox
         DefaultValue = "The quick brown fox jumps over the lazy dog 0123456789")]
     private string previewText;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FontPickerDialogBox"/> class with default OK/Cancel settings.
+    /// </summary>
+    /// <param name="owningWindow">The window that owns the dialog.</param>
+    /// <param name="fontDescription">The initially selected font.</param>
     public FontPickerDialogBox(
         Window owningWindow,
         FontDescription fontDescription)
@@ -87,6 +92,12 @@ public partial class FontPickerDialogBox
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FontPickerDialogBox"/> class.
+    /// </summary>
+    /// <param name="owningWindow">The window that owns the dialog.</param>
+    /// <param name="settings">The dialog settings, such as size, title and button texts.</param>
+    /// <param name="fontDescription">The initially selected font.</param>
     public FontPickerDialogBox(
         Window owningWindow,
         DialogBoxSettings settings,
@@ -108,10 +119,19 @@ public partial class FontPickerDialogBox
         InitializeDialogBox();
     }
 
+    /// <summary>
+    /// Gets the window that owns the dialog.
+    /// </summary>
     public Window OwningWindow { get; private set; }
 
+    /// <summary>
+    /// Gets the dialog settings.
+    /// </summary>
     public DialogBoxSettings Settings { get; }
 
+    /// <summary>
+    /// Gets or sets an optional control shown in the dialog header.
+    /// </summary>
     public ContentControl? HeaderControl { get; set; }
 
     private void InitializeDialogBox()

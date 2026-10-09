@@ -1,5 +1,8 @@
 namespace Atc.Wpf.FontIcons;
 
+/// <summary>
+/// An image that renders a Font Awesome 5 Free (regular) icon, with support for spinning, rotation and flipping.
+/// </summary>
 public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippable
 {
     /// <summary>
@@ -119,6 +122,9 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
         set => SetValue(FlipOrientationProperty, value);
     }
 
+    /// <summary>
+    /// Creates an image source that renders the specified Font Awesome 5 Free (regular) icon with the given foreground brush and em-size.
+    /// </summary>
     public static ImageSource CreateImageSource(
         FontAwesomeRegularType fontIconType,
         Brush foregroundBrush,
@@ -132,6 +138,9 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
             emSize);
     }
 
+    /// <summary>
+    /// Creates a drawing image that renders the specified Font Awesome 5 Free (regular) icon with the given foreground brush and em-size.
+    /// </summary>
     public static DrawingImage CreateDrawingImage(
         FontAwesomeRegularType fontIconType,
         Brush foregroundBrush,

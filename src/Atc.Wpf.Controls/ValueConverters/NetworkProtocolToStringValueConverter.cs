@@ -8,8 +8,10 @@ namespace Atc.Wpf.Controls.ValueConverters;
 [ValueConversion(typeof(NetworkProtocolType), typeof(string))]
 public sealed class NetworkProtocolToStringValueConverter : IValueConverter
 {
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly NetworkProtocolToStringValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -23,6 +25,7 @@ public sealed class NetworkProtocolToStringValueConverter : IValueConverter
             _ => Binding.DoNothing,
         };
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

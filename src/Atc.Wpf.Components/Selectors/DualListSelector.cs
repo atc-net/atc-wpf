@@ -169,6 +169,9 @@ public sealed partial class DualListSelector : Control
     [DependencyProperty]
     private DataTemplate? selectedHeaderTemplate;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DualListSelector"/> class.
+    /// </summary>
     public DualListSelector()
     {
         AvailableItems = [];

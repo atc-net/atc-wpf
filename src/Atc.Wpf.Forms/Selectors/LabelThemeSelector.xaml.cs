@@ -8,6 +8,9 @@ public partial class LabelThemeSelector
     [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
     private RenderColorIndicatorType renderColorIndicatorType;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelThemeSelector"/> class.
+    /// </summary>
     public LabelThemeSelector()
     {
         InitializeComponent();

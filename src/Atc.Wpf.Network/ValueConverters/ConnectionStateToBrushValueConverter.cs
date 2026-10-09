@@ -16,6 +16,9 @@ namespace Atc.Wpf.Network.ValueConverters;
 [ValueConversion(typeof(ConnectionState), typeof(SolidColorBrush))]
 public sealed class ConnectionStateToBrushValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly ConnectionStateToBrushValueConverter Instance = new();
 
     private static readonly ConcurrentDictionary<ConnectionState, SolidColorBrush> Cache = new();

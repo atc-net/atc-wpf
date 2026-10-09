@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Theming.Helpers;
 
+/// <summary>
+/// Provides routed commands used by the themed control templates.
+/// </summary>
 public static class AtcAppsCommands
 {
     private static RoutedUICommand? clearControlCommand;
@@ -15,12 +18,19 @@ public static class AtcAppsCommands
                 (_, args) => CanClearControl(args)));
     }
 
+    /// <summary>
+    /// Gets the command that clears the content of a control that has the clear-text button enabled
+    /// (text box, password box, rich text box, date picker or combo box).
+    /// </summary>
     public static ICommand ClearControlCommand
         => clearControlCommand ??= new RoutedUICommand(
             "Clear",
             nameof(ClearControlCommand),
             typeof(AtcAppsCommands));
 
+    /// <summary>
+    /// Gets the search command.
+    /// </summary>
     public static ICommand SearchCommand
         => searchCommand ??= new RoutedUICommand(
             "Search",
@@ -51,6 +61,11 @@ public static class AtcAppsCommands
         };
     }
 
+    /// <summary>
+    /// Clears the content of the control that originated the command, when its clear-text button is enabled,
+    /// and updates the binding source.
+    /// </summary>
+    /// <param name="args">The executed-command event data whose original source is the control to clear.</param>
     public static void ClearControl(ExecutedRoutedEventArgs args)
     {
         ArgumentNullException.ThrowIfNull(args);

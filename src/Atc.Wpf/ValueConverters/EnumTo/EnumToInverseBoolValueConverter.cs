@@ -29,6 +29,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(Enum), typeof(bool))]
 public sealed class EnumToInverseBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="EnumToInverseBoolValueConverter"/>.
+    /// </summary>
     public static readonly EnumToInverseBoolValueConverter Instance = new();
 
     /// <inheritdoc />

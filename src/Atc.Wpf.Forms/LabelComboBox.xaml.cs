@@ -13,15 +13,25 @@ public partial class LabelComboBox : ILabelComboBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string selectedKey;
 
+    /// <summary>
+    /// Occurs when the <c>SelectedKey</c> changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>
+    /// Occurs when the <c>SelectedKey</c> changes and fails validation (a mandatory field with no selection).
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelComboBox"/> class.
+    /// </summary>
     public LabelComboBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateValue(default, this, SelectedKey, raiseEvents: false);

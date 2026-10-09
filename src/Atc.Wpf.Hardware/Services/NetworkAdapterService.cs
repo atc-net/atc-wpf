@@ -1,5 +1,8 @@
 namespace Atc.Wpf.Hardware.Services;
 
+/// <summary>
+/// Enumerates the network adapters and polls for changes on the dispatcher.
+/// </summary>
 public sealed class NetworkAdapterService : INetworkAdapterService
 {
     private readonly Func<IReadOnlyList<NetworkAdapterSnapshot>> enumerate;
@@ -7,6 +10,9 @@ public sealed class NetworkAdapterService : INetworkAdapterService
     private bool started;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NetworkAdapterService"/> class.
+    /// </summary>
     public NetworkAdapterService()
         : this(EnumerateAdapters)
     {
@@ -24,16 +30,20 @@ public sealed class NetworkAdapterService : INetworkAdapterService
         pollTimer.Tick += OnPollTick;
     }
 
+    /// <inheritdoc />
     public ObservableCollection<NetworkAdapterInfo> Adapters { get; }
 
+    /// <inheritdoc />
     public TimeSpan PollingInterval
     {
         get => pollTimer.Interval;
         set => pollTimer.Interval = value;
     }
 
+    /// <inheritdoc />
     public bool IncludeLoopback { get; set; }
 
+    /// <inheritdoc />
     public void StartWatching()
     {
         if (started)
@@ -45,6 +55,7 @@ public sealed class NetworkAdapterService : INetworkAdapterService
         pollTimer.Start();
     }
 
+    /// <inheritdoc />
     public void StopWatching()
     {
         if (!started)
@@ -56,12 +67,14 @@ public sealed class NetworkAdapterService : INetworkAdapterService
         pollTimer.Stop();
     }
 
+    /// <inheritdoc />
     public Task RefreshAsync()
     {
         EnumerateAndSync();
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (disposed)

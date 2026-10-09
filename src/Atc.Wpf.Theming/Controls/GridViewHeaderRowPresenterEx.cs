@@ -1,10 +1,15 @@
 // ReSharper disable SuggestBaseTypeForParameter
 namespace Atc.Wpf.Theming.Controls;
 
+/// <summary>
+/// A <see cref="GridViewHeaderRowPresenter"/> that paints the column drag indicator
+/// with the brush from <c>ItemHelper.GridViewHeaderIndicatorBrush</c>.
+/// </summary>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
 [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "OK.")]
 public sealed class GridViewHeaderRowPresenterEx : GridViewHeaderRowPresenter
 {
+    /// <inheritdoc />
     protected override void OnVisualChildrenChanged(
         DependencyObject visualAdded,
         DependencyObject visualRemoved)

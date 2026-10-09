@@ -10,6 +10,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(object))]
 public sealed class NullCheckValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="NullCheckValueConverter"/>.
+    /// </summary>
     public static readonly NullCheckValueConverter Instance = new();
 
     /// <inheritdoc />

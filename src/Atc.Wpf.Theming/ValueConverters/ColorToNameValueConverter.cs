@@ -1,10 +1,16 @@
 // ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
 namespace Atc.Wpf.Theming.ValueConverters;
 
+/// <summary>
+/// ValueConverter: <see cref="Color"/> → color name (or hex code when the color has no name), and back.
+/// </summary>
 [MarkupExtensionReturnType(typeof(ColorToNameValueConverter))]
 [ValueConversion(typeof(Color), typeof(string))]
 public sealed class ColorToNameValueConverter : MarkupMultiValueConverterBase
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly ColorToNameValueConverter Instance = new();
 
     /// <summary>

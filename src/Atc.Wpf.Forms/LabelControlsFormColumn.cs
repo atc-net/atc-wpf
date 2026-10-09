@@ -3,12 +3,19 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Forms;
 
+/// <summary>
+/// A column of label controls in a <see cref="LabelControlsForm"/>.
+/// </summary>
 public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 {
     private const int LabelControlsHeightForSpace = 20;
     private const int LabelControlsHeightForVertical = 98;
     private const int LabelControlsHeightForHorizontal = 72;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelControlsFormColumn"/> class.
+    /// </summary>
+    /// <param name="labelControls">The label controls in the column.</param>
     public LabelControlsFormColumn(IList<ILabelControlBase> labelControls)
     {
         ArgumentNullException.ThrowIfNull(labelControls);
@@ -16,14 +23,19 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         this.LabelControls = labelControls;
     }
 
+    /// <inheritdoc />
     public bool UseGroupBox { get; set; }
 
+    /// <inheritdoc />
     public Orientation ControlOrientation { get; set; }
 
+    /// <inheritdoc />
     public int ControlWidth { get; set; }
 
+    /// <inheritdoc />
     public IList<ILabelControlBase> LabelControls { get; }
 
+    /// <inheritdoc />
     public void SetSettings(
         bool useGroupBox,
         Orientation controlOrientation,
@@ -38,33 +50,39 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         }
     }
 
+    /// <inheritdoc />
     public bool HasMultiGroupIdentifiers()
         => GetGroupIdentifiers()
             .Skip(1)
             .Any();
 
+    /// <inheritdoc />
     public IList<string?> GetGroupIdentifiers()
         => LabelControls
             .Select(x => x.GroupIdentifier)
             .Distinct(StringComparer.Ordinal)
             .ToList();
 
+    /// <inheritdoc />
     public IList<ILabelControlBase> GetLabelControlsByGroupIdentifier(
         string? groupIdentifier)
         => LabelControls
             .Where(x => x.GroupIdentifier == groupIdentifier)
             .ToList();
 
+    /// <inheritdoc />
     public int CalculateHeight()
         => UseGroupBox
             ? CalculateHeightWithGroupBoxes()
             : CalculateHeightWithoutGroupBoxes();
 
+    /// <inheritdoc />
     public Panel GeneratePanel()
         => UseGroupBox
             ? GeneratePanelWithGroupBoxes()
             : GeneratePanelWithoutGroupBoxes();
 
+    /// <inheritdoc />
     public bool IsValid()
     {
         var isAllValid = true;
@@ -79,6 +97,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         return isAllValid;
     }
 
+    /// <inheritdoc />
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public Dictionary<string, object> GetKeyValues()
     {
@@ -201,6 +220,10 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         return result;
     }
 
+    /// <summary>
+    /// Calculates the column height when the controls are wrapped in group boxes, using the tallest group.
+    /// </summary>
+    /// <returns>The calculated height.</returns>
     public int CalculateHeightWithGroupBoxes()
     {
         var maxHeight = 0;
@@ -237,6 +260,10 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         return maxHeight;
     }
 
+    /// <summary>
+    /// Calculates the column height when the controls are not wrapped in group boxes.
+    /// </summary>
+    /// <returns>The calculated height.</returns>
     public int CalculateHeightWithoutGroupBoxes()
     {
         var maxHeight = 0;
@@ -320,6 +347,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         return stackPanel;
     }
 
+    /// <inheritdoc />
     public override string ToString()
         => $"{nameof(UseGroupBox)}: {UseGroupBox}, {nameof(ControlOrientation)}: {ControlOrientation}, {nameof(ControlWidth)}: {ControlWidth}, {nameof(LabelControls)}.Count: {LabelControls.Count}";
 }

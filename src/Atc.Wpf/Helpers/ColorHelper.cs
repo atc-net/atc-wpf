@@ -51,6 +51,7 @@ public static class ColorHelper
     /// </summary>
     private static readonly ConcurrentDictionary<int, Dictionary<string, Color>> ColorNameToColor = new();
 
+    /// <summary>Preloads the localized color names for the supported languages (en-US, en-GB, da-DK and de-DE).</summary>
     public static void InitializeWithSupportedLanguages()
     {
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.UnitedStates));
@@ -59,11 +60,13 @@ public static class ColorHelper
         EnsureColorNamesForCulture(new CultureInfo(GlobalizationLcidConstants.Germany));
     }
 
+    /// <summary>Gets all known colors.</summary>
     public static Color[] GetColors()
         => BaseColors
             .Select(x => x.Value)
             .ToArray();
 
+    /// <summary>Gets the basic colors.</summary>
     public static Color[] GetBasicColors()
     {
         var colors = new List<Color>();
@@ -81,9 +84,11 @@ public static class ColorHelper
         return [.. colors];
     }
 
+    /// <summary>Gets a color from a hex value or a color name in the current UI culture.</summary>
     public static Color? GetColorFromString(string value)
         => GetColorFromString(value, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets a color from a hex value or a color name in the specified culture.</summary>
     public static Color? GetColorFromString(
         string value,
         CultureInfo culture)
@@ -126,9 +131,11 @@ public static class ColorHelper
         return default(Color);
     }
 
+    /// <summary>Gets a color from a color name in the current UI culture.</summary>
     public static Color? GetColorFromName(string colorName)
         => GetColorFromString(colorName, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets a color from a color name in the specified culture.</summary>
     public static Color? GetColorFromName(
         string colorName,
         CultureInfo culture)
@@ -148,6 +155,7 @@ public static class ColorHelper
             culture);
     }
 
+    /// <summary>Gets a color from a hex value in the format #RGB, #RRGGBB or #AARRGGBB.</summary>
     public static Color? GetColorFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
@@ -171,9 +179,11 @@ public static class ColorHelper
             CultureInfo.InvariantCulture);
     }
 
+    /// <summary>Gets all localized color names for the current UI culture, sorted.</summary>
     public static IList<string> GetAllColorNames()
         => GetAllColorNames(CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets all localized color names for the specified culture, sorted.</summary>
     public static IList<string> GetAllColorNames(CultureInfo culture)
     {
         ArgumentNullException.ThrowIfNull(culture);
@@ -186,11 +196,13 @@ public static class ColorHelper
         return values;
     }
 
+    /// <summary>Gets the keys of all known colors.</summary>
     public static IList<string> GetColorKeys()
         => BaseColors
             .Select(x => x.Key)
             .ToList();
 
+    /// <summary>Gets the keys of the basic colors, sorted.</summary>
     public static IList<string> GetBasicColorKeys()
     {
         var list = new List<string>
@@ -220,6 +232,7 @@ public static class ColorHelper
             .ToList();
     }
 
+    /// <summary>Gets the key of the known color that matches the color, or <see langword="null"/> if there is none.</summary>
     public static string? GetColorKeyFromColor(Color brush)
         => BaseColors
             .FirstOrDefault(x => string.Equals(
@@ -228,9 +241,11 @@ public static class ColorHelper
                 StringComparison.Ordinal))
             .Key;
 
+    /// <summary>Gets the localized name of the color in the current UI culture.</summary>
     public static string? GetColorNameFromColor(Color color)
         => GetColorNameFromColor(color, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets the localized name of the color in the specified culture, optionally followed by its hex value.</summary>
     public static string? GetColorNameFromColor(
         Color color,
         CultureInfo culture,
@@ -260,6 +275,7 @@ public static class ColorHelper
         return $"{colorName} ({colorHex})";
     }
 
+    /// <summary>Gets the key of the known color that matches a hex value starting with # or 0x, or <see langword="null"/> if there is none.</summary>
     public static string? GetColorKeyFromHex(string hexValue)
     {
         ArgumentException.ThrowIfNullOrEmpty(hexValue);
@@ -306,9 +322,11 @@ public static class ColorHelper
             .Key;
     }
 
+    /// <summary>Gets the localized name of the color for a hex value in the current UI culture.</summary>
     public static string? GetColorNameFromHex(string hexValue)
         => GetColorNameFromHex(hexValue, CultureInfo.CurrentUICulture);
 
+    /// <summary>Gets the localized name of the color for a hex value in the specified culture, optionally followed by its hex value.</summary>
     public static string? GetColorNameFromHex(
         string hexValue,
         CultureInfo culture,
@@ -325,6 +343,7 @@ public static class ColorHelper
                 useAlphaChannel);
     }
 
+    /// <summary>Gets the localized name of the color with the given key in the specified culture, or <see langword="null"/> if the key is unknown.</summary>
     public static string? GetColorNameFromKey(
         string colorKey,
         CultureInfo culture)

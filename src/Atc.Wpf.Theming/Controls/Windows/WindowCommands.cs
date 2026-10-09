@@ -1,9 +1,13 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Theming.Controls.Windows;
 
+/// <summary>
+/// A toolbar of commands hosted in the title bar of a window.
+/// </summary>
 [StyleTypedProperty(Property = nameof(ItemContainerStyle), StyleTargetType = typeof(WindowCommands))]
 public sealed class WindowCommands : ToolBar
 {
+    /// <summary>Identifies the <see cref="Theme"/> dependency property.</summary>
     public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
         nameof(Theme),
         typeof(string),
@@ -51,6 +55,7 @@ public sealed class WindowCommands : ToolBar
         set => SetValue(ThemeProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="LightTemplate"/> dependency property.</summary>
     public static readonly DependencyProperty LightTemplateProperty = DependencyProperty.Register(
         nameof(LightTemplate),
         typeof(ControlTemplate),
@@ -66,6 +71,7 @@ public sealed class WindowCommands : ToolBar
         set => SetValue(LightTemplateProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="DarkTemplate"/> dependency property.</summary>
     public static readonly DependencyProperty DarkTemplateProperty = DependencyProperty.Register(
         nameof(DarkTemplate),
         typeof(ControlTemplate),
@@ -81,6 +87,7 @@ public sealed class WindowCommands : ToolBar
         set => SetValue(DarkTemplateProperty, value);
     }
 
+    /// <summary>Identifies the <see cref="ShowSeparators"/> dependency property.</summary>
     public static readonly DependencyProperty ShowSeparatorsProperty = DependencyProperty.Register(
         nameof(ShowSeparators),
         typeof(bool),
@@ -111,6 +118,7 @@ public sealed class WindowCommands : ToolBar
         set => SetValue(ShowSeparatorsProperty, BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="ShowLastSeparator"/> dependency property.</summary>
     public static readonly DependencyProperty ShowLastSeparatorProperty = DependencyProperty.Register(
         nameof(ShowLastSeparator),
         typeof(bool),
@@ -141,6 +149,7 @@ public sealed class WindowCommands : ToolBar
         set => SetValue(ShowLastSeparatorProperty, BooleanBoxes.Box(value));
     }
 
+    /// <summary>Identifies the <see cref="SeparatorHeight"/> dependency property.</summary>
     public static readonly DependencyProperty SeparatorHeightProperty = DependencyProperty.Register(
         nameof(SeparatorHeight),
         typeof(double),
@@ -182,17 +191,23 @@ public sealed class WindowCommands : ToolBar
         DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowCommands), new FrameworkPropertyMetadata(typeof(WindowCommands)));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WindowCommands"/> class.
+    /// </summary>
     public WindowCommands()
     {
         Loaded += WindowCommandsLoaded;
     }
 
+    /// <inheritdoc />
     protected override DependencyObject GetContainerForItemOverride()
         => new WindowCommandsItem();
 
+    /// <inheritdoc />
     protected override bool IsItemItsOwnContainerOverride(object item)
         => item is WindowCommandsItem;
 
+    /// <inheritdoc />
     protected override void PrepareContainerForItemOverride(
         DependencyObject element,
         object item)
@@ -218,6 +233,7 @@ public sealed class WindowCommands : ToolBar
         ResetSeparators();
     }
 
+    /// <inheritdoc />
     protected override void ClearContainerForItemOverride(
         DependencyObject element,
         object item)
@@ -281,6 +297,7 @@ public sealed class WindowCommands : ToolBar
         }
     }
 
+    /// <inheritdoc />
     protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
     {
         base.OnItemsChanged(e);
@@ -354,6 +371,7 @@ public sealed class WindowCommands : ToolBar
         }
     }
 
+    /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer()
         => new WindowCommandsAutomationPeer(this);
 }

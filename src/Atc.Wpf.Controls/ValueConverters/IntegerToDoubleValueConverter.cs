@@ -7,8 +7,10 @@ namespace Atc.Wpf.Controls.ValueConverters;
 [ValueConversion(typeof(decimal), typeof(double))]
 public sealed class IntegerToDoubleValueConverter : IValueConverter
 {
+    /// <summary>The shared instance of the converter.</summary>
     public static readonly IntegerToDoubleValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -21,6 +23,7 @@ public sealed class IntegerToDoubleValueConverter : IValueConverter
             _ => 0D,
         };
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

@@ -12,8 +12,10 @@ public partial class WellKnownColorPicker
     [DependencyProperty(DefaultValue = "Transparent")]
     private Brush colorBrush;
 
+    /// <summary>Occurs when the selected color changes.</summary>
     public event EventHandler<ValueChangedEventArgs<Color>>? ColorChanged;
 
+    /// <summary>Initializes a new instance of the <see cref="WellKnownColorPicker"/> class.</summary>
     public WellKnownColorPicker()
     {
         InitializeComponent();

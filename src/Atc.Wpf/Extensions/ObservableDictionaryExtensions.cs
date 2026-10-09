@@ -1,8 +1,14 @@
 // ReSharper disable CheckNamespace
 namespace Atc.Wpf.Collections;
 
+/// <summary>
+/// Extension methods for <see cref="ObservableDictionary{TKey, TValue}"/>.
+/// </summary>
 public static class ObservableDictionaryExtensions
 {
+    /// <summary>
+    /// Copies the entries into a new dictionary of strings.
+    /// </summary>
     public static Dictionary<string, string> ToDictionaryOfStrings(
         this ObservableDictionary<string, string> keyValues)
     {
@@ -17,6 +23,9 @@ public static class ObservableDictionaryExtensions
         return data;
     }
 
+    /// <summary>
+    /// Copies the entries into a new dictionary of strings, converting the integer keys with the invariant English culture.
+    /// </summary>
     public static Dictionary<string, string> ToDictionaryOfStrings(
         this ObservableDictionary<int, string> keyValues)
     {
@@ -31,6 +40,9 @@ public static class ObservableDictionaryExtensions
         return data;
     }
 
+    /// <summary>
+    /// Copies the entries into a new dictionary of strings, converting the GUID keys to strings.
+    /// </summary>
     public static Dictionary<string, string> ToDictionaryOfStrings(
         this ObservableDictionary<Guid, string> keyValues)
     {

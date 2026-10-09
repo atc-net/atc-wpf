@@ -25,15 +25,25 @@ public partial class LabelBluetoothDevicePicker : ILabelBluetoothDevicePicker
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
+    /// <summary>
+    /// Occurs when the selection changes and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<BluetoothDeviceInfo?>>? LostFocusValid;
 
+    /// <summary>
+    /// Occurs when the selection changes and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<BluetoothDeviceInfo?>>? LostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelBluetoothDevicePicker"/> class.
+    /// </summary>
     public LabelBluetoothDevicePicker()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         Validate(

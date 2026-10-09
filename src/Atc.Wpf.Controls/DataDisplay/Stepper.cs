@@ -114,6 +114,7 @@ public sealed partial class Stepper : Control
             new FrameworkPropertyMetadata(typeof(Stepper)));
     }
 
+    /// <summary>Initializes a new instance of the <see cref="Stepper"/> class.</summary>
     public Stepper()
     {
         Items.CollectionChanged += OnItemsCollectionChanged;

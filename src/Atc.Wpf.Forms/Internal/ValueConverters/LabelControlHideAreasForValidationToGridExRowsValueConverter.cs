@@ -6,8 +6,12 @@ namespace Atc.Wpf.Forms.Internal.ValueConverters;
 [ValueConversion(typeof(LabelControlHideAreasType), typeof(string))]
 public sealed class LabelControlHideAreasForValidationToGridExRowsValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared instance of the converter.
+    /// </summary>
     public static readonly LabelControlHideAreasForValidationToGridExRowsValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object? value,
         Type targetType,
@@ -32,6 +36,7 @@ public sealed class LabelControlHideAreasForValidationToGridExRowsValueConverter
             : "Auto,Auto,Auto,10";
     }
 
+    /// <inheritdoc />
     public object ConvertBack(
         object? value,
         Type targetType,

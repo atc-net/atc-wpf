@@ -86,6 +86,9 @@ public partial class ApplicationMonitorView
         PropertyChangedCallback = nameof(OnEnableContextMenuChanged))]
     private bool enableContextMenu;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ApplicationMonitorView"/> class.
+    /// </summary>
     public ApplicationMonitorView()
     {
         InitializeComponent();

@@ -3,6 +3,7 @@ namespace Atc.Wpf.Controls.Buttons;
 
 public partial class ConnectivityButton
 {
+    /// <summary>Occurs when the connected state of the button changes.</summary>
     public event RoutedEventHandler? IsConnectedChanged;
 
     [DependencyProperty]
@@ -58,6 +59,7 @@ public partial class ConnectivityButton
     [DependencyProperty]
     private ICommand? disconnectCommand;
 
+    /// <summary>Initializes a new instance of the <see cref="ConnectivityButton"/> class.</summary>
     public ConnectivityButton()
     {
         InitializeComponent();
@@ -68,6 +70,7 @@ public partial class ConnectivityButton
         Unloaded += OnUnloadedUnsubscribeFromThemeChanges;
     }
 
+    /// <inheritdoc />
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);

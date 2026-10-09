@@ -8,6 +8,7 @@ public partial class ZoomBox
     private double momentumVelocity;
     private Point momentumFocus;
 
+    /// <summary>Identifies the <see cref="IsZoomMomentumEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsZoomMomentumEnabledProperty = DependencyProperty.Register(
         nameof(IsZoomMomentumEnabled),
         typeof(bool),

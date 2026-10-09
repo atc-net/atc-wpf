@@ -23,6 +23,9 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
         PropertyChangedCallback = nameof(OnIsOnChanged))]
     private bool isOn;
 
+    /// <summary>
+    /// Occurs when the <c>IsOn</c> value changes.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<bool>>? IsOnChanged;
 
     static LabelToggleSwitch()
@@ -34,6 +37,9 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
                 OnLabelPositionChanged));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelToggleSwitch"/> class.
+    /// </summary>
     public LabelToggleSwitch()
     {
         InitializeComponent();

@@ -2,6 +2,9 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelPasswordBox : ILabelPasswordBox
 {
+    /// <summary>
+    /// Occurs when the password text changes.
+    /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
         HandlerType = typeof(RoutedPropertyChangedEventHandler<string>))]
@@ -34,15 +37,25 @@ public partial class LabelPasswordBox : ILabelPasswordBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string text;
 
+    /// <summary>
+    /// Occurs when the password is committed and passes validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusValid;
 
+    /// <summary>
+    /// Occurs when the password is committed and fails validation.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? TextLostFocusInvalid;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelPasswordBox"/> class.
+    /// </summary>
     public LabelPasswordBox()
     {
         InitializeComponent();
     }
 
+    /// <inheritdoc />
     public override bool IsValid()
     {
         ValidateText(default, this, raiseEvents: false);

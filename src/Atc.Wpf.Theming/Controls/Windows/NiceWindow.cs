@@ -212,6 +212,9 @@ public partial class NiceWindow : WindowChromeWindow
     [DependencyProperty(DefaultValue = true)]
     private bool isWindowDraggable;
 
+    /// <summary>
+    /// Occurs when the content transition of the window has completed.
+    /// </summary>
     [RoutedEvent]
     private static readonly RoutedEvent windowTransitionCompleted;
 
@@ -328,6 +331,11 @@ public partial class NiceWindow : WindowChromeWindow
         await tcs.Task.ConfigureAwait(true);
     }
 
+    /// <summary>
+    /// Determines whether the overlay is visible at <see cref="OverlayOpacity"/>.
+    /// </summary>
+    /// <returns><see langword="true"/> if the overlay is fully shown; otherwise <see langword="false"/>.</returns>
+    /// <exception cref="InvalidOperationException">The overlay is not found in the window template.</exception>
     public bool IsOverlayVisible()
     {
         if (OverlayBox is null)
@@ -338,6 +346,9 @@ public partial class NiceWindow : WindowChromeWindow
         return OverlayBox.Visibility == Visibility.Visible && OverlayBox.Opacity >= OverlayOpacity;
     }
 
+    /// <summary>
+    /// Shows the overlay immediately, without animation.
+    /// </summary>
     public void ShowOverlay()
     {
         if (OverlayBox is null)
@@ -349,6 +360,9 @@ public partial class NiceWindow : WindowChromeWindow
         OverlayBox.SetCurrentValue(OpacityProperty, OverlayOpacity);
     }
 
+    /// <summary>
+    /// Hides the overlay immediately, without animation.
+    /// </summary>
     public void HideOverlay()
     {
         if (OverlayBox is null)
@@ -417,6 +431,9 @@ public partial class NiceWindow : WindowChromeWindow
             }));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NiceWindow"/> class.
+    /// </summary>
     public NiceWindow()
     {
         InitializeSettingsBehavior();
@@ -426,6 +443,7 @@ public partial class NiceWindow : WindowChromeWindow
         ContentRendered += OnContentRendered;
     }
 
+    /// <inheritdoc />
     protected override void OnClosing(CancelEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
@@ -463,6 +481,7 @@ public partial class NiceWindow : WindowChromeWindow
         }
     }
 
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -503,6 +522,9 @@ public partial class NiceWindow : WindowChromeWindow
     protected override AutomationPeer OnCreateAutomationPeer()
         => new NiceWindowAutomationPeer(this);
 
+    /// <summary>
+    /// Gets the native window handle, read from the non-public <c>Window.CriticalHandle</c> property.
+    /// </summary>
     protected internal IntPtr CriticalHandle
     {
         get

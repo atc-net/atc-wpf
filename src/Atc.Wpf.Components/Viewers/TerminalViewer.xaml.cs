@@ -54,6 +54,9 @@ public sealed partial class TerminalViewer : IDisposable
     // disabling auto-scroll for the rest of the session.
     private bool isPerformingProgrammaticScroll;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TerminalViewer"/> class.
+    /// </summary>
     public TerminalViewer()
     {
         InitializeComponent();
@@ -300,6 +303,7 @@ public sealed partial class TerminalViewer : IDisposable
     [DependencyProperty(DefaultValue = 0)]
     private int matchCount;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Messenger.Default.UnRegister<TerminalReceivedDataEventArgs>(this, TerminalReceivedDataHandle);

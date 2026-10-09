@@ -7,6 +7,9 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(object), typeof(bool))]
 public sealed class ObjectNullToBoolValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="ObjectNullToBoolValueConverter"/>.
+    /// </summary>
     public static readonly ObjectNullToBoolValueConverter Instance = new();
 
     /// <inheritdoc />

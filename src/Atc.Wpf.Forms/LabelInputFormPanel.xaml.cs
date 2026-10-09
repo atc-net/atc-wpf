@@ -2,12 +2,19 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelInputFormPanel
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelInputFormPanel"/> class.
+    /// </summary>
     public LabelInputFormPanel()
     {
         InitializeComponent();
         DataContext = this;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelInputFormPanel"/> class and renders the form with default settings.
+    /// </summary>
+    /// <param name="labelInputFormPanel">The form to render.</param>
     public LabelInputFormPanel(ILabelControlsForm labelInputFormPanel)
         : this()
     {
@@ -16,6 +23,11 @@ public partial class LabelInputFormPanel
             labelInputFormPanel);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelInputFormPanel"/> class and renders the form with the given settings.
+    /// </summary>
+    /// <param name="settings">The layout settings.</param>
+    /// <param name="labelInputFormPanel">The form to render.</param>
     public LabelInputFormPanel(
         LabelInputFormPanelSettings settings,
         ILabelControlsForm labelInputFormPanel)
@@ -26,12 +38,26 @@ public partial class LabelInputFormPanel
             labelInputFormPanel);
     }
 
+    /// <summary>
+    /// Gets the layout settings used for rendering.
+    /// </summary>
     public LabelInputFormPanelSettings Settings { get; private set; } = new();
 
+    /// <summary>
+    /// Gets the rendered form.
+    /// </summary>
     public ILabelControlsForm Data { get; private set; } = new LabelControlsForm();
 
+    /// <summary>
+    /// Gets the content control that hosts the generated form panel.
+    /// </summary>
     public ContentControl ContentControl { get; private set; } = new();
 
+    /// <summary>
+    /// Renders the form with the given settings.
+    /// </summary>
+    /// <param name="settings">The layout settings.</param>
+    /// <param name="labelInputFormPanel">The form to render.</param>
     public void Render(
         LabelInputFormPanelSettings settings,
         ILabelControlsForm labelInputFormPanel)
@@ -43,6 +69,9 @@ public partial class LabelInputFormPanel
         PopulateContentControl();
     }
 
+    /// <summary>
+    /// Re-applies the current settings to the already rendered form.
+    /// </summary>
     public void ReRender()
     {
         SetContentControlSettings();

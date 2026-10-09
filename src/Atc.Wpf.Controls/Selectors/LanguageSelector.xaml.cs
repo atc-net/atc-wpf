@@ -8,36 +8,42 @@ namespace Atc.Wpf.Controls.Selectors;
 
 public partial class LanguageSelector
 {
+    /// <summary>Identifies the <see cref="DropDownFirstItemType"/> dependency property.</summary>
     public static readonly DependencyProperty DropDownFirstItemTypeProperty = DependencyProperty.Register(
         nameof(DropDownFirstItemType),
         typeof(DropDownFirstItemType),
         typeof(LanguageSelector),
         new PropertyMetadata(DropDownFirstItemType.None));
 
+    /// <summary>Identifies the <see cref="RenderFlagIndicatorType"/> dependency property.</summary>
     public static readonly DependencyProperty RenderFlagIndicatorTypeProperty = DependencyProperty.Register(
         nameof(RenderFlagIndicatorType),
         typeof(RenderFlagIndicatorType),
         typeof(LanguageSelector),
         new PropertyMetadata(RenderFlagIndicatorType.Flat16));
 
+    /// <summary>Identifies the <see cref="UseOnlySupportedLanguages"/> dependency property.</summary>
     public static readonly DependencyProperty UseOnlySupportedLanguagesProperty = DependencyProperty.Register(
         nameof(UseOnlySupportedLanguages),
         typeof(bool),
         typeof(LanguageSelector),
         new PropertyMetadata(true));
 
+    /// <summary>Identifies the <see cref="DefaultCultureIdentifier"/> dependency property.</summary>
     public static readonly DependencyProperty DefaultCultureIdentifierProperty = DependencyProperty.Register(
         nameof(DefaultCultureIdentifier),
         typeof(string),
         typeof(LanguageSelector),
         new PropertyMetadata(string.Empty));
 
+    /// <summary>Identifies the <see cref="SelectedKey"/> dependency property.</summary>
     public static readonly DependencyProperty SelectedKeyProperty = DependencyProperty.Register(
         nameof(SelectedKey),
         typeof(string),
         typeof(LanguageSelector),
         new PropertyMetadata(string.Empty, OnSelectedKeyChanged));
 
+    /// <summary>Identifies the <see cref="UpdateUiCultureOnChangeEvent"/> dependency property.</summary>
     public static readonly DependencyProperty UpdateUiCultureOnChangeEventProperty = DependencyProperty.Register(
         nameof(UpdateUiCultureOnChangeEvent),
         typeof(bool),
@@ -49,12 +55,14 @@ public partial class LanguageSelector
     private int? lastLcid;
     private bool processingUiCultureChanged;
 
+    /// <summary>Gets or sets the kind of first item shown in the drop-down (none, blank or "please select").</summary>
     public DropDownFirstItemType DropDownFirstItemType
     {
         get => (DropDownFirstItemType)GetValue(DropDownFirstItemTypeProperty);
         set => SetValue(DropDownFirstItemTypeProperty, value);
     }
 
+    /// <summary>Gets or sets the style of the flag icons.</summary>
     public RenderFlagIndicatorType RenderFlagIndicatorType
     {
         get
@@ -63,32 +71,38 @@ public partial class LanguageSelector
             => SetValue(RenderFlagIndicatorTypeProperty, value);
     }
 
+    /// <summary>Gets or sets a value indicating whether only the languages supported by the application are listed.</summary>
     public bool UseOnlySupportedLanguages
     {
         get => (bool)GetValue(UseOnlySupportedLanguagesProperty);
         set => SetValue(UseOnlySupportedLanguagesProperty, value);
     }
 
+    /// <summary>Gets or sets the culture (LCID or culture name) selected by default.</summary>
     public string DefaultCultureIdentifier
     {
         get => (string)GetValue(DefaultCultureIdentifierProperty);
         set => SetValue(DefaultCultureIdentifierProperty, value);
     }
 
+    /// <summary>Gets or sets the key (the culture LCID) of the selected language.</summary>
     public string SelectedKey
     {
         get => (string)GetValue(SelectedKeyProperty);
         set => SetValue(SelectedKeyProperty, value);
     }
 
+    /// <summary>Gets or sets a value indicating whether the UI culture is switched to the selected language when the selection changes.</summary>
     public bool UpdateUiCultureOnChangeEvent
     {
         get => (bool)GetValue(UpdateUiCultureOnChangeEventProperty);
         set => SetValue(UpdateUiCultureOnChangeEventProperty, value);
     }
 
+    /// <summary>Occurs when the selected language changes.</summary>
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorChanged;
 
+    /// <summary>Initializes a new instance of the <see cref="LanguageSelector"/> class.</summary>
     public LanguageSelector()
     {
         InitializeComponent();
@@ -99,6 +113,7 @@ public partial class LanguageSelector
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <summary>Gets the languages listed in the selector.</summary>
     public ObservableCollectionEx<LanguageItem> Items => items;
 
     private void OnLoaded(

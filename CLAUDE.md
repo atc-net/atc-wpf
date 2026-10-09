@@ -99,6 +99,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 - Nullable reference types enabled
 - StyleCop, Meziantou, SonarAnalyzer enforced
 - Release builds treat warnings as errors
+- Every public member in `src/` has an XML doc comment: each library project turns CS1591 (missing XML comment) back on, so an undocumented public member fails the Release build. `[assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]` makes the source generators document generated members from the field/method docs; document a `[RoutedEvent]` field yourself
 
 ## Testing
 

@@ -1,13 +1,18 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Forms;
 
+/// <summary>
+/// A form of label controls laid out in rows and columns.
+/// </summary>
 public sealed class LabelControlsForm : ILabelControlsForm
 {
     private const int GroupBoxWidthForSpace = 20;
     private const int GroupBoxWidthForMargin = 10;
 
+    /// <inheritdoc />
     public IList<ILabelControlsFormRow>? Rows { get; set; }
 
+    /// <inheritdoc />
     public void AddColumn(IList<ILabelControlBase> labelControls)
     {
         ArgumentNullException.ThrowIfNull(labelControls);
@@ -17,6 +22,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         AddColumn(labelControlsFormColumn);
     }
 
+    /// <inheritdoc />
     public void AddColumn(ILabelControlsFormColumn labelControlsFormColumn)
     {
         ArgumentNullException.ThrowIfNull(labelControlsFormColumn);
@@ -54,11 +60,13 @@ public sealed class LabelControlsForm : ILabelControlsForm
         }
     }
 
+    /// <inheritdoc />
     public void Clear()
     {
         Rows = new List<ILabelControlsFormRow>();
     }
 
+    /// <inheritdoc />
     public bool HasMultiGroupIdentifiers()
     {
         if (Rows is null)
@@ -96,6 +104,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         return false;
     }
 
+    /// <inheritdoc />
     public int GetMaxHeight()
     {
         if (Rows is null)
@@ -120,6 +129,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         return rowHeight;
     }
 
+    /// <inheritdoc />
     public int GetMaxWidth()
     {
         if (Rows is null)
@@ -166,6 +176,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         return rowMaxWidth;
     }
 
+    /// <inheritdoc />
     public Panel GeneratePanel()
     {
         var stackPanelRoot = new StackPanel
@@ -201,6 +212,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         return stackPanelRoot;
     }
 
+    /// <inheritdoc />
     public bool IsValid()
     {
         if (Rows is null)
@@ -228,6 +240,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         return isAllValid;
     }
 
+    /// <inheritdoc />
     public Dictionary<string, object> GetKeyValues()
     {
         if (Rows is null)
@@ -255,6 +268,7 @@ public sealed class LabelControlsForm : ILabelControlsForm
         return result;
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         if (Rows is null)

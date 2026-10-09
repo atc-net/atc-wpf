@@ -8,8 +8,12 @@ namespace Atc.Wpf.ValueConverters;
 /// </summary>
 public sealed class RectangleCircularValueConverter : IMultiValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="RectangleCircularValueConverter"/>.
+    /// </summary>
     public static readonly RectangleCircularValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object Convert(
         object[] values,
         Type targetType,
@@ -33,6 +37,7 @@ public sealed class RectangleCircularValueConverter : IMultiValueConverter
         return DependencyProperty.UnsetValue;
     }
 
+    /// <inheritdoc />
     public object[] ConvertBack(
         object value,
         Type[] targetTypes,

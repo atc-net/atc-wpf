@@ -64,6 +64,7 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
             : LightForegroundColor;
     }
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -82,6 +83,7 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         return foregroundBrush;
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,
@@ -89,6 +91,7 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         CultureInfo culture)
         => DependencyProperty.UnsetValue;
 
+    /// <inheritdoc />
     public object? Convert(
         object[]? values,
         Type targetType,
@@ -119,6 +122,7 @@ public sealed class BackgroundToForegroundValueConverter : IValueConverter, IMul
         return Convert(backgroundBrush, targetType, parameter, culture);
     }
 
+    /// <inheritdoc />
     public object[]? ConvertBack(
         object? value,
         Type[] targetTypes,

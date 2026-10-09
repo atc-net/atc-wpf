@@ -1,11 +1,13 @@
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace Atc.Wpf.Helpers;
 
+/// <summary>Provides helper methods for getting <see cref="ColorItem"/> lists with names localized to the current UI culture.</summary>
 public static class ColorItemHelper
 {
     private static readonly ConcurrentDictionary<int, ColorItem[]> CacheColorItems = new();
     private static readonly ConcurrentDictionary<int, ColorItem[]> CacheBasicColorItems = new();
 
+    /// <summary>Gets color items for all known colors, localized to the current UI culture and ordered by display name.</summary>
     public static ColorItem[] GetColorItems()
     {
         if (CacheColorItems.TryGetValue(
@@ -25,6 +27,7 @@ public static class ColorItemHelper
         return items;
     }
 
+    /// <summary>Gets color items for the basic colors, localized to the current UI culture and ordered by display name.</summary>
     public static ColorItem[] GetBasicColorItems()
     {
         if (CacheBasicColorItems.TryGetValue(

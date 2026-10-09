@@ -7,6 +7,9 @@ public partial class ThemeSelector : INotifyPropertyChanged
     [DependencyProperty(DefaultValue = RenderColorIndicatorType.Square)]
     private RenderColorIndicatorType renderColorIndicatorType;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ThemeSelector"/> class.
+    /// </summary>
     public ThemeSelector()
     {
         InitializeComponent();
@@ -24,10 +27,18 @@ public partial class ThemeSelector : INotifyPropertyChanged
         PopulateData();
     }
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// Gets or sets the available themes.
+    /// </summary>
     public IList<ThemeItem> Items { get; set; } = new List<ThemeItem>();
 
+    /// <summary>
+    /// Gets or sets the base color scheme name of the selected theme. Setting it changes the application theme;
+    /// empty values are ignored.
+    /// </summary>
     public string SelectedKey
     {
         get => selectedKey;
@@ -53,6 +64,10 @@ public partial class ThemeSelector : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {

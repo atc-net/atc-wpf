@@ -8,6 +8,9 @@ public partial class LabelCheckBox : ILabelCheckBox
         PropertyChangedCallback = nameof(OnIsCheckedChanged))]
     private bool isChecked;
 
+    /// <summary>
+    /// Occurs when the <c>IsChecked</c> value changes.
+    /// </summary>
     public event EventHandler<ValueChangedEventArgs<bool>>? IsCheckedChanged;
 
     static LabelCheckBox()
@@ -19,6 +22,9 @@ public partial class LabelCheckBox : ILabelCheckBox
                 OnLabelPositionChanged));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelCheckBox"/> class.
+    /// </summary>
     public LabelCheckBox()
     {
         InitializeComponent();

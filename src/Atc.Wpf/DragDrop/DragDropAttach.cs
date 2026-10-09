@@ -82,12 +82,18 @@ public static class DragDropAttach
             typeof(DragDropAttach),
             new PropertyMetadata(true));
 
+    /// <summary>
+    /// Gets the value of the IsDragSource attached property.
+    /// </summary>
     public static bool GetIsDragSource(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (bool)element.GetValue(IsDragSourceProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the IsDragSource attached property.
+    /// </summary>
     public static void SetIsDragSource(
         UIElement element,
         bool value)
@@ -96,12 +102,18 @@ public static class DragDropAttach
         element.SetValue(IsDragSourceProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the IsDropTarget attached property.
+    /// </summary>
     public static bool GetIsDropTarget(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (bool)element.GetValue(IsDropTargetProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the IsDropTarget attached property.
+    /// </summary>
     public static void SetIsDropTarget(
         UIElement element,
         bool value)
@@ -110,12 +122,18 @@ public static class DragDropAttach
         element.SetValue(IsDropTargetProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the DropHandler attached property.
+    /// </summary>
     public static IDropHandler? GetDropHandler(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (IDropHandler?)element.GetValue(DropHandlerProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the DropHandler attached property.
+    /// </summary>
     public static void SetDropHandler(
         UIElement element,
         IDropHandler? value)
@@ -124,12 +142,18 @@ public static class DragDropAttach
         element.SetValue(DropHandlerProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the DragHandler attached property.
+    /// </summary>
     public static IDragHandler? GetDragHandler(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (IDragHandler?)element.GetValue(DragHandlerProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the DragHandler attached property.
+    /// </summary>
     public static void SetDragHandler(
         UIElement element,
         IDragHandler? value)
@@ -138,12 +162,18 @@ public static class DragDropAttach
         element.SetValue(DragHandlerProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the AllowedEffects attached property.
+    /// </summary>
     public static DragDropEffects GetAllowedEffects(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (DragDropEffects)element.GetValue(AllowedEffectsProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the AllowedEffects attached property.
+    /// </summary>
     public static void SetAllowedEffects(
         UIElement element,
         DragDropEffects value)
@@ -152,12 +182,18 @@ public static class DragDropAttach
         element.SetValue(AllowedEffectsProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the ShowDragAdorner attached property.
+    /// </summary>
     public static bool GetShowDragAdorner(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (bool)element.GetValue(ShowDragAdornerProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the ShowDragAdorner attached property.
+    /// </summary>
     public static void SetShowDragAdorner(
         UIElement element,
         bool value)
@@ -166,12 +202,18 @@ public static class DragDropAttach
         element.SetValue(ShowDragAdornerProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the ShowDropIndicator attached property.
+    /// </summary>
     public static bool GetShowDropIndicator(UIElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
         return (bool)element.GetValue(ShowDropIndicatorProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the ShowDropIndicator attached property.
+    /// </summary>
     public static void SetShowDropIndicator(
         UIElement element,
         bool value)

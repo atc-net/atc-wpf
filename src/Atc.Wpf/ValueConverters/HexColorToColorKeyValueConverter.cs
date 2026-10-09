@@ -9,8 +9,12 @@ namespace Atc.Wpf.ValueConverters;
 [ValueConversion(typeof(string), typeof(string))]
 public sealed class HexColorToColorKeyValueConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets a static default instance of <see cref="HexColorToColorKeyValueConverter"/>.
+    /// </summary>
     public static readonly HexColorToColorKeyValueConverter Instance = new();
 
+    /// <inheritdoc />
     public object? Convert(
         object? value,
         Type targetType,
@@ -28,6 +32,7 @@ public sealed class HexColorToColorKeyValueConverter : IValueConverter
         return ColorHelper.GetColorKeyFromHex(str);
     }
 
+    /// <inheritdoc />
     public object? ConvertBack(
         object? value,
         Type targetType,

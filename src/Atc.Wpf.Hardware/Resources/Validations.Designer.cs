@@ -12,6 +12,9 @@ namespace Atc.Wpf.Hardware.Resources {
     using System;
 
 
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,6 +28,9 @@ namespace Atc.Wpf.Hardware.Resources {
         internal Validations() {
         }
 
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
@@ -36,6 +42,10 @@ namespace Atc.Wpf.Hardware.Resources {
             }
         }
 
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Globalization.CultureInfo Culture {
             get {
@@ -46,18 +56,27 @@ namespace Atc.Wpf.Hardware.Resources {
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to A device must be selected.
+        /// </summary>
         public static string DeviceIsRequired {
             get {
                 return ResourceManager.GetString("DeviceIsRequired", resourceCulture);
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to The selected device is no longer available.
+        /// </summary>
         public static string DeviceNoLongerAvailable {
             get {
                 return ResourceManager.GetString("DeviceNoLongerAvailable", resourceCulture);
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to The selected device is currently in use.
+        /// </summary>
         public static string DeviceCurrentlyInUse {
             get {
                 return ResourceManager.GetString("DeviceCurrentlyInUse", resourceCulture);
