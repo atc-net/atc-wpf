@@ -7,19 +7,19 @@ public sealed class JsonPropertyTemplateSelector : DataTemplateSelector
 {
     /// <summary>
     /// Gets or sets the data template for property nodes with an object value.
-    /// Note: template selection currently resolves the <c>ObjectPropertyTemplate</c> resource key instead of this property.
+    /// When not set, the <c>ObjectPropertyTemplate</c> resource is used.
     /// </summary>
     public DataTemplate? ObjectPropertyTemplate { get; set; }
 
     /// <summary>
     /// Gets or sets the data template for property nodes with an array value.
-    /// Note: template selection currently resolves the <c>ArrayPropertyTemplate</c> resource key instead of this property.
+    /// When not set, the <c>ArrayPropertyTemplate</c> resource is used.
     /// </summary>
     public DataTemplate? ArrayPropertyTemplate { get; set; }
 
     /// <summary>
     /// Gets or sets the data template for property nodes with a primitive value.
-    /// Note: template selection currently resolves the <c>PrimitivePropertyTemplate</c> resource key instead of this property.
+    /// When not set, the <c>PrimitivePropertyTemplate</c> resource is used.
     /// </summary>
     public DataTemplate? PrimitivePropertyTemplate { get; set; }
 
@@ -42,13 +42,17 @@ public sealed class JsonPropertyTemplateSelector : DataTemplateSelector
         {
             return propertyNode.ValueType switch
             {
-                JsonNodeType.Object => frameworkElement.FindResource("ObjectPropertyTemplate") as DataTemplate,
-                JsonNodeType.Array => frameworkElement.FindResource("ArrayPropertyTemplate") as DataTemplate,
-                _ => frameworkElement.FindResource("PrimitivePropertyTemplate") as DataTemplate,
+                JsonNodeType.Object => ObjectPropertyTemplate ?? FindTemplate(frameworkElement, "ObjectPropertyTemplate"),
+                JsonNodeType.Array => ArrayPropertyTemplate ?? FindTemplate(frameworkElement, "ArrayPropertyTemplate"),
+                _ => PrimitivePropertyTemplate ?? FindTemplate(frameworkElement, "PrimitivePropertyTemplate"),
             };
         }
 
-        var key = new DataTemplateKey(item.GetType());
-        return frameworkElement.FindResource(key) as DataTemplate;
+        return FindTemplate(frameworkElement, new DataTemplateKey(item.GetType()));
     }
+
+    private static DataTemplate? FindTemplate(
+        FrameworkElement frameworkElement,
+        object resourceKey)
+        => frameworkElement.TryFindResource(resourceKey) as DataTemplate;
 }
