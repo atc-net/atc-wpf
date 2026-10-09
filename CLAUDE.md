@@ -112,10 +112,10 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
-| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage, SvgImage brushes and drawing cache, managed markup extensions) | 126 |
-| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes), layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard, images and zoom, picker DataContext, sample readme lookup | 44 |
-| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls, EndpointBox, ColorPicker | 20 |
-| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters, right-to-left viewers, flyout first open and host hit testing | 27 |
+| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage and AutoGrey extensions, SvgImage brushes and drawing cache, managed markup extensions, culture change across UI threads) | 128 |
+| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes, their lost-focus events and value metadata), CountrySelector, layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard, images and zoom, picker DataContext, sample readme lookup | 47 |
+| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls (incl. lost-focus events and culture selector forwarding), EndpointBox, ColorPicker | 22 |
+| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, Zoom browser, tray icon, value converters, right-to-left viewers, JSON property template selector, flyout first open and host hit testing | 28 |
 | `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization | 34 |
 | `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, VNC connection service, value converters | 12 |
 | `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync, high-contrast theme generation, DatePicker style, NiceWindow backdrop and ThemeMode | 12 |
@@ -123,7 +123,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 | `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests | 4 |
 | `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app (`Category=UI`, excluded from the default CI run) | 8 |
 
-> Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,340 tests).
+> Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,370 tests).
 > Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
 
 ### Running Tests
