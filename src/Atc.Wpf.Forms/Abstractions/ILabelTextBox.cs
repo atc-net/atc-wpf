@@ -31,11 +31,6 @@ public interface ILabelTextBox : ILabelControl
     uint MinLength { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the default set of not-allowed characters is used.
-    /// </summary>
-    bool UseDefaultNotAllowedCharacters { get; set; }
-
-    /// <summary>
     /// Gets or sets the characters that are not allowed in the text.
     /// </summary>
     string CharactersNotAllowed { get; set; }

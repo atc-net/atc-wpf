@@ -31,9 +31,6 @@ public partial class LabelTextBox : ILabelTextBox
     [DependencyProperty(DefaultValue = 0)]
     private uint minLength;
 
-    [DependencyProperty(DefaultValue = true)]
-    private bool useDefaultNotAllowedCharacters;
-
     [DependencyProperty(DefaultValue = "")]
     private string charactersNotAllowed;
 
