@@ -2,6 +2,11 @@ namespace Atc.Wpf.Tests.MarkupExtensions;
 
 public sealed class ManagedMarkupExtensionTests
 {
+    // Each [StaFact] runs on its own thread, so targets another test left in the shared manager belong to a
+    // different (finished) thread and cannot be updated from this one.
+    public ManagedMarkupExtensionTests()
+        => TestTextExtension.Manager.ActiveExtensions.Clear();
+
     // Flyout.xaml sets ToolTip through a Resx extension in a style setter; a culture change then updated the
     // sealed setter and threw "After a 'SetterBase' is in use (sealed), it cannot be modified".
     [StaFact]
