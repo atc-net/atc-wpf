@@ -87,6 +87,13 @@ internal sealed class SvgRender
     {
         ArgumentNullException.ThrowIfNull(svg);
 
+        // Custom brushes replace the SVG's paint servers: also when they were set before the SVG was loaded,
+        // and when an entry was changed in place since the last render.
+        if (customBrushes is not null)
+        {
+            svg.CustomBrushes = customBrushes;
+        }
+
         return LoadGroup(
             svg.Elements,
             svg.ViewBox,
