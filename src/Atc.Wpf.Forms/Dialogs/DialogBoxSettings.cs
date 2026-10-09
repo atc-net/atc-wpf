@@ -167,12 +167,12 @@ public sealed class DialogBoxSettings
     public bool ShowNegativeButton { get; private set; }
 
     /// <summary>
-    /// Gets or sets the text used for the Affirmative button..
+    /// Gets or sets the text used for the Affirmative button.
     /// </summary>
-    /// /// <example>
+    /// <example>
     /// "OK" or "Yes"
     /// </example>
-    public string AffirmativeButtonText { get; set; } = "? Negative ?";
+    public string AffirmativeButtonText { get; set; } = "? Affirmative ?";
 
     /// <summary>
     /// Gets or sets the background brush of the affirmative button.
@@ -190,7 +190,7 @@ public sealed class DialogBoxSettings
     /// <example>
     /// "Cancel" or "No"
     /// </example>
-    public string NegativeButtonText { get; set; } = "? Affirmative ?";
+    public string NegativeButtonText { get; set; } = "? Negative ?";
 
     /// <summary>
     /// Gets or sets the background brush of the negative button.
