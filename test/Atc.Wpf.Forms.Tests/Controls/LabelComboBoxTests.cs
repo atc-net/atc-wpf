@@ -59,6 +59,26 @@ public sealed class LabelComboBoxTests : IDisposable
         Assert.Equal("Field is required", sut.ValidationText);
     }
 
+    [StaFact]
+    public void SelectedKey_SetThroughTheInterface_RaisesTheInterfaceEvents()
+    {
+        UseEnglishUi();
+        ILabelComboBoxBase sut = new LabelComboBox
+        {
+            IsMandatory = true,
+            Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["DK"] = "Denmark", ["SE"] = "Sweden" },
+            SelectedKey = "DK",
+        };
+        var raised = new List<string>();
+        sut.SelectorChanged += (_, e) => raised.Add($"changed:{e.NewValue}");
+        sut.SelectorLostFocusInvalid += (_, _) => raised.Add("invalid");
+
+        sut.SelectedKey = "SE";
+        sut.SelectedKey = string.Empty;
+
+        Assert.Equal(["changed:SE", "invalid"], raised);
+    }
+
     private static void UseEnglishUi()
         => Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 }
