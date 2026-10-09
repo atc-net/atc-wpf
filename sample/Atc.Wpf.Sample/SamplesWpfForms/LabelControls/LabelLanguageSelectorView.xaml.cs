@@ -5,6 +5,6 @@ public partial class LabelLanguageSelectorView
     public LabelLanguageSelectorView()
     {
         InitializeComponent();
-        DataContext = new LabelControlDemoViewModel();
+        DataContext = new LabelCultureSelectorDemoViewModel();
     }
 }
