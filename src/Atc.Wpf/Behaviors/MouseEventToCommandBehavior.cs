@@ -6,15 +6,6 @@ namespace Atc.Wpf.Behaviors;
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
 {
-    private const int DoubleClickTimeMs = 500;
-
-    private static readonly DependencyProperty LastClickTimeProperty =
-        DependencyProperty.RegisterAttached(
-            "LastClickTime",
-            typeof(DateTime),
-            typeof(MouseEventToCommandBehavior),
-            new PropertyMetadata(DateTime.MinValue));
-
     /// <summary>
     /// Identifies the CommandParameter attached property.
     /// </summary>
@@ -235,25 +226,18 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
             return;
         }
 
+        if (!IsDoubleClick(e))
+        {
+            return;
+        }
+
         var command = GetLeftDoubleClickCommand(element);
         var commandParameter = GetCommandParameter(element);
 
-        var now = DateTime.Now;
-        var lastClickTime = (DateTime)element.GetValue(LastClickTimeProperty);
-        var span = now - lastClickTime;
-        if (span.TotalMilliseconds < DoubleClickTimeMs)
+        if (command is not null &&
+            command.CanExecute(commandParameter))
         {
-            if (command is not null &&
-                command.CanExecute(commandParameter))
-            {
-                command.Execute(commandParameter);
-            }
-
-            element.SetValue(LastClickTimeProperty, now);
-        }
-        else
-        {
-            element.SetValue(LastClickTimeProperty, now);
+            command.Execute(commandParameter);
         }
     }
 
@@ -285,25 +269,26 @@ public sealed class MouseEventToCommandBehavior : Behavior<UIElement>
             return;
         }
 
+        if (!IsDoubleClick(e))
+        {
+            return;
+        }
+
         var command = GetRightDoubleClickCommand(element);
         var commandParameter = GetCommandParameter(element);
 
-        var now = DateTime.Now;
-        var lastClickTime = (DateTime)element.GetValue(LastClickTimeProperty);
-        var span = now - lastClickTime;
-        if (span.TotalMilliseconds < DoubleClickTimeMs)
+        if (command is not null &&
+            command.CanExecute(commandParameter))
         {
-            if (command is not null &&
-                command.CanExecute(commandParameter))
-            {
-                command.Execute(commandParameter);
-            }
-
-            element.SetValue(LastClickTimeProperty, now);
-        }
-        else
-        {
-            element.SetValue(LastClickTimeProperty, now);
+            command.Execute(commandParameter);
         }
     }
+
+    /// <summary>
+    /// A double-click is the second press of the same button within the system double-click
+    /// time and distance, which the input system reports through <see cref="MouseButtonEventArgs.ClickCount"/>.
+    /// Per-button, so a left press followed by a right press is never a double-click.
+    /// </summary>
+    private static bool IsDoubleClick(MouseButtonEventArgs e)
+        => e.ClickCount == 2;
 }
