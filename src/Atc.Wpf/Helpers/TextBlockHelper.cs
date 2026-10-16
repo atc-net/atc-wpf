@@ -15,6 +15,16 @@ public static class TextBlockHelper
             defaultValue: null,
             OnInlinesChanged));
 
+    /// <summary>
+    /// Holds the per-TextBlock CollectionChanged handler so it can be removed from the
+    /// previous collection when <see cref="InlinesProperty"/> changes.
+    /// </summary>
+    private static readonly DependencyProperty InlinesCollectionChangedHandlerProperty = DependencyProperty.RegisterAttached(
+        "InlinesCollectionChangedHandler",
+        typeof(NotifyCollectionChangedEventHandler),
+        typeof(TextBlockHelper),
+        new PropertyMetadata(defaultValue: null));
+
     /// <summary>Gets the value of the Inlines attached property.</summary>
     public static ObservableCollection<Run> GetInlines(DependencyObject d)
         => (ObservableCollection<Run>)d.GetValue(InlinesProperty);
@@ -34,6 +44,13 @@ public static class TextBlockHelper
             return;
         }
 
+        if (e.OldValue is ObservableCollection<Run> oldInlines &&
+            textBlock.GetValue(InlinesCollectionChangedHandlerProperty) is NotifyCollectionChangedEventHandler oldHandler)
+        {
+            oldInlines.CollectionChanged -= oldHandler;
+        }
+
+        textBlock.ClearValue(InlinesCollectionChangedHandlerProperty);
         textBlock.Inlines.Clear();
 
         if (e.NewValue is not ObservableCollection<Run> inlines)
@@ -41,43 +58,87 @@ public static class TextBlockHelper
             return;
         }
 
-        foreach (var inline in inlines)
-        {
-            textBlock.Inlines.Add(inline);
-        }
+        textBlock.Inlines.AddRange(inlines);
 
-        inlines.CollectionChanged += (_, args) =>
-        {
-            OnCollectionChangedHandler(
-                textBlock,
-                args);
-        };
+        NotifyCollectionChangedEventHandler handler = (_, args) => OnCollectionChangedHandler(textBlock, inlines, args);
+        textBlock.SetValue(InlinesCollectionChangedHandlerProperty, handler);
+        inlines.CollectionChanged += handler;
     }
 
     private static void OnCollectionChangedHandler(
         TextBlock textBlock,
+        ObservableCollection<Run> inlines,
         NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems is null &&
-            e.OldItems is null)
+        switch (e.Action)
         {
-            textBlock.Inlines.Clear();
+            case NotifyCollectionChangedAction.Add:
+                InsertRuns(textBlock, e.NewItems, e.NewStartingIndex);
+                break;
+            case NotifyCollectionChangedAction.Remove:
+                RemoveRuns(textBlock, e.OldItems);
+                break;
+            case NotifyCollectionChangedAction.Replace:
+            case NotifyCollectionChangedAction.Move:
+                RemoveRuns(textBlock, e.OldItems);
+                InsertRuns(textBlock, e.NewItems, e.NewStartingIndex);
+                break;
+            case NotifyCollectionChangedAction.Reset:
+                textBlock.Inlines.Clear();
+                textBlock.Inlines.AddRange(inlines);
+                break;
+            default:
+                throw new SwitchCaseDefaultException(e.Action);
+        }
+    }
+
+    private static void InsertRuns(
+        TextBlock textBlock,
+        IList? runs,
+        int index)
+    {
+        if (runs is null)
+        {
             return;
         }
 
-        if (e.NewItems is not null)
+        var inlineCollection = textBlock.Inlines;
+        var anchor = index >= 0 && index < inlineCollection.Count
+            ? inlineCollection.ElementAt(index)
+            : null;
+
+        foreach (var item in runs)
         {
-            foreach (Run inline in e.NewItems)
+            if (item is not Run run)
             {
-                textBlock.Inlines.Add(inline);
+                continue;
+            }
+
+            if (anchor is null)
+            {
+                inlineCollection.Add(run);
+            }
+            else
+            {
+                inlineCollection.InsertBefore(anchor, run);
             }
         }
+    }
 
-        if (e.OldItems is not null)
+    private static void RemoveRuns(
+        TextBlock textBlock,
+        IList? runs)
+    {
+        if (runs is null)
         {
-            foreach (Run inline in e.OldItems)
+            return;
+        }
+
+        foreach (var item in runs)
+        {
+            if (item is Run run)
             {
-                textBlock.Inlines.Remove(inline);
+                textBlock.Inlines.Remove(run);
             }
         }
     }
