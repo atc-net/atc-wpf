@@ -9,8 +9,20 @@ namespace Atc.Wpf.Forms.Extractors;
 public static class ModelToLabelControlExtractor
 {
     /// <summary>
+    /// The maximum number of nested model levels the extractor descends into below the root model.
+    /// Nested models deeper than this are skipped, so a self-referencing type cannot recurse forever.
+    /// </summary>
+    public const int MaxNestingDepth = 8;
+
+    /// <summary>
     /// Creates a label control for each supported public property of the model, including nested complex types.
     /// </summary>
+    /// <remarks>
+    /// Collection properties (any type implementing <see cref="IEnumerable"/> other than <see cref="string"/>)
+    /// and indexed properties are skipped. Nested models are followed at most <see cref="MaxNestingDepth"/>
+    /// levels below the root model; deeper models are skipped instead of being extracted, so a
+    /// self-referencing type cannot recurse forever.
+    /// </remarks>
     /// <typeparam name="T">The model type.</typeparam>
     /// <param name="model">The model to read properties and values from.</param>
     /// <param name="includeReadOnly">If <see langword="true"/>, properties without a setter are included as read-only controls; otherwise they are skipped.</param>
@@ -24,13 +36,15 @@ public static class ModelToLabelControlExtractor
             model,
             includeReadOnly,
             groupIdentifier,
-            string.Empty);
+            string.Empty,
+            depth: 0);
 
     private static IList<ILabelControlBase> ExtractType<T>(
         [DisallowNull] T model,
         bool includeReadOnly,
         string groupIdentifier,
-        string parentGroupIdentifier)
+        string parentGroupIdentifier,
+        int depth)
     {
         ArgumentNullException.ThrowIfNull(model);
 
@@ -43,6 +57,7 @@ public static class ModelToLabelControlExtractor
         foreach (var propertyInfo in properties)
         {
             if (propertyInfo.GetMethod == null ||
+                propertyInfo.GetIndexParameters().Length > 0 ||
                 propertyInfo.HasIgnoreDisplayAttribute())
             {
                 continue;
@@ -85,10 +100,24 @@ public static class ModelToLabelControlExtractor
                 continue;
             }
 
-            if (!propertyInfo.PropertyType.IsPrimitive &&
-                ExtractComplexType(model, includeReadOnly, propertyInfo, labelControls, typeGroupIdentifier))
+            if (IsCollectionType(propertyInfo.PropertyType))
             {
+                Trace.TraceWarning($"ModelToLabelControlHelper is skipping collection property: {type.Name}.{propertyInfo.Name}");
                 continue;
+            }
+
+            if (!propertyInfo.PropertyType.IsPrimitive)
+            {
+                if (depth >= MaxNestingDepth)
+                {
+                    Trace.TraceWarning($"ModelToLabelControlHelper is skipping nested property deeper than {MaxNestingDepth} levels: {type.Name}.{propertyInfo.Name}");
+                    continue;
+                }
+
+                if (ExtractComplexType(model, includeReadOnly, propertyInfo, labelControls, typeGroupIdentifier, depth + 1))
+                {
+                    continue;
+                }
             }
 
             Trace.TraceWarning($"ModelToLabelControlHelper is not supporting dataType yet: {propertyInfo.PropertyType}");
@@ -97,13 +126,18 @@ public static class ModelToLabelControlExtractor
         return labelControls;
     }
 
+    private static bool IsCollectionType(Type type)
+        => type != typeof(string) &&
+           typeof(IEnumerable).IsAssignableFrom(type);
+
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK - errorHandler will handle it")]
     private static bool ExtractComplexType<T>(
         [DisallowNull] T model,
         bool includeReadOnly,
         PropertyInfo propertyInfo,
         List<ILabelControlBase> labelControls,
-        string typeGroupIdentifier)
+        string typeGroupIdentifier,
+        int depth)
     {
         var subModel = propertyInfo.GetValue(model);
         if (subModel is not null)
@@ -113,7 +147,8 @@ public static class ModelToLabelControlExtractor
                     subModel,
                     includeReadOnly,
                     propertyInfo.Name,
-                    typeGroupIdentifier));
+                    typeGroupIdentifier,
+                    depth));
 
             return true;
         }
@@ -138,7 +173,8 @@ public static class ModelToLabelControlExtractor
                         newSubModel,
                         includeReadOnly,
                         propertyInfo.Name,
-                        typeGroupIdentifier));
+                        typeGroupIdentifier,
+                        depth));
 
                 return true;
             }

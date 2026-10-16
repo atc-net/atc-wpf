@@ -62,6 +62,8 @@ var panel = new LabelInputFormPanel(
     labelControlsForm);
 ```
 
+The extractor follows nested model properties up to 8 levels deep and skips collection properties (anything implementing `IEnumerable` other than `string`) and indexed properties, so lists, dictionaries and self-referencing types do not end up in the form.
+
 ### Read the Values Back
 
 ```csharp
