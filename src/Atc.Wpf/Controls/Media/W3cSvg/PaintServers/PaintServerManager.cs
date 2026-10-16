@@ -215,70 +215,65 @@ internal sealed class PaintServerManager
         return id;
     }
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     private string? ParseSolidRgbColor(string value)
     {
-        value = value
-            .Replace(
-                "\r",
-                string.Empty,
-                StringComparison.Ordinal)
-            .Replace(
-                "\n",
-                string.Empty,
-                StringComparison.Ordinal)
-            .Replace(
-                "\t",
-                string.Empty,
-                StringComparison.Ordinal)
-            .Replace(
-                " ",
-                string.Empty,
-                StringComparison.Ordinal);
+        value = string.Concat(value.Where(c => !char.IsWhiteSpace(c)));
+        if (paintServers.ContainsKey(value))
+        {
+            return value;
+        }
+
+        if (!value.EndsWith(')'))
+        {
+            return null;
+        }
+
+        string[] components;
+        bool hasAlpha;
         if (value.StartsWith("rgb(", StringComparison.Ordinal))
         {
-            var newVal = value
-                .Substring(
-                    4,
-                    value.Length - 5)
-                .Split(',');
-            return ParseSolidColor(
-                "#" +
-                ParseColorNumber(newVal[0]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo) +
-                ParseColorNumber(newVal[1]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo) +
-                ParseColorNumber(newVal[2]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo));
+            components = value[4..^1].Split(',');
+            hasAlpha = false;
         }
-
-        if (value.StartsWith("rgba(", StringComparison.Ordinal))
+        else if (value.StartsWith("rgba(", StringComparison.Ordinal))
         {
-            var newVal = value
-                .Substring(
-                    5,
-                    value.Length - 6)
-                .Split(',');
-            return ParseSolidColor(
-                "#" +
-                ParseColorNumber(newVal[0]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo) +
-                ParseColorNumber(newVal[1]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo) +
-                ParseColorNumber(newVal[2]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo) +
-                ParseColorNumber(newVal[3]).ToString(
-                    "x",
-                    GlobalizationConstants.EnglishCultureInfo));
+            components = value[5..^1].Split(',');
+            hasAlpha = true;
+        }
+        else
+        {
+            return null;
         }
 
-        return null;
+        if (components.Length != (hasAlpha ? 4 : 3))
+        {
+            return null;
+        }
+
+        var r = ParseColorComponent(components[0]);
+        var g = ParseColorComponent(components[1]);
+        var b = ParseColorComponent(components[2]);
+        var color = hasAlpha
+            ? Color.FromArgb(ParseAlphaComponent(components[3]), r, g, b)
+            : Color.FromRgb(r, g, b);
+
+        paintServers[value] = new SolidColorPaintServer(
+            this,
+            color);
+        return value;
+    }
+
+    private static byte ParseColorComponent(string value)
+        => (byte)System.Math.Clamp(ParseColorNumber(value), 0, 255);
+
+    /// <summary>The alpha of rgba() is 0..1 (or a percentage), not 0..255.</summary>
+    private static byte ParseAlphaComponent(string value)
+    {
+        var alpha = value.EndsWith('%')
+            ? double.Parse(value.AsSpan(0, value.Length - 1), CultureInfo.InvariantCulture) / 100
+            : double.Parse(value, CultureInfo.InvariantCulture);
+
+        return (byte)System.Math.Round(System.Math.Clamp(alpha, 0, 1) * 255);
     }
 
     private static int ParseColorNumber(string value)
