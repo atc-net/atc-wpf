@@ -48,7 +48,7 @@ public class PrintService : IPrintService
                 return PrintResult.Cancelled();
             }
 
-            var pageSize = GetPageSize(printDialog, settings);
+            var pageSize = GetPageSize(printDialog);
             var paginator = new VisualPaginator(visual, pageSize, settings);
 
             printDialog.PrintDocument(paginator, settings.Title);
@@ -75,7 +75,7 @@ public class PrintService : IPrintService
             var printDialog = new PrintDialog();
             ApplySettings(printDialog, settings);
 
-            var pageSize = GetPageSize(printDialog, settings);
+            var pageSize = GetPageSize(printDialog);
             var paginator = new VisualPaginator(visual, pageSize, settings);
             var fixedDocument = CreateFixedDocument(paginator, pageSize);
 
@@ -106,7 +106,7 @@ public class PrintService : IPrintService
                 return PrintResult.Cancelled();
             }
 
-            var pageSize = GetPageSize(printDialog, settings);
+            var pageSize = GetPageSize(printDialog);
             var paginator = FlowDocumentPrintHelper.CreatePaginator(document, pageSize, settings);
 
             printDialog.PrintDocument(paginator, settings.Title);
@@ -133,7 +133,7 @@ public class PrintService : IPrintService
             var printDialog = new PrintDialog();
             ApplySettings(printDialog, settings);
 
-            var pageSize = GetPageSize(printDialog, settings);
+            var pageSize = GetPageSize(printDialog);
             var paginator = FlowDocumentPrintHelper.CreatePaginator(document, pageSize, settings);
             var fixedDocument = CreateFixedDocument(paginator, pageSize);
 
@@ -159,17 +159,16 @@ public class PrintService : IPrintService
         }
     }
 
-    private static Size GetPageSize(
-        PrintDialog dialog,
-        PrintSettings settings)
-    {
-        if (settings.Orientation == PrintOrientation.Landscape)
-        {
-            return new Size(dialog.PrintableAreaHeight, dialog.PrintableAreaWidth);
-        }
-
-        return new Size(dialog.PrintableAreaWidth, dialog.PrintableAreaHeight);
-    }
+    /// <summary>
+    /// The printable area for the orientation that <see cref="ApplySettings"/> has already put on the print ticket.
+    /// </summary>
+    /// <remarks>
+    /// PrintDialog reports PrintableAreaWidth/Height for the ticket's orientation, so the values are used as they are
+    /// for both portrait and landscape; swapping them again for landscape paginated landscape pages as portrait.
+    /// This follows the PrintDialog semantics and was not verified on a physical print queue.
+    /// </remarks>
+    private static Size GetPageSize(PrintDialog dialog)
+        => new(dialog.PrintableAreaWidth, dialog.PrintableAreaHeight);
 
     private static FixedDocument CreateFixedDocument(
         DocumentPaginator paginator,
