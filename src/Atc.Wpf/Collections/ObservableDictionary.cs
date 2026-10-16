@@ -18,12 +18,8 @@ public sealed class ObservableDictionary<TKey, TValue>
                 nameof(key));
         }
 
-        var pair = new ObservableKeyValuePair<TKey, TValue> { Key = key, Value = value };
-        Add(pair);
-        OnCollectionChanged(
-            new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Add,
-                pair));
+        // The base InsertItem raises the single, indexed Add notification.
+        Add(new ObservableKeyValuePair<TKey, TValue> { Key = key, Value = value });
     }
 
     /// <inheritdoc />
@@ -68,17 +64,8 @@ public sealed class ObservableDictionary<TKey, TValue>
             return false;
         }
 
-        if (!ThisAsCollection().Remove(pair))
-        {
-            return false;
-        }
-
-        OnCollectionChanged(
-            new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Remove,
-                pair));
-
-        return true;
+        // The base RemoveItem raises the single, indexed Remove notification.
+        return ThisAsCollection().Remove(pair);
     }
 
     /// <inheritdoc />
@@ -201,45 +188,34 @@ public sealed class ObservableDictionary<TKey, TValue>
             return false;
         }
 
-        if (!ThisAsCollection().Remove(pair))
-        {
-            return false;
-        }
-
-        OnCollectionChanged(
-            new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Remove,
-                pair));
-        return true;
+        // The base RemoveItem raises the single, indexed Remove notification.
+        return ThisAsCollection().Remove(pair);
     }
 
     /// <summary>
-    /// Replaces the entry with the same key as <paramref name="item"/>, keeping its position in the collection.
+    /// Replaces the entry with the same key as <paramref name="item"/>, keeping its position in the collection
+    /// (one Replace notification). An unknown key is appended like <see cref="Add(TKey, TValue)"/>.
     /// </summary>
     public void Update(KeyValuePair<TKey, TValue> item)
     {
-        var index = 0;
-        for (var i = 0; i < ThisAsCollection().Count; i++)
+        for (var i = 0; i < Items.Count; i++)
         {
-            if (!object.Equals(
-                this[i].Key,
-                item.Key))
+            if (!Equals(Items[i].Key, item.Key))
             {
                 continue;
             }
 
-            index = i;
-            break;
+            SetItem(
+                i,
+                new ObservableKeyValuePair<TKey, TValue>
+                {
+                    Key = item.Key,
+                    Value = item.Value,
+                });
+            return;
         }
 
-        Remove(item.Key);
-        Insert(
-            index,
-            new ObservableKeyValuePair<TKey, TValue>()
-            {
-                Key = item.Key,
-                Value = item.Value,
-            });
+        Add(item.Key, item.Value);
     }
 
     /// <inheritdoc />
