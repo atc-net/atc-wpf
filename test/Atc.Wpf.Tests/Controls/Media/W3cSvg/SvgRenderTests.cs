@@ -87,6 +87,37 @@ public sealed class SvgRenderTests
         Assert.Equal(new byte[] { 51, 255, 51 }, alphas);
     }
 
+    [StaTheory]
+    [InlineData("", 0)]
+    [InlineData("indefinite", 0)]
+    [InlineData("0:00:05", 0)]
+    [InlineData("500ms", 500)]
+    [InlineData("2s", 2000)]
+    [InlineData("2", 2000)]
+    public void AnimateDuration_IsParsedOrFallsBackToZero(
+        string dur,
+        int expectedMilliseconds)
+    {
+        var durAttribute = string.IsNullOrEmpty(dur)
+            ? string.Empty
+            : $"""dur="{dur}" """;
+        var svgRender = new SvgRender();
+
+        svgRender.LoadXmlDrawing(
+            $$"""
+            {{SvgOpen}}
+              <g>
+                <circle id="c" cx="5" cy="5" r="2" />
+                <animate xlink:href="#c" attributeName="r" values="2;4;2" {{durAttribute}}repeatCount="indefinite" />
+              </g>
+            </svg>
+            """);
+
+        var group = Assert.IsType<Group>(svgRender.Svg!.Elements.Single());
+        var animate = Assert.Single(group.Elements.OfType<Animate>());
+        Assert.Equal(TimeSpan.FromMilliseconds(expectedMilliseconds), animate.Duration);
+    }
+
     [StaFact]
     public void RadialGradient_FocalPoint_IsNotScaled()
     {
