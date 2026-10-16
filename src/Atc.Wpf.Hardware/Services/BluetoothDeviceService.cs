@@ -5,7 +5,14 @@ namespace Atc.Wpf.Hardware.Services;
 /// </summary>
 public sealed class BluetoothDeviceService : IBluetoothDeviceService
 {
+    private const string IsConnectedPropertyKey = "System.Devices.Aep.IsConnected";
+
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
+
+    private static readonly string[] RequestedProperties =
+    {
+        IsConnectedPropertyKey,
+    };
 
     private readonly IDeviceWatcherHost watcher;
     private bool started;
@@ -17,7 +24,8 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
     /// </summary>
     public BluetoothDeviceService()
         : this(new DeviceWatcherHost(
-            Windows.Devices.Bluetooth.BluetoothDevice.GetDeviceSelectorFromPairingState(true)))
+            Windows.Devices.Bluetooth.BluetoothDevice.GetDeviceSelectorFromPairingState(true),
+            RequestedProperties))
     {
     }
 
@@ -122,11 +130,21 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
         }
     }
 
-    private static void OnUpdated(
+    private void OnUpdated(
         object? sender,
         DeviceSnapshotEventArgs e)
     {
-        // No-op for Bluetooth; rely on Added/Removed for v1 connection signalling.
+        // An update only carries the properties that changed; a missing IsConnected means it did not change.
+        if (e.Snapshot.IsConnected is not { } isConnected)
+        {
+            return;
+        }
+
+        var existing = FindByDeviceId(e.Snapshot.Id);
+        if (existing is not null)
+        {
+            existing.IsConnected = isConnected;
+        }
     }
 
     private void OnEnumerationCompleted(
@@ -142,6 +160,9 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
     {
         var existing = FindByDeviceId(snapshot.Id);
 
+        // Older enumerations without the IsConnected property only know whether the device is enabled.
+        var isConnected = snapshot.IsConnected ?? snapshot.IsEnabled;
+
         if (existing is not null)
         {
             if (existing.State is DeviceState.Disconnected)
@@ -149,7 +170,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
                 existing.State = DeviceState.Available;
             }
 
-            existing.IsConnected = snapshot.IsEnabled;
+            existing.IsConnected = isConnected;
             return;
         }
 
@@ -157,7 +178,7 @@ public sealed class BluetoothDeviceService : IBluetoothDeviceService
             deviceId: snapshot.Id,
             friendlyName: snapshot.Name,
             isPaired: snapshot.IsPaired ?? true,
-            isConnected: snapshot.IsEnabled)
+            isConnected: isConnected)
         {
             State = isInitialEnumeration
                 ? DeviceState.Available

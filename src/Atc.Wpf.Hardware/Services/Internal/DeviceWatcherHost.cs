@@ -3,6 +3,7 @@ namespace Atc.Wpf.Hardware.Services.Internal;
 internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 {
     private const string SerialPortNameKey = "System.DeviceInterface.Serial.PortName";
+    private const string AepIsConnectedKey = "System.Devices.Aep.IsConnected";
 
     private readonly DeviceWatcher watcher;
     private readonly string aqsFilter;
@@ -113,8 +114,7 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         => MarshalToUi(
             () => Updated?.Invoke(
                 this,
-                new DeviceSnapshotEventArgs(
-                    new DeviceSnapshot { Id = update.Id, Name = string.Empty })));
+                new DeviceSnapshotEventArgs(ToUpdatedSnapshot(update.Id, update.Properties))));
 
     private void OnWatcherRemoved(
         DeviceWatcher sender,
@@ -177,7 +177,23 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
             IsDefault = info.IsDefault,
             Panel = MapPanel(info.EnclosureLocation),
             IsPaired = info.Pairing?.IsPaired,
-            PortName = TryGetPortName(info),
+            IsConnected = TryGetBoolean(info.Properties, AepIsConnectedKey),
+            PortName = TryGetString(info.Properties, SerialPortNameKey),
+        };
+
+    /// <summary>
+    /// Builds the snapshot for an Updated event. Only the id and the properties that changed are known,
+    /// so everything else stays at its default and the optional properties are <see langword="null"/> when absent.
+    /// </summary>
+    internal static DeviceSnapshot ToUpdatedSnapshot(
+        string id,
+        IReadOnlyDictionary<string, object>? properties)
+        => new()
+        {
+            Id = id,
+            Name = string.Empty,
+            IsConnected = TryGetBoolean(properties, AepIsConnectedKey),
+            PortName = TryGetString(properties, SerialPortNameKey),
         };
 
     private static CameraPanel? MapPanel(EnclosureLocation? location)
@@ -199,6 +215,20 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         };
     }
 
-    private static string? TryGetPortName(DeviceInformation info)
-        => info.Properties.TryGetValue(SerialPortNameKey, out var value) ? value as string : null;
+    private static bool? TryGetBoolean(
+        IReadOnlyDictionary<string, object>? properties,
+        string key)
+        => properties is not null &&
+           properties.TryGetValue(key, out var value) &&
+           value is bool result
+            ? result
+            : null;
+
+    private static string? TryGetString(
+        IReadOnlyDictionary<string, object>? properties,
+        string key)
+        => properties is not null &&
+           properties.TryGetValue(key, out var value)
+            ? value as string
+            : null;
 }

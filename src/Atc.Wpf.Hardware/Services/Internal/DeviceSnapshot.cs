@@ -14,5 +14,10 @@ internal sealed class DeviceSnapshot
 
     public bool? IsPaired { get; init; }
 
+    /// <summary>
+    /// The <c>System.Devices.Aep.IsConnected</c> property; <see langword="null"/> when it was not requested or not reported.
+    /// </summary>
+    public bool? IsConnected { get; init; }
+
     public string? PortName { get; init; }
 }
