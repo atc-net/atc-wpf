@@ -182,10 +182,19 @@ public static class HsvColorUtil
 
         return Color.FromArgb(
             255,
-            (byte)(r * 255),
-            (byte)(g * 255),
-            (byte)(b * 255));
+            ToColorComponent(r),
+            ToColorComponent(g),
+            ToColorComponent(b));
     }
+
+    /// <summary>
+    /// Scales a 0-1 component to a 0-255 byte, rounding to the nearest value so RGB -> HSV -> RGB round-trips.
+    /// </summary>
+    private static byte ToColorComponent(double value)
+        => (byte)System.Math.Clamp(
+            System.Math.Round(value * 255, MidpointRounding.AwayFromZero),
+            0,
+            255);
 
     /// <summary>
     /// Generates a list of colors with hues ranging from 0 360 and a saturation and value of 1.
