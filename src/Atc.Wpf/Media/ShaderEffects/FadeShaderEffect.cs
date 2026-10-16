@@ -39,6 +39,7 @@ public sealed class FadeShaderEffect : ShaderEffectBase
     {
         UpdateShaderValue(InputProperty);
         UpdateShaderValue(StrengthProperty);
+        UpdateShaderValue(ToColorProperty);
     }
 
     /// <summary>
