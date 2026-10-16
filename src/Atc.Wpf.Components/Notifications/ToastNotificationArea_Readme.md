@@ -4,7 +4,7 @@ A container control that positions, stacks and auto-expires toast notifications.
 
 ## 🔍 Overview
 
-`ToastNotificationArea` is the visual host for `ToastNotification` items. It registers itself with `ToastNotificationManager` when constructed, so notifications shown through `IToastNotificationService` / `ToastNotificationManager` are routed to it. The area aligns its notifications to one of the four corners, stacks them (newest nearest the corner for bottom positions), limits how many are shown at once, and closes each notification when its expiration time elapses.
+`ToastNotificationArea` is the visual host for `ToastNotification` items. It registers itself with `ToastNotificationManager` while it is loaded, so notifications shown through `IToastNotificationService` / `ToastNotificationManager` are routed to it. The area aligns its notifications to one of the four corners, stacks them (newest nearest the corner for bottom positions), limits how many are shown at once, and closes each notification when its expiration time elapses.
 
 ## 📍 Namespace
 
@@ -78,7 +78,8 @@ await WindowArea.ShowAsync(content, TimeSpan.MaxValue, onClick: null, onClose: n
 
 ## 📝 Notes
 
-- The area registers itself with `ToastNotificationManager` in its constructor; the manager routes a notification to the area(s) whose `Name` matches the requested area name, and falls back to all non-desktop areas when no name matches
+- The area registers itself with `ToastNotificationManager` when it is loaded and unregisters when it is unloaded; the manager routes a notification to the loaded area(s) whose `Name` matches the requested area name, and falls back to all loaded non-desktop areas when no name matches
+- A content instance can only be shown in one area; when several areas match, pass a `Func<UserControl>` content factory to `ToastNotificationManager.Show` so each area gets its own instance
 - When `useDesktop` is requested, notifications go to a full-screen overlay window that hosts an area named `DesktopArea`
 - Clicking a toast invokes `onClick` (when provided) and closes it; `onClose` is invoked when the toast closes
 - When more than `MaxItems` notifications are open, the oldest ones are closed automatically

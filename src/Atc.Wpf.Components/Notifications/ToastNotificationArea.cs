@@ -15,11 +15,13 @@ public sealed partial class ToastNotificationArea : Control
     private int maxItems;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ToastNotificationArea"/> class and registers it with the <see cref="ToastNotificationManager"/>.
+    /// Initializes a new instance of the <see cref="ToastNotificationArea"/> class. The area is registered with the
+    /// <see cref="ToastNotificationManager"/> while it is loaded, so an area in a view that has been unloaded no longer receives notifications.
     /// </summary>
     public ToastNotificationArea()
     {
-        ToastNotificationManager.AddArea(this);
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
 
     static ToastNotificationArea()
@@ -70,6 +72,24 @@ public sealed partial class ToastNotificationArea : Control
         Action? onClick,
         Action? onClose)
     {
+        // Checked before the content gets a host, so an area that cannot show it does not take the content away from one that can.
+        if (!IsLoaded)
+        {
+            return;
+        }
+
+        var w = Window.GetWindow(this);
+        if (w is null)
+        {
+            return;
+        }
+
+        var x = PresentationSource.FromVisual(w);
+        if (x is null)
+        {
+            return;
+        }
+
         var toastNotification = new ToastNotification
         {
             Content = contentControl,
@@ -88,23 +108,6 @@ public sealed partial class ToastNotificationArea : Control
 
         toastNotification.NotificationClosed += (_, _) => onClose?.Invoke();
         toastNotification.NotificationClosed += OnNotificationClosed;
-
-        if (!IsLoaded)
-        {
-            return;
-        }
-
-        var w = Window.GetWindow(this);
-        if (w is null)
-        {
-            return;
-        }
-
-        var x = PresentationSource.FromVisual(w);
-        if (x is null)
-        {
-            return;
-        }
 
         IReadOnlyList<ToastNotification> toastNotificationsToClose;
 
@@ -150,6 +153,16 @@ public sealed partial class ToastNotificationArea : Control
         => openOldestFirst
             .Take(System.Math.Max(0, openOldestFirst.Count - maxItems))
             .ToList();
+
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+        => ToastNotificationManager.AddArea(this);
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+        => ToastNotificationManager.RemoveArea(this);
 
     private void OnNotificationClosed(
         object sender,
