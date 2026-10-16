@@ -40,6 +40,58 @@ public sealed class WindowsSettingBehaviorTests
         Assert.Equal(1, settings.UpgradeCalls);
     }
 
+    [Fact]
+    public void IsPlacementOnScreen_InsideTheScreen_IsTrue()
+    {
+        var screen = new Rect(0, 0, 1920, 1080);
+
+        Assert.True(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(100, 100, 800, 600), screen));
+    }
+
+    [Fact]
+    public void IsPlacementOnScreen_PartlyOffTheScreen_IsTrue()
+    {
+        var screen = new Rect(0, 0, 1920, 1080);
+
+        Assert.True(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(1700, 900, 800, 600), screen));
+    }
+
+    [Fact]
+    public void IsPlacementOnScreen_OnASecondaryMonitorLeftOfThePrimary_IsTrue()
+    {
+        var screen = new Rect(-1920, 0, 3840, 1080);
+
+        Assert.True(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(-1800, 100, 800, 600), screen));
+    }
+
+    // A window last closed on a monitor that is no longer attached.
+    [Fact]
+    public void IsPlacementOnScreen_EntirelyOffTheScreen_IsFalse()
+    {
+        var screen = new Rect(0, 0, 1920, 1080);
+
+        Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(2000, 100, 800, 600), screen));
+        Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(-900, 100, 800, 600), screen));
+        Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(100, 1200, 800, 600), screen));
+    }
+
+    [Fact]
+    public void IsPlacementOnScreen_OnlyTouchingTheScreenEdge_IsFalse()
+    {
+        var screen = new Rect(0, 0, 1920, 1080);
+
+        Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(1920, 100, 800, 600), screen));
+    }
+
+    [Fact]
+    public void IsPlacementOnScreen_EmptyPlacement_IsFalse()
+    {
+        var screen = new Rect(0, 0, 1920, 1080);
+
+        Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(Rect.Empty, screen));
+        Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(100, 100, 0, 0), screen));
+    }
+
     private sealed class FakeSettings : IWindowPlacementSettings
     {
         public WindowPlacementSetting? Placement { get; set; }
