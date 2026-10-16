@@ -141,6 +141,8 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
             return;
         }
 
+        UpgradeSettingsIfRequired(settings);
+
         // check for existing placement and prevent empty bounds
         if (settings.Placement is null || settings.Placement.normalPosition.IsEmpty)
         {
@@ -157,6 +159,33 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         catch (Exception ex)
         {
             throw new AtcAppsException($"Failed to set the window state for {window} from the settings.", ex);
+        }
+    }
+
+    /// <summary>
+    /// Upgrades the settings once after a version change of the application, so the saved placement is carried over;
+    /// user settings are stored per application version and would otherwise start out empty.
+    /// </summary>
+    /// <param name="settings">The reloaded settings.</param>
+    internal static void UpgradeSettingsIfRequired(
+        IWindowPlacementSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(settings);
+
+        if (!settings.UpgradeSettings)
+        {
+            return;
+        }
+
+        try
+        {
+            settings.Upgrade();
+            settings.UpgradeSettings = false;
+            settings.Save();
+        }
+        catch (Exception e)
+        {
+            Trace.TraceError($"{nameof(WindowsSettingBehavior)}: The settings could not be upgraded! {e}");
         }
     }
 
