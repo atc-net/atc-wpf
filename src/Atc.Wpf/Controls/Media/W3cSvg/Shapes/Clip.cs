@@ -21,10 +21,16 @@ internal sealed class Clip : Group
                 return clpGeo;
             }
 
+            if (Elements.Count == 0)
+            {
+                clpGeo = Geometry.Empty;
+                return clpGeo;
+            }
+
             var retVal = GetGeometryForShape(Elements[0]);
             if (Elements.Count > 1)
             {
-                retVal = Elements.Aggregate(retVal, (current, element) => new CombinedGeometry(current, GetGeometryForShape(element)));
+                retVal = Elements.Skip(1).Aggregate(retVal, (current, element) => new CombinedGeometry(current, GetGeometryForShape(element)));
             }
 
             clpGeo = retVal;
@@ -39,7 +45,12 @@ internal sealed class Clip : Group
             case RectangleShape rectangle:
             {
                 var r = rectangle;
-                var g = new RectangleGeometry(new Rect(r.Rx, r.Ry, r.Width, r.Height));
+                if (r.Width <= 0 || r.Height <= 0)
+                {
+                    return Geometry.Empty;
+                }
+
+                var g = new RectangleGeometry(new Rect(r.X, r.Y, r.Width, r.Height), r.Rx, r.Ry);
                 r.GeometryElement = g;
                 return g;
             }

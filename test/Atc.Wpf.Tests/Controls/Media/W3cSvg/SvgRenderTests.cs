@@ -174,6 +174,49 @@ public sealed class SvgRenderTests
     }
 
     [StaFact]
+    public void ClipPathRectangle_UsesXAndY()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs><clipPath id="c"><rect x="2" y="3" width="4" height="5" rx="1" ry="1" /></clipPath></defs>
+              <rect width="10" height="10" clip-path="url(#c)" />
+            </svg>
+            """);
+
+        var clipped = DrawingGroups(drawing).Single(x => x.ClipGeometry is RectangleGeometry);
+        var clip = (RectangleGeometry)clipped.ClipGeometry;
+        Assert.Equal(new Rect(2, 3, 4, 5), clip.Rect);
+        Assert.Equal(1d, clip.RadiusX);
+        Assert.Equal(1d, clip.RadiusY);
+    }
+
+    [StaFact]
+    public void ClipPath_WithoutChildren_ClipsToNothing()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs><clipPath id="c" /></defs>
+              <rect width="10" height="10" clip-path="url(#c)" />
+            </svg>
+            """);
+
+        var clipped = DrawingGroups(drawing).Single(x => x.ClipGeometry is not null);
+        Assert.True(clipped.ClipGeometry.IsEmpty());
+    }
+
+    [StaTheory]
+    [InlineData("polygon")]
+    [InlineData("polyline")]
+    public void PolyShape_WithoutPoints_IsSkipped(string element)
+    {
+        var drawing = Render($"""{SvgOpen}<{element} points="" /><{element} /><rect width="1" height="1" /></svg>""");
+
+        Assert.Single(GeometryDrawings(drawing));
+    }
+
+    [StaFact]
     public void RadialGradient_FocalPoint_IsNotScaled()
     {
         var drawing = Render(

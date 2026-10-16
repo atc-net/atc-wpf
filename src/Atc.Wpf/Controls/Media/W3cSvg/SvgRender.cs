@@ -541,6 +541,11 @@ internal sealed class SvgRender
 
                 case PolylineShape polylineShape:
                 {
+                    if (polylineShape.Points.Length == 0)
+                    {
+                        continue;
+                    }
+
                     var pathGeometry = new PathGeometry();
                     var pathFigure = new PathFigure();
                     pathGeometry.Figures.Add(pathFigure);
@@ -565,6 +570,11 @@ internal sealed class SvgRender
 
                 case PolygonShape polygonShape:
                 {
+                    if (polygonShape.Points.Length == 0)
+                    {
+                        continue;
+                    }
+
                     var pathGeometry = new PathGeometry();
                     var pathFigure = new PathFigure();
                     pathGeometry.Figures.Add(pathFigure);
