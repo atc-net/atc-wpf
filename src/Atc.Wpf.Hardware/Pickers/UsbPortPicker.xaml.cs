@@ -79,7 +79,7 @@ public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
     [DependencyProperty(DefaultValue = false)]
     private bool autoSelectFirstAvailable;
 
-    [DependencyProperty(DefaultValue = UsbDeviceClassFilter.None)]
+    [DependencyProperty(DefaultValue = UsbDeviceClassFilter.None, PropertyChangedCallback = nameof(OnClassFilterChanged))]
     private UsbDeviceClassFilter classFilter;
 
     /// <summary>
@@ -242,6 +242,16 @@ public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
         => ((UsbPortPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+
+    private static void OnClassFilterChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is UsbDeviceClassFilter filter)
+        {
+            ((UsbPortPicker)d).service.ClassFilter = filter;
+        }
+    }
 
     private void ApplyResolvedItemTemplate()
         => ResolvedItemTemplate = ItemTemplate ?? (DataTemplate)Resources["DefaultItemTemplate"];

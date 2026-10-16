@@ -53,6 +53,38 @@ public sealed class DevicePickerControllerTests
         Assert.Equal(Miscellaneous.DeviceDisconnected, host.SelectedStateMessage);
     }
 
+    // The services mark an unplugged device Disconnected in place; nothing else changes on the collection.
+    [Fact]
+    public void SelectedItemDisconnects_WithoutAnyCollectionChange_RaisesDeviceLost()
+    {
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+
+        item.State = DeviceState.Disconnected;
+
+        Assert.Equal(["1"], host.Lost);
+        Assert.Same(item, host.Value);
+        Assert.Equal(Miscellaneous.DeviceDisconnected, host.SelectedStateMessage);
+    }
+
+    [Fact]
+    public void SelectedItemDisconnects_LaterCollectionChanges_DoNotRaiseDeviceLostAgain()
+    {
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+        item.State = DeviceState.Disconnected;
+
+        items.Add(Item(2, DeviceState.Available));
+        items.Add(Item(3, DeviceState.Available));
+        items.RemoveAt(2);
+
+        Assert.Equal(["1"], host.Lost);
+    }
+
     [Fact]
     public void SelectedItemDisconnects_WithClearValueOnDisconnect_ClearsTheValue()
     {
@@ -64,6 +96,21 @@ public sealed class DevicePickerControllerTests
 
         item.State = DeviceState.Disconnected;
         items.Remove(item);
+
+        Assert.Equal(["1"], host.Lost);
+        Assert.Null(host.Value);
+    }
+
+    [Fact]
+    public void SelectedItemDisconnects_WithClearValueOnDisconnectAndNoCollectionChange_ClearsTheValue()
+    {
+        host.ClearValueOnDisconnect = true;
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+
+        item.State = DeviceState.Disconnected;
 
         Assert.Equal(["1"], host.Lost);
         Assert.Null(host.Value);
@@ -85,6 +132,57 @@ public sealed class DevicePickerControllerTests
 
         Assert.Same(returned, host.Value);
         Assert.Equal(["1"], host.Reconnected);
+    }
+
+    // On re-plug the services revive the same instance instead of adding a new one.
+    [Fact]
+    public void LostDeviceRevives_WithClearValueAndAutoRebind_IsSelectedAgainAndRaisesReconnected()
+    {
+        host.ClearValueOnDisconnect = true;
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+        item.State = DeviceState.Disconnected;
+
+        item.State = DeviceState.Available;
+
+        Assert.Same(item, host.Value);
+        Assert.Equal(["1"], host.Reconnected);
+    }
+
+    [Fact]
+    public void LostDeviceRevives_WhileStillSelected_RaisesReconnectedOnceAndClearsTheMessage()
+    {
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+        item.State = DeviceState.Disconnected;
+
+        item.State = DeviceState.Available;
+        items.Add(Item(2, DeviceState.Available));
+
+        Assert.Equal(["1"], host.Lost);
+        Assert.Equal(["1"], host.Reconnected);
+        Assert.Equal(string.Empty, host.SelectedStateMessage);
+    }
+
+    [Fact]
+    public void LostDeviceRevives_WithoutAutoRebind_StaysUnselected()
+    {
+        host.ClearValueOnDisconnect = true;
+        host.AutoRebindOnReconnect = false;
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+        item.State = DeviceState.Disconnected;
+
+        item.State = DeviceState.Available;
+
+        Assert.Null(host.Value);
+        Assert.Empty(host.Reconnected);
     }
 
     [Fact]
@@ -117,6 +215,51 @@ public sealed class DevicePickerControllerTests
         items.Add(Item(3, DeviceState.Available));
 
         Assert.Same(available, host.Value);
+    }
+
+    [Fact]
+    public void AutoSelectFirstAvailable_SelectsAnItemThatBecomesAvailableWhileNothingIsSelected()
+    {
+        host.AutoSelectFirstAvailable = true;
+        var item = Item(1, DeviceState.InUse);
+        items.Add(item);
+        CreateSut();
+
+        item.State = DeviceState.Available;
+
+        Assert.Same(item, host.Value);
+    }
+
+    [Fact]
+    public void Reset_UnhooksTheOldItemsAndReportsTheOrphanedValueAsLost()
+    {
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+
+        items.Clear();
+        item.State = DeviceState.InUse;
+
+        Assert.Equal(["1"], host.Lost);
+        Assert.Empty(host.StateChanges);
+    }
+
+    [Fact]
+    public void Reset_ThenTheSameDeviceIdIsListedAgain_RebindsWhenClearValueOnDisconnectIsOn()
+    {
+        host.ClearValueOnDisconnect = true;
+        var item = Item(1, DeviceState.Available);
+        items.Add(item);
+        var sut = CreateSut();
+        Select(sut, item);
+        items.Clear();
+
+        var relisted = Item(1, DeviceState.Available);
+        items.Add(relisted);
+
+        Assert.Same(relisted, host.Value);
+        Assert.Equal(["1"], host.Reconnected);
     }
 
     [Fact]
@@ -176,6 +319,27 @@ public sealed class DevicePickerControllerTests
         var exception = await Record.ExceptionAsync(sut.LoadedAsync);
 
         Assert.Null(exception);
+    }
+
+    [Fact]
+    public async Task LoadedAsync_StartWatchingFails_StillRefreshesAndDoesNotThrow()
+    {
+        var sut = new DevicePickerController<RunningProcessInfo>(
+            host,
+            items,
+            startWatching: () => throw new InvalidOperationException("watcher is stopping"),
+            stopWatching: () => serviceCalls.Add("stop"),
+            refreshAsync: () =>
+            {
+                serviceCalls.Add("refresh");
+                return Task.CompletedTask;
+            });
+        keepAlive.Add(sut);
+
+        var exception = await Record.ExceptionAsync(sut.LoadedAsync);
+
+        Assert.Null(exception);
+        Assert.Equal(["refresh"], serviceCalls);
     }
 
     [Fact]

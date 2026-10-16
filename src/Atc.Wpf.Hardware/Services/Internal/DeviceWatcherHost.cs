@@ -9,6 +9,7 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
     private readonly IEnumerable<string>? requestedProperties;
     private readonly Dispatcher uiDispatcher;
     private bool disposed;
+    private bool startRequested;
 
     public DeviceWatcherHost(
         string aqsFilter,
@@ -27,6 +28,7 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         watcher.Updated += OnWatcherUpdated;
         watcher.Removed += OnWatcherRemoved;
         watcher.EnumerationCompleted += OnWatcherEnumerationCompleted;
+        watcher.Stopped += OnWatcherStopped;
     }
 
     public event EventHandler<DeviceSnapshotEventArgs>? Added;
@@ -39,9 +41,16 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 
     public void StartWatching()
     {
-        if (watcher.Status is DeviceWatcherStatus.Started or DeviceWatcherStatus.EnumerationCompleted)
+        switch (watcher.Status)
         {
-            return;
+            case DeviceWatcherStatus.Started:
+            case DeviceWatcherStatus.EnumerationCompleted:
+                return;
+            case DeviceWatcherStatus.Stopping:
+                // Start is only legal from Created, Stopped or Aborted. Stop is asynchronous, so a quick
+                // Unloaded then Loaded lands here; start again once the Stopped event arrives.
+                startRequested = true;
+                return;
         }
 
         watcher.Start();
@@ -49,7 +58,9 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 
     public void StopWatching()
     {
-        if (watcher.Status is DeviceWatcherStatus.Stopped or DeviceWatcherStatus.Created)
+        startRequested = false;
+
+        if (watcher.Status is DeviceWatcherStatus.Stopped or DeviceWatcherStatus.Created or DeviceWatcherStatus.Aborted)
         {
             return;
         }
@@ -85,6 +96,7 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         watcher.Updated -= OnWatcherUpdated;
         watcher.Removed -= OnWatcherRemoved;
         watcher.EnumerationCompleted -= OnWatcherEnumerationCompleted;
+        watcher.Stopped -= OnWatcherStopped;
 
         StopWatching();
     }
@@ -123,6 +135,26 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         }
 
         return uiDispatcher.InvokeAsync(action).Task;
+    }
+
+    private void OnWatcherStopped(
+        DeviceWatcher sender,
+        object args)
+    {
+        if (!startRequested)
+        {
+            return;
+        }
+
+        startRequested = false;
+        MarshalToUi(() =>
+        {
+            if (!disposed &&
+                watcher.Status is DeviceWatcherStatus.Stopped or DeviceWatcherStatus.Aborted or DeviceWatcherStatus.Created)
+            {
+                watcher.Start();
+            }
+        });
     }
 
     private void MarshalToUi(Action action)

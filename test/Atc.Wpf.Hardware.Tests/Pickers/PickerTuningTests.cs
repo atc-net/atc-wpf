@@ -133,4 +133,16 @@ public sealed class PickerTuningTests
         service.Received(1).StopWatching();
         service.DidNotReceive().StartWatching();
     }
+
+    [StaFact]
+    public void UsbPortPicker_ClassFilter_IsPushedToTheServiceWhenChanged()
+    {
+        var service = Substitute.For<IUsbDeviceService>();
+        service.Devices.Returns([]);
+        var picker = new UsbPortPicker(service);
+
+        picker.ClassFilter = UsbDeviceClassFilter.Hid;
+
+        service.Received().ClassFilter = UsbDeviceClassFilter.Hid;
+    }
 }
