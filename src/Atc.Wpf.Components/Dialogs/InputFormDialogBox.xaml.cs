@@ -71,6 +71,8 @@ public partial class InputFormDialogBox
         Settings.Form = formPanelSettings;
 
         InitializeDialogBox(labelControlsForm);
+
+        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
@@ -95,6 +97,8 @@ public partial class InputFormDialogBox
         Settings.Form.UseGroupBox = labelControlsForm.HasMultiGroupIdentifiers();
 
         InitializeDialogBox(labelControlsForm);
+
+        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
