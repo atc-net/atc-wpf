@@ -433,6 +433,18 @@ public static class TextBoxHelper
     /// <summary>Identifies the TextLength attached property.</summary>
     public static readonly DependencyProperty TextLengthProperty = TextLengthPropertyKey.DependencyProperty;
 
+    /// <summary>
+    /// Mirrors <see cref="ComboBox.Text"/> of a monitored ComboBox through a one-way self binding, so HasText follows
+    /// the text update that the ComboBox performs after it has raised SelectionChanged.
+    /// </summary>
+    private static readonly DependencyProperty ComboBoxTextProxyProperty = DependencyProperty.RegisterAttached(
+        "ComboBoxTextProxy",
+        typeof(string),
+        typeof(TextBoxHelper),
+        new PropertyMetadata(
+            default(string),
+            OnComboBoxTextProxyChanged));
+
     private static void TextChanged(
         object sender,
         RoutedEventArgs e)
@@ -548,7 +560,59 @@ public static class TextBoxHelper
     {
         if (sender is ComboBox comboBox)
         {
-            comboBox.SetCurrentValue(HasTextProperty, BooleanBoxes.Box(!string.IsNullOrWhiteSpace(comboBox.Text) || comboBox.SelectedItem != null));
+            UpdateComboBoxText(comboBox);
+        }
+    }
+
+    private static void UpdateComboBoxText(ComboBox comboBox)
+    {
+        comboBox.SetValue(TextLengthPropertyKey, comboBox.Text?.Length ?? 0);
+        comboBox.SetCurrentValue(HasTextProperty, BooleanBoxes.Box(!string.IsNullOrWhiteSpace(comboBox.Text) || comboBox.SelectedItem != null));
+    }
+
+    private static void TextBoxTextChanged(
+        object sender,
+        TextChangedEventArgs e)
+        => SetTextLength(sender as TextBox, textBox => textBox.Text.Length);
+
+    private static void RichTextBoxTextChanged(
+        object sender,
+        TextChangedEventArgs e)
+    {
+        if (sender is RichTextBox richTextBox)
+        {
+            SetRichTextBoxTextLength(richTextBox);
+        }
+    }
+
+    private static void ComboBoxSelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox)
+        {
+            UpdateComboBoxText(comboBox);
+        }
+    }
+
+    private static void OnComboBoxTextProxyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is ComboBox comboBox && GetIsMonitoring(comboBox))
+        {
+            UpdateComboBoxText(comboBox);
+        }
+    }
+
+    /// <summary>Handles the TextChanged event that bubbles up from the editable text box of a monitored ComboBox.</summary>
+    private static void ComboBoxTextChanged(
+        object sender,
+        TextChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox)
+        {
+            UpdateComboBoxText(comboBox);
         }
     }
 
@@ -556,28 +620,110 @@ public static class TextBoxHelper
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is not PasswordBox passBox)
+        var isMonitoring = (bool)e.NewValue;
+        switch (d)
+        {
+            case PasswordBox passwordBox:
+                MonitorPasswordBox(passwordBox, isMonitoring);
+                break;
+            case RichTextBox richTextBox:
+                MonitorRichTextBox(richTextBox, isMonitoring);
+                break;
+            case TextBox textBox:
+                MonitorTextBox(textBox, isMonitoring);
+                break;
+            case ComboBox comboBox:
+                MonitorComboBox(comboBox, isMonitoring);
+                break;
+        }
+    }
+
+    private static void MonitorPasswordBox(
+        PasswordBox passwordBox,
+        bool isMonitoring)
+    {
+        if (isMonitoring)
+        {
+            _ = passwordBox.BeginInvoke(() =>
+            {
+                PasswordChanged(passwordBox, new RoutedEventArgs(PasswordBox.PasswordChangedEvent, passwordBox));
+            });
+
+            passwordBox.PasswordChanged += PasswordChanged;
+            passwordBox.GotFocus += PasswordGotFocus;
+            passwordBox.PreviewMouseLeftButtonDown += UiElementPreviewMouseLeftButtonDown;
+        }
+        else
+        {
+            passwordBox.PasswordChanged -= PasswordChanged;
+            passwordBox.GotFocus -= PasswordGotFocus;
+            passwordBox.PreviewMouseLeftButtonDown -= UiElementPreviewMouseLeftButtonDown;
+        }
+    }
+
+    private static void MonitorTextBox(
+        TextBox textBox,
+        bool isMonitoring)
+    {
+        textBox.TextChanged -= TextBoxTextChanged;
+        textBox.GotFocus -= TextBoxGotFocus;
+        textBox.PreviewMouseLeftButtonDown -= UiElementPreviewMouseLeftButtonDown;
+        if (!isMonitoring)
         {
             return;
         }
 
-        if ((bool)e.NewValue)
-        {
-            _ = passBox.BeginInvoke(() =>
-            {
-                PasswordChanged(passBox, new RoutedEventArgs(PasswordBox.PasswordChangedEvent, passBox));
-            });
+        textBox.TextChanged += TextBoxTextChanged;
+        textBox.GotFocus += TextBoxGotFocus;
+        textBox.PreviewMouseLeftButtonDown += UiElementPreviewMouseLeftButtonDown;
+        SetTextLength(textBox, x => x.Text.Length);
+    }
 
-            passBox.PasswordChanged += PasswordChanged;
-            passBox.GotFocus += PasswordGotFocus;
-            passBox.PreviewMouseLeftButtonDown += UiElementPreviewMouseLeftButtonDown;
-        }
-        else
+    private static void MonitorRichTextBox(
+        RichTextBox richTextBox,
+        bool isMonitoring)
+    {
+        richTextBox.TextChanged -= RichTextBoxTextChanged;
+        richTextBox.GotFocus -= RichTextBoxGotFocus;
+        richTextBox.PreviewMouseLeftButtonDown -= UiElementPreviewMouseLeftButtonDown;
+        if (!isMonitoring)
         {
-            passBox.PasswordChanged -= PasswordChanged;
-            passBox.GotFocus -= PasswordGotFocus;
-            passBox.PreviewMouseLeftButtonDown -= UiElementPreviewMouseLeftButtonDown;
+            return;
         }
+
+        richTextBox.TextChanged += RichTextBoxTextChanged;
+        richTextBox.GotFocus += RichTextBoxGotFocus;
+        richTextBox.PreviewMouseLeftButtonDown += UiElementPreviewMouseLeftButtonDown;
+        SetRichTextBoxTextLength(richTextBox);
+    }
+
+    private static void MonitorComboBox(
+        ComboBox comboBox,
+        bool isMonitoring)
+    {
+        comboBox.SelectionChanged -= ComboBoxSelectionChanged;
+        comboBox.RemoveHandler(TextBoxBase.TextChangedEvent, new TextChangedEventHandler(ComboBoxTextChanged));
+        comboBox.GotFocus -= ComboBoxGotFocus;
+        comboBox.PreviewMouseLeftButtonDown -= UiElementPreviewMouseLeftButtonDown;
+        BindingOperations.ClearBinding(comboBox, ComboBoxTextProxyProperty);
+        if (!isMonitoring)
+        {
+            return;
+        }
+
+        comboBox.SelectionChanged += ComboBoxSelectionChanged;
+        comboBox.AddHandler(TextBoxBase.TextChangedEvent, new TextChangedEventHandler(ComboBoxTextChanged));
+        comboBox.GotFocus += ComboBoxGotFocus;
+        comboBox.PreviewMouseLeftButtonDown += UiElementPreviewMouseLeftButtonDown;
+        BindingOperations.SetBinding(
+            comboBox,
+            ComboBoxTextProxyProperty,
+            new Binding(nameof(ComboBox.Text))
+            {
+                RelativeSource = RelativeSource.Self,
+                Mode = BindingMode.OneWay,
+            });
+        UpdateComboBoxText(comboBox);
     }
 
     private static void UiElementPreviewMouseLeftButtonDown(
@@ -599,6 +745,34 @@ public static class TextBoxHelper
         => ControlGotFocus(
             sender as PasswordBox,
             passwordBox => passwordBox.SelectAll());
+
+    private static void TextBoxGotFocus(
+        object sender,
+        RoutedEventArgs e)
+        => ControlGotFocus(
+            sender as TextBox,
+            textBox => textBox.SelectAll());
+
+    private static void RichTextBoxGotFocus(
+        object sender,
+        RoutedEventArgs e)
+        => ControlGotFocus(
+            sender as RichTextBox,
+            richTextBox => richTextBox.SelectAll());
+
+    private static void ComboBoxGotFocus(
+        object sender,
+        RoutedEventArgs e)
+        => ControlGotFocus(
+            sender as ComboBox,
+            comboBox =>
+            {
+                if (comboBox.IsEditable &&
+                    comboBox.Template?.FindName("PART_EditableTextBox", comboBox) is TextBox editableTextBox)
+                {
+                    editableTextBox.SelectAll();
+                }
+            });
 
     private static void ControlGotFocus<TDependencyObject>(
         TDependencyObject? sender,
