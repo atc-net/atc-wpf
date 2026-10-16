@@ -15,4 +15,9 @@ internal interface IDeviceWatcherHost : IDisposable
     void StopWatching();
 
     Task<IReadOnlyList<DeviceSnapshot>> FindAllAsync();
+
+    /// <summary>
+    /// Runs <paramref name="action"/> on the UI thread the watcher events are raised on, inline when already there.
+    /// </summary>
+    Task InvokeOnUiAsync(Action action);
 }

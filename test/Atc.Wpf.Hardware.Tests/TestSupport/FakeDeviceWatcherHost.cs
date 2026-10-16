@@ -2,6 +2,9 @@ namespace Atc.Wpf.Hardware.Tests.TestSupport;
 
 internal sealed class FakeDeviceWatcherHost : IDeviceWatcherHost
 {
+    private readonly Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
+    private TaskCompletionSource<IReadOnlyList<DeviceSnapshot>>? pendingFindAll;
+
     public event EventHandler<DeviceSnapshotEventArgs>? Added;
 
     public event EventHandler<DeviceSnapshotEventArgs>? Updated;
@@ -22,6 +25,12 @@ internal sealed class FakeDeviceWatcherHost : IDeviceWatcherHost
 
     public List<DeviceSnapshot> SeedSnapshots { get; } = new();
 
+    /// <summary>
+    /// When set, <see cref="FindAllAsync"/> returns a task that stays pending until
+    /// <see cref="CompleteFindAll"/> is called, so a test can complete it from another thread.
+    /// </summary>
+    public bool DeferFindAll { get; set; }
+
     public void StartWatching()
     {
         IsStarted = true;
@@ -37,7 +46,38 @@ internal sealed class FakeDeviceWatcherHost : IDeviceWatcherHost
     public Task<IReadOnlyList<DeviceSnapshot>> FindAllAsync()
     {
         FindAllCallCount++;
-        return Task.FromResult<IReadOnlyList<DeviceSnapshot>>(SeedSnapshots.ToArray());
+
+        if (!DeferFindAll)
+        {
+            return Task.FromResult<IReadOnlyList<DeviceSnapshot>>(SeedSnapshots.ToArray());
+        }
+
+        pendingFindAll = new TaskCompletionSource<IReadOnlyList<DeviceSnapshot>>();
+        return pendingFindAll.Task;
+    }
+
+    /// <summary>
+    /// Completes the deferred <see cref="FindAllAsync"/> on the calling thread, so the awaiting
+    /// service continues on that thread.
+    /// </summary>
+    public void CompleteFindAll()
+    {
+        var pending = pendingFindAll
+                      ?? throw new InvalidOperationException($"{nameof(FindAllAsync)} has not been called with {nameof(DeferFindAll)} set.");
+
+        pendingFindAll = null;
+        pending.SetResult(SeedSnapshots.ToArray());
+    }
+
+    public Task InvokeOnUiAsync(Action action)
+    {
+        if (dispatcher.CheckAccess())
+        {
+            action();
+            return Task.CompletedTask;
+        }
+
+        return dispatcher.InvokeAsync(action).Task;
     }
 
     public void Dispose()
