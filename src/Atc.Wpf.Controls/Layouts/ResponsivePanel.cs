@@ -826,7 +826,7 @@ public class ResponsivePanel : Panel
 
         // Calculate column width
         var totalGapWidth = (columnCount - 1) * columnGap;
-        var columnWidth = (availableWidth - totalGapWidth) / columnCount;
+        var columnWidth = System.Math.Max(0, (availableWidth - totalGapWidth) / columnCount);
 
         // Measure all children
         var childConstraint = new Size(columnWidth, double.PositiveInfinity);
@@ -883,7 +883,7 @@ public class ResponsivePanel : Panel
 
         // Calculate column width
         var totalGapWidth = (columnCount - 1) * columnGap;
-        var columnWidth = (finalSize.Width - totalGapWidth) / columnCount;
+        var columnWidth = System.Math.Max(0, (finalSize.Width - totalGapWidth) / columnCount);
 
         // Get ordered visible children
         var orderedChildren = GetOrderedVisibleChildren(breakpoint);
@@ -937,7 +937,7 @@ public class ResponsivePanel : Panel
             // Second pass: arrange children
             foreach (var (element, span) in row)
             {
-                var childWidth = (span * columnWidth) + ((span - 1) * columnGap);
+                var childWidth = System.Math.Max(0, (span * columnWidth) + ((span - 1) * columnGap));
                 var rect = new Rect(xOffset, yOffset, childWidth, rowHeight);
                 element.Arrange(rect);
 

@@ -58,6 +58,7 @@ public sealed class StaggeredPanel : Panel
         new PropertyMetadata(0d, OnInvalidateMeasure));
 
     private double itemWidth;
+    private int columnCount;
 
     /// <summary>
     /// Gets or sets the desired width for each column.
@@ -126,8 +127,8 @@ public sealed class StaggeredPanel : Panel
 
         var horizontalPadding = Padding.Left + Padding.Right;
         var verticalPadding = Padding.Top + Padding.Bottom;
-        var availableWidth = availableSize.Width - horizontalPadding;
-        var availableHeight = availableSize.Height - verticalPadding;
+        var availableWidth = System.Math.Max(0, availableSize.Width - horizontalPadding);
+        var availableHeight = System.Math.Max(0, availableSize.Height - verticalPadding);
         var spacing = HorizontalSpacing;
 
         int numColumns;
@@ -152,6 +153,10 @@ public sealed class StaggeredPanel : Panel
                 itemWidth = System.Math.Max(0, (availableWidth - ((numColumns - 1) * spacing)) / numColumns);
             }
         }
+
+        // ArrangeOverride reuses this count: recomputing it from the stretched item width
+        // can floor to one column less because of floating point rounding.
+        columnCount = numColumns;
 
         var columnHeights = new double[numColumns];
         var itemsPerColumn = new int[numColumns];
@@ -183,7 +188,7 @@ public sealed class StaggeredPanel : Panel
         var horizontalOffset = Padding.Left;
         var verticalOffset = Padding.Top;
         var contentWidth = finalSize.Width - Padding.Left - Padding.Right;
-        var numColumns = GetColumnCount(contentWidth, itemWidth, HorizontalSpacing);
+        var numColumns = System.Math.Max(1, columnCount);
         var totalWidth = itemWidth + ((numColumns - 1) * (itemWidth + HorizontalSpacing));
 
         switch (HorizontalAlignment)

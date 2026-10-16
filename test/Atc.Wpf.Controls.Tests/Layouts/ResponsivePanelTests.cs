@@ -666,5 +666,24 @@ public sealed class ResponsivePanelTests
         Assert.True(point3.Y > 0); // Third child should be on second row
     }
 
+    [StaFact]
+    public void Layout_WidthSmallerThanTheGaps_DoesNotThrow()
+    {
+        // Arrange
+        var panel = new ResponsivePanel { Gap = 20, ColumnsXs = 2 };
+        panel.Children.Add(new Border { Height = 10 });
+        panel.Children.Add(new Border { Height = 10 });
+
+        // Act
+        var exception = Record.Exception(() =>
+        {
+            panel.Measure(new Size(10, 100));
+            panel.Arrange(new Rect(0, 0, 10, 100));
+        });
+
+        // Assert
+        Assert.Null(exception);
+    }
+
     #endregion
 }
