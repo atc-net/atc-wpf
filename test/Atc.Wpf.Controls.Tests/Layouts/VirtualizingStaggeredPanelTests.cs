@@ -198,6 +198,44 @@ public sealed class VirtualizingStaggeredPanelTests : IDisposable
     }
 
     [StaFact]
+    public void SetVerticalOffset_Hosted_NonContiguousVisibleSet_RealizesRangeAndCachesHeightsPerItem()
+    {
+        // Arrange: two columns, so a tall item in one column stays visible while the
+        // following short items in the other column have already scrolled out.
+        // Column 0: item0 0-300, item4 300-600. Column 1: item1 0-50, item2 50-100,
+        // item3 100-400, item5 400-450, item6 450-500, item7 500-800.
+        var (itemsControl, panel) = CreateHosted(300, 50, 50, 300, 300, 50, 50, 300);
+        LayoutHosted(itemsControl, panel, new Size(200, 350));
+
+        // Act: viewport 120-470 shows items 0, 3, 4, 5 and 6 but not 1, 2 and 7.
+        panel.SetVerticalOffset(120);
+        RelayoutPanel(panel, new Size(200, 350));
+
+        // Assert: the whole range 0..6 is realized in item order, 7 is virtualized away.
+        Assert.Equal(120d, panel.VerticalOffset);
+        Assert.Equal(800d, panel.ExtentHeight);
+        Assert.Equal(7, panel.Children.Count);
+        for (var i = 0; i <= 6; i++)
+        {
+            Assert.Same(itemsControl.Items[i], panel.Children[i]);
+        }
+
+        AssertSlot((UIElement)itemsControl.Items[0], 0, -120, 100, 300);
+        AssertSlot((UIElement)itemsControl.Items[1], 100, -120, 100, 50);
+        AssertSlot((UIElement)itemsControl.Items[3], 100, -20, 100, 300);
+        AssertSlot((UIElement)itemsControl.Items[4], 0, 180, 100, 300);
+        AssertSlot((UIElement)itemsControl.Items[5], 100, 280, 100, 50);
+        AssertSlot((UIElement)itemsControl.Items[6], 100, 330, 100, 50);
+
+        var expectedHeights = new[] { 300d, 50d, 50d, 300d, 300d, 50d, 50d, 300d };
+        for (var i = 0; i < expectedHeights.Length; i++)
+        {
+            Assert.True(panel.CachedItemHeights.TryGetValue(i, out var cachedHeight));
+            Assert.Equal(expectedHeights[i], cachedHeight);
+        }
+    }
+
+    [StaFact]
     public void SetVerticalOffset_Hosted_BeyondExtent_IsClampedToLastPage()
     {
         // Arrange

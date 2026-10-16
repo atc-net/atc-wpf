@@ -47,7 +47,6 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
 
     private readonly Dictionary<int, double> itemHeightCache = [];
     private readonly List<double> columnHeights = [];
-    private readonly HashSet<int> visibleIndicesScratch = [];
 
     private double itemWidth;
     private int columnCount;
@@ -83,6 +82,10 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
         get => (double)GetValue(VerticalSpacingProperty);
         set => SetValue(VerticalSpacingProperty, value);
     }
+
+    /// <summary>Gets the measured heights of realized items, keyed by item index.</summary>
+    internal IReadOnlyDictionary<int, double> CachedItemHeights
+        => itemHeightCache;
 
     private static void OnLayoutPropertyChanged(
         DependencyObject d,
@@ -258,17 +261,20 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
             itemCount,
             availableSize.Height);
         UpdateTotalHeight();
+
+        // The visible set can have gaps (a tall item in one column stays visible while the
+        // following short items in another column have scrolled out), but the generator only
+        // hands out consecutive items. Realize the contiguous range from the lowest to the
+        // highest needed index so every container is cached and arranged under its own index.
+        var (firstIndex, lastIndex) = GetIndexRange(positions);
         GenerateAndMeasureItems(
             generator,
-            positions,
+            firstIndex,
+            lastIndex,
             availableSize);
-        visibleIndicesScratch.Clear();
-        foreach (var (index, _, _) in positions)
-        {
-            visibleIndicesScratch.Add(index);
-        }
-
-        CleanupUnusedContainers(visibleIndicesScratch);
+        CleanupUnusedContainers(
+            firstIndex,
+            lastIndex);
 
         var extentSize = new Size(
             availableSize.Width,
@@ -348,13 +354,38 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
         }
     }
 
+    private static (int FirstIndex, int LastIndex) GetIndexRange(
+        List<(int Index, int Column, double Top)> positions)
+    {
+        if (positions.Count == 0)
+        {
+            return (0, -1);
+        }
+
+        var firstIndex = int.MaxValue;
+        var lastIndex = int.MinValue;
+        foreach (var (index, _, _) in positions)
+        {
+            firstIndex = Math.Min(firstIndex, index);
+            lastIndex = Math.Max(lastIndex, index);
+        }
+
+        return (firstIndex, lastIndex);
+    }
+
     private void GenerateAndMeasureItems(
         IItemContainerGenerator generator,
-        List<(int Index, int Column, double Top)> positions,
+        int firstIndex,
+        int lastIndex,
         Size availableSize)
     {
+        if (lastIndex < firstIndex)
+        {
+            return;
+        }
+
         var children = InternalChildren;
-        var startPos = generator.GeneratorPositionFromIndex(positions.Count > 0 ? positions[0].Index : 0);
+        var startPos = generator.GeneratorPositionFromIndex(firstIndex);
 
         using (generator.StartAt(
             startPos,
@@ -363,7 +394,7 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
         {
             var childIndex = startPos.Offset == 0 ? startPos.Index : startPos.Index + 1;
 
-            foreach (var (itemIndex, _, _) in positions)
+            for (var itemIndex = firstIndex; itemIndex <= lastIndex; itemIndex++)
             {
                 var child = (UIElement)generator.GenerateNext(out var isNewlyRealized);
 
@@ -569,7 +600,9 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
         return minIndex;
     }
 
-    private void CleanupUnusedContainers(HashSet<int> visibleIndices)
+    private void CleanupUnusedContainers(
+        int firstIndex,
+        int lastIndex)
     {
         var generator = ItemContainerGenerator;
         var children = InternalChildren;
@@ -581,7 +614,7 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
                 0);
             var itemIndex = generator.IndexFromGeneratorPosition(position);
 
-            if (!visibleIndices.Contains(itemIndex))
+            if (itemIndex < firstIndex || itemIndex > lastIndex)
             {
                 generator.Remove(
                     position,
