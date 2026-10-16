@@ -114,6 +114,17 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         object args)
         => MarshalToUi(() => EnumerationCompleted?.Invoke(this, EventArgs.Empty));
 
+    public Task InvokeOnUiAsync(Action action)
+    {
+        if (uiDispatcher.CheckAccess())
+        {
+            action();
+            return Task.CompletedTask;
+        }
+
+        return uiDispatcher.InvokeAsync(action).Task;
+    }
+
     private void MarshalToUi(Action action)
     {
         if (uiDispatcher.CheckAccess())

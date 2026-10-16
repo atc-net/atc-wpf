@@ -69,8 +69,16 @@ public sealed class AudioDeviceService : IAudioDeviceService
     /// <inheritdoc />
     public async Task RefreshAsync()
     {
-        var found = await watcher.FindAllAsync().ConfigureAwait(false);
+        var host = watcher;
+        var found = await host.FindAllAsync().ConfigureAwait(false);
 
+        // The collection is bound to the picker and the watcher events already arrive on the UI thread,
+        // so the sync has to run there too, whichever thread called RefreshAsync.
+        await host.InvokeOnUiAsync(() => SyncWith(found)).ConfigureAwait(false);
+    }
+
+    private void SyncWith(IReadOnlyList<DeviceSnapshot> found)
+    {
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var snapshot in found)

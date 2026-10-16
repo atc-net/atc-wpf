@@ -23,6 +23,7 @@ public interface ISerialPortService : IDisposable
     /// <summary>
     /// Enumerates the ports once, adding new ones and marking missing ones as <see cref="DeviceState.Disconnected"/>.
     /// </summary>
+    /// <remarks>Safe to call from any thread: the collection is only changed on the UI thread.</remarks>
     /// <returns>A task that completes when the enumeration has been applied.</returns>
     Task RefreshAsync();
 
