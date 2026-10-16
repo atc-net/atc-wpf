@@ -145,8 +145,8 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
-                maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
+                minimum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
+                maximum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
             }
         }
 
@@ -225,8 +225,8 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = (decimal)((RangeAttribute)rangeLengthAttribute).Minimum;
-                maximum = (decimal)((RangeAttribute)rangeLengthAttribute).Maximum;
+                minimum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
+                maximum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
             }
         }
 
@@ -304,8 +304,8 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
-                maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
+                minimum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
+                maximum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
             }
         }
 
@@ -384,8 +384,8 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = (int)((RangeAttribute)rangeLengthAttribute).Minimum;
-                maximum = (int)((RangeAttribute)rangeLengthAttribute).Maximum;
+                minimum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
+                maximum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
             }
         }
 
@@ -424,8 +424,6 @@ public static class LabelControlFactory
             InputDataType = inputDataType,
             ValueWidth = valueWidth ?? 0,
             ValueHeight = valueHeight ?? 0,
-            Minimum = minimum ?? 0,
-            Maximum = maximum ?? 0,
         };
 
         if (minimum.HasValue)
