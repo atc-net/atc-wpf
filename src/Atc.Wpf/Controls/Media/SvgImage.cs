@@ -557,8 +557,7 @@ public sealed class SvgImage : Control
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is not SvgImage svgImage ||
-            e.NewValue is not double)
+        if (d is not SvgImage svgImage)
         {
             return;
         }

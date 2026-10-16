@@ -123,11 +123,8 @@ internal sealed class SvgRender
 
         if (stroke is not null)
         {
-            if (OverrideStrokeWidth.HasValue)
-            {
-                stroke.Width = OverrideStrokeWidth.Value;
-            }
-
+            // The override is applied per render; the shape keeps the width from the SVG so the override can be cleared.
+            var strokeWidth = OverrideStrokeWidth ?? stroke.Width;
             var brush = stroke.StrokeBrush(
                 Svg,
                 this,
@@ -155,12 +152,12 @@ internal sealed class SvgRender
 
             geometryDrawing.Pen = new Pen(
                 brush,
-                stroke.Width);
+                strokeWidth);
             if (stroke.StrokeArray is not null)
             {
                 geometryDrawing.Pen.DashCap = PenLineCap.Flat;
                 var ds = new DashStyle();
-                var scale = 1 / stroke.Width;
+                var scale = 1 / strokeWidth;
                 foreach (var d in stroke.StrokeArray)
                 {
                     var dash = (int)d;
