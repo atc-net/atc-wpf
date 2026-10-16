@@ -149,6 +149,17 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
             return;
         }
 
+        // A placement saved on a monitor that is no longer attached would open the window off-screen;
+        // leave the default placement in that case.
+        var screenBounds = GetVirtualScreenBounds();
+        if (screenBounds.Width > 0 &&
+            screenBounds.Height > 0 &&
+            !IsPlacementOnScreen(settings.Placement.normalPosition, screenBounds))
+        {
+            Trace.TraceInformation($"{this}: The saved placement for {window} is outside the current screens and is not applied.");
+            return;
+        }
+
         try
         {
             var wp = settings.Placement.ToWindowPlacement();
@@ -160,6 +171,27 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
         {
             throw new AtcAppsException($"Failed to set the window state for {window} from the settings.", ex);
         }
+    }
+
+    /// <summary>
+    /// Determines whether a saved window placement is at least partly visible on the current screens.
+    /// </summary>
+    /// <param name="normalPosition">The saved bounds of the window in its restored state, in physical pixels.</param>
+    /// <param name="screenBounds">The bounds of the virtual screen (all monitors), in physical pixels.</param>
+    /// <returns><see langword="true"/> when the two rectangles overlap by more than an edge; otherwise <see langword="false"/>.</returns>
+    internal static bool IsPlacementOnScreen(
+        Rect normalPosition,
+        Rect screenBounds)
+    {
+        if (normalPosition.IsEmpty || screenBounds.IsEmpty)
+        {
+            return false;
+        }
+
+        var visible = Rect.Intersect(normalPosition, screenBounds);
+        return !visible.IsEmpty &&
+               visible.Width > 0 &&
+               visible.Height > 0;
     }
 
     /// <summary>
@@ -188,6 +220,16 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
             Trace.TraceError($"{nameof(WindowsSettingBehavior)}: The settings could not be upgraded! {e}");
         }
     }
+
+    /// <summary>
+    /// Gets the bounding rectangle of all monitors in physical pixels, the unit <c>WINDOWPLACEMENT</c> uses.
+    /// </summary>
+    private static Rect GetVirtualScreenBounds()
+        => new(
+            PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_XVIRTUALSCREEN),
+            PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_YVIRTUALSCREEN),
+            System.Math.Max(0, PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_CXVIRTUALSCREEN)),
+            System.Math.Max(0, PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_CYVIRTUALSCREEN)));
 
     [SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
