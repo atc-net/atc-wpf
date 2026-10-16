@@ -35,6 +35,7 @@ global using Atc.Wpf.Controls.Zoom.Internal;
 global using Atc.Wpf.Controls.Zoom.ValueConverters;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Navigation;
+global using Atc.XamlToolkit.Messaging;
 global using Atc.XUnit;
 
 global using Xunit;

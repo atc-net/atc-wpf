@@ -44,6 +44,18 @@ public sealed class MarkdownFileLookupTests
         Assert.Equal(files[0].FullName, MarkdownFileLookup.Find(files, "badge_readme")?.FullName);
     }
 
+    [Theory]
+    [InlineData("LabelTextBoxView", "LabelTextBox")]
+    [InlineData("GridExView", "GridEx")]
+    [InlineData("MyUserControl", "MyUserControl")]
+    [InlineData("Overview", "Overview")]
+    [InlineData("View", "View")]
+    [InlineData("Box", "Box")]
+    public void GetClassName_RemovesOnlyATrailingView(
+        string classViewName,
+        string expected)
+        => Assert.Equal(expected, MarkdownFileLookup.GetClassName(classViewName));
+
     private static FileInfo[] Files(params string[] relativePaths)
         => relativePaths.Select(p => new FileInfo(Path.Combine(Root, p))).ToArray();
 }

@@ -31,4 +31,21 @@ internal static class MarkdownFileLookup
             suffix,
             StringComparison.OrdinalIgnoreCase));
     }
+
+    /// <summary>
+    /// Returns the control class name for a sample view class name: a trailing "View" is removed
+    /// ("LabelTextBoxView" gives "LabelTextBox"); any other name is returned unchanged.
+    /// </summary>
+    /// <param name="classViewName">The class name of the sample view.</param>
+    /// <returns>The class name used to look up the readme.</returns>
+    public static string GetClassName(string classViewName)
+    {
+        ArgumentNullException.ThrowIfNull(classViewName);
+
+        const string suffix = "View";
+        return classViewName.Length > suffix.Length &&
+               classViewName.EndsWith(suffix, StringComparison.Ordinal)
+            ? classViewName[..^suffix.Length]
+            : classViewName;
+    }
 }

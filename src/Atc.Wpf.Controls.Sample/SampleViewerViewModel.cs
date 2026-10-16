@@ -7,6 +7,7 @@ namespace Atc.Wpf.Controls.Sample;
 public sealed class SampleViewerViewModel : ViewModelBase
 {
     private const string Error = "Error";
+    private const int ReadmeTabIndex = 4;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SampleViewerViewModel"/> class and subscribes to <see cref="SampleItemMessage"/>.
@@ -218,8 +219,10 @@ public sealed class SampleViewerViewModel : ViewModelBase
             }
         }
 
-        // Auto-select first enabled tab
-        TabSelectedIndex = GetFirstEnabledTabIndex();
+        // Show the readme when the sample asks for it, otherwise the first enabled tab
+        TabSelectedIndex = StartOnMarkdownDocument
+            ? ReadmeTabIndex
+            : GetFirstEnabledTabIndex();
     }
 
     private int GetFirstEnabledTabIndex()
@@ -246,7 +249,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
         if (HasMarkdownDocument)
         {
-            return 4;
+            return ReadmeTabIndex;
         }
 
         return 0;
@@ -260,6 +263,8 @@ public sealed class SampleViewerViewModel : ViewModelBase
         XamlCode = null;
         CodeBehindCode = null;
         ViewModelCode = null;
+        MarkdownDocument = null;
+        StartOnMarkdownDocument = false;
     }
 
     private void TryDisposeAndClearSampleContent()
@@ -372,11 +377,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
             return;
         }
 
-        var className = classViewName.EndsWith(
-                classViewName,
-                StringComparison.Ordinal)
-            ? classViewName[..^4]
-            : classViewName;
+        var className = MarkdownFileLookup.GetClassName(classViewName);
 
         var docSection = sampleLocation.Name.Replace("SamplesWpf", string.Empty, StringComparison.Ordinal);
 
