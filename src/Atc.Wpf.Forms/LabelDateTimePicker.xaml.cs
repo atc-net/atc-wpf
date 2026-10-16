@@ -90,6 +90,13 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
 
+    /// <inheritdoc />
+    public override bool IsValid()
+    {
+        ValidateText(this);
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
     private void OnLoaded(
         object sender,
         RoutedEventArgs e)
