@@ -139,4 +139,67 @@ public sealed class ModelToLabelControlExtractorTests
         Assert.NotNull(actual);
         Assert.Equal(3, actual.Count);
     }
+
+    [StaFact]
+    public void GetLabelControls_CollectionsModel_SkipsCollectionProperties()
+    {
+        // Arrange
+        var model = new CollectionsModel
+        {
+            Name = "Name",
+            Age = 42,
+            Tags = { "a", "b" },
+            Counts = { ["a"] = 1 },
+        };
+
+        // Act
+        var actual = ModelToLabelControlExtractor.Extract(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.Equal(2, actual.Count);
+        Assert.Contains(actual, x => x.Identifier == "Name");
+        Assert.Contains(actual, x => x.Identifier == "Age");
+    }
+
+    [StaFact]
+    public void GetLabelControls_SelfReferencingType_StopsAtDepthLimit()
+    {
+        // Arrange
+        var model = new Node { Name = "Root" };
+
+        // Act
+        var actual = ModelToLabelControlExtractor.Extract(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.Equal(ModelToLabelControlExtractor.MaxNestingDepth + 1, actual.Count);
+        Assert.All(actual, x => Assert.Equal("Name", x.Identifier));
+    }
+
+    [StaFact]
+    public void GetLabelControls_SelfReferencingChainLongerThanLimit_StopsAtDepthLimit()
+    {
+        // Arrange
+        var model = new Node { Name = "0" };
+        var current = model;
+        for (var i = 1; i < 30; i++)
+        {
+            current.Next = new Node { Name = i.ToString(GlobalizationConstants.EnglishCultureInfo) };
+            current = current.Next;
+        }
+
+        // Act
+        var actual = ModelToLabelControlExtractor.Extract(
+            model,
+            includeReadOnly: true);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.Equal(ModelToLabelControlExtractor.MaxNestingDepth + 1, actual.Count);
+    }
 }
