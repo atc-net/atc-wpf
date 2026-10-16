@@ -1,7 +1,11 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample">
 
     <Style x:Key="MarkdownDocumentStyle" TargetType="FlowDocument">
         <Setter Property="FontFamily" Value="Arial" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="PagePadding" Value="0" />
         <Setter Property="FontSize" Value="14" />
@@ -44,6 +48,8 @@
                     <Trigger Property="Tag" Value="CodeBlock">
                         <Setter Property="FontFamily" Value="Courier New" />
                         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
+                        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
+                        <Setter Property="Padding" Value="10,6" />
                     </Trigger>
                     <Trigger Property="Tag" Value="Note">
                         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
@@ -85,6 +91,7 @@
             </Style>
 
             <Style xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" TargetType="avalonEdit:TextEditor">
+                <Setter Property="sample:MarkdownCodeBlockTheming.IsEnabled" Value="True" />
                 <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground2}" />
                 <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.ThemeForeground}" />
                 <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />

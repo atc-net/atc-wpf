@@ -19,3 +19,6 @@ global using Atc.XamlToolkit.Controls.Attributes;
 global using Atc.XamlToolkit.Messaging;
 global using Atc.XamlToolkit.Metadata;
 global using Atc.XamlToolkit.Mvvm;
+global using ControlzEx.Theming;
+global using ICSharpCode.AvalonEdit;
+global using ICSharpCode.AvalonEdit.Rendering;
