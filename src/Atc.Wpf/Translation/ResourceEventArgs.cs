@@ -35,4 +35,10 @@ public sealed class ResourceEventArgs : EventArgs
     /// Gets the UI culture.
     /// </summary>
     public CultureInfo UiCulture { get; }
+
+    /// <summary>
+    /// Gets or sets the value a handler supplies for the resource key. When it is left <see langword="null"/>,
+    /// the value is looked up in the resource file.
+    /// </summary>
+    public object? Result { get; set; }
 }
