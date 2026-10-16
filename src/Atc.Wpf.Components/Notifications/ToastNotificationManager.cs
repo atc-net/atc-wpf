@@ -230,21 +230,68 @@ public sealed class ToastNotificationManager : IToastNotificationManager
     {
         if (window is null)
         {
-            var workArea = SystemParameters.WorkArea;
-            window = new ToastNotificationsOverlayWindow
+            window = new ToastNotificationsOverlayWindow();
+            window.Closed += OnOverlayWindowClosed;
+
+            // Belt and braces: an overlay that could not be owned must not outlive the application.
+            if (Application.Current is { } application)
             {
-                Left = workArea.Left,
-                Top = workArea.Top,
-                Width = workArea.Width,
-                Height = workArea.Height,
-            };
+                application.Exit += OnApplicationExit;
+            }
         }
 
-        // The desktop overlay has no owner, so it follows the main window's direction.
-        window.FlowDirection = Application.Current?.MainWindow?.FlowDirection ?? FlowDirection.LeftToRight;
+        // The work area changes when displays or the taskbar change, so it is read on every show.
+        var workArea = SystemParameters.WorkArea;
+        window.Left = workArea.Left;
+        window.Top = workArea.Top;
+        window.Width = workArea.Width;
+        window.Height = workArea.Height;
+
+        var mainWindow = Application.Current?.MainWindow;
+        if (window.Owner is null &&
+            mainWindow is not null &&
+            !ReferenceEquals(mainWindow, window) &&
+            HasWindowHandle(mainWindow))
+        {
+            // Owned by the main window the overlay closes with it, so it no longer keeps the process alive
+            // under the default ShutdownMode. A window without a handle (not shown yet, or closed) cannot own another one.
+            window.Owner = mainWindow;
+        }
+
+        window.FlowDirection = mainWindow?.FlowDirection ?? FlowDirection.LeftToRight;
         window.Show();
         return window;
     }
+
+    private static bool HasWindowHandle(Window candidate)
+        => new WindowInteropHelper(candidate).Handle != IntPtr.Zero &&
+           PresentationSource.FromVisual(candidate) is not null;
+
+    private static void OnOverlayWindowClosed(
+        object? sender,
+        EventArgs e)
+    {
+        if (sender is not ToastNotificationsOverlayWindow closedWindow)
+        {
+            return;
+        }
+
+        closedWindow.Closed -= OnOverlayWindowClosed;
+        if (Application.Current is { } application)
+        {
+            application.Exit -= OnApplicationExit;
+        }
+
+        if (ReferenceEquals(window, closedWindow))
+        {
+            window = null;
+        }
+    }
+
+    private static void OnApplicationExit(
+        object sender,
+        ExitEventArgs e)
+        => window?.Close();
 
     private void ShowCore(
         bool useDesktop,
