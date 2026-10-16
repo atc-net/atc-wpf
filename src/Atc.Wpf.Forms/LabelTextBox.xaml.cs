@@ -55,6 +55,8 @@ public partial class LabelTextBox : ILabelTextBox
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged)]
     private string text;
 
+    private string textOnFocus = string.Empty;
+
     /// <summary>
     /// Occurs when the control loses focus and the text passes validation.
     /// </summary>
@@ -71,6 +73,9 @@ public partial class LabelTextBox : ILabelTextBox
     public LabelTextBox()
     {
         InitializeComponent();
+
+        AddHandler(GotFocusEvent, new RoutedEventHandler(OnGotFocus), handledEventsToo: true);
+        AddHandler(LostFocusEvent, new RoutedEventHandler(OnLostFocus), handledEventsToo: true);
     }
 
     /// <inheritdoc />
@@ -145,12 +150,20 @@ public partial class LabelTextBox : ILabelTextBox
                 TextChangedEvent));
     }
 
+    private void OnGotFocus(
+        object sender,
+        RoutedEventArgs e)
+        => textOnFocus = Text;
+
     private void OnLostFocus(
         object sender,
         RoutedEventArgs e)
     {
+        var oldText = textOnFocus;
+        textOnFocus = Text;
+
         ValidateText(
-            default,
+            new DependencyPropertyChangedEventArgs(TextProperty, oldText, Text),
             this,
             isCalledFromLostFocus: true,
             isCalledFromIsValid: false);
@@ -281,6 +294,10 @@ public partial class LabelTextBox : ILabelTextBox
         LabelTextBox control,
         DependencyPropertyChangedEventArgs e)
     {
+        var oldValue = e.OldValue is null
+            ? string.Empty
+            : e.OldValue.ToString();
+
         var newValue = e.NewValue is null
             ? string.Empty
             : e.NewValue.ToString();
@@ -288,8 +305,8 @@ public partial class LabelTextBox : ILabelTextBox
         control.TextLostFocusValid?.Invoke(
             control,
             new ValueChangedEventArgs<string?>(
-                ControlHelper.GetIdentifier(control),
-                oldValue: null,
+                control.Identifier,
+                oldValue,
                 newValue));
     }
 
@@ -308,7 +325,7 @@ public partial class LabelTextBox : ILabelTextBox
         control.TextLostFocusInvalid?.Invoke(
             control,
             new ValueChangedEventArgs<string?>(
-                ControlHelper.GetIdentifier(control),
+                control.Identifier,
                 oldValue,
                 newValue));
     }

@@ -138,6 +138,42 @@ public sealed class LabelTextBoxTests : IDisposable
         Assert.Equal("new", raised.NewValue);
     }
 
+    [StaFact]
+    public void TextLostFocusValid_AfterAnEdit_CarriesTheOldAndNewText()
+    {
+        UseEnglishUi();
+        var sut = new LabelTextBox { LabelText = "Name", Text = "old" };
+        ValueChangedEventArgs<string?>? raised = null;
+        sut.TextLostFocusValid += (_, e) => raised = e;
+        FocusEvents.GotFocus(sut);
+        sut.Text = "hello";
+
+        FocusEvents.LostFocus(sut);
+
+        Assert.NotNull(raised);
+        Assert.Equal(sut.Identifier, raised.Identifier);
+        Assert.Equal("old", raised.OldValue);
+        Assert.Equal("hello", raised.NewValue);
+    }
+
+    [StaFact]
+    public void TextLostFocusInvalid_AfterAnEdit_CarriesTheOldAndNewText()
+    {
+        UseEnglishUi();
+        var sut = new LabelTextBox { MinLength = 3, Text = "old" };
+        ValueChangedEventArgs<string?>? raised = null;
+        sut.TextLostFocusInvalid += (_, e) => raised = e;
+        FocusEvents.GotFocus(sut);
+        sut.Text = "ab";
+
+        FocusEvents.LostFocus(sut);
+
+        Assert.NotNull(raised);
+        Assert.Equal("old", raised.OldValue);
+        Assert.Equal("ab", raised.NewValue);
+        Assert.Equal("Min. length: 3", sut.ValidationText);
+    }
+
     private static void UseEnglishUi()
         => Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 }
