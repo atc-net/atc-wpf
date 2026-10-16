@@ -1,10 +1,11 @@
 namespace Atc.Wpf.Controls.Sample;
 
 /// <summary>
-/// Keeps the AvalonEdit code blocks of a markdown document readable in the dark theme. AvalonEdit's built-in
-/// syntax colours are made for a light page; when the application theme is dark, every foreground that is too dark
-/// is lifted to a readable lightness after the highlighting colorizer has run, and the editor is redrawn when the
-/// theme changes.
+/// Keeps the AvalonEdit code blocks of a markdown document readable on a dark background. AvalonEdit's built-in
+/// syntax colours are made for a light page; when the editor's background is dark, every foreground that is too
+/// dark is lifted to a readable lightness after the highlighting colorizer has run. The decision follows the
+/// editor's actual background brush, which the style binds to a theme resource, so a theme switch is picked up
+/// through that brush without listening to the theme manager.
 /// </summary>
 public static class MarkdownCodeBlockTheming
 {
@@ -23,7 +24,16 @@ public static class MarkdownCodeBlockTheming
         typeof(MarkdownCodeBlockTheming),
         new PropertyMetadata(defaultValue: null));
 
-    /// <summary>Gets whether the editor's syntax colours follow the dark theme.</summary>
+    /// <summary>Mirrors the editor's Background through a one-way self binding, so changes to it can be followed without pinning the editor.</summary>
+    private static readonly DependencyProperty BackgroundProxyProperty = DependencyProperty.RegisterAttached(
+        "BackgroundProxy",
+        typeof(Brush),
+        typeof(MarkdownCodeBlockTheming),
+        new PropertyMetadata(
+            defaultValue: null,
+            OnBackgroundProxyChanged));
+
+    /// <summary>Gets whether the editor's syntax colours are adjusted to its background.</summary>
     /// <param name="obj">The text editor.</param>
     /// <returns><see langword="true"/> when enabled.</returns>
     public static bool GetIsEnabled(DependencyObject obj)
@@ -32,7 +42,7 @@ public static class MarkdownCodeBlockTheming
         return (bool)obj.GetValue(IsEnabledProperty);
     }
 
-    /// <summary>Sets whether the editor's syntax colours follow the dark theme.</summary>
+    /// <summary>Sets whether the editor's syntax colours are adjusted to its background.</summary>
     /// <param name="obj">The text editor.</param>
     /// <param name="value"><see langword="true"/> to enable.</param>
     public static void SetIsEnabled(
@@ -42,6 +52,15 @@ public static class MarkdownCodeBlockTheming
         ArgumentNullException.ThrowIfNull(obj);
         obj.SetValue(IsEnabledProperty, value);
     }
+
+    /// <summary>
+    /// Returns whether <paramref name="brush"/> is a dark solid colour, the case in which light-page syntax colours
+    /// need lifting. Anything that is not a solid colour counts as light, so the editor is left alone.
+    /// </summary>
+    internal static bool IsDarkBackground(Brush? brush)
+        => brush is SolidColorBrush { Color: var color } &&
+           color.A > 0 &&
+           ((0.2126 * color.R) + (0.7152 * color.G) + (0.0722 * color.B)) / 255d < 0.5;
 
     private static void OnIsEnabledChanged(
         DependencyObject d,
@@ -64,11 +83,21 @@ public static class MarkdownCodeBlockTheming
         }
     }
 
+    private static void OnBackgroundProxyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d.GetValue(AttachmentProperty) is Attachment attachment)
+        {
+            attachment.Apply();
+        }
+    }
+
     /// <summary>
     /// Lifts dark syntax foregrounds on a dark background. Runs after AvalonEdit's own highlighting colorizer, which
     /// the editor keeps at the front of the transformer list.
     /// </summary>
-    private sealed class DarkThemeSyntaxTransformer : IVisualLineTransformer
+    private sealed class DarkBackgroundSyntaxTransformer : IVisualLineTransformer
     {
         public bool IsActive { get; set; }
 
@@ -104,57 +133,32 @@ public static class MarkdownCodeBlockTheming
     private sealed class Attachment
     {
         private readonly TextEditor editor;
-        private readonly DarkThemeSyntaxTransformer transformer = new();
+        private readonly DarkBackgroundSyntaxTransformer transformer = new();
 
         public Attachment(TextEditor editor)
         {
             this.editor = editor;
-            transformer.IsActive = IsDarkTheme();
             editor.TextArea.TextView.LineTransformers.Add(transformer);
-            editor.Loaded += OnLoaded;
-            editor.Unloaded += OnUnloaded;
-
-            if (editor.IsLoaded)
-            {
-                ThemeManager.Current.ThemeChanged += OnThemeChanged;
-            }
+            BindingOperations.SetBinding(
+                editor,
+                BackgroundProxyProperty,
+                new Binding(nameof(Control.Background))
+                {
+                    RelativeSource = RelativeSource.Self,
+                    Mode = BindingMode.OneWay,
+                });
+            Apply();
         }
 
         public void Detach()
         {
-            editor.Loaded -= OnLoaded;
-            editor.Unloaded -= OnUnloaded;
-            ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+            BindingOperations.ClearBinding(editor, BackgroundProxyProperty);
             editor.TextArea.TextView.LineTransformers.Remove(transformer);
         }
 
-        private void OnLoaded(
-            object sender,
-            RoutedEventArgs e)
+        public void Apply()
         {
-            ThemeManager.Current.ThemeChanged -= OnThemeChanged;
-            ThemeManager.Current.ThemeChanged += OnThemeChanged;
-            Apply(IsDarkTheme());
-        }
-
-        private void OnUnloaded(
-            object sender,
-            RoutedEventArgs e)
-            => ThemeManager.Current.ThemeChanged -= OnThemeChanged;
-
-        private void OnThemeChanged(
-            object? sender,
-            ThemeChangedEventArgs e)
-            => Apply(string.Equals(e.NewTheme.BaseColorScheme, ThemeManager.BaseColorDark, StringComparison.Ordinal));
-
-        private static bool IsDarkTheme()
-            => string.Equals(
-                ThemeManager.Current.DetectTheme()?.BaseColorScheme,
-                ThemeManager.BaseColorDark,
-                StringComparison.Ordinal);
-
-        private void Apply(bool isDark)
-        {
+            var isDark = IsDarkBackground(editor.Background);
             if (transformer.IsActive == isDark)
             {
                 return;
