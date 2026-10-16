@@ -15,6 +15,13 @@ public sealed class SvgImageTests : IDisposable
         </svg>
         """;
 
+    // A diagonal line with a 2 wide red stroke.
+    private const string StrokedLineSvg = """
+        <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="0" x2="10" y2="10" stroke="#FF0000" stroke-width="2" />
+        </svg>
+        """;
+
     private readonly string svgFile;
 
     public SvgImageTests()
@@ -81,6 +88,19 @@ public sealed class SvgImageTests : IDisposable
         Assert.Throws<FileNotFoundException>(() => sut.FileSource = missingFile);
     }
 
+    [StaFact]
+    public void OverrideStrokeWidth_ClearedAfterLoad_RestoresTheSvgStrokeWidth()
+    {
+        File.WriteAllText(svgFile, StrokedLineSvg);
+        var sut = LoadLikeXaml(customBrushes: null);
+        sut.OverrideStrokeWidth = 5;
+        Assert.Equal(5d, PenThickness(sut.CurrentDrawing!));
+
+        sut.OverrideStrokeWidth = null;
+
+        Assert.Equal(2d, PenThickness(sut.CurrentDrawing!));
+    }
+
     // XAML sets the properties between BeginInit and EndInit, so the image loads in OnInitialized.
     private SvgImage LoadLikeXaml(Dictionary<string, Brush>? customBrushes)
     {
@@ -95,6 +115,14 @@ public sealed class SvgImageTests : IDisposable
         svgImage.EndInit();
         return svgImage;
     }
+
+    private static double PenThickness(Drawing drawing)
+        => drawing switch
+        {
+            GeometryDrawing geometryDrawing => geometryDrawing.Pen.Thickness,
+            DrawingGroup group => PenThickness(group.Children.Single()),
+            _ => throw new InvalidOperationException("No geometry drawing"),
+        };
 
     // Hosted in a window that is never shown, so the image renders as it does in an application.
     private static Color CenterColor(FrameworkElement element)

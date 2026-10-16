@@ -248,6 +248,19 @@ public sealed class SvgRenderTests
         Assert.Equal(new Point(0.4, 0.6), brush.Center);
     }
 
+    [StaFact]
+    public void OverrideStrokeWidth_ClearedBetweenRenders_RestoresTheSvgStrokeWidth()
+    {
+        var svgRender = new SvgRender { OverrideStrokeWidth = 5 };
+        var overridden = svgRender.LoadXmlDrawing($"""{SvgOpen}<line x1="0" y1="0" x2="10" y2="10" stroke="red" stroke-width="2" /></svg>""");
+        Assert.Equal(5d, GeometryDrawings(overridden).Single().Pen.Thickness);
+
+        svgRender.OverrideStrokeWidth = null;
+        var restored = svgRender.CreateDrawing(svgRender.Svg!);
+
+        Assert.Equal(2d, GeometryDrawings(restored).Single().Pen.Thickness);
+    }
+
     private static DrawingGroup Render(string svg)
         => new SvgRender().LoadXmlDrawing(svg);
 
