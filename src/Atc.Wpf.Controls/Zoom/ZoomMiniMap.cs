@@ -11,6 +11,8 @@ public partial class ZoomMiniMap : ContentControl
     private Border? sizingBorder;
     private Canvas? viewportCanvas;
     private FrameworkElement? deferredVisualElement;
+    private FrameworkElement? backgroundElement;
+    private VisualBrush? backgroundBrush;
     private MouseHandlingModeType mouseHandlingMode;
     private Point contentMouseDownPoint;
 
@@ -71,12 +73,13 @@ public partial class ZoomMiniMap : ContentControl
 
         if (dragBorder is null ||
             sizingBorder is null ||
-            viewportCanvas is null)
+            viewportCanvas is null ||
+            TryGetZoomBox() is not { } zoomBox)
         {
             return;
         }
 
-        GetZoomBox().SaveZoom();
+        zoomBox.SaveZoom();
         mouseHandlingMode = MouseHandlingModeType.Panning;
         contentMouseDownPoint = e.GetPosition(viewportCanvas);
 
@@ -115,14 +118,13 @@ public partial class ZoomMiniMap : ContentControl
 
         if (mouseHandlingMode == MouseHandlingModeType.DragZooming)
         {
-            var zoomBox = GetZoomBox();
             var curContentPoint = e.GetPosition(viewportCanvas);
             var rect = ViewportHelpers.Clip(
                 curContentPoint,
                 contentMouseDownPoint,
                 new Point(0, 0),
                 new Point(viewportCanvas.Width, viewportCanvas.Height));
-            zoomBox.AnimatedZoomTo(rect);
+            TryGetZoomBox()?.AnimatedZoomTo(rect);
             dragBorder.Visibility = Visibility.Visible;
             sizingBorder.Visibility = Visibility.Hidden;
         }
@@ -172,12 +174,12 @@ public partial class ZoomMiniMap : ContentControl
 
         base.OnMouseDoubleClick(e);
 
-        if ((Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None)
+        if ((Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None ||
+            TryGetZoomBox() is not { } zoomBox)
         {
             return;
         }
 
-        var zoomBox = GetZoomBox();
         zoomBox.SaveZoom();
         zoomBox.AnimatedSnapTo(e.GetPosition(viewportCanvas));
     }
@@ -276,22 +278,40 @@ public partial class ZoomMiniMap : ContentControl
             Stretch = Stretch.Fill,
         };
 
-        if (viewportCanvas is not null)
+        backgroundBrush = visualBrush;
+        ApplyBackground(frameworkElement);
+
+        // Follow the size of one element at a time; a template re-apply or a new DataContext
+        // must not leave the previous element with a handler (and a reference to this minimap).
+        if (ReferenceEquals(backgroundElement, frameworkElement))
         {
-            viewportCanvas.Height = frameworkElement.ActualHeight;
-            viewportCanvas.Width = frameworkElement.ActualWidth;
-            viewportCanvas.Background = visualBrush;
+            return;
         }
 
-        frameworkElement.SizeChanged += (_, _) =>
+        if (backgroundElement is not null)
         {
-            if (viewportCanvas is not null)
-            {
-                viewportCanvas.Height = frameworkElement.ActualHeight;
-                viewportCanvas.Width = frameworkElement.ActualWidth;
-                viewportCanvas.Background = visualBrush;
-            }
-        };
+            backgroundElement.SizeChanged -= OnBackgroundElementSizeChanged;
+        }
+
+        backgroundElement = frameworkElement;
+        frameworkElement.SizeChanged += OnBackgroundElementSizeChanged;
+    }
+
+    private void OnBackgroundElementSizeChanged(
+        object sender,
+        SizeChangedEventArgs e)
+        => ApplyBackground((FrameworkElement)sender);
+
+    private void ApplyBackground(FrameworkElement frameworkElement)
+    {
+        if (viewportCanvas is null)
+        {
+            return;
+        }
+
+        viewportCanvas.Height = frameworkElement.ActualHeight;
+        viewportCanvas.Width = frameworkElement.ActualWidth;
+        viewportCanvas.Background = backgroundBrush;
     }
 
     private void DeferSetBackgroundUntilLoaded(
@@ -329,11 +349,11 @@ public partial class ZoomMiniMap : ContentControl
         miniMap.SetBackground(miniMap.VisualElement);
     }
 
-    private ZoomBox GetZoomBox()
-    {
-        var zoomBox = DataContext as ZoomBox ??
-                      (DataContext as ZoomScrollViewer)?.ZoomContent;
-
-        return zoomBox ?? throw new InvalidOperationException("DataContext is not of type ZoomBox");
-    }
+    /// <summary>
+    /// The zoom control this minimap drives, or <see langword="null"/> while the DataContext is
+    /// something else (e.g. an inherited view model before the binding resolves) - clicks are then ignored.
+    /// </summary>
+    private ZoomBox? TryGetZoomBox()
+        => DataContext as ZoomBox ??
+           (DataContext as ZoomScrollViewer)?.ZoomContent;
 }
