@@ -230,6 +230,48 @@ public sealed class StaggeredPanelTests : IDisposable
         Assert.Null(exception);
     }
 
+    [StaFact]
+    public void Layout_StretchAlignment_WidthThatDoesNotDivideEvenly_ArrangesInTheMeasuredColumnCount()
+    {
+        // 376 px fits 3 columns of 100 with 2 gaps of 10; stretched, each column is 118.67 px wide.
+        var panel = CreatePanel(HorizontalAlignment.Stretch, 50, 50, 50);
+        panel.DesiredItemWidth = 100;
+        panel.HorizontalSpacing = 10;
+
+        // Act
+        Layout(panel, new Size(376, double.PositiveInfinity));
+
+        // Assert
+        var itemWidth = (376 - 20) / 3d;
+        Assert.Equal(50d, panel.DesiredSize.Height);
+        AssertSlotApproximately(panel.Children[0], 0, 0, itemWidth, 50);
+        AssertSlotApproximately(panel.Children[1], itemWidth + 10, 0, itemWidth, 50);
+        AssertSlotApproximately(panel.Children[2], (2 * itemWidth) + 20, 0, itemWidth, 50);
+    }
+
+    [StaTheory]
+    [InlineData(300, 0)]
+    [InlineData(5, 100)]
+    public void Layout_AvailableSizeSmallerThanPadding_DoesNotThrow(
+        double width,
+        double height)
+    {
+        // Arrange
+        var panel = CreatePanel(HorizontalAlignment.Left, 50, 30);
+        panel.DesiredItemWidth = 100;
+        panel.Padding = new Thickness(10);
+
+        // Act
+        var exception = Record.Exception(() =>
+        {
+            panel.Measure(new Size(width, height));
+            panel.Arrange(new Rect(0, 0, width, height));
+        });
+
+        // Assert
+        Assert.Null(exception);
+    }
+
     private static StaggeredPanel CreatePanel(
         HorizontalAlignment alignment,
         params double[] childHeights)
@@ -262,4 +304,18 @@ public sealed class StaggeredPanelTests : IDisposable
         double width,
         double height)
         => Assert.Equal(new Rect(x, y, width, height), LayoutInformation.GetLayoutSlot((FrameworkElement)child));
+
+    private static void AssertSlotApproximately(
+        UIElement child,
+        double x,
+        double y,
+        double width,
+        double height)
+    {
+        var slot = LayoutInformation.GetLayoutSlot((FrameworkElement)child);
+        Assert.Equal(x, slot.X, 6);
+        Assert.Equal(y, slot.Y, 6);
+        Assert.Equal(width, slot.Width, 6);
+        Assert.Equal(height, slot.Height, 6);
+    }
 }
