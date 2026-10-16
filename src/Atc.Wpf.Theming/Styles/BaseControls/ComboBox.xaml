@@ -735,6 +735,7 @@
         <Setter Property="atc:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.ClearText}" />
         <Setter Property="atc:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="atc:TextBoxHelper.ButtonWidth" Value="22" />
+        <Setter Property="atc:TextBoxHelper.IsMonitoring" Value="True" />
         <Style.Triggers>
             <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
                 <Setter Property="ItemsPanel">

@@ -216,6 +216,7 @@
         <Setter Property="atc:TextBoxHelper.ButtonFontSize" Value="{DynamicResource AtcApps.Font.Size.Button.Text}" />
         <Setter Property="atc:TextBoxHelper.ButtonTemplate" Value="{DynamicResource AtcApps.Templates.Button.Chromeless}" />
         <Setter Property="atc:TextBoxHelper.ButtonWidth" Value="22" />
+        <Setter Property="atc:TextBoxHelper.IsMonitoring" Value="True" />
         <Setter Property="atc:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}" />
     </Style>
 
