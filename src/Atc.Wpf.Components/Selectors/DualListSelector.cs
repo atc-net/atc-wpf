@@ -45,13 +45,13 @@ public sealed partial class DualListSelector : Control
     /// <summary>
     /// The source list of available items.
     /// </summary>
-    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback = nameof(OnItemsCollectionChanged))]
     private ObservableCollection<DualListSelectorItem> availableItems = [];
 
     /// <summary>
     /// The target list of selected items.
     /// </summary>
-    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback = nameof(OnItemsCollectionChanged))]
     private ObservableCollection<DualListSelectorItem> selectedItems = [];
 
     /// <summary>
@@ -1097,6 +1097,36 @@ public sealed partial class DualListSelector : Control
 
         return false;
     }
+
+    private static void OnItemsCollectionChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not DualListSelector selector)
+        {
+            return;
+        }
+
+        // The footer counts and the empty texts must follow changes made outside the control too (a view
+        // model filling the list after load, or rebinding it). Weak, so a long-lived collection does not
+        // keep the control alive.
+        if (e.OldValue is INotifyCollectionChanged oldItems)
+        {
+            CollectionChangedEventManager.RemoveHandler(oldItems, selector.OnItemsChanged);
+        }
+
+        if (e.NewValue is INotifyCollectionChanged newItems)
+        {
+            CollectionChangedEventManager.AddHandler(newItems, selector.OnItemsChanged);
+        }
+
+        selector.UpdateItemCounts();
+    }
+
+    private void OnItemsChanged(
+        object? sender,
+        NotifyCollectionChangedEventArgs e)
+        => UpdateItemCounts();
 
     /// <summary>
     /// Converts an insertion index (insert before that item) into the target index for
