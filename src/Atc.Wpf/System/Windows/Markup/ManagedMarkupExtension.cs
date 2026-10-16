@@ -123,8 +123,10 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (targetProperty is DependencyProperty dependencyProperty)
             {
-                var target = reference.Target as DependencyObject;
-                target?.SetValue(dependencyProperty, GetValue());
+                if (reference.Target is DependencyObject target)
+                {
+                    OnTargetThread(target, () => target.SetValue(dependencyProperty, GetValue()));
+                }
             }
             else if (targetProperty is PropertyInfo info)
             {
@@ -132,10 +134,33 @@ public abstract class ManagedMarkupExtension : MarkupExtension
                 var target = reference.Target;
                 if (target is not null and not SetterBase { IsSealed: true })
                 {
-                    info.SetValue(target, GetValue(), index: null);
+                    OnTargetThread(target, () => info.SetValue(target, GetValue(), index: null));
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Runs <paramref name="apply"/> on the thread that owns <paramref name="target"/>. A culture change is
+    /// process-wide and may be raised on any UI thread, while the targets belong to the windows that created
+    /// them; writing them from another thread throws. Targets whose dispatcher is shutting down are skipped.
+    /// </summary>
+    private static void OnTargetThread(
+        object target,
+        Action apply)
+    {
+        if (target is not DispatcherObject { Dispatcher: { } dispatcher } || dispatcher.CheckAccess())
+        {
+            apply();
+            return;
+        }
+
+        if (dispatcher.HasShutdownStarted)
+        {
+            return;
+        }
+
+        _ = dispatcher.BeginInvoke(apply);
     }
 
     /// <summary>
