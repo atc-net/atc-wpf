@@ -530,12 +530,32 @@ public sealed class HotkeyService : IHotkeyService
         KeyEventArgs e)
     {
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
-        var modifiers = Keyboard.Modifiers;
+        if (ProcessPreviewKeyDown(key, Keyboard.Modifiers))
+        {
+            e.Handled = true;
+        }
+    }
 
+    /// <summary>
+    /// Feeds one key-down into the chord state machine.
+    /// </summary>
+    /// <param name="key">The pressed key (the system key for Alt combinations).</param>
+    /// <param name="modifiers">The modifier keys held while the key was pressed.</param>
+    /// <returns><see langword="true"/> when the key was consumed as a chord stroke.</returns>
+    internal bool ProcessPreviewKeyDown(
+        Key key,
+        ModifierKeys modifiers)
+    {
         if (pendingChordFirstStroke is not null)
         {
-            HandleChordSecondStroke(key, modifiers, e);
-            return;
+            // A bare modifier key-down (the user releasing and re-pressing Ctrl between the strokes)
+            // is not the second stroke, so keep waiting for the real key.
+            if (IsModifierKey(key))
+            {
+                return false;
+            }
+
+            return HandleChordSecondStroke(key, modifiers);
         }
 
         // Check if this key combo matches the first stroke of any chord
@@ -550,18 +570,19 @@ public sealed class HotkeyService : IHotkeyService
                 .ToList();
         }
 
-        if (chordRegistrations.Count > 0)
+        if (chordRegistrations.Count == 0)
         {
-            pendingChordFirstStroke = chordRegistrations[0];
-            StartChordTimer();
-            e.Handled = true;
+            return false;
         }
+
+        pendingChordFirstStroke = chordRegistrations[0];
+        StartChordTimer();
+        return true;
     }
 
-    private void HandleChordSecondStroke(
+    private bool HandleChordSecondStroke(
         Key key,
-        ModifierKeys modifiers,
-        KeyEventArgs e)
+        ModifierKeys modifiers)
     {
         CancelChordPending();
 
@@ -583,9 +604,16 @@ public sealed class HotkeyService : IHotkeyService
         foreach (var match in matches)
         {
             InvokeCallback(match);
-            e.Handled = true;
         }
+
+        return matches.Count > 0;
     }
+
+    private static bool IsModifierKey(Key key)
+        => key is Key.LeftCtrl or Key.RightCtrl
+            or Key.LeftShift or Key.RightShift
+            or Key.LeftAlt or Key.RightAlt
+            or Key.LWin or Key.RWin;
 
     private void StartChordTimer()
     {
