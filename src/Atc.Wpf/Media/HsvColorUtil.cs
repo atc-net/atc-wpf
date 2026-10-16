@@ -8,6 +8,21 @@ public static class HsvColorUtil
     /// <summary>
     /// Converts an RGB color to an HSV color.
     /// </summary>
+    /// <param name="color">
+    /// The color; its alpha channel is ignored.
+    /// </param>
+    /// <returns>
+    /// The <see cref="HsvColor" />.
+    /// </returns>
+    public static HsvColor ConvertRgbToHsv(Color color)
+        => ConvertRgbToHsvCore(
+            color.R,
+            color.G,
+            color.B);
+
+    /// <summary>
+    /// Converts an RGB color to an HSV color.
+    /// </summary>
     /// <param name="r">
     /// The r.
     /// </param>
@@ -20,10 +35,24 @@ public static class HsvColorUtil
     /// <returns>
     /// The <see cref="HsvColor" />.
     /// </returns>
+    /// <remarks>
+    /// The parameters are declared in (r, b, g) order, so a positional (r, g, b) call swaps the green and blue channels.
+    /// </remarks>
+    [SuppressMessage("Major Code Smell", "S1133:Deprecated code should be removed", Justification = "Kept for binary compatibility.")]
+    [Obsolete("Use ConvertRgbToHsv(Color); this overload takes the channels in (r, b, g) order.")]
     public static HsvColor ConvertRgbToHsv(
         int r,
         int b,
         int g)
+        => ConvertRgbToHsvCore(
+            r,
+            g,
+            b);
+
+    private static HsvColor ConvertRgbToHsvCore(
+        int r,
+        int g,
+        int b)
     {
         double h = 0;
         double s;
