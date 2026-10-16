@@ -304,7 +304,7 @@ public partial class ApplicationMonitorView
     private void OnApplicationMonitorScrollEvent(
         ApplicationMonitorScrollEvent obj)
     {
-        _ = Dispatcher.CurrentDispatcher.BeginInvokeIfRequired(() =>
+        _ = Dispatcher.BeginInvokeIfRequired(() =>
         {
             if (LvEntries.Items.Count <= 0)
             {
@@ -313,7 +313,7 @@ public partial class ApplicationMonitorView
 
             if (isUserDetached)
             {
-                NewSinceDetached++;
+                NewSinceDetached += obj.AddedCount;
                 return;
             }
 

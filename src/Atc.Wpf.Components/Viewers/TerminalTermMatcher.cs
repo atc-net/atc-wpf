@@ -20,9 +20,18 @@ internal static class TerminalTermMatcher
             return false;
         }
 
-        int index;
-        while ((index = line.IndexOf(term, comparison)) >= 0)
+        // Search from an offset into the full line, so the character before a later occurrence is still visible
+        // for the boundary check (slicing the line away would make "aa" match inside "xaaa").
+        var start = 0;
+        while (start <= line.Length - term.Length)
         {
+            var found = line[start..].IndexOf(term, comparison);
+            if (found < 0)
+            {
+                return false;
+            }
+
+            var index = start + found;
             var end = index + term.Length;
             var atStart = index == 0 || !IsWordChar(line[index - 1]);
             var atEnd = end == line.Length || !IsWordChar(line[end]);
@@ -32,7 +41,7 @@ internal static class TerminalTermMatcher
                 return true;
             }
 
-            line = line[(index + 1)..];
+            start = index + 1;
         }
 
         return false;

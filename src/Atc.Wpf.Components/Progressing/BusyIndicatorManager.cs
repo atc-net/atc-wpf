@@ -50,7 +50,7 @@ public static class BusyIndicatorManager
     {
         var token = new BusyToken { RegionName = regionName };
         var cts = allowCancellation ? new CancellationTokenSource() : null;
-        var session = new BusySession(cts);
+        var session = new BusySession(cts) { RegionName = regionName };
 
         ActiveSessions[token.Id] = session;
 
@@ -83,6 +83,12 @@ public static class BusyIndicatorManager
         }
 
         session.Cts?.Dispose();
+
+        if (IsRegionBusy(token.RegionName))
+        {
+            // Another session still owns the region, so its overlay stays up.
+            return;
+        }
 
         if (!dispatcher.CheckAccess())
         {
@@ -242,10 +248,13 @@ public static class BusyIndicatorManager
         bool allowCancellation,
         CancellationTokenSource? cts)
     {
-        if (ActiveSessions.TryGetValue(token.Id, out var session))
+        if (!ActiveSessions.TryGetValue(token.Id, out var session))
         {
-            session.RegionName = token.RegionName;
+            // Hidden before this queued apply ran; showing now would leave the overlay stuck.
+            return;
         }
+
+        session.RegionName = token.RegionName;
 
         foreach (var overlay in GetOverlays(token.RegionName))
         {
@@ -275,6 +284,9 @@ public static class BusyIndicatorManager
             overlay.IsBusy = true;
         }
     }
+
+    private static bool IsRegionBusy(string regionName)
+        => ActiveSessions.Values.Any(s => string.Equals(s.RegionName, regionName, StringComparison.Ordinal));
 
     private static void ClearOverlays(string regionName)
     {

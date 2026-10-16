@@ -40,4 +40,12 @@ public sealed class TerminalTermMatcherTests
     [Fact]
     public void ContainsTermAsWord_CaseSensitiveComparison_RespectsCase()
         => Assert.False(TerminalTermMatcher.ContainsTermAsWord("ERROR", "error", StringComparison.Ordinal));
+
+    [Theory]
+    [InlineData("xaaa", "aa")]
+    [InlineData("aaax", "aa")]
+    public void ContainsTermAsWord_OverlappingOccurrencesInsideAWord_DoesNotMatch(
+        string line,
+        string term)
+        => Assert.False(TerminalTermMatcher.ContainsTermAsWord(line, term, StringComparison.OrdinalIgnoreCase));
 }

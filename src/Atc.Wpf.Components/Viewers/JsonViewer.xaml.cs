@@ -43,6 +43,15 @@ public partial class JsonViewer
     }
 
     /// <summary>
+    /// Removes the displayed JSON tree.
+    /// </summary>
+    public void Clear()
+    {
+        JsonTreeView.ItemsSource = null;
+        JsonTreeView.Items.Clear();
+    }
+
+    /// <summary>
     /// Parses the JSON text and shows it in the tree view. Empty input is ignored; invalid JSON
     /// is reported in a message box (the invalid-format message is skipped when
     /// <c>SuppressErrorMessages</c> is set).
@@ -143,19 +152,15 @@ public partial class JsonViewer
         DependencyObject d,
         DependencyPropertyChangedEventArgs args)
     {
-        if (args.NewValue is null)
-        {
-            return;
-        }
-
-        var jsonData = args.NewValue.ToString();
-        if (string.IsNullOrEmpty(jsonData))
-        {
-            return;
-        }
-
         if (d is not JsonViewer jsonViewer)
         {
+            return;
+        }
+
+        var jsonData = args.NewValue?.ToString();
+        if (string.IsNullOrEmpty(jsonData))
+        {
+            jsonViewer.Clear();
             return;
         }
 
@@ -205,7 +210,21 @@ public partial class JsonViewer
         }
         else
         {
-            itemGen.StatusChanged += (_, _) => Recurse(items, isExpanded, itemGen);
+            itemGen.StatusChanged += OnStatusChanged;
+
+            void OnStatusChanged(
+                object? sender,
+                EventArgs e)
+            {
+                if (itemGen.Status != GeneratorStatus.ContainersGenerated)
+                {
+                    return;
+                }
+
+                // One shot: otherwise every Expand/Collapse All leaves another handler behind.
+                itemGen.StatusChanged -= OnStatusChanged;
+                Recurse(items, isExpanded, itemGen);
+            }
         }
     }
 

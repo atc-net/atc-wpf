@@ -27,6 +27,7 @@ public sealed partial class TerminalViewer : IDisposable
     private Regex? compiledSearchRegex;
     private int nextLineNumber = 1;
     private AnsiSgrState ansiState = AnsiSgrState.Default;
+    private bool isDisposed;
     private ScrollViewer? cachedScrollViewer;
 
     // Snapshot fields read by the background drain loop. Reading DP-backed
@@ -306,6 +307,13 @@ public sealed partial class TerminalViewer : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
+        if (isDisposed)
+        {
+            return;
+        }
+
+        isDisposed = true;
+
         Messenger.Default.UnRegister<TerminalReceivedDataEventArgs>(this, TerminalReceivedDataHandle);
         Messenger.Default.UnRegister<TerminalClearEventArgs>(this, TerminalClearEventArgsHandle);
 
@@ -847,17 +855,7 @@ public sealed partial class TerminalViewer : IDisposable
     }
 
     private void TrimToCap()
-    {
-        if (MaxLines <= 0)
-        {
-            return;
-        }
-
-        while (ListViewTerminal.Items.Count > MaxLines)
-        {
-            ListViewTerminal.Items.RemoveAt(0);
-        }
-    }
+        => TerminalLineTrimmer.TrimToCap(ListViewTerminal.Items, MaxLines);
 
     private void UpdateBufferedCount()
     {

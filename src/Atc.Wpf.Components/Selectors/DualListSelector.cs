@@ -972,10 +972,10 @@ public sealed partial class DualListSelector : Control
         {
             var item = items[0];
             var oldIndex = SelectedItems.IndexOf(item);
-            var dropIndex = System.Math.Clamp(
+            var dropIndex = GetReorderTargetIndex(
+                oldIndex,
                 DragDropHelper.GetInsertIndex(selectedListBox, e),
-                0,
-                SelectedItems.Count - 1);
+                SelectedItems.Count);
 
             if (oldIndex != dropIndex && oldIndex >= 0)
             {
@@ -1096,6 +1096,22 @@ public sealed partial class DualListSelector : Control
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Converts an insertion index (insert before that item) into the target index for
+    /// <see cref="ObservableCollection{T}.Move"/>, which removes the dragged item before inserting it.
+    /// </summary>
+    internal static int GetReorderTargetIndex(
+        int oldIndex,
+        int insertIndex,
+        int count)
+    {
+        var target = insertIndex > oldIndex
+            ? insertIndex - 1
+            : insertIndex;
+
+        return System.Math.Clamp(target, 0, System.Math.Max(0, count - 1));
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - Item count and empty text update.")]

@@ -5,4 +5,10 @@ namespace Atc.Wpf.Components.Monitoring;
 /// </summary>
 /// <param name="Direction">The current sort direction, which determines whether the newest entry is at the top or the bottom.</param>
 public record ApplicationMonitorScrollEvent(
-    ListSortDirection Direction);
+    ListSortDirection Direction)
+{
+    /// <summary>
+    /// Gets the number of entries added by the batch that raised this event. Defaults to 1.
+    /// </summary>
+    public int AddedCount { get; init; } = 1;
+}
