@@ -440,7 +440,6 @@ public partial class NiceWindow : WindowChromeWindow
 
         DataContextChanged += OnDataContextChanged;
         Loaded += OnLoaded;
-        ContentRendered += OnContentRendered;
     }
 
     /// <inheritdoc />
@@ -876,13 +875,6 @@ public partial class NiceWindow : WindowChromeWindow
             CornerPreference = backupCornerPreference;
         }
     }
-
-    private static void OnContentRendered(
-        object? sender,
-        EventArgs e)
-        => CultureManager.SetCultures(
-            GlobalizationConstants.EnglishCultureInfo,
-            CultureManager.UiCulture);
 
     private void InitializeSettingsBehavior()
     {
