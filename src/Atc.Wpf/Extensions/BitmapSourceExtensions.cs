@@ -135,7 +135,9 @@ public static class BitmapSourceExtensions
     }
 
     /// <summary>
-    /// Creates a new bitmap with every byte of each 4-byte pixel (including alpha) inverted.
+    /// Creates a new <see cref="PixelFormats.Bgra32"/> bitmap with the color channels of every pixel inverted.
+    /// The alpha channel is kept, so an opaque image stays opaque; premultiplied and non-32-bit sources are
+    /// converted to <see cref="PixelFormats.Bgra32"/> first.
     /// </summary>
     public static BitmapSource InvertColors(this BitmapSource bitmapSource)
     {
@@ -143,26 +145,29 @@ public static class BitmapSourceExtensions
 
         bitmapSource = bitmapSource.EnsureRelativeUriLocation();
 
-        var stride = bitmapSource.GetStride();
-        var length = stride * bitmapSource.PixelHeight;
+        BitmapSource source = bitmapSource.Format == PixelFormats.Bgra32
+            ? bitmapSource
+            : new FormatConvertedBitmap(bitmapSource, PixelFormats.Bgra32, destinationPalette: null, alphaThreshold: 0);
 
-        var data = new byte[length];
-        bitmapSource.CopyPixels(data, stride, 0);
+        const int bytesPerPixel = 4;
+        var stride = source.PixelWidth * bytesPerPixel;
+        var data = new byte[stride * source.PixelHeight];
+        source.CopyPixels(data, stride, 0);
 
-        for (var i = 0; i < length; i += 4)
+        // Byte 3 of every pixel is the alpha channel and is left as is.
+        for (var i = 0; i < data.Length; i += bytesPerPixel)
         {
-            data[i] = (byte)(255 - data[i]);            // R
+            data[i] = (byte)(255 - data[i]);            // B
             data[i + 1] = (byte)(255 - data[i + 1]);    // G
-            data[i + 2] = (byte)(255 - data[i + 2]);    // B
-            data[i + 3] = (byte)(255 - data[i + 3]);    // A
+            data[i + 2] = (byte)(255 - data[i + 2]);    // R
         }
 
         return BitmapSource.Create(
-            bitmapSource.PixelWidth,
-            bitmapSource.PixelHeight,
-            bitmapSource.DpiX,
-            bitmapSource.DpiY,
-            bitmapSource.Format,
+            source.PixelWidth,
+            source.PixelHeight,
+            source.DpiX,
+            source.DpiY,
+            PixelFormats.Bgra32,
             palette: null,
             data,
             stride);
