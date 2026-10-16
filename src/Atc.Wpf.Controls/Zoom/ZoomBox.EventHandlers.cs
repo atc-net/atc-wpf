@@ -474,15 +474,18 @@ public partial class ZoomBox
         object oldContent,
         object newContent)
     {
-        ArgumentNullException.ThrowIfNull(newContent);
-
         base.OnContentChanged(oldContent, newContent);
-        if (oldContent != null)
+
+        // The content may be cleared or be a data object shown through a template.
+        if (oldContent is FrameworkElement oldElement)
         {
-            ((FrameworkElement)oldContent).SizeChanged -= SetZoomInitialPosition;
+            oldElement.SizeChanged -= SetZoomInitialPosition;
         }
 
-        ((FrameworkElement)newContent).SizeChanged += SetZoomInitialPosition;
+        if (newContent is FrameworkElement newElement)
+        {
+            newElement.SizeChanged += SetZoomInitialPosition;
+        }
     }
 
     /// <summary>
