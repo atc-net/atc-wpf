@@ -266,10 +266,39 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     }
 
     private bool CanScan()
-        => StartIpAddress is not null &&
-           IPAddress.TryParse((string?)StartIpAddress, out _) &&
-           EndIpAddress is not null &&
-           IPAddress.TryParse((string?)EndIpAddress, out _);
+        => IsValidIpv4Range(StartIpAddress, EndIpAddress);
+
+    /// <summary>
+    /// The scanner only handles IPv4 ranges whose start is not above the end; anything else makes
+    /// <c>GetAddressesInRange</c> throw, so it must never reach the scan.
+    /// </summary>
+    internal static bool IsValidIpv4Range(
+        string? start,
+        string? end)
+        => TryParseIpv4(start, out var startAddress) &&
+           TryParseIpv4(end, out var endAddress) &&
+           ToUInt32(startAddress) <= ToUInt32(endAddress);
+
+    private static bool TryParseIpv4(
+        string? text,
+        out IPAddress address)
+    {
+        if (IPAddress.TryParse(text, out var parsed) &&
+            parsed.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+        {
+            address = parsed;
+            return true;
+        }
+
+        address = IPAddress.None;
+        return false;
+    }
+
+    private static uint ToUInt32(IPAddress address)
+    {
+        var bytes = address.GetAddressBytes();
+        return ((uint)bytes[0] << 24) | ((uint)bytes[1] << 16) | ((uint)bytes[2] << 8) | bytes[3];
+    }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "User-facing error handling requires catching all exceptions.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Scan operation requires sequential setup, execution, and cleanup.")]
@@ -282,30 +311,34 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
         Entries.Clear();
         entriesByIp.Clear();
 
-        var startIp = IPAddress.Parse(StartIpAddress!);
-        var endIp = IPAddress.Parse(EndIpAddress!);
-        totalIpCount = IPv4AddressHelper.GetAddressesInRange(startIp, endIp).Count;
-        UpdateEntryCountInfo();
-
         BusyIndicatorMaximumValue = 0;
         BusyIndicatorCurrentValue = 0;
         BusyIndicatorPercentageValue = string.Empty;
         CompletionTime = null;
 
-        StartElapsedTimer();
-
-        var ipScannerConfig = new IPScannerConfig(IPServicePortExaminationLevel.WellKnown);
-        using var ipScanner = new IPScanner(ipScannerConfig);
-
-        if (PortsNumbers.Count > 0)
-        {
-            ipScanner.Configuration.PortNumbers = PortsNumbers;
-        }
-
-        ipScanner.ProgressReporting += IpScannerOnProgressReporting;
+        IPScanner? ipScanner = null;
 
         try
         {
+            // Inside the try, so an invalid range ends up in ErrorMessage and releases IsBusy like every
+            // other failure instead of escaping the command.
+            var startIp = IPAddress.Parse(StartIpAddress!);
+            var endIp = IPAddress.Parse(EndIpAddress!);
+            totalIpCount = IPv4AddressHelper.GetAddressesInRange(startIp, endIp).Count;
+            UpdateEntryCountInfo();
+
+            StartElapsedTimer();
+
+            var ipScannerConfig = new IPScannerConfig(IPServicePortExaminationLevel.WellKnown);
+            ipScanner = new IPScanner(ipScannerConfig);
+
+            if (PortsNumbers.Count > 0)
+            {
+                ipScanner.Configuration.PortNumbers = PortsNumbers;
+            }
+
+            ipScanner.ProgressReporting += IpScannerOnProgressReporting;
+
             var ipScanResults = await ipScanner
                 .ScanRange(startIp, endIp, cancellationToken)
                 .ConfigureAwait(true);
@@ -347,7 +380,12 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
         finally
         {
             StopElapsedTimer();
-            ipScanner.ProgressReporting -= IpScannerOnProgressReporting;
+            if (ipScanner is not null)
+            {
+                ipScanner.ProgressReporting -= IpScannerOnProgressReporting;
+            }
+
+            ipScanner?.Dispose();
             IsBusy = false;
         }
     }

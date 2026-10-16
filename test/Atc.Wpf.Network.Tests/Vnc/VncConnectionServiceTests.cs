@@ -111,4 +111,41 @@ public sealed class VncConnectionServiceTests
         client.Framebuffer.Returns(new VncFramebuffer(4, 4, "test", new VncPixelFormat()));
         return client;
     }
+
+    [WpfFact]
+    public async Task DisconnectAsync_WhenTheClientThrows_StillCleansUpAndReportsDisconnected()
+    {
+        var client = CreateConnectableClient();
+        client
+            .Disconnect()
+            .Returns(Task.FromException(new IOException("socket closed")));
+
+        using var service = new VncConnectionService((_, _) => client);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+        Assert.True(service.IsConnected);
+
+        var disconnectedCount = 0;
+        service.Disconnected += (_, _) => disconnectedCount++;
+
+        var exception = await Record.ExceptionAsync(service.DisconnectAsync);
+
+        Assert.Null(exception);
+        Assert.False(service.IsConnected);
+        Assert.Null(service.CurrentFrame);
+        Assert.Equal(1, disconnectedCount);
+    }
+
+    [WpfFact]
+    public async Task ConnectAsync_FailingReconnectAfterALiveSession_ReportsDisconnected()
+    {
+        var client = CreateConnectableClient();
+        using var service = new VncConnectionService((_, _) => client);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+        Assert.True(service.IsConnected);
+
+        client.Connect(Arg.Any<CancellationToken>()).Returns(false);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+
+        Assert.False(service.IsConnected);
+    }
 }
