@@ -16,6 +16,7 @@ public sealed class ClipboardService : IClipboardService
 
     private HwndSource? hwndSource;
     private bool disposed;
+    private int maxHistorySize = DefaultMaxHistorySize;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ClipboardService"/> class.
@@ -43,7 +44,20 @@ public sealed class ClipboardService : IClipboardService
     }
 
     /// <inheritdoc />
-    public int MaxHistorySize { get; set; } = DefaultMaxHistorySize;
+    public int MaxHistorySize
+    {
+        get => maxHistorySize;
+        set
+        {
+            ArgumentOutOfRangeException.ThrowIfNegative(value);
+
+            lock (historyLock)
+            {
+                maxHistorySize = value;
+                TrimHistory();
+            }
+        }
+    }
 
     /// <inheritdoc />
     public bool IsMonitoring => hwndSource is not null;
@@ -53,8 +67,10 @@ public sealed class ClipboardService : IClipboardService
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        ExecuteClipboardOperation(() => System.Windows.Clipboard.SetText(text));
-        AddHistoryEntry(ClipboardDataType.Text, text, TruncateText(text));
+        if (ExecuteClipboardOperation(() => System.Windows.Clipboard.SetText(text)))
+        {
+            AddHistoryEntry(ClipboardDataType.Text, text, TruncateText(text));
+        }
     }
 
     /// <inheritdoc />
@@ -70,10 +86,11 @@ public sealed class ClipboardService : IClipboardService
     {
         ArgumentNullException.ThrowIfNull(image);
 
-        ExecuteClipboardOperation(() => System.Windows.Clipboard.SetImage(image));
-
-        var summary = $"Image {(int)image.Width}x{(int)image.Height}";
-        AddHistoryEntry(ClipboardDataType.Image, image, summary);
+        if (ExecuteClipboardOperation(() => System.Windows.Clipboard.SetImage(image)))
+        {
+            var summary = $"Image {(int)image.Width}x{(int)image.Height}";
+            AddHistoryEntry(ClipboardDataType.Image, image, summary);
+        }
     }
 
     /// <inheritdoc />
@@ -89,10 +106,11 @@ public sealed class ClipboardService : IClipboardService
     {
         ArgumentNullException.ThrowIfNull(fileDropList);
 
-        ExecuteClipboardOperation(() => System.Windows.Clipboard.SetFileDropList(fileDropList));
-
-        var summary = $"{fileDropList.Count} file{(fileDropList.Count == 1 ? string.Empty : "s")}";
-        AddHistoryEntry(ClipboardDataType.FileDropList, fileDropList, summary);
+        if (ExecuteClipboardOperation(() => System.Windows.Clipboard.SetFileDropList(fileDropList)))
+        {
+            var summary = $"{fileDropList.Count} file{(fileDropList.Count == 1 ? string.Empty : "s")}";
+            AddHistoryEntry(ClipboardDataType.FileDropList, fileDropList, summary);
+        }
     }
 
     /// <inheritdoc />
@@ -111,8 +129,10 @@ public sealed class ClipboardService : IClipboardService
         ArgumentNullException.ThrowIfNull(format);
         ArgumentNullException.ThrowIfNull(data);
 
-        ExecuteClipboardOperation(() => System.Windows.Clipboard.SetData(format, data));
-        AddHistoryEntry(ClipboardDataType.Other, data, $"Format: {format}");
+        if (ExecuteClipboardOperation(() => System.Windows.Clipboard.SetData(format, data)))
+        {
+            AddHistoryEntry(ClipboardDataType.Other, data, $"Format: {format}");
+        }
     }
 
     /// <inheritdoc />
@@ -131,7 +151,9 @@ public sealed class ClipboardService : IClipboardService
 
     /// <inheritdoc />
     public void Clear()
-        => ExecuteClipboardOperation(System.Windows.Clipboard.Clear);
+    {
+        ExecuteClipboardOperation(System.Windows.Clipboard.Clear);
+    }
 
     /// <inheritdoc />
     public void ClearHistory()
@@ -198,25 +220,41 @@ public sealed class ClipboardService : IClipboardService
             : string.Concat(singleLine.AsSpan(0, SummaryMaxLength), "...");
     }
 
-    private static void ExecuteClipboardOperation(Action operation)
+    /// <summary>
+    /// Runs a clipboard operation on the dispatcher thread (the WPF clipboard needs an STA thread).
+    /// </summary>
+    /// <returns><see langword="true"/> when the operation ran; <see langword="false"/> when the clipboard was unavailable.</returns>
+    private bool ExecuteClipboardOperation(Action operation)
     {
         try
         {
-            operation();
+            if (dispatcher.CheckAccess())
+            {
+                operation();
+            }
+            else
+            {
+                dispatcher.Invoke(operation);
+            }
+
+            return true;
         }
-        catch (ExternalException)
+        catch (Exception ex) when (ex is ExternalException or ThreadStateException)
         {
-            // Clipboard is locked by another process — silently ignore.
+            // Clipboard is locked by another process or unavailable — silently ignore.
+            return false;
         }
     }
 
-    private static T? ExecuteClipboardOperation<T>(Func<T> operation)
+    private T? ExecuteClipboardOperation<T>(Func<T> operation)
     {
         try
         {
-            return operation();
+            return dispatcher.CheckAccess()
+                ? operation()
+                : dispatcher.Invoke(operation);
         }
-        catch (ExternalException)
+        catch (Exception ex) when (ex is ExternalException or ThreadStateException)
         {
             return default;
         }
@@ -227,22 +265,70 @@ public sealed class ClipboardService : IClipboardService
         object? data,
         string summary)
     {
-        var entry = new ClipboardEntry
+        // While monitoring, the clipboard listener records the change (and raises ClipboardChanged),
+        // so adding it here as well would duplicate the entry.
+        if (IsMonitoring)
+        {
+            return;
+        }
+
+        TryAddHistoryEntry(new ClipboardEntry
         {
             DataType = dataType,
             Data = data,
             Timestamp = DateTime.Now,
             Summary = summary,
-        };
+        });
+    }
 
+    /// <summary>
+    /// Adds the entry to the front of the history unless it carries the same content as the newest entry.
+    /// Windows raises more than one clipboard update for a single OLE write (set followed by flush),
+    /// so an identical consecutive snapshot is treated as an echo of the previous one.
+    /// </summary>
+    /// <returns><see langword="true"/> when the entry was added; <see langword="false"/> when it duplicated the newest entry.</returns>
+    private bool TryAddHistoryEntry(ClipboardEntry entry)
+    {
         lock (historyLock)
         {
-            history.Insert(0, entry);
-
-            while (history.Count > MaxHistorySize)
+            if (history.Count > 0 && HasSameContent(history[0], entry))
             {
-                history.RemoveAt(history.Count - 1);
+                return false;
             }
+
+            history.Insert(0, entry);
+            TrimHistory();
+            return true;
+        }
+    }
+
+    private static bool HasSameContent(
+        ClipboardEntry existing,
+        ClipboardEntry candidate)
+    {
+        if (existing.DataType != candidate.DataType)
+        {
+            return false;
+        }
+
+        return candidate.DataType switch
+        {
+            ClipboardDataType.Text => string.Equals(existing.Data as string, candidate.Data as string, StringComparison.Ordinal),
+            ClipboardDataType.FileDropList => existing.Data is StringCollection existingFiles &&
+                                              candidate.Data is StringCollection candidateFiles &&
+                                              existingFiles.Cast<string>().SequenceEqual(candidateFiles.Cast<string>(), StringComparer.OrdinalIgnoreCase),
+            _ => false,
+        };
+    }
+
+    /// <summary>
+    /// Removes the oldest entries until the history fits <see cref="MaxHistorySize"/>. Call under <see cref="historyLock"/>.
+    /// </summary>
+    private void TrimHistory()
+    {
+        if (history.Count > maxHistorySize)
+        {
+            history.RemoveRange(maxHistorySize, history.Count - maxHistorySize);
         }
     }
 
@@ -290,18 +376,8 @@ public sealed class ClipboardService : IClipboardService
         handled = true;
 
         var entry = CreateSnapshotEntry();
-        if (entry is not null)
+        if (entry is not null && TryAddHistoryEntry(entry))
         {
-            lock (historyLock)
-            {
-                history.Insert(0, entry);
-
-                while (history.Count > MaxHistorySize)
-                {
-                    history.RemoveAt(history.Count - 1);
-                }
-            }
-
             ClipboardChanged?.Invoke(this, new ClipboardChangedEventArgs(entry));
         }
 
