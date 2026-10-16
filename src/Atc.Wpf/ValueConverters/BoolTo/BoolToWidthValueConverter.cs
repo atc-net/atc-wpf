@@ -38,17 +38,16 @@ public sealed class BoolToWidthValueConverter : IValueConverter
                 : 0;
         }
 
-        var lengthConverter = new LengthConverter();
         var s = parameter.ToString();
         if (s is null)
         {
             return 0;
         }
 
-        var convertFromString = lengthConverter.ConvertFromString(s);
-        width = convertFromString is not null &&
-                double.TryParse(convertFromString.ToString(), NumberStyles.Any, GlobalizationConstants.EnglishCultureInfo, out var result)
-            ? result
+        // The parameter is XAML text, so it is read the way XAML reads lengths: independent of the current culture.
+        var lengthConverter = new LengthConverter();
+        width = lengthConverter.ConvertFromInvariantString(s) is double length
+            ? length
             : 0;
 
         return boolValue
