@@ -798,17 +798,22 @@ public sealed partial class TerminalViewer : IDisposable
         var addedCount = 0;
         foreach (var line in batch.SelectMany(e => e.Lines))
         {
+            var text = line;
             IReadOnlyList<TerminalRun>? runs = null;
             if (enableAnsiParsingSnapshot && AnsiSequenceParser.ContainsEscapeSequence(line))
             {
                 var (parsedRuns, newState) = AnsiSequenceParser.Parse(line, ansiState);
                 ansiState = newState;
                 runs = parsedRuns;
+
+                // Keep the escape codes out of Text so copy, export, search and the keyword colouring
+                // see what the terminal shows; the runs carry the colours for rendering.
+                text = string.Concat(parsedRuns.Select(r => r.Text));
             }
 
             var item = new TerminalLineItem(
-                line,
-                GetColorForLine(line))
+                text,
+                GetColorForLine(text))
             {
                 Timestamp = DateTimeOffset.Now,
                 LineNumber = nextLineNumber++,
@@ -1012,7 +1017,7 @@ public sealed partial class TerminalViewer : IDisposable
 
             foreach (var term in terms)
             {
-                if (ContainsTermAsWord(
+                if (TerminalTermMatcher.ContainsTermAsWord(
                         lineSpan,
                         term.AsSpan(),
                         cmp))
@@ -1023,30 +1028,5 @@ public sealed partial class TerminalViewer : IDisposable
         }
 
         return DefaultTextColor;
-    }
-
-    private static bool ContainsTermAsWord(
-        ReadOnlySpan<char> line,
-        ReadOnlySpan<char> term,
-        StringComparison comparison)
-    {
-        int index;
-        while ((index = line.IndexOf(
-                   term,
-                   comparison)) >= 0)
-        {
-            var atStart = index == 0 || char.IsWhiteSpace(line[index - 1]);
-            var end = index + term.Length;
-            var atEnd = end == line.Length || (end < line.Length && char.IsWhiteSpace(line[end]));
-
-            if (atStart && atEnd)
-            {
-                return true;
-            }
-
-            line = line[(index + 1)..];
-        }
-
-        return false;
     }
 }

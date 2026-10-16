@@ -3,7 +3,7 @@ namespace Atc.Wpf.Components.Viewers;
 /// <summary>
 /// A single line of output shown in the <see cref="TerminalViewer"/>.
 /// </summary>
-/// <param name="Text">The line text.</param>
+/// <param name="Text">The line text as displayed. With ANSI parsing enabled the escape sequences are removed, so copy, export and search see plain text.</param>
 /// <param name="Foreground">The brush used to draw the line text.</param>
 public record TerminalLineItem(
     string Text,

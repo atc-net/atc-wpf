@@ -122,7 +122,8 @@ The zoom shortcuts accept both the main keyboard row and the numeric keypad (`Ct
 
 - Data arrives via messenger events (`TerminalReceivedDataEventArgs`); set `TerminalId` on the message to address a single viewer
 - Processing uses `System.Threading.Channels` for async queuing
-- Term matching is word-boundary-aware (matches whole words, not substrings)
+- Term matching is word-boundary-aware: a term matches as a whole word, delimited by anything that is not a letter, digit or underscore, so `error` matches `error:` and `[error]` but not `errors`
+- With `EnableAnsiParsing` on (the default), ANSI escape sequences are rendered as colours and removed from `TerminalLineItem.Text`, so copy, export, search and term matching work on the plain text
 - The control implements `IDisposable` — dispose when no longer needed
 - Priority order for color matching: Error > Success > Terms1 > Terms2 > Terms3 > Default
 

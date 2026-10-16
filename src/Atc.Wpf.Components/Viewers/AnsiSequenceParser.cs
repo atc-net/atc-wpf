@@ -31,6 +31,19 @@ public static class AnsiSequenceParser
         => !string.IsNullOrEmpty(text) && text.Contains(Esc, StringComparison.Ordinal);
 
     /// <summary>
+    /// Returns <paramref name="text"/> with every ANSI CSI escape sequence removed, that is, the text a
+    /// terminal would display. A line without escape sequences is returned as is.
+    /// </summary>
+    public static string Strip(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        return ContainsEscapeSequence(text)
+            ? EscapeSequenceRegex.Replace(text, string.Empty)
+            : text;
+    }
+
+    /// <summary>
     /// Splits <paramref name="text"/> into runs and returns the SGR state
     /// that survives at end-of-line — pass that back as <paramref name="state"/>
     /// for the next line so colours can span lines.
