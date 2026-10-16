@@ -147,6 +147,8 @@ public static class AnimateAttach
             return;
         }
 
+        element.Loaded -= OnElementLoaded;
+
         var kind = (AnimationKind)e.NewValue;
         if (kind == AnimationKind.None)
         {
@@ -182,17 +184,26 @@ public static class AnimateAttach
             return;
         }
 
+        var descriptor = DependencyPropertyDescriptor.FromProperty(
+            UIElement.VisibilityProperty,
+            element.GetType());
+
+        if (descriptor is null)
+        {
+            return;
+        }
+
+        // Always drop the previous subscription first: AddValueChanged keeps a strong
+        // reference to the element, so stacking handlers would leak it.
+        descriptor.RemoveValueChanged(element, OnVisibilityChanged);
+
         var kind = (AnimationKind)e.NewValue;
         if (kind == AnimationKind.None)
         {
             return;
         }
 
-        var descriptor = DependencyPropertyDescriptor.FromProperty(
-            UIElement.VisibilityProperty,
-            element.GetType());
-
-        descriptor?.AddValueChanged(element, OnVisibilityChanged);
+        descriptor.AddValueChanged(element, OnVisibilityChanged);
     }
 
     private static void OnVisibilityChanged(
