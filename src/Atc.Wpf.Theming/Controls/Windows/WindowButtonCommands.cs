@@ -270,15 +270,12 @@ public sealed class WindowButtonCommands : ContentControl
             System.Windows.SystemCommands.CloseWindowCommand,
             CloseWindow));
 
+        // The parent window exists only once the control is in a tree; NiceWindow sets it earlier itself.
+        Loaded += WindowButtonCommandsLoaded;
+
         this.Invoke(
             () =>
             {
-                if (ParentWindow is null)
-                {
-                    var window = this.TryFindParent<Window>();
-                    SetValue(ParentWindowPropertyKey, window);
-                }
-
                 if (string.IsNullOrWhiteSpace(Minimize))
                 {
                     SetCurrentValue(MinimizeProperty, WinApiHelper.GetCaption(900));
@@ -300,6 +297,19 @@ public sealed class WindowButtonCommands : ContentControl
                 }
             },
             DispatcherPriority.Loaded);
+    }
+
+    private void WindowButtonCommandsLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        Loaded -= WindowButtonCommandsLoaded;
+
+        if (ParentWindow is null)
+        {
+            var window = this.TryFindParent<Window>();
+            SetValue(ParentWindowPropertyKey, window);
+        }
     }
 
     private void MinimizeWindow(
