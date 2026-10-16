@@ -81,8 +81,8 @@ public partial class LabelToggleSwitch : ILabelToggleSwitch
             control,
             new ValueChangedEventArgs<bool>(
                 control.Identifier,
-                control.IsOn,
-                !control.IsOn));
+                (bool)e.OldValue,
+                (bool)e.NewValue));
     }
 
     private void OnUiCultureChanged(
