@@ -128,7 +128,7 @@ public static class ColorHelper
             return namedColor;
         }
 
-        return default(Color);
+        return null;
     }
 
     /// <summary>Gets a color from a color name in the current UI culture.</summary>
