@@ -4,7 +4,6 @@ namespace Atc.Wpf.Forms.Internal.Helpers;
 
 internal static class DateTimeTextBoxHelper
 {
-    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "OK.")]
     public static string GetSelectedDateAsText(
         DateTime dateTime,
         DatePickerFormat datePickerFormat,
@@ -19,10 +18,11 @@ internal static class DateTimeTextBoxHelper
             return dateTime.ToString(
                 datePickerFormat == DatePickerFormat.Short
                     ? cultureInfo.DateTimeFormat.ShortDatePattern
-                    : cultureInfo.DateTimeFormat.LongDatePattern);
+                    : cultureInfo.DateTimeFormat.LongDatePattern,
+                cultureInfo);
         }
 
-        var s = dateTime.ToString(cultureInfo.DateTimeFormat.LongDatePattern);
+        var s = dateTime.ToString(cultureInfo.DateTimeFormat.LongDatePattern, cultureInfo);
 
         if (s.StartsWith(nameof(DayOfWeek.Sunday), StringComparison.Ordinal))
         {
