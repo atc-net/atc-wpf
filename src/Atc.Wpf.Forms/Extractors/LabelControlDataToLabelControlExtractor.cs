@@ -66,7 +66,7 @@ public static class LabelControlDataToLabelControlExtractor
                         isMandatory: controlData.IsMandatory,
                         watermarkText: controlData.WatermarkText ?? string.Empty,
                         inputDataType: type,
-                        value: (int?)controlData.Value,
+                        value: controlData.Value is null ? null : Convert.ToDecimal(controlData.Value, CultureInfo.InvariantCulture),
                         minimum: controlData.Minimum,
                         maximum: controlData.Maximum));
                 continue;
