@@ -29,10 +29,7 @@ public sealed class JsonFormatter : ITextFormatter
     {
         ArgumentNullException.ThrowIfNull(document);
 
-        var tr = new TextRange(document.ContentStart, document.ContentEnd);
-        using var memoryStream = new MemoryStream();
-        tr.Save(memoryStream, DataFormats.Rtf);
-        return Encoding.Default.GetString(memoryStream.ToArray());
+        return new TextRange(document.ContentStart, document.ContentEnd).Text;
     }
 
     /// <summary>
@@ -119,12 +116,19 @@ public sealed class JsonFormatter : ITextFormatter
     }
 
     private static void ParseJsonNode(
-         JsonNode jsonNode,
+         JsonNode? jsonNode,
          InlineCollection inlines,
          ref int indentLevel)
     {
         switch (jsonNode)
         {
+            case null:
+            {
+                // A JSON null literal is represented by a null node.
+                inlines.Add(new Run("null") { Foreground = JsonColorSchema.NullBrush });
+                break;
+            }
+
             case JsonObject jsonObject:
             {
                 ParseJsonObject(inlines, ref indentLevel, jsonObject);
@@ -155,11 +159,6 @@ public sealed class JsonFormatter : ITextFormatter
 
         foreach (var kvp in jsonObject)
         {
-            if (kvp.Value is null)
-            {
-                continue;
-            }
-
             AddIndent(inlines, indentLevel);
             inlines.Add(new Run($"\"{kvp.Key}\": ") { Foreground = JsonColorSchema.KeyBrush });
             ParseJsonNode(kvp.Value, inlines, ref indentLevel);
@@ -182,11 +181,6 @@ public sealed class JsonFormatter : ITextFormatter
 
         foreach (var element in jsonArray)
         {
-            if (element is null)
-            {
-                continue;
-            }
-
             AddIndent(inlines, indentLevel);
             ParseJsonNode(element, inlines, ref indentLevel);
             inlines.Add(new Run(",\n") { Foreground = JsonColorSchema.DefaultBrush });
