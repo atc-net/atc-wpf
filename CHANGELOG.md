@@ -4,6 +4,87 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0](https://github.com/atc-net/atc-wpf/compare/v4.0.215...v4.1.0) (2026-10-09)
+
+
+### New features
+
+* **components:** add TrayIcon notification area icon ([fb1f7a9](https://github.com/atc-net/atc-wpf/commit/fb1f7a96d9556796ec0abd8ae0fdabde7178a078))
+* **components:** address terminal output to a specific TerminalViewer ([ca2670f](https://github.com/atc-net/atc-wpf/commit/ca2670fd90a900c7b2509de7934cf34e765c1b80))
+* **components:** render the xterm 256-colour palette in TerminalViewer ([d058b80](https://github.com/atc-net/atc-wpf/commit/d058b80bd00958931561fdd456f1661d4e45eedb))
+* **controls:** add NavigationView shell bound to INavigationService ([78549fa](https://github.com/atc-net/atc-wpf/commit/78549fa3aba433ea8010d25839930887e6db7e23))
+* **forms:** forward UpdateUiCultureOnChangeEvent from LabelCountrySelector ([547188b](https://github.com/atc-net/atc-wpf/commit/547188b4543c0530ff31ac17762fb2abf70e99c3))
+* **hardware:** share picker behaviour and expose service tuning ([5187d15](https://github.com/atc-net/atc-wpf/commit/5187d15fdae772d9c52b8c2a59d662d0831fdc38))
+* **hotkeys:** report global hotkeys that Windows refuses to register ([8cdd071](https://github.com/atc-net/atc-wpf/commit/8cdd071b414115972accbfc3b75955b322e0de0a))
+* improve NetworkValidationRule and EndpointBox to handle hostname ([1336d80](https://github.com/atc-net/atc-wpf/commit/1336d803c8b9ce8f13db453113c69a7d11d2fc62))
+* **sample:** add a right-to-left switch to the sample viewer ([a9a11a8](https://github.com/atc-net/atc-wpf/commit/a9a11a86f102b8ed95a2d3921adefbff63d4f661))
+* **theming:** add Windows 11 backdrops to NiceWindow and keep it intact under ThemeMode ([a3260c5](https://github.com/atc-net/atc-wpf/commit/a3260c565bc575a9c630ef31fb11018d770c2775))
+* **theming:** follow the Windows app mode and accent color ([f04c488](https://github.com/atc-net/atc-wpf/commit/f04c488324a02094004f4c6169bf1d35a4399136))
+* **theming:** follow Windows high contrast ([2c8e03b](https://github.com/atc-net/atc-wpf/commit/2c8e03b337f712dcdc71b745aa20cedfced0d725))
+* **zoom:** make ZoomGridOverlay styling bindable and release it on Detach ([05be68b](https://github.com/atc-net/atc-wpf/commit/05be68bdd3bbc01c0ca820ce60db8beaea6b52cf))
+
+
+### Bug fixes
+
+* **components:** animate a flyout the first time it opens ([7889a86](https://github.com/atc-net/atc-wpf/commit/7889a86519756ef84f8504c51792c7cd15be67c9))
+* **components:** close the oldest toasts when MaxItems is exceeded ([6bea803](https://github.com/atc-net/atc-wpf/commit/6bea8036d9d4c258bfa1799c767f086876e479f2))
+* **components:** keep JSON and terminal content left-to-right in right-to-left layouts ([9845157](https://github.com/atc-net/atc-wpf/commit/984515791746a1f5721b88f5edd3afcfa56d5ab6))
+* **components:** let clicks pass through an empty FlyoutHost ([38bf8d3](https://github.com/atc-net/atc-wpf/commit/38bf8d3e31094c2034875bbd8ad3cf408945066d))
+* **components:** open print preview and desktop toasts in the app's flow direction ([5e65216](https://github.com/atc-net/atc-wpf/commit/5e65216d13e6b9222a150c643a187b1bf399ccbc))
+* **components:** stop CloseAllFlyouts hanging during close animations ([0560b7f](https://github.com/atc-net/atc-wpf/commit/0560b7f16d5e2d192898ca5722c6043d724b7943))
+* **components:** strip private-mode ANSI sequences and truncated colours ([ae6277f](https://github.com/atc-net/atc-wpf/commit/ae6277f59a45ff4605628679c89bca8d1777a154))
+* **controls:** accept lower-case percent and hex letters in NumericBox ([099a07d](https://github.com/atc-net/atc-wpf/commit/099a07daf4f51dc6067a5ac2489f59d6fe334511))
+* **controls:** align UniformSpacingPanel measure with arrange ([ba63f0f](https://github.com/atc-net/atc-wpf/commit/ba63f0fc367a67cee720d6b4f1014d8a28834ee4))
+* **controls:** apply ZoomMiniMap viewport border properties ([ac90a34](https://github.com/atc-net/atc-wpf/commit/ac90a34a494a498bb313d6183bba598703032aac))
+* **controls:** change the UI culture from CountrySelector when enabled ([b78526c](https://github.com/atc-net/atc-wpf/commit/b78526cf3ca9265984683c605193a340f31de909))
+* **controls:** keep country and language flags unmirrored in right-to-left ([2717633](https://github.com/atc-net/atc-wpf/commit/2717633fd625641687ef0386828f2c88734a6095))
+* **controls:** keep ZoomBox content unmirrored when it opens in right-to-left ([0d5b05a](https://github.com/atc-net/atc-wpf/commit/0d5b05ad7955386b552d5699c80395eeb162192f))
+* **controls:** keep ZoomRuler labels readable in right-to-left ([6bdd4eb](https://github.com/atc-net/atc-wpf/commit/6bdd4eb335d4b641c6f11fecaea4851dc1204496))
+* **controls:** let FilePicker and DirectoryPicker inherit the DataContext ([64fac3c](https://github.com/atc-net/atc-wpf/commit/64fac3c230e527a4380ee37a33b91da4d83660af))
+* **controls:** measure VirtualizingStaggeredPanel without infinite sizes ([7e21264](https://github.com/atc-net/atc-wpf/commit/7e21264a880295d56839207612026dbf0a54508d))
+* **controls:** mirror the ZoomMiniMap thumbnail for right-to-left content ([b47b2d1](https://github.com/atc-net/atc-wpf/commit/b47b2d174e6c34809af4316397b4550ec9094506))
+* **controls:** raise the number box LostFocus events once per edit ([fd3820d](https://github.com/atc-net/atc-wpf/commit/fd3820d437fb95c6fa0e8fa31b754a466e6aad67))
+* **controls:** re-arrange ReversibleStackPanel when ReverseOrder changes ([27a81b7](https://github.com/atc-net/atc-wpf/commit/27a81b71e2fae8faf2d046972e0026ba780a45e7))
+* **controls:** share column layout between StaggeredPanel measure and arrange ([8a682ba](https://github.com/atc-net/atc-wpf/commit/8a682bad31efcf27bb189a593ead8ce42bb08779))
+* **controls:** stop theme-change subscriptions from leaking controls ([a3b357a](https://github.com/atc-net/atc-wpf/commit/a3b357a2d292cb2b29e414cf7911e279ff221448))
+* **controls:** swap arrow keys in right-to-left layouts ([1ccbf89](https://github.com/atc-net/atc-wpf/commit/1ccbf8904649593a87c7c3e77f717eb610276173))
+* **dialogs:** correct the DialogBoxSettings placeholder texts and docs ([5b95315](https://github.com/atc-net/atc-wpf/commit/5b95315d3a3d3f291f13c748ff749d2072ac0ccd))
+* **dialogs:** follow the owning window's flow direction ([e326e4f](https://github.com/atc-net/atc-wpf/commit/e326e4fbe949307450ccca5a2109a0e027812f51))
+* **dialogs:** make DialogService cancellation close the open dialog ([7c04c15](https://github.com/atc-net/atc-wpf/commit/7c04c15bd1b938f4139f7d31f9a8e129239eadd5))
+* **forms:** declare the combo box selector events on ILabelComboBoxBase ([8ba9f64](https://github.com/atc-net/atc-wpf/commit/8ba9f6495ab6b27472750cce6e9ace1f4a58c33a))
+* **forms:** make LabelSlider.IsValid validate the current value ([b5ac102](https://github.com/atc-net/atc-wpf/commit/b5ac102c56f0d883cf37916ec5ade074848311a2))
+* **forms:** raise EndpointBox LostFocus events when an editor loses focus ([aec88c5](https://github.com/atc-net/atc-wpf/commit/aec88c51fa0bc10d64fdde696d328cf8a2853421))
+* **forms:** raise TextChanged from LabelDatePicker and LabelTimePicker ([1c2163a](https://github.com/atc-net/atc-wpf/commit/1c2163a14ea0ae6850133c79cb3d7bf8bfcfe754))
+* **forms:** report the previous color from ColorPicker.ColorChanged ([996ad7a](https://github.com/atc-net/atc-wpf/commit/996ad7a76eb99198e19732f077da8c955ebe88e3))
+* **hardware:** keep unplugged devices disconnected after the just-connected delay ([71fca55](https://github.com/atc-net/atc-wpf/commit/71fca55c83705ce6d722b057b1ca983bcca21c68))
+* **hardware:** refresh display and network adapter details while connected ([4de7a43](https://github.com/atc-net/atc-wpf/commit/4de7a4372a91e78022fc198332efac818cc91d31))
+* **hardware:** refresh polled process, window, drive and printer entries ([c9f919c](https://github.com/atc-net/atc-wpf/commit/c9f919c0a2dbb84bba7260cc2d1b85a7fd2176bf))
+* **hardware:** stop the camera and microphone running after unload ([96dcd9b](https://github.com/atc-net/atc-wpf/commit/96dcd9b2d4059fc670da135a76e1061cc614b98d))
+* keep the original exception as inner exception in RtfFormatter and ColorPickerAutomationPeer ([fff08d4](https://github.com/atc-net/atc-wpf/commit/fff08d4058e7b9881a01e3b6f125d02de251bc30))
+* **media:** keep SVG external file references inside the SVG folder ([6b76bc8](https://github.com/atc-net/atc-wpf/commit/6b76bc89c87a8870b2104c34d93edfa49614a1e5))
+* **media:** make the AutoGrey extensions work and keep transparency ([4b75dfa](https://github.com/atc-net/atc-wpf/commit/4b75dfa699d53c2d5b8a303e19399237b18023ac))
+* **media:** render an SvgImage once when it loads and keep custom brushes ([d3c1311](https://github.com/atc-net/atc-wpf/commit/d3c1311c5cce9c19b552d5ea4ae7c09938203741))
+* **network:** report a dropped VNC socket as a disconnect instead of crashing ([3af02c0](https://github.com/atc-net/atc-wpf/commit/3af02c0a41505f2db13d5d00358929a4e5f2d4a1))
+* **notifications:** name the toast factory title parameter title ([ad6cda9](https://github.com/atc-net/atc-wpf/commit/ad6cda98c00110ad2d3871f5d596c559853ce743))
+* **sample:** match readme files from a folder boundary in the sample viewer ([04c56d2](https://github.com/atc-net/atc-wpf/commit/04c56d29b8c6b49baef278c893d63c83f122b565))
+* suppress some coding rules and fix code ([71f6465](https://github.com/atc-net/atc-wpf/commit/71f646551bad7ce294223f07341960cd589cdd0c))
+* **theming:** keep the DatePicker calendar icon unmirrored in right-to-left ([9666f3f](https://github.com/atc-net/atc-wpf/commit/9666f3f328dd5cd1e3039102b085f49b252132cc))
+* **translation:** notify culture subscribers on their own UI thread ([1496ed9](https://github.com/atc-net/atc-wpf/commit/1496ed96701ac20c9738f2023d5c6ce3d463e6c8))
+* **translation:** skip sealed style setters when updating translated values ([2074c09](https://github.com/atc-net/atc-wpf/commit/2074c09abeb46fdb904eb090d3ff1a6ca08ed735))
+* **viewers:** use the JsonPropertyTemplateSelector template properties ([5cb3496](https://github.com/atc-net/atc-wpf/commit/5cb3496f8ddb7963ca2b35e30635c2da69851e5d))
+* **zoom:** reject non-positive or non-finite grid spacing ([4c22453](https://github.com/atc-net/atc-wpf/commit/4c224537b2e61bb9f3818bbdaa6e387a9253d214))
+
+
+### Performance improvements
+
+* **hardware:** enumerate processes and windows off the UI thread ([dbb50a3](https://github.com/atc-net/atc-wpf/commit/dbb50a393f467861ea45ff572bd81419657d59dd))
+* **hardware:** query the print spooler off the UI thread ([7bccafc](https://github.com/atc-net/atc-wpf/commit/7bccafc67a87046eaf1673b080fa61ea4d745ea4))
+* **hardware:** reuse camera preview frame buffers and coalesce renders ([7f9575b](https://github.com/atc-net/atc-wpf/commit/7f9575b7bba4c47ef003332ab499eced99cc760e))
+* **media:** cache AutoGreyableImage greyscale versions per source ([eedc3eb](https://github.com/atc-net/atc-wpf/commit/eedc3eb35f4fc4a9252f901f1c4f16686d837303))
+* **media:** share frozen SVG drawings between images with the same source ([b702644](https://github.com/atc-net/atc-wpf/commit/b70264445d72a9a74692593294f63c81b717a718))
+* **network:** stop refreshing the whole scanner view on every progress report ([c2d14ad](https://github.com/atc-net/atc-wpf/commit/c2d14adce1af70d12a4e2525fca9fe69c9492822))
+* **zoom:** reuse pens and text resources in ZoomRuler and ZoomGridOverlay ([67af5d3](https://github.com/atc-net/atc-wpf/commit/67af5d36d8fc1ac8b6d404ef810fdb022b113321))
+
 ## 4.0.215 (2026-05-12)
 
 ### Added
