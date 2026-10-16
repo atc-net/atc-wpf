@@ -332,7 +332,7 @@ public partial class ZoomBox
             throw new InvalidOperationException("PART_Content was not found in the ZoomBox visual template!");
         }
 
-        ZoomTo(FillZoomValue);
+        AnimatedZoomTo(FitZoomValue);
     }
 
     /// <summary>

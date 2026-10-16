@@ -189,7 +189,8 @@ public partial class ZoomBox
             ContentViewportWidth,
             ContentViewportHeight);
 
-        if (transformedRect.Contains(viewportRect))
+        // Already fully visible: leave the view (and any running offset animation) alone.
+        if (viewportRect.Contains(transformedRect))
         {
             return rectangle;
         }
