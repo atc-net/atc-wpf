@@ -43,7 +43,9 @@ public sealed class MarkupExtensionManager
     /// </summary>
     public void UpdateAllTargets()
     {
-        foreach (var extension in ActiveExtensions)
+        // Updating a target can register new extensions (a new value may re-apply a template that
+        // contains more of them), so iterate a snapshot of the list.
+        foreach (var extension in ActiveExtensions.ToArray())
         {
             extension.UpdateTarget();
         }
