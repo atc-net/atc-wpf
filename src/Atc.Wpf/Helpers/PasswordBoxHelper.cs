@@ -11,7 +11,8 @@ public static class PasswordBoxHelper
         typeof(PasswordBoxHelper),
         new FrameworkPropertyMetadata(
             string.Empty,
-            OnBoundPasswordChanged));
+            OnBoundPasswordChanged,
+            CoerceBoundPassword));
 
     /// <summary>Gets the value of the BoundPassword attached property.</summary>
     public static string GetBoundPassword(DependencyObject obj)
@@ -104,6 +105,22 @@ public static class PasswordBoxHelper
             RevealTextButtonContentTemplateProperty,
             value);
 
+    private static object CoerceBoundPassword(
+        DependencyObject d,
+        object baseValue)
+    {
+        // Coercion runs for every value the property receives, including one that equals the
+        // current value (for which no change callback fires), so this is where the
+        // PasswordChanged subscription is guaranteed to exist as soon as BoundPassword is in use.
+        if (d is PasswordBox pb)
+        {
+            pb.PasswordChanged -= PasswordChanged;
+            pb.PasswordChanged += PasswordChanged;
+        }
+
+        return baseValue;
+    }
+
     private static void OnBoundPasswordChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -128,8 +145,9 @@ public static class PasswordBoxHelper
     {
         if (sender is PasswordBox pb)
         {
-            SetBoundPassword(
-                pb,
+            // SetCurrentValue keeps a one-way binding alive; SetValue would replace it.
+            pb.SetCurrentValue(
+                BoundPasswordProperty,
                 pb.Password);
         }
     }
