@@ -163,7 +163,6 @@ public sealed class ZoomGridOverlay : Adorner
         Pen majorPen,
         bool isVertical)
     {
-        var lineIndex = 0;
         var pos = start;
         var screenPos = (pos - offset) * zoom;
 
@@ -171,7 +170,7 @@ public sealed class ZoomGridOverlay : Adorner
         {
             if (screenPos >= 0)
             {
-                var pen = lineIndex % 5 == 0 ? majorPen : minorPen;
+                var pen = IsMajorLine(pos, spacing) ? majorPen : minorPen;
                 if (isVertical)
                 {
                     dc.DrawLine(pen, new Point(screenPos, 0), new Point(screenPos, crossExtent));
@@ -182,11 +181,19 @@ public sealed class ZoomGridOverlay : Adorner
                 }
             }
 
-            lineIndex++;
             pos += spacing;
             screenPos = (pos - offset) * zoom;
         }
     }
+
+    /// <summary>
+    /// Every fifth line, counted from the content origin, is a major line - so the major lines
+    /// stay on the same content positions while panning (and agree with the rulers).
+    /// </summary>
+    private static bool IsMajorLine(
+        double position,
+        double spacing)
+        => System.Math.Abs(System.Math.Round(position / spacing)) % 5 == 0;
 
     private static double CalculateAdaptiveSpacing(
         double baseSpacing,
