@@ -118,6 +118,34 @@ public sealed class SvgRenderTests
         Assert.Equal(TimeSpan.FromMilliseconds(expectedMilliseconds), animate.Duration);
     }
 
+    [StaTheory]
+    [InlineData("0 0 24 24")]
+    [InlineData("0,0,24,24")]
+    [InlineData("0, 0, 24, 24")]
+    [InlineData("0 0  24 24")]
+    [InlineData("0\t0\n24\r\n24")]
+    public void ViewBox_SeparatedByWhitespaceOrComma_IsParsed(string viewBox)
+    {
+        var svgRender = new SvgRender();
+
+        svgRender.LoadXmlDrawing($"""<svg viewBox="{viewBox}" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" /></svg>""");
+
+        Assert.Equal(new Rect(0, 0, 24, 24), svgRender.Svg!.ViewBox);
+    }
+
+    [StaTheory]
+    [InlineData("0 0 24")]
+    [InlineData("0 0 24 24 1")]
+    [InlineData("a b c d")]
+    public void ViewBox_NotFourNumbers_IsIgnored(string viewBox)
+    {
+        var svgRender = new SvgRender();
+
+        svgRender.LoadXmlDrawing($"""<svg viewBox="{viewBox}" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" /></svg>""");
+
+        Assert.Null(svgRender.Svg!.ViewBox);
+    }
+
     [StaFact]
     public void RadialGradient_FocalPoint_IsNotScaled()
     {

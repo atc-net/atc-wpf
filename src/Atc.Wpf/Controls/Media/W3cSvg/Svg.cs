@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.Media.W3cSvg;
 [SuppressMessage("Maintainability", "S1144:Unused private types or members should be removed", Justification = "OK.")]
 internal sealed class Svg
 {
+    private static readonly char[] ViewBoxSeparators = [' ', ',', '\t', '\r', '\n'];
+
     private List<Shape>? elements;
     private Dictionary<string, Brush>? customBrushes;
 
@@ -319,6 +321,41 @@ internal sealed class Svg
         }
     }
 
+    /// <summary>
+    /// Reads "min-x min-y width height" separated by whitespace and/or commas.
+    /// Anything that is not four numbers with a non-negative size is ignored.
+    /// </summary>
+    private static Rect? ParseViewBox(string value)
+    {
+        var parts = value.Split(
+            ViewBoxSeparators,
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (parts.Length != 4)
+        {
+            return null;
+        }
+
+        var numbers = new double[4];
+        for (var i = 0; i < 4; i++)
+        {
+            if (!double.TryParse(parts[i], NumberStyles.Float, CultureInfo.InvariantCulture, out numbers[i]))
+            {
+                return null;
+            }
+        }
+
+        if (numbers[2] < 0 || numbers[3] < 0)
+        {
+            return null;
+        }
+
+        return new Rect(
+            x: numbers[0],
+            y: numbers[1],
+            width: numbers[2],
+            height: numbers[3]);
+    }
+
     private List<Shape> Parse(XmlNode node)
     {
         ArgumentNullException.ThrowIfNull(node);
@@ -326,13 +363,7 @@ internal sealed class Svg
         var vb = node.Attributes?.GetNamedItem("viewBox");
         if (vb?.Value is not null)
         {
-            var cord = vb.Value.Split(' ');
-            var cult = CultureInfo.InvariantCulture;
-            ViewBox = new Rect(
-                x: double.Parse(cord[0], cult),
-                y: double.Parse(cord[1], cult),
-                width: double.Parse(cord[2], cult),
-                height: double.Parse(cord[3], cult));
+            ViewBox = ParseViewBox(vb.Value) ?? ViewBox;
         }
 
         Size = new Size(
