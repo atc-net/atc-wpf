@@ -15,11 +15,13 @@ internal static class PInvokeExtensions
         => rect.left >= rect.right || rect.top >= rect.bottom;
 
     public static void Offset(
-        this RECT rect,
+        this ref RECT rect,
         int offsetX,
         int offsetY)
     {
         rect.left += offsetX;
         rect.top += offsetY;
+        rect.right += offsetX;
+        rect.bottom += offsetY;
     }
 }
