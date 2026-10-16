@@ -5,18 +5,18 @@
 - [ValueConverters in Atc.Wpf](#valueconverters-in-atcwpf)
   - [📑 Table of Contents](#-table-of-contents)
   - [🧹 Usage](#-usage)
-  - [#️⃣ ValueConverters - Bool to \[...\]](#️⃣-valueconverters---bool-to-)
-  - [#️⃣ ValueConverters - String to \[...\]](#️⃣-valueconverters---string-to-)
-  - [#️⃣ ValueConverters - ICollection to \[...\]](#️⃣-valueconverters---icollection-to-)
-  - [#️⃣ ValueConverters - Object to \[...\]](#️⃣-valueconverters---object-to-)
-  - [#️⃣ ValueConverters - Markup to \[...\]](#️⃣-valueconverters---markup-to-)
-  - [#️⃣ ValueConverters - Enum to \[...\]](#️⃣-valueconverters---enum-to-)
-  - [#️⃣ ValueConverters - Number to \[...\]](#️⃣-valueconverters---number-to-)
-  - [#️⃣ ValueConverters - Time to \[...\]](#️⃣-valueconverters---time-to-)
-  - [#️⃣ ValueConverters - Others to \[...\]](#️⃣-valueconverters---others-to-)
-  - [#️⃣ ValueConverters - Math](#️⃣-valueconverters---math)
-  - [#️⃣ ValueConverters - JSON](#️⃣-valueconverters---json)
-  - [#️⃣ ValueConverters - Method](#️⃣-valueconverters---method)
+  - [🔄 ValueConverters - Bool to \[...\]](#-valueconverters---bool-to-)
+  - [🔄 ValueConverters - String to \[...\]](#-valueconverters---string-to-)
+  - [🔄 ValueConverters - ICollection to \[...\]](#-valueconverters---icollection-to-)
+  - [🔄 ValueConverters - Object to \[...\]](#-valueconverters---object-to-)
+  - [🔄 ValueConverters - Markup to \[...\]](#-valueconverters---markup-to-)
+  - [🔄 ValueConverters - Enum to \[...\]](#-valueconverters---enum-to-)
+  - [🔄 ValueConverters - Number to \[...\]](#-valueconverters---number-to-)
+  - [🔄 ValueConverters - Time to \[...\]](#-valueconverters---time-to-)
+  - [🔄 ValueConverters - Others to \[...\]](#-valueconverters---others-to-)
+  - [🔄 ValueConverters - Math](#-valueconverters---math)
+  - [🔄 ValueConverters - JSON](#-valueconverters---json)
+  - [🔄 ValueConverters - Method](#-valueconverters---method)
   - [🧩 Advanced parameter shapes](#-advanced-parameter-shapes)
     - [Enum -\> Visibility](#enum---visibility)
     - [Double -\> GridLength](#double---gridlength)
@@ -52,7 +52,7 @@ Or by the ValueConverter's Instance:
 <StackPanel Visibility="{Binding IsVisible<br/>Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
 ```
 
-## #️⃣ ValueConverters - Bool to [...]
+## 🔄 ValueConverters - Bool to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -67,7 +67,7 @@ Or by the ValueConverter's Instance:
 | Bool[] -> Visibility      | MultiBoolToVisibilityVisibleValueConverter               | All-True -> Visible                     | Not supported                           |
 | (Bool, Double) -> Double  | BoolAndDoubleToDoubleMultiValueConverter                 | (true, 150) -> 150<br/>(false, 150) -> 0 | Not supported                          |
 
-## #️⃣ ValueConverters - String to [...]
+## 🔄 ValueConverters - String to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -86,7 +86,7 @@ Or by the ValueConverter's Instance:
 | String -> String          | ToLowerValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 | String -> String          | ToUpperValueConverter                                    | String -> String                        | Binding.DoNothing                       |
 
-## #️⃣ ValueConverters - ICollection to [...]
+## 🔄 ValueConverters - ICollection to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -95,7 +95,7 @@ Or by the ValueConverter's Instance:
 | ICollection -> Visibility | CollectionNullOrEmptyToVisibilityCollapsedValueConverter | NULL or empty -> Collapsed              | Not supported                           |
 | ICollection -> Visibility | CollectionNullOrEmptyToVisibilityVisibleValueConverter   | NULL or empty -> Visible                | Not supported                           |
 
-## #️⃣ ValueConverters - Object to [...]
+## 🔄 ValueConverters - Object to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -112,7 +112,7 @@ Or by the ValueConverter's Instance:
 | Object -> Bool            | ObjectNullToBoolValueConverter                           | NULL => True                            | Not supported                           |
 | Object -> String          | ObjectToTypeNameValueConverter                                     | "hello" -> "String"<br/>42 -> "Int32"<br/>"hello" + param "Full" -> "System.String" | Not supported                           |
 
-## #️⃣ ValueConverters - Markup to [...]
+## 🔄 ValueConverters - Markup to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -120,7 +120,7 @@ Or by the ValueConverter's Instance:
 |                           | MarkupValueConverter                                     |                                         |                                         |
 |                           | MarkupValueConverterBase                                 |                                         |                                         |
 
-## #️⃣ ValueConverters - Enum to [...]
+## 🔄 ValueConverters - Enum to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -133,7 +133,7 @@ Or by the ValueConverter's Instance:
 | Enum -> Visibility *(flags)* | EnumFlagsToVisibilityVisibleValueConverter            | (Read \| Write) + param Read -> Visible<br/>Read + param Admin -> Collapsed | Not supported                           |
 | Enum -> Visibility *(flags)* | EnumFlagsToVisibilityCollapsedValueConverter          | (Read \| Write) + param Read -> Collapsed<br/>Read + param Admin -> Visible | Not supported                           |
 
-## #️⃣ ValueConverters - Number to [...]
+## 🔄 ValueConverters - Number to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -142,14 +142,14 @@ Or by the ValueConverter's Instance:
 | Number -> Visibility      | NumericComparisonToVisibilityCollapsedValueConverter            | 10 + param "&gt;=5" -&gt; Collapsed<br/>0 + param "&gt;5" -&gt; Visible | Not supported                           |
 | Number -> String *(two-way)* | NumberToPercentStringValueConverter                                    | 0.42 -> "42 %"<br/>0.1234 + param 2 -> "12.34 %" | "42%" -> 0.42<br/>"42 %" -> 0.42        |
 
-## #️⃣ ValueConverters - Time to [...]
+## 🔄 ValueConverters - Time to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
 | TimeSpan -> String        | TimeSpanToHumanReadableStringValueConverter              | TimeSpan.FromMinutes(75) -> "1h 15m"<br/>TimeSpan.FromSeconds(90) -> "1m 30s" | Not supported                           |
 | DateTime -> String        | DateTimeToRelativeStringValueConverter                   | DateTime.UtcNow.AddMinutes(-5) -> "5 minutes ago"<br/>DateTime.UtcNow.AddHours(2) -> "in 2 hours" | Not supported                           |
 
-## #️⃣ ValueConverters - Others to [...]
+## 🔄 ValueConverters - Others to [...]
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -180,7 +180,7 @@ Or by the ValueConverter's Instance:
 | Errors -> String          | ValidationErrorsToStringValueConverter                   |                                         | Not supported                           |
 |                           | WindowResizeModeMinMaxButtonVisibilityMultiValueConverter|                                         |                                         |
 
-## #️⃣ ValueConverters - Math
+## 🔄 ValueConverters - Math
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -190,7 +190,7 @@ Or by the ValueConverter's Instance:
 |                           | MathSubtractValueConverter                               |                                         |                                         |
 |                           | MathValueConverter                                       |                                         |                                         |
 
-## #️⃣ ValueConverters - JSON
+## 🔄 ValueConverters - JSON
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
@@ -200,7 +200,7 @@ Or by the ValueConverter's Instance:
 | JsonValueNode -> String   | JsonValueDisplayConverter                                | JsonValueNode -> DisplayValue           | Not supported                           |
 | JsonValueNode -> Brush    | JsonValueTypeToColorConverter                            | JsonValueNode -> SolidColorBrush        | Not supported                           |
 
-## #️⃣ ValueConverters - Method
+## 🔄 ValueConverters - Method
 
 | Category                  | Type                                                     | Convert Examples                        | ConvertBack Examples                    |
 | ------------------------- | -------------------------------------------------------- | --------------------------------------- | --------------------------------------- |
