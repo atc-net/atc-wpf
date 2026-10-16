@@ -621,11 +621,52 @@ public static class TextBoxHelper
         DependencyPropertyChangedEventArgs e)
     {
         var isMonitoring = (bool)e.NewValue;
-        switch (d)
+        if (d is PasswordBox passwordBox)
         {
-            case PasswordBox passwordBox:
-                MonitorPasswordBox(passwordBox, isMonitoring);
-                break;
+            MonitorPasswordBox(passwordBox, isMonitoring);
+            return;
+        }
+
+        if (d is not FrameworkElement element)
+        {
+            return;
+        }
+
+        // The themed styles turn monitoring on while the element is still being built. Hooking into other
+        // controls' statics at that point, inside the BAML load, can deadlock against parallel UI threads
+        // (seen in the test host), so wait for Loaded unless the element is already in a live tree.
+        element.Loaded -= MonitorWhenLoaded;
+        if (isMonitoring && !element.IsLoaded)
+        {
+            element.Loaded += MonitorWhenLoaded;
+            return;
+        }
+
+        Monitor(element, isMonitoring);
+    }
+
+    private static void MonitorWhenLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement element)
+        {
+            return;
+        }
+
+        element.Loaded -= MonitorWhenLoaded;
+        if (GetIsMonitoring(element))
+        {
+            Monitor(element, isMonitoring: true);
+        }
+    }
+
+    private static void Monitor(
+        FrameworkElement element,
+        bool isMonitoring)
+    {
+        switch (element)
+        {
             case RichTextBox richTextBox:
                 MonitorRichTextBox(richTextBox, isMonitoring);
                 break;
