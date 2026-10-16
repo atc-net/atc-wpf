@@ -3,7 +3,8 @@ namespace Atc.Wpf.FontIcons.ValueConverters;
 /// <summary>
 /// ValueConverter: font-icon enum value (FontAwesome / Bootstrap / IcoFont / Material / Weather)
 /// → <see cref="System.Windows.Media.DrawingImage"/>. <c>ConverterParameter</c> may be a
-/// <see cref="System.Windows.Media.Brush"/> (foreground) or a <see cref="double"/> em-size;
+/// <see cref="System.Windows.Media.Brush"/> (foreground) or a <see cref="double"/> em-size, also given as a
+/// string (<c>ConverterParameter=Red</c>, <c>ConverterParameter=24</c>);
 /// otherwise falls back to <see cref="DefaultBrush"/> at <see cref="DefaultEmSize"/>em.
 /// </summary>
 /// <remarks>
@@ -51,8 +52,10 @@ public sealed class FontIconDrawingImageValueConverter : MarkupExtension, IValue
         object? parameter,
         CultureInfo? culture)
     {
-        var brush = parameter as Brush ?? DefaultBrush;
-        var emSize = parameter as double? ?? DefaultEmSize;
+        var (brush, emSize) = FontIconConverterParameter.Resolve(
+            parameter,
+            DefaultBrush,
+            DefaultEmSize);
         return value switch
         {
             FontAwesomeRegularType type => ImageAwesomeRegular.CreateDrawingImage(
