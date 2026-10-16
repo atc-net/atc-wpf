@@ -64,7 +64,10 @@ public partial class LabelTimeZonePicker : ILabelTimeZonePicker
             return;
         }
 
-        OnLostFocusFireValidEvent(control, e);
+        if (raiseEvents)
+        {
+            OnLostFocusFireValidEvent(control, e);
+        }
     }
 
     private static void OnLostFocusFireValidEvent(

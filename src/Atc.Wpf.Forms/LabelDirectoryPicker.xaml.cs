@@ -96,7 +96,10 @@ public partial class LabelDirectoryPicker : ILabelDirectoryPicker
             return;
         }
 
-        OnLostFocusFireValidEvent(control, e);
+        if (raiseEvents)
+        {
+            OnLostFocusFireValidEvent(control, e);
+        }
     }
 
     private static void OnLostFocusFireValidEvent(

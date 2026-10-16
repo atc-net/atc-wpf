@@ -104,7 +104,10 @@ public partial class LabelFilePicker : ILabelFilePicker
             return;
         }
 
-        OnLostFocusFireValidEvent(control, e);
+        if (raiseEvents)
+        {
+            OnLostFocusFireValidEvent(control, e);
+        }
     }
 
     private static void OnLostFocusFireValidEvent(
