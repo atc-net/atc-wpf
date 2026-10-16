@@ -50,7 +50,12 @@ public static class ThemeManagerHelper
                     StringComparison.Ordinal);
         }
 
-        var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
+        if (Application.Current is not { } application ||
+            ThemeManager.Current.DetectTheme(application) is not { } currentTheme)
+        {
+            return Colors.DeepPink;
+        }
+
         var cacheKey = $"{currentTheme.BaseColorScheme}_{resourceKey}";
 
         if (CacheColors.TryGetValue(
@@ -63,10 +68,10 @@ public static class ThemeManagerHelper
         object? resource = null;
         if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
         {
-            resource = Application.Current.Resources[resourceKey];
+            resource = application.Resources[resourceKey];
         }
 
-        resource ??= currentTheme.Resources[resourceKey] ?? Application.Current.Resources[resourceKey];
+        resource ??= currentTheme.Resources[resourceKey] ?? application.Resources[resourceKey];
 
         if (resource is null)
         {
@@ -117,7 +122,12 @@ public static class ThemeManagerHelper
                     StringComparison.Ordinal);
         }
 
-        var currentTheme = ThemeManager.Current.DetectTheme(Application.Current)!;
+        if (Application.Current is not { } application ||
+            ThemeManager.Current.DetectTheme(application) is not { } currentTheme)
+        {
+            return Brushes.DeepPink;
+        }
+
         var cacheKey = $"{currentTheme.BaseColorScheme}_{resourceKey}";
 
         if (CacheBrushes.TryGetValue(
@@ -130,10 +140,10 @@ public static class ThemeManagerHelper
         object? resource = null;
         if (resourceKey.Contains(".Bootstrap", StringComparison.Ordinal))
         {
-            resource = Application.Current.Resources[resourceKey];
+            resource = application.Resources[resourceKey];
         }
 
-        resource ??= currentTheme.Resources[resourceKey] ?? Application.Current.Resources[resourceKey];
+        resource ??= currentTheme.Resources[resourceKey] ?? application.Resources[resourceKey];
 
         if (resource is null)
         {
@@ -155,14 +165,21 @@ public static class ThemeManagerHelper
     /// <summary>
     /// Gets the primary accent color of the current application theme.
     /// </summary>
-    /// <returns>The primary accent color.</returns>
+    /// <returns>The primary accent color, or <see cref="Colors.DeepPink"/> if no theme is detected.</returns>
     public static Color GetPrimaryAccentColor()
-        => ThemeManager.Current.DetectTheme(Application.Current)!.PrimaryAccentColor;
+    {
+        var application = Application.Current;
+        var currentTheme = application is null
+            ? null
+            : ThemeManager.Current.DetectTheme(application);
+
+        return currentTheme?.PrimaryAccentColor ?? Colors.DeepPink;
+    }
 
     /// <summary>
     /// Gets a frozen brush of the primary accent color of the current application theme.
     /// </summary>
-    /// <returns>A new frozen <see cref="SolidColorBrush"/>.</returns>
+    /// <returns>A new frozen <see cref="SolidColorBrush"/>, of <see cref="Colors.DeepPink"/> if no theme is detected.</returns>
     public static SolidColorBrush GetPrimaryAccentBrush()
     {
         var color = GetPrimaryAccentColor();
