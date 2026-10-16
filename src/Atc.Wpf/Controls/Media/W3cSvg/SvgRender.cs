@@ -22,6 +22,8 @@ internal sealed class SvgRender
 
     public double? OverrideStrokeWidth { get; set; }
 
+    private readonly HashSet<Shape> expandingUseTargets = new();
+
     private Dictionary<string, Brush>? customBrushes;
 
     public Dictionary<string, Brush>? CustomBrushes
@@ -444,49 +446,10 @@ internal sealed class SvgRender
 
                 case UseShape useShape:
                 {
-                    var currentUsedShape = Svg!.GetShape(useShape.Href!);
-                    if (currentUsedShape is not null)
+                    var subgroup = LoadUse(useShape);
+                    if (subgroup is not null)
                     {
-                        currentUsedShape.RealParent = useShape;
-                        var oldParent = currentUsedShape.Parent;
-                        DrawingGroup subgroup;
-                        if (currentUsedShape is Shapes.Group group)
-                        {
-                            subgroup = LoadGroup(
-                                group.Elements,
-                                viewBox: null,
-                                isSwitch: false);
-                        }
-                        else
-                        {
-                            subgroup = LoadGroup(
-                                new[] { currentUsedShape },
-                                viewBox: null,
-                                isSwitch: false);
-                        }
-
-                        if (currentUsedShape.Clip is not null)
-                        {
-                            subgroup.ClipGeometry = currentUsedShape.Clip.ClipGeometry;
-                        }
-
-                        subgroup.Transform = new TranslateTransform(
-                            useShape.X,
-                            useShape.Y);
-                        if (useShape.Transform is not null)
-                        {
-                            subgroup.Transform = new TransformGroup
-                            {
-                                Children = new TransformCollection
-                                {
-                                    subgroup.Transform,
-                                    useShape.Transform,
-                                },
-                            };
-                        }
-
                         drawingGroup.Children.Add(subgroup);
-                        currentUsedShape.Parent = oldParent;
                     }
 
                     continue;
@@ -726,6 +689,68 @@ internal sealed class SvgRender
         }
 
         return drawingGroup;
+    }
+
+    /// <summary>
+    /// Renders the shape a use element points at. A target that is already being expanded (a use pointing at
+    /// itself or at one of its ancestors) is skipped, as that would never end.
+    /// </summary>
+    private DrawingGroup? LoadUse(UseShape useShape)
+    {
+        var currentUsedShape = Svg!.GetShape(useShape.Href!);
+        if (currentUsedShape is null ||
+            !expandingUseTargets.Add(currentUsedShape))
+        {
+            return null;
+        }
+
+        try
+        {
+            currentUsedShape.RealParent = useShape;
+            var oldParent = currentUsedShape.Parent;
+            DrawingGroup subgroup;
+            if (currentUsedShape is Shapes.Group group)
+            {
+                subgroup = LoadGroup(
+                    group.Elements,
+                    viewBox: null,
+                    isSwitch: false);
+            }
+            else
+            {
+                subgroup = LoadGroup(
+                    new[] { currentUsedShape },
+                    viewBox: null,
+                    isSwitch: false);
+            }
+
+            if (currentUsedShape.Clip is not null)
+            {
+                subgroup.ClipGeometry = currentUsedShape.Clip.ClipGeometry;
+            }
+
+            subgroup.Transform = new TranslateTransform(
+                useShape.X,
+                useShape.Y);
+            if (useShape.Transform is not null)
+            {
+                subgroup.Transform = new TransformGroup
+                {
+                    Children = new TransformCollection
+                    {
+                        subgroup.Transform,
+                        useShape.Transform,
+                    },
+                };
+            }
+
+            currentUsedShape.Parent = oldParent;
+            return subgroup;
+        }
+        finally
+        {
+            expandingUseTargets.Remove(currentUsedShape);
+        }
     }
 
     private static void AddDrawingToGroup(

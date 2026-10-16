@@ -146,6 +146,33 @@ public sealed class SvgRenderTests
         Assert.Null(svgRender.Svg!.ViewBox);
     }
 
+    [StaTheory]
+    [InlineData("""<g id="a"><rect width="1" height="1" /><use href="#a" /></g>""")]
+    [InlineData("""<use id="u" href="#u" />""")]
+    [InlineData("""<g id="a"><use href="#b" /></g><g id="b"><use href="#a" /></g>""")]
+    public void Use_ReferencingItselfOrAnAncestor_DoesNotRecurseForever(
+        string body)
+    {
+        var drawing = Render($"{SvgOpen}{body}</svg>");
+
+        Assert.NotNull(drawing);
+    }
+
+    [StaFact]
+    public void Use_SameTargetTwice_RendersBoth()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs><rect id="r" width="2" height="2" fill="red" /></defs>
+              <use href="#r" x="0" y="0" />
+              <use href="#r" x="5" y="5" />
+            </svg>
+            """);
+
+        Assert.Equal(2, GeometryDrawings(drawing).Count());
+    }
+
     [StaFact]
     public void RadialGradient_FocalPoint_IsNotScaled()
     {
