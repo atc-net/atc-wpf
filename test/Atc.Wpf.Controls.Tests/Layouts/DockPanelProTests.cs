@@ -70,7 +70,6 @@ public sealed class DockPanelProTests
         {
             RegionId = "region1",
             Width = 100,
-            Height = 100,
         };
         DockPanelPro.SetDock(region, DockPosition.Left);
         dockPanel.Children.Add(region);
@@ -95,8 +94,38 @@ public sealed class DockPanelProTests
 
         // Assert
         Assert.Equal(250, region.Width);
-        Assert.Equal(150, region.Height);
+        Assert.True(double.IsNaN(region.Height));
         Assert.False(region.IsExpanded);
+    }
+
+    [StaFact]
+    public void LoadLayout_AfterSaveLayout_RestoresOnlyDockingDimensions()
+    {
+        // Arrange
+        var dockPanel = new DockPanelPro();
+        var left = new DockRegion { RegionId = "left" };
+        var top = new DockRegion { RegionId = "top" };
+        var center = new DockRegion { RegionId = "center" };
+        DockPanelPro.SetDock(left, DockPosition.Left);
+        DockPanelPro.SetDock(top, DockPosition.Top);
+        DockPanelPro.SetDock(center, DockPosition.Center);
+        dockPanel.Children.Add(left);
+        dockPanel.Children.Add(top);
+        dockPanel.Children.Add(center);
+        dockPanel.Measure(new Size(800, 600));
+        dockPanel.Arrange(new Rect(0, 0, 800, 600));
+        var json = dockPanel.SaveLayout();
+
+        // Act
+        dockPanel.LoadLayout(json);
+
+        // Assert
+        Assert.True(double.IsNaN(center.Width));
+        Assert.True(double.IsNaN(center.Height));
+        Assert.Equal(200, left.Width);
+        Assert.True(double.IsNaN(left.Height));
+        Assert.Equal(100, top.Height);
+        Assert.True(double.IsNaN(top.Width));
     }
 
     [StaFact]
