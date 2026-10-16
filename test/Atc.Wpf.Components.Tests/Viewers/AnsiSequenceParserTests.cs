@@ -666,4 +666,45 @@ public sealed class AnsiSequenceParserTests
         Assert.Null(newState.Foreground);
         Assert.Null(newState.Background);
     }
+
+    [Fact]
+    public void Strip_NullText_Throws()
+        => Assert.Throws<ArgumentNullException>(() => AnsiSequenceParser.Strip(null!));
+
+    [Fact]
+    public void Strip_PlainText_ReturnsTheSameInstance()
+    {
+        const string text = "hello [31m world";
+
+        Assert.Same(text, AnsiSequenceParser.Strip(text));
+    }
+
+    [Fact]
+    public void Strip_SgrSequences_AreRemoved()
+        => Assert.Equal("Done", AnsiSequenceParser.Strip(Esc + "[32mDone" + Esc + "[0m"));
+
+    [Fact]
+    public void Strip_TextAroundSequences_IsKept()
+        => Assert.Equal("error: failed", AnsiSequenceParser.Strip(Esc + "[1;31merror" + Esc + "[0m: failed"));
+
+    [Fact]
+    public void Strip_PrivateModeAndCursorSequences_AreRemoved()
+        => Assert.Equal("ab", AnsiSequenceParser.Strip(Esc + "[?25la" + Esc + "[2Kb" + Esc + "[?25h"));
+
+    [Fact]
+    public void Strip_OnlySequences_ReturnsEmpty()
+        => Assert.Equal(string.Empty, AnsiSequenceParser.Strip(Esc + "[0m"));
+
+    // TerminalViewer stores the concatenated run texts as the line Text, so it must equal the stripped line.
+    [Theory]
+    [InlineData("plain text")]
+    [InlineData(Esc + "[32mDone" + Esc + "[0m")]
+    [InlineData(Esc + "[1;31merror" + Esc + "[0m: failed")]
+    [InlineData(Esc + "[?25la" + Esc + "[2Kb" + Esc + "[38;5;196mc" + Esc + "[0m")]
+    public void Parse_ConcatenatedRunTexts_EqualStrip(string text)
+    {
+        var (runs, _) = AnsiSequenceParser.Parse(text, AnsiSgrState.Default);
+
+        Assert.Equal(AnsiSequenceParser.Strip(text), string.Concat(runs.Select(r => r.Text)));
+    }
 }
