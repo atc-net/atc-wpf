@@ -211,22 +211,31 @@ public sealed class GridEx : Grid
             return gridLengths;
         }
 
-        // Split the string by comma.
-        var sa = lengths.Split(',');
+        // Split the string by comma, ignoring surrounding spaces and empty tokens such as a trailing comma.
+        var tokens = lengths.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         // Use the cached grid length converter to set each length.
-        gridLengths.AddRange(sa.Select(length =>
-        {
-            var convertFromString = SharedGridLengthConverter.ConvertFromString(length);
-            if (convertFromString is GridLength gridLength)
-            {
-                return gridLength;
-            }
-
-            return GridLength.Auto;
-        }));
+        gridLengths.AddRange(tokens.Select(ParseGridLength));
 
         return gridLengths;
+    }
+
+    /// <summary>
+    /// Parses a single length token such as "3*", "Auto" or "1.5*" using the invariant culture,
+    /// falling back to <see cref="GridLength.Auto"/> for tokens that cannot be parsed.
+    /// </summary>
+    private static GridLength ParseGridLength(string token)
+    {
+        try
+        {
+            return SharedGridLengthConverter.ConvertFromInvariantString(token) is GridLength gridLength
+                ? gridLength
+                : GridLength.Auto;
+        }
+        catch (Exception ex) when (ex is FormatException or OverflowException or NotSupportedException or ArgumentException)
+        {
+            return GridLength.Auto;
+        }
     }
 
     /// <summary>
