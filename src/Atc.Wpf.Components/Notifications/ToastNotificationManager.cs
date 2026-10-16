@@ -3,11 +3,17 @@ namespace Atc.Wpf.Components.Notifications;
 /// <summary>
 /// Shows toast notifications in the registered <see cref="ToastNotificationArea"/> controls or in a desktop overlay window.
 /// </summary>
+/// <remarks>
+/// An area is registered while it is loaded (see <see cref="ToastNotificationArea"/>), and the registry holds it weakly,
+/// so a view that hosted an area does not stay alive because of the manager.
+/// </remarks>
 public sealed class ToastNotificationManager : IToastNotificationManager
 {
-    private readonly Dispatcher dispatcher;
-    private static readonly ConcurrentBag<ToastNotificationArea> Areas = [];
+    private const string DesktopAreaName = "DesktopArea";
+    private static readonly Lock AreasLock = new();
+    private static readonly List<WeakReference<ToastNotificationArea>> Areas = [];
     private static ToastNotificationsOverlayWindow? window;
+    private readonly Dispatcher dispatcher;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ToastNotificationManager"/> class.
@@ -67,8 +73,20 @@ public sealed class ToastNotificationManager : IToastNotificationManager
             onClick,
             onClose);
 
-    /// <inheritdoc />
-    [SuppressMessage("Critical Code Smell", "S2696:Instance members should not write to \"static\" fields", Justification = "OK.")]
+    /// <summary>
+    /// Shows a toast notification with the given content in the first loaded area that matches.
+    /// </summary>
+    /// <remarks>
+    /// A WPF element can only have one parent, so when several loaded areas match the name only the first one shows
+    /// <paramref name="content"/>; the others are skipped. Use the overload that takes a content factory to show a
+    /// notification in every matching area.
+    /// </remarks>
+    /// <param name="useDesktop"><see langword="true"/> to show the notification in a desktop overlay window; otherwise it is shown in the matching notification area.</param>
+    /// <param name="content">The content to display.</param>
+    /// <param name="areaName">The name of the <see cref="ToastNotificationArea"/> to show the notification in; when no area matches, all non-desktop areas are used.</param>
+    /// <param name="expirationTime">The time before the notification closes automatically; defaults to 5 seconds.</param>
+    /// <param name="onClick">An optional action invoked when the notification is clicked.</param>
+    /// <param name="onClose">An optional action invoked when the notification is closed.</param>
     public void Show(
         bool useDesktop,
         UserControl content,
@@ -77,14 +95,173 @@ public sealed class ToastNotificationManager : IToastNotificationManager
         Action? onClick = null,
         Action? onClose = null)
     {
+        var handedOut = false;
+        ShowCore(
+            useDesktop,
+            () =>
+            {
+                if (handedOut)
+                {
+                    return null;
+                }
+
+                handedOut = true;
+                return content;
+            },
+            areaName,
+            expirationTime,
+            onClick,
+            onClose);
+    }
+
+    /// <summary>
+    /// Shows a toast notification in every loaded area that matches, creating the content once per area.
+    /// </summary>
+    /// <param name="useDesktop"><see langword="true"/> to show the notification in a desktop overlay window; otherwise it is shown in the matching notification areas.</param>
+    /// <param name="contentFactory">Creates the content to display; it is called once for each area that shows the notification.</param>
+    /// <param name="areaName">The name of the <see cref="ToastNotificationArea"/> to show the notification in; when no area matches, all non-desktop areas are used.</param>
+    /// <param name="expirationTime">The time before the notification closes automatically; defaults to 5 seconds.</param>
+    /// <param name="onClick">An optional action invoked when a notification is clicked.</param>
+    /// <param name="onClose">An optional action invoked when a notification is closed.</param>
+    public void Show(
+        bool useDesktop,
+        Func<UserControl> contentFactory,
+        string areaName = "",
+        TimeSpan? expirationTime = null,
+        Action? onClick = null,
+        Action? onClose = null)
+    {
+        ArgumentNullException.ThrowIfNull(contentFactory);
+
+        ShowCore(
+            useDesktop,
+            contentFactory,
+            areaName,
+            expirationTime,
+            onClick,
+            onClose);
+    }
+
+    /// <summary>
+    /// Registers an area. Called by <see cref="ToastNotificationArea"/> when it is loaded.
+    /// </summary>
+    internal static void AddArea(ToastNotificationArea area)
+    {
+        lock (AreasLock)
+        {
+            if (GetLiveAreasUnlocked().Contains(area))
+            {
+                return;
+            }
+
+            Areas.Add(new WeakReference<ToastNotificationArea>(area));
+        }
+    }
+
+    /// <summary>
+    /// Removes an area. Called by <see cref="ToastNotificationArea"/> when it is unloaded.
+    /// </summary>
+    internal static void RemoveArea(ToastNotificationArea area)
+    {
+        lock (AreasLock)
+        {
+            Areas.RemoveAll(reference =>
+                !reference.TryGetTarget(out var target) ||
+                ReferenceEquals(target, area));
+        }
+    }
+
+    /// <summary>
+    /// Whether the area is currently registered.
+    /// </summary>
+    internal static bool IsAreaRegistered(ToastNotificationArea area)
+        => GetLiveAreas().Contains(area);
+
+    private static List<ToastNotificationArea> GetLiveAreas()
+    {
+        lock (AreasLock)
+        {
+            return GetLiveAreasUnlocked();
+        }
+    }
+
+    /// <summary>
+    /// The areas that are still alive; collected ones are pruned from the registry on the way.
+    /// </summary>
+    private static List<ToastNotificationArea> GetLiveAreasUnlocked()
+    {
+        var live = new List<ToastNotificationArea>(Areas.Count);
+        for (var i = Areas.Count - 1; i >= 0; i--)
+        {
+            if (Areas[i].TryGetTarget(out var area))
+            {
+                live.Insert(0, area);
+            }
+            else
+            {
+                Areas.RemoveAt(i);
+            }
+        }
+
+        return live;
+    }
+
+    /// <summary>
+    /// The loaded areas on the calling thread that match <paramref name="areaName"/>, or all loaded non-desktop areas when none matches.
+    /// </summary>
+    private static ToastNotificationArea[] GetLoadedAreas(string areaName)
+    {
+        var loaded = GetLiveAreas()
+            .Where(a => a.Dispatcher.CheckAccess() && a.IsLoaded)
+            .ToArray();
+
+        var matching = loaded
+            .Where(a => string.Equals(a.Name, areaName, StringComparison.Ordinal))
+            .ToArray();
+
+        return matching.Length > 0
+            ? matching
+            : loaded
+                .Where(a => !string.Equals(a.Name, DesktopAreaName, StringComparison.Ordinal))
+                .ToArray();
+    }
+
+    private static ToastNotificationsOverlayWindow EnsureOverlayWindow()
+    {
+        if (window is null)
+        {
+            var workArea = SystemParameters.WorkArea;
+            window = new ToastNotificationsOverlayWindow
+            {
+                Left = workArea.Left,
+                Top = workArea.Top,
+                Width = workArea.Width,
+                Height = workArea.Height,
+            };
+        }
+
+        // The desktop overlay has no owner, so it follows the main window's direction.
+        window.FlowDirection = Application.Current?.MainWindow?.FlowDirection ?? FlowDirection.LeftToRight;
+        window.Show();
+        return window;
+    }
+
+    private void ShowCore(
+        bool useDesktop,
+        Func<UserControl?> contentFactory,
+        string areaName,
+        TimeSpan? expirationTime,
+        Action? onClick,
+        Action? onClose)
+    {
         expirationTime ??= TimeSpan.FromSeconds(5);
 
         if (!dispatcher.CheckAccess())
         {
             _ = dispatcher.BeginInvoke(
-                new Action(() => Show(
+                new Action(() => ShowCore(
                     useDesktop,
-                    content,
+                    contentFactory,
                     areaName,
                     expirationTime,
                     onClick,
@@ -94,45 +271,46 @@ public sealed class ToastNotificationManager : IToastNotificationManager
 
         if (useDesktop)
         {
-            if (window is null)
+            var overlay = EnsureOverlayWindow();
+            if (!overlay.IsLoaded)
             {
-                var workArea = SystemParameters.WorkArea;
-                window = new ToastNotificationsOverlayWindow
+                // The overlay was just shown; its area registers itself when Loaded is raised, so show the notification then.
+                RoutedEventHandler? onLoaded = null;
+                onLoaded = (_, _) =>
                 {
-                    Left = workArea.Left,
-                    Top = workArea.Top,
-                    Width = workArea.Width,
-                    Height = workArea.Height,
+                    overlay.Loaded -= onLoaded;
+                    ShowCore(
+                        useDesktop,
+                        contentFactory,
+                        areaName,
+                        expirationTime,
+                        onClick,
+                        onClose);
                 };
+
+                overlay.Loaded += onLoaded;
+                return;
             }
 
-            // The desktop overlay has no owner, so it follows the main window's direction.
-            window.FlowDirection = Application.Current?.MainWindow?.FlowDirection ?? FlowDirection.LeftToRight;
-            window.Show();
-            areaName = "DesktopArea";
+            areaName = DesktopAreaName;
         }
 
-        var toastNotificationAreas = Areas
-            .Where(a => a.Name == areaName)
-            .ToArray();
-
-        if (!toastNotificationAreas.Any())
+        foreach (var area in GetLoadedAreas(areaName))
         {
-            toastNotificationAreas = Areas
-                .Where(a => a.Name != "DesktopArea")
-                .ToArray();
-        }
+            var content = contentFactory();
+            if (content is null)
+            {
+                Debug.WriteLine(
+                    $"{nameof(ToastNotificationManager)}: the same content instance cannot be shown in more than one area; " +
+                    $"area '{area.Name}' is skipped. Use the Show overload that takes a content factory to show a notification in every area.");
+                break;
+            }
 
-        foreach (var area in toastNotificationAreas)
-        {
             area.Show(
                 content,
-                (TimeSpan)expirationTime,
+                expirationTime.Value,
                 onClick,
                 onClose);
         }
     }
-
-    internal static void AddArea(ToastNotificationArea area)
-        => Areas.Add(area);
 }

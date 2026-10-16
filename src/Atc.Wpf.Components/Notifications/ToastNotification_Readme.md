@@ -139,7 +139,7 @@ All methods accept optional parameters: `areaName`, `expirationTime` (default 5s
 
 - Notifications auto-dismiss after `expirationTime` (default 5 seconds)
 - When `MaxItems` is exceeded, the oldest notification is auto-closed
-- The `ToastNotificationArea` registers itself with the manager on construction
+- The `ToastNotificationArea` registers itself with the manager while it is loaded
 - All components handle dispatcher marshalling for cross-thread safety
 - `ToastNotification.CloseAsync()` plays a closing animation before removal
 - Desktop notifications use a `ToastNotificationsOverlayWindow` that floats above all windows
