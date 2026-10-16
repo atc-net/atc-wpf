@@ -26,7 +26,7 @@ public sealed class GridLines : ContentControl
 
     private readonly Canvas containerCanvas = new();
 
-    /// <summary>Gets or sets the spacing between the horizontal lines.</summary>
+    /// <summary>Gets or sets the horizontal spacing between the vertical lines; a value that is not positive draws none.</summary>
     [Category("Layout")]
     [Description("The horizontal step property")]
     public double HorizontalStep
@@ -35,7 +35,7 @@ public sealed class GridLines : ContentControl
         set => SetValue(HorizontalStepProperty, value);
     }
 
-    /// <summary>Gets or sets the spacing between the vertical lines.</summary>
+    /// <summary>Gets or sets the vertical spacing between the horizontal lines; a value that is not positive draws none.</summary>
     [Category("Layout")]
     [Description("The vertical step property")]
     public double VerticalStep
@@ -91,42 +91,45 @@ public sealed class GridLines : ContentControl
     {
         containerCanvas.Children.Clear();
 
-        var thickness = 1d;
+        // One device pixel on the monitor this control is shown on (no application or main window needed).
+        var thickness = 1 / VisualTreeHelper.GetDpi(this).DpiScaleX;
 
-        var currentMainWindow = Application.Current.MainWindow;
-        if (currentMainWindow is not null)
+        if (IsValidStep(HorizontalStep))
         {
-            var matrix = PresentationSource.FromVisual(currentMainWindow)!.CompositionTarget!.TransformToDevice;
-            var dpiFactor = 1 / matrix.M11;
-            thickness = 1 * dpiFactor;
+            for (double x = 0; x < ActualWidth; x += HorizontalStep)
+            {
+                var line = new System.Windows.Shapes.Rectangle
+                {
+                    Width = thickness,
+                    Height = ActualHeight,
+                    Fill = LineBrush,
+                };
+
+                Canvas.SetLeft(line, x);
+
+                containerCanvas.Children.Add(line);
+            }
         }
 
-        for (double x = 0; x < ActualWidth; x += HorizontalStep)
+        if (IsValidStep(VerticalStep))
         {
-            var line = new System.Windows.Shapes.Rectangle
+            for (double y = 0; y < ActualHeight; y += VerticalStep)
             {
-                Width = thickness,
-                Height = ActualHeight,
-                Fill = LineBrush,
-            };
+                var line = new System.Windows.Shapes.Rectangle
+                {
+                    Width = ActualWidth,
+                    Height = thickness,
+                    Fill = LineBrush,
+                };
 
-            Canvas.SetLeft(line, x);
+                Canvas.SetTop(line, y);
 
-            containerCanvas.Children.Add(line);
-        }
-
-        for (double y = 0; y < ActualHeight; y += VerticalStep)
-        {
-            var line = new System.Windows.Shapes.Rectangle
-            {
-                Width = ActualWidth,
-                Height = thickness,
-                Fill = LineBrush,
-            };
-
-            Canvas.SetTop(line, y);
-
-            containerCanvas.Children.Add(line);
+                containerCanvas.Children.Add(line);
+            }
         }
     }
+
+    /// <summary>A step that is not a positive finite number would never advance the loop, so it draws no lines.</summary>
+    private static bool IsValidStep(double step)
+        => double.IsFinite(step) && step > 0;
 }
