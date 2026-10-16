@@ -99,7 +99,9 @@ public sealed class ResxExtension : ManagedMarkupExtension
     /// <param name="key">The key.</param>
     public static void UpdateTarget(string key)
     {
+        // Updating a target can register new extensions, so iterate a snapshot.
         foreach (var target in MarkupManager.ActiveExtensions
+                     .ToArray()
                      .Cast<ResxExtension>()
                      .Where(target => target.Key == key))
         {
@@ -126,7 +128,9 @@ public sealed class ResxExtension : ManagedMarkupExtension
         object? result = null;
         try
         {
-            Resource?.Invoke(this, new ResourceEventArgs(ResxName, Key, CultureManager.UiCulture));
+            var resourceEventArgs = new ResourceEventArgs(ResxName, Key, CultureManager.UiCulture);
+            Resource?.Invoke(this, resourceEventArgs);
+            result = resourceEventArgs.Result;
 
             if (result is null)
             {
