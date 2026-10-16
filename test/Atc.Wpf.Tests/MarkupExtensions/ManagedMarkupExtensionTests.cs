@@ -59,7 +59,9 @@ public sealed class ManagedMarkupExtensionTests
         var exception = Record.Exception(TestTextExtension.Manager.UpdateAllTargets);
 
         Assert.Null(exception);
-        Assert.Equal("After", other.Dispatcher.Invoke(() => other.Element.Text));
+
+        // Read at a lower priority than the queued update, which the extension posts at Normal priority.
+        Assert.Equal("After", other.Dispatcher.Invoke(() => other.Element.Text, DispatcherPriority.Background));
     }
 
     [StaFact]
