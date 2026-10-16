@@ -3,7 +3,6 @@ namespace Atc.Wpf.Controls.Layouts.Grid;
 /// <summary>A Bootstrap-style 24-cell row panel that lays out <see cref="Col"/> children, wrapping when the cells of a line are used up.</summary>
 public sealed class Row : Panel
 {
-    private ColLayoutType layoutStatus;
     private double maxChildDesiredHeight;
     private double totalAutoWidth;
 
@@ -39,6 +38,8 @@ public sealed class Row : Panel
         var totalRowCount = 1;
         var gutterHalf = Gutter / 2;
         totalAutoWidth = 0;
+        maxChildDesiredHeight = 0;
+        var layoutStatus = ColLayout.GetLayoutStatus(availableSize.Width);
 
         foreach (var child in InternalChildren.OfType<Col>())
         {
@@ -66,7 +67,8 @@ public sealed class Row : Panel
             }
         }
 
-        return new Size(0, (maxChildDesiredHeight * totalRowCount) - Gutter);
+        // With no (visible) columns the height would be minus the gutter, which Size rejects.
+        return new Size(0, System.Math.Max(0, (maxChildDesiredHeight * totalRowCount) - Gutter));
     }
 
     /// <inheritdoc />
@@ -78,7 +80,7 @@ public sealed class Row : Panel
         itemWidth = System.Math.Max(0, itemWidth);
 
         var childBounds = new Rect(-gutterHalf, -gutterHalf, 0, maxChildDesiredHeight);
-        layoutStatus = ColLayout.GetLayoutStatus(finalSize.Width);
+        var layoutStatus = ColLayout.GetLayoutStatus(finalSize.Width);
 
         foreach (var child in InternalChildren.OfType<Col>())
         {
