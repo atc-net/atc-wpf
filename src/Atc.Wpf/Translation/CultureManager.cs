@@ -113,7 +113,8 @@ public static class CultureManager
                 return;
             }
 
-            var oldUiCulture = new CultureInfo(uiCulture.LCID);
+            // Custom and supplemental locales share LCID 4096 and cannot be re-created from it, so copy the instance.
+            var oldUiCulture = (CultureInfo)uiCulture.Clone();
             uiCulture = value;
 
             CultureInfo.DefaultThreadCurrentUICulture = value;
