@@ -63,6 +63,8 @@ public partial class InputDialogBox
         Data = labelControl;
 
         InitializeDialogBox();
+
+        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>

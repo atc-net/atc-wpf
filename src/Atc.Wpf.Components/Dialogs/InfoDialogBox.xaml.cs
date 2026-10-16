@@ -61,6 +61,8 @@ public partial class InfoDialogBox
         Height = Settings.Height;
 
         InitializeDialogBox(contentText);
+
+        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>

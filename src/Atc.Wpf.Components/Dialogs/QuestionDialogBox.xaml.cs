@@ -63,6 +63,8 @@ public partial class QuestionDialogBox
         Height = Settings.Height;
 
         InitializeDialogBox(contentText);
+
+        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
