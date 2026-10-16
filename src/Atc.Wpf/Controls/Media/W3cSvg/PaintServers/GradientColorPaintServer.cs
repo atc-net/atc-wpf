@@ -85,33 +85,26 @@ internal abstract class GradientColorPaintServer : PaintServer
             var stopColor = SvgXmlUtil.AttrValue(
                 childNode,
                 "stop-color",
-                "#0");
-            if (stopColor is null)
-            {
-                continue;
-            }
-
+                defaultValue: null);
             var stopOpacity = SvgXmlUtil.AttrValue(
                 childNode,
                 "stop-opacity",
                 1);
 
-            var color = stopColor.StartsWith('#')
-                ? ColorHelper.GetColorFromHex(stopColor)
-                : PaintServerManager.KnownColor(stopColor);
-
-            if (color is null)
-            {
-                continue;
-            }
+            // A missing or unreadable stop-color is black, as the SVG default.
+            var color = string.IsNullOrWhiteSpace(stopColor)
+                ? Colors.Black
+                : ColorHelper.GetColorFromString(
+                      stopColor.Trim(),
+                      GlobalizationConstants.EnglishCultureInfo) ?? Colors.Black;
 
             if (!stopOpacity.IsEqual(1))
             {
                 color = Color.FromArgb(
                     (byte)(stopOpacity * 255),
-                    color.Value.R,
-                    color.Value.G,
-                    color.Value.B);
+                    color.R,
+                    color.G,
+                    color.B);
             }
 
             if (offset > 1)
@@ -121,7 +114,7 @@ internal abstract class GradientColorPaintServer : PaintServer
 
             gradientStop.Add(
                 new GradientStop(
-                    color.Value,
+                    color,
                     offset));
         }
     }
