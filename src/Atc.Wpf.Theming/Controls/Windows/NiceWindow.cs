@@ -716,6 +716,8 @@ public partial class NiceWindow : WindowChromeWindow
         {
             window.SizeChanged += window.OnSizeChanged;
         }
+
+        window.UpdateTitleBarMargin();
     }
 
     private static void OnIconTemplatePropertyChanged(
@@ -901,43 +903,46 @@ public partial class NiceWindow : WindowChromeWindow
         }
     }
 
+    /// <summary>
+    /// Calculates the margin that keeps a centred title bar centred between the left and right window commands.
+    /// The title bar fills the space between the two command areas, so the wider area is balanced by a margin
+    /// of the width difference on the opposite side.
+    /// </summary>
+    /// <param name="leftCommandsWidth">The width of the left window commands.</param>
+    /// <param name="rightCommandsWidth">The width of the right window commands.</param>
+    /// <returns>The balancing margin; top and bottom are always zero.</returns>
+    internal static Thickness CalculateCenteredTitleBarMargin(
+        double leftCommandsWidth,
+        double rightCommandsWidth)
+        => new(
+            System.Math.Max(0, rightCommandsWidth - leftCommandsWidth),
+            0,
+            System.Math.Max(0, leftCommandsWidth - rightCommandsWidth),
+            0);
+
     private void OnSizeChanged(
         object sender,
         RoutedEventArgs e)
+        => UpdateTitleBarMargin();
+
+    private void UpdateTitleBarMargin()
     {
-        if (TitleAlignment != HorizontalAlignment.Center ||
-            titleBar is null)
+        if (titleBar is null)
         {
             return;
         }
 
-        var halfDistance = ActualWidth / 2;
-        var margin = (Thickness)titleBar.GetValue(MarginProperty);
-        var distanceToCenter = (titleBar.DesiredSize.Width - margin.Left - margin.Right) / 2;
-
-        var localIconWidth = icon?.ActualWidth ?? 0;
-        var leftWindowCommandsWidth = LeftWindowCommands?.ActualWidth ?? 0;
-        var rightWindowCommandsWidth = RightWindowCommands?.ActualWidth ?? 0;
-        var windowButtonCommandsWith = WindowButtonCommands?.ActualWidth ?? 0;
-
-        var distanceFromLeft = localIconWidth + leftWindowCommandsWidth;
-        var distanceFromRight = rightWindowCommandsWidth + windowButtonCommandsWith;
-        const double horizontalMargin = 5.0;
-
-        var dLeft = distanceFromLeft + distanceToCenter + horizontalMargin;
-        var dRight = distanceFromRight + distanceToCenter + horizontalMargin;
-        if (dLeft < halfDistance && dRight < halfDistance)
+        if (TitleAlignment != HorizontalAlignment.Center)
         {
-            titleBar.SetCurrentValue(MarginProperty, default(Thickness));
-            Grid.SetColumn(titleBar, 0);
-            Grid.SetColumnSpan(titleBar, 5);
+            titleBar.InvalidateProperty(MarginProperty);
+            return;
         }
-        else
-        {
-            titleBar.SetCurrentValue(MarginProperty, new Thickness(leftWindowCommandsWidth, 0, rightWindowCommandsWidth, 0));
-            Grid.SetColumn(titleBar, 2);
-            Grid.SetColumnSpan(titleBar, 1);
-        }
+
+        titleBar.SetCurrentValue(
+            MarginProperty,
+            CalculateCenteredTitleBarMargin(
+                LeftWindowCommands?.ActualWidth ?? 0,
+                RightWindowCommands?.ActualWidth ?? 0));
     }
 
     private void HandleThemeManagerThemeChanged(
