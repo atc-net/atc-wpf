@@ -26,6 +26,7 @@ global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Navigation;
 global using Atc.Wpf.Controls.Pickers;
+global using Atc.Wpf.Controls.Progressing;
 global using Atc.Wpf.Controls.Sample;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Controls.Tests.TestSupport;

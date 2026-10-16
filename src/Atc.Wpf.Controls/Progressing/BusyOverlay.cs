@@ -68,9 +68,19 @@ public partial class BusyOverlay : ContentControl
         object? sender,
         UiCultureEventArgs e)
     {
-        if (BusyContent is string)
+        if (BusyContent is not string text)
         {
-            BusyContent = $"{SharedMisc.PleaseWait}...";
+            return;
+        }
+
+        // Only the default "Please wait..." text follows the culture; a custom text is left alone,
+        // and SetCurrentValue keeps a binding on BusyContent intact.
+        var oldDefaultText = SharedMisc.ResourceManager.GetString(nameof(SharedMisc.PleaseWait3Dots), e.OldCulture);
+        var oldPleaseWait = SharedMisc.ResourceManager.GetString(nameof(SharedMisc.PleaseWait), e.OldCulture);
+        if (string.Equals(text, oldDefaultText, StringComparison.Ordinal) ||
+            string.Equals(text, $"{oldPleaseWait}...", StringComparison.Ordinal))
+        {
+            SetCurrentValue(BusyContentProperty, SharedMisc.PleaseWait3Dots);
         }
     }
 
