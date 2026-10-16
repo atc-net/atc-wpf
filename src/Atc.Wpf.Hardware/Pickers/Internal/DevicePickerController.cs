@@ -15,10 +15,12 @@ internal sealed class DevicePickerController<TInfo>
     where TInfo : class, IDeviceInfo, INotifyPropertyChanged
 {
     private readonly IDevicePickerHost<TInfo> host;
+    private readonly ObservableCollection<TInfo> items;
     private readonly Action startWatching;
     private readonly Action stopWatching;
     private readonly Func<Task> refreshAsync;
     private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
+    private readonly List<TInfo> hookedItems = new();
     private string? lostDeviceId;
     private bool isLoaded;
 
@@ -32,6 +34,7 @@ internal sealed class DevicePickerController<TInfo>
         ArgumentNullException.ThrowIfNull(items);
 
         this.host = host;
+        this.items = items;
         this.startWatching = startWatching;
         this.stopWatching = stopWatching;
         this.refreshAsync = refreshAsync;
@@ -54,7 +57,14 @@ internal sealed class DevicePickerController<TInfo>
 
         if (host.AutoRefreshOnDeviceChange)
         {
-            startWatching();
+            try
+            {
+                startWatching();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"{typeof(TInfo).Name} picker could not start watching: {ex.Message}");
+            }
         }
 
         try
@@ -154,17 +164,26 @@ internal sealed class DevicePickerController<TInfo>
         });
     }
 
+    private static bool IsAvailable(TInfo item)
+        => item.State is DeviceState.Available or DeviceState.JustConnected;
+
     private void HookItem(TInfo item)
     {
         lastKnownStates[item.DeviceId] = item.State;
+        hookedItems.Add(item);
         PropertyChangedEventManager.AddHandler(item, OnItemPropertyChanged, nameof(IDeviceInfo.State));
     }
 
     private void UnhookItem(TInfo item)
     {
         PropertyChangedEventManager.RemoveHandler(item, OnItemPropertyChanged, nameof(IDeviceInfo.State));
+        hookedItems.Remove(item);
         lastKnownStates.Remove(item.DeviceId);
     }
+
+    private bool IsLostDevice(TInfo item)
+        => lostDeviceId is not null &&
+           string.Equals(item.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase);
 
     private void OnItemPropertyChanged(
         object? sender,
@@ -187,6 +206,13 @@ internal sealed class DevicePickerController<TInfo>
 
         lastKnownStates[item.DeviceId] = item.State;
         host.RaiseDeviceStateChanged(item.DeviceId, oldState, item.State);
+
+        // The services revive the same item instance on re-plug instead of adding a new one, so a lost
+        // device coming back (and a first available device) shows up here, not as a collection Add.
+        if (IsAvailable(item))
+        {
+            TryRebindOrAutoSelect(item);
+        }
     }
 
     private void OnValueStatePropertyChanged(
@@ -198,6 +224,20 @@ internal sealed class DevicePickerController<TInfo>
             return;
         }
 
+        var value = host.Value;
+        if (value is { State: DeviceState.Disconnected })
+        {
+            HandleSelectedDeviceLost();
+            return;
+        }
+
+        if (value is not null && IsLostDevice(value) && IsAvailable(value))
+        {
+            // Still selected (ClearValueOnDisconnect is off) and back again.
+            lostDeviceId = null;
+            host.RaiseDeviceReconnected(value);
+        }
+
         UpdateSelectedStateMessage();
     }
 
@@ -205,6 +245,12 @@ internal sealed class DevicePickerController<TInfo>
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
+        if (e.Action is NotifyCollectionChangedAction.Reset)
+        {
+            OnItemsReset();
+            return;
+        }
+
         if (e.OldItems is not null)
         {
             foreach (var item in e.OldItems)
@@ -216,20 +262,51 @@ internal sealed class DevicePickerController<TInfo>
             }
         }
 
-        if (e.Action is NotifyCollectionChangedAction.Add &&
-            e.NewItems is not null)
+        if (e.NewItems is not null)
         {
             foreach (var item in e.NewItems)
             {
-                if (item is TInfo added)
+                if (item is not TInfo added)
+                {
+                    continue;
+                }
+
+                if (e.Action is NotifyCollectionChangedAction.Add)
                 {
                     OnItemAdded(added);
+                }
+                else
+                {
+                    HookItem(added);
                 }
             }
         }
 
         if (host.Value is { State: DeviceState.Disconnected })
         {
+            HandleSelectedDeviceLost();
+        }
+    }
+
+    private void OnItemsReset()
+    {
+        // Reset carries no OldItems (e.g. Clear when a filter changes), so drop every tracked item and
+        // re-hook whatever survived.
+        foreach (var hooked in hookedItems.ToArray())
+        {
+            UnhookItem(hooked);
+        }
+
+        foreach (var item in items)
+        {
+            HookItem(item);
+        }
+
+        var value = host.Value;
+        if (value is not null && !items.Contains(value))
+        {
+            // The selected instance is gone for good; treat it like an unplug so the consumer hears about it
+            // and a device with the same id can be rebound when it is listed again.
             HandleSelectedDeviceLost();
         }
     }
@@ -243,16 +320,32 @@ internal sealed class DevicePickerController<TInfo>
             return;
         }
 
-        if (host.AutoRebindOnReconnect &&
-            !string.IsNullOrEmpty(lostDeviceId) &&
-            string.Equals(item.DeviceId, lostDeviceId, StringComparison.OrdinalIgnoreCase))
+        if (host.AutoRebindOnReconnect && IsLostDevice(item))
         {
             host.Value = item;
             host.RaiseDeviceReconnected(item);
             lostDeviceId = null;
         }
-        else if (host.AutoSelectFirstAvailable &&
-                 item.State is DeviceState.Available or DeviceState.JustConnected)
+        else if (host.AutoSelectFirstAvailable && IsAvailable(item))
+        {
+            host.Value = item;
+        }
+    }
+
+    private void TryRebindOrAutoSelect(TInfo item)
+    {
+        if (host.Value is not null)
+        {
+            return;
+        }
+
+        if (host.AutoRebindOnReconnect && IsLostDevice(item))
+        {
+            host.Value = item;
+            host.RaiseDeviceReconnected(item);
+            lostDeviceId = null;
+        }
+        else if (host.AutoSelectFirstAvailable)
         {
             host.Value = item;
         }
@@ -263,6 +356,13 @@ internal sealed class DevicePickerController<TInfo>
         var lost = host.Value;
         if (lost is null)
         {
+            return;
+        }
+
+        if (IsLostDevice(lost))
+        {
+            // Already reported for this device; a later collection change must not raise DeviceLost again.
+            UpdateSelectedStateMessage();
             return;
         }
 

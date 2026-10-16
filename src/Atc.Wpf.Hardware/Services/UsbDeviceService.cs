@@ -84,7 +84,15 @@ public sealed class UsbDeviceService : IUsbDeviceService
 
         // The collection is bound to the picker and the watcher events already arrive on the UI thread,
         // so the sync has to run there too, whichever thread called RefreshAsync.
-        await host.InvokeOnUiAsync(() => SyncWith(found)).ConfigureAwait(false);
+        await host.InvokeOnUiAsync(() =>
+        {
+            if (ReferenceEquals(host, watcher))
+            {
+                SyncWith(found);
+            }
+
+            // else: the class filter changed while enumerating; these results belong to the old filter.
+        }).ConfigureAwait(false);
     }
 
     private void SyncWith(IReadOnlyList<DeviceSnapshot> found)

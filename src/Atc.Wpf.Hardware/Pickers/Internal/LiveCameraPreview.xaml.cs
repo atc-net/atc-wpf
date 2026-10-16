@@ -134,14 +134,16 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
             ClearError();
 
             var capture = new Windows.Media.Capture.MediaCapture();
+
+            // Own it before initialising, so a failed InitializeAsync (access denied, camera busy) is disposed
+            // by DisposeMediaAsync instead of holding the camera until finalisation.
+            mediaCapture = capture;
             await capture.InitializeAsync(new Windows.Media.Capture.MediaCaptureInitializationSettings
             {
                 VideoDeviceId = deviceId,
                 StreamingCaptureMode = Windows.Media.Capture.StreamingCaptureMode.Video,
                 MemoryPreference = Windows.Media.Capture.MediaCaptureMemoryPreference.Cpu,
             });
-
-            mediaCapture = capture;
 
             var colorSource = capture.FrameSources.Values
                 .FirstOrDefault(s => s.Info.SourceKind is Windows.Media.Capture.Frames.MediaFrameSourceKind.Color);

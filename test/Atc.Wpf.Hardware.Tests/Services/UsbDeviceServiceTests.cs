@@ -117,4 +117,21 @@ public sealed class UsbDeviceServiceTests
         Assert.Single(service.Devices);
         Assert.Equal(1, host.FindAllCallCount);
     }
+
+    [WpfFact]
+    public async Task RefreshAsync_ClassFilterChangesWhileEnumerating_IgnoresTheOldWatcherResult()
+    {
+        using var first = new FakeDeviceWatcherHost { DeferFindAll = true };
+        using var second = new FakeDeviceWatcherHost();
+        var queue = new Queue<FakeDeviceWatcherHost>(new[] { first, second });
+        using var service = new UsbDeviceService(_ => queue.Dequeue());
+        first.SeedSnapshots.Add(new DeviceSnapshot { Id = "id-1", Name = "Not a HID" });
+
+        var refresh = service.RefreshAsync();
+        service.ClassFilter = UsbDeviceClassFilter.Hid;
+        await Task.Run(first.CompleteFindAll);
+        await refresh;
+
+        Assert.Empty(service.Devices);
+    }
 }
