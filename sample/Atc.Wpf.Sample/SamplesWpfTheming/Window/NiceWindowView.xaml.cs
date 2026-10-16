@@ -54,15 +54,37 @@ public partial class NiceWindowView
             Height = 400,
             WindowStyle = windowStyle,
             WindowStartupLocation = WindowStartupLocation.CenterScreen,
-            Content = new TextBlock
-            {
-                Text = $"This is a NiceWindow with WindowStyle = {windowStyle}",
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 16,
-            },
         };
 
+        var content = new StackPanel
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+
+        content.Children.Add(new TextBlock
+        {
+            Text = $"This is a NiceWindow with WindowStyle = {windowStyle}",
+            HorizontalAlignment = HorizontalAlignment.Center,
+            FontSize = 16,
+        });
+
+        if (windowStyle == WindowStyle.None)
+        {
+            // A borderless window has no title bar and therefore no close button of its own.
+            var closeButton = new Button
+            {
+                Content = "Close",
+                Width = 120,
+                Margin = new Thickness(0, 20, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+
+            closeButton.Click += (_, _) => window.Close();
+            content.Children.Add(closeButton);
+        }
+
+        window.Content = content;
         window.Show();
     }
 }
