@@ -3,7 +3,7 @@ namespace Atc.Wpf.Tests.Collections;
 public sealed class ObservableCollectionExTests
 {
     [Fact]
-    public void AddRange_adds_all_items_and_raises_one_collection_changed_event()
+    public void AddRange_adds_all_items_and_raises_one_Reset_event()
     {
         var sut = new ObservableCollectionEx<int>();
         var events = new List<NotifyCollectionChangedAction>();
@@ -13,7 +13,7 @@ public sealed class ObservableCollectionExTests
 
         Assert.Equal(new[] { 1, 2, 3, 4 }, sut);
         Assert.Single(events);
-        Assert.Equal(NotifyCollectionChangedAction.Add, events[0]);
+        Assert.Equal(NotifyCollectionChangedAction.Reset, events[0]);
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public sealed class ObservableCollectionExTests
     }
 
     [Fact]
-    public void AddRange_with_empty_input_still_raises_one_Add_event()
+    public void AddRange_with_empty_input_raises_no_event()
     {
         var sut = new ObservableCollectionEx<int>();
         var events = new List<NotifyCollectionChangedAction>();
@@ -34,8 +34,7 @@ public sealed class ObservableCollectionExTests
         sut.AddRange(Array.Empty<int>());
 
         Assert.Empty(sut);
-        Assert.Single(events);
-        Assert.Equal(NotifyCollectionChangedAction.Add, events[0]);
+        Assert.Empty(events);
     }
 
     [Fact]

@@ -43,8 +43,9 @@ public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
     /// <summary>
     /// Adds a range of items to the collection. This method temporarily suppresses collection changed notifications,
     /// allowing for the bulk addition of items without triggering individual UI updates for each addition.
-    /// A single collection changed notification is raised after all items are added, improving performance and responsiveness
-    /// when updating bound views with multiple items at once.
+    /// A single <see cref="NotifyCollectionChangedAction.Reset"/> notification is raised after all items are added
+    /// (WPF collection views do not accept multi-item Add notifications), improving performance and responsiveness
+    /// when updating bound views with multiple items at once. Nothing is raised when <paramref name="list"/> is empty.
     /// </summary>
     /// <param name="list">The collection of items to be added to the ObservableCollectionEx. The items in this collection
     /// will be added to the ObservableCollectionEx, and a single notification will be raised after all items are added.</param>
@@ -52,19 +53,30 @@ public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
     {
         ArgumentNullException.ThrowIfNull(list);
 
+        var wasSuppressed = suppressNotification;
+        var added = false;
         suppressNotification = true;
-
-        foreach (var item in list)
+        try
         {
-            Add(item);
+            foreach (var item in list)
+            {
+                Add(item);
+                added = true;
+            }
+        }
+        finally
+        {
+            suppressNotification = wasSuppressed;
         }
 
-        suppressNotification = false;
+        if (!added)
+        {
+            return;
+        }
 
         OnCollectionChanged(
             new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Add,
-                list));
+                NotifyCollectionChangedAction.Reset));
     }
 
     /// <summary>
