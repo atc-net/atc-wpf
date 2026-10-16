@@ -69,9 +69,10 @@ public class NavigationService : INavigationService
     {
         ArgumentNullException.ThrowIfNull(viewModelType);
 
-        // Check navigation guard asynchronously
+        // Check navigation guard asynchronously. Continue on the calling (UI) context so the
+        // view-model callbacks and the Navigated event run on the thread the caller expects.
         if (currentViewModel is INavigationGuard guard &&
-            !await guard.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(false))
+            !await guard.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(true))
         {
             return false;
         }
@@ -105,9 +106,10 @@ public class NavigationService : INavigationService
             return false;
         }
 
-        // Check navigation guard asynchronously
+        // Check navigation guard asynchronously. Continue on the calling (UI) context so the
+        // view-model callbacks and the Navigated event run on the thread the caller expects.
         if (currentViewModel is INavigationGuard guard &&
-            !await guard.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(false))
+            !await guard.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(true))
         {
             return false;
         }
@@ -141,9 +143,10 @@ public class NavigationService : INavigationService
             return false;
         }
 
-        // Check navigation guard asynchronously
+        // Check navigation guard asynchronously. Continue on the calling (UI) context so the
+        // view-model callbacks and the Navigated event run on the thread the caller expects.
         if (currentViewModel is INavigationGuard guard &&
-            !await guard.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(false))
+            !await guard.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(true))
         {
             return false;
         }
