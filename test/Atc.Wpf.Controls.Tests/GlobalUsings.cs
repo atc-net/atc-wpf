@@ -13,6 +13,7 @@ global using System.Windows.Automation.Provider;
 global using System.Windows.Controls;
 global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;
+global using System.Windows.Documents;
 global using System.Windows.Input;
 global using System.Windows.Interop;
 global using System.Windows.Markup;
@@ -39,5 +40,8 @@ global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Navigation;
 global using Atc.XamlToolkit.Messaging;
 global using Atc.XUnit;
+
+global using ICSharpCode.AvalonEdit;
+global using MdXaml;
 
 global using Xunit;
