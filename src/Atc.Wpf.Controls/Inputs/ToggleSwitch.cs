@@ -350,7 +350,13 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
             return;
         }
 
-        var showHeader = (Header is string s && !string.IsNullOrEmpty(s)) || Header != null;
+        var showHeader = Header switch
+        {
+            null => false,
+            string s => s.Length > 0,
+            _ => true,
+        };
+
         HeaderContentPresenter.Visibility = showHeader ? Visibility.Visible : Visibility.Collapsed;
     }
 
@@ -363,7 +369,13 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
             return;
         }
 
-        var showContent = (Content is string s && !string.IsNullOrEmpty(s)) || Content != null;
+        var showContent = Content switch
+        {
+            null => false,
+            string s => s.Length > 0,
+            _ => true,
+        };
+
         ContentPresenter.Visibility = showContent ? Visibility.Visible : Visibility.Collapsed;
         OffContentPresenter.Visibility = !showContent ? Visibility.Visible : Visibility.Collapsed;
         OnContentPresenter.Visibility = !showContent ? Visibility.Visible : Visibility.Collapsed;
