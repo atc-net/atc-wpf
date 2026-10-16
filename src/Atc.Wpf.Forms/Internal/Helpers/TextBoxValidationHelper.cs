@@ -31,7 +31,11 @@ internal static class TextBoxValidationHelper
 
                 break;
             case TextBoxValidationRuleType.Ftp:
+                ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: true, allowFtps: false);
+                break;
             case TextBoxValidationRuleType.Ftps:
+                ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: false, allowFtps: true);
+                break;
             case TextBoxValidationRuleType.FtpOrFtps:
                 ValidateFtpOrFtps(value, ref isValid, ref errorMessage, allowFtp: true, allowFtps: true);
                 break;
@@ -259,44 +263,31 @@ internal static class TextBoxValidationHelper
         string? value,
         ref bool isValid,
         ref string errorMessage)
-    {
-        var validation = new UriAttribute(
-            required: true,
-            allowHttp: false,
-            allowHttps: false,
-            allowFtp: false,
-            allowFtps: false,
-            allowFile: false,
-            allowOpcTcp: true);
-        if (validation.IsValid(value))
-        {
-            return;
-        }
+        => ValidateScheme(value, "tcp", Validations.InvalidTcpUrl, ref isValid, ref errorMessage);
 
-        isValid = false;
-        errorMessage = Validations.InvalidTcpUrl;
-    }
-
+    // There is no UDP-specific message, so the TCP one is reused.
     private static void ValidateUdp(
         string? value,
         ref bool isValid,
         ref string errorMessage)
+        => ValidateScheme(value, "udp", Validations.InvalidTcpUrl, ref isValid, ref errorMessage);
+
+    private static void ValidateScheme(
+        string? value,
+        string scheme,
+        string invalidMessage,
+        ref bool isValid,
+        ref string errorMessage)
     {
-        var validation = new UriAttribute(
-            required: true,
-            allowHttp: false,
-            allowHttps: false,
-            allowFtp: false,
-            allowFtps: false,
-            allowFile: false,
-            allowOpcTcp: true);
-        if (validation.IsValid(value))
+        if (Uri.TryCreate(value, UriKind.Absolute, out var uri) &&
+            string.Equals(uri.Scheme, scheme, StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrEmpty(uri.Host))
         {
             return;
         }
 
         isValid = false;
-        errorMessage = Validations.InvalidTcpUrl;
+        errorMessage = invalidMessage;
     }
 
     private static void ValidatePasswordStrength(

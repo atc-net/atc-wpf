@@ -123,6 +123,49 @@ public sealed class EndpointBoxTests : IDisposable
         Assert.Equal("new.example.com", raised.NewValue);
     }
 
+    [StaFact]
+    public void Value_WithTcpProtocol_IsATcpUri()
+    {
+        var sut = new EndpointBox { NetworkProtocol = NetworkProtocolType.Tcp, Host = "plc.example.com", Port = 502 };
+
+        Assert.Equal(new Uri("tcp://plc.example.com:502"), sut.Value);
+    }
+
+    [StaFact]
+    public void Value_WithUdpProtocol_IsAUdpUri()
+    {
+        var sut = new EndpointBox { NetworkProtocol = NetworkProtocolType.Udp, Host = "plc.example.com", Port = 514 };
+
+        Assert.Equal(new Uri("udp://plc.example.com:514"), sut.Value);
+    }
+
+    [StaFact]
+    public void LabelEndpointBox_IsValid_MandatoryAndEmpty_ReportsFieldIsRequired()
+    {
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+        var sut = new LabelEndpointBox { IsMandatory = true };
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelEndpointBox_MandatoryAndEmptyBeforeAnyEdit_ShowsNoMessageUntilValidated()
+    {
+        var sut = new LabelEndpointBox { IsMandatory = true };
+
+        Assert.Equal(string.Empty, sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelEndpointBox_IsValid_MandatoryWithHost_IsValid()
+    {
+        var sut = new LabelEndpointBox { IsMandatory = true, Host = "plc.example.com" };
+
+        Assert.True(sut.IsValid());
+        Assert.Equal(string.Empty, sut.ValidationText);
+    }
+
     private static void GotFocus(UIElement editor)
         => editor.RaiseEvent(new RoutedEventArgs(UIElement.GotFocusEvent, editor));
 
