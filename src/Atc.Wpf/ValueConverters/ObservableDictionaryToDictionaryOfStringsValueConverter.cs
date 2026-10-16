@@ -48,7 +48,7 @@ public sealed class ObservableDictionaryToDictionaryOfStringsValueConverter : IV
 
             case ObservableDictionary<Guid, string> observableDictionaryGuid:
             {
-                observableDictionaryGuid.ToDictionaryOfStrings();
+                dictionary = observableDictionaryGuid.ToDictionaryOfStrings();
                 break;
             }
         }
