@@ -12,6 +12,7 @@ public partial class VncViewerView
         InitializeComponent();
 
         DataContextChanged += OnDataContextChanged;
+        Loaded += OnLoaded;
         Unloaded += OnUnloaded;
 
         VncImage.MouseLeftButtonDown += OnVncImageMouseButtonDown;
@@ -218,19 +219,26 @@ public partial class VncViewerView
         };
     }
 
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (viewModel is null)
+        {
+            return;
+        }
+
+        // Unloaded detaches the framebuffer handler; a view that is loaded again (tab switch, re-parenting)
+        // has to pick the live session up again. The input handlers on our own children stay attached.
+        viewModel.FramebufferUpdated -= OnFramebufferUpdated;
+        viewModel.FramebufferUpdated += OnFramebufferUpdated;
+        RefreshImage();
+    }
+
     private void OnUnloaded(
         object sender,
         RoutedEventArgs e)
     {
-        VncImage.MouseLeftButtonDown -= OnVncImageMouseButtonDown;
-        VncImage.MouseLeftButtonUp -= OnVncImageMouseButtonUp;
-        VncImage.MouseRightButtonDown -= OnVncImageMouseButtonDown;
-        VncImage.MouseRightButtonUp -= OnVncImageMouseButtonUp;
-        VncImage.MouseMove -= OnVncImageMouseMove;
-
-        PreviewKeyDown -= OnPreviewKeyDown;
-        PreviewKeyUp -= OnPreviewKeyUp;
-
         if (viewModel is not null)
         {
             viewModel.FramebufferUpdated -= OnFramebufferUpdated;

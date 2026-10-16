@@ -55,6 +55,12 @@ public sealed class UndoRedoKeyBindingBehavior : Behavior<UIElement>
             return;
         }
 
+        if (e.OriginalSource is TextBoxBase)
+        {
+            // A focused text editor owns Ctrl+Z / Ctrl+Y for its own edits.
+            return;
+        }
+
         var ctrl = (e.KeyboardDevice.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
         var shift = (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 

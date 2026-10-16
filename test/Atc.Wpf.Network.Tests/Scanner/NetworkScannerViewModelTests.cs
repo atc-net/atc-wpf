@@ -109,4 +109,37 @@ public sealed class NetworkScannerViewModelTests
         });
         Assert.Null(exception);
     }
+
+    [Theory]
+    [InlineData("192.168.1.10", "192.168.1.50", true)]
+    [InlineData("192.168.1.10", "192.168.1.10", true)]
+    [InlineData("10.0.0.1", "10.0.1.0", true)]
+    [InlineData("192.168.1.50", "192.168.1.10", false)]
+    [InlineData("::1", "::2", false)]
+    [InlineData("not-an-ip", "192.168.1.1", false)]
+    [InlineData(null, "192.168.1.1", false)]
+    [InlineData("192.168.1.1", null, false)]
+    public void IsValidIpv4Range_AcceptsOnlyOrderedIpv4Ranges(
+        string? start,
+        string? end,
+        bool expected)
+        => Assert.Equal(expected, NetworkScannerViewModel.IsValidIpv4Range(start, end));
+
+    [Fact]
+    public void ScanCommand_WithAReversedRange_CannotExecute()
+    {
+        sut.StartIpAddress = "192.168.1.50";
+        sut.EndIpAddress = "192.168.1.10";
+
+        Assert.False(sut.ScanCommand.CanExecute(null));
+    }
+
+    [Fact]
+    public void ScanCommand_WithAnOrderedRange_CanExecute()
+    {
+        sut.StartIpAddress = "192.168.1.10";
+        sut.EndIpAddress = "192.168.1.50";
+
+        Assert.True(sut.ScanCommand.CanExecute(null));
+    }
 }

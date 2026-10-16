@@ -80,6 +80,7 @@ public sealed class VncConnectionService : IDisposable
         string? password)
     {
         Cleanup();
+        IsConnected = false;
 
         try
         {
@@ -138,11 +139,19 @@ public sealed class VncConnectionService : IDisposable
     /// Disconnects from the VNC server and raises <see cref="Disconnected"/>.
     /// </summary>
     /// <returns>A task that completes when the connection has been closed.</returns>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A failed disconnect still has to release the client and report Disconnected.")]
     public async Task DisconnectAsync()
     {
         if (vnc is not null)
         {
-            await vnc.Disconnect().ConfigureAwait(false);
+            try
+            {
+                await vnc.Disconnect().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                // The transport is already gone; releasing the client below is what matters.
+            }
         }
 
         Cleanup();
