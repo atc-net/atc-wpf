@@ -24,6 +24,7 @@ global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
+global using Atc.Wpf.Controls.Layouts.Grid;
 global using Atc.Wpf.Controls.Navigation;
 global using Atc.Wpf.Controls.Pickers;
 global using Atc.Wpf.Controls.Progressing;
