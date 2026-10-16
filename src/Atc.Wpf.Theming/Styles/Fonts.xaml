@@ -39,6 +39,7 @@
     <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs.Accent">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.Button.Dialogs.AccentHighlight">Normal</CharacterCasing>
+    <CharacterCasing x:Key="AtcApps.CharacterCasing.DataGridColumnHeader">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.GridViewColumnHeader">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.GroupBox">Normal</CharacterCasing>
     <CharacterCasing x:Key="AtcApps.CharacterCasing.WindowCommands">Normal</CharacterCasing>

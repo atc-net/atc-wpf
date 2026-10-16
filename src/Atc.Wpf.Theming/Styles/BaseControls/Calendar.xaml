@@ -531,7 +531,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="1">
                             <Border
-                                BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground0}"
+                                BorderBrush="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                                 BorderThickness="2"
                                 CornerRadius="1">
                                 <atc:GridEx Columns="Auto,Auto,Auto" Rows="Auto,*">
