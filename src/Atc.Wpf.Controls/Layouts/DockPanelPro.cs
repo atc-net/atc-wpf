@@ -151,6 +151,11 @@ public sealed partial class DockPanelPro : Panel
     /// <summary>
     /// Loads layout from a JSON string.
     /// </summary>
+    /// <remarks>
+    /// Only the docking dimension of each side region is restored: the width of left and right
+    /// regions and the height of top and bottom regions. The other dimension and the center
+    /// region keep following the panel size, so a saved layout never pins them.
+    /// </remarks>
     /// <param name="json">The JSON string containing the layout.</param>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public void LoadLayout(string json)
@@ -187,31 +192,27 @@ public sealed partial class DockPanelPro : Panel
             }
 
             var dock = GetDock(region);
+            var hasWidth = !double.IsNaN(regionState.Width) && regionState.Width > 0;
+            var hasHeight = !double.IsNaN(regionState.Height) && regionState.Height > 0;
 
-            if (!double.IsNaN(regionState.Width) && regionState.Width > 0)
+            switch (dock)
             {
-                region.Width = regionState.Width;
-                if (dock == DockPosition.Left)
-                {
+                case DockPosition.Left when hasWidth:
+                    region.Width = regionState.Width;
                     leftWidth = regionState.Width;
-                }
-                else if (dock == DockPosition.Right)
-                {
+                    break;
+                case DockPosition.Right when hasWidth:
+                    region.Width = regionState.Width;
                     rightWidth = regionState.Width;
-                }
-            }
-
-            if (!double.IsNaN(regionState.Height) && regionState.Height > 0)
-            {
-                region.Height = regionState.Height;
-                if (dock == DockPosition.Top)
-                {
+                    break;
+                case DockPosition.Top when hasHeight:
+                    region.Height = regionState.Height;
                     topHeight = regionState.Height;
-                }
-                else if (dock == DockPosition.Bottom)
-                {
+                    break;
+                case DockPosition.Bottom when hasHeight:
+                    region.Height = regionState.Height;
                     bottomHeight = regionState.Height;
-                }
+                    break;
             }
 
             region.IsExpanded = regionState.IsExpanded;
