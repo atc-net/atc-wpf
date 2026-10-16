@@ -90,7 +90,6 @@ internal sealed class RadialGradientColorPaintServer : GradientColorPaintServer
         }
         else
         {
-            const double scale = 1d / 100d;
             if (!double.IsNaN(Cx) && !double.IsNaN(Cy))
             {
                 brush.Center = new Point(
@@ -101,8 +100,8 @@ internal sealed class RadialGradientColorPaintServer : GradientColorPaintServer
             if (!double.IsNaN(Fx) && !double.IsNaN(Fy))
             {
                 brush.GradientOrigin = new Point(
-                    Fx * scale,
-                    Fy * scale);
+                    Fx,
+                    Fy);
             }
 
             if (!double.IsNaN(R))
