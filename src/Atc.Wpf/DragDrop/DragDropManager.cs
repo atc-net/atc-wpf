@@ -94,6 +94,17 @@ internal static class DragDropManager
             return;
         }
 
+        BeginDrag(itemsControl, item);
+    }
+
+    /// <summary>
+    /// Asks the optional <see cref="IDragHandler"/> whether the drag may start and,
+    /// if so, runs the OLE drag-drop operation for <paramref name="item"/>.
+    /// </summary>
+    internal static void BeginDrag(
+        ItemsControl itemsControl,
+        object item)
+    {
         var sourceIndex = itemsControl.Items.IndexOf(item);
 
         var dragInfo = new DragInfo
@@ -110,6 +121,9 @@ internal static class DragDropManager
 
         if (dragInfo.Effects == DragDropEffects.None)
         {
+            // The handler cancelled this drag; forget the press so the next
+            // mouse move does not ask the handler again until a new press.
+            dragStartPoint = null;
             return;
         }
 
