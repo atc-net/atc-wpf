@@ -102,15 +102,15 @@ public partial class LabelEndpointBox : ILabelEndpointBox
     /// <inheritdoc />
     public override bool IsValid()
     {
-        ValidateEndpoint();
+        ValidateEndpoint(isExplicit: true);
         return string.IsNullOrEmpty(ValidationText);
     }
 
-    private void ValidateEndpoint()
+    private void ValidateEndpoint(bool isExplicit = false)
     {
         if (IsMandatory && string.IsNullOrWhiteSpace(Host))
         {
-            ValidationText = IsDirty
+            ValidationText = IsDirty || isExplicit
                 ? Validations.FieldIsRequired
                 : string.Empty;
             return;
