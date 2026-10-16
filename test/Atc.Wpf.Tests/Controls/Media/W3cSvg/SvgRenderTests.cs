@@ -87,6 +87,38 @@ public sealed class SvgRenderTests
         Assert.Equal(new byte[] { 51, 255, 51 }, alphas);
     }
 
+    [StaFact]
+    public void RadialGradient_FocalPoint_IsNotScaled()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs><radialGradient id="g" fx="0.3" fy="0.7"><stop offset="0" stop-color="red" /><stop offset="1" stop-color="blue" /></radialGradient></defs>
+              <rect width="10" height="10" fill="url(#g)" />
+            </svg>
+            """);
+
+        var brush = Assert.IsType<RadialGradientBrush>(GeometryDrawings(drawing).Single().Brush);
+        Assert.Equal(new Point(0.3, 0.7), brush.GradientOrigin);
+        Assert.Equal(new Point(0.5, 0.5), brush.Center);
+    }
+
+    [StaFact]
+    public void RadialGradient_DefaultFocalPoint_IsTheCenter()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs><radialGradient id="g" cx="0.4" cy="0.6"><stop offset="0" stop-color="red" /><stop offset="1" stop-color="blue" /></radialGradient></defs>
+              <rect width="10" height="10" fill="url(#g)" />
+            </svg>
+            """);
+
+        var brush = Assert.IsType<RadialGradientBrush>(GeometryDrawings(drawing).Single().Brush);
+        Assert.Equal(new Point(0.4, 0.6), brush.GradientOrigin);
+        Assert.Equal(new Point(0.4, 0.6), brush.Center);
+    }
+
     private static DrawingGroup Render(string svg)
         => new SvgRender().LoadXmlDrawing(svg);
 
