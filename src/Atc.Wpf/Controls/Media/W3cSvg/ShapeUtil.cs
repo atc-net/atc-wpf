@@ -12,10 +12,12 @@ internal static class ShapeUtil
             return ParseTransformInternal(value);
         }
 
+        // SVG applies a transform list right-to-left (the last item acts on the shape first),
+        // while a TransformGroup applies its children first-to-last, so add them in reverse order.
         var tg = new TransformGroup();
-        foreach (var transform in transforms
-            .OrderBy(x => x.StartsWith(SvgTagConstants.Translate, StringComparison.Ordinal)))
+        for (var i = transforms.Length - 1; i >= 0; i--)
         {
+            var transform = transforms[i];
             if (string.IsNullOrEmpty(transform))
             {
                 continue;
