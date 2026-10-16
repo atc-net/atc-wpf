@@ -185,12 +185,17 @@ public sealed class EnumToArrayBindingSourceExtension : MarkupExtension
             return enumValues;
         }
 
+        // For a nullable enum the first slot stands for "no value" and stays null. The converted array holds
+        // the enum names, not the enum values, so the new array must use the same element type.
         var tempArray = Array.CreateInstance(
-            actualEnumType,
+            enumValues.GetType().GetElementType()!,
             enumValues.Length + 1);
-        enumValues.CopyTo(
+        Array.Copy(
+            enumValues,
+            sourceIndex: 0,
             tempArray,
-            1);
+            destinationIndex: 1,
+            enumValues.Length);
         return tempArray;
     }
 }
