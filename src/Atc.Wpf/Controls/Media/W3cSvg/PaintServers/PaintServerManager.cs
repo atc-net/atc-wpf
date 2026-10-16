@@ -184,14 +184,6 @@ internal sealed class PaintServerManager
         return null;
     }
 
-    public static Color KnownColor(string value)
-    {
-        var color = ColorHelper.GetColorFromString(
-            value,
-            GlobalizationConstants.EnglishCultureInfo);
-        return color ?? Colors.Black;
-    }
-
     private string ParseSolidColor(string value)
     {
         var id = value;

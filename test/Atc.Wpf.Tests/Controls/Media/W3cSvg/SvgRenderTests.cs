@@ -34,6 +34,42 @@ public sealed class SvgRenderTests
     }
 
     [StaFact]
+    public void GradientStop_WithoutStopColor_IsBlack()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs>
+                <linearGradient id="g"><stop offset="0" /><stop offset="1" stop-color="red" /></linearGradient>
+              </defs>
+              <rect width="10" height="10" fill="url(#g)" />
+            </svg>
+            """);
+
+        var brush = Assert.IsType<LinearGradientBrush>(GeometryDrawings(drawing).Single().Brush);
+        Assert.Equal(2, brush.GradientStops.Count);
+        Assert.Equal(Colors.Black, brush.GradientStops[0].Color);
+        Assert.Equal(Colors.Red, brush.GradientStops[1].Color);
+    }
+
+    [StaFact]
+    public void GradientStop_WithInvalidStopColor_IsBlack()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <defs>
+                <linearGradient id="g"><stop offset="0" stop-color="#12" /><stop offset="1" stop-color="red" /></linearGradient>
+              </defs>
+              <rect width="10" height="10" fill="url(#g)" />
+            </svg>
+            """);
+
+        var brush = Assert.IsType<LinearGradientBrush>(GeometryDrawings(drawing).Single().Brush);
+        Assert.Equal(Colors.Black, brush.GradientStops[0].Color);
+    }
+
+    [StaFact]
     public void SameFillColor_DifferentFillOpacity_EachShapeGetsItsOwnOpacity()
     {
         var drawing = Render(
