@@ -6,6 +6,8 @@ namespace Atc.Wpf.DragDrop;
 /// </summary>
 public class DefaultDropHandler : IDropHandler
 {
+    private static readonly ConcurrentDictionary<Type, MethodInfo?> ObservableCollectionMoveMethods = new();
+
     /// <inheritdoc />
     public virtual void DragOver(DropInfo dropInfo)
     {
@@ -18,7 +20,15 @@ public class DefaultDropHandler : IDropHandler
         }
 
         if (dropInfo.DragInfo is null ||
-            dropInfo.TargetCollection is not System.Collections.IList)
+            dropInfo.TargetCollection is not IList targetCollection)
+        {
+            return;
+        }
+
+        if (!CanMoveItem(
+                dropInfo.DragInfo.SourceCollection as IList,
+                targetCollection,
+                dropInfo.DragInfo.SourceItem))
         {
             return;
         }
@@ -43,11 +53,13 @@ public class DefaultDropHandler : IDropHandler
             return;
         }
 
-        var sourceCollection = dropInfo.DragInfo.SourceCollection as System.Collections.IList;
-        var targetCollection = dropInfo.TargetCollection as System.Collections.IList;
+        var sourceCollection = dropInfo.DragInfo.SourceCollection as IList;
+        var targetCollection = dropInfo.TargetCollection as IList;
         var item = dropInfo.DragInfo.SourceItem;
 
-        if (sourceCollection is null || targetCollection is null)
+        if (sourceCollection is null ||
+            targetCollection is null ||
+            !CanMoveItem(sourceCollection, targetCollection, item))
         {
             return;
         }
@@ -62,8 +74,64 @@ public class DefaultDropHandler : IDropHandler
         }
     }
 
+    /// <summary>
+    /// Determines whether <paramref name="item"/> can be removed from <paramref name="sourceCollection"/>
+    /// and inserted into <paramref name="targetCollection"/> without the list operations throwing:
+    /// both lists must be mutable and not fixed-size, and the item must be compatible
+    /// with the element type of a generic target list.
+    /// </summary>
+    internal static bool CanMoveItem(
+        IList? sourceCollection,
+        IList targetCollection,
+        object item)
+    {
+        ArgumentNullException.ThrowIfNull(targetCollection);
+        ArgumentNullException.ThrowIfNull(item);
+
+        if (sourceCollection is null ||
+            sourceCollection.IsReadOnly ||
+            sourceCollection.IsFixedSize ||
+            targetCollection.IsReadOnly ||
+            targetCollection.IsFixedSize)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(sourceCollection, targetCollection))
+        {
+            return true;
+        }
+
+        var elementType = GetElementType(targetCollection.GetType());
+        return elementType is null || elementType.IsInstanceOfType(item);
+    }
+
+    private static Type? GetElementType(Type collectionType)
+    {
+        var listInterface = FindGenericInterface(collectionType, typeof(IList<>))
+                            ?? FindGenericInterface(collectionType, typeof(ICollection<>));
+
+        return listInterface?.GetGenericArguments()[0];
+    }
+
+    private static Type? FindGenericInterface(
+        Type type,
+        Type openGenericInterface)
+    {
+        if (type.IsInterface &&
+            type.IsGenericType &&
+            type.GetGenericTypeDefinition() == openGenericInterface)
+        {
+            return type;
+        }
+
+        return Array.Find(
+            type.GetInterfaces(),
+            x => x.IsGenericType && x.GetGenericTypeDefinition() == openGenericInterface);
+    }
+
     private static void HandleReorder(
-        System.Collections.IList collection,
+        IList collection,
         object item,
         int insertIndex)
     {
@@ -73,31 +141,66 @@ public class DefaultDropHandler : IDropHandler
             return;
         }
 
-        if (collection is ObservableCollection<object> observableCollection)
+        var targetIndex = insertIndex > oldIndex ? insertIndex - 1 : insertIndex;
+        targetIndex = System.Math.Clamp(targetIndex, 0, collection.Count - 1);
+        if (oldIndex == targetIndex)
         {
-            var targetIndex = insertIndex > oldIndex ? insertIndex - 1 : insertIndex;
-            if (oldIndex != targetIndex)
-            {
-                observableCollection.Move(oldIndex, targetIndex);
-            }
+            return;
+        }
 
+        if (TryMoveInObservableCollection(collection, oldIndex, targetIndex))
+        {
             return;
         }
 
         collection.RemoveAt(oldIndex);
-        var adjustedIndex = insertIndex > oldIndex ? insertIndex - 1 : insertIndex;
-        adjustedIndex = System.Math.Min(adjustedIndex, collection.Count);
-        collection.Insert(adjustedIndex, item);
+        collection.Insert(targetIndex, item);
+    }
+
+    private static bool TryMoveInObservableCollection(
+        IList collection,
+        int oldIndex,
+        int newIndex)
+    {
+        var moveMethod = ObservableCollectionMoveMethods.GetOrAdd(
+            collection.GetType(),
+            FindObservableCollectionMoveMethod);
+
+        if (moveMethod is null)
+        {
+            return false;
+        }
+
+        moveMethod.Invoke(collection, [oldIndex, newIndex]);
+        return true;
+    }
+
+    private static MethodInfo? FindObservableCollectionMoveMethod(
+        Type collectionType)
+    {
+        for (var type = collectionType; type is not null; type = type.BaseType)
+        {
+            if (type.IsGenericType &&
+                type.GetGenericTypeDefinition() == typeof(ObservableCollection<>))
+            {
+                return type.GetMethod(
+                    nameof(ObservableCollection<object>.Move),
+                    BindingFlags.Public | BindingFlags.Instance,
+                    [typeof(int), typeof(int)]);
+            }
+        }
+
+        return null;
     }
 
     private static void HandleTransfer(
-        System.Collections.IList sourceCollection,
-        System.Collections.IList targetCollection,
+        IList sourceCollection,
+        IList targetCollection,
         object item,
         int insertIndex)
     {
         sourceCollection.Remove(item);
-        var safeIndex = System.Math.Min(insertIndex, targetCollection.Count);
+        var safeIndex = System.Math.Clamp(insertIndex, 0, targetCollection.Count);
         targetCollection.Insert(safeIndex, item);
     }
 
