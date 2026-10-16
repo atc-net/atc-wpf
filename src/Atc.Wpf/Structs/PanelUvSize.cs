@@ -120,7 +120,8 @@ public struct PanelUvSize : IEquatable<PanelUvSize>
 
     /// <inheritdoc />
     public readonly bool Equals(PanelUvSize other)
-        => U.IsEqual(other.U) &&
+        => orientation == other.orientation &&
+           U.IsEqual(other.U) &&
            V.IsEqual(other.V);
 
     /// <inheritdoc />
