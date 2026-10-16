@@ -434,15 +434,17 @@ public static class TerminalLineHighlight
             if (match.Index > pos)
             {
                 tb.Inlines.Add(new Run(text[pos..match.Index]));
+                pos = match.Index;
+            }
+
+            if (match.Length == 0)
+            {
+                // Nothing to highlight, and the text here belongs to the next run or the tail.
+                continue;
             }
 
             tb.Inlines.Add(new Run(match.Value) { Background = brush });
             pos = match.Index + match.Length;
-
-            if (match.Length == 0)
-            {
-                pos++;
-            }
         }
 
         if (pos < text.Length)

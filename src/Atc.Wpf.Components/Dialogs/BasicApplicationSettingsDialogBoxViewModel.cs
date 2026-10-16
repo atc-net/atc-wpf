@@ -6,10 +6,11 @@ namespace Atc.Wpf.Components.Dialogs;
 /// View model for the <see cref="BasicApplicationSettingsDialogBox"/>, editing a copy of the
 /// application settings and saving or reverting them when the dialog is closed.
 /// </summary>
-public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
+public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase, IDisposable
 {
     private readonly DirectoryInfo? dataDirectory;
     private readonly BasicApplicationSettingsViewModel applicationSettingsBackup;
+    private bool isDisposed;
 
     /// <summary>
     /// Gets the command that accepts the changes, saves them when a data directory is set, and closes the dialog.
@@ -155,6 +156,31 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
         ApplicationSettings.Theme = e.NewTheme.Name;
     }
 
+    /// <summary>
+    /// Detaches the view model from the process-wide theme and culture change events. Safe to call more than once.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Releases the event subscriptions held by this view model.
+    /// </summary>
+    /// <param name="disposing"><see langword="true"/> when called from <see cref="Dispose()"/>.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (isDisposed || !disposing)
+        {
+            return;
+        }
+
+        isDisposed = true;
+        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        CultureManager.UiCultureChanged -= OnUiCultureChanged;
+    }
+
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
@@ -164,7 +190,7 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
 
     private void OkCommandHandler(NiceDialogBox dialogBox)
     {
-        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        Dispose();
 
         if (ApplicationSettings.IsDirty)
         {
@@ -182,14 +208,17 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase
 
     private void CancelCommandHandler(NiceDialogBox dialogBox)
     {
-        ThemeManager.Current.ThemeChanged -= OnThemeChanged;
+        Dispose();
 
         if (ApplicationSettings.IsDirty)
         {
             if (!ApplicationSettings.Theme.Equals(applicationSettingsBackup.Theme, StringComparison.Ordinal))
             {
                 var sa = applicationSettingsBackup.Theme.Split('.');
-                ThemeManager.Current.ChangeTheme(Application.Current, sa[0], sa[1]);
+                if (sa.Length == 2)
+                {
+                    ThemeManager.Current.ChangeTheme(Application.Current, sa[0], sa[1]);
+                }
             }
 
             if (!ApplicationSettings.Language.Equals(applicationSettingsBackup.Language, StringComparison.Ordinal))

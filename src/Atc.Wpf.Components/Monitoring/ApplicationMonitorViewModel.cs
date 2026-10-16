@@ -24,6 +24,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
     private readonly CancellationTokenSource cts = new();
     private readonly Task? queueProcessingTask;
+    private bool isDisposed;
 
     private ListSortDirection sortDirection;
     private int maxEntries = 10000;
@@ -343,7 +344,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
         if (AutoScroll)
         {
-            MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection));
+            MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection) { AddedCount = batch.Count });
         }
     }
 
@@ -412,6 +413,13 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     /// <inheritdoc />
     public void Dispose()
     {
+        if (isDisposed)
+        {
+            return;
+        }
+
+        isDisposed = true;
+
         MessengerInstance.UnRegister<ApplicationEventEntry>(
             this,
             OnApplicationEventEntryHandler);

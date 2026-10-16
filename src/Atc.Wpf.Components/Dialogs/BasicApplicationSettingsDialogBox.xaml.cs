@@ -20,6 +20,7 @@ public partial class BasicApplicationSettingsDialogBox
         InitializeComponent();
 
         DataContext = viewModel;
+        Closed += (_, _) => (DataContext as IDisposable)?.Dispose();
     }
 
     /// <summary>
