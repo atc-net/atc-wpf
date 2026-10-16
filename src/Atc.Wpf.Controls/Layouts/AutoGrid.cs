@@ -668,15 +668,16 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
                     if (skip[row, col])
                     {
                         position++;
-                        row = position / colDefCount;
-                        col = position % colDefCount;
+                        row = Clamp(position / colDefCount, rowDefCount - 1);
+                        col = Clamp(position % colDefCount, colDefCount - 1);
                     }
 
                     SetRow(child, row);
                     SetColumn(child, col);
                     position += GetColumnSpan(child);
 
-                    var offset = GetRowSpan(child) - 1;
+                    // A span that reaches past the last row is clipped, as Grid does.
+                    var offset = System.Math.Min(GetRowSpan(child) - 1, rowDefCount - 1 - row);
                     while (offset > 0)
                     {
                         skip[row + offset--, col] = true;
@@ -689,15 +690,16 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
                     if (skip[row, col])
                     {
                         position++;
-                        row = position % rowDefCount;
-                        col = position / rowDefCount;
+                        row = Clamp(position % rowDefCount, rowDefCount - 1);
+                        col = Clamp(position / rowDefCount, colDefCount - 1);
                     }
 
                     SetRow(child, row);
                     SetColumn(child, col);
                     position += GetRowSpan(child);
 
-                    var offset = GetColumnSpan(child) - 1;
+                    // A span that reaches past the last column is clipped, as Grid does.
+                    var offset = System.Math.Min(GetColumnSpan(child) - 1, colDefCount - 1 - col);
                     while (offset > 0)
                     {
                         skip[row, col + offset--] = true;

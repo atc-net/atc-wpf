@@ -317,4 +317,55 @@ public sealed class AutoGridTests
         Assert.Equal(20, child1.Margin.Right);
         Assert.Equal(5, child1.Margin.Bottom);
     }
+
+    [StaFact]
+    public void Measure_RowSpanReachingPastTheLastRow_DoesNotThrow()
+    {
+        // Arrange
+        var grid = new AutoGrid
+        {
+            Columns = "*,*",
+            Rows = "*,*",
+        };
+
+        var spanning = new Border();
+        Grid.SetRowSpan(spanning, 2);
+        grid.Children.Add(new Border());
+        grid.Children.Add(new Border());
+        grid.Children.Add(spanning);
+
+        // Act
+        var exception = Record.Exception(() => grid.Measure(new Size(200, 200)));
+
+        // Assert
+        Assert.Null(exception);
+        Assert.Equal(1, Grid.GetRow(spanning));
+        Assert.Equal(0, Grid.GetColumn(spanning));
+    }
+
+    [StaFact]
+    public void Measure_ColumnSpanReachingPastTheLastColumn_WhenFillingColumnsFirst_DoesNotThrow()
+    {
+        // Arrange
+        var grid = new AutoGrid
+        {
+            Columns = "*,*",
+            Rows = "*,*",
+            Orientation = Orientation.Vertical,
+        };
+
+        var spanning = new Border();
+        Grid.SetColumnSpan(spanning, 2);
+        grid.Children.Add(new Border());
+        grid.Children.Add(new Border());
+        grid.Children.Add(spanning);
+
+        // Act
+        var exception = Record.Exception(() => grid.Measure(new Size(200, 200)));
+
+        // Assert
+        Assert.Null(exception);
+        Assert.Equal(0, Grid.GetRow(spanning));
+        Assert.Equal(1, Grid.GetColumn(spanning));
+    }
 }
