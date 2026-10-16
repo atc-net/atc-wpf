@@ -87,6 +87,46 @@ public sealed class ZoomMiniMapTests : IDisposable
         Assert.Equal(new Thickness(10), dragging.BorderThickness);
     }
 
+    [StaFact]
+    public void VisualElement_Replaced_StopsFollowingTheSizeOfThePreviousElement()
+    {
+        var first = new Border { Width = 100, Height = 50 };
+        var second = new Border { Width = 200, Height = 100 };
+        var host = new StackPanel();
+        host.Children.Add(first);
+        host.Children.Add(second);
+        LayoutHost(host);
+        var sut = new ZoomMiniMap();
+        ApplyTemplate(sut);
+        var canvas = (Canvas)sut.Template.FindName("PART_Content", sut);
+
+        sut.VisualElement = first;
+        sut.VisualElement = second;
+        first.Width = 300;
+        LayoutHost(host);
+
+        Assert.Equal(200d, canvas.Width);
+    }
+
+    [StaFact]
+    public void MouseDown_DataContextIsNotAZoomControl_IsIgnored()
+    {
+        var sut = new ZoomMiniMap { DataContext = "not a zoom control" };
+        ApplyTemplate(sut);
+
+        var exception = Record.Exception(() => sut.RaiseEvent(
+            new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left) { RoutedEvent = Mouse.MouseDownEvent }));
+
+        Assert.Null(exception);
+    }
+
+    private static void LayoutHost(UIElement host)
+    {
+        host.Measure(new Size(1000, 1000));
+        host.Arrange(new Rect(0, 0, 1000, 1000));
+        host.UpdateLayout();
+    }
+
     private static (Border Dragging, Border Sizing) ApplyTemplate(
         ZoomMiniMap miniMap)
     {
