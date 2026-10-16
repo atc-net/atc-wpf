@@ -51,4 +51,61 @@ public sealed class LabelPickerAndSliderTests : IDisposable
         Assert.Equal(textBefore, raised[0].OldValue);
         Assert.Equal("09:30", raised[0].NewValue);
     }
+
+    [StaFact]
+    public void LabelDatePicker_IsValid_MandatoryAndEmpty_ReportsFieldIsRequired()
+    {
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+        var sut = new LabelDatePicker { IsMandatory = true };
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelDatePicker_IsValid_WithASelectedDate_IsValid()
+    {
+        var sut = new LabelDatePicker { IsMandatory = true, SelectedDate = new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Unspecified) };
+
+        Assert.True(sut.IsValid());
+        Assert.Equal(string.Empty, sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelTimePicker_IsValid_MandatoryAndEmpty_ReportsFieldIsRequired()
+    {
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+        var sut = new LabelTimePicker { IsMandatory = true };
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelTimePicker_IsValid_WithASelectedTime_IsValid()
+    {
+        var sut = new LabelTimePicker { IsMandatory = true, SelectedTime = new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified) };
+
+        Assert.True(sut.IsValid());
+        Assert.Equal(string.Empty, sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelDateTimePicker_IsValid_MandatoryAndEmpty_ReportsFieldIsRequired()
+    {
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+        var sut = new LabelDateTimePicker { IsMandatory = true };
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
+    [StaFact]
+    public void LabelDateTimePicker_IsValid_WithASelectedDate_IsValid()
+    {
+        var sut = new LabelDateTimePicker { IsMandatory = true, SelectedDate = new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified) };
+
+        Assert.True(sut.IsValid());
+        Assert.Equal(string.Empty, sut.ValidationText);
+    }
 }
