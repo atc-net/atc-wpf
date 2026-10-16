@@ -210,15 +210,27 @@ public static class PanelHelper
             return;
         }
 
-        for (var i = 0; i < panel.Children.Count; i++)
-        {
-            var child = panel.Children[i];
-            if (child is not FrameworkElement fe)
-            {
-                continue;
-            }
+        ApplyItemMargins(panel);
+    }
 
-            fe.Margin = GetItemMargin(panel);
+    /// <summary>
+    /// Applies <see cref="ItemMarginProperty"/> to every child element except the last one,
+    /// which receives <see cref="LastItemMarginProperty"/> so the panel gets no trailing spacing.
+    /// </summary>
+    internal static void ApplyItemMargins(Panel panel)
+    {
+        var children = panel.Children.OfType<FrameworkElement>().ToList();
+        if (children.Count == 0)
+        {
+            return;
         }
+
+        var itemMargin = GetItemMargin(panel);
+        for (var i = 0; i < children.Count - 1; i++)
+        {
+            children[i].Margin = itemMargin;
+        }
+
+        children[^1].Margin = GetLastItemMargin(panel);
     }
 }
