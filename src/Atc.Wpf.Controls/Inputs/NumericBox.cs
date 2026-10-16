@@ -640,26 +640,28 @@ public partial class NumericBox : Control
             return;
         }
 
+        // Always detach first: both the IsReadOnly callback and the InterceptManualEnter trigger
+        // of the default style end up here, so the handlers must never be attached twice.
+        valueTextBox.LostFocus -= OnTextBoxLostFocus;
+        valueTextBox.PreviewTextInput -= OnPreviewTextInput;
+        valueTextBox.PreviewKeyDown -= OnTextBoxKeyDown;
+        valueTextBox.TextChanged -= OnTextChanged;
+        DataObject.RemovePastingHandler(
+            valueTextBox,
+            OnValueTextBoxPaste);
+
         if (isReadOnly)
         {
-            valueTextBox.LostFocus -= OnTextBoxLostFocus;
-            valueTextBox.PreviewTextInput -= OnPreviewTextInput;
-            valueTextBox.PreviewKeyDown -= OnTextBoxKeyDown;
-            valueTextBox.TextChanged -= OnTextChanged;
-            DataObject.RemovePastingHandler(
-                valueTextBox,
-                OnValueTextBoxPaste);
+            return;
         }
-        else
-        {
-            valueTextBox.LostFocus += OnTextBoxLostFocus;
-            valueTextBox.PreviewTextInput += OnPreviewTextInput;
-            valueTextBox.PreviewKeyDown += OnTextBoxKeyDown;
-            valueTextBox.TextChanged += OnTextChanged;
-            DataObject.AddPastingHandler(
-                valueTextBox,
-                OnValueTextBoxPaste);
-        }
+
+        valueTextBox.LostFocus += OnTextBoxLostFocus;
+        valueTextBox.PreviewTextInput += OnPreviewTextInput;
+        valueTextBox.PreviewKeyDown += OnTextBoxKeyDown;
+        valueTextBox.TextChanged += OnTextChanged;
+        DataObject.AddPastingHandler(
+            valueTextBox,
+            OnValueTextBoxPaste);
     }
 
     /// <summary>Selects all text in the input box.</summary>

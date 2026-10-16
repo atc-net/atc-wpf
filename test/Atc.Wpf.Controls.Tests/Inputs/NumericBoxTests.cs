@@ -572,6 +572,24 @@ public sealed class NumericBoxTests : IDisposable
     }
 
     [StaFact]
+    public void TypedText_AfterReadOnlyRoundTrip_IsNotRewrittenWhileTyping()
+    {
+        // Arrange - the default style toggles InterceptManualEnter together with IsReadOnly
+        var (numericBox, textBox, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.IsReadOnly = true;
+        numericBox.InterceptManualEnter = false;
+        numericBox.IsReadOnly = false;
+        numericBox.InterceptManualEnter = true;
+
+        // Act
+        TypeText(textBox, "1.");
+
+        // Assert
+        Assert.Equal("1.", textBox.Text);
+        Assert.Equal(1d, numericBox.Value);
+    }
+
+    [StaFact]
     public void UpButton_Click_RaisesValueIncrementedWithInterval()
     {
         // Arrange
