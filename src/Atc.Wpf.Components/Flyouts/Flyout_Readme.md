@@ -363,6 +363,8 @@ MyFlyout.Closed += (s, e) =>
 | `Tab`       | Navigate forward through focusable elements (trapped within flyout when `IsFocusTrapEnabled=true`)   |
 | `Shift+Tab` | Navigate backwards through focusable elements (trapped within flyout when `IsFocusTrapEnabled=true`) |
 
+When several flyouts are open in the same window, Escape only acts on the topmost one (the most recently opened). If that flyout is pinned or has `CloseOnEscape=false`, Escape does nothing: it is not passed on to the flyouts below it.
+
 ### Focus Trapping
 
 When `IsFocusTrapEnabled` is true (default), Tab/Shift+Tab navigation is confined to the flyout's content. This prevents users from accidentally tabbing out of the flyout into the underlying window.
