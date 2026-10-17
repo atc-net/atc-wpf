@@ -1,6 +1,8 @@
 global using System.Collections.ObjectModel;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
+global using System.Printing;
+global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using System.Windows;
 global using System.Windows.Controls;
@@ -16,12 +18,14 @@ global using Atc.Wpf.Components.Dialogs;
 global using Atc.Wpf.Components.Flyouts;
 global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;
+global using Atc.Wpf.Components.Printing;
 global using Atc.Wpf.Components.Selectors;
 global using Atc.Wpf.Components.Tests.TestSupport;
 global using Atc.Wpf.Components.ValueConverters;
 global using Atc.Wpf.Components.Viewers;
 global using Atc.Wpf.Components.Zoom;
 global using Atc.Wpf.Notifications;
+global using Atc.Wpf.Printing;
 global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.XamlToolkit.Command;
 
