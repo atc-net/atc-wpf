@@ -79,6 +79,34 @@ public sealed class LabelComboBoxTests : IDisposable
         Assert.Equal(["changed:SE", "invalid"], raised);
     }
 
+    [StaFact]
+    public void EnumPicker_MandatoryWithThePlaceholderSelected_ReportsFieldIsRequired()
+    {
+        UseEnglishUi();
+        var sut = LabelControlFactory.CreateLabelEnumPicker(
+            groupIdentifier: "Group",
+            labelText: "Day",
+            isReadOnly: false,
+            isMandatory: true,
+            selectedKey: nameof(DayOfWeek.Monday),
+            typeof(DayOfWeek));
+        var placeholderKey = Atc.Helpers.DropDownFirstItemTypeHelper
+            .GetEnumGuid(Atc.DropDownFirstItemType.PleaseSelect)
+            .ToString();
+        Assert.True(sut.Items.ContainsKey(placeholderKey));
+        var invalidRaised = false;
+        var changedRaised = false;
+        sut.SelectorLostFocusInvalid += (_, _) => invalidRaised = true;
+        sut.SelectorChanged += (_, _) => changedRaised = true;
+
+        sut.SelectedKey = placeholderKey;
+
+        Assert.True(invalidRaised);
+        Assert.False(changedRaised);
+        Assert.False(sut.IsValid());
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
     private static void UseEnglishUi()
         => Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 }
