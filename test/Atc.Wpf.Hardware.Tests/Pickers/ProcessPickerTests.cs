@@ -36,10 +36,16 @@ public sealed class ProcessPickerTests
 
         // Let the poll started by Loaded finish, so only a real subscription leak can keep the picker alive.
         await sharedService.RefreshAsync();
-        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        GC.Collect();
+
+        // The refresh can complete inline inside the dispatcher callback that applied the poll, so collect only
+        // after yielding back to the dispatcher. A real leak survives every attempt.
+        for (var attempt = 0; attempt < 5 && reference.IsAlive; attempt++)
+        {
+            await Dispatcher.Yield(DispatcherPriority.ApplicationIdle);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
 
         Assert.False(reference.IsAlive);
         GC.KeepAlive(sharedService);
