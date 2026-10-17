@@ -55,6 +55,37 @@ public sealed class MarkdownCodeBlockThemingTests
         Assert.Equal(original, ForegroundOf(editor, "var"));
     }
 
+    [StaTheory]
+    [InlineData("Light.Blue")]
+    [InlineData("Dark.Blue")]
+    public void FencedCodeBlock_UnderTheTheme_UsesTheThemeColoursAndStaysReadable(
+        string theme)
+    {
+        var themeResources = LoadTheme(theme);
+        var editor = RenderCodeBlock(themeResources);
+
+        // The style's DynamicResource lookups must resolve against the theme; a failed lookup would leave
+        // AvalonEdit's own white background and make the contrast checks below meaningless.
+        var background = BrushColor(themeResources, "AtcApps.Brushes.ThemeBackground2");
+        var foreground = BrushColor(themeResources, "AtcApps.Brushes.ThemeForeground");
+        Assert.Equal(background, Assert.IsType<SolidColorBrush>(editor.Background).Color);
+        Assert.Equal(foreground, Assert.IsType<SolidColorBrush>(editor.Foreground).Color);
+
+        Assert.True(
+            ContrastRatio(foreground, background) >= 4.5,
+            $"{theme}: code text {foreground} on {background} has contrast {ContrastRatio(foreground, background):F2}");
+
+        var tokens = HighlightedTokens(editor);
+        Assert.Contains(tokens, token => token.Text == "var" && token.Color != foreground);
+        Assert.Contains(tokens, token => token.Text.StartsWith("//", StringComparison.Ordinal) && token.Color != foreground);
+        foreach (var (text, color) in tokens)
+        {
+            Assert.True(
+                ContrastRatio(color, background) >= 3,
+                $"{theme}: '{text}' in {color} on {background} has contrast {ContrastRatio(color, background):F2}");
+        }
+    }
+
     [Theory]
     [InlineData(0, 0, 0, true)]
     [InlineData(30, 30, 30, true)]
@@ -75,7 +106,8 @@ public sealed class MarkdownCodeBlockThemingTests
         Assert.False(MarkdownCodeBlockTheming.IsDarkBackground(Brushes.Transparent));
     }
 
-    private static TextEditor RenderCodeBlock()
+    private static TextEditor RenderCodeBlock(
+        ResourceDictionary? themeResources = null)
     {
         RuntimeHelpers.RunClassConstructor(typeof(Application).TypeHandle);
         var styles = new ResourceDictionary
@@ -88,6 +120,11 @@ public sealed class MarkdownCodeBlockThemingTests
             MarkdownStyle = (Style)styles["MarkdownDocumentStyle"],
             Markdown = Markdown,
         };
+
+        if (themeResources is not null)
+        {
+            viewer.Resources.MergedDictionaries.Add(themeResources);
+        }
 
         viewer.Measure(new Size(800, 600));
         viewer.Arrange(new Rect(0, 0, 800, 600));
@@ -123,6 +160,60 @@ public sealed class MarkdownCodeBlockThemingTests
         }
 
         throw new Xunit.Sdk.XunitException($"no highlighted element for '{word}' found");
+    }
+
+    private static ResourceDictionary LoadTheme(string theme)
+    {
+        // The theme dictionaries use the StaticResource markup type from Atc.Wpf.
+        _ = typeof(Atc.Wpf.MarkupExtensions.StaticResourceExtension).Assembly;
+        RuntimeHelpers.RunClassConstructor(typeof(Application).TypeHandle);
+        return new ResourceDictionary
+        {
+            Source = new Uri($"pack://application:,,,/Atc.Wpf.Theming;component/Styles/Themes/{theme}.xaml", UriKind.Absolute),
+        };
+    }
+
+    private static Color BrushColor(
+        ResourceDictionary resources,
+        string key)
+        => Assert.IsType<SolidColorBrush>(resources[key]).Color;
+
+    private static List<(string Text, Color Color)> HighlightedTokens(
+        TextEditor editor)
+    {
+        var textView = editor.TextArea.TextView;
+        textView.EnsureVisualLines();
+        var line = textView.VisualLines[0];
+        var lineStart = line.FirstDocumentLine.Offset;
+
+        return line.Elements
+            .Select(element => (
+                Text: editor.Document.GetText(lineStart + element.RelativeTextOffset, element.DocumentLength),
+                Brush: element.TextRunProperties.ForegroundBrush))
+            .Where(token => !string.IsNullOrWhiteSpace(token.Text) && token.Brush is SolidColorBrush)
+            .Select(token => (token.Text, ((SolidColorBrush)token.Brush).Color))
+            .ToList();
+    }
+
+    // WCAG 2 contrast ratio between two opaque sRGB colours (1 = identical, 21 = black on white).
+    private static double ContrastRatio(
+        Color first,
+        Color second)
+    {
+        var a = RelativeLuminance(first);
+        var b = RelativeLuminance(second);
+        return (System.Math.Max(a, b) + 0.05) / (System.Math.Min(a, b) + 0.05);
+    }
+
+    private static double RelativeLuminance(Color color)
+        => (0.2126 * Linear(color.R)) + (0.7152 * Linear(color.G)) + (0.0722 * Linear(color.B));
+
+    private static double Linear(byte channel)
+    {
+        var value = channel / 255d;
+        return value <= 0.04045
+            ? value / 12.92
+            : System.Math.Pow((value + 0.055) / 1.055, 2.4);
     }
 
     private static double Luminance(Color color)
