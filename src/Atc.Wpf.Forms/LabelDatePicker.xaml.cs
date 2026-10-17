@@ -72,6 +72,8 @@ public partial class LabelDatePicker : ILabelDatePicker
 
     private string? themeNameWhenUnloaded;
 
+    private bool isClearingValueFromInvalidText;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="LabelDatePicker"/> class.
     /// </summary>
@@ -224,6 +226,11 @@ public partial class LabelDatePicker : ILabelDatePicker
     {
         var control = (LabelDatePicker)d;
 
+        if (control.isClearingValueFromInvalidText)
+        {
+            return;
+        }
+
         if (control.SelectedDate is null)
         {
             control.SetCurrentValue(
@@ -259,7 +266,16 @@ public partial class LabelDatePicker : ILabelDatePicker
         }
         else
         {
-            control.SelectedDate = null;
+            // The text didn't parse: clear the value but keep what the user typed, so they can correct it.
+            control.isClearingValueFromInvalidText = true;
+            try
+            {
+                control.SelectedDate = null;
+            }
+            finally
+            {
+                control.isClearingValueFromInvalidText = false;
+            }
         }
     }
 
