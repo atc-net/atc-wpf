@@ -7,7 +7,7 @@
                 Margin="2,2,0,0"
                 FontSize="11"
                 Foreground="{DynamicResource AtcApps.Brushes.Control.Validation}"
-                Text="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
+                Text="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)/ErrorContent}"
                 TextWrapping="Wrap" />
         </StackPanel>
     </ControlTemplate>
