@@ -281,4 +281,120 @@ public sealed class GridExTests
         Assert.Equal(5, child1.Margin.Right);
         Assert.Equal(5, child1.Margin.Bottom);
     }
+
+    [StaFact]
+    public void Spacing_ChangedAfterFirstMeasure_IsReapplied()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*",
+            Rows = "*,*",
+            Spacing = 10,
+        };
+
+        var child = new Border();
+        grid.Children.Add(child);
+        grid.Measure(new Size(200, 200));
+        Assert.Equal(new Thickness(0, 0, 10, 10), child.Margin);
+
+        // Act
+        grid.Spacing = 20;
+        grid.Measure(new Size(200, 200));
+
+        // Assert
+        Assert.Equal(new Thickness(0, 0, 20, 20), child.Margin);
+    }
+
+    [StaFact]
+    public void Spacing_ChildMovedToLastCell_LosesTrailingSpacing()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*",
+            Rows = "*,*",
+            Spacing = 10,
+        };
+
+        var child = new Border();
+        grid.Children.Add(child);
+        grid.Measure(new Size(200, 200));
+
+        // Act
+        Grid.SetColumn(child, 1);
+        Grid.SetRow(child, 1);
+        grid.Measure(new Size(200, 200));
+
+        // Assert
+        Assert.Equal(new Thickness(0), child.Margin);
+    }
+
+    [StaFact]
+    public void Spacing_RemovedAfterFirstMeasure_ClearsAppliedMargin()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*",
+            Spacing = 10,
+        };
+
+        var child = new Border();
+        grid.Children.Add(child);
+        grid.Measure(new Size(200, 200));
+
+        // Act
+        grid.Spacing = double.NaN;
+        grid.Measure(new Size(200, 200));
+
+        // Assert
+        Assert.Equal(new Thickness(0), child.Margin);
+    }
+
+    [StaFact]
+    public void Spacing_UserMargin_IsPreserved()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*",
+            Rows = "*,*",
+            Spacing = 10,
+        };
+
+        var userChild = new Border { Margin = new Thickness(5) };
+        grid.Children.Add(userChild);
+        grid.Measure(new Size(200, 200));
+
+        // Act
+        grid.Spacing = 20;
+        grid.Measure(new Size(200, 200));
+
+        // Assert
+        Assert.Equal(new Thickness(5), userChild.Margin);
+    }
+
+    [StaFact]
+    public void Spacing_UserMarginSetAfterSpacingApplied_IsPreserved()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*",
+            Spacing = 10,
+        };
+
+        var child = new Border();
+        grid.Children.Add(child);
+        grid.Measure(new Size(200, 200));
+
+        // Act
+        child.Margin = new Thickness(3);
+        grid.Spacing = 20;
+        grid.Measure(new Size(200, 200));
+
+        // Assert
+        Assert.Equal(new Thickness(3), child.Margin);
+    }
 }
