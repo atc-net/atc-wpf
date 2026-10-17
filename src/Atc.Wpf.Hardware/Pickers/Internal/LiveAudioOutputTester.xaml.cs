@@ -1,7 +1,7 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Hardware.Pickers.Internal;
 
-internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
+internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable, IAsyncDisposable
 {
     private const int RingCapacity = 200;
     private const int RenderIntervalMilliseconds = 33;
@@ -51,6 +51,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     private bool isPlaying;
     private bool startInProgress;
     private bool disposed;
+    private Task? teardown;
 
     public LiveAudioOutputTester()
     {
@@ -63,15 +64,29 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Stops the device without blocking. The stop awaits work that resumes on the UI thread, so waiting for it
+    /// here would deadlock when disposed from that thread; use <see cref="DisposeAsync"/> to await it.
+    /// </summary>
     public void Dispose()
+        => _ = BeginTeardown();
+
+    /// <summary>
+    /// Stops the device and completes once it has been released.
+    /// </summary>
+    public ValueTask DisposeAsync()
+        => new(BeginTeardown());
+
+    private Task BeginTeardown()
     {
-        if (disposed)
+        if (teardown is not null)
         {
-            return;
+            return teardown;
         }
 
         disposed = true;
-        StopAsync().GetAwaiter().GetResult();
+        teardown = LiveDeviceTeardown.Start(Dispatcher, StopAsync, StopAsync);
+        return teardown;
     }
 
     private static void OnDeviceIdChanged(
@@ -109,6 +124,11 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
             if (isPlaying)
             {
                 await StopAsync();
+                return;
+            }
+
+            if (disposed)
+            {
                 return;
             }
 
@@ -195,7 +215,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Stop must not throw on shutdown.")]
-    private async Task StopAsync()
+    private Task StopAsync()
     {
         renderTimer.Stop();
         isPlaying = false;
@@ -232,7 +252,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
             }
         }
 
-        await Dispatcher.InvokeAsync(() =>
+        LiveDeviceTeardown.OnUiThread(Dispatcher, () =>
         {
             ringHead = 0;
             currentPeak = 0;
@@ -242,6 +262,8 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable
             PartPeakBar.Height = 0;
             UpdateButtonLabel();
         });
+
+        return Task.CompletedTask;
     }
 
     private void OnMediaFailed(

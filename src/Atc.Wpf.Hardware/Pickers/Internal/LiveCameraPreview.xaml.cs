@@ -1,7 +1,7 @@
 // ReSharper disable UnusedParameter.Local
 namespace Atc.Wpf.Hardware.Pickers.Internal;
 
-internal sealed partial class LiveCameraPreview : UserControl, IDisposable
+internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsyncDisposable
 {
     public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
         nameof(DeviceId),
@@ -43,11 +43,13 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
 
     private readonly DeviceSessionCoordinator session;
     private readonly LatestFrameSlot frameSlot = new();
+    [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Disposed by the teardown Dispose starts (StopAsync / DisposeMediaAsync).")]
     private Windows.Media.Capture.MediaCapture? mediaCapture;
     private Windows.Media.Capture.Frames.MediaFrameReader? frameReader;
     private WriteableBitmap? renderTarget;
     private bool isInVisualTree;
     private bool disposed;
+    private Task? teardown;
 
     public LiveCameraPreview()
     {
@@ -57,15 +59,29 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
         Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Stops the device without blocking. The stop awaits work that resumes on the UI thread, so waiting for it
+    /// here would deadlock when disposed from that thread; use <see cref="DisposeAsync"/> to await it.
+    /// </summary>
     public void Dispose()
+        => _ = BeginTeardown();
+
+    /// <summary>
+    /// Stops the device and completes once it has been released.
+    /// </summary>
+    public ValueTask DisposeAsync()
+        => new(BeginTeardown());
+
+    private Task BeginTeardown()
     {
-        if (disposed)
+        if (teardown is not null)
         {
-            return;
+            return teardown;
         }
 
         disposed = true;
-        StopAsync().GetAwaiter().GetResult();
+        teardown = LiveDeviceTeardown.Start(Dispatcher, session.SyncAsync, StopAsync);
+        return teardown;
     }
 
     private static void OnDeviceIdChanged(
@@ -198,7 +214,10 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
             try
             {
                 reader.FrameArrived -= OnFrameArrived;
-                await reader.StopAsync();
+
+                // Not on the UI thread: the rest of the stop is not UI work, so it must not wait for a dispatcher
+                // that may be blocked or shutting down (the coordinator resumes on the UI thread itself).
+                await reader.StopAsync().AsTask().ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -210,9 +229,9 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable
             }
         }
 
-        await DisposeMediaAsync();
+        await DisposeMediaAsync().ConfigureAwait(false);
 
-        await Dispatcher.InvokeAsync(() =>
+        LiveDeviceTeardown.OnUiThread(Dispatcher, () =>
         {
             renderTarget = null;
             PartImage.Source = null;
