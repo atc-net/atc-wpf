@@ -77,6 +77,71 @@ public sealed class ManagedMarkupExtensionTests
         Assert.Null(exception);
     }
 
+    // An extension shared by a template gains a target per instantiation; references to collected targets
+    // used to stay in its list forever.
+    [StaFact]
+    public void UpdateTarget_TargetsCollected_DropsTheirReferences()
+    {
+        var extension = new TestTextExtension();
+        ProvideForUnreferencedTargets(extension, count: 5);
+        Assert.Equal(5, extension.TargetReferenceCount);
+
+        CollectGarbage();
+        extension.UpdateTarget();
+
+        Assert.Equal(0, extension.TargetReferenceCount);
+        Assert.False(extension.IsTargetAlive);
+    }
+
+    [StaFact]
+    public void ProvideValue_ManyCollectedTargets_PrunesThemOnAdd()
+    {
+        var extension = new TestTextExtension();
+        ProvideForUnreferencedTargets(extension, count: 100);
+
+        CollectGarbage();
+
+        // Pruning is amortized (it runs once the list doubles), so keep adding until it has run.
+        var liveTargets = Enumerable.Range(0, 64).Select(_ => new TextBlock()).ToList();
+        foreach (var liveTarget in liveTargets)
+        {
+            extension.ProvideValue(new TargetServiceProvider(liveTarget));
+        }
+
+        Assert.Equal(liveTargets.Count, extension.TargetReferenceCount);
+        Assert.True(extension.IsTargetAlive);
+        GC.KeepAlive(liveTargets);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void ProvideForUnreferencedTargets(
+        TestTextExtension extension,
+        int count)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            extension.ProvideValue(new TargetServiceProvider(new TextBlock()));
+        }
+    }
+
+    [SuppressMessage("Major Code Smell", "S1215:\"GC.Collect\" should not be called", Justification = "Forcing a collection is how the dead targets are produced.")]
+    private static void CollectGarbage()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+    }
+
+    private sealed class TargetServiceProvider(object target) : IServiceProvider, IProvideValueTarget
+    {
+        public object TargetObject => target;
+
+        public object TargetProperty => TextBlock.TextProperty;
+
+        public object? GetService(Type serviceType)
+            => serviceType == typeof(IProvideValueTarget) ? this : null;
+    }
+
     /// <summary>Runs a WPF dispatcher on its own STA thread and creates the element under test on it.</summary>
     private sealed class UiThread : IDisposable
     {
