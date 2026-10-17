@@ -2,6 +2,14 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelComboBox : ILabelComboBox
 {
+    private static readonly string PleaseSelectKey = DropDownFirstItemTypeHelper
+        .GetEnumGuid(DropDownFirstItemType.PleaseSelect)
+        .ToString();
+
+    private static readonly string BlankKey = DropDownFirstItemTypeHelper
+        .GetEnumGuid(DropDownFirstItemType.Blank)
+        .ToString();
+
     [DependencyProperty]
     private Dictionary<string, string> items;
 
@@ -45,7 +53,7 @@ public partial class LabelComboBox : ILabelComboBox
         bool raiseEvents)
     {
         if (control.IsMandatory &&
-            string.IsNullOrWhiteSpace(selectedKey))
+            (string.IsNullOrWhiteSpace(selectedKey) || IsPlaceholderKey(selectedKey)))
         {
             control.ValidationText = Validations.FieldIsRequired;
             if (raiseEvents)
@@ -71,6 +79,13 @@ public partial class LabelComboBox : ILabelComboBox
                 selectedKey));
     }
 
+    /// <summary>
+    /// A "please select" or blank first item stands for no selection, so it does not satisfy a mandatory field.
+    /// </summary>
+    private static bool IsPlaceholderKey(string selectedKey)
+        => string.Equals(selectedKey, PleaseSelectKey, StringComparison.OrdinalIgnoreCase) ||
+           string.Equals(selectedKey, BlankKey, StringComparison.OrdinalIgnoreCase);
+
     private static void OnSelectedKeyLostFocus(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -89,7 +104,9 @@ public partial class LabelComboBox : ILabelComboBox
             return;
         }
 
-        var newValue = e.AddedItems[0]!.ToString()!;
+        var newValue = e.AddedItems[0] is KeyValuePair<string, string> item
+            ? item.Key
+            : e.AddedItems[0]!.ToString()!;
 
         Debug.WriteLine($"LabelComboBox - Change to: {newValue}");
         ValidateValue(default, this, newValue, raiseEvents: false);
