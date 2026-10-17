@@ -64,10 +64,15 @@ public sealed class PollingServiceHostTests
             });
 
         var first = host.RefreshAsync();
-        var second = Task.Run(host.RefreshAsync);
-        gate.SetResult();
-        await Task.WhenAll(first, second);
 
+        // Ask for the second refresh from another thread, and finish asking before the first poll is released.
+        Task? second = null;
+        await Task.Run(() => { second = host.RefreshAsync(); });
+
+        gate.SetResult();
+        await Task.WhenAll(first, second!);
+
+        Assert.Same(first, second);
         Assert.Equal(1, polls);
     }
 
