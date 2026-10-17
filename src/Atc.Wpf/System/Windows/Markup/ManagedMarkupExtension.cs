@@ -13,10 +13,27 @@ namespace System.Windows.Markup;
 public abstract class ManagedMarkupExtension : MarkupExtension
 {
     /// <summary>
+    /// The smallest number of targets at which an add prunes dead references.
+    /// </summary>
+    private const int MinimumPruneThreshold = 16;
+
+    /// <summary>
     /// List of weak reference to the target DependencyObjects to allow them to
     /// be garbage collected.
     /// </summary>
     private readonly List<WeakReference> targetObjects = new();
+
+    /// <summary>
+    /// The number of targets at which the next add prunes dead references. It grows with the live targets,
+    /// so pruning stays amortized constant per add.
+    /// </summary>
+    private int pruneThreshold = MinimumPruneThreshold;
+
+    /// <summary>
+    /// Whether a target has ever been registered; once all of them are collected the extension is dead
+    /// even though the pruned list is empty.
+    /// </summary>
+    private bool hasHadTarget;
 
     /// <summary>
     /// The target property.
@@ -41,7 +58,12 @@ public abstract class ManagedMarkupExtension : MarkupExtension
     ///   <see langword="true" /> if this instance is target alive; otherwise, <see langword="false" />.
     /// </value>
     public bool IsTargetAlive =>
-        targetObjects.Count == 0 || targetObjects.Exists(reference => reference.IsAlive);
+        !hasHadTarget || targetObjects.Exists(reference => reference.IsAlive);
+
+    /// <summary>
+    /// Gets the number of target references currently held, alive or not yet pruned.
+    /// </summary>
+    internal int TargetReferenceCount => targetObjects.Count;
 
     /// <summary>
     /// Gets a value indicating whether this instance is in design mode.
@@ -104,7 +126,7 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             return this;
         }
 
-        targetObjects.Add(new WeakReference(targetHelper.TargetObject));
+        AddTarget(targetHelper.TargetObject);
         return GetValue();
     }
 
@@ -118,7 +140,11 @@ public abstract class ManagedMarkupExtension : MarkupExtension
             return;
         }
 
-        foreach (var reference in targetObjects)
+        // Drop references to collected targets while visiting them, so the list does not grow forever.
+        targetObjects.RemoveAll(reference => !reference.IsAlive);
+
+        // Iterate a snapshot: setting a value can re-apply a template that registers more targets here.
+        foreach (var reference in targetObjects.ToArray())
         {
             // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (targetProperty is DependencyProperty dependencyProperty)
@@ -138,6 +164,23 @@ public abstract class ManagedMarkupExtension : MarkupExtension
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Registers a target, first pruning references to collected targets once the list has grown past
+    /// the threshold. An extension shared by a template gains a target per instantiation, so without this the
+    /// list would keep every dead reference.
+    /// </summary>
+    private void AddTarget(object target)
+    {
+        if (targetObjects.Count >= pruneThreshold)
+        {
+            targetObjects.RemoveAll(reference => !reference.IsAlive);
+            pruneThreshold = Math.Max(MinimumPruneThreshold, targetObjects.Count * 2);
+        }
+
+        targetObjects.Add(new WeakReference(target));
+        hasHadTarget = true;
     }
 
     /// <summary>
