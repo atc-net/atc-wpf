@@ -194,6 +194,8 @@ public static class PanelHelper
 
         panel.Loaded -= OnPanelLoaded;
         panel.Loaded += OnPanelLoaded;
+        panel.Unloaded -= OnPanelUnloaded;
+        panel.Unloaded += OnPanelUnloaded;
 
         if (panel.IsLoaded)
         {
@@ -210,15 +212,71 @@ public static class PanelHelper
             return;
         }
 
+        SubscribeLayoutUpdated(panel);
+        ApplyItemMargins(panel);
+    }
+
+    private static void OnPanelUnloaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (sender is not Panel panel)
+        {
+            return;
+        }
+
+        UnsubscribeLayoutUpdated(panel);
+    }
+
+    /// <summary>
+    /// Panel exposes no children-changed event, so the panel listens to
+    /// <see cref="UIElement.LayoutUpdated"/> while it is loaded (adding or removing a child
+    /// always triggers a layout pass) and re-applies the margins only when the children changed.
+    /// The handler is removed again on Unloaded, because the layout manager holds it strongly.
+    /// </summary>
+    private static void SubscribeLayoutUpdated(Panel panel)
+    {
+        if (panel.GetValue(LayoutUpdatedHandlerProperty) is EventHandler)
+        {
+            return;
+        }
+
+        EventHandler handler = (_, _) => OnPanelLayoutUpdated(panel);
+        panel.SetValue(LayoutUpdatedHandlerProperty, handler);
+        panel.LayoutUpdated += handler;
+    }
+
+    private static void UnsubscribeLayoutUpdated(Panel panel)
+    {
+        if (panel.GetValue(LayoutUpdatedHandlerProperty) is not EventHandler handler)
+        {
+            return;
+        }
+
+        panel.LayoutUpdated -= handler;
+        panel.ClearValue(LayoutUpdatedHandlerProperty);
+    }
+
+    private static void OnPanelLayoutUpdated(Panel panel)
+    {
+        var lastApplied = (ChildrenSnapshot?)panel.GetValue(ChildrenSnapshotProperty);
+        if (lastApplied is not null && lastApplied.Matches(panel))
+        {
+            return;
+        }
+
         ApplyItemMargins(panel);
     }
 
     /// <summary>
     /// Applies <see cref="ItemMarginProperty"/> to every child element except the last one,
     /// which receives <see cref="LastItemMarginProperty"/> so the panel gets no trailing spacing.
+    /// A child whose margin was set locally by someone other than <see cref="PanelHelper"/> keeps it.
     /// </summary>
     internal static void ApplyItemMargins(Panel panel)
     {
+        panel.SetValue(ChildrenSnapshotProperty, ChildrenSnapshot.Create(panel));
+
         var children = panel.Children.OfType<FrameworkElement>().ToList();
         if (children.Count == 0)
         {
@@ -228,9 +286,103 @@ public static class PanelHelper
         var itemMargin = GetItemMargin(panel);
         for (var i = 0; i < children.Count - 1; i++)
         {
-            children[i].Margin = itemMargin;
+            ApplyMargin(children[i], itemMargin);
         }
 
-        children[^1].Margin = GetLastItemMargin(panel);
+        ApplyMargin(children[^1], GetLastItemMargin(panel));
+    }
+
+    private static void ApplyMargin(
+        FrameworkElement element,
+        Thickness margin)
+    {
+        var appliedMargin = (Thickness?)element.GetValue(AppliedMarginProperty);
+        var ownsMargin = appliedMargin.HasValue && element.Margin == appliedMargin.Value;
+
+        if (!ownsMargin &&
+            DependencyPropertyHelper.GetValueSource(element, FrameworkElement.MarginProperty).BaseValueSource is BaseValueSource.Local)
+        {
+            // The margin was set locally by the user (value or binding) - leave it alone.
+            // Style/theme margins are still replaced, as before.
+            if (appliedMargin.HasValue)
+            {
+                element.ClearValue(AppliedMarginProperty);
+            }
+
+            return;
+        }
+
+        if (element.Margin != margin)
+        {
+            element.Margin = margin;
+        }
+
+        element.SetValue(AppliedMarginProperty, margin);
+    }
+
+    /// <summary>
+    /// Remembers the margin <see cref="PanelHelper"/> last applied to a child, so later
+    /// spacing changes can be re-applied without overwriting a margin the user set.
+    /// </summary>
+    private static readonly DependencyProperty AppliedMarginProperty = DependencyProperty.RegisterAttached(
+        "AppliedMargin",
+        typeof(Thickness?),
+        typeof(PanelHelper),
+        new PropertyMetadata(defaultValue: null));
+
+    private static readonly DependencyProperty LayoutUpdatedHandlerProperty = DependencyProperty.RegisterAttached(
+        "LayoutUpdatedHandler",
+        typeof(EventHandler),
+        typeof(PanelHelper),
+        new PropertyMetadata(defaultValue: null));
+
+    private static readonly DependencyProperty ChildrenSnapshotProperty = DependencyProperty.RegisterAttached(
+        "ChildrenSnapshot",
+        typeof(ChildrenSnapshot),
+        typeof(PanelHelper),
+        new PropertyMetadata(defaultValue: null));
+
+    /// <summary>
+    /// A cheap fingerprint of a panel's children (count plus the last child) used to skip
+    /// re-applying margins on layout passes where the children did not change.
+    /// </summary>
+    private sealed class ChildrenSnapshot
+    {
+        private readonly int count;
+        private readonly WeakReference<UIElement>? lastChild;
+
+        private ChildrenSnapshot(
+            int count,
+            UIElement? lastChild)
+        {
+            this.count = count;
+            this.lastChild = lastChild is null ? null : new WeakReference<UIElement>(lastChild);
+        }
+
+        public static ChildrenSnapshot Create(Panel panel)
+        {
+            var children = panel.Children;
+            return new ChildrenSnapshot(
+                children.Count,
+                children.Count > 0 ? children[^1] : null);
+        }
+
+        public bool Matches(Panel panel)
+        {
+            var children = panel.Children;
+            if (children.Count != count)
+            {
+                return false;
+            }
+
+            if (count == 0)
+            {
+                return true;
+            }
+
+            return lastChild is not null &&
+                   lastChild.TryGetTarget(out var target) &&
+                   ReferenceEquals(target, children[^1]);
+        }
     }
 }

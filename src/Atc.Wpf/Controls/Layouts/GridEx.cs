@@ -67,6 +67,16 @@ public sealed class GridEx : Grid
             FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     /// <summary>
+    /// Remembers the margin GridEx last applied to a child, so spacing changes can be re-applied
+    /// without overwriting a margin the user set.
+    /// </summary>
+    private static readonly DependencyProperty AppliedSpacingMarginProperty = DependencyProperty.RegisterAttached(
+        "AppliedSpacingMargin",
+        typeof(Thickness?),
+        typeof(GridEx),
+        new PropertyMetadata(defaultValue: null));
+
+    /// <summary>
     /// Gets or sets the row definitions as a comma-separated list of sizes (for example <c>2*,Auto,*,66</c>).
     /// </summary>
     [Category("Layout")]
@@ -264,13 +274,15 @@ public sealed class GridEx : Grid
     /// <summary>
     /// Applies spacing margins to all children based on their grid position.
     /// </summary>
+    /// <remarks>
+    /// The margin GridEx applies is remembered on each child, so a later change of spacing,
+    /// rows, columns or cell position re-applies it. A margin the child got from anywhere else
+    /// (local value, style, binding) is never overwritten.
+    /// </remarks>
     private void ApplySpacingToChildren()
     {
         var (hSpacing, vSpacing) = GetEffectiveSpacing();
-        if (hSpacing <= 0 && vSpacing <= 0)
-        {
-            return;
-        }
+        var hasSpacing = hSpacing > 0 || vSpacing > 0;
 
         var colCount = ColumnDefinitions.Count;
         var rowCount = RowDefinitions.Count;
@@ -282,6 +294,12 @@ public sealed class GridEx : Grid
                 continue;
             }
 
+            if (!hasSpacing)
+            {
+                ApplySpacingMargin(fe, margin: null);
+                continue;
+            }
+
             var col = GetColumn(child);
             var row = GetRow(child);
             var colSpan = GetColumnSpan(child);
@@ -290,13 +308,51 @@ public sealed class GridEx : Grid
             var isLastColumn = colCount == 0 || col + colSpan >= colCount;
             var isLastRow = rowCount == 0 || row + rowSpan >= rowCount;
 
-            var spacingMargin = new Thickness(
-                0,
-                0,
-                isLastColumn ? 0 : hSpacing,
-                isLastRow ? 0 : vSpacing);
-
-            fe.SetIfDefault(MarginProperty, spacingMargin);
+            ApplySpacingMargin(
+                fe,
+                new Thickness(
+                    0,
+                    0,
+                    isLastColumn ? 0 : hSpacing,
+                    isLastRow ? 0 : vSpacing));
         }
+    }
+
+    /// <summary>
+    /// Applies (or, when <paramref name="margin"/> is <see langword="null"/>, removes) the spacing margin
+    /// of a child, unless the child's margin was set by someone other than GridEx.
+    /// </summary>
+    private static void ApplySpacingMargin(
+        FrameworkElement fe,
+        Thickness? margin)
+    {
+        var appliedMargin = (Thickness?)fe.GetValue(AppliedSpacingMarginProperty);
+        var ownsMargin = appliedMargin.HasValue && fe.Margin == appliedMargin.Value;
+
+        if (margin is null)
+        {
+            if (ownsMargin)
+            {
+                fe.ClearValue(MarginProperty);
+            }
+
+            fe.ClearValue(AppliedSpacingMarginProperty);
+            return;
+        }
+
+        if (!ownsMargin &&
+            DependencyPropertyHelper.GetValueSource(fe, MarginProperty).BaseValueSource is not BaseValueSource.Default)
+        {
+            // The margin was set by the user (or a style/binding) - leave it alone.
+            fe.ClearValue(AppliedSpacingMarginProperty);
+            return;
+        }
+
+        if (fe.Margin != margin.Value)
+        {
+            fe.SetValue(MarginProperty, margin.Value);
+        }
+
+        fe.SetValue(AppliedSpacingMarginProperty, margin.Value);
     }
 }
