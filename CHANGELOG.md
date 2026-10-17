@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.1](https://github.com/atc-net/atc-wpf/compare/v4.2.0...v4.2.1) (2026-10-17)
+
+
+### Bug fixes
+
+* **components:** close only the topmost flyout on Escape ([fe49990](https://github.com/atc-net/atc-wpf/commit/fe4999023b0b822b20107ff01ae6bc7a85176bd1))
+* **core:** prune collected targets from managed markup extensions ([9dafdc9](https://github.com/atc-net/atc-wpf/commit/9dafdc9836b4d95eeb862fc0ff87e16171d329da))
+* **forms:** keep invalid picker text and report full date-time on lost focus ([2b0469d](https://github.com/atc-net/atc-wpf/commit/2b0469d1c6e903755464860f2c57170d52abc5d8))
+* **forms:** treat the enum picker placeholder as missing when mandatory ([9de5610](https://github.com/atc-net/atc-wpf/commit/9de5610c5b8f83659e1a38e469e93f734e556999))
+* **hardware:** apply polling service results on the UI thread ([43aee4c](https://github.com/atc-net/atc-wpf/commit/43aee4c76edfee2ffc4537583254bbf0a3218cc3))
+* **hardware:** stop live previews without blocking in Dispose ([c19e9b8](https://github.com/atc-net/atc-wpf/commit/c19e9b8ac88f7f00945ae1d5f8fa103993263694))
+* **layouts:** re-apply GridEx and PanelHelper spacing without overwriting user margins ([0dfda3a](https://github.com/atc-net/atc-wpf/commit/0dfda3a11f95e890aa7b288ea704d4038f41d4e3))
+* **theming:** bind the validation error text to the current error ([078f733](https://github.com/atc-net/atc-wpf/commit/078f733ff7aef1d318e8aad51c84417c53d5fbc0))
+
 ## [4.2.0](https://github.com/atc-net/atc-wpf/compare/v4.1.0...v4.2.0) (2026-10-16)
 
 
