@@ -108,4 +108,99 @@ public sealed class LabelPickerAndSliderTests : IDisposable
         Assert.True(sut.IsValid());
         Assert.Equal(string.Empty, sut.ValidationText);
     }
+
+    [StaFact]
+    public void LabelDateTimePicker_TimeTextCommitted_LostFocusValidCarriesTheDateAndTheTime()
+    {
+        UseEnglishUi();
+        var sut = new LabelDateTimePicker
+        {
+            CustomCulture = CultureInfo.GetCultureInfo("en-US"),
+            SelectedDate = new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified),
+        };
+        ValueChangedEventArgs<DateTime?>? raised = null;
+        sut.LostFocusValid += (_, e) => raised = e;
+
+        sut.TextTime = "2:45 PM";
+
+        Assert.NotNull(raised);
+        Assert.Equal(new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified), raised.OldValue);
+        Assert.Equal(new DateTime(2026, 1, 2, 14, 45, 0, DateTimeKind.Unspecified), raised.NewValue);
+        Assert.Equal(new DateTime(2026, 1, 2, 14, 45, 0, DateTimeKind.Unspecified), sut.SelectedDate);
+    }
+
+    [StaFact]
+    public void LabelDateTimePicker_DateTextCommitted_LostFocusValidKeepsTheTime()
+    {
+        UseEnglishUi();
+        var sut = new LabelDateTimePicker
+        {
+            CustomCulture = CultureInfo.GetCultureInfo("en-US"),
+            SelectedDate = new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified),
+        };
+        ValueChangedEventArgs<DateTime?>? raised = null;
+        sut.LostFocusValid += (_, e) => raised = e;
+
+        sut.TextDate = "3/4/2026";
+
+        Assert.NotNull(raised);
+        Assert.Equal(new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified), raised.OldValue);
+        Assert.Equal(new DateTime(2026, 3, 4, 9, 30, 0, DateTimeKind.Unspecified), raised.NewValue);
+    }
+
+    [StaFact]
+    public void LabelDatePicker_InvalidTextCommitted_KeepsTheTextAndShowsTheError()
+    {
+        UseEnglishUi();
+        var sut = new LabelDatePicker
+        {
+            CustomCulture = CultureInfo.GetCultureInfo("en-US"),
+            SelectedDate = new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Unspecified),
+        };
+
+        sut.Text = "not a date";
+
+        Assert.Equal("not a date", sut.Text);
+        Assert.Null(sut.SelectedDate);
+        Assert.False(string.IsNullOrEmpty(sut.ValidationText));
+    }
+
+    [StaFact]
+    public void LabelTimePicker_InvalidTextCommitted_KeepsTheTextAndShowsTheError()
+    {
+        UseEnglishUi();
+        var sut = new LabelTimePicker
+        {
+            CustomCulture = CultureInfo.GetCultureInfo("en-US"),
+            SelectedTime = new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified),
+        };
+
+        sut.Text = "not a time";
+
+        Assert.Equal("not a time", sut.Text);
+        Assert.Null(sut.SelectedTime);
+        Assert.False(string.IsNullOrEmpty(sut.ValidationText));
+    }
+
+    [StaFact]
+    public void LabelDateTimePicker_InvalidTimeTextCommitted_KeepsBothTextsAndShowsTheError()
+    {
+        UseEnglishUi();
+        var sut = new LabelDateTimePicker
+        {
+            CustomCulture = CultureInfo.GetCultureInfo("en-US"),
+            SelectedDate = new DateTime(2026, 1, 2, 9, 30, 0, DateTimeKind.Unspecified),
+        };
+        var dateTextBefore = sut.TextDate;
+
+        sut.TextTime = "not a time";
+
+        Assert.Equal(dateTextBefore, sut.TextDate);
+        Assert.Equal("not a time", sut.TextTime);
+        Assert.Null(sut.SelectedDate);
+        Assert.False(string.IsNullOrEmpty(sut.ValidationText));
+    }
+
+    private static void UseEnglishUi()
+        => Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 }

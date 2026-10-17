@@ -50,6 +50,8 @@ public partial class LabelTimePicker : ILabelTimePicker
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<DateTime?>>? LostFocusInvalid;
 
+    private bool isClearingValueFromInvalidText;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="LabelTimePicker"/> class.
     /// </summary>
@@ -189,6 +191,11 @@ public partial class LabelTimePicker : ILabelTimePicker
     {
         var control = (LabelTimePicker)d;
 
+        if (control.isClearingValueFromInvalidText)
+        {
+            return;
+        }
+
         if (control.SelectedTime is null)
         {
             control.SetCurrentValue(
@@ -221,7 +228,16 @@ public partial class LabelTimePicker : ILabelTimePicker
         }
         else
         {
-            control.SelectedTime = null;
+            // The text didn't parse: clear the value but keep what the user typed, so they can correct it.
+            control.isClearingValueFromInvalidText = true;
+            try
+            {
+                control.SelectedTime = null;
+            }
+            finally
+            {
+                control.isClearingValueFromInvalidText = false;
+            }
         }
     }
 

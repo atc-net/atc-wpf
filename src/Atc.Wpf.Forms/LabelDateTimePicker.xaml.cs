@@ -78,6 +78,8 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
 
     private string? themeNameWhenUnloaded;
 
+    private bool isClearingValueFromInvalidText;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="LabelDateTimePicker"/> class.
     /// </summary>
@@ -252,6 +254,11 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
     {
         var control = (LabelDateTimePicker)d;
 
+        if (control.isClearingValueFromInvalidText)
+        {
+            return;
+        }
+
         if (control.SelectedDate is null)
         {
             control.SetCurrentValue(
@@ -329,7 +336,16 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
         }
         else
         {
-            control.SelectedDate = null;
+            // The text didn't parse: clear the value but keep what the user typed, so they can correct it.
+            control.isClearingValueFromInvalidText = true;
+            try
+            {
+                control.SelectedDate = null;
+            }
+            finally
+            {
+                control.isClearingValueFromInvalidText = false;
+            }
         }
     }
 
@@ -416,12 +432,7 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             control,
             e,
             control.CustomCulture,
-            (string value, CultureInfo culture, out DateTime result) =>
-                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
-                    control.SelectedDateFormat,
-                    value,
-                    culture,
-                    out result),
+            GetDateAndTimeParser(control, e),
             control.LostFocusValid);
 
     private static void OnLostFocusFireInvalidEvent(
@@ -431,13 +442,25 @@ public partial class LabelDateTimePicker : ILabelDateTimePicker
             control,
             e,
             control.CustomCulture,
-            (string value, CultureInfo culture, out DateTime result) =>
-                DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
-                    control.SelectedDateFormat,
-                    value,
-                    culture,
-                    out result),
+            GetDateAndTimeParser(control, e),
             control.LostFocusInvalid);
+
+    /// <summary>
+    /// Gets a parser for the old/new text of the changed part (date or time) that combines it with
+    /// the current text of the other part, so the event reports the full date and time.
+    /// </summary>
+    private static DateTimePickerEventHelper.TryParseDateTime GetDateAndTimeParser(
+        LabelDateTimePicker control,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var isTimeChanged = e.Property == TextTimeProperty;
+        return (string value, CultureInfo culture, out DateTime result) =>
+            DateTimeTextBoxHelper.TryParseUsingSpecificCulture(
+                isTimeChanged ? control.TextDate : value,
+                isTimeChanged ? value : control.TextTime,
+                culture,
+                out result);
+    }
 
     private static object CoerceText(
         DependencyObject d,
