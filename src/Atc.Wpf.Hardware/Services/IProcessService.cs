@@ -33,6 +33,7 @@ public interface IProcessService : IDisposable
     /// <summary>
     /// Enumerates the processes once and updates <see cref="Processes"/>.
     /// </summary>
+    /// <remarks>Safe to call from any thread: the collection is only changed on the UI thread.</remarks>
     /// <returns>A task that completes when the enumeration has been applied.</returns>
     Task RefreshAsync();
 }

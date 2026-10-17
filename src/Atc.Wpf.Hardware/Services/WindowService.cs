@@ -1,16 +1,13 @@
 namespace Atc.Wpf.Hardware.Services;
 
 /// <summary>
-/// Enumerates the top-level windows and polls for changes.
+/// Enumerates the top-level windows and polls for changes; the collection is only changed on the UI thread.
 /// </summary>
 public sealed class WindowService : IWindowService
 {
     private readonly Func<bool, IReadOnlyList<WindowSnapshot>> enumerate;
     private readonly Func<int, string> resolveProcessName;
-    private readonly DispatcherTimer pollTimer;
-    private Task? inFlightPoll;
-    private bool started;
-    private bool disposed;
+    private readonly PollingServiceHost host;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WindowService"/> class.
@@ -22,16 +19,13 @@ public sealed class WindowService : IWindowService
 
     internal WindowService(
         Func<bool, IReadOnlyList<WindowSnapshot>> enumerate,
-        Func<int, string> resolveProcessName)
+        Func<int, string> resolveProcessName,
+        Dispatcher? uiDispatcher = null)
     {
         this.enumerate = enumerate;
         this.resolveProcessName = resolveProcessName;
         Windows = new ObservableCollection<TopLevelWindowInfo>();
-        pollTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2),
-        };
-        pollTimer.Tick += OnPollTick;
+        host = new PollingServiceHost(nameof(WindowService), PollAsync, uiDispatcher);
     }
 
     /// <inheritdoc />
@@ -40,8 +34,8 @@ public sealed class WindowService : IWindowService
     /// <inheritdoc />
     public TimeSpan PollingInterval
     {
-        get => pollTimer.Interval;
-        set => pollTimer.Interval = value;
+        get => host.Interval;
+        set => host.Interval = value;
     }
 
     /// <inheritdoc />
@@ -49,74 +43,24 @@ public sealed class WindowService : IWindowService
 
     /// <inheritdoc />
     public void StartWatching()
-    {
-        if (started)
-        {
-            return;
-        }
-
-        started = true;
-        pollTimer.Start();
-    }
+        => host.Start();
 
     /// <inheritdoc />
     public void StopWatching()
-    {
-        if (!started)
-        {
-            return;
-        }
-
-        started = false;
-        pollTimer.Stop();
-    }
+        => host.Stop();
 
     /// <summary>
-    /// Enumerates on a background thread and applies the result on the calling (UI) thread.
+    /// Enumerates on a background thread and applies the result on the UI thread.
     /// A refresh requested while a poll is in flight shares that poll.
     /// </summary>
+    /// <remarks>Safe to call from any thread: the collection is only changed on the UI thread.</remarks>
+    /// <returns>A task that completes when the enumeration has been applied.</returns>
     public Task RefreshAsync()
-    {
-        if (inFlightPoll is { IsCompleted: false })
-        {
-            return inFlightPoll;
-        }
-
-        inFlightPoll = PollAsync();
-        return inFlightPoll;
-    }
+        => host.RefreshAsync();
 
     /// <inheritdoc />
     public void Dispose()
-    {
-        if (disposed)
-        {
-            return;
-        }
-
-        disposed = true;
-
-        pollTimer.Tick -= OnPollTick;
-        pollTimer.Stop();
-    }
-
-    private void OnPollTick(
-        object? sender,
-        EventArgs e)
-        => _ = PollFromTimerAsync();
-
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on enumeration errors.")]
-    private async Task PollFromTimerAsync()
-    {
-        try
-        {
-            await RefreshAsync().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"WindowService poll failed: {ex.Message}");
-        }
-    }
+        => host.Dispose();
 
     private static IReadOnlyList<WindowSnapshot> EnumerateWindows(
         bool onlyVisibleWithTitle)
@@ -174,20 +118,63 @@ public sealed class WindowService : IWindowService
 
     private async Task PollAsync()
     {
-        var onlyVisibleWithTitle = OnlyVisibleWithTitle;
-        var snapshots = await Task.Run(() => enumerate(onlyVisibleWithTitle)).ConfigureAwait(true);
-        if (disposed)
+        var snapshots = enumerate(OnlyVisibleWithTitle);
+        if (host.IsDisposed)
         {
             return;
         }
 
-        var foundHandles = new HashSet<IntPtr>();
+        var foundHandles = snapshots
+            .Select(snapshot => snapshot.Handle)
+            .ToHashSet();
+
+        // The collection is bound to the picker, so it is only read and changed on the UI thread.
+        var newcomers = await host
+            .InvokeOnUiAsync(() => host.IsDisposed ? [] : UpdateKnown(snapshots))
+            .ConfigureAwait(false);
+        if (host.IsDisposed)
+        {
+            return;
+        }
+
+        var processNames = newcomers.Count == 0
+            ? []
+            : await Task
+                .Run(() => newcomers.Select(n => resolveProcessName(n.Snapshot.ProcessId)).ToList())
+                .ConfigureAwait(false);
+        if (host.IsDisposed)
+        {
+            return;
+        }
+
+        await host
+            .InvokeOnUiAsync(() =>
+            {
+                if (host.IsDisposed)
+                {
+                    return;
+                }
+
+                for (var i = 0; i < newcomers.Count; i++)
+                {
+                    AddNewcomer(newcomers[i].Snapshot, processNames[i], newcomers[i].Stale);
+                }
+
+                MarkMissingAsDisconnected(foundHandles);
+            })
+            .ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Updates the entries that are still the same window and returns the snapshots that need a new entry.
+    /// </summary>
+    private List<(WindowSnapshot Snapshot, TopLevelWindowInfo? Stale)> UpdateKnown(
+        IReadOnlyList<WindowSnapshot> snapshots)
+    {
         var newcomers = new List<(WindowSnapshot Snapshot, TopLevelWindowInfo? Stale)>();
 
         foreach (var snapshot in snapshots)
         {
-            foundHandles.Add(snapshot.Handle);
-
             var existing = FindByHandle(snapshot.Handle);
             if (existing is not null &&
                 existing.ProcessId == snapshot.ProcessId &&
@@ -207,23 +194,7 @@ public sealed class WindowService : IWindowService
             }
         }
 
-        if (newcomers.Count > 0)
-        {
-            var processNames = await Task
-                .Run(() => newcomers.Select(n => resolveProcessName(n.Snapshot.ProcessId)).ToList())
-                .ConfigureAwait(true);
-            if (disposed)
-            {
-                return;
-            }
-
-            for (var i = 0; i < newcomers.Count; i++)
-            {
-                AddNewcomer(newcomers[i].Snapshot, processNames[i], newcomers[i].Stale);
-            }
-        }
-
-        MarkMissingAsDisconnected(foundHandles);
+        return newcomers;
     }
 
     private void MarkMissingAsDisconnected(HashSet<IntPtr> found)

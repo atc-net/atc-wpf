@@ -1,16 +1,13 @@
 namespace Atc.Wpf.Hardware.Services;
 
 /// <summary>
-/// Enumerates the running processes and polls for changes.
+/// Enumerates the running processes and polls for changes; the collection is only changed on the UI thread.
 /// </summary>
 public sealed class ProcessService : IProcessService
 {
     private readonly Func<IReadOnlyList<ProcessSnapshot>> enumerate;
     private readonly Func<int, string?> resolveModulePath;
-    private readonly DispatcherTimer pollTimer;
-    private Task? inFlightPoll;
-    private bool started;
-    private bool disposed;
+    private readonly PollingServiceHost host;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProcessService"/> class.
@@ -22,16 +19,13 @@ public sealed class ProcessService : IProcessService
 
     internal ProcessService(
         Func<IReadOnlyList<ProcessSnapshot>> enumerate,
-        Func<int, string?> resolveModulePath)
+        Func<int, string?> resolveModulePath,
+        Dispatcher? uiDispatcher = null)
     {
         this.enumerate = enumerate;
         this.resolveModulePath = resolveModulePath;
         Processes = new ObservableCollection<RunningProcessInfo>();
-        pollTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2),
-        };
-        pollTimer.Tick += OnPollTick;
+        host = new PollingServiceHost(nameof(ProcessService), PollAsync, uiDispatcher);
     }
 
     /// <inheritdoc />
@@ -40,8 +34,8 @@ public sealed class ProcessService : IProcessService
     /// <inheritdoc />
     public TimeSpan PollingInterval
     {
-        get => pollTimer.Interval;
-        set => pollTimer.Interval = value;
+        get => host.Interval;
+        set => host.Interval = value;
     }
 
     /// <inheritdoc />
@@ -49,74 +43,24 @@ public sealed class ProcessService : IProcessService
 
     /// <inheritdoc />
     public void StartWatching()
-    {
-        if (started)
-        {
-            return;
-        }
-
-        started = true;
-        pollTimer.Start();
-    }
+        => host.Start();
 
     /// <inheritdoc />
     public void StopWatching()
-    {
-        if (!started)
-        {
-            return;
-        }
-
-        started = false;
-        pollTimer.Stop();
-    }
+        => host.Stop();
 
     /// <summary>
-    /// Enumerates on a background thread and applies the result on the calling (UI) thread.
+    /// Enumerates on a background thread and applies the result on the UI thread.
     /// A refresh requested while a poll is in flight shares that poll.
     /// </summary>
+    /// <remarks>Safe to call from any thread: the collection is only changed on the UI thread.</remarks>
+    /// <returns>A task that completes when the enumeration has been applied.</returns>
     public Task RefreshAsync()
-    {
-        if (inFlightPoll is { IsCompleted: false })
-        {
-            return inFlightPoll;
-        }
-
-        inFlightPoll = PollAsync();
-        return inFlightPoll;
-    }
+        => host.RefreshAsync();
 
     /// <inheritdoc />
     public void Dispose()
-    {
-        if (disposed)
-        {
-            return;
-        }
-
-        disposed = true;
-
-        pollTimer.Tick -= OnPollTick;
-        pollTimer.Stop();
-    }
-
-    private void OnPollTick(
-        object? sender,
-        EventArgs e)
-        => _ = PollFromTimerAsync();
-
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient process enumeration errors.")]
-    private async Task PollFromTimerAsync()
-    {
-        try
-        {
-            await RefreshAsync().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"ProcessService poll failed: {ex.Message}");
-        }
-    }
+        => host.Dispose();
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Process metadata access can throw for protected processes.")]
     private static IReadOnlyList<ProcessSnapshot> EnumerateProcesses()
@@ -164,24 +108,71 @@ public sealed class ProcessService : IProcessService
 
     private async Task PollAsync()
     {
-        var snapshots = await Task.Run(enumerate).ConfigureAwait(true);
-        if (disposed)
+        var snapshots = Filter(enumerate(), OnlyWithMainWindow);
+        if (host.IsDisposed)
         {
             return;
         }
 
-        var foundIds = new HashSet<int>();
+        var foundIds = snapshots
+            .Select(snapshot => snapshot.ProcessId)
+            .ToHashSet();
+
+        // The collection is bound to the picker, so it is only read and changed on the UI thread.
+        var newcomers = await host
+            .InvokeOnUiAsync(() => host.IsDisposed ? [] : UpdateKnown(snapshots))
+            .ConfigureAwait(false);
+        if (host.IsDisposed)
+        {
+            return;
+        }
+
+        // MainModule access is slow (and can throw for protected processes): resolve off the UI thread.
+        var modulePaths = newcomers.Count == 0
+            ? []
+            : await Task
+                .Run(() => newcomers.Select(n => resolveModulePath(n.Snapshot.ProcessId)).ToList())
+                .ConfigureAwait(false);
+        if (host.IsDisposed)
+        {
+            return;
+        }
+
+        await host
+            .InvokeOnUiAsync(() =>
+            {
+                if (host.IsDisposed)
+                {
+                    return;
+                }
+
+                for (var i = 0; i < newcomers.Count; i++)
+                {
+                    AddNewcomer(newcomers[i].Snapshot, modulePaths[i], newcomers[i].Stale);
+                }
+
+                MarkMissingAsDisconnected(foundIds);
+            })
+            .ConfigureAwait(false);
+    }
+
+    private static List<ProcessSnapshot> Filter(
+        IReadOnlyList<ProcessSnapshot> snapshots,
+        bool onlyWithMainWindow)
+        => snapshots
+            .Where(snapshot => !onlyWithMainWindow || snapshot.HasMainWindow)
+            .ToList();
+
+    /// <summary>
+    /// Updates the entries that are still the same process and returns the snapshots that need a new entry.
+    /// </summary>
+    private List<(ProcessSnapshot Snapshot, RunningProcessInfo? Stale)> UpdateKnown(
+        IReadOnlyList<ProcessSnapshot> snapshots)
+    {
         var newcomers = new List<(ProcessSnapshot Snapshot, RunningProcessInfo? Stale)>();
 
         foreach (var snapshot in snapshots)
         {
-            if (OnlyWithMainWindow && !snapshot.HasMainWindow)
-            {
-                continue;
-            }
-
-            foundIds.Add(snapshot.ProcessId);
-
             var existing = FindByProcessId(snapshot.ProcessId);
             if (existing is not null &&
                 string.Equals(existing.ProcessName, snapshot.ProcessName, StringComparison.OrdinalIgnoreCase))
@@ -200,24 +191,7 @@ public sealed class ProcessService : IProcessService
             }
         }
 
-        if (newcomers.Count > 0)
-        {
-            // MainModule access is slow (and can throw for protected processes): resolve off the UI thread.
-            var modulePaths = await Task
-                .Run(() => newcomers.Select(n => resolveModulePath(n.Snapshot.ProcessId)).ToList())
-                .ConfigureAwait(true);
-            if (disposed)
-            {
-                return;
-            }
-
-            for (var i = 0; i < newcomers.Count; i++)
-            {
-                AddNewcomer(newcomers[i].Snapshot, modulePaths[i], newcomers[i].Stale);
-            }
-        }
-
-        MarkMissingAsDisconnected(foundIds);
+        return newcomers;
     }
 
     private void MarkMissingAsDisconnected(HashSet<int> found)

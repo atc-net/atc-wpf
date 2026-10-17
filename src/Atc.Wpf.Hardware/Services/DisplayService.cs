@@ -1,14 +1,12 @@
 namespace Atc.Wpf.Hardware.Services;
 
 /// <summary>
-/// Enumerates the display monitors and polls for changes on the dispatcher.
+/// Enumerates the display monitors and polls for changes; the collection is only changed on the UI thread.
 /// </summary>
 public sealed class DisplayService : IDisplayService
 {
     private readonly Func<IReadOnlyList<DisplaySnapshot>> enumerate;
-    private readonly DispatcherTimer pollTimer;
-    private bool started;
-    private bool disposed;
+    private readonly PollingServiceHost host;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DisplayService"/> class.
@@ -18,15 +16,13 @@ public sealed class DisplayService : IDisplayService
     {
     }
 
-    internal DisplayService(Func<IReadOnlyList<DisplaySnapshot>> enumerate)
+    internal DisplayService(
+        Func<IReadOnlyList<DisplaySnapshot>> enumerate,
+        Dispatcher? uiDispatcher = null)
     {
         this.enumerate = enumerate;
         Displays = new ObservableCollection<DisplayInfo>();
-        pollTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2),
-        };
-        pollTimer.Tick += OnPollTick;
+        host = new PollingServiceHost(nameof(DisplayService), PollAsync, uiDispatcher);
     }
 
     /// <inheritdoc />
@@ -35,68 +31,44 @@ public sealed class DisplayService : IDisplayService
     /// <inheritdoc />
     public TimeSpan PollingInterval
     {
-        get => pollTimer.Interval;
-        set => pollTimer.Interval = value;
+        get => host.Interval;
+        set => host.Interval = value;
     }
 
     /// <inheritdoc />
     public void StartWatching()
-    {
-        if (started)
-        {
-            return;
-        }
-
-        started = true;
-        pollTimer.Start();
-    }
+        => host.Start();
 
     /// <inheritdoc />
     public void StopWatching()
-    {
-        if (!started)
-        {
-            return;
-        }
-
-        started = false;
-        pollTimer.Stop();
-    }
+        => host.Stop();
 
     /// <inheritdoc />
     public Task RefreshAsync()
-    {
-        EnumerateAndSync();
-        return Task.CompletedTask;
-    }
+        => host.RefreshAsync();
 
     /// <inheritdoc />
     public void Dispose()
+        => host.Dispose();
+
+    private async Task PollAsync()
     {
-        if (disposed)
+        var snapshots = enumerate();
+        if (host.IsDisposed)
         {
             return;
         }
 
-        disposed = true;
-
-        pollTimer.Tick -= OnPollTick;
-        pollTimer.Stop();
-    }
-
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient enumeration errors.")]
-    private void OnPollTick(
-        object? sender,
-        EventArgs e)
-    {
-        try
-        {
-            EnumerateAndSync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"DisplayService poll failed: {ex.Message}");
-        }
+        // The collection is bound to the picker, so the sync has to run on the UI thread.
+        await host
+            .InvokeOnUiAsync(() =>
+            {
+                if (!host.IsDisposed)
+                {
+                    SyncWith(snapshots);
+                }
+            })
+            .ConfigureAwait(false);
     }
 
     private static IReadOnlyList<DisplaySnapshot> EnumerateDisplays()
@@ -126,11 +98,11 @@ public sealed class DisplayService : IDisplayService
         return snapshots;
     }
 
-    private void EnumerateAndSync()
+    private void SyncWith(IReadOnlyList<DisplaySnapshot> snapshots)
     {
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var snapshot in enumerate())
+        foreach (var snapshot in snapshots)
         {
             foundIds.Add(snapshot.DeviceName);
             Upsert(snapshot);

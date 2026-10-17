@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Hardware.Services;
 
 /// <summary>
-/// Enumerates the logical drives and polls for changes on the dispatcher.
+/// Enumerates the logical drives and polls for changes; the collection is only changed on the UI thread.
 /// </summary>
 public sealed class DriveService : IDriveService
 {
@@ -9,10 +9,8 @@ public sealed class DriveService : IDriveService
 
     private readonly Func<IReadOnlyList<(string Name, System.IO.DriveType DriveType)>> listDrives;
     private readonly Func<string, System.IO.DriveType, DriveSnapshot> readVolume;
-    private readonly DispatcherTimer pollTimer;
-    private bool started;
+    private readonly PollingServiceHost host;
     private bool initialEnumerationCompleted;
-    private bool disposed;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DriveService"/> class.
@@ -24,16 +22,13 @@ public sealed class DriveService : IDriveService
 
     internal DriveService(
         Func<IReadOnlyList<(string Name, System.IO.DriveType DriveType)>> listDrives,
-        Func<string, System.IO.DriveType, DriveSnapshot> readVolume)
+        Func<string, System.IO.DriveType, DriveSnapshot> readVolume,
+        Dispatcher? uiDispatcher = null)
     {
         this.listDrives = listDrives;
         this.readVolume = readVolume;
         Drives = new ObservableCollection<DiskDriveInfo>();
-        pollTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2),
-        };
-        pollTimer.Tick += OnPollTick;
+        host = new PollingServiceHost(nameof(DriveService), PollAsync, uiDispatcher);
     }
 
     /// <inheritdoc />
@@ -42,70 +37,48 @@ public sealed class DriveService : IDriveService
     /// <inheritdoc />
     public TimeSpan PollingInterval
     {
-        get => pollTimer.Interval;
-        set => pollTimer.Interval = value;
+        get => host.Interval;
+        set => host.Interval = value;
     }
 
     /// <inheritdoc />
     public void StartWatching()
-    {
-        if (started)
-        {
-            return;
-        }
-
-        started = true;
-        pollTimer.Start();
-    }
+        => host.Start();
 
     /// <inheritdoc />
     public void StopWatching()
-    {
-        if (!started)
-        {
-            return;
-        }
-
-        started = false;
-        pollTimer.Stop();
-    }
+        => host.Stop();
 
     /// <inheritdoc />
-    [SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait", Justification = "WPF service ties to the dispatcher.")]
     public Task RefreshAsync()
-    {
-        EnumerateAndSync(isInitialEnumeration: !initialEnumerationCompleted);
-        initialEnumerationCompleted = true;
-        return Task.CompletedTask;
-    }
+        => host.RefreshAsync();
 
     /// <inheritdoc />
     public void Dispose()
+        => host.Dispose();
+
+    private async Task PollAsync()
     {
-        if (disposed)
+        var drives = listDrives();
+        if (host.IsDisposed)
         {
             return;
         }
 
-        disposed = true;
+        // Upsert decides per drive whether to re-read the volume from the existing entry and starts the
+        // just-connected DispatcherTimer, so the whole sync runs on the UI thread with the bound collection.
+        await host
+            .InvokeOnUiAsync(() =>
+            {
+                if (host.IsDisposed)
+                {
+                    return;
+                }
 
-        pollTimer.Tick -= OnPollTick;
-        pollTimer.Stop();
-    }
-
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient drive enumeration errors.")]
-    private void OnPollTick(
-        object? sender,
-        EventArgs e)
-    {
-        try
-        {
-            EnumerateAndSync(isInitialEnumeration: false);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"DriveService poll failed: {ex.Message}");
-        }
+                SyncWith(drives, isInitialEnumeration: !initialEnumerationCompleted);
+                initialEnumerationCompleted = true;
+            })
+            .ConfigureAwait(false);
     }
 
     private static IReadOnlyList<(string Name, System.IO.DriveType DriveType)> ListDrives()
@@ -134,11 +107,13 @@ public sealed class DriveService : IDriveService
         }
     }
 
-    private void EnumerateAndSync(bool isInitialEnumeration)
+    private void SyncWith(
+        IReadOnlyList<(string Name, System.IO.DriveType DriveType)> drives,
+        bool isInitialEnumeration)
     {
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var (name, driveType) in listDrives())
+        foreach (var (name, driveType) in drives)
         {
             foundIds.Add(name);
             Upsert(name, driveType, isInitialEnumeration);
