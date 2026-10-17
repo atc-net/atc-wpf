@@ -30,7 +30,7 @@ Hardware picker controls for selecting connected serial ports, USB devices, USB 
 
 > The system-locale `TimeZonePicker` / `LabelTimeZonePicker` lives in `Atc.Wpf.Forms` — it has no hardware involvement.
 
-The six WinRT-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker`, `ProcessPicker`, `WindowPicker`, `NetworkAdapterPicker`, `PrinterPicker`, and `DisplayPicker` share a polling host (`PollingServiceHost`): a thread-pool timer (default 2 s, configurable) runs the enumeration off the UI thread and applies the result on the UI dispatcher. The consuming app reads the same `DeviceState` shape regardless of source — hot-plug, disconnect and in-use changes update the picker live so the user never has to click *Refresh* and never picks a device that's silently unusable.
+The six WinRT-backed pickers share infrastructure (`DeviceWatcherHost`) using `Windows.Devices.Enumeration.DeviceWatcher`. `DrivePicker`, `ProcessPicker`, `WindowPicker`, `NetworkAdapterPicker`, `PrinterPicker`, and `DisplayPicker` share a polling host (`PollingServiceHost`): a thread-pool timer (default 2 s, configurable) runs the enumeration off the UI thread and applies the result on the UI dispatcher (`DrivePicker` also reads volume details on the UI thread). The consuming app reads the same `DeviceState` shape regardless of source — hot-plug, disconnect and in-use changes update the picker live so the user never has to click *Refresh* and never picks a device that's silently unusable.
 
 ## Quick Reference
 
