@@ -100,6 +100,24 @@
                             Content="Open None (Borderless)" />
                     </StackPanel>
 
+                    <!--  RightWindowCommands  -->
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontWeight="Bold"
+                            Text="RightWindowCommands" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            Foreground="Gray"
+                            Text="Window with commands on the right of the title bar. The title stays centred between the icon and the window buttons."
+                            TextWrapping="Wrap" />
+                        <Button
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Click="OnOpenRightWindowCommandsWindowClick"
+                            Content="Open with RightWindowCommands" />
+                    </StackPanel>
+
                 </atc:UniformSpacingPanel>
             </ScrollViewer>
         </GroupBox>

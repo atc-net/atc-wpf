@@ -43,6 +43,41 @@ public partial class NiceWindowView
             "None (Borderless)");
     }
 
+    private void OnOpenRightWindowCommandsWindowClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        var rightWindowCommands = new WindowCommands();
+        rightWindowCommands.Items.Add(new Button { Content = "Settings" });
+        rightWindowCommands.Items.Add(new Button { Content = "Help" });
+
+        var window = new NiceWindow
+        {
+            Title = "NiceWindow - RightWindowCommands",
+            Width = 900,
+            Height = 400,
+            Icon = System.Windows.Window.GetWindow(this)?.Icon,
+            RightWindowCommands = rightWindowCommands,
+            WindowStartupLocation = WindowStartupLocation.CenterScreen,
+        };
+
+        // A panel, not a lone TextBlock, so UI Automation names the window by its title instead of the text.
+        var content = new StackPanel
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+
+        content.Children.Add(new TextBlock
+        {
+            Text = "The title is centred between the icon and the window buttons, not in the space left of the commands.",
+            FontSize = 16,
+        });
+
+        window.Content = content;
+        window.Show();
+    }
+
     private static void OpenNiceWindow(
         WindowStyle windowStyle,
         string title)
