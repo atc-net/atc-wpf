@@ -42,6 +42,12 @@ public sealed partial class Flyout : ContentControl
     private IInputElement? previouslyFocusedElement;
     private Window? parentWindow;
 
+    // The open flyouts on this UI thread in the order they were opened. The last open entry in a window is
+    // that window's topmost flyout, the only one Escape acts on. Weak references, so a flyout that is never
+    // closed does not stay alive; entries are also removed on close.
+    [ThreadStatic]
+    private static List<WeakReference<Flyout>>? openFlyoutsInOpenOrder;
+
     /// <summary>
     /// Identifies the Opening routed event.
     /// </summary>
@@ -408,11 +414,7 @@ public sealed partial class Flyout : ContentControl
             return;
         }
 
-        if (e.Key == Key.Escape && CloseOnEscape && IsOpen)
-        {
-            CloseWithLightDismiss();
-            e.Handled = true;
-        }
+        TryCloseOnEscape(e);
     }
 
     /// <inheritdoc />
@@ -533,13 +535,66 @@ public sealed partial class Flyout : ContentControl
     private void OnParentWindowPreviewKeyDown(
         object sender,
         KeyEventArgs e)
+        => TryCloseOnEscape(e);
+
+    /// <summary>
+    /// Escape only acts on the topmost (most recently opened) open flyout in the window. When that flyout
+    /// cannot be closed by Escape (CloseOnEscape is false, it is pinned, or it is still animating), Escape
+    /// does nothing: it is not passed on to the flyouts below it.
+    /// </summary>
+    private void TryCloseOnEscape(KeyEventArgs e)
     {
-        if (e.Key == Key.Escape && CloseOnEscape && IsOpen && !isAnimating && !IsPinned)
+        if (e.Handled ||
+            e.Key != Key.Escape ||
+            !IsOpen ||
+            !IsTopmostOpenFlyout())
+        {
+            return;
+        }
+
+        if (CloseOnEscape && !isAnimating && !IsPinned)
         {
             CloseWithLightDismiss();
             e.Handled = true;
         }
     }
+
+    private void RegisterAsOpen()
+    {
+        UnregisterAsOpen();
+        GetOpenFlyoutsInOpenOrder().Add(new WeakReference<Flyout>(this));
+    }
+
+    private static List<WeakReference<Flyout>> GetOpenFlyoutsInOpenOrder()
+        => openFlyoutsInOpenOrder ??= [];
+
+    private void UnregisterAsOpen()
+        => openFlyoutsInOpenOrder?.RemoveAll(reference =>
+            !reference.TryGetTarget(out var flyout) || ReferenceEquals(flyout, this));
+
+    private bool IsTopmostOpenFlyout()
+    {
+        var scope = GetInputScope(this);
+        if (scope is null || openFlyoutsInOpenOrder is null)
+        {
+            return true;
+        }
+
+        for (var i = openFlyoutsInOpenOrder.Count - 1; i >= 0; i--)
+        {
+            if (openFlyoutsInOpenOrder[i].TryGetTarget(out var flyout) &&
+                flyout.IsOpen &&
+                ReferenceEquals(GetInputScope(flyout), scope))
+            {
+                return ReferenceEquals(flyout, this);
+            }
+        }
+
+        return true;
+    }
+
+    private static DependencyObject? GetInputScope(Flyout flyout)
+        => (DependencyObject?)Window.GetWindow(flyout) ?? PresentationSource.FromVisual(flyout)?.RootVisual;
 
     private void UnhookEvents()
     {
@@ -679,10 +734,12 @@ public sealed partial class Flyout : ContentControl
 
             if (newIsOpen)
             {
+                flyout.RegisterAsOpen();
                 flyout.OnOpening();
             }
             else
             {
+                flyout.UnregisterAsOpen();
                 flyout.OnClosing(isLightDismiss: false);
             }
         }
