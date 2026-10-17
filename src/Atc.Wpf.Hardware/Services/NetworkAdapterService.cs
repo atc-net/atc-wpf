@@ -1,14 +1,12 @@
 namespace Atc.Wpf.Hardware.Services;
 
 /// <summary>
-/// Enumerates the network adapters and polls for changes on the dispatcher.
+/// Enumerates the network adapters and polls for changes; the collection is only changed on the UI thread.
 /// </summary>
 public sealed class NetworkAdapterService : INetworkAdapterService
 {
     private readonly Func<IReadOnlyList<NetworkAdapterSnapshot>> enumerate;
-    private readonly DispatcherTimer pollTimer;
-    private bool started;
-    private bool disposed;
+    private readonly PollingServiceHost host;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NetworkAdapterService"/> class.
@@ -19,15 +17,12 @@ public sealed class NetworkAdapterService : INetworkAdapterService
     }
 
     internal NetworkAdapterService(
-        Func<IReadOnlyList<NetworkAdapterSnapshot>> enumerate)
+        Func<IReadOnlyList<NetworkAdapterSnapshot>> enumerate,
+        Dispatcher? uiDispatcher = null)
     {
         this.enumerate = enumerate;
         Adapters = new ObservableCollection<NetworkAdapterInfo>();
-        pollTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2),
-        };
-        pollTimer.Tick += OnPollTick;
+        host = new PollingServiceHost(nameof(NetworkAdapterService), PollAsync, uiDispatcher);
     }
 
     /// <inheritdoc />
@@ -36,8 +31,8 @@ public sealed class NetworkAdapterService : INetworkAdapterService
     /// <inheritdoc />
     public TimeSpan PollingInterval
     {
-        get => pollTimer.Interval;
-        set => pollTimer.Interval = value;
+        get => host.Interval;
+        set => host.Interval = value;
     }
 
     /// <inheritdoc />
@@ -45,62 +40,38 @@ public sealed class NetworkAdapterService : INetworkAdapterService
 
     /// <inheritdoc />
     public void StartWatching()
-    {
-        if (started)
-        {
-            return;
-        }
-
-        started = true;
-        pollTimer.Start();
-    }
+        => host.Start();
 
     /// <inheritdoc />
     public void StopWatching()
-    {
-        if (!started)
-        {
-            return;
-        }
-
-        started = false;
-        pollTimer.Stop();
-    }
+        => host.Stop();
 
     /// <inheritdoc />
     public Task RefreshAsync()
-    {
-        EnumerateAndSync();
-        return Task.CompletedTask;
-    }
+        => host.RefreshAsync();
 
     /// <inheritdoc />
     public void Dispose()
+        => host.Dispose();
+
+    private async Task PollAsync()
     {
-        if (disposed)
+        var snapshots = enumerate();
+        if (host.IsDisposed)
         {
             return;
         }
 
-        disposed = true;
-
-        pollTimer.Tick -= OnPollTick;
-        pollTimer.Stop();
-    }
-
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient enumeration errors.")]
-    private void OnPollTick(
-        object? sender,
-        EventArgs e)
-    {
-        try
-        {
-            EnumerateAndSync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"NetworkAdapterService poll failed: {ex.Message}");
-        }
+        // The collection is bound to the picker, so the sync has to run on the UI thread.
+        await host
+            .InvokeOnUiAsync(() =>
+            {
+                if (!host.IsDisposed)
+                {
+                    SyncWith(snapshots);
+                }
+            })
+            .ConfigureAwait(false);
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Adapter property access can throw on transient device state changes.")]
@@ -154,11 +125,11 @@ public sealed class NetworkAdapterService : INetworkAdapterService
         return snapshots;
     }
 
-    private void EnumerateAndSync()
+    private void SyncWith(IReadOnlyList<NetworkAdapterSnapshot> snapshots)
     {
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var snapshot in enumerate())
+        foreach (var snapshot in snapshots)
         {
             if (!IncludeLoopback &&
                 snapshot.AdapterType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback)

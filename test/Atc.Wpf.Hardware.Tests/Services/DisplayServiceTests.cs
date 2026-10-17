@@ -10,7 +10,7 @@ public sealed class DisplayServiceTests
 
     private IReadOnlyList<DisplaySnapshot> snapshots = [];
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_NewDisplay_IsAddedAsAvailable()
     {
         using var service = CreateService();
@@ -24,7 +24,7 @@ public sealed class DisplayServiceTests
         Assert.True(display.IsPrimary);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_DisplayUnpluggedAndPluggedBackIn_GoesDisconnectedThenAvailable()
     {
         using var service = CreateService();
@@ -41,7 +41,7 @@ public sealed class DisplayServiceTests
         Assert.Equal(DeviceState.Available, Assert.Single(service.Displays).State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_ResolutionAndPrimaryChanged_UpdatesTheDisplayInPlace()
     {
         using var service = CreateService();

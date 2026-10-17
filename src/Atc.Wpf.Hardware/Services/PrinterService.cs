@@ -1,15 +1,12 @@
 namespace Atc.Wpf.Hardware.Services;
 
 /// <summary>
-/// Enumerates the printers (print queues) and polls for changes.
+/// Enumerates the printers (print queues) and polls for changes; the collection is only changed on the UI thread.
 /// </summary>
 public sealed class PrinterService : IPrinterService
 {
     private readonly Func<IReadOnlyList<PrinterSnapshot>> enumerate;
-    private readonly DispatcherTimer pollTimer;
-    private Task? inFlightPoll;
-    private bool started;
-    private bool disposed;
+    private readonly PollingServiceHost host;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PrinterService"/> class.
@@ -19,15 +16,13 @@ public sealed class PrinterService : IPrinterService
     {
     }
 
-    internal PrinterService(Func<IReadOnlyList<PrinterSnapshot>> enumerate)
+    internal PrinterService(
+        Func<IReadOnlyList<PrinterSnapshot>> enumerate,
+        Dispatcher? uiDispatcher = null)
     {
         this.enumerate = enumerate;
         Printers = new ObservableCollection<PrinterInfo>();
-        pollTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(2),
-        };
-        pollTimer.Tick += OnPollTick;
+        host = new PollingServiceHost(nameof(PrinterService), PollAsync, uiDispatcher);
     }
 
     /// <inheritdoc />
@@ -36,80 +31,30 @@ public sealed class PrinterService : IPrinterService
     /// <inheritdoc />
     public TimeSpan PollingInterval
     {
-        get => pollTimer.Interval;
-        set => pollTimer.Interval = value;
+        get => host.Interval;
+        set => host.Interval = value;
     }
 
     /// <inheritdoc />
     public void StartWatching()
-    {
-        if (started)
-        {
-            return;
-        }
-
-        started = true;
-        pollTimer.Start();
-    }
+        => host.Start();
 
     /// <inheritdoc />
     public void StopWatching()
-    {
-        if (!started)
-        {
-            return;
-        }
-
-        started = false;
-        pollTimer.Stop();
-    }
+        => host.Stop();
 
     /// <summary>
-    /// Enumerates on a background thread and applies the result on the calling (UI) thread.
+    /// Enumerates on a background thread and applies the result on the UI thread.
     /// A refresh requested while a poll is in flight shares that poll.
     /// </summary>
+    /// <remarks>Safe to call from any thread: the collection is only changed on the UI thread.</remarks>
+    /// <returns>A task that completes when the enumeration has been applied.</returns>
     public Task RefreshAsync()
-    {
-        if (inFlightPoll is { IsCompleted: false })
-        {
-            return inFlightPoll;
-        }
-
-        inFlightPoll = PollAsync();
-        return inFlightPoll;
-    }
+        => host.RefreshAsync();
 
     /// <inheritdoc />
     public void Dispose()
-    {
-        if (disposed)
-        {
-            return;
-        }
-
-        disposed = true;
-
-        pollTimer.Tick -= OnPollTick;
-        pollTimer.Stop();
-    }
-
-    private void OnPollTick(
-        object? sender,
-        EventArgs e)
-        => _ = PollFromTimerAsync();
-
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Polling must not crash on transient print spooler errors.")]
-    private async Task PollFromTimerAsync()
-    {
-        try
-        {
-            await RefreshAsync().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"PrinterService poll failed: {ex.Message}");
-        }
-    }
+        => host.Dispose();
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Print queue metadata access can throw.")]
     private static IReadOnlyList<PrinterSnapshot> EnumeratePrinters()
@@ -164,13 +109,27 @@ public sealed class PrinterService : IPrinterService
 
     private async Task PollAsync()
     {
-        // The spooler query can block for seconds when a network print server is offline.
-        var snapshots = await Task.Run(enumerate).ConfigureAwait(true);
-        if (disposed)
+        // The spooler query can block for seconds when a network print server is offline,
+        // so it runs on the thread pool; the bound collection is only changed on the UI thread.
+        var snapshots = enumerate();
+        if (host.IsDisposed)
         {
             return;
         }
 
+        await host
+            .InvokeOnUiAsync(() =>
+            {
+                if (!host.IsDisposed)
+                {
+                    SyncWith(snapshots);
+                }
+            })
+            .ConfigureAwait(false);
+    }
+
+    private void SyncWith(IReadOnlyList<PrinterSnapshot> snapshots)
+    {
         var foundIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var snapshot in snapshots)

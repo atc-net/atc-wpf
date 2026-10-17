@@ -7,7 +7,7 @@ public sealed class NetworkAdapterServiceTests
 
     private IReadOnlyList<NetworkAdapterSnapshot> snapshots = [];
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_LoopbackAdapter_IsListedOnlyWhenIncluded()
     {
         using var service = CreateService();
@@ -23,7 +23,7 @@ public sealed class NetworkAdapterServiceTests
         Assert.Contains(service.Adapters, a => a.IsLoopback);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_AdapterRemoved_IsMarkedDisconnected()
     {
         using var service = CreateService();
@@ -36,7 +36,7 @@ public sealed class NetworkAdapterServiceTests
         Assert.Equal(DeviceState.Disconnected, Assert.Single(service.Adapters).State);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_OperationalStatusChanged_UpdatesTheAdapterInPlace()
     {
         using var service = CreateService();
@@ -51,7 +51,7 @@ public sealed class NetworkAdapterServiceTests
         Assert.Equal(OperationalStatus.Down, adapter.OperationalStatus);
     }
 
-    [StaFact]
+    [WpfFact]
     public async Task RefreshAsync_LinkSpeedAndNameChanged_UpdatesTheAdapterInPlace()
     {
         using var service = CreateService();
