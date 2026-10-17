@@ -1,0 +1,10 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- rotate about a centre point: an L-shape turned a quarter turn clockwise about (25,25) -->
+  <path d="M15 15 h6 v14 h10 v6 h-16 z" fill="#1e64c8" transform="rotate(90 25 25)" />
+  <!-- rotate then translate in the list: translate first, then rotate about the origin -->
+  <rect x="0" y="0" width="16" height="6" fill="#c82828" transform="rotate(30) translate(60,0)" />
+  <!-- skewX then scale in the list: scale first, then skew, then translate -->
+  <rect x="0" y="0" width="10" height="10" fill="#28a03c" transform="translate(15,62) skewX(20) scale(2,2.5)" />
+  <!-- matrix() on its own: a 2x vertical stretch placed bottom-right -->
+  <rect x="0" y="0" width="16" height="8" fill="#e68c14" transform="matrix(1 0 0 2 70 66)" />
+</svg>
