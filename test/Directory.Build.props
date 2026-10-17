@@ -28,6 +28,16 @@
     </PackageReference>
   </ItemGroup>
 
+  <!--
+    Atc.XUnit pulls in EPPlus, which brings vulnerable System.Security.Cryptography.Pkcs/.Xml 10.0.10.
+    Pin the patched versions. FontIcons.Tests and UiTests resolve them from the shared framework,
+    where the explicit reference would be pruned (NU1510).
+  -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' != 'Atc.Wpf.FontIcons.Tests' AND '$(MSBuildProjectName)' != 'Atc.Wpf.UiTests'">
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.13" />
+  </ItemGroup>
+
   <ItemGroup>
     <Using Include="Atc.Test" />
     <Using Include="AutoFixture" />
