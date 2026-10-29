@@ -100,6 +100,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 - StyleCop, Meziantou, SonarAnalyzer enforced
 - Release builds treat warnings as errors
 - Every public member in `src/` has an XML doc comment: each library project turns CS1591 (missing XML comment) back on, so an undocumented public member fails the Release build. `[assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]` makes the source generators document generated members from the field/method docs; document a `[RoutedEvent]` field yourself
+- Resource (translation) keys in `*.resx` end with the number of format parameters they take: no placeholders, no suffix (`SelectAll`, `CountOfMax`); `"{0} of max {1}"` is `CountOfMax2`; `"+{0}"` is `MoreCount1`. Add every key to the neutral, `.da-DK` and `.de-DE` files
 
 ## Testing
 
