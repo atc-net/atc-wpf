@@ -307,13 +307,13 @@ public sealed partial class Segmented : Control
 
         if (control.subscribedSelectedKeys is not null)
         {
-            control.subscribedSelectedKeys.CollectionChanged -= control.OnSelectedKeysCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
         control.subscribedSelectedKeys = e.NewValue as ObservableCollection<string>;
         if (control.subscribedSelectedKeys is not null)
         {
-            control.subscribedSelectedKeys.CollectionChanged += control.OnSelectedKeysCollectionChanged;
+            CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
         if (!control.isWritingSelectedKeys)

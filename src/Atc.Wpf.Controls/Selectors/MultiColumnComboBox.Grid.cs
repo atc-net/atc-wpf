@@ -216,13 +216,13 @@ public partial class MultiColumnComboBox
         var control = (MultiColumnComboBox)d;
         if (control.subscribedSource is not null)
         {
-            control.subscribedSource.CollectionChanged -= control.OnSourceCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(control.subscribedSource, control.OnSourceCollectionChanged);
         }
 
         control.subscribedSource = e.NewValue as INotifyCollectionChanged;
         if (control.subscribedSource is not null)
         {
-            control.subscribedSource.CollectionChanged += control.OnSourceCollectionChanged;
+            CollectionChangedEventManager.AddHandler(control.subscribedSource, control.OnSourceCollectionChanged);
         }
 
         control.RebuildItems();
@@ -255,13 +255,13 @@ public partial class MultiColumnComboBox
         var control = (MultiColumnComboBox)d;
         if (control.subscribedColumns is not null)
         {
-            control.subscribedColumns.CollectionChanged -= control.OnColumnsCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(control.subscribedColumns, control.OnColumnsCollectionChanged);
         }
 
         control.subscribedColumns = e.NewValue as ObservableCollection<DataGridColumn>;
         if (control.subscribedColumns is not null)
         {
-            control.subscribedColumns.CollectionChanged += control.OnColumnsCollectionChanged;
+            CollectionChangedEventManager.AddHandler(control.subscribedColumns, control.OnColumnsCollectionChanged);
         }
 
         control.RebuildGridColumns();

@@ -95,14 +95,14 @@ internal sealed class CheckTreeState
     {
         if (roots is not null)
         {
-            roots.CollectionChanged -= OnRootsCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(roots, OnRootsCollectionChanged);
         }
 
         UnindexAll();
         roots = newRoots;
         if (roots is not null)
         {
-            roots.CollectionChanged += OnRootsCollectionChanged;
+            CollectionChangedEventManager.AddHandler(roots, OnRootsCollectionChanged);
             foreach (var root in roots)
             {
                 Index(root, parent: null);
@@ -392,7 +392,7 @@ internal sealed class CheckTreeState
     {
         if (roots is not null)
         {
-            roots.CollectionChanged -= OnRootsCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(roots, OnRootsCollectionChanged);
             roots = null;
         }
 
@@ -650,7 +650,7 @@ internal sealed class CheckTreeState
         infos[node] = info;
         nodesByKey[node.Key] = node;
         childrenOwners[node.Children] = node;
-        node.Children.CollectionChanged += OnChildrenCollectionChanged;
+        CollectionChangedEventManager.AddHandler(node.Children, OnChildrenCollectionChanged);
         foreach (var child in info.IndexedChildren)
         {
             Index(child, node);
@@ -670,7 +670,7 @@ internal sealed class CheckTreeState
         }
 
         childrenOwners.Remove(node.Children);
-        node.Children.CollectionChanged -= OnChildrenCollectionChanged;
+        CollectionChangedEventManager.RemoveHandler(node.Children, OnChildrenCollectionChanged);
         foreach (var child in info.IndexedChildren)
         {
             Unindex(child);
@@ -681,7 +681,7 @@ internal sealed class CheckTreeState
     {
         foreach (var node in infos.Keys.ToList())
         {
-            node.Children.CollectionChanged -= OnChildrenCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(node.Children, OnChildrenCollectionChanged);
         }
 
         infos.Clear();

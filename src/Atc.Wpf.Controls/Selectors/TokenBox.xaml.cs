@@ -574,13 +574,13 @@ public partial class TokenBox
         var control = (TokenBox)d;
         if (control.subscribedSelectedKeys is not null)
         {
-            control.subscribedSelectedKeys.CollectionChanged -= control.OnSelectedKeysCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
         control.subscribedSelectedKeys = e.NewValue as ObservableCollection<string>;
         if (control.subscribedSelectedKeys is not null)
         {
-            control.subscribedSelectedKeys.CollectionChanged += control.OnSelectedKeysCollectionChanged;
+            CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
         control.UpdateTokens();
@@ -593,13 +593,13 @@ public partial class TokenBox
         var control = (TokenBox)d;
         if (control.subscribedFixedKeys is not null)
         {
-            control.subscribedFixedKeys.CollectionChanged -= control.OnFixedKeysCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(control.subscribedFixedKeys, control.OnFixedKeysCollectionChanged);
         }
 
         control.subscribedFixedKeys = e.NewValue as ObservableCollection<string>;
         if (control.subscribedFixedKeys is not null)
         {
-            control.subscribedFixedKeys.CollectionChanged += control.OnFixedKeysCollectionChanged;
+            CollectionChangedEventManager.AddHandler(control.subscribedFixedKeys, control.OnFixedKeysCollectionChanged);
         }
 
         control.UpdateTokens();

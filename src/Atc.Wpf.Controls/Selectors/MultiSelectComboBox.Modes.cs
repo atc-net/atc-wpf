@@ -200,13 +200,13 @@ public partial class MultiSelectComboBox
         var control = (MultiSelectComboBox)d;
         if (control.subscribedDisabledKeys is not null)
         {
-            control.subscribedDisabledKeys.CollectionChanged -= control.OnDisabledKeysCollectionChanged;
+            CollectionChangedEventManager.RemoveHandler(control.subscribedDisabledKeys, control.OnDisabledKeysCollectionChanged);
         }
 
         control.subscribedDisabledKeys = e.NewValue as ObservableCollection<string>;
         if (control.subscribedDisabledKeys is not null)
         {
-            control.subscribedDisabledKeys.CollectionChanged += control.OnDisabledKeysCollectionChanged;
+            CollectionChangedEventManager.AddHandler(control.subscribedDisabledKeys, control.OnDisabledKeysCollectionChanged);
         }
 
         control.UpdateSummary();
