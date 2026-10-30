@@ -47,3 +47,4 @@ global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.XUnit;
 
 global using Microsoft.Extensions.Logging;
+global using Microsoft.Xaml.Behaviors;
