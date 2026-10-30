@@ -217,7 +217,7 @@ The text ("Bold") is hidden; it becomes the tooltip (unless the segment has its 
 - Separators are rendered between joined items and hidden next to a selected segment
 - `SelectedKeys` is kept in sync in every mode; keys without a matching segment are kept (segments added later pick them up), while the keys of removed segments are dropped with one `SelectedKeysChanged`
 - The selection follows the key, not the position: inserting or removing other segments keeps the selected segment (and moves `SelectedIndex`); removing the selected segment in a single mode clears the selection
-- Switching from `Multiple` to a single mode keeps only the most recently selected segment
+- Switching from `Multiple` to a single mode keeps only the most recently selected segment (one `SelectedKeysChanged`; with a data-bound `SelectedKeys`, once the bindings have settled, so a DataContext swap that brings a new mode before its keys never writes into the previous view model's collection)
 - In `Multiple`, setting `SelectedIndex` from outside selects that segment as well; setting it to `-1` leaves the selection as it is
 - `SelectedIndex` and `SelectedItem` support two-way binding and journaling
 - No `Label*` wrapper: put it in a `LabelContent` when a form needs a label

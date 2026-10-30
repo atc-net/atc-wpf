@@ -18,6 +18,7 @@ public sealed partial class Segmented : Control
 {
     private readonly ObservableCollection<SegmentedItem> selectedItemsSource = [];
     private readonly List<Border> separators = [];
+    private readonly SelectedKeysCleanup modeTrim;
     private Panel? itemsHost;
     private bool isUpdatingSelection;
     private bool isWritingSelectedKeys;
@@ -173,6 +174,7 @@ public sealed partial class Segmented : Control
     public Segmented()
     {
         SelectedItems = new ReadOnlyObservableCollection<SegmentedItem>(selectedItemsSource);
+        modeTrim = new SelectedKeysCleanup(this, SelectedKeysProperty, _ => TrimToSingleSelection());
         CornerRadius = new CornerRadius(4);
         Items.CollectionChanged += OnItemsCollectionChanged;
         Loaded += OnLoaded;
@@ -275,10 +277,23 @@ public sealed partial class Segmented : Control
             return;
         }
 
-        // Leaving the multi-select mode keeps only the most recently selected segment.
-        var item = control.GetItemAt(control.SelectedIndex);
+        // Leaving the multi-select mode keeps only the most recently selected segment. With a bound SelectedKeys the
+        // trim waits for the bindings to settle: on a DataContext swap the new mode can arrive before the new keys,
+        // and trimming at once would write into the previous view model's collection.
         control.ApplySingleSelectionFlags(control.SelectedIndex);
-        control.CommitKeys(item?.EffectiveKey is { } key ? [key] : []);
+        control.modeTrim.Request(control.itemKeySet);
+    }
+
+    private void TrimToSingleSelection()
+    {
+        if (SelectionMode == SegmentedSelectionMode.Multiple)
+        {
+            return;
+        }
+
+        var item = GetItemAt(SelectedIndex);
+        ApplySingleSelectionFlags(SelectedIndex);
+        CommitKeys(item?.EffectiveKey is { } key ? [key] : []);
     }
 
     private static void OnSelectedKeysChanged(

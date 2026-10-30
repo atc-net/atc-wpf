@@ -78,6 +78,72 @@ public sealed class MultiSelectDataContextSwapTests : IDisposable
     [StaTheory]
     [InlineData(true)]
     [InlineData(false)]
+    public void Segmented_with_a_bound_selection_mode_keeps_both_view_models_unchanged(
+        bool modeFirst)
+    {
+        var first = CreateFirst();
+        first.SegmentedMode = SegmentedSelectionMode.Multiple;
+        var second = CreateSecond();
+        var sut = new Segmented { DataContext = first };
+        foreach (var key in new[] { "a1", "a2", "a3", "b1", "b2" })
+        {
+            sut.Items.Add(new SegmentedItem { Key = key, Content = key });
+        }
+
+        if (modeFirst)
+        {
+            Bind(sut, Segmented.SelectionModeProperty, nameof(ViewModel.SegmentedMode));
+        }
+
+        Bind(sut, Segmented.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        if (!modeFirst)
+        {
+            Bind(sut, Segmented.SelectionModeProperty, nameof(ViewModel.SegmentedMode));
+        }
+
+        Pump();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.DataContext = second;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(SegmentedSelectionMode.Single, sut.SelectionMode);
+
+        sut.DataContext = first;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(SegmentedSelectionMode.Multiple, sut.SelectionMode);
+        Assert.Equal(2, sut.SelectedItems.Count);
+    }
+
+    [StaFact]
+    public void Unbound_Segmented_keeps_only_one_key_at_once_when_leaving_the_multiple_mode()
+    {
+        var sut = new Segmented { SelectionMode = SegmentedSelectionMode.Multiple };
+        foreach (var key in new[] { "a1", "a2", "a3" })
+        {
+            sut.Items.Add(new SegmentedItem { Key = key, Content = key });
+        }
+
+        sut.SelectedKeys.Add("a1");
+        sut.SelectedKeys.Add("a2");
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.SelectionMode = SegmentedSelectionMode.Single;
+
+        Assert.Equal(["a2"], sut.SelectedKeys);
+        Assert.Equal(1, events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
     public void TokenBox_keeps_both_view_models_unchanged(bool itemsFirst)
     {
         var sut = new TokenBox();
@@ -298,5 +364,7 @@ public sealed class MultiSelectDataContextSwapTests : IDisposable
         public System.Collections.ObjectModel.ObservableCollection<string> SelectedKeys { get; set; }
 
         public ChipSelectionMode SelectionMode { get; set; } = ChipSelectionMode.Multiple;
+
+        public SegmentedSelectionMode SegmentedMode { get; set; } = SegmentedSelectionMode.Single;
     }
 }
