@@ -87,15 +87,24 @@ public class StringValidationRule : ValidationRule
     }
 
     /// <inheritdoc />
+    /// <remarks>
+    /// An empty value counts as missing when <see cref="Required"/> is set: a bound text box passes an empty
+    /// string, while <see cref="StringAttribute"/> only treats <see langword="null"/> as missing.
+    /// </remarks>
     public override System.Windows.Controls.ValidationResult Validate(
         object? value,
         CultureInfo cultureInfo)
-        => StringAttribute.TryIsValid(
-            value?.ToString() ?? string.Empty,
+    {
+        var text = value?.ToString() ?? string.Empty;
+        var isMissing = Required && text.Length == 0;
+
+        return StringAttribute.TryIsValid(
+            isMissing ? null! : text,
             Constraints,
             out var errorMessage)
             ? System.Windows.Controls.ValidationResult.ValidResult
             : new System.Windows.Controls.ValidationResult(false, errorMessage);
+    }
 
     private static string[] SplitCsv(string? csv)
         => string.IsNullOrWhiteSpace(csv)

@@ -9,7 +9,11 @@ public sealed class StringValidationRuleTests
         string? value)
     {
         // Arrange
-        var sut = new StringValidationRule { Required = true };
+        var sut = new StringValidationRule
+        {
+            Required = true,
+            MinLength = 0,
+        };
 
         // Act
         var result = sut.Validate(value, CultureInfo.InvariantCulture);
