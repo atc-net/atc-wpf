@@ -67,6 +67,11 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `MaxSelectionCount` | `int?` | `null` | Selection limit |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Shown but cannot be toggled |
 | `ItemTemplate` | `DataTemplate?` | `null` | The text part of a pop-up row |
+| `DisplayMode` | `MultiSelectDisplayMode` | `Text` | `Text`, `Chips` (removable chips with "+N") or `Count` |
+| `MaxVisibleChips` | `int?` | `null` | Chips mode: `null` = as many as fit, then "+N" |
+| `ChipsWrap` | `bool` | `false` | Chips mode: wrap the chips over several lines |
+| `ChipTemplate` | `DataTemplate?` | `null` | Chips mode: a custom chip (data context: `MultiSelectChipItem`) |
+| `CommitMode` | `MultiSelectCommitMode` | `Immediate` | `Deferred` shows OK / Cancel; ticks apply on OK |
 | `MaxDropDownHeight` | `double` | as `ComboBox` | The pop-up's maximum height |
 
 ## 📢 Events
@@ -74,11 +79,11 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | Event | Args | When |
 |---|---|---|
 | `SelectedKeysChanged` | `ValueChangedEventArgs<IReadOnlyList<string>>` | The ticked keys changed through the pop-up (or an `Items` change) and the field is valid |
-| `SelectedKeysChangedInvalid` | `ValueChangedEventArgs<IReadOnlyList<string>>` | The ticked keys changed through the pop-up and the field is invalid (mandatory with nothing ticked) |
+| `SelectedKeysChangedInvalid` | `ValueChangedEventArgs<IReadOnlyList<string>>` | The ticked keys changed through the pop-up and the field is invalid (mandatory with nothing ticked, or more keys than `MaxSelectionCount`) |
 
 ## 📝 Notes
 
-- `IsValid()` validates now and sets `ValidationText` ("Field is required" when mandatory and nothing is ticked).
+- `IsValid()` validates now and sets `ValidationText`: "Field is required" when mandatory and nothing is ticked, "Select at most {0}" (translated) when `SelectedKeys` set from code holds more keys of `Items` than `MaxSelectionCount` (the keys are kept; the pop-up itself never ticks beyond the limit).
 - `SelectedKeys` binds two-way by default: bind it to a property with a setter, or use `Mode=OneWay`.
 - The summary, keyboard and UI Automation behaviour comes from `MultiSelectComboBox`; see `MultiSelectComboBox_Readme.md`.
 

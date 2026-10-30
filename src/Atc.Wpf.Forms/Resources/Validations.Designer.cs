@@ -286,6 +286,15 @@ namespace Atc.Wpf.Forms.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select at most {0}.
+        /// </summary>
+        public static string SelectAtMost1 {
+            get {
+                return ResourceManager.GetString("SelectAtMost1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regular expression don&apos;t match.
         /// </summary>
         public static string RegexPatternDontMatch {

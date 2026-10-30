@@ -2,7 +2,7 @@ namespace Atc.Wpf.Forms;
 
 /// <summary>
 /// A labeled multi-select drop-down (<see cref="MultiSelectComboBox"/>) with a mandatory marker and validation text.
-/// When <c>IsMandatory</c> is set, at least one key must be ticked.
+/// When <c>IsMandatory</c> is set, at least one key must be ticked; with <c>MaxSelectionCount</c>, no more than that many.
 /// </summary>
 public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
 {
@@ -71,7 +71,8 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
     private bool isGroupCheckable;
 
     /// <summary>
-    /// The maximum number of ticked keys; <see langword="null"/> for no limit.
+    /// The maximum number of ticked keys; <see langword="null"/> for no limit. Keys set from code beyond the limit are
+    /// kept, but make <see cref="IsValid"/> return <see langword="false"/>.
     /// </summary>
     [DependencyProperty]
     private int? maxSelectionCount;
@@ -87,6 +88,37 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
     /// </summary>
     [DependencyProperty]
     private DataTemplate? itemTemplate;
+
+    /// <summary>
+    /// What the closed box shows for the ticked items: the names, a removable chip per item, or only the count.
+    /// </summary>
+    [DependencyProperty(DefaultValue = MultiSelectDisplayMode.Text)]
+    private MultiSelectDisplayMode displayMode;
+
+    /// <summary>
+    /// In chips mode, the most chips shown before the "+N" chip; <see langword="null"/> (the default) shows as many as fit.
+    /// </summary>
+    [DependencyProperty]
+    private int? maxVisibleChips;
+
+    /// <summary>
+    /// In chips mode, whether the chips wrap over several lines instead of ending in "+N".
+    /// </summary>
+    [DependencyProperty]
+    private bool chipsWrap;
+
+    /// <summary>
+    /// In chips mode, the template of a chip (data context: <see cref="MultiSelectChipItem"/>); <see langword="null"/>
+    /// for the default small input chip.
+    /// </summary>
+    [DependencyProperty]
+    private DataTemplate? chipTemplate;
+
+    /// <summary>
+    /// Whether ticks in the pop-up reach <see cref="SelectedKeys"/> right away or only on OK.
+    /// </summary>
+    [DependencyProperty(DefaultValue = MultiSelectCommitMode.Immediate)]
+    private MultiSelectCommitMode commitMode;
 
     /// <summary>
     /// The most display values the summary lists before it switches to <see cref="CountFormat"/>.
@@ -126,7 +158,8 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
     public event EventHandler<ValueChangedEventArgs<IReadOnlyList<string>>>? SelectedKeysChanged;
 
     /// <summary>
-    /// Occurs when the ticked keys change through the pop-up and fail validation (a mandatory field with nothing ticked).
+    /// Occurs when the ticked keys change through the pop-up and fail validation (a mandatory field with nothing ticked,
+    /// or more keys than <see cref="MaxSelectionCount"/>).
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<IReadOnlyList<string>>>? SelectedKeysChangedInvalid;
 
@@ -161,6 +194,11 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
         Forward(MultiSelectComboBox.MaxSelectionCountProperty, MaxSelectionCountProperty);
         Forward(MultiSelectComboBox.DisabledKeysProperty, DisabledKeysProperty);
         Forward(MultiSelectComboBox.ItemTemplateProperty, ItemTemplateProperty);
+        Forward(MultiSelectComboBox.DisplayModeProperty, DisplayModeProperty);
+        Forward(MultiSelectComboBox.MaxVisibleChipsProperty, MaxVisibleChipsProperty);
+        Forward(MultiSelectComboBox.ChipsWrapProperty, ChipsWrapProperty);
+        Forward(MultiSelectComboBox.ChipTemplateProperty, ChipTemplateProperty);
+        Forward(MultiSelectComboBox.CommitModeProperty, CommitModeProperty);
         Forward(MultiSelectComboBox.SelectNewItemsProperty, SelectNewItemsProperty);
         Forward(MultiSelectComboBox.SelectedKeysProperty, SelectedKeysProperty, BindingMode.TwoWay);
         Forward(MultiSelectComboBox.ItemsProperty, ItemsProperty);
@@ -223,8 +261,26 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
             return false;
         }
 
+        if (MaxSelectionCount is { } max && CountTickedItems() > max)
+        {
+            ValidationText = string.Format(CultureInfo.CurrentCulture, Validations.SelectAtMost1, max);
+            return false;
+        }
+
         ValidationText = string.Empty;
         return true;
+    }
+
+    private int CountTickedItems()
+    {
+        if (SelectedKeys is null || Items is null)
+        {
+            return 0;
+        }
+
+        return SelectedKeys
+            .Distinct(StringComparer.Ordinal)
+            .Count(Items.ContainsKey);
     }
 
     private void OnComboBoxSelectedKeysChanged(

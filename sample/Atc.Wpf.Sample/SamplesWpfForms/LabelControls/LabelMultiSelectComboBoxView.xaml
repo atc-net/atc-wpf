@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfForms.LabelControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
@@ -70,6 +71,57 @@
 
                     </StackPanel>
                 </atc:GridEx>
+
+                <atc:GroupBoxExpander Header="Display modes, limit, deferred commit and groups">
+                    <atc:GridEx Columns="*,*">
+                        <StackPanel Grid.Column="0" Margin="10">
+
+                            <atc:LabelMultiSelectComboBox
+                                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                                LabelText="Days (Text)"
+                                WatermarkText="Pick days" />
+
+                            <atc:LabelMultiSelectComboBox
+                                DisplayMode="Chips"
+                                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                                LabelText="Days (Chips)"
+                                WatermarkText="Pick days" />
+
+                            <atc:LabelMultiSelectComboBox
+                                DisplayMode="Count"
+                                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                                LabelText="Days (Count)"
+                                WatermarkText="Pick days" />
+
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="10">
+
+                            <atc:LabelMultiSelectComboBox
+                                DisplayMode="Chips"
+                                InformationText="At most three days."
+                                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                                LabelText="Limit of 3"
+                                MaxSelectionCount="3"
+                                WatermarkText="Pick up to three" />
+
+                            <atc:LabelMultiSelectComboBox
+                                CommitMode="Deferred"
+                                InformationText="Ticks apply on OK."
+                                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                                LabelText="Deferred commit"
+                                WatermarkText="Pick days" />
+
+                            <atc:LabelMultiSelectComboBox
+                                ChipsWrap="True"
+                                DisplayMode="Chips"
+                                ItemGroups="{Binding Source={x:Static local:LabelMultiSelectComboBoxView.WeekdayGroups}}"
+                                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                                LabelText="Grouped (wrapping chips)"
+                                WatermarkText="Pick days" />
+
+                        </StackPanel>
+                    </atc:GridEx>
+                </atc:GroupBoxExpander>
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>

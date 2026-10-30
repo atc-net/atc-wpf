@@ -83,6 +83,68 @@ public sealed class LabelMultiSelectComboBoxTests : IDisposable
     }
 
     [StaFact]
+    public void Display_and_commit_options_are_passed_through_to_the_inner_combo_box()
+    {
+        var sut = Create();
+        var chipTemplate = new DataTemplate();
+
+        sut.DisplayMode = MultiSelectDisplayMode.Chips;
+        sut.MaxVisibleChips = 2;
+        sut.ChipsWrap = true;
+        sut.ChipTemplate = chipTemplate;
+        sut.CommitMode = MultiSelectCommitMode.Deferred;
+
+        var inner = sut.ComboBox;
+        Assert.Equal(MultiSelectDisplayMode.Chips, inner.DisplayMode);
+        Assert.Equal(2, inner.MaxVisibleChips);
+        Assert.True(inner.ChipsWrap);
+        Assert.Same(chipTemplate, inner.ChipTemplate);
+        Assert.Equal(MultiSelectCommitMode.Deferred, inner.CommitMode);
+    }
+
+    [StaFact]
+    public void Display_and_commit_options_have_the_inner_defaults()
+    {
+        var sut = Create();
+
+        Assert.Equal(MultiSelectDisplayMode.Text, sut.DisplayMode);
+        Assert.Null(sut.MaxVisibleChips);
+        Assert.False(sut.ChipsWrap);
+        Assert.Null(sut.ChipTemplate);
+        Assert.Equal(MultiSelectCommitMode.Immediate, sut.CommitMode);
+    }
+
+    [StaFact]
+    public void IsValid_SelectedKeysBeyondTheLimit_AreKeptButInvalid()
+    {
+        UseEnglishUi();
+        var sut = Create();
+        sut.MaxSelectionCount = 2;
+
+        sut.SelectedKeys = ["a", "b", "c"];
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Select at most 2", sut.ValidationText);
+        Assert.Equal(["a", "b", "c"], sut.SelectedKeys);
+
+        sut.SelectedKeys.Remove("c");
+
+        Assert.True(sut.IsValid());
+        Assert.Equal(string.Empty, sut.ValidationText);
+    }
+
+    [StaFact]
+    public void IsValid_KeysNotInItems_DoNotCountTowardsTheLimit()
+    {
+        var sut = Create();
+        sut.MaxSelectionCount = 2;
+
+        sut.SelectedKeys = ["a", "b", "gone"];
+
+        Assert.True(sut.IsValid());
+    }
+
+    [StaFact]
     public void Ticking_updates_SelectedKeys_and_raises_SelectedKeysChanged_with_the_identifier()
     {
         var sut = Create();

@@ -564,7 +564,7 @@ A labeled dropdown/combo box for item selection.
 
 ### LabelMultiSelectComboBox
 
-A labeled multi-select drop-down (`MultiSelectComboBox`): closed it looks like `LabelComboBox` and shows a summary ("Orders, Payments", "3 of 5 selected", "All"); open it shows a check list with Select all, Clear and a filter. `IsMandatory` means at least one key is ticked. See [LabelMultiSelectComboBox_Readme.md](LabelMultiSelectComboBox_Readme.md).
+A labeled multi-select drop-down (`MultiSelectComboBox`): closed it looks like `LabelComboBox` and shows a summary ("Orders, Payments", "3 of 5 selected", "All"); open it shows a check list with Select all, Clear and a filter. `DisplayMode` switches the closed box to removable chips or a count; `MaxSelectionCount`, `CommitMode="Deferred"` (OK / Cancel) and `ItemGroups` are passed through. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelMultiSelectComboBox_Readme.md](LabelMultiSelectComboBox_Readme.md).
 
 ```xml
 <atc:LabelMultiSelectComboBox

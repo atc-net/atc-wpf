@@ -162,6 +162,9 @@
   <data name="ValueShouldBeAInteger" xml:space="preserve">
     <value>Værdien skal være et heltal</value>
   </data>
+  <data name="SelectAtMost1" xml:space="preserve">
+    <value>Vælg højst {0}</value>
+  </data>
   <data name="PleaseSelect1" xml:space="preserve">
     <value>Vælg venligst et {0}</value>
   </data>
