@@ -7,17 +7,19 @@ namespace Atc.Wpf.Controls.Media.W3cSvg;
 /// <remarks>
 /// Only frozen drawings are stored, so animated output (which cannot be frozen) is never shared, and a cached
 /// drawing can be used from any thread. The parsed SVG model is not cached: rendering changes it.
+/// When full, the least recently used drawing is evicted, so an app showing more distinct icons than the
+/// capacity keeps its frequently shown ones cached.
 /// </remarks>
 internal static class SvgDrawingCache
 {
     private const int MaxEntries = 256;
 
-    private static readonly ConcurrentDictionary<Key, Entry> Entries = new();
+    private static readonly LruCache<Key, Entry> Entries = new(MaxEntries);
 
     public static bool TryGet(
         Key key,
         [NotNullWhen(true)] out Entry? entry)
-        => Entries.TryGetValue(key, out entry);
+        => Entries.TryGet(key, out entry);
 
     /// <summary>
     /// Freezes the drawing and brushes and stores them; does nothing when any of them cannot be frozen.
@@ -45,12 +47,7 @@ internal static class SvgDrawingCache
 
         drawing.Freeze();
 
-        if (Entries.Count >= MaxEntries)
-        {
-            Entries.Clear();
-        }
-
-        Entries[key] = new Entry(drawing, frozenBrushes);
+        Entries.Set(key, new Entry(drawing, frozenBrushes));
     }
 
     /// <summary>
