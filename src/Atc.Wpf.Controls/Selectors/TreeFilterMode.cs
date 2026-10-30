@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
-/// Specifies how a tri-state check tree (<see cref="CheckTreeView"/>, <c>TreeSelectComboBox</c>) shows the
+/// Specifies how a tri-state check tree (<see cref="CheckTreeView"/>, <see cref="TreeSelectComboBox"/>) shows the
 /// nodes that match the filter text.
 /// </summary>
 public enum TreeFilterMode

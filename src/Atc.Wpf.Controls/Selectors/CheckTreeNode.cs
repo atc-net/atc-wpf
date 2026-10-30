@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
-/// A node in a tri-state check tree (<see cref="CheckTreeView"/>, <c>TreeSelectComboBox</c>).
+/// A node in a tri-state check tree (<see cref="CheckTreeView"/>, <see cref="TreeSelectComboBox"/>).
 /// </summary>
 /// <remarks>
 /// The check state (<see cref="IsChecked"/>) is kept by the control from its <c>SelectedKeys</c>, so a view model only

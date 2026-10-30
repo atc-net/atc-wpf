@@ -1,7 +1,7 @@
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
-/// Specifies which keys of a tri-state check tree (<see cref="CheckTreeView"/>, <c>TreeSelectComboBox</c>) end
+/// Specifies which keys of a tri-state check tree (<see cref="CheckTreeView"/>, <see cref="TreeSelectComboBox"/>) end
 /// up in <c>SelectedKeys</c> when the check boxes are linked.
 /// </summary>
 public enum CheckedKeysStrategy

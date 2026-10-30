@@ -139,6 +139,11 @@ public partial class CheckTreeView
     public event EventHandler<ValueChangedEventArgs<IReadOnlyList<string>>>? SelectedKeysChanged;
 
     /// <summary>
+    /// Occurs after the check states, the keys or the tree changed and the chrome (count, Select all) was refreshed.
+    /// </summary>
+    internal event EventHandler? StateRefreshed;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="CheckTreeView"/> class.
     /// </summary>
     public CheckTreeView()
@@ -490,6 +495,12 @@ public partial class CheckTreeView
             return;
         }
 
+        RefreshChromeParts();
+        StateRefreshed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void RefreshChromeParts()
+    {
         var keyCount = SelectedKeys?.Count ?? 0;
         IsAtSelectionLimit = MaxSelectionCount is { } max && keyCount >= max;
 
