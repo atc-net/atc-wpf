@@ -116,6 +116,9 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-26)
       - [Usage Example](#usage-example-26)
   - [Base Controls](#base-controls)
+  - [Forms Generated from a Model](#forms-generated-from-a-model)
+    - [Type Mapping](#type-mapping)
+    - [Multi-Select Properties](#multi-select-properties)
   - [Validation Behavior](#validation-behavior)
     - [Validation Implementation](#validation-implementation)
   - [Theming](#theming)
@@ -1100,6 +1103,79 @@ The following base controls (without labels) are also available in `Atc.Wpf.Cont
 - `ToggleSwitch` - On/off toggle
 
 These base controls provide the core functionality and can be used independently without the label wrapper.
+
+## Forms Generated from a Model
+
+`ModelToLabelControlExtractor.Extract(model)` creates a label control for each public property of a model, and
+`LabelControlsForm` lays them out (for example in an `InputFormDialogBox`). `LabelControlsFormToModelWriter.Update(model, form)`
+writes the edited values back into a copy of the model.
+
+```csharp
+var labelControlsForm = new LabelControlsForm();
+labelControlsForm.AddColumn(ModelToLabelControlExtractor.Extract(person));
+
+// ... the user edits the form ...
+
+var updatedPerson = LabelControlsFormToModelWriter.Update(person, labelControlsForm);
+```
+
+### Type Mapping
+
+| Property type | Control |
+|---------------|---------|
+| `string`, `Guid` | `LabelTextBox` |
+| `int`, `uint`, `long`, `ulong`, `short`, `ushort` | `LabelIntegerBox` |
+| `decimal`, `double`, `float` | `LabelDecimalBox` |
+| `bool` | `LabelCheckBox` |
+| enum | `LabelComboBox` |
+| `[Flags]` enum | `LabelMultiSelectComboBox` |
+| `T[]`, `List<T>`, `IList<T>`, `ICollection<T>`, `IEnumerable<T>`, `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, `HashSet<T>`, `ISet<T>` of an enum | `LabelMultiSelectComboBox` |
+| the same collections of `string` | `LabelTokenBox` (free values, `AllowCreate="True"`) |
+| `DateTime`, `DateTimeOffset` | `LabelDateTimePicker` |
+| `DateOnly` | `LabelDatePicker` |
+| `TimeOnly` | `LabelTimePicker` |
+| `Point2D` | `LabelDecimalXyBox` |
+| `Size` | `LabelPixelSizeBox` |
+| `Color` | `LabelWellKnownColorSelector` |
+| `CultureInfo` (name contains "Country" / "Language") | `LabelCountrySelector` / `LabelLanguageSelector` |
+| `DirectoryInfo` / `FileInfo` | `LabelDirectoryPicker` / `LabelFilePicker` |
+| other class | its properties, nested up to `ModelToLabelControlExtractor.MaxNestingDepth` levels |
+
+Nullable value types map like the type they wrap. Other collections (dictionaries, collections of other element
+types) and indexed properties are skipped. A property without a public setter becomes a disabled control, or is
+skipped with `includeReadOnly: false`.
+
+### Multi-Select Properties
+
+```csharp
+[Flags]
+public enum ContactChannels { None = 0, Email = 1, Phone = 2, Sms = 4, Post = 8 }
+
+public record Person
+{
+    public ContactChannels PreferredContactChannels { get; init; }  // LabelMultiSelectComboBox
+
+    [Required]
+    public List<DayOfWeek> WorkDays { get; init; } = [];          // LabelMultiSelectComboBox
+
+    [MaxLength(5)]
+    public IList<string> Tags { get; init; } = [];                // LabelTokenBox
+}
+```
+
+- **`[Flags]` enum:** the items are the single flags. Zero (`None`) and combined values (such as `ReadWrite = Read | Write`) are not
+  items; a combined value in the model ticks the flags it is made of. The ticked flags are written back as one combined value, and
+  an empty selection writes the zero value (also for a nullable `[Flags]` enum).
+- **Collection of an enum:** the items are the enum values except `None`, `Unknown` and `Default`, as for a single enum.
+- **Collection of `string`:** a `LabelTokenBox` without items that turns any typed value into a token.
+- **Attributes:** `[Required]` sets `IsMandatory` (at least one value). `[MaxLength(n)]` or `[Length(min, n)]` sets
+  `MaxSelectionCount` to `n`.
+- **Write-back:** the selected keys are written as a new collection of the property's type. A `null` collection in the model
+  comes back as an empty collection, and an empty selection writes an empty collection.
+- To use another multi-select control (for example a `LabelCheckListBox` or `LabelChipGroup`) for a property, build that control
+  with `LabelControlFactory` and add it to the form yourself; there is no attribute that picks the control. Its `LabelText` must
+  give the property name as `Identifier`, and for a `[Flags]` enum set `InputDataType` to the enum type so the ticked keys are
+  written back as one combined value.
 
 ## Validation Behavior
 

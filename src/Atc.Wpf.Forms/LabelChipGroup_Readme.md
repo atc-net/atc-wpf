@@ -10,6 +10,8 @@ A labeled group of toggle chips (`ChipGroup`) with a mandatory marker, informati
 - With `MaxSelectionCount`, more keys than the limit (e.g. set from outside) make `IsValid()` false ("Select at most 2").
 - Supported by `LabelControlsForm` (`GetKeyValues` returns the selected keys) and `LabelControlFactory.CreateLabelChipGroup`.
 
+Set `InputDataType` to a `[Flags]` enum type to have `GetKeyValues()` return the selected keys as one combined flags value instead of a list. See the type mapping in [Readme.md](Readme.md#forms-generated-from-a-model).
+
 ## 📍 Namespace
 
 ```csharp

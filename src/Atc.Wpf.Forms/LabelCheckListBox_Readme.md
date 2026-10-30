@@ -6,6 +6,8 @@ A labeled form field around `CheckListBox`: an always-visible check list with a 
 
 `LabelCheckListBox` puts a `CheckListBox` in the standard `LabelContent` layout used by the other `Label*` controls. `IsMandatory` means at least one key must be ticked. It implements `ILabelCheckListBox`, so it works in `LabelControlsForm` (`GetKeyValues()` returns the ticked keys as a list, which `LabelControlsFormToModelWriter` writes back to a `List<string>` / `IList<string>` property) and can be created with `LabelControlFactory.CreateLabelCheckListBox(...)`.
 
+Set `InputDataType` to a `[Flags]` enum type to have `GetKeyValues()` return the ticked keys as one combined flags value instead of a list. See the type mapping in [Readme.md](Readme.md#forms-generated-from-a-model).
+
 ## 📍 Namespace
 
 ```csharp
