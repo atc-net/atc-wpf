@@ -52,7 +52,7 @@ To share one watcher between several pickers, or to supply a test double, pass t
 ## 📖 Documentation
 
 - **[Hardware guide](../../docs/Hardware/@Readme.md)** - shared properties, device-state behaviour and localization
-- One `*_Readme.md` per picker in [`Pickers/`](Pickers/)
+- One `*_Readme.md` per picker in [`Pickers/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Hardware/Pickers)
 
 ## 🎮 Sample Application
 

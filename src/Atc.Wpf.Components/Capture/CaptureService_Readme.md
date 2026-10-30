@@ -97,7 +97,7 @@ else
 
 ## Related Controls
 
-- [PrintService](../Printing/PrintService.cs) - Similar service pattern for printing
+- [PrintService](../Printing/PrintService_Readme.md) - Similar service pattern for printing
 
 ## Sample Application
 

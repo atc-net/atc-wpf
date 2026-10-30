@@ -14,4 +14,4 @@ Each control, service and helper in the Atc.Wpf libraries can have its own readm
 | [Atc.Wpf.Hardware](../../src/Atc.Wpf.Hardware/Readme.md) | Hardware, system and inspection pickers |
 | [Atc.Wpf.UndoRedo](../../src/Atc.Wpf.UndoRedo/Readme.md) | Undo/redo history view and keyboard behavior |
 
-Use the navigation on the left to open a readme. The API reference for every type is under [API Reference](../api/).
+Use the navigation on the left to open a readme. The API reference for every type is under [API Reference](../api/Atc.Wpf.yml).

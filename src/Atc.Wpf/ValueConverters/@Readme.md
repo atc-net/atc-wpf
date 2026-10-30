@@ -219,7 +219,7 @@ Both `EnumToVisibilityVisibleValueConverter` and `EnumToVisibilityCollapsedValue
 | Single `Enum`                            | `ConverterParameter="{x:Static sys:DayOfWeek.Monday}"`                                              |
 | Single string (member name)              | `ConverterParameter=Monday` *(case-insensitive)*                                                    |
 | Comma-separated string (multi-value)     | `ConverterParameter="Monday,Tuesday"` *(items are trimmed and case-insensitive)*                    |
-| `IEnumerable` of `Enum`/string           | An `x:Array` of enum literals, or the [`EnumValuesExtension`](../MarkupExtensions) markup extension |
+| `IEnumerable` of `Enum`/string           | An `x:Array` of enum literals, or the [`EnumValuesExtension`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf/MarkupExtensions/EnumValuesExtension.cs) markup extension |
 
 Multi-value examples in XAML:
 

@@ -7,7 +7,7 @@ Core WPF library for the ATC.Net WPF stack: MVVM helpers, layouts, value convert
 | Area | Path | Docs |
 |---|---|---|
 | MVVM (ViewModels, commands, messaging) | from [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) (reference it directly) | [`docs/Mvvm/@Readme.md`](../../docs/Mvvm/@Readme.md) |
-| Source generators (`[ObservableProperty]`, `[RelayCommand]`, `[DependencyProperty]`, `[AttachedProperty]`) | reference `Atc.XamlToolkit` / `Atc.XamlToolkit.Wpf` directly | [`docs/SourceGenerators/`](../../docs/SourceGenerators) |
+| Source generators (`[ObservableProperty]`, `[RelayCommand]`, `[DependencyProperty]`, `[AttachedProperty]`) | reference `Atc.XamlToolkit` / `Atc.XamlToolkit.Wpf` directly | [`docs/SourceGenerators/`](../../docs/SourceGenerators/ViewModel.md) |
 | Layouts (`GridEx`, `AutoGrid`, `FlexPanel`, `StaggeredPanel`, `UniformSpacingPanel`, …) | `Controls/Layouts/` | [`docs/Layouts/@Readme.md`](../../docs/Layouts/@Readme.md) |
 | Hotkeys (`HotkeyManager`, `KeyboardHook`) | `Hotkeys/` | [`docs/Hotkeys/@Readme.md`](../../docs/Hotkeys/@Readme.md) |
 | Navigation (frame/page navigation primitives) | `Navigation/` | [`docs/Navigation/@Readme.md`](../../docs/Navigation/@Readme.md) |

@@ -107,7 +107,7 @@ else
 
 ## Related Controls
 
-- [DialogService](../Dialogs/DialogService.cs) - Similar service pattern
+- [DialogService](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Components/Dialogs/DialogService.cs) - Similar service pattern
 
 ## Sample Application
 
