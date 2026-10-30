@@ -155,6 +155,17 @@
                             <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding SelectedBackground, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
 
+                        <!--  Selected border brush, when set  -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding SelectedBorderBrush, RelativeSource={RelativeSource Self}, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}" Value="Visible" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_Border" Property="BorderBrush" Value="{Binding SelectedBorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
                         <!--  Show checkmark for Filter variant when selected  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -165,6 +176,20 @@
                                 <Setter TargetName="PART_Checkmark" Property="Visibility" Value="Visible" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
+
+                        <!--  ShowCheckMark overrides the variant default  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowCheckMark" Value="True" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_Checkmark" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="ShowCheckMark" Value="False">
+                            <Setter TargetName="PART_Checkmark" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
 
                         <!--  Filter variant defaults to selectable  -->
                         <Trigger Property="Variant" Value="Filter">

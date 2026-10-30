@@ -126,11 +126,15 @@ using Atc.Wpf.Controls.DataDisplay;
 - Input variant automatically shows a close/remove button
 - Disabled chips render at 50% opacity
 - The chip uses `MouseLeftButtonUp` for click handling
+- `ShowCheckMark` (`bool?`, default `null`) forces the check mark on (`true`) or off (`false`) for a selected chip; `null` keeps the Filter-variant behaviour
+- `SelectedBorderBrush` (default `null` = `SelectedBackground`) sets the border of a selected chip
+- UI Automation: a selectable chip is a check box with the Toggle pattern
 
 ## 🔗 Related Controls
 
 - **Badge** - Overlay content with counts or status indicators
 - **Avatar** - User profile pictures, often combined with chips
+- **ChipGroup** - A whole set of toggle chips bound to `Items` / `SelectedKeys` (see [ChipGroup_Readme.md](ChipGroup_Readme.md))
 - **Segmented** - Group of mutually exclusive selections
 
 ## 🎮 Sample Application

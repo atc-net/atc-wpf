@@ -9,7 +9,7 @@ Atomic / primitive WPF controls that act as the building blocks for the higher-l
 | Base controls (`NumericBox`, `IntegerBox`, `DecimalBox`, `EndpointBox`, `DateTimePicker`, `TimePicker`, `ColorPicker`, `ToggleSwitch`, …) | `BaseControls/` | per-control `_Readme.md` |
 | Buttons (variants: standard, chromeless, icon, badge, …) | `Buttons/` | per-control `_Readme.md` |
 | Color controls (`HueSlider`, `SaturationBrightnessPicker`, `TransparencySlider`, `WellKnownColorPicker`, `ColorBox`) | `Colors/` | per-control `_Readme.md` |
-| Data-display controls (`Avatar`, `AvatarGroup`, `Badge`, `Breadcrumb`, `Card`, `Carousel`, `Chip`, `Divider`, `Popover`, `Segmented`, `Timeline`) | `DataDisplay/` | [`docs/DataDisplay/@Readme.md`](../../docs/DataDisplay/@Readme.md) |
+| Data-display controls (`Avatar`, `AvatarGroup`, `Badge`, `Breadcrumb`, `Card`, `Carousel`, `Chip`, `ChipGroup`, `Divider`, `Popover`, `Segmented`, `Timeline`) | `DataDisplay/` | [`docs/DataDisplay/@Readme.md`](../../docs/DataDisplay/@Readme.md) |
 | Layouts (`VirtualizingStaggeredPanel`, `MasonryPanel`, …) | `Layouts/` | [`docs/Layouts/@Readme.md`](../../docs/Layouts/@Readme.md) |
 | Progressing (`BusyOverlay`, `LoadingIndicator`, `Skeleton`, `Overlay`) | `Progressing/` | per-control `_Readme.md` |
 | Selectors (`AccentColorSelector`, `CheckListBox`, `CountrySelector`, `LanguageSelector`, `MultiSelectComboBox`, `ThemeSelector`, `WellKnownColorSelector`, …) | `Selectors/` | per-control `_Readme.md` |

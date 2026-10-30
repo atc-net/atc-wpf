@@ -151,6 +151,10 @@
             IsExpanded="True"
             SamplePath="DataDisplay.ChipView" />
         <sample:SampleTreeViewItem
+            Header="ChipGroup"
+            IsExpanded="True"
+            SamplePath="DataDisplay.ChipGroupView" />
+        <sample:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />

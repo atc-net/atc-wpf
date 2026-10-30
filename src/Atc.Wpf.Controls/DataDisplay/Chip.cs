@@ -89,6 +89,19 @@ public sealed partial class Chip : ContentControl
     private Brush? pressedBackground;
 
     /// <summary>
+    /// Whether a check mark is shown before the content when the chip is selected;
+    /// <see langword="null"/> (the default) shows it only for the <see cref="ChipVariant.Filter"/> variant.
+    /// </summary>
+    [DependencyProperty]
+    private bool? showCheckMark;
+
+    /// <summary>
+    /// Border brush when the chip is selected; <see langword="null"/> (the default) uses <see cref="SelectedBackground"/>.
+    /// </summary>
+    [DependencyProperty]
+    private Brush? selectedBorderBrush;
+
+    /// <summary>
     /// Occurs when the chip is clicked.
     /// </summary>
     public event RoutedEventHandler? Click;
@@ -121,22 +134,65 @@ public sealed partial class Chip : ContentControl
         }
     }
 
-    /// <inheritdoc />
-    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-    {
-        base.OnMouseLeftButtonUp(e);
+    /// <summary>
+    /// Gets or sets a hook that decides what a click (or a UI Automation toggle) does instead of the chip flipping
+    /// <see cref="IsSelected"/> itself. A chip group sets it so it can apply its selection mode and limits.
+    /// </summary>
+    internal Action<Chip>? ToggleRequested { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the chip is one option of a single-select group: UI Automation then
+    /// exposes it as a radio button with the selection-item pattern instead of a check box.
+    /// </summary>
+    internal bool IsRadioItem { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether a click (or a UI Automation toggle) changes the selection.
+    /// </summary>
+    internal bool IsToggleable
+        => ToggleRequested is not null || IsSelectable;
+
+    /// <summary>
+    /// Does what a mouse click does: toggles the selection (through <see cref="ToggleRequested"/> when set) and
+    /// raises <see cref="Click"/>. Nothing happens when <see cref="IsClickable"/> is <see langword="false"/>.
+    /// </summary>
+    internal void PerformClick()
+    {
         if (!IsClickable)
         {
             return;
         }
 
-        if (IsSelectable)
+        RequestToggle();
+        OnClick();
+    }
+
+    /// <summary>
+    /// Toggles the selection: through <see cref="ToggleRequested"/> when set, otherwise when <see cref="IsSelectable"/>.
+    /// </summary>
+    internal void RequestToggle()
+    {
+        if (ToggleRequested is not null)
         {
-            IsSelected = !IsSelected;
+            ToggleRequested(this);
+            return;
         }
 
-        OnClick();
+        if (IsSelectable)
+        {
+            SetCurrentValue(IsSelectedProperty, !IsSelected);
+        }
+    }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new ChipAutomationPeer(this);
+
+    /// <inheritdoc />
+    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonUp(e);
+        PerformClick();
     }
 
     private void OnClick()
@@ -159,6 +215,11 @@ public sealed partial class Chip : ContentControl
     {
         if (d is Chip chip)
         {
+            if (UIElementAutomationPeer.FromElement(chip) is ChipAutomationPeer peer)
+            {
+                peer.RaiseSelectionChanged((bool)e.OldValue, (bool)e.NewValue);
+            }
+
             chip.OnSelectionChanged();
         }
     }
