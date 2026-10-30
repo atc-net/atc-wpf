@@ -36,7 +36,7 @@ public partial class MultiSelectComboBox
     /// The items, keyed by their selection key, with their display value. Changing it keeps the ticks of the keys
     /// still present and drops the others from <see cref="SelectedKeys"/>.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnSummaryInputChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnItemsChanged))]
     private Dictionary<string, string> items;
 
     /// <summary>

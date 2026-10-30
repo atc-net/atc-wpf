@@ -452,6 +452,28 @@ public sealed class MultiSelectComboBoxDisplayModeTests : IDisposable
     }
 
     [StaFact]
+    public void Deferred_items_change_while_open_drops_stale_keys_from_the_selection_too()
+    {
+        var sut = Create(4);
+        sut.CommitMode = MultiSelectCommitMode.Deferred;
+        sut.SelectedKeys = ["k1", "k4"];
+        var keys = sut.SelectedKeys;
+        var events = Record(sut);
+
+        sut.IsDropDownOpen = true;
+        sut.Items = Items(3);
+
+        Assert.Equal(["k1"], keys);
+        Assert.Single(events);
+
+        sut.PartCancelButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+
+        Assert.Same(keys, sut.SelectedKeys);
+        Assert.Equal(["k1"], sut.SelectedKeys);
+        Assert.Single(events);
+    }
+
+    [StaFact]
     public void Group_header_ticks_and_unticks_its_items_with_three_states()
     {
         var sut = CreateGrouped();

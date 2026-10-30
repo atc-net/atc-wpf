@@ -135,6 +135,36 @@ public partial class MultiSelectComboBox
         return peers;
     }
 
+    private static void OnItemsChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (MultiSelectComboBox)d;
+        if (control.IsDrafting && control.SelectedKeys is { } target)
+        {
+            // The pop-up list cleans only the draft; the real selection drops its stale keys (one event) as well.
+            var oldItemKeys = e.OldValue is Dictionary<string, string> oldItems
+                ? new HashSet<string>(oldItems.Keys, StringComparer.Ordinal)
+                : new HashSet<string>(StringComparer.Ordinal);
+            var oldKeys = target.ToList();
+            var newKeys = KeySelectionHelper.GetSelectionAfterItemsChanged(
+                oldKeys,
+                oldItemKeys,
+                control.Items,
+                control.SelectNewItems);
+
+            if (!KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+            {
+                KeySelectionHelper.ApplyInPlace(target, newKeys);
+                control.UpdateSummary();
+                control.RaiseSelectedKeysChanged(oldKeys, target.ToList());
+                return;
+            }
+        }
+
+        control.UpdateSummary();
+    }
+
     private static void OnChipsInputChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
