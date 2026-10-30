@@ -143,6 +143,9 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelCascaderComboBox labelCascaderComboBox:
                     result.Add(control.GetFullIdentifier(), (labelCascaderComboBox.SelectedKeys ?? []).ToList());
                     break;
+                case LabelMultiColumnComboBox labelMultiColumnComboBox:
+                    result.Add(control.GetFullIdentifier(), (labelMultiColumnComboBox.SelectedKeys ?? []).ToList());
+                    break;
                 case LabelDecimalBox labelDecimalBox:
                     result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
                     break;

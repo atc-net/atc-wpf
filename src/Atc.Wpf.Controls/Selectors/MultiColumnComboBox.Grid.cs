@@ -98,6 +98,28 @@ public partial class MultiColumnComboBox
     }
 
     /// <summary>
+    /// Ticks or unticks an item as a click on its row does, raising <see cref="SelectedKeysChanged"/> once (in
+    /// <see cref="MultiSelectCommitMode.Deferred"/> mode with the pop-up open, only the draft changes). Does nothing for
+    /// a disabled row or an unticked row at the <see cref="MaxSelectionCount"/> limit.
+    /// </summary>
+    /// <param name="item">An item of <see cref="ItemsSource"/>.</param>
+    /// <returns><see langword="true"/> when the item was toggled.</returns>
+    public bool ToggleItem(object? item)
+    {
+        if (!CanToggle(item))
+        {
+            return false;
+        }
+
+        var key = GetKey(item!)!;
+        var working = GetWorkingKeys();
+        Commit(checkedSet.Contains(key)
+            ? KeySelectionHelper.GetSelectionWith(working, [], [key])
+            : KeySelectionHelper.GetSelectionWith(working, [key], []));
+        return true;
+    }
+
+    /// <summary>
     /// Returns whether the item with this key is ticked (in the draft while one is open).
     /// </summary>
     internal bool IsKeyChecked(string key)
@@ -116,25 +138,6 @@ public partial class MultiColumnComboBox
         return checkedSet.Contains(key) ||
                MaxSelectionCount is not { } max ||
                checkedItemCount < max;
-    }
-
-    /// <summary>
-    /// Ticks or unticks an item as a click on its row does, raising <see cref="SelectedKeysChanged"/> once.
-    /// </summary>
-    /// <returns><see langword="true"/> when the item was toggled.</returns>
-    internal bool ToggleItem(object? item)
-    {
-        if (!CanToggle(item))
-        {
-            return false;
-        }
-
-        var key = GetKey(item!)!;
-        var working = GetWorkingKeys();
-        Commit(checkedSet.Contains(key)
-            ? KeySelectionHelper.GetSelectionWith(working, [], [key])
-            : KeySelectionHelper.GetSelectionWith(working, [key], []));
-        return true;
     }
 
     /// <summary>

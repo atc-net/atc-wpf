@@ -259,6 +259,48 @@ public static class LabelControlFactory
     }
 
     /// <summary>
+    /// Creates a <see cref="LabelMultiColumnComboBox"/> with the given label, items and ticked keys. Without explicit
+    /// columns, the grid shows one text column per public property of the items.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="itemsSource">The objects shown as rows.</param>
+    /// <param name="keyMemberPath">The (dotted) property path of an item's key.</param>
+    /// <param name="displayMemberPath">The (dotted) property path of an item's display value.</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control.</returns>
+    public static LabelMultiColumnComboBox CreateLabelMultiColumnComboBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IEnumerable itemsSource,
+        string keyMemberPath,
+        string displayMemberPath,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(itemsSource);
+
+        var control = new LabelMultiColumnComboBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            AutoGenerateColumns = true,
+            KeyMemberPath = keyMemberPath,
+            DisplayMemberPath = displayMemberPath,
+            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            ItemsSource = itemsSource,
+        };
+
+        return control;
+    }
+
+    /// <summary>
     /// Creates a <see cref="LabelChipGroup"/> with the given label, items and selected keys.
     /// </summary>
     /// <param name="groupIdentifier">The group identifier.</param>
