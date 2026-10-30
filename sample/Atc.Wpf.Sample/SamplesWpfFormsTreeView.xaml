@@ -123,6 +123,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelIntegerXyBoxView" />
         <sample:SampleTreeViewItem
+            Header="LabelMultiColumnComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelMultiColumnComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelMultiSelectComboBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelMultiSelectComboBoxView" />

@@ -58,6 +58,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-11)
       - [Properties](#properties-5)
       - [Usage Example](#usage-example-11)
+    - [LabelMultiColumnComboBox](#labelmulticolumncombobox)
     - [LabelMultiSelectComboBox](#labelmultiselectcombobox)
     - [LabelTokenBox](#labeltokenbox)
     - [LabelTreeSelectComboBox](#labeltreeselectcombobox)
@@ -158,7 +159,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCascaderComboBox, LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch, LabelTreeSelectComboBox |
+| **Selection** | LabelCascaderComboBox, LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiColumnComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch, LabelTreeSelectComboBox |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -591,6 +592,26 @@ A labeled dropdown/combo box for item selection.
     LabelText="Status"
     ItemsSource="{Binding StatusOptions}"
     SelectedItem="{Binding CurrentStatus, Mode=TwoWay}" />
+```
+
+### LabelMultiColumnComboBox
+
+A labeled multi-column multi-select drop-down (`MultiColumnComboBox`): closed it shows a summary like `LabelMultiSelectComboBox`; open it shows a sortable grid of objects with a check-box column (header = "select all shown"), a filter across the visible columns and a "{0} of {1} selected" footer, for choosing by comparing several attributes (number, name, city). `KeyMemberPath` / `DisplayMemberPath` read the key and name; `Columns` (or `AutoGenerateColumns`) define the grid. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelMultiColumnComboBox_Readme.md](LabelMultiColumnComboBox_Readme.md).
+
+```xml
+<atc:LabelMultiColumnComboBox
+    DisplayMemberPath="Name"
+    IsMandatory="True"
+    ItemsSource="{Binding Path=Customers}"
+    KeyMemberPath="Number"
+    LabelText="Customers"
+    SelectedKeys="{Binding Path=CustomerNumbers}">
+    <atc:LabelMultiColumnComboBox.Columns>
+        <DataGridTextColumn Binding="{Binding Path=Number}" Header="No." />
+        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
+        <DataGridTextColumn Binding="{Binding Path=City}" Header="City" />
+    </atc:LabelMultiColumnComboBox.Columns>
+</atc:LabelMultiColumnComboBox>
 ```
 
 ### LabelMultiSelectComboBox

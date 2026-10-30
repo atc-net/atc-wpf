@@ -236,6 +236,8 @@ When the pop-up opens, focus goes to the filter box (if shown) or the first row.
 - **CheckListBox** - The same list, always visible
 - **TokenBox** - Large or open-ended sets, typing is the main way in
 - **CheckTreeView** / **TreeSelectComboBox** - Hierarchies with tri-state check boxes
+- **MultiColumnComboBox** - The same drop-down with a sortable check-box grid, for comparing items on several attributes
+- **CascaderComboBox** - Deep, uniform hierarchies with one column per level
 - **ChipGroup** - 2–15 short options as toggle chips
 - **Segmented** - 2–6 very short options as a joined button row
 - **DualListSelector** - Building an ordered list out of a pool (two lists with transfer buttons)

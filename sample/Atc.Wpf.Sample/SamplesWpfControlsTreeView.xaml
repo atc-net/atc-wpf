@@ -290,6 +290,10 @@
             IsExpanded="True"
             SamplePath="Selectors.LanguageSelectorView" />
         <sample:SampleTreeViewItem
+            Header="MultiColumnComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.MultiColumnComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="MultiSelectComboBox"
             IsExpanded="True"
             SamplePath="Selectors.MultiSelectComboBoxView" />
