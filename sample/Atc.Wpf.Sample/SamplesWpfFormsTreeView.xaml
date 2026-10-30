@@ -83,6 +83,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelCheckListBoxView" />
         <sample:SampleTreeViewItem
+            Header="LabelChipGroup"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelChipGroupView" />
+        <sample:SampleTreeViewItem
             Header="LabelComboBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelComboBoxView" />

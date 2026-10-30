@@ -52,6 +52,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Properties](#properties-4)
       - [Usage Example](#usage-example-10)
     - [LabelCheckListBox](#labelchecklistbox)
+    - [LabelChipGroup](#labelchipgroup)
     - [LabelComboBox](#labelcombobox)
       - [Features](#features-11)
       - [Properties](#properties-5)
@@ -154,7 +155,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelCheckListBox, LabelComboBox, LabelMultiSelectComboBox, LabelToggleSwitch |
+| **Selection** | LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelToggleSwitch |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -524,6 +525,18 @@ A labeled, always-visible check list (`CheckListBox`) for ticking several keys: 
     Items="{Binding Path=ExportColumns}"
     LabelText="Columns to export"
     SelectedKeys="{Binding Path=SelectedExportColumns}" />
+```
+
+### LabelChipGroup
+
+A labeled group of toggle chips (`ChipGroup`) for 2–15 short options, all visible: `Multiple`, `Single` or `SingleOrNone` selection, `Filled` / `Outlined` chips, an optional **All** chip, icons and counts per key, a selection limit and disabled keys. `IsMandatory` means at least one key is selected; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelChipGroup_Readme.md](LabelChipGroup_Readme.md).
+
+```xml
+<atc:LabelChipGroup
+    IsMandatory="True"
+    Items="{Binding Path=WorkDays}"
+    LabelText="Work days"
+    SelectedKeys="{Binding Path=SelectedWorkDays}" />
 ```
 
 ### LabelComboBox

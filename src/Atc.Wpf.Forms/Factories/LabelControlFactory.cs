@@ -148,6 +148,40 @@ public static class LabelControlFactory
     }
 
     /// <summary>
+    /// Creates a <see cref="LabelChipGroup"/> with the given label, items and selected keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the chips are read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be selected.</param>
+    /// <param name="items">The items, keyed by their selection key, with their display value.</param>
+    /// <param name="selectedKeys">The keys selected initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control.</returns>
+    public static LabelChipGroup CreateLabelChipGroup(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IDictionary<string, string> items,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(items);
+
+        var control = new LabelChipGroup
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
+            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+        };
+
+        return control;
+    }
+
+    /// <summary>
     /// Creates a <see cref="LabelCheckBox"/> labeled with the property name.
     /// </summary>
     public static LabelCheckBox CreateLabelCheckBox(

@@ -1,0 +1,74 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfForms.LabelControls.LabelChipGroupView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    xmlns:wpf="clr-namespace:Atc.Wpf;assembly=Atc.Wpf"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
+
+                <atc:LabelChipGroup
+                    x:Name="InteractiveLabelChipGroup"
+                    InformationText="{Binding InformationText}"
+                    IsMandatory="{Binding IsMandatory}"
+                    Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                    LabelText="{Binding LabelText}"
+                    Orientation="{Binding Orientation}" />
+
+                <TextBlock
+                    x:Name="EventLog"
+                    AutomationProperties.AutomationId="LabelChipGroupLog"
+                    TextWrapping="Wrap" />
+
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
+
+                        <atc:LabelChipGroup
+                            InformationText="Pick at least one day."
+                            IsMandatory="True"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                            LabelText="Work days"
+                            Orientation="Vertical"
+                            ShowAllChip="True" />
+
+                        <atc:LabelChipGroup
+                            ChipVariant="Outlined"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True}}"
+                            LabelText="Size"
+                            Orientation="Vertical"
+                            SelectionMode="Single" />
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelChipGroup
+                            ChipSize="Small"
+                            InformationText="At most two."
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type sys:DayOfWeek}, KeyAsString=True, IncludeDefault=True}}"
+                            LabelText="Meeting days"
+                            MaxSelectionCount="2"
+                            Orientation="Vertical" />
+
+                        <atc:LabelChipGroup
+                            ChipOrientation="Vertical"
+                            ChipVariant="Outlined"
+                            Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type wpf:ControlSizeType}, KeyAsString=True}}"
+                            LabelText="Sizes (vertical)"
+                            SelectionMode="SingleOrNone" />
+
+                    </StackPanel>
+                </atc:GridEx>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
+</UserControl>

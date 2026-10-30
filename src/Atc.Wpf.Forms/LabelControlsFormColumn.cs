@@ -131,6 +131,9 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelMultiSelectComboBox labelMultiSelectComboBox:
                     result.Add(control.GetFullIdentifier(), (labelMultiSelectComboBox.SelectedKeys ?? []).ToList());
                     break;
+                case LabelChipGroup labelChipGroup:
+                    result.Add(control.GetFullIdentifier(), (labelChipGroup.SelectedKeys ?? []).ToList());
+                    break;
                 case LabelDecimalBox labelDecimalBox:
                     result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
                     break;

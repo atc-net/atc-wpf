@@ -28,6 +28,7 @@ global using Atc.Serialization;
 global using Atc.Serialization.JsonConverters;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.ColorEditing;
+global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Inputs.Internal;
