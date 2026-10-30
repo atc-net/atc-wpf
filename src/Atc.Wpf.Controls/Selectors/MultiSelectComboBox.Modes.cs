@@ -12,6 +12,7 @@ public partial class MultiSelectComboBox
     private const int MaxOneLineChipElements = 100;
 
     private readonly List<MultiSelectChipItem> chipItems = [];
+    private readonly SelectedKeysCleanup selectionCleanup;
     private ObservableCollection<string>? subscribedDisabledKeys;
     private ObservableCollection<string>? draftKeys;
     private DataDisplay.Chip? overflowChip;
@@ -140,29 +141,41 @@ public partial class MultiSelectComboBox
         DependencyPropertyChangedEventArgs e)
     {
         var control = (MultiSelectComboBox)d;
-        if (control.IsDrafting && control.SelectedKeys is { } target)
+        control.UpdateSummary();
+        if (control.IsDrafting)
         {
             // The pop-up list cleans only the draft; the real selection drops its stale keys (one event) as well.
-            var oldItemKeys = e.OldValue is Dictionary<string, string> oldItems
-                ? new HashSet<string>(oldItems.Keys, StringComparer.Ordinal)
-                : new HashSet<string>(StringComparer.Ordinal);
-            var oldKeys = target.ToList();
-            var newKeys = KeySelectionHelper.GetSelectionAfterItemsChanged(
-                oldKeys,
-                oldItemKeys,
-                control.Items,
-                control.SelectNewItems);
+            control.selectionCleanup.Request(
+                e.OldValue is Dictionary<string, string> oldItems
+                    ? new HashSet<string>(oldItems.Keys, StringComparer.Ordinal)
+                    : new HashSet<string>(StringComparer.Ordinal));
+        }
+    }
 
-            if (!KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
-            {
-                KeySelectionHelper.ApplyInPlace(target, newKeys);
-                control.UpdateSummary();
-                control.RaiseSelectedKeysChanged(oldKeys, target.ToList());
-                return;
-            }
+    /// <summary>
+    /// Drops the keys gone from <see cref="Items"/> from the real selection while a deferred draft is open.
+    /// </summary>
+    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+    {
+        if (SelectedKeys is not { } target)
+        {
+            return;
         }
 
-        control.UpdateSummary();
+        var oldKeys = target.ToList();
+        var newKeys = KeySelectionHelper.GetSelectionAfterItemsChanged(
+            oldKeys,
+            oldItemKeys,
+            Items,
+            SelectNewItems);
+        if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+        {
+            return;
+        }
+
+        KeySelectionHelper.ApplyInPlace(target, newKeys);
+        UpdateSummary();
+        RaiseSelectedKeysChanged(oldKeys, target.ToList());
     }
 
     private static void OnChipsInputChanged(

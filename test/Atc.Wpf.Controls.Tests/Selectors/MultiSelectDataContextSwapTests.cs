@@ -103,6 +103,35 @@ public sealed class MultiSelectDataContextSwapTests : IDisposable
     [StaTheory]
     [InlineData(true)]
     [InlineData(false)]
+    public void Open_deferred_MultiSelectComboBox_keeps_both_view_models_unchanged(
+        bool itemsFirst)
+    {
+        var sut = new MultiSelectComboBox { CommitMode = MultiSelectCommitMode.Deferred };
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+        try
+        {
+            AssertSwapKeepsViewModels(
+                sut,
+                MultiSelectComboBox.ItemsProperty,
+                MultiSelectComboBox.SelectedKeysProperty,
+                itemsFirst,
+                () => events,
+                afterBind: () =>
+                {
+                    sut.SetCurrentValue(MultiSelectComboBox.IsDropDownOpenProperty, true);
+                    Assert.True(sut.IsDrafting);
+                });
+        }
+        finally
+        {
+            sut.SetCurrentValue(MultiSelectComboBox.IsDropDownOpenProperty, false);
+        }
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
     public void MultiColumnComboBox_keeps_both_view_models_unchanged(
         bool itemsFirst)
     {
@@ -182,7 +211,8 @@ public sealed class MultiSelectDataContextSwapTests : IDisposable
         DependencyProperty selectedKeysProperty,
         bool itemsFirst,
         Func<int> events,
-        string itemsPath = nameof(ViewModel.Items))
+        string itemsPath = nameof(ViewModel.Items),
+        Action? afterBind = null)
     {
         var first = CreateFirst();
         var second = CreateSecond();
@@ -199,6 +229,7 @@ public sealed class MultiSelectDataContextSwapTests : IDisposable
         }
 
         Pump();
+        afterBind?.Invoke();
         var eventsBefore = events();
 
         sut.DataContext = second;

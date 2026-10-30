@@ -208,6 +208,7 @@ public partial class MultiSelectComboBox
     /// </summary>
     public MultiSelectComboBox()
     {
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, CleanUpSelection);
         InitializeComponent();
 
         summaryTextBlock = new TextBlock
