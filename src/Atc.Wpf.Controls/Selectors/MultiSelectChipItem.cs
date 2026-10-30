@@ -1,8 +1,9 @@
 namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
-/// The data context of a chip in a <see cref="MultiSelectComboBox"/> in <see cref="MultiSelectDisplayMode.Chips"/> mode,
-/// for a custom <see cref="MultiSelectComboBox.ChipTemplate"/>.
+/// The data context of a chip in a <see cref="MultiSelectComboBox"/> in <see cref="MultiSelectDisplayMode.Chips"/> mode
+/// (for a custom <see cref="MultiSelectComboBox.ChipTemplate"/>) and of a token in a <see cref="TokenBox"/> (for a custom
+/// <see cref="TokenBox.TokenTemplate"/>).
 /// </summary>
 public sealed class MultiSelectChipItem
 {
@@ -29,12 +30,12 @@ public sealed class MultiSelectChipItem
     public string DisplayValue { get; }
 
     /// <summary>
-    /// Gets a value indicating whether the item can be unticked (it is not one of the disabled keys).
+    /// Gets a value indicating whether the item can be unticked or removed (it is not a disabled or fixed key).
     /// </summary>
     public bool CanRemove { get; }
 
     /// <summary>
-    /// Gets the command that unticks the item without opening the pop-up.
+    /// Gets the command that unticks (removes) the item without opening the pop-up.
     /// </summary>
     public ICommand RemoveCommand { get; }
 
