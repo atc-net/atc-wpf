@@ -355,7 +355,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **Breadcrumb** | Navigation path | Overflow, custom separators | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
 | **Popover** | Positioned popup | Placement modes, triggers, light dismiss | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
 | **Stepper** | Step-by-step progress | Cancelable transitions | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
-| **Segmented** | Segment selector | Mutually exclusive selection | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **Segmented** | Segment selector | Single, single-or-none or multiple selection (weekdays, B/I/U), vertical or separate pills | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Timeline** | Timeline display | Vertical/horizontal, alternate mode | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
 ### Media Controls
@@ -456,7 +456,7 @@ Unlabeled input controls that provide core functionality:
 | **Divider** | Visual separator (horizontal/vertical) | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
 | **Breadcrumb** | Navigation path with overflow | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
 | **Popover** | Positioned popup with placement and triggers | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
-| **Segmented** | Mutually exclusive segment selector | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **Segmented** | Segment selector: single or multiple selection, vertical, separate pills, icon only | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Stepper** | Step-by-step progress indicator | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Timeline** | Vertical/horizontal timeline display | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
