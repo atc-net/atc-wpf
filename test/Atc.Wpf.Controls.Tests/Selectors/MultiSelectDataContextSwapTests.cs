@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.Tests.Selectors;
 /// Swapping the DataContext between two view models with disjoint items must not let the stale-key cleanup of the
 /// new items write into either view model's SelectedKeys, whichever binding updates first.
 /// </summary>
+[Collection(nameof(PackResourceTestGroup))]
 public sealed class MultiSelectDataContextSwapTests : IDisposable
 {
     public void Dispose()
