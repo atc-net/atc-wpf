@@ -1,0 +1,210 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Selectors.CascaderColumnView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors"
+    x:ClassModifier="internal"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <!--  A column: a virtualized list of rows with a separator on its trailing side.  -->
+        <ControlTemplate x:Key="CascaderColumnListTemplate" TargetType="{x:Type selectors:CascaderColumnList}">
+            <Border
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="True">
+                <ScrollViewer
+                    x:Name="PART_ScrollViewer"
+                    Padding="0,2"
+                    CanContentScroll="True"
+                    Focusable="False"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+                    <ItemsPresenter />
+                </ScrollViewer>
+            </Border>
+        </ControlTemplate>
+
+        <!--  A row container: hover, active (its children are shown in the next column) and keyboard focus.  -->
+        <Style x:Key="CascaderColumnItemStyle" TargetType="{x:Type selectors:CascaderColumnItem}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Padding" Value="4,2,2,2" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type selectors:CascaderColumnItem}">
+                        <Border
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent4}" />
+                </Trigger>
+                <Trigger Property="IsActive" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Highlight}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  A node row: check box (its own click area), optional icon, the text (or the highlighted path of a filter result) and a chevron for rows with children.  -->
+        <DataTemplate x:Key="CascaderRowTemplate" DataType="{x:Type selectors:CheckTreeNode}">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <selectors:CascaderCheckArea
+                    x:Name="CheckArea"
+                    Grid.Column="0"
+                    Padding="0,0,2,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent">
+                    <selectors:CheckTreeCheckBox
+                        x:Name="Check"
+                        MinWidth="0"
+                        Margin="0"
+                        Padding="0"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Path=IsChecked, Mode=OneWay}" />
+                </selectors:CascaderCheckArea>
+                <ContentPresenter
+                    x:Name="Icon"
+                    Grid.Column="1"
+                    Margin="2,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding Path=Icon}" />
+                <ContentPresenter
+                    x:Name="Text"
+                    Grid.Column="2"
+                    Margin="6,1,4,1"
+                    VerticalAlignment="Center"
+                    Content="{Binding}"
+                    ContentTemplate="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnView}}, Path=ItemTemplate}">
+                    <ContentPresenter.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        </Style>
+                    </ContentPresenter.Resources>
+                </ContentPresenter>
+                <ContentPresenter
+                    x:Name="FilterText"
+                    Grid.Column="2"
+                    Margin="6,1,4,1"
+                    VerticalAlignment="Center"
+                    Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnItem}}, Path=FilterContent}"
+                    Visibility="Collapsed" />
+                <TextBlock
+                    x:Name="Chevron"
+                    Grid.Column="3"
+                    Margin="2,0,2,0"
+                    VerticalAlignment="Center"
+                    Foreground="{DynamicResource AtcApps.Brushes.Gray}"
+                    Text="›" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=Icon}" Value="{x:Null}">
+                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=Children.Count}" Value="0" />
+                        <Condition Binding="{Binding Path=HasUnloadedChildren}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="Chevron" Property="Visibility" Value="Hidden" />
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnItem}}, Path=IsFilterResult}" Value="True">
+                    <Setter TargetName="Chevron" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="Text" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="FilterText" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
+                    <Setter TargetName="Check" Property="IsEnabled" Value="False" />
+                    <Setter TargetName="Text" Property="Opacity" Value="0.55" />
+                    <Setter TargetName="FilterText" Property="Opacity" Value="0.55" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=IsChecked}" Value="False" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnView}}, Path=IsAtSelectionLimit}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="Check" Property="IsEnabled" Value="False" />
+                    <Setter TargetName="Text" Property="Opacity" Value="0.55" />
+                    <Setter TargetName="FilterText" Property="Opacity" Value="0.55" />
+                </MultiDataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!--  The row shown in the next column while the children of the active row load.  -->
+        <DataTemplate x:Key="CascaderBusyRowTemplate" DataType="{x:Type selectors:CheckTreeNode}">
+            <TextBlock
+                Margin="4,1"
+                VerticalAlignment="Center"
+                FontStyle="Italic"
+                Foreground="{DynamicResource AtcApps.Brushes.Gray}"
+                Text="{Binding Path=Text}" />
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBox
+            x:Name="PartFilter"
+            Grid.Row="0"
+            Margin="4,4,4,4"
+            atc:TextBoxHelper.ClearTextButton="True"
+            AutomationProperties.AutomationId="Filter"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnView}}, Path=FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Visibility="Collapsed" />
+
+        <ScrollViewer
+            x:Name="PartColumnsScroller"
+            Grid.Row="1"
+            Focusable="False"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="PartColumnsPanel" Orientation="Horizontal" />
+        </ScrollViewer>
+
+        <Border x:Name="PartFilterResultsHost" Grid.Row="1" Visibility="Collapsed" />
+
+        <TextBlock
+            x:Name="PartNoMatches"
+            Grid.Row="1"
+            Margin="8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Foreground="{DynamicResource AtcApps.Brushes.Gray}"
+            Visibility="Collapsed" />
+    </Grid>
+
+</UserControl>
