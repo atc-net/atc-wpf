@@ -73,6 +73,11 @@ Add the NuGet packages to your `.csproj` file:
 
 ```xml
 <ItemGroup>
+  <!-- MVVM base classes and source generators: reference these directly,
+       the generators do not flow through package dependencies -->
+  <PackageReference Include="Atc.XamlToolkit" Version="3.*" />
+  <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.*" />
+
   <!-- Core packages -->
   <PackageReference Include="Atc.Wpf" Version="4.*" />
   <PackageReference Include="Atc.Wpf.Theming" Version="4.*" />
@@ -770,7 +775,7 @@ Every picker has a `Label*` wrapper (e.g. `LabelSerialPortPicker`) for forms. Se
 
 ## 🎯 Source Generators
 
-Atc.Wpf includes powerful source generators from [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) to reduce boilerplate code:
+The [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) packages (referenced directly, see [Installation](#installation)) provide source generators that reduce boilerplate code:
 
 - **[ViewModel Generator](docs/SourceGenerators/ViewModel.md)** - Auto-generate ViewModels with `[ObservableProperty]` and `[RelayCommand]`
 - **[DependencyProperty Generator](docs/SourceGenerators/DependencyProperty.md)** - Auto-generate WPF dependency properties with `[DependencyProperty]`

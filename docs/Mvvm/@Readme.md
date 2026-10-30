@@ -2,11 +2,11 @@
 
 Windows Presentation Foundation (WPF) fully supports the **Model-View-ViewModel (MVVM)** pattern, which promotes a clear separation of concerns between the UI and business logic.
 
-The **Atc.Wpf** library includes the [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) MVVM infrastructure as a dependency, providing a robust foundation for implementing MVVM effectively, reducing boilerplate code and simplifying development.
+The MVVM infrastructure used with **Atc.Wpf** comes from [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit), providing a robust foundation for implementing MVVM effectively, reducing boilerplate code and simplifying development.
 
 ## ⚙️ Features
 
-The MVVM infrastructure is provided by the **Atc.XamlToolkit** and **Atc.XamlToolkit.Wpf** packages, which are included as dependencies of `Atc.Wpf`:
+The MVVM infrastructure is provided by the **Atc.XamlToolkit** and **Atc.XamlToolkit.Wpf** packages, which you add to your project directly (`Atc.Wpf` does not depend on them):
 
 | 🧩 Component             | 📦 Source Namespace       | 📋 Description                                                                 |
 |---------------------------|---------------------------|--------------------------------------------------------------------------------|

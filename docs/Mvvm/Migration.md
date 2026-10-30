@@ -1,6 +1,6 @@
 # 🔁 Migration: hand-rolled MVVM → source generators
 
-This guide is for projects already using `Atc.Wpf` (or any other MVVM stack) with **hand-rolled** `INotifyPropertyChanged` / `RelayCommand` boilerplate, and are now adopting the **source-generator attributes** that ship with [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) (a transitive dependency of `Atc.Wpf`).
+This guide is for projects already using `Atc.Wpf` (or any other MVVM stack) with **hand-rolled** `INotifyPropertyChanged` / `RelayCommand` boilerplate, and are now adopting the **source-generator attributes** that ship with [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) (add `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf` to your project; `Atc.Wpf` does not depend on them, and the generators do not flow through package dependencies).
 
 The generators are additive: the legacy patterns continue to compile. Migrate at your own pace, file by file.
 
