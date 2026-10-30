@@ -266,6 +266,10 @@
             IsExpanded="True"
             SamplePath="Selectors.CheckListBoxView" />
         <sample:SampleTreeViewItem
+            Header="CheckTreeView"
+            IsExpanded="True"
+            SamplePath="Selectors.CheckTreeViewView" />
+        <sample:SampleTreeViewItem
             Header="CountrySelector"
             IsExpanded="True"
             SamplePath="Selectors.CountrySelectorView" />
@@ -285,6 +289,10 @@
             Header="TokenBox"
             IsExpanded="True"
             SamplePath="Selectors.TokenBoxView" />
+        <sample:SampleTreeViewItem
+            Header="TreeSelectComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.TreeSelectComboBoxView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Zoom">

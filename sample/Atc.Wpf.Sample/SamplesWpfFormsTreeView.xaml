@@ -151,6 +151,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelToggleSwitchView" />
         <sample:SampleTreeViewItem
+            Header="LabelTreeSelectComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelTreeSelectComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="Label-MIX"
             IsExpanded="True"
             SamplePath="LabelControls.LabelMixView" />

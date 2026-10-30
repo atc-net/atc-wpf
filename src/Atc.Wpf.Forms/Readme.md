@@ -59,6 +59,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Usage Example](#usage-example-11)
     - [LabelMultiSelectComboBox](#labelmultiselectcombobox)
     - [LabelTokenBox](#labeltokenbox)
+    - [LabelTreeSelectComboBox](#labeltreeselectcombobox)
     - [LabelToggleSwitch](#labeltoggleswitch)
       - [Features](#features-12)
       - [Usage Example](#usage-example-12)
@@ -156,7 +157,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch |
+| **Selection** | LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch, LabelTreeSelectComboBox |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -601,6 +602,20 @@ A labeled token field (`TokenBox`): the user types to pick several values, each 
     MaxSelectionCount="10"
     SelectedKeys="{Binding Path=Tags}"
     WatermarkText="Add tags" />
+```
+
+### LabelTreeSelectComboBox
+
+A labeled drop-down with a tri-state check tree (`TreeSelectComboBox`): ticking a parent ticks everything under it and a parent shows a partial mark when only some children are ticked. `CheckedKeysStrategy` decides whether `SelectedKeys` holds the ticked leaves, the top-most fully ticked parents or all ticked nodes; the summary shows names, chips or a count; `LoadChildrenAsync` loads children lazily. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelTreeSelectComboBox_Readme.md](LabelTreeSelectComboBox_Readme.md).
+
+```xml
+<atc:LabelTreeSelectComboBox
+    CheckedKeysStrategy="Parents"
+    IsMandatory="True"
+    LabelText="Sales regions"
+    Nodes="{Binding Path=Regions}"
+    SelectedKeys="{Binding Path=RegionKeys}"
+    WatermarkText="Pick regions" />
 ```
 
 ### LabelToggleSwitch
