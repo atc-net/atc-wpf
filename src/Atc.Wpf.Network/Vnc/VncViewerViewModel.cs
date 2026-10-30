@@ -139,7 +139,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 
     private async Task ExecuteShowConnectDialogAsync()
     {
-        var ownerWindow = Application.Current.MainWindow;
+        var ownerWindow = Application.Current?.MainWindow;
         if (ownerWindow is null)
         {
             return;

@@ -101,6 +101,100 @@ public sealed class VncConnectionServiceTests
         Assert.Equal(1, disconnectedCount);
     }
 
+    [WpfFact]
+    public async Task FramebufferUpdated_WithARectangleOutsideTheSourceFramebuffer_LeavesTheBitmapUnlocked()
+    {
+        var client = CreateConnectableClient();
+        using var service = new VncConnectionService((_, _) => client);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+        var bitmap = service.CurrentFrame!;
+
+        var source = new VncFramebuffer(4, 4, "test", new VncPixelFormat());
+        client.FramebufferUpdated += Raise.EventWith(
+            client,
+            new VncFramebufferUpdateEventArgs(new VncRectangle(-2, 0, 4, 4), source));
+        await Dispatcher.Yield(DispatcherPriority.Background);
+
+        Assert.True(bitmap.CanFreeze);
+    }
+
+    [WpfFact]
+    public async Task FramebufferUpdated_WithAValidRectangle_RendersAndRaisesFramebufferUpdated()
+    {
+        var client = CreateConnectableClient();
+        using var service = new VncConnectionService((_, _) => client);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+        var bitmap = service.CurrentFrame!;
+
+        var updatedCount = 0;
+        service.FramebufferUpdated += (_, _) => updatedCount++;
+
+        var source = new VncFramebuffer(4, 4, "test", new VncPixelFormat());
+        source.FillRectangle(new VncRectangle(0, 0, 4, 4), unchecked((int)0xFF112233));
+        client.FramebufferUpdated += Raise.EventWith(
+            client,
+            new VncFramebufferUpdateEventArgs(new VncRectangle(0, 0, 4, 4), source));
+        await Dispatcher.Yield(DispatcherPriority.Background);
+
+        var pixels = new int[16];
+        bitmap.CopyPixels(pixels, 16, 0);
+
+        Assert.Equal(1, updatedCount);
+        Assert.True(bitmap.CanFreeze);
+        Assert.All(pixels, p => Assert.Equal(unchecked((int)0xFF112233), p));
+    }
+
+    [WpfFact]
+    public async Task FramebufferUpdated_WhenTheSourceIsLargerThanTheBitmap_ClipsToTheBitmap()
+    {
+        var client = CreateConnectableClient();
+        using var service = new VncConnectionService((_, _) => client);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+        var bitmap = service.CurrentFrame!;
+
+        var source = new VncFramebuffer(64, 64, "test", new VncPixelFormat());
+        client.FramebufferUpdated += Raise.EventWith(
+            client,
+            new VncFramebufferUpdateEventArgs(new VncRectangle(0, 0, 64, 64), source));
+        await Dispatcher.Yield(DispatcherPriority.Background);
+
+        Assert.True(bitmap.CanFreeze);
+    }
+
+    [WpfFact]
+    public async Task FramebufferUpdated_WhenTheServiceIsDisposedBeforeTheUpdateIsRendered_DoesNotThrow()
+    {
+        var client = CreateConnectableClient();
+        var service = new VncConnectionService((_, _) => client);
+        await service.ConnectAsync("vnc-host", 5900, password: null);
+
+        Exception? unhandled = null;
+        void OnUnhandled(
+            object sender,
+            DispatcherUnhandledExceptionEventArgs e)
+        {
+            unhandled = e.Exception;
+            e.Handled = true;
+        }
+
+        Dispatcher.CurrentDispatcher.UnhandledException += OnUnhandled;
+        try
+        {
+            var source = new VncFramebuffer(4, 4, "test", new VncPixelFormat());
+            client.FramebufferUpdated += Raise.EventWith(
+                client,
+                new VncFramebufferUpdateEventArgs(new VncRectangle(0, 0, 4, 4), source));
+            service.Dispose();
+            await Dispatcher.Yield(DispatcherPriority.Background);
+        }
+        finally
+        {
+            Dispatcher.CurrentDispatcher.UnhandledException -= OnUnhandled;
+        }
+
+        Assert.Null(unhandled);
+    }
+
     private static IVncClient CreateConnectableClient()
     {
         var client = Substitute.For<IVncClient>();

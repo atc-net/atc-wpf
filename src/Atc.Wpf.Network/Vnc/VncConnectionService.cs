@@ -223,59 +223,84 @@ public sealed class VncConnectionService : IDisposable
     public void Dispose()
         => Cleanup();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Rendering errors must not crash the application.")]
     private void OnVncFramebufferUpdated(
         object? sender,
         VncFramebufferUpdateEventArgs e)
     {
-        if (framebuffer is null)
+        // Updates arrive on the client's receive thread; read the field once so a Cleanup()
+        // or reconnect racing with the queued render can neither null it nor swap in a
+        // bitmap of another size underneath it.
+        var target = framebuffer;
+        if (target is null)
         {
             return;
         }
 
+        var source = e.Framebuffer;
+        var rect = e.Rectangle;
+
+        _ = dispatcher.BeginInvoke(() =>
+        {
+            if (!ReferenceEquals(target, framebuffer))
+            {
+                // Disconnected or reconnected since the update was queued.
+                return;
+            }
+
+            if (RenderUpdate(target, source, rect))
+            {
+                FramebufferUpdated?.Invoke(this, EventArgs.Empty);
+            }
+        });
+    }
+
+    /// <summary>
+    /// Copies <paramref name="rect"/> of <paramref name="source"/> into <paramref name="target"/>,
+    /// clipped to both the source and the target, and always releases the bitmap lock again.
+    /// </summary>
+    /// <returns><see langword="true"/> when pixels were copied; otherwise <see langword="false"/>.</returns>
+    private static bool RenderUpdate(
+        WriteableBitmap target,
+        VncFramebuffer source,
+        VncRectangle rect)
+    {
+        const int bytesPerPixel = 4;
+
+        var left = System.Math.Max(rect.X, 0);
+        var top = System.Math.Max(rect.Y, 0);
+        var right = System.Math.Min(rect.X + rect.Width, System.Math.Min(source.Width, target.PixelWidth));
+        var bottom = System.Math.Min(rect.Y + rect.Height, System.Math.Min(source.Height, target.PixelHeight));
+        if (right <= left || bottom <= top)
+        {
+            return false;
+        }
+
+        var width = right - left;
+        var sourceData = source.PixelData;
+
+        target.Lock();
         try
         {
-            var fb = e.Framebuffer;
-            var rect = e.Rectangle;
-
-            _ = dispatcher.BeginInvoke(() =>
+            var stride = target.BackBufferStride;
+            for (var y = top; y < bottom; y++)
             {
-                try
-                {
-                    framebuffer.Lock();
+                var destOffset = (y * stride) + (left * bytesPerPixel);
+                var srcOffset = (y * source.Width) + left;
+                Marshal.Copy(sourceData, srcOffset, target.BackBuffer + destOffset, width);
+            }
 
-                    var sourceData = fb.PixelData;
-                    var stride = framebuffer.BackBufferStride;
-                    var bytesPerPixel = 4;
-
-                    for (var y = rect.Y; y < rect.Y + rect.Height && y < fb.Height; y++)
-                    {
-                        var destOffset = (y * stride) + (rect.X * bytesPerPixel);
-                        var srcOffset = (y * fb.Width) + rect.X;
-                        var pixelCount = System.Math.Min(rect.Width, fb.Width - rect.X);
-
-                        Marshal.Copy(sourceData, srcOffset, framebuffer.BackBuffer + destOffset, pixelCount);
-                    }
-
-                    framebuffer.AddDirtyRect(new Int32Rect(
-                        rect.X,
-                        rect.Y,
-                        System.Math.Min(rect.Width, fb.Width - rect.X),
-                        System.Math.Min(rect.Height, fb.Height - rect.Y)));
-
-                    framebuffer.Unlock();
-                }
-                catch
-                {
-                    // Ignore rendering errors
-                }
-
-                FramebufferUpdated?.Invoke(this, EventArgs.Empty);
-            });
+            target.AddDirtyRect(new Int32Rect(left, top, width, bottom - top));
+            return true;
         }
-        catch
+        catch (ArgumentException)
         {
-            // Ignore rendering errors from background thread
+            // The source pixel buffer is shorter than its stated size; drop this update
+            // rather than fault the dispatcher - the next update repaints the region.
+            return false;
+        }
+        finally
+        {
+            target.Unlock();
         }
     }
 
