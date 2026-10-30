@@ -203,5 +203,68 @@ namespace Atc.Wpf.Resources {
                 return ResourceManager.GetString("SelectTimeZone", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of max {1}.
+        /// </summary>
+        public static string CountOfMax2 {
+            get {
+                return ResourceManager.GetString("CountOfMax2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string CountOf2 {
+            get {
+                return ResourceManager.GetString("CountOf2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} selected.
+        /// </summary>
+        public static string CountOfSelected2 {
+            get {
+                return ResourceManager.GetString("CountOfSelected2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No matches.
+        /// </summary>
+        public static string NoMatches {
+            get {
+                return ResourceManager.GetString("NoMatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to +{0}.
+        /// </summary>
+        public static string MoreCount1 {
+            get {
+                return ResourceManager.GetString("MoreCount1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove {0}.
+        /// </summary>
+        public static string Remove1 {
+            get {
+                return ResourceManager.GetString("Remove1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
     }
 }

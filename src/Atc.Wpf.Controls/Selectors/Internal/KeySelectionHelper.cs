@@ -1,0 +1,212 @@
+#pragma warning disable IDE0130
+namespace Atc.Wpf.Controls.Selectors;
+
+/// <summary>
+/// Shared selection logic for the multi-select controls that work on a key/value <c>Items</c> dictionary
+/// and a <c>SelectedKeys</c> collection: stale-key cleanup, new-key ticking, batched in-place updates and filtering.
+/// </summary>
+internal static class KeySelectionHelper
+{
+    /// <summary>
+    /// Above this many items the filter is applied after a short pause in typing instead of on each key press.
+    /// </summary>
+    public const int FilterDebounceThreshold = 2000;
+
+    /// <summary>
+    /// The pause in typing before the filter is applied for large item sets.
+    /// </summary>
+    public static readonly TimeSpan FilterDebounceDelay = TimeSpan.FromMilliseconds(150);
+
+    /// <summary>
+    /// Returns the selection after <c>Items</c> changed from <paramref name="oldItemKeys"/> to <paramref name="newItems"/>:
+    /// keys no longer present are dropped and, when <paramref name="selectNewItems"/> is set, keys that were not
+    /// present before are ticked (in item order).
+    /// </summary>
+    public static IReadOnlyList<string> GetSelectionAfterItemsChanged(
+        IReadOnlyCollection<string> currentSelection,
+        IReadOnlySet<string> oldItemKeys,
+        IReadOnlyDictionary<string, string>? newItems,
+        bool selectNewItems)
+    {
+        ArgumentNullException.ThrowIfNull(currentSelection);
+        ArgumentNullException.ThrowIfNull(oldItemKeys);
+
+        if (newItems is null)
+        {
+            return currentSelection.ToList();
+        }
+
+        var result = currentSelection
+            .Where(newItems.ContainsKey)
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+
+        if (!selectNewItems)
+        {
+            return result;
+        }
+
+        var selected = new HashSet<string>(result, StringComparer.Ordinal);
+        foreach (var key in newItems.Keys)
+        {
+            if (!oldItemKeys.Contains(key) && selected.Add(key))
+            {
+                result.Add(key);
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Returns the selection with <paramref name="keysToAdd"/> ticked and <paramref name="keysToRemove"/> unticked,
+    /// keeping the order of the keys already selected and appending new keys in the given order.
+    /// </summary>
+    public static IReadOnlyList<string> GetSelectionWith(
+        IReadOnlyCollection<string> currentSelection,
+        IEnumerable<string> keysToAdd,
+        IEnumerable<string> keysToRemove)
+    {
+        ArgumentNullException.ThrowIfNull(currentSelection);
+        ArgumentNullException.ThrowIfNull(keysToAdd);
+        ArgumentNullException.ThrowIfNull(keysToRemove);
+
+        var removeSet = new HashSet<string>(keysToRemove, StringComparer.Ordinal);
+        var result = currentSelection
+            .Where(x => !removeSet.Contains(x))
+            .ToList();
+
+        var selected = new HashSet<string>(result, StringComparer.Ordinal);
+        foreach (var key in keysToAdd)
+        {
+            if (!removeSet.Contains(key) && selected.Add(key))
+            {
+                result.Add(key);
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Returns whether two selections hold the same keys in the same order.
+    /// </summary>
+    public static bool SequenceEquals(
+        IReadOnlyList<string> first,
+        IReadOnlyList<string> second)
+    {
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+
+        if (first.Count != second.Count)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < first.Count; i++)
+        {
+            if (!string.Equals(first[i], second[i], StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Updates <paramref name="target"/> in place so it holds <paramref name="newKeys"/>. An
+    /// <see cref="ObservableCollectionEx{T}"/> raises a single reset notification; any other collection gets the
+    /// smallest set of removes and adds (or a clear and refill when most keys go).
+    /// </summary>
+    public static void ApplyInPlace(
+        ObservableCollection<string> target,
+        IReadOnlyList<string> newKeys)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(newKeys);
+
+        if (target is ObservableCollectionEx<string> rangeCollection)
+        {
+            rangeCollection.SuppressOnChangedNotification = true;
+            try
+            {
+                rangeCollection.Clear();
+                foreach (var key in newKeys)
+                {
+                    rangeCollection.Add(key);
+                }
+            }
+            finally
+            {
+                rangeCollection.SuppressOnChangedNotification = false;
+            }
+
+            return;
+        }
+
+        var newSet = new HashSet<string>(newKeys, StringComparer.Ordinal);
+        var removeCount = target.Count(x => !newSet.Contains(x));
+        if (removeCount > 0 && removeCount > target.Count / 2)
+        {
+            target.Clear();
+            foreach (var key in newKeys)
+            {
+                target.Add(key);
+            }
+
+            return;
+        }
+
+        for (var i = target.Count - 1; i >= 0; i--)
+        {
+            if (!newSet.Contains(target[i]))
+            {
+                target.RemoveAt(i);
+            }
+        }
+
+        var existing = new HashSet<string>(target, StringComparer.Ordinal);
+        foreach (var key in newKeys)
+        {
+            if (existing.Add(key))
+            {
+                target.Add(key);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns whether a display value matches the filter text: a case-insensitive "contains" match;
+    /// an empty filter matches everything.
+    /// </summary>
+    public static bool MatchesFilter(
+        string? displayValue,
+        string? filterText)
+    {
+        if (string.IsNullOrWhiteSpace(filterText))
+        {
+            return true;
+        }
+
+        return (displayValue ?? string.Empty).Contains(filterText.Trim(), StringComparison.CurrentCultureIgnoreCase);
+    }
+
+    /// <summary>
+    /// Returns the tri-state check value for a set of shown, enabled items: <see langword="false"/> when none is
+    /// ticked (or there are none), <see langword="true"/> when all are, otherwise <see langword="null"/>.
+    /// </summary>
+    public static bool? GetAggregateState(
+        int selectedCount,
+        int totalCount)
+    {
+        if (totalCount == 0 || selectedCount == 0)
+        {
+            return false;
+        }
+
+        return selectedCount >= totalCount
+            ? true
+            : null;
+    }
+}

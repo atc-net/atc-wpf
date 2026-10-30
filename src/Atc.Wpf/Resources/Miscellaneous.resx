@@ -106,4 +106,25 @@
   <data name="SelectTimeZone" xml:space="preserve">
     <value>Select time zone…</value>
   </data>
+  <data name="CountOfMax2" xml:space="preserve">
+    <value>{0} of max {1}</value>
+  </data>
+  <data name="CountOf2" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="CountOfSelected2" xml:space="preserve">
+    <value>{0} of {1} selected</value>
+  </data>
+  <data name="NoMatches" xml:space="preserve">
+    <value>No matches</value>
+  </data>
+  <data name="MoreCount1" xml:space="preserve">
+    <value>+{0}</value>
+  </data>
+  <data name="Remove1" xml:space="preserve">
+    <value>Remove {0}</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
 </root>
