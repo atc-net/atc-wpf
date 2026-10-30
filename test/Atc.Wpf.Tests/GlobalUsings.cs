@@ -43,6 +43,7 @@ global using Atc.Wpf.Tests.Navigation.Models;
 global using Atc.Wpf.Tests.TestSupport;
 global using Atc.Wpf.Tests.XUnitTestTypes;
 global using Atc.Wpf.Translation;
+global using Atc.Wpf.ValidationRules;
 global using Atc.Wpf.ValueConverters;
 global using Atc.Wpf.Viewers.JsonTree;
 global using Atc.XUnit;
