@@ -1,4 +1,5 @@
 global using System.Collections.ObjectModel;
+global using System.Collections.Specialized;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Printing;
@@ -18,6 +19,7 @@ global using System.Windows.Markup;
 global using System.Windows.Media;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Collections;
 global using Atc.Wpf.Components.Dialogs;
 global using Atc.Wpf.Components.Dialogs.Helpers;
 global using Atc.Wpf.Components.Flyouts;
