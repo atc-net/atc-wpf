@@ -137,6 +137,9 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelTokenBox labelTokenBox:
                     result.Add(control.GetFullIdentifier(), (labelTokenBox.SelectedKeys ?? []).ToList());
                     break;
+                case LabelTreeSelectComboBox labelTreeSelectComboBox:
+                    result.Add(control.GetFullIdentifier(), (labelTreeSelectComboBox.SelectedKeys ?? []).ToList());
+                    break;
                 case LabelDecimalBox labelDecimalBox:
                     result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
                     break;
