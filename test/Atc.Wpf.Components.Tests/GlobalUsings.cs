@@ -19,6 +19,7 @@ global using System.Windows.Media;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Components.Dialogs;
+global using Atc.Wpf.Components.Dialogs.Helpers;
 global using Atc.Wpf.Components.Flyouts;
 global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;

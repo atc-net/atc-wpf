@@ -220,6 +220,6 @@ public class DialogService : IDialogService
     private Window GetOwnerWindow()
     {
         var owner = ownerResolver?.Invoke();
-        return owner ?? Application.Current.MainWindow ?? throw new InvalidOperationException("No owner window available.");
+        return owner ?? Application.Current?.MainWindow ?? throw new InvalidOperationException("No owner window available.");
     }
 }

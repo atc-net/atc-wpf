@@ -61,7 +61,7 @@ internal sealed class HeaderFooterDocumentPaginator : DocumentPaginator
             var printableWidth = pageSize2.Width - margins.Left - margins.Right;
             var totalPages = PageCount;
 
-            var pixelsPerDip = VisualTreeHelper.GetDpi(Application.Current.MainWindow!).PixelsPerDip;
+            var pixelsPerDip = PrintDpiHelper.GetPixelsPerDip(pageVisual);
 
             DrawLine(dc, headerFooter.HeaderLeft, headerFooter.HeaderCenter, headerFooter.HeaderRight, margins.Left, margins.Top / 2, printableWidth, typeface, fontSize, brush, pageNumber + 1, totalPages, pixelsPerDip);
             DrawLine(dc, headerFooter.FooterLeft, headerFooter.FooterCenter, headerFooter.FooterRight, margins.Left, pageSize2.Height - (margins.Bottom / 2) - fontSize, printableWidth, typeface, fontSize, brush, pageNumber + 1, totalPages, pixelsPerDip);
