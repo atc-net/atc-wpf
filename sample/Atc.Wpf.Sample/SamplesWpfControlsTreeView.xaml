@@ -273,6 +273,10 @@
             Header="LanguageSelector"
             IsExpanded="True"
             SamplePath="Selectors.LanguageSelectorView" />
+        <sample:SampleTreeViewItem
+            Header="MultiSelectComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.MultiSelectComboBoxView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Zoom">
