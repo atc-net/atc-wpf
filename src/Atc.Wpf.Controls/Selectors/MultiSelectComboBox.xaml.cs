@@ -216,6 +216,11 @@ public partial class MultiSelectComboBox
         PartCheckList.SelectedKeysChanged += OnListSelectedKeysChanged;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
+        // Like ComboBox: while open, the control holds the mouse capture (sub-tree), so a click outside closes the
+        // pop-up and a click on the box toggles it.
+        Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
+        AddHandler(Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCaptureWithin));
+
         UpdateSummary();
     }
 
@@ -364,11 +369,9 @@ public partial class MultiSelectComboBox
         var control = (MultiSelectComboBox)d;
         var isOpen = (bool)e.NewValue;
 
-        // While open, a click on the box closes the pop-up (StaysOpen = false) and must not re-open it.
-        control.PartDropDownToggle.IsHitTestVisible = !isOpen;
-
         if (isOpen)
         {
+            Mouse.Capture(control, CaptureMode.SubTree);
             _ = control.Dispatcher.BeginInvoke(DispatcherPriority.Input, control.FocusPopupContent);
             control.DropDownOpened?.Invoke(control, EventArgs.Empty);
         }
@@ -377,6 +380,11 @@ public partial class MultiSelectComboBox
             if (control.PartPopupBorder.IsKeyboardFocusWithin)
             {
                 control.Focus();
+            }
+
+            if (Mouse.Captured == control)
+            {
+                Mouse.Capture(null);
             }
 
             control.DropDownClosed?.Invoke(control, EventArgs.Empty);
@@ -408,6 +416,57 @@ public partial class MultiSelectComboBox
         DependencyProperty outerProperty,
         BindingMode mode = BindingMode.OneWay)
         => Bind(PartCheckList, innerProperty, outerProperty, mode);
+
+    private void OnMouseDownOutsideCapturedElement(
+        object sender,
+        MouseButtonEventArgs e)
+        => SetCurrentValue(IsDropDownOpenProperty, false);
+
+    private void OnLostMouseCaptureWithin(
+        object sender,
+        MouseEventArgs e)
+    {
+        if (!IsDropDownOpen || Mouse.Captured == this)
+        {
+            return;
+        }
+
+        if (ReferenceEquals(e.OriginalSource, this))
+        {
+            // The control lost the capture: keep the pop-up open only when a part of it took the capture
+            // (the arrow, a check box, the filter box, a scroll bar).
+            if (!IsWithin(Mouse.Captured as DependencyObject))
+            {
+                SetCurrentValue(IsDropDownOpenProperty, false);
+            }
+
+            return;
+        }
+
+        if (!IsWithin(e.OriginalSource as DependencyObject))
+        {
+            SetCurrentValue(IsDropDownOpenProperty, false);
+            return;
+        }
+
+        // A part released the capture it took: take it back, so the next click outside still closes the pop-up.
+        if (Mouse.Captured is null)
+        {
+            Mouse.Capture(this, CaptureMode.SubTree);
+            e.Handled = true;
+        }
+        else if (!IsWithin(Mouse.Captured as DependencyObject))
+        {
+            SetCurrentValue(IsDropDownOpenProperty, false);
+        }
+    }
+
+    private bool IsWithin(DependencyObject? element)
+        => element is Visual visual &&
+           (ReferenceEquals(visual, this) ||
+            IsAncestorOf(visual) ||
+            ReferenceEquals(visual, PartPopupBorder) ||
+            PartPopupBorder.IsAncestorOf(visual));
 
     private void FocusPopupContent()
     {

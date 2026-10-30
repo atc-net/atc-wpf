@@ -73,7 +73,7 @@
             <ColumnDefinition x:Name="PartToggleColumn" Width="22" />
         </Grid.ColumnDefinitions>
 
-        <!--  The arrow; the whole box is the click target. Not hit-testable while open, so a click on it closes the pop-up instead of re-opening it.  -->
+        <!--  The arrow; the whole box is the click target that opens and closes the pop-up.  -->
         <ToggleButton
             x:Name="PartDropDownToggle"
             Grid.Column="0"
@@ -107,8 +107,7 @@
             AllowsTransparency="True"
             Focusable="False"
             Placement="Bottom"
-            PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
-            StaysOpen="False">
+            PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
             <decorators:ClipBorder
                 x:Name="PartPopupBorder"
                 Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"

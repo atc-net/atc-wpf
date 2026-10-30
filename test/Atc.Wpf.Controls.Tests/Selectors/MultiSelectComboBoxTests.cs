@@ -374,6 +374,7 @@ public sealed class MultiSelectComboBoxTests : IDisposable
         }
         finally
         {
+            sut.IsDropDownOpen = false;
             window.Close();
         }
 
