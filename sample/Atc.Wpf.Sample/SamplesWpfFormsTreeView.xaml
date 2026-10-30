@@ -75,6 +75,10 @@
                 SamplePath="LabelControls.LabelTimeZonePickerView" />
         </TreeViewItem>
         <sample:SampleTreeViewItem
+            Header="LabelCascaderComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelCascaderComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelCheckBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelCheckBoxView" />

@@ -47,6 +47,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-9)
       - [Usage Example](#usage-example-9)
   - [Selection Controls](#selection-controls)
+    - [LabelCascaderComboBox](#labelcascadercombobox)
     - [LabelCheckBox](#labelcheckbox)
       - [Features](#features-10)
       - [Properties](#properties-4)
@@ -157,7 +158,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch, LabelTreeSelectComboBox |
+| **Selection** | LabelCascaderComboBox, LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch, LabelTreeSelectComboBox |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -485,6 +486,21 @@ A labeled control combining date and time selection.
 ```
 
 ## Selection Controls
+
+### LabelCascaderComboBox
+
+A labeled multi-select cascader (`CascaderComboBox`): a drop-down with one column per hierarchy level and tri-state check boxes, for deep, uniform hierarchies (country › region › city). `CheckedKeysStrategy` defaults to `Parents`; `ShowFullPath` puts the full path ("Denmark / Jutland / Aarhus") in the summary and the chips; the filter searches every loaded level; `LoadChildrenAsync` loads children when a row becomes active. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelCascaderComboBox_Readme.md](LabelCascaderComboBox_Readme.md).
+
+```xml
+<atc:LabelCascaderComboBox
+    DisplayMode="Chips"
+    IsMandatory="True"
+    LabelText="Sales regions"
+    Nodes="{Binding Path=Regions}"
+    SelectedKeys="{Binding Path=RegionKeys}"
+    ShowFullPath="True"
+    WatermarkText="Pick regions" />
+```
 
 ### LabelCheckBox
 

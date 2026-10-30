@@ -124,6 +124,7 @@ When the pop-up opens, focus goes to the filter box (if shown) or the first row.
 ## 🔗 Related Controls
 
 - **CheckTreeView** - The same tree, always visible
+- **[CascaderComboBox](CascaderComboBox_Readme.md)** - The same tree as one column per level, for deep, uniform hierarchies where an indented tree gets too tall
 - **LabelTreeSelectComboBox** - The form field around this control
 - **MultiSelectComboBox** - A flat check list in a drop-down
 - **CheckListBox** - A flat, always-visible check list

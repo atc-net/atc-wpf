@@ -266,6 +266,10 @@
             IsExpanded="True"
             SamplePath="Selectors.CardSelectorView" />
         <sample:SampleTreeViewItem
+            Header="CascaderComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.CascaderComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="CheckListBox"
             IsExpanded="True"
             SamplePath="Selectors.CheckListBoxView" />
