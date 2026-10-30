@@ -222,6 +222,43 @@ public static class LabelControlFactory
     }
 
     /// <summary>
+    /// Creates a <see cref="LabelCascaderComboBox"/> with the given label, tree and ticked keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="nodes">The root nodes (the first column).</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <param name="checkedKeysStrategy">Which ticked nodes the selected keys hold.</param>
+    /// <returns>The created control.</returns>
+    public static LabelCascaderComboBox CreateLabelCascaderComboBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IEnumerable<CheckTreeNode> nodes,
+        IEnumerable<string>? selectedKeys,
+        CheckedKeysStrategy checkedKeysStrategy = CheckedKeysStrategy.Parents)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        var control = new LabelCascaderComboBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            CheckedKeysStrategy = checkedKeysStrategy,
+            Nodes = new ObservableCollection<CheckTreeNode>(nodes),
+            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+        };
+
+        return control;
+    }
+
+    /// <summary>
     /// Creates a <see cref="LabelChipGroup"/> with the given label, items and selected keys.
     /// </summary>
     /// <param name="groupIdentifier">The group identifier.</param>
