@@ -590,6 +590,36 @@ public sealed class CascaderComboBoxTests : IDisposable
     }
 
     [StaFact]
+    public void Columns_wider_than_the_pop_up_scroll_and_keep_the_newest_column_in_view()
+    {
+        var sut = Create();
+        sut.ColumnWidth = 200;
+        var window = CreateWindow(sut);
+        window.Show();
+        try
+        {
+            sut.IsDropDownOpen = true;
+            sut.PartPopupBorder.MaxWidth = 300;
+            sut.PartColumns.UpdateLayout();
+            Pump();
+
+            sut.PartColumns.Activate(sut.FindNode("dk")!);
+            sut.PartColumns.Activate(sut.FindNode("dk-jut")!);
+            sut.PartColumns.UpdateLayout();
+            Pump();
+
+            var scroller = sut.PartColumns.PartColumnsScroller;
+            Assert.True(scroller.ScrollableWidth > 0);
+            Assert.Equal(scroller.ScrollableWidth, scroller.HorizontalOffset, 1);
+        }
+        finally
+        {
+            sut.IsDropDownOpen = false;
+            window.Close();
+        }
+    }
+
+    [StaFact]
     public void IsDropDownOpen_opens_and_closes_the_pop_up_with_events()
     {
         var sut = Create();

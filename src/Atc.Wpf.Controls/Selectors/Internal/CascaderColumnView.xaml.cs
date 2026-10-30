@@ -434,8 +434,8 @@ internal partial class CascaderColumnView
     }
 
     /// <summary>
-    /// Moves the keyboard focus into the view: the filter box when shown, otherwise the active (or first) row of the
-    /// first column.
+    /// Moves the keyboard focus into the view: the filter box when shown, otherwise the deepest active row (or the
+    /// first row of the first column).
     /// </summary>
     internal void FocusFirstElement()
     {
@@ -963,10 +963,14 @@ internal partial class CascaderColumnView
             return;
         }
 
-        var node = column == 0 && activePath.Count > 0
-            ? activePath[0]
-            : items[0];
-        SetFocus(column, node);
+        // With an active path, the deepest active row gets the focus, so the newest columns stay in view.
+        if (column == 0 && activePath.Count > 0)
+        {
+            SetFocus(activePath.Count - 1, activePath[^1]);
+            return;
+        }
+
+        SetFocus(column, items[0]);
     }
 
     private void MoveWithinColumn(
@@ -1123,7 +1127,7 @@ internal partial class CascaderColumnView
 
     private void ScrollNewestColumnIntoView()
     {
-        if (isScrollPending || !PartColumnsScroller.IsLoaded)
+        if (isScrollPending || !PartColumnsScroller.IsVisible)
         {
             return;
         }
@@ -1134,7 +1138,10 @@ internal partial class CascaderColumnView
             () =>
             {
                 isScrollPending = false;
+
+                // The scroll is applied in the next layout pass; make sure there is one.
                 PartColumnsScroller.ScrollToRightEnd();
+                PartColumnsScroller.InvalidateArrange();
             });
     }
 
