@@ -312,6 +312,17 @@ public sealed partial class ChipGroup : UserControl
         }
 
         control.RebuildPanel();
+
+        // Leaving the multi-select mode keeps only the most recently selected key (keys are appended as they are
+        // ticked), like Segmented does.
+        var current = control.GetCurrentSelection();
+        if (control.SelectionMode != ChipSelectionMode.Multiple && current.Count > 1)
+        {
+            var kept = current.LastOrDefault(control.itemKeys.Contains) ?? current[^1];
+            control.Commit([kept]);
+            return;
+        }
+
         control.RefreshStates();
     }
 

@@ -128,6 +128,7 @@ chipGroup.SelectedKeysChanged += (_, e) =>
 ## 📝 Notes
 
 - Material guidance: a chip set is either single- or multi-select, never mixed — so `ShowAllChip`, `MaxSelectionCount` and `SelectNewItems` only apply in `Multiple` mode.
+- Switching from `Multiple` to a single mode keeps only the most recently selected key (one `SelectedKeysChanged`), like `Segmented`.
 - In the single modes a `SelectedKeys` set from outside with several keys is shown as is; the next click or arrow key leaves one key.
 - An icon element in `ItemIcons` can only be on one chip; use one element per key.
 - Theme brushes only; the chips follow Light, Dark and right-to-left (arrow keys follow the flow direction).

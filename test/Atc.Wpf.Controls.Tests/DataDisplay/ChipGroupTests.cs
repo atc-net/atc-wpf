@@ -367,6 +367,40 @@ public sealed class ChipGroupTests : IDisposable
         Assert.Null(sut.GetChip("warn"));
     }
 
+    [StaTheory]
+    [InlineData(ChipSelectionMode.Single)]
+    [InlineData(ChipSelectionMode.SingleOrNone)]
+    public void Switching_from_Multiple_to_a_single_mode_keeps_the_most_recent_key_in_one_event(
+        ChipSelectionMode mode)
+    {
+        var sut = Create();
+        Toggle(sut, "warn");
+        Toggle(sut, "error");
+        Toggle(sut, "info");
+        var events = Record(sut);
+
+        sut.SelectionMode = mode;
+
+        Assert.Equal(["info"], sut.SelectedKeys);
+        Assert.Single(sut.SelectedChips);
+        var e = Assert.Single(events);
+        Assert.Equal(["warn", "error", "info"], e.OldValue);
+        Assert.Equal(["info"], e.NewValue);
+    }
+
+    [StaFact]
+    public void Switching_from_Multiple_to_Single_with_one_key_raises_no_event()
+    {
+        var sut = Create();
+        Toggle(sut, "warn");
+        var events = Record(sut);
+
+        sut.SelectionMode = ChipSelectionMode.Single;
+
+        Assert.Equal(["warn"], sut.SelectedKeys);
+        Assert.Empty(events);
+    }
+
     [StaFact]
     public void SelectNewItems_ticks_new_keys()
     {
