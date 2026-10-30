@@ -3,6 +3,11 @@ namespace Atc.Wpf.Behaviors;
 /// <summary>
 /// A behavior that automatically scrolls a <see cref="ListView"/> to its first or last item when the items collection changes.
 /// </summary>
+/// <remarks>
+/// The behavior scrolls once per frame, however many changes arrive: the first change posts one scroll to the
+/// dispatcher at <see cref="DispatcherPriority.Background"/>, so it runs after the window has drawn the changes.
+/// Adding thousands of items one by one therefore costs one layout pass, not one per item.
+/// </remarks>
 public sealed class AutoScrollListViewBehavior : Behavior<ListView>
 {
     /// <summary>
@@ -16,13 +21,15 @@ public sealed class AutoScrollListViewBehavior : Behavior<ListView>
             new PropertyMetadata(ScrollDirectionType.Bottom));
 
     /// <summary>
-    /// Gets or sets the direction to scroll to when items change (default is <see cref="ScrollDirectionType.Bottom"/>).
+    /// Gets or sets the direction to scroll to after items change (default is <see cref="ScrollDirectionType.Bottom"/>).
     /// </summary>
     public ScrollDirectionType ScrollDirection
     {
         get => (ScrollDirectionType)GetValue(ScrollDirectionProperty);
         set => SetValue(ScrollDirectionProperty, value);
     }
+
+    private bool isScrollPending;
 
     /// <summary>
     /// Identifies the <see cref="IsEnabled"/> dependency property.
@@ -54,22 +61,32 @@ public sealed class AutoScrollListViewBehavior : Behavior<ListView>
     /// <inheritdoc />
     protected override void OnDetaching()
     {
-        base.OnDetaching();
         var items = AssociatedObject.Items;
         ((INotifyCollectionChanged)items).CollectionChanged -= OnCollectionChanged;
+        base.OnDetaching();
     }
 
     private void OnCollectionChanged(
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
-        if (!IsEnabled)
+        if (!IsEnabled || isScrollPending)
         {
             return;
         }
 
+        isScrollPending = true;
+        _ = AssociatedObject.Dispatcher.BeginInvoke(DispatcherPriority.Background, ScrollToTarget);
+    }
+
+    private void ScrollToTarget()
+    {
+        isScrollPending = false;
+
         var listView = AssociatedObject;
-        if (listView.Items.Count <= 1)
+        if (listView is null ||
+            !IsEnabled ||
+            listView.Items.Count <= 1)
         {
             return;
         }
