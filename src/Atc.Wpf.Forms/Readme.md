@@ -51,6 +51,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-10)
       - [Properties](#properties-4)
       - [Usage Example](#usage-example-10)
+    - [LabelCheckListBox](#labelchecklistbox)
     - [LabelComboBox](#labelcombobox)
       - [Features](#features-11)
       - [Properties](#properties-5)
@@ -152,7 +153,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelComboBox, LabelToggleSwitch |
+| **Selection** | LabelCheckBox, LabelCheckListBox, LabelComboBox, LabelToggleSwitch |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -510,6 +511,18 @@ A labeled checkbox for boolean selection.
 <atc:LabelCheckBox
     LabelText="Select All"
     IsChecked="{Binding SelectAllState, Mode=TwoWay}" />
+```
+
+### LabelCheckListBox
+
+A labeled, always-visible check list (`CheckListBox`) for ticking several keys: tri-state Select all with a count, filter, groups, a selection limit, disabled keys and `CheckBox` / `Highlight` / `Switch` row styles. `IsMandatory` means at least one key is ticked. See [LabelCheckListBox_Readme.md](LabelCheckListBox_Readme.md).
+
+```xml
+<atc:LabelCheckListBox
+    IsMandatory="True"
+    Items="{Binding Path=ExportColumns}"
+    LabelText="Columns to export"
+    SelectedKeys="{Binding Path=SelectedExportColumns}" />
 ```
 
 ### LabelComboBox
