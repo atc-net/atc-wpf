@@ -120,7 +120,7 @@ cardSelector.SelectedKeysChanged += (_, e) =>
 | `↑` / `↓` | Nearest enabled card in the row above / below |
 | `Home` / `End` | First / last enabled card |
 | `Space` / `Enter` | Toggles the focused card |
-| `Ctrl+A` | Selects all enabled cards (`Multiple` only) |
+| `Ctrl+A` | Selects all enabled cards (`Multiple` only; a text box inside a card keeps its own `Ctrl+A`) |
 
 In `Single` and `SingleOrNone` moving also selects, like a radio group.
 

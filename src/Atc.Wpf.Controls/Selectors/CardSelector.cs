@@ -350,6 +350,25 @@ public sealed partial class CardSelector : ListBox
         => new CardSelectorAutomationPeer(this);
 
     /// <inheritdoc />
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        // Ctrl+A is taken before the ListBox select-all command sees it, so the limit and the disabled cards apply.
+        // A text box inside a card keeps its own Ctrl+A.
+        if (e.Key == Key.A &&
+            Keyboard.Modifiers.HasFlag(ModifierKeys.Control) &&
+            e.OriginalSource is not TextBoxBase)
+        {
+            HandleKey(null, e.Key, Keyboard.Modifiers);
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPreviewKeyDown(e);
+    }
+
+    /// <inheritdoc />
     protected override void OnKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);

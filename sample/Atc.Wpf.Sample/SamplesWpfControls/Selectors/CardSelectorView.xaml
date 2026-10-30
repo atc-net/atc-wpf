@@ -147,6 +147,7 @@
                 <atc:GroupBoxExpander Header="Plan picker (single - arrow keys move and select)">
                     <atc:CardSelector
                         Margin="10"
+                        AutomationProperties.AutomationId="PlanPicker"
                         AutomationProperties.Name="Plans"
                         CardWidth="200"
                         ItemTemplate="{StaticResource PlanCardTemplate}"
@@ -160,6 +161,7 @@
                 <atc:GroupBoxExpander Header="Device picker (offline devices are disabled, at most 2)">
                     <atc:CardSelector
                         Margin="10"
+                        AutomationProperties.AutomationId="DevicePicker"
                         AutomationProperties.Name="Devices"
                         CardWidth="220"
                         IsEnabledMemberPath="IsAvailable"
