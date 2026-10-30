@@ -16,6 +16,7 @@ public partial class MultiColumnComboBox
     private readonly Dictionary<string, object> itemsByKey = new(StringComparer.Ordinal);
     private readonly Dictionary<object, string> keysByItem = new(ReferenceEqualityComparer.Instance);
     private readonly List<DataGridColumn> autoColumns = [];
+    private readonly SelectedKeysCleanup selectionCleanup;
     private ListCollectionView view = null!;
     private MultiColumnCheckColumn checkColumn = null!;
     private HashSet<string> previousItemKeys = new(StringComparer.Ordinal);
@@ -584,21 +585,24 @@ public partial class MultiColumnComboBox
 
         RebuildGridColumns();
         UpdateFilterVisibility();
-        DropStaleKeys();
+        var oldItemKeys = previousItemKeys;
+        previousItemKeys = new HashSet<string>(itemsByKey.Keys, StringComparer.Ordinal);
+        selectionCleanup.Request(oldItemKeys);
         UpdateNoMatches();
         chipsSignature = null;
         OnSelectionChanged();
     }
 
-    private void DropStaleKeys()
+    /// <summary>
+    /// Drops the keys of items that are gone from the selection and the draft (one event).
+    /// </summary>
+    private void DropStaleKeys(IReadOnlySet<string> oldItemKeys)
     {
-        var itemKeys = new HashSet<string>(itemsByKey.Keys, StringComparer.Ordinal);
         var stale = ((IEnumerable<string>?)SelectedKeys ?? [])
             .Concat(draftKeys ?? [])
-            .Where(x => previousItemKeys.Contains(x) && !itemKeys.Contains(x))
+            .Where(x => oldItemKeys.Contains(x) && !itemsByKey.ContainsKey(x))
             .Distinct(StringComparer.Ordinal)
             .ToList();
-        previousItemKeys = itemKeys;
 
         if (stale.Count == 0)
         {

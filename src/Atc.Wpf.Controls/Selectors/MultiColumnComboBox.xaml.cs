@@ -253,6 +253,7 @@ public partial class MultiColumnComboBox
     /// </summary>
     public MultiColumnComboBox()
     {
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, DropStaleKeys);
         InitializeComponent();
 
         summaryTextBlock = new TextBlock

@@ -134,6 +134,7 @@ The data context of `ItemTemplate` is the row (`CheckListItem`: `Key`, `DisplayV
 
 ## 📝 Notes
 
+- When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
 - `SelectedKeys` binds two-way by default: bind it to a property with a setter, or set `Mode=OneWay` for a get-only collection (the control still updates it in place).
 - With a filter, Select all ticks only the shown items, while the count is for all items.
 - Disabled keys do not count towards the Select all and group header states.

@@ -162,6 +162,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 
 ## 📝 Notes
 
+- When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
 - **Matching typed text:** a part matches an item when it equals its display value (case-insensitive) or its key.
 - **Highlight:** without `AllowCreate` the first suggestion is highlighted, so `Enter` picks it. With `AllowCreate` only a suggestion equal to the typed text is highlighted, so `Enter` creates the typed value instead of picking a longer one (use `↓` to pick a suggestion).
 - **Unknown text:** without `AllowCreate`, text that matches nothing stays in the field; pasted parts that match nothing stay there too (joined by the first separator).

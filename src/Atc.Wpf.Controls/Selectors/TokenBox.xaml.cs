@@ -214,6 +214,7 @@ public partial class TokenBox
     /// </summary>
     public TokenBox()
     {
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, CleanUpSelection);
         InitializeComponent();
 
         PartTextBox = new TextBox

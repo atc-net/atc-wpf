@@ -19,6 +19,7 @@ public partial class CheckListBox
     private readonly List<CheckListItem> itemRows = [];
     private readonly ObservableCollectionEx<CheckListItem> visibleRows = [];
     private readonly ItemsPanelTemplate defaultItemsPanel;
+    private readonly SelectedKeysCleanup selectionCleanup;
 
     /// <summary>
     /// The items, keyed by their selection key, with their display value. Changing it keeps the ticks of the keys
@@ -133,6 +134,7 @@ public partial class CheckListBox
     /// </summary>
     public CheckListBox()
     {
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, CleanUpSelection);
         InitializeComponent();
 
         defaultItemsPanel = PartList.ItemsPanel;
@@ -280,23 +282,22 @@ public partial class CheckListBox
         DependencyPropertyChangedEventArgs e)
     {
         var control = (CheckListBox)d;
-        var current = control.GetCurrentSelection();
-        var newSelection = KeySelectionHelper.GetSelectionAfterItemsChanged(
-            current,
-            control.itemKeys,
-            control.Items,
-            control.SelectNewItems);
-
+        var oldItemKeys = control.itemKeys;
         control.RebuildRows(keepScrollPosition: true);
-
-        if (KeySelectionHelper.SequenceEquals(current, newSelection))
-        {
-            control.RefreshStates();
-            return;
-        }
-
-        control.Commit(newSelection);
+        control.RefreshStates();
+        control.selectionCleanup.Request(oldItemKeys);
     }
+
+    /// <summary>
+    /// Drops the keys of items that are gone (and ticks new ones with <see cref="SelectNewItems"/>) after
+    /// <see cref="Items"/> changed, in one <see cref="SelectedKeysChanged"/>.
+    /// </summary>
+    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+        => Commit(KeySelectionHelper.GetSelectionAfterItemsChanged(
+            GetCurrentSelection(),
+            oldItemKeys,
+            Items,
+            SelectNewItems));
 
     private static void OnItemGroupsChanged(
         DependencyObject d,

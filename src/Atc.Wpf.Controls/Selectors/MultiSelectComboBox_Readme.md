@@ -223,6 +223,7 @@ When the pop-up opens, focus goes to the filter box (if shown) or the first row.
 
 ## 📝 Notes
 
+- When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
 - `SelectedKeys` binds two-way by default: bind it to a property with a setter, or set `Mode=OneWay` for a get-only collection.
 - The summary lists names in the order of `Items`, not in the order they were ticked, and counts only keys that are in `Items`.
 - UI Automation: while the pop-up is open, its rows (and in deferred mode the **OK** and **Cancel** buttons) are children of the combo box element, so a FlaUI search scoped to the control finds them. In `Chips` mode each shown chip's remove button is a button named "Remove {display value}" and "+N" is a button named after the hidden items ("Item 3, Item 4"); group headers are check boxes with a three-state `Toggle` named after the group.

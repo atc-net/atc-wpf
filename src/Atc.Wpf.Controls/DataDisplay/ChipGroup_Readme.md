@@ -127,8 +127,9 @@ chipGroup.SelectedKeysChanged += (_, e) =>
 
 ## 📝 Notes
 
+- When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
 - Material guidance: a chip set is either single- or multi-select, never mixed — so `ShowAllChip`, `MaxSelectionCount` and `SelectNewItems` only apply in `Multiple` mode.
-- Switching from `Multiple` to a single mode keeps only the most recently selected key (one `SelectedKeysChanged`), like `Segmented`.
+- Switching from `Multiple` to a single mode keeps only the most recently selected key (one `SelectedKeysChanged`; with a data-bound `SelectedKeys`, once the bindings have settled), like `Segmented`.
 - In the single modes a `SelectedKeys` set from outside with several keys is shown as is; the next click or arrow key leaves one key.
 - An icon element in `ItemIcons` can only be on one chip; use one element per key.
 - Theme brushes only; the chips follow Light, Dark and right-to-left (arrow keys follow the flow direction).

@@ -10,6 +10,7 @@ public partial class TokenBox
     private readonly Dictionary<string, string> knownValues = new(StringComparer.Ordinal);
     private readonly HashSet<string> createdKeys = new(StringComparer.Ordinal);
     private readonly HashSet<string> createdPending = new(StringComparer.Ordinal);
+    private readonly SelectedKeysCleanup selectionCleanup;
     private DataDisplay.Chip? overflowChip;
     private Button? overflowButton;
     private TextBox? editBox;
@@ -291,32 +292,41 @@ public partial class TokenBox
         DependencyPropertyChangedEventArgs e)
     {
         var control = (TokenBox)d;
-        var target = control.SelectedKeys;
-        if (target is null || e.NewValue is not Dictionary<string, string> newItems)
+        control.UpdateTokens();
+        control.selectionCleanup.Request(
+            e.OldValue is Dictionary<string, string> oldItems
+                ? new HashSet<string>(oldItems.Keys, StringComparer.Ordinal)
+                : new HashSet<string>(StringComparer.Ordinal));
+    }
+
+    /// <summary>
+    /// Drops the keys gone from <see cref="Items"/> (one event); created values and values picked from the
+    /// suggestions provider are kept. With <see cref="AllowCreate"/>, keys that were never in <see cref="Items"/>
+    /// (free values) are kept as well.
+    /// </summary>
+    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+    {
+        var target = SelectedKeys;
+        if (target is null || Items is not { } newItems)
         {
-            control.UpdateTokens();
             return;
         }
 
-        // Keys gone from Items are dropped (one event); created values and values picked from the suggestions
-        // provider are kept. With AllowCreate, keys that were never in Items (free values) are kept as well.
-        var oldItems = e.OldValue as Dictionary<string, string>;
         var oldKeys = target.ToList();
         var newKeys = oldKeys
             .Where(x => newItems.ContainsKey(x) ||
-                        control.knownValues.ContainsKey(x) ||
-                        (control.AllowCreate && !(oldItems?.ContainsKey(x) ?? false)))
+                        knownValues.ContainsKey(x) ||
+                        (AllowCreate && !oldItemKeys.Contains(x)))
             .Distinct(StringComparer.Ordinal)
             .ToList();
         if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
         {
-            control.UpdateTokens();
             return;
         }
 
         KeySelectionHelper.ApplyInPlace(target, newKeys);
-        control.UpdateTokens();
-        control.RaiseSelectedKeysChanged(oldKeys, target.ToList());
+        UpdateTokens();
+        RaiseSelectedKeysChanged(oldKeys, target.ToList());
     }
 
     private bool IsFixed(string key)

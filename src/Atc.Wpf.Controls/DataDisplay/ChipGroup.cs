@@ -17,6 +17,7 @@ public sealed partial class ChipGroup : UserControl
     private readonly Dictionary<Chip, ChipEntry> entriesByChip = [];
     private readonly List<ChipEntry> entries = [];
     private readonly List<Chip> chips = [];
+    private readonly SelectedKeysCleanup selectionCleanup;
 
     /// <summary>
     /// The items, keyed by their selection key, with their display value. Changing it keeps the selection of the keys
@@ -119,6 +120,8 @@ public sealed partial class ChipGroup : UserControl
     private ObservableCollection<string>? subscribedSelectedKeys;
     private ObservableCollection<string>? subscribedDisabledKeys;
     private bool isWritingSelectedKeys;
+    private bool isItemsCleanupRequested;
+    private bool isModeTrimRequested;
 
     /// <summary>
     /// Occurs when the control changes <see cref="SelectedKeys"/>: once per chip toggle, "All" chip click, arrow key in a
@@ -131,6 +134,7 @@ public sealed partial class ChipGroup : UserControl
     /// </summary>
     public ChipGroup()
     {
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, CleanUpSelection);
         Focusable = false;
         IsTabStop = false;
 
@@ -242,22 +246,11 @@ public sealed partial class ChipGroup : UserControl
         DependencyPropertyChangedEventArgs e)
     {
         var control = (ChipGroup)d;
-        var current = control.GetCurrentSelection();
-        var newSelection = KeySelectionHelper.GetSelectionAfterItemsChanged(
-            current,
-            control.itemKeys,
-            control.Items,
-            control.SelectNewItems && control.SelectionMode == ChipSelectionMode.Multiple);
-
+        var oldItemKeys = control.itemKeys;
         control.RebuildChips();
-
-        if (KeySelectionHelper.SequenceEquals(current, newSelection))
-        {
-            control.RefreshStates();
-            return;
-        }
-
-        control.Commit(newSelection);
+        control.RefreshStates();
+        control.isItemsCleanupRequested = true;
+        control.selectionCleanup.Request(oldItemKeys);
     }
 
     private static void OnSelectedKeysChanged(
@@ -312,18 +305,45 @@ public sealed partial class ChipGroup : UserControl
         }
 
         control.RebuildPanel();
+        control.RefreshStates();
+
+        if (e.Property == SelectionModeProperty &&
+            control.SelectionMode != ChipSelectionMode.Multiple &&
+            (control.SelectedKeys?.Count ?? 0) > 1)
+        {
+            control.isModeTrimRequested = true;
+            control.selectionCleanup.Request(control.itemKeys);
+        }
+    }
+
+    /// <summary>
+    /// Drops the keys of items that are gone (and ticks new ones with <see cref="SelectNewItems"/>) after
+    /// <see cref="Items"/> changed, and keeps only the most recently selected key after switching to a single mode;
+    /// one <see cref="SelectedKeysChanged"/> for both.
+    /// </summary>
+    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+    {
+        var current = GetCurrentSelection();
+        var newSelection = current;
+        if (isItemsCleanupRequested)
+        {
+            newSelection = KeySelectionHelper.GetSelectionAfterItemsChanged(
+                newSelection,
+                oldItemKeys,
+                Items,
+                SelectNewItems && SelectionMode == ChipSelectionMode.Multiple);
+        }
 
         // Leaving the multi-select mode keeps only the most recently selected key (keys are appended as they are
         // ticked), like Segmented does.
-        var current = control.GetCurrentSelection();
-        if (control.SelectionMode != ChipSelectionMode.Multiple && current.Count > 1)
+        if (isModeTrimRequested && SelectionMode != ChipSelectionMode.Multiple && newSelection.Count > 1)
         {
-            var kept = current.LastOrDefault(control.itemKeys.Contains) ?? current[^1];
-            control.Commit([kept]);
-            return;
+            newSelection = [newSelection.LastOrDefault(itemKeys.Contains) ?? newSelection[^1]];
         }
 
-        control.RefreshStates();
+        isItemsCleanupRequested = false;
+        isModeTrimRequested = false;
+        Commit(newSelection);
     }
 
     private static void OnChipAppearanceChanged(
