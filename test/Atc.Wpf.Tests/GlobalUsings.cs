@@ -40,6 +40,7 @@ global using Atc.Wpf.Media;
 global using Atc.Wpf.Navigation;
 global using Atc.Wpf.Serialization.JsonConverters;
 global using Atc.Wpf.Tests.Navigation.Models;
+global using Atc.Wpf.Tests.TestSupport;
 global using Atc.Wpf.Tests.XUnitTestTypes;
 global using Atc.Wpf.Translation;
 global using Atc.Wpf.ValueConverters;
