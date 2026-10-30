@@ -14,7 +14,7 @@ public partial class MultiSelectComboBox
     private readonly List<MultiSelectChipItem> chipItems = [];
     private readonly SelectedKeysCleanup selectionCleanup;
     private ObservableCollection<string>? subscribedDisabledKeys;
-    private ObservableCollection<string>? draftKeys;
+    private ObservableCollectionEx<string>? draftKeys;
     private DataDisplay.Chip? overflowChip;
     private Button? overflowButton;
     private string? chipsSignature;
@@ -26,6 +26,11 @@ public partial class MultiSelectComboBox
     /// Gets the panel holding the chips and the "+N" element in <see cref="MultiSelectDisplayMode.Chips"/> mode.
     /// </summary>
     internal MultiSelectChipPanel ChipPanel { get; }
+
+    /// <summary>
+    /// Gets how many times the chips were rebuilt (for change-storm tests).
+    /// </summary>
+    internal int ChipRebuildCount { get; private set; }
 
     /// <summary>
     /// Gets the "+N" element (a button showing a small chip; its automation name lists the hidden names).
@@ -174,7 +179,7 @@ public partial class MultiSelectComboBox
             return;
         }
 
-        KeySelectionHelper.ApplyInPlace(target, newKeys);
+        WriteSelectedKeys(target, newKeys);
         UpdateSummary();
         RaiseSelectedKeysChanged(oldKeys, target.ToList());
     }
@@ -291,6 +296,7 @@ public partial class MultiSelectComboBox
         }
 
         chipsSignature = signature;
+        ChipRebuildCount++;
         chipItems.Clear();
         chipItems.AddRange(ticked.Select(x => new MultiSelectChipItem(
             x.Key,
@@ -450,7 +456,8 @@ public partial class MultiSelectComboBox
             return;
         }
 
-        draftKeys = new ObservableCollection<string>((IEnumerable<string>?)SelectedKeys ?? []);
+        draftKeys = new ObservableCollectionEx<string>();
+        draftKeys.AddRange((IEnumerable<string>?)SelectedKeys ?? []);
         BindingOperations.ClearBinding(PartCheckList, CheckListBox.SelectedKeysProperty);
         PartCheckList.SetCurrentValue(CheckListBox.SelectedKeysProperty, draftKeys);
     }
@@ -466,29 +473,29 @@ public partial class MultiSelectComboBox
 
         var draft = draftKeys.ToList();
         draftKeys = null;
+        var target = SelectedKeys;
+        var oldKeys = target is null ? [] : target.ToList();
+        var isChanged = commit && !KeySelectionHelper.SequenceEquals(oldKeys, draft);
+        if (isChanged)
+        {
+            if (target is null)
+            {
+                target = new ObservableCollectionEx<string>();
+                SetCurrentValue(SelectedKeysProperty, target);
+            }
+
+            // Written before the list points back at the real selection, so the list refreshes once.
+            WriteSelectedKeys(target, draft);
+        }
 
         // Point the list back at the real selection; this discards the draft.
         Forward(CheckListBox.SelectedKeysProperty, SelectedKeysProperty, BindingMode.TwoWay);
 
-        if (!commit)
+        if (!isChanged || target is null)
         {
             return;
         }
 
-        var target = SelectedKeys;
-        var oldKeys = target is null ? [] : target.ToList();
-        if (KeySelectionHelper.SequenceEquals(oldKeys, draft))
-        {
-            return;
-        }
-
-        if (target is null)
-        {
-            target = [];
-            SetCurrentValue(SelectedKeysProperty, target);
-        }
-
-        KeySelectionHelper.ApplyInPlace(target, draft);
         UpdateSummary();
         RaiseSelectedKeysChanged(oldKeys, target.ToList());
     }
@@ -509,4 +516,19 @@ public partial class MultiSelectComboBox
         object sender,
         RoutedEventArgs e)
         => SetCurrentValue(IsDropDownOpenProperty, false);
+
+    private void WriteSelectedKeys(
+        ObservableCollection<string> target,
+        IReadOnlyList<string> newKeys)
+    {
+        isWritingSelectedKeys = true;
+        try
+        {
+            KeySelectionHelper.ApplyInPlace(target, newKeys);
+        }
+        finally
+        {
+            isWritingSelectedKeys = false;
+        }
+    }
 }

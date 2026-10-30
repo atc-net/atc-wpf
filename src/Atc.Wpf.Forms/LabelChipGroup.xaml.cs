@@ -120,7 +120,7 @@ public partial class LabelChipGroup : ILabelChipGroup
         PartChipGroup = new ChipGroup();
         ((LabelContent)Content).Content = PartChipGroup;
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new Atc.Wpf.Collections.ObservableCollectionEx<string>());
         SetCurrentValue(DisabledKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
 

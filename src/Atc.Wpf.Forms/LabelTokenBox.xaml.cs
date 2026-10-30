@@ -163,7 +163,7 @@ public partial class LabelTokenBox : ILabelTokenBox
         PartTokenBox = new TokenBox();
         ((LabelContent)Content).Content = PartTokenBox;
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new Atc.Wpf.Collections.ObservableCollectionEx<string>());
         SetCurrentValue(FixedKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
 

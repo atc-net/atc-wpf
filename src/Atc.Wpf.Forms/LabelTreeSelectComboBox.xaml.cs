@@ -168,7 +168,7 @@ public partial class LabelTreeSelectComboBox : ILabelTreeSelectComboBox
         PartComboBox = new TreeSelectComboBox();
         ((LabelContent)Content).Content = PartComboBox;
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new Atc.Wpf.Collections.ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
 
         // Options first, then SelectedKeys and Nodes last.

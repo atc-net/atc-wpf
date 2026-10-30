@@ -161,6 +161,7 @@ Ticking a node whose children are not loaded ticks the node itself (with `Leaves
 
 ## 📝 Notes
 
+- Bulk changes: the default `SelectedKeys` is an `ObservableCollectionEx<string>`, so Select all and Clear raise one `Reset`; a view-model `ObservableCollection<string>` gets one notification per key, but the control still updates its states and summary once per action. For a bulk change from code, assign a new collection or use `ObservableCollectionEx<string>.AddRange` (one notification): adding keys one by one updates the control once per key.
 - A click anywhere on a row (check box or text) toggles it; the arrow expands or collapses.
 - Ticking a **partial** parent ticks all its enabled children; a parent whose enabled (and shown) children are all ticked is unticked by a click, even when a disabled child keeps it partial.
 - Keys in `SelectedKeys` that are not in the tree (for example children that are not loaded yet) are kept, so a saved selection survives until those nodes appear.

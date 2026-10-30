@@ -193,6 +193,7 @@ public partial class TokenBox
     private bool isDropDownOpen;
 
     private ObservableCollection<string>? subscribedSelectedKeys;
+    private bool isWritingSelectedKeys;
     private ObservableCollection<string>? subscribedFixedKeys;
     private Window? subscribedWindow;
     private bool isUpdatingText;
@@ -261,7 +262,7 @@ public partial class TokenBox
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
         SetCurrentValue(FixedKeysProperty, new ObservableCollection<string>());
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
 
         UpdateTokens();
@@ -717,7 +718,12 @@ public partial class TokenBox
     private void OnSelectedKeysCollectionChanged(
         object? sender,
         NotifyCollectionChangedEventArgs e)
-        => UpdateTokens();
+    {
+        if (!isWritingSelectedKeys)
+        {
+            UpdateTokens();
+        }
+    }
 
     private void OnFixedKeysCollectionChanged(
         object? sender,

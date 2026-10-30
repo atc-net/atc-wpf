@@ -525,7 +525,7 @@ public partial class MultiColumnComboBox
         {
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 

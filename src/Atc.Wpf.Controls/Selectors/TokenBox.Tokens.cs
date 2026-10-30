@@ -324,7 +324,7 @@ public partial class TokenBox
             return;
         }
 
-        KeySelectionHelper.ApplyInPlace(target, newKeys);
+        WriteSelectedKeys(target, newKeys);
         UpdateTokens();
         RaiseSelectedKeysChanged(oldKeys, target.ToList());
     }
@@ -548,7 +548,7 @@ public partial class TokenBox
         var target = SelectedKeys;
         if (target is null)
         {
-            target = [];
+            target = new ObservableCollectionEx<string>();
             SetCurrentValue(SelectedKeysProperty, target);
         }
 
@@ -592,7 +592,7 @@ public partial class TokenBox
         }
 
         var newKeys = KeySelectionHelper.GetSelectionWith(oldKeys, toAdd, []);
-        KeySelectionHelper.ApplyInPlace(target, newKeys);
+        WriteSelectedKeys(target, newKeys);
         UpdateTokens();
         RaiseSelectedKeysChanged(oldKeys, target.ToList());
         return true;
@@ -626,7 +626,7 @@ public partial class TokenBox
         SelectedTokenIndex = -1;
         var oldKeys = target.ToList();
         var newKeys = KeySelectionHelper.GetSelectionWith(oldKeys, [], removable);
-        KeySelectionHelper.ApplyInPlace(target, newKeys);
+        WriteSelectedKeys(target, newKeys);
         UpdateTokens();
         RaiseSelectedKeysChanged(oldKeys, target.ToList());
     }
@@ -1013,6 +1013,25 @@ public partial class TokenBox
         if (hadFocus)
         {
             PartTextBox.Focus();
+        }
+    }
+
+    /// <summary>
+    /// Writes a change made by the control into <see cref="SelectedKeys"/>; the tokens are updated once afterwards,
+    /// not once per notification.
+    /// </summary>
+    private void WriteSelectedKeys(
+        ObservableCollection<string> target,
+        IReadOnlyList<string> newKeys)
+    {
+        isWritingSelectedKeys = true;
+        try
+        {
+            KeySelectionHelper.ApplyInPlace(target, newKeys);
+        }
+        finally
+        {
+            isWritingSelectedKeys = false;
         }
     }
 }

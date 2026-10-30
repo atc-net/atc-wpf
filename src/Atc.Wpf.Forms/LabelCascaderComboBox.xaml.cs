@@ -175,7 +175,7 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
         PartComboBox = new CascaderComboBox();
         ((LabelContent)Content).Content = PartComboBox;
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new Atc.Wpf.Collections.ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
 
         // Options first, then SelectedKeys and Nodes last.

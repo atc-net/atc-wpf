@@ -173,7 +173,7 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
         PartComboBox = new MultiSelectComboBox();
         ((LabelContent)Content).Content = PartComboBox;
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new Atc.Wpf.Collections.ObservableCollectionEx<string>());
         SetCurrentValue(DisabledKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
 

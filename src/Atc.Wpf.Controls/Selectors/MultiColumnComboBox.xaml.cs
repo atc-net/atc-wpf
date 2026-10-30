@@ -283,7 +283,7 @@ public partial class MultiColumnComboBox
         InitializeGrid();
         ApplyTexts();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(ColumnsProperty, new ObservableCollection<DataGridColumn>());
 
         CultureManager.UiCultureChanged += OnUiCultureChanged;

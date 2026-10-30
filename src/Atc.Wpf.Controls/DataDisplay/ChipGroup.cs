@@ -161,7 +161,7 @@ public sealed partial class ChipGroup : UserControl
         ApplyTexts();
         ApplyLayout();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(DisabledKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
     }
@@ -674,7 +674,7 @@ public sealed partial class ChipGroup : UserControl
             var target = SelectedKeys;
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 

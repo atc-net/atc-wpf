@@ -117,6 +117,7 @@ When the pop-up opens, focus goes to the filter box (if shown) or the first row.
 
 ## 📝 Notes
 
+- Bulk changes: the default `SelectedKeys` is an `ObservableCollectionEx<string>`, so Select all and Clear raise one `Reset`; a view-model `ObservableCollection<string>` gets one notification per key, but the control still updates its states and summary once per action. For a bulk change from code, assign a new collection or use `ObservableCollectionEx<string>.AddRange` (one notification): adding keys one by one updates the control once per key.
 - A node belongs to one tree: give each control its own nodes.
 - There is no deferred (OK / Cancel) commit mode; ticks apply right away.
 - The drop-down shell (pop-up, mouse capture, keyboard, automation peer) is kept in its own files so a single-select tree drop-down can reuse it.

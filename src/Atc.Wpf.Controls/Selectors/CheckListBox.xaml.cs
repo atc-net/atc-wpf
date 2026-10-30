@@ -144,7 +144,7 @@ public partial class CheckListBox
         CultureManager.UiCultureChanged += OnUiCultureChanged;
         ApplyTexts();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(DisabledKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
         UpdateChrome();
@@ -155,6 +155,17 @@ public partial class CheckListBox
     /// Gets the rows currently shown (group headers and items, after the filter).
     /// </summary>
     internal IReadOnlyList<CheckListItem> VisibleRows => visibleRows;
+
+    /// <summary>
+    /// Gets how many times the check states were refreshed (for change-storm tests).
+    /// </summary>
+    internal int StateRefreshCount { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection skips the notifications of that write and updates once afterwards.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => isWritingSelectedKeys;
 
     /// <summary>
     /// Ticks every shown, enabled item in one change. Does nothing when the selection limit has no room for them all.
@@ -580,6 +591,8 @@ public partial class CheckListBox
             return;
         }
 
+        StateRefreshCount++;
+
         selectedSet = new HashSet<string>((IEnumerable<string>?)SelectedKeys ?? Array.Empty<string>(), StringComparer.Ordinal);
         disabledSet = new HashSet<string>((IEnumerable<string>?)DisabledKeys ?? Array.Empty<string>(), StringComparer.Ordinal);
 
@@ -734,7 +747,7 @@ public partial class CheckListBox
             var target = SelectedKeys;
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 

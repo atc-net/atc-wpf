@@ -253,7 +253,7 @@ public partial class CascaderComboBox
 
         ChipPanel = CreateChipPanel();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
 
         // Options first, then SelectedKeys and Nodes last, so the first nodes are handled with the final options.
@@ -315,6 +315,11 @@ public partial class CascaderComboBox
     /// Gets the column view shown in the pop-up.
     /// </summary>
     internal CascaderColumnView PartColumns { get; }
+
+    /// <summary>
+    /// Gets how many times the summary was rebuilt (for change-storm tests).
+    /// </summary>
+    internal int SummaryUpdateCount { get; private set; }
 
     /// <summary>
     /// Returns the node with a key, or <see langword="null"/> when it is not in the tree.
@@ -603,7 +608,15 @@ public partial class CascaderComboBox
     private void OnSelectedKeysCollectionChanged(
         object? sender,
         NotifyCollectionChangedEventArgs e)
-        => UpdateSummary();
+    {
+        // A change written by the pop-up is summarised once, after the write.
+        if (PartColumns.IsWritingSelectedKeys && ReferenceEquals(PartColumns.SelectedKeys, sender))
+        {
+            return;
+        }
+
+        UpdateSummary();
+    }
 
     private void OnUiCultureChanged(
         object? sender,
@@ -619,6 +632,8 @@ public partial class CascaderComboBox
         {
             return;
         }
+
+        SummaryUpdateCount++;
 
         var text = BuildSummaryText();
         var oldText = SummaryText;

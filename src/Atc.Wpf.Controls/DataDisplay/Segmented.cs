@@ -178,7 +178,7 @@ public sealed partial class Segmented : Control
         CornerRadius = new CornerRadius(4);
         Items.CollectionChanged += OnItemsCollectionChanged;
         Loaded += OnLoaded;
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
     }
 
     /// <inheritdoc />
@@ -684,7 +684,7 @@ public sealed partial class Segmented : Control
             var target = SelectedKeys;
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 

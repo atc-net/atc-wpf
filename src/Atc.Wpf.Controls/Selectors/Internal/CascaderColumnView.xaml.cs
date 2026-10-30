@@ -178,7 +178,7 @@ internal partial class CascaderColumnView
         CultureManager.UiCultureChanged += OnUiCultureChanged;
         ApplyTexts();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
         RefreshChrome();
     }
@@ -206,6 +206,12 @@ internal partial class CascaderColumnView
     /// Gets the check-state engine.
     /// </summary>
     internal CheckTreeState State => state;
+
+    /// <summary>
+    /// Gets a value indicating whether the view is writing its own change into <c>SelectedKeys</c>; the drop-down that
+    /// shares the collection skips the notifications of that write and updates once afterwards.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => isWritingSelectedKeys;
 
     /// <summary>
     /// Gets the nodes shown in each column (the roots first; a "please wait" row while a column loads).
@@ -1330,7 +1336,7 @@ internal partial class CascaderColumnView
             var target = SelectedKeys;
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 
@@ -1341,7 +1347,8 @@ internal partial class CascaderColumnView
             isWritingSelectedKeys = false;
         }
 
-        RefreshChrome();
+        // SelectedKeysChanged follows: no separate StateRefreshed, so the drop-down updates its summary once.
+        RefreshChrome(raiseStateRefreshed: false);
         SelectedKeysChanged?.Invoke(
             this,
             new ValueChangedEventArgs<IReadOnlyList<string>>(
@@ -1356,7 +1363,7 @@ internal partial class CascaderColumnView
             ? []
             : SelectedKeys.ToList();
 
-    private void RefreshChrome()
+    private void RefreshChrome(bool raiseStateRefreshed = true)
     {
         if (PartFilter is null)
         {
@@ -1374,7 +1381,10 @@ internal partial class CascaderColumnView
             ? Visibility.Visible
             : Visibility.Collapsed;
 
-        StateRefreshed?.Invoke(this, EventArgs.Empty);
+        if (raiseStateRefreshed)
+        {
+            StateRefreshed?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void CancelLoad()

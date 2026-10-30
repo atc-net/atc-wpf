@@ -107,7 +107,7 @@ public static class LabelControlFactory
             IsEnabled = !isReadOnly,
             IsMandatory = isMandatory,
             Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
         };
 
         return control;
@@ -141,7 +141,7 @@ public static class LabelControlFactory
             IsEnabled = !isReadOnly,
             IsMandatory = isMandatory,
             Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
         };
 
         return control;
@@ -178,7 +178,7 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             AllowCreate = allowCreate,
             Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
         };
 
         return control;
@@ -215,7 +215,7 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             CheckedKeysStrategy = checkedKeysStrategy,
             Nodes = new ObservableCollection<CheckTreeNode>(nodes),
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
         };
 
         return control;
@@ -252,7 +252,7 @@ public static class LabelControlFactory
             IsMandatory = isMandatory,
             CheckedKeysStrategy = checkedKeysStrategy,
             Nodes = new ObservableCollection<CheckTreeNode>(nodes),
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
         };
 
         return control;
@@ -293,7 +293,7 @@ public static class LabelControlFactory
             AutoGenerateColumns = true,
             KeyMemberPath = keyMemberPath,
             DisplayMemberPath = displayMemberPath,
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
             ItemsSource = itemsSource,
         };
 
@@ -328,7 +328,7 @@ public static class LabelControlFactory
             IsEnabled = !isReadOnly,
             IsMandatory = isMandatory,
             Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
-            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+            SelectedKeys = CreateKeys(selectedKeys),
         };
 
         return control;
@@ -1221,5 +1221,16 @@ public static class LabelControlFactory
         };
 
         return control;
+    }
+
+    /// <summary>
+    /// Creates a control-owned key collection: a bulk change made by the control raises a single notification.
+    /// </summary>
+    private static Atc.Wpf.Collections.ObservableCollectionEx<string> CreateKeys(
+        IEnumerable<string>? selectedKeys)
+    {
+        var keys = new Atc.Wpf.Collections.ObservableCollectionEx<string>();
+        keys.AddRange(selectedKeys ?? []);
+        return keys;
     }
 }

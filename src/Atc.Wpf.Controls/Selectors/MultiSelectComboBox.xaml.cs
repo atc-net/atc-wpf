@@ -185,6 +185,7 @@ public partial class MultiSelectComboBox
     private bool isDropDownOpen;
 
     private ObservableCollection<string>? subscribedSelectedKeys;
+    private bool isWritingSelectedKeys;
     private int tickedCount;
 
     /// <summary>
@@ -237,7 +238,7 @@ public partial class MultiSelectComboBox
         ChipPanel = CreateChipPanel();
         ApplyFooterTexts();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(DisabledKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
 
@@ -289,6 +290,11 @@ public partial class MultiSelectComboBox
     /// Gets the check list shown in the pop-up.
     /// </summary>
     internal CheckListBox PartCheckList { get; }
+
+    /// <summary>
+    /// Gets how many times the summary was rebuilt (for change-storm tests).
+    /// </summary>
+    internal int SummaryUpdateCount { get; private set; }
 
     /// <summary>
     /// Ticks every shown, enabled item in one change.
@@ -585,7 +591,16 @@ public partial class MultiSelectComboBox
     private void OnSelectedKeysCollectionChanged(
         object? sender,
         NotifyCollectionChangedEventArgs e)
-        => UpdateSummary();
+    {
+        // A change written by the pop-up (or by this control) is summarised once, after the write.
+        if (isWritingSelectedKeys ||
+            (PartCheckList.IsWritingSelectedKeys && ReferenceEquals(PartCheckList.SelectedKeys, sender)))
+        {
+            return;
+        }
+
+        UpdateSummary();
+    }
 
     private void OnUiCultureChanged(
         object? sender,
@@ -602,6 +617,8 @@ public partial class MultiSelectComboBox
         {
             return;
         }
+
+        SummaryUpdateCount++;
 
         var text = BuildSummaryText();
         var oldText = SummaryText;

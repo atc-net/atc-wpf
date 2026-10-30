@@ -166,7 +166,7 @@ public partial class CheckTreeView
         CultureManager.UiCultureChanged += OnUiCultureChanged;
         ApplyTexts();
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
         RefreshChrome();
     }
@@ -194,6 +194,17 @@ public partial class CheckTreeView
     /// Gets the tree.
     /// </summary>
     internal TreeView PartTree { get; }
+
+    /// <summary>
+    /// Gets how many times <see cref="SelectedKeys"/> was applied to the check states (for change-storm tests).
+    /// </summary>
+    internal int KeysApplyCount { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection skips the notifications of that write and updates once afterwards.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => isWritingSelectedKeys;
 
     /// <summary>
     /// Gets the check-state engine.
@@ -394,6 +405,7 @@ public partial class CheckTreeView
 
     private void ApplySelectedKeys()
     {
+        KeysApplyCount++;
         state.ApplyKeys((IEnumerable<string>?)SelectedKeys ?? []);
         RefreshChrome();
     }
@@ -488,7 +500,7 @@ public partial class CheckTreeView
             var target = SelectedKeys;
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 
@@ -499,7 +511,12 @@ public partial class CheckTreeView
             isWritingSelectedKeys = false;
         }
 
-        RefreshChrome();
+        // SelectedKeysChanged follows: no separate StateRefreshed, so a wrapper updates its summary once.
+        if (PartTree is not null)
+        {
+            RefreshChromeParts();
+        }
+
         SelectedKeysChanged?.Invoke(
             this,
             new ValueChangedEventArgs<IReadOnlyList<string>>(

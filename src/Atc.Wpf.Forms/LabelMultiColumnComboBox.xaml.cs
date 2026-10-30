@@ -178,7 +178,7 @@ public partial class LabelMultiColumnComboBox : ILabelMultiColumnComboBox
         PartComboBox = new MultiColumnComboBox();
         ((LabelContent)Content).Content = PartComboBox;
 
-        SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        SetCurrentValue(SelectedKeysProperty, new Atc.Wpf.Collections.ObservableCollectionEx<string>());
 
         // Options first, then SelectedKeys and ItemsSource last.
         Forward(MinHeightProperty, ContentMinHeightProperty);

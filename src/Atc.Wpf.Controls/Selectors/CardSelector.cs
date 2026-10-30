@@ -109,7 +109,7 @@ public sealed partial class CardSelector : ListBox
     /// Initializes a new instance of the <see cref="CardSelector"/> class.
     /// </summary>
     public CardSelector()
-        => SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
+        => SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
 
     /// <summary>
     /// Occurs when the control changes <see cref="SelectedKeys"/> (only with <see cref="KeyMemberPath"/>): once per
@@ -670,7 +670,7 @@ public sealed partial class CardSelector : ListBox
             var target = SelectedKeys;
             if (target is null)
             {
-                target = [];
+                target = new ObservableCollectionEx<string>();
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 
