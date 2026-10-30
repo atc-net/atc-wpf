@@ -7,6 +7,7 @@
     xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
     xmlns:navigation="clr-namespace:Atc.Wpf.Controls.Navigation"
     xmlns:progressing="clr-namespace:Atc.Wpf.Controls.Progressing"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors"
     xmlns:zoom="clr-namespace:Atc.Wpf.Controls.Zoom">
 
     <ResourceDictionary.MergedDictionaries>
@@ -26,6 +27,7 @@
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Stepper.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Timeline.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Carousel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Selectors/CardSelector.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/DockPanelPro.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/FlexPanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Layouts/GroupBoxExpander.xaml" />
@@ -65,6 +67,8 @@
     <Style BasedOn="{StaticResource AtcApps.Styles.Timeline}" TargetType="{x:Type dataDisplay:Timeline}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.TimelineItem}" TargetType="{x:Type dataDisplay:TimelineItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.Carousel}" TargetType="{x:Type dataDisplay:Carousel}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.CardSelector}" TargetType="{x:Type selectors:CardSelector}" />
+    <Style BasedOn="{StaticResource AtcApps.Styles.CardSelectorItem}" TargetType="{x:Type selectors:CardSelectorItem}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.DockPanelPro}" TargetType="{x:Type layouts:DockPanelPro}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.DockRegion}" TargetType="{x:Type layouts:DockRegion}" />
     <Style BasedOn="{StaticResource AtcApps.Styles.FlexPanel}" TargetType="{x:Type layouts:FlexPanel}" />
