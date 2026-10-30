@@ -2,8 +2,17 @@ namespace Atc.Wpf.Controls.Tests.Selectors;
 
 public sealed class MultiColumnComboBoxTests : IDisposable
 {
+    private readonly List<MultiColumnComboBox> openedBoxes = [];
+
     public void Dispose()
-        => Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+    {
+        foreach (var box in openedBoxes)
+        {
+            box.IsDropDownOpen = false;
+        }
+
+        Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+    }
 
     [StaFact]
     public void Defaults_match_the_documented_api()
@@ -734,10 +743,11 @@ public sealed class MultiColumnComboBoxTests : IDisposable
             .Select(x => x is Customer c ? c.Number : ((Part)x).Number)
             .ToList();
 
-    private static void OpenAndRealize(
+    private void OpenAndRealize(
         MultiColumnComboBox sut,
         double height = 400)
     {
+        openedBoxes.Add(sut);
         sut.IsDropDownOpen = true;
         sut.PartPopupBorder.Measure(new Size(500, height));
         sut.PartPopupBorder.Arrange(new Rect(0, 0, 500, System.Math.Min(height, sut.PartPopupBorder.DesiredSize.Height)));
