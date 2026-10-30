@@ -322,8 +322,9 @@ public partial class PropertyGrid
 
         foreach (var propertyInfo in properties)
         {
-            // Skip non-readable properties
-            if (!propertyInfo.CanRead)
+            // Skip non-readable properties and indexers (they need an index to be read)
+            if (!propertyInfo.CanRead ||
+                propertyInfo.GetIndexParameters().Length > 0)
             {
                 continue;
             }
