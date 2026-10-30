@@ -778,6 +778,12 @@ Atc.Wpf includes powerful source generators from [Atc.XamlToolkit](https://githu
 
 ---
 
+## ♿ Accessibility
+
+- [Accessibility](docs/Accessibility/@Readme.md) — UI Automation peers, keyboard rules, high contrast and right-to-left support
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! Please read our guidelines:
