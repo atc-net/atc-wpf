@@ -22,6 +22,7 @@ global using Atc.Wpf.Forms.Factories;
 global using Atc.Wpf.Forms.FontEditing;
 global using Atc.Wpf.Forms.Internal.Helpers;
 global using Atc.Wpf.Forms.Internal.ValueConverters;
+global using Atc.Wpf.Forms.PropertyEditing;
 global using Atc.Wpf.Forms.Tests.TestSupport;
 global using Atc.Wpf.Forms.Tests.XUnitTestTypes;
 global using Atc.Wpf.Forms.Writers;
