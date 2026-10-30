@@ -106,6 +106,24 @@ public sealed class TokenBoxAutomationPeer : FrameworkElementAutomationPeer, IVa
     }
 
     /// <inheritdoc />
+    protected override bool IsKeyboardFocusableCore()
+        => OwnerControl.IsEnabled;
+
+    /// <inheritdoc />
+    protected override bool HasKeyboardFocusCore()
+        => OwnerControl.IsKeyboardFocusWithin;
+
+    /// <inheritdoc />
+    protected override void SetFocusCore()
+    {
+        // The caret belongs in the text box; focusing the field moves it there.
+        if (!OwnerControl.PartTextBox.Focus())
+        {
+            throw new InvalidOperationException("The token box cannot take the keyboard focus.");
+        }
+    }
+
+    /// <inheritdoc />
     protected override List<AutomationPeer>? GetChildrenCore()
     {
         var children = new List<AutomationPeer>();

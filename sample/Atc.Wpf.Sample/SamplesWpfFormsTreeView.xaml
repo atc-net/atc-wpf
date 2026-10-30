@@ -143,6 +143,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelTextInfoView" />
         <sample:SampleTreeViewItem
+            Header="LabelTokenBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelTokenBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelToggleSwitch"
             IsExpanded="True"
             SamplePath="LabelControls.LabelToggleSwitchView" />

@@ -58,6 +58,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Properties](#properties-5)
       - [Usage Example](#usage-example-11)
     - [LabelMultiSelectComboBox](#labelmultiselectcombobox)
+    - [LabelTokenBox](#labeltokenbox)
     - [LabelToggleSwitch](#labeltoggleswitch)
       - [Features](#features-12)
       - [Usage Example](#usage-example-12)
@@ -155,7 +156,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelToggleSwitch |
+| **Selection** | LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -586,6 +587,20 @@ A labeled multi-select drop-down (`MultiSelectComboBox`): closed it looks like `
     LabelText="Source systems"
     SelectedKeys="{Binding Path=SelectedSourceSystems}"
     WatermarkText="Pick source systems" />
+```
+
+### LabelTokenBox
+
+A labeled token field (`TokenBox`): the user types to pick several values, each shown as a removable chip, with a suggestion pop-up (the match in bold). `AllowCreate` turns unknown text into new tokens (checked by `CreateValidator`, keyed through `TokenCreating`); pasted text is split on the separators and new lines; `SuggestionsProvider` adds a debounced asynchronous lookup for huge or remote lists. `IsMandatory` means at least one token; tokens beyond `MaxSelectionCount` make `IsValid()` false. See [LabelTokenBox_Readme.md](LabelTokenBox_Readme.md).
+
+```xml
+<atc:LabelTokenBox
+    AllowCreate="True"
+    Items="{Binding Path=KnownTags}"
+    LabelText="Tags"
+    MaxSelectionCount="10"
+    SelectedKeys="{Binding Path=Tags}"
+    WatermarkText="Add tags" />
 ```
 
 ### LabelToggleSwitch

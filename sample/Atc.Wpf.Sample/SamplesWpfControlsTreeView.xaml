@@ -281,6 +281,10 @@
             Header="MultiSelectComboBox"
             IsExpanded="True"
             SamplePath="Selectors.MultiSelectComboBoxView" />
+        <sample:SampleTreeViewItem
+            Header="TokenBox"
+            IsExpanded="True"
+            SamplePath="Selectors.TokenBoxView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Zoom">
