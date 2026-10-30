@@ -32,6 +32,11 @@
   href: docs/Hotkeys/@Readme.md
 - name: Navigation
   href: docs/Navigation/@Readme.md
+- name: Accessibility
+  href: docs/Accessibility/@Readme.md
+- name: Control readmes
+  href: docs/Controls/
+  topicHref: docs/Controls/index.md
 - name: Sample app
   href: docs/sample-app.md
 - name: API Reference
