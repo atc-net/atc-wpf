@@ -56,6 +56,7 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-11)
       - [Properties](#properties-5)
       - [Usage Example](#usage-example-11)
+    - [LabelMultiSelectComboBox](#labelmultiselectcombobox)
     - [LabelToggleSwitch](#labeltoggleswitch)
       - [Features](#features-12)
       - [Usage Example](#usage-example-12)
@@ -153,7 +154,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelCheckListBox, LabelComboBox, LabelToggleSwitch |
+| **Selection** | LabelCheckBox, LabelCheckListBox, LabelComboBox, LabelMultiSelectComboBox, LabelToggleSwitch |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -559,6 +560,19 @@ A labeled dropdown/combo box for item selection.
     LabelText="Status"
     ItemsSource="{Binding StatusOptions}"
     SelectedItem="{Binding CurrentStatus, Mode=TwoWay}" />
+```
+
+### LabelMultiSelectComboBox
+
+A labeled multi-select drop-down (`MultiSelectComboBox`): closed it looks like `LabelComboBox` and shows a summary ("Orders, Payments", "3 of 5 selected", "All"); open it shows a check list with Select all, Clear and a filter. `IsMandatory` means at least one key is ticked. See [LabelMultiSelectComboBox_Readme.md](LabelMultiSelectComboBox_Readme.md).
+
+```xml
+<atc:LabelMultiSelectComboBox
+    IsMandatory="True"
+    Items="{Binding Path=SourceSystems}"
+    LabelText="Source systems"
+    SelectedKeys="{Binding Path=SelectedSourceSystems}"
+    WatermarkText="Pick source systems" />
 ```
 
 ### LabelToggleSwitch
