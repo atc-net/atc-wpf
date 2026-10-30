@@ -2,7 +2,8 @@ namespace Atc.Wpf.Controls.Selectors;
 
 /// <summary>
 /// Exposes <see cref="MultiSelectComboBox"/> to UI Automation as a combo box with the expand/collapse pattern and a
-/// read-only value (the summary text). While the pop-up is open, its rows are children of this element.
+/// read-only value (the summary text). While the pop-up is open, its rows (and, in deferred mode, OK and Cancel) are
+/// children of this element; in chips mode the chip remove buttons and the "+N" button are children too.
 /// </summary>
 public sealed class MultiSelectComboBoxAutomationPeer : FrameworkElementAutomationPeer, IExpandCollapseProvider, IValueProvider
 {
@@ -98,12 +99,20 @@ public sealed class MultiSelectComboBoxAutomationPeer : FrameworkElementAutomati
     /// <inheritdoc />
     protected override List<AutomationPeer>? GetChildrenCore()
     {
-        if (!OwnerControl.IsDropDownOpen)
+        // Closed: only the chips' remove buttons and the "+N" button (chips mode). Open: also the pop-up list and,
+        // in deferred mode, its OK and Cancel buttons.
+        var children = OwnerControl.GetChipAutomationPeers();
+        if (OwnerControl.IsDropDownOpen)
         {
-            return null;
+            children.Add(CreatePeerForElement(OwnerControl.PartCheckList));
+            if (OwnerControl.PartCommitFooter.Visibility == Visibility.Visible)
+            {
+                children.Add(CreatePeerForElement(OwnerControl.PartOkButton));
+                children.Add(CreatePeerForElement(OwnerControl.PartCancelButton));
+            }
         }
 
-        return [CreatePeerForElement(OwnerControl.PartCheckList)];
+        return children.Count == 0 ? null : children;
     }
 
     private void EnsureEnabled()

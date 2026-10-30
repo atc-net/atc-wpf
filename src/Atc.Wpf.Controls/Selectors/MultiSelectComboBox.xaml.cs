@@ -99,9 +99,9 @@ public partial class MultiSelectComboBox
     private int? maxSelectionCount;
 
     /// <summary>
-    /// The keys whose items are shown but cannot be toggled.
+    /// The keys whose items are shown but cannot be toggled (their chips have no remove button).
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnDisabledKeysChanged))]
     private ObservableCollection<string> disabledKeys;
 
     /// <summary>
@@ -109,6 +109,45 @@ public partial class MultiSelectComboBox
     /// </summary>
     [DependencyProperty]
     private DataTemplate? itemTemplate;
+
+    /// <summary>
+    /// What the closed box shows for the ticked items: the names (<see cref="MultiSelectDisplayMode.Text"/>), a
+    /// removable chip per item (<see cref="MultiSelectDisplayMode.Chips"/>) or only the count
+    /// (<see cref="MultiSelectDisplayMode.Count"/>).
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = MultiSelectDisplayMode.Text,
+        PropertyChangedCallback = nameof(OnChipsInputChanged))]
+    private MultiSelectDisplayMode displayMode;
+
+    /// <summary>
+    /// In <see cref="MultiSelectDisplayMode.Chips"/> mode, the most chips shown before the "+N" chip;
+    /// <see langword="null"/> (the default) shows as many as fit on one line.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnChipsInputChanged))]
+    private int? maxVisibleChips;
+
+    /// <summary>
+    /// In <see cref="MultiSelectDisplayMode.Chips"/> mode, whether the chips wrap over several lines (the box grows in
+    /// height and shows every chip, with no "+N").
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnChipsInputChanged))]
+    private bool chipsWrap;
+
+    /// <summary>
+    /// In <see cref="MultiSelectDisplayMode.Chips"/> mode, the template of a chip; its data context is a
+    /// <see cref="MultiSelectChipItem"/>. <see langword="null"/> (the default) uses a small input <c>Chip</c>.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnChipsInputChanged))]
+    private DataTemplate? chipTemplate;
+
+    /// <summary>
+    /// When ticks in the pop-up reach <see cref="SelectedKeys"/>: right away
+    /// (<see cref="MultiSelectCommitMode.Immediate"/>), or on OK (<see cref="MultiSelectCommitMode.Deferred"/>, the
+    /// pop-up then shows OK and Cancel; Cancel, Esc and a click outside discard the ticks, Enter is OK).
+    /// </summary>
+    [DependencyProperty(DefaultValue = MultiSelectCommitMode.Immediate)]
+    private MultiSelectCommitMode commitMode;
 
     /// <summary>
     /// The most display values the summary lists (comma-separated) before it switches to <see cref="CountFormat"/>.
@@ -192,7 +231,10 @@ public partial class MultiSelectComboBox
         PartPopup.PlacementTarget = this;
 
         PartCheckList = new CheckListBox();
-        PartPopupBorder.Child = PartCheckList;
+        PartListHost.Child = PartCheckList;
+
+        ChipPanel = CreateChipPanel();
+        ApplyFooterTexts();
 
         SetCurrentValue(SelectedKeysProperty, new ObservableCollection<string>());
         SetCurrentValue(DisabledKeysProperty, new ObservableCollection<string>());
@@ -294,8 +336,24 @@ public partial class MultiSelectComboBox
 
         if (IsDropDownOpen && key is Key.Escape or Key.Enter)
         {
-            SetCurrentValue(IsDropDownOpenProperty, false);
+            if (key == Key.Enter)
+            {
+                CommitDraftAndClose();
+            }
+            else
+            {
+                SetCurrentValue(IsDropDownOpenProperty, false);
+            }
+
             return true;
+        }
+
+        if (key == Key.Back &&
+            modifiers == ModifierKeys.None &&
+            !IsDropDownOpen &&
+            DisplayMode == MultiSelectDisplayMode.Chips)
+        {
+            return RemoveLastChip();
         }
 
         return false;
@@ -371,12 +429,14 @@ public partial class MultiSelectComboBox
 
         if (isOpen)
         {
+            control.BeginDraft();
             Mouse.Capture(control, CaptureMode.SubTree);
             _ = control.Dispatcher.BeginInvoke(DispatcherPriority.Input, control.FocusPopupContent);
             control.DropDownOpened?.Invoke(control, EventArgs.Empty);
         }
         else
         {
+            control.EndDraft();
             if (control.PartPopupBorder.IsKeyboardFocusWithin)
             {
                 control.Focus();
@@ -502,14 +562,24 @@ public partial class MultiSelectComboBox
         object? sender,
         ValueChangedEventArgs<IReadOnlyList<string>> e)
     {
+        if (IsDrafting)
+        {
+            return;
+        }
+
         UpdateSummary();
-        SelectedKeysChanged?.Invoke(
+        RaiseSelectedKeysChanged(e.OldValue, e.NewValue);
+    }
+
+    private void RaiseSelectedKeysChanged(
+        IReadOnlyList<string> oldKeys,
+        IReadOnlyList<string> newKeys)
+        => SelectedKeysChanged?.Invoke(
             this,
             new ValueChangedEventArgs<IReadOnlyList<string>>(
                 Name,
-                e.OldValue,
-                e.NewValue));
-    }
+                oldKeys,
+                newKeys));
 
     private void OnSelectedKeysCollectionChanged(
         object? sender,
@@ -519,7 +589,11 @@ public partial class MultiSelectComboBox
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
-        => UpdateSummary();
+    {
+        ApplyFooterTexts();
+        chipsSignature = null;
+        UpdateSummary();
+    }
 
     private void UpdateSummary()
     {
@@ -532,6 +606,7 @@ public partial class MultiSelectComboBox
         var oldText = SummaryText;
         SummaryText = text;
         summaryTextBlock.Text = text;
+        UpdateChips();
         UpdateWatermark();
 
         if (!string.Equals(oldText, text, StringComparison.Ordinal) &&
@@ -563,12 +638,18 @@ public partial class MultiSelectComboBox
             return NoneText ?? string.Empty;
         }
 
+        if (DisplayMode == MultiSelectDisplayMode.Chips)
+        {
+            return string.Join(", ", names);
+        }
+
         if (names.Count == source.Count)
         {
             return AllText ?? Atc.Wpf.Resources.Word.All;
         }
 
-        if (names.Count <= MaxNamesInSummary)
+        if (DisplayMode == MultiSelectDisplayMode.Text &&
+            names.Count <= MaxNamesInSummary)
         {
             return string.Join(", ", names);
         }

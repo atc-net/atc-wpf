@@ -113,7 +113,35 @@
                 Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
                 BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.PopupBorder}"
                 BorderThickness="1"
-                SnapsToDevicePixels="True" />
+                SnapsToDevicePixels="True">
+                <DockPanel>
+                    <!--  OK / Cancel, shown when CommitMode is Deferred.  -->
+                    <Border
+                        x:Name="PartCommitFooter"
+                        Padding="6,4"
+                        BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.PopupBorder}"
+                        BorderThickness="0,1,0,0"
+                        DockPanel.Dock="Bottom"
+                        Visibility="Collapsed">
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button
+                                x:Name="PartOkButton"
+                                MinWidth="64"
+                                Padding="8,1"
+                                AutomationProperties.AutomationId="Ok"
+                                Click="OnOkClick" />
+                            <Button
+                                x:Name="PartCancelButton"
+                                MinWidth="64"
+                                Margin="6,0,0,0"
+                                Padding="8,1"
+                                AutomationProperties.AutomationId="Cancel"
+                                Click="OnCancelClick" />
+                        </StackPanel>
+                    </Border>
+                    <Border x:Name="PartListHost" />
+                </DockPanel>
+            </decorators:ClipBorder>
         </Popup>
     </Grid>
 

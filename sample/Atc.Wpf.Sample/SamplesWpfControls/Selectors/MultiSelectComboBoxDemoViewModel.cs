@@ -13,6 +13,14 @@ public partial class MultiSelectComboBoxDemoViewModel : ViewModelBase
     [ObservableProperty]
     private string noneText = string.Empty;
 
+    [PropertyDisplay("Display Mode", "Summary", 3)]
+    [ObservableProperty]
+    private MultiSelectDisplayMode displayMode = MultiSelectDisplayMode.Text;
+
+    [PropertyDisplay("Commit Mode", "Pop-up", 3)]
+    [ObservableProperty]
+    private MultiSelectCommitMode commitMode = MultiSelectCommitMode.Immediate;
+
     [PropertyDisplay("Show Select All Row", "Pop-up", 1)]
     [ObservableProperty]
     private bool showSelectAllRow = true;
@@ -59,6 +67,15 @@ public partial class MultiSelectComboBoxDemoViewModel : ViewModelBase
             .ToDictionary(x => x.TwoLetterISORegionName, x => x.EnglishName, StringComparer.Ordinal);
         SelectedCountries = ["DK", "SE", "NO"];
 
+        SelectedDisplayModeLogLevels = ["debug", "information", "warning", "error"];
+        SelectedChipsSourceSystems = [];
+        SelectedLimitedLogLevels = ["warning", "error"];
+        SelectedDeferredLogLevels = ["error"];
+
+        Foods = CreateFoods();
+        FoodGroups = CreateFoodGroups();
+        SelectedFoods = ["apple", "milk"];
+
         ManyItems = Enumerable.Range(1, 1_000)
             .ToDictionary(
                 i => i.ToString(CultureInfo.InvariantCulture),
@@ -81,6 +98,45 @@ public partial class MultiSelectComboBoxDemoViewModel : ViewModelBase
     public System.Collections.ObjectModel.ObservableCollection<string> SelectedCountries { get; set; }
 
     public Dictionary<string, string> ManyItems { get; }
+
+    public System.Collections.ObjectModel.ObservableCollection<string> SelectedDisplayModeLogLevels { get; set; }
+
+    public System.Collections.ObjectModel.ObservableCollection<string> SelectedChipsSourceSystems { get; set; }
+
+    public System.Collections.ObjectModel.ObservableCollection<string> SelectedLimitedLogLevels { get; set; }
+
+    public System.Collections.ObjectModel.ObservableCollection<string> SelectedDeferredLogLevels { get; set; }
+
+    public Dictionary<string, string> Foods { get; }
+
+    public Dictionary<string, string> FoodGroups { get; }
+
+    public System.Collections.ObjectModel.ObservableCollection<string> SelectedFoods { get; set; }
+
+    private static Dictionary<string, string> CreateFoods()
+        => new(StringComparer.Ordinal)
+        {
+            ["bread"] = "Bread",
+            ["apple"] = "Apple",
+            ["carrot"] = "Carrot",
+            ["pear"] = "Pear",
+            ["leek"] = "Leek",
+            ["cheese"] = "Cheese",
+            ["milk"] = "Milk",
+            ["banana"] = "Banana",
+        };
+
+    private static Dictionary<string, string> CreateFoodGroups()
+        => new(StringComparer.Ordinal)
+        {
+            ["apple"] = "Fruit",
+            ["carrot"] = "Vegetables",
+            ["pear"] = "Fruit",
+            ["leek"] = "Vegetables",
+            ["cheese"] = "Dairy",
+            ["milk"] = "Dairy",
+            ["banana"] = "Fruit",
+        };
 
     [RelayCommand]
     private void AddSourceSystem()

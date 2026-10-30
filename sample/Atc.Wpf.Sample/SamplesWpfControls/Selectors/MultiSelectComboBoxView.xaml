@@ -26,6 +26,8 @@
                             HorizontalAlignment="Left"
                             atc:TextBoxHelper.Watermark="Source systems"
                             AutomationProperties.AutomationId="InteractiveBox"
+                            CommitMode="{Binding Path=CommitMode}"
+                            DisplayMode="{Binding Path=DisplayMode}"
                             IsEnabled="{Binding Path=IsControlEnabled}"
                             Items="{Binding Path=SourceSystems}"
                             MaxNamesInSummary="{Binding Path=MaxNamesInSummary}"
@@ -60,9 +62,140 @@
                                 Items="{Binding Path=LogLevels}"
                                 SelectedKeys="{Binding Path=SelectedLogLevels}" />
                             <Separator Margin="5,0" />
+                            <atc:MultiSelectComboBox
+                                Width="200"
+                                atc:TextBoxHelper.Watermark="Log levels (chips)"
+                                DisplayMode="Chips"
+                                Items="{Binding Path=LogLevels}"
+                                SelectedKeys="{Binding Path=SelectedLogLevels}" />
+                            <Separator Margin="5,0" />
                             <TextBox Width="150" Text="Search" />
                         </ToolBar>
                     </ToolBarTray>
+                </atc:GroupBoxExpander>
+
+                <!--  Display modes  -->
+                <atc:GroupBoxExpander Header="Display modes side by side: Text, Chips, Count (one shared selection)">
+                    <StackPanel Margin="10">
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,0,4" Text="Text" />
+                                <atc:MultiSelectComboBox
+                                    Width="240"
+                                    atc:TextBoxHelper.Watermark="Log levels"
+                                    DisplayMode="Text"
+                                    Items="{Binding Path=LogLevels}"
+                                    SelectedKeys="{Binding Path=SelectedDisplayModeLogLevels}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,0,4" Text="Chips (responsive &quot;+N&quot;)" />
+                                <atc:MultiSelectComboBox
+                                    Width="240"
+                                    atc:TextBoxHelper.Watermark="Log levels"
+                                    DisplayMode="Chips"
+                                    Items="{Binding Path=LogLevels}"
+                                    SelectedKeys="{Binding Path=SelectedDisplayModeLogLevels}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,0,4" Text="Count" />
+                                <atc:MultiSelectComboBox
+                                    Width="240"
+                                    atc:TextBoxHelper.Watermark="Log levels"
+                                    DisplayMode="Count"
+                                    Items="{Binding Path=LogLevels}"
+                                    SelectedKeys="{Binding Path=SelectedDisplayModeLogLevels}" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,0,4" Text="Chips, MaxVisibleChips=&quot;2&quot;" />
+                                <atc:MultiSelectComboBox
+                                    Width="320"
+                                    atc:TextBoxHelper.Watermark="Log levels"
+                                    DisplayMode="Chips"
+                                    MaxVisibleChips="2"
+                                    Items="{Binding Path=LogLevels}"
+                                    SelectedKeys="{Binding Path=SelectedDisplayModeLogLevels}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,10,10">
+                                <TextBlock Margin="0,0,0,4" Text="Chips, ChipsWrap=&quot;True&quot; (grows in height)" />
+                                <atc:MultiSelectComboBox
+                                    Width="240"
+                                    atc:TextBoxHelper.Watermark="Log levels"
+                                    ChipsWrap="True"
+                                    DisplayMode="Chips"
+                                    Items="{Binding Path=LogLevels}"
+                                    SelectedKeys="{Binding Path=SelectedDisplayModeLogLevels}" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  Chips with remove buttons  -->
+                <atc:GroupBoxExpander Header="Chips: the remove button on a chip unticks it without opening; Backspace removes the last chip">
+                    <StackPanel Margin="10">
+                        <atc:MultiSelectComboBox
+                            x:Name="ChipsBox"
+                            Width="320"
+                            HorizontalAlignment="Left"
+                            atc:TextBoxHelper.Watermark="Source systems"
+                            AutomationProperties.AutomationId="ChipsBox"
+                            DisplayMode="Chips"
+                            Items="{Binding Path=SourceSystems}"
+                            SelectedKeys="{Binding Path=SelectedChipsSourceSystems}" />
+                        <TextBlock
+                            x:Name="ChipsLog"
+                            Margin="0,10,0,0"
+                            AutomationProperties.AutomationId="ChipsLog"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  Selection limit  -->
+                <atc:GroupBoxExpander Header="Selection limit: at most 3 (the other items are disabled at the limit)">
+                    <atc:MultiSelectComboBox
+                        Width="320"
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        atc:TextBoxHelper.Watermark="Up to three log levels"
+                        DisplayMode="Chips"
+                        Items="{Binding Path=LogLevels}"
+                        MaxSelectionCount="3"
+                        SelectedKeys="{Binding Path=SelectedLimitedLogLevels}" />
+                </atc:GroupBoxExpander>
+
+                <!--  Deferred commit  -->
+                <atc:GroupBoxExpander Header="Deferred commit: ticks apply on OK; Cancel, Esc or a click outside discard them">
+                    <StackPanel Margin="10">
+                        <atc:MultiSelectComboBox
+                            x:Name="DeferredBox"
+                            Width="240"
+                            HorizontalAlignment="Left"
+                            atc:TextBoxHelper.Watermark="Log levels"
+                            AutomationProperties.AutomationId="DeferredBox"
+                            CommitMode="Deferred"
+                            Items="{Binding Path=LogLevels}"
+                            SelectedKeys="{Binding Path=SelectedDeferredLogLevels}" />
+                        <TextBlock
+                            x:Name="DeferredLog"
+                            Margin="0,10,0,0"
+                            AutomationProperties.AutomationId="DeferredLog"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  Groups  -->
+                <atc:GroupBoxExpander Header="Grouped items: a group header ticks or unticks its shown items">
+                    <atc:MultiSelectComboBox
+                        Width="240"
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        atc:TextBoxHelper.Watermark="Foods"
+                        DisplayMode="Chips"
+                        IsFilterVisible="True"
+                        ItemGroups="{Binding Path=FoodGroups}"
+                        Items="{Binding Path=Foods}"
+                        SelectedKeys="{Binding Path=SelectedFoods}" />
                 </atc:GroupBoxExpander>
 
                 <!--  Live data  -->
