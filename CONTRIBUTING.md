@@ -36,8 +36,7 @@ dotnet run --project sample/Atc.Wpf.Sample
    See [`CLAUDE.md`](CLAUDE.md#testing) for the full list of test projects and per-project filter syntax.
 3. **Add or update tests** for the change. Functional coverage is uneven across the libraries — new tests are always welcome.
 4. **Update relevant readmes.** Each control may have a `[Control]_Readme.md` next to its source — update it if behaviour or properties change. See the **Control Readme Conventions** section in [`CLAUDE.md`](CLAUDE.md) for the discovery rules.
-5. **Add a `CHANGELOG.md` entry** under the `[Unreleased]` section using Keep-a-Changelog phrasing.
-6. **Use Conventional Commits** for commit messages (e.g. `fix(controls): …`, `feat(theming): …`, `perf(layouts): …`, `docs(forms): …`).
+5. **Use Conventional Commits** for commit messages (e.g. `fix(controls): …`, `feat(theming): …`, `perf(layouts): …`, `docs(forms): …`). Don't edit `CHANGELOG.md` by hand: [release-please](https://github.com/googleapis/release-please) writes it from the commit messages when a release is cut.
 
 ## 🛡️ Public API compatibility
 
