@@ -70,7 +70,7 @@ public sealed partial class CheckTreeNode : ObservableObject
     }
 
     /// <summary>
-    /// Gets the selection key of the node; unique in the tree.
+    /// Gets the selection key of the node; unique in the tree (adding another node with the same key throws an <see cref="InvalidOperationException"/>).
     /// </summary>
     public string Key { get; init; } = string.Empty;
 

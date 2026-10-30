@@ -56,7 +56,7 @@ public ObservableCollection<string> PermissionKeys { get; set; } = [];
 
 | Member | Type | Description |
 |---|---|---|
-| `Key` | `string` (init) | The selection key; unique in the tree. |
+| `Key` | `string` (init) | The selection key; unique in the tree (a second node with the same key throws an `InvalidOperationException`). |
 | `Text` | `string` | The display text, UI Automation name and what the filter matches. |
 | `Icon` | `object?` | Optional content shown before the text. |
 | `IsEnabled` | `bool` | `false`: the node cannot be toggled and keeps its state. |

@@ -337,6 +337,56 @@ public sealed class CheckTreeStateTests
     }
 
     [Fact]
+    public void Two_nodes_with_the_same_key_in_the_roots_throw_naming_the_key()
+    {
+        var sut = new CheckTreeState();
+        var roots = new System.Collections.ObjectModel.ObservableCollection<CheckTreeNode>
+        {
+            new("dk", "Denmark") { Children = { new CheckTreeNode("cph", "Copenhagen") } },
+            new("se", "Sweden") { Children = { new CheckTreeNode("cph", "Copenhagen (SE)") } },
+        };
+
+        var exception = Assert.Throws<InvalidOperationException>(() => sut.SetRoots(roots));
+
+        Assert.Contains("'cph'", exception.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Adding_a_child_with_a_key_already_in_the_tree_throws_naming_the_key()
+    {
+        var sut = CreateRegions();
+
+        var exception = Assert.Throws<InvalidOperationException>(
+            () => sut.Find("se")!.Children.Add(new CheckTreeNode("dk-cph", "Copenhagen")));
+
+        Assert.Contains("'dk-cph'", exception.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Lazy_children_and_a_node_moved_back_into_the_tree_keep_their_keys()
+    {
+        var lazy = new CheckTreeNode("lazy", "Lazy") { HasUnloadedChildren = true };
+        var other = new CheckTreeNode("other", "Other");
+        var sut = Create(CheckedKeysStrategy.Leaves, lazy, other);
+        var child = new CheckTreeNode("lazy-a", "A");
+
+        lazy.Children.Add(child);
+        lazy.Children.Add(new CheckTreeNode("lazy-b", "B"));
+        lazy.Children.Remove(child);
+        other.Children.Add(child);
+        other.Children.Remove(child);
+        lazy.Children.Insert(0, child);
+        lazy.Children.Move(0, 1);
+
+        Assert.Same(child, sut.Find("lazy-a"));
+        Assert.Equal(4, sut.NodeCount);
+
+        sut.Toggle(child);
+
+        Assert.Equal(["lazy-a"], sut.GetKeys());
+    }
+
+    [Fact]
     public void Deferred_structure_changes_are_handled_once_per_parent()
     {
         var lazy = new CheckTreeNode("lazy", "Lazy");

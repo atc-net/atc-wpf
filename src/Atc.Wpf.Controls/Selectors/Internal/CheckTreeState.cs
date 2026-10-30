@@ -635,6 +635,13 @@ internal sealed class CheckTreeState
             throw new InvalidOperationException($"The node '{node.Key}' is in the tree more than once.");
         }
 
+        if (nodesByKey.TryGetValue(node.Key, out var existing) && !ReferenceEquals(existing, node))
+        {
+            // Keys identify the nodes in SelectedKeys: two nodes with one key could not be ticked independently.
+            throw new InvalidOperationException(
+                $"Another node with the key '{node.Key}' is already in the tree; every node needs a unique key.");
+        }
+
         var info = new NodeInfo
         {
             Parent = parent,
