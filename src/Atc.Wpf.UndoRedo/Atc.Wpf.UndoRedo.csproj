@@ -8,15 +8,10 @@
     <PackageId>Atc.Wpf.UndoRedo</PackageId>
     <PackageTags>wpf;undo;redo;history;mvvm</PackageTags>
     <Description>WPF undo/redo UI components (history view, keyboard behavior) on top of the Atc.UndoRedo service.</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
     <!-- Every public member is documented: report missing XML comments. -->
     <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="3.0.186" />

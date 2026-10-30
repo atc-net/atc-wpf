@@ -14,10 +14,13 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/$(OrganizationName)/$(RepositoryName)</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
+    <!-- Each package ships its own nuget.org readme (absolute links only), not the repository README. -->
+    <PackageReadmeFile>README.nuget.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="README.nuget.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <PropertyGroup Label="Build instructions">

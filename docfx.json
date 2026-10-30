@@ -51,7 +51,8 @@
         ],
         "exclude": [
           "**/bin/**",
-          "**/obj/**"
+          "**/obj/**",
+          "**/README.nuget.md"
         ],
         "src": "src",
         "dest": "Controls"

@@ -8,15 +8,10 @@
     <PackageId>Atc.Wpf.Theming</PackageId>
     <PackageTags>wpf;theming;styles;light-theme;dark-theme</PackageTags>
     <Description>WPF theming library providing light and dark themes with customizable styles for WPF applications.</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);SYSLIB0051;CS0169;CS0649;CS8618;CA1823</NoWarn>
     <!-- Every public member is documented: report missing XML comments. -->
     <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />

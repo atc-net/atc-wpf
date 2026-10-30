@@ -8,15 +8,10 @@
     <PackageId>Atc.Wpf.Controls</PackageId>
     <PackageTags>wpf;controls;input;picker;layout;progress</PackageTags>
     <Description>WPF control library providing atomic UI controls including input controls, pickers, layouts, and progress indicators.</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
     <!-- Every public member is documented: report missing XML comments. -->
     <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Resources\collapse.svg" />
