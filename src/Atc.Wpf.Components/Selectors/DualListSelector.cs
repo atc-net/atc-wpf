@@ -52,6 +52,7 @@ public sealed partial class DualListSelector : Control
     private TextBlock? selectedHeaderCount;
     private bool isGroupingPending;
     private bool isSyncingSelectAll;
+    private int transferDepth;
     private Point? dragStartPoint;
     private ListBox? dragSourceListBox;
     private DragDropAdorner? dragAdorner;
@@ -235,10 +236,16 @@ public sealed partial class DualListSelector : Control
     /// </summary>
     public DualListSelector()
     {
-        AvailableItems = [];
-        SelectedItems = [];
+        // Range-capable, so a transfer of many items reaches the lists as one Reset instead of one event per item.
+        AvailableItems = new ObservableCollectionEx<DualListSelectorItem>();
+        SelectedItems = new ObservableCollectionEx<DualListSelectorItem>();
         ListMaxHeight = double.PositiveInfinity;
     }
+
+    /// <summary>
+    /// Gets how many times the item counts, empty texts and header counts were brought up to date (a test hook for bulk transfers).
+    /// </summary>
+    internal int ItemCountUpdateCount { get; private set; }
 
     /// <summary>
     /// Occurs when items are transferred between lists.
@@ -566,29 +573,8 @@ public sealed partial class DualListSelector : Control
             return false;
         }
 
-        foreach (var item in itemsToMove)
-        {
-            AvailableItems.Remove(item);
-
-            if (insertIndex >= 0 && insertIndex <= SelectedItems.Count)
-            {
-                SelectedItems.Insert(insertIndex, item);
-                insertIndex++;
-            }
-            else
-            {
-                SelectedItems.Add(item);
-            }
-        }
-
-        if (clearFilters)
-        {
-            ClearFilters();
-        }
-
-        RecalculateSortOrder();
+        Transfer(itemsToMove, availableListBox, AvailableItems, SelectedItems, insertIndex, clearFilters);
         RaiseItemsTransferred(itemsToMove, DualListSelectorTransferDirection.ToSelected);
-        UpdateItemCounts();
         selectedListBox?.Focus();
         return true;
     }
@@ -607,20 +593,8 @@ public sealed partial class DualListSelector : Control
             return false;
         }
 
-        foreach (var item in itemsToMove)
-        {
-            SelectedItems.Remove(item);
-            AvailableItems.Add(item);
-        }
-
-        if (clearFilters)
-        {
-            ClearFilters();
-        }
-
-        RecalculateSortOrder();
+        Transfer(itemsToMove, selectedListBox, SelectedItems, AvailableItems, insertIndex: -1, clearFilters);
         RaiseItemsTransferred(itemsToMove, DualListSelectorTransferDirection.ToAvailable);
-        UpdateItemCounts();
         if (focusAvailable)
         {
             availableListBox?.Focus();
@@ -631,6 +605,181 @@ public sealed partial class DualListSelector : Control
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Moves <paramref name="itemsToMove"/> (in that order) from <paramref name="source"/> to <paramref name="target"/>,
+    /// at <paramref name="insertIndex"/> or at the end. The counts are brought up to date once, after the move,
+    /// and each list gets one Reset when its collection is an <see cref="ObservableCollectionEx{T}"/>.
+    /// </summary>
+    private void Transfer(
+        List<DualListSelectorItem> itemsToMove,
+        ListBox? sourceListBox,
+        ObservableCollection<DualListSelectorItem> source,
+        ObservableCollection<DualListSelectorItem> target,
+        int insertIndex,
+        bool clearFilters)
+    {
+        var moving = new HashSet<DualListSelectorItem>(itemsToMove, ReferenceEqualityComparer.Instance);
+
+        transferDepth++;
+        try
+        {
+            var keptHighlight = DropHighlight(sourceListBox, moving);
+            RemoveItems(source, moving);
+            InsertItems(target, itemsToMove, insertIndex);
+            RestoreHighlight(sourceListBox, keptHighlight);
+
+            if (clearFilters)
+            {
+                ClearFilters();
+            }
+
+            RecalculateSortOrder();
+        }
+        finally
+        {
+            transferDepth--;
+        }
+
+        UpdateItemCounts();
+    }
+
+    /// <summary>
+    /// Unhighlights the rows about to leave <paramref name="listBox"/> in one selection change (rather than one per
+    /// removed row) and returns the highlighted rows that stay.
+    /// </summary>
+    private static List<DualListSelectorItem> DropHighlight(
+        ListBox? listBox,
+        HashSet<DualListSelectorItem> moving)
+    {
+        if (listBox is null || listBox.SelectedItems.Count == 0)
+        {
+            return [];
+        }
+
+        var kept = listBox.SelectedItems
+            .Cast<DualListSelectorItem>()
+            .Where(i => !moving.Contains(i))
+            .ToList();
+        if (kept.Count == listBox.SelectedItems.Count)
+        {
+            // No highlighted row moves (e.g. the × of a row that is not highlighted): the selection stays as it is.
+            return [];
+        }
+
+        listBox.UnselectAll();
+        return kept;
+    }
+
+    private static void RestoreHighlight(
+        ListBox? listBox,
+        List<DualListSelectorItem> kept)
+    {
+        if (listBox is null || kept.Count == 0)
+        {
+            return;
+        }
+
+        if (listBox.SelectionMode == SelectionMode.Single)
+        {
+            listBox.SelectedItem = kept[0];
+            return;
+        }
+
+        foreach (var item in kept)
+        {
+            listBox.SelectedItems.Add(item);
+        }
+    }
+
+    private static void RemoveItems(
+        ObservableCollection<DualListSelectorItem> items,
+        HashSet<DualListSelectorItem> moving)
+    {
+        var indexes = new List<int>(moving.Count);
+        for (var i = 0; i < items.Count; i++)
+        {
+            if (moving.Contains(items[i]))
+            {
+                indexes.Add(i);
+            }
+        }
+
+        if (indexes.Count == 0)
+        {
+            return;
+        }
+
+        if (items is ObservableCollectionEx<DualListSelectorItem> rangeItems)
+        {
+            ReplaceAll(rangeItems, rangeItems.Where(i => !moving.Contains(i)).ToList());
+        }
+        else if (indexes.Count == items.Count)
+        {
+            items.Clear();
+        }
+        else
+        {
+            // From the end, so the earlier indexes stay valid and each removal only shifts the tail.
+            for (var i = indexes.Count - 1; i >= 0; i--)
+            {
+                items.RemoveAt(indexes[i]);
+            }
+        }
+    }
+
+    private static void InsertItems(
+        ObservableCollection<DualListSelectorItem> items,
+        List<DualListSelectorItem> itemsToInsert,
+        int insertIndex)
+    {
+        var atIndex = insertIndex >= 0 && insertIndex <= items.Count;
+
+        if (items is ObservableCollectionEx<DualListSelectorItem> rangeItems)
+        {
+            var content = new List<DualListSelectorItem>(rangeItems.Count + itemsToInsert.Count);
+            content.AddRange(rangeItems);
+            content.InsertRange(atIndex ? insertIndex : content.Count, itemsToInsert);
+            ReplaceAll(rangeItems, content);
+            return;
+        }
+
+        foreach (var item in itemsToInsert)
+        {
+            if (atIndex)
+            {
+                items.Insert(insertIndex++, item);
+            }
+            else
+            {
+                items.Add(item);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Replaces the content of <paramref name="items"/> with <paramref name="content"/> and raises one Reset
+    /// (or none, when the owner of the collection already suppresses its notifications).
+    /// </summary>
+    private static void ReplaceAll(
+        ObservableCollectionEx<DualListSelectorItem> items,
+        List<DualListSelectorItem> content)
+    {
+        var wasSuppressed = items.SuppressOnChangedNotification;
+        items.SuppressOnChangedNotification = true;
+        try
+        {
+            items.Clear();
+            foreach (var item in content)
+            {
+                items.Add(item);
+            }
+        }
+        finally
+        {
+            items.SuppressOnChangedNotification = wasSuppressed;
+        }
     }
 
     private static bool CanLeaveSelected(DualListSelectorItem item)
@@ -1092,6 +1241,11 @@ public sealed partial class DualListSelector : Control
 
     private void UpdateHeaderCounts()
     {
+        if (transferDepth > 0)
+        {
+            return;
+        }
+
         UpdateHeaderCount(AvailableItems, availableListBox, availableSelectAll, availableHeaderCount);
         UpdateHeaderCount(SelectedItems, selectedListBox, selectedSelectAll, selectedHeaderCount);
     }
@@ -1600,7 +1754,12 @@ public sealed partial class DualListSelector : Control
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems?.OfType<DualListSelectorItem>().Any(i => i.Group is not null) == true &&
+        // A Reset (a range change) carries no new items, so the whole collection is checked then.
+        var added = e.Action == NotifyCollectionChangedAction.Reset
+            ? sender as IEnumerable
+            : e.NewItems;
+
+        if (added?.OfType<DualListSelectorItem>().Any(i => i.Group is not null) == true &&
             sender is ObservableCollection<DualListSelectorItem> items &&
             CollectionViewSource.GetDefaultView(items)?.GroupDescriptions.OfType<OwnGroupDescription>().Any() == false)
         {
@@ -1629,6 +1788,14 @@ public sealed partial class DualListSelector : Control
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - Item count and empty text update.")]
     private void UpdateItemCounts()
     {
+        // A transfer brings the counts up to date once, when it is done.
+        if (transferDepth > 0)
+        {
+            return;
+        }
+
+        ItemCountUpdateCount++;
+
         if (availableItemCount is not null)
         {
             var view = CollectionViewSource.GetDefaultView(AvailableItems);

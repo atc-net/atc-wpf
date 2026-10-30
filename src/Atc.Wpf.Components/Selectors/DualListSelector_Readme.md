@@ -196,6 +196,7 @@ VisibleColumns.Add(new DualListSelectorItem { Identifier = "id", Name = "Id", Is
 - In `CheckBox` style a checked row is a picked row (the list box selection), so the transfer buttons move the checked rows. **Select all** checks the shown (filtered) enabled rows, or unchecks all when they all are checked; rows hidden by a filter are unchecked
 - Virtualization needs a bounded list height (e.g. `ListMaxHeight`); in a `ScrollViewer` or `StackPanel` without one, every row is realized
 - With grouping, the filter keeps only the groups that have matches
+- A transfer of many items updates the counts once. The control's own `AvailableItems` / `SelectedItems` are `ObservableCollectionEx<DualListSelectorItem>`, so each list gets one `Reset` per transfer; bind your own `ObservableCollectionEx` to keep that, as a plain `ObservableCollection` gets one change per moved item (or one `Reset` when it is emptied)
 - `ItemsTransferred` is raised once per action (button, key, double-click, drop or ×)
 - Items with `IsEnabled = false` appear grayed out and cannot be selected or transferred
 - `Tag` can hold arbitrary user data attached to an item
