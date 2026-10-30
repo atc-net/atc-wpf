@@ -134,6 +134,9 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelChipGroup labelChipGroup:
                     result.Add(control.GetFullIdentifier(), (labelChipGroup.SelectedKeys ?? []).ToList());
                     break;
+                case LabelTokenBox labelTokenBox:
+                    result.Add(control.GetFullIdentifier(), (labelTokenBox.SelectedKeys ?? []).ToList());
+                    break;
                 case LabelDecimalBox labelDecimalBox:
                     result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
                     break;

@@ -148,6 +148,43 @@ public static class LabelControlFactory
     }
 
     /// <summary>
+    /// Creates a <see cref="LabelTokenBox"/> with the given label, known values and tokens.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the field is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one token is required.</param>
+    /// <param name="items">The known values, keyed by their selection key, with their display value.</param>
+    /// <param name="selectedKeys">The tokens initially, or <see langword="null"/> for none.</param>
+    /// <param name="allowCreate">Whether text that matches no item becomes a new token.</param>
+    /// <returns>The created control.</returns>
+    public static LabelTokenBox CreateLabelTokenBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IDictionary<string, string> items,
+        IEnumerable<string>? selectedKeys,
+        bool allowCreate = false)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(items);
+
+        var control = new LabelTokenBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            AllowCreate = allowCreate,
+            Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
+            SelectedKeys = new ObservableCollection<string>(selectedKeys ?? []),
+        };
+
+        return control;
+    }
+
+    /// <summary>
     /// Creates a <see cref="LabelChipGroup"/> with the given label, items and selected keys.
     /// </summary>
     /// <param name="groupIdentifier">The group identifier.</param>
