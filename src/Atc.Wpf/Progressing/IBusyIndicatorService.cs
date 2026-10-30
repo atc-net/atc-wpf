@@ -42,6 +42,11 @@ public interface IBusyIndicatorService
     /// <summary>
     /// Runs an async operation with automatic busy overlay lifecycle.
     /// </summary>
+    /// <remarks>
+    /// When the user presses the Cancel button, the <see cref="OperationCanceledException"/> it causes is
+    /// swallowed and the task completes. Any other exception, including an <see cref="OperationCanceledException"/>
+    /// from another token (for example an HTTP timeout), reaches the caller. The overlay is hidden in both cases.
+    /// </remarks>
     /// <param name="operation">The async operation receiving a progress reporter and cancellation token.</param>
     /// <param name="message">Optional message to display.</param>
     /// <param name="regionName">Optional region name for targeting a specific BusyOverlay.</param>
@@ -55,12 +60,18 @@ public interface IBusyIndicatorService
     /// <summary>
     /// Runs an async operation with automatic busy overlay lifecycle and a return value.
     /// </summary>
+    /// <remarks>
+    /// When the user presses the Cancel button, the <see cref="OperationCanceledException"/> it causes is
+    /// swallowed and the task returns <see langword="default"/>. Any other exception, including an
+    /// <see cref="OperationCanceledException"/> from another token (for example an HTTP timeout), reaches the
+    /// caller. The overlay is hidden in both cases.
+    /// </remarks>
     /// <typeparam name="T">The return type of the operation.</typeparam>
     /// <param name="operation">The async operation receiving a progress reporter and cancellation token.</param>
     /// <param name="message">Optional message to display.</param>
     /// <param name="regionName">Optional region name for targeting a specific BusyOverlay.</param>
     /// <param name="allowCancellation">If true, a Cancel button is shown.</param>
-    /// <returns>The result of the operation.</returns>
+    /// <returns>The result of the operation, or <see langword="default"/> when the user cancelled it.</returns>
     Task<T> RunAsync<T>(
         Func<IProgress<BusyInfo>, CancellationToken, Task<T>> operation,
         string message = "",

@@ -117,6 +117,7 @@ await busyService.RunAsync(
 - If a named region is not found, the service falls back to the default (empty name) region
 - Progress display format: `"Message 50%"` when percentage is set, `"Message"` otherwise
 - Cancellation creates a `CancellationTokenSource` per session, disposed on hide
+- `RunAsync` swallows only the `OperationCanceledException` caused by its own Cancel button (`RunAsync<T>` then returns `default`). An `OperationCanceledException` from any other token, such as an `HttpClient` timeout, reaches the caller
 - Multiple overlays can share the same region name
 
 ## Related Controls
