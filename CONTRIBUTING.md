@@ -39,6 +39,10 @@ dotnet run --project sample/Atc.Wpf.Sample
 5. **Add a `CHANGELOG.md` entry** under the `[Unreleased]` section using Keep-a-Changelog phrasing.
 6. **Use Conventional Commits** for commit messages (e.g. `fix(controls): …`, `feat(theming): …`, `perf(layouts): …`, `docs(forms): …`).
 
+## 🛡️ Public API compatibility
+
+`dotnet pack` runs package validation against the last published release (`PackageValidationBaselineVersion` in `src/Directory.Build.props`), and CI packs on every pull request, so a removed or changed public member fails the build. If a break is intentional, run `dotnet pack -c Release -p:GenerateCompatibilitySuppressionFile=true`, review the generated `CompatibilitySuppressions.xml` next to the project, and commit it. After a release, bump `PackageValidationBaselineVersion` to the version just published and delete the suppression files, since they only apply to the old baseline.
+
 ## 🧱 Project structure
 
 The repo is organised as a four-tier control library:

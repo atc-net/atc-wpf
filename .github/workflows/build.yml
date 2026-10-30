@@ -30,6 +30,11 @@ jobs:
       - name: 🛠️ Build solution
         run: dotnet build Atc.Wpf.slnx -c Release --no-restore
 
+      # Packing runs package validation: it fails on a public API break against the
+      # baseline version set in src/Directory.Build.props.
+      - name: 🔍 Validate package API compatibility
+        run: dotnet pack Atc.Wpf.slnx -c Release --no-build -o "${{ runner.temp }}\packages"
+
   dotnet-test:
     runs-on: windows-latest
     needs: dotnet-build
