@@ -282,6 +282,138 @@ public sealed class SegmentedTests : IDisposable
     }
 
     [StaFact]
+    public void Single_inserting_a_segment_before_the_selected_one_keeps_the_selected_key()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Single);
+        sut.Items[2].PerformClick();
+        var selected = sut.Items[2];
+        var events = Record(sut);
+
+        sut.Items.Insert(0, new SegmentedItem { Key = "sun", Content = "Sun" });
+
+        Assert.Equal(["wed"], sut.SelectedKeys);
+        Assert.Equal(3, sut.SelectedIndex);
+        Assert.Same(selected, sut.SelectedItem);
+        Assert.True(selected.IsSelected);
+        Assert.False(sut.Items[2].IsSelected);
+        Assert.Equal([selected], sut.SelectedItems);
+        Assert.Empty(events);
+    }
+
+    [StaFact]
+    public void Single_removing_a_segment_before_the_selected_one_keeps_the_selected_key()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Single);
+        sut.Items[2].PerformClick();
+        var events = Record(sut);
+
+        sut.Items.RemoveAt(0);
+
+        Assert.Equal(["wed"], sut.SelectedKeys);
+        Assert.Equal(1, sut.SelectedIndex);
+        Assert.True(sut.Items[1].IsSelected);
+        Assert.Empty(events);
+    }
+
+    [StaFact]
+    public void Single_removing_the_selected_segment_clears_the_selection_in_one_event()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Single);
+        sut.Items[2].PerformClick();
+        var events = Record(sut);
+
+        sut.Items.RemoveAt(2);
+
+        Assert.Empty(sut.SelectedKeys);
+        Assert.Equal(-1, sut.SelectedIndex);
+        Assert.Null(sut.SelectedItem);
+        Assert.DoesNotContain(sut.Items, x => x.IsSelected);
+        var e = Assert.Single(events);
+        Assert.Equal(["wed"], e.OldValue);
+        Assert.Empty(e.NewValue);
+    }
+
+    [StaFact]
+    public void Single_changing_the_key_of_the_selected_segment_updates_the_key_in_one_event()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Single);
+        sut.Items[2].PerformClick();
+        var events = Record(sut);
+
+        sut.Items[2].Key = "wednesday";
+
+        Assert.Equal(["wednesday"], sut.SelectedKeys);
+        Assert.Equal(2, sut.SelectedIndex);
+        var e = Assert.Single(events);
+        Assert.Equal(["wed"], e.OldValue);
+        Assert.Equal(["wednesday"], e.NewValue);
+    }
+
+    [StaFact]
+    public void Single_selected_index_set_before_the_items_raises_one_event_when_the_item_arrives()
+    {
+        var sut = new Segmented { SelectedIndex = 1 };
+        var events = Record(sut);
+
+        sut.Items.Add(new SegmentedItem { Content = "A" });
+        sut.Items.Add(new SegmentedItem { Content = "B" });
+
+        Assert.Equal(["B"], sut.SelectedKeys);
+        var e = Assert.Single(events);
+        Assert.Empty(e.OldValue);
+        Assert.Equal(["B"], e.NewValue);
+    }
+
+    [StaFact]
+    public void Multiple_removing_a_selected_segment_drops_its_key_in_one_event()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Multiple);
+        sut.Items[0].PerformClick();
+        sut.Items[2].PerformClick();
+        sut.Items[4].PerformClick();
+        var events = Record(sut);
+
+        sut.Items.RemoveAt(2);
+
+        Assert.Equal(["mon", "fri"], sut.SelectedKeys);
+        Assert.Equal([sut.Items[0], sut.Items[3]], sut.SelectedItems);
+        var e = Assert.Single(events);
+        Assert.Equal(["mon", "wed", "fri"], e.OldValue);
+        Assert.Equal(["mon", "fri"], e.NewValue);
+    }
+
+    [StaFact]
+    public void Multiple_clearing_the_segments_drops_their_keys_but_keeps_keys_without_a_segment()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Multiple);
+        sut.SelectedKeys.Add("tue");
+        sut.SelectedKeys.Add("sat");
+        var events = Record(sut);
+
+        sut.Items.Clear();
+
+        Assert.Equal(["sat"], sut.SelectedKeys);
+        var e = Assert.Single(events);
+        Assert.Equal(["tue", "sat"], e.OldValue);
+        Assert.Equal(["sat"], e.NewValue);
+    }
+
+    [StaFact]
+    public void Multiple_inserting_a_segment_keeps_the_keys_without_an_event()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Multiple);
+        sut.Items[1].PerformClick();
+        var events = Record(sut);
+
+        sut.Items.Insert(0, new SegmentedItem { Key = "sun", Content = "Sun" });
+
+        Assert.Equal(["tue"], sut.SelectedKeys);
+        Assert.True(sut.Items[2].IsSelected);
+        Assert.Equal(2, sut.SelectedIndex);
+        Assert.Empty(events);
+    }
+
+    [StaFact]
     public void Switching_from_multiple_to_single_keeps_only_the_most_recent_item()
     {
         var sut = CreateWeekdays(SegmentedSelectionMode.Multiple);

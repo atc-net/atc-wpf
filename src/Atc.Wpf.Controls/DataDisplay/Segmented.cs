@@ -23,6 +23,7 @@ public sealed partial class Segmented : Control
     private bool isWritingSelectedKeys;
     private bool isSyncingFromKeys;
     private ObservableCollection<string>? subscribedSelectedKeys;
+    private HashSet<string> itemKeySet = new(StringComparer.Ordinal);
 
     /// <summary>
     /// The index of the currently selected segment (-1 means none). In <see cref="SegmentedSelectionMode.Multiple"/>
@@ -534,31 +535,86 @@ public sealed partial class Segmented : Control
         }
     }
 
+    /// <summary>
+    /// Re-syncs the selection after the segments or their keys changed. The selection follows the keys, not the
+    /// positions: keys of segments that are gone are dropped (with one <see cref="SelectedKeysChanged"/>), keys that
+    /// never had a segment are kept so segments added later pick them up.
+    /// </summary>
     private void SyncAfterItemsChanged()
     {
+        var oldItemKeys = itemKeySet;
+        itemKeySet = new HashSet<string>(
+            Items.Select(x => x.EffectiveKey).OfType<string>(),
+            StringComparer.Ordinal);
+
+        var oldKeys = GetCurrentKeys();
+        var keys = oldKeys
+            .Where(x => !oldItemKeys.Contains(x) || itemKeySet.Contains(x))
+            .ToList();
+        var hasStaleKeys = keys.Count != oldKeys.Count;
+
         if (SelectionMode == SegmentedSelectionMode.Multiple)
         {
+            var multipleChanged = WriteKeys(keys);
             SyncItemsFromKeys();
+            if (multipleChanged)
+            {
+                RaiseSelectedKeysChanged(oldKeys);
+            }
+
             return;
         }
 
-        var item = GetItemAt(SelectedIndex);
-        if (item is not null)
+        if (GetSingleIndexAfterItemsChanged(keys, hasStaleKeys) is not { } index)
         {
-            ApplySingleSelectionFlags(SelectedIndex);
-            SetSelectedItemSilently(item);
-            WriteKeys(item.EffectiveKey is { } key ? [key] : []);
+            // Nothing to select yet: keep SelectedIndex for segments added later.
+            ApplySingleSelectionFlags(-1);
+            SetSelectedItemSilently(null);
             return;
         }
 
-        if (GetCurrentKeys().Any(x => IndexOfKey(x) >= 0))
+        var item = GetItemAt(index);
+        if (item?.EffectiveKey is { } key)
         {
-            SyncFromExternalKeys();
-            return;
+            keys = [key];
         }
 
-        ApplySingleSelectionFlags(-1);
-        SetSelectedItemSilently(null);
+        SetSelectedIndexSilently(index);
+        ApplySingleSelectionFlags(index);
+        if (WriteKeys(keys))
+        {
+            RaiseSelectedKeysChanged(oldKeys);
+        }
+    }
+
+    /// <summary>
+    /// Single modes: returns the index to select after the segments changed (-1 for none), or
+    /// <see langword="null"/> when there is nothing to select yet.
+    /// </summary>
+    private int? GetSingleIndexAfterItemsChanged(
+        IReadOnlyList<string> keys,
+        bool hasStaleKeys)
+    {
+        var index = keys
+            .Select(IndexOfKey)
+            .FirstOrDefault(x => x >= 0, -1);
+        if (index >= 0)
+        {
+            return index;
+        }
+
+        if (hasStaleKeys)
+        {
+            // The key of the selected segment is gone: keep the segment when it is still there (its key changed).
+            return SelectedItem is { } selected
+                ? Items.IndexOf(selected)
+                : -1;
+        }
+
+        // SelectedIndex may have been set before the segments were added.
+        return GetItemAt(SelectedIndex) is not null
+            ? SelectedIndex
+            : null;
     }
 
     private void SetSelectedIndexSilently(int index)

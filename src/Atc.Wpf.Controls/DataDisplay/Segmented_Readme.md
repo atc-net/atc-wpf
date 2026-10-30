@@ -215,7 +215,8 @@ The text ("Bold") is hidden; it becomes the tooltip (unless the segment has its 
 - Corner radius is applied to the first and last segments to create one pill shape: left / right when horizontal, top / bottom when vertical; every pill gets the full radius when `IsJoined` is `false`
 - Disabled items are skipped during keyboard navigation and cannot be toggled
 - Separators are rendered between joined items and hidden next to a selected segment
-- `SelectedKeys` is kept in sync in every mode; keys without a matching segment are kept (segments added later pick them up)
+- `SelectedKeys` is kept in sync in every mode; keys without a matching segment are kept (segments added later pick them up), while the keys of removed segments are dropped with one `SelectedKeysChanged`
+- The selection follows the key, not the position: inserting or removing other segments keeps the selected segment (and moves `SelectedIndex`); removing the selected segment in a single mode clears the selection
 - Switching from `Multiple` to a single mode keeps only the most recently selected segment
 - In `Multiple`, setting `SelectedIndex` from outside selects that segment as well; setting it to `-1` leaves the selection as it is
 - `SelectedIndex` and `SelectedItem` support two-way binding and journaling
