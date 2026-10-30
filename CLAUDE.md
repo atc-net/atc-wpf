@@ -9,7 +9,7 @@ ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
 - **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls, selectors incl. the `CheckListBox` multi-select list, the `MultiSelectComboBox` multi-select drop-down, the `TokenBox` tag input with suggestions and the tri-state check trees `CheckTreeView` / `TreeSelectComboBox`; data display incl. the `ChipGroup` toggle-chip filter)
 - **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation, incl. `LabelCheckListBox`, `LabelMultiSelectComboBox`, `LabelChipGroup`, `LabelTokenBox` and `LabelTreeSelectComboBox`) plus the bare `TimeZonePicker` / `LabelTimeZonePicker` (system-locale picker, no hardware involvement)
-- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser)
+- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser, the `DualListSelector` transfer list with check-box style, one-way mode, locked items, a limit and virtualization)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
 - **Atc.Wpf.Network** - Network scanning and discovery controls (wraps external `Atc.Network`)

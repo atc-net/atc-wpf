@@ -70,6 +70,15 @@ namespace Atc.Wpf.Components.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}/{1}.
+        /// </summary>
+        public static string HeaderCountFormat2 {
+            get {
+                return ResourceManager.GetString("HeaderCountFormat2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} of {1}.
         /// </summary>
         public static string ItemCountFilteredFormat2 {
@@ -84,6 +93,15 @@ namespace Atc.Wpf.Components.Resources {
         public static string ItemCountFormat1 {
             get {
                 return ResourceManager.GetString("ItemCountFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked.
+        /// </summary>
+        public static string Locked {
+            get {
+                return ResourceManager.GetString("Locked", resourceCulture);
             }
         }
         

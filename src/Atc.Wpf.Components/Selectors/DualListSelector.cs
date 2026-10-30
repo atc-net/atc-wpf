@@ -18,8 +18,17 @@ namespace Atc.Wpf.Components.Selectors;
 [TemplatePart(Name = PART_SelectedItemCount, Type = typeof(TextBlock))]
 [TemplatePart(Name = PART_AvailableEmptyText, Type = typeof(TextBlock))]
 [TemplatePart(Name = PART_SelectedEmptyText, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_AvailableSelectAll, Type = typeof(CheckBox))]
+[TemplatePart(Name = PART_SelectedSelectAll, Type = typeof(CheckBox))]
+[TemplatePart(Name = PART_AvailableHeaderCount, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_SelectedHeaderCount, Type = typeof(TextBlock))]
 public sealed partial class DualListSelector : Control
 {
+    private const string PART_AvailableSelectAll = "PART_AvailableSelectAll";
+    private const string PART_SelectedSelectAll = "PART_SelectedSelectAll";
+    private const string PART_AvailableHeaderCount = "PART_AvailableHeaderCount";
+    private const string PART_SelectedHeaderCount = "PART_SelectedHeaderCount";
+
     private const string PART_AvailableListBox = "PART_AvailableListBox";
     private const string PART_SelectedListBox = "PART_SelectedListBox";
     private const string PART_AvailableFilterTextBox = "PART_AvailableFilterTextBox";
@@ -37,6 +46,12 @@ public sealed partial class DualListSelector : Control
     private TextBlock? selectedItemCount;
     private TextBlock? availableEmptyText;
     private TextBlock? selectedEmptyText;
+    private CheckBox? availableSelectAll;
+    private CheckBox? selectedSelectAll;
+    private TextBlock? availableHeaderCount;
+    private TextBlock? selectedHeaderCount;
+    private bool isGroupingPending;
+    private bool isSyncingSelectAll;
     private Point? dragStartPoint;
     private ListBox? dragSourceListBox;
     private DragDropAdorner? dragAdorner;
@@ -154,8 +169,54 @@ public sealed partial class DualListSelector : Control
     /// <summary>
     /// Whether to show an item count below each list.
     /// </summary>
-    [DependencyProperty(DefaultValue = false)]
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnStateChanged))]
     private bool showItemCount;
+
+    /// <summary>
+    /// How the rows show that they are picked: highlighted (the default) or with a check box per row
+    /// and a tri-state "Select all" check box with a "checked / total" count in each list header.
+    /// </summary>
+    [DependencyProperty(DefaultValue = DualListItemSelectionStyle.Highlight, PropertyChangedCallback = nameof(OnStateChanged))]
+    private DualListItemSelectionStyle itemSelectionStyle;
+
+    /// <summary>
+    /// The format of the "checked / total" count next to each "Select all" check box when
+    /// <see cref="ItemSelectionStyle"/> is <see cref="DualListItemSelectionStyle.CheckBox"/>:
+    /// <c>{0}</c> is the number of checked rows and <c>{1}</c> the number of shown rows.
+    /// <see langword="null"/> uses the translated default <c>"{0}/{1}"</c>.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged))]
+    private string? headerCountFormat;
+
+    /// <summary>
+    /// Whether the selected list is just "what was picked": the "move to available" buttons are hidden,
+    /// each selected row gets a × button and <c>Delete</c> removes the highlighted rows.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnStateChanged))]
+    private bool isOneWay;
+
+    /// <summary>
+    /// The maximum number of items in the selected list; <see langword="null"/> for no limit.
+    /// A transfer that would exceed the limit is blocked (buttons disabled, drop refused),
+    /// and the selected list footer shows "{0} of max {1}".
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged))]
+    private int? maxSelectedCount;
+
+    /// <summary>
+    /// Whether both lists virtualize their rows (with container recycling), so lists of thousands of items stay fast.
+    /// Virtualization needs a bounded list height, e.g. <see cref="ListMaxHeight"/>.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnIsVirtualizingChanged))]
+    private bool isVirtualizing;
+
+    /// <summary>
+    /// The item property to group both lists by (e.g. <c>"Tag"</c> or a property of a derived item);
+    /// <see langword="null"/> groups by <see cref="DualListSelectorItem.Group"/> when an item has one.
+    /// The filter keeps only the groups with matches.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnGroupMemberPathChanged))]
+    private string? groupMemberPath;
 
     /// <summary>
     /// Custom header template for the available list.
@@ -249,6 +310,12 @@ public sealed partial class DualListSelector : Control
                 DualListSelectorCommands.MoveToBottom,
                 OnMoveToBottomExecuted,
                 OnMoveToBottomCanExecute));
+        CommandManager.RegisterClassCommandBinding(
+            typeof(DualListSelector),
+            new CommandBinding(
+                DualListSelectorCommands.RemoveFromSelected,
+                OnRemoveFromSelectedExecuted,
+                OnRemoveFromSelectedCanExecute));
     }
 
     /// <inheritdoc />
@@ -265,6 +332,24 @@ public sealed partial class DualListSelector : Control
         selectedItemCount = GetTemplateChild(PART_SelectedItemCount) as TextBlock;
         availableEmptyText = GetTemplateChild(PART_AvailableEmptyText) as TextBlock;
         selectedEmptyText = GetTemplateChild(PART_SelectedEmptyText) as TextBlock;
+        availableSelectAll = GetTemplateChild(PART_AvailableSelectAll) as CheckBox;
+        selectedSelectAll = GetTemplateChild(PART_SelectedSelectAll) as CheckBox;
+        availableHeaderCount = GetTemplateChild(PART_AvailableHeaderCount) as TextBlock;
+        selectedHeaderCount = GetTemplateChild(PART_SelectedHeaderCount) as TextBlock;
+
+        if (availableSelectAll is not null)
+        {
+            availableSelectAll.Checked += OnSelectAllToggled;
+            availableSelectAll.Unchecked += OnSelectAllToggled;
+            availableSelectAll.Indeterminate += OnSelectAllToggled;
+        }
+
+        if (selectedSelectAll is not null)
+        {
+            selectedSelectAll.Checked += OnSelectAllToggled;
+            selectedSelectAll.Unchecked += OnSelectAllToggled;
+            selectedSelectAll.Indeterminate += OnSelectAllToggled;
+        }
 
         if (availableListBox is not null)
         {
@@ -289,6 +374,8 @@ public sealed partial class DualListSelector : Control
         }
 
         SetupDragDrop();
+        ApplyVirtualization();
+        ApplyGrouping();
         UpdateItemCounts();
     }
 
@@ -314,6 +401,10 @@ public sealed partial class DualListSelector : Control
                 MoveToAvailable();
                 e.Handled = true;
                 break;
+            case Key.Delete when IsOneWay && IsSourcedFrom(e, selectedListBox) && CanMoveToAvailable():
+                TransferToAvailable(GetHighlighted(selectedListBox), clearFilters: false, focusAvailable: false);
+                e.Handled = true;
+                break;
             case Key.Up when Keyboard.Modifiers == ModifierKeys.Control &&
                              IsSourcedFrom(e, selectedListBox) && CanMoveUp():
                 MoveUp();
@@ -327,119 +418,193 @@ public sealed partial class DualListSelector : Control
         }
     }
 
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new DualListSelectorAutomationPeer(this);
+
     internal void MoveToSelected()
-    {
-        if (availableListBox is null)
-        {
-            return;
-        }
-
-        var itemsToMove = availableListBox.SelectedItems
-            .Cast<DualListSelectorItem>()
-            .Where(i => i.IsEnabled)
-            .ToList();
-
-        if (itemsToMove.Count == 0)
-        {
-            return;
-        }
-
-        foreach (var item in itemsToMove)
-        {
-            AvailableItems.Remove(item);
-            SelectedItems.Add(item);
-        }
-
-        RecalculateSortOrder();
-        RaiseItemsTransferred(itemsToMove, DualListSelectorTransferDirection.ToSelected);
-        UpdateItemCounts();
-        selectedListBox?.Focus();
-    }
+        => TransferToSelected(GetHighlighted(availableListBox), insertIndex: -1, clearFilters: false);
 
     internal void MoveToAvailable()
-    {
-        if (selectedListBox is null)
-        {
-            return;
-        }
-
-        var itemsToMove = selectedListBox.SelectedItems
-            .Cast<DualListSelectorItem>()
-            .Where(i => i.IsEnabled)
-            .ToList();
-
-        if (itemsToMove.Count == 0)
-        {
-            return;
-        }
-
-        foreach (var item in itemsToMove)
-        {
-            SelectedItems.Remove(item);
-            AvailableItems.Add(item);
-        }
-
-        RecalculateSortOrder();
-        RaiseItemsTransferred(itemsToMove, DualListSelectorTransferDirection.ToAvailable);
-        UpdateItemCounts();
-        availableListBox?.Focus();
-    }
+        => TransferToAvailable(GetHighlighted(selectedListBox), clearFilters: false, focusAvailable: true);
 
     internal void MoveAllToSelected()
-    {
-        var selectedCount = availableListBox?.SelectedItems.Count ?? 0;
+        => TransferToSelected(GetMoveAllCandidates(availableListBox, AvailableItems), insertIndex: -1, clearFilters: true);
 
-        List<DualListSelectorItem> itemsToMove;
-        if (selectedCount >= 2)
+    internal void MoveAllToAvailable()
+        => TransferToAvailable(GetMoveAllCandidates(selectedListBox, SelectedItems), clearFilters: true, focusAvailable: true);
+
+    /// <summary>
+    /// Returns one item from the selected list to the available list (the × button in one-way mode). Locked items stay.
+    /// </summary>
+    internal void RemoveFromSelected(DualListSelectorItem item)
+    {
+        if (CanRemoveFromSelected(item))
         {
-            itemsToMove = availableListBox!.SelectedItems.Cast<DualListSelectorItem>().Where(i => i.IsEnabled).ToList();
+            TransferToAvailable([item], clearFilters: false, focusAvailable: false);
+        }
+    }
+
+    internal bool CanRemoveFromSelected(object? parameter)
+        => parameter is DualListSelectorItem item &&
+           CanLeaveSelected(item) &&
+           SelectedItems.Contains(item);
+
+    /// <summary>
+    /// Whether dropping <paramref name="items"/> on the selected list is allowed: a transfer from the available list
+    /// must fit <see cref="MaxSelectedCount"/>; a reorder inside the selected list is always allowed.
+    /// </summary>
+    internal bool CanDropOnSelected(
+        IReadOnlyCollection<DualListSelectorItem> items,
+        bool fromAvailable)
+        => !fromAvailable || FitsLimit(items.Count(i => i.IsEnabled));
+
+    /// <summary>
+    /// Handles a drop on the selected list: a transfer from the available list (inserted at the drop slot),
+    /// or the reorder of one item inside the selected list.
+    /// </summary>
+    /// <param name="items">The dragged items.</param>
+    /// <param name="fromAvailable">Whether the drag started in the available list.</param>
+    /// <param name="viewInsertIndex">The drop slot ("insert before the shown row at this index") in the shown, filtered and grouped, rows.</param>
+    internal void DropOnSelected(
+        IReadOnlyList<DualListSelectorItem> items,
+        bool fromAvailable,
+        int viewInsertIndex)
+    {
+        if (items.Count == 0 || selectedListBox is null)
+        {
+            return;
+        }
+
+        var insertIndex = ToCollectionInsertIndex(selectedListBox, SelectedItems, viewInsertIndex);
+
+        if (fromAvailable)
+        {
+            if (CanDropOnSelected(items, fromAvailable: true))
+            {
+                TransferToSelected(items, insertIndex, clearFilters: false);
+            }
+
+            return;
+        }
+
+        if (items.Count != 1)
+        {
+            return;
+        }
+
+        var item = items[0];
+        var oldIndex = SelectedItems.IndexOf(item);
+        var dropIndex = GetReorderTargetIndex(oldIndex, insertIndex, SelectedItems.Count);
+
+        if (oldIndex != dropIndex && oldIndex >= 0)
+        {
+            SelectedItems.Move(oldIndex, dropIndex);
+            selectedListBox.SelectedItem = item;
+            RecalculateSortOrder();
+            ItemsReordered?.Invoke(
+                this,
+                new DualListSelectorItemsReorderedEventArgs(item, oldIndex, dropIndex));
+        }
+
+        selectedListBox.Focus();
+    }
+
+    /// <summary>
+    /// Handles a drop on the available list: items dragged from the selected list go back, except locked ones.
+    /// </summary>
+    internal void DropOnAvailable(
+        IReadOnlyList<DualListSelectorItem> items,
+        bool fromSelected)
+    {
+        if (fromSelected)
+        {
+            TransferToAvailable(items, clearFilters: false, focusAvailable: true);
+        }
+    }
+
+    /// <summary>
+    /// The "Select all" check box of a list: checks every shown, enabled row, or unchecks all when they all are checked.
+    /// </summary>
+    internal void ToggleSelectAll(ListBox? listBox)
+    {
+        if (listBox is null || listBox.SelectionMode == SelectionMode.Single)
+        {
+            return;
+        }
+
+        var shownEnabled = listBox.Items.OfType<DualListSelectorItem>().Count(i => i.IsEnabled);
+        var checkedEnabled = listBox.SelectedItems.OfType<DualListSelectorItem>().Count(i => i.IsEnabled);
+
+        if (shownEnabled > 0 && checkedEnabled >= shownEnabled)
+        {
+            listBox.UnselectAll();
         }
         else
         {
-            var view = CollectionViewSource.GetDefaultView(AvailableItems);
-            itemsToMove = view is not null && view.Filter is not null
-                ? view.Cast<DualListSelectorItem>().Where(i => i.IsEnabled).ToList()
-                : AvailableItems.Where(i => i.IsEnabled).ToList();
+            listBox.SelectAll();
+            foreach (var disabled in listBox.SelectedItems.OfType<DualListSelectorItem>().Where(i => !i.IsEnabled).ToList())
+            {
+                listBox.SelectedItems.Remove(disabled);
+            }
         }
 
-        if (itemsToMove.Count == 0)
+        UpdateHeaderCounts();
+    }
+
+    private bool TransferToSelected(
+        IEnumerable<DualListSelectorItem> candidates,
+        int insertIndex,
+        bool clearFilters)
+    {
+        var itemsToMove = candidates
+            .Where(i => i.IsEnabled)
+            .ToList();
+
+        if (itemsToMove.Count == 0 || !FitsLimit(itemsToMove.Count))
         {
-            return;
+            return false;
         }
 
         foreach (var item in itemsToMove)
         {
             AvailableItems.Remove(item);
-            SelectedItems.Add(item);
+
+            if (insertIndex >= 0 && insertIndex <= SelectedItems.Count)
+            {
+                SelectedItems.Insert(insertIndex, item);
+                insertIndex++;
+            }
+            else
+            {
+                SelectedItems.Add(item);
+            }
         }
 
-        ClearFilters();
+        if (clearFilters)
+        {
+            ClearFilters();
+        }
+
         RecalculateSortOrder();
         RaiseItemsTransferred(itemsToMove, DualListSelectorTransferDirection.ToSelected);
         UpdateItemCounts();
         selectedListBox?.Focus();
+        return true;
     }
 
-    internal void MoveAllToAvailable()
+    private bool TransferToAvailable(
+        IEnumerable<DualListSelectorItem> candidates,
+        bool clearFilters,
+        bool focusAvailable)
     {
-        var selectedCount = selectedListBox?.SelectedItems.Count ?? 0;
-
-        List<DualListSelectorItem> itemsToMove;
-        if (selectedCount >= 2)
-        {
-            itemsToMove = selectedListBox!.SelectedItems.Cast<DualListSelectorItem>().Where(i => i.IsEnabled).ToList();
-        }
-        else
-        {
-            var view = CollectionViewSource.GetDefaultView(SelectedItems);
-            itemsToMove = view is not null && view.Filter is not null
-                ? view.Cast<DualListSelectorItem>().Where(i => i.IsEnabled).ToList()
-                : SelectedItems.Where(i => i.IsEnabled).ToList();
-        }
+        var itemsToMove = candidates
+            .Where(CanLeaveSelected)
+            .ToList();
 
         if (itemsToMove.Count == 0)
         {
-            return;
+            return false;
         }
 
         foreach (var item in itemsToMove)
@@ -448,11 +613,90 @@ public sealed partial class DualListSelector : Control
             AvailableItems.Add(item);
         }
 
-        ClearFilters();
+        if (clearFilters)
+        {
+            ClearFilters();
+        }
+
         RecalculateSortOrder();
         RaiseItemsTransferred(itemsToMove, DualListSelectorTransferDirection.ToAvailable);
         UpdateItemCounts();
-        availableListBox?.Focus();
+        if (focusAvailable)
+        {
+            availableListBox?.Focus();
+        }
+        else
+        {
+            selectedListBox?.Focus();
+        }
+
+        return true;
+    }
+
+    private static bool CanLeaveSelected(DualListSelectorItem item)
+        => item is { IsEnabled: true, IsLocked: false };
+
+    private bool FitsLimit(int addCount)
+        => MaxSelectedCount is not { } max || SelectedItems.Count + addCount <= max;
+
+    private static List<DualListSelectorItem> GetHighlighted(ListBox? listBox)
+        => listBox is null
+            ? []
+            : listBox.SelectedItems.Cast<DualListSelectorItem>().ToList();
+
+    /// <summary>
+    /// "Move all" moves the highlighted items when two or more are highlighted, otherwise every shown (filtered) item.
+    /// </summary>
+    private static List<DualListSelectorItem> GetMoveAllCandidates(
+        ListBox? listBox,
+        ObservableCollection<DualListSelectorItem> items)
+    {
+        if ((listBox?.SelectedItems.Count ?? 0) >= 2)
+        {
+            return GetHighlighted(listBox);
+        }
+
+        var view = CollectionViewSource.GetDefaultView(items);
+        return view is not null && view.Filter is not null
+            ? view.Cast<DualListSelectorItem>().ToList()
+            : items.ToList();
+    }
+
+    /// <summary>
+    /// Maps a slot in the shown rows (filtered, grouped) to an insert index in the underlying collection.
+    /// </summary>
+    private static int ToCollectionInsertIndex(
+        ListBox listBox,
+        ObservableCollection<DualListSelectorItem> items,
+        int viewInsertIndex)
+    {
+        var shown = listBox.Items;
+        if (viewInsertIndex < 0)
+        {
+            return -1;
+        }
+
+        if (viewInsertIndex < shown.Count &&
+            shown[viewInsertIndex] is DualListSelectorItem anchor)
+        {
+            var index = items.IndexOf(anchor);
+            if (index >= 0)
+            {
+                return index;
+            }
+        }
+
+        if (shown.Count > 0 &&
+            shown[shown.Count - 1] is DualListSelectorItem last)
+        {
+            var index = items.IndexOf(last);
+            if (index >= 0)
+            {
+                return index + 1;
+            }
+        }
+
+        return items.Count;
     }
 
     internal void MoveToTop()
@@ -555,16 +799,34 @@ public sealed partial class DualListSelector : Control
     }
 
     internal bool CanMoveToSelected()
-        => availableListBox is not null && availableListBox.SelectedItems.Count > 0;
+    {
+        if (availableListBox is null || availableListBox.SelectedItems.Count == 0)
+        {
+            return false;
+        }
+
+        return MaxSelectedCount is null ||
+               FitsLimit(availableListBox.SelectedItems.Cast<DualListSelectorItem>().Count(i => i.IsEnabled));
+    }
 
     internal bool CanMoveToAvailable()
-        => selectedListBox is not null && selectedListBox.SelectedItems.Count > 0;
+        => selectedListBox is not null &&
+           selectedListBox.SelectedItems.Cast<DualListSelectorItem>().Any(CanLeaveSelected);
 
     internal bool CanMoveAllToSelected()
-        => AvailableItems.Count > 0 && (availableListBox?.SelectedItems.Count ?? 0) != 1;
+    {
+        if (AvailableItems.Count == 0 || (availableListBox?.SelectedItems.Count ?? 0) == 1)
+        {
+            return false;
+        }
+
+        return MaxSelectedCount is null ||
+               FitsLimit(GetMoveAllCandidates(availableListBox, AvailableItems).Count(i => i.IsEnabled));
+    }
 
     internal bool CanMoveAllToAvailable()
-        => SelectedItems.Count > 0 && (selectedListBox?.SelectedItems.Count ?? 0) != 1;
+        => (selectedListBox?.SelectedItems.Count ?? 0) != 1 &&
+           SelectedItems.Any(CanLeaveSelected);
 
     [SuppressMessage("Minor Code Smell", "S2692:Index checks should not be for positive numbers", Justification = "Intentional: index > 0 means item is not already at top.")]
     internal bool CanMoveToTop()
@@ -668,6 +930,250 @@ public sealed partial class DualListSelector : Control
         object sender,
         CanExecuteRoutedEventArgs e)
         => e.CanExecute = ((DualListSelector)sender).CanMoveToBottom();
+
+    private static void OnRemoveFromSelectedExecuted(
+        object sender,
+        ExecutedRoutedEventArgs e)
+    {
+        if (e.Parameter is DualListSelectorItem item)
+        {
+            ((DualListSelector)sender).RemoveFromSelected(item);
+            e.Handled = true;
+        }
+    }
+
+    private static void OnRemoveFromSelectedCanExecute(
+        object sender,
+        CanExecuteRoutedEventArgs e)
+        => e.CanExecute = ((DualListSelector)sender).CanRemoveFromSelected(e.Parameter);
+
+    private static void OnStateChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is DualListSelector selector)
+        {
+            selector.UpdateItemCounts();
+            CommandManager.InvalidateRequerySuggested();
+        }
+    }
+
+    private static void OnIsVirtualizingChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => (d as DualListSelector)?.ApplyVirtualization();
+
+    private static void OnGroupMemberPathChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => (d as DualListSelector)?.ApplyGrouping();
+
+    private void ApplyVirtualization()
+    {
+        foreach (var listBox in new[] { availableListBox, selectedListBox })
+        {
+            if (listBox is null)
+            {
+                continue;
+            }
+
+            VirtualizingPanel.SetIsVirtualizing(listBox, IsVirtualizing);
+            VirtualizingPanel.SetIsVirtualizingWhenGrouping(listBox, IsVirtualizing);
+            VirtualizingPanel.SetVirtualizationMode(
+                listBox,
+                IsVirtualizing ? VirtualizationMode.Recycling : VirtualizationMode.Standard);
+            if (IsVirtualizing)
+            {
+                ScrollViewer.SetCanContentScroll(listBox, true);
+            }
+            else
+            {
+                listBox.ClearValue(ScrollViewer.CanContentScrollProperty);
+            }
+        }
+    }
+
+    private void ApplyGrouping()
+    {
+        ApplyGrouping(AvailableItems);
+        ApplyGrouping(SelectedItems);
+    }
+
+    private void ApplyGrouping(
+        ObservableCollection<DualListSelectorItem>? items)
+    {
+        if (items is null)
+        {
+            return;
+        }
+
+        var view = CollectionViewSource.GetDefaultView(items);
+        if (view is null || !view.CanGroup)
+        {
+            return;
+        }
+
+        var path = !string.IsNullOrWhiteSpace(GroupMemberPath)
+            ? GroupMemberPath
+            : items.Any(i => i.Group is not null)
+                ? nameof(DualListSelectorItem.Group)
+                : null;
+
+        var current = view.GroupDescriptions.OfType<OwnGroupDescription>().ToList();
+        if (current.Count == 1 && string.Equals(current[0].PropertyName, path, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        if (current.Count == 0 && path is null)
+        {
+            return;
+        }
+
+        foreach (var description in current)
+        {
+            view.GroupDescriptions.Remove(description);
+        }
+
+        if (path is not null)
+        {
+            view.GroupDescriptions.Add(new OwnGroupDescription(path));
+        }
+    }
+
+    private static void RemoveGrouping(object? items)
+    {
+        if (items is null)
+        {
+            return;
+        }
+
+        var view = CollectionViewSource.GetDefaultView(items);
+        if (view?.CanGroup != true)
+        {
+            return;
+        }
+
+        foreach (var description in view.GroupDescriptions.OfType<OwnGroupDescription>().ToList())
+        {
+            view.GroupDescriptions.Remove(description);
+        }
+    }
+
+    private void ScheduleGroupingCheck()
+    {
+        if (isGroupingPending || !string.IsNullOrWhiteSpace(GroupMemberPath))
+        {
+            return;
+        }
+
+        // Changing the group descriptions while the collection is raising CollectionChanged would race the
+        // view's own handler, so the check runs right after the change.
+        isGroupingPending = true;
+        _ = Dispatcher.BeginInvoke(
+            DispatcherPriority.DataBind,
+            () =>
+            {
+                isGroupingPending = false;
+                ApplyGrouping();
+            });
+    }
+
+    private void OnSelectAllToggled(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // A click (or the UI Automation Toggle) changes IsChecked; the control then sets the state from the list.
+        if (!isSyncingSelectAll)
+        {
+            ToggleSelectAll(ReferenceEquals(sender, availableSelectAll) ? availableListBox : selectedListBox);
+        }
+    }
+
+    private void UpdateHeaderCounts()
+    {
+        UpdateHeaderCount(AvailableItems, availableListBox, availableSelectAll, availableHeaderCount);
+        UpdateHeaderCount(SelectedItems, selectedListBox, selectedSelectAll, selectedHeaderCount);
+    }
+
+    private void UpdateHeaderCount(
+        ObservableCollection<DualListSelectorItem>? items,
+        ListBox? listBox,
+        CheckBox? selectAll,
+        TextBlock? headerCount)
+    {
+        if (items is null || listBox is null || ItemSelectionStyle != DualListItemSelectionStyle.CheckBox)
+        {
+            return;
+        }
+
+        // Counted from the collection and the filter rather than from the list box, which may not have
+        // processed a collection change yet when this runs.
+        var (shown, shownEnabled) = CountShown(items);
+
+        var checkedCount = listBox.SelectedItems.Count;
+        var checkedEnabled = listBox.SelectedItems.OfType<DualListSelectorItem>().Count(i => i.IsEnabled);
+
+        if (selectAll is not null)
+        {
+            bool? state = checkedEnabled == 0
+                ? false
+                : checkedEnabled >= shownEnabled
+                    ? true
+                    : null;
+            isSyncingSelectAll = true;
+            try
+            {
+                selectAll.SetCurrentValue(ToggleButton.IsCheckedProperty, state);
+                selectAll.SetCurrentValue(
+                    IsEnabledProperty,
+                    shownEnabled > 0 && listBox.SelectionMode != SelectionMode.Single);
+            }
+            finally
+            {
+                isSyncingSelectAll = false;
+            }
+        }
+
+        var countText = string.Format(
+            CultureInfo.CurrentCulture,
+            HeaderCountFormat ?? DualListSelectorStrings.HeaderCountFormat2,
+            checkedCount,
+            shown);
+        if (headerCount is not null)
+        {
+            headerCount.Text = countText;
+        }
+
+        // Text inside a template is hidden from UI Automation, so the count is also the help text of the check box.
+        if (selectAll is not null)
+        {
+            System.Windows.Automation.AutomationProperties.SetHelpText(selectAll, countText);
+        }
+    }
+
+    private static (int Shown, int ShownEnabled) CountShown(
+        ObservableCollection<DualListSelectorItem> items)
+    {
+        var filter = CollectionViewSource.GetDefaultView(items)?.Filter;
+        var shown = 0;
+        var shownEnabled = 0;
+        foreach (var item in items)
+        {
+            if (filter is not null && !filter(item))
+            {
+                continue;
+            }
+
+            shown++;
+            if (item.IsEnabled)
+            {
+                shownEnabled++;
+            }
+        }
+
+        return (shown, shownEnabled);
+    }
 
     private void RecalculateSortOrder()
     {
@@ -835,13 +1341,21 @@ public sealed partial class DualListSelector : Control
             return;
         }
 
-        e.Effects = DragDropEffects.Move;
         e.Handled = true;
 
         if (sender is not ListBox targetListBox)
         {
+            e.Effects = DragDropEffects.Move;
             return;
         }
+
+        if (IsDropRefused(targetListBox, e.Data.GetData(typeof(List<DualListSelectorItem>)) as List<DualListSelectorItem>))
+        {
+            e.Effects = DragDropEffects.None;
+            return;
+        }
+
+        e.Effects = DragDropEffects.Move;
 
         if (dragAdorner is not null)
         {
@@ -872,6 +1386,26 @@ public sealed partial class DualListSelector : Control
             adornerLayer?.Remove(dropIndicatorAdorner);
             dropIndicatorAdorner = null;
         }
+    }
+
+    private bool IsDropRefused(
+        ListBox targetListBox,
+        List<DualListSelectorItem>? items)
+    {
+        if (items is null || items.Count == 0)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(targetListBox, selectedListBox) &&
+            ReferenceEquals(dragSourceListBox, availableListBox))
+        {
+            return !CanDropOnSelected(items, fromAvailable: true);
+        }
+
+        return ReferenceEquals(targetListBox, availableListBox) &&
+               ReferenceEquals(dragSourceListBox, selectedListBox) &&
+               !items.Exists(CanLeaveSelected);
     }
 
     private static void OnListBoxDragEnter(
@@ -910,25 +1444,12 @@ public sealed partial class DualListSelector : Control
             return;
         }
 
-        if (ReferenceEquals(dragSourceListBox, selectedListBox))
-        {
-            foreach (var item in items)
-            {
-                SelectedItems.Remove(item);
-                AvailableItems.Add(item);
-            }
-
-            RecalculateSortOrder();
-            RaiseItemsTransferred(items, DualListSelectorTransferDirection.ToAvailable);
-            UpdateItemCounts();
-            availableListBox?.Focus();
-        }
+        DropOnAvailable(items, ReferenceEquals(dragSourceListBox, selectedListBox));
 
         dragSourceListBox = null;
         e.Handled = true;
     }
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - Drag-drop handling with reorder.")]
     private void OnSelectedListBoxDrop(
         object sender,
         DragEventArgs e)
@@ -943,51 +1464,10 @@ public sealed partial class DualListSelector : Control
             return;
         }
 
-        if (ReferenceEquals(dragSourceListBox, availableListBox))
+        var fromAvailable = ReferenceEquals(dragSourceListBox, availableListBox);
+        if (fromAvailable || ReferenceEquals(dragSourceListBox, selectedListBox))
         {
-            var dropIndex = DragDropHelper.GetInsertIndex(selectedListBox, e);
-
-            foreach (var item in items)
-            {
-                AvailableItems.Remove(item);
-
-                if (dropIndex >= 0 && dropIndex <= SelectedItems.Count)
-                {
-                    SelectedItems.Insert(dropIndex, item);
-                    dropIndex++;
-                }
-                else
-                {
-                    SelectedItems.Add(item);
-                }
-            }
-
-            RecalculateSortOrder();
-            RaiseItemsTransferred(items, DualListSelectorTransferDirection.ToSelected);
-            UpdateItemCounts();
-            selectedListBox.Focus();
-        }
-        else if (ReferenceEquals(dragSourceListBox, selectedListBox) &&
-                 items.Count == 1)
-        {
-            var item = items[0];
-            var oldIndex = SelectedItems.IndexOf(item);
-            var dropIndex = GetReorderTargetIndex(
-                oldIndex,
-                DragDropHelper.GetInsertIndex(selectedListBox, e),
-                SelectedItems.Count);
-
-            if (oldIndex != dropIndex && oldIndex >= 0)
-            {
-                SelectedItems.Move(oldIndex, dropIndex);
-                selectedListBox.SelectedItem = item;
-                RecalculateSortOrder();
-                ItemsReordered?.Invoke(
-                    this,
-                    new DualListSelectorItemsReorderedEventArgs(item, oldIndex, dropIndex));
-            }
-
-            selectedListBox.Focus();
+            DropOnSelected(items, fromAvailable, DragDropHelper.GetInsertIndex(selectedListBox, e));
         }
 
         dragSourceListBox = null;
@@ -1033,6 +1513,7 @@ public sealed partial class DualListSelector : Control
         SelectionChangedEventArgs e)
     {
         CommandManager.InvalidateRequerySuggested();
+        UpdateHeaderCounts();
         SelectionChanged?.Invoke(this, e);
     }
 
@@ -1041,14 +1522,9 @@ public sealed partial class DualListSelector : Control
         MouseButtonEventArgs e)
     {
         if (availableListBox?.SelectedItem is DualListSelectorItem { IsEnabled: true } item &&
-            IsMouseOverListBoxItem(availableListBox, e))
+            IsMouseOverListBoxItem(availableListBox, e) &&
+            TransferToSelected([item], insertIndex: -1, clearFilters: false))
         {
-            AvailableItems.Remove(item);
-            SelectedItems.Add(item);
-            RecalculateSortOrder();
-            RaiseItemsTransferred([item], DualListSelectorTransferDirection.ToSelected);
-            UpdateItemCounts();
-            selectedListBox?.Focus();
             e.Handled = true;
         }
     }
@@ -1058,14 +1534,9 @@ public sealed partial class DualListSelector : Control
         MouseButtonEventArgs e)
     {
         if (selectedListBox?.SelectedItem is DualListSelectorItem { IsEnabled: true } item &&
-            IsMouseOverListBoxItem(selectedListBox, e))
+            IsMouseOverListBoxItem(selectedListBox, e) &&
+            TransferToAvailable([item], clearFilters: false, focusAvailable: true))
         {
-            SelectedItems.Remove(item);
-            AvailableItems.Add(item);
-            RecalculateSortOrder();
-            RaiseItemsTransferred([item], DualListSelectorTransferDirection.ToAvailable);
-            UpdateItemCounts();
-            availableListBox?.Focus();
             e.Handled = true;
         }
     }
@@ -1113,6 +1584,7 @@ public sealed partial class DualListSelector : Control
         if (e.OldValue is INotifyCollectionChanged oldItems)
         {
             CollectionChangedEventManager.RemoveHandler(oldItems, selector.OnItemsChanged);
+            RemoveGrouping(oldItems);
         }
 
         if (e.NewValue is INotifyCollectionChanged newItems)
@@ -1120,13 +1592,23 @@ public sealed partial class DualListSelector : Control
             CollectionChangedEventManager.AddHandler(newItems, selector.OnItemsChanged);
         }
 
+        selector.ApplyGrouping(e.NewValue as ObservableCollection<DualListSelectorItem>);
         selector.UpdateItemCounts();
     }
 
     private void OnItemsChanged(
         object? sender,
         NotifyCollectionChangedEventArgs e)
-        => UpdateItemCounts();
+    {
+        if (e.NewItems?.OfType<DualListSelectorItem>().Any(i => i.Group is not null) == true &&
+            sender is ObservableCollection<DualListSelectorItem> items &&
+            CollectionViewSource.GetDefaultView(items)?.GroupDescriptions.OfType<OwnGroupDescription>().Any() == false)
+        {
+            ScheduleGroupingCheck();
+        }
+
+        UpdateItemCounts();
+    }
 
     /// <summary>
     /// Converts an insertion index (insert before that item) into the target index for
@@ -1150,6 +1632,9 @@ public sealed partial class DualListSelector : Control
         if (availableItemCount is not null)
         {
             var view = CollectionViewSource.GetDefaultView(AvailableItems);
+            availableItemCount.Visibility = ShowItemCount
+                ? Visibility.Visible
+                : Visibility.Collapsed;
             if (view is not null && view.Filter is not null)
             {
                 var filteredCount = view.Cast<object>().Count();
@@ -1171,7 +1656,18 @@ public sealed partial class DualListSelector : Control
         if (selectedItemCount is not null)
         {
             var view = CollectionViewSource.GetDefaultView(SelectedItems);
-            if (view?.Filter is not null)
+            selectedItemCount.Visibility = ShowItemCount || MaxSelectedCount is not null
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            if (MaxSelectedCount is { } max)
+            {
+                selectedItemCount.Text = string.Format(
+                    CultureInfo.CurrentCulture,
+                    Atc.Wpf.Resources.Miscellaneous.CountOfMax2,
+                    SelectedItems.Count,
+                    max);
+            }
+            else if (view?.Filter is not null)
             {
                 var filteredCount = view.Cast<object>().Count();
                 selectedItemCount.Text = string.Format(
@@ -1191,6 +1687,7 @@ public sealed partial class DualListSelector : Control
 
         UpdateEmptyText(AvailableItems, availableEmptyText);
         UpdateEmptyText(SelectedItems, selectedEmptyText);
+        UpdateHeaderCounts();
     }
 
     private static void UpdateEmptyText(
@@ -1231,5 +1728,34 @@ public sealed partial class DualListSelector : Control
             adornerLayer?.Remove(dropIndicatorAdorner);
             dropIndicatorAdorner = null;
         }
+    }
+
+    /// <summary>
+    /// A group description added by this control, so it can tell its own grouping from one a consumer added to the view.
+    /// </summary>
+    private sealed class OwnGroupDescription : PropertyGroupDescription
+    {
+        public OwnGroupDescription(string propertyName)
+            : base(propertyName)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Exposes the selector as a group in the UI Automation tree (with its automation id and name), so the
+    /// lists, buttons and check boxes inside it can be found under it.
+    /// </summary>
+    private sealed class DualListSelectorAutomationPeer : FrameworkElementAutomationPeer
+    {
+        public DualListSelectorAutomationPeer(DualListSelector owner)
+            : base(owner)
+        {
+        }
+
+        protected override string GetClassNameCore()
+            => nameof(DualListSelector);
+
+        protected override AutomationControlType GetAutomationControlTypeCore()
+            => AutomationControlType.Group;
     }
 }

@@ -13,6 +13,7 @@ global using System.Text;
 global using System.Text.RegularExpressions;
 global using System.Threading.Channels;
 global using System.Windows;
+global using System.Windows.Automation.Peers;
 global using System.Windows.Controls;
 global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;

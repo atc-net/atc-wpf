@@ -44,4 +44,10 @@ public static class DualListSelectorCommands
     /// Moves the highlighted item in the selected list to the bottom.
     /// </summary>
     public static readonly RoutedCommand MoveToBottom = new(nameof(MoveToBottom), typeof(DualListSelectorCommands));
+
+    /// <summary>
+    /// Removes one item (the <see cref="System.Windows.Input.ICommandSource.CommandParameter"/>) from the selected list and returns it
+    /// to the available list. Used by the × button of each row when <see cref="DualListSelector.IsOneWay"/> is on; locked items are kept.
+    /// </summary>
+    public static readonly RoutedCommand RemoveFromSelected = new(nameof(RemoveFromSelected), typeof(DualListSelectorCommands));
 }

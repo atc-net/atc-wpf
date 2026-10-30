@@ -94,4 +94,10 @@
   <data name="NoItemsFound" xml:space="preserve">
     <value>No items found</value>
   </data>
+  <data name="HeaderCountFormat2" xml:space="preserve">
+    <value>{0}/{1}</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
 </root>
