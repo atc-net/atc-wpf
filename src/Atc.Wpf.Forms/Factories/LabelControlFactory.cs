@@ -148,6 +148,58 @@ public static class LabelControlFactory
     }
 
     /// <summary>
+    /// Creates a <see cref="LabelMultiSelectComboBox"/> for a <c>[Flags]</c> enum property or a collection-of-enum
+    /// property (an array, <see cref="List{T}"/>, <see cref="HashSet{T}"/> or one of their collection interfaces).
+    /// The items are the enum values: for a <c>[Flags]</c> enum the single flags (no zero and no combined values),
+    /// otherwise every value except None, Unknown and Default. The label is the property name; <c>[Required]</c>
+    /// makes it mandatory and <c>[MaxLength]</c> or <c>[Length]</c> sets <c>MaxSelectionCount</c>.
+    /// </summary>
+    /// <param name="propertyInfo">The property.</param>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="selectedKeys">The names of the values ticked initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control, with <c>InputDataType</c> set to the property type.</returns>
+    /// <exception cref="ArgumentException">The property is neither a <c>[Flags]</c> enum nor a supported collection of an enum.</exception>
+    public static LabelMultiSelectComboBox CreateLabelMultiSelectComboBox(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        Type enumType;
+        if (MultiSelectPropertyHelper.IsFlagsEnum(propertyInfo.PropertyType))
+        {
+            enumType = propertyInfo.PropertyType.GetNonNullableType();
+        }
+        else if (MultiSelectPropertyHelper.TryGetCollectionElementType(propertyInfo.PropertyType, out var elementType) &&
+                 elementType.IsEnum)
+        {
+            enumType = elementType;
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"The property {propertyInfo.Name} must be a [Flags] enum or a collection of an enum.",
+                nameof(propertyInfo));
+        }
+
+        var control = CreateLabelMultiSelectComboBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            MultiSelectPropertyHelper.GetEnumItems(enumType),
+            selectedKeys);
+
+        control.InputDataType = propertyInfo.PropertyType;
+        control.MaxSelectionCount = MultiSelectPropertyHelper.GetMaxSelectionCount(propertyInfo);
+
+        return control;
+    }
+
+    /// <summary>
     /// Creates a <see cref="LabelTokenBox"/> with the given label, known values and tokens.
     /// </summary>
     /// <param name="groupIdentifier">The group identifier.</param>
@@ -180,6 +232,40 @@ public static class LabelControlFactory
             Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
             SelectedKeys = CreateKeys(selectedKeys),
         };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelTokenBox"/> for a collection-of-string property (an array, <see cref="List{T}"/>,
+    /// <see cref="HashSet{T}"/> or one of their collection interfaces). It has no items and accepts any typed value
+    /// as a token. The label is the property name; <c>[Required]</c> makes it mandatory and <c>[MaxLength]</c> or
+    /// <c>[Length]</c> sets <c>MaxSelectionCount</c>.
+    /// </summary>
+    /// <param name="propertyInfo">The property.</param>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="isReadOnly">Whether the field is read-only (disabled).</param>
+    /// <param name="selectedKeys">The tokens initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control, with <c>InputDataType</c> set to the property type.</returns>
+    public static LabelTokenBox CreateLabelTokenBox(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        var control = CreateLabelTokenBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            new Dictionary<string, string>(StringComparer.Ordinal),
+            selectedKeys,
+            allowCreate: true);
+
+        control.InputDataType = propertyInfo.PropertyType;
+        control.MaxSelectionCount = MultiSelectPropertyHelper.GetMaxSelectionCount(propertyInfo);
 
         return control;
     }

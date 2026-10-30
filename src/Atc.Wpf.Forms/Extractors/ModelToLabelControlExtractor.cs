@@ -18,8 +18,11 @@ public static class ModelToLabelControlExtractor
     /// Creates a label control for each supported public property of the model, including nested complex types.
     /// </summary>
     /// <remarks>
-    /// Collection properties (any type implementing <see cref="IEnumerable"/> other than <see cref="string"/>)
-    /// and indexed properties are skipped. Nested models are followed at most <see cref="MaxNestingDepth"/>
+    /// A <c>[Flags]</c> enum property and a collection of an enum become a <see cref="LabelMultiSelectComboBox"/>, and a
+    /// collection of <see cref="string"/> becomes a <see cref="LabelTokenBox"/> that accepts any value. Supported
+    /// collections are arrays, <see cref="List{T}"/>, <see cref="HashSet{T}"/> and the collection interfaces they
+    /// implement. Other collection properties (any other type implementing <see cref="IEnumerable"/>, such as a
+    /// dictionary) and indexed properties are skipped. Nested models are followed at most <see cref="MaxNestingDepth"/>
     /// levels below the root model; deeper models are skipped instead of being extracted, so a
     /// self-referencing type cannot recurse forever.
     /// </remarks>
@@ -190,6 +193,12 @@ public static class ModelToLabelControlExtractor
         string typeGroupIdentifier,
         bool isReadOnly)
     {
+        if (MultiSelectPropertyHelper.IsFlagsEnum(propertyInfo.PropertyType))
+        {
+            labelControls.Add(CreateLabelMultiSelectComboBox(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
         var nonNullableType = propertyInfo.PropertyType.GetNonNullableType();
         if (nonNullableType.IsEnum)
         {
@@ -311,6 +320,18 @@ public static class ModelToLabelControlExtractor
             }
         }
 
+        if (MultiSelectPropertyHelper.TryGetCollectionElementType(propertyInfo.PropertyType, out var elementType))
+        {
+            if (elementType.IsEnum)
+            {
+                labelControls.Add(CreateLabelMultiSelectComboBox(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+                return true;
+            }
+
+            labelControls.Add(CreateLabelTokenBox(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
         return false;
     }
 
@@ -377,6 +398,36 @@ public static class ModelToLabelControlExtractor
             groupIdentifier,
             isReadOnly,
             selectedKey);
+    }
+
+    private static LabelMultiSelectComboBox CreateLabelMultiSelectComboBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        return LabelControlFactory.CreateLabelMultiSelectComboBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            MultiSelectPropertyHelper.GetSelectedKeys(GetPropertyValue(model, propertyInfo.Name)));
+    }
+
+    private static LabelTokenBox CreateLabelTokenBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        return LabelControlFactory.CreateLabelTokenBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            MultiSelectPropertyHelper.GetSelectedKeys(GetPropertyValue(model, propertyInfo.Name)));
     }
 
     private static LabelCheckBox CreateLabelCheckBox<T>(

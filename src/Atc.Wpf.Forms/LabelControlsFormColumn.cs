@@ -126,13 +126,13 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelComboBox.SelectedKey);
                     break;
                 case LabelCheckListBox labelCheckListBox:
-                    result.Add(control.GetFullIdentifier(), (labelCheckListBox.SelectedKeys ?? []).ToList());
+                    result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelCheckListBox.SelectedKeys));
                     break;
                 case LabelMultiSelectComboBox labelMultiSelectComboBox:
-                    result.Add(control.GetFullIdentifier(), (labelMultiSelectComboBox.SelectedKeys ?? []).ToList());
+                    result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelMultiSelectComboBox.SelectedKeys));
                     break;
                 case LabelChipGroup labelChipGroup:
-                    result.Add(control.GetFullIdentifier(), (labelChipGroup.SelectedKeys ?? []).ToList());
+                    result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelChipGroup.SelectedKeys));
                     break;
                 case LabelTokenBox labelTokenBox:
                     result.Add(control.GetFullIdentifier(), (labelTokenBox.SelectedKeys ?? []).ToList());
@@ -240,6 +240,17 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 
         return result;
     }
+
+    /// <summary>
+    /// Gets the form value of a multi-select control: the combined flags when the control edits a <c>[Flags]</c> enum
+    /// (see <see cref="ILabelControlBase.InputDataType"/>), otherwise the list of selected keys.
+    /// </summary>
+    private static object GetSelectedKeysValue(
+        ILabelControlBase control,
+        IEnumerable<string>? selectedKeys)
+        => MultiSelectPropertyHelper.IsFlagsEnum(control.InputDataType)
+            ? MultiSelectPropertyHelper.CombineFlags(control.InputDataType!, selectedKeys)
+            : (selectedKeys ?? []).ToList();
 
     /// <summary>
     /// Calculates the column height when the controls are wrapped in group boxes, using the tallest group.

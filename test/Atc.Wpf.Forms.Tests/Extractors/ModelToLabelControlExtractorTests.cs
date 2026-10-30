@@ -141,7 +141,7 @@ public sealed class ModelToLabelControlExtractorTests
     }
 
     [StaFact]
-    public void GetLabelControls_CollectionsModel_SkipsCollectionProperties()
+    public void GetLabelControls_CollectionsModel_SkipsUnsupportedCollectionProperties()
     {
         // Arrange
         var model = new CollectionsModel
@@ -159,9 +159,12 @@ public sealed class ModelToLabelControlExtractorTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(2, actual.Count);
+        Assert.Equal(3, actual.Count);
         Assert.Contains(actual, x => x.Identifier == "Name");
         Assert.Contains(actual, x => x.Identifier == "Age");
+        var tags = Assert.IsType<LabelTokenBox>(actual.Single(x => x.Identifier == "Tags"));
+        Assert.False(tags.IsEnabled);
+        Assert.DoesNotContain(actual, x => x.Identifier == "Counts");
     }
 
     [StaFact]
