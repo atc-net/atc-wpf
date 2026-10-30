@@ -91,7 +91,7 @@ public partial class LabelTokenBox : ILabelTokenBox
     /// The maximum number of tokens; <see langword="null"/> for no limit. Keys set from code beyond the limit are kept,
     /// but make <see cref="IsValid"/> return <see langword="false"/>.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnSelectedKeysChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -252,6 +252,19 @@ public partial class LabelTokenBox : ILabelTokenBox
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelTokenBox)d;
+        if (e.Property == SelectedKeysProperty)
+        {
+            if (e.OldValue is ObservableCollection<string> oldKeys)
+            {
+                CollectionChangedEventManager.RemoveHandler(oldKeys, control.OnSelectedKeysCollectionChanged);
+            }
+
+            if (e.NewValue is ObservableCollection<string> newKeys)
+            {
+                CollectionChangedEventManager.AddHandler(newKeys, control.OnSelectedKeysCollectionChanged);
+            }
+        }
+
         if (!string.IsNullOrEmpty(control.ValidationText))
         {
             control.Validate();
@@ -273,24 +286,11 @@ public partial class LabelTokenBox : ILabelTokenBox
 
     private bool Validate()
     {
-        var count = SelectedKeys is null
-            ? 0
-            : SelectedKeys.Distinct(StringComparer.Ordinal).Count();
-
-        if (IsMandatory && count == 0)
-        {
-            ValidationText = Validations.FieldIsRequired;
-            return false;
-        }
-
-        if (MaxSelectionCount is { } max && count > max)
-        {
-            ValidationText = string.Format(CultureInfo.CurrentCulture, Validations.SelectAtMost1, max);
-            return false;
-        }
-
-        ValidationText = string.Empty;
-        return true;
+        ValidationText = MultiSelectValidationHelper.GetValidationText(
+            IsMandatory,
+            MaxSelectionCount,
+            MultiSelectValidationHelper.CountKeys(SelectedKeys));
+        return string.IsNullOrEmpty(ValidationText);
     }
 
     private void OnTokenBoxSelectedKeysChanged(
@@ -316,4 +316,21 @@ public partial class LabelTokenBox : ILabelTokenBox
         object? sender,
         TokenCreatingEventArgs e)
         => TokenCreating?.Invoke(this, e);
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
+
+    /// <summary>
+    /// Re-validates after <see cref="SelectedKeys"/> was changed in place (e.g. cleared by the view model). A change
+    /// made in the inner control is validated once, by its <c>SelectedKeysChanged</c>.
+    /// </summary>
+    private void OnSelectedKeysCollectionChanged(
+        object? sender,
+        NotifyCollectionChangedEventArgs e)
+    {
+        if (!PartTokenBox.IsWritingSelectedKeys)
+        {
+            Validate();
+        }
+    }
 }

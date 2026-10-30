@@ -55,7 +55,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `ColumnWidth` | `double` | `180` | The width of each column. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 20 nodes. |
 | `FilterText` | `string` | `""` | The filter text (two-way). |
-| `MaxSelectionCount` | `int?` | `null` | The most keys; beyond it `IsValid()` is `false`. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys; beyond it `IsValid()` is `false`. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys; re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `LoadChildrenAsync` | `Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?` | `null` | Lazy loading of children when a row becomes active. |
 | `PathSeparator` | `string` | `" / "` | Between the texts of a path. |
 | `ShowFullPath` | `bool` | `false` | Summary names and chips show the full path. |

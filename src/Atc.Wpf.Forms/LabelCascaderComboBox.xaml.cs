@@ -76,7 +76,7 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
     /// The maximum number of keys; <see langword="null"/> for no limit. Keys set from code beyond the limit are kept,
     /// but make <see cref="IsValid"/> return <see langword="false"/>.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnSelectedKeysChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -245,6 +245,19 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelCascaderComboBox)d;
+        if (e.Property == SelectedKeysProperty)
+        {
+            if (e.OldValue is ObservableCollection<string> oldKeys)
+            {
+                CollectionChangedEventManager.RemoveHandler(oldKeys, control.OnSelectedKeysCollectionChanged);
+            }
+
+            if (e.NewValue is ObservableCollection<string> newKeys)
+            {
+                CollectionChangedEventManager.AddHandler(newKeys, control.OnSelectedKeysCollectionChanged);
+            }
+        }
+
         if (!string.IsNullOrEmpty(control.ValidationText))
         {
             control.Validate();
@@ -266,21 +279,11 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
 
     private bool Validate()
     {
-        var keyCount = SelectedKeys?.Distinct(StringComparer.Ordinal).Count() ?? 0;
-        if (IsMandatory && keyCount == 0)
-        {
-            ValidationText = Validations.FieldIsRequired;
-            return false;
-        }
-
-        if (MaxSelectionCount is { } max && keyCount > max)
-        {
-            ValidationText = string.Format(CultureInfo.CurrentCulture, Validations.SelectAtMost1, max);
-            return false;
-        }
-
-        ValidationText = string.Empty;
-        return true;
+        ValidationText = MultiSelectValidationHelper.GetValidationText(
+            IsMandatory,
+            MaxSelectionCount,
+            MultiSelectValidationHelper.CountKeys(SelectedKeys));
+        return string.IsNullOrEmpty(ValidationText);
     }
 
     private void OnComboBoxSelectedKeysChanged(
@@ -299,6 +302,23 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
         else
         {
             SelectedKeysChangedInvalid?.Invoke(this, args);
+        }
+    }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
+
+    /// <summary>
+    /// Re-validates after <see cref="SelectedKeys"/> was changed in place (e.g. cleared by the view model). A change
+    /// made in the inner control is validated once, by its <c>SelectedKeysChanged</c>.
+    /// </summary>
+    private void OnSelectedKeysCollectionChanged(
+        object? sender,
+        NotifyCollectionChangedEventArgs e)
+    {
+        if (!PartComboBox.IsWritingSelectedKeys)
+        {
+            Validate();
         }
     }
 }

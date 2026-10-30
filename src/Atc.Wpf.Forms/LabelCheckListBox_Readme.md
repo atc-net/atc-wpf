@@ -57,7 +57,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = more than 10 items |
 | `ItemGroups` | `Dictionary<string, string>?` | `null` | Key → group name |
 | `IsGroupCheckable` | `bool` | `true` | Tri-state check boxes on group headers |
-| `MaxSelectionCount` | `int?` | `null` | Selection limit |
+| `MaxSelectionCount` | `int?` | `null` | Selection limit. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys that are in `Items` (a stale key neither counts nor satisfies `IsMandatory`); re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Shown but cannot be toggled |
 | `ItemStyle` | `CheckListItemStyle` | `CheckBox` | `CheckBox`, `Highlight` or `Switch` |
 | `Columns` | `int` | `1` | Lay items out in N columns |

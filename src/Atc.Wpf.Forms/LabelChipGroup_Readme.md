@@ -65,7 +65,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `Wrap` | `bool` | `true` | `false` = one line that scrolls. |
 | `ItemSpacing` | `double` | `4` | Space between chips. |
 | `ShowAllChip` | `bool` | `false` | A leading **All** chip. |
-| `MaxSelectionCount` | `int?` | `null` | The most keys that can be selected. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys that can be selected. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys that are in `Items` (a stale key neither counts nor satisfies `IsMandatory`); re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Keys shown but not toggleable. |
 | `ItemIcons` | `Dictionary<string, object>?` | `null` | Optional icon per key. |
 | `ItemCounts` | `Dictionary<string, int>?` | `null` | Optional count per key. |

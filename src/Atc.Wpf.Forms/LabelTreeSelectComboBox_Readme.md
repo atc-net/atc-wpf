@@ -56,7 +56,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `FilterText` | `string` | `""` | The filter text (two-way). |
 | `FilterMode` | `TreeFilterMode` | `KeepAncestors` | `KeepAncestors` or `FlatResults`. |
 | `ShowSelectAllRow` | `bool` | `false` | Select all / count / Clear in the pop-up. |
-| `MaxSelectionCount` | `int?` | `null` | The most keys; beyond it `IsValid()` is `false`. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys; beyond it `IsValid()` is `false`. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys; re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `LoadChildrenAsync` | `Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?` | `null` | Lazy loading of children. |
 | `ExpandDepth` | `int` | `1` | Levels expanded when `Nodes` is set. |
 | `ItemTemplate` | `DataTemplate?` | `null` | The text part of a pop-up row. |

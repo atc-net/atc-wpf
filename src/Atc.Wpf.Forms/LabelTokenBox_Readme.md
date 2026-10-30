@@ -63,7 +63,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `MaxSuggestions` | `int` | `50` | The most rows in the pop-up |
 | `TokensWrap` | `bool` | `true` | `false`: one line that scrolls |
 | `MaxVisibleTokens` | `int?` | `null` | When not focused, the most tokens before "+N" |
-| `MaxSelectionCount` | `int?` | `null` | Token limit |
+| `MaxSelectionCount` | `int?` | `null` | Token limit. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys; re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `FixedKeys` | `ObservableCollection<string>` | empty | Tokens that cannot be removed |
 | `AllowEditTokens` | `bool` | `false` | Double-click a created token to edit it |
 | `ShowClearButton` | `bool` | `false` | An × that removes every token that is not fixed |

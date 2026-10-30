@@ -64,7 +64,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `FilterText` | `string` | `""` | The filter text (two-way) |
 | `ItemGroups` | `Dictionary<string, string>?` | `null` | Key → group name |
 | `IsGroupCheckable` | `bool` | `true` | Tri-state check boxes on group headers |
-| `MaxSelectionCount` | `int?` | `null` | Selection limit |
+| `MaxSelectionCount` | `int?` | `null` | Selection limit. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys that are in `Items` (a stale key neither counts nor satisfies `IsMandatory`); re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Shown but cannot be toggled |
 | `ItemTemplate` | `DataTemplate?` | `null` | The text part of a pop-up row |
 | `DisplayMode` | `MultiSelectDisplayMode` | `Text` | `Text`, `Chips` (removable chips with "+N") or `Count` |

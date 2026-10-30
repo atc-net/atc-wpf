@@ -186,6 +186,59 @@ public sealed class LabelCheckListBoxTests : IDisposable
         Assert.Equal(["a", "c"], actual.Columns, StringComparer.Ordinal);
     }
 
+    [StaFact]
+    public void IsValid_MoreKeysThanTheLimitSetInCode_ReportsSelectAtMost()
+    {
+        UseEnglishUi();
+        var sut = Create();
+        sut.MaxSelectionCount = 2;
+
+        sut.SelectedKeys.Add("a");
+        sut.SelectedKeys.Add("b");
+        sut.SelectedKeys.Add("c");
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Select at most 2", sut.ValidationText);
+    }
+
+    [StaFact]
+    public void Mandatory_SelectedKeysClearedInPlace_SetsValidationText()
+    {
+        UseEnglishUi();
+        var sut = Create();
+        sut.IsMandatory = true;
+        sut.SelectedKeys.Add("a");
+        Assert.True(sut.IsValid());
+
+        sut.SelectedKeys.Clear();
+
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
+    [StaFact]
+    public void Mandatory_OnlyAStaleKey_IsNotValid()
+    {
+        UseEnglishUi();
+        var sut = Create();
+        sut.IsMandatory = true;
+
+        sut.SelectedKeys = ["gone"];
+
+        Assert.False(sut.IsValid());
+        Assert.Equal("Field is required", sut.ValidationText);
+    }
+
+    [StaTheory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    public void MaxSelectionCount_BelowOne_IsRejected(int limit)
+    {
+        var sut = Create();
+
+        Assert.Throws<ArgumentException>(() => sut.MaxSelectionCount = limit);
+        Assert.Null(sut.MaxSelectionCount);
+    }
+
     private static LabelCheckListBox Create()
         => new()
         {

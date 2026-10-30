@@ -61,7 +61,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `Columns` | `ObservableCollection<DataGridColumn>` | empty | The grid columns after the check-box column (get-only; XAML content). |
 | `AutoGenerateColumns` | `bool` | `false` | One text column per public property when `Columns` is empty. |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys (two-way). |
-| `MaxSelectionCount` | `int?` | `null` | The most keys; beyond it `IsValid()` is `false`. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys; beyond it `IsValid()` is `false`. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. Counts the distinct keys; re-validated when the keys are set in code or `SelectedKeys` changes in place. |
 | `IsEnabledMemberPath` | `string` | `""` | The path of a `bool` property; `false` rows cannot be toggled. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 10 items. |
 | `FilterText` | `string` | `""` | The filter text (two-way). |
