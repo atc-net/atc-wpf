@@ -1,7 +1,5 @@
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
-using JsonNode = System.Text.Json.Nodes.JsonNode;
-
 namespace Atc.Wpf.Documents.TextFormatters;
 
 /// <summary>
@@ -9,12 +7,6 @@ namespace Atc.Wpf.Documents.TextFormatters;
 /// </summary>
 public sealed class JsonFormatter : ITextFormatter
 {
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
-    {
-        WriteIndented = true,
-        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-    };
-
     /// <summary>
     /// The instance.
     /// </summary>
@@ -71,17 +63,18 @@ public sealed class JsonFormatter : ITextFormatter
 
         try
         {
-            var jsonElement = JsonSerializer.Deserialize<JsonElement>(text);
-            var formattedJson = JsonSerializer.Serialize(jsonElement, JsonSerializerOptions);
+            // One parse; the walk below writes the indented layout itself.
+            using var jsonDocument = JsonDocument.Parse(text);
+            var rootElement = jsonDocument.RootElement;
 
-            var paragraph = new Paragraph();
-            var indentLevel = 0;
-            var jsonNode = JsonNode.Parse(formattedJson);
-
-            if (jsonNode is not null)
+            // A top-level JSON null is shown as plain text, not as a colored literal.
+            if (rootElement.ValueKind != JsonValueKind.Null)
             {
-                ParseJsonNode(
-                    jsonNode,
+                var paragraph = new Paragraph();
+                var indentLevel = 0;
+
+                ParseJsonElement(
+                    rootElement,
                     paragraph.Inlines,
                     ref indentLevel);
 
@@ -115,35 +108,28 @@ public sealed class JsonFormatter : ITextFormatter
         inlines.Add(new Run(new string(' ', indentLevel * 2)));
     }
 
-    private static void ParseJsonNode(
-         JsonNode? jsonNode,
-         InlineCollection inlines,
-         ref int indentLevel)
+    private static void ParseJsonElement(
+        JsonElement jsonElement,
+        InlineCollection inlines,
+        ref int indentLevel)
     {
-        switch (jsonNode)
+        switch (jsonElement.ValueKind)
         {
-            case null:
+            case JsonValueKind.Object:
             {
-                // A JSON null literal is represented by a null node.
-                inlines.Add(new Run("null") { Foreground = JsonColorSchema.NullBrush });
+                ParseJsonObject(inlines, ref indentLevel, jsonElement);
                 break;
             }
 
-            case JsonObject jsonObject:
+            case JsonValueKind.Array:
             {
-                ParseJsonObject(inlines, ref indentLevel, jsonObject);
+                ParseJsonArray(inlines, ref indentLevel, jsonElement);
                 break;
             }
 
-            case JsonArray jsonArray:
+            default:
             {
-                ParseJsonArray(inlines, ref indentLevel, jsonArray);
-                break;
-            }
-
-            case JsonValue jsonValue:
-            {
-                ParseJsonValue(inlines, jsonValue);
+                ParseJsonValue(inlines, jsonElement);
                 break;
             }
         }
@@ -152,16 +138,24 @@ public sealed class JsonFormatter : ITextFormatter
     private static void ParseJsonObject(
         InlineCollection inlines,
         ref int indentLevel,
-        JsonObject jsonObject)
+        JsonElement jsonObject)
     {
         inlines.Add(new Run("{\n") { Foreground = JsonColorSchema.DefaultBrush });
         indentLevel++;
 
-        foreach (var kvp in jsonObject)
+        // Duplicate property names are not rendered (the caller falls back to the plain text).
+        var propertyNames = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var property in jsonObject.EnumerateObject())
         {
+            if (!propertyNames.Add(property.Name))
+            {
+                throw new JsonException($"Duplicate property name '{property.Name}'.");
+            }
+
             AddIndent(inlines, indentLevel);
-            inlines.Add(new Run($"\"{kvp.Key}\": ") { Foreground = JsonColorSchema.KeyBrush });
-            ParseJsonNode(kvp.Value, inlines, ref indentLevel);
+            inlines.Add(new Run($"\"{property.Name}\": ") { Foreground = JsonColorSchema.KeyBrush });
+            ParseJsonElement(property.Value, inlines, ref indentLevel);
             inlines.Add(new Run(",\n") { Foreground = JsonColorSchema.DefaultBrush });
         }
 
@@ -174,15 +168,15 @@ public sealed class JsonFormatter : ITextFormatter
     private static void ParseJsonArray(
         InlineCollection inlines,
         ref int indentLevel,
-        JsonArray jsonArray)
+        JsonElement jsonArray)
     {
         inlines.Add(new Run("[\n") { Foreground = JsonColorSchema.DefaultBrush });
         indentLevel++;
 
-        foreach (var element in jsonArray)
+        foreach (var element in jsonArray.EnumerateArray())
         {
             AddIndent(inlines, indentLevel);
-            ParseJsonNode(element, inlines, ref indentLevel);
+            ParseJsonElement(element, inlines, ref indentLevel);
             inlines.Add(new Run(",\n") { Foreground = JsonColorSchema.DefaultBrush });
         }
 
@@ -194,22 +188,20 @@ public sealed class JsonFormatter : ITextFormatter
 
     private static void ParseJsonValue(
         InlineCollection inlines,
-        JsonValue jsonValue)
+        JsonElement jsonValue)
     {
-        var jsonValueKind = jsonValue.GetValue<JsonElement>().ValueKind;
-
-        switch (jsonValueKind)
+        switch (jsonValue.ValueKind)
         {
             case JsonValueKind.String:
 
-                var strValue = jsonValue.ToString();
+                var strValue = jsonValue.GetString() ?? string.Empty;
                 inlines.Add(new Run("\"") { Foreground = JsonColorSchema.StringBrush });
 
                 if (DateTimeHelper.TryParseUsingSpecificCulture(strValue, GlobalizationConstants.EnglishCultureInfo, out _))
                 {
                     inlines.Add(new Run(strValue) { Foreground = JsonColorSchema.DateBrush });
                 }
-                else if (Guid.TryParse(jsonValue.ToString(), out _))
+                else if (Guid.TryParse(strValue, out _))
                 {
                     inlines.Add(new Run(strValue) { Foreground = JsonColorSchema.GuidBrush });
                 }
@@ -226,17 +218,17 @@ public sealed class JsonFormatter : ITextFormatter
 
                 break;
             case JsonValueKind.Number:
-                inlines.Add(new Run(jsonValue.ToString()) { Foreground = JsonColorSchema.NumberBrush });
+                inlines.Add(new Run(jsonValue.GetRawText()) { Foreground = JsonColorSchema.NumberBrush });
                 break;
             case JsonValueKind.True:
             case JsonValueKind.False:
-                inlines.Add(new Run(jsonValue.ToString()) { Foreground = JsonColorSchema.BooleanBrush });
+                inlines.Add(new Run(jsonValue.GetRawText()) { Foreground = JsonColorSchema.BooleanBrush });
                 break;
             case JsonValueKind.Null:
                 inlines.Add(new Run("null") { Foreground = JsonColorSchema.NullBrush });
                 break;
             default:
-                inlines.Add(new Run(jsonValue.ToString()) { Foreground = JsonColorSchema.DefaultBrush });
+                inlines.Add(new Run(jsonValue.GetRawText()) { Foreground = JsonColorSchema.DefaultBrush });
                 break;
         }
     }
