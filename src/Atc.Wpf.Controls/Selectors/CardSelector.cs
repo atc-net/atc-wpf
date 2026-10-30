@@ -73,7 +73,7 @@ public sealed partial class CardSelector : ListBox
     /// The maximum number of selected cards in <see cref="CardSelectionMode.Multiple"/>; <see langword="null"/> for no
     /// limit. At the limit the unselected cards are disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -753,4 +753,7 @@ public sealed partial class CardSelector : ListBox
             isApplyingSelection = false;
         }
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

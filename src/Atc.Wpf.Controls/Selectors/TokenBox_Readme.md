@@ -117,7 +117,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 | `MaxSuggestions` | `int` | `50` | The most rows in the pop-up |
 | `TokensWrap` | `bool` | `true` | `true`: the field grows in height; `false`: one line that scrolls while focused and ends in "+N" when not |
 | `MaxVisibleTokens` | `int?` | `null` | When not focused, the most tokens before a "+N" chip; all show again on focus |
-| `MaxSelectionCount` | `int?` | `null` | At the limit typing is blocked and the field shows "{0} of max {1}" |
+| `MaxSelectionCount` | `int?` | `null` | At the limit typing is blocked and the field shows "{0} of max {1}". `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `FixedKeys` | `ObservableCollection<string>` | empty | Tokens that cannot be removed (no ×; `Backspace` and Clear skip them) |
 | `AllowEditTokens` | `bool` | `false` | Double-click a created token to edit it (`Enter` / a click elsewhere commits, `Esc` cancels) |
 | `ShowClearButton` | `bool` | `false` | An × at the end of the field removes every token that is not fixed (one change) |

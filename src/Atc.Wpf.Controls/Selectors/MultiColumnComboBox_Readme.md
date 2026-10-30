@@ -93,7 +93,7 @@ var customers = box.SelectedItems.Cast<Customer>();
 | `AutoGenerateColumns` | `bool` | `false` | `true`: one text column per public property when `Columns` is empty. |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The keys of the ticked items (two-way, updated in place). |
 | `SelectedItems` | `IReadOnlyList<object>` | empty | Read-only: the ticked objects in `SelectedKeys` order. |
-| `MaxSelectionCount` | `int?` | `null` | The most ticked items; at the limit the unticked rows are disabled. |
+| `MaxSelectionCount` | `int?` | `null` | The most ticked items; at the limit the unticked rows are disabled. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `IsEnabledMemberPath` | `string` | `""` | The path of a `bool` property; rows where it is `false` cannot be toggled. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 10 items. |
 | `FilterText` | `string` | `""` | The filter text (two-way). |

@@ -134,7 +134,7 @@ As `TreeSelectComboBox`: `NoneText` (or the watermark) when nothing is ticked, "
 | `MaxDropDownHeight` | `double` | as `ComboBox` | The pop-up's maximum height; each column scrolls (virtualized) beyond it. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 20 nodes. |
 | `FilterText` | `string` | `""` | The filter text (two-way). Debounced above 2,000 nodes. |
-| `MaxSelectionCount` | `int?` | `null` | The most keys in `SelectedKeys`; a tick beyond it is refused and at the limit the unticked rows are dimmed. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys in `SelectedKeys`; a tick beyond it is refused and at the limit the unticked rows are dimmed. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `LoadChildrenAsync` | `Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?` | `null` | Loads the children of a row with `HasUnloadedChildren` when it becomes active. |
 | `PathSeparator` | `string` | `" / "` | Between the texts of a path (filter results, and the summary with `ShowFullPath`). |
 | `ShowFullPath` | `bool` | `false` | Summary names and chips show the full path instead of the node text. |

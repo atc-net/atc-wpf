@@ -96,7 +96,7 @@ public partial class TreeSelectComboBox
     /// <summary>
     /// The maximum number of keys in <see cref="SelectedKeys"/>; <see langword="null"/> for no limit.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnSummaryInputChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -293,6 +293,12 @@ public partial class TreeSelectComboBox
     /// Gets how many times the summary was rebuilt (for change-storm tests).
     /// </summary>
     internal int SummaryUpdateCount { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection validates once afterwards instead of once per notification.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => PartTree.IsWritingSelectedKeys;
 
     /// <summary>
     /// Returns the node with a key, or <see langword="null"/> when it is not in the tree.
@@ -683,4 +689,7 @@ public partial class TreeSelectComboBox
             ? Visibility.Visible
             : Visibility.Collapsed;
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

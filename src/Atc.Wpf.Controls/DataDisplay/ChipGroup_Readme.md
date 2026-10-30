@@ -100,7 +100,7 @@ chipGroup.SelectedKeysChanged += (_, e) =>
 | `Wrap` | `bool` | `true` | `false` keeps the chips on one line that scrolls. |
 | `ItemSpacing` | `double` | `4` | Space between two chips and between two lines. |
 | `ShowAllChip` | `bool` | `false` | A leading **All** chip (`Multiple` only): selected when every enabled key is; clicking it selects them all or clears them in one change. |
-| `MaxSelectionCount` | `int?` | `null` | The most keys that can be selected (`Multiple`); at the limit the other chips are disabled, not hidden. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys that can be selected (`Multiple`); at the limit the other chips are disabled, not hidden. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Keys whose chips are shown but cannot be toggled. |
 | `ItemIcons` | `Dictionary<string, object>?` | `null` | Optional icon per key (font icon, image, any content). |
 | `ItemCounts` | `Dictionary<string, int>?` | `null` | Optional count per key, shown after the text ("Error 12"). |

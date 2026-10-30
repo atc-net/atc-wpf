@@ -181,7 +181,7 @@ With `CommitMode="Deferred"` the pop-up shows **OK** and **Cancel** in a footer.
 | `SummaryText` | `string` | `""` | Read-only: the text the closed box shows (also the UI Automation value). |
 | `ItemGroups` | `Dictionary<string, string>?` | `null` | Key → group name (passed to the pop-up list). |
 | `IsGroupCheckable` | `bool` | `true` | Tri-state check boxes on group headers. |
-| `MaxSelectionCount` | `int?` | `null` | Selection limit; at the limit the unticked items are disabled. |
+| `MaxSelectionCount` | `int?` | `null` | Selection limit; at the limit the unticked items are disabled. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Shown but cannot be toggled. |
 | `ItemTemplate` | `DataTemplate?` | `null` | The text part of a pop-up row (data context: `CheckListItem`). |
 | `DisplayMode` | `MultiSelectDisplayMode` | `Text` | `Text`, `Chips` or `Count`: what the closed box shows. |

@@ -111,7 +111,7 @@ public partial class CheckTreeView
     /// The maximum number of keys in <see cref="SelectedKeys"/>; <see langword="null"/> for no limit. A tick that would
     /// go beyond it is refused; at the limit the unticked nodes are disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnChromeChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnChromeChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -634,4 +634,7 @@ public partial class CheckTreeView
             e.Handled = true;
         }
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

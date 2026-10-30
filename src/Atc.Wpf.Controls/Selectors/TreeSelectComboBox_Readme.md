@@ -72,7 +72,7 @@ With `Parents`, ticking all of Denmark gives one chip, "Denmark". Removing a chi
 | `FilterText` | `string` | `""` | The filter text (two-way). |
 | `FilterMode` | `TreeFilterMode` | `KeepAncestors` | `KeepAncestors` or `FlatResults`. |
 | `ShowSelectAllRow` | `bool` | `false` | **Select all** / count / **Clear** above the tree. |
-| `MaxSelectionCount` | `int?` | `null` | The most keys; a tick beyond it is refused. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys; a tick beyond it is refused. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `LoadChildrenAsync` | `Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?` | `null` | Lazy loading of children on the first expand. |
 | `ExpandDepth` | `int` | `1` | Levels expanded when `Nodes` is set. |
 | `ItemTemplate` | `DataTemplate?` | `null` | The text part of a pop-up row (data context: `CheckTreeNode`). |

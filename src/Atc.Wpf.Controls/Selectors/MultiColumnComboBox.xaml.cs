@@ -106,7 +106,7 @@ public partial class MultiColumnComboBox
     /// The maximum number of ticked items; <see langword="null"/> for no limit. At the limit the unticked rows are
     /// disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnRowStateInputChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnRowStateInputChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -783,4 +783,7 @@ public partial class MultiColumnComboBox
             ? Visibility.Visible
             : Visibility.Collapsed;
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

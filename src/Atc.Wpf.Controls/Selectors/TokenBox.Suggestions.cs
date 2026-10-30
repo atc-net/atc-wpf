@@ -26,6 +26,12 @@ public partial class TokenBox
     internal bool IsBusy { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection validates once afterwards instead of once per notification.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => isWritingSelectedKeys;
+
+    /// <summary>
     /// Gets or sets the index of the highlighted suggestion; -1 for none.
     /// </summary>
     internal int HighlightedIndex

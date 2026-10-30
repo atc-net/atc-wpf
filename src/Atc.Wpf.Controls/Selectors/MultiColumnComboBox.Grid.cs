@@ -49,6 +49,12 @@ public partial class MultiColumnComboBox
     internal bool? HeaderCheckState => HeaderCheckBox.IsChecked;
 
     /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection validates once afterwards instead of once per notification.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => isWritingSelectedKeys;
+
+    /// <summary>
     /// Gets a value indicating whether the filter box is shown.
     /// </summary>
     internal bool IsFilterShown => PartFilter.Visibility == Visibility.Visible;

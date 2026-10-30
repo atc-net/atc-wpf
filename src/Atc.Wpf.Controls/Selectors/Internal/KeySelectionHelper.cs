@@ -96,6 +96,13 @@ internal static class KeySelectionHelper
     }
 
     /// <summary>
+    /// Returns whether a value is allowed for a <c>MaxSelectionCount</c> property: <see langword="null"/> (no limit) or
+    /// at least one. Used as the validate-value callback, so a lower value throws an <see cref="ArgumentException"/>.
+    /// </summary>
+    public static bool IsValidMaxSelectionCount(object? value)
+        => value is null or int and >= 1;
+
+    /// <summary>
     /// Returns whether two selections hold the same keys in the same order.
     /// </summary>
     public static bool SequenceEquals(

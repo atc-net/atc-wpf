@@ -95,7 +95,7 @@ public partial class MultiSelectComboBox
     /// <summary>
     /// The maximum number of ticked keys; <see langword="null"/> for no limit. At the limit the unticked items are disabled.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnSummaryInputChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -295,6 +295,13 @@ public partial class MultiSelectComboBox
     /// Gets how many times the summary was rebuilt (for change-storm tests).
     /// </summary>
     internal int SummaryUpdateCount { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection validates once afterwards instead of once per notification.
+    /// </summary>
+    internal bool IsWritingSelectedKeys
+        => isWritingSelectedKeys || PartCheckList.IsWritingSelectedKeys;
 
     /// <summary>
     /// Ticks every shown, enabled item in one change.
@@ -701,4 +708,7 @@ public partial class MultiSelectComboBox
             ? Visibility.Visible
             : Visibility.Collapsed;
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

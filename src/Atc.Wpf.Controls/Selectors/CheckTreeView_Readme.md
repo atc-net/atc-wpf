@@ -125,7 +125,7 @@ Ticking a node whose children are not loaded ticks the node itself (with `Leaves
 | `FilterText` | `string` | `""` | The filter text (two-way). Debounced above 2,000 nodes. |
 | `FilterMode` | `TreeFilterMode` | `KeepAncestors` | `KeepAncestors` or `FlatResults`. |
 | `ShowSelectAllRow` | `bool` | `false` | The **Select all** / count / **Clear** row above the tree. |
-| `MaxSelectionCount` | `int?` | `null` | The most keys in `SelectedKeys`; a tick beyond it is refused and at the limit the unticked nodes are disabled. |
+| `MaxSelectionCount` | `int?` | `null` | The most keys in `SelectedKeys`; a tick beyond it is refused and at the limit the unticked nodes are disabled. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `LoadChildrenAsync` | `Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?` | `null` | Loads the children of a node with `HasUnloadedChildren` on its first expand. |
 | `ExpandDepth` | `int` | `1` | Levels expanded when `Nodes` is set (1 = the roots are expanded). |
 | `ItemTemplate` | `DataTemplate?` | `null` | The text part of a row (data context: `CheckTreeNode`). |

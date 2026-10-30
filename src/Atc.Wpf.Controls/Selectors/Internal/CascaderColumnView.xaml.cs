@@ -101,7 +101,7 @@ internal partial class CascaderColumnView
     /// <summary>
     /// The maximum number of keys in <see cref="SelectedKeys"/>; <see langword="null"/> for no limit.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnChromeChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnChromeChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -1474,4 +1474,7 @@ internal partial class CascaderColumnView
             CultureInfo culture)
             => throw new NotSupportedException();
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

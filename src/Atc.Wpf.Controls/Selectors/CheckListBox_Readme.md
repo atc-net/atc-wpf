@@ -102,7 +102,7 @@ The data context of `ItemTemplate` is the row (`CheckListItem`: `Key`, `DisplayV
 | `FilterText` | `string` | `""` | The filter text (two-way); items whose display value contains it are shown. |
 | `ItemGroups` | `Dictionary<string, string>?` | `null` | Key → group name. |
 | `IsGroupCheckable` | `bool` | `true` | Group headers have a tri-state check box that ticks or unticks the shown items of the group. |
-| `MaxSelectionCount` | `int?` | `null` | At the limit the unticked items are disabled (not hidden) and the count reads "{0} of max {1}". Select all is disabled when the shown items do not fit. |
+| `MaxSelectionCount` | `int?` | `null` | At the limit the unticked items are disabled (not hidden) and the count reads "{0} of max {1}". Select all is disabled when the shown items do not fit. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `DisabledKeys` | `ObservableCollection<string>` | empty | Shown but cannot be toggled; Select all, Clear, groups and ranges leave them as they are. |
 | `ItemStyle` | `CheckListItemStyle` | `CheckBox` | `CheckBox` (box before text), `Highlight` (no box; ticked rows get the accent background and a trailing ✓), `Switch` (a toggle switch at the end of the row). |
 | `Columns` | `int` | `1` | Lay items out in N columns; virtualization only applies at 1. |

@@ -93,7 +93,7 @@ public sealed partial class ChipGroup : UserControl
     /// <summary>
     /// The maximum number of selected keys; <see langword="null"/> for no limit. At the limit the unselected chips are disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -185,6 +185,12 @@ public sealed partial class ChipGroup : UserControl
     /// Gets the scroll viewer around the panel.
     /// </summary>
     internal ScrollViewer ScrollHost { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the control is writing its own change into <c>SelectedKeys</c>; a wrapper that
+    /// shares the collection validates once afterwards instead of once per notification.
+    /// </summary>
+    internal bool IsWritingSelectedKeys => isWritingSelectedKeys;
 
     /// <summary>
     /// Selects every enabled chip in one change. Does nothing when the selection limit has no room for them all,
@@ -829,4 +835,7 @@ public sealed partial class ChipGroup : UserControl
 
         public TextBlock CountText { get; }
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

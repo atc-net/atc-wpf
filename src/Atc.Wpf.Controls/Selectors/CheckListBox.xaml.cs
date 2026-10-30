@@ -85,7 +85,7 @@ public partial class CheckListBox
     /// <summary>
     /// The maximum number of ticked keys; <see langword="null"/> for no limit. At the limit the unticked items are disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -948,4 +948,7 @@ public partial class CheckListBox
 
         return null;
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

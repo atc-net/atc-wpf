@@ -133,7 +133,7 @@ public partial class TokenBox
     /// The maximum number of tokens; <see langword="null"/> for no limit. At the limit typing is blocked and the field
     /// shows "{0} of max {1}".
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnTokensInputChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnTokensInputChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -845,4 +845,7 @@ public partial class TokenBox
         PartTextBox.Focus();
         e.Handled = true;
     }
+
+    private static bool ValidateMaxSelectionCount(object? value)
+        => KeySelectionHelper.IsValidMaxSelectionCount(value);
 }

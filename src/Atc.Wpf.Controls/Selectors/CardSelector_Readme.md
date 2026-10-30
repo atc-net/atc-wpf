@@ -94,7 +94,7 @@ cardSelector.SelectedKeysChanged += (_, e) =>
 | `CardHeight` | `double` | `NaN` | Height of each card; `NaN` sizes the cards to their content |
 | `ItemSpacing` | `double` | `8` | Space between cards and between rows |
 | `ShowCheckMark` | `bool` | `true` | Corner ✓ on selected cards (radio dot in the single-select modes) |
-| `MaxSelectionCount` | `int?` | `null` | Selection limit in `Multiple`; at the limit the other cards are disabled |
+| `MaxSelectionCount` | `int?` | `null` | Selection limit in `Multiple`; at the limit the other cards are disabled. `null` (no limit) or at least 1; a lower value throws an `ArgumentException`. |
 | `IsEnabledMemberPath` | `string?` | `null` | Path of a `bool` property; `false` greys the card out and the keyboard skips it |
 
 ## 📡 Events
