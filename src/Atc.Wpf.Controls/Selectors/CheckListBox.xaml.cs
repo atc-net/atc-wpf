@@ -297,7 +297,8 @@ public partial class CheckListBox
             GetCurrentSelection(),
             oldItemKeys,
             Items,
-            SelectNewItems));
+            SelectNewItems,
+            MaxSelectionCount));
 
     private static void OnItemGroupsChanged(
         DependencyObject d,

@@ -51,7 +51,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 |---|---|---|---|
 | `Items` | `Dictionary<string, string>` | empty | Key → display value |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys; two-way by default, updated in place |
-| `SelectNewItems` | `bool` | `false` | Tick keys that appear in `Items` |
+| `SelectNewItems` | `bool` | `false` | Tick keys that appear in `Items`, up to `MaxSelectionCount` |
 | `ShowSelectAllRow` | `bool` | `true` | The tri-state Select all row with the count |
 | `ShowClearButton` | `bool` | `false` | A Clear button in the Select all row |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = more than 10 items |

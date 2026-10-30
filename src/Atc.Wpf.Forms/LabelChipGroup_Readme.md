@@ -57,7 +57,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `Items` | `Dictionary<string, string>` | empty | Key → display value. |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The selected keys. Two-way by default; updated in place. |
 | `SelectionMode` | `ChipSelectionMode` | `Multiple` | `Multiple`, `Single` or `SingleOrNone`. |
-| `SelectNewItems` | `bool` | `false` | New keys in `Items` are selected (`Multiple` only). |
+| `SelectNewItems` | `bool` | `false` | New keys in `Items` are selected (`Multiple` only), up to `MaxSelectionCount`. |
 | `ChipVariant` | `ChipGroupVariant` | `Filled` | `Filled` or `Outlined`. |
 | `ChipSize` | `ChipSize` | `Medium` | The chip size. |
 | `ShowCheckMark` | `bool` | `true` | A ✓ on selected chips. |

@@ -95,7 +95,7 @@ The data context of `ItemTemplate` is the row (`CheckListItem`: `Key`, `DisplayV
 |---|---|---|---|
 | `Items` | `Dictionary<string, string>` | empty | Key → display value. Changing it keeps the ticks (and the scroll position) of keys still present and drops the others from `SelectedKeys` (one event). |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys. Two-way by default; updated in place; a new instance from the binding is picked up. |
-| `SelectNewItems` | `bool` | `false` | Keys that appear in `Items` (including the first items) are ticked automatically. Set it before `Items`. |
+| `SelectNewItems` | `bool` | `false` | Keys that appear in `Items` (including the first items) are ticked automatically, up to `MaxSelectionCount`. Set it before `Items`. |
 | `ShowSelectAllRow` | `bool` | `true` | The top row with the tri-state **Select all** check box and the count. |
 | `ShowClearButton` | `bool` | `false` | A **Clear** button in the Select all row. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown when there are more than 10 items. |

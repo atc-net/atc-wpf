@@ -20,13 +20,15 @@ internal static class KeySelectionHelper
     /// <summary>
     /// Returns the selection after <c>Items</c> changed from <paramref name="oldItemKeys"/> to <paramref name="newItems"/>:
     /// keys no longer present are dropped and, when <paramref name="selectNewItems"/> is set, keys that were not
-    /// present before are ticked (in item order).
+    /// present before are ticked (in item order), but only while the selection holds fewer than
+    /// <paramref name="maxSelectionCount"/> keys.
     /// </summary>
     public static IReadOnlyList<string> GetSelectionAfterItemsChanged(
         IReadOnlyCollection<string> currentSelection,
         IReadOnlySet<string> oldItemKeys,
         IReadOnlyDictionary<string, string>? newItems,
-        bool selectNewItems)
+        bool selectNewItems,
+        int? maxSelectionCount = null)
     {
         ArgumentNullException.ThrowIfNull(currentSelection);
         ArgumentNullException.ThrowIfNull(oldItemKeys);
@@ -49,6 +51,11 @@ internal static class KeySelectionHelper
         var selected = new HashSet<string>(result, StringComparer.Ordinal);
         foreach (var key in newItems.Keys)
         {
+            if (maxSelectionCount is { } max && result.Count >= max)
+            {
+                break;
+            }
+
             if (!oldItemKeys.Contains(key) && selected.Add(key))
             {
                 result.Add(key);
@@ -115,7 +122,9 @@ internal static class KeySelectionHelper
     }
 
     /// <summary>
-    /// Updates <paramref name="target"/> in place so it holds <paramref name="newKeys"/>. An
+    /// Updates <paramref name="target"/> in place so it holds <paramref name="newKeys"/>: keys that stay keep their
+    /// place and new keys are appended in the given order (duplicates skipped), so the collection keeps the order in
+    /// which keys were ticked. Nothing is raised when the keys do not change. An
     /// <see cref="ObservableCollectionEx{T}"/> raises a single reset notification; any other collection gets the
     /// smallest set of removes and adds (or a clear and refill when most keys go).
     /// </summary>
@@ -126,31 +135,32 @@ internal static class KeySelectionHelper
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(newKeys);
 
-        if (target is ObservableCollectionEx<string> rangeCollection)
-        {
-            rangeCollection.SuppressOnChangedNotification = true;
-            try
-            {
-                rangeCollection.Clear();
-                foreach (var key in newKeys)
-                {
-                    rangeCollection.Add(key);
-                }
-            }
-            finally
-            {
-                rangeCollection.SuppressOnChangedNotification = false;
-            }
+        var newSet = new HashSet<string>(newKeys, StringComparer.Ordinal);
+        var kept = target
+            .Where(newSet.Contains)
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+        var keptSet = new HashSet<string>(kept, StringComparer.Ordinal);
+        var added = newKeys
+            .Where(keptSet.Add)
+            .ToList();
 
+        if (added.Count == 0 && kept.Count == target.Count)
+        {
             return;
         }
 
-        var newSet = new HashSet<string>(newKeys, StringComparer.Ordinal);
-        var removeCount = target.Count(x => !newSet.Contains(x));
+        if (target is ObservableCollectionEx<string> rangeCollection)
+        {
+            ResetTo(rangeCollection, kept.Concat(added));
+            return;
+        }
+
+        var removeCount = target.Count - kept.Count;
         if (removeCount > 0 && removeCount > target.Count / 2)
         {
             target.Clear();
-            foreach (var key in newKeys)
+            foreach (var key in kept.Concat(added))
             {
                 target.Add(key);
             }
@@ -166,13 +176,9 @@ internal static class KeySelectionHelper
             }
         }
 
-        var existing = new HashSet<string>(target, StringComparer.Ordinal);
-        foreach (var key in newKeys)
+        foreach (var key in added)
         {
-            if (existing.Add(key))
-            {
-                target.Add(key);
-            }
+            target.Add(key);
         }
     }
 
@@ -208,5 +214,24 @@ internal static class KeySelectionHelper
         return selectedCount >= totalCount
             ? true
             : null;
+    }
+
+    private static void ResetTo(
+        ObservableCollectionEx<string> target,
+        IEnumerable<string> keys)
+    {
+        target.SuppressOnChangedNotification = true;
+        try
+        {
+            target.Clear();
+            foreach (var key in keys)
+            {
+                target.Add(key);
+            }
+        }
+        finally
+        {
+            target.SuppressOnChangedNotification = false;
+        }
     }
 }

@@ -167,7 +167,8 @@ public partial class MultiSelectComboBox
             oldKeys,
             oldItemKeys,
             Items,
-            SelectNewItems);
+            SelectNewItems,
+            MaxSelectionCount);
         if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
         {
             return;

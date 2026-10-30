@@ -92,7 +92,7 @@ chipGroup.SelectedKeysChanged += (_, e) =>
 | `Items` | `Dictionary<string, string>` | empty | Key → display value. Changing it drops keys no longer present from `SelectedKeys` (one event). |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The selected keys. Two-way by default; updated in place; a new instance from the binding is picked up. |
 | `SelectionMode` | `ChipSelectionMode` | `Multiple` | `Multiple`, `Single` (radio group) or `SingleOrNone` (click the selected chip to clear). |
-| `SelectNewItems` | `bool` | `false` | Keys that appear in `Items` are selected automatically (`Multiple` only). |
+| `SelectNewItems` | `bool` | `false` | Keys that appear in `Items` are selected automatically (`Multiple` only), up to `MaxSelectionCount`. |
 | `ChipVariant` | `ChipGroupVariant` | `Filled` | `Filled`: selected = accent fill. `Outlined`: selected = accent border and a light accent tint. |
 | `ChipSize` | `ChipSize` | `Medium` | `Small`, `Medium` or `Large`, as `Chip`. |
 | `ShowCheckMark` | `bool` | `true` | A ✓ before the text of a selected chip. |

@@ -331,7 +331,8 @@ public sealed partial class ChipGroup : UserControl
                 newSelection,
                 oldItemKeys,
                 Items,
-                SelectNewItems && SelectionMode == ChipSelectionMode.Multiple);
+                SelectNewItems && SelectionMode == ChipSelectionMode.Multiple,
+                MaxSelectionCount);
         }
 
         // Leaving the multi-select mode keeps only the most recently selected key (keys are appended as they are
