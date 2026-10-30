@@ -664,6 +664,25 @@ public sealed class TokenBoxTests : IDisposable
     }
 
     [StaFact]
+    public void SuggestionsProvider_throwing_its_own_cancellation_ends_the_busy_state_and_shows_no_matches()
+    {
+        var sut = new TokenBox
+        {
+            SuggestionDelay = TimeSpan.FromMilliseconds(20),
+            SuggestionsProvider = (_, _) => throw new TaskCanceledException("The request timed out."),
+        };
+
+        sut.Text = "jen";
+        Assert.True(sut.IsBusy);
+
+        Pump(TimeSpan.FromMilliseconds(200));
+
+        Assert.False(sut.IsBusy);
+        Assert.Empty(sut.Suggestions);
+        Assert.Equal(Atc.Wpf.Resources.Miscellaneous.NoMatches, sut.StatusText);
+    }
+
+    [StaFact]
     public void Automation_peer_is_a_combo_box_with_the_typed_text_as_value_and_a_token_list()
     {
         var sut = CreateStyled();

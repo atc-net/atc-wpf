@@ -312,8 +312,9 @@ public partial class TokenBox
         {
             found = await provider(typed, cancellation.Token).ConfigureAwait(true) ?? [];
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
         {
+            // Our own cancellation: a newer lookup or CancelLookup owns the busy state.
             return;
         }
         catch (Exception)
