@@ -237,7 +237,7 @@ A quick reference of all controls organized by category:
 | Category | Controls | Package |
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
-| **Data Display** | Alert, Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline, Popover | Atc.Wpf.Controls |
+| **Data Display** | Alert, Card, Badge, Chip, ChipGroup, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented (single or multiple), Timeline, Popover | Atc.Wpf.Controls |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Components |
 | **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
@@ -245,8 +245,10 @@ A quick reference of all controls organized by category:
 | **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
 | **Drag & Drop** | DragDropAttach | Atc.Wpf |
 | **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector | Atc.Wpf.Controls |
-| **Selectors** | DualListSelector | Atc.Wpf.Components |
+| **Multi-Select** | CheckListBox, MultiSelectComboBox, TokenBox, CheckTreeView, TreeSelectComboBox, CascaderComboBox, MultiColumnComboBox, CardSelector (see [Which control when](#-which-multi-select-control-when)) | Atc.Wpf.Controls |
+| **Selectors** | DualListSelector (check boxes, one-way mode, locked items, limit, grouping, virtualization) | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
+| **Labeled Multi-Select** | LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox, LabelCascaderComboBox, LabelMultiColumnComboBox | Atc.Wpf.Forms |
 | **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
@@ -453,6 +455,7 @@ Unlabeled input controls that provide core functionality:
 | **Badge** | Status indicator overlay | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
 | **Card** | Elevated container with header/footer | [Readme](src/Atc.Wpf.Controls/DataDisplay/Card_Readme.md) |
 | **Chip** | Tag/filter interactive elements | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
+| **ChipGroup** | Row of toggle chips bound to `Items` / `SelectedKeys`: single, single-or-none or multiple selection, optional **All** chip | [Readme](src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) |
 | **Divider** | Visual separator (horizontal/vertical) | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
 | **Breadcrumb** | Navigation path with overflow | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
 | **Popover** | Positioned popup with placement and triggers | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
@@ -475,6 +478,42 @@ Unlabeled input controls that provide core functionality:
 | **CountrySelector** | Country dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/CountrySelector_Readme.md) |
 | **LanguageSelector** | Language dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/LanguageSelector_Readme.md) |
 | **FontFamilySelector** | Font family dropdown with previews | [Readme](src/Atc.Wpf.Controls/Selectors/FontFamilySelector_Readme.md) |
+
+### Multi-Select Controls
+
+A family of multi-select controls sharing one contract: bind `Items` (or `ItemsSource`) and a `SelectedKeys` collection, get one `SelectedKeysChanged` per user action, an optional selection limit, disabled keys, keyboard support and UI Automation.
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **CheckListBox** | Always-visible check list with tri-state **Select all**, filter, groups, limit and virtualization | [Readme](src/Atc.Wpf.Controls/Selectors/CheckListBox_Readme.md) |
+| **MultiSelectComboBox** | Drop-down check list; closed it shows names, removable chips or a count | [Readme](src/Atc.Wpf.Controls/Selectors/MultiSelectComboBox_Readme.md) |
+| **TokenBox** | Text field where each pick becomes a removable token; suggestions, paste a list, optional free values | [Readme](src/Atc.Wpf.Controls/Selectors/TokenBox_Readme.md) |
+| **CheckTreeView** | Inline tree with tri-state check boxes, filter, lazy loading and a choice of which keys are reported | [Readme](src/Atc.Wpf.Controls/Selectors/CheckTreeView_Readme.md) |
+| **TreeSelectComboBox** | The tri-state check tree in a drop-down | [Readme](src/Atc.Wpf.Controls/Selectors/TreeSelectComboBox_Readme.md) |
+| **CascaderComboBox** | Drop-down with one column per level for deep, uniform hierarchies | [Readme](src/Atc.Wpf.Controls/Selectors/CascaderComboBox_Readme.md) |
+| **MultiColumnComboBox** | Drop-down with a sortable grid and a check-box column, for comparing items on several attributes | [Readme](src/Atc.Wpf.Controls/Selectors/MultiColumnComboBox_Readme.md) |
+| **CardSelector** | Wrapping grid of cards for picking one or several visual options | [Readme](src/Atc.Wpf.Controls/Selectors/CardSelector_Readme.md) |
+| **ChipGroup** | Row of toggle chips for a handful of options | [Readme](src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) |
+| **Segmented** | Joined button row; `SelectionMode="Multiple"` for weekdays or B / I / U | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **DualListSelector** | Two lists with transfer buttons (in Atc.Wpf.Components) | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
+
+### 🧭 Which Multi-Select Control When
+
+| Situation | Control |
+|-----------|---------|
+| 2–6 very short options or icons (weekdays, B / I / U) | **Segmented** (`SelectionMode="Multiple"`) |
+| 2–15 short options, all visible (quick filters, facets) | **ChipGroup** |
+| 3–1,000 known items, little space (toolbar filter, form row) | **MultiSelectComboBox** |
+| 5–1,000 items in a settings page or side panel | **CheckListBox** |
+| Large or open-ended sets; typing is the main way in (users, tags, e-mail addresses) | **TokenBox** |
+| A hierarchy, always visible (permissions, folders) | **CheckTreeView** |
+| A hierarchy, little space | **TreeSelectComboBox** |
+| A deep, uniform hierarchy (Country › Region › City) | **CascaderComboBox** |
+| Items you compare on several attributes (number + name + city) | **MultiColumnComboBox** |
+| Few, visual choices (plans, templates, devices) | **CardSelector** |
+| Building an ordered list out of a pool | **DualListSelector** |
+
+For a labeled form field with a mandatory marker and validation, use the `Label*` wrapper (see [Multi-select form fields](#-label-controls-25-controls)).
 
 ### Progress Controls
 
@@ -499,6 +538,7 @@ Labeled input controls with built-in validation and consistent styling:
 - **Selection**: LabelCheckBox, LabelComboBox, LabelToggleSwitch, LabelSlider
 - **Selectors**: LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelWellKnownColorSelector
 - **Pickers**: LabelColorPicker, LabelDirectoryPicker, LabelFilePicker
+- **Multi-Select**: [LabelCheckListBox](src/Atc.Wpf.Forms/LabelCheckListBox_Readme.md), [LabelMultiSelectComboBox](src/Atc.Wpf.Forms/LabelMultiSelectComboBox_Readme.md), [LabelChipGroup](src/Atc.Wpf.Forms/LabelChipGroup_Readme.md), [LabelTokenBox](src/Atc.Wpf.Forms/LabelTokenBox_Readme.md), [LabelTreeSelectComboBox](src/Atc.Wpf.Forms/LabelTreeSelectComboBox_Readme.md), [LabelCascaderComboBox](src/Atc.Wpf.Forms/LabelCascaderComboBox_Readme.md), [LabelMultiColumnComboBox](src/Atc.Wpf.Forms/LabelMultiColumnComboBox_Readme.md)
 - **Network**: LabelEndpointBox (protocol + host + port with validation)
 - **Display**: LabelContent, LabelTextInfo
 
@@ -547,7 +587,7 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **DualListSelector** | Dual-list transfer control with filtering, reordering, and drag-drop | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
+| **DualListSelector** | Dual-list transfer control with filtering, reordering and drag-drop; optional check boxes with tri-state **Select all**, one-way mode, locked items, a limit, grouping and virtualization | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
 
 ### Viewers
 
