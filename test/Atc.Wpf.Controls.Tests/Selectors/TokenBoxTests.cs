@@ -555,19 +555,20 @@ public sealed class TokenBoxTests : IDisposable
     }
 
     [StaFact]
-    public void Items_change_keeps_created_values_when_AllowCreate_is_set()
+    public void Items_change_keeps_created_values_but_drops_known_items_when_AllowCreate_is_set()
     {
         var sut = Create();
         sut.AllowCreate = true;
-        sut.SelectedKeys = ["orders"];
+        sut.SelectedKeys = ["orders", "free"];
         sut.Paste("brand new,");
         var events = Record(sut);
 
         sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["payments"] = "Payments" };
 
-        Assert.Equal(["orders", "brand new"], sut.SelectedKeys);
-        Assert.Empty(events);
-        Assert.Equal(["orders", "brand new"], sut.GetTokenItems().Select(x => x.DisplayValue).ToList());
+        Assert.Equal(["free", "brand new"], sut.SelectedKeys);
+        var change = Assert.Single(events);
+        Assert.Equal(["orders", "free", "brand new"], change.OldValue);
+        Assert.Equal(["free", "brand new"], sut.GetTokenItems().Select(x => x.DisplayValue).ToList());
     }
 
     [StaFact]

@@ -167,7 +167,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 - **Unknown text:** without `AllowCreate`, text that matches nothing stays in the field; pasted parts that match nothing stay there too (joined by the first separator).
 - **Created values:** the key is the text itself unless `TokenCreating` sets another; the pair is added to `Items`. While `AllowCreate` is set, keys in `SelectedKeys` that are not in `Items` show as their key.
 - **Duplicates** are ignored (by key, or by display value ignoring case); pasting "a, a, b" adds a and b.
-- **Items changes** drop tokens whose keys are gone (one event) — except when `AllowCreate` is set, and except values picked from `SuggestionsProvider`.
+- **Items changes** drop tokens whose keys are gone (one event), except created values and values picked from `SuggestionsProvider`. With `AllowCreate`, keys that were never in `Items` (free values set from the view model) are kept too.
 - **Limit:** a paste past `MaxSelectionCount` adds tokens up to the limit and drops the rest.
 - **Token order** follows `SelectedKeys`; new tokens are appended.
 - The texts ("+{0}", "Remove {0}", "{0} of max {1}", "No matches", "Please wait...", "Clear") come from the shared `Atc.Wpf.Resources.Miscellaneous` resources (English, Danish, German).

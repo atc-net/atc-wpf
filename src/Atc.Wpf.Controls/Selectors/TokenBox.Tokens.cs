@@ -292,16 +292,20 @@ public partial class TokenBox
     {
         var control = (TokenBox)d;
         var target = control.SelectedKeys;
-        if (target is null || control.AllowCreate || e.NewValue is not Dictionary<string, string> newItems)
+        if (target is null || e.NewValue is not Dictionary<string, string> newItems)
         {
             control.UpdateTokens();
             return;
         }
 
-        // Keys gone from Items are dropped (one event); values picked from the suggestions provider are kept.
+        // Keys gone from Items are dropped (one event); created values and values picked from the suggestions
+        // provider are kept. With AllowCreate, keys that were never in Items (free values) are kept as well.
+        var oldItems = e.OldValue as Dictionary<string, string>;
         var oldKeys = target.ToList();
         var newKeys = oldKeys
-            .Where(x => newItems.ContainsKey(x) || control.knownValues.ContainsKey(x))
+            .Where(x => newItems.ContainsKey(x) ||
+                        control.knownValues.ContainsKey(x) ||
+                        (control.AllowCreate && !(oldItems?.ContainsKey(x) ?? false)))
             .Distinct(StringComparer.Ordinal)
             .ToList();
         if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
