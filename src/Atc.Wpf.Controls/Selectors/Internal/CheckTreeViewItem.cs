@@ -58,7 +58,7 @@ internal sealed class CheckTreeViewItem : TreeViewItem
     {
         ArgumentNullException.ThrowIfNull(e);
 
-        var isRowClick = !e.Handled && IsFromOwnHeader(e.OriginalSource as DependencyObject);
+        var isRowClick = IsFromOwnRow(e.OriginalSource as DependencyObject);
         base.OnMouseLeftButtonDown(e);
         if (isRowClick && e.ClickCount == 1 && !IsPlaceholder && Node is { } node)
         {
@@ -83,21 +83,32 @@ internal sealed class CheckTreeViewItem : TreeViewItem
             return;
         }
 
+        if (e.Key == Key.Multiply &&
+            !IsPlaceholder &&
+            Node is { } expandNode &&
+            ReferenceEquals(e.OriginalSource, this))
+        {
+            OwnerView.ExpandSubtree(expandNode);
+            e.Handled = true;
+            return;
+        }
+
         base.OnKeyDown(e);
     }
 
-    private bool IsFromOwnHeader(DependencyObject? source)
+    private bool IsFromOwnRow(DependencyObject? source)
     {
-        while (source is not null && !ReferenceEquals(source, this))
+        // Anywhere on the row counts, except the expander arrow and the rows of the children.
+        while (source is not null)
         {
-            switch (source)
+            if (ReferenceEquals(source, this))
             {
-                case CheckTreeViewItem:
-                    return false;
-                case ToggleButton and not CheckTreeCheckBox:
-                    return false;
-                case FrameworkElement { Name: "PART_Header" } header when ReferenceEquals(header.TemplatedParent, this):
-                    return true;
+                return true;
+            }
+
+            if (source is CheckTreeViewItem or ItemsPresenter or (ToggleButton and not CheckTreeCheckBox))
+            {
+                return false;
             }
 
             source = source is Visual or System.Windows.Media.Media3D.Visual3D

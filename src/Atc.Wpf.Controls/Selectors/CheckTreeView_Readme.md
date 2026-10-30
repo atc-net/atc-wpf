@@ -140,6 +140,7 @@ Ticking a node whose children are not loaded ticks the node itself (with `Leaves
 | `SetNodeChecked(string key, bool isChecked)` | Ticks or unticks a node (with its shown, enabled children when linked). |
 | `SelectAll()` / `ClearSelection()` | Ticks every shown, enabled node / unticks every enabled node (one event each). |
 | `ExpandAll()` / `CollapseAll()` | Expands every loaded node / collapses every node. |
+| `ExpandSubtree(CheckTreeNode node)` | Expands a node and every loaded node under it (what `*` does). |
 
 ## 📢 Events
 

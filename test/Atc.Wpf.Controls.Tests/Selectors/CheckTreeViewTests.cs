@@ -440,6 +440,23 @@ public sealed class CheckTreeViewTests : IDisposable
     }
 
     [StaFact]
+    public void Multiply_on_a_row_expands_everything_under_it()
+    {
+        var nodes = CheckTreeStateTests.CreateRegionNodes();
+        var sut = new CheckTreeView { ExpandDepth = 0, Nodes = nodes };
+
+        RunInWindow(sut, () =>
+        {
+            var worldContainer = (TreeViewItem)sut.PartTree.ItemContainerGenerator.ContainerFromIndex(0);
+
+            KeyPress.Send(worldContainer, Key.Multiply);
+
+            Assert.True(nodes[0].IsExpanded);
+            Assert.All(nodes[0].Children, x => Assert.True(x.IsExpanded));
+        });
+    }
+
+    [StaFact]
     public void A_tree_of_10000_nodes_is_virtualized_and_filters_quickly()
     {
         var sut = new CheckTreeView

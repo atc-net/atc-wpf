@@ -266,6 +266,32 @@ public partial class CheckTreeView
     }
 
     /// <summary>
+    /// Expands a node and every loaded node under it (what <c>*</c> on a row does); nodes with unloaded children start
+    /// loading.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    public void ExpandSubtree(CheckTreeNode node)
+    {
+        ArgumentNullException.ThrowIfNull(node);
+
+        var stack = new Stack<CheckTreeNode>();
+        stack.Push(node);
+        while (stack.Count > 0)
+        {
+            var current = stack.Pop();
+            if (current.Children.Count > 0 || current.HasUnloadedChildren)
+            {
+                current.IsExpanded = true;
+            }
+
+            foreach (var child in current.Children)
+            {
+                stack.Push(child);
+            }
+        }
+    }
+
+    /// <summary>
     /// Collapses every node.
     /// </summary>
     public void CollapseAll()
