@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Controls.Tests.Selectors;
 
+[Collection(nameof(PackResourceTestGroup))]
 public sealed class CascaderComboBoxTests : IDisposable
 {
     public void Dispose()
