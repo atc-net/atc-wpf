@@ -262,6 +262,10 @@
 
     <TreeViewItem Header="Selectors">
         <sample:SampleTreeViewItem
+            Header="CardSelector"
+            IsExpanded="True"
+            SamplePath="Selectors.CardSelectorView" />
+        <sample:SampleTreeViewItem
             Header="CheckListBox"
             IsExpanded="True"
             SamplePath="Selectors.CheckListBoxView" />

@@ -12,7 +12,7 @@ Atomic / primitive WPF controls that act as the building blocks for the higher-l
 | Data-display controls (`Avatar`, `AvatarGroup`, `Badge`, `Breadcrumb`, `Card`, `Carousel`, `Chip`, `ChipGroup`, `Divider`, `Popover`, `Segmented`, `Timeline`) | `DataDisplay/` | [`docs/DataDisplay/@Readme.md`](../../docs/DataDisplay/@Readme.md) |
 | Layouts (`VirtualizingStaggeredPanel`, `MasonryPanel`, …) | `Layouts/` | [`docs/Layouts/@Readme.md`](../../docs/Layouts/@Readme.md) |
 | Progressing (`BusyOverlay`, `LoadingIndicator`, `Skeleton`, `Overlay`) | `Progressing/` | per-control `_Readme.md` |
-| Selectors (`AccentColorSelector`, `CheckListBox`, `CheckTreeView`, `CountrySelector`, `LanguageSelector`, `MultiSelectComboBox`, `ThemeSelector`, `TokenBox`, `TreeSelectComboBox`, `WellKnownColorSelector`, …) | `Selectors/` | per-control `_Readme.md` |
+| Selectors (`AccentColorSelector`, `CardSelector`, `CheckListBox`, `CheckTreeView`, `CountrySelector`, `LanguageSelector`, `MultiSelectComboBox`, `ThemeSelector`, `TokenBox`, `TreeSelectComboBox`, `WellKnownColorSelector`, …) | `Selectors/` | per-control `_Readme.md` |
 | Pickers (`DirectoryPicker`, `FilePicker`, `FontPicker`, `AdvancedFontPicker`) | `Pickers/` | per-control `_Readme.md` |
 | Zoom (`ZoomBox`, `ZoomMiniMap`, mouse/touch handlers, undo/redo glue) | `Zoom/` | per-control `_Readme.md` |
 | Localization resources (en / da / de) | `Resources/` | — |

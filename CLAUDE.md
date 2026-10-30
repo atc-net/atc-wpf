@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 160+ controls, and source generators. The project follows a four-tier architecture:
 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
-- **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls, selectors incl. the `CheckListBox` multi-select list, the `MultiSelectComboBox` multi-select drop-down, the `TokenBox` tag input with suggestions and the tri-state check trees `CheckTreeView` / `TreeSelectComboBox`; data display incl. the `ChipGroup` toggle-chip filter)
+- **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls, selectors incl. the `CardSelector` card/tile picker, the `CheckListBox` multi-select list, the `MultiSelectComboBox` multi-select drop-down, the `TokenBox` tag input with suggestions and the tri-state check trees `CheckTreeView` / `TreeSelectComboBox`; data display incl. the `ChipGroup` toggle-chip filter)
 - **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation, incl. `LabelCheckListBox`, `LabelMultiSelectComboBox`, `LabelChipGroup`, `LabelTokenBox` and `LabelTreeSelectComboBox`) plus the bare `TimeZonePicker` / `LabelTimeZonePicker` (system-locale picker, no hardware involvement)
 - **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser, the `DualListSelector` transfer list with check-box style, one-way mode, locked items, a limit and virtualization)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
@@ -148,7 +148,7 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 | Category | TreeView | Samples |
 |----------|----------|---------|
 | Wpf | `SamplesWpfTreeView.xaml` | Commands, Layouts, Media, Markup, etc. |
-| Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts, Selectors (incl. CheckListBox, CheckTreeView, MultiSelectComboBox, TokenBox, TreeSelectComboBox), DataDisplay (incl. Chip, ChipGroup) |
+| Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts, Selectors (incl. CardSelector, CheckListBox, CheckTreeView, MultiSelectComboBox, TokenBox, TreeSelectComboBox), DataDisplay (incl. Chip, ChipGroup) |
 | Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls (incl. LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox), Selectors, Pickers (incl. TimeZonePicker / LabelTimeZonePicker) |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications (incl. TrayIcon), Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
