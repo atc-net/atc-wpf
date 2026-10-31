@@ -103,6 +103,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     }
 
     /// <summary>
+    /// Occurs on the UI thread after a batch of entries was added while <see cref="AutoScroll"/> is on, asking the
+    /// view bound to this view model to scroll to the newest entry.
+    /// </summary>
+    internal event EventHandler<ApplicationMonitorScrollRequestedEventArgs>? ScrollRequested;
+
+    /// <summary>
     /// Gets the collected event entries.
     /// </summary>
     public ObservableCollectionEx<ApplicationEventEntry> Entries { get; }
@@ -365,7 +371,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
         if (AutoScroll)
         {
-            MessengerInstance.Send(new ApplicationMonitorScrollEvent(SortDirection) { AddedCount = batch.Count });
+            var scrollEvent = new ApplicationMonitorScrollEvent(SortDirection) { AddedCount = batch.Count };
+            ScrollRequested?.Invoke(this, new ApplicationMonitorScrollRequestedEventArgs(scrollEvent));
+
+            // Still broadcast for listeners outside the view; the view itself listens to ScrollRequested so that
+            // one monitor does not scroll another.
+            MessengerInstance.Send(scrollEvent);
         }
     }
 

@@ -33,7 +33,7 @@ using Atc.Wpf.Components.Monitoring;
 | `ShowAutoScrollInToolbar` | `bool` | `true` | Show auto-scroll toggle |
 | `AutoScroll` | `bool` | `true` | Whether new entries scroll into view automatically. Two-way bindable; bridges to the underlying `ApplicationMonitorViewModel.AutoScroll`, so the toolbar toggle and this DP stay in sync. |
 | `MaxEntries` | `int` | `10000` | Ring-buffer cap on the in-memory entry buffer. When new entries push the count past this value, the oldest entries (by insertion order) are dropped. Set to `0` for no cap (only safe for short-running apps). Two-way bindable and bridged to the VM. |
-| `IsPaused` | `bool` | `false` | When `true`, suspends dispatch of incoming entries to the visible buffer while the ingest channel keeps capturing. The toolbar Pause button shows a badge with the buffered count. Resuming flushes the held entries. Two-way bindable and bridged to the VM. |
+| `IsPaused` | `bool` | `false` | When `true`, suspends dispatch of incoming entries to the visible buffer while the newest `MaxEntries` entries keep being captured (older ones are dropped). The toolbar Pause button shows a badge with the buffered count. Resuming flushes the held entries. Two-way bindable and bridged to the VM. |
 | `ShowPauseInToolbar` | `bool` | `true` | Show the Pause/Resume toggle in the toolbar. |
 | `ShowExportInToolbar` | `bool` | `false` | Show the Export button (CSV / JSON / TXT) in the toolbar. Off by default — opt in with `ShowExportInToolbar="True"`. |
 | `IsDetachedFromTail` | `bool` | `false` | (Read-only intent.) `true` while the user has manually scrolled away from the tail of the list. Auto-scroll is suppressed while detached; the `Jump to live` overlay is bound to this. |
@@ -44,7 +44,8 @@ using Atc.Wpf.Components.Monitoring;
 
 ## 📝 Notes
 
-- Uses `Messenger.Default` to receive `ApplicationMonitorScrollEvent` messages
+- When the `DataContext` is set to an `ApplicationMonitorViewModel`, the `AutoScroll`, `MaxEntries` and `IsPaused` values set on the view (directly or by a binding) are pushed to the view model; the others show the view model's own values
+- Scrolls when its own view model adds entries; the view model still broadcasts `ApplicationMonitorScrollEvent` through `Messenger.Default` for other listeners
 - Auto-scroll keeps the latest entries visible
 - Each `ApplicationEventEntry` displays a distinct icon per `LogCategoryType` via `LogCategoryTypeToResourceImageValueConverter`
 - Supported log categories with unique icons: Critical, Error, Warning, Security, Audit, Service, UI, Information, Debug, Trace

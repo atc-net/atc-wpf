@@ -20,7 +20,7 @@ public sealed class ApplicationMonitorViewModelBatchTests
 
         var stopwatch = Stopwatch.StartNew();
         sut.IsPaused = false;
-        PumpUntil(() => sut.Entries.Count == 1_000);
+        DispatcherPump.Until(() => sut.Entries.Count == 1_000);
 
         Assert.Equal(1_000, sut.Entries.Count);
         Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(5), stopwatch.Elapsed.ToString());
@@ -42,7 +42,7 @@ public sealed class ApplicationMonitorViewModelBatchTests
         }
 
         sut.IsPaused = false;
-        PumpUntil(() => sut.Entries.Count == 50);
+        DispatcherPump.Until(() => sut.Entries.Count == 50);
 
         Assert.Equal(50, sut.Entries.Count);
         Assert.Equal(1, copyAllRaised);
@@ -51,18 +51,4 @@ public sealed class ApplicationMonitorViewModelBatchTests
 
     private static ApplicationEventEntry Entry(int i)
         => new(LogCategoryType.Information, "Test", i.ToString(CultureInfo.InvariantCulture));
-
-    private static void PumpUntil(Func<bool> condition)
-    {
-        var stopwatch = Stopwatch.StartNew();
-        while (!condition() && stopwatch.Elapsed < TimeSpan.FromSeconds(10))
-        {
-            var frame = new DispatcherFrame();
-            _ = Dispatcher.CurrentDispatcher.BeginInvoke(
-                DispatcherPriority.ContextIdle,
-                () => frame.Continue = false);
-            Dispatcher.PushFrame(frame);
-            Thread.Sleep(10);
-        }
-    }
 }
