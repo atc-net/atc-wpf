@@ -14,6 +14,7 @@ internal static class ThemedWindow
         "Styles/BaseControls/TextBlock.xaml",
         "Styles/BaseControls/TextBox.xaml",
         "Styles/BaseControls/ComboBox.xaml",
+        "Styles/BaseControls/StatusBar.xaml",
     ];
 
     public static ResourceDictionary CreateResources(

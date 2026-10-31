@@ -5,6 +5,7 @@ global using System.Runtime.CompilerServices;
 global using System.Threading;
 global using System.Windows;
 global using System.Windows.Controls;
+global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;
 global using System.Windows.Documents;
 global using System.Windows.Interop;
