@@ -134,24 +134,26 @@ public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
             {
                 var handler = (NotifyCollectionChangedEventHandler)o;
 
-                // If the subscriber is a DispatcherObject and different thread
-                switch (handler.Target)
+                // A subscriber owned by another thread (e.g. a CollectionView) gets the change on its own
+                // thread. The call is synchronous on purpose: the event args carry indices that are only
+                // valid until the next change, so the change must be handled before this thread continues.
+                // Every subscriber - CollectionViews included - gets the incremental change itself;
+                // turning it into a view refresh would reset every bound ItemsControl per item and throw
+                // while a DataGrid is editing a row.
+                if (handler.Target is DispatcherObject dispatcherObject &&
+                    !dispatcherObject.CheckAccess())
                 {
-                    case DispatcherObject dispatcherObject when !dispatcherObject.CheckAccess():
-                        dispatcherObject.Dispatcher?.Invoke(
-                            DispatcherPriority.DataBind,
-                            handler,
-                            this,
-                            e);
-                        break;
-                    case CollectionView target:
-                        target.Refresh();
-                        break;
-                    default:
-                        handler(
-                            this,
-                            e);
-                        break;
+                    dispatcherObject.Dispatcher.Invoke(
+                        DispatcherPriority.DataBind,
+                        handler,
+                        this,
+                        e);
+                }
+                else
+                {
+                    handler(
+                        this,
+                        e);
                 }
             }
         }
