@@ -668,7 +668,7 @@ public sealed partial class ChipGroup : UserControl
     private void Commit(IReadOnlyList<string> newSelection)
     {
         var oldSelection = GetCurrentSelection();
-        if (KeySelectionHelper.SequenceEquals(oldSelection, newSelection))
+        if (KeySelectionHelper.SetEquals(oldSelection, newSelection))
         {
             RefreshStates();
             return;

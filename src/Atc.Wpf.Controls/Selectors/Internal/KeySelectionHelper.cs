@@ -129,13 +129,30 @@ internal static class KeySelectionHelper
     }
 
     /// <summary>
+    /// Returns whether two selections hold the same keys, in any order. The family compares selections this way:
+    /// <see cref="ApplyInPlace"/> keeps the order in which keys were ticked, so a selection that differs only in
+    /// order is not a change.
+    /// </summary>
+    public static bool SetEquals(
+        IReadOnlyCollection<string> first,
+        IReadOnlyCollection<string> second)
+    {
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+
+        var firstSet = new HashSet<string>(first, StringComparer.Ordinal);
+        return firstSet.SetEquals(second);
+    }
+
+    /// <summary>
     /// Updates <paramref name="target"/> in place so it holds <paramref name="newKeys"/>: keys that stay keep their
     /// place and new keys are appended in the given order (duplicates skipped), so the collection keeps the order in
     /// which keys were ticked. Nothing is raised when the keys do not change. An
     /// <see cref="ObservableCollectionEx{T}"/> raises a single reset notification; any other collection gets the
     /// smallest set of removes and adds (or a clear and refill when most keys go).
     /// </summary>
-    public static void ApplyInPlace(
+    /// <returns><see langword="true"/> when <paramref name="target"/> was changed.</returns>
+    public static bool ApplyInPlace(
         ObservableCollection<string> target,
         IReadOnlyList<string> newKeys)
     {
@@ -154,13 +171,13 @@ internal static class KeySelectionHelper
 
         if (added.Count == 0 && kept.Count == target.Count)
         {
-            return;
+            return false;
         }
 
         if (target is ObservableCollectionEx<string> rangeCollection)
         {
             ResetTo(rangeCollection, kept.Concat(added));
-            return;
+            return true;
         }
 
         var removeCount = target.Count - kept.Count;
@@ -172,7 +189,7 @@ internal static class KeySelectionHelper
                 target.Add(key);
             }
 
-            return;
+            return true;
         }
 
         for (var i = target.Count - 1; i >= 0; i--)
@@ -187,6 +204,8 @@ internal static class KeySelectionHelper
         {
             target.Add(key);
         }
+
+        return true;
     }
 
     /// <summary>

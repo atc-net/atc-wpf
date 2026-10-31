@@ -498,6 +498,21 @@ public sealed class CheckTreeViewTests : IDisposable
         Assert.Equal(4, sut.GetShownChildren(sut.FindNode("dk")!).Count);
     }
 
+    [StaFact]
+    public void A_structure_change_does_not_raise_SelectedKeysChanged_when_only_the_order_differs()
+    {
+        var sut = CreateRegions();
+        sut.ToggleNode(sut.FindNode("dk-odense")!);
+        sut.ToggleNode(sut.FindNode("dk-aarhus")!);
+        Assert.Equal(["dk-odense", "dk-aarhus"], sut.SelectedKeys);
+        var events = Record(sut);
+
+        sut.FindNode("se")!.Children.Add(new CheckTreeNode("se-mal", "Malmo"));
+
+        Assert.Empty(events);
+        Assert.Equal(["dk-odense", "dk-aarhus"], sut.SelectedKeys);
+    }
+
     private static CheckTreeView CreateRegions()
         => new() { Nodes = CheckTreeStateTests.CreateRegionNodes(), ExpandDepth = 2 };
 

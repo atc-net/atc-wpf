@@ -520,7 +520,7 @@ public partial class MultiColumnComboBox
     {
         var target = SelectedKeys;
         var oldKeys = target is null ? [] : target.ToList();
-        if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+        if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {
             RefreshPopupState();
             return;

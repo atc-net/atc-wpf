@@ -1171,7 +1171,7 @@ internal partial class CascaderColumnView
 
         // Loaded or added children may change the keys (a ticked parent passes its tick on).
         var newKeys = state.GetKeys();
-        if (!KeySelectionHelper.SequenceEquals(GetCurrentKeys(), newKeys))
+        if (!KeySelectionHelper.SetEquals(GetCurrentKeys(), newKeys))
         {
             state.CommitKeys();
             Commit(newKeys);
@@ -1324,12 +1324,13 @@ internal partial class CascaderColumnView
     private bool Commit(IReadOnlyList<string> newKeys)
     {
         var oldKeys = GetCurrentKeys();
-        if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+        if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {
             RefreshChrome();
             return false;
         }
 
+        bool isChanged;
         isWritingSelectedKeys = true;
         try
         {
@@ -1340,11 +1341,17 @@ internal partial class CascaderColumnView
                 SetCurrentValue(SelectedKeysProperty, target);
             }
 
-            KeySelectionHelper.ApplyInPlace(target, newKeys);
+            isChanged = KeySelectionHelper.ApplyInPlace(target, newKeys);
         }
         finally
         {
             isWritingSelectedKeys = false;
+        }
+
+        if (!isChanged)
+        {
+            RefreshChrome();
+            return false;
         }
 
         // SelectedKeysChanged follows: no separate StateRefreshed, so the drop-down updates its summary once.

@@ -174,7 +174,7 @@ public partial class MultiSelectComboBox
             Items,
             SelectNewItems,
             MaxSelectionCount);
-        if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+        if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {
             return;
         }
@@ -475,7 +475,7 @@ public partial class MultiSelectComboBox
         draftKeys = null;
         var target = SelectedKeys;
         var oldKeys = target is null ? [] : target.ToList();
-        var isChanged = commit && !KeySelectionHelper.SequenceEquals(oldKeys, draft);
+        var isChanged = commit && !KeySelectionHelper.SetEquals(oldKeys, draft);
         if (isChanged)
         {
             if (target is null)

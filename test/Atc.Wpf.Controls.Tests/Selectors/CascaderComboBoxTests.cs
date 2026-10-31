@@ -719,6 +719,22 @@ public sealed class CascaderComboBoxTests : IDisposable
         }
     }
 
+    [StaFact]
+    public void A_structure_change_does_not_raise_SelectedKeysChanged_when_only_the_order_differs()
+    {
+        var sut = Create();
+        sut.CheckedKeysStrategy = CheckedKeysStrategy.Leaves;
+        sut.ToggleNode(sut.FindNode("dk-zea-cph")!);
+        sut.ToggleNode(sut.FindNode("dk-jut-aar")!);
+        Assert.Equal(["dk-zea-cph", "dk-jut-aar"], sut.SelectedKeys);
+        var events = Record(sut);
+
+        sut.FindNode("se-sve")!.Children.Add(new CheckTreeNode("se-sve-upp", "Uppsala"));
+
+        Assert.Empty(events);
+        Assert.Equal(["dk-zea-cph", "dk-jut-aar"], sut.SelectedKeys);
+    }
+
     internal static System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> CreateCascaderRegions()
     {
         var jutland = new CheckTreeNode("dk-jut", "Jutland");

@@ -673,7 +673,7 @@ public sealed partial class Segmented : Control
     /// </summary>
     private bool WriteKeys(IReadOnlyList<string> newKeys)
     {
-        if (KeySelectionHelper.SequenceEquals(GetCurrentKeys(), newKeys))
+        if (KeySelectionHelper.SetEquals(GetCurrentKeys(), newKeys))
         {
             return false;
         }

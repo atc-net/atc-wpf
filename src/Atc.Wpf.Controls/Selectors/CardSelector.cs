@@ -659,7 +659,7 @@ public sealed partial class CardSelector : ListBox
     private void WriteKeys(IReadOnlyList<string> newKeys)
     {
         var oldKeys = GetCurrentKeys();
-        if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+        if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {
             return;
         }

@@ -319,7 +319,7 @@ public partial class TokenBox
                         (AllowCreate && !oldItemKeys.Contains(x)))
             .Distinct(StringComparer.Ordinal)
             .ToList();
-        if (KeySelectionHelper.SequenceEquals(oldKeys, newKeys))
+        if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {
             return;
         }
