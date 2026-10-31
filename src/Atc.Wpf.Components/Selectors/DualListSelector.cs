@@ -42,6 +42,8 @@ public sealed partial class DualListSelector : Control
     private ListBox? selectedListBox;
     private ListCollectionView? availableView;
     private ListCollectionView? selectedView;
+    private List<DualListSelectorItem>? keptAvailableHighlight;
+    private List<DualListSelectorItem>? keptSelectedHighlight;
     private TextBox? availableFilterTextBox;
     private TextBox? selectedFilterTextBox;
     private TextBlock? availableItemCount;
@@ -242,6 +244,8 @@ public sealed partial class DualListSelector : Control
         AvailableItems = new ObservableCollectionEx<DualListSelectorItem>();
         SelectedItems = new ObservableCollectionEx<DualListSelectorItem>();
         ListMaxHeight = double.PositiveInfinity;
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
 
     /// <summary>
@@ -1730,9 +1734,14 @@ public sealed partial class DualListSelector : Control
             CollectionChangedEventManager.AddHandler(newItems, selector.OnItemsChanged);
         }
 
-        selector.ReplaceView(
-            isAvailable: e.Property == AvailableItemsProperty,
-            e.NewValue as ObservableCollection<DualListSelectorItem>);
+        // The views live only while the control is loaded: a view subscribes strongly to its collection.
+        if (selector.IsLoaded)
+        {
+            selector.ReplaceView(
+                isAvailable: e.Property == AvailableItemsProperty,
+                e.NewValue as ObservableCollection<DualListSelectorItem>);
+        }
+
         selector.UpdateItemCounts();
     }
 
@@ -1768,6 +1777,52 @@ public sealed partial class DualListSelector : Control
         }
 
         oldView?.DetachFromSourceCollection();
+    }
+
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (availableView is not null || selectedView is not null)
+        {
+            return;
+        }
+
+        RestoreView(isAvailable: true, AvailableItems, availableListBox, keptAvailableHighlight);
+        RestoreView(isAvailable: false, SelectedItems, selectedListBox, keptSelectedHighlight);
+        keptAvailableHighlight = null;
+        keptSelectedHighlight = null;
+        UpdateItemCounts();
+    }
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // A collection view subscribes strongly to its collection: let go of it, so a long-lived collection
+        // does not keep one view per selector ever shown. The views (filter, grouping, highlight) come back on Loaded.
+        keptAvailableHighlight = GetHighlighted(availableListBox);
+        keptSelectedHighlight = GetHighlighted(selectedListBox);
+        ReplaceView(isAvailable: true, items: null);
+        ReplaceView(isAvailable: false, items: null);
+    }
+
+    private void RestoreView(
+        bool isAvailable,
+        ObservableCollection<DualListSelectorItem>? items,
+        ListBox? listBox,
+        List<DualListSelectorItem>? highlight)
+    {
+        ReplaceView(isAvailable, items);
+        if (listBox is null || highlight is null || items is null)
+        {
+            return;
+        }
+
+        foreach (var item in highlight.Where(listBox.Items.Contains))
+        {
+            listBox.SelectedItems.Add(item);
+        }
     }
 
     private ListCollectionView? GetView(

@@ -232,6 +232,68 @@ public sealed class DualListSelectorRulesTests : IDisposable
         Assert.Equal(3, new ListBox { ItemsSource = first }.Items.Count);
     }
 
+    [StaFact]
+    public void An_unloaded_selector_lets_go_of_a_long_lived_collection_and_is_collected()
+    {
+        var items = DualListSelectorTestHost.CreateItems("A", 3);
+
+        var reference = CreateAndCloseSelector(items);
+
+        Assert.Equal(0, CountViewSubscriptions(items));
+        Assert.True(ControlLeakProbe.IsCollected(reference));
+    }
+
+    [StaFact]
+    public void Loading_the_selector_again_restores_its_own_filtered_view()
+    {
+        var items = DualListSelectorTestHost.CreateItems("A", 3);
+        using var host = new DualListSelectorTestHost(s =>
+        {
+            s.ShowFilter = true;
+            s.AvailableItems = items;
+        });
+        host.AvailableFilter.Text = "A 1";
+        var window = (Window)host.Selector.Parent;
+
+        window.Content = null;
+        host.Flush();
+        Assert.Equal(0, CountViewSubscriptions(items));
+
+        window.Content = host.Selector;
+        host.Flush();
+
+        Assert.Single(host.AvailableList.Items);
+        Assert.Equal(1, CountViewSubscriptions(items));
+        Assert.Null(CollectionViewSource.GetDefaultView(items).Filter);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference CreateAndCloseSelector(
+        ObservableCollection<DualListSelectorItem> items)
+    {
+        var host = new DualListSelectorTestHost(s =>
+        {
+            s.ShowFilter = true;
+            s.AvailableItems = items;
+        });
+        host.AvailableFilter.Text = "A 1";
+        Assert.Equal(1, CountViewSubscriptions(items));
+        host.Dispose();
+        host.Flush();
+        return new WeakReference(host.Selector);
+    }
+
+    private static int CountViewSubscriptions(
+        ObservableCollection<DualListSelectorItem> items)
+    {
+        var field = typeof(ObservableCollection<DualListSelectorItem>).GetField(
+            nameof(ObservableCollection<DualListSelectorItem>.CollectionChanged),
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        var handler = (Delegate?)field!.GetValue(items);
+        var defaultView = CollectionViewSource.GetDefaultView(items);
+        return handler?.GetInvocationList().Count(d => d.Target is CollectionView view && !ReferenceEquals(view, defaultView)) ?? 0;
+    }
+
     private static string MaxText(
         int count,
         int max)
