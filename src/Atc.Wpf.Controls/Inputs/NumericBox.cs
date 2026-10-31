@@ -513,7 +513,7 @@ public partial class NumericBox : Control
         numericBox.OnMinimumChanged(
             (double)e.OldValue,
             (double)e.NewValue);
-        numericBox.EnableDisableUpDown();
+        numericBox.UpdateSpinButtonsEnabled();
     }
 
     private static void OnMaximumPropertyChanged(
@@ -527,7 +527,7 @@ public partial class NumericBox : Control
         numericBox.OnMaximumChanged(
             (double)e.OldValue,
             (double)e.NewValue);
-        numericBox.EnableDisableUpDown();
+        numericBox.UpdateSpinButtonsEnabled();
     }
 
     private static object CoerceMaximum(
@@ -672,6 +672,8 @@ public partial class NumericBox : Control
 
     private void ToggleReadOnlyMode(bool isReadOnly)
     {
+        UpdateSpinButtonsEnabled();
+
         if (repeatUp is null || repeatDown is null || valueTextBox is null)
         {
             return;
@@ -861,6 +863,8 @@ public partial class NumericBox : Control
         double? oldValue,
         double? newValue)
     {
+        UpdateSpinButtonsEnabled();
+
         if (!manualChange)
         {
             if (!newValue.HasValue)
@@ -884,23 +888,8 @@ public partial class NumericBox : Control
                 return;
             }
 
-            if (repeatUp is { IsEnabled: false })
-            {
-                repeatUp.IsEnabled = true;
-            }
-
-            if (repeatDown is { IsEnabled: false })
-            {
-                repeatDown.IsEnabled = true;
-            }
-
             if (newValue <= Minimum)
             {
-                if (repeatDown is not null)
-                {
-                    repeatDown.IsEnabled = false;
-                }
-
                 ResetInternal();
 
                 if (IsLoaded)
@@ -911,11 +900,6 @@ public partial class NumericBox : Control
 
             if (newValue >= Maximum)
             {
-                if (repeatUp is not null)
-                {
-                    repeatUp.IsEnabled = false;
-                }
-
                 ResetInternal();
                 if (IsLoaded)
                 {
@@ -1205,26 +1189,21 @@ public partial class NumericBox : Control
             CoerceValue(this, val).Item1);
     }
 
-    private void EnableDisableDown()
-    {
-        if (repeatDown is not null)
-        {
-            repeatDown.IsEnabled = Value is null || Value > Minimum;
-        }
-    }
-
-    private void EnableDisableUp()
+    /// <summary>
+    /// The one place that enables the spin buttons: off while read-only, otherwise on until the value reaches
+    /// the matching end of the range.
+    /// </summary>
+    private void UpdateSpinButtonsEnabled()
     {
         if (repeatUp is not null)
         {
-            repeatUp.IsEnabled = Value is null || Value < Maximum;
+            repeatUp.IsEnabled = !IsReadOnly && (Value is null || Value < Maximum);
         }
-    }
 
-    private void EnableDisableUpDown()
-    {
-        EnableDisableUp();
-        EnableDisableDown();
+        if (repeatDown is not null)
+        {
+            repeatDown.IsEnabled = !IsReadOnly && (Value is null || Value > Minimum);
+        }
     }
 
     private void OnTextBoxKeyDown(

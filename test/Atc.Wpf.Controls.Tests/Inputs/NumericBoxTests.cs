@@ -566,6 +566,42 @@ public sealed class NumericBoxTests : IDisposable
     }
 
     [StaFact]
+    public void ReadOnly_ValueChanged_KeepsSpinButtonsDisabled()
+    {
+        // Arrange
+        var (numericBox, _, up, down) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Minimum = 0;
+        numericBox.Maximum = 10;
+        numericBox.Value = 0;
+        numericBox.IsReadOnly = true;
+
+        // Act
+        numericBox.Value = 5;
+
+        // Assert
+        Assert.False(up.IsEnabled);
+        Assert.False(down.IsEnabled);
+    }
+
+    [StaFact]
+    public void ReadOnly_Cleared_ReEnablesSpinButtonsWithinRange()
+    {
+        // Arrange
+        var (numericBox, _, up, down) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Minimum = 0;
+        numericBox.Maximum = 10;
+        numericBox.Value = 10;
+        numericBox.IsReadOnly = true;
+
+        // Act
+        numericBox.IsReadOnly = false;
+
+        // Assert
+        Assert.False(up.IsEnabled);
+        Assert.True(down.IsEnabled);
+    }
+
+    [StaFact]
     public void ArrowKeySpeedup_AfterReadOnlyRoundTrip_IsReset()
     {
         // Arrange

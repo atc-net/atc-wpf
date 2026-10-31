@@ -316,8 +316,6 @@
                             <Setter Property="InterceptArrowKeys" Value="False" />
                             <Setter Property="InterceptManualEnter" Value="False" />
                             <Setter Property="InterceptMouseWheel" Value="False" />
-                            <Setter TargetName="PART_NumericDownButton" Property="IsEnabled" Value="False" />
-                            <Setter TargetName="PART_NumericUpButton" Property="IsEnabled" Value="False" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -339,7 +337,7 @@
                             <Setter TargetName="PART_NumericDownButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_NumericDownButton" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_NumericUpButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
+                            <Setter TargetName="PART_NumericDownButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
                         </Trigger>
                         <Trigger SourceName="PART_TextBox" Property="IsSelectionActive" Value="True">
                             <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atcTheming:ControlsHelper.FocusBorderBrush)}" />
@@ -350,11 +348,8 @@
                             <Setter TargetName="PART_NumericUpButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
-                            <Setter TargetName="PART_NumericDownButton" Property="IsEnabled" Value="False" />
                             <Setter TargetName="PART_NumericDownButtonIcon" Property="Opacity" Value="0.4" />
-                            <Setter TargetName="PART_NumericUpButton" Property="IsEnabled" Value="False" />
                             <Setter TargetName="PART_NumericUpButtonIcon" Property="Opacity" Value="0.4" />
-                            <Setter TargetName="PART_TextBox" Property="IsEnabled" Value="False" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
