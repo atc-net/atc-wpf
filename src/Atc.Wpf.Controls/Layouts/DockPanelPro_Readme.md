@@ -98,6 +98,7 @@ Put `DockPane` elements in `DockRegion.Panes` instead of setting the region's co
 - A side region whose panes are all floating or closed collapses, so the other regions take its space; it comes back when a pane is docked again.
 - A closed pane keeps its region and position: `RestorePane` puts it back there and activates it.
 - Panes are logical children of their region, so they inherit its `DataContext`, also while floating.
+- A floating window merges the resource dictionaries of the pane's ancestors (region, panel, page, window), so implicit styles and `DynamicResource`s keep applying, and it follows the panel's `FlowDirection`, `Language` and font (family, size, style, weight, stretch).
 
 ## 🪟 Floating Panes
 
@@ -411,7 +412,6 @@ The styles are `AtcApps.Styles.DockPanelPro`, `AtcApps.Styles.DockRegion`, `AtcA
 ## 📝 Notes
 
 - A floating window hosts exactly one pane; panes cannot be tabbed together inside a floating window.
-- Floating windows only see `Application` resources and the pane's own resources, not resources defined on the owner window or page.
 - Window bounds are in device-independent units of the panel's window; check mixed-DPI multi-monitor setups by hand.
 
 ## ⚠️ Limitations

@@ -290,6 +290,50 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     [StaFact]
+    public void A_floating_pane_keeps_the_ancestor_resources_flow_direction_language_and_font()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var text = new TextBlock { Text = "output text" };
+        text.SetResourceReference(TextBlock.BackgroundProperty, "Test.PaneBrush");
+        var output = panel.FindPane("output")!;
+        output.Content = text;
+        var implicitStyle = new Style(typeof(TextBlock));
+        implicitStyle.Setters.Add(new Setter(FrameworkElement.TagProperty, "styled"));
+        panel.Resources["Test.PaneBrush"] = Brushes.Orange;
+        var host = Show(panel);
+        try
+        {
+            host.Resources[typeof(TextBlock)] = implicitStyle;
+            host.FlowDirection = FlowDirection.RightToLeft;
+            host.Language = XmlLanguage.GetLanguage("da-DK");
+            host.FontFamily = new FontFamily("Consolas");
+            host.FontSize = 17;
+
+            panel.FloatPane(output);
+            var window = panel.GetFloatingWindow(output)!;
+            window.UpdateLayout();
+
+            Assert.Equal("styled", text.Tag);
+            Assert.Same(Brushes.Orange, text.Background);
+            Assert.Equal(FlowDirection.RightToLeft, text.FlowDirection);
+            Assert.Equal("da-DK", text.Language.IetfLanguageTag, ignoreCase: true);
+            Assert.Equal("Consolas", text.FontFamily.Source);
+            Assert.Equal(17, text.FontSize);
+
+            panel.Resources["Test.PaneBrush"] = Brushes.Teal;
+            host.FlowDirection = FlowDirection.LeftToRight;
+
+            Assert.Same(Brushes.Teal, text.Background);
+            Assert.Equal(FlowDirection.LeftToRight, text.FlowDirection);
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
     public void The_floating_window_context_menu_docks_and_closes_the_pane()
     {
         var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();

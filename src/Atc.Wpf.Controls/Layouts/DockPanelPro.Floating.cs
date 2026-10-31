@@ -10,6 +10,17 @@ public sealed partial class DockPanelPro
     private const double MinimumFloatingWidth = 160;
     private const double MinimumFloatingHeight = 120;
 
+    private static readonly DependencyProperty[] InheritedWindowProperties =
+    [
+        FlowDirectionProperty,
+        LanguageProperty,
+        TextElement.FontFamilyProperty,
+        TextElement.FontSizeProperty,
+        TextElement.FontStyleProperty,
+        TextElement.FontWeightProperty,
+        TextElement.FontStretchProperty,
+    ];
+
     private readonly Dictionary<DockPane, DockFloatingWindow> floatingWindows = [];
     private Window? ownerWindow;
     private bool isOwnerClosing;
@@ -156,6 +167,7 @@ public sealed partial class DockPanelPro
 
         // The window becomes the logical parent of the pane: keep the DataContext of the pane's region flowing in.
         window.SetBinding(DataContextProperty, new Binding(nameof(DataContext)) { Source = pane.Region });
+        InheritAncestorSettings(window, pane.Region);
 
         if (ownerWindow is not null && ownerWindow.IsLoaded && !ReferenceEquals(ownerWindow, window))
         {
@@ -204,6 +216,38 @@ public sealed partial class DockPanelPro
             }));
     }
 
+    /// <summary>
+    /// A floating window is outside the element tree of the panel: give it the resource dictionaries of the
+    /// pane's ancestors (implicit styles, DynamicResources) and follow their flow direction, language and font.
+    /// </summary>
+    private static void InheritAncestorSettings(
+        DockFloatingWindow window,
+        FrameworkElement start)
+    {
+        var dictionaries = new List<ResourceDictionary>();
+        DependencyObject? current = start;
+        while (current is not null)
+        {
+            if (current is FrameworkElement element)
+            {
+                dictionaries.Add(element.Resources);
+            }
+
+            current = current is Visual
+                ? VisualTreeHelper.GetParent(current) ?? LogicalTreeHelper.GetParent(current)
+                : LogicalTreeHelper.GetParent(current);
+        }
+
+        // A later merged dictionary wins, so the nearest ancestor goes last.
+        dictionaries.Reverse();
+        window.InheritResources(dictionaries);
+
+        foreach (var property in InheritedWindowProperties)
+        {
+            window.SetBinding(property, new Binding { Path = new PropertyPath(property), Source = start, Mode = BindingMode.OneWay });
+        }
+    }
+
     private void CloseFloatingWindow(DockPane pane)
     {
         if (!floatingWindows.Remove(pane, out var window))
@@ -223,6 +267,7 @@ public sealed partial class DockPanelPro
         var pane = window.Pane;
         pane.FloatingBounds = window.CurrentBounds;
         window.ReleasePane();
+        window.ReleaseResources();
         pane.Region?.AcceptPaneFromWindow(pane);
     }
 

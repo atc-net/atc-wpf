@@ -14,6 +14,7 @@ internal sealed class DockFloatingWindow : Atc.Wpf.Theming.Controls.Windows.Nice
     private readonly Button dockButton;
     private readonly MenuItem dockMenuItem;
     private readonly MenuItem closeMenuItem;
+    private readonly List<ResourceDictionary> inheritedResources = [];
 
     public DockFloatingWindow(DockPane pane)
     {
@@ -88,6 +89,37 @@ internal sealed class DockFloatingWindow : Atc.Wpf.Theming.Controls.Windows.Nice
         {
             UpdateLayout();
         }
+    }
+
+    /// <summary>
+    /// Merges the resource dictionaries of the panel's ancestors into the window (outermost first).
+    /// </summary>
+    public void InheritResources(IEnumerable<ResourceDictionary> dictionaries)
+    {
+        foreach (var dictionary in dictionaries)
+        {
+            if (ReferenceEquals(dictionary, Resources) ||
+                Resources.MergedDictionaries.Contains(dictionary))
+            {
+                continue;
+            }
+
+            Resources.MergedDictionaries.Add(dictionary);
+            inheritedResources.Add(dictionary);
+        }
+    }
+
+    /// <summary>
+    /// Removes the merged ancestor dictionaries again, so they no longer list the window as an owner.
+    /// </summary>
+    public void ReleaseResources()
+    {
+        foreach (var dictionary in inheritedResources)
+        {
+            Resources.MergedDictionaries.Remove(dictionary);
+        }
+
+        inheritedResources.Clear();
     }
 
     /// <summary>
